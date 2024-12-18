@@ -1,0 +1,23 @@
+{
+  "name": "bento",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "format": "biome check",
+    "lint": "biome lint"
+  },
+  "devDependencies": {
+    "biome": "^0.3.3",
+    "turbo": "^2.3.3",
+    "typescript": "5.7.2"
+  },
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "packageManager": "npm@10.9.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
