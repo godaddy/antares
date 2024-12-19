@@ -12,7 +12,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "attributePosition": "auto",
-    "ignore": ["**/package-lock.json"]
+    "ignore": ["**/package-lock.json", "package.json"]
   },
   "organizeImports": { "enabled": true },
   "linter": {

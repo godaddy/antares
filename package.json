@@ -1,13 +1,20 @@
 {
   "name": "bento",
   "private": true,
+  "version": "0.0.0",
+  "homepage": "https://github.com/godaddy/bento/tree/main",
   "scripts": {
     "build": "turbo build",
     "format": "biome check",
-    "lint": "biome lint"
+    "lint": "biome lint",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "biome": "^0.3.3",
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "turbo": "^2.3.3",
     "typescript": "5.7.2"
   },
@@ -19,5 +26,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": ["biome lint --fix", "biome format --fix", "git add"]
+  }
 }
