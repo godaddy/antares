@@ -1,0 +1,95 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/blocks';
+import * as Stories from './error.stories.tsx';
+
+import SourceBasic from './examples/throws.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Error
+
+The `@bento/error` package creates custom `Error` objects that can be thrown
+as part of the framework. These custom error objects are designed to create a
+better DX for developers in a production environment.
+
+Every created error will automatically include the following as part of
+the message:
+
+- Unobfuscated name of the component that threw the error.
+- Unobfuscated name of the function that threw the error.
+- Link to the documentation that is dedicated to the error.
+- Reference to our support channel.
+
+Throwing or logging the error created above would result in the following output:
+
+```
+BentoError: @bento/package-name(method-name): The given name is already registered, please provide a different unique name
+
+For more information visit: https://example.com/docs/errors/#AFBF4A
+
+Need more help? Join our support channel #bento-support.
+    at TestContext.<anonymous> (<path>/<file>:420:69)
+    at Test.runInAsyncScope (node:async_hooks:211:14)
+    at Test.run (node:internal/test_runner/test:931:25)
+    at Test.start (node:internal/test_runner/test:829:17)
+    at node:internal/test_runner/test:1308:71
+    at node:internal/per_context/primordials:483:82
+    at new Promise (<anonymous>)
+    at new SafePromise (node:internal/per_context/primordials:451:29)
+    at node:internal/per_context/primordials:483:9
+    at Array.map (<anonymous>)
+```
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/error
+```
+
+#***REMOVED***BentoError
+
+The package exposes the `BentoError` Error class that can be used to create
+custom errors.
+
+```javascript
+import { BentoError } from '@bento/error';
+
+throw new BentoError({
+  name: 'package-name',
+  method: 'method-name',
+  message: 'The given name is already registered, please provide a different unique name'
+});
+```
+
+The following keys are required:
+
+<ArgTypes of={Stories.Required} />
+
+> Changing the `name`, `method`, or `message` properties will result in a
+> different hash. This hash is the reference to the error on the documentation
+> page. If you change any of these properties, you must also update the
+> documentation page.
+
+```html
+<h2 id="place-the-generated-hash-here"></h2>
+
+<!--
+ As mentioned above, it's possible that a different hash was previously generated.
+ You still want to keep the hash on the documentation page to ensure that older
+  versions of the framework can still be accessed in the right section.
+-->
+<a name="place-the-previous-hash-here"></a>
+```
+
+The following keys are optional:
+
+<ArgTypes of={Stories.Optional} />
+
+Any other key added to the object will be introduced as a property on
+the error object. This can be useful for debugging purposes when you want to
+provide additional information to the developer.
+
+##***REMOVED***Example
+
+<Source language='tsx' code={SourceBasic} />
+<Controls of={Stories.Demo} />
+<Story of={Stories.Demo} inline />

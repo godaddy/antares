@@ -1,0 +1,59 @@
+import * as Stories from './error.stories.tsx';
+import { Meta } from '@storybook/blocks';
+
+<Meta of={Stories} name="Errors" />
+
+***REMOVED***Errors
+
+Our framework is currently throwing the following errors, each error
+comes with a unique hash that can be used to link to the documentation page
+that explains the error in more detail.
+
+If you are still having trouble understanding the error, please reach out to
+our support channel.
+
+#***REMOVED***The supplied component name has already been registered.
+<a name="AFBF4A"></a>
+
+The `@bento/slots` component requires unique names when the component is being
+created in the `withSlots` function. The reason for this is that we want each
+component within the system to be able to be targeted with a global slot
+override. To find those items, we need to know their names.
+
+```javascript
+import { withSlots } from '@bento/slots';
+
+const YourComponentDeclaration = withSlots(/* This is where the error comes from */, function Component() {
+  // Your component logic
+});
+```
+
+- The first argument of the `withSlots` function should be a unique string,
+  the resulting component stored as `const` can be named anything.
+- You may be loading the same component twice from different sources.
+- SharedComponents might use the same name as the component you are trying to
+  create. So be mindful of the names you are using, and avoid using generic names
+  , like `button`, `input`, `container`, etc. You can always prefix or suffix the
+  name with your package name. For example: `BentoButton`.
+
+> NOTE: This error will only be thrown in non-production environments, this
+> does not mean that the error is not important.
+
+#***REMOVED***The supplied component modifier is not a function.
+<a name="C1D3A4"></a>
+
+The `@bento/slots` component allows you to use special modifiers as the third argument
+when using the `withSlots` function. One of the items that is currently supplied
+to the array is not a `function`.
+
+```javascript
+import { withSlots } from '@bento/slots';
+
+const YourComponentDeclaration = withSlots('your-component', function Component() {
+  // Your component logic
+}, [ /* This is where your error is coming from */ ]);
+```
+
+- Double check that you've spelled the name of your modifier correctly
+- You may have an additional comma at the end of the array that introduces an item.
+- Iterate through all the items and `console.log` them to see which item breaks.

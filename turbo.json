@@ -4,8 +4,24 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*",
+        "../../configs/*.json",
+        "../../configs/*.mjs"
+      ],
+      "outputs": [".next/**", "!.next/cache/**", "storybook-static/**", "dist"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "test/**/*.js",
+        "test/**/*.ts",
+        "examples/**/*.tsx",
+        "examples/**/*.ts"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

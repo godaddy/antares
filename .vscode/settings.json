@@ -3,14 +3,14 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "biomejs.biome",
     "editor.codeActionsOnSave": {
-      "source.organizeImports.biome": "explicit"
+      "source.organizeImports.biome": "false"
     }
   },
   "[javascriptreact]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "biomejs.biome",
     "editor.codeActionsOnSave": {
-      "source.organizeImports.biome": "explicit"
+      "source.organizeImports.biome": "false"
     }
   },
   "[json]": {
@@ -19,6 +19,6 @@
   },
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
-    "source.organizeImports": "explicit"
+    "source.organizeImports": "false"
   }
 }

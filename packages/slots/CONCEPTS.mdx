@@ -1,0 +1,155 @@
+import { Meta, ArgTypes, Source, Story } from '@storybook/blocks';
+import * as Stories from './slots.stories.tsx';
+
+import SourceFunction from './examples/slot-function.tsx?raw';
+import SourceProps from './examples/slot-props.tsx?raw';
+import SourceNested from './examples/nested.tsx?raw';
+import SourceMemo from './examples/memo.tsx?raw';
+
+<Meta of={Stories} name="Concepts" />
+
+***REMOVED***Slots
+
+Slots gives you full control over every part of the component. It's the ulimate
+expression of freedom in a component-based architecture. Every component that is
+build with the `@bento/slots` now accepts 2 additional props:
+
+<ArgTypes of={Stories.SlotsAPI} />
+
+> **IMPORTANT**
+>
+> Before you introduce `slots` to a component reach out to your design system
+> team. Overrides are an indication that the component you're using is no
+> longer following the design system guidelines or the design that you're
+> trying to implement is not covered by the design system.
+>
+> Components are used to enforce consistency across the application. Reaching
+> out to your design system team will help to ensure that the component you're
+> using is still following the design system guidelines.
+>
+> If you are fixing a bug, consider contributing the fix back to the design
+> system. This will help to ensure that the component is fixed for everyone.
+
+The `slots` prop accepts an object as a value. The key of the object should be
+the name of the slot that you want to modify. The value of the object should be
+an object or function that contains the modifications that you want to make to
+the slot.
+
+#***REMOVED***Assigning `slot`'s to components
+
+Note that this only needed when you are building your own custom components on
+top of Bento that should also support slots. If you are developing applications
+then this is already done for you in the components that you consume.
+
+The slots implementation needs to know which component should receive the
+modifications, this is done by assigning the `slot` prop. The `slot` prop can be
+assigned to any component that is built with the `@bento/slots` package. The
+`slot` accepts a string as a value that represents the name of the slot.
+
+The example component below will be used througout the documentation to
+illustrate the usage of slots.
+
+<Source language='tsx' code={ SourceNested } />
+
+While it is possible to use assign the same name `slot` to multiple (different)
+components, it is recommended to use unique names to allow individual targetting
+of each component. When authoring components the names of the slots should be
+documented in the component's documentation so the consumers know which slots
+are available.
+
+#***REMOVED***Namespace for component composition
+
+A unique feature of our slots implementation is the ability to drill down
+components. When a `slot` is assigned to a component it becomes part of the
+namespace of the component. This namespace can be used to drill down the
+component tree and access the slots of the children.
+
+The namespace is a dot-separated string that represents the path to the slot.
+To illustrate this, consider the following example where we created a fictional
+`Search` component that is composed with an existing `Button` component. This
+`Button` component has a slot named `icon` that we want to customize.
+
+```jsx
+// button component
+<Button>
+   <Text slot="label">{ children }</Text>
+   <Icon slot="icon" name="arrow-right" />
+</Button>
+
+// search component
+<Search>
+   <Label slot="label">
+      Search
+      <Icon slot="icon" name="search" />
+   </Label>
+   <Input slot="search" />
+   <Button slot="submit">Submit</Button>
+</Search>
+```
+
+As the namespace is composed of each of the assigned `slot` name, we can
+customize the `icon` slot of the `Button` component by targetting the
+`submit.icon` namespace. The namespace should be supplied as key and the
+required modifications as value as illustrated below:
+
+```jsx
+<Search slots={{ 'submit.icon': { name: 'search' } }} />
+```
+
+#***REMOVED***Introducing new props
+
+When an object is supplied as a value to a slot, the object will be merged with
+the props of the component. This allows you to introduce or override props of
+the component.
+
+<Source language='tsx' code={ SourceProps } />
+<Story of={Stories.PropsSlots} inline />
+
+This pattern is a lot powerful than it seems at first. There is virtually no
+limit to what you can assign with this pattern. To given an example, you can
+`slots` to assign `refs` to the components, or even assign event handlers to
+to the components. You can see this in action in our
+[Best Practices](#best-practices) example.
+
+#***REMOVED***Modify children
+
+When a function (`renderProp`) is supplied as a value to a slot, the function
+can be used to replace or modify the children of a component. This allows you to
+affect the structure of the component.
+
+The function will receive the `props` and `original` as arguments and should
+return the content that should be rendered. The `props` argument is an object
+that contains the original props of the component. The `original` argument is
+the original content of the slot.
+
+<Source language='tsx' code={ SourceFunction } />
+<Story of={Stories.FunctionalSlots} inline />
+
+#***REMOVED***Best practices
+
+As the `slots` prop accepts an object, it is important to ensure that the
+object is memoized to prevent unnecessary re-renders. If the modifications
+you are making to the component are static, you can declare the object outside
+of the component scope and pass it as a prop. This ensures that the object is
+only created once and the prop is not considered a new prop on each render:
+
+```jsx
+const slots = {
+   'submit.icon': { id: 'my-custom-id' }
+};
+
+function YourExampleComponent() {
+   return <Search slots={slots} />
+}
+```
+
+If your object references variables declared in the component scope you can use
+the `React.useMemo` hook. The `React.useMemo` hook caches the object between
+re-renders. Given that your object references variables declared in the
+components function scope you must include them in the dependencies array:
+
+<Source language='tsx' code={ SourceMemo } />
+
+The above example results in the following output:
+
+<Story of={Stories.MemoSlots} inline />

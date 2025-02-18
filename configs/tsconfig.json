@@ -1,0 +1,18 @@
+{
+  "include": ["types"],
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["esnext"],
+    "outDir": "./dist",
+    "strict": true,
+    "baseUrl": "./",
+    "jsx": "react",
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true
+  }
+}

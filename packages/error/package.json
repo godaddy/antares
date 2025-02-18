@@ -1,0 +1,46 @@
+{
+  "name": "@bento/error",
+  "version": "1.0.0",
+  "description": "Custom error class for Bento",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "scripts": {
+    "dev": "tsup src/index.ts --watch",
+    "build": "tsup",
+    "test": "npm run test:node",
+    "pretest": "npm run build",
+    "test:node": "c8 --100 tsx --test test/**/*.node.ts",
+    "lint": "biome lint && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/bento.git"
+  },
+  "keywords": [
+    "bento",
+    "react",
+    "component",
+    "library",
+    "error"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/godaddy/bento/issues"
+  },
+  "homepage": "https://github.com/godaddy/bento#readme",
+  "files": [
+    "dist",
+    "src",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  }
+}

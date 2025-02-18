@@ -1,0 +1,143 @@
+import React, { type ReactNode, useContext, memo } from 'react';
+import { useDeepCompareMemo } from 'use-deep-compare';
+import { Slot, type SlotContext } from './context.ts';
+import { BentoError } from '@bento/error';
+import { override } from './override.ts';
+import { replace } from './replace.ts';
+
+/**
+ * Slotted Components receive.
+ *
+ * @interface SlottedComponentProps
+ * @property {string} slot - The slot name
+ * @property {ReactNode} children - The children to render
+ */
+export interface SlottedComponentProps {
+  slot: string;
+  slots: object;
+  children: ReactNode;
+}
+
+//
+// A list of libraries that are currently registered by the system. This is
+// needed to prevent duplicate component names from being registered as the
+// names are used to target the correct component with slot overrides.
+//
+export const library = new Set<string>();
+
+/**
+ * Higher-order component that wraps a given component with slot functionality.
+ * This allows components to be dynamically replaced or overridden based on the provided context and slots.
+ *
+ * @param {string} name - The name of the component.
+ * @param {React.ComponentType} Component - The component to wrap.
+ * @param {Array} [modifiers=[replace, override]] - The modifiers to apply to the component.
+ * @returns {React.ComponentType} The wrapped component.
+ * @public
+ *
+ * @throws {BentoError} If the component name has already been registered (in development mode).
+ * @throws {BentoError} If any of the supplied modifiers are not functions.
+ *
+ * @example
+ * ```tsx
+ * const MyComponent = () => <div>My Component</div>;
+ * const SlottedMyComponent = withSlots('MyComponent', MyComponent);
+ * ```
+ */
+export function withSlots(
+  name: string,
+  Component: React.ComponentType,
+  modifiers = [replace, override]
+): React.ComponentType {
+  function WrappedComponent({ slot, slots, ...props }: SlottedComponentProps) {
+    let ctx = { ...useContext<SlotContext>(Slot) };
+    let Element = Component;
+
+    ctx.namespace = [...ctx.namespace, slot].filter(Boolean);
+    ctx.slots = { ...ctx.slots, ...slots };
+
+    //
+    // Modifiers allow you to manipulate the context, props, and component with
+    // a single function. This makes it easier to turn on or off functionality
+    // that you might not need for your components.
+    //
+    // For Bento based components we supply the following modifiers by default:
+    // - replace: Allows you to replace the component with another component
+    //   based on the slots and provided context.
+    // - override: Makes a note of potential design or functional overrides
+    //   that are applied to the component. Making it easier to provide support
+    //   to find common overrides in your application.
+    //
+    modifiers.forEach(function forEach(modifier) {
+      const mods: {
+        Component?: React.ComponentType;
+        context?: object;
+        props?: object;
+      } =
+        modifier({
+          Component: Element,
+          context: ctx,
+          props,
+          name
+        }) || {};
+
+      if (typeof mods.context === 'object') ctx = { ...ctx, ...mods.context };
+      if (typeof mods.props === 'object') props = { ...props, ...mods.props };
+      if (mods.Component) Element = mods.Component;
+    });
+
+    const context = useDeepCompareMemo(() => ctx, [ctx]);
+    const rendered = (
+      <Slot.Provider value={context}>
+        <Element {...props} />
+      </Slot.Provider>
+    );
+
+    const slotted = ctx.slots[ctx.namespace.join('.')];
+
+    if (typeof slotted !== 'function') return rendered;
+    return slotted({ props, original: rendered.props.children });
+  }
+
+  const SlottedComponent = memo(WrappedComponent);
+  SlottedComponent.displayName = `Slotted(${name})`;
+
+  if (process.env.NODE_ENV !== 'production') {
+    //
+    // This enables re-render tracking for every Bento based component using the
+    // `@welldone-software/why-did-you-render` package.
+    //
+    SlottedComponent.whyDidYouRender = true;
+
+    //
+    // We want to throw the following error only in a development environment.
+    //
+    // While the requirement is to have unique components so each component can
+    // be individually and correctly targetted using our provided context we
+    // want to be mindful that we're breaking an application for the right
+    // reasons. We should only throw in production if an application cannot
+    // recover from this error.
+    //
+    // In the case of these overrides
+    //
+    if (library.has(name))
+      throw new BentoError({
+        message: 'The supplied component name has already been registered.',
+        method: 'withSlots',
+        name: 'slots'
+      });
+
+    library.add(name);
+  }
+
+  modifiers.forEach(function forEach(modifier) {
+    if (typeof modifier !== 'function')
+      throw new BentoError({
+        message: 'The supplied component modifier is not a function.',
+        method: 'withSlots',
+        name: 'slots'
+      });
+  });
+
+  return SlottedComponent;
+}

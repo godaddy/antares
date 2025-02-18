@@ -14,7 +14,7 @@
     "attributePosition": "auto",
     "ignore": ["**/package-lock.json", "package.json"]
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": { "enabled": false },
   "linter": {
     "enabled": true,
     "rules": {
@@ -78,18 +78,21 @@
     }
   },
   "javascript": {
+    "linter": {
+      "enabled": true
+    },
     "formatter": {
       "enabled": true,
-      "jsxQuoteStyle": "single",
+      "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
       "trailingCommas": "none",
       "semicolons": "always",
-      "arrowParentheses": "asNeeded",
+      "arrowParentheses": "always",
       "bracketSpacing": true,
       "bracketSameLine": false,
       "indentStyle": "space",
       "quoteStyle": "single",
-      "attributePosition": "multiline",
+      "attributePosition": "auto",
       "lineWidth": 120
     }
   },
