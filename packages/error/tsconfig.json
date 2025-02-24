@@ -8,6 +8,9 @@
       "../../node_modules/@types",
       "../../types"
     ],
-    "types": ["node"]
-  }
+    "types": ["node"],
+    "declarationDir": "./dist"
+  },
+  "include": ["./src"],
+  "exclude": ["./dist", "example", "test", "node_modules"]
 }
