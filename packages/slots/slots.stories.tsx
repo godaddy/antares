@@ -7,7 +7,7 @@ import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
 
 const meta: Meta<typeof Button> = {
-  title: '@bento/slots',
+  title: 'higher-order components/slots',
   component: () => null
 };
 

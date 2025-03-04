@@ -8,7 +8,7 @@ import SourceNestedSlots from './examples/nested.tsx?raw';
 
 ***REMOVED***Render Props
 
-The `@bento/render-props` package provides a hook that unifies the component
+The `@bento/use-render-props` package provides a hook that unifies the component
 and slot based props into a single interace. Both the component and slot-based
 props can be specified as a `renderProp`. A `renderProp` is a function that
 returns the value that should be applied as props to the component.
@@ -16,7 +16,7 @@ returns the value that should be applied as props to the component.
 #***REMOVED***Installation
 
 ```shell
-npm install --save @bento/render-props
+npm install --save @bento/use-render-props
 ```
 
 #***REMOVED***useRenderProps
@@ -28,7 +28,7 @@ introduced on the component to override the props that are specified on the
 component.
 
 ```javascript
-import { useRenderProps } from '@bento/render-props';
+import { useRenderProps } from '@bento/use-render-props';
 import { useState } from 'react';
 
 function Component(args) {
@@ -68,7 +68,7 @@ Just like normal `props`, you can also use this instance to spread the props
 on your components:
 
 ```javascript
-import { useRenderProps } from '@bento/render-props';
+import { useRenderProps } from '@bento/use-render-props';
 import { withSlots } from '@bento/slots';
 import { useState } from 'react';
 
@@ -88,7 +88,7 @@ Given that no default value is applied, this renderProp will not be called
 with the `original` value assigned.
 
 ```javascript
-import { useRenderProps } from '@bento/render-props';
+import { useRenderProps } from '@bento/use-render-props';
 import { withSlots } from '@bento/slots';
 
 const Anchor = withSlots('Anchor', function AnchorComponent(args) {

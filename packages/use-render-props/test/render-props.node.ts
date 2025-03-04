@@ -7,7 +7,7 @@ import util from 'node:util';
 import assume from 'assume';
 import React from 'react';
 
-describe('@bento/render-props', function bento() {
+describe('@bento/use-render-props', function bento() {
   describe('isEventListener', function listener() {
     it('is a function', function fn() {
       assume(isEventListener).is.a('function');

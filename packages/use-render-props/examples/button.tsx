@@ -1,4 +1,4 @@
-import { useRenderProps } from '@bento/render-props';
+import { useRenderProps } from '@bento/use-render-props';
 import { withSlots } from '@bento/slots';
 import React from 'react';
 

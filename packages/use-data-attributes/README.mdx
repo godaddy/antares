@@ -1,0 +1,40 @@
+import { Meta, Story, Source, ArgTypes, Markdown } from '@storybook/blocks';
+import * as Stories from './data-attributes.stories.tsx';
+
+import SourceContainer from './examples/container.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Data Attributes
+
+The `@bento/use-data-attributes` package provides a hook that automatically
+converts a component’s props into `data-` attributes. This allows components to
+expose their internal state to the DOM, making debugging and styling components
+easier.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/use-data-attributes
+```
+
+#***REMOVED***useDataAttributes
+
+The `useDataAttributes` automatically transforms any given `object` into its
+`data-` attribute equivalent, transforming the values into strings. The resulting
+object only contains the `data-` prefixed attributes.
+
+It's worth noting that this hook does not merge the created `data-` attributes
+with the existing ones. The user is left to decide on the correct merge strategy.
+
+The `useDataAttributes` hook takes an object with the following arguments:
+
+<ArgTypes of={Stories.useDataAttributes} />
+
+As the `data-` attributes end up in the DOM, their values are automatically
+transformed into strings. This is done using the `@bento/as-value-attribute`
+package. The package automatically formats the `data` based on the type of the
+value given.
+
+
+<Source language='tsx' code={ SourceContainer } />

@@ -4,7 +4,7 @@ import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
 
 const meta: Meta<typeof Button> = {
-  title: '@bento/render-props',
+  title: 'hooks/use-render-props',
   component: () => null
 };
 

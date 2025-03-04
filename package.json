@@ -17,6 +17,7 @@
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@microsoft/api-extractor": "^7.51.1",
+    "@types/dashify": "^1.0.3",
     "@types/node": "^22.13.9",
     "assume": "^2.3.0",
     "browserslist-to-esbuild": "^2.1.1",

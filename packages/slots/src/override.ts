@@ -1,4 +1,5 @@
 import { type ComponentProps, type ComponentType } from 'react';
+import { useDataAttributes } from '@bento/use-data-attributes';
 import { type SlotContext } from './context.ts';
 
 interface OverrideArgs {
@@ -49,8 +50,6 @@ export function override({ context, props }: OverrideArgs): OverrideResult | und
   if (!causes.length) return;
 
   return {
-    props: {
-      'data-override': causes.join(' ')
-    }
+    props: useDataAttributes({ override: causes })
   };
 }

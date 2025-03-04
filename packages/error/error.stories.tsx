@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Throws } from './examples/throws.tsx';
 
 const meta: Meta<typeof Throws> = {
-  title: '@bento/error',
+  title: 'utility/error',
   component: () => null
 };
 

@@ -1,7 +1,7 @@
 {
-  "name": "@bento/slots",
+  "name": "@bento/as-attribute-value",
   "version": "1.0.0",
-  "description": "The slots implementation of Bento",
+  "description": "Format a value as an HTML attribute value.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -22,9 +22,10 @@
     "react",
     "component",
     "library",
-    "slot",
-    "slots",
-    "primitives"
+    "format",
+    "attribute",
+    "value",
+    "stringify"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -42,30 +43,13 @@
     "react-dom": "18.x || 19.x"
   },
   "dependencies": {
-    "@bento/error": "file:../error",
-    "@bento/use-data-attributes": "file:../use-data-attributes",
-    "use-deep-compare": "^1.3.0"
+    "dashify": "^2.0.0"
   },
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./context": {
-      "types": "./src/context.ts",
-      "import": "./dist/context.js",
-      "require": "./dist/context.cjs"
-    },
-    "./modifiers/override": {
-      "types": "./src/override.ts",
-      "import": "./dist/override.js",
-      "require": "./dist/override.cjs"
-    },
-    "./modifiers/replace": {
-      "types": "./src/replace.ts",
-      "import": "./dist/replace.js",
-      "require": "./dist/replace.cjs"
     },
     "./package.json": "./package.json"
   }

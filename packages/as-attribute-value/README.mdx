@@ -1,0 +1,42 @@
+import * as Stories from './as-attribute-value.stories.tsx';
+import { Meta, ArgTypes } from '@storybook/blocks';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Attribute Value
+
+The `@bento/as-attribute-value` package is a formatter that converts any given
+value into a string that can be used as an HTML attribute value.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/as-attribute-value
+```
+
+#***REMOVED***stringify
+
+The package exposes the `stringify` function as the default export. The sole
+purpose of this function is to format any given value into a `string` that
+closely resembles the value as if it was formatted as an HTML attribute value.
+
+The function accepts the following arguments:
+
+<ArgTypes of={Stories.stringify} />
+
+```jsx
+import { stringify } from '@bento/as-attribute-value';
+
+console.log(stringify({ hello: 'world'}));        // hello(world)
+```
+
+We automatically format the `data` based on the type of the value given:
+
+<ArgTypes of={Stories.output} />
+
+Any unknown object is converted using `JSON.stringify`. In order for these
+custom objects to be converted, they must have a `toJSON` method that returns a
+serializable object.
+
+The value `false` is automatically converted to `undefined` to signal React that
+the resulting attribute should not end up in the DOM.
