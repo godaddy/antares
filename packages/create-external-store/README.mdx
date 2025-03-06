@@ -1,0 +1,286 @@
+import { Meta, Story, Source, ArgTypes } from '@storybook/blocks';
+import * as Stories from './create-external-store.stories.tsx';
+
+import SourceCreate from './examples/create-store.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***External Store
+
+The `@bento/create-external-store` package provides a simple way to create a
+external store that can be used to share global state between components. It's
+designed to be as low-level as possible and doesn't provide additional
+features like reducers or actions.
+
+This package is meant to be used in combination with the `useSyncExternalStore`
+hook from React.
+
+If you are looking for a more feature-rich store, you might want to consider
+using a library like Redux.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/create-external-store
+```
+
+#***REMOVED***createStore
+
+The returned `store` object is designed to be used in combination with the
+`useSyncExternalStore` hook from React. It contains the `subscribe` and
+`getSnapshot` methods should be provided to the hook.
+
+When creating a new store, you can provide an initial state as the first
+argument. The initial state can be any iterable object.
+
+<Source language='tsx' code={ SourceCreate } />
+<Story of={Stories.Store} />
+
+The created store returns an object with the following methods:
+
+<ArgTypes of={Stories.api} />
+
+##***REMOVED***subscribe
+
+The `subscribe` function is used to listen for changes to the store. It accepts
+a callback function that is called whenever the store is updated. It returns an
+`unsubscribe` function that can be used to stop listening for changes. This
+follows the API that is required by the `useSyncExternalStore` hook.
+
+The `subscribe` function should be passed into the `useSyncExternalStore` hook
+as the first argument:
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+import { useSyncExternalStore } from 'react';
+
+const store = createStore({ count: 0 });
+useSyncExternalStore(store.subscribe, store.getSnapshot);
+```
+
+You can also use the `subscribe` method directly if you want to listen to
+changes to the store. The `subscribe` method is called with the changes that
+triggered the update.
+
+```jsx
+const unsubscribe = store.subscribe(function (changes) {
+  console.log('This was added to the store:', changes);
+});
+```
+
+##***REMOVED***getSnapshot
+
+The `getSnapshot` function is used to get the store’s current state. It
+returns a **cached** snapshot of the current state of the store.
+
+The `getSnapshot` function should be passed into the `useSyncExternalStore` hook
+as the second argument:
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+import { useSyncExternalStore } from 'react';
+
+const store = createStore({ count: 110001 });
+useSyncExternalStore(store.subscribe, store.getSnapshot);
+```
+
+```jsx
+const snapshot = store.getSnapshot();
+console.log('The current state of the store:', snapshot);
+
+store.getSnapshot() === store.getSnapshot() // true
+
+//
+// If we see you do this, will come to your house and slap you.
+// - Copilot <5 March 2025>
+//
+// Real talk: As we cache the value of the snapshot inside the store, it's not
+// recommended to mutate the snapshot directly. This is a performance optimization
+// as we do not want to create a fresh clone of the data every time the snapshot
+// function is called.
+//
+snapshot.count = 0;
+```
+
+##***REMOVED***set
+
+The `set` function is used to update the store. It accepts an object with the
+state that should be updated. The `set` function triggers the `subscribe` method
+with the changes made to the store.
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+
+const store = createStore({ count: 0 });
+store.set({ count: 1 });
+```
+
+The `set` function does not replace the store’s state but instead merges
+the new state with the existing state. This means you can update only
+specific keys in the store without affecting the rest of the state.
+
+```jsx
+store.set({ foo: 'bar' });
+console.log(store.getSnapshot()) // { count: 1, foo: 'bar' }
+```
+
+To remove data from the store, set the value to `undefined`.
+
+```jsx
+store.set({ count: undefined });
+console.log(store.getSnapshot()) // { foo: 'bar' }
+```
+
+##***REMOVED***ondemand
+
+The `ondemand` function updates the store once the data is requested.
+The `ondemand` expects an **async** function that returns the data for the
+requested key. The key is supplied as the first argument of the function.
+
+> **Note:** The `ondemand` function should be used in combination with the
+> `pick` function. This method will trigger the `ondemand` function when
+> the supplied key does not exist in the store.
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+
+const store = createStore();
+
+store.ondemand(async function lazyload(key) {
+  console.log('key:', key); // 'count'
+
+  //
+  // This is an example code; you should always sanitize the key before using it
+  // as it should be considered user input. We're ignoring these security
+  // concerns for the sake of simplicity.
+  //
+  const external = await fetch(`/api/${key}`);
+  return external.json();
+});
+
+const unsub = store.only('count')(function subscriber() {
+  console.log('The data has been loaded');
+});
+
+const data = store.pick('count')(); // undefined
+```
+
+The supplied function is only called once for each key. The result of the
+function is cached and returned for subsequent requests. If you want to
+force a re-fetch, use the `set` command to set the value to `undefined`.
+
+```jsx
+store.set({ count: undefined });
+```
+
+##***REMOVED***pick
+
+The `pick` function selects specific keys from the store. When the
+key does not exist in the store; the `ondemand` function is triggered to request
+the data for the supplied key.
+
+The `pick` function accepts a `string` as the first argument, which is the key
+you want to select from the store. The return value is a function that should
+be supplied to the `useSyncExternalStore` hook as the second argument.
+
+To prevent unwanted re-rendering, you should wrap the result of the
+`pick` function in a `useCallback` hook.
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+import { useSyncExternalStore, useCallback } from 'react';
+
+const store = createStore({ counter: 420 });
+
+function MyCounter() {
+  const counter = useCallback(store.only('counter'), []);
+  const picker = useCallback(store.pick('counter'), []);
+
+  const count = useSyncExternalStore(counter, picker);
+  const bump = useCallback(function update() {
+    store.set({ counter: count + 1 });
+  }, [count]);
+
+  return <button onClick={bump}>Count: {data}</button>;
+}
+```
+
+If you are looking to select a key without triggering the `ondemand` function,
+you should use object destructuring instead:
+
+```jsx
+const { counter } = useSyncExternalStore(store.subscribe, store.getSnapshot);
+```
+
+##***REMOVED***only
+
+The `only` function allows you to only subscribe to changes to specific keys in
+the store. This is useful when you only want to trigger an update when a specific
+key changes. It's effectively a wrapper around our `subscribe` method.
+
+The method accepts a `string` or an `array` of strings of the keys that you want
+to subscribe to. The return value is a dedicated `subscribe` function that
+should be passed to the `useSyncExternalStore` hook to trigger an update only
+when the specified keys change.
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+
+const store = createStore({ count: 0 });
+const counter = store.only('count');
+
+const unsub = counter(function subscriber() {
+  console.log('The count has changed:', counter());
+});
+
+store.set({ foo: 'bar' });    // No update
+store.set({ count: 1 });      // Update \o/
+```
+
+To prevent unwanted re-rendering, you should wrap the result of the
+`only` function in a `useCallback` hook.
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+import { useSyncExternalStore, useCallback } from 'react';
+
+const store = createStore({ counter: 420 });
+
+function MyCounter() {
+  const counter = useCallback(store.only('counter'), []);
+  const data = useSyncExternalStore(counter, store.getSnapshot);
+  const bump = useCallback(function update() {
+    store.set({ counter: data.counter + 1 });
+  }, [data.counter]);
+
+  return <button onClick={bump}>Count: {data.counter}</button>;
+}
+```
+
+##***REMOVED***dispatch
+
+The `dispatch` function triggers the functions you supplied to
+the `subscribe` method. This is done automatically when introducing a new state
+using either the `set` or `ondemand` methods. We still wanted to expose these
+internals for consumption to give you complete control over the store.
+
+The `dispatch` function is called with the newly introduced data. These changes
+are used by the `only` method to ensure that it only triggers an update when
+the specified keys are changed.
+
+```jsx
+import { createStore } from '@bento/create-external-store';
+
+const store = createStore({ count: 1337 });
+
+store.subscribe(function subscriber(changes) {
+  console.log('This was added to the store:', changes);
+});
+
+//
+// NOTE: This does not update the store's state. It will only
+// call the `subscribe` function. If you want to update the state of the store
+// use the `set` or `ondemand` methods.
+//
+store.dispatch({ count: 1 });
+```
