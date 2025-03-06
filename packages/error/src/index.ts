@@ -39,7 +39,7 @@ export interface BentoErrorArgs {
   docs?: string;
   scope?: string;
 
-  [x: string]: any;
+  [key: string]: any;
 }
 
 /**
@@ -69,6 +69,7 @@ export interface BentoErrorArgs {
  * });
  */
 export class BentoError extends Error {
+  [key: string]: any;
   constructor({
     name,
     method,

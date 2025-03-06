@@ -1,5 +1,5 @@
 import { BentoError } from '../src/index.ts';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assume from 'assume';
 
 describe('@bento/error', function errors() {

@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { withSlots, library } from '@bento/slots';
 import { Slot } from '@bento/slots/context';

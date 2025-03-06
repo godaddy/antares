@@ -5,6 +5,7 @@ import { SlotProps } from './examples/slot-props.tsx';
 import { Button } from './examples/button.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
+import React from 'react';
 
 const meta: Meta<typeof Button> = {
   title: 'higher-order components/slots',

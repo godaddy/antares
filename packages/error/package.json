@@ -8,10 +8,10 @@
   "scripts": {
     "dev": "tsup src/index.ts --watch",
     "build": "tsup",
-    "test": "npm run test:node",
+    "lint": "biome lint && tsc",
     "pretest": "npm run build",
-    "test:node": "c8 --100 tsx --test test/**/*.node.ts",
-    "lint": "biome lint && tsc"
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",

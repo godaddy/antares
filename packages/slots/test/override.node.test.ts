@@ -2,7 +2,7 @@ import { override } from '@bento/slots/modifiers/override';
 import { renderToString } from 'react-dom/server';
 import { Slot } from '@bento/slots/context';
 import { withSlots } from '@bento/slots';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assume from 'assume';
 import React from 'react';
 

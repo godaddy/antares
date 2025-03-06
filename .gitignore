@@ -39,3 +39,9 @@ yarn-error.log*
 
 !.vscode/*
 storybook-static
+
+***REMOVED***Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

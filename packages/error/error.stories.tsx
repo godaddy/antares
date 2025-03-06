@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Throws } from './examples/throws.tsx';
+import React from 'react';
 
 const meta: Meta<typeof Throws> = {
   title: 'utility/error',

@@ -3,6 +3,5 @@
   "extends": "../../configs/tsconfig.json",
   "compilerOptions": {
     "declarationDir": "./dist",
-    "jsx": "preserve",
   }
 }

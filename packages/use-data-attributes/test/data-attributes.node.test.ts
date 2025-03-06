@@ -1,7 +1,7 @@
 import { useDataAttributes } from '../src/index.ts';
 import { Container } from '../examples/container.tsx';
 import { renderToString } from 'react-dom/server';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assume from 'assume';
 import React from 'react';
 
