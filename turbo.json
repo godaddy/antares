@@ -8,7 +8,8 @@
         "$TURBO_DEFAULT$",
         ".env*",
         "../../configs/*.json",
-        "../../configs/*.mjs"
+        "../../configs/*.mjs",
+        "../../configs/*.mts"
       ],
       "outputs": [".next/**", "!.next/cache/**", "storybook-static/**", "dist"]
     },

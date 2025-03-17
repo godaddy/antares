@@ -1,4 +1,4 @@
-import { stringify } from '@bento/as-attribute-value';
+import { stringify } from '@bento/to-attribute-value';
 import { withSlots } from '@bento/slots';
 import React, { useState } from 'react';
 

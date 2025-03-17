@@ -6,16 +6,15 @@ import { override } from './override.ts';
 import { replace } from './replace.ts';
 
 /**
- * Slotted Components receive.
+ * Interface representing a collection of slots.
  *
- * @interface SlottedComponentProps
- * @property {string} slot - The slot name
- * @property {ReactNode} children - The children to render
+ * @interface Slots
+ * @property {string} slot - The slot name.
+ * @property {object} slots - The slots overrides.
  */
-export interface SlottedComponentProps {
-  slot: string;
-  slots: object;
-  children: ReactNode;
+export interface Slots {
+  slot?: string;
+  slots?: Record<string, object | Function>;
 }
 
 //
@@ -44,12 +43,12 @@ export const library = new Set<string>();
  * const SlottedMyComponent = withSlots('MyComponent', MyComponent);
  * ```
  */
-export function withSlots(
+export function withSlots<Type extends Slots>(
   name: string,
-  Component: React.ComponentType,
+  Component: React.ComponentType<Type>,
   modifiers = [replace, override]
-): React.ComponentType {
-  function WrappedComponent({ slot, slots, ...props }: SlottedComponentProps) {
+) {
+  function WrappedComponent({ slot = '', slots = {}, ...props }: Type) {
     let ctx = { ...useContext<SlotContext>(Slot) };
     let Element = Component;
 
@@ -83,13 +82,13 @@ export function withSlots(
 
       if (typeof mods.context === 'object') ctx = { ...ctx, ...mods.context };
       if (typeof mods.props === 'object') props = { ...props, ...mods.props };
-      if (mods.Component) Element = mods.Component;
+      if (mods.Component) Element = mods.Component as React.ComponentType<Type>;
     });
 
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
       <Slot.Provider value={context}>
-        <Element {...props} />
+        <Element {...(props as Type)} />
       </Slot.Provider>
     );
 
@@ -99,7 +98,7 @@ export function withSlots(
     return slotted({ props, original: rendered.props.children });
   }
 
-  const SlottedComponent = memo(WrappedComponent);
+  const SlottedComponent = memo<Type>(WrappedComponent);
   SlottedComponent.displayName = `Slotted(${name})`;
 
   if (process.env.NODE_ENV !== 'production') {
@@ -107,7 +106,7 @@ export function withSlots(
     // This enables re-render tracking for every Bento based component using the
     // `@welldone-software/why-did-you-render` package.
     //
-    SlottedComponent.whyDidYouRender = true;
+    (SlottedComponent as any).whyDidYouRender = true;
 
     //
     // We want to throw the following error only in a development environment.

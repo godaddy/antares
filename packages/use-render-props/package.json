@@ -6,11 +6,13 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
-    "dev": "tsup src/index.ts --watch",
-    "build": "tsup",
+    "build": "tsup-node",
+    "dev": "tsup-node src/index.ts --watch",
     "lint": "biome lint && tsc",
+    "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test": "vitest --run",
+    "test": "c8 --100 tsx --test test/**/*.node.test.ts",
+    "test:vitest": "vitest --run",
     "test:watch": "vitest"
   },
   "repository": {

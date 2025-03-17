@@ -1,9 +1,19 @@
 import { type ComponentProps, type ComponentType } from 'react';
 import { type SlotContext } from './context.ts';
 
-interface ReplaceArgs {
+/**
+ * Interface representing the arguments required for replacing a component.
+ *
+ * @interface ReplaceArgs
+ * @property {ComponentProps<any>} props - The properties of the component.
+ * @property {ComponentType<Type>} Component - The component which should will be rendered.
+ * @property {SlotContext} context - The current Slot context.
+ * @property {string} name - The name of the component.
+ * @private
+ */
+interface ReplaceArgs<Type = any> {
   props: ComponentProps<any>;
-  Component: ComponentType;
+  Component: ComponentType<Type>;
   context: SlotContext;
   name: string;
 }

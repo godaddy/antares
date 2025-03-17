@@ -1,17 +1,17 @@
-import * as Stories from './as-attribute-value.stories.tsx';
+import * as Stories from './to-attribute-value.stories.tsx';
 import { Meta, ArgTypes } from '@storybook/blocks';
 
 <Meta of={Stories} name="Overview" />
 
 ***REMOVED***Attribute Value
 
-The `@bento/as-attribute-value` package is a formatter that converts any given
+The `@bento/to-attribute-value` package is a formatter that converts any given
 value into a string that can be used as an HTML attribute value.
 
 #***REMOVED***Installation
 
 ```shell
-npm install --save @bento/as-attribute-value
+npm install --save @bento/to-attribute-value
 ```
 
 #***REMOVED***stringify
@@ -25,7 +25,7 @@ The function accepts the following arguments:
 <ArgTypes of={Stories.stringify} />
 
 ```jsx
-import { stringify } from '@bento/as-attribute-value';
+import { stringify } from '@bento/to-attribute-value';
 
 console.log(stringify({ hello: 'world'}));        // hello(world)
 ```

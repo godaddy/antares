@@ -1,5 +1,9 @@
 import { createStore, type Store } from '../src/index.ts';
 import { beforeEach, describe, it } from 'node:test';
+import { dirname, resolve, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import pkg from '../package.json';
+import fs from 'node:fs/promises';
 import assume from 'assume';
 
 describe('@bento/create-external-store', function store() {
@@ -184,6 +188,30 @@ describe('@bento/create-external-store', function store() {
 
       const res = store.pick('foo')();
       assume(res).is.a('undefined');
+    });
+  });
+
+  describe('Public API', function packageSuite() {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+
+    describe('#exports', function exportsSuite() {
+      Object.keys(pkg.exports).forEach(function each(subpaths) {
+        describe(`${subpaths}`, function subpathsSuite() {
+          if (typeof pkg.exports[subpaths] === 'string') {
+            return it(`exports ${subpaths} exists`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          }
+
+          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+            it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          });
+        });
+      });
     });
   });
 });

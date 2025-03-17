@@ -11,14 +11,14 @@ import React, { createContext } from 'react';
  */
 export interface SlotContext {
   components: { [key: string]: React.ComponentType };
+  slots: Record<string, any>;
   namespace: string[];
   override: boolean;
-  slots: object;
 }
 
 export const Slot = createContext<SlotContext>({
-  components: {},
   override: false,
+  components: {},
   namespace: [],
   slots: {}
 });

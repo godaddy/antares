@@ -1,16 +1,18 @@
 {
-  "name": "@bento/as-attribute-value",
+  "name": "@bento/illustration",
   "version": "1.0.0",
-  "description": "Format a value as an HTML attribute value.",
+  "description": "Illustration component",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
-    "dev": "tsup src/index.ts --watch",
-    "build": "tsup",
+    "build": "tsup-node",
+    "dev": "tsup-node src/index.ts --watch",
     "lint": "biome lint && tsc",
+    "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test": "vitest --run",
+    "test": "c8 --100 tsx --test test/**/*.node.test.tsx",
+    "test:vitest": "vitest --run",
     "test:watch": "vitest"
   },
   "repository": {
@@ -22,10 +24,14 @@
     "react",
     "component",
     "library",
-    "format",
-    "attribute",
-    "value",
-    "stringify"
+    "illustration",
+    "svg",
+    "vector",
+    "graphic",
+    "asset",
+    "image",
+    "picture",
+    "icon"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -38,19 +44,20 @@
     "src",
     "package.json"
   ],
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
-  },
   "dependencies": {
-    "dashify": "^2.0.0"
+    "@bento/slots": "file:../slots",
+    "@bento/to-attribute-value": "file:../to-attribute-value",
+    "@bento/use-render-props": "file:../use-render-props"
   },
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./src/index.tsx",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "@react-types/shared": "^3.28.0"
   }
 }

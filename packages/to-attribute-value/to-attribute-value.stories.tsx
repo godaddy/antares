@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Container } from './examples/container.tsx';
 
 const meta: Meta<typeof Container> = {
-  title: 'utility/as-attribute-value',
+  title: 'utility/to-attribute-value',
   component: () => null
 };
 

@@ -6,12 +6,13 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
-    "dev": "tsup src/index.ts --watch",
-    "build": "tsup",
-    "test": "npm run test:node",
+    "build": "tsup-node",
+    "dev": "tsup-node src/index.ts --watch",
+    "lint": "biome lint && tsc",
+    "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test:node": "c8 --100 tsx --test test/**/*.node.ts",
-    "lint": "biome lint && tsc"
+    "test": "npm run test:node",
+    "test:node": "c8 --100 tsx --test test/**/*.node.ts"
   },
   "repository": {
     "type": "git",

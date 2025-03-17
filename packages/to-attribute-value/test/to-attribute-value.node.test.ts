@@ -1,11 +1,19 @@
+import { dirname, resolve, join } from 'node:path';
 import { stringify } from '../src/index.ts';
+import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
+import pkg from '../package.json';
+import fs from 'node:fs/promises';
 import assume from 'assume';
 
-describe('@bento/as-attribute-value', function bento() {
+describe('@bento/to-attribute-value', function bento() {
   describe('#stringify', function stringifySuite() {
     it('is a function', function test() {
       assume(stringify).is.a('function');
+    });
+
+    it('defaults to undefined for empty values', function test() {
+      assume(stringify()).equals(undefined);
     });
 
     it('returns undefined for undefined', function test() {
@@ -17,7 +25,7 @@ describe('@bento/as-attribute-value', function bento() {
     });
 
     it('returns the value for boolean', function test() {
-      assume(stringify(true)).equals(true);
+      assume(stringify(true)).equals('true');
       assume(stringify(false)).equals(undefined);
     });
 
@@ -65,6 +73,10 @@ describe('@bento/as-attribute-value', function bento() {
       assume(stringify(a)).equals('b(a([circular]))');
     });
 
+    it('does not see primitive values as circular', function test() {
+      assume(stringify({ a: [12, 12, 'foo', 'foo'] })).equals('a(12 12 foo foo)');
+    });
+
     it('handles circular array references inside an object', function test() {
       const a: any = { b: null };
       const b = ['foo', a];
@@ -79,6 +91,30 @@ describe('@bento/as-attribute-value', function bento() {
       a[0] = a;
 
       assume(stringify(a)).equals('[circular]');
+    });
+  });
+
+  describe('Public API', function packageSuite() {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+
+    describe('#exports', function exportsSuite() {
+      Object.keys(pkg.exports).forEach(function each(subpaths) {
+        describe(`${subpaths}`, function subpathsSuite() {
+          if (typeof pkg.exports[subpaths] === 'string') {
+            return it(`exports ${subpaths} exists`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          }
+
+          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+            it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          });
+        });
+      });
     });
   });
 });

@@ -44,7 +44,7 @@ export function isRenderProp(name: string, value: any): boolean {
  * @returns {any} - The result of the function execution or the value of the property.
  * @private
  */
-export function execute(name: string, data: object, args: RenderPropData): any {
+export function execute(name: string, data: { [key: string]: any }, args: RenderPropData): any {
   const value = data[name];
 
   if (isRenderProp(name, value)) return value(args);
@@ -81,7 +81,10 @@ export function renderProp(name: string, args: RenderPropData): any {
  * if (props.a) doSomething()
  * return <a {...apply({ className: 'foo' }) }>{ props.children }</a>;
  */
-export function useRenderProps(props: object, state: object = {}): object {
+export function useRenderProps(
+  props: { [key: string]: any },
+  state: object = {}
+): [Record<string, any>, (attributes?: object) => Record<string, any>] {
   const { namespace, slots } = useContext<SlotContext>(Slot);
   const dot = namespace.join('.');
   const slotted = slots[dot] || {};
@@ -97,7 +100,7 @@ export function useRenderProps(props: object, state: object = {}): object {
   function apply(attributes?: object): object {
     const data = attributes || propsy;
 
-    return Object.keys(data).reduce(function reduce(memo, key) {
+    return Object.keys(data).reduce(function reduce(memo: Record<string, any>, key: string) {
       memo[key] = renderProp(key, {
         original: data[key],
         slots: slotted,

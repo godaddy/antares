@@ -6,8 +6,10 @@ export const shared: Options = {
   sourcemap: true,
   clean: true,
   treeshake: true,
+  // TODO: figure out why splitting: false breaks builds
+  splitting: true,
+  loader: {".css": "local-css"},
   target: browserslistToEsbuild(),
-  external: ['react', 'react-dom']
   // TODO: Renable this once TS is fixed in packages
   // dts: true
 };

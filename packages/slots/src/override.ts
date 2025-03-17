@@ -2,13 +2,31 @@ import { type ComponentProps, type ComponentType } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { type SlotContext } from './context.ts';
 
-interface OverrideArgs {
+/**
+ * Interface representing the arguments required to override a component.
+ *
+ * @interface OverrideArgs
+ * @property {ComponentProps<any>} props - The properties of the component.
+ * @property {ComponentType<Type>} Component - The component which should will be rendered.
+ * @property {SlotContext} context - The current Slot context.
+ * @property {string} name - The name of the component.
+ * @private
+ */
+interface OverrideArgs<Type = any> {
   props: ComponentProps<any>;
-  Component: ComponentType;
+  Component: ComponentType<Type>;
   context: SlotContext;
   name: string;
 }
 
+/**
+ * Represents the result of an override operation.
+ *
+ * @interface OverrideResult
+ * @property {Object} props - The properties of the override result.
+ * @property {string} props.data-override - A string indicating the override data.
+ * @private
+ */
 interface OverrideResult {
   props: {
     'data-override': string;
@@ -50,6 +68,6 @@ export function override({ context, props }: OverrideArgs): OverrideResult | und
   if (!causes.length) return;
 
   return {
-    props: useDataAttributes({ override: causes })
+    props: useDataAttributes({ override: causes }) as OverrideResult['props']
   };
 }

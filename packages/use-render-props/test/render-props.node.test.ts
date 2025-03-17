@@ -1,8 +1,12 @@
 import { useRenderProps, renderProp, isEventListener, execute } from '../src/index.ts';
-import { describe, it } from 'vitest';
+import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { Slot } from '@bento/slots/context';
 import { withSlots } from '@bento/slots';
+import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import pkg from '../package.json';
+import fs from 'node:fs/promises';
 import util from 'node:util';
 import assume from 'assume';
 import React from 'react';
@@ -301,6 +305,30 @@ describe('@bento/use-render-props', function bento() {
 
       assume(result).is.size(1);
       assume(result).deep.equals({ id: 'modified' });
+    });
+  });
+
+  describe('Public API', function packageSuite() {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+
+    describe('#exports', function exportsSuite() {
+      Object.keys(pkg.exports).forEach(function each(subpaths) {
+        describe(`${subpaths}`, function subpathsSuite() {
+          if (typeof pkg.exports[subpaths] === 'string') {
+            return it(`exports ${subpaths} exists`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          }
+
+          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+            it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          });
+        });
+      });
     });
   });
 });

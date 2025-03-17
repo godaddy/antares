@@ -17,9 +17,8 @@ import dashify from 'dashify';
  * @returns {string} Representation of the value, or `undefined` if the value is `null` or `undefined`.
  * @public
  */
-export function stringify(value: any, separator = ' ', seen = new Set()): string | undefined | boolean {
+export function stringify(value: any, separator = ' ', seen = new WeakSet()): string | undefined {
   if (seen.has(value)) return '[circular]';
-  seen.add(value);
 
   switch (Object.prototype.toString.call(value).toLowerCase().slice(8, -1)) {
     //
@@ -39,7 +38,7 @@ export function stringify(value: any, separator = ' ', seen = new Set()): string
     // in the data attributes at all. Following the same pattern as the `null`.
     //
     case 'boolean':
-      return value || undefined;
+      return value ? value.toString() : undefined;
 
     //
     // We want to make sure we prevent any null or undefined values from being
@@ -55,6 +54,7 @@ export function stringify(value: any, separator = ' ', seen = new Set()): string
     // Which is also supported by the CSS selector pattern.
     //
     case 'array':
+      seen.add(value);
       return value
         .map(function arrayMap(content: any) {
           return stringify(content, separator, seen);
@@ -71,6 +71,7 @@ export function stringify(value: any, separator = ' ', seen = new Set()): string
     // generate future CSS or SVG transformations.
     //
     case 'object':
+      seen.add(value);
       return stringify(
         Object.entries(value).map(function map([key, value]) {
           return `${dashify(key)}(${stringify(value, separator, seen)})`;
@@ -85,6 +86,7 @@ export function stringify(value: any, separator = ' ', seen = new Set()): string
     // edge cases.
     //
     default: {
+      seen.add(value);
       const result = JSON.stringify(value);
 
       if (result === '{}') return undefined;

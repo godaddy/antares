@@ -1,8 +1,12 @@
-import { beforeEach, describe, it } from 'vitest';
+import { beforeEach, describe, it } from 'node:test';
+import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { withSlots, library } from '@bento/slots';
 import { Slot } from '@bento/slots/context';
 import { Nested } from '../examples/nested';
+import { fileURLToPath } from 'node:url';
+import pkg from '../package.json';
+import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';
 
@@ -153,6 +157,30 @@ describe('@bento/slots', function bento() {
       assume(trigger).throws('@bento/slots(withSlots)');
       assume(trigger).throws('The supplied component modifier is not a function.');
       assume(trigger).throws('https://example.com/docs/errors/#9F4D92');
+    });
+  });
+
+  describe('Public API', function packageSuite() {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+
+    describe('#exports', function exportsSuite() {
+      Object.keys(pkg.exports).forEach(function each(subpaths) {
+        describe(`${subpaths}`, function subpathsSuite() {
+          if (typeof pkg.exports[subpaths] === 'string') {
+            return it(`exports ${subpaths} exists`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          }
+
+          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+            it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
+              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              await fs.access(path, fs.constants.F_OK);
+            });
+          });
+        });
+      });
     });
   });
 });

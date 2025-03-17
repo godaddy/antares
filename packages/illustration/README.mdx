@@ -1,0 +1,153 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/blocks';
+import * as Stories from './illustration.stories.tsx';
+import SourceDemo from './examples/rendering-svg.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Illustration
+
+The `@bento/illustration` component allows you to render and manipulate SVG
+based illustrations while following the best practices for accessibility. The
+component is meant to wrap around your SVG content so it can introduce the
+required accessibility standards and provides a way to manipulate the SVG
+content using the provided properties.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/illustration
+```
+
+#***REMOVED***Props
+
+The `@bento/illustration` exports the `Illustration` component. When rendering
+the component without any supplied properties, the component will automatically
+apply the following properties:
+
+- `focusable=false`
+- `role=presentation`
+
+```jsx
+import { Illustration } from '@bento/illustration';
+
+<Illustration>
+  <YourSvg>
+</Illustration>
+```
+
+The following properties are available to be used on the `Illustration`
+component:
+
+<ArgTypes of={Stories.Props} />
+
+For all other properties specified on the `Illustration` component, the
+component will pass them down to the root SVG element of the component. Which
+would be the equivalent of you adding them directly to the child component.
+
+#***REMOVED***Example
+
+<Source language='tsx' code={ SourceDemo } />
+<Story of={Stories.Demo} inline />
+<Controls of={Stories.Demo} />
+
+##***REMOVED***Accessibility
+
+- `title`: The `title` attribute describes the illustration to screen readers.
+- `role`: The `role` attribute is default set to `presentation` but is
+  swapped to `img` when a `title` attribute is provided.
+
+##***REMOVED***Customization
+
+When using the `flip` or `rotate` properties, the component will apply the
+required transformations inside the SVG element by introducing a wrapping
+`<g>` element.
+
+The transformations are not applied using CSS because they would affect the
+elements around the SVG content.
+
+What's the difference between CSS transformations?
+
+- If you rotate an SVG by 90 degrees in CSS, the SVG's bounding box remains the
+  same. The 16x24 icon still takes space for 16x24, but it might overlap elements
+  around it.
+- If you rotate an SVG by 90 degrees in SVG Framework, the SVG's dimensions swap
+  places. 16x24 icon becomes a 24x16 icon, and it does not affect the elements
+  around it.
+
+By applying the transformations to the SVG element by default, we've given you
+the option to choose how you want to apply the transformations. Use the props
+provided by the component to apply the transformations directly to the SVG
+element or introduce the `className` property to apply the transformations
+yourself using CSS, which is the recommended approach when you want to introduce
+animations to the component.
+
+###***REMOVED***Slots
+
+The component is created using our `@bento/slots` package and allows the
+assignment of the custom `slot` property to be used for overrides.
+
+```jsx
+import { useRenderProps } from '@bento/use-render-props';
+import { Illustration } from '@bento/illustration';
+import { withSlots } from '@bento/slots';
+
+const MyCustomComponent = withSlots('MyCustomComponent', function Custom(args) {
+  const [props] = useRenderProps(args);
+
+  return (
+    <Illustration {...props} slot="illustration">
+      <ContentsHere />
+    </Illustration>
+  )
+});
+```
+
+See the `@bento/slots` package for more information on how to use the `slot` and
+`slots` properties.
+
+###***REMOVED***Styling
+
+Once you assign the `className` property to the component, you take full
+responsibility for the styling of the component, and it will remove any
+default styling that might be applied as part of this component.
+
+```jsx
+import { Illustration } from '@bento/illustration';
+
+<Illustration className="my-component">
+  <YourSvg>
+</Illustration>
+```
+
+The following `data-` attributes are introduced as part of the component
+render state:
+
+- `data-flip=horizontal|vertical`: The component is flipped horizontally or
+  vertically using the provided `flip` property.
+- `data-rotate=90|180|270`: The component is rotated by the provided angle
+  using the `rotate` property.
+
+These `data-` attributes are introduced on the root element of the component
+and can be targetted using your previously provided custom `className`:
+
+```css
+.my-component[data-flip] {
+  /* The component is flipped */
+}
+
+.my-component[data-rotate] {
+  /* The component is rotated */
+}
+```
+
+To detect if the component has received a `title` attribute, you can
+use the following CSS selectors:
+
+```css
+.my-component:has(title) {
+  /* We have a <title> element as part of rendered result */
+}
+.my-component[role="img"] {
+  /* The role is swapped to `img` from `presentation` when a title is provided */
+}
+```
