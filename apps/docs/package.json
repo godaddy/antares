@@ -6,9 +6,17 @@
   "scripts": {
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006 --no-open",
-    "build": "storybook build"
+    "build": "storybook build",
+    "preinstall": "node ./scripts/preinstall.ts"
   },
   "dependencies": {
+    "@bento/create-external-store": "*",
+    "@bento/error": "*",
+    "@bento/illustration": "*",
+    "@bento/slots": "*",
+    "@bento/to-attribute-value": "*",
+    "@bento/use-data-attributes": "*",
+    "@bento/use-render-props": "*",
     "@welldone-software/why-did-you-render": "^8.0.3",
     "react": "^18.3.1",
     "react-diff-viewer-continued": "^3.4.0",
