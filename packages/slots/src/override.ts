@@ -6,16 +6,16 @@ import { type SlotContext } from './context.ts';
  * Interface representing the arguments required to override a component.
  *
  * @interface OverrideArgs
- * @property {ComponentProps<any>} props - The properties of the component.
- * @property {ComponentType<Type>} Component - The component which should will be rendered.
- * @property {SlotContext} context - The current Slot context.
+ * @property {Props} props - The properties of the component.
+ * @property {ComponentType<Props>} Component - The component which should will be rendered.
+ * @property {SlotContext<Props>} context - The current Slot context.
  * @property {string} name - The name of the component.
  * @private
  */
-interface OverrideArgs<Type = any> {
-  props: ComponentProps<any>;
-  Component: ComponentType<Type>;
-  context: SlotContext;
+interface OverrideArgs<Props> {
+  props: Props;
+  Component: ComponentType<Props>;
+  context: SlotContext<Props>;
   name: string;
 }
 
@@ -44,7 +44,10 @@ const triggers: string[] = ['className', 'style'];
  * @returns {OverrideResult | undefined} The result containing the updated properties or undefined if no overrides are applied.
  * @public
  */
-export function override({ context, props }: OverrideArgs): OverrideResult | undefined {
+export function override<Props extends Record<string, any>>({
+  context,
+  props
+}: OverrideArgs<Props>): OverrideResult | undefined {
   const causes: string[] = [];
   const { namespace, slots, override } = context;
   const slot: Record<string, any> | undefined = slots[namespace.join('.')];
@@ -68,6 +71,6 @@ export function override({ context, props }: OverrideArgs): OverrideResult | und
   if (!causes.length) return;
 
   return {
-    props: useDataAttributes({ override: causes }) as OverrideResult['props']
+    props: useDataAttributes({ override: causes })
   };
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useSyncExternalStore } from 'react';
+import { ReactElement, useCallback, useSyncExternalStore } from 'react';
 import { createStore } from '@bento/create-external-store';
 import { useRenderProps } from '@bento/use-render-props';
 import { withSlots } from '@bento/slots';
@@ -21,10 +21,10 @@ export const { ondemand, pick, only, subscribe, getSnapshot } = createStore({
 //
 // Render a icon
 //
-export const Icon = withSlots('StoreIconExample', function Iconic(args) {
+export const Icon = withSlots('StoreIconExample', function Iconic(args: Record<string, any>) {
   const [props] = useRenderProps(args);
   const { icon, ...rest } = props;
-  const picker = useCallback(pick(icon), [icon]);
+  const picker = useCallback(pick(icon) as () => ReactElement | undefined, [icon]);
   const subscriber = useCallback(only(icon), [icon]);
   const content = useSyncExternalStore(subscriber, picker);
 

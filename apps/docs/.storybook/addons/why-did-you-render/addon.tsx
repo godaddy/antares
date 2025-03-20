@@ -3,6 +3,7 @@ import { addons, types } from '@storybook/manager-api';
 import React, { useEffect, useState } from 'react';
 import { EmptyState } from './empty-state.tsx';
 import { Why } from './why.tsx';
+import type { Event } from './reason.tsx';
 
 const eventname = 'whyDidYouRender:notifier';
 const name = 'why-did-you-render';
@@ -24,7 +25,7 @@ addons.register(name, function register() {
       );
     },
     render: function render({ active }) {
-      const [events, setEvents] = useState<object[]>([]);
+      const [events, setEvents] = useState<Event[]>([]);
 
       useEffect(function addonListener(): () => void {
         /**

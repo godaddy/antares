@@ -10,6 +10,5 @@ export const shared: Options = {
   splitting: true,
   loader: {".css": "local-css"},
   target: browserslistToEsbuild(),
-  // TODO: Renable this once TS is fixed in packages
-  // dts: true
+  dts: true
 };

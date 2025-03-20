@@ -1,6 +1,6 @@
 import { Illustration } from '@bento/illustration';
 
-export function RotateSVG(args) {
+export function RotateSVG(args: Record<string, unknown>) {
   return (
     <Illustration rotate={90} {...args}>
       <svg

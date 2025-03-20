@@ -43,13 +43,15 @@ export const library = new Set<string>();
  * const SlottedMyComponent = withSlots('MyComponent', MyComponent);
  * ```
  */
-export function withSlots<Type extends Slots>(
+export function withSlots<Props extends object>(
   name: string,
-  Component: React.ComponentType<Type>,
+  Component: React.ComponentType<Props>,
   modifiers = [replace, override]
 ) {
-  function WrappedComponent({ slot = '', slots = {}, ...props }: Type) {
-    let ctx = { ...useContext<SlotContext>(Slot) };
+  function WrappedComponent(propsAndSlots: Props & Slots) {
+    const { slot = '', slots = {}, ...restProps } = propsAndSlots;
+    let props = { ...restProps } as Props;
+    let ctx = { ...useContext<SlotContext<Props>>(Slot) };
     let Element = Component;
 
     ctx.namespace = [...ctx.namespace, slot].filter(Boolean);
@@ -69,7 +71,7 @@ export function withSlots<Type extends Slots>(
     //
     modifiers.forEach(function forEach(modifier) {
       const mods: {
-        Component?: React.ComponentType;
+        Component?: React.ComponentType<Props>;
         context?: object;
         props?: object;
       } =
@@ -82,13 +84,13 @@ export function withSlots<Type extends Slots>(
 
       if (typeof mods.context === 'object') ctx = { ...ctx, ...mods.context };
       if (typeof mods.props === 'object') props = { ...props, ...mods.props };
-      if (mods.Component) Element = mods.Component as React.ComponentType<Type>;
+      if (mods.Component) Element = mods.Component;
     });
 
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
       <Slot.Provider value={context}>
-        <Element {...(props as Type)} />
+        <Element {...props} />
       </Slot.Provider>
     );
 
@@ -98,7 +100,7 @@ export function withSlots<Type extends Slots>(
     return slotted({ props, original: rendered.props.children });
   }
 
-  const SlottedComponent = memo<Type>(WrappedComponent);
+  const SlottedComponent = memo<Props & Slots>(WrappedComponent);
   SlottedComponent.displayName = `Slotted(${name})`;
 
   if (process.env.NODE_ENV !== 'production') {

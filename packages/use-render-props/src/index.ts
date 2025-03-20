@@ -2,7 +2,7 @@ import { Slot, type SlotContext } from '@bento/slots/context';
 import React, { useContext } from 'react';
 
 interface RenderPropData {
-  original?: Record<string, undefined | any>;
+  original?: unknown;
   props: Record<string, any>;
   slots: Record<string, any>;
   state: Record<string, any>;
@@ -44,7 +44,7 @@ export function isRenderProp(name: string, value: any): boolean {
  * @returns {any} - The result of the function execution or the value of the property.
  * @private
  */
-export function execute(name: string, data: { [key: string]: any }, args: RenderPropData): any {
+export function execute(name: string, data: Record<string, any>, args: RenderPropData): any {
   const value = data[name];
 
   if (isRenderProp(name, value)) return value(args);
@@ -82,10 +82,10 @@ export function renderProp(name: string, args: RenderPropData): any {
  * return <a {...apply({ className: 'foo' }) }>{ props.children }</a>;
  */
 export function useRenderProps(
-  props: { [key: string]: any },
+  props: Record<string, any>,
   state: object = {}
 ): [Record<string, any>, (attributes?: object) => Record<string, any>] {
-  const { namespace, slots } = useContext<SlotContext>(Slot);
+  const { namespace, slots } = useContext<SlotContext<Record<string, any>>>(Slot);
   const dot = namespace.join('.');
   const slotted = slots[dot] || {};
   const propsy = { ...props, ...slotted };

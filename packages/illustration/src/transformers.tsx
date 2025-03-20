@@ -1,5 +1,5 @@
 import { stringify } from '@bento/to-attribute-value';
-import React, { type ReactNode } from 'react';
+import React, { type ReactElement } from 'react';
 
 /**
  * Interface representing the properties for transforming an illustration.
@@ -66,16 +66,16 @@ export function toViewBox({ left, top, width, height }: viewBox): string {
  * @param {string} [props.flip] - The flip transformation to apply.
  * @param {string} [props.rotate] - The rotation transformation to apply.
  * @param {string} props.viewBox - The viewBox of the SVG.
- * @param {ReactNode} drawings - The contents of the SVG.
- * @returns {ReactNode} The transformed SVG contents.
+ * @param {ReactElement} drawings - The contents of the SVG.
+ * @returns {ReactElement} The transformed SVG contents.
  * @public
  */
 export function transformers(
   { flip, rotate, viewBox }: TransformProps,
-  drawings: ReactNode
+  drawings: ReactElement
 ): {
   viewBox: viewBox;
-  drawings: ReactNode;
+  drawings: ReactElement;
 } {
   let { left, top, width, height } = parseViewBox(viewBox);
   //

@@ -8,7 +8,7 @@ import React from 'react';
 
 describe('@bento/modifiers/override', function bento() {
   function createComponent(name: string, props = {}, slots = {}, components = {}) {
-    const TestReturn = withSlots(`BentoOverride-${name}`, function Component(args) {
+    const TestReturn = withSlots(`BentoOverride-${name}`, function Component(args: any) {
       return React.createElement('div', { ...args });
     });
 
@@ -17,6 +17,7 @@ describe('@bento/modifiers/override', function bento() {
         Slot.Provider,
         {
           value: {
+            override: false,
             namespace: [],
             slots: { test: slots },
             components: components
@@ -80,7 +81,7 @@ describe('@bento/modifiers/override', function bento() {
       },
       {},
       {
-        'BentoOverride-context': function Component(props) {
+        'BentoOverride-context': function Component(props: any) {
           assume(props['data-override']).equals('context style');
           return React.createElement('div', props);
         }
@@ -91,7 +92,7 @@ describe('@bento/modifiers/override', function bento() {
   });
 
   it('inherits the context override from the parent component', function parent() {
-    const Kiddo = withSlots(`BentoOverride-Kiddo`, function Component(args) {
+    const Kiddo = withSlots(`BentoOverride-Kiddo`, function Component(args: any) {
       return React.createElement('p', args, args.children);
     });
 
@@ -115,6 +116,7 @@ describe('@bento/modifiers/override', function bento() {
         Slot.Provider,
         {
           value: {
+            override: false,
             namespace: [],
             slots: {},
             components: {

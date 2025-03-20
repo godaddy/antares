@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Button } from './button.tsx';
 
-export function Memo(props) {
+export function Memo(props: Record<string, unknown>) {
   const className = useCallback(
     function renderProps({ original }: { original: string }) {
       return [original, 'my-className', props.className].filter(Boolean).join(' ');

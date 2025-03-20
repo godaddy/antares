@@ -3,9 +3,9 @@ import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { withSlots, library } from '@bento/slots';
 import { Slot } from '@bento/slots/context';
-import { Nested } from '../examples/nested';
+import { Nested } from '../examples/nested.tsx';
 import { fileURLToPath } from 'node:url';
-import pkg from '../package.json';
+import pkg from '../package.json' with { type: 'json' };
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';
@@ -51,7 +51,7 @@ describe('@bento/slots', function bento() {
 
   describe('slots', function nested() {
     it('can render components without a `slot` property', function render() {
-      const Plain = withSlots('Plain', (props) => React.createElement('p', props, 'Hello World'));
+      const Plain = withSlots('Plain', (props: any) => React.createElement('p', props, 'Hello World'));
       const plain = renderToString(React.createElement(Plain, { id: 'example' }));
 
       assume(plain).contains('<p id="example">Hello World</p>');
@@ -69,7 +69,7 @@ describe('@bento/slots', function bento() {
       const nested = renderToString(
         React.createElement(Nested, {
           slots: {
-            'example-container.label': function ({ props, original }) {
+            'example-container.label': function ({ props, original }: any) {
               assume(props.htmlFor).equals('example');
               assume(props.children).equals('Hello World');
 
@@ -96,6 +96,7 @@ describe('@bento/slots', function bento() {
           Slot.Provider,
           {
             value: {
+              override: false,
               namespace: [],
               slots: {},
               components: {
@@ -127,7 +128,7 @@ describe('@bento/slots', function bento() {
         return null;
       }
 
-      function modifier(data) {
+      function modifier(data: any) {
         assume(data).is.a('object');
         assume(data.props).is.a('object');
         assume(data.props.id).equals('example');
@@ -142,7 +143,7 @@ describe('@bento/slots', function bento() {
         ran = true;
       }
 
-      const Component = withSlots('CustomNameHere', Custom, [modifier]);
+      const Component: any = withSlots('CustomNameHere', Custom, [modifier as any]);
 
       renderToString(React.createElement(Component, { id: 'example' }));
       assume(ran).is.true();
@@ -151,7 +152,7 @@ describe('@bento/slots', function bento() {
     it('throws when the modifier is not a function', function invalid() {
       let index = 0;
       function trigger() {
-        withSlots('InvalidModifier' + index++, () => null, [{}]);
+        withSlots('InvalidModifier' + index++, () => null, [{} as any]);
       }
 
       assume(trigger).throws('@bento/slots(withSlots)');
@@ -166,16 +167,18 @@ describe('@bento/slots', function bento() {
     describe('#exports', function exportsSuite() {
       Object.keys(pkg.exports).forEach(function each(subpaths) {
         describe(`${subpaths}`, function subpathsSuite() {
-          if (typeof pkg.exports[subpaths] === 'string') {
+          const exportPath = (pkg.exports as any)[subpaths];
+
+          if (typeof exportPath === 'string') {
             return it(`exports ${subpaths} exists`, async function exportedTest() {
-              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              const path = resolve(__dirname, '..', exportPath);
               await fs.access(path, fs.constants.F_OK);
             });
           }
 
-          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+          Object.keys(exportPath).forEach(function each(exported) {
             it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
-              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              const path = resolve(__dirname, '..', exportPath[exported]);
               await fs.access(path, fs.constants.F_OK);
             });
           });

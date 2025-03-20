@@ -3,7 +3,7 @@ import { observer, type Observer } from './observer.ts';
 export interface Store {
   subscribe: (callback: (changes: Record<string, any>) => void) => () => void;
   ondemand: (fn: (key: string) => Promise<unknown>) => void;
-  only: (key: string) => (fn: (changes: Record<string, any>) => void) => () => void;
+  only: (key: string | string[]) => (fn: (changes: Record<string, any>) => void) => () => void;
   pick: (key: string) => () => unknown;
   dispatch: (data: unknown) => void;
   set: (data: unknown) => void;

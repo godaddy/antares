@@ -1,10 +1,10 @@
-import { RenderingSvg } from '../examples/rendering-svg';
-import { Illustration } from '@bento/illustration';
+import { RenderingSvg } from '../examples/rendering-svg.tsx';
+import { Illustration, type IllustrationProps } from '@bento/illustration';
 import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import pkg from '../package.json';
+import pkg from '../package.json' with { type: 'json' };
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';
@@ -16,7 +16,7 @@ import React from 'react';
  * @returns {string} The rendered string representation of the `Illustration` component.
  * @private
  */
-function renderToStringWithChildren(args = {}) {
+function renderToStringWithChildren(args: IllustrationProps) {
   return renderToString(<Illustration {...args} />);
 }
 
@@ -129,16 +129,18 @@ describe('@bento/illustration', function bento() {
     describe('#exports', function exportsSuite() {
       Object.keys(pkg.exports).forEach(function each(subpaths) {
         describe(`${subpaths}`, function subpathsSuite() {
-          if (typeof pkg.exports[subpaths] === 'string') {
+          const exportPath = (pkg.exports as any)[subpaths];
+
+          if (typeof exportPath === 'string') {
             return it(`exports ${subpaths} exists`, async function exportedTest() {
-              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              const path = resolve(__dirname, '..', exportPath);
               await fs.access(path, fs.constants.F_OK);
             });
           }
 
-          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+          Object.keys(exportPath).forEach(function each(exported) {
             it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
-              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              const path = resolve(__dirname, '..', exportPath[exported]);
               await fs.access(path, fs.constants.F_OK);
             });
           });

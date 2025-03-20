@@ -1,5 +1,6 @@
+import React from 'react';
 import { test, expect } from '@playwright/experimental-ct-react';
-import { Button } from '../examples/button';
+import { Button } from '../examples/button.tsx';
 
 // TODO: Make these proper screenshot tests
 test('renders the app', async ({ mount }) => {

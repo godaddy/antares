@@ -3,13 +3,13 @@ import { withSlots } from '@bento/slots';
 import { Button } from './button.tsx';
 import React, { useId } from 'react';
 
-export const Example = withSlots('RenderPropsExample', function ExampleComponent(args) {
+export const Example = withSlots('RenderPropsExample', function ExampleComponent(args: Record<string, unknown>) {
   const [props, apply] = useRenderProps(args);
 
   return <div {...apply({ className: 'example' })}>{props.children}</div>;
 });
 
-export const Label = withSlots('RenderPropsLabel', function LabelComponent(args) {
+export const Label = withSlots('RenderPropsLabel', function LabelComponent(args: Record<string, unknown>) {
   const [props, apply] = useRenderProps(args);
 
   return <label {...apply()}>{props.children}</label>;

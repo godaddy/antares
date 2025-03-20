@@ -21,7 +21,7 @@ type DataPrefix<Type> = {
  * @returns {object} - An object with keys formatted as data attributes and their corresponding stringified values.
  * @public
  */
-export function useDataAttributes(props: Record<string, any>): DataPrefix<typeof props> {
+export function useDataAttributes<Props extends Record<string, unknown>>(props: Props): DataPrefix<Props> {
   return useDeepCompareMemo(
     function createAttributes() {
       return Object.keys(props).reduce(function reduceAttributes(data: Record<string, string>, key) {
@@ -32,7 +32,7 @@ export function useDataAttributes(props: Record<string, any>): DataPrefix<typeof
 
         data[dashify(key)] = value;
         return data;
-      }, {});
+      }, {}) as DataPrefix<Props>;
     },
     [props]
   );

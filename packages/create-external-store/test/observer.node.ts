@@ -22,7 +22,7 @@ describe('@bento/observe', function bento() {
 
   it('receives the dispatched data', function test(_, next) {
     const { subscribe, dispatch } = observer();
-    const unsubscribe = subscribe(function callback(data: string) {
+    const unsubscribe = subscribe(function callback(data: Record<string, unknown>) {
       assume(data).equals('hello');
       unsubscribe();
       next();

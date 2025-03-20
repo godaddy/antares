@@ -2,7 +2,7 @@ import { useRenderProps } from '@bento/use-render-props';
 import { withSlots } from '@bento/slots';
 import React from 'react';
 
-export const Button = withSlots('RenderPropsButton', function BentoButton(args: object) {
+export const Button = withSlots('RenderPropsButton', function BentoButton(args: Record<string, unknown>) {
   const [props, apply] = useRenderProps(args);
   const { as, ...rest } = props;
 

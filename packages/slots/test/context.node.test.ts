@@ -10,8 +10,8 @@ describe('@bento/slots/context', function bento() {
   });
 
   it('provides default values', function defaults() {
-    assume(Slot._currentValue).is.a('object');
-    assume(Slot._currentValue).deep.equals({
+    assume((Slot as any)._currentValue).is.a('object');
+    assume((Slot as any)._currentValue).deep.equals({
       override: false,
       components: {},
       namespace: [],

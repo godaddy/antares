@@ -15,6 +15,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "moduleDetection": "force",
+    "skipLibCheck": true,
     "resolveJsonModule": true
   },
   "exclude": [

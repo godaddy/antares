@@ -9,14 +9,14 @@ import React, { createContext } from 'react';
  * @property {boolean} override Indication of a global component based override for the current component.
  * @property {object} slots Object where the key are the namespaced slot names and the value are the slot components.
  */
-export interface SlotContext {
-  components: { [key: string]: React.ComponentType };
+export interface SlotContext<Props> {
+  components: Record<string, React.ComponentType<Props>>;
   slots: Record<string, any>;
   namespace: string[];
   override: boolean;
 }
 
-export const Slot = createContext<SlotContext>({
+export const Slot = createContext<SlotContext<any>>({
   override: false,
   components: {},
   namespace: [],

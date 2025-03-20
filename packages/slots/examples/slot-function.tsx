@@ -7,7 +7,7 @@ import { Nested } from './nested.tsx';
 // the Nested component to re-render unnecessarily.
 //
 const slots = {
-  'example-container.label': function example({ props }) {
+  'example-container.label': function example({ props }: { props: Record<string, any> }) {
     return (
       <label {...props}>
         <strong>{props.children}</strong>

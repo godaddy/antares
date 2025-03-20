@@ -5,7 +5,7 @@ import { Slot } from '@bento/slots/context';
 import { withSlots } from '@bento/slots';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import pkg from '../package.json';
+import pkg from '../package.json' with { type: 'json' };
 import fs from 'node:fs/promises';
 import util from 'node:util';
 import assume from 'assume';
@@ -78,7 +78,7 @@ describe('@bento/use-render-props', function bento() {
         original: 'batman',
         props: { foo: 'bar' },
         slots: {
-          foo: function foo(args) {
+          foo: function foo(args: Record<string, any>) {
             assume(args).is.a('object');
             assume(args.props.foo).equals('bar');
             assume(args.original).equals('batman');
@@ -100,7 +100,7 @@ describe('@bento/use-render-props', function bento() {
       const allProps = { foo: 'bar' };
       const currentState = { foo: 'baz' };
 
-      function foo({ original, state, props, slots, ...rest }) {
+      function foo({ original, state, props, slots, ...rest }: Record<string, any>) {
         assume(rest).is.size(0);
         assume(original).equals('bar');
         assume(props).equals(allProps);
@@ -149,6 +149,7 @@ describe('@bento/use-render-props', function bento() {
             Slot.Provider,
             {
               value: {
+                override: false,
                 namespace: [],
                 slots: { test: slots },
                 components: {}
@@ -167,7 +168,7 @@ describe('@bento/use-render-props', function bento() {
     });
 
     it('can be used without a provided context', function noContext() {
-      function Component(args) {
+      function Component(args: Record<string, unknown>) {
         const [props] = useRenderProps(args);
 
         return React.createElement('div', props);
@@ -210,7 +211,7 @@ describe('@bento/use-render-props', function bento() {
           'slotfn',
           { id: 'example' },
           {
-            id: function idFunction({ original, props, slots, state }) {
+            id: function idFunction({ original, props, slots, state }: Record<string, any>) {
               assume(original).equals('example');
               assume(props.id).equals('example');
 
@@ -249,7 +250,7 @@ describe('@bento/use-render-props', function bento() {
 
       it('executes the renderProp function if it exists', function renderProp() {
         const { apply } = createComponent('idfunction', {
-          title: (args) => {
+          title: (args: Record<string, any>) => {
             if (!args.original) return 'my title';
             return args.original.toUpperCase();
           }
@@ -314,16 +315,18 @@ describe('@bento/use-render-props', function bento() {
     describe('#exports', function exportsSuite() {
       Object.keys(pkg.exports).forEach(function each(subpaths) {
         describe(`${subpaths}`, function subpathsSuite() {
-          if (typeof pkg.exports[subpaths] === 'string') {
+          const exportPath = (pkg.exports as any)[subpaths];
+
+          if (typeof exportPath === 'string') {
             return it(`exports ${subpaths} exists`, async function exportedTest() {
-              const path = resolve(__dirname, '..', pkg.exports[subpaths]);
+              const path = resolve(__dirname, '..', exportPath);
               await fs.access(path, fs.constants.F_OK);
             });
           }
 
-          Object.keys(pkg.exports[subpaths]).forEach(function each(exported) {
+          Object.keys(exportPath).forEach(function each(exported) {
             it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
-              const path = resolve(__dirname, '..', pkg.exports[subpaths][exported]);
+              const path = resolve(__dirname, '..', exportPath[exported]);
               await fs.access(path, fs.constants.F_OK);
             });
           });

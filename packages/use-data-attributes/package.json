@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsup-node",
     "dev": "tsup-node src/index.ts --watch",
-    "lint": "biome lint && tsc",
+    "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
     "pretest": "npm run build",
     "test": "c8 --100 tsx --test test/**/*.node.test.ts",

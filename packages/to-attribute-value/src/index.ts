@@ -17,7 +17,7 @@ import dashify from 'dashify';
  * @returns {string} Representation of the value, or `undefined` if the value is `null` or `undefined`.
  * @public
  */
-export function stringify(value: any, separator = ' ', seen = new WeakSet()): string | undefined {
+export function stringify(value: any = undefined, separator = ' ', seen = new WeakSet()): string | undefined {
   if (seen.has(value)) return '[circular]';
 
   switch (Object.prototype.toString.call(value).toLowerCase().slice(8, -1)) {
