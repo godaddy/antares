@@ -22,7 +22,7 @@
     "@playwright/experimental-ct-react": "^1.51.1",
     "@types/dashify": "^1.0.3",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.13",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-istanbul": "^3.0.9",
     "@vitest/coverage-v8": "^3.0.9",
