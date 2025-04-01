@@ -11,8 +11,7 @@
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test": "c8 --100 tsx --test test/**/*.node.test.ts",
-    "test:vitest": "vitest --run",
+    "test": "vitest --run",
     "test:watch": "vitest"
   },
   "repository": {

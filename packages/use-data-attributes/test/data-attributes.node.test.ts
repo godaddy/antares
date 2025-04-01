@@ -1,10 +1,10 @@
-import { useDataAttributes } from '../src/index.ts';
-import { Container } from '../examples/container.tsx';
-import { renderToString } from 'react-dom/server';
-import { dirname, resolve, join } from 'node:path';
-import { describe, it } from 'node:test';
-import { fileURLToPath } from 'node:url';
 import pkg from '../package.json' with { type: 'json' };
+import { Container } from '../examples/container.tsx';
+import { useDataAttributes } from '../src/index.ts';
+import { dirname, resolve, join } from 'node:path';
+import { renderToString } from 'react-dom/server';
+import { fileURLToPath } from 'node:url';
+import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';

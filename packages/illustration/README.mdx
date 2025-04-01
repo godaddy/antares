@@ -44,19 +44,19 @@ For all other properties specified on the `Illustration` component, the
 component will pass them down to the root SVG element of the component. Which
 would be the equivalent of you adding them directly to the child component.
 
-#***REMOVED***Example
+##***REMOVED***Example
 
 <Source language='tsx' code={ SourceDemo } />
 <Story of={Stories.Demo} inline />
 <Controls of={Stories.Demo} />
 
-##***REMOVED***Accessibility
+#***REMOVED***Accessibility
 
 - `title`: The `title` attribute describes the illustration to screen readers.
 - `role`: The `role` attribute is default set to `presentation` but is
   swapped to `img` when a `title` attribute is provided.
 
-##***REMOVED***Customization
+#***REMOVED***Customization
 
 When using the `flip` or `rotate` properties, the component will apply the
 required transformations inside the SVG element by introducing a wrapping
@@ -81,7 +81,7 @@ element or introduce the `className` property to apply the transformations
 yourself using CSS, which is the recommended approach when you want to introduce
 animations to the component.
 
-###***REMOVED***Slots
+##***REMOVED***Slots
 
 The component is created using our `@bento/slots` package and allows the
 assignment of the custom `slot` property to be used for overrides.
@@ -105,7 +105,7 @@ const MyCustomComponent = withSlots('MyCustomComponent', function Custom(args) {
 See the `@bento/slots` package for more information on how to use the `slot` and
 `slots` properties.
 
-###***REMOVED***Styling
+##***REMOVED***Styling
 
 Once you assign the `className` property to the component, you take full
 responsibility for the styling of the component, and it will remove any

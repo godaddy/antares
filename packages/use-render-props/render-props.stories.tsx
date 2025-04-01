@@ -118,6 +118,5 @@ export const ComplexComponent: Story = {
 };
 
 export const MemoProps: Story = {
-  title: '@bento/slots/stories',
   render: (args) => <Memo {...args} />
 };

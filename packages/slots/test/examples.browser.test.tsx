@@ -1,0 +1,89 @@
+import { SlotFunction } from '../examples/slot-function.tsx';
+import { ContextExample } from '../examples/namespace.tsx';
+import { SlotProps } from '../examples/slot-props.tsx';
+import { Button } from '../examples/button.tsx';
+import { render } from 'vitest-browser-react';
+import { Memo } from '../examples/memo.tsx';
+import { describe, it } from 'vitest';
+import assume from 'assume';
+import React from 'react';
+
+describe('@bento/slots examples', function bento() {
+  describe('Button', function button() {
+    it('should render a button', function test() {
+      const { container } = render(<Button id="foo">Click me</Button>);
+      const result = container.innerHTML;
+
+      assume(result).equals('<button id="foo">Click me</button>');
+    });
+  });
+
+  describe('Memo', function memo() {
+    it('should render a memoized component', async function test() {
+      const screen = render(<Memo />);
+      const result = screen.container.innerHTML;
+      const logger = console.log;
+      let logs: any[] = [];
+
+      console.log = function (...args) {
+        logs = args;
+      };
+
+      assume(result).equals(
+        '<div data-override="slot" id=":r0:" class="example"><label for="example">Hello World</label><button id=":r1:" data-override="slot">Click Me</button></div>'
+      );
+      await screen.getByRole('button', { name: 'Click me' }).click();
+
+      console.log = logger;
+
+      assume(logs).is.an('array');
+      assume(logs[0]).equals('Button ref:');
+      assume(logs[1]).is.instanceOf(HTMLButtonElement);
+    });
+  });
+
+  describe('Namespaced', function namespace() {
+    it('should render a namespaced component', function nstest() {
+      const { container } = render(<ContextExample />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        '<p>Slot namespace: level 1</p><p>Slot namespace: level 1 &gt; level 2</p><p>Slot namespace: level 1 &gt; level 2 &gt; level 3</p>'
+      );
+    });
+  });
+
+  describe('SlotFunction', function slotfn() {
+    it('should render a slot function override', function slotted() {
+      const { container } = render(<SlotFunction />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        '<div class="example"><label for="example"><strong>Hello World</strong></label><button id=":r2:">Click Me</button></div>'
+      );
+    });
+  });
+
+  describe('SlotProps', function slotprops() {
+    it('should render a component with slot props, creating a red button', async function props() {
+      const screen = render(<SlotProps />);
+      const result = screen.container.innerHTML;
+      const logger = console.log;
+      let logs: any[] = [];
+
+      console.log = function (...args) {
+        logs = args;
+      };
+
+      assume(result).equals(
+        '<div class="example"><label for="example">Hello World</label><button id=":r3:" data-override="style slot" style="background: red; border: 2px solid black;">Click Me</button></div>'
+      );
+      await screen.getByRole('button', { name: 'Click me' }).click();
+
+      console.log = logger;
+
+      assume(logs).is.an('array');
+      assume(logs[0]).equals('Button clicked!');
+    });
+  });
+});

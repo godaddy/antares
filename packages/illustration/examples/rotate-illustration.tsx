@@ -1,4 +1,5 @@
 import { Illustration } from '@bento/illustration';
+import React from 'react';
 
 export function RotateSVG(args: Record<string, unknown>) {
   return (

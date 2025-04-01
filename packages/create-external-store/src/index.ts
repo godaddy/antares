@@ -2,7 +2,7 @@ import { observer, type Observer } from './observer.ts';
 
 export interface Store {
   subscribe: (callback: (changes: Record<string, any>) => void) => () => void;
-  ondemand: (fn: (key: string) => Promise<unknown>) => void;
+  ondemand: (fn: (key: string) => Promise<unknown>) => () => void;
   only: (key: string | string[]) => (fn: (changes: Record<string, any>) => void) => () => void;
   pick: (key: string) => () => unknown;
   dispatch: (data: unknown) => void;
@@ -26,6 +26,7 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
   // without risking prototype pollution attacks.
   //
   const state = new Map(Object.entries(initial));
+  const loaded = new Set<string>();
   let snapshot = Object.fromEntries(state);
 
   /**
@@ -42,10 +43,16 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
    * Registers a loader function to be called on demand.
    *
    * @param {function} fn - The loader function that takes a key and returns a promise.
+   * @returns {function} A function that, when called, unregisters the loader function.
    * @public
    */
   function ondemand(fn: (key: string) => Promise<any>) {
     loaders.push(fn);
+
+    return function unregister() {
+      const index = loaders.indexOf(fn);
+      if (~index) loaders.splice(index, 1);
+    };
   }
 
   /**
@@ -58,7 +65,7 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
   function pick(key: string): () => any {
     return function pickSnapshot() {
       if (state.has(key)) return state.get(key);
-      load(key);
+      if (!loaded.has(key)) load(key);
     };
   }
 
@@ -89,8 +96,12 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
    */
   function set(data: any) {
     for (const [key, value] of Object.entries(data)) {
-      if (value === undefined || value === null) state.delete(key);
-      else state.set(key, value);
+      if (value === undefined || value === null) {
+        loaded.delete(key);
+        state.delete(key);
+      } else {
+        state.set(key, value);
+      }
     }
 
     snapshot = Object.fromEntries(state);
@@ -107,9 +118,19 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
    * @private
    */
   async function load(key: string) {
+    //
+    // Track which keys have been loaded to prevent multiple requests to be
+    // send out for the same key. This loaded cache is automatically cleared
+    // when the data is set to undefined or null.
+    //
+    loaded.add(key);
+
     for (const loader of loaders) {
       try {
-        return set({ [key]: await loader(key) });
+        const data = await loader(key);
+
+        if (!data) continue;
+        return set({ [key]: data });
       } catch (_) {
         continue;
       }

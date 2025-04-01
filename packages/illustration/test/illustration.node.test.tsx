@@ -1,10 +1,10 @@
-import { RenderingSvg } from '../examples/rendering-svg.tsx';
 import { Illustration, type IllustrationProps } from '@bento/illustration';
+import { RenderingSvg } from '../examples/rendering-svg.tsx';
+import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
-import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import pkg from '../package.json' with { type: 'json' };
+import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';

@@ -1,10 +1,14 @@
+import React, { useEffect, useSyncExternalStore } from 'react';
 import { createStore } from '@bento/create-external-store';
-import { useEffect, useSyncExternalStore } from 'react';
 import { withSlots } from '@bento/slots';
+
+interface Example {
+  [key: string]: any;
+}
 
 const store = createStore({ initial: 'data' });
 
-export const CreateStore = withSlots('CreatedStore', function Stored(props) {
+export const CreateStore: React.FC<Example> = withSlots('CreatedStore', function Stored(props) {
   const data = useSyncExternalStore(store.subscribe, store.getSnapshot);
 
   useEffect(

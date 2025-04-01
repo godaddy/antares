@@ -24,5 +24,9 @@ export function Throws(props: BentoErrorArgs): JSX.Element {
     [props]
   );
 
-  return <button onClick={createError}>Log bento error in console</button>;
+  return (
+    <button name="error" onClick={createError}>
+      Log bento error in console
+    </button>
+  );
 }

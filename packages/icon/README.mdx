@@ -1,0 +1,542 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/blocks';
+import * as Stories from './icon.stories.tsx';
+
+import SourceIcon from './examples/icon.tsx?raw';
+import SourceDemand from './examples/ondemand.tsx?raw';
+import SourceLoading from './examples/loading.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Icon
+
+The `@bento/icon` package provides a way to render SVG-based icons in your
+application. This package does not ship any icons but instead allows you to
+introduce your own icons.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/icon
+```
+
+#***REMOVED***Props
+
+The `@bento/icon` package exports the `Icon` component:
+
+```jsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="icon-name" />
+```
+
+The following properties are available to be used on the `Icon`
+component:
+
+<ArgTypes of={Stories.Props} />
+
+For all other properties specified on the `Icon` component, the
+component will pass them down to the root SVG element of the component. Which
+would be the equivalent of you adding them directly to the child component.
+
+##***REMOVED***Example
+
+<Source language='tsx' code={ SourceIcon } />
+<Story of={Stories.Demo} inline />
+<Controls of={Stories.Demo} />
+
+#***REMOVED***Introducing content
+
+By default, the icon component ships with no icon sets or libraries. You need to
+introduce the icons to the included store. The icon library exposes the
+following API methods:
+
+- **[set](#set)** - Introduce content synchronously.
+- **[ondemand](#ondemand)** - Introduce content asynchronously.
+
+Both methods expect the Icon content to be a valid React SVG element.
+If you have SVG content that is not a React SVG element, you can use the
+included [`@bento/icon/parser`](#parser) method to transform a string into
+the required React SVG element.
+
+> NOTE: If you want to learn more about the store, please refer to the
+> `@bento/create-external-store` package.
+
+##***REMOVED***parser
+
+The `@bento/icon/parser` allows you to transform raw SVG content into a React
+based SVG element.
+
+```tsx
+import { parser } from '@bento/icon/parser';
+```
+
+The parser method expects the following arguments:
+
+- `content` - The raw SVG content that should be transformed into a React SVG
+  element.
+- `options` - An object that allows you to transform the content before it's
+  introduced to the store.
+- `options.props` - An object that allows you to transform the props of the
+  elements in the SVG content. The key is the name of the prop that
+  should be transformed, and the value is a function that should return the
+  transformed prop. See [Transforming props](#transforming-props) for more
+  information.
+- `options.nodes` - An object that allows you to transform the elements in the
+  SVG content. The key is the name of the element that should be
+  transformed, and the value is a function that returns the transformed
+  element. See [Custom Elements](#custom-elements) for more information.
+
+> NOTE: The parser is designed for client-side use only. It's using the
+> `DOMParser` API for all of its heavy lifting. If you need to parse an SVG
+> on the server, you should use a different library, or you would need polyfill
+> the `DOMParser` API.
+
+###***REMOVED***Transforming props
+
+The parser receives the `Node` of the element currently parsing as the first
+argument. Your parser function should return an array of two elements.
+
+- `[0]` - The name of the prop that should be added to the element.
+- `[1]` - The value of the prop that should be added to the element.
+
+When an empty array is returned, we assume that the prop should be removed from
+the element.
+
+To give an example of the use cases, let's say you have an SVG that has styling
+applied to it in the form of a `style` and a `class` attribute. React doesn't
+support the `class` attribute, so you would need to transform it into a
+`className` attribute. If you don't want to keep these attributes, you can
+remove them from the element as shown in the example below:
+
+```tsx
+const icon = parser('<svg>...</svg>', {
+  props: {
+    class: (node) => ['className', node.getAttribute('class')],
+    style: (node) => [/* removes the style attribute */]
+  }
+});
+```
+
+###***REMOVED***Custom Elements
+
+The parser receives the `Node` of the element currently parsing as the first
+argument. Your parser function should return an array of two elements.
+
+- `[0]` - The React component that should be used to render the element. This
+          can be a custom component you created or the element’s name that
+          should be used to render the element. e.g., the name of the element
+          `node.nodeName`.
+- `[1]` - Additional props should be passed to the React component. Note
+          that these props will be merged with the result of the `props` parser
+          and are not parsed by the `props` parser.
+
+In the example below, we are replacing all `rect` elements with a custom
+component called `CustomRect`. We're also introducing additional props to the
+element:
+
+```tsx
+const icon = parser('<svg>...</svg>', {
+  nodes: {
+    rect: (node) => [CustomRect, { 'data-class': node.getAttribute('class') }]
+  }
+});
+```
+
+##***REMOVED***Custom parser
+
+Just because we include a parser in this package doesn't mean this
+is the only way to introduce the content to the store. You can use any parser,
+file format, or method you want to introduce the content to the
+store as long as the result is a valid SVG element.
+
+There are more performant ways to introduce the content, e.g., by parsing the
+SVG at build time and transforming them to a JSON object that can be transformed
+into a React component. This reduces the amount of bytes that need to be
+transferred over the network and reduces the amount of work that needs to be
+done on the client.
+
+You can see this pattern in place in the `@fortawesome/free-solid-svg-icons`
+package. They ship their icons as JSON objects that can be transformed into
+React components:
+
+```js
+// Contents of { faCircleChevronRight} from the '@fortawesome/free-solid-svg-icons' package
+{
+  prefix: 'fas',
+  iconName: 'circle-chevron-right',
+  icon: [
+    512,
+    512,
+    [ 'chevron-circle-right' ],
+    'f138',
+    'M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z'
+  ]
+}
+```
+
+You can transform this JSON object into a valid SVG element that can be used
+by the `@bento/icon` package by using the following code:
+
+```tsx
+import { faCircleChevronRight} from '@fortawesome/free-solid-svg-icons';
+type IconData = [number, number, string[], string, string];
+
+/**
+ * Transforms the FontAwesome icon data into a React SVG element.
+ *
+ * @param {IconData} data The FontAwesome icon data.
+ * @returns {React.ReactElement} The React SVG element.
+ * @private
+ */
+function awesome(data:IconData) {
+  return (
+    <svg width={data[0]} height={data[1]}>
+      <path d={data[4]} />
+    </svg>
+  );
+}
+
+set({ 'circle-chevron-right': awesome(faCircleChevronRight.icon) });
+```
+
+##***REMOVED***set
+
+The `set` method allows you to **synchronously** introduce content to the store.
+The method expects an object where the key is the icon’s name, as you would
+specify in the `icon` prop name, and the value is the React SVG element that
+should be used to render the icon.
+
+```tsx
+import { set } from '@bento/icon';
+
+set({
+  'icon-name': <svg />,
+  'another-icon': <svg />,
+  'yet-another-icon': <svg />
+});
+```
+
+If you have SVG content that is not a React SVG element, you can use the
+included [`@bento/icon/parser`](#parser) method to transform a string into
+the required React SVG element:
+
+```tsx
+import { parser } from '@bento/icon/parser';
+import { set } from '@bento/icon';
+
+import icon from './icon.svg?raw';
+
+set({ 'icon-name': parser(icon) });
+```
+
+<Source language='tsx' code={ SourceIcon } />
+<Story of={Stories.Demo} inline />
+<Controls of={Stories.Demo} />
+
+##***REMOVED***ondemand
+
+The `ondemand` method allows you to **asynchronously** introduce content to the
+store. The method expects a function that should return a promise that resolves
+to the React SVG element that should be used to render the icon. It receives the
+icon’s name, which should be loaded as the first argument.
+
+```tsx
+import { parser } from '@bento/icon/parser';
+import { ondemand } from '@bento/icon';
+
+ondemand(async function hosted(name:string) {
+  const icon:string = await fetch(`{name}.svg`).then((res) => res.text());
+
+  return parser(icon);
+});
+```
+
+You can have multiple `ondemand` loaders specified in your application, and
+they will be called in the order that they are specified. The first loader that
+returns a valid React SVG element will be used to render the icon.
+
+If your loader throws an error, the next loader will be called. If all loaders
+throw an error or no content is returned, the icon will return a `null`
+response and renders the [placeholder](#placeholders) content if it's specified.
+
+<Source language='tsx' code={ SourceDemand } />
+<Story of={Stories.Ondemand} inline />
+<Controls of={Stories.Ondemand} />
+
+#***REMOVED***Accessibility
+
+The icons are rendered with `role="presentation"` and should be considered
+decorative and should not be used to convey information to the user. They
+should only be used for visual or branding purposes.
+
+##***REMOVED***Semantic Icons
+
+Semantic icons convey information to the user rather than just pure
+decoration. This includes icons without text next to them that are used for
+interactive elements. To ensure they are accessible to all users,
+you should always describe the icon.
+
+The `title` prop is used to describe the icon. This
+sets the `role="img"` attribute on the SVG element and adds a `title` element
+to the SVG element with the contents of the `title` prop.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="wand" title="A magic wand" />
+```
+
+#***REMOVED***Performance
+
+When introducing content to the store, you should consider the performance
+impact of the content you are introducing. The icons should always be
+optimized using the appropriate tools and techniques to reduce the size of the
+icons. Tools such as `svgo` can be used to optimize the SVG content.
+
+The `Icon` component will render the icon as a full SVG element by default.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="icon-name" />
+<Icon icon="icon-name" />
+<Icon icon="icon-name" />
+```
+
+When rendering the same icon multiple times, this can lead to a lot of
+duplication in the DOM. Depending on the amount of icons you are rendering and
+the size of the icons, this can lead to a lot of bytes being transferred over
+the network.
+
+```html
+<svg>
+  <path d="...full..path..here" />
+</svg>
+<svg>
+  <path d="...so..much..duplication" />
+</svg>
+<svg>
+  <path d="...much..more..bytes..here" />
+</svg>
+```
+
+It's worth noting that there are distinct advantages to rendering the icons as
+full SVG elements when it comes to [server-side rendering](#server-side-rendering).
+
+##***REMOVED***Sprite
+
+To reduce the amount of duplication in the DOM, you can render the icons as a
+sprite. The optional `mode` prop is used to specify how the icon should be
+rendered. Switching the `mode` to `sprite` instructs the `Icon` component to
+render a `use` element that references the icon from a sprite sheet
+automatically injected sprite sheet.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="icon-name" mode="sprite" />
+<Icon icon="icon-name" mode="sprite" />
+<Icon icon="icon-name" mode="sprite" />
+```
+
+Would result in the following DOM:
+
+```html
+<svg>
+  <use xlink:href="#bento-svg-sprite-icon-name" />
+</svg>
+<svg>
+  <use xlink:href="#bento-svg-sprite-icon-name" />
+</svg>
+<svg>
+  <use xlink:href="#bento-svg-sprite-icon-name" />
+</svg>
+```
+
+Once your application is hydrated on the client, the icons sprite sheet is
+generated and injected into the DOM. The browser will trigger a paint event
+and the icons are displayed. The sprite sheet is generated as follows:
+
+```html
+<svg id="bento-svg-sprite" style="display: none;">
+  <symbol id="bento-svg-sprite-icon-name" data-symbol="icon-name" viewBox="0 0 24 24">
+    <path d="...massive..long..string..here" />
+  </symbol>
+</svg>
+```
+
+The sprite sheet container is only created if it doesn't already exist in the
+DOM. The icons are added to the sprite sheet as they are requested. If an icon
+is requested multiple times, it will only be added to the sprite sheet once.
+
+This also means that you can inject the spritesheet into the DOM yourself as
+part of the SSR response to ensure they are available and displayed before
+the client-side hydration.
+
+#***REMOVED***Server side rendering
+
+While the `Icon` component can render the icon content during the server-side
+rendering, the content must be available during the rendering of the icons.
+When loading the content [Asynchronously](#asynchronously) using the recommended
+[ondemand](#ondemand) method, the content is not available during the
+server-side rendering resulting in an empty response.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="icon-name" />
+// null - The icon doesn't have content, so it can't render anything.
+```
+
+Depending on your requirements this might be acceptable. If you want to return
+content during the server-side rendering, you have the following options:
+
+- [SVG element as a response](#svg-element-as-a-response)
+- [Asynchronously](#asynchronously)
+- [Placeholders](#placeholders)
+
+##***REMOVED***SVG element as a response
+
+As noted above, the `Icon` component can only render the icon if the content
+is available during the server-side rendering. If you want to render
+the icon as part of the SSR response, you should use the [`set`](#set) method
+to introduce the content to the store.
+
+```tsx
+import { set } from '@bento/icon';
+set({ 'icon-name': <svg /> });
+
+<Icon icon="icon-name" />
+// <svg>...</svg> - The icon has content that can render the icon.
+```
+
+The `set` method is synchronous. If you are using the `ondemand` method in your
+application, please refer to the [Asynchronously](#asynchronously) section.
+
+##***REMOVED***Asynchronously
+
+When loading your content asynchronously using the `ondemand` method, it's
+unavailable during the server-side rendering. These icons will default render an
+empty (`null`) response. Once your application is hydrated on the client, the
+icons will be available, requested in the `ondemand` method, and rendered
+accordingly.
+
+To avoid the empty response, you can either use 
+[Placeholders](#placeholders) as mentioned below or change the `mode` to
+`sprite` to render the icon as a sprite. When an icon is rendered as a sprite,
+it will return an SVG element with a `use` element that references the icon
+from the sprite.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="icon-name" mode="sprite" />
+// <svg><use xlink:href="#icon-name"></use></svg>
+```
+
+See [sprite](#sprite) for more information.
+
+##***REMOVED***Placeholders
+
+When the icon content is loading or the requested icon doesn't exist the `Icon`
+component will render the provided `children` as placeholder. This allows you to
+render skeleton loaders, loading spinners, or any other content that should be
+displayed while the icon is loading.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+<Icon icon="icon-name">
+  <svg>...</svg>
+</Icon>
+```
+
+While it might be tempting to use render props to render the conditionally
+icon fallback differently on the server and client; this is not recommended for
+applications that need to hydrate the server-rendered content on the client.
+This will cause a mismatch between the server and client content, which will
+result in the client-side hydration failing, forcing a complete re-render of the
+content.
+
+```tsx
+import { Icon } from '@bento/icon';
+
+//
+// ANTI PATTERN causes hydration errors:
+//
+<Icon icon="icon-name" mode="sprite">
+  {() => server ? <svg>{icon}</svg> : null }
+</Icon>
+```
+
+<Source language='tsx' code={ SourceLoading } />
+<Story of={Stories.Loading} inline />
+<Controls of={Stories.Loading} />
+
+#***REMOVED***Customization
+
+As the `Icon` component is a wrapper around the `Illustration` component, you
+can use the `Illustration`'s properties to customize the icon. The `Icon`
+component will pass all properties down to the `Illustration` component
+allowing you to `rotate` or `flip` the icon. This is useful when you need
+to support RTL languages that requires the icon to be altered.
+
+##***REMOVED***Slots
+
+The component is created using our `@bento/slots` package and allows the
+assignment of the custom `slot` property to be used for overrides.
+
+The `@bento/icon` is registered as `BentoIcon` and introduces the following
+slots:
+
+- `content`: Assigned to the `Illustration` component that renders the icon
+  content.
+
+See the `@bento/slots` package for more information on how to use the `slot` and
+`slots` properties.
+
+##***REMOVED***Styling
+
+Once you assign the `className` property to the component, you take full
+responsibility for the styling of the component, and it will remove any
+default styling that might be applied as part of this component.
+
+```jsx
+import { Illustration } from '@bento/icon';
+
+<Icon icon="magic-wand" className="my-component" />
+```
+
+The following `data-` attributes are introduced as part of the component
+render state:
+
+- `data-loading=true`: The `Icon` component will add a `data-loading` attribute to
+  the component’s root element when the icon is loading. This can be used
+  to style the component while the icon is loading.
+- `data-icon="icon-name"`: The name of the icon that is currently being rendered.
+- `data-mode="sprite"`: The component is rendering the icon as a sprite.
+- `data-flip=horizontal|vertical`: The component is flipped horizontally or
+  vertically using the provided `flip` property.
+- `data-rotate=90|180|270`: The component is rotated by the provided angle
+  using the `rotate` property.
+
+These `data-` attributes are introduced on the root element of the component
+and can be targetted using your previously provided custom `className`:
+
+```css
+.my-component[data-loading] {
+  /* The component is loading */
+}
+
+.my-component[data-flip] {
+  /* The component is flipped */
+}
+
+.my-component[data-rotate] {
+  /* The component is rotated */
+}
+
+.my-component[data-icon="magic-wand"] {
+  /* The component is rendering the magic wand icon */
+}
+```

@@ -12,6 +12,7 @@
   "dependencies": {
     "@bento/create-external-store": "*",
     "@bento/error": "*",
+    "@bento/icon": "*",
     "@bento/illustration": "*",
     "@bento/slots": "*",
     "@bento/to-attribute-value": "*",

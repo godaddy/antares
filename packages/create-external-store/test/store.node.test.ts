@@ -1,8 +1,9 @@
-import { createStore, type Store } from '../src/index.ts';
-import { beforeEach, describe, it } from 'node:test';
-import { dirname, resolve, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { createStore, type Store } from '@bento/create-external-store';
 import pkg from '../package.json' with { type: 'json' };
+import { dirname, resolve, join } from 'node:path';
+import { callback, NextFunction } from './next.ts';
+import { beforeEach, describe, it } from 'vitest';
+import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 
@@ -48,49 +49,58 @@ describe('@bento/create-external-store', function store() {
   });
 
   describe('#subscribe', function subscribe() {
-    it('triggers the callback on state changes', function triggers(_, next) {
-      const unsub = store.subscribe(function cb(snapshot) {
-        assume(snapshot).deep.equals({ foo: 'bar' });
-        unsub();
-        next();
-      });
+    it(
+      'triggers the callback on state changes',
+      callback(function triggers(next: NextFunction) {
+        const unsub = store.subscribe(function cb(snapshot: Record<string, any>) {
+          assume(snapshot).deep.equals({ foo: 'bar' });
+          unsub();
+          next();
+        });
 
-      store.set({ foo: 'bar' });
-    });
+        store.set({ foo: 'bar' });
+      })
+    );
   });
 
   describe('#only', function only() {
-    it('triggers the callback on defined changes', function triggers(_, next) {
-      const subscribe = store.only('foo');
-      const unsub = subscribe(function cb(data) {
-        assume(data).deep.equals({ foo: 'bar' });
+    it(
+      'triggers the callback on defined changes',
+      callback(function triggers(next: NextFunction) {
+        const subscribe = store.only('foo');
+        const unsub = subscribe(function cb(data) {
+          assume(data).deep.equals({ foo: 'bar' });
 
-        unsub();
-        next();
-      });
-
-      store.set({ bar: 'foo' });
-      store.set({ foo: 'bar' });
-      store.set({ bar: 'foo' });
-    });
-
-    it('can listen to multiple keys', function multiple(_, next) {
-      const keys: string[] = [];
-
-      const subscribe = store.only(['foo', 'bar']);
-      const unsub = subscribe(function cb(data) {
-        keys.push(...Object.keys(data));
-
-        if (keys.join(',') === 'foo,bar') {
           unsub();
           next();
-        }
-      });
+        });
 
-      store.set({ foobar: 'bar' });
-      store.set({ foo: 'baz' });
-      store.set({ bar: 'foo' });
-    });
+        store.set({ bar: 'foo' });
+        store.set({ foo: 'bar' });
+        store.set({ bar: 'foo' });
+      })
+    );
+
+    it(
+      'can listen to multiple keys',
+      callback(function multiple(next: NextFunction) {
+        const keys: string[] = [];
+
+        const subscribe = store.only(['foo', 'bar']);
+        const unsub = subscribe(function cb(data) {
+          keys.push(...Object.keys(data));
+
+          if (keys.join(',') === 'foo,bar') {
+            unsub();
+            next();
+          }
+        });
+
+        store.set({ foobar: 'bar' });
+        store.set({ foo: 'baz' });
+        store.set({ bar: 'foo' });
+      })
+    );
   });
 
   describe('#set', function set() {
@@ -143,52 +153,113 @@ describe('@bento/create-external-store', function store() {
       assume(store.pick('foo')()).equals('bar');
     });
 
-    it('calls the loader when the key is not in the state', function callsLoader(_, next) {
-      store.ondemand(async function ondemand(name) {
-        assume(name).equals('foo');
-        next();
+    it(
+      'calls the loader when the key is not in the state',
+      callback(function callsLoader(next: NextFunction) {
+        store.ondemand(async function ondemand(name) {
+          assume(name).equals('foo');
+          next();
 
-        return 'another';
+          return 'another';
+        });
+
+        store.pick('foo')();
+      })
+    );
+
+    it('returns an unregister function to remove the ondemand function', function unregister() {
+      const unsub = store.ondemand(async function ondemand() {
+        throw new Error('This should not break the test suite');
       });
+
+      assume(unsub).is.a('function');
+      unsub();
 
       store.pick('foo')();
     });
 
-    it('introduces the returned value into the state', function introduces(_, next) {
-      store.ondemand(async function ondemand(name) {
-        assume(name).equals('foo');
-        return 'return value';
-      });
+    it(
+      'introduces the returned value into the state',
+      callback(function introduces(next: NextFunction) {
+        store.ondemand(async function ondemand(name) {
+          assume(name).equals('foo');
+          return 'return value';
+        });
 
-      const unsub = store.subscribe(function subscribe(snapshot) {
-        assume(snapshot).is.a('object');
-        assume(snapshot).is.length(1);
-        assume(snapshot).deep.equals({ foo: 'return value' });
-        assume(store.pick('foo')()).equals('return value');
+        const unsub = store.subscribe(function subscribe(snapshot) {
+          assume(snapshot).is.a('object');
+          assume(snapshot).is.length(1);
+          assume(snapshot).deep.equals({ foo: 'return value' });
+          assume(store.pick('foo')()).equals('return value');
 
-        unsub();
+          unsub();
+          next();
+        });
+
+        const res = store.pick('foo')();
+        assume(res).is.a('undefined');
+      })
+    );
+
+    it(
+      'handles multiple loaders',
+      callback(function multiple(next: NextFunction) {
+        store.ondemand(async function ondemand() {
+          throw new Error('This should not break the test suite');
+        });
+
+        store.ondemand(async function works(name) {
+          assume(name).equals('foo');
+          next();
+
+          return 'another';
+        });
+
+        const res = store.pick('foo')();
+        assume(res).is.a('undefined');
+      })
+    );
+
+    it(
+      'does not trigger the ondemand function multiple times',
+      callback(function multiple(next: NextFunction) {
+        let called = 0;
+
+        store.ondemand(async function ondemand() {
+          called++;
+        });
+
+        store.pick('foo')();
+        store.pick('foo')();
+        store.pick('foo')();
+
+        assume(called).equals(1);
         next();
-      });
+      })
+    );
 
-      const res = store.pick('foo')();
-      assume(res).is.a('undefined');
-    });
+    it(
+      'allows the ondemand function to be called again after removing the key from the store',
+      callback(function multiple(next: NextFunction) {
+        let called = 0;
 
-    it('handles multiple loaders', function multiple(_, next) {
-      store.ondemand(async function ondemand() {
-        throw new Error('This should not break the test suite');
-      });
+        store.ondemand(async function ondemand() {
+          called++;
+        });
 
-      store.ondemand(async function works(name) {
-        assume(name).equals('foo');
+        store.pick('foo')();
+        store.pick('foo')();
+        store.pick('foo')();
+
+        assume(called).equals(1);
+
+        store.set({ foo: null });
+        store.pick('foo')();
+
+        assume(called).equals(2);
         next();
-
-        return 'another';
-      });
-
-      const res = store.pick('foo')();
-      assume(res).is.a('undefined');
-    });
+      })
+    );
   });
 
   describe('Public API', function packageSuite() {

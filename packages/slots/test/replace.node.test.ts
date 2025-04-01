@@ -1,5 +1,5 @@
 import { replace } from '@bento/slots/modifiers/replace';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assume from 'assume';
 
 describe('@bento/modifiers/replace', function bento() {

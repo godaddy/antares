@@ -1,5 +1,5 @@
 import { Slot } from '@bento/slots/context';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assume from 'assume';
 
 describe('@bento/slots/context', function bento() {

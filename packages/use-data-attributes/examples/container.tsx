@@ -3,7 +3,11 @@ import { useRenderProps } from '@bento/use-render-props';
 import { withSlots } from '@bento/slots';
 import React, { useState } from 'react';
 
-export const Container = withSlots('MyDataPropsContainer', function Containers(args: object) {
+interface Example {
+  [key: string]: any;
+}
+
+export const Container: React.FC<Example> = withSlots('MyDataPropsContainer', function Containers(args: object) {
   //
   // Always supply the `useRenderProps` hook with the state of your component.
   // This allows the renderProps to refer the state of the component and render

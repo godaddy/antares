@@ -1,11 +1,11 @@
-import { beforeEach, describe, it } from 'node:test';
+import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
+import { beforeEach, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { withSlots, library } from '@bento/slots';
-import { Slot } from '@bento/slots/context';
 import { Nested } from '../examples/nested.tsx';
+import { Slot } from '@bento/slots/context';
 import { fileURLToPath } from 'node:url';
-import pkg from '../package.json' with { type: 'json' };
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';

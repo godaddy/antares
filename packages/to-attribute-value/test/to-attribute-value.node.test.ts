@@ -1,8 +1,8 @@
+import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { stringify } from '../src/index.ts';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
-import pkg from '../package.json' with { type: 'json' };
 import fs from 'node:fs/promises';
 import assume from 'assume';
 

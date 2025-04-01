@@ -1,5 +1,5 @@
-import { Slot } from '@bento/slots/context';
 import React, { ReactNode, useContext } from 'react';
+import { Slot } from '@bento/slots/context';
 import { withSlots } from '@bento/slots';
 
 const Example = withSlots('ContextExample', function Example(props: { children?: ReactNode }) {

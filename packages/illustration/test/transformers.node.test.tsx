@@ -1,5 +1,5 @@
 import { toViewBox, parseViewBox, transformers } from '../src/transformers.tsx';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assume from 'assume';
 import React from 'react';
 

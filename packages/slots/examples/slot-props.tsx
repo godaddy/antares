@@ -12,7 +12,7 @@ const slots = {
       background: 'red',
       border: '2px solid black'
     },
-    onClick: () => alert('Button clicked!')
+    onClick: () => console.log('Button clicked!')
   }
 };
 

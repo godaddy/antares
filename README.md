@@ -1,81 +1,34 @@
-***REMOVED***Bento 🍱
+***REMOVED***🍱 Bento
 
-Bento is a component library built to support our GoDaddy design system. It is a collection of reusable components (i.e. primitives) that can be used to build more complex components.
+Bento is a component library built to support our GoDaddy design system. It is a
+collection of reusable components (i.e., primitives) that can be used to build
+more complex components.
 
-#***REMOVED***Using this example
-
-Run the following command:
+#***REMOVED***🛠️ Development
 
 ```sh
-npx create-turbo@latest
+npm install .
 ```
 
-#***REMOVED***What's inside?
+##***REMOVED***📝 Conventional Commits
 
-This Turborepo includes the following packages/apps:
+The repo is configured only to accept conventional commits as commit syntax.
+This is enforced using `@commitlint`.
 
-##***REMOVED***Apps and Packages
+#***REMOVED***📖 Documentation
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Our documentation is powered by Storybook and can be started by running:
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-##***REMOVED***Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-##***REMOVED***Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```sh
+npm run storybook
 ```
 
-##***REMOVED***Develop
+From inside of the `apps/docs` folder. Storybook is configured to automatically
+scan our `packages/**` folder for `.mdx` and `.stories.{ts|tsx}` files. This
+allows our documentation to be co-located with the actual code.
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-##***REMOVED***Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-#***REMOVED***Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+The examples that are part of the Storybook documentation should be placed in
+the `examples` folder as individual component exports. This allows us to re-use
+the examples as part of our testing strategy, as well as run tests against
+our examples folder to ensure our documentation and examples are always up to
+date and working as expected.

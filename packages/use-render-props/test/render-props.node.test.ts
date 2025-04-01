@@ -1,11 +1,11 @@
 import { useRenderProps, renderProp, isEventListener, execute } from '../src/index.ts';
+import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { Slot } from '@bento/slots/context';
 import { withSlots } from '@bento/slots';
-import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import pkg from '../package.json' with { type: 'json' };
+import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import util from 'node:util';
 import assume from 'assume';
