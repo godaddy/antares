@@ -5,7 +5,7 @@
   "homepage": "https://github.com/godaddy/bento/tree/main",
   "scripts": {
     "build": "turbo build",
-    "postinstall": "npm run build",
+    "postinstall": "turbo telemetry disable && npm run build",
     "clean": "npm exec --workspaces -- npx rimraf node_modules .turbo dist && npx rimraf node_modules .turbo",
     "format": "biome check",
     "lint": "turbo lint",

@@ -8,6 +8,8 @@ on:
 jobs:
   ci:
     runs-on: [self-hosted, 6216-uxcoreci]
+    env:
+      TURBO_TELEMETRY_DISABLED: 1
     steps:
       - name: Checkout Repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 ***REMOVED***v4.2.2
