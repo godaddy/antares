@@ -177,10 +177,19 @@ describe('@bento/slots', function bento() {
           }
 
           Object.keys(exportPath).forEach(function each(exported) {
-            it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
-              const path = resolve(__dirname, '..', exportPath[exported]);
-              await fs.access(path, fs.constants.F_OK);
-            });
+            if (typeof exportPath[exported] === 'string') {
+              it(`conditional export "${exported}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
+                const path = resolve(__dirname, '..', exportPath[exported]);
+                await fs.access(path, fs.constants.F_OK);
+              });
+            } else {
+              Object.keys(exportPath[exported]).forEach(function each(key) {
+                it(`conditional export "${exported}.${key}" exists for ${join(pkg.name, subpaths)}`, async function exportedTest() {
+                  const path = resolve(__dirname, '..', exportPath[exported][key]);
+                  await fs.access(path, fs.constants.F_OK);
+                });
+              });
+            }
           });
         });
       });

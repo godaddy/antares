@@ -49,24 +49,44 @@
   },
   "exports": {
     ".": {
-      "types": "./src/index.tsx",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./context": {
-      "types": "./src/context.ts",
-      "import": "./dist/context.js",
-      "require": "./dist/context.cjs"
+      "import": {
+        "types": "./dist/context.d.ts",
+        "default": "./dist/context.js"
+      },
+      "require": {
+        "types": "./dist/context.d.cts",
+        "default": "./dist/context.cjs"
+      }
     },
     "./modifiers/override": {
-      "types": "./src/override.ts",
-      "import": "./dist/override.js",
-      "require": "./dist/override.cjs"
+      "import": {
+        "types": "./dist/override.d.ts",
+        "default": "./dist/override.js"
+      },
+      "require": {
+        "types": "./dist/override.d.cts",
+        "default": "./dist/override.cjs"
+      }
     },
     "./modifiers/replace": {
-      "types": "./src/replace.ts",
-      "import": "./dist/replace.js",
-      "require": "./dist/replace.cjs"
+      "import": {
+        "types": "./dist/replace.d.ts",
+        "default": "./dist/replace.js"
+      },
+      "require": {
+        "types": "./dist/replace.d.cts",
+        "default": "./dist/replace.cjs"
+      }
     },
     "./package.json": "./package.json"
   }

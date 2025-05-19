@@ -29,7 +29,7 @@ interface OverrideArgs<Props> {
  */
 interface OverrideResult {
   props: {
-    'data-override': string;
+    'data-override'?: string;
   };
 }
 
