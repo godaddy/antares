@@ -1,0 +1,179 @@
+***REMOVED***Primitive Design Review (PDR)
+
+#***REMOVED***Purpose
+
+<!--
+What is the purpose of this primitive?
+What problem does it solve or what behavior does it encapsulate?
+What scenarios or user interactions require this to exist?
+What kinds of components or apps would typically consume this?
+-->
+
+##***REMOVED***Unique Attributes
+
+<!--
+What makes this different from similar primitives or components?
+Does it support specific ARIA roles, keyboard interactions, or novel composition strategies?
+What responsibilities or behaviors are unique to this implementation?
+-->
+
+#***REMOVED***Primitive Composition
+
+<!--
+Which primitives, patterns, or hooks are used to build this?
+- List each one and describe its role.
+- Is it a reusable shared primitive or new for this use case?
+- Are you introducing any new reusable logic (e.g. custom hooks or collection APIs)?
+Clarify whether this is a **UI primitive**, a **behavioral hook**, or a **shared pattern**.
+-->
+
+#***REMOVED***Implementation Patterns (Optional)
+
+<!--
+Summarize how this primitive aligns with Bento patterns.
+Include any React Aria hooks, shared utilities, or architectural conventions used.
+Use the table below to connect common patterns with your implementation.
+Uncomment and fill in relevant rows.
+-->
+
+<!--
+| Concept             | Implementation                                               |
+|---------------------|--------------------------------------------------------------|
+| React Aria          | e.g., useListBox, useOption                                  |
+| Slots               | e.g., withSlots, slots prop                                  |
+| Render Props        | e.g., className or style as function with meta object        |
+| data-* Attributes   | e.g., data-selected, data-focus-visible                      |
+| data-override       | Used when user customizes slot/style behavior                |
+| data-version        | Dev-only attribute to trace version                          |
+| Composability       | Supports children, items, render function                    |
+-->
+
+#***REMOVED***Internal Structure & Reuse Potential
+
+<!--
+Can this be decomposed into smaller parts or primitives?
+Are any behaviors generic enough to extract into a shared hook or utility?
+Does this share logic with other primitives or patterns?
+Is this the minimal reusable unit? Why or why not?
+
+Also consider:
+- If your component renders HTML, are the behavioral parts separated into a logic primitive?
+- If your primitive consumes a collection of items, should a reusable collection API or hook be proposed?
+-->
+
+#***REMOVED***React Aria or External Hook Integration
+
+<!--
+Does this reuse logic from React Aria or another external system?
+Which specific hooks or behaviors are used?
+Do we extend, wrap, or customize that logic?
+Are there gaps in coverage we needed to solve manually?
+-->
+
+#***REMOVED***Architecture & Features
+
+<!--
+What architectural decisions shape this component?
+What props, modes, or variations are supported?
+What is rendered to the DOM and why?
+How are children vs items handled?
+How is state (controlled or uncontrolled) managed?
+Can this component support nesting or advanced composition?
+How do we expect developers to use this in apps?
+
+- Children vs Items:
+- Rendered DOM structure:
+- Controlled vs Uncontrolled usage:
+- Orientation options:
+- Section/group support:
+- Dynamic content support:
+- Styling via data attributes:
+- Supports nesting/compound usage?:
+- Expected usage patterns:
+-->
+
+#***REMOVED***Accessibility Highlights
+
+<!--
+What ARIA roles, labels, and relationships are used?
+What keyboard interactions are supported (e.g., arrow keys, tab, space)?
+Does the component use roving tabindex or aria-activedescendant?
+How is focus visibility handled?
+How are screen reader announcements managed?
+Is autoFocus supported? How does it behave?
+-->
+
+#***REMOVED***Internationalization, RTL, and Mobile Considerations
+
+<!--
+Does this component support right-to-left (RTL) layouts?
+Are there mobile-specific concerns (e.g. touch target size, scrollable areas)?
+Is internationalized content expected to change layout or behavior?
+How does this primitive account for these variations?
+-->
+
+#***REMOVED***Data Attributes and Slot Map
+
+##***REMOVED***Expected `data-*` Attributes (Optional)
+
+<!--
+What data attributes are exposed?
+How do they reflect internal state?
+Which are used for styling, testing, or behavior customization?
+Uncomment and add rows as needed.
+-->
+
+<!--
+| Attribute             | Description                                   | Example Values         |
+|----------------------|-----------------------------------------------|------------------------|
+| `data-selected`      | Indicates selected state                      | "true" / "false"       |
+| `data-disabled`      | Indicates disabled state                      | "true" / "false"       |
+| `data-focus-visible` | Whether focus ring should be shown            | "true" / "false"       |
+| `data-override`      | Mark for locally overridden logic/UI          | "true"                 |
+| `data-version`       | Component version in dev only                 | "listbox@1.0"          |
+-->
+
+##***REMOVED***Slot Map (Optional)
+
+<!--
+What slots are exposed for customization?
+Which are required vs optional?
+What defaults are provided?
+Uncomment and customize as needed.
+-->
+
+<!--
+| Slot Name | Description                          | Required | Default Fallback |
+|-----------|--------------------------------------|----------|------------------|
+| `root`    | Top-level container                  | Yes      | Yes              |
+| `item`    | Unit in collection or layout         | Yes      | Yes              |
+| `section` | Wrapper for logical groups           | No       | No               |
+| `label`   | Accessible label                     | No       | No               |
+| `icon`    | Optional visual icon inside item     | No       | No               |
+| `checkbox`| For multiselect patterns             | No       | No               |
+-->
+
+#***REMOVED***Competitive Research (Optional)
+
+<!--
+List similar primitives or components from other design systems or headless libraries.
+What APIs or behaviors do they offer?
+How does your proposal compare in terms of scope, simplicity, and extensibility?
+-->
+
+#***REMOVED***Code Examples
+
+<!--
+Include usage examples that demonstrate core behaviors.
+You can use headings like:
+
+##***REMOVED***Basic usage
+##***REMOVED***Controlled vs uncontrolled
+##***REMOVED***Dynamic items with render function
+##***REMOVED***Grouped sections
+##***REMOVED***Orientation variants
+##***REMOVED***Slot overrides and render props
+
+Include at least one example that demonstrates a slot or render prop override to ensure customization paths are clear.
+Use code blocks to provide real TSX usage examples that reflect how the component is intended to be used.
+-->
