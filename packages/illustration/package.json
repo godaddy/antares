@@ -62,6 +62,6 @@
     "./package.json": "./package.json"
   },
   "devDependencies": {
-    "@react-types/shared": "^3.29.0"
+    "@react-types/shared": "^3.29.1"
   }
 }
