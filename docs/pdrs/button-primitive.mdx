@@ -1,0 +1,275 @@
+***REMOVED***Button Primitive PDR
+
+#***REMOVED***Purpose
+
+The Button Primitive provides a standardized foundation for interactive elements in our Bento library. It consists of two parts: a reusable pressable primitive and a button component built on top of it. Built on React Aria's useButton hook, it ensures consistent, accessible behavior across all devices and input methods.
+
+This primitive will serve as the foundation for other interactive elements like menu buttons, list items and any other interactive elements used in our Bento library, maintaining consistent behavior and accessibility patterns throughout the library.
+
+##***REMOVED***Unique Attributes
+
+The Button Primitive consists of two main parts:
+
+1. `<Pressable />` - A behavioral primitive that provides consistent press interactions and accessibility features:
+  - Built on React Aria's `useButton` hook
+  - Handles keyboard interactions (Enter, Space, Tab)
+  - Manages focus states and focus rings
+  - Provides press state management
+  - Handles touch interactions
+
+2. `<Button />` - A complete button component built on top of `<Pressable />`:
+  - Renders as a native `<button>` element
+  - Inherits all accessibility and interaction features from `<Pressable />`
+
+This combination allows developers to either use the complete `<Button />` component or build custom interactive elements using the `<Pressable />` primitive while maintaining consistent behavior and accessibility.
+
+#***REMOVED***Primitive Composition
+
+The pressable primitive will be built using:
+
+1. React Aria's `useButton`, `useFocusRing`, and `useHover` hooks for behavior and accessibility
+2. `withSlots` and `useRenderProps` for slot-based composition and customization
+3. `useDataAttributes` for exposing internal states as data attributes
+
+```tsx
+// Pressable primitive
+export const Pressable = withSlots(
+  'BentoPressable',
+  function Pressable(args: PressableProps) {
+    const ref = useRef<HTMLElement | null>(null);
+    const { buttonProps, isPressed } = useButton(args, ref);
+    const { hoverProps, isHovered } = useHover(args);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(args);
+    const child = React.Children.only(children);
+    const dataAttributes = useDataAttributes({
+      pressed: isPressed,
+      hovered: isHovered,
+      focused: isFocused,
+      focusVisible: isFocusVisible,
+    });
+
+    const [props, apply] = useRenderProps(args);
+    const { children, ...restProps } = props;
+
+    return React.cloneElement(child, {
+      ...mergeProps(
+        restProps,
+        buttonProps,
+        focusProps,
+        hoverProps,
+        dataAttributes,
+      ),
+      ref: mergeRefs(childRef, ref),
+    });
+  },
+);
+```
+
+The Button component will be built using the pressable primitive and will render a native `<button>` element.
+
+```tsx
+// Button component
+export const Button = withSlots(
+  'BentoButton',
+  function Button(args: ButtonProps) {
+    const [props, apply] = useRenderProps(args);
+    const { children, ...restProps } = props;
+
+    return (
+      <Pressable {...restProps}>
+        <button>
+          {children}
+        </button>
+      </Pressable>
+    );
+  },
+);
+```
+
+#***REMOVED***Internal Structure & Reuse Potential
+
+The Button implementation is built on top of a more generic Pressable primitive that can be used with any element. This separation allows us to:
+
+1. Reuse pressable behavior across different elements (buttons, links, divs, menu items, etc.)
+2. Maintain consistent accessibility and interaction patterns
+3. Share state management and event handling logic
+
+The Button component itself is a thin wrapper around the Pressable primitive that renders a native `<button>` element. This approach provides:
+
+- A convenient, pre-configured button component for common use cases
+- The flexibility to use pressable behavior with other elements when needed
+- Consistent behavior and accessibility across all pressable elements
+
+The Pressable primitive handles all the core functionality:
+- State management (pressed, hovered, focused)
+- Event handling and normalization
+- Accessibility attributes
+- Data attribute generation for styling
+
+This separation of concerns allows us to maintain a minimal, reusable unit while providing a convenient API for common button use cases.
+
+#***REMOVED***React Aria or External Hook Integration
+
+The Button primitive leverages React Aria's hooks to provide consistent behavior and accessibility:
+
+- `useButton`: Handles core button behavior including press events, keyboard interactions, and ARIA attributes
+- `useHover`: Manages hover state and events consistently across devices
+- `useFocusRing`: Controls focus visibility and keyboard focus behavior
+
+These hooks are used directly without modification, as they already provide comprehensive coverage for button interactions and accessibility requirements. The primitive simply composes these hooks together and exposes their states via data attributes for styling.
+
+No additional logic was needed to fill gaps, as React Aria's implementation handles all edge cases for button behavior across devices and input methods.
+
+#***REMOVED***Architecture & Features
+
+##***REMOVED***Accessibility
+
+The Button primitive must be fully accessible, supporting keyboard navigation, screen readers, and all WCAG requirements.
+For these, we will adhere to the following accessibility guidelines:
+
+- Use the native `<button>` element to ensure proper keyboard navigation and screen reader support
+- Implement consistent hover, press and focus states
+- Include appropriate ARIA attributes as needed (provided by React Aria's `useButton` hook)
+
+##***REMOVED***Behavior and States
+
+There are some inconsistencies in how buttons behave across devices, especially touch devices. For example, the `onClick` event may not be triggered on touch devices if the user moves their finger slightly after pressing the button, or the `onPress` event may not be triggered if the user lifts their finger too quickly.
+
+These inconsistencies can lead to confusion and frustration for users, as they may not understand why their button press didn't register. All these edge cases are handled and normalized by the `useButton` hook.
+
+A comprehensive list of these scenarios can be found in this [React Aria blog post](https://react-spectrum.adobe.com/blog/building-a-button-part-1.html) which explains how they provide a consistent solution across devices with the `usePress` hook, which is internally used by the `useButton` hook.
+
+Other button states such as hover and focus are also important for accessibility and usability, and they present inconsistencies across browsers and devices as well [[1]](https://react-spectrum.adobe.com/blog/building-a-button-part-2.html) [[2]](https://react-spectrum.adobe.com/blog/building-a-button-part-3.html). To address this, we will expose the following states as data attributes on the button element so that we can consistently style the button based on its current state regardless of the device:
+
+```
+data-pressed
+data-hovered
+data-focused
+data-focus-visible
+```
+
+```css
+.button[data-pressed='true'] {
+  /* styles */
+}
+```
+
+##***REMOVED***Composition and Customization
+
+The button should support composition with other components (like icons) to create common button patterns and also be highly customizable in terms of appearance while maintaining its accessibility and behavior.
+
+We expect implementers of this primitive to have the freedom to compose their `Button` components as they wish. We will offer the flexibility of `@bento/slots` and allow props to be passed down to this primitive without restrictions.
+
+
+##***REMOVED***API
+
+The API for the Bento `Button` will be composed of the `AriaButtonProps` provided by React Aria and the Native DOM `<button>` Props. This approach is necessary because `AriaButtonProps` makes slight modifications to the `onPress`, `onHover`, `onClick`, and `onFocus` handlers in order to comply with its consistent behavior approach using `useButton`. Additionally, other handlers such as `onDoubleClick`, `onClickCapture`, etc., are not available in `AriaButtonProps` but we want them to be accessible in our `Props` interface for more flexible use cases.
+
+```tsx
+interface ButtonProps
+  extends AriaButtonProps,
+    Omit<ComponentProps<'button'>, keyof AriaButtonProps> {}
+```
+
+For the `<Pressable />` primitive, we will use the same approach but will not limit it to button elements. The API will be similar, but we will need to ensure that the props are compatible with any element that can be made pressable.
+
+```tsx
+interface PressableProps
+  extends AriaButtonProps,
+    Omit<ComponentProps<HTMLElement>, keyof AriaButtonProps> {}
+```
+
+#***REMOVED***Competitive Research
+
+Some comparisons between React Aria, Radix, and HeadlessUI libraries were made to see how they approach the creation of a Button primitive.
+
+##***REMOVED***React Aria
+
+- [Button component](https://react-spectrum.adobe.com/react-aria/Button.html)
+
+React Aria provides a Primitive Button that internally uses a `useButton` hook that handles button behavior, states, and accessibility. It provides press, hover, and focus states, and handles keyboard interactions properly. Our proposed implementation also leverages the [useButton](https://react-spectrum.adobe.com/react-aria/useButton.html) for its core functionality.
+
+Notable features:
+
+- Styleable – Hover, press, and keyboard focus states are provided for easy styling. These states only apply when interacting with an appropriate input device, unlike CSS pseudo classes.
+- Accessible – Uses a native <button /> element under the hood, with support for the Space and Enter keys.
+- Cross-browser – Mouse, touch, keyboard, and focus interactions are normalized to ensure consistency across browsers and devices.
+
+##***REMOVED***Radix UI
+
+- [Button component](https://www.radix-ui.com/themes/docs/components/button)
+
+Radix UI does not provide a button primitive per se, but it addresses all of the features covered in React Aria. The component is more readily prepared to be used in a "themes" or design system implementation.
+
+##***REMOVED***Headless UI
+
+- [Button component](https://headlessui.com/react/button)
+
+Headless UI takes a similar approach to React Aria, providing an unstyled button with behavior and accessibility built-in. HeadlessUI also provides a [`render props` approach](https://headlessui.com/react/button#using-render-props) allowing you to pass a function that receives the button state as an argument for more fine-grained customization. In our assessment, this approach seems a bit excessive for a button component.
+
+Notable features:
+
+- State-based rendering
+- State management
+- Render props approach
+- Keyboard navigation
+
+#***REMOVED***Code Examples
+
+##***REMOVED***Button component
+
+The Button comopnent would be the most straightforward approach. We can then create design system specific components that inherit from the Button component and add additional functionality or styling.
+
+```tsx
+//
+// A button component that allows composition by leveraging the children component
+//
+function MyDesignButton1(props) {
+  return (
+    <Button {...props}>
+      {children}
+    </Button>
+  );
+}
+
+<MyDesignButton1 {...props}>
+  <EditIcon />
+  Edit
+</Button>
+
+//
+// A button component that allows composition via props
+//
+function MyDesignButton2(props) {
+  const { label, icon, ...rest } = props;
+
+  return (
+    <Button {...rest}>
+      {icon}
+      <span>{label}</span>
+    </Button>
+  );
+}
+
+<MyDesignButton2 label="Edit" icon={<EditIcon />} {...props} />
+```
+
+##***REMOVED***Pressable Primitive
+
+For even greater flexibility, we could use the `<Pressable />` primitive that can wrap any element or component to provide pressable behavior. This approach would extend beyond traditional buttons, allowing pressable functionality to be applied to a wider range of UI elements, such as anchors `<a />` or form input buttons `<input type="button" />`:
+
+```tsx
+<Pressable {...props}>
+  <button>Native button</button>
+</Pressable>
+
+<Pressable {...props}>
+  <a href="#">link</a>
+</Pressable>
+
+// this will make the div element pressable (not recommended though)
+<Pressable {...props}>
+  <div>hola</div>
+</Pressable>
+```
+
