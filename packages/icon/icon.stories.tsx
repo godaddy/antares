@@ -5,7 +5,7 @@ import { Example } from './examples/icon.tsx';
 import React from 'react';
 
 const meta: Meta<typeof Example> = {
-  title: 'components/icon',
+  title: 'components/Icon',
   component: () => null,
   argTypes: {
     flip: {

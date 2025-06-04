@@ -63,8 +63,8 @@ export function stringify(value: any = undefined, separator = ' ', seen = new We
 
     //
     // There are no known patterns for transforming an object to a string. The
-    // closest pattern that we can align to how function are formatted in CSS.
-    // In this case we want to use the key of the object as the function name
+    // closest pattern that we can align to how functions are formatted in CSS.
+    // In this case we want to use the key of the object as the function's name
     // and the value as the argument.
     //
     // The added benefit is that we can then re-use the stringify function to

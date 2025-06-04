@@ -16,6 +16,12 @@ const slots = {
   }
 };
 
+/**
+ * SlotFunction component demonstrating how to pass a slot as a function.
+ *
+ * @returns {JSX.Element} The rendered Nested component with a slot function.
+ * @public
+ */
 export function SlotFunction() {
   return <Nested slots={slots} />;
 }

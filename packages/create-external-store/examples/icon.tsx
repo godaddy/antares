@@ -1,12 +1,15 @@
 import { ReactElement, useCallback, useSyncExternalStore } from 'react';
 import { createStore } from '@bento/create-external-store';
-import { useRenderProps } from '@bento/use-render-props';
+import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import React from 'react';
 
-//
-// Exposes the API to introduce icon content.
-//
+/**
+ * Creates a store for managing icon content with on-demand loading.
+ *
+ * @returns {Object} Store methods for managing icon content.
+ * @public
+ */
 export const { ondemand, pick, only, subscribe, getSnapshot } = createStore({
   'octopus-sausages': (
     <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 1200 1200">
@@ -18,11 +21,15 @@ export const { ondemand, pick, only, subscribe, getSnapshot } = createStore({
   )
 });
 
-//
-// Render a icon
-//
+/**
+ * Icon component that renders SVG content from the store.
+ *
+ * @param {Record<string, any>} args - The component props.
+ * @returns {JSX.Element | null} The rendered icon or null if not found.
+ * @public
+ */
 export const Icon = withSlots('StoreIconExample', function Iconic(args: Record<string, any>) {
-  const [props] = useRenderProps(args);
+  const { props } = useProps(args);
   const { icon, ...rest } = props;
   const picker = useCallback(pick(icon) as () => ReactElement | undefined, [icon]);
   const subscriber = useCallback(only(icon), [icon]);

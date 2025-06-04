@@ -1,6 +1,13 @@
 import { Illustration } from '@bento/illustration';
 import React from 'react';
 
+/**
+ * Example component demonstrating SVG rendering with Illustration.
+ *
+ * @param {Record<string, unknown>} args - The component props.
+ * @returns {JSX.Element} The rendered component with SVG illustration.
+ * @public
+ */
 export function RenderingSvg(args: Record<string, unknown>) {
   return (
     <Illustration {...args}>

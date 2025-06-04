@@ -7,12 +7,12 @@ import './why-did-you-render.ts';
 import type { Preview } from '@storybook/react';
 
 const preview: Preview = {
-  options: {
-    storySort: {
-      method: 'alphabetical'
-    }
-  },
   parameters: {
+    options: {
+      storySort: {
+        order: ['components', 'hooks', 'higher-order components', 'utility', 'internal', '*']
+      }
+    },
     docs: {
       toc: {
         title: 'On this page',

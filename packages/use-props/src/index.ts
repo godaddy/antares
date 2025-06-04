@@ -1,0 +1,152 @@
+import { Box, type BoxContext } from '@bento/box';
+import { useInternalProps } from '@bento/internal-props';
+import React, { useContext } from 'react';
+
+interface RenderPropData {
+  original?: unknown;
+  props: Record<string, any>;
+  slots: Record<string, any>;
+  state: Record<string, any>;
+}
+
+/**
+ * Checks if the given string is an event listener name. An event listener name
+ * is defined as a string that starts with "on" followed by an uppercase letter.
+ *
+ * @param {string} name - The string to check.
+ * @returns {boolean} `true` if the string is an event listener name, otherwise `false`.
+ * @private
+ */
+export function isEventListener(name: string): boolean {
+  return /^on[A-Z]/.test(name);
+}
+
+/**
+ * Determines if a given value is a render prop.
+ *
+ * A render prop is a function that is used to dynamically generate
+ * UI elements. This function checks if the provided value is a function
+ * and not an event listener.
+ *
+ * @param {string} name - The name of the prop.
+ * @param {any} value - The value of the prop to check.
+ * @returns {boolean} - Returns `true` if the value is a render prop, otherwise `false`.
+ */
+export function isRenderProp(name: string, value: any): boolean {
+  return typeof value === 'function' && !isEventListener(name);
+}
+
+/**
+ * Executes a function or returns a value from the given data object.
+ *
+ * @param {string} name - The name of the property to execute or retrieve.
+ * @param {object} data - The data object containing the property.
+ * @param {RenderPropData} args - The arguments to pass if the property is a function.
+ * @returns {any} - The result of the function execution or the value of the property.
+ * @private
+ */
+export function execute(name: string, data: Record<string, any>, args: RenderPropData): any {
+  const value = data[name];
+
+  if (isRenderProp(name, value)) return value(args);
+  return value;
+}
+
+/**
+ * Retrieves a property value, potentially overridden by a slotted value.
+ *
+ * @param {string} name - The name of the property to retrieve.
+ * @param {Object} options - An object containing the properties, slotted values, and state.
+ * @param {Object} options.props - The original properties.
+ * @param {Object} options.slots - The slotted values that can override the original properties.
+ * @param {Object} options.state - The current state.
+ * @param {Object} options.original - The original value of the property.
+ * @returns {any} - The original property value or the overridden value if provided.
+ */
+export function renderProp(name: string, args: RenderPropData): any {
+  const { props, slots, original } = args;
+
+  return execute(name, slots, args) || execute(name, props, args) || original;
+}
+
+interface Returns {
+  /**
+   * Proxy object that have access to the original props, slotted values, and internal props. When
+   * accessing a property, it will first check the slotted values, then the original props, and finally
+   * the internal props. If the property is a render prop, it will execute the function with the provided
+   * arguments.
+   */
+  props: Record<string, any>;
+  /**
+   * Applies the given attributes as default values to the props. If no attributes are provided, it will
+   * use the props as default values. The resulting object will contain all the properties of the props,
+   * except for the ones specified in the `except` array. The values of the properties will be the result
+   * of executing the render prop function with the provided arguments.
+   */
+  apply: (attributes?: object, except?: string[]) => object;
+}
+
+/**
+ * Hook that merges props with slotted props and provides a proxy for accessing them.
+ *
+ * @param {object} args - The initial props to use.
+ * @param {object} [state={}] - The state object to use.
+ * @returns {Returns} An object containing the proxy based props object and the apply function.
+ * @throws {BentoError} If the hook is used outside of a @bento/slots component.
+ *
+ * @example
+ * const [props, apply] = useRenderProps({ foo: 'bar' });
+ * if (props.a) doSomething()
+ * return <a {...apply({ className: 'foo' }) }>{ props.children }</a>;
+ */
+export function useProps(args: Record<string, any>, state: object = {}): Returns {
+  const { slots } = useContext<BoxContext<Record<string, any>>>(Box);
+  const [props, internal] = useInternalProps(args);
+  const { namespace, assigned } = slots;
+  const dot = namespace.join('.');
+  const slotted = assigned[dot] || {};
+  const propsy = { ...internal, ...props, ...slotted };
+
+  /**
+   * Applies the given attributes to an object.
+   *
+   * @param {object} [attributes] - The attributes to apply. If not provided, defaults to `propsy`.
+   * @param {string[]} [except] - An array of keys to exclude from the resulting object.
+   * @returns {object} The resulting object with applied attributes.
+   * @public
+   */
+  function apply(attributes?: object, except?: string[]): object {
+    const data = attributes || propsy;
+    const returned = {};
+
+    function reduce(memo: Record<string, any>, key: string) {
+      if (except && except.includes(key)) return memo;
+
+      memo[key] = renderProp(key, {
+        original: data[key],
+        slots: slotted,
+        props: { ...props, ...internal },
+        state
+      });
+
+      return memo;
+    }
+
+    if (!attributes) return Object.keys(propsy).reduce(reduce, returned);
+    return Object.keys(propsy).reduce(reduce, Object.keys(attributes).reduce(reduce, returned));
+  }
+
+  return {
+    props: new Proxy(propsy, {
+      get: function getter(_: object, name: string) {
+        return renderProp(name, {
+          original: isRenderProp(name, props[name]) ? undefined : props[name],
+          slots: slotted,
+          props: { ...props, ...internal },
+          state
+        });
+      }
+    }),
+    apply
+  };
+}

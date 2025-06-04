@@ -1,5 +1,5 @@
-import { render } from 'vitest-browser-react';
 import { Container } from '../examples/container.tsx';
+import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 import React from 'react';

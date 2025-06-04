@@ -6,6 +6,7 @@ import React, { type JSX } from 'react';
  *
  * @param {number} ms - The number of milliseconds to wait before the promise resolves.
  * @returns {Promise<void>} A promise that resolves after the specified delay.
+ * @public
  */
 export function timeout(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -27,6 +28,13 @@ ondemand(async function fetchIcons(icon: string) {
   );
 });
 
+/**
+ * Example component demonstrating loading state with delayed icon.
+ *
+ * @param {any} args - The component props.
+ * @returns {JSX.Element} The rendered loader component.
+ * @public
+ */
 export function Loader(args: any): JSX.Element {
   //
   // spinner and dragon icon used by the loader delayed loader above are fromt:

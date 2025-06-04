@@ -7,6 +7,11 @@ import { parser } from '@bento/icon/parser';
 //
 const FONT_AWESOME_URL = 'https://site-assets.fontawesome.com/releases/v6.7.2/svgs/solid';
 
+/**
+ * Fetches and parses Font Awesome icons on demand.
+ * @param {string} icon - The name of the icon to fetch.
+ * @returns {Promise<JSX.Element>} A promise that resolves to the parsed SVG element.
+ */
 ondemand(async function fetchIcons(icon: string) {
   const response = await fetch(`${FONT_AWESOME_URL}/${icon}.svg`);
   const text = await response.text();
@@ -15,6 +20,13 @@ ondemand(async function fetchIcons(icon: string) {
   return parsed;
 });
 
+/**
+ * Awesome component demonstrating on-demand icon loading from Font Awesome.
+ *
+ * @param {any} args - The component props.
+ * @returns {JSX.Element} The rendered icon component with documentation.
+ * @public
+ */
 export function Awesome(args: any): JSX.Element {
   const url = 'https://fontawesome.com/search?o=r&ic=free&s=solid&ip=classic';
 

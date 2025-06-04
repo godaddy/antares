@@ -1,6 +1,6 @@
-import React, { type ReactNode, useContext, memo } from 'react';
+import React, { useContext, memo } from 'react';
 import { useDeepCompareMemo } from 'use-deep-compare';
-import { Slot, type SlotContext } from './context.ts';
+import { Box, type BoxContext } from '@bento/box';
 import { BentoError } from '@bento/error';
 import { override } from './override.ts';
 import { replace } from './replace.ts';
@@ -51,11 +51,19 @@ export function withSlots<Props extends object>(
   function WrappedComponent(propsAndSlots: Props & Slots) {
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
     let props = { ...restProps } as Props;
-    let ctx = { ...useContext<SlotContext<Props>>(Slot) };
     let Element = Component;
 
-    ctx.namespace = [...ctx.namespace, slot].filter(Boolean);
-    ctx.slots = { ...ctx.slots, ...slots };
+    //
+    // We need to create a new context object to prevent introducing properties
+    // to a context that is shared across components. Without cloning the context
+    // properties like `namespace` will become corrupted as they would start to
+    // include the slot name of siblings instead of just being a pure parent/child
+    // relationship.
+    let ctx = { ...useContext<BoxContext<Props>>(Box) };
+    ctx.env = { ...ctx.env };
+    ctx.slots = { ...ctx.slots };
+    ctx.slots.namespace = [...ctx.slots.namespace, slot].filter(Boolean);
+    ctx.slots.assigned = { ...ctx.slots.assigned, ...slots };
 
     //
     // Modifiers allow you to manipulate the context, props, and component with
@@ -72,7 +80,7 @@ export function withSlots<Props extends object>(
     modifiers.forEach(function forEach(modifier) {
       const mods: {
         Component?: React.ComponentType<Props>;
-        context?: object;
+        context?: Partial<BoxContext<Props>> | Record<string, any>;
         props?: object;
       } =
         modifier({
@@ -82,19 +90,24 @@ export function withSlots<Props extends object>(
           name
         }) || {};
 
-      if (typeof mods.context === 'object') ctx = { ...ctx, ...mods.context };
+      if (typeof mods.context === 'object')
+        ctx = {
+          env: { ...ctx.env, ...mods.context?.env },
+          slots: { ...ctx.slots, ...mods.context?.slots }
+        };
+
       if (typeof mods.props === 'object') props = { ...props, ...mods.props };
       if (mods.Component) Element = mods.Component;
     });
 
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
-      <Slot.Provider value={context}>
+      <Box.Provider value={context}>
         <Element {...props} />
-      </Slot.Provider>
+      </Box.Provider>
     );
 
-    const slotted = ctx.slots[ctx.namespace.join('.')];
+    const slotted = ctx.slots.assigned[ctx.slots.namespace.join('.')];
 
     if (typeof slotted !== 'function') return rendered;
     return slotted({ props, original: rendered.props.children });

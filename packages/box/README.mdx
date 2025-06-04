@@ -1,0 +1,77 @@
+import { Meta, Story, ArgTypes, Source } from '@storybook/blocks';
+import * as Stories from './box.stories.tsx';
+
+import SourceNamespace from './examples/namespace.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***box
+
+The `@bento/box` package provides the shared React context that is used throughout
+the Bento component ecosystem.
+
+#***REMOVED***Installation
+
+To install the package, use the following command:
+
+```shell
+npm install --save @bento/box
+```
+
+#***REMOVED***Context
+
+```javascript
+import { Box } from '@bento/box';
+```
+
+The `Box` context is a React context that provides Bento-specific configuration
+to child components. It is typically used internally and does not require direct
+interaction in most cases.
+
+- **[slots](#slots)**: An object used by the `@bento/slots` and `@bento/use-props` packages.
+- **[env](#env)**: An object used by the `@bento/environment` component.
+
+The `Box` context is used to pass down the Bento specific configuration down to
+the child components. This is done automatically for you, for the majority of
+the cases you don't need to interact or use this context directly in your
+application.
+
+<Source language='tsx' code={ SourceNamespace } />
+
+The above example would output the following:
+
+<Story of={Stories.Namespace} inline />
+
+##***REMOVED***defaults
+
+The package exposes a `defaults` function that will return the default assigned
+values for the `Box` context. You can use this if you need to provide your
+components with a custom `Box.Provider`
+
+```javascript
+import { Box, defaults } from '@bento/box';
+import { useContext } from 'react';
+
+function MyComponent() {
+  return (
+    <Box.Provider values={defaults()}>
+      <MyChildComponent />
+    </Box.Provider>
+  );
+};
+```
+
+##***REMOVED***Slots
+
+The `Box` context contains a `slots` object which is consumed by the 
+`@bento/slots` and `@bento/use-render-props` packages. This object
+contains the following properties:
+
+<ArgTypes of={Stories.slots} />
+
+##***REMOVED***Env
+
+The `env` object contains `@bento/environment` specific configuration. The
+object contains the following properties:
+
+<ArgTypes of={Stories.env} />

@@ -7,7 +7,7 @@
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "dev": "tsup-node src/index.ts --watch",
+    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
     "pretest": "npm run build",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@bento/slots": "file:../slots",
     "@bento/to-attribute-value": "file:../to-attribute-value",
-    "@bento/use-render-props": "file:../use-render-props"
+    "@bento/use-props": "file:../use-props"
   },
   "exports": {
     ".": {
@@ -60,8 +60,5 @@
       }
     },
     "./package.json": "./package.json"
-  },
-  "devDependencies": {
-    "@react-types/shared": "^3.29.1"
   }
 }

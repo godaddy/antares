@@ -1,0 +1,67 @@
+import { Meta, Story, Source, ArgTypes } from '@storybook/blocks';
+import * as Stories from './environment.stories.tsx';
+
+import ComponentLevelExample from './examples/component-level.tsx?raw';
+import CustomButtonExample from './examples/custom-button.tsx?raw';
+
+<Meta of={Stories} name="Concepts" />
+
+***REMOVED***Application level configuration
+
+The `Environment` component is the main entry point for configuring Bento 
+components in your application. It allows you to set up global configurations, 
+such as components, and other settings that will be applied throughout your 
+application. This allows you to easily customize the behavior of specific set
+of components.
+
+You can apply the custom Environment component at the application level, or
+apply it to specific sections of your application for when you want only want
+affect a specific section of your application.
+
+#***REMOVED***Components
+
+The `components` prop allows you to override the default components used by
+Bento. This is useful when you want to customize the behavior or appearance of a
+specific component. You can pass a mapping of component names to their
+corresponding components. The keys in the object should match the component
+names used by Bento, and the values should be the new components you want to
+use. 
+
+This is useful when you want to use a custom implementation of a component
+or when you want to use a different library altogether. For example, if you want
+to use a custom button component instead of the default Bento button, you can do
+it like this:
+
+<Source language='tsx' code={CustomButtonExample} />
+
+This will replace the default Bento button with your custom button component 
+throughout your application.
+
+##***REMOVED***Overrides
+
+You can also override the default props of a component by passing an object with
+the component name as the key and the new props as the value. This is useful
+when you want to change the default behavior of a component without replacing it
+entirely.
+
+For example, if you want to change the default mode of the BentoIcon component
+to "sprite", you can do it like this:
+
+<Source language='tsx' code={ComponentLevelExample} />
+
+This doesn't have to be an application level configuration, you can also use it
+at a component level. For example, if you want to override the default props of
+a component that might not have a slot assigned to it, you can do it like this:
+
+<Source language='tsx' code={ComponentLevelExample} />
+<Story of={Stories.ComponentLevelOverride} />
+
+##***REMOVED***Experimentation
+
+The overrides also allows you to introduce experimentation in your application,
+your A/B testing framework of choice can leverage the `components` prop to
+introduce new components in your application without the need to modify the
+application code. This is useful when you want to test a new component or a new
+version of a component without modifying the application code. The custom button example shows how to use a different component implementation for A/B testing:
+
+<Source language='tsx' code={CustomButtonExample} />

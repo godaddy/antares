@@ -10,14 +10,17 @@
     "preinstall": "node ./scripts/preinstall.ts"
   },
   "dependencies": {
+    "@bento/box": "*",
     "@bento/create-external-store": "*",
+    "@bento/environment": "*",
     "@bento/error": "*",
     "@bento/icon": "*",
     "@bento/illustration": "*",
+    "@bento/internal-props": "*",
     "@bento/slots": "*",
     "@bento/to-attribute-value": "*",
     "@bento/use-data-attributes": "*",
-    "@bento/use-render-props": "*",
+    "@bento/use-props": "*",
     "@welldone-software/why-did-you-render": "^8.0.3",
     "react": "^18.3.1",
     "react-diff-viewer-continued": "^3.4.0",

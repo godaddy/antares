@@ -2,10 +2,10 @@ import React, { useSyncExternalStore, useState, useCallback, useEffect } from 'r
 import { Illustration, type IllustrationProps } from '@bento/illustration';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { createStore } from '@bento/create-external-store';
-import { useRenderProps } from '@bento/use-render-props';
 import { useSVGSprite } from './use-sprite.tsx';
-import { BentoError } from '@bento/error';
+import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
+import { BentoError } from '@bento/error';
 import style from './icon.module.css';
 
 /**
@@ -63,8 +63,8 @@ export const { ondemand, set, pick, only } = createStore();
  */
 export const Icon: React.FC<IconProps> = withSlots('BentoIcon', function Iconic(args) {
   const [loading, setLoading] = useState(true);
-  const [props, apply] = useRenderProps(args, { loading });
-  const { icon, mode, children, ...rest } = props;
+  const { props, apply } = useProps(args, { loading });
+  const { icon, mode, children } = props;
   const sprite = mode === 'sprite';
 
   //
@@ -117,8 +117,10 @@ export const Icon: React.FC<IconProps> = withSlots('BentoIcon', function Iconic(
   const drawing = graphic || children;
   if (!drawing) return null;
 
+  const applied = apply({ className: style.icon }, ['icon', 'mode']);
+
   return (
-    <Illustration {...apply({ className: style.icon })} {...rest} {...data} slot="content">
+    <Illustration {...applied} {...data} slot="content">
       {drawing}
     </Illustration>
   );

@@ -4,7 +4,7 @@ import { beforeEach, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { withSlots, library } from '@bento/slots';
 import { Nested } from '../examples/nested.tsx';
-import { Slot } from '@bento/slots/context';
+import { Box, defaults } from '@bento/box';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
@@ -91,28 +91,18 @@ describe('@bento/slots', function bento() {
     it('can override the components used', function override() {
       let id;
 
-      const nested = renderToString(
-        React.createElement(
-          Slot.Provider,
-          {
-            value: {
-              override: false,
-              namespace: [],
-              slots: {},
-              components: {
-                SlotsButton: function Button(props) {
-                  assume(props['data-override']).equals('context');
-                  assume(props.id).startsWith(':R');
-                  id = props.id;
+      const value = defaults();
+      value.env.components = {
+        SlotsButton: function Button(props) {
+          assume(props['data-override']).equals('context');
+          assume(props.id).startsWith(':R');
+          id = props.id;
 
-                  return React.createElement('p', props, 'No more button, only text');
-                }
-              }
-            }
-          },
-          React.createElement(Nested)
-        )
-      );
+          return React.createElement('p', props, 'No more button, only text');
+        }
+      };
+
+      const nested = renderToString(React.createElement(Box.Provider, { value }, React.createElement(Nested)));
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
@@ -133,11 +123,14 @@ describe('@bento/slots', function bento() {
         assume(data.props).is.a('object');
         assume(data.props.id).equals('example');
         assume(data.Component).equals(Custom);
-        assume(data.context).is.a('object');
-        assume(data.context.namespace).is.a('array');
+
+        assume(data.context.env).is.a('object');
         assume(data.context.slots).is.a('object');
-        assume(data.context.components).is.a('object');
-        assume(data.context.override).is.false();
+        assume(data.context.slots.assigned).is.a('object');
+        assume(data.context.slots.namespace).is.a('array');
+        assume(data.context.slots.override).is.false();
+        assume(data.context.env.components).is.a('object');
+
         assume(data.name).equals('CustomNameHere');
 
         ran = true;

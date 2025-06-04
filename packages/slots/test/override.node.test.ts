@@ -1,10 +1,11 @@
 import { override } from '@bento/slots/modifiers/override';
 import { renderToString } from 'react-dom/server';
-import { Slot } from '@bento/slots/context';
 import { withSlots } from '@bento/slots';
 import { describe, it } from 'vitest';
+import { Box, defaults } from '@bento/box';
 import assume from 'assume';
 import React from 'react';
+import { useProps } from '@bento/use-props';
 
 describe('@bento/modifiers/override', function bento() {
   function createComponent(name: string, props = {}, slots = {}, components = {}) {
@@ -12,19 +13,12 @@ describe('@bento/modifiers/override', function bento() {
       return React.createElement('div', { ...args });
     });
 
+    const value = defaults();
+    value.slots.assigned = { test: slots };
+    value.env.components = components;
+
     return renderToString(
-      React.createElement(
-        Slot.Provider,
-        {
-          value: {
-            override: false,
-            namespace: [],
-            slots: { test: slots },
-            components: components
-          }
-        },
-        React.createElement(TestReturn, { slot: 'test', ...props })
-      )
+      React.createElement(Box.Provider, { value }, React.createElement(TestReturn, { slot: 'test', ...props }))
     );
   }
 
@@ -40,6 +34,16 @@ describe('@bento/modifiers/override', function bento() {
   it('introduces data-override when style is present', function style() {
     const html = createComponent('style', { style: { color: 'red' } });
     assume(html).contains('<div style="color:red" data-override="style"></div>');
+  });
+
+  it('does not introduce a data-override when CSS variables are introduced', function cssVariables() {
+    const html = createComponent('cssVariables', { style: { '--color': 'red' } });
+    assume(html).contains('<div style="--color:red"></div>');
+  });
+
+  it('introduces data-override when CSS variables and another style property are present', function cssVariablesAndStyle() {
+    const html = createComponent('cssVariablesAndStyle', { style: { '--color': 'red', color: 'blue' } });
+    assume(html).contains('<div style="--color:red;color:blue" data-override="style"></div>');
   });
 
   it('introduces data-override when className is present', function className() {
@@ -111,32 +115,22 @@ describe('@bento/modifiers/override', function bento() {
       );
     });
 
-    const html = renderToString(
-      React.createElement(
-        Slot.Provider,
-        {
-          value: {
-            override: false,
-            namespace: [],
-            slots: {},
-            components: {
-              'BentoOverride-Parent': function Parent(props) {
-                assume(props['data-override']).equals('context');
+    const value = defaults();
+    value.env.components = {
+      'BentoOverride-Parent': function Parent(props) {
+        assume(props['data-override']).equals('context');
 
-                //
-                // It is intentional that we are not passing down the props into
-                // the created element below, this is to simulate if someone
-                // would remove the props from the component. A child component
-                // should still be able to indicate that a parent was overridden.
-                //
-                return React.createElement('div', null, React.createElement(Kiddo, null, 'Should have data-override'));
-              }
-            }
-          }
-        },
-        React.createElement(Parent)
-      )
-    );
+        //
+        // It is intentional that we are not passing down the props into
+        // the created element below, this is to simulate if someone
+        // would remove the props from the component. A child component
+        // should still be able to indicate that a parent was overridden.
+        //
+        return React.createElement('div', null, React.createElement(Kiddo, null, 'Should have data-override'));
+      }
+    };
+
+    const html = renderToString(React.createElement(Box.Provider, { value }, React.createElement(Parent)));
 
     assume(html).equals('<div><p data-override="context">Should have data-override</p></div>');
   });

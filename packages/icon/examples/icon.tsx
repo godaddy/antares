@@ -13,6 +13,13 @@ set({
   )
 });
 
+/**
+ * Example component demonstrating basic icon usage.
+ *
+ * @param {any} args - The component props.
+ * @returns {JSX.Element} The rendered icon with description.
+ * @public
+ */
 export function Example(args: any) {
   return (
     <>

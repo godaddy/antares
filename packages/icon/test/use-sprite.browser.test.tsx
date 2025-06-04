@@ -1,6 +1,8 @@
 import { root, useSVGSprite } from '../src/use-sprite.tsx';
-import { renderHook } from 'vitest-browser-react';
+import { render, renderHook } from 'vitest-browser-react';
+import { Environment } from '@bento/environment';
 import { describe, it } from 'vitest';
+import { Icon } from '@bento/icon';
 import React, { act } from 'react';
 import assume from 'assume';
 
@@ -64,22 +66,55 @@ describe('@bento/icon use-sprite', function bento() {
 
   it('returns an svg with a use element referencing the symbol', async function symbol() {
     const { result } = await flushedHook(() => useSVGSprite('reference', <svg />));
-    const props = result.current?.props;
-    const use = props.children;
-
-    assume(result.current?.type).equals('svg');
-    assume(use.type).equals('use');
-    assume(use.props.xlinkHref).equals(`#${root}-reference`);
+    const svg = result.current as React.ReactElement | null;
+    assume(svg?.type).equals('svg');
+    const use = Array.isArray(svg?.props.children) ? svg?.props.children[0] : svg?.props.children;
+    assume(use?.type).equals('use');
+    assume(use?.props.xlinkHref).equals(`#${root}-reference`);
   });
 
   it('inherits the width/height and viewbox from the provided SVG', async function props() {
     const { result } = await flushedHook(() =>
       useSVGSprite('another', <svg viewBox="0 0 100 100" width="110" height="111" />)
     );
-    const svg = result.current;
-
+    const svg = result.current as React.ReactElement | null;
     assume(svg?.props.width).equals('110');
     assume(svg?.props.height).equals('111');
     assume(svg?.props.viewBox).equals('0 0 100 100');
+  });
+
+  it('uses the sprite option from environment in xlinkHref', async function spriteOption() {
+    const customSprite = 'https://example.com/sprites.svg';
+    const { container } = render(
+      <Environment sprite={customSprite}>
+        <Icon icon="play" mode="sprite" />
+      </Environment>
+    );
+
+    const result = container.innerHTML;
+    assume(result).includes('https://example.com/sprites.svg#bento-svg-spritesheet-play');
+  });
+
+  it('returns an empty svg when no Graphic is provided', async function noGraphic() {
+    const { result } = await flushedHook(() => useSVGSprite('no-graphic', undefined));
+    await act(() => {
+      /* Ensure the component is fully rendered */
+    });
+    const svg = result.current as React.ReactElement | null;
+    assume(svg?.type).equals('svg');
+    assume(svg?.props.viewBox).equals(undefined);
+    assume(svg?.props.width).equals(undefined);
+    assume(svg?.props.height).equals(undefined);
+    const use = Array.isArray(svg?.props.children) ? svg?.props.children[0] : svg?.props.children;
+    assume(use?.type).equals('use');
+    assume(use?.props.xlinkHref).equals(`#${root}-no-graphic`);
+  });
+
+  it('uses #id in xlinkHref if env.sprite is undefined', async function noEnvSprite() {
+    // Render without Environment provider, so env.sprite is undefined
+    const { result } = await flushedHook(() => useSVGSprite('plain', <svg />));
+    const svg = result.current as React.ReactElement | null;
+    const use = Array.isArray(svg?.props.children) ? svg?.props.children[0] : svg?.props.children;
+    assume(use?.props.xlinkHref).equals(`#${root}-plain`);
   });
 });

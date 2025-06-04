@@ -1,6 +1,12 @@
 import React, { useId, useMemo, useRef } from 'react';
 import { Nested } from './nested.tsx';
 
+/**
+ * Memo component demonstrating memoization of slot props and refs.
+ *
+ * @returns {JSX.Element} The rendered Nested component with memoized slots.
+ * @public
+ */
 export function Memo() {
   const ref = useRef<HTMLButtonElement>(null);
   const id = useId();

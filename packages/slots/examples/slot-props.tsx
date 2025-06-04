@@ -16,6 +16,12 @@ const slots = {
   }
 };
 
+/**
+ * SlotProps component demonstrating how to pass slot-specific props.
+ *
+ * @returns {JSX.Element} The rendered Nested component with slot props.
+ * @public
+ */
 export function SlotProps() {
   return <Nested slots={slots} />;
 }

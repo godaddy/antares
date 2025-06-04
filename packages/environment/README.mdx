@@ -1,0 +1,96 @@
+import { Meta, Story, Source, ArgTypes, Markdown } from '@storybook/blocks';
+import * as Stories from './environment.stories.tsx';
+import OverrideExample from './examples/override.tsx?raw';
+import OverridePropsExample from './examples/override-props.tsx?raw';
+import CustomButtonExample from './examples/custom-button.tsx?raw';
+import ComponentLevelExample from './examples/component-level.tsx?raw';
+import IframeRenderingExample from './examples/iframe-rendering.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Environment
+
+The `@bento/environment` package allows you to setup a custom environment for
+your components. It allows you to replace any Bento based component with a
+custom implementation as well as provide custom properties to the components.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/environment
+```
+
+#***REMOVED***Props
+
+The `Environment` component is the main entry point for configuring Bento
+components in your application. It allows you to set up global configurations,
+such as components, and other settings that will be applied throughout your
+application.
+
+```javascript
+import { Environment } from '@bento/environment';
+```
+
+The `Environment` component accepts the following props:
+
+<ArgTypes of={Stories.API} />
+
+##***REMOVED***Example
+
+The `components` prop allows you to override the default components used by
+Bento. This is useful when you want to customize the behavior or appearance of a
+specific component. You can pass a mapping of component names to their
+corresponding components.
+
+<Source language='tsx' code={OverrideExample} />
+<Story of={Stories.Demo} />
+
+#***REMOVED***Shadow DOM, Iframes, and other rendering contexts
+
+Our components are designed to work in a variety of rendering contexts. This
+includes the browser, Shadow DOM, and Iframes. The `root` prop allows you to
+specify the root node for the environment context. This allows our components
+to correctly access the `window` and `document` objects for the rendering
+context.
+
+In the example below we are using the `react-frame-component` package to render
+our components in an iframe. By passing the new `document` object as `root`
+prop, we can ensure that the components that reference the `document` and 
+`window` objects will correctly access the new document and window objects.
+
+<Source language='tsx' code={IframeRenderingExample} />
+<Story of={Stories.IframeRendering} />
+
+#***REMOVED***Component replacement
+
+The `components` prop can also be used to replace the default components with
+your own custom components. This is useful when you want to make a change
+to a component that is used in many different places in your application
+without having to modify every single instance of the component.
+
+An example use case for this is experimentation. Instead of modifying the
+application code, and shared components, you can leverage the `components` prop
+to introduce new components without modifying the application code.
+
+In the example below, we're replacing the default BentoButton component with a
+custom button component.
+
+<Source language='tsx' code={CustomButtonExample} />
+<Story of={Stories.Experimentation} />
+
+#***REMOVED***Introducing new props
+
+As the example above shows, you can completely replace any component in the
+system with a custom implementation. This works well for A/B testing, but
+sometimes you don't need such a drastic or invasive change. Instead of providing
+a new component, you can also provide a set of props that should be applied to
+the component.
+
+By providing the `props` object, you can introduce new props to the component
+without replacing it entirely. This is useful when you want to change the
+default behavior of a component without replacing it entirely. For example, if
+you want to change the default mode of the BentoIcon component to "sprite", you
+can do it like this:
+
+<Source language='tsx' code={ComponentLevelExample} />
+<Story of={Stories.ComponentLevelOverride} />

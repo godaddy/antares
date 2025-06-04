@@ -1,7 +1,6 @@
 import { Meta, Story, ArgTypes, Source } from '@storybook/blocks';
 import * as Stories from './slots.stories.tsx';
 
-import SourceNamespace from './examples/namespace.tsx?raw';
 import SourceNestedSlots from './examples/nested.tsx?raw';
 import SourceMemo from './examples/memo.tsx?raw';
 
@@ -53,30 +52,10 @@ the component. This allows the component to be targeted with a global slot
 override, but it will also be used as `displayName` to ensure a readable
 component name in the React DevTools.
 
-#***REMOVED***Context
-
-The `Slot` context is used to pass down the slot information down to the child
-components. This is done automatically for you, for the majority of the cases
-you don't need to interact or use this context directly in your application.
-
-We do expose the created context as part of our public API:
-
-```javascript
-import { Slot } from '@bento/slots/context';
-```
-
-The `Slot` context contains the following properties that are used by the
-`@bento/slots` and `@bento/use-render-props` package:
-
-<ArgTypes of={Stories.context} />
-
-<Source language='tsx' code={ SourceNamespace } />
-<Story of={Stories.Namespace} inline />
-
 #***REMOVED***Modifiers
 
 Modifiers are functions that are ran when the supplied component is rendered.
-They can be used to modify the component or recieved props. This allows common
+They can be used to modify the component or received props. This allows common
 modifications to be shared between components.
 
 Each modifier is a function that takes an object with the following properties:
@@ -151,7 +130,7 @@ original Component and the current rendered component are originating from.
 
 For you as a developer, this means you can easily see which components can be
 easily upgrade to the new version without any problems, and which components
-would require some additional attention and which area's specifically.
+would require some additional attention and which areas specifically.
 
 The `data-override` attribute is a space-separated list of the names that
 indicates the following modifications:

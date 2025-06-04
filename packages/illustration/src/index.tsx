@@ -2,8 +2,8 @@ import React, { useId, type SVGProps, type ReactElement } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { type AriaLabelingProps } from '@react-types/shared';
 import { transformers, toViewBox } from './transformers.tsx';
-import { useRenderProps } from '@bento/use-render-props';
 import { withSlots, type Slots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
 
 /**
  * Interface representing the properties of an Illustration component.
@@ -40,7 +40,7 @@ export const Illustration: React.FC<IllustrationProps> = withSlots(
   'BentoIllustration',
   function Illustrated(args: IllustrationProps) {
     const id = useId();
-    const [props, apply] = useRenderProps(args);
+    const { props, apply } = useProps(args);
     const { title, children, rotate, flip, ...rest } = props;
     const svgProps = children.props;
 

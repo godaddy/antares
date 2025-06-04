@@ -7,7 +7,7 @@
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "dev": "tsup-node src/index.ts --watch",
+    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
     "pretest": "npm run build",
@@ -43,6 +43,7 @@
     "react-dom": "18.x || 19.x"
   },
   "dependencies": {
+    "@bento/box": "file:../box",
     "@bento/error": "file:../error",
     "@bento/use-data-attributes": "file:../use-data-attributes",
     "use-deep-compare": "^1.3.0"
@@ -56,16 +57,6 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
-      }
-    },
-    "./context": {
-      "import": {
-        "types": "./dist/context.d.ts",
-        "default": "./dist/context.js"
-      },
-      "require": {
-        "types": "./dist/context.d.cts",
-        "default": "./dist/context.cjs"
       }
     },
     "./modifiers/override": {

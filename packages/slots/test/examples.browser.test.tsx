@@ -1,5 +1,4 @@
 import { SlotFunction } from '../examples/slot-function.tsx';
-import { ContextExample } from '../examples/namespace.tsx';
 import { SlotProps } from '../examples/slot-props.tsx';
 import { Button } from '../examples/button.tsx';
 import { render } from 'vitest-browser-react';
@@ -39,17 +38,6 @@ describe('@bento/slots examples', function bento() {
       assume(logs).is.an('array');
       assume(logs[0]).equals('Button ref:');
       assume(logs[1]).is.instanceOf(HTMLButtonElement);
-    });
-  });
-
-  describe('Namespaced', function namespace() {
-    it('should render a namespaced component', function nstest() {
-      const { container } = render(<ContextExample />);
-      const result = container.innerHTML;
-
-      assume(result).equals(
-        '<p>Slot namespace: level 1</p><p>Slot namespace: level 1 &gt; level 2</p><p>Slot namespace: level 1 &gt; level 2 &gt; level 3</p>'
-      );
     });
   });
 

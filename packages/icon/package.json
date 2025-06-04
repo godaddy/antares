@@ -7,7 +7,7 @@
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "dev": "tsup-node src/index.tsx src/parser.ts src/use-sprite.tsx --watch",
+    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "pretest": "npm run build",
@@ -45,6 +45,7 @@
     "package.json"
   ],
   "dependencies": {
+    "@bento/box": "file:../box",
     "@bento/create-external-store": "file:../create-external-store",
     "@bento/illustration": "file:../illustration",
     "@bento/slots": "file:../slots",

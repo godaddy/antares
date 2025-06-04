@@ -1,5 +1,5 @@
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { useRenderProps } from '@bento/use-render-props';
+import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import React, { useState } from 'react';
 
@@ -7,6 +7,13 @@ interface Example {
   [key: string]: any;
 }
 
+/**
+ * Container component demonstrating data attributes usage.
+ *
+ * @param {object} args - The component props.
+ * @returns {JSX.Element} The rendered div element with data attributes.
+ * @public
+ */
 export const Container: React.FC<Example> = withSlots('MyDataPropsContainer', function Containers(args: object) {
   //
   // Always supply the `useRenderProps` hook with the state of your component.
@@ -14,7 +21,7 @@ export const Container: React.FC<Example> = withSlots('MyDataPropsContainer', fu
   // the correct content accordingly.
   //
   const [loading] = useState(true);
-  const [props] = useRenderProps(args, { loading });
+  const { props } = useProps(args, { loading });
 
   const dataAttributes = useDataAttributes({
     loading,

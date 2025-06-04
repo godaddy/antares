@@ -1,0 +1,139 @@
+import { Meta, Story, Source, ArgTypes } from '@storybook/blocks';
+import * as Stories from './props.stories.tsx';
+
+import SourceBasic from './examples/button.tsx?raw';
+import SourceNestedSlots from './examples/nested.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Props Management
+
+The `@bento/use-props` package provides a hook that unifies the component
+and slot based props into a single interface. Both the component and slot-based
+props can be specified as a `renderProp`. A `renderProp` is a function that
+returns the value that should be applied as props to the component.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/use-props
+```
+
+#***REMOVED***useProps
+
+The package exposes a `useProps` hook that can be used to apply the
+props to the component. The hook is designed to be used in conjunction
+with the `@bento/slots` package as it allows the `slots` props that are
+introduced on the component to override the props that are specified on the
+component.
+
+```javascript
+import { useProps } from '@bento/use-props';
+import { useState } from 'react';
+
+function Component(args) {
+  const [value, setValue] = useState(0);
+  const { props, apply } = useProps(args, { value });
+}
+```
+
+As seen from the example above, the `useProps` hook takes two
+arguments:
+
+<ArgTypes of={Stories.useProps} />
+
+The `useProps` hook returns an object with two properties:
+
+<ArgTypes of={Stories.hook} />
+
+##***REMOVED***props
+
+The `props` property is a `props`-like object - specifically a `Proxy` instance. It
+provides the familiar `props` interface for retrieving component props. When props
+are modified by slots to add or override values, this Proxy automatically returns
+the correct merged value. The Proxy seamlessly handles both component props and
+slot-based props.
+
+When the prop that you're trying to access is specified as a `renderProp`, the
+`Proxy` will automatically call the function and return the value returned by
+the function. It's designed to do all the work for you so you can focus on
+writing your components.
+
+Just like normal `props`, you can also use this instance to spread the props
+on your components:
+
+```javascript
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+import { useState } from 'react';
+
+const Anchor = withSlots('Anchor', function AnchorComponent(args) {
+  const [value, setValue] = useState(0);
+  const { props, apply } = useProps(args, { value });
+
+  return <a {...props} />;
+})
+```
+
+The primary use case for the `props` item is to interact with properties that
+do not have a default value assigned to them or when you need to spread unknown
+props to your component. When you interact with a prop that is set as renderProp
+it will automatically call the function and return the value that is returned.
+Given that no default value is applied, this renderProp will not be called
+with the `original` value assigned.
+
+```javascript
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+
+const Anchor = withSlots('Anchor', function AnchorComponent(args) {
+  const { props, apply } = useProps(args);
+  const { design, ...rest } = props;
+
+  const className = design === 'foo' ? 'foo' : 'bar';
+  return <a {...props} {...apply({ className })} />;
+}
+
+// Illustrative purposes only, useCallback is required in a real application
+<Anchor design={function renderProp({ original, state }) {
+  console.log(original);  // undefined - Design prop was only used to lookup values
+  console.log(state);     // {} - No state was specified in the useProps
+
+  return 'foo';
+}} />
+```
+
+##***REMOVED***apply
+
+The `apply` function is used to apply props to your component. It takes an
+object of props and returns a new object with all the props applied, taking into
+account any render props and slot overrides.
+
+The function accepts an optional second parameter - an array of prop names that
+should be omitted from being applied to the component. This is useful when you
+want to prevent certain props from being passed down, such as props used only
+for internal logic or props that shouldn't be spread onto the underlying
+DOM element.
+
+```javascript
+// Apply all props
+const appliedProps = apply({ className: 'my-class', onClick: handleClick });
+
+// Apply props while omitting specific ones
+const appliedProps = apply({ className: 'my-class', onClick: handleClick }, ['onClick']);
+```
+
+The `apply` function ensures that all props are properly handled, including:
+- Regular props
+- Render props (functions that return prop values)
+- Props that might be overridden by slots
+- Props that need to be merged with existing values
+
+This makes it the recommended way to apply any props to your components, as it
+handles all the necessary prop management internally.
+
+<Source language='tsx' code={ SourceBasic } />
+<Story of={Stories.Demo} />
+
+<Source language='tsx' code={ SourceNestedSlots } />
+<Story of={Stories.ComplexComponent} />

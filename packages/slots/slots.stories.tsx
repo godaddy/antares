@@ -1,5 +1,4 @@
 import { SlotFunction } from './examples/slot-function.tsx';
-import { ContextExample } from './examples/namespace.tsx';
 import type { Meta, StoryObj } from '@storybook/react';
 import { SlotProps } from './examples/slot-props.tsx';
 import { Button } from './examples/button.tsx';
@@ -58,45 +57,6 @@ export const withSlots: Story = {
   }
 };
 
-export const context: Story = {
-  tags: ['!dev', 'stable'],
-  argTypes: {
-    components: {
-      description:
-        'Mapping of the components that should be replaced. Where the key if the unique identifier of the function and the value the component it should be replaced with.',
-      type: 'object',
-      table: {
-        defaultValue: { summary: '{}' },
-        type: { summary: 'object' }
-      }
-    },
-    namespace: {
-      description: 'Ordered list of parent slot names that will be used as namespace.',
-      type: 'array',
-      table: {
-        defaultValue: { summary: '[]' },
-        type: { summary: 'array' }
-      }
-    },
-    override: {
-      description: 'Indicator if a `components` override has been applied to the parent or current component.',
-      type: 'boolean',
-      table: {
-        defaultValue: { summary: 'false' },
-        type: { summary: 'boolean' }
-      }
-    },
-    slots: {
-      description: 'Object where the key are the namespaced slot names and the value are the slot components.',
-      type: 'object',
-      table: {
-        defaultValue: { summary: '{}' },
-        type: { summary: 'object' }
-      }
-    }
-  }
-};
-
 export const modifiers: Story = {
   tags: ['!dev', 'stable'],
   argTypes: {
@@ -146,8 +106,4 @@ export const PropsSlots: Story = {
 
 export const FunctionalSlots: Story = {
   render: (args) => <SlotFunction {...args} />
-};
-
-export const Namespace: Story = {
-  render: (args) => <ContextExample {...args} />
 };

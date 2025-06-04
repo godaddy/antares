@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, type ReactElement } from 'react';
+import React, { useEffect, useMemo, useContext, type ReactElement } from 'react';
+import { Box, type BoxContext } from '@bento/box';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 
@@ -53,6 +54,7 @@ function sprite(id: string): SVGSVGElement {
  * @public
  */
 export function useSVGSprite(name: string, Graphic: ReactElement | undefined): ReactElement | null {
+  const { env } = useContext<BoxContext<Record<string, any>>>(Box);
   const id = `${root}-${name}`;
 
   useEffect(
@@ -101,7 +103,7 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
           width={Graphic?.props?.width}
           height={Graphic?.props?.height}
         >
-          <use xlinkHref={`#${id}`} fill="currentColor" />
+          <use xlinkHref={`${env.sprite}#${id}`} fill="currentColor" />
         </svg>
       );
     },
