@@ -1,0 +1,276 @@
+***REMOVED***Listbox Component PDR
+
+#***REMOVED***Purpose
+
+The Listbox primitive provides an accessible, keyboard-navigable list of selectable options that serves as the foundation for dropdown menus, autocomplete widgets, multi-select controls, and other selection interfaces. It encapsulates complex accessibility patterns, [ARIA semantics](https://www.w3.org/TR/wai-aria-1.2/), and keyboard interactions, while remaining completely unstyled and highly composable. This component follows the [W3C ARIA Authoring Practices Guide listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
+
+It is essential for components like [Select](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/), [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/), Menu, and any custom selection interface where users need to choose from a list of options. This primitive allows developers to build both standardized and bespoke selection UIs, maintaining consistent accessibility and interaction behavior.
+
+##***REMOVED***Unique Attributes
+
+* **Behavior-first abstraction**: Pure interaction logic without visual styling
+* **Compositional flexibility**: Accepts both static children and dynamic item collections
+* **Advanced keyboard support**: Arrow navigation, home/end, typeahead, and optional wrapping
+* **Selection modes**: Single, multiple, or none
+* **ARIA sectioning**: Grouped options with proper labeling semantics
+* **Focus management**: [Roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex) for efficient accessibility
+* **Override support**: Exposes `slots`, `renderProps`, and `data-*` attributes
+
+#***REMOVED***Primitive Composition
+
+[React Aria]: https://react-spectrum.adobe.com/react-aria/
+[useListBox]: https://react-spectrum.adobe.com/react-aria/useListBox.html
+[useOption]: https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/listbox/src/useOption.ts#L88
+[useListBoxSection]: https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/listbox/src/useListBoxSection.ts#L40
+[React Stately]: https://react-spectrum.adobe.com/react-stately/
+
+* **SelectableList**: Core list state and keyboard navigation behavior
+* **SelectableGroup**: Section/grouping logic used by `ListboxSection`
+* **React Aria Hooks**:
+
+  * [`useListBox`][useListBox]: Provides ARIA roles, selection logic, focus tracking
+  * [`useOption`][useOption]: Hook for individual options with `aria-selected`, focus, press
+  * [`useListBoxSection`][useListBoxSection]: Hook for `ListboxSection` with `role=group`
+* **Shared Hooks**:
+
+  * `useRenderProps`: Enables render function overrides
+  * `useDataAttributes`: Applies state-reflective `data-*` attributes
+  * `useControlledState`: Manages controlled vs uncontrolled selection state
+
+This primitive is implemented as both a UI component and a composable set of behavior-focused hooks.
+
+#***REMOVED***Implementation Patterns
+
+| Concept            | Implementation                                         |
+| ------------------ | ------------------------------------------------------ |
+| React Aria         | useListBox, useOption, useListBoxSection               |
+| Slots              | root, item, section, label                             |
+| Render Props       | className, style, children, onClick with meta object   |
+| data-\* Attributes | data-selected, data-focus-visible, data-disabled, etc. |
+| data-override      | Set when props/slots override internal behavior        |
+| data-version       | Dev-only metadata for debugging                        |
+| Composability      | Children and items support, slot/prop overrides        |
+
+#***REMOVED***Internal Structure & Reuse Potential
+
+* **Reusable hooks**: Selection, keyboard navigation, typeahead search
+* **Focus management**: Roving tabindex via React Aria
+* **Group handling**: Logical sections via `useListBoxSection`
+* **Collection utils**: Shared patterns for mapping items vs children
+* **Headless support**: Could expose `useListboxBehavior` for custom implementations
+
+This is the minimal reusable unit for list-based selection components.
+
+#***REMOVED***React Aria or External Hook Integration
+
+* Built on top of [React Aria][React Aria] hooks including [`useListBox`][useListBox], [`useOption`][useOption], and [`useListBoxSection`][useListBoxSection], as well as [React Stately][React Stately] for state management
+* React Aria handles ARIA semantics, selection, and focus events
+* Custom slot and override layers added via Bento's slot/renderProps/meta patterns
+* No gaps in coverage — React Aria ensures [WCAG-compliant](https://www.w3.org/WAI/WCAG22/quickref/) behavior out of the box
+
+#***REMOVED***Architecture & Features
+
+**Large Datasets and Virtualization:**
+Handling large datasets (e.g., 1000+ items) should be offloaded to a separate virtualization utility or `VirtualizedCollection` primitive. This keeps Listbox focused on accessibility and interaction logic while enabling high-performance rendering through composition. Developers are encouraged to use the `items` and render function pattern in conjunction with virtualization tools like [`react-virtual`](https://github.com/TanStack/virtual) or a shared `useVirtualizedCollection` hook for optimal scalability.
+
+**Nested Listboxes:**
+Nested listboxes (e.g., for cascaded or hierarchical menus) are **not directly supported** by this primitive. Developers who require nested selection behaviors should compose multiple `Listbox` instances manually with coordinated state, focus, and ARIA handling. Alternatively, consider using a [tree](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/) or [grid](https://www.w3.org/WAI/ARIA/apg/patterns/grid/) primitive more appropriate for hierarchical navigation.
+
+**Orientation Use Cases:**
+Horizontal orientation is useful in UI scenarios where selection items are arranged inline rather than stacked. Common examples include:
+
+* **Segmented controls** or **button groups** (e.g., view toggles: Grid | List)
+* **Timeline pickers** (e.g., month or year selectors)
+* **Pill-style selectors** (e.g., filters like "Popular", "Recent", "Trending")
+* **Tab-like menus** where visual design favors horizontal layout but needs selection behavior
+
+Horizontal mode still supports full keyboard navigation via left/right arrows and adapts to RTL environments by reversing key mappings.
+
+**Props and Modes:**
+
+* `selectionMode`: single | multiple | none
+* `orientation`: vertical (default) | horizontal
+* `autoFocus`: optional focus target
+* `keyboardWrapping`: enable/disable arrow key looping
+
+**DOM Structure Example:**
+
+```html
+<div role="listbox" aria-orientation="vertical" data-orientation="vertical">
+  <!-- Section label is outside the group to comply with ARIA authoring practices -->
+  <span id="section-fruits">Fruits</span>
+  <div role="group" aria-labelledby="section-fruits">
+    <div role="option" aria-selected="true" data-selected="true">Apple</div>
+    <div role="option" aria-selected="false" data-selected="false">Banana</div>
+  </div>
+</div>
+```
+
+**Note on Section Labels**: The section label (`<span>`) is placed **outside** the `role="group"` element to comply with [ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/). According to [ARIA specifications](https://www.w3.org/TR/wai-aria-1.2/#group), elements with `role="group"` inside a listbox should only contain `role="option"` elements as direct children. Unlike HTML's native `<fieldset>/<legend>` pattern which has built-in tolerance for mixed content, ARIA roles have strict content models. Placing the label outside the group and using [`aria-labelledby`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-labelledby) to associate them ensures proper semantics while avoiding the need for `role="presentation"` workarounds.
+
+**Supported Patterns:**
+
+* Children vs Items API
+* Controlled and uncontrolled state
+* Grouping and headers
+* Async and virtualized content
+* Slot-based overrides and style customizations
+
+#***REMOVED***Accessibility Highlights
+
+* **Roles**: [`listbox`](https://www.w3.org/TR/wai-aria-1.2/#listbox), [`option`](https://www.w3.org/TR/wai-aria-1.2/#option), [`group`](https://www.w3.org/TR/wai-aria-1.2/#group)
+* **Attributes**: [`aria-selected`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected), [`aria-activedescendant`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant), [`aria-multiselectable`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-multiselectable), [`aria-orientation`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation)
+  * Note: ARIA attributes like `aria-selected` and `aria-disabled` are **required** for accessibility. Data attributes (`data-selected`, `data-disabled`) are additional hooks for styling and should not replace ARIA attributes.
+* **Keyboard Support**: ([Full keyboard interaction details](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/#keyboard-interaction-12))
+
+  * Arrow keys for navigation (looping disabled by default, enable with `keyboardWrapping`)
+  * Home/End to jump to first/last option
+  * Typeahead search
+  * Enter/Space to select
+  * Escape to close (in composed components)
+  * Tab to move focus out
+* **Focus Handling**:
+
+  * [Roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex)
+  * `data-focus-visible` for focus ring styling
+  * `autoFocus` support
+
+#***REMOVED***Internationalization, RTL, and Mobile Considerations
+
+* **RTL**: Direction-aware keyboard handling in horizontal orientation
+* **Touch**: Meets [touch target sizing](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) and responsive scroll areas
+* **I18n**: All ARIA and label content fully localizable; typeahead respects locale
+* **Mobile**: Optimized for virtual keyboard, inert overflow, and focus clarity
+
+#***REMOVED***Data Attributes and Slot Map
+
+##***REMOVED***Expected Attributes
+
+Components in the Listbox family use both ARIA attributes (for accessibility) and data attributes (for styling). This separation ensures:
+
+- **ARIA attributes** provide semantic information to assistive technologies
+- **Data attributes** provide hooks for CSS styling without relying on ARIA for presentation
+
+###***REMOVED***Listbox Container Attributes
+
+| Attribute             | Type | Description                             | Example Values                 |
+| --------------------- | ---- | --------------------------------------- | ------------------------------ |
+| `aria-orientation`    | ARIA | Semantic orientation for assistive tech | "vertical" / "horizontal"      |
+| `data-orientation`    | Data | Listbox orientation for styling         | "vertical" / "horizontal"      |
+| `data-selection-mode` | Data | Single, multiple, or none               | "single" / "multiple" / "none" |
+| `data-override`       | Data | Indicates customization via props/slots | "style slot"                   |
+| `data-version`        | Data | Dev-only version tag                    | "listbox\@1.0"                 |
+
+###***REMOVED***Item/Option Attributes
+
+| Attribute             | Type | Description                             | Example Values                 |
+| --------------------- | ---- | --------------------------------------- | ------------------------------ |
+| `aria-selected`       | ARIA | Semantic selected state for a11y        | "true" / "false"               |
+| `aria-disabled`       | ARIA | Semantic disabled state for a11y        | "true" / "false"               |
+| `data-selected`       | Data | Selected state for styling              | "true" / "false"               |
+| `data-disabled`       | Data | Disabled state for styling              | "true" / "false"               |
+| `data-focus-visible`  | Data | Whether focus ring should be shown      | "true" / "false"               |
+| `data-hovered`        | Data | Option is hovered by mouse              | "true" / "false"               |
+| `data-pressed`        | Data | Indicates active mouse press state      | "true" / "false"               |
+
+##***REMOVED***Slot Map
+
+| Slot Name     | Description                | Required | Default Fallback |
+| ------------- | -------------------------- | -------- | ---------------- |
+| `root`        | Outer listbox container    | Yes      | `<ul>`           |
+| `item`        | Selectable option wrapper  | Yes      | `<li>`           |
+| `section`     | Grouping container         | No       | `<div>`          |
+| `label`       | Label for section/group    | No       | None             |
+| `description` | Additional text for option | No       | None             |
+
+**Note on `label` slot**: This does not default to an HTML `<label>` element because labels in listbox sections are text elements referenced by `aria-labelledby`, not form control labels. When provided, this slot typically renders a `<span>` or similar text element.
+
+#***REMOVED***Competitive Research
+
+* **[Radix UI](https://www.radix-ui.com/primitives/docs/components/select)**: Strong accessibility but lacks deep override/slot patterns
+* **[Ark UI](https://ark-ui.com/docs/components/select)**: Similar primitives but limited in customization depth
+* **[Headless UI](https://headlessui.com/react/listbox)**: Rigid component structure; lacks data attributes
+* **[React Spectrum](https://react-spectrum.adobe.com/react-spectrum/ListBox.html)**: Robust ARIA logic but no slot/prop flexibility
+
+Bento provides the best blend of accessibility and full override support via `slots`, `renderProps`, and meta-driven event handling.
+
+#***REMOVED***Code Examples
+
+##***REMOVED***Basic Usage
+
+```tsx
+<Listbox aria-label="Fruits">
+  <Option key="apple">Apple</Option>
+  <Option key="banana">Banana</Option>
+</Listbox>
+```
+
+##***REMOVED***Controlled vs Uncontrolled
+
+```tsx
+// Controlled
+const [selected, setSelected] = useState(new Set(['apple']));
+<Listbox selectedKeys={selected} onSelectionChange={setSelected} />
+
+// Uncontrolled
+<Listbox defaultSelectedKeys={["apple"]} />
+```
+
+##***REMOVED***Dynamic Items with Render Function
+
+```tsx
+<Listbox items={items}>
+  {(item) => <Option key={item.id}>{item.name}</Option>}
+</Listbox>
+```
+
+##***REMOVED***Grouped Sections
+
+```tsx
+<Listbox>
+  <Label id="fruits-label">Fruits</Label>
+  <Section aria-labelledby="fruits-label">
+    <Option key="apple">Apple</Option>
+    <Option key="banana">Banana</Option>
+  </Section>
+  <Label id="vegetables-label">Vegetables</Label>
+  <Section aria-labelledby="vegetables-label">
+    <Option key="carrot">Carrot</Option>
+    <Option key="lettuce">Lettuce</Option>
+  </Section>
+</Listbox>
+```
+
+##***REMOVED***Slot Overrides and Render Props
+
+```tsx
+<Listbox
+  slots={{
+    item: ({ props, children, state }) => (
+      <div {...props} className="custom-option">
+        {state.isSelected && <CheckIcon />}
+        {children}
+      </div>
+    )
+  }}
+/>
+
+<Option
+  className={({ isSelected, isFocused }) =>
+    `option ${isSelected ? 'selected' : ''} ${isFocused ? 'focused' : ''}`}
+>
+  Apple
+</Option>
+```
+
+##***REMOVED***Event Handling with Meta Object
+
+```tsx
+<Listbox onSelectionChange={(keys, { event, state }) => {
+  console.log('Selected keys:', keys);
+  console.log('Previous state:', state);
+}}>
+  <Option key="apple">Apple</Option>
+  <Option key="banana">Banana</Option>
+</Listbox>
+```
