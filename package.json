@@ -15,6 +15,7 @@
     "test:visual": "playwright test -c playwright-ct.config.ts"
   },
   "devDependencies": {
+    "@bento/types": "file:./packages/types",
     "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",

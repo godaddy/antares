@@ -1,0 +1,51 @@
+{
+  "name": "@bento/types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types used across the Bento library.",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup-node",
+    "lint": "biome lint && tsc --noEmit",
+    "posttest": "npm run lint",
+    "pretest": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/bento.git"
+  },
+  "keywords": [
+    "bento",
+    "react",
+    "component",
+    "library",
+    "typescript",
+    "types",
+    "value"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/godaddy/bento/issues"
+  },
+  "homepage": "https://github.com/godaddy/bento#readme",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  }
+}

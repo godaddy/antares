@@ -1,12 +1,13 @@
 import { Box, type BoxContext } from '@bento/box';
 import { useInternalProps } from '@bento/internal-props';
+import { AnyObject } from '@bento/types';
 import React, { useContext } from 'react';
 
 interface RenderPropData {
   original?: unknown;
-  props: Record<string, any>;
-  slots: Record<string, any>;
-  state: Record<string, any>;
+  props: AnyObject;
+  slots: AnyObject;
+  state: AnyObject;
 }
 
 /**
@@ -45,7 +46,7 @@ export function isRenderProp(name: string, value: any): boolean {
  * @returns {any} - The result of the function execution or the value of the property.
  * @private
  */
-export function execute(name: string, data: Record<string, any>, args: RenderPropData): any {
+export function execute(name: string, data: AnyObject, args: RenderPropData): any {
   const value = data[name];
 
   if (isRenderProp(name, value)) return value(args);
@@ -76,7 +77,7 @@ interface Returns {
    * the internal props. If the property is a render prop, it will execute the function with the provided
    * arguments.
    */
-  props: Record<string, any>;
+  props: AnyObject;
   /**
    * Applies the given attributes as default values to the props. If no attributes are provided, it will
    * use the props as default values. The resulting object will contain all the properties of the props,
@@ -99,8 +100,8 @@ interface Returns {
  * if (props.a) doSomething()
  * return <a {...apply({ className: 'foo' }) }>{ props.children }</a>;
  */
-export function useProps(args: Record<string, any>, state: object = {}): Returns {
-  const { slots } = useContext<BoxContext<Record<string, any>>>(Box);
+export function useProps(args: AnyObject, state: object = {}): Returns {
+  const { slots } = useContext<BoxContext<AnyObject>>(Box);
   const [props, internal] = useInternalProps(args);
   const { namespace, assigned } = slots;
   const dot = namespace.join('.');
@@ -119,7 +120,7 @@ export function useProps(args: Record<string, any>, state: object = {}): Returns
     const data = attributes || propsy;
     const returned = {};
 
-    function reduce(memo: Record<string, any>, key: string) {
+    function reduce(memo: AnyObject, key: string) {
       if (except && except.includes(key)) return memo;
 
       memo[key] = renderProp(key, {

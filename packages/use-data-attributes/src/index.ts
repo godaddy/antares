@@ -1,5 +1,6 @@
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { stringify } from '@bento/to-attribute-value';
+import { UnknownObject } from '@bento/types';
 import dashify from 'dashify';
 
 /**
@@ -21,7 +22,7 @@ type DataPrefix<Type> = {
  * @returns {object} - An object with keys formatted as data attributes and their corresponding stringified values.
  * @public
  */
-export function useDataAttributes<Props extends Record<string, unknown>>(props: Props): DataPrefix<Props> {
+export function useDataAttributes<Props extends UnknownObject>(props: Props): DataPrefix<Props> {
   return useDeepCompareMemo(
     function createAttributes() {
       return Object.keys(props).reduce(function reduceAttributes(data: Record<string, string>, key) {

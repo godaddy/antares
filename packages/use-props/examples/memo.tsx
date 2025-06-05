@@ -1,14 +1,15 @@
 import React, { useCallback } from 'react';
+import { UnknownObject } from '@bento/types';
 import { Button } from './button.tsx';
 
 /**
  * Memo component demonstrating class name composition with useCallback.
  *
- * @param {Record<string, unknown>} props - The component props.
+ * @param {UnknownObject} props - The component props.
  * @returns {JSX.Element} The rendered button with composed class names.
  * @public
  */
-export function Memo(props: Record<string, unknown>) {
+export function Memo(props: UnknownObject) {
   const className = useCallback(
     function renderProps({ original }: { original: string }) {
       return [original, 'my-className', props.className].filter(Boolean).join(' ');

@@ -1,7 +1,8 @@
 import { Illustration } from '@bento/illustration';
+import { UnknownObject } from '@bento/types';
 import React from 'react';
 
-export function RotateSVG(args: Record<string, unknown>) {
+export function RotateSVG(args: UnknownObject) {
   return (
     <Illustration rotate={90} {...args}>
       <svg

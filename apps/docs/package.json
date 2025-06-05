@@ -19,6 +19,7 @@
     "@bento/internal-props": "*",
     "@bento/slots": "*",
     "@bento/to-attribute-value": "*",
+    "@bento/types": "*",
     "@bento/use-data-attributes": "*",
     "@bento/use-props": "*",
     "@welldone-software/why-did-you-render": "^8.0.3",

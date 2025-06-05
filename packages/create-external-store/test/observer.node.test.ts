@@ -2,6 +2,7 @@ import { callback, NextFunction } from './next.ts';
 import { observer } from '../src/observer.ts';
 import { describe, it } from 'vitest';
 import assume from 'assume';
+import { UnknownObject } from '@bento/types';
 
 describe('@bento/observe', function bento() {
   it('returns an object', function test() {
@@ -25,7 +26,7 @@ describe('@bento/observe', function bento() {
     'receives the dispatched data',
     callback(function test(next: NextFunction) {
       const { subscribe, dispatch } = observer();
-      const unsubscribe = subscribe(function holla(data: Record<string, unknown>) {
+      const unsubscribe = subscribe(function holla(data: UnknownObject) {
         assume(data).equals('hello');
         unsubscribe();
         next();
