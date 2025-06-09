@@ -2,7 +2,7 @@ import React, { useSyncExternalStore, useState, useCallback, useEffect } from 'r
 import { Illustration, type IllustrationProps } from '@bento/illustration';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { createStore } from '@bento/create-external-store';
-import { useSVGSprite } from './use-sprite.tsx';
+import { useSVGSprite } from '@bento/use-svg-sprite';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { BentoError } from '@bento/error';

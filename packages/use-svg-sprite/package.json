@@ -1,13 +1,13 @@
 {
-  "name": "@bento/icon",
+  "name": "@bento/use-svg-sprite",
   "version": "1.0.0",
-  "description": "Icon component",
+  "description": "A React hook for managing SVG sprites",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "dev": "tsup-node --watch",
+    "dev": "tsup-node src/index.tsx --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "pretest": "npm run build",
@@ -24,14 +24,9 @@
     "react",
     "component",
     "library",
-    "illustration",
     "svg",
     "vector",
-    "graphic",
-    "asset",
-    "image",
-    "picture",
-    "icon"
+    "sprite"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -45,13 +40,11 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "file:../box",
-    "@bento/create-external-store": "file:../create-external-store",
-    "@bento/illustration": "file:../illustration",
-    "@bento/slots": "file:../slots",
-    "@bento/use-render-props": "file:../use-render-props",
-    "@bento/use-svg-sprite": "file:../use-svg-sprite",
-    "camelcase": "^8.0.0"
+    "@bento/box": "file:../box"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {
@@ -64,16 +57,6 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./parser": {
-      "import": {
-        "types": "./dist/parser.d.ts",
-        "default": "./dist/parser.js"
-      },
-      "require": {
-        "types": "./dist/parser.d.cts",
-        "default": "./dist/parser.cjs"
-      }
-    },
     "./package.json": "./package.json"
   }
-}
+} 

@@ -1,0 +1,61 @@
+import { Meta, Story, Source, ArgTypes, Controls } from '@storybook/blocks';
+import * as Stories from './svg-sprite.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceMultiple from './examples/multiple.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***use-svg-sprite
+
+The `@bento/use-svg-sprite` package provides a hook that registers inline
+SVG illustrations into a shared sprite sheet and returns a reusable component.
+This makes it easy to keep your icons consistent and efficient across the app.
+
+> This approach ensures your icons are only defined once in the DOM and reused
+> efficiently across your app, improving performance and maintainability.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/use-svg-sprite
+```
+
+#***REMOVED***useSVGSprite
+
+The package exposes a `useSVGSprite` hook that creates a new symbol element
+for the provided illustration and adds it to the sprite sheet.
+The hook returns a React element that references the newly added symbol.
+
+##***REMOVED***Basic Usage
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.BasicUsageStory} />
+
+As seen from the example above, the `useSVGSprite` hook takes two arguments:
+
+<ArgTypes of={Stories.useSVGSpriteMeta} />
+
+It returns a React element that renders an `<svg>` with a `<use>`
+that references a symbol injected into a shared sprite sheet.
+
+##***REMOVED***Multiple Icons Example
+
+You can define and render multiple icons with different names.
+
+<Source language="tsx" code={SourceMultiple} />
+<Story of={Stories.MultipleIconStory} />
+
+When using SVG icons with `useSVGSprite`, three attributes are crucial for optimal 
+performance and visual consistency:
+
+`viewBox`: This attribute defines the coordinate system and aspect ratio of your 
+SVG. It ensures your icon scales correctly and maintains its proportions when 
+resized. Without a proper `viewBox`, icons might appear distorted or incorrectly 
+positioned.
+
+`width` and `height`: These attributes are essential for preventing layout shifts 
+during page load. By specifying these dimensions, the browser can reserve the 
+correct amount of space for the icon before it's fully rendered. This improves 
+the Cumulative Layout Shift (CLS) metric and overall user experience.
+

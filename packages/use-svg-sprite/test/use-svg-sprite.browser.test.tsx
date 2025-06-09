@@ -1,4 +1,4 @@
-import { root, useSVGSprite } from '../src/use-sprite.tsx';
+import { root, useSVGSprite } from '@bento/use-svg-sprite';
 import { render, renderHook } from 'vitest-browser-react';
 import { Environment } from '@bento/environment';
 import { describe, it } from 'vitest';
@@ -6,7 +6,7 @@ import { Icon } from '@bento/icon';
 import React, { act } from 'react';
 import assume from 'assume';
 
-describe('@bento/icon use-sprite', function bento() {
+describe('@bento/use-svg-sprite browser', function bento() {
   const play = (
     <svg viewBox="0 0 24 24" width="24" height="24">
       <path d="M3 22v-20l18 10-18 10z"></path>
