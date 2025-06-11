@@ -1,17 +1,16 @@
 {
-  "name": "@bento/icon",
+  "name": "@bento/svg-parser",
   "version": "1.0.0",
-  "description": "Icon component",
+  "description": "A utility for parsing SVG strings into React elements",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "dev": "tsup-node --watch",
+    "dev": "tsup-node src/index.tsx --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test:node": "c8 --100 tsx --test test/**/*.node.test.tsx",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -24,14 +23,8 @@
     "react",
     "component",
     "library",
-    "illustration",
     "svg",
-    "vector",
-    "graphic",
-    "asset",
-    "image",
-    "picture",
-    "icon"
+    "vector"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -45,14 +38,11 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "file:../box",
-    "@bento/create-external-store": "file:../create-external-store",
-    "@bento/illustration": "file:../illustration",
-    "@bento/slots": "file:../slots",
-    "@bento/use-render-props": "file:../use-render-props",
-    "@bento/svg-parser": "file:../svg-parser",
-    "@bento/use-svg-sprite": "file:../use-svg-sprite",
     "camelcase": "^8.0.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {
@@ -67,4 +57,4 @@
     },
     "./package.json": "./package.json"
   }
-}
+} 

@@ -1,12 +1,8 @@
-import { parser } from '@bento/icon/parser';
+import { parser } from '@bento/svg-parser';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 
-describe('@bento/icon/parser', function bento() {
-  it('is a function', function isFunction() {
-    assume(parser).is.a('function');
-  });
-
+describe('@bento/svg-parser browser', function bento() {
   it('parses the icon name', function name() {
     const result = parser('<svg xmlns="http://www.w3.org/2000/svg"><path d="M3 22v-20l18 10-18 10z"></svg>');
 

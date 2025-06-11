@@ -18,6 +18,7 @@
     "@bento/illustration": "*",
     "@bento/internal-props": "*",
     "@bento/slots": "*",
+    "@bento/svg-parser": "*",
     "@bento/to-attribute-value": "*",
     "@bento/types": "*",
     "@bento/use-data-attributes": "*",

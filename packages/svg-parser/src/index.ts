@@ -15,7 +15,7 @@ import camelCase from 'camelcase';
  * and the value is a function that takes an `Element` and returns a tuple containing
  * two strings: the first is the property name, and the second is the property value.
  */
-interface ParserOptions {
+export interface ParserOptions {
   nodes?: Record<string, (node: Element) => [string, object]>;
   props?: Record<string, (node: Element) => [string, string]>;
 }

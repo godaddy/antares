@@ -55,149 +55,11 @@ following API methods:
 
 Both methods expect the Icon content to be a valid React SVG element.
 If you have SVG content that is not a React SVG element, you can use the
-included [`@bento/icon/parser`](#parser) method to transform a string into
+included [`@bento/svg-parser`](#parser) method to transform a string into
 the required React SVG element.
 
 > NOTE: If you want to learn more about the store, please refer to the
 > `@bento/create-external-store` package.
-
-##***REMOVED***parser
-
-The `@bento/icon/parser` allows you to transform raw SVG content into a React
-based SVG element.
-
-```tsx
-import { parser } from '@bento/icon/parser';
-```
-
-The parser method expects the following arguments:
-
-- `content` - The raw SVG content that should be transformed into a React SVG
-  element.
-- `options` - An object that allows you to transform the content before it's
-  introduced to the store.
-- `options.props` - An object that allows you to transform the props of the
-  elements in the SVG content. The key is the name of the prop that
-  should be transformed, and the value is a function that should return the
-  transformed prop. See [Transforming props](#transforming-props) for more
-  information.
-- `options.nodes` - An object that allows you to transform the elements in the
-  SVG content. The key is the name of the element that should be
-  transformed, and the value is a function that returns the transformed
-  element. See [Custom Elements](#custom-elements) for more information.
-
-> NOTE: The parser is designed for client-side use only. It's using the
-> `DOMParser` API for all of its heavy lifting. If you need to parse an SVG
-> on the server, you should use a different library, or you would need polyfill
-> the `DOMParser` API.
-
-###***REMOVED***Transforming props
-
-The parser receives the `Node` of the element currently parsing as the first
-argument. Your parser function should return an array of two elements.
-
-- `[0]` - The name of the prop that should be added to the element.
-- `[1]` - The value of the prop that should be added to the element.
-
-When an empty array is returned, we assume that the prop should be removed from
-the element.
-
-To give an example of the use cases, let's say you have an SVG that has styling
-applied to it in the form of a `style` and a `class` attribute. React doesn't
-support the `class` attribute, so you would need to transform it into a
-`className` attribute. If you don't want to keep these attributes, you can
-remove them from the element as shown in the example below:
-
-```tsx
-const icon = parser('<svg>...</svg>', {
-  props: {
-    class: (node) => ['className', node.getAttribute('class')],
-    style: (node) => [/* removes the style attribute */]
-  }
-});
-```
-
-###***REMOVED***Custom Elements
-
-The parser receives the `Node` of the element currently parsing as the first
-argument. Your parser function should return an array of two elements.
-
-- `[0]` - The React component that should be used to render the element. This
-          can be a custom component you created or the element’s name that
-          should be used to render the element. e.g., the name of the element
-          `node.nodeName`.
-- `[1]` - Additional props should be passed to the React component. Note
-          that these props will be merged with the result of the `props` parser
-          and are not parsed by the `props` parser.
-
-In the example below, we are replacing all `rect` elements with a custom
-component called `CustomRect`. We're also introducing additional props to the
-element:
-
-```tsx
-const icon = parser('<svg>...</svg>', {
-  nodes: {
-    rect: (node) => [CustomRect, { 'data-class': node.getAttribute('class') }]
-  }
-});
-```
-
-##***REMOVED***Custom parser
-
-Just because we include a parser in this package doesn't mean this
-is the only way to introduce the content to the store. You can use any parser,
-file format, or method you want to introduce the content to the
-store as long as the result is a valid SVG element.
-
-There are more performant ways to introduce the content, e.g., by parsing the
-SVG at build time and transforming them to a JSON object that can be transformed
-into a React component. This reduces the amount of bytes that need to be
-transferred over the network and reduces the amount of work that needs to be
-done on the client.
-
-You can see this pattern in place in the `@fortawesome/free-solid-svg-icons`
-package. They ship their icons as JSON objects that can be transformed into
-React components:
-
-```js
-// Contents of { faCircleChevronRight} from the '@fortawesome/free-solid-svg-icons' package
-{
-  prefix: 'fas',
-  iconName: 'circle-chevron-right',
-  icon: [
-    512,
-    512,
-    [ 'chevron-circle-right' ],
-    'f138',
-    'M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z'
-  ]
-}
-```
-
-You can transform this JSON object into a valid SVG element that can be used
-by the `@bento/icon` package by using the following code:
-
-```tsx
-import { faCircleChevronRight} from '@fortawesome/free-solid-svg-icons';
-type IconData = [number, number, string[], string, string];
-
-/**
- * Transforms the FontAwesome icon data into a React SVG element.
- *
- * @param {IconData} data The FontAwesome icon data.
- * @returns {React.ReactElement} The React SVG element.
- * @private
- */
-function awesome(data:IconData) {
-  return (
-    <svg width={data[0]} height={data[1]}>
-      <path d={data[4]} />
-    </svg>
-  );
-}
-
-set({ 'circle-chevron-right': awesome(faCircleChevronRight.icon) });
-```
 
 ##***REMOVED***set
 
@@ -217,11 +79,11 @@ set({
 ```
 
 If you have SVG content that is not a React SVG element, you can use the
-included [`@bento/icon/parser`](#parser) method to transform a string into
+included [`@bento/svg-parser`](#parser) method to transform a string into
 the required React SVG element:
 
 ```tsx
-import { parser } from '@bento/icon/parser';
+import { parser } from '@bento/svg-parser';
 import { set } from '@bento/icon';
 
 import icon from './icon.svg?raw';
@@ -241,7 +103,7 @@ to the React SVG element that should be used to render the icon. It receives the
 icon’s name, which should be loaded as the first argument.
 
 ```tsx
-import { parser } from '@bento/icon/parser';
+import { parser } from '@bento/svg-parser';
 import { ondemand } from '@bento/icon';
 
 ondemand(async function hosted(name:string) {

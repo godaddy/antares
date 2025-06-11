@@ -1,6 +1,6 @@
 import React, { createElement, type JSX } from 'react';
 import { Icon, ondemand } from '@bento/icon';
-import { parser } from '@bento/icon/parser';
+import { parser } from '@bento/svg-parser';
 
 //
 // The Font Awesome SVG files are hosted on a CDN and we can fetch them on demand
