@@ -1,5 +1,6 @@
 import { Environment } from '@bento/environment';
 import { withSlots } from '@bento/slots';
+/* v8 ignore next */
 import React, { useMemo } from 'react';
 
 /**

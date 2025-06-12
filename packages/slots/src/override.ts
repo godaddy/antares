@@ -1,4 +1,4 @@
-import { type ComponentProps, type ComponentType, type CSSProperties } from 'react';
+import { type ComponentType, type CSSProperties } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { type BoxContext } from '@bento/box';
 

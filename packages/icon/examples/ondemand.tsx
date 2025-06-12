@@ -1,4 +1,5 @@
-import React, { createElement, type JSX } from 'react';
+/* v8 ignore next */
+import React, { type JSX } from 'react';
 import { Icon, ondemand } from '@bento/icon';
 import { parser } from '@bento/svg-parser';
 

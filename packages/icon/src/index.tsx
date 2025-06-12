@@ -1,3 +1,4 @@
+/* v8 ignore next */
 import React, { useSyncExternalStore, useState, useCallback, useEffect } from 'react';
 import { Illustration, type IllustrationProps } from '@bento/illustration';
 import { useDataAttributes } from '@bento/use-data-attributes';

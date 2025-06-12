@@ -1,4 +1,5 @@
 import { Nested } from './nested.tsx';
+/* v8 ignore next */
 import React from 'react';
 
 //

@@ -59,26 +59,6 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./modifiers/override": {
-      "import": {
-        "types": "./dist/override.d.ts",
-        "default": "./dist/override.js"
-      },
-      "require": {
-        "types": "./dist/override.d.cts",
-        "default": "./dist/override.cjs"
-      }
-    },
-    "./modifiers/replace": {
-      "import": {
-        "types": "./dist/replace.d.ts",
-        "default": "./dist/replace.js"
-      },
-      "require": {
-        "types": "./dist/replace.d.cts",
-        "default": "./dist/replace.cjs"
-      }
-    },
     "./package.json": "./package.json"
   }
 }

@@ -1,6 +1,6 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { BentoError } from '../src/index.ts';
+import { BentoError } from '@bento/error';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';

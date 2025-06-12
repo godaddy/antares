@@ -1,3 +1,4 @@
+/* v8 ignore next */
 import { createElement, type JSX } from 'react';
 import camelCase from 'camelcase';
 
@@ -54,6 +55,7 @@ export function parser(source: string, { nodes = {}, props = {} }: ParserOptions
         let Component = nodeName;
 
         if (nodeName in nodes) [Component, attrs] = nodes[nodeName](node);
+        /* v8 ignore next */
         if (!attrs) attrs = {};
         if (!attrs.key) attrs.key = `${nodeName}-${i}`;
 

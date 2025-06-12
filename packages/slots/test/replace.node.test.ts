@@ -1,4 +1,4 @@
-import { replace } from '@bento/slots/modifiers/replace';
+import { replace } from '@bento/slots';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 import { renderToString } from 'react-dom/server';
@@ -6,7 +6,7 @@ import { withSlots } from '@bento/slots';
 import { Box, defaults } from '@bento/box';
 import React from 'react';
 
-describe('@bento/modifiers/replace', function bento() {
+describe('@bento/slots replace', function bento() {
   function createComponent(name: string, props = {}, slots = {}, components = {}) {
     const TestReturn = withSlots(`BentoReplace-${name}`, function Component(args: any) {
       return React.createElement('div', { ...args });

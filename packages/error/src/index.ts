@@ -74,7 +74,6 @@ export class BentoError extends Error {
     name,
     method,
     message,
-
     channel = SUPPORT,
     docs = DOCS,
     scope = SCOPE,

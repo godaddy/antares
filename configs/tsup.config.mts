@@ -7,7 +7,7 @@ export const shared: Options = {
   clean: true,
   treeshake: true,
   // TODO: figure out why splitting: false breaks builds
-  splitting: true,
+  splitting: false,
   loader: {".css": "local-css"},
   target: browserslistToEsbuild(),
   dts: true

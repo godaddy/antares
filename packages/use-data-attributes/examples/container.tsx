@@ -1,6 +1,7 @@
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
+/* v8 ignore next */
 import React, { useState } from 'react';
 
 interface Example {

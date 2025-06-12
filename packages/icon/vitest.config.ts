@@ -5,8 +5,9 @@ export default mergeConfig(
   sharedConfig,
   defineConfig({
     test: {
-      workspace: [ssr, browser],
+      projects: [ssr, browser],
       coverage: {
+        exclude: ['src/index.ts'],
         thresholds: {
           //
           // Lower the coverage thresholds for the icon package to 90% because

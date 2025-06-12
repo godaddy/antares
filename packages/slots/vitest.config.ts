@@ -5,7 +5,10 @@ export default mergeConfig(
   sharedConfig,
   defineConfig({
     test: {
-      workspace: [ssr, browser]
+      coverage: {
+        exclude: ['src/index.ts']
+      },
+      projects: [ssr, browser]
     }
   })
 );

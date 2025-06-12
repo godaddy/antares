@@ -1,4 +1,5 @@
 import { Icon, set } from '@bento/icon';
+/* v8 ignore next */
 import React from 'react';
 
 //

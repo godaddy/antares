@@ -1,13 +1,12 @@
-import { override } from '@bento/slots/modifiers/override';
+import { override } from '@bento/slots';
 import { renderToString } from 'react-dom/server';
 import { withSlots } from '@bento/slots';
 import { describe, it } from 'vitest';
 import { Box, defaults } from '@bento/box';
 import assume from 'assume';
 import React from 'react';
-import { useProps } from '@bento/use-props';
 
-describe('@bento/modifiers/override', function bento() {
+describe('@bento/slots override', function bento() {
   function createComponent(name: string, props = {}, slots = {}, components = {}) {
     const TestReturn = withSlots(`BentoOverride-${name}`, function Component(args: any) {
       return React.createElement('div', { ...args });

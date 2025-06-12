@@ -53,3 +53,6 @@ packages/**/test/__screenshots__/
 ***REMOVED***When running testing with VITE_NODE_DEBUG_DUMP=true it generates a .vite-node
 ***REMOVED***folder dump folder of all the compiled assets.
 .vite-node
+
+***REMOVED***Claude
+.claude

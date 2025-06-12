@@ -3,5 +3,5 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   ...shared,
-  entryPoints: ['src/index.ts']
+  entry: ['src/index.ts']
 });

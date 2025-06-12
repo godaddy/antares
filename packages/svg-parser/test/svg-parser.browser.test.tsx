@@ -34,7 +34,7 @@ describe('@bento/svg-parser browser', function bento() {
         {
           props: {
             class: function modify(node) {
-              return ['className', node.getAttribute('class')];
+              return ['className', node.getAttribute('class') ?? ''];
             }
           }
         }
@@ -66,7 +66,7 @@ describe('@bento/svg-parser browser', function bento() {
       const result = parser('<svg xmlns="http://www.w3.org/2000/svg"><g><path d="M3 22v-20l18 10-18 10z"></g></svg>', {
         nodes: {
           g: function modify() {
-            return ['div'];
+            return ['div', {}];
           }
         }
       });
@@ -117,7 +117,7 @@ describe('@bento/svg-parser browser', function bento() {
         {
           nodes: {
             g: function modify() {
-              return [Custom, {}];
+              return [Custom as unknown as string, {}];
             }
           }
         }

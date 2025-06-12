@@ -1,4 +1,5 @@
 import { Icon, ondemand } from '@bento/icon';
+/* v8 ignore next */
 import React, { type JSX } from 'react';
 
 /**

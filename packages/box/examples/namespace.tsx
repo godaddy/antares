@@ -1,3 +1,4 @@
+/* v8 ignore next */
 import React, { ReactNode, useContext } from 'react';
 import { withSlots } from '@bento/slots';
 import { Box, defaults } from '@bento/box';

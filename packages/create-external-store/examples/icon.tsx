@@ -2,6 +2,7 @@ import { ReactElement, useCallback, useSyncExternalStore } from 'react';
 import { createStore } from '@bento/create-external-store';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
+/* v8 ignore next */
 import React from 'react';
 
 /**

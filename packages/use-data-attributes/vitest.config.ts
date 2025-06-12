@@ -5,7 +5,7 @@ export default mergeConfig(
   sharedConfig,
   defineConfig({
     test: {
-      workspace: [ssr, browser]
+      projects: [ssr, browser]
     }
   })
 );

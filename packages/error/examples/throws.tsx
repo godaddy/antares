@@ -1,4 +1,5 @@
 import { BentoError, type BentoErrorArgs } from '@bento/error';
+/* v8 ignore next */
 import React, { useCallback, type JSX } from 'react';
 
 /**

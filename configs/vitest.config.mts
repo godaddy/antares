@@ -6,8 +6,9 @@ export const ssr = {
   test: {
     name: 'SSR',
     include: ['./test/**/*.node.test.{ts,tsx}'],
-    environment: 'node'
-  }
+    environment: 'node',
+    plugins: [react(), tsconfigPaths()]
+  },
 };
 
 export const browser = {
@@ -19,33 +20,29 @@ export const browser = {
       provider: 'playwright',
       headless: true,
       enabled: true
-    }
+    },
+    plugins: [react(), tsconfigPaths()]
   }
 };
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
   test: {
     exclude: [...defaultExclude, 'test/**/*.visual.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       enabled: true,
-      include: ['dist/**', 'examples/**/*', 'src/**/*'],
+      include: ['dist/**/*', 'src/**/*', 'examples/**/*'],
       exclude: ['dist/**.d.ts'],
+      ignoreEmptyLines: true,
       reporter: ['text', 'json', 'html'],
       thresholds: {
-        'examples/**.{ts,tsx}': {
+        'src/**.{ts,tsx}': {
           statements: 100,
           functions: 100,
-          lines: 100,
-          //
-          // Every example seems to have 1 line introduced by the compiler that
-          // cannot be reached, making it impossible to reach 100% coverage on
-          // branches. So we're ignoring branches for the examples and have a
-          // 100% threshold for the rest of the code.
-          //
+          branches: 100,
+          lines: 100
         },
-        'src/**.{ts,tsx}': {
+        'examples/**.{ts,tsx}': {
           statements: 100,
           functions: 100,
           branches: 100,

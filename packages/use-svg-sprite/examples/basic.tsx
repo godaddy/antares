@@ -1,4 +1,5 @@
 import { useSVGSprite } from '@bento/use-svg-sprite';
+/* v8 ignore next */
 import React from 'react';
 
 export function BasicUsage() {

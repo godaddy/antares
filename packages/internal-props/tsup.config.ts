@@ -4,7 +4,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   ...shared,
-  entryPoints: ['src/index.ts'],
+  entry: ['src/index.ts'],
 
   /**
    * Introduces the version of the package as a define variable in the build,

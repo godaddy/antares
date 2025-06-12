@@ -1,4 +1,6 @@
+/* v8 ignore next */
 import Frame, { FrameContextConsumer } from 'react-frame-component';
+/* v8 ignore next */
 import React, { useContext, useState } from 'react';
 import { Environment } from '@bento/environment';
 import { withSlots } from '@bento/slots';
