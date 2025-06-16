@@ -46,6 +46,7 @@
   ],
   "dependencies": {
     "@bento/box": "file:../box",
+    "@bento/error": "file:../error",
     "@bento/create-external-store": "file:../create-external-store",
     "@bento/illustration": "file:../illustration",
     "@bento/slots": "file:../slots",

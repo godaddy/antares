@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 
 export const ssr = {
   test: {
+    globals: true,
     name: 'SSR',
     include: ['./test/**/*.node.test.{ts,tsx}'],
     environment: 'node',
@@ -13,6 +14,7 @@ export const ssr = {
 
 export const browser = {
   test: {
+    globals: true,
     name: 'Browser',
     include: ['./test/**/*.browser.test.{ts,tsx}'],
     browser: {

@@ -73,7 +73,7 @@ describe('@bento/environment examples', function bento() {
       const { container } = render(<ComponentLevelExample />);
       const result = container.innerHTML;
       assume(result).equals(
-        '<div><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="icon_icon" data-override="context className" data-mode="sprite" data-icon="my-icon" aria-labelledby=":r0:" role="img" focusable="false" title="In this example it should be rendered as sprite through environment level configuration"><title id=":r0:">In this example it should be rendered as sprite through environment level configuration</title><use xlink:href="#bento-svg-spritesheet-my-icon" fill="currentColor"></use></svg><p>This icon will be loaded as sprite, even though the mode is not specified.</p></div>'
+        '<div><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="_icon_1b1e5_1" data-override="context className" data-mode="sprite" data-icon="my-icon" aria-labelledby=":r0:" role="img" focusable="false" title="In this example it should be rendered as sprite through environment level configuration"><title id=":r0:">In this example it should be rendered as sprite through environment level configuration</title><use xlink:href="#bento-svg-spritesheet-my-icon" fill="currentColor"></use></svg><p>This icon will be loaded as sprite, even though the mode is not specified.</p></div>'
       );
     });
 
