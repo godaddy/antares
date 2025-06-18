@@ -1,5 +1,5 @@
 import { ContextExample } from './examples/namespace.tsx';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 
 const meta: Meta<typeof ContextExample> = {

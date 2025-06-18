@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useSVGSprite } from './src';
 import { BasicUsage } from './examples/basic';
 import { MultipleIcons } from './examples/multiple';

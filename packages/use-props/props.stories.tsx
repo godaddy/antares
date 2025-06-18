@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './examples/button.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';

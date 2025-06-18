@@ -1,5 +1,5 @@
 import { CreateStore } from './examples/create-store.tsx';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Icon } from './examples/icon.tsx';
 
 const meta: Meta<typeof CreateStore> = {

@@ -1,5 +1,5 @@
 import { Example as OverrideClassNameExample } from './examples/override-classname';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 
 const meta: Meta<typeof OverrideClassNameExample> = {

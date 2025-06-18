@@ -4,7 +4,7 @@
 // React and apply re-render tracking.
 //
 import './why-did-you-render.ts';
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 
 const preview: Preview = {
   parameters: {
@@ -17,7 +17,9 @@ const preview: Preview = {
       toc: {
         title: 'On this page',
         headingSelector: 'h2, h3'
-      }
+      },
+
+      codePanel: true
     }
   }
 };

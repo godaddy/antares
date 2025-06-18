@@ -2,7 +2,7 @@ import { ComponentLevelExample } from './examples/component-level.tsx';
 import { CustomButtonExample } from './examples/custom-button.tsx';
 import { IframeRenderingExample } from './examples/iframe-rendering.tsx';
 import { OverrideProps } from './examples/override-props.tsx';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Override } from './examples/override.tsx';
 import React from 'react';
 

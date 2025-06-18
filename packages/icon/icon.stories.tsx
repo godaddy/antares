@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Awesome } from './examples/ondemand.tsx';
 import { Loader } from './examples/loading.tsx';
 import { Example } from './examples/icon.tsx';

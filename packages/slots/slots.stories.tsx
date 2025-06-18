@@ -1,5 +1,5 @@
 import { SlotFunction } from './examples/slot-function.tsx';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SlotProps } from './examples/slot-props.tsx';
 import { Button } from './examples/button.tsx';
 import { Nested } from './examples/nested.tsx';

@@ -1,5 +1,5 @@
 import whyDidYouRender from '@welldone-software/why-did-you-render';
-import { addons } from '@storybook/preview-api';
+import { addons } from 'storybook/preview-api';
 import React from 'react';
 
 /**

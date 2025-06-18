@@ -1,4 +1,4 @@
-import { EmptyTabContent, Link } from '@storybook/components';
+import { EmptyTabContent, Link } from 'storybook/internal/components';
 import { styled } from 'storybook/internal/theming';
 import React, { type JSX } from 'react';
 
