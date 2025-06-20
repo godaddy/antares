@@ -1,0 +1,69 @@
+import React from 'react';
+import { render } from 'vitest-browser-react';
+import { beforeEach, afterEach, describe, it, vi, expect } from 'vitest';
+import assume from 'assume';
+import { PressableDivExample } from '../examples/pressable-div.tsx';
+import { PressableLinkExample } from '../examples/pressable-link-example.tsx';
+import { PressableCustomExample } from '../examples/pressable-custom.tsx';
+
+describe('@bento/pressable examples', function bento() {
+  let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0);
+  });
+
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
+    vi.clearAllMocks();
+  });
+
+  describe('PressableDiv', function pressableDivExample() {
+    it('renders the pressable div', function test() {
+      const { container } = render(<PressableDivExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('data-react-aria-pressable="true"');
+      assume(result).includes('tabindex="0"');
+      assume(result).match(/^<div[^>]*>Pressable Div<\/div>$/);
+
+      const divButton = container.querySelector('div');
+
+      divButton?.click();
+      expect(consoleLogSpy).toHaveBeenCalledWith('div pressed!');
+    });
+  });
+
+  describe('PressableLink', function pressableLinkExample() {
+    it('renders the pressable link', function test() {
+      const { container } = render(<PressableLinkExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('data-react-aria-pressable="true"');
+      assume(result).includes('tabindex="0"');
+      assume(result).match(/^<a[^>]*>Pressable Link<\/a>$/);
+
+      const link = container.querySelector('a');
+
+      link?.addEventListener('click', (e) => e.preventDefault());
+      link?.click();
+      expect(consoleLogSpy).toHaveBeenCalledWith('link pressed!');
+    });
+  });
+
+  describe('PressableCustom', function pressableCustomExample() {
+    it('renders the pressable custom', function test() {
+      const { container } = render(<PressableCustomExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('data-react-aria-pressable="true"');
+      assume(result).includes('tabindex="0"');
+      assume(result).match(/^<div[^>]*>Custom Component<\/div>$/);
+
+      const div = container.querySelector('div');
+
+      div?.click();
+      expect(consoleLogSpy).toHaveBeenCalledWith('custom component pressed!');
+    });
+  });
+});

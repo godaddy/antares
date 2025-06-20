@@ -1,0 +1,95 @@
+import { Meta, ArgTypes, Story, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './pressable.stories.tsx';
+import DivExample from './examples/pressable-div.tsx?raw';
+import LinkExample from './examples/pressable-link-example.tsx?raw';
+import CustomExample from './examples/pressable-custom.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Pressable
+
+The `@bento/pressable` package provides a standardized foundation for interactive elements in the Bento library. It exports the **Pressable** primitive, which provides consistent press interactions and accessibility features for building interactive components.
+
+#***REMOVED***Installation
+
+```bash
+npm install --save @bento/pressable
+```
+
+#***REMOVED***Props
+
+The `@bento/pressable` package exports the `Pressable` primitive:
+
+```jsx
+import { Pressable } from '@bento/pressable';
+
+<Pressable onPress={() => console.log('Div pressed!')}>
+  <div>Press me</div>
+</Pressable>
+```
+
+The following properties are available to be used on the `Pressable` primitive:
+
+<ArgTypes of={Stories.Props} />
+
+For all other properties specified on the `Pressable` primitive, the component will pass them down to the direct child element of the component. Which would be the equivalent of you adding them directly to the child element.
+
+```tsx
+import { Pressable } from '@bento/pressable';
+
+function MyComponent() {
+  return (
+    <Pressable onPress={() => console.log('Pressed!')}>
+      <div>Press me</div>
+    </Pressable>
+  );
+}
+```
+
+##***REMOVED***Examples
+
+###***REMOVED***Basic Div Element
+
+The simplest way to use Pressable is to wrap a div element. The component will handle all the necessary accessibility features and interaction states.
+
+<Source language='tsx' code={ DivExample } />
+
+###***REMOVED***Link Element
+
+You can also make link elements pressable while maintaining their semantic meaning and default browser behavior.
+
+<Source language='tsx' code={ LinkExample } />
+
+###***REMOVED***Custom Component
+
+For custom components, you need to forward the ref and pass props to the underlying element to ensure proper functionality.
+
+<Source language='tsx' code={ CustomExample } />
+
+#***REMOVED***Accessibility
+
+The Pressable component automatically handles accessibility features:
+
+- **Keyboard Navigation**: Supports Enter and Space key activation
+- **Focus Management**: Proper focus handling and focus-visible states
+- **ARIA Attributes**: Automatically applies appropriate ARIA attributes
+- **Screen Reader Support**: Works seamlessly with assistive technologies
+
+##***REMOVED***Data Attributes
+
+The following data attributes are exposed and can be used for styling:
+
+- `data-pressed` - True when the button is being pressed
+- `data-hovered` - True when the button is hovered
+- `data-focused` - True when the button has focus
+- `data-focus-visible` - True when focus should be visible (keyboard navigation)
+
+```css
+[data-pressed='true'] {
+  background-color: #ccc;
+}
+
+[data-focus-visible='true'] {
+  outline: 2px solid blue;
+}
+```

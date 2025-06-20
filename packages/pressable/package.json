@@ -1,17 +1,15 @@
 {
-  "name": "@bento/icon",
+  "name": "@bento/pressable",
   "version": "1.0.0",
-  "description": "Icon component",
+  "description": "Pressable primitive provides consistent press interactions and accessibility features for building interactive components",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test:node": "c8 --100 tsx --test test/**/*.node.test.tsx",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -24,14 +22,10 @@
     "react",
     "component",
     "library",
-    "illustration",
-    "svg",
-    "vector",
-    "graphic",
-    "asset",
-    "image",
-    "picture",
-    "icon"
+    "pressable",
+    "interactive",
+    "accessibility",
+    "aria"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -44,16 +38,16 @@
     "src",
     "package.json"
   ],
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
+  },
   "dependencies": {
-    "@bento/box": "file:../box",
-    "@bento/error": "file:../error",
-    "@bento/create-external-store": "file:../create-external-store",
-    "@bento/illustration": "file:../illustration",
     "@bento/slots": "file:../slots",
-    "@bento/svg-parser": "file:../svg-parser",
+    "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props",
-    "@bento/use-svg-sprite": "file:../use-svg-sprite",
-    "camelcase": "^8.0.0"
+    "@react-aria/utils": "^3.29.1",
+    "react-aria": "^3.41.1"
   },
   "exports": {
     ".": {
