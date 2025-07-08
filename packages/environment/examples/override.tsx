@@ -14,7 +14,7 @@ interface Example {
 }
 
 /* c8 ignore start */
-const Button: React.FC<Example> = withSlots('BentoButton', function Button() {
+const Button: React.FC<Example> = withSlots('OverrideExample.CustomButton', function Button() {
   throw new Error('This button should not render as we are overriding it');
 });
 /* c8 ignore end */
@@ -32,7 +32,7 @@ const Link = withSlots('BentoLink', function Link(args: object) {
  */
 export const Override: React.FC<Example> = withSlots('MyOverrideContainer', function Containers() {
   return (
-    <Environment components={{ BentoButton: Link }}>
+    <Environment components={{ 'OverrideExample.CustomButton': Link }}>
       <div>
         <Button href="foo.html">foo</Button>
 
