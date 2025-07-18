@@ -1,0 +1,372 @@
+***REMOVED***Checkbox Primitive PDR
+
+#***REMOVED***Purpose
+
+In order to provide a consistent and accessible way to handle checkbox inputs in Bento, we are introducing the `Checkbox` and `CheckboxGroup` primitives. These primitives will encapsulate the behavior of checkboxes, including single selection, multiple selections, disabled, and indeterminate states, while ensuring compliance with accessibility standards.
+
+##***REMOVED***Unique Attributes
+
+The `Checkbox` and `CheckboxGroup` primitives are unique in that they provide a standardized way to manage checkbox inputs.
+
+- **Checkbox**: Represents a single checkbox input with or without a label that can be checked, unchecked, or in an indeterminate state. It supports both controlled and uncontrolled modes, allowing developers to manage its state through props or internal state. It is flexible enough to be used in various contexts, such as forms, settings, or preferences, and can be customized with slots for labels and icons.
+- **CheckboxGroup**: Represents a group of checkboxes that can be used for multi-selection scenarios. It manages the state of multiple checkboxes, allowing for collective control over their selection states with contextual state management.
+
+#***REMOVED***Primitive Compositions
+
+The `Checkbox` and `CheckboxGroup` primitives will be composed using a combination of Bento and React ARIA hooks and components to ensure flexibility, accessibility, and ease of use. The `Checkbox` group is the base primitive, which can be rendered with or without a label. If there is no label then no `<label>` element will be rendered. The `CheckboxGroup` primitive builds on the `Checkbox` primitive by allowing them as children whose state is controlled through context to manage multiple checkbox inputs in a group.
+
+The following sections outline the composition of each primitive.
+
+##***REMOVED***Checkbox Primitive
+
+The `Checkbox` primitive will be built using the following hooks and components:
+
+###***REMOVED***Component composition
+
+- **Control**: The `Checkbox` primitive will use the `Control` component (as defined in the [Radio and RadioGroup PDR](/docs/pdrs/radio-primitive.mdx#control-primitive)) from Bento to render the checkbox input. This component will handle the basic input functionality and accessibility features.
+- **Icon**: The `Checkbox` primitive will use the `Icon` primitive to render the visual representation of the checkbox state (checked, unchecked, indeterminate). These icons are entirely customizable by the user, and there will be no default icons provided.
+- **useDataAttributes**: The `Checkbox` primitive will use the `useDataAttributes` utility to manage the visual styles and states of the checkbox, allowing developers to apply custom styles based on the state of the checkbox.
+- **withSlots**: The `Checkbox` primitive will use the `withSlots` utility to allow for flexible slot-based composition, enabling developers to customize the checkbox's appearance and behavior by providing custom components for the icon slots.
+
+###***REMOVED***State management
+
+- **useCheckbox**: The `Checkbox` primitive will utilize the `useCheckbox` hook from React Aria to manage the checkbox's state and behavior when it is not within the React context of a `CheckboxGroup`. A user can pass in the `checked` and `onChange` props to control the checkbox state, or it can be used in an uncontrolled mode where the state is managed internally by the hook.
+- **useToggleState**: The `Checkbox` primitive will use the `useToggleState` hook to manage the checked state of the checkbox, allowing for both controlled and uncontrolled modes. This hook will be used for checkboxes that are not part of a group.
+- **useCheckboxGroupItem**: The `Checkbox` primitive will use the `useCheckboxGroupItem` hook to manage the checkbox's state and behavior when it is within the context of a `CheckboxGroup`. This hook will provide the necessary props and state management for the checkbox to function correctly within the group.
+- **useId**: The `Checkbox` primitive will use the `useId` hook to generate a unique ID for the checkbox input, ensuring that it can be correctly associated with its label for accessibility purposes.
+
+###***REMOVED***Pseudocode
+
+A `Checkbox` without a label will render without a text label or `<label>` element, unlike a `Checkbox` with a label.
+
+####***REMOVED***Checkbox Pseudocode
+
+A basic example of what a `Checkbox` would look like in JSX is as follows:
+
+```jsx
+<Control slot="control" props={{ labelProps, inputProps, label, ref }}>
+  <Icon slot="icon" aria-selected={ state.isSelected } data-selected={ state.isSelected }icon={ icon } />
+</Control>
+```
+
+:::note
+React ARIA already uses their version of the `Pressable` primitive internally in their checkbox state hooks, which handles the press state and visual feedback. Therefore, we do not need to wrap the `Checkbox` primitive in a `Pressable` component.
+:::
+
+##***REMOVED***CheckboxGroup Primitive
+
+The `CheckboxGroup` primitive will be built using the following hooks and components:
+
+- **ControlGroup**: The `CheckboxGroup` primitive will use the `ControlGroup` component (as defined in the [Radio and RadioGroup PDR](/docs/pdrs/radio-primitive.mdx#controlgroup-primitive)) from Bento to render the group of checkbox inputs. This component will handle the basic input functionality and accessibility features as well as the layout of the checkbox group.
+- **useCheckboxGroup**: The `CheckboxGroup` primitive will use the `useCheckboxGroup` hook to manage the state of multiple checkboxes within a group.
+- **useCheckboxGroupState**: The `CheckboxGroup` primitive will use the `useCheckboxGroupState` hook to manage the state of multiple checkboxes, allowing for collective control over their selection states.
+- **useDataAttributes**: The `CheckboxGroup` primitive will use the `useDataAttributes` utility to manage the visual styles and states of the checkbox group, allowing developers to apply custom styles based on the state of the group.
+- **withSlots**: The `CheckboxGroup` primitive will use the `withSlots` utility to allow for flexible slot-based composition, enabling developers to customize the checkbox group's appearance and behavior by providing custom components for slots like label, icon, and the visible checkbox input.
+
+###***REMOVED***Pseudocode
+
+A very basic outline of what this could look like in JSX is as follows:
+
+```jsx
+<ControlGroup slot="group" props={{ groupProps, isInvalid, descriptionProps, errorMessageProps, validationErrors, label, description }}>
+  <CheckboxGroupStateContext.Provider value={state}>{children}</CheckboxGroupStateContext.Provider>
+</ControlGroup>
+```
+
+`groupProps`, `labelProps`, `descriptionProps`, and `errorMessageProps` are all derived from the `useCheckboxGroup` hook, which provides the necessary ARIA attributes and event handlers for the checkbox group. `isInvalid` and `validationErrors` are also derived from the hook and can be used to manage the checkbox group's validation state. `description` is an optional prop that can be passed to the `CheckboxGroup` primitive to provide additional context.
+
+#***REMOVED***Internal Structure & Reuse Potential
+
+The `Checkbox` and `CheckboxGroup` primitives are designed to be flexible and reusable across various components and layouts. They can be used in different contexts, such as:
+
+- Single `Checkbox` inputs for forms, settings, or preferences.
+- Single `Checkbox` inputs for selecting rows in a table or list.
+- `Checkbox`s that allow for custom labels and icons.
+- `CheckboxGroup`s for multi-selection scenarios, such as selecting multiple options from a list.
+
+The `Checkbox` can be reused within the Bento ecosystem if we decide to add selectable rows or columns in tables, or if we want to create a list of selectable items.
+
+#***REMOVED***React Aria or External Hook Integration
+
+- **useCheckbox** - Provides the necessary state and behavior for a single checkbox input, including handling checked, unchecked, and indeterminate states. It also manages accessibility attributes like `aria-checked`, `aria-disabled`, and `aria-required`.
+- **useCheckboxGroup** - Manages the state and behavior of a group of checkboxes, allowing for collective control over their selection states. It provides the necessary ARIA attributes and event handlers for the checkbox group.
+- **useCheckboxGroupState** - Manages the state of a group of checkboxes, including their collective checked and indeterminate states.
+- **useCheckboxGroupItem** - Manages the state and behavior of a single checkbox within a group, allowing it to participate in the group's collective state management.
+- **useToggleState** - Provides a simple way to manage the toggled state of a `Checkbox` that is not a part of a group context.
+
+#***REMOVED***Accessibility, Internationalization, RTL, and Mobile Considerations
+
+The Checkbox primitive is designed with accessibility in mind to ensure that it meets ARIA standards for checkbox inputs. Key accessibility features include:
+
+- **Semantic HTML**: The input within the Checkbox primitive is rendered as a native `<input type="checkbox">`, which provides built-in accessibility features and ensures compatibility with assistive technologies. Although this input is visually hidden, it is still part of the DOM and accessible to screen readers.
+- **ARIA Attributes**: All ARIA attributes are supplied by the the `Control` and `ControlGroup` primitives.
+- **Keyboard Navigation**: The `<input>` element is the focusable element and ensures that the checkbox responds to keyboard interactions, including spacebar activation.
+- **Focus Management**: The React ARIA hook `useCheckbox` correctly applies the `tabIndex='0'` to Checkbox instances, allowing them to be focusable. We will also add data-attributes for pressability and focusability, such as `data-focus-visible` attribute.
+- **Screen Reader Support**: The `aria-label` and `aria-labelledby` attributes are used to provide accessible labels for the checkbox, ensuring that screen readers can announce the checkbox state correctly. The `aria-required` attribute is also applied when necessary, and the visually hidden input is still part of the DOM and accessible to screen readers.
+- **RTL Support**: The Checkbox primitive supports right-to-left (RTL) layouts innately. When the directionality of the component should not be set to browser default, developers can use the `dir` prop to explicitly set the directionality of the checkbox on any parent element. This ensures that the checkbox label is correctly positioned on the right or left depending on the correct directionality.
+- **Mobile Considerations**: The Checkbox primitive is designed to be touch-friendly, with appropriate padding and hit area sizes to ensure usability on mobile devices. The internals of `useCheckbox` handles touch interactions and provides a framework for visual feedback on press with the data attributes it provides.
+
+#***REMOVED***Data Attributes, Prop Map, and Slot Map
+
+##***REMOVED***Expected Data Attributes
+
+The following `data-*` attributes are provided by the `Icon` primitive itself to help developers manage the visibility and styling of the icons used in the `Checkbox` primitive:
+
+| Attribute             | Description                                   | Example Values         |
+|-----------------------|-----------------------------------------------|------------------------|
+| `data-icon`           | The icon name or type                          | "checked" / "unchecked" / "indeterminate" |
+
+The following `data-*` attributes are provided by the `Checkbox` primitive itself to help developers manage the visual styles and states of their checkbox implementation:
+
+| Attribute             | Description                                   | Example Values         |
+|-----------------------|-----------------------------------------------|------------------------|
+| `data-disabled`       | Indicates disabled state                      | "true" / "false"       |
+| `data-invalid`        | Indicates invalid state                       | "true" / "false"       |
+| `data-required`       | Indicates required state                      | "true" / "false"       |
+| `data-indeterminate`  | Indicates indeterminate state                 | "true" / "false"       |
+| `data-checked`        | Indicates checked state                       | "true" / "false"       |
+| `data-override`       | Mark for locally overridden logic/UI          | "true"                 |
+| `data-version`        | Component version in dev only                 | "checkbox@1.0"         |
+| `data-pressed`        | Indicates pressed state                       | "true" / "false"       |
+| `data-hovered`        | Indicates hovered state                       | "true" / "false"       |
+| `data-focused`        | Indicates focused state                       | "true" / "false"       |
+| `data-focus-visible`  | Whether focus ring should be shown            | "true" / "false"       |
+
+The following `data-*` attributes are provided by the `CheckboxGroup` primitive itself to help developers manage the visual styles and states of their checkbox group implementation:
+
+| Attribute             | Description                                   | Example Values         |
+|-----------------------|-----------------------------------------------|------------------------|
+| `data-override`       | Mark for locally overridden logic/UI          | "true"                 |
+| `data-invalid`        | Indicates invalid state                       | "true" / "false"       |
+| `data-version`        | Component version in dev only                 | "checkbox-group@1.0"         |
+
+##***REMOVED***Prop Map
+
+The following table describes the props available for the `Checkbox` primitive.
+
+| Prop Name            | Description                                   | Type                  | Required | Default Value |
+|----------------------|-----------------------------------------------|-----------------------|----------|---------------|
+| `id`                 | Unique identifier for the checkbox                | string                | No       | Generated     |
+| `className`          | Custom CSS class to apply to the checkbox        | string                | No       | undefined     |
+| `isChecked`       | Whether the checkbox is checked                   | boolean               | No       |
+| `onChange`      | Callback when the checkbox state changes          | (checked: boolean) => void | No | undefined     |
+| `isDisabled`      | Whether the checkbox is disabled                   | boolean               | No       |
+| `isRequired`      | Whether the checkbox is required                   | boolean               | No       | false         |
+| `isIndeterminate` | Whether the checkbox is in an indeterminate state | boolean               | No       | false         |
+| `label`              | Accessible label for the checkbox             | string                | No       | undefined     |
+
+The following table describes the props available for the `CheckboxGroup` primitive.
+
+| Prop Name            | Description                                   | Type                  | Required | Default Value |
+|----------------------|-----------------------------------------------|-----------------------|----------|---------------|
+| `id`                 | Unique identifier for the checkbox group         | string                | No       | Generated     |
+| `className`          | Custom CSS class to apply to the checkbox group | string                | No       | undefined     |
+| `label`              | Accessible label for the checkbox group      | string                | No       | undefined     |
+| `description`        | Optional description for the checkbox group | string                | No       | undefined     |
+
+##***REMOVED***Slot Map
+
+The following table describes the slots available for the `Checkbox` primitive.
+
+| Slot Name     | Description                           | Required | Default Fallback |
+|---------------|---------------------------------------|----------|------------------|
+| `control.label`       | Accessible label                      | No       | No               |
+| `control.icon`        | Optional visual icon inside item      | No       | No               |
+
+The following table describes the slots available for the `CheckboxGroup` primitive.
+
+| Slot Name | Description                          | Required | Default Fallback |
+|-----------|--------------------------------------|----------|------------------|
+| `group.label`       | Accessible label                      | No       | No               |
+| `group.description` | Optional description for the checkbox group | No       | No               |
+| `group.error`         | Error message for validation errors | No       | No               |
+
+#***REMOVED***Rationale
+
+- **Why not split up the `Checkbox`?**: It is much simpler to conditionally render the label based on the presence of children rather than splitting the `Checkbox` primitive into two separate primitives due to extra state management that would be necessary otherwise. If we expected users to be able to pass in `isChecked` and `onChange` to both primitives, we would need to manage the group state, toggle state (when not in a group), controllability, and the passing of state between the two individually which would get messy. Also, having two primitives rather than three aligns better with the `Radio` and `RadioGroup` compositions.
+- **Why use React ARIA hooks?**: React ARIA hooks provide a standardized way to manage accessibility and state for form controls. They align with the WAI-ARIA specifications and ensure that the components are accessible to users with disabilities.
+- **Why visually hide the native checkbox input?**: The native checkbox input is visually hidden to allow for custom styling and behavior while still being accessible to screen readers. Native checkboxes also vary style-wise browser to browser, so visually hiding the `<input>` and allowing users to style the `Icon` allows for a consistent look and feel across all browsers.
+
+#***REMOVED***Code Examples
+
+:::note
+For simplicity, the data attributes are shortened in the rendered HTML examples below. The full data attributes will be present in the actual implementation, and are available to browse [here](#expected-data-attributes).
+:::
+
+##***REMOVED***Default Uncontrolled, Unlabelled Checkbox
+
+The following is a simple example of an uncontrolled, unlabelled `Checkbox`, which is the default state management of the base component. The `Checkbox` primitive uses React ARIA's `useCheckbox` and `useCheckboxGroup` hooks to manage the checkbox state internally, allowing it to be used without any additional state management.
+
+```jsx
+function DefaultUncontrolledCheckbox() {
+  return (
+    <Checkbox />
+  );
+}
+```
+
+This JSX would render in the DOM as follows:
+
+```html
+<label class="checkbox-wrapper" data-pressable-attributes>
+  <div style="visually-hidden-pseudocode-styles: true;">
+    <input type="checkbox" id="use-id-autogenerated-id" aria-label="Checkbox" />
+  </div>
+  <svg role="presentation" data-icon="unchecked">
+    <path d="..."></path>
+  </svg>
+</label>
+```
+
+The `data-icon` attribute will be set to `unchecked` by default, indicating that the checkbox is not checked based on the state.
+
+##***REMOVED***Controlled Checkbox Example
+
+The following is an example of a controlled `Checkbox`, where the state is managed externally. The `isChecked` and `onChange` props are used to control the checkbox state.
+
+```jsx
+import { useState } from 'react';
+
+function ControlledCheckboxExample() {
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (newChecked) => {
+    setChecked(newChecked);
+  };
+
+  return (
+    <Checkbox
+      isChecked={checked}
+      onChange={handleChange}
+    />
+  );
+}
+```
+
+The JSX will render identically to the uncontrolled example, but the `isChecked` state will be managed by the `useState` hook in React. The `onChange` callback will update the state when the checkbox is toggled.
+
+##***REMOVED***Labelled Checkbox Example
+
+The following example demonstrates how to use the labelled `Checkbox` primitive with slots to customize the label and icon. This allows for a more flexible and tailored `Checkbox` implementation while maintaining accessibility.
+
+```jsx
+import { Checkbox, CheckboxGroup } from 'bento-checkbox';
+
+function CheckboxSlotsExample() {
+  return (
+    <CheckboxGroup label="Slots Example">
+      <Checkbox
+        label="Checkbox Label"
+        name="checkbox-example"
+      />
+    </CheckboxGroup>
+  );
+}
+```
+
+##***REMOVED***Checkbox Icon Slot Override Example
+
+The following example demonstrates how to use the `Checkbox` primitive with slots to customize the icon conditionally, so that the icon changes based on the checked state using `useState` to manage the checked state.
+
+:::note
+All slots are optional and both primitives can use slots, as detailed in the [Slot Map section](#slot-map) above.
+:::
+
+```jsx
+import { useState } from 'react';
+import { Checkbox } from 'bento-checkbox';
+import { set } from 'bento-icon';
+
+// Set the icons for the checkbox
+// Icons do not use the 'checked' or 'unchecked' names, but rather custom names for the alternate icons
+// This allows for the 'checked' and 'unchecked' icons to be used in other contexts without confusion
+set({
+  'checked-alternate': alternateCheckedSvg,
+  'unchecked-alternate': alternateUncheckedSvg,
+  ...rest
+});
+
+function CheckboxSlotOverrideExample() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <Checkbox
+      label="Checkbox Label"
+      slots={{
+        'control.icon': { icon: checked ? 'checked-alternate' : 'unchecked-alternate' } // Custom icon slot
+      }}
+    />
+  );
+}
+```
+
+##***REMOVED***Checkbox Indeterminate Group Example
+
+The following example demonstrates how to create a checkbox group with a parent checkbox that can be in an indeterminate state, along with child checkboxes that can be checked or unchecked. The parent checkbox will reflect the state of its children, allowing for collective control over their selection states.
+
+This is a common pattern that showcases the primitives' ability to handle state in complex scenarios, group checkboxes, and manage indeterminate states effectively. The `CheckboxGroup` primitive is used to manage the state of multiple checkboxes, while the `Checkbox` primitive is used for individual checkboxes within the group.
+
+```jsx
+import { useState } from 'react';
+import { Checkbox, CheckboxGroup } from 'bento-checkbox';
+
+const CHILDREN = [
+  { label: 'Child Checkbox 1', name: 'child-checkbox-1' },
+  { label: 'Child Checkbox 2', name: 'child-checkbox-2' },
+  { label: 'Child Checkbox 3', name: 'child-checkbox-3' },
+];
+
+function IndeterminateCheckboxGroupExample() {
+  const [checkedValues, setCheckedValues] = useState([]);
+  const allNames = CHILDREN.map(child => child.name);
+  const totalCount = allNames.length;
+  const checkedCount = checkedValues.length;
+  const parentChecked = checkedCount === totalCount;
+  const parentIndeterminate = checkedCount > 0 && checkedCount < totalCount;
+
+  // Handles CheckboxGroup change
+  const handleGroupChange = useCallback((newCheckedValues) => {
+    setCheckedValues(newCheckedValues);
+  }, []);
+
+  // Handles parent checkbox change
+  const handleParentChange = useCallback((checked) => {
+    setCheckedValues(checked ? allNames : []);
+  }, [allNames]);
+
+  // Handles child checkbox change
+  const handleChildChange = useCallback((childName, checked) => {
+    setCheckedValues(prevValues => 
+      checked ? [...prevValues, childName] : prevValues.filter(name => name !== childName)
+    );
+  }, []);
+
+  return (
+    <CheckboxGroup
+      label='Group Example'
+      name='checkbox-group-example'
+      value={ checkedValues }
+      onChange={ handleGroupChange }
+    >
+      <Checkbox
+        label='Parent Checkbox'
+        name='parent-checkbox'
+        isChecked={ parentChecked }
+        isIndeterminate={ parentIndeterminate }
+        onChange={ handleParentChange }
+      />
+      <div role='group' style={{ marginLeft: 20 }}>
+        {CHILDREN.map((child, idx) => (
+          <Checkbox
+            key={ child.name }
+            label={ child.label }
+            name={ child.name }
+            isChecked={ checkedValues.includes(child.name) }
+            onChange={ (checked) => handleChildChange(child.name, checked) }
+          />
+        )) }
+      </div>
+    </CheckboxGroup>
+  );
+}
+```
