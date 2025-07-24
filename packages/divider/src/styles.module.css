@@ -1,0 +1,12 @@
+.divider {
+  margin: 0;
+  background-color: currentColor;
+  border: none;
+  width: 100%;
+  height: 1px;
+
+  &[aria-orientation="vertical"] {
+    width: 1px;
+    height: 100%;
+  }
+}

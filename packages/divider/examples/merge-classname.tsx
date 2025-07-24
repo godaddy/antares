@@ -1,0 +1,16 @@
+/* v8 ignore next */
+import React from 'react';
+import { Divider } from '@bento/divider';
+import { withSlots } from '@bento/slots';
+
+export const MergeClassName = withSlots('ClassNameOverrideExample', function MergeClassName() {
+  return (
+    <Divider
+      orientation="vertical"
+      className={({ original }: { original: string }) => {
+        return ['custom-divider-class', original].filter(Boolean).join(' ');
+      }}
+      style={{ height: '100px' }}
+    />
+  );
+});

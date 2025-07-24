@@ -13,6 +13,7 @@
     "@bento/box": "*",
     "@bento/button": "*",
     "@bento/create-external-store": "*",
+    "@bento/divider": "*",
     "@bento/environment": "*",
     "@bento/error": "*",
     "@bento/icon": "*",
