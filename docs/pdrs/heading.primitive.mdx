@@ -1,0 +1,58 @@
+***REMOVED***Heading Primitive PDR
+
+#***REMOVED***Purpose
+
+The Heading Primitive will extend the Text Primitive to provide a more semantic and accessible heading component.
+
+#***REMOVED***API
+
+The API interface for the resource should include the following props, excluding the props from the Text Primitive:
+
+```tsx
+interface HeadingProps extends TextProps {
+    /** @default null */
+    level?: 1 | 2 | 3 | 4 | 5 | 6;
+}
+```
+
+##***REMOVED***`level`
+
+The `level` prop is used to specify the level of the heading. If not provided, the heading will automatically determine the level based on the number of nested `Heading.Provider` components or render a span element if no `Heading.Provider` is found.
+
+#***REMOVED***Code examples
+
+##***REMOVED***Basic usage
+
+The `level` prop is used to specify the level of the heading.
+
+```tsx
+/* Renders a h1 element with the text "Hello, world!" */
+<Heading level={1}>Hello, world!</Heading>
+```
+
+##***REMOVED***Auto level
+
+The `Heading.Provider` component is used to automatically determine the level of the heading based on the number of nested `Heading.Provider` components. If `level` is provided, it will override the automatic level determination.
+
+```tsx
+/* Automatically determines the level of the heading based on the number of nested Heading.Scope components */
+<Heading.Provider>
+  <Heading>This is an h1 heading</Heading>
+  <Heading.Provider>
+    <Heading>This is an h2 heading</Heading>
+    <Heading.Provider>
+      <Heading level={2}>This is an h2 heading</Heading>
+    </Heading.Provider>
+  </Heading.Provider>
+</Heading.Provider>
+```
+
+If no `level` is provided and the `Heading.Provider` is not nested, the heading will warn the user that the level is not specified and render a span element. This is to ensure that the heading is always rendered with a valid level. We can consider adding a data attribute to indicate the problem.
+
+We may also consider adding a `level` to the `Heading.Provider` component override the current level determined by the scope.
+
+#***REMOVED***Appendix
+
+- [Managing Heading Levels In Design Systems](https://medium.com/@Heydon/managing-heading-levels-in-design-systems-18be9a746fa3)
+- [Ariakit Heading](https://ariakit.org/components/heading)
+- [Base Web Heading](https://github.com/uber/baseweb/tree/main/src/heading)
