@@ -1,0 +1,68 @@
+{
+  "name": "@bento/radio",
+  "version": "1.0.0",
+  "description": "Radio component",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsup-node",
+    "lint": "biome lint && tsc",
+    "posttest": "npm run lint",
+    "pretest": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/bento.git"
+  },
+  "keywords": [
+    "bento",
+    "react",
+    "component",
+    "library",
+    "radio",
+    "interactive",
+    "accessibility",
+    "aria"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/godaddy/bento/issues"
+  },
+  "homepage": "https://github.com/godaddy/bento#readme",
+  "files": [
+    "dist",
+    "src",
+    "package.json"
+  ],
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
+  },
+  "dependencies": {
+    "@bento/control": "file:../control",
+    "@bento/icon": "file:../icon",
+    "@bento/slots": "file:../slots",
+    "@bento/use-data-attributes": "file:../use-data-attributes",
+    "@bento/use-props": "file:../use-props",
+    "@react-aria/utils": "^3.29.1",
+    "react-aria": "^3.41.1",
+    "react-stately": "^3.40.0"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  }
+}

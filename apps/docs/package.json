@@ -12,6 +12,7 @@
   "dependencies": {
     "@bento/box": "*",
     "@bento/button": "*",
+    "@bento/control": "*",
     "@bento/create-external-store": "*",
     "@bento/divider": "*",
     "@bento/environment": "*",
@@ -20,6 +21,7 @@
     "@bento/illustration": "*",
     "@bento/internal-props": "*",
     "@bento/pressable": "*",
+    "@bento/radio": "*",
     "@bento/slots": "*",
     "@bento/svg-parser": "*",
     "@bento/to-attribute-value": "*",
@@ -39,6 +41,7 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^5.0.0",
     "globals": "^16.2.0",
+    "remark-gfm": "^4.0.1",
     "storybook": "^9.0.16",
     "typescript": "~5.9.2",
     "vite": "^7.1.2"

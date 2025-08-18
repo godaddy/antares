@@ -1,0 +1,77 @@
+import { Meta, ArgTypes, Story, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './control.stories.tsx';
+import Default from './examples/default.tsx?raw';
+import InputRef from './examples/input-ref.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Control
+
+The `@bento/control` package provides foundational building blocks for form controls such as radios and checkboxes. It delivers a consistent DOM structure and shared behaviors, making it easy to create custom form controls. The package exports the **ControlGroup** and **Control** primitives.
+
+The `ControlGroup` is a container for a group of controls. It is used to group controls with a shared label and description. It also provides a standardized way to display error messages.
+
+The `Control` consists of a label and an visually hidden input element. The label is used to describe the control and the input element is used to capture user input.
+
+This package is intended primarily for internal use as a foundation for building other Bento primitives, rather than for direct use outside the Bento ecosystem.
+
+#***REMOVED***Installation
+
+```bash
+npm install --save @bento/control
+```
+
+#***REMOVED***Props
+
+The `@bento/control` package exports the `ControlGroup` and `Control` primitives:
+
+```jsx
+import { ControlGroup, Control } from '@bento/control';
+
+<ControlGroup label="Control label">
+  <Control inputRef={inputRef} inputProps={inputProps} labelProps={labelProps} label="Control 1" />
+  <Control inputRef={inputRef} inputProps={inputProps} labelProps={labelProps} label="Control 2" />
+</ControlGroup>;
+```
+
+The following properties are available to be used on the `Control` and `ControlGroup` primitives:
+
+##***REMOVED***ControlGroup
+
+<ArgTypes of={Stories.Props} />
+
+##***REMOVED***Control
+
+<ArgTypes of={Stories.ControlProps} />
+
+#***REMOVED***Slot Map and Props
+
+The slot map and props can be used to style and customize the `Control` and `ControlGroup` primitives.
+
+##***REMOVED***`Control` Slot Map
+
+| Slot Name | Description           |
+| --------- | --------------------- |
+| `label`   | Label for the control |
+
+##***REMOVED***`ControlGroup` Slot Map
+
+| Slot Name     | Description                    |
+| ------------- | ------------------------------ |
+| `label`       | Label for controlgroup         |
+| `description` | Description for controlgroup   |
+| `error`       | Error message for controlgroup |
+
+#***REMOVED***Examples
+
+##***REMOVED***Default
+
+A simple usage of the `ControlGroup` primitive.
+
+<Source language="tsx" code={Default} />
+
+##***REMOVED***Input Ref
+
+Passing a ref to the `Control` primitive allows you to access the underlying input element.
+
+<Source language="tsx" code={InputRef} />
