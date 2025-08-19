@@ -69,7 +69,7 @@ describe('@bento/slots', function bento() {
       const nested = renderToString(
         React.createElement(Nested, {
           slots: {
-            'example-container.label': function ({ props, original }: any) {
+            'example-container.label': function overrideLabel({ props, original }: any) {
               assume(props.htmlFor).equals('example');
               assume(props.children).equals('Hello World');
 

@@ -6,7 +6,7 @@ import React from 'react';
 // to make a custom component pressable, you need to forward the ref to the
 // child element and pass the props to the child element
 //
-const CustomComponent = React.forwardRef<HTMLDivElement>((props, ref) => {
+const CustomComponent = React.forwardRef<HTMLDivElement>(function CustomComponent(props, ref) {
   return (
     <div {...props} ref={ref}>
       Custom Component
@@ -17,7 +17,7 @@ const CustomComponent = React.forwardRef<HTMLDivElement>((props, ref) => {
 export function PressableCustomExample() {
   return (
     <Pressable
-      onPress={() => {
+      onPress={function handlePress() {
         console.log('custom component pressed!');
       }}
     >

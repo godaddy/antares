@@ -55,8 +55,7 @@ export interface RadioGroupProps
  */
 export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args: RadioGroupProps) {
   const { errorMessage, ...restArgs } = args;
-  const { props } = useProps(restArgs);
-  const { isInvalid, isDisabled, isReadOnly, isRequired, ...restProps } = props;
+  const { props, apply } = useProps(restArgs);
   const state = useRadioGroupState(props);
   const { radioGroupProps, labelProps, descriptionProps, errorMessageProps, ...validationResult } = useRadioGroup(
     props,
@@ -80,7 +79,7 @@ export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args:
       errorMessage={displayedErrorMessage}
       errorMessageProps={errorMessageProps}
       {...radioGroupProps}
-      {...restProps}
+      {...apply(props, ['isInvalid', 'isDisabled', 'isReadOnly', 'isRequired', 'validationBehavior'])}
       {...useDataAttributes({
         orientation: props.orientation || 'vertical',
         invalid: state.isInvalid,

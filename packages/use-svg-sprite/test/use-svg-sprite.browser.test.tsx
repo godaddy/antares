@@ -15,7 +15,7 @@ describe('@bento/use-svg-sprite browser', function bento() {
 
   async function flushedHook(fn) {
     const res = renderHook(fn);
-    await act(() => {
+    await act(function flush() {
       /* delay returning until all dom changes have been made */
     });
 
@@ -96,8 +96,11 @@ describe('@bento/use-svg-sprite browser', function bento() {
   });
 
   it('returns an empty svg when no Graphic is provided', async function noGraphic() {
-    const { result } = await flushedHook(() => useSVGSprite('no-graphic', undefined));
-    await act(() => {
+    const { result } = await flushedHook(function hookCall() {
+      return useSVGSprite('no-graphic', undefined);
+    });
+
+    await act(function ensureRendered() {
       /* Ensure the component is fully rendered */
     });
     const svg = result.current as React.ReactElement | null;

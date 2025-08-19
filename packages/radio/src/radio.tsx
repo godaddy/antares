@@ -37,8 +37,7 @@ export interface RadioProps extends AriaRadioProps, Partial<Omit<ControlProps, k
  * @public
  */
 export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
-  const { props } = useProps(args);
-  const { isDisabled, value, autoFocus, ...restProps } = props;
+  const { props, apply } = useProps(args);
   const state = React.useContext(RadioGroupStateContext)!;
   const ref = React.useRef<HTMLInputElement>(null);
   const inputRef = useObjectRef(useMemo(() => mergeRefs(ref, props.inputRef), [ref, props.inputRef]));
@@ -57,14 +56,14 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
       labelProps={mergeProps(labelProps, hoverProps)}
       inputRef={inputRef}
       inputProps={mergeProps(inputProps, focusProps)}
-      {...restProps}
+      {...apply(props, ['isDisabled', 'value', 'autoFocus'])}
       {...useDataAttributes({
         selected: isSelected,
         pressed: isPressed,
         hovered: isHovered,
         focused: isFocused,
         focusVisible: isFocusVisible,
-        disabled: isDisabled,
+        disabled: props.isDisabled,
         readonly: state.isReadOnly,
         invalid: state.isInvalid,
         required: state.isRequired

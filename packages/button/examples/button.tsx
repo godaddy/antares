@@ -5,7 +5,7 @@ import React from 'react';
 export function ButtonExample() {
   return (
     <Button
-      onPress={() => {
+      onPress={function handlePress() {
         console.log('button pressed!');
       }}
     >

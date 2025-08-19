@@ -182,7 +182,7 @@ describe('@bento/radio', function bento() {
 
   describe('Form', function form() {
     it('should submit a form using correct values', async function submitForm() {
-      const onSubmit = vi.fn((e) => {
+      const onSubmit = vi.fn(function handleSubmit(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
         e.target.setAttribute('fruit-value', formData.get('fruit'));
@@ -213,7 +213,7 @@ describe('@bento/radio', function bento() {
             groupProps={{
               isRequired: true,
               validationBehavior: 'native',
-              errorMessage: (validation) => {
+              errorMessage: function errorMessage(validation) {
                 return validation.isInvalid ? <span>error message</span> : null;
               }
             }}
@@ -270,7 +270,7 @@ describe('@bento/radio', function bento() {
   });
 
   describe('Accessibility', function accessibility() {
-    it('should add the correct role and aria-orientation to the radiogroup', function () {
+    it('should add the correct role and aria-orientation to the radiogroup', function checkRadiogroupRoleAndOrientation() {
       const { container } = render(<RadioGroupExample />);
       const radioGroup = container.querySelector('[role="radiogroup"]')!;
       assume(radioGroup.getAttribute('role')).equals('radiogroup');

@@ -11,7 +11,7 @@ describe('@bento/error examples', function bento() {
       const consoleError = console.error;
       let error: Error | undefined;
 
-      console.error = function (err) {
+      console.error = function handleError(err) {
         error = err;
       };
 

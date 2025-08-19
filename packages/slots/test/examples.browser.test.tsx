@@ -24,7 +24,7 @@ describe('@bento/slots examples', function bento() {
       const logger = console.log;
       let logs: any[] = [];
 
-      console.log = function (...args) {
+      console.log = function handleLog(...args) {
         logs = args;
       };
 
@@ -59,7 +59,7 @@ describe('@bento/slots examples', function bento() {
       const logger = console.log;
       let logs: any[] = [];
 
-      console.log = function (...args) {
+      console.log = function handleLog(...args) {
         logs = args;
       };
 

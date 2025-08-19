@@ -15,7 +15,7 @@ describe('@bento/environment', function bento() {
       const env = renderToString(
         <Environment components={{ BentoButton: Link }}>
           <Box.Consumer>
-            {({ env }) => {
+            {function renderConsumer({ env }) {
               assume(env.components.BentoButton).to.equal(Link);
               return 'Hello World';
             }}
@@ -30,7 +30,7 @@ describe('@bento/environment', function bento() {
       const env = renderToString(
         <Environment foo="bar" another={[1, 2, 3]} baz={{ a: 'b' }}>
           <Box.Consumer>
-            {({ env }) => {
+            {function renderConsumer({ env }) {
               assume(env.foo).to.equal('bar');
               assume(env.another).to.deep.equal([1, 2, 3]);
               assume(env.baz).to.deep.equal({ a: 'b' });
@@ -51,7 +51,7 @@ describe('@bento/environment', function bento() {
       const env = renderToString(
         <Environment root={win?.contentWindow?.document}>
           <Box.Consumer>
-            {({ env }) => {
+            {function renderConsumer({ env }) {
               assume(env).is.a('object');
               assume(env.window()).exists();
               assume(env.window()).to.equal(win.contentWindow);

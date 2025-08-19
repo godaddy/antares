@@ -31,7 +31,7 @@ export function Memo() {
       'example-container.button': {
         // Slots can also be used to add refs to elements
         ref: ref,
-        onClick: () => {
+        onClick: function handleClick() {
           console.log('Button ref:', ref.current);
         }
       }

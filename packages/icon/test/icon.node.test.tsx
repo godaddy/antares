@@ -41,7 +41,7 @@ describe('@bento/icon', function bento() {
   });
 
   it('does not not try to call the ondemand function when no icon name is provided', function noIconName() {
-    const undemand = ondemand(function () {
+    const undemand = ondemand(function neverCall() {
       throw new Error('i should never be called');
     });
 
@@ -101,7 +101,7 @@ describe('@bento/icon', function bento() {
     it('passes the loading state to the renderProps function', function loadingState() {
       const result = renderToStringWithChildren({
         icon: 'unknown',
-        children: function (args) {
+        children: function renderChildren(args) {
           assume(args).is.a('object');
           assume(args.state).is.a('object');
           assume(args.original).is.a('undefined');
@@ -162,7 +162,7 @@ describe('@bento/icon', function bento() {
   });
 
   describe('#slots', function slots() {
-    it('introduced the `content` slot to the Illustration component', function () {
+    it('introduced the `content` slot to the Illustration component', function content() {
       const result = renderToStringWithChildren({
         icon: 'play',
         slots: {

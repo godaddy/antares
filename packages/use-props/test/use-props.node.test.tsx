@@ -231,7 +231,7 @@ describe('@bento/use-props', function bento() {
 
       it('executes render prop functions through proxy getter', function proxyGetter() {
         const { props } = createComponent('proxy-getter', {
-          title: (args: Record<string, any>) => {
+          title: function titleFunction(args: Record<string, any>) {
             if (!args.original) return 'my title';
             return args.original.toUpperCase();
           }
@@ -259,7 +259,7 @@ describe('@bento/use-props', function bento() {
 
       it('executes the renderProp function if it exists', function renderProp() {
         const { apply } = createComponent('idfunction', {
-          title: (args: Record<string, any>) => {
+          title: function titleFunction(args: Record<string, any>) {
             if (!args.original) return 'my title';
             return args.original.toUpperCase();
           }

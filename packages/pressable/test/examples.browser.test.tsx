@@ -9,11 +9,13 @@ import { PressableCustomExample } from '../examples/pressable-custom.tsx';
 describe('@bento/pressable examples', function bento() {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
 
-  beforeEach(() => {
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0);
+  beforeEach(function beforeEach() {
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(function mockLog() {
+      return void 0;
+    });
   });
 
-  afterEach(() => {
+  afterEach(function afterEach() {
     consoleLogSpy.mockRestore();
     vi.clearAllMocks();
   });

@@ -19,7 +19,7 @@ function stringifyJSON(obj: unknown): string | undefined {
   const cache = new Set();
   return JSON.stringify(
     obj,
-    (_, value) => {
+    function replacer(_, value) {
       if (typeof value === 'object' && value !== null) {
         if (cache.has(value)) return;
         cache.add(value);

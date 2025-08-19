@@ -5,7 +5,7 @@ import React from 'react';
 export function PressableDivExample() {
   return (
     <Pressable
-      onPress={() => {
+      onPress={function handlePress() {
         console.log('div pressed!');
       }}
     >

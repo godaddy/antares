@@ -61,7 +61,7 @@ describe('@bento/icon examples', function bento() {
       const { container } = render(<Awesome icon="hippo" />);
 
       await timeout(1000);
-      await act(() => {
+      await act(function flush() {
         /* flush before asserting */
       });
       const result = container.innerHTML;

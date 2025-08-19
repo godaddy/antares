@@ -1,12 +1,12 @@
-import React from 'react';
+import { Divider, type DividerProps } from '@bento/divider';
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { Divider, type DividerProps } from '@bento/divider';
 import { renderToString } from 'react-dom/server';
-import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
+import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import assume from 'assume';
+import React from 'react';
 
 /**
  * Renders the `Divider` component to a string with the provided props.
@@ -29,7 +29,7 @@ describe('@bento/divider', function bento() {
     assume(result).endsWith('/>');
   });
 
-  it('renders with vertical orientation', function () {
+  it('renders with vertical orientation', function vertical() {
     const result = renderToStringDivider({
       orientation: 'vertical'
     });
@@ -37,7 +37,7 @@ describe('@bento/divider', function bento() {
     assume(result).includes('aria-orientation="vertical"');
   });
 
-  it('excludes orientation prop from HTML attributes', function () {
+  it('excludes orientation prop from HTML attributes', function excludes() {
     const result = renderToStringDivider({
       orientation: 'vertical'
     });
@@ -46,7 +46,7 @@ describe('@bento/divider', function bento() {
     assume(result).doesnt.include(' orientation=');
   });
 
-  it('renders correct [data-override] attribute values when directly overridden', function () {
+  it('renders correct [data-override] attribute values when directly overridden', function overrides() {
     const result = renderToStringDivider({
       className: 'custom-class',
       style: { color: 'red' }
@@ -55,7 +55,7 @@ describe('@bento/divider', function bento() {
     assume(result).includes('data-override="className style"');
   });
 
-  it('allows user to override classname fully', function () {
+  it('allows user to override classname fully', function classname() {
     const result = renderToStringDivider({
       className: 'custom-class'
     });

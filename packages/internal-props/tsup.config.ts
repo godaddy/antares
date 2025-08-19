@@ -26,7 +26,7 @@ export default defineConfig({
     const semver = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
 
     options.define ??= {};
-    ['major', 'minor', 'patch'].forEach((key, index) => {
+    ['major', 'minor', 'patch'].forEach(function defineVersion(key, index) {
       options.define[key] = semver[index];
     });
   }

@@ -109,15 +109,15 @@ describe('@bento/environment examples', function bento() {
       assume(iframe).to.not.equal(null);
 
       // Wait for iframe to load and content to be available
-      await new Promise((resolve) => {
-        const checkContent = () => {
+      await new Promise(function waitForIframe(resolve) {
+        function checkContent() {
           const iframeDoc = iframe?.contentDocument;
           if (iframeDoc && iframeDoc.querySelector('h2')) {
             resolve(undefined);
           } else {
             setTimeout(checkContent, 10);
           }
-        };
+        }
 
         if (iframe?.contentDocument?.readyState === 'complete') {
           checkContent();

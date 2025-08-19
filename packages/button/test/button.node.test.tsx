@@ -1,12 +1,12 @@
+import { Button, type ButtonProps } from '@bento/button';
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { Button, type ButtonProps } from '@bento/button';
 import { renderToString } from 'react-dom/server';
-import { describe, it } from 'vitest';
+import { type AnyObject } from '@bento/types';
 import { fileURLToPath } from 'node:url';
+import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import assume from 'assume';
-import { type AnyObject } from '@bento/types';
 import React from 'react';
 
 /**
@@ -31,7 +31,7 @@ describe('@bento/button', function bento() {
   });
 
   describe('#slots', function slots() {
-    it('renders correct [data-override] attribute values', function () {
+    it('renders correct [data-override] attribute values', function overrides() {
       const result = renderToStringButton({
         className: 'custom-class',
         style: { color: 'red' },
@@ -47,7 +47,7 @@ describe('@bento/button', function bento() {
       assume(result).includes('data-override="className style"');
     });
 
-    it('introduced the `pressable` slot to the Pressable component', function () {
+    it('introduced the `pressable` slot to the Pressable component', function pressable() {
       const result = renderToStringButton({
         children: <div>Press me</div>,
         slots: {

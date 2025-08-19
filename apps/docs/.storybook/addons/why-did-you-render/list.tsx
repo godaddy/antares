@@ -57,13 +57,18 @@ export const Description = styled.div({
   fontStyle: 'italic'
 });
 
-export const ListItem: React.FC<ListItemProps> = ({ item }) => {
+export const ListItem: React.FC<ListItemProps> = function ListItem({ item }) {
   const [open, onToggle] = useState(false);
 
   return (
     <Fragment>
       <Wrapper>
-        <HeaderBar onClick={() => onToggle(!open)} role="button">
+        <HeaderBar
+          onClick={function handleToggle() {
+            onToggle(!open);
+          }}
+          role="button"
+        >
           <Icon
             color={convert(themes.light).appBorderColor}
             style={{

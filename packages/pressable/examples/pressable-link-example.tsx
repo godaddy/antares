@@ -5,7 +5,7 @@ import React from 'react';
 export function PressableLinkExample() {
   return (
     <Pressable
-      onPress={() => {
+      onPress={function handlePress() {
         console.log('link pressed!');
       }}
     >

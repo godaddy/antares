@@ -30,7 +30,7 @@ describe('@bento/pressable', function bento() {
   });
 
   describe('#slots', function slots() {
-    it('renders correct [data-override] attribute values', function () {
+    it('renders correct [data-override] attribute values', function overrides() {
       const result = renderToStringPressable({
         className: 'custom-class',
         style: { color: 'red' },

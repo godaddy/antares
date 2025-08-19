@@ -83,7 +83,11 @@ export function Reason({
       }
 
       if (reason.ownerDifferences.hookDifferences) {
-        parent = reason.ownerDifferences.hookDifferences.reduce((acc: JSX.Element | null, _: any, i: number) => {
+        parent = reason.ownerDifferences.hookDifferences.reduce(function reduceHookDifferences(
+          acc: JSX.Element | null,
+          _: any,
+          i: number
+        ) {
           return (
             <Diff
               who={nextOwnerData.displayName}

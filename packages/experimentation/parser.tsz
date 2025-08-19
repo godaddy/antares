@@ -1,0 +1,50 @@
+import React, { createElement, type JSX } from 'react';
+import camelCase from 'camelcase';
+
+/**
+ * Transform SVG strings into the React.createElement counterparts.
+ *
+ * @param {string} source The SVG string that needs to be transformed.
+ * @param {object} [nodes] Optional dedicated node parsers.
+ * @param {object} [props] Optional dedicated prop parsers (style obj).
+ * @returns {JSX.Element} Transformed SVG string.
+ * @public
+ * @example
+ * ReactParser({
+ *   source: '<svg><rect x="10" y="10" width="100" height="100" stroke-width="2" class="hello" /></svg>',
+ *   props: { class: (node) => ['className', node.getAttribute('class')] }
+ * });
+ * // <svg><rect x="10" y="10" width="100" height="100" strokeWidth="2" className="hello" /></svg>
+ */
+export function ReactParser({ source, nodes={}, props = {} }): JSX.Element {
+  function create(children:NodeList):Array<JSX.Element> {
+    return Array.from(children).map((node:Element):JSX.Element => {
+      const { nodeName, attributes, childNodes } = node;
+      let Component = nodeName;
+      let attrs;
+
+      if (nodeName in nodes) [Component, attrs] = nodes[nodeName](node);
+
+      return createElement(
+        Component,
+        Array.prototype.map.call(attributes, attr => attr.name).reduce((memo:object, name:string) => {
+          let value = node.getAttribute(name);
+
+          if (name in props) [name, value] = props[name](node);
+          else name = camelCase(name);
+
+          memo[name] = value;
+
+          return memo;
+        }, attrs || {}),
+        create(childNodes)
+      );
+    });
+  }
+
+  return createElement(
+    React.Fragment, 
+    null, 
+    create((new DOMParser()).parseFromString(source, 'image/svg+xml').querySelectorAll('svg'))
+  )
+}

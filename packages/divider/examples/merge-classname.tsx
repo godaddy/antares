@@ -7,7 +7,7 @@ export const MergeClassName = withSlots('ClassNameOverrideExample', function Mer
   return (
     <Divider
       orientation="vertical"
-      className={({ original }: { original: string }) => {
+      className={function mergeClassNames({ original }: { original: string }) {
         return ['custom-divider-class', original].filter(Boolean).join(' ');
       }}
       style={{ height: '100px' }}
