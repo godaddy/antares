@@ -24,6 +24,7 @@
     "@bento/radio": "*",
     "@bento/slots": "*",
     "@bento/svg-parser": "*",
+    "@bento/text": "*",
     "@bento/to-attribute-value": "*",
     "@bento/types": "*",
     "@bento/use-data-attributes": "*",
