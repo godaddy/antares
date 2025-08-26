@@ -12,6 +12,7 @@
   "dependencies": {
     "@bento/box": "*",
     "@bento/button": "*",
+    "@bento/checkbox": "*",
     "@bento/control": "*",
     "@bento/create-external-store": "*",
     "@bento/divider": "*",
