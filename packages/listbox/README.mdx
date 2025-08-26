@@ -1,0 +1,342 @@
+import { Meta, ArgTypes, Story, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './listbox.stories.tsx';
+
+import BasicExample from './examples/basic-listbox.tsx?raw';
+import SectionsExample from './examples/sections.tsx?raw';
+import DynamicExample from './examples/dynamic-collection.tsx?raw';
+import SlotsExample from './examples/slots-dynamic-sections.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***ListBox
+
+The `@bento/listbox` package provides a flexible, accessible listbox primitive that supports both controlled and uncontrolled selection modes. Built on React Aria for interaction fidelity and designed for composition within higher-level components like Select, Combobox, and Menu.
+
+#***REMOVED***Installation
+
+```shell
+npm install --save @bento/listbox
+```
+
+#***REMOVED***Component Structure
+
+The `@bento/listbox` package exports five main components:
+
+- **ListBox**: The main container component that manages selection state, keyboard navigation, and accessibility
+- **ListBoxItem**: Individual selectable items within the listbox
+- **ListBoxSection**: Optional grouping component for organizing options into sections
+- **Header**: Accessible heading for a `ListBoxSection`, forwards props and refs for full styling control
+- **Collection**: Utility for rendering nested dynamic data inside a `ListBoxSection` (or other collection-aware context).
+
+#***REMOVED***Props
+
+The following properties are available on the `ListBox` component:
+
+<ArgTypes of={Stories.Props} />
+
+#***REMOVED***Static Items
+
+<Source language='tsx' code={BasicExample} />
+
+#***REMOVED***Sections
+
+Use `ListBoxSection` to group related options. Use `Header` inside a `ListBoxSection` to render an accessible heading for the group. It automatically links the heading to the section via `aria-labelledby`.
+
+The `<Header>` component accepts standard DOM props and a `slot` prop for Bento’s slot system, enabling fine-grained overrides in composite components.
+
+<Source language='tsx' code={SectionsExample} />
+
+#***REMOVED***Dynamic Collections
+
+For dynamic data, use the `items` prop with a render function. The ListBox component follows different patterns depending on how it's used:
+
+##***REMOVED***When `items` prop is provided
+When you provide an `items` prop, the `children` function receives **individual items** for React Aria compatibility:
+
+<Source language='tsx' code={DynamicExample} />
+
+In this pattern, `children` is called for each item in the `items` array, receiving the individual item data to render `ListBoxItem` components.
+
+##***REMOVED***When no `items` prop is provided  
+When you don't provide an `items` prop but use `children` as a function, it follows **Bento's render prop pattern** and receives an object with render props:
+
+```tsx
+<ListBox aria-label="Custom ListBox">
+  {({ isEmpty, isFocused, state, items }) => (
+    isEmpty ? (
+      <div>No items available</div>
+    ) : (
+      // Render items normally using static children or other logic
+      <ListBoxItem>Static Item</ListBoxItem>
+    )
+  )}
+</ListBox>
+```
+
+This pattern provides access to the ListBox's state, focus status, and other render props following Bento's consistent render prop API.
+
+##***REMOVED***Nested Collections with Sections
+You can also render nested data inside a section using the exported `Collection` component:
+
+<Source language='tsx' code={DynamicExample} />
+
+#***REMOVED***Customization
+
+The ListBox components provide extensive customization options through data attributes, slots, render props, and standard CSS styling. This section covers all available approaches to customize the appearance and behavior.
+
+##***REMOVED***Styling with Data Attributes
+
+All ListBox components expose their internal state through `data-` attributes, enabling CSS-based styling without JavaScript. This follows Bento's design philosophy of returning styling control to CSS.
+
+###***REMOVED***ListBox Container Attributes
+
+The main `ListBox` component exposes these data attributes:
+
+- `[data-empty]` - Applied when the listbox contains no items
+- `[data-focused]` - Applied when the listbox is focused
+- `[data-focus-visible]` - Applied when the listbox has keyboard focus
+- `[data-layout="stack"]` - The layout type (currently only "stack" supported)
+- `[data-orientation="vertical|horizontal"]` - The primary orientation
+- `[data-selection-mode="none|single|multiple"]` - The selection mode
+- `[data-selection-behavior="toggle|replace"]` - How selection behaves
+- `[data-allows-tab-navigation]` - Whether tab navigation is enabled
+- `[data-focus-wrap]` - Whether focus wraps around the collection
+
+###***REMOVED***ListBoxItem Attributes
+
+Individual `ListBoxItem` components expose these data attributes:
+
+- `[data-selected]` - Applied when the item is selected
+- `[data-disabled]` - Applied when the item is disabled
+- `[data-hovered]` - Applied when the item is being hovered
+- `[data-focused]` - Applied when the item is focused
+- `[data-focus-visible]` - Applied when the item has keyboard focus
+- `[data-pressed]` - Applied when the item is being pressed
+- `[data-level]` - The nesting level (useful for indentation)
+- `[data-selection-mode]` - Inherited selection mode
+- `[data-selection-behavior]` - Inherited selection behavior
+- `[data-text-value]` - The computed text value for the item
+
+###***REMOVED***ListBoxSection Attributes
+
+The `ListBoxSection` component exposes:
+
+- `[data-level]` - The nesting level of the section
+
+###***REMOVED***CSS Styling Examples
+
+```css
+/* Basic item styling */
+[role="option"] {
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+/* Selected items */
+[role="option"][data-selected] {
+  background: Highlight;
+  color: HighlightText;
+}
+
+/* Hovered items */
+[role="option"][data-hovered] {
+  background: color-mix(in srgb, Highlight 10%, transparent);
+}
+
+/* Disabled items */
+[role="option"][data-disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Focused items (keyboard navigation) */
+[role="option"][data-focus-visible] {
+  outline: 2px solid Highlight;
+  outline-offset: -2px;
+}
+
+/* Combined states */
+[role="option"][data-selected][data-hovered] {
+  background: color-mix(in srgb, Highlight 90%, white);
+}
+
+/* Empty state styling */
+.listbox[data-empty] {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+/* Section headers */
+.section-header {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #64748b;
+  padding: 6px 12px;
+  margin-bottom: 4px;
+}
+```
+
+##***REMOVED***Slots System
+
+The components use Bento's `@bento/slots` package for fine-grained component overrides. Slots allow you to replace or wrap specific parts of the component tree with custom implementations.
+
+###***REMOVED***Basic Slot Usage
+
+<Source language='tsx' code={SlotsExample} />
+
+###***REMOVED***Advanced Slot Patterns
+
+You can target specific items or sections using hierarchical slot names:
+
+```tsx
+// Override a specific section header
+const slots = {
+  'my-listbox.fruits.header': ({ original, props }) => (
+    <Header {...props}>🍎 {original}</Header>
+  ),
+  
+  // Override a specific item in a specific section
+  'my-listbox.fruits.apple': ({ original }) => (
+    <div className="special-item">⭐ {original}</div>
+  ),
+  
+  // Override an entire section
+  'my-listbox.vegetables': ({ original }) => (
+    <div className="veggie-section">{original}</div>
+  )
+};
+
+<ListBox slot="my-listbox" slots={slots}>
+  <ListBoxSection slot="fruits">
+    <Header slot="header">Fruits</Header>
+    <ListBoxItem slot="apple">Apple</ListBoxItem>
+    <ListBoxItem slot="orange">Orange</ListBoxItem>
+  </ListBoxSection>
+  <ListBoxSection slot="vegetables">
+    <Header slot="header">Vegetables</Header>
+    <ListBoxItem slot="carrot">Carrot</ListBoxItem>
+  </ListBoxSection>
+</ListBox>
+```
+
+##***REMOVED***Render Props
+
+The `ListBoxItem` component supports render prop patterns for dynamic content based on interaction state:
+
+```tsx
+// ListBoxItem render prop with interaction state
+<ListBoxItem>
+  {({ isSelected, isHovered, isDisabled }) => (
+    <div className={`item ${isSelected ? 'selected' : ''}`}>
+      {isHovered && '👆 '}
+      My Item
+      {isSelected && ' ✓'}
+    </div>
+  )}
+</ListBoxItem>
+```
+
+For ListBox-level render props, use the `renderEmptyState` prop to customize empty state display:
+
+```tsx
+<ListBox
+  items={items}
+  renderEmptyState={({ isEmpty, isFocused, state, items }) => (
+    <div className="empty-state">
+      {isFocused ? 'No items found (focused)' : 'No items available'}
+    </div>
+  )}
+>
+  {(item: any) => (
+    <ListBoxItem key={item.id} textValue={item.name}>
+      {item.name}
+    </ListBoxItem>
+  )}
+</ListBox>
+```
+
+##***REMOVED***Empty State Customization
+
+Customize the appearance when no items are present:
+
+```tsx
+<ListBox
+  renderEmptyState={({ isEmpty, isFocused }) => (
+    <div className="empty-state">
+      <span>📭</span>
+      <p>No items to display</p>
+      {isFocused && <p>Start typing to search...</p>}
+    </div>
+  )}
+>
+  {/* Items when present */}
+</ListBox>
+```
+
+##***REMOVED***Accessibility Customization
+
+All components support standard ARIA attributes for enhanced accessibility:
+
+```tsx
+<ListBox 
+  aria-label="Food menu"
+  aria-describedby="menu-description"
+>
+  <ListBoxSection aria-label="Main courses">
+    <Header>Main Dishes</Header>
+    <ListBoxItem aria-label="Chicken teriyaki with rice">
+      Chicken Teriyaki
+    </ListBoxItem>
+  </ListBoxSection>
+</ListBox>
+```
+
+##***REMOVED***CSS-in-JS and Styled Components
+
+The data attributes work seamlessly with CSS-in-JS libraries:
+
+```tsx
+// Styled Components
+const StyledListBox = styled.div`
+  &[data-focused] {
+    box-shadow: 0 0 0 2px blue;
+  }
+  
+  [role="option"][data-selected] {
+    background: ${props => props.theme.primary};
+  }
+`;
+
+// Emotion
+const listboxStyles = css`
+  &[data-empty] {
+    opacity: 0.5;
+  }
+`;
+```
+
+##***REMOVED***Animation and Transitions
+
+Data attributes enable smooth state transitions:
+
+```css
+[role="option"] {
+  transition: all 0.2s ease-in-out;
+  transform: translateY(0);
+}
+
+[role="option"][data-hovered] {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+[role="option"][data-pressed] {
+  transform: translateY(0);
+  transition-duration: 0.1s;
+}
+```

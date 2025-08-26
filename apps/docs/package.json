@@ -20,6 +20,7 @@
     "@bento/icon": "*",
     "@bento/illustration": "*",
     "@bento/internal-props": "*",
+    "@bento/listbox": "*",
     "@bento/pressable": "*",
     "@bento/radio": "*",
     "@bento/slots": "*",

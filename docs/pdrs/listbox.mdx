@@ -1,8 +1,8 @@
-***REMOVED***Listbox Component PDR
+***REMOVED***ListBox Component PDR
 
 #***REMOVED***Purpose
 
-The Listbox primitive provides an accessible, keyboard-navigable list of selectable options that serves as the foundation for dropdown menus, autocomplete widgets, multi-select controls, and other selection interfaces. It encapsulates complex accessibility patterns, [ARIA semantics](https://www.w3.org/TR/wai-aria-1.2/), and keyboard interactions, while remaining completely unstyled and highly composable. This component follows the [W3C ARIA Authoring Practices Guide listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
+The ListBox primitive provides an accessible, keyboard-navigable list of selectable options that serves as the foundation for dropdown menus, autocomplete widgets, multi-select controls, and other selection interfaces. It encapsulates complex accessibility patterns, [ARIA semantics](https://www.w3.org/TR/wai-aria-1.2/), and keyboard interactions, while remaining completely unstyled and highly composable. This component follows the [W3C ARIA Authoring Practices Guide listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
 
 It is essential for components like [Select](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/), [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/), Menu, and any custom selection interface where users need to choose from a list of options. This primitive allows developers to build both standardized and bespoke selection UIs, maintaining consistent accessibility and interaction behavior.
 
@@ -25,15 +25,15 @@ It is essential for components like [Select](https://www.w3.org/WAI/ARIA/apg/pat
 [React Stately]: https://react-spectrum.adobe.com/react-stately/
 
 * **SelectableList**: Core list state and keyboard navigation behavior
-* **SelectableGroup**: Section/grouping logic used by `ListboxSection`
+* **SelectableGroup**: Section/grouping logic used by `ListBoxSection`
 * **React Aria Hooks**:
 
   * [`useListBox`][useListBox]: Provides ARIA roles, selection logic, focus tracking
   * [`useOption`][useOption]: Hook for individual options with `aria-selected`, focus, press
-  * [`useListBoxSection`][useListBoxSection]: Hook for `ListboxSection` with `role=group`
+  * [`useListBoxSection`][useListBoxSection]: Hook for `ListBoxSection` with `role=group`
 * **Shared Hooks**:
 
-  * `useRenderProps`: Enables render function overrides
+  * `useProps`: Enables render function overrides
   * `useDataAttributes`: Applies state-reflective `data-*` attributes
   * `useControlledState`: Manages controlled vs uncontrolled selection state
 
@@ -57,7 +57,7 @@ This primitive is implemented as both a UI component and a composable set of beh
 * **Focus management**: Roving tabindex via React Aria
 * **Group handling**: Logical sections via `useListBoxSection`
 * **Collection utils**: Shared patterns for mapping items vs children
-* **Headless support**: Could expose `useListboxBehavior` for custom implementations
+* **Headless support**: Could expose `useListBoxBehavior` for custom implementations
 
 This is the minimal reusable unit for list-based selection components.
 
@@ -74,7 +74,7 @@ This is the minimal reusable unit for list-based selection components.
 Handling large datasets (e.g., 1000+ items) should be offloaded to a separate virtualization utility or `VirtualizedCollection` primitive. This keeps Listbox focused on accessibility and interaction logic while enabling high-performance rendering through composition. Developers are encouraged to use the `items` and render function pattern in conjunction with virtualization tools like [`react-virtual`](https://github.com/TanStack/virtual) or a shared `useVirtualizedCollection` hook for optimal scalability.
 
 **Nested Listboxes:**
-Nested listboxes (e.g., for cascaded or hierarchical menus) are **not directly supported** by this primitive. Developers who require nested selection behaviors should compose multiple `Listbox` instances manually with coordinated state, focus, and ARIA handling. Alternatively, consider using a [tree](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/) or [grid](https://www.w3.org/WAI/ARIA/apg/patterns/grid/) primitive more appropriate for hierarchical navigation.
+Nested listboxes (e.g., for cascaded or hierarchical menus) are **not directly supported** by this primitive. Developers who require nested selection behaviors should compose multiple `ListBox` instances manually with coordinated state, focus, and ARIA handling. Alternatively, consider using a [tree](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/) or [grid](https://www.w3.org/WAI/ARIA/apg/patterns/grid/) primitive more appropriate for hierarchical navigation.
 
 **Orientation Use Cases:**
 Horizontal orientation is useful in UI scenarios where selection items are arranged inline rather than stacked. Common examples include:
@@ -199,10 +199,10 @@ Bento provides the best blend of accessibility and full override support via `sl
 ##***REMOVED***Basic Usage
 
 ```tsx
-<Listbox aria-label="Fruits">
-  <Option key="apple">Apple</Option>
-  <Option key="banana">Banana</Option>
-</Listbox>
+<ListBox aria-label="Fruits">
+  <ListBoxItem key="apple">Apple</ListBoxItem>
+  <ListBoxItem key="banana">Banana</ListBoxItem>
+</ListBox>
 ```
 
 ##***REMOVED***Controlled vs Uncontrolled
@@ -210,41 +210,41 @@ Bento provides the best blend of accessibility and full override support via `sl
 ```tsx
 // Controlled
 const [selected, setSelected] = useState(new Set(['apple']));
-<Listbox selectedKeys={selected} onSelectionChange={setSelected} />
+<ListBox selectedKeys={selected} onSelectionChange={setSelected} />
 
 // Uncontrolled
-<Listbox defaultSelectedKeys={["apple"]} />
+<ListBox defaultSelectedKeys={["apple"]} />
 ```
 
 ##***REMOVED***Dynamic Items with Render Function
 
 ```tsx
-<Listbox items={items}>
-  {(item) => <Option key={item.id}>{item.name}</Option>}
-</Listbox>
+<ListBox items={items}>
+  {(item) => <ListBoxItem key={item.id}>{item.name}</ListBoxItem>}
+</ListBox>
 ```
 
 ##***REMOVED***Grouped Sections
 
 ```tsx
-<Listbox>
+<ListBox>
   <Label id="fruits-label">Fruits</Label>
-  <Section aria-labelledby="fruits-label">
-    <Option key="apple">Apple</Option>
-    <Option key="banana">Banana</Option>
-  </Section>
+  <ListBoxSection aria-labelledby="fruits-label">
+    <ListBoxItem key="apple">Apple</ListBoxItem>
+    <ListBoxItem key="banana">Banana</ListBoxItem>
+  </ListBoxSection>
   <Label id="vegetables-label">Vegetables</Label>
-  <Section aria-labelledby="vegetables-label">
-    <Option key="carrot">Carrot</Option>
-    <Option key="lettuce">Lettuce</Option>
-  </Section>
-</Listbox>
+  <ListBoxSection aria-labelledby="vegetables-label">
+    <ListBoxItem key="carrot">Carrot</ListBoxItem>
+    <ListBoxItem key="lettuce">Lettuce</ListBoxItem>
+  </ListBoxSection>
+</ListBox>
 ```
 
 ##***REMOVED***Slot Overrides and Render Props
 
 ```tsx
-<Listbox
+<ListBox
   slots={{
     item: ({ props, children, state }) => (
       <div {...props} className="custom-option">
@@ -255,22 +255,22 @@ const [selected, setSelected] = useState(new Set(['apple']));
   }}
 />
 
-<Option
+<ListBoxItem
   className={({ isSelected, isFocused }) =>
     `option ${isSelected ? 'selected' : ''} ${isFocused ? 'focused' : ''}`}
 >
   Apple
-</Option>
+</ListBoxItem>
 ```
 
 ##***REMOVED***Event Handling with Meta Object
 
 ```tsx
-<Listbox onSelectionChange={(keys, { event, state }) => {
+<ListBox onSelectionChange={(keys, { event, state }) => {
   console.log('Selected keys:', keys);
   console.log('Previous state:', state);
 }}>
-  <Option key="apple">Apple</Option>
-  <Option key="banana">Banana</Option>
-</Listbox>
+  <ListBoxItem key="apple">Apple</ListBoxItem>
+  <ListBoxItem key="banana">Banana</ListBoxItem>
+</ListBox>
 ```
