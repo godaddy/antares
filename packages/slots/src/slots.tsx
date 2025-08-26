@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import React, { useContext, memo } from 'react';
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { Box, type BoxContext } from '@bento/box';
@@ -134,7 +135,7 @@ export function withSlots<Props extends object>(
     //
     // In the case of these overrides
     //
-    if (library.has(name))
+    if (library.has(name) && !import.meta.hot)
       throw new BentoError({
         message: 'The supplied component name has already been registered.',
         method: 'withSlots',
