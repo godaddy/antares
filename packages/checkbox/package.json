@@ -49,7 +49,7 @@
     "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props",
     "@react-aria/utils": "^3.30.0",
-    "react-aria": "^3.41.1",
+    "react-aria": "^3.43.1",
     "react-stately": "^3.40.0"
   },
   "exports": {
