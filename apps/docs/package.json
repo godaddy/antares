@@ -47,7 +47,7 @@
     "remark-gfm": "^4.0.1",
     "storybook": "^9.0.16",
     "typescript": "~5.9.2",
-    "vite": "^7.1.2"
+    "vite": "^7.1.5"
   },
   "overrides": {
     "storybook": "$storybook"
