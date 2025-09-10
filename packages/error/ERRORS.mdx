@@ -12,8 +12,8 @@ that explains the error in more detail.
 If you are still having trouble understanding the error, please reach out to
 our support channel.
 
-#***REMOVED***The supplied component name has already been registered.
-<a name="AFBF4A"></a>
+#***REMOVED***The supplied component %s has already been registered.
+<a name="A6D28"></a>
 
 The `@bento/slots` component requires unique names when the component is being
 created in the `withSlots` function. The reason for this is that we want each
@@ -27,6 +27,9 @@ const YourComponentDeclaration = withSlots(/* This is where the error comes from
   // Your component logic
 });
 ```
+
+**Error message format**: The actual error will show the specific component name, for example:
+`@bento/slots(withSlots): The supplied component MyComponent has already been registered.`
 
 - The first argument of the `withSlots` function should be a unique string,
   the resulting component stored as `const` can be named anything.

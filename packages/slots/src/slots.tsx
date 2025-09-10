@@ -137,7 +137,8 @@ export function withSlots<Props extends object>(
     //
     if (library.has(name) && !import.meta.hot)
       throw new BentoError({
-        message: 'The supplied component name has already been registered.',
+        message: 'The supplied component %s has already been registered.',
+        args: [name],
         method: 'withSlots',
         name: 'slots'
       });

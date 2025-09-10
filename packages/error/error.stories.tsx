@@ -56,6 +56,15 @@ export const Optional: Story = {
         defaultValue: { summary: 'https://bento.bento/docs' },
         type: { summary: 'string' }
       }
+    },
+    args: {
+      description:
+        'The arguments to be substituted into the message template.  This is useful when you want to use %s placeholders in the message.',
+      type: 'array',
+      table: {
+        defaultValue: { summary: '[]' },
+        type: { summary: 'array' }
+      }
     }
   }
 };

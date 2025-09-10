@@ -102,6 +102,92 @@ describe('@bento/error', function errors() {
     });
   });
 
+  describe('string formatting', function formatting() {
+    it('supports string formatting with %s placeholders', function formatting() {
+      const err = new BentoError({
+        name: 'slots',
+        method: 'withSlots',
+        message: 'The supplied component %s has already been registered.',
+        args: ['MyComponent']
+      });
+
+      assume(err.message).includes(
+        '@bento/slots(withSlots): The supplied component MyComponent has already been registered.'
+      );
+    });
+
+    it('uses template for hash generation when using string formatting', function hashTemplate() {
+      const err1 = new BentoError({
+        name: 'slots',
+        method: 'withSlots',
+        message: 'The supplied component %s has already been registered.',
+        args: ['ComponentA']
+      });
+
+      const err2 = new BentoError({
+        name: 'slots',
+        method: 'withSlots',
+        message: 'The supplied component %s has already been registered.',
+        args: ['ComponentB']
+      });
+
+      // Both errors should generate the same documentation hash
+      // because they use the same template
+      const hash1 = err1.message.match(/#([A-F0-9]+)/)?.[1];
+      const hash2 = err2.message.match(/#([A-F0-9]+)/)?.[1];
+
+      assume(hash1).equals(hash2);
+      assume(err1.message).includes(
+        '@bento/slots(withSlots): The supplied component ComponentA has already been registered.'
+      );
+      assume(err2.message).includes(
+        '@bento/slots(withSlots): The supplied component ComponentB has already been registered.'
+      );
+    });
+
+    it('works without args parameter (backwards compatibility)', function backwards() {
+      const err = new BentoError({
+        name: 'package-name',
+        method: 'method-name',
+        message: 'Simple message without formatting'
+      });
+
+      assume(err.message).includes('@bento/package-name(method-name): Simple message without formatting');
+    });
+
+    it('handles multiple %s placeholders', function multiple() {
+      const err = new BentoError({
+        name: 'test',
+        method: 'testMethod',
+        message: 'Error with %s and %s parameters',
+        args: ['first', 'second']
+      });
+
+      assume(err.message).includes('@bento/test(testMethod): Error with first and second parameters');
+    });
+
+    it('handles partial %s placeholders', function partial() {
+      const err = new BentoError({
+        name: 'test',
+        method: 'testMethod',
+        message: 'Error with %s and %s parameters',
+        args: ['first']
+      });
+
+      assume(err.message).includes('@bento/test(testMethod): Error with first and %s parameters');
+    });
+
+    it('handles empty args parameter', function empty() {
+      const err = new BentoError({
+        name: 'test',
+        method: 'testMethod',
+        message: 'Error with %s and %s parameters'
+      });
+
+      assume(err.message).includes('@bento/test(testMethod): Error with %s and %s parameters');
+    });
+  });
+
   describe('Public API', function packageSuite() {
     const __dirname = dirname(fileURLToPath(import.meta.url));
 
