@@ -19,7 +19,7 @@
     "@biomejs/biome": "^2.2.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@microsoft/api-extractor": "^7.52.10",
+    "@microsoft/api-extractor": "^7.52.12",
     "@playwright/experimental-ct-react": "^1.54.2",
     "@react-types/shared": "^3.31.0",
     "@testing-library/user-event": "^14.6.1",
