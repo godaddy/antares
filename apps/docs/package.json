@@ -18,6 +18,7 @@
     "@bento/divider": "*",
     "@bento/environment": "*",
     "@bento/error": "*",
+    "@bento/heading": "*",
     "@bento/icon": "*",
     "@bento/illustration": "*",
     "@bento/internal-props": "*",

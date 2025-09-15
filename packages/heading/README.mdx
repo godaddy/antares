@@ -1,0 +1,50 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './heading.stories.tsx';
+import DefaultExample from './examples/heading.tsx?raw';
+import LevelExample from './examples/level.tsx?raw';
+import ProviderExample from './examples/provider.tsx?raw';
+import OverrideExample from './examples/override.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Heading
+
+The `@bento/heading` package exports the **Heading** component primitive.
+
+#***REMOVED***Installation
+
+```bash
+npm install --save @bento/heading
+```
+
+#***REMOVED***Props
+
+The `@bento/heading` package exports the `Heading` component:
+
+<Source language='tsx' code={ DefaultExample } />
+
+The following properties are available to be used on the `Heading` component:
+
+<ArgTypes of={Stories.Props} />
+
+#***REMOVED***Examples
+
+##***REMOVED***Level
+
+Setting the `level` prop allows you to change the HTML tag of the `Heading` component.
+Without a `level` prop, the `Heading` component will render as a `span` element.
+This is because we cannot assume the appropriate heading level for the content without context.
+
+<Source language='tsx' code={ LevelExample } />
+
+##***REMOVED***Provider
+
+The `HeadingProvider` component allows you to set the heading level for the `Heading` component by way of nesting.
+
+<Source language='tsx' code={ ProviderExample } />
+
+##***REMOVED***Override
+
+Even when using the `HeadingProvider` component, you can override the heading level by passing the `level` prop to the `Heading` component.
+
+<Source language='tsx' code={ OverrideExample } />
