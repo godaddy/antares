@@ -1,0 +1,264 @@
+***REMOVED***ScrollLock Primitive PDR
+
+#***REMOVED***Purpose
+
+The ScrollLock primitive provides a Bento-wrapped interface around React Aria's `usePreventScroll` hook, focusing primarily on API consistency and data attributes for debugging purposes.
+
+**Research Finding**: React Aria's `usePreventScroll` includes comprehensive scroll prevention and layout stability features. According to the official documentation: *"Prevents scrolling on the document body on mount, and restores it on unmount. Also ensures that content does not shift due to the scrollbars disappearing."*
+
+This research indicates that scrollbar compensation is already handled by the underlying React Aria implementation.
+
+##***REMOVED***Actual Unique Attributes
+
+Given React Aria's comprehensive implementation, the ScrollLock primitive provides:
+- **Data Attributes**: Adds debugging and styling hooks via `data-scroll-locked`
+- **Environment Integration**: Uses Bento's Box context for consistent document/window access  
+- **TypeScript Types**: Provides Bento-aligned type definitions
+- **Consistent API**: Follows Bento's hook patterns for familiarity
+- **Optional Enhancements**: Additional configuration options if needed
+
+#***REMOVED***Primitive Composition
+
+The ScrollLock primitive is built using:
+
+1. **React Aria Foundation**:
+   - `usePreventScroll` - Comprehensive scroll prevention including:
+     - Touch events, iOS Safari issues, and proper cleanup
+     - **Built-in scrollbar compensation** (prevents layout shift)
+     - Keyboard scroll prevention and scroll chain management
+     - Cross-browser normalization
+
+2. **Minimal Bento Enhancements**:
+   - Data attributes using `@bento/use-data-attributes` for debugging
+   - Consistent TypeScript types with Bento patterns
+   - API alignment with other Bento hooks
+
+Given React Aria's built-in scrollbar compensation and layout shift prevention, this primitive serves as a **thin wrapper** that adds Bento-specific conventions while leveraging the underlying functionality.
+
+#***REMOVED***Implementation Patterns
+
+| Concept             | Implementation                                               |
+|---------------------|--------------------------------------------------------------|
+| React Aria          | Direct use of usePreventScroll with all its built-in features |
+| Bento Environment   | Uses Box context for document/window access                  |
+| State Management    | React Aria manages scroll state and layout compensation     |
+| Platform Detection  | React Aria provides iOS/Android and scrollbar support      |
+| Cleanup             | React Aria manages listeners and style restoration         |
+| TypeScript          | Potentially extends PreventScrollOptions if needed          |
+
+#***REMOVED***Internal Structure & Reuse Potential
+
+Given that React Aria's `usePreventScroll` already handles scrollbar compensation, the ScrollLock primitive becomes much simpler:
+
+```tsx
+// Simplified hook structure
+export function useScrollLock(options: ScrollLockOptions = {}) {
+  // React Aria handles everything including scrollbar compensation
+  usePreventScroll(options);
+  
+  // Add minimal Bento-specific enhancements
+  useDataAttributes(options);
+  // Environment integration if needed
+}
+```
+
+**Scope Refinement**: Given React Aria's comprehensive feature set, this primitive focuses on:
+- **Data attributes**: For debugging and styling hooks
+- **API consistency**: Aligning with Bento's hook patterns
+
+The implementation leverages React Aria's existing capabilities rather than duplicating functionality.
+
+#***REMOVED***React Aria or External Hook Integration
+
+ScrollLock is built directly on top of React Aria's `usePreventScroll` hook, which provides comprehensive scroll prevention including:
+
+- Touch event handling for mobile devices
+- iOS Safari rubber-band scrolling prevention
+- Proper cleanup and restoration
+- Support for both document and element-level scroll locking
+- Chain-based scroll prevention for nested elements
+
+**Our Adoption of React Aria**:
+```tsx
+// React Aria's usePreventScroll provides the core functionality
+import { usePreventScroll } from '@react-aria/overlays';
+
+// Bento wraps it for consistency with our patterns
+import { useScrollLock } from '@bento/use-scroll-lock';
+
+function BentoModal(props) {
+  // React Aria for modal behavior
+  const { modalProps } = useModal();
+  const { overlayProps } = useOverlay(props, ref);
+  
+  // Bento wrapper around usePreventScroll
+  useScrollLock({ 
+    isDisabled: !props.isOpen,
+    preserveScrollBarGap: true // Our addition
+  });
+  
+  // Combine for complete solution
+  return <div {...modalProps} {...overlayProps} />;
+}
+```
+
+**What Bento Adds**:
+- Data attributes for debugging and styling
+- Consistent API with other Bento hooks  
+- TypeScript types aligned with Bento patterns
+
+#***REMOVED***Architecture & Features
+
+##***REMOVED***Hook API
+
+```tsx
+import { PreventScrollOptions } from '@react-aria/overlays';
+
+interface ScrollLockOptions extends PreventScrollOptions {
+  // From React Aria's PreventScrollOptions:
+  // - isDisabled?: boolean
+  // React Aria includes built-in scrollbar compensation
+  
+  // Note: Data attributes are automatically generated using @bento/use-data-attributes
+  // The hook exposes scroll lock state as data-scroll-locked="true|false"
+}
+```
+
+##***REMOVED***Implementation Details
+
+```tsx
+import { usePreventScroll } from '@react-aria/overlays';
+import { useDataAttributes } from '@bento/use-data-attributes';
+import { useLayoutEffect } from 'react';
+
+export function useScrollLock(options: ScrollLockOptions = {}) {
+  const { isDisabled = false, ...reactAriaOptions } = options;
+  
+  // React Aria provides comprehensive scroll prevention
+  usePreventScroll({
+    isDisabled,
+    ...reactAriaOptions
+  });
+  
+  // Generate data attributes for debugging
+  const dataAttributes = useDataAttributes({
+    scrollLocked: !isDisabled
+  });
+  
+  // Apply data attributes to document body
+  useLayoutEffect(() => {
+    const entries = Object.entries(dataAttributes);
+    
+    entries.forEach(([key, value]) => {
+      if (value) {
+        document.body.setAttribute(key, value);
+      }
+    });
+    
+    return () => {
+      entries.forEach(([key]) => {
+        document.body.removeAttribute(key);
+      });
+    };
+  }, [dataAttributes]);
+};
+```
+
+**Implementation Note**: React Aria's `usePreventScroll` provides the following features:
+- Scrollbar width calculation and compensation
+- Layout shift prevention  
+- Cross-browser scroll prevention
+- Touch event handling
+- iOS Safari fixes
+- Proper cleanup and restoration
+
+#***REMOVED***Accessibility Highlights
+
+React Aria's `usePreventScroll` provides comprehensive accessibility support that we inherit:
+
+- **Screen Reader Compatibility**: Doesn't interfere with virtual cursor navigation
+- **Focus Management Integration**: Works seamlessly with React Aria's `useFocusScope` and `useModal`
+- **Keyboard Support**: Prevents all keyboard-based scrolling (arrows, Page Up/Down, Home/End, spacebar)
+- **Touch Accessibility**: Handles touch events properly on mobile devices
+- **Scroll Chains**: Prevents scroll propagation through parent containers
+
+Our Bento additions maintain accessibility by:
+- **Non-intrusive**: Data attributes don't interfere with React Aria's accessibility
+- **Debug Support**: Helps with accessibility testing without affecting ARIA semantics
+
+#***REMOVED***Internationalization, RTL, and Mobile Considerations
+
+React Aria's `usePreventScroll` handles:
+- **Mobile Safari**: iOS rubber-band scrolling and position:fixed issues
+- **Android Chrome**: Touch event handling and pull-to-refresh prevention
+- **Cross-Browser**: Normalized behavior across all major browsers
+- **Touch Events**: Comprehensive touch, wheel, and keyboard event prevention
+
+Our minimal Bento wrapper ensures:
+- **Full Compatibility**: Inherits all React Aria's RTL and mobile support
+- **No Interference**: Data attributes don't affect React Aria's cross-platform behavior
+
+#***REMOVED***Data Attributes and Slot Map
+
+##***REMOVED***Expected `data-*` Attributes
+
+| Attribute                  | Description                              | Example Values    |
+|---------------------------|------------------------------------------|-------------------|
+| `data-scroll-locked`      | Indicates when scroll lock is active    | "true" / "false"  |
+
+
+Note: As a behavioral hook, ScrollLock doesn't use slots but does apply data attributes for debugging and potential styling hooks.
+
+#***REMOVED***Competitive Research
+
+- **React Aria `usePreventScroll`**: Comprehensive solution with scrollbar compensation, mobile support, and accessibility
+- **Radix UI `RemoveScroll`**: Good ref counting but less iOS support
+- **Headless UI**: Built into Dialog, not available as standalone
+- **body-scroll-lock`: Popular but abandoned, has memory leaks
+- **react-remove-scroll`: Comprehensive but heavy dependency
+
+**Key Finding**: React Aria's `usePreventScroll` is already the best-in-class solution. Our wrapper adds minimal value beyond API consistency and debugging attributes.
+
+#***REMOVED***Code Examples
+
+##***REMOVED***Basic Integration with React Aria Modal
+
+```tsx
+import { useModal, useOverlay, useDialog } from '@react-aria/overlays';
+import { useScrollLock } from '@bento/use-scroll-lock';
+import { withSlots } from '@bento/slots';
+
+export const Modal = withSlots('BentoModal', function Modal(props) {
+  const { isOpen, onClose, children } = props;
+  const ref = useRef<HTMLDivElement>(null);
+  
+  // React Aria hooks for modal behavior
+  const { overlayProps, underlayProps } = useOverlay(
+    { isOpen, onClose, isDismissable: true },
+    ref
+  );
+  const { modalProps } = useModal();
+  const { dialogProps } = useDialog({}, ref);
+  
+  // Bento scroll lock (thin wrapper around React Aria's usePreventScroll)
+  useScrollLock({ 
+    isDisabled: !isOpen
+  });
+  
+  if (!isOpen) return null;
+  
+  return (
+    <div {...underlayProps} className="underlay">
+      <div
+        {...overlayProps}
+        {...dialogProps}
+        {...modalProps}
+        ref={ref}
+        slot="modal"
+      >
+        {children}
+      </div>
+    </div>
+  );
+});
+```
