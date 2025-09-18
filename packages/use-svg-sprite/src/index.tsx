@@ -24,8 +24,8 @@ const namespace = 'http://www.w3.org/2000/svg';
  * doesn't exist. The created SVG element is hidden from view by setting its
  * display style to 'none'.
  *
- * @param {string} id - The ID of the SVG element to retrieve or create.
- * @returns {SVGSVGElement} The existing or newly created SVG element.
+ * @param id - The ID of the SVG element to retrieve or create.
+ * @returns The existing or newly created SVG element.
  * @private
  */
 function sprite(id: string): SVGSVGElement {
@@ -48,9 +48,9 @@ function sprite(id: string): SVGSVGElement {
  * sprite sheet. The hook returns a React element that references the newly
  * added symbol.
  *
- * @param {string} name - The name of the SVG that should be added to the SVG sprite sheet.
- * @param {ReactElement | undefined} Graphic - The component that renders the SVG content for the sprite sheet.
- * @returns {ReactElement | null} - A React element containing the SVG use reference or null if no component is provided.
+ * @param name - The name of the SVG that should be added to the SVG sprite sheet.
+ * @param [Graphic] - The component that renders the SVG content for the sprite sheet.
+ * @returns A React element containing the SVG use reference or null if no component is provided.
  * @public
  */
 export function useSVGSprite(name: string, Graphic: ReactElement | undefined): ReactElement | null {

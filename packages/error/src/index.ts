@@ -23,8 +23,8 @@ function replacePlaceholders(template: string, args: (string | number)[]): strin
  * Generate a small but consistent hashtag from the given message. This can
  * be used as unique identifier for the error documentation.
  *
- * @param message {string} The message to generate the hashtag from.
- * @returns {string} The generated hashtag.
+ * @param message - The message to generate the hashtag from.
+ * @returns The generated hashtag.
  * @private
  */
 function hashtag(message: string): string {
@@ -37,26 +37,49 @@ function hashtag(message: string): string {
 }
 
 /**
- * The arguments for the BentoError class.
- *
- * @interface BentoErrorArgs
- * @property {string} name The name of package that is throwing the error.
- * @property {string} method The name of the function where the error is originating.
- * @property {string} message The actual error message or template.
- * @property {(string | number)[]} [args] Arguments for message formatting when message contains placeholders.
- * @property {string} [channel] The support channel to join for support.
- * @property {string} [docs] The documentation to visit for more information.
- * @property {string} [scope] The scope of the package name.
+ * The arguments for the {@link BentoError} class.
  */
 export interface BentoErrorArgs {
+  /** The name of the package that is throwing the error. */
   name: string;
+
+  /** The name of the method that is throwing the error. */
   method: string;
+
+  /** The message that will be displayed to the user. */
   message: string;
+
+  /**
+   * The arguments to be substituted into the message template.
+   * This is useful when you want to use %s placeholders in the message.
+   */
   args?: (string | number)[];
+
+  /**
+   * The support channel that the user can use to get help.
+   * This is useful when you want to provide a direct link to the support channel that is related to the error.
+   *
+   * @default SUPPORT(#bento-support)
+   */
   channel?: string;
+
+  /**
+   * The link to the documentation that is related to the error.
+   * This is useful when you want to provide more information about the error.
+   *
+   * @default DOCS(https://bento.bento/docs)
+   */
   docs?: string;
+
+  /**
+   * The scope of the supplied package name.
+   * This is useful when you want to provide more context to the error.
+   *
+   * @default SCOPE(@bento)
+   */
   scope?: string;
 
+  /** Additional data to be assigned to the error object. */
   [key: string]: any;
 }
 
@@ -67,15 +90,7 @@ export interface BentoErrorArgs {
  * @class
  * @extends {Error}
  *
- * @param {BentoErrorArgs} args - The arguments for the BentoError.
- * @param {string} args.name - The name of package that is throwing the error.
- * @param {string} args.method - The method where the error occurred.
- * @param {string} args.message - The error message or template.
- * @param {(string | number)[]} [args.args] - Arguments for string formatting.
- * @param {string} [args.channel=SUPPORT] - The support channel for further assistance.
- * @param {string} [args.docs=DOCS] - The documentation URL for more information.
- * @param {string} [args.scope=SCOPE] - The scope of the package/name.
- * @param {...any} args.data - Additional data to be assigned to the error object.
+ * @param args - The arguments {@link BentoErrorArgs} for the BentoError.
  *
  * @example
  * // Basic usage

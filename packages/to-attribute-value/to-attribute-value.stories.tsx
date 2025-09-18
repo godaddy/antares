@@ -1,16 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Container } from './examples/container.tsx';
 
-const meta: Meta<typeof Container> = {
-  title: 'utility/to-attribute-value',
-  component: () => null
-};
+export default getMeta({
+  title: 'utility/to-attribute-value'
+});
 
-type Story = StoryObj<typeof Container>;
-
-export default meta;
-
-export const stringify: Story = {
+export const stringify = {
   tags: ['!dev', 'stable'],
   argTypes: {
     data: {
@@ -29,7 +24,7 @@ export const stringify: Story = {
   }
 };
 
-export const output: Story = {
+export const output = {
   tags: ['!dev', 'stable'],
   argTypes: {
     string: {
@@ -94,12 +89,11 @@ export const output: Story = {
   }
 };
 
-export const Demo: Story = {
+export const Demo = getStory(Container, {
   args: {
     example: ['1', '2', 'foo-bar'],
     focused: true,
     transform: { rotate: '45deg' },
     input: 'value'
-  },
-  render: (args) => <Container {...args} />
-};
+  }
+});

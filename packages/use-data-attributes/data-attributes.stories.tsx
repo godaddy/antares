@@ -1,16 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Container } from './examples/container.tsx';
 
-const meta: Meta<typeof Container> = {
-  title: 'hooks/use-data-attributes',
-  component: () => null
-};
+export default getMeta({
+  title: 'hooks/use-data-attributes'
+});
 
-type Story = StoryObj<typeof Container>;
-
-export default meta;
-
-export const useDataAttributes: Story = {
+export const useDataAttributesProps = {
   tags: ['!dev', 'stable'],
   argTypes: {
     props: {
@@ -21,12 +16,11 @@ export const useDataAttributes: Story = {
   }
 };
 
-export const Demo: Story = {
+export const Demo = getStory(Container, {
   args: {
     example: ['1', '2', 'foo-bar'],
     focused: true,
     transform: { rotate: '45deg' },
     children: 'Inspect my DOM to see the resulting data- attributes'
-  },
-  render: (args) => <Container {...args} />
-};
+  }
+});

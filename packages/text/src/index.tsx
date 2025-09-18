@@ -4,15 +4,30 @@ import React, { ReactNode } from 'react';
 import styles from './index.module.css';
 
 export interface TextProps {
-  /** @default null */
+  /**
+   * The alignment of the text.
+   */
   align?: 'start' | 'center' | 'end' | 'justify';
-  /** @default 'span' */
+
+  /**
+   * The HTML element to render the text as.
+   * @default 'span'
+   */
   as?: string;
-  /** @default null */
+
+  /**
+   * The content to display inside the text.
+   */
   children?: ReactNode;
-  /** @default null */
+
+  /**
+   * The maximum number of lines to display.
+   */
   maxLines?: number;
-  /** @default null */
+
+  /**
+   * The wrapping behavior of the text.
+   */
   wrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable';
 }
 
@@ -21,12 +36,7 @@ export interface TextProps {
  * Renders as a native text element.
  *
  * @component
- * @param {TextProps} args - The properties passed to the Text component.
- * @param {'start' | 'center' | 'end' | 'justify'} [args.align] - The alignment of the text.
- * @param {String} [args.as] - The HTML element to render the text as.
- * @param {React.ReactNode} [args.children] - The content to display inside the text.
- * @param {Number} [args.maxLines] - The maximum number of lines to display.
- * @param {'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable'} [args.wrap] - The wrapping behavior of the text.
+ * @param args - The properties {@link TextProps} passed to the Text component.
  *
  * @example
  * ```tsx

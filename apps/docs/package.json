@@ -26,6 +26,7 @@
     "@bento/pressable": "*",
     "@bento/radio": "*",
     "@bento/slots": "*",
+    "@bento/storybook-addon-helpers": "*",
     "@bento/svg-parser": "*",
     "@bento/text": "*",
     "@bento/to-attribute-value": "*",

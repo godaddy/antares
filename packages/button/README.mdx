@@ -1,4 +1,5 @@
 import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import ButtonExample from './examples/button.tsx?raw';
 import * as Stories from './button.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -15,18 +16,10 @@ npm install --save @bento/button
 
 #***REMOVED***Props
 
-The `@bento/button` package exports the `Button` component:
-
-```jsx
-import { Button } from '@bento/button';
-
-<Button onPress={() => console.log('Button pressed!')}>
-  Click me
-</Button>
-```
-
 The following properties are available to be used on the `Button` component:
 
 <ArgTypes of={Stories.Props} />
 
-Also, the `Button` component accepts all [**props**](/docs/components-pressable--overview#props) from the **Pressable** primitive, plus the standard HTML button attributes like `type`, `disabled`, `name`, `value`, etc. This means you get all the interactive features from Pressable (like `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`) while maintaining the native button functionality.
+#***REMOVED***Examples
+
+<Source language="tsx" code={ButtonExample} />

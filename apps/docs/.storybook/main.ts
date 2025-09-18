@@ -35,7 +35,8 @@ const config: StorybookConfig = {
         }
       }
     },
-    join(__dirname, './addons/why-did-you-render/index.ts')
+    join(__dirname, './addons/why-did-you-render/index.ts'),
+    '@bento/storybook-addon-helpers'
   ],
 
   framework: {

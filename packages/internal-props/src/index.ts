@@ -9,9 +9,9 @@ const namespace = ['$$bento', 'internal', major].filter(Boolean).join('-');
  * Extracts internal properties from a set of properties by removing the
  * specified prefix.
  *
- * @param {string} prefix - The prefix to remove from the properties.
- * @param {[Record<string, any>]} props - The properties to extract from.
- * @returns {[Record<string, any>, string[]]} - A tuple containing the properties
+ * @param prefix - The prefix to remove from the properties.
+ * @param props - The properties to extract from.
+ * @returns A tuple containing the properties
  * without the prefix and the internal properties with the prefix.
  * @private
  */
@@ -38,10 +38,9 @@ function explode(prefix: string, props: Record<string, any>): [Record<string, an
  * Extracts internal properties from a set of properties by removing the
  * specified prefix.
  *
- * @param {Record<string, any>} props - The properties to extract from.
- * @param {string} [prefix=namespace] - The prefix to remove from the properties.
- * @returns {[Record<string, any>, Record<string, any>]} - A tuple containing the
- * properties without the prefix and the internal properties with the prefix.
+ * @param props - The properties to extract from.
+ * @param [prefix="$$bento-internal-{major}-"] - Optional prefix to remove from the properties.
+ * @returns A tuple containing the properties without the prefix and the internal properties with the prefix.
  * @public
  */
 export function useInternalProps(
@@ -62,9 +61,9 @@ export function useInternalProps(
  * Converts a set of properties to internal properties by prefixing them with
  * the specified namespace.
  *
- * @param {Record<string, any>} props - The properties to convert.
- * @param {string} [prefix=namespace] - The prefix to use for the internal properties.
- * @returns {Record<string, any>} - The converted properties with the prefix applied.
+ * @param props - The properties to convert.
+ * @param [prefix="$$bento-internal-{major}-"] - Optional prefix to use for the internal properties.
+ * @returns The converted properties with the prefix applied.
  * @public
  */
 export function toInternalProps(props: Record<string, any>, prefix: string = namespace): Record<string, any> {

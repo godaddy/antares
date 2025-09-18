@@ -1,4 +1,12 @@
-import { usePress, useFocusRing, useHover, mergeProps, type PressProps, useFocusable } from 'react-aria';
+import {
+  usePress,
+  useFocusRing,
+  useHover,
+  mergeProps,
+  type PressProps,
+  useFocusable,
+  type PressEvent
+} from 'react-aria';
 import { mergeRefs } from '@react-aria/utils';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
@@ -7,7 +15,32 @@ import React, { type HTMLAttributes, useRef } from 'react';
 import style from './pressable.module.css';
 
 export interface PressableProps extends PressProps, Omit<HTMLAttributes<HTMLElement>, keyof PressProps> {
+  /** A single React element that will be made pressable. */
   children: React.ReactElement;
+
+  /**
+   * Handler that is called when the pressable is pressed.
+   * Similar to the standard `onClick` event, but normalized to handle all interaction methods consistently.
+   */
+  onPress?: (e: PressEvent) => void;
+
+  /** Handler that is called when a press interaction starts. */
+  onPressStart?: (e: PressEvent) => void;
+
+  /**
+   * Handler that is called when a press interaction ends, either
+   * over the target or when the pointer leaves the target.
+   */
+  onPressEnd?: (e: PressEvent) => void;
+
+  /** Handler that is called when the press state changes. */
+  onPressChange?: (isPressed: boolean) => void;
+
+  /**
+   * Handler that is called when a press is released over the target, regardless of
+   * whether it started on the target or not.
+   */
+  onPressUp?: (e: PressEvent) => void;
 }
 
 /**
@@ -16,11 +49,6 @@ export interface PressableProps extends PressProps, Omit<HTMLAttributes<HTMLElem
  * consistent behavior across devices (mouse, touch, keyboard). It handles edge cases like
  * touch movement and quick releases, and provides proper ARIA attributes for accessibility.
  *
- * @component
- * @param {PressableProps} args - The properties passed to the Pressable component.
- * @param {React.ReactElement} args.children - A single React element that will be made pressable.
- * @returns {React.ReactElement} The cloned child element with press interaction behaviors applied.
- *
  * @example
  * ```tsx
  * // Make a div pressable
@@ -28,8 +56,6 @@ export interface PressableProps extends PressProps, Omit<HTMLAttributes<HTMLElem
  *   <div>Click here</div>
  * </Pressable>
  * ```
- *
- * @public
  */
 export const Pressable = withSlots('BentoPressable', function Pressable(args: PressableProps) {
   const { props, apply } = useProps(args);

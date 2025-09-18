@@ -23,11 +23,6 @@ export interface ControlProps extends ComponentProps<'label'> {
 /**
  * The `Control` consists of a label and an visually hidden input element.
  * The label is used to describe the control and the input element is used to capture user input.
- *
- * @component
- * @param {ControlProps} args - The props passed to the Control component.
- *
- * @public
  */
 export const Control = withSlots('BentoControl', function Control(args: ControlProps) {
   const { props } = useProps(args);

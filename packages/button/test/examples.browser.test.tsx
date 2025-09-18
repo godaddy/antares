@@ -3,6 +3,7 @@ import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi, expect } from 'vitest';
 import assume from 'assume';
 import { ButtonExample } from '../examples/button.tsx';
+import { ButtonVariantsExample } from '../examples/variants.tsx';
 
 describe('@bento/button examples', function bento() {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -30,6 +31,13 @@ describe('@bento/button examples', function bento() {
 
       button?.click();
       expect(consoleLogSpy).toHaveBeenCalledWith('button pressed!');
+    });
+
+    it('renders the button with variants', function test() {
+      const { container } = render(<ButtonVariantsExample children="Variants!" />);
+      const result = container.innerHTML;
+
+      assume(result).match(/^<button[^>]*>Variants!<\/button>$/);
     });
   });
 });

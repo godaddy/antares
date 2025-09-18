@@ -3,7 +3,7 @@ import React from 'react';
 import { Divider } from '@bento/divider';
 import { withSlots } from '@bento/slots';
 
-export const MergeClassName = withSlots('ClassNameOverrideExample', function MergeClassName() {
+export const MergeClassName = withSlots('DividerClassNameOverrideExample', function MergeClassName() {
   return (
     <Divider
       orientation="vertical"

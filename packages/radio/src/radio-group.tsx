@@ -47,11 +47,6 @@ export interface RadioGroupProps
 
 /**
  * The `RadioGroup` allows a user to select a single item from a list of `Radio` components.
- *
- * @component
- * @param {RadioGroupProps} args - The props passed to the RadioGroup component.
- *
- * @public
  */
 export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args: RadioGroupProps) {
   const { errorMessage, ...restArgs } = args;

@@ -11,7 +11,7 @@ import React, { useId } from 'react';
  * @returns {JSX.Element} The rendered example component.
  * @public
  */
-export const Example = withSlots('SlotsExample', function ExampleComponent(args: Record<string, any>) {
+const Example = withSlots('SlotsExample', function ExampleComponent(args: Record<string, any>) {
   const { props } = useProps(args);
 
   return (
@@ -28,7 +28,7 @@ export const Example = withSlots('SlotsExample', function ExampleComponent(args:
  * @returns {JSX.Element} The rendered label.
  * @public
  */
-export const Label = withSlots('SlotsLabel', function LabelComponent(props: Record<string, any>) {
+const Label = withSlots('SlotsLabel', function LabelComponent(props: Record<string, any>) {
   return <label {...props}>{props.children}</label>;
 });
 

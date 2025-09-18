@@ -11,10 +11,10 @@ import { CheckboxGroupStateContext } from './checkbox-group-state';
 export interface CheckboxGroupProps
   extends AriaCheckboxGroupProps,
     Partial<Omit<ControlGroupProps, keyof AriaCheckboxGroupProps>> {
-  /** The current value (controlled). */
+  /** The current value of the checkbox group (controlled). */
   value?: string[];
 
-  /** The default value (uncontrolled). */
+  /** The default value of the checkbox group (uncontrolled). */
   defaultValue?: string[];
 
   /** Whether the input is disabled. */

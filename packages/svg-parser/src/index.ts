@@ -4,31 +4,27 @@ import camelCase from 'camelcase';
 
 /**
  * Options for configuring the parser.
- *
- * @interface ParserOptions
- * @property {Record<string, (node: Element) => [string, object]>} [nodes] -
- * An optional record of node parsers. Each key is a string representing the node type,
- * and the value is a function that takes an `Element` and returns a tuple containing
- * a string and an object: the string is the component name, and the object is the component props.
- *
- * @property {Record<string, (node: Element) => [string, string]>} [props] -
- * An optional record of property parsers. Each key is a string representing the property name,
- * and the value is a function that takes an `Element` and returns a tuple containing
- * two strings: the first is the property name, and the second is the property value.
  */
 export interface ParserOptions {
+  /**
+   * Custom node transformation functions. Each key is an SVG element name to
+   * transform, and the value is a function that returns [componentName, props]
+   */
   nodes?: Record<string, (node: Element) => [string, object]>;
+
+  /**
+   * Custom property transformation functions. Each key is an SVG attribute name to
+   * transform, and the value is a function that returns [propName, propValue]
+   */
   props?: Record<string, (node: Element) => [string, string]>;
 }
 
 /**
  * Transform SVG strings into the React.createElement counterparts.
  *
- * @param {string} source - The SVG string to be transformed.
- * @param {ParserOptions} options - The options to be used for the transformation.
- * @param {Record<string, (node: Element) => [string, object]>} options.nodes - The custom node transformation functions.
- * @param {Record<string, (node: Element) => [string, string]>} options.props - The custom prop transformation functions.
- * @returns {JSX.Element} Transformed SVG string.
+ * @param source - The SVG string to be transformed.
+ * @param options - The options to be used for the transformation.
+ * @returns Transformed SVG string.
  * @example
  * parser('<svg><rect x="10" y="10" width="100" height="100" stroke-width="2" class="hello" /></svg>', {
  *   props: {
@@ -42,8 +38,8 @@ export function parser(source: string, { nodes = {}, props = {} }: ParserOptions
   /**
    * Creates an array of JSX elements from a given NodeList.
    *
-   * @param {NodeList} children - The list of child nodes to convert into JSX elements.
-   * @returns {Array<JSX.Element>} An array of JSX elements created from the given NodeList.
+   * @param children - The list of child nodes to convert into JSX elements.
+   * @returns An array of JSX elements created from the given NodeList.
    * @public
    */
   function create(children: NodeList): Array<JSX.Element> {

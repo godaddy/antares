@@ -33,11 +33,6 @@ export interface ControlGroupProps extends ComponentProps<'div'> {
  * The `ControlGroup` is a container for a group of controls.
  * It is used to group controls with a shared label and description.
  * It also provides a standardized way to display error messages.
- *
- * @component
- * @param {ControlGroupProps} args - The props passed to the ControlGroup component.
- *
- * @public
  */
 export const ControlGroup = withSlots('BentoControlGroup', function ControlGroup(args: ControlGroupProps) {
   const { props } = useProps(args);

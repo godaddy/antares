@@ -24,6 +24,7 @@ interface ReplaceArgs<Props> {
  * @private
  */
 interface PropsOverride {
+  /** The properties of the props override. */
   props: Record<string, any>;
 }
 
@@ -31,8 +32,8 @@ interface PropsOverride {
  * Checks if the provided data is a props override instead of a component
  * override.
  *
- * @param {object} data - Determines if the data is a props override.
- * @returns {boolean} - Returns true if the data is a props override, false otherwise.
+ * @param data - The data to check.
+ * @returns Returns true if the data is a props override, false otherwise.
  * @private
  */
 function isPropsOverride(data: any): data is PropsOverride {
@@ -45,11 +46,10 @@ function isPropsOverride(data: any): data is PropsOverride {
 /**
  * Replaces a component in the context with the specified name and props.
  *
- * @param {ReplaceArgs} args - The arguments for the replace function.
- * @param {Props} args.props - The properties to be passed to the component.
- * @param {string} args.name - The name of the component to be replaced.
- * @param {BoxContext} args.context - The context containing the components.
- * @returns {Object} An object containing the updated props, the component to be replaced, and the updated context.
+ * @param args.props - The properties to be passed to the component.
+ * @param args.name - The name of the component to be replaced.
+ * @param args.context - The context containing the components.
+ * @returns An object containing the updated props, the component to be replaced, and the updated context.
  * @public
  */
 export function replace<Props extends Record<string, any>>({ props, name, context }: ReplaceArgs<Props>) {

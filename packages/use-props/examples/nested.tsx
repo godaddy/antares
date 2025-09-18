@@ -12,7 +12,7 @@ import React, { useId } from 'react';
  * @returns {JSX.Element} The rendered div element.
  * @public
  */
-export const Example = withSlots('RenderPropsExample', function ExampleComponent(args: UnknownObject) {
+const Example = withSlots('RenderPropsExample', function ExampleComponent(args: UnknownObject) {
   const { props, apply } = useProps(args);
 
   return <div {...apply({ className: 'example' })}>{props.children}</div>;
@@ -25,7 +25,7 @@ export const Example = withSlots('RenderPropsExample', function ExampleComponent
  * @returns {JSX.Element} The rendered label element.
  * @public
  */
-export const Label = withSlots('RenderPropsLabel', function LabelComponent(args: UnknownObject) {
+const Label = withSlots('RenderPropsLabel', function LabelComponent(args: UnknownObject) {
   const { props } = useProps(args);
 
   return <label {...props}>{props.children}</label>;

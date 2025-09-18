@@ -1,28 +1,27 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import { getMeta, getComponentDocs, getStory, getVariants } from '@bento/storybook-addon-helpers';
+import { Button } from './src/index.tsx';
 import { ButtonExample } from './examples/button.tsx';
+import { ButtonVariantsExample } from './examples/variants.tsx';
 
-const meta: Meta<typeof ButtonExample> = {
-  title: 'components/button',
-  component: () => null
-};
+export default getMeta({
+  title: 'components/button'
+});
 
-export default meta;
+export const Props = getComponentDocs(Button);
 
-type Story = StoryObj<typeof meta>;
+export const Default = getStory(ButtonExample);
 
-export const Props: Story = {
-  tags: ['!dev', 'stable'],
-  argTypes: {
-    childRef: {
-      description: 'A ref to the button element. This is useful if you want to access the button element directly.'
-    },
-    children: {
-      description: 'The content to display inside the button.'
+export const Styles = getVariants(ButtonVariantsExample, {
+  primary: {
+    args: {
+      onPress: () => console.log('primary pressed!'),
+      style: { backgroundColor: 'red', color: 'white' }
+    }
+  },
+  secondary: {
+    args: {
+      children: 'Secondary!',
+      style: { backgroundColor: 'blue', color: 'white' }
     }
   }
-};
-
-export const Button: Story = {
-  render: (args) => <ButtonExample {...args} />
-};
+});

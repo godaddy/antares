@@ -5,6 +5,14 @@ import { withSlots } from '@bento/slots';
 import styles from './styles.module.css';
 
 export interface DividerProps extends ComponentProps<'hr'> {
+  /** The id of the divider element. This is useful for accessibility purposes. */
+  id?: string;
+
+  /**
+   * The orientation of the divider.
+   *
+   * @default 'horizontal'
+   */
   orientation?: 'horizontal' | 'vertical';
 }
 
@@ -13,7 +21,6 @@ export interface DividerProps extends ComponentProps<'hr'> {
  *
  * @component
  * @param {DividerProps} args - The properties passed to the Divider component.
- * @param {string} [args.orientation] - The orientation of the divider, either 'horizontal' or 'vertical'.
  *
  * @example
  * ```tsx

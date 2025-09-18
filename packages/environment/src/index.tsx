@@ -3,12 +3,18 @@ import React, { useContext, type ReactElement } from 'react';
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { merge } from 'ts-deepmerge';
 
-interface EnvironmentProps {
+export interface EnvironmentProps {
+  /**
+   * The root node (Document, ShadowRoot, or Node) to use for the environment context.
+   * This will automatically update the `window` and `document` props.
+   */
   root?: Document | ShadowRoot | Node;
+
   /**
    * The child components that will have access to the configured context.
    */
   children: ReactElement;
+
   /**
    * Object that contains components that should be replaced.
    */
@@ -41,11 +47,9 @@ interface EnvironmentProps {
  * a context to its children. It merges the provided configuration into the
  * existing context and ensures that the environment (`env`) is properly set up.
  *
- * @param {EnvironmentProps} props - The props for the `Environment` component.
- * @param {React.ReactNode} props.children - The child components that will have access to the configured context.
- * @param {Record<string, any>} props.config - The configuration object containing key-value pairs to be merged into the context.
+ * @param props - The props for the `Environment` component.
  *
- * @returns {JSX.Element} A `Box.Provider` component that wraps the children with the configured context.
+ * @returns A `Box.Provider` component that wraps the children with the configured context.
  *
  * @remarks
  * - If a value in the configuration is an array, it will be concatenated with the existing array in the context.

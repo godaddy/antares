@@ -1,41 +1,17 @@
+import { getMeta, getInterfaceDocs, getStory } from '@bento/storybook-addon-helpers';
 import { SlotFunction } from './examples/slot-function.tsx';
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SlotProps } from './examples/slot-props.tsx';
-import { Button } from './examples/button.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
-import React from 'react';
+import { type Slots } from './src/slots.tsx';
 
-const meta: Meta<typeof Button> = {
-  title: 'higher-order components/slots',
-  component: () => null
-};
+export default getMeta({
+  title: 'higher-order components/slots'
+});
 
-type Story = StoryObj<typeof Button>;
+export const SlotsAPI = getInterfaceDocs<Slots>();
 
-export default meta;
-
-export const SlotsAPI: Story = {
-  tags: ['!dev', 'stable'],
-  argTypes: {
-    prop: {
-      description:
-        'A named part of a component that can be customized. This is implemented by the consuming component. The exposed slot names of a component are available in the components documentation.',
-      type: 'string'
-    },
-    props: {
-      description:
-        'An object that contains the customizations for the slots. The main way you interact with the slot system as a consumer.',
-      type: 'object',
-      table: {
-        defaultValue: { summary: '{}' },
-        type: { summary: 'object' }
-      }
-    }
-  }
-};
-
-export const withSlots: Story = {
+export const withSlots = {
   tags: ['!dev', 'stable'],
   argTypes: {
     name: {
@@ -57,7 +33,7 @@ export const withSlots: Story = {
   }
 };
 
-export const modifiers: Story = {
+export const modifiers = {
   tags: ['!dev', 'stable'],
   argTypes: {
     Component: {
@@ -87,23 +63,15 @@ export const modifiers: Story = {
   }
 };
 
-export const NestedSlots: Story = {
+export const NestedSlots = getStory(Nested, {
   args: {
     children: 'Hello World',
     id: 'button'
-  },
+  }
+});
 
-  render: (args) => <Nested {...args} />
-};
+export const MemoSlots = getStory(Memo);
 
-export const MemoSlots: Story = {
-  render: (args) => <Memo {...args} />
-};
+export const PropsSlots = getStory(SlotProps);
 
-export const PropsSlots: Story = {
-  render: (args) => <SlotProps {...args} />
-};
-
-export const FunctionalSlots: Story = {
-  render: (args) => <SlotFunction {...args} />
-};
+export const FunctionalSlots = getStory(SlotFunction);

@@ -1,36 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { BasicExample } from './examples/basic';
 import { ComplexExample } from './examples/complex';
 import { CustomNodesExample } from './examples/custom-nodes';
 import { CustomPropsExample } from './examples/custom-props';
 
-const meta: Meta = {
-  title: 'utility/svg-parser',
-  component: () => null
-};
+export default getMeta({
+  title: 'utility/svg-parser'
+});
 
-export default meta;
+export const Basic = getStory(BasicExample);
 
-export const Basic: StoryObj = {
-  name: 'Basic',
-  render: () => <BasicExample />
-};
+export const Complex = getStory(ComplexExample);
 
-export const Complex: StoryObj = {
-  name: 'Complex',
-  render: () => <ComplexExample />
-};
+export const CustomNodes = getStory(CustomNodesExample);
 
-export const CustomNodes: StoryObj = {
-  name: 'Custom Nodes',
-  render: () => <CustomNodesExample />
-};
-
-export const CustomProps: StoryObj = {
-  name: 'Custom Props',
-  render: () => <CustomPropsExample />
-};
+export const CustomProps = getStory(CustomPropsExample);
 
 export const svgParserAPI = {
   tags: ['!dev', 'stable'],

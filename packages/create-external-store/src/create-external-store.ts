@@ -1,12 +1,46 @@
 import { observer, type Observer } from './observer.ts';
 
 export interface Store {
+  /**
+   * Subscribe to changes in the store. The callback is called anytime a item in the store changes.
+   * @default subscribe((changes) => {})
+   */
   subscribe: (callback: (changes: Record<string, any>) => void) => () => void;
+
+  /**
+   * Registers an async loader function to be called when data is requested for an unknown key.
+   * @default ondemand(async (key) => {})
+   */
   ondemand: (fn: (key: string) => Promise<unknown>) => () => void;
+
+  /**
+   * Creates a function that listens for changes to a specific key.
+   * @default subscribe = only(key)
+   */
   only: (key: string | string[]) => (fn: (changes: Record<string, any>) => void) => () => void;
+
+  /**
+   * Returns a function that retrieves the value associated with the specified key from the store.
+   * @default getSnapshot = pick(key)
+   */
   pick: (key: string) => () => unknown;
+
+  /**
+   * Notify subscribers of changes in the store. This is automatically called when a item in the store changes.
+   * @default dispatch(changes)
+   */
   dispatch: (data: unknown) => void;
+
+  /**
+   * Adds data to the store, updates the snapshot, and calls the subscribers.
+   * @default set({ data: here })
+   */
   set: (data: unknown) => void;
+
+  /**
+   * Returns the current snapshot of the store.
+   * @default getSnapshot()
+   */
   getSnapshot: () => object;
 }
 

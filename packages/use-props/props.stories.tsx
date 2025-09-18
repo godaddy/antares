@@ -1,19 +1,14 @@
+import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './examples/button.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
-import React from 'react';
 
-const meta: Meta<typeof Button> = {
-  title: 'hooks/use-props',
-  component: () => null
-};
+export default getMeta({
+  title: 'hooks/use-props'
+});
 
-type Story = StoryObj<typeof Button>;
-
-export default meta;
-
-export const RenderProps: Story = {
+export const RenderProps = {
   tags: ['!dev', 'stable'],
   argTypes: {
     original: {
@@ -53,7 +48,7 @@ export const RenderProps: Story = {
   }
 };
 
-export const useProps: Story = {
+export const useProps = {
   tags: ['!dev', 'stable'],
   argTypes: {
     props: {
@@ -72,7 +67,7 @@ export const useProps: Story = {
   }
 };
 
-export const hook: Story = {
+export const hook = {
   tags: ['!dev', 'stable'],
   argTypes: {
     props: {
@@ -93,14 +88,14 @@ export const hook: Story = {
   }
 };
 
-export const Demo: Story = {
+export const Demo = getStory(Button, {
   args: {
     children: 'Hello World',
     id: 'button'
   }
-};
+});
 
-export const ComplexComponent: Story = {
+export const ComplexComponent = getStory(Nested, {
   args: {
     slots: {
       'example-container.button': {
@@ -112,11 +107,7 @@ export const ComplexComponent: Story = {
         }
       }
     }
-  },
+  }
+});
 
-  render: (args) => <Nested {...args} />
-};
-
-export const MemoProps: Story = {
-  render: (args) => <Memo {...args} />
-};
+export const MemoProps = getStory(Memo);

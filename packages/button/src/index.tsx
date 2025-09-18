@@ -7,7 +7,10 @@ import React, { ComponentProps } from 'react';
 export interface ButtonProps
   extends Omit<PressableProps, 'children'>,
     Omit<ComponentProps<'button'>, keyof PressableProps> {
+  /** A ref to the button element. This is useful if you want to access the button element directly. */
   childRef?: React.Ref<HTMLButtonElement>;
+
+  /** The content to display inside the button. */
   children: React.ReactNode;
 }
 
@@ -15,16 +18,10 @@ export interface ButtonProps
  * A complete button component built on top of the Pressable primitive.
  * Renders as a native button element with all accessibility and interaction features.
  *
- * @component
- * @param {ButtonProps} args - The properties passed to the Button component.
- * @param {React.ReactNode} args.children - The content to display inside the button.
- *
  * @example
  * ```tsx
  * <Button onPress={() => console.log('Button pressed!')}>Click me</Button>
  * ```
- *
- * @public
  */
 export const Button = withSlots('BentoButton', function Button(args: ButtonProps) {
   const { props } = useProps(args);

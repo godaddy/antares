@@ -30,11 +30,6 @@ export interface RadioProps extends AriaRadioProps, Partial<Omit<ControlProps, k
 
 /**
  * The `Radio` is a single radio option that can be selected by the user.
- *
- * @component
- * @param {RadioProps} args - The props passed to the Radio component.
- *
- * @public
  */
 export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
   const { props, apply } = useProps(args);

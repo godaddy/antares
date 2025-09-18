@@ -48,7 +48,7 @@ export interface CheckboxProps extends AriaCheckboxProps, Partial<Omit<ControlPr
  * The `Checkbox` is a single checkbox option that can be selected by the user.
  *
  * @component
- * @param {CheckboxProps} args - The props passed to the Checkbox component.
+ * @param args - The props {@link CheckboxProps} passed to the Checkbox component.
  *
  * @public
  */

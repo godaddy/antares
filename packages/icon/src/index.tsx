@@ -9,14 +9,6 @@ import { withSlots } from '@bento/slots';
 import { BentoError } from '@bento/error';
 import style from './icon.module.css';
 
-/**
- * Props for the Icon component.
- *
- * @interface IconProps
- * @extends {Omit<IllustrationProps, 'children'>}
- * @property {string} icon - The name or identifier of the icon to be displayed.
- * @property {React.ReactNode} [children] - Optional children elements to be rendered within the Icon component when the icon isn't loaded yet.
- */
 export interface IconProps extends Omit<IllustrationProps, 'children'> {
   /**
    * The name or identifier of the icon to be displayed.
@@ -24,7 +16,11 @@ export interface IconProps extends Omit<IllustrationProps, 'children'> {
   icon: string;
 
   /**
-   * The mode to use when rendering the icon.
+   * The rendering mode when outputting the icon.
+   * Either `sprite` or `svg` where `svg` will return the full SVG element,
+   * and the `sprite` mode will add the icon to the sprite sheet and reference it.
+   *
+   * @default 'svg'
    */
   mode?: 'sprite' | 'svg';
 
@@ -37,6 +33,9 @@ export interface IconProps extends Omit<IllustrationProps, 'children'> {
   // nothing. This also means that users can only style a loading state the
   // icon component if there is a placeholder provided.
   //
+  /**
+   * Optional children elements to be rendered within the Icon component when the icon isn't loaded yet.
+   */
   children?: React.ReactNode;
 }
 
@@ -50,19 +49,17 @@ export const { ondemand, set, pick, only } = createStore();
  * Icon component that renders an icon based on the provided props.
  *
  * @component
- * @param {IconProps} args - The properties passed to the Icon component.
- * @param {string} args.icon - The name or identifier of the icon to be displayed.
- * @param {React.ReactNode} [args.children] - Optional children elements to be rendered within the Icon component when the icon isn't loaded yet.
- * @param {IllustrationProps} [args] - Additional properties to be passed to the Illustration component.
+ * @param args - The properties passed to the Icon component.
+ * Additional properties to be passed to the Illustration component.
  * @throws {BentoError} Throws an error if no icon name is provided.
- * @returns {JSX.Element | null} The rendered icon or null if no drawing is available.
+ * @returns The rendered icon or null if no drawing is available.
  * @example
  * ```tsx
  * <Icon icon="home" width={ 48 } height={ 48 } fill="red" flip="horizontal" />
  * ```
  * @public
  */
-export const Icon: React.FC<IconProps> = withSlots('BentoIcon', function Iconic(args) {
+export const Icon = withSlots('BentoIcon', function Iconic(args: IconProps) {
   const [loading, setLoading] = useState(true);
   const { props, apply } = useProps(args, { loading });
   const { icon, mode, children } = props;

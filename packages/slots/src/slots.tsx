@@ -8,13 +8,17 @@ import { replace } from './replace.ts';
 
 /**
  * Interface representing a collection of slots.
- *
- * @interface Slots
- * @property {string} slot - The slot name.
- * @property {object} slots - The slots overrides.
  */
 export interface Slots {
+  /**
+   * A named part of a component that can be customized. This is implemented by the consuming component.
+   * The exposed slot names of a component are available in the components documentation.
+   */
   slot?: string;
+  /**
+   * An object that contains the customizations for the slots.
+   * The main way you interact with the slot system as a consumer.
+   */
   slots?: Record<string, object | Function>;
 }
 
@@ -29,10 +33,10 @@ export const library = new Set<string>();
  * Higher-order component that wraps a given component with slot functionality.
  * This allows components to be dynamically replaced or overridden based on the provided context and slots.
  *
- * @param {string} name - The name of the component.
- * @param {React.ComponentType} Component - The component to wrap.
- * @param {Array} [modifiers=[replace, override]] - The modifiers to apply to the component.
- * @returns {React.ComponentType} The wrapped component.
+ * @param name - The unique name of the component. This is used to identify the component for slot overrides.
+ * @param Component - The component that should be rendered.
+ * @param modifiers - The modifier functions that should be applied to the component.
+ * @returns The wrapped component.
  * @public
  *
  * @throws {BentoError} If the component name has already been registered (in development mode).

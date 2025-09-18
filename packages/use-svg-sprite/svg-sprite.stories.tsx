@@ -1,19 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useSVGSprite } from './src';
+import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { BasicUsage } from './examples/basic';
 import { MultipleIcons } from './examples/multiple';
 
-import React from 'react';
 
-const meta: Meta = {
-  title: 'Hooks/use-svg-sprite',
-  component: () => null
-};
-
-export default meta;
+export default getMeta({
+  title: 'Hooks/use-svg-sprite'
+});
 
 export const useSVGSpriteMeta = {
-  name: 'useSVGSprite',
+  tags: ['!dev', 'stable'],
   parameters: {
     controls: {
       expanded: true
@@ -33,12 +28,6 @@ export const useSVGSpriteMeta = {
   }
 };
 
-export const BasicUsageStory: StoryObj = {
-  name: 'Basic Icon',
-  render: () => <BasicUsage />
-};
+export const BasicUsageStory = getStory(BasicUsage);
 
-export const MultipleIconStory: StoryObj = {
-  name: 'Multiple Icons',
-  render: () => <MultipleIcons />
-};
+export const MultipleIconStory = getStory(MultipleIcons);

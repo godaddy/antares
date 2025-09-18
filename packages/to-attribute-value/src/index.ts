@@ -11,10 +11,10 @@ import dashify from 'dashify';
  * - `object`: Converts the object to a string by formatting each key-value pair as `key(value)`.
  * - Other types: Uses `JSON.stringify` to convert the value to a string.
  *
- * @param {any} value - The value to be converted. It can be of any type.
- * @param {string} [separator] - The separator to be used when joining array values. Defaults to a whitespace.
- * @param {Set} [seen] - A set of values that have already been processed to prevent circular references.
- * @returns {string} Representation of the value, or `undefined` if the value is `null` or `undefined`.
+ * @param value - The value to be converted. It can be of any type.
+ * @param [separator] - The separator to be used when joining array values. Defaults to a whitespace.
+ * @param [seen] - A set of values that have already been processed to prevent circular references.
+ * @returns Representation of the value, or `undefined` if the value is `null` or `undefined`.
  * @public
  */
 export function stringify(value: any = undefined, separator = ' ', seen = new WeakSet()): string | undefined {

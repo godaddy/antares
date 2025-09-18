@@ -2,9 +2,12 @@ import React, { createContext } from 'react';
 
 export type RootNode = ShadowRoot | Document | Node;
 
-export type EnvContext<Props> = {
+export interface EnvContext<Props> {
   /**
-   * Object that contains components that should be replaced.
+   * Mapping of the components that should be replaced.
+   * Where the key if the unique identifier of the function
+   * and the value the component it should be replaced with.
+   *
    */
   components: Record<string, React.ComponentType<Props> | { props: Record<string, any> }>;
 
@@ -24,11 +27,11 @@ export type EnvContext<Props> = {
   sprite: string;
 
   [key: string]: any;
-};
+}
 
-export type SlotsContext = {
+export interface SlotsContext {
   /**
-   * Object where the keys are the namespaced slot names and the value are the slot components.
+   * Object where the keys are the namespaced slot names and the values are the slot components.
    */
   assigned: Record<string, any>;
 
@@ -38,10 +41,10 @@ export type SlotsContext = {
   namespace: string[];
 
   /**
-   * Indication of a global component based override for the current component.
+   * Indicator if a `components` override has been applied to the parent or current component.
    */
   override: boolean;
-};
+}
 
 export interface BoxContext<Props> {
   /**
@@ -58,16 +61,16 @@ export interface BoxContext<Props> {
 /**
  * Default values for the Box context.
  *
- * @param {RootNode} [root] - The root node of the component.
- * @returns {BoxContext} The default values for the Box context.
+ * @param root - The root node of the component.
+ * @returns The default values for the Box context.
  * @private
  */
 export function defaults(root?: RootNode): BoxContext<any> {
   /**
    * Get the window object for the rendering context.
    *
-   * @param {Node | ShadowRoot | Document | null | undefined} root - The root node of the component.
-   * @returns {Window & typeof globalThis} The window object for the rendering context.
+   * @param root - The root node of the component.
+   * @returns The window object for the rendering context.
    * @private
    */
   function getWindow(root: Node | ShadowRoot | Document | null | undefined): Window & typeof globalThis {
@@ -79,8 +82,8 @@ export function defaults(root?: RootNode): BoxContext<any> {
   /**
    * Get the document object for the rendering context.
    *
-   * @param {Node | ShadowRoot | Document | null | undefined} root - The root node of the component.
-   * @returns {Document} The document object for the rendering context.
+   * @param root - The root node of the component.
+   * @returns The document object for the rendering context.
    * @private
    */
   function getDocument(root: Element | Window | Node | Document | null | undefined): Document {
@@ -107,7 +110,6 @@ export function defaults(root?: RootNode): BoxContext<any> {
 /**
  * Box context for managing component environment and slots.
  *
- * @type {BoxContext}
  * @public
  */
 export const Box = createContext<BoxContext<any>>(defaults());
