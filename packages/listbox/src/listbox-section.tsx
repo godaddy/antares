@@ -1,6 +1,5 @@
 import React, { forwardRef, useRef, useContext } from 'react';
 import { useListBoxSection, mergeProps } from 'react-aria';
-import { filterDOMProps } from '@react-aria/utils';
 import { createBranchComponent } from '@react-aria/collections';
 import { CollectionRendererContext } from 'react-aria-components';
 import type { Node } from '@react-types/shared';
@@ -14,7 +13,7 @@ import { ListStateContext } from './listbox';
  * Props for the ListBoxSection component.
  * @interface ListBoxSectionProps
  */
-export interface ListBoxSectionProps {
+export interface ListBoxSectionProps extends Omit<React.ComponentProps<'section'>, 'title'> {
   /**
    * A slot name for the component. Used by Bento's slot system.
    */
@@ -27,10 +26,6 @@ export interface ListBoxSectionProps {
    * The children of the section.
    */
   readonly children?: React.ReactNode;
-  /**
-   * ARIA label for the section.
-   */
-  readonly 'aria-label'?: string;
 }
 
 /**
@@ -83,10 +78,7 @@ const BentoListBoxSectionImpl = withSlots(
       'aria-label': props['aria-label']
     });
 
-    const composed = mergeProps(
-      apply({ ...data, ...filterDOMProps(props) }, ['children', 'title', 'slot']),
-      groupProps
-    );
+    const composed = mergeProps(apply({ ...data, ...props }, ['children', 'title', 'slot']), groupProps);
 
     const sectionContent = children || props.children;
 

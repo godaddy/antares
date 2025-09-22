@@ -1,6 +1,5 @@
 import React, { ForwardedRef, ReactNode, createContext, useContext, useMemo, forwardRef } from 'react';
 import { mergeProps, useOption, useHover } from 'react-aria';
-import { filterDOMProps } from '@react-aria/utils';
 import { createLeafComponent } from '@react-aria/collections';
 import { HoverEvents, Key, LinkDOMProps, Node } from '@react-types/shared';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -83,7 +82,10 @@ export interface ListBoxItemRenderProps {
  * @interface ListBoxItemProps
  * @template T The type of the item value
  */
-export interface ListBoxItemProps<T = object> extends LinkDOMProps, HoverEvents {
+export interface ListBoxItemProps<T = object>
+  extends LinkDOMProps,
+    HoverEvents,
+    Omit<React.HTMLAttributes<HTMLElement>, keyof LinkDOMProps | keyof HoverEvents | 'id' | 'children'> {
   /** The unique id of the item. If not provided, React Aria will auto-generate one. */
   readonly id?: Key;
   /** The object value that this item represents. When using dynamic collections, this is set automatically. */
@@ -97,24 +99,12 @@ export interface ListBoxItemProps<T = object> extends LinkDOMProps, HoverEvents 
   readonly onAction?: () => void;
   /** The contents of the item. Can be a render function that receives render props. */
   readonly children?: ReactNode | ((values: ListBoxItemRenderProps) => ReactNode);
-  /** Where to display the linked URL, as the name for a browsing context. */
-  readonly target?: React.HTMLAttributeAnchorTarget;
-  /** The relationship of the linked URL as space-separated link types. */
-  readonly rel?: string;
-  /** Causes the browser to download the URL instead of navigating to it. */
-  readonly download?: boolean | string;
-  /** A space-separated list of URLs to ping when the link is followed. */
-  readonly ping?: string;
-  /** How much of the referrer to send when following the link. */
-  readonly referrerPolicy?: React.HTMLAttributeReferrerPolicy;
   /**
    * A slot name for the component. Used by Bento's slot system.
    */
   readonly slot?: string;
   /** Whether the item is disabled. */
   readonly isDisabled?: boolean;
-  /** ARIA label for the item. */
-  readonly 'aria-label'?: string;
 }
 
 /**
@@ -169,7 +159,7 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
 
   const content = typeof props.children === 'function' ? props.children(renderValues) : props.children;
 
-  const { props: finalProps, apply } = useProps(props, renderValues);
+  const { apply } = useProps(props, renderValues);
 
   const dataAttributes = useDataAttributes({
     selected: states.isSelected,
@@ -197,19 +187,20 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
 
   const ElementType = __node.props.href ? 'a' : 'div';
 
+  // Use original node props (which contain className) not filtered finalProps
+  const appliedUserProps = apply(__node.props, ['ref']);
+
+  const finalAttributes = {
+    ...mergeProps(optionProps, hoverProps), // React Aria props
+    ...dataAttributes, // Bento data attributes
+    ...appliedUserProps,
+    ref: safeRef,
+    'data-text-value': __node.textValue
+  };
+
   return (
     <TextContext.Provider value={textContext}>
-      {React.createElement(
-        ElementType,
-        apply({
-          ...filterDOMProps(finalProps),
-          ...mergeProps(optionProps, hoverProps),
-          ...dataAttributes,
-          ref: safeRef,
-          'data-text-value': __node.textValue
-        }),
-        content
-      )}
+      {React.createElement(ElementType, finalAttributes, content)}
     </TextContext.Provider>
   );
 };
@@ -229,12 +220,6 @@ export const ListBoxItemImpl = withSlots('BentoListBoxItem', forwardRef(ListBoxI
  *
  * @template T - The type of the item value
  * @param {ListBoxItemProps<T>} props - ListBoxItem component props
- * @param {React.ReactNode | ((values: ListBoxItemRenderProps) => React.ReactNode)} [props.children] - Content to render, can be static or render function
- * @param {Key} [props.id] - Unique identifier for the item
- * @param {T} [props.value] - Object value that this item represents
- * @param {string} [props.textValue] - String representation for typeahead functionality
- * @param {() => void} [props.onAction] - Handler for user actions on the item
- * @param {boolean} [props.isDisabled] - Whether the item is disabled
  * @param {React.ForwardedRef<HTMLDivElement>} forwardedRef - Ref forwarded from the collection system
  * @param {Node<T>} item - React Aria node containing item metadata and collection info
  * @returns {React.ReactElement} The ListBoxItemImpl component with proper node and ref wiring
@@ -267,6 +252,4 @@ const ListBoxItemBase = createLeafComponent('item', ListBoxItemComponent);
  * ```
  * @public
  */
-export const ListBoxItem = ListBoxItemBase as <T extends object = object>(
-  props: ListBoxItemProps<T>
-) => React.ReactElement;
+export const ListBoxItem = ListBoxItemBase;

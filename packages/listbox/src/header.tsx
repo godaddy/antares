@@ -1,5 +1,4 @@
 import React, { forwardRef, createContext, useContext } from 'react';
-import { filterDOMProps } from '@react-aria/utils';
 import { createLeafComponent } from '@react-aria/collections';
 import { useProps } from '@bento/use-props';
 import { withSlots, type Slots } from '@bento/slots';
@@ -8,7 +7,7 @@ import { withSlots, type Slots } from '@bento/slots';
  * Props for the Header component.
  * @interface HeaderProps
  */
-export interface HeaderProps extends Slots {
+export interface HeaderProps extends Slots, React.ComponentProps<'header'> {
   /**
    * The children of the header.
    */
@@ -46,8 +45,8 @@ export const HeaderContext = createContext<HeaderContextValue>({});
 
 /**
  * Internal implementation of the BentoHeader component with slots support.
- * This component handles prop processing, context integration, and DOM prop filtering.
- * It merges props from useProps, HeaderContext, and standard DOM attributes.
+ * This component handles prop processing and context integration.
+ * It merges props from useProps and HeaderContext while preserving styling props.
  *
  * @internal
  */
@@ -57,10 +56,13 @@ const BentoHeaderImpl = withSlots(
     const { props: processedProps, apply } = useProps(props);
     const contextProps = useContext(HeaderContext);
 
-    const composed = apply({
-      ...filterDOMProps(processedProps),
-      ...contextProps
-    });
+    // Apply user props directly (preserves className, style, etc.)
+    const appliedUserProps = apply(processedProps);
+
+    const composed = {
+      ...contextProps,
+      ...appliedUserProps // User props take precedence over context
+    };
 
     return (
       <header {...composed} ref={contextProps.ref || ref}>

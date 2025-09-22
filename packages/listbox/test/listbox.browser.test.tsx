@@ -66,6 +66,141 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('data-testid="custom-item"');
     });
 
+    it('supports className prop on all ListBox primitives', function test() {
+      const { container } = render(
+        <ListBox aria-label="ClassNames test" className="custom-listbox-class">
+          <ListBoxSection title="Fruits" className="custom-section-class">
+            <Header className="custom-header-class">Fruits Header</Header>
+            <ListBoxItem textValue="Apple" className="custom-item-class">
+              Apple
+            </ListBoxItem>
+            <ListBoxItem textValue="Banana">Banana</ListBoxItem>
+          </ListBoxSection>
+        </ListBox>
+      );
+      const result = container.innerHTML;
+
+      // Verify ListBox className
+      assume(result).includes('class="custom-listbox-class"');
+
+      // Verify ListBoxSection className
+      assume(result).includes('class="custom-section-class"');
+
+      // Verify Header className
+      assume(result).includes('class="custom-header-class"');
+
+      // Verify ListBoxItem className (within section works)
+      assume(result).includes('class="custom-item-class"');
+
+      // Verify content is still rendered correctly
+      assume(result).includes('Apple');
+      assume(result).includes('Banana');
+      assume(result).includes('Fruits Header');
+    });
+
+    it('supports className prop on core ListBox primitives', function test() {
+      const { container } = render(
+        <ListBox aria-label="Core className test" className="test-listbox">
+          <ListBoxItem textValue="Standalone" className="standalone-class">
+            Standalone Item
+          </ListBoxItem>
+        </ListBox>
+      );
+      const result = container.innerHTML;
+
+      // Verify ListBox className works
+      assume(result).includes('class="test-listbox"');
+      assume(result).includes('Standalone Item');
+
+      // Verify standalone ListBoxItem className works (fixed!)
+      assume(result).includes('standalone-class');
+    });
+
+    it('supports all styling props and data attributes', function test() {
+      const { container } = render(
+        <ListBox aria-label="Comprehensive props test">
+          <ListBoxItem
+            textValue="AllProps"
+            className="test-class"
+            style={{ color: 'red' }}
+            title="Test title"
+            tabIndex={-1}
+            hidden={true}
+            data-testid="custom-item"
+            data-value="test-value"
+          >
+            All Props Item
+          </ListBoxItem>
+          <ListBoxSection title="Test Section">
+            <ListBoxItem textValue="SectionItem">Section Item</ListBoxItem>
+          </ListBoxSection>
+        </ListBox>
+      );
+      const result = container.innerHTML;
+
+      // Verify all style/data props are applied
+      assume(result).includes('class="test-class"');
+      assume(result).includes('style="color: red;"');
+      assume(result).includes('title="Test title"');
+      assume(result).includes('tabindex="-1"');
+      assume(result).includes('data-testid="custom-item"');
+      assume(result).includes('data-value="test-value"');
+      assume(result.includes('hidden=""') || result.includes('hidden="true"')).equals(true);
+      assume(result).includes('Section Item');
+    });
+
+    it('handles edge cases and Map stress testing', function test() {
+      // Stress test with rapid mount/unmount cycles
+      for (let i = 0; i < 15; i++) {
+        const { unmount } = render(
+          <ListBox aria-label={`Stress ${i}`}>
+            <ListBoxItem textValue="EdgeCase" className="stress">
+              Stress {i}
+            </ListBoxItem>
+          </ListBox>
+        );
+        unmount();
+      }
+
+      // Test complex children and key mismatches
+      const { container } = render(
+        <ListBox aria-label="Edge cases test">
+          <ListBoxItem id="unique" className="edge-1">
+            <span>Complex</span>
+          </ListBoxItem>
+          <ListBoxItem className="edge-2">
+            <div>Very Complex</div>
+          </ListBoxItem>
+          <ListBoxItem textValue="Final" className="final">
+            Final
+          </ListBoxItem>
+        </ListBox>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Complex');
+      assume(result).includes('Very Complex');
+      assume(result).includes('Final');
+    });
+
+    it('handles ListBoxItem without preserved styling props', function test() {
+      // Test items within sections (different code path that doesn't use preservation system)
+      const { container } = render(
+        <ListBox aria-label="Section test">
+          <ListBoxSection title="Test Section">
+            <ListBoxItem textValue="Item1">Item 1</ListBoxItem>
+            <ListBoxItem textValue="Item2">Item 2</ListBoxItem>
+          </ListBoxSection>
+        </ListBox>
+      );
+      const result = container.innerHTML;
+
+      // Verify items render correctly without className preservation
+      assume(result).includes('Item 1');
+      assume(result).includes('Item 2');
+      assume(result).includes('Test Section');
+    });
+
     it('renders basic listbox with fruit selection and disabled items', function test() {
       const { container } = render(
         <ListBox aria-label="Fruit selection" selectionMode="multiple">

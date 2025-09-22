@@ -9,7 +9,6 @@ import {
   ListKeyboardDelegate
 } from 'react-aria';
 import { ListState, SelectionBehavior, useListState, Orientation, Node } from 'react-stately';
-import { filterDOMProps } from '@react-aria/utils';
 import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
 import { AriaListBoxProps } from '@react-types/listbox';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -64,15 +63,10 @@ export interface ListBoxRenderProps {
  * @interface ListBoxProps
  * @template T The type of items in the collection
  */
-export interface ListBoxProps<T> extends Omit<AriaListBoxProps<T>, 'label' | 'children'>, Slots {
-  /**
-   * The element's unique identifier.
-   */
-  readonly id?: string;
-  /**
-   * CSS class name to apply to the listbox.
-   */
-  readonly className?: string;
+export interface ListBoxProps<T>
+  extends Omit<AriaListBoxProps<T>, 'label' | 'children'>,
+    Omit<React.ComponentProps<'div'>, keyof AriaListBoxProps<T> | 'children'>,
+    Slots {
   /**
    * How multiple selection should behave in the collection.
    */
@@ -302,15 +296,6 @@ function useComposedProps({
 }) {
   const { apply } = useProps(otherProps, renderValues);
 
-  const baseProps = {
-    ...filterDOMProps(otherProps, { labelable: true }),
-    ...mergeProps(listBoxProps, focusProps),
-    ...dataAttributes,
-    ...(selectionManager.selectionMode !== 'none' && {
-      'aria-multiselectable': selectionManager.selectionMode === 'multiple'
-    })
-  };
-
   const propsToExclude = [
     'renderEmptyState',
     'selectionMode',
@@ -324,17 +309,28 @@ function useComposedProps({
     'keyboardDelegate'
   ];
 
-  //
-  // Apply props but don't include ref in the processing to avoid extensibility issues
-  //
-  const appliedProps = apply(baseProps, propsToExclude) as Record<string, unknown>;
+  // Apply user props directly (preserves className, style, etc.)
+  const appliedUserProps = apply(otherProps, propsToExclude);
+
+  // React Aria and Bento props
+  const baseProps = {
+    ...mergeProps(listBoxProps, focusProps),
+    ...dataAttributes,
+    ...(selectionManager.selectionMode !== 'none' && {
+      'aria-multiselectable': selectionManager.selectionMode === 'multiple'
+    })
+  };
 
   //
-  // Set ref directly on the final object to avoid Proxy extensibility issues
+  // Merge all props together with user props taking precedence
   //
-  appliedProps.ref = listBoxRef;
+  const finalProps = {
+    ...baseProps,
+    ...appliedUserProps,
+    ref: listBoxRef // Set ref directly to avoid extensibility issues
+  };
 
-  return appliedProps;
+  return finalProps;
 }
 
 /**
