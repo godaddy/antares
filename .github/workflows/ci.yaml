@@ -23,7 +23,9 @@ jobs:
         run: |
           npm ci
           npx playwright install
+      - name: Build Packages (CI-Safe)
+        run: npm run build:ci
       - name: Run Unit Tests
-        run: npm test
+        run: npm test -- --concurrency=1
       - name: Run Linting
         run: npm run lint

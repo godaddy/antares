@@ -28,5 +28,3 @@ export function SectionsDynamicExample({ categories, ...args }: any) {
     </ListBox>
   );
 }
-
-export default SectionsDynamicExample;

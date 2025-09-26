@@ -2,7 +2,6 @@ import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { BasicUsage } from './examples/basic';
 import { MultipleIcons } from './examples/multiple';
 
-
 export default getMeta({
   title: 'Hooks/use-svg-sprite'
 });

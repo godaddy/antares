@@ -9,7 +9,7 @@ export const ssr = {
     include: ['./test/**/*.node.test.{ts,tsx}'],
     environment: 'node',
     plugins: [react(), tsconfigPaths()]
-  },
+  }
 };
 
 export const browser = {

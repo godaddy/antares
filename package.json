@@ -2,21 +2,29 @@
   "name": "bento",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://github.com/godaddy/bento/tree/main",
   "scripts": {
     "build": "turbo build",
-    "postinstall": "turbo telemetry disable && npm run build",
+    "build:ci": "turbo build --concurrency=1",
     "clean": "npm exec --workspaces -- npx rimraf node_modules .turbo dist && npx rimraf node_modules .turbo",
+    "deps:check": "syncpack list-mismatches && knip --reporter=symbols",
+    "deps:fix": "syncpack fix-mismatches",
     "format": "biome check",
+    "format:package": "syncpack format",
     "lint": "turbo lint",
+    "postinstall": "turbo telemetry disable && npm run build",
     "prepare": "husky",
     "test": "turbo test",
     "test:root": "vitest",
     "test:visual": "playwright test -c playwright-ct.config.ts"
   },
+  "homepage": "https://github.com/godaddy/bento/tree/main",
   "devDependencies": {
+    "@bento/storybook-addon-helpers": "file:./packages/storybook-addon-helpers",
     "@bento/types": "file:./packages/types",
     "@biomejs/biome": "^2.2.0",
+    "@storybook/react": "^9.1.6",
+    "@storybook/react-vite": "^9.1.6",
+    "vite": "^7.1.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@microsoft/api-extractor": "^7.52.13",
@@ -26,26 +34,26 @@
     "@types/css-modules": "^1.0.5",
     "@types/dashify": "^1.0.3",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^24.5.0",
+    "@types/node": "^24.5.2",
     "@vitejs/plugin-react": "^5.0.2",
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.0.7",
     "assume": "^2.3.0",
     "browserslist-to-esbuild": "^2.1.1",
-    "c8": "^10.1.3",
     "esbuild": "^0.25.9",
     "husky": "^9.1.7",
+    "knip": "^5.64.0",
     "lint-staged": "^16.1.6",
     "playwright": "^1.50.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-frame-component": "^5.2.7",
     "rimraf": "^6.0.1",
+    "syncpack": "^13.0.4",
     "tsup": "^8.5.0",
-    "tsx": "^4.20.4",
     "turbo": "^2.5.6",
-    "typescript": "5.9.2",
+    "typescript": "^5.9.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.7",
     "vitest-browser-react": "^1.0.1"
@@ -54,15 +62,15 @@
     "node": ">=23",
     "npm": ">=10"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,json}": [
+      "biome lint --write",
+      "biome format --write"
+    ]
+  },
   "packageManager": "npm@10.9.0",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs}": [
-      "biome lint --fix",
-      "biome format --fix"
-    ]
-  }
+  ]
 }

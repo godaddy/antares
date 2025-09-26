@@ -20,9 +20,9 @@
   },
   "keywords": [
     "bento",
-    "react",
     "component",
     "library",
+    "react",
     "store"
   ],
   "author": "GoDaddy Operating Company, LLC",
@@ -36,6 +36,10 @@
     "src",
     "package.json"
   ],
+  "devDependencies": {
+    "@bento/slots": "file:../slots",
+    "@bento/use-props": "file:../use-props"
+  },
   "exports": {
     ".": {
       "import": {

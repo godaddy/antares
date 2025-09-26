@@ -80,12 +80,12 @@ describe('getComponentDocs', function getComponentDocsSuite() {
 
 describe('getInterfaceDocs', function getInterfaceDocsSuite() {
   it('should pass type checking', function typeChecking() {
-    const actual = getInterfaceDocs<{ a: string, b: number }>();
+    const actual = getInterfaceDocs<{ a: string; b: number }>();
 
-    expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string, b: number }>>();
+    expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string; b: number }>>();
 
     // @ts-expect-error invalid type
-    expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string, b: string }>>();
+    expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string; b: string }>>();
   });
 });
 

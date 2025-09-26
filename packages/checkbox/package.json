@@ -18,14 +18,14 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "bento",
-    "react",
-    "component",
-    "library",
-    "checkbox",
-    "interactive",
     "accessibility",
-    "aria"
+    "aria",
+    "bento",
+    "checkbox",
+    "component",
+    "interactive",
+    "library",
+    "react"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -38,10 +38,6 @@
     "src",
     "package.json"
   ],
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
-  },
   "dependencies": {
     "@bento/control": "file:../control",
     "@bento/icon": "file:../icon",
@@ -51,6 +47,10 @@
     "@react-aria/utils": "^3.30.0",
     "react-aria": "^3.43.1",
     "react-stately": "^3.40.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

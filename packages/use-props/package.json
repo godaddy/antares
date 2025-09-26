@@ -20,13 +20,13 @@
   },
   "keywords": [
     "bento",
-    "react",
     "component",
     "library",
-    "renderprops",
     "props",
+    "react",
+    "render",
     "render-props",
-    "render"
+    "renderprops"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -39,13 +39,14 @@
     "src",
     "package.json"
   ],
+  "dependencies": {
+    "@bento/box": "file:../box",
+    "@bento/internal-props": "file:../internal-props",
+    "@bento/types": "file:../types"
+  },
   "peerDependencies": {
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"
-  },
-  "dependencies": {
-    "@bento/box": "file:../box",
-    "@bento/internal-props": "file:../internal-props"
   },
   "exports": {
     ".": {

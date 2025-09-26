@@ -12,7 +12,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "attributePosition": "auto",
-    "includes": ["**", "!**/package-lock.json", "!**/package.json"]
+    "includes": ["**", "!**/package-lock.json", "!.grit/**"]
   },
   "assist": { "actions": { "source": { "organizeImports": "off" } } },
   "plugins": [

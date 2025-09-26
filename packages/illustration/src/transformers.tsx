@@ -9,7 +9,7 @@ import React, { type ReactElement } from 'react';
  * @property {'horizontal' | 'vertical'} [flip] - Optional flip direction. Can be 'horizontal' or 'vertical'.
  * @property {string} viewBox - The viewBox attribute defines the position and dimension, in user space, of an SVG viewport.
  */
-export interface TransformProps {
+interface TransformProps {
   rotate?: 90 | 180 | 270;
   flip?: 'horizontal' | 'vertical';
   viewBox: string;
@@ -24,7 +24,7 @@ export interface TransformProps {
  * @property {number} width - The width of the viewBox.
  * @property {number} height - The height of the viewBox.
  */
-export type viewBox = {
+type viewBox = {
   left: number;
   top: number;
   width: number;

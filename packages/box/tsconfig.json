@@ -3,6 +3,6 @@
   "include": ["./src", "./test", "./examples"],
   "compilerOptions": {
     "rootDir": "./",
-    "declarationDir": "./dist",
+    "declarationDir": "./dist"
   }
 }

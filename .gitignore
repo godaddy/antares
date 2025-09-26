@@ -14,6 +14,7 @@ node_modules
 
 ***REMOVED***Testing
 coverage
+coverage-html
 
 ***REMOVED***Turbo
 .turbo
@@ -39,6 +40,7 @@ yarn-error.log*
 
 !.vscode/*
 storybook-static
+debug-storybook.log
 
 ***REMOVED***Playwright
 /test-results/

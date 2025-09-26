@@ -6,7 +6,7 @@ export const shared: Options = {
   sourcemap: true,
   clean: true,
   treeshake: true,
-  loader: {'.css': 'copy'},
+  loader: { '.css': 'copy' },
   target: browserslistToEsbuild(),
   dts: true
 };

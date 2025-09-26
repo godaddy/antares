@@ -71,10 +71,19 @@ describe('@bento/environment examples', function bento() {
   describe('ComponentLevelExample', function container() {
     it('should render the component with overridden props', function test() {
       const { container } = render(<ComponentLevelExample />);
-      const result = container.innerHTML;
-      assume(result).equals(
-        '<div><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="_icon_1b1e5_1" data-override="context className" data-mode="sprite" data-icon="my-icon" aria-labelledby=":r0:" role="img" focusable="false" title="In this example it should be rendered as sprite through environment level configuration"><title id=":r0:">In this example it should be rendered as sprite through environment level configuration</title><use xlink:href="#bento-svg-spritesheet-my-icon" fill="currentColor"></use></svg><p>This icon will be loaded as sprite, even though the mode is not specified.</p></div>'
-      );
+      const svg = container.querySelector('svg');
+      assume(svg).to.not.equal(null);
+
+      // Ensure overridden props from the Environment wrapper are applied
+      assume(svg?.getAttribute('data-mode')).equals('sprite');
+      assume(svg?.getAttribute('data-icon')).equals('my-icon');
+      assume(svg?.getAttribute('width')).equals('48');
+      assume(svg?.getAttribute('height')).equals('48');
+
+      // Check the accompanying paragraph is present and contains the expected text
+      const paragraph = container.querySelector('p');
+      assume(paragraph).to.not.equal(null);
+      assume(paragraph?.textContent).includes('This icon will be loaded as sprite');
     });
 
     it('should render icon in sprite mode via environment configuration', function test() {

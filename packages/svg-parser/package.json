@@ -20,9 +20,9 @@
   },
   "keywords": [
     "bento",
-    "react",
     "component",
     "library",
+    "react",
     "svg",
     "vector"
   ],
@@ -57,4 +57,4 @@
     },
     "./package.json": "./package.json"
   }
-} 
+}

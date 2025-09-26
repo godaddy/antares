@@ -18,16 +18,15 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "bento",
-    "react",
-    "component",
-    "library",
-    "heading",
-    "interactive",
     "accessibility",
     "aria",
-    "typography",
-    "heading"
+    "bento",
+    "component",
+    "heading",
+    "interactive",
+    "library",
+    "react",
+    "typography"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -40,15 +39,14 @@
     "src",
     "package.json"
   ],
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
-  },
   "dependencies": {
     "@bento/slots": "file:../slots",
     "@bento/text": "file:../text",
-    "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

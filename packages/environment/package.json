@@ -19,13 +19,13 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
+    "application",
     "bento",
-    "react",
     "component",
-    "library",
-    "environment",
     "configure",
-    "application"
+    "environment",
+    "library",
+    "react"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -38,14 +38,15 @@
     "src",
     "package.json"
   ],
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
-  },
   "dependencies": {
     "@bento/box": "file:../box",
     "@bento/slots": "file:../slots",
-    "ts-deepmerge": "^7.0.3"
+    "ts-deepmerge": "^7.0.3",
+    "use-deep-compare": "^1.3.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

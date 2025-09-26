@@ -52,6 +52,16 @@ describe('@bento/heading', function bento() {
     assume(result).match(/^<h1[^>]*>Handgloves<\/h1>$/);
   });
 
+  it('renders as span when level is not a number', function invalidLevel() {
+    const result = renderToStringHeading({
+      children: 'Handgloves',
+      // @ts-expect-error - Testing runtime behavior with invalid level type
+      level: 'invalid'
+    });
+
+    assume(result).match(/^<span[^>]*>Handgloves<\/span>$/);
+  });
+
   describe('#slots', function slots() {
     it('renders correct [data-override] attribute values', function dataOverride() {
       const result = renderToStringHeading({
@@ -87,6 +97,16 @@ describe('@bento/heading', function bento() {
       assume(result).includes('<h1');
       assume(result).includes('<h2');
       assume(result).includes('<h3');
+    });
+
+    it('HeadingProvider with level prop still uses context', function providerWithLevel() {
+      const result = renderToString(
+        <HeadingProvider level={5}>
+          <Heading>Level should be 1</Heading>
+        </HeadingProvider>
+      );
+
+      assume(result).includes('<h1');
     });
 
     const __dirname = dirname(fileURLToPath(import.meta.url));

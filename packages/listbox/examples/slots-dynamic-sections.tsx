@@ -104,5 +104,3 @@ export function SlotsDynamicSectionsExample({ categories, ...args }: any) {
     </ListBox>
   );
 }
-
-export default SlotsDynamicSectionsExample;

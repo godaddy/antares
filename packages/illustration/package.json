@@ -19,18 +19,18 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "bento",
-    "react",
-    "component",
-    "library",
-    "illustration",
-    "svg",
-    "vector",
-    "graphic",
     "asset",
+    "bento",
+    "component",
+    "graphic",
+    "icon",
+    "illustration",
     "image",
+    "library",
     "picture",
-    "icon"
+    "react",
+    "svg",
+    "vector"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -46,6 +46,7 @@
   "dependencies": {
     "@bento/slots": "file:../slots",
     "@bento/to-attribute-value": "file:../to-attribute-value",
+    "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props"
   },
   "exports": {

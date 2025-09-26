@@ -18,14 +18,14 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
+    "accessibility",
+    "aria",
     "bento",
-    "react",
     "component",
+    "interactive",
     "library",
     "radio",
-    "interactive",
-    "accessibility",
-    "aria"
+    "react"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -38,19 +38,19 @@
     "src",
     "package.json"
   ],
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
-  },
   "dependencies": {
     "@bento/control": "file:../control",
     "@bento/icon": "file:../icon",
     "@bento/slots": "file:../slots",
     "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props",
-    "@react-aria/utils": "^3.29.1",
+    "@react-aria/utils": "^3.30.0",
     "react-aria": "^3.43.1",
     "react-stately": "^3.40.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

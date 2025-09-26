@@ -20,12 +20,12 @@
   },
   "keywords": [
     "bento",
-    "react",
     "component",
     "library",
+    "react",
+    "sprite",
     "svg",
-    "vector",
-    "sprite"
+    "vector"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -40,6 +40,9 @@
   ],
   "dependencies": {
     "@bento/box": "file:../box"
+  },
+  "devDependencies": {
+    "@bento/environment": "file:../environment"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
@@ -58,4 +61,4 @@
     },
     "./package.json": "./package.json"
   }
-} 
+}

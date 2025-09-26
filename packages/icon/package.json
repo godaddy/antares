@@ -11,7 +11,6 @@
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "pretest": "npm run build",
-    "test:node": "c8 --100 tsx --test test/**/*.node.test.tsx",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -20,18 +19,18 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "bento",
-    "react",
-    "component",
-    "library",
-    "illustration",
-    "svg",
-    "vector",
-    "graphic",
     "asset",
+    "bento",
+    "component",
+    "graphic",
+    "icon",
+    "illustration",
     "image",
+    "library",
     "picture",
-    "icon"
+    "react",
+    "svg",
+    "vector"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -45,15 +44,14 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "file:../box",
-    "@bento/error": "file:../error",
     "@bento/create-external-store": "file:../create-external-store",
+    "@bento/error": "file:../error",
     "@bento/illustration": "file:../illustration",
     "@bento/slots": "file:../slots",
     "@bento/svg-parser": "file:../svg-parser",
+    "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props",
-    "@bento/use-svg-sprite": "file:../use-svg-sprite",
-    "camelcase": "^8.0.0"
+    "@bento/use-svg-sprite": "file:../use-svg-sprite"
   },
   "exports": {
     ".": {

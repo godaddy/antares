@@ -19,14 +19,14 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "bento",
-    "react",
-    "component",
-    "library",
-    "format",
     "attribute",
-    "value",
-    "stringify"
+    "bento",
+    "component",
+    "format",
+    "library",
+    "react",
+    "stringify",
+    "value"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -39,12 +39,12 @@
     "src",
     "package.json"
   ],
+  "dependencies": {
+    "dashify": "^2.0.0"
+  },
   "peerDependencies": {
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"
-  },
-  "dependencies": {
-    "dashify": "^2.0.0"
   },
   "exports": {
     ".": {

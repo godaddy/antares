@@ -1,10 +1,10 @@
 {
   "name": "@bento/storybook-addon-helpers",
+  "private": true,
   "version": "1.0.0",
   "description": "Storybook preset addon helpers for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
-  "private": true,
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
@@ -19,15 +19,15 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "bento",
-    "react",
-    "component",
-    "library",
-    "button",
-    "pressable",
-    "interactive",
     "accessibility",
-    "aria"
+    "aria",
+    "bento",
+    "button",
+    "component",
+    "interactive",
+    "library",
+    "pressable",
+    "react"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
@@ -40,13 +40,16 @@
     "src",
     "package.json"
   ],
-  "peerDependencies": {
-    "storybook": "^9.0.0"
-  },
   "dependencies": {
     "camelcase": "^8.0.0",
     "react-docgen-typescript": "^2.4.0",
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "vite": "^7.1.5"
+  },
+  "peerDependencies": {
+    "storybook": "^9.1.6"
   },
   "exports": {
     ".": {

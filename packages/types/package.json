@@ -18,11 +18,11 @@
   },
   "keywords": [
     "bento",
-    "react",
     "component",
     "library",
-    "typescript",
+    "react",
     "types",
+    "typescript",
     "value"
   ],
   "author": "GoDaddy Operating Company, LLC",
@@ -35,7 +35,6 @@
     "dist",
     "package.json"
   ],
-
   "exports": {
     ".": {
       "import": {

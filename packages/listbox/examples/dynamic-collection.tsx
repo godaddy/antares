@@ -21,5 +21,3 @@ export function DynamicCollectionExample({ items, ...args }: any) {
     </ListBox>
   );
 }
-
-export default DynamicCollectionExample;
