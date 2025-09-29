@@ -43,7 +43,7 @@
     "@bento/use-data-attributes": "file:../use-data-attributes",
     "@bento/use-props": "file:../use-props",
     "@react-aria/utils": "^3.30.0",
-    "react-aria": "^3.43.1"
+    "react-aria": "^3.43.2"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

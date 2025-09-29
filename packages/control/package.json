@@ -41,7 +41,7 @@
   "dependencies": {
     "@bento/slots": "file:../slots",
     "@bento/use-props": "file:../use-props",
-    "react-aria": "^3.43.1"
+    "react-aria": "^3.43.2"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
