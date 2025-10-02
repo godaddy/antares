@@ -1,31 +1,42 @@
 name: Continuous Integration
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
 
+      ***REMOVED***Avoid redundant runs for same PRs
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
-    runs-on: [self-hosted, 6216-uxcoreci]
+    runs-on: ubuntu-latest
     env:
       TURBO_TELEMETRY_DISABLED: 1
     steps:
       - name: Checkout Repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 ***REMOVED***v5.0.0
+
       - name: Setup Node
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 ***REMOVED***v5.0.0
         with:
           node-version-file: .nvmrc
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+
       - name: Install Dependencies
         run: |
           npm ci
           npx playwright install
+
       - name: Build Packages (CI-Safe)
         run: npm run build:ci
+
       - name: Run Unit Tests
         run: npm test -- --concurrency=1
+
       - name: Run Linting
         run: npm run lint

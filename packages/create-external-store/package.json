@@ -1,6 +1,6 @@
 {
   "name": "@bento/create-external-store",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Creates a generic external store for use with Bento",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -37,8 +37,8 @@
     "package.json"
   ],
   "devDependencies": {
-    "@bento/slots": "file:../slots",
-    "@bento/use-props": "file:../use-props"
+    "@bento/slots": "^0.0.0",
+    "@bento/use-props": "^0.0.0"
   },
   "exports": {
     ".": {
@@ -52,5 +52,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

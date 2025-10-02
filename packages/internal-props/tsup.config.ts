@@ -27,7 +27,7 @@ export default defineConfig({
 
     options.define ??= {};
     ['major', 'minor', 'patch'].forEach(function defineVersion(key, index) {
-      options.define[key] = semver[index];
+      options.define[key] = JSON.stringify(semver[index]);
     });
   }
 });

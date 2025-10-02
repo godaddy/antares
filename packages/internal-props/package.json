@@ -1,6 +1,6 @@
 {
   "name": "@bento/internal-props",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Internal utilities for managing prefixed component properties",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -55,5 +55,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

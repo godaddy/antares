@@ -1,6 +1,6 @@
 {
   "name": "@bento/types",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Shared TypeScript types used across the Bento library.",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -46,5 +46,9 @@
         "default": "./dist/index.cjs"
       }
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

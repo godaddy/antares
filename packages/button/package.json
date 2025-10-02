@@ -1,6 +1,6 @@
 {
   "name": "@bento/button",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Button component built on top of the Pressable primitive",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,9 +40,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/pressable": "file:../pressable",
-    "@bento/slots": "file:../slots",
-    "@bento/use-props": "file:../use-props",
+    "@bento/pressable": "^0.0.0",
+    "@bento/slots": "^0.0.0",
+    "@bento/use-props": "^0.0.0",
     "react-aria": "^3.43.2"
   },
   "peerDependencies": {
@@ -61,5 +61,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

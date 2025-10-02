@@ -1,5 +1,5 @@
 name: Dependabot auto-approve
-on: 
+on:
   pull_request:
     branches:
       - main
@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   dependabot:
-    runs-on: [self-hosted, 6216-uxcoreci]
+    runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: Dependabot metadata
@@ -17,6 +17,7 @@ jobs:
         uses: dependabot/fetch-metadata@08eff52bf64351f401fb50d4972fa95b9f2c2d1b
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
+
       - name: Approve a PR
         run: gh pr review --approve "$PR_URL"
         env:

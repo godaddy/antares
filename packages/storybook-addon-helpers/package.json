@@ -1,7 +1,7 @@
 {
   "name": "@bento/storybook-addon-helpers",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Storybook preset addon helpers for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -63,5 +63,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

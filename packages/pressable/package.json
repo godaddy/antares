@@ -1,6 +1,6 @@
 {
   "name": "@bento/pressable",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Pressable primitive provides consistent press interactions and accessibility features for building interactive components",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,9 +39,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "file:../slots",
-    "@bento/use-data-attributes": "file:../use-data-attributes",
-    "@bento/use-props": "file:../use-props",
+    "@bento/slots": "^0.0.0",
+    "@bento/use-data-attributes": "^0.0.0",
+    "@bento/use-props": "^0.0.0",
     "@react-aria/utils": "^3.30.0",
     "react-aria": "^3.43.2"
   },
@@ -61,5 +61,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

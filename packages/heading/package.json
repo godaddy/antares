@@ -1,6 +1,6 @@
 {
   "name": "@bento/heading",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Heading component primitive",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,9 +40,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "file:../slots",
-    "@bento/text": "file:../text",
-    "@bento/use-props": "file:../use-props"
+    "@bento/slots": "^0.0.0",
+    "@bento/text": "^0.0.0",
+    "@bento/use-props": "^0.0.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
@@ -60,5 +60,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

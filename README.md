@@ -15,6 +15,21 @@ npm install .
 The repo is configured only to accept conventional commits as commit syntax.
 This is enforced using `@commitlint`.
 
+##***REMOVED***📦 Changesets
+
+When contributing changes to packages, you must include a changeset:
+
+```sh
+npm run changeset
+```
+
+Select the affected packages, choose the version bump type (patch/minor/major), 
+and write a description using conventional commit syntax (e.g., "fix: resolve issue", 
+"feat: add feature", "docs: update readme").
+
+**Note:** Documentation changes in packages should use `patch` version bumps with 
+a `docs:` prefix, as they improve the published package for consumers and AI tooling.
+
 #***REMOVED***📖 Documentation
 
 Our documentation is powered by Storybook and can be started by running:

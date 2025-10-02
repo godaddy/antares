@@ -1,6 +1,6 @@
 {
   "name": "@bento/use-props",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Context aware props transformation for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,9 +40,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "file:../box",
-    "@bento/internal-props": "file:../internal-props",
-    "@bento/types": "file:../types"
+    "@bento/box": "^0.0.0",
+    "@bento/internal-props": "^0.0.0",
+    "@bento/types": "^0.0.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
@@ -60,5 +60,9 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
