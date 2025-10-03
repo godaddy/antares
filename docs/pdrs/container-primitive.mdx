@@ -1,0 +1,155 @@
+***REMOVED***Container Primitive PDR
+
+#***REMOVED***Summary
+
+Container is the **atomic building block** for polymorphic rendering + slot composition + prop spreading. Zero styling, zero layout logic - just the infrastructure that Text, Box, and all future Bento components build upon.
+
+**What it provides:**
+1. Polymorphic rendering via `as` prop
+2. Slot-based composition via `@bento/slots`
+3. Prop spreading and override tracking via `@bento/use-props`
+
+**What it is NOT:**
+- Not a layout component (no flex/grid/spacing)
+- Not styled (no CSS, no appearance)
+- Not interactive (no behavior, no state)
+
+**Target users:** Component authors building primitives and design systems, not end-user developers writing apps.
+
+#***REMOVED***Comparison to Text
+
+Container is Text without the text-specific opinions:
+
+| Feature | Container | Text |
+|---------|-----------|------|
+| Polymorphic (`as`) | ✅ `div` default | ✅ `span` default |
+| Slots + prop spreading | ✅ | ✅ (same) |
+| Domain props | ❌ | ✅ `align`, `maxLines`, `wrap` |
+| CSS module | ❌ | ✅ Text styles |
+
+**Future**: Text can refactor to extend Container, eliminating duplication.
+
+#***REMOVED***Props Interface
+
+```tsx
+interface ContainerProps extends Slots, React.HTMLAttributes<HTMLElement> {
+  /**
+   * The HTML element to render.
+   * @default 'div'
+   */
+  as?: string;
+  
+  /**
+   * The content to render inside the container.
+   */
+  children?: ReactNode;
+}
+```
+
+**Type safety**: The `as` prop uses a simple `string` type, accepting any HTML element name. This matches Text's current implementation and keeps the API straightforward. In the future, we could add TypeScript generics (e.g., `Container<'button'>`) to provide element-specific prop types, but that's an additive enhancement that wouldn't break existing usage.
+
+#***REMOVED***React Aria Analysis
+
+Container is a **composition primitive**, not a behavioral component. React Aria doesn't have a direct equivalent because:
+
+1. **No hooks needed** - Container provides no behavior (no [`useButton`](https://react-spectrum.adobe.com/react-aria/useButton.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), etc.)
+2. **Pure infrastructure** - Only handles polymorphic rendering and prop spreading
+3. **Below React Aria's abstraction level** - React Aria components would build *on top* of Container
+
+**Relationship to React Aria:**
+- Bento components like Button/Checkbox use React Aria hooks for behavior
+- Those components can internally use Container for polymorphic rendering
+- Container is the layer *beneath* React Aria's behavioral hooks
+
+**Why no React Aria equivalent exists:**
+
+React Aria Components focus on **behavior and accessibility**, not composition infrastructure. Their [component architecture](https://react-spectrum.adobe.com/react-aria/components.html) provides components like `<Button>`, `<Checkbox>`, etc. that render as specific HTML elements with ARIA semantics built-in.
+
+For polymorphic rendering, React Aria uses:
+- [`elementType` prop](https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Button.tsx#L130-L136) on individual components (not a shared primitive)
+- Internal utilities like [`createLeafComponent`](https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/utils.tsx#L99-L107) (not part of public API)
+
+Container fills the gap by providing a **shared, reusable primitive** for polymorphic rendering that all Bento components can build upon, rather than each component reimplementing this pattern.
+
+#***REMOVED***Usage Examples
+
+```tsx
+// Basic polymorphic rendering
+<Container as="article">
+  <h1>Article Title</h1>
+</Container>
+
+// Building design system components
+function Box({ padding, elevation, children, ...props }) {
+  return (
+    <Container
+      {...props}
+      className={cn(styles.box, styles[elevation])}
+      style={{ padding: tokens.spacing[padding], ...props.style }}
+    >
+      {children}
+    </Container>
+  );
+}
+```
+
+#***REMOVED***Implementation
+
+```tsx
+// packages/container/src/index.tsx
+import { withSlots, type Slots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+import React, { type ReactNode } from 'react';
+
+export interface ContainerProps extends Slots, React.HTMLAttributes<HTMLElement> {
+  /**
+   * The HTML element to render.
+   * @default 'div'
+   */
+  as?: string;
+  
+  /**
+   * The content to render inside the container.
+   */
+  children?: ReactNode;
+}
+
+export const Container = withSlots('BentoContainer', function Container(args: ContainerProps) {
+  const { props, apply } = useProps(args);
+  const { children, as = 'div' } = props;
+
+  if (children == null) return null;
+
+  return React.createElement(as, apply({}, ['as']), children);
+});
+```
+
+**Key patterns:**
+- No CSS module (truly unstyled)
+- Only filters `as` prop (everything else passes through)
+- Returns `null` when `children == null` (avoids empty DOM nodes)
+- Default element: `div` (more generic than `span`)
+
+**Data attributes** (automatically added by [`@bento/use-props`](../../packages/use-props/)):
+- `data-override` - Tracks when `className`/`style`/slots are customized (see [Text implementation](../../packages/text/src/index.tsx) for this pattern)
+- `data-version` - Component version (dev builds only)
+
+#***REMOVED***Testing
+
+Key test coverage:
+- Renders as `div` by default, custom element via `as`
+- Passes through `className`, `style`, ARIA attributes, event handlers
+- Returns `null` when no children passed (avoids empty DOM nodes)
+- Tracks overrides via `data-override`
+- Supports slot composition
+
+#***REMOVED***Competitive Analysis
+
+| Library | Approach | Limitation |
+|---------|----------|------------|
+| [Radix UI](https://github.com/radix-ui/primitives/tree/main/packages/react/primitive) | [`Primitive.div/span`](https://www.radix-ui.com/primitives/docs/utilities/primitive) | Verbose API (`Primitive.div` vs `as="div"`), no slots |
+| [Chakra UI](https://chakra-ui.com/docs/components/box) | [Box with style props](https://github.com/chakra-ui/chakra-ui/blob/main/packages/components/layout/src/box.tsx) | Not unstyled, theme-coupled |
+| [React Spectrum](https://react-spectrum.adobe.com/react-spectrum/View.html) | [View with spacing](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-spectrum/view/src/View.tsx) | Design system-coupled |
+| [Ark UI](https://ark-ui.com/react/docs/utilities/ark) | [`asChild` pattern](https://github.com/chakra-ui/ark/blob/main/packages/react/src/factory.tsx) | Different composition model (slot merging) |
+
+**Bento's edge**: Truly unstyled, minimal API, slot system, design system-agnostic.
