@@ -31,7 +31,7 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 ***REMOVED***v1.4.7 (enterprise allowlist approved)
         with:
           version: npm run version
           ***REMOVED***TODO: Uncomment publish when ready for first public release

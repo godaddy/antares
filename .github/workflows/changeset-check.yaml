@@ -13,98 +13,34 @@ jobs:
   check:
     name: Check for changeset
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     env:
       TURBO_TELEMETRY_DISABLED: 1
     steps:
-      - name: Checkout Repo
+      - name: Checkout repository with full git history
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 ***REMOVED***v5.0.0
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Setup Node.js from .nvmrc
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 ***REMOVED***v5.0.0
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
 
-      - name: Install Dependencies
+      - name: Install npm dependencies
         run: npm ci
 
-      - name: Check for changeset
-        run: |
-          ***REMOVED***Get list of changed files in packages directory
-          CHANGED_PACKAGES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '^packages/' | grep -v -E '\.(test|spec|stories)\.' || true)
+      - name: Verify changeset exists for package changes
+        run: bash .github/scripts/check-changeset.sh "${{ github.base_ref }}"
 
-          if [ -z "$CHANGED_PACKAGES" ]; then
-            echo "No package changes detected that require a changeset."
-            exit 0
-          fi
-
-          echo "Changed packages detected:"
-          echo "$CHANGED_PACKAGES"
-
-          ***REMOVED***Check if any changeset files were added or modified in this PR (excluding README.md)
-          NEW_CHANGESETS=$(git diff --name-only --diff-filter=AM origin/${{ github.base_ref }}...HEAD | grep '^\.changeset/.*\.md$' | grep -v '\.changeset/README\.md$' || true)
-
-          if [ -z "$NEW_CHANGESETS" ]; then
-            echo "::error::This PR contains changes to packages but is missing a changeset. Please run 'npm run changeset' to add a changeset."
-            exit 1
-          fi
-
-          echo "✅ Changeset found:"
-          echo "$NEW_CHANGESETS"
-
-      - name: Validate changeset
+      - name: Validate changeset format and package versions
         run: npx changeset status --since origin/${{ github.base_ref }}
 
-      - name: Post comment on PR
+      - name: Comment on PR with changeset instructions
         if: failure()
         uses: actions/github-script@v7
         with:
           script: |
-            const comment = `#***REMOVED***📝 Changeset Required
-
-            This PR contains changes to packages but is missing a changeset. Changesets help us automatically version packages and generate changelogs.
-
-            ##***REMOVED***To add a changeset:
-
-            1. Run \`npm run changeset\` in your local repository
-            2. Select the packages you've changed
-            3. Choose the appropriate version bump type:
-               - **patch**: Bug fixes and small changes
-               - **minor**: New features (backwards compatible)
-               - **major**: Breaking changes
-            4. Write a brief description of your changes using conventional commit syntax (e.g., "fix: resolve issue", "feat: add feature")
-            5. Commit the generated changeset file
-
-            ##***REMOVED***Exemptions:
-
-            If this PR only contains:
-            - Test file changes (\`.test.\`, \`.spec.\`, \`.stories.\`)
-
-            Then no changeset is required.
-
-            **Note:** Documentation changes should use \`patch\` version bumps with a \`docs:\` prefix.
-
-            [Learn more about changesets](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)`;
-
-            // Check if we already commented
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const botComment = comments.find(comment => 
-              comment.user.type === 'Bot' && 
-              comment.body.includes('Changeset Required')
-            );
-
-            if (!botComment) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: comment,
-              });
-            }
+            const script = await import('${{ github.workspace }}/.github/scripts/comment-on-pr.js');
+            await script.default({ github, context });
