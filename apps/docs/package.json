@@ -47,7 +47,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "remark-gfm": "^4.0.1",
     "storybook": "^9.1.6",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vite": "^7.1.9"
   }
 }

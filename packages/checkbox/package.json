@@ -45,8 +45,8 @@
     "@bento/use-data-attributes": "^0.0.0",
     "@bento/use-props": "^0.0.0",
     "@react-aria/utils": "^3.30.0",
-    "react-aria": "^3.43.2",
-    "react-stately": "^3.40.0"
+    "react-aria": "^3.44.0",
+    "react-stately": "^3.42.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
