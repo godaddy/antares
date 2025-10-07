@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "scripts": {
     "build": "turbo build",
-    "build:ci": "turbo build --concurrency=1",
     "clean": "npm exec --workspaces -- npx rimraf node_modules .turbo dist && npx rimraf node_modules .turbo",
     "deps:check": "syncpack list-mismatches && knip --reporter=symbols",
     "deps:fix": "syncpack fix-mismatches",
