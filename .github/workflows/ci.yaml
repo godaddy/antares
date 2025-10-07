@@ -5,10 +5,15 @@ on:
   pull_request:
     branches:
       - main
+  ***REMOVED***Run CI when changesets bot pushes to release branches
+  ***REMOVED***This satisfies required status checks since GITHUB_TOKEN doesn't trigger pull_request events
+  push:
+    branches:
+      - "changeset-release/**"
 
-      ***REMOVED***Avoid redundant runs for same PRs
+***REMOVED***Avoid redundant runs for same PRs
 concurrency:
-  group: ci-${{ github.head_ref || github.ref }}
+  group: ci-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
