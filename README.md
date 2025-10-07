@@ -30,6 +30,8 @@ and write a description using conventional commit syntax (e.g., "fix: resolve is
 **Note:** Documentation changes in packages should use `patch` version bumps with 
 a `docs:` prefix, as they improve the published package for consumers and AI tooling.
 
+The [Changeset Bot](https://github.com/apps/changeset-bot) will automatically comment on pull requests to remind you if a changeset is needed.
+
 #***REMOVED***📖 Documentation
 
 Our documentation is powered by Storybook and can be started by running:

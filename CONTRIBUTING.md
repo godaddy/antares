@@ -51,6 +51,7 @@ From a practical perspective, contributions are as simple as:
 1. Make changes on the branch of your forked repository.
 1. When committing, reference your issue (if present) and include a note about
   the fix.
+1. If you've changed package code, add a changeset with `npm run changeset` (the [Changeset Bot](https://github.com/apps/changeset-bot) will remind you if needed)
 1. Please also add/update unit tests for your changes.
 1. Push the changes to your fork and submit a pull request to the 'main
    development branch' of the project's repository.

@@ -16,7 +16,7 @@
     "test:root": "vitest",
     "test:visual": "playwright test -c playwright-ct.config.ts",
     "changeset": "changeset",
-    "version": "changeset version",
+    "version": "changeset version && npm install",
     "release": "npm run build && changeset publish"
   },
   "homepage": "https://github.com/godaddy/bento/tree/main",
