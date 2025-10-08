@@ -3,6 +3,8 @@ import { SlotProps } from '../examples/slot-props.tsx';
 import { Button } from '../examples/button.tsx';
 import { render } from 'vitest-browser-react';
 import { Memo } from '../examples/memo.tsx';
+import { Merged } from '../examples/merged.tsx';
+import { MergedFunction } from '../examples/merged-function.tsx';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 import React from 'react';
@@ -72,6 +74,44 @@ describe('@bento/slots examples', function bento() {
 
       assume(logs).is.an('array');
       assume(logs[0]).equals('Button clicked!');
+    });
+  });
+
+  describe('Merged', function merged() {
+    it('should render a component with the correct merged slots', function test() {
+      const { container } = render(<Merged />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        [
+          '<p>',
+          '  <span>Description: </span>',
+          '  <label data-override="className slot" class="merged-class" title="better-title" id="merged">',
+          '  </label>',
+          '  <span>Merged summary</span>',
+          '  <span>Better error</span>',
+          '  Expect class "merged-class", id "merged" and title "better-title".',
+          '</p>'
+        ]
+          .join('\n')
+          .replace(/^\s+/gm, '')
+          .replace(/\n/g, '')
+      );
+    });
+  });
+
+  describe('MergedFunction', function mergedFunction() {
+    it('should render all enhancement levels in correct order', function allLevels() {
+      const { container } = render(<MergedFunction />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        '<div>' +
+          '<div>First Enhancement</div>' +
+          '<div>Second Enhancement</div>' +
+          '<div>Third Enhancement: merged-fn</div>' +
+          '</div>'
+      );
     });
   });
 });

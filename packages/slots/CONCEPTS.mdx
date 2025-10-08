@@ -49,7 +49,7 @@ assigned to any component that is built with the `@bento/slots` package. The
 The example component below will be used througout the documentation to
 illustrate the usage of slots.
 
-<Source language='tsx' code={ SourceNested } />
+<Source language="tsx" code={SourceNested} />
 
 While it is possible to use assign the same name `slot` to multiple (different)
 components, it is recommended to use unique names to allow individual targetting
@@ -102,7 +102,7 @@ When an object is supplied as a value to a slot, the object will be merged with
 the props of the component. This allows you to introduce or override props of
 the component.
 
-<Source language='tsx' code={ SourceProps } />
+<Source language="tsx" code={SourceProps} />
 <Story of={Stories.PropsSlots} inline />
 
 This pattern is a lot powerful than it seems at first. There is virtually no
@@ -117,12 +117,12 @@ When a function (`renderProp`) is supplied as a value to a slot, the function
 can be used to replace or modify the children of a component. This allows you to
 affect the structure of the component.
 
-The function will receive the `props` and `original` as arguments and should
+The function will receive the `props`, `original` and `previous` as arguments and should
 return the content that should be rendered. The `props` argument is an object
 that contains the original props of the component. The `original` argument is
-the original content of the slot.
+the original content of the slot. The `previous` argument is an array of the previous slots if any.
 
-<Source language='tsx' code={ SourceFunction } />
+<Source language="tsx" code={SourceFunction} />
 <Story of={Stories.FunctionalSlots} inline />
 
 #***REMOVED***Best practices
@@ -135,11 +135,11 @@ only created once and the prop is not considered a new prop on each render:
 
 ```jsx
 const slots = {
-   'submit.icon': { id: 'my-custom-id' }
+  'submit.icon': { id: 'my-custom-id' },
 };
 
 function YourExampleComponent() {
-   return <Search slots={slots} />
+  return <Search slots={slots} />;
 }
 ```
 
@@ -148,7 +148,7 @@ the `React.useMemo` hook. The `React.useMemo` hook caches the object between
 re-renders. Given that your object references variables declared in the
 components function scope you must include them in the dependencies array:
 
-<Source language='tsx' code={ SourceMemo } />
+<Source language="tsx" code={SourceMemo} />
 
 The above example results in the following output:
 

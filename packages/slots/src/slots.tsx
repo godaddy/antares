@@ -68,7 +68,35 @@ export function withSlots<Props extends object>(
     ctx.env = { ...ctx.env };
     ctx.slots = { ...ctx.slots };
     ctx.slots.namespace = [...ctx.slots.namespace, slot].filter(Boolean);
-    ctx.slots.assigned = { ...ctx.slots.assigned, ...slots };
+    ctx.slots.assigned = { ...ctx.slots.assigned };
+
+    //
+    // merge the new slots with the assigned slots,
+    // parent component slots should take precedence over child ones.
+    //
+    for (const slotKey in slots) {
+      const assignedSlot = ctx.slots.assigned[slotKey];
+      const newSlot = slots[slotKey];
+
+      //
+      // New slots are assigned if none exist, or merged with the new slots.
+      // If the assigned slot exists and is an object, keep it as is.
+      //
+      if (!assignedSlot) {
+        ctx.slots.assigned[slotKey] = newSlot;
+      } else if (typeof assignedSlot === 'object') {
+        ctx.slots.assigned[slotKey] = { ...newSlot, ...assignedSlot };
+      } else if (typeof assignedSlot === 'function') {
+        const existingPrevious = assignedSlot.__slotPrevious || [];
+        const newPrevious = [newSlot, ...existingPrevious];
+        const mergedFnSlot = function mergedFnSlot({ props, original, previous }: any) {
+          return assignedSlot({ props, original, previous: previous || newPrevious });
+        };
+
+        mergedFnSlot.__slotPrevious = newPrevious;
+        ctx.slots.assigned[slotKey] = mergedFnSlot;
+      }
+    }
 
     //
     // Modifiers allow you to manipulate the context, props, and component with

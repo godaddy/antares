@@ -50,7 +50,7 @@ describe('@bento/control', function bento() {
         },
         {
           slots: {
-            label: { style: { color: 'green' } }
+            label: { title: 'control label' }
           }
         }
       );
@@ -59,7 +59,7 @@ describe('@bento/control', function bento() {
       assume(result).includes('color:yellow');
       assume(result).includes('color:blue');
       assume(result).includes('color:red');
-      assume(result).includes('color:green');
+      assume(result).includes('title="control label"');
     });
   });
 

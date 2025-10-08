@@ -135,9 +135,9 @@ would require some additional attention and which areas specifically.
 The `data-override` attribute is a space-separated list of the names that
 indicates the following modifications:
 
-- `style`: Custom styling has been applied to the component using the `style 
+- `style`: Custom styling has been applied to the component using the `style
   prop.
-- `className`: Custom className has been applied to the component using the 
+- `className`: Custom className has been applied to the component using the
   `className` prop.
 - `slot`: The component has been modified using `slots`. When the slots
   make changes to `style` or `className`, these are also included in the
@@ -161,3 +161,74 @@ case of experimentation.
 ```javascript
 import { replaces } from '@bento/slots/modifiers/replaces';
 ```
+
+#***REMOVED***Slot Merging
+
+Slot merging allows slots to be progressively enhanced as they flow through a component tree. When multiple components define slots for the same slot name, these slots are merged together.
+
+##***REMOVED***Object Slot Merging
+
+When both parent and child define object slots (props), they are merged with **parent taking precedence**:
+
+```tsx
+// Child defines props
+<Component slots={{ label: { className: 'child', id: 'child-id' } }} />
+
+// Parent adds more props
+<Child slots={{ label: { className: 'parent', title: 'parent-title' } }} />
+
+// Result: { className: 'parent', id: 'child-id', title: 'parent-title' }
+```
+
+##***REMOVED***Function Slot Merging
+
+When function slots are merged, the **parent function becomes active** but receives access to all previous implementations via the `previous` parameter:
+
+```tsx
+import { MergedFunction } from './examples/merged-function.tsx';
+
+// Each enhancement level adds its own function
+const FirstEnhancement = () => (
+  <BaseComponent slots={{
+    container: function firstWrapper() {
+      return <div>First Enhancement</div>;
+    }
+  }} />
+);
+
+const SecondEnhancement = () => (
+  <FirstEnhancement slots={{
+    container: function secondWrapper() {
+      return <div>Second Enhancement</div>;
+    }
+  }} />
+);
+
+// Final component can access all previous functions
+<ThirdEnhancement slots={{
+  container: function wrapper({ previous }) {
+    return (
+      <div>
+        {previous[0]()}  {/* First Enhancement */}
+        {previous[1]()}  {/* Second Enhancement */}
+        {previous[2]()}  {/* Third Enhancement */}
+      </div>
+    );
+  }
+}} />
+```
+
+##***REMOVED***Function Slot Parameters
+
+Function slots receive an object with:
+
+- `props`: The component's props
+- `original`: The original React element
+- `previous`: Array of previous slot implementations (child → parent order)
+
+##***REMOVED***Key Rules
+
+- **Object slots**: Parent props override child props for same keys
+- **Function slots**: Parent function is called, previous functions available in `previous` array
+- **Mixed types**: Function slots take precedence over object slots
+- **Previous array**: Ordered from closest child to furthest ancestor

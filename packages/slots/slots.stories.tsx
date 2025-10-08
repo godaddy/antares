@@ -3,6 +3,7 @@ import { SlotFunction } from './examples/slot-function.tsx';
 import { SlotProps } from './examples/slot-props.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
+import { Merged } from './examples/merged.tsx';
 import { type Slots } from './src/slots.tsx';
 
 export default getMeta({
@@ -75,3 +76,5 @@ export const MemoSlots = getStory(Memo);
 export const PropsSlots = getStory(SlotProps);
 
 export const FunctionalSlots = getStory(SlotFunction);
+
+export const MergedSlots = getStory(Merged);
