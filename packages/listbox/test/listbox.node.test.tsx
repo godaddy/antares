@@ -1,7 +1,6 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { ListBox, ListBoxItem, ListBoxSection, Header } from '../src';
-import { ListBoxSectionInner } from '../src/listbox-section';
 import { renderToString } from 'react-dom/server';
 import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';

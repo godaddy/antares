@@ -1,0 +1,147 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './container.stories.tsx';
+
+<Meta of={Stories} name="Concepts" />
+
+***REMOVED***Container Concepts
+
+Container is an infrastructure primitive for building component libraries. This guide covers the problems it solves, when to use it, and how it enables customization.
+
+#***REMOVED***Why Container?
+
+Container solves three fundamental problems when building component libraries:
+
+##***REMOVED***1. **Polymorphic Rendering**
+Components need to render as different HTML elements while maintaining the same API and behavior. Container provides type-safe polymorphism through the `as` prop.
+
+##***REMOVED***2. **Slot Composition**
+Design systems need to allow consumers to customize internal component structure without exposing implementation details. Container integrates with `@bento/slots` to enable deep customization.
+
+##***REMOVED***3. **Prop Spreading**
+Components need to accept arbitrary HTML attributes and pass them through safely. Container uses `@bento/use-props` to handle props merging, render props, and filtering.
+
+#***REMOVED***When to Use Container
+
+Container is an **infrastructure primitive** for building component libraries, not a replacement for HTML in application code.
+
+Use Container when you need to expose customization APIs to consumers. The trade-off is abstraction overhead for flexibility. If your component's internal structure won't be customized, or element semantics won't vary, raw HTML may be more appropriate.
+
+**Key considerations:**
+
+**Polymorphism**: Does the component need to render as different semantic elements while maintaining behavior? (e.g., a Button that can render as `<button>` or `<a>`)
+
+**Composition**: Will consumers need to override internal elements without forking your implementation? Container + slots scale better than exposing individual props per customization point.
+
+**Prop forwarding**: Does the component accept arbitrary HTML attributes? Container handles prop merging, render props, and filtering automatically.
+
+##***REMOVED***Examples: When to Use Each Approach
+
+**Use HTML directly** when the component is simple with no customization needs:
+
+```tsx
+// Divider - Always renders <hr>, no internal structure to customize
+export const Divider = withSlots('BentoDivider', function Divider(args: DividerProps) {
+  const { props, apply } = useProps(args);
+  const { orientation = 'horizontal' } = props;
+
+  return (
+    <hr
+      {...apply(
+        { 'aria-orientation': orientation },
+        ['orientation']
+      )}
+    />
+  );
+});
+```
+
+**Use Container** when consumers need to customize internal elements:
+
+```tsx
+// ControlGroup - Multiple internal elements consumers might want to style/replace
+export const ControlGroup = withSlots('BentoControlGroup', function ControlGroup(args) {
+  const { props } = useProps(args);
+  const { children, label, description } = props;
+
+  return (
+    <Container {...props}>
+      <Container slot="label" as="label">
+        {label}
+      </Container>
+
+      <Container slot="content">
+        {children}
+      </Container>
+
+      {description && (
+        <Container slot="description">
+          {description}
+        </Container>
+      )}
+    </Container>
+  );
+});
+
+// Now consumers can customize any internal element:
+<ControlGroup slots={{
+  label: { className: 'custom-label' },
+  content: { style: { gap: '1rem' } }
+}}>
+  <Input />
+</ControlGroup>
+```
+
+#***REMOVED***How Slots Enable Customization
+
+Container integrates with `@bento/slots` to enable infinite customization through a clean API.
+
+##***REMOVED***Example: Building a Customizable Card
+
+```tsx
+// card.tsx - Building a Card component
+import { Container } from '@bento/container';
+import { withSlots } from '@bento/slots';
+
+export const Card = withSlots('Card', function Card(props) {
+  return (
+    <Container {...props} className="card">
+      <Container slot="header" className="card-header">
+        {props.title}
+      </Container>
+      <Container slot="body" className="card-body">
+        {props.children}
+      </Container>
+      <Container slot="footer" className="card-footer">
+        {props.actions}
+      </Container>
+    </Container>
+  );
+});
+
+// Consumers can now customize any internal element:
+
+// Override header styling
+<Card slots={{ header: { className: 'custom-header' } }}>
+  Content
+</Card>
+
+// Replace header entirely
+<Card slots={{ header: <CustomHeader /> }}>
+  Content
+</Card>
+
+// Use render prop for advanced control
+<Card slots={{
+  header: ({ original, props }) => (
+    <div className="enhanced-header">
+      {original}
+      <Icon name="star" />
+    </div>
+  )
+}}>
+  Content
+</Card>
+```
+
+**Why this matters**: Without slots, you'd need separate props for every customization point (headerClassName, headerStyle, renderHeader, etc.). The `slots` prop scales infinitely while keeping the API clean.
+

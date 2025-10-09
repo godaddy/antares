@@ -1,7 +1,7 @@
 import { Box, type BoxContext } from '@bento/box';
 import { useInternalProps } from '@bento/internal-props';
 import { AnyObject } from '@bento/types';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 export interface RenderPropData {
   /**

@@ -1,0 +1,49 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './container.stories.tsx';
+import BasicExample from './examples/basic.tsx?raw';
+import AsExample from './examples/as.tsx?raw';
+import BuildingBlockExample from './examples/building-block.tsx?raw';
+import NestedExample from './examples/nested.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+***REMOVED***Container
+
+Container is the atomic building block for polymorphic rendering + slot composition + prop spreading. It provides the infrastructure that makes Bento components infinitely customizable while maintaining consistency.
+
+#***REMOVED***Installation
+
+```bash
+npm install --save @bento/container
+```
+
+#***REMOVED***Props
+
+The `@bento/container` package exports the `Container` component:
+
+<Source language='tsx' code={ BasicExample } />
+
+The following properties are available to be used on the `Container` component:
+
+<ArgTypes of={Stories.Props} />
+
+#***REMOVED***Examples
+
+##***REMOVED***As
+
+Setting the `as` prop allows you to change the HTML tag of the `Container` component. By default, Container renders as a `div` element.
+
+<Source language='tsx' code={ AsExample } />
+
+##***REMOVED***Building Block
+
+Container is designed to be the foundation for building other components. This example shows a custom Box component built on top of Container with padding and elevation props.
+
+<Source language='tsx' code={ BuildingBlockExample } />
+
+##***REMOVED***Nested
+
+Container components can be nested to create semantic HTML structures with proper document outline.
+
+<Source language='tsx' code={ NestedExample } />
+

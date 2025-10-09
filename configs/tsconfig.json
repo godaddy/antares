@@ -3,6 +3,7 @@
     "target": "ESNext",
     "lib": ["ESNext", "DOM"],
     "strict": true,
+    "noUnusedLocals": true,
     "baseUrl": "./",
     "jsx": "preserve",
     "forceConsistentCasingInFileNames": true,
