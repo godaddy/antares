@@ -1,4 +1,4 @@
-import { describe, it, vi, afterEach } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import { experimental_indexers, viteFinal } from '../src/index.ts';
 import { generateCSFPlugin } from '../src/plugin.ts';
 

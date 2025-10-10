@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { parse } from 'react-docgen-typescript';
-import { type ItemDoc, resolveImport, findSymbolInFile } from './ats-utils.ts';
+import { type ItemDoc, resolveImport } from './ats-utils.ts';
 
 /**
  * Extracts the component or function documentation from the source file.

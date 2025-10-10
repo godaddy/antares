@@ -31,7 +31,7 @@
     "select"
   ],
   "author": "GoDaddy Operating Company, LLC",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/godaddy/bento/issues"
   },
