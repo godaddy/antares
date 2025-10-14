@@ -1,6 +1,6 @@
 {
   "name": "@bento/icon",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Icon component",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -46,8 +46,8 @@
   "dependencies": {
     "@bento/create-external-store": "^0.1.0",
     "@bento/error": "^0.1.0",
-    "@bento/illustration": "^0.1.0",
-    "@bento/slots": "^0.1.0",
+    "@bento/illustration": "^0.1.1",
+    "@bento/slots": "^0.1.1",
     "@bento/svg-parser": "^0.1.0",
     "@bento/use-data-attributes": "^0.1.0",
     "@bento/use-props": "^0.1.0",

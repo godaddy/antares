@@ -1,6 +1,6 @@
 {
   "name": "@bento/control",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Control component",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,7 +39,7 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.1.0",
+    "@bento/slots": "^0.1.1",
     "@bento/use-props": "^0.1.0",
     "react-aria": "^3.44.0"
   },

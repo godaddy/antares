@@ -1,5 +1,16 @@
 ***REMOVED***@bento/heading
 
+#***REMOVED***0.1.1
+
+##***REMOVED***Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.1.1
+- @bento/text@0.1.1
+</details>
+
 #***REMOVED***0.1.0
 
 ##***REMOVED***Minor Changes

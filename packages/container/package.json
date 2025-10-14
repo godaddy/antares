@@ -1,6 +1,6 @@
 {
   "name": "@bento/container",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Container component primitive - atomic building block for polymorphic rendering and slot composition",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,7 +39,7 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.1.0",
+    "@bento/slots": "^0.1.1",
     "@bento/use-props": "^0.1.0"
   },
   "peerDependencies": {
