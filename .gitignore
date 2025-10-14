@@ -1,40 +1,40 @@
-***REMOVED***See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-***REMOVED***Dependencies
+# Dependencies
 node_modules
 .pnp
 .pnp.js
 
-***REMOVED***Local env files
+# Local env files
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-***REMOVED***Testing
+# Testing
 coverage
 coverage-html
 
-***REMOVED***Turbo
+# Turbo
 .turbo
 
-***REMOVED***Vercel
+# Vercel
 .vercel
 
-***REMOVED***Build Outputs
+# Build Outputs
 .next/
 out/
 build
 dist
 
 
-***REMOVED***Debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-***REMOVED***Misc
+# Misc
 .DS_Store
 *.pem
 
@@ -42,19 +42,19 @@ yarn-error.log*
 storybook-static
 debug-storybook.log
 
-***REMOVED***Playwright
+# Playwright
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 
-***REMOVED***When you a test failure, vitest automatically generates a screenshot of the
-***REMOVED***failure. This is the folder where the screenshots are stored.
+# When you a test failure, vitest automatically generates a screenshot of the
+# failure. This is the folder where the screenshots are stored.
 packages/**/test/__screenshots__/
 
-***REMOVED***When running testing with VITE_NODE_DEBUG_DUMP=true it generates a .vite-node
-***REMOVED***folder dump folder of all the compiled assets.
+# When running testing with VITE_NODE_DEBUG_DUMP=true it generates a .vite-node
+# folder dump folder of all the compiled assets.
 .vite-node
 
-***REMOVED***Claude
+# Claude
 .claude

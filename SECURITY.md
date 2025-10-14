@@ -1,10 +1,10 @@
-***REMOVED***Reporting Security Issues
+# Reporting Security Issues
 
 We take security very seriously at GoDaddy. We appreciate your efforts to
 responsibly disclose your findings, and will make every effort to acknowledge
 your contributions.
 
-#***REMOVED***Where should I report security issues?
+## Where should I report security issues?
 
 In order to give the community time to respond and upgrade, we strongly urge you to
 report all security issues privately.

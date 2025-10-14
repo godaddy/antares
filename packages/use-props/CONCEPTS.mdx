@@ -4,7 +4,7 @@ import * as Stories from './props.stories.tsx';
 
 <Meta of={Stories} name="Concepts" />
 
-***REMOVED***Render Props
+# Render Props
 
 Render props allows you to define **any prop as a function**. The Bento based
 component will execute this function and the return value will be used as the
@@ -18,7 +18,7 @@ component.
 <ExampleComponent className={({ state }) => state.active ? 'active' : 'inactive' } />
 ```
 
-#***REMOVED***API
+## API
 
 Bento is built on React ARIA, which has a different render-prop approach. In
 [React ARIA][renderpropsaria] only the `style` and `className` props can accept
@@ -35,7 +35,7 @@ The render prop function receives an object with the following properties:
 
 <ArgTypes of={Stories.RenderProps} />
 
-#***REMOVED***Best Practices
+## Best Practices
 
 React will re-render a component if the props passed to it change. This can
 cause performance issues if the function passed to a render prop is re-created

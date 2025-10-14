@@ -8,7 +8,7 @@ import SourceMemo from './examples/memo.tsx?raw';
 
 <Meta of={Stories} name="Concepts" />
 
-***REMOVED***Slots
+# Slots
 
 Slots gives you full control over every part of the component. It's the ultimate
 expression of freedom in a component-based architecture. Every component that is
@@ -35,7 +35,7 @@ the name of the slot that you want to modify. The value of the object should be
 an object or function that contains the modifications that you want to make to
 the slot.
 
-#***REMOVED***Assigning `slot`'s to components
+## Assigning `slot`'s to components
 
 Note that this only needed when you are building your own custom components on
 top of Bento that should also support slots. If you are developing applications
@@ -57,7 +57,7 @@ of each component. When authoring components the names of the slots should be
 documented in the component's documentation so the consumers know which slots
 are available.
 
-#***REMOVED***Namespace for component composition
+## Namespace for component composition
 
 A unique feature of our slots implementation is the ability to drill down
 components. When a `slot` is assigned to a component it becomes part of the
@@ -96,7 +96,7 @@ required modifications as value as illustrated below:
 <Search slots={{ 'submit.icon': { name: 'search' } }} />
 ```
 
-#***REMOVED***Introducing new props
+## Introducing new props
 
 When an object is supplied as a value to a slot, the object will be merged with
 the props of the component. This allows you to introduce or override props of
@@ -111,7 +111,7 @@ limit to what you can assign with this pattern. To given an example, you can
 to the components. You can see this in action in our
 [Best Practices](#best-practices) example.
 
-#***REMOVED***Modify children
+## Modify children
 
 When a function (`renderProp`) is supplied as a value to a slot, the function
 can be used to replace or modify the children of a component. This allows you to
@@ -125,7 +125,7 @@ the original content of the slot. The `previous` argument is an array of the pre
 <Source language="tsx" code={SourceFunction} />
 <Story of={Stories.FunctionalSlots} inline />
 
-#***REMOVED***Best practices
+## Best practices
 
 As the `slots` prop accepts an object, it is important to ensure that the
 object is memoized to prevent unnecessary re-renders. If the modifications

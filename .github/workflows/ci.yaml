@@ -5,13 +5,13 @@ on:
   pull_request:
     branches:
       - main
-  ***REMOVED***Run CI when changesets bot pushes to release branches
-  ***REMOVED***This satisfies required status checks since GITHUB_TOKEN doesn't trigger pull_request events
+  # Run CI when changesets bot pushes to release branches
+  # This satisfies required status checks since GITHUB_TOKEN doesn't trigger pull_request events
   push:
     branches:
       - "changeset-release/**"
 
-***REMOVED***Avoid redundant runs for same PRs
+# Avoid redundant runs for same PRs
 concurrency:
   group: ci-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
@@ -23,10 +23,10 @@ jobs:
       TURBO_TELEMETRY_DISABLED: 1
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 ***REMOVED***v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Setup Node
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 ***REMOVED***v5.0.0
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
           cache: "npm"

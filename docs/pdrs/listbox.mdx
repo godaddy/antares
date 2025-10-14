@@ -1,12 +1,12 @@
-***REMOVED***ListBox Component PDR
+# ListBox Component PDR
 
-#***REMOVED***Purpose
+## Purpose
 
 The ListBox primitive provides an accessible, keyboard-navigable list of selectable options that serves as the foundation for dropdown menus, autocomplete widgets, multi-select controls, and other selection interfaces. It encapsulates complex accessibility patterns, [ARIA semantics](https://www.w3.org/TR/wai-aria-1.2/), and keyboard interactions, while remaining completely unstyled and highly composable. This component follows the [W3C ARIA Authoring Practices Guide listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
 
 It is essential for components like [Select](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/), [Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/), Menu, and any custom selection interface where users need to choose from a list of options. This primitive allows developers to build both standardized and bespoke selection UIs, maintaining consistent accessibility and interaction behavior.
 
-##***REMOVED***Unique Attributes
+### Unique Attributes
 
 * **Behavior-first abstraction**: Pure interaction logic without visual styling
 * **Compositional flexibility**: Accepts both static children and dynamic item collections
@@ -16,7 +16,7 @@ It is essential for components like [Select](https://www.w3.org/WAI/ARIA/apg/pat
 * **Focus management**: [Roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex) for efficient accessibility
 * **Override support**: Exposes `slots`, `renderProps`, and `data-*` attributes
 
-#***REMOVED***Primitive Composition
+## Primitive Composition
 
 [React Aria]: https://react-spectrum.adobe.com/react-aria/
 [useListBox]: https://react-spectrum.adobe.com/react-aria/useListBox.html
@@ -39,7 +39,7 @@ It is essential for components like [Select](https://www.w3.org/WAI/ARIA/apg/pat
 
 This primitive is implemented as both a UI component and a composable set of behavior-focused hooks.
 
-#***REMOVED***Implementation Patterns
+## Implementation Patterns
 
 | Concept            | Implementation                                         |
 | ------------------ | ------------------------------------------------------ |
@@ -51,7 +51,7 @@ This primitive is implemented as both a UI component and a composable set of beh
 | data-version       | Dev-only metadata for debugging                        |
 | Composability      | Children and items support, slot/prop overrides        |
 
-#***REMOVED***Internal Structure & Reuse Potential
+## Internal Structure & Reuse Potential
 
 * **Reusable hooks**: Selection, keyboard navigation, typeahead search
 * **Focus management**: Roving tabindex via React Aria
@@ -61,14 +61,14 @@ This primitive is implemented as both a UI component and a composable set of beh
 
 This is the minimal reusable unit for list-based selection components.
 
-#***REMOVED***React Aria or External Hook Integration
+## React Aria or External Hook Integration
 
 * Built on top of [React Aria][React Aria] hooks including [`useListBox`][useListBox], [`useOption`][useOption], and [`useListBoxSection`][useListBoxSection], as well as [React Stately][React Stately] for state management
 * React Aria handles ARIA semantics, selection, and focus events
 * Custom slot and override layers added via Bento's slot/renderProps/meta patterns
 * No gaps in coverage — React Aria ensures [WCAG-compliant](https://www.w3.org/WAI/WCAG22/quickref/) behavior out of the box
 
-#***REMOVED***Architecture & Features
+## Architecture & Features
 
 **Large Datasets and Virtualization:**
 Handling large datasets (e.g., 1000+ items) should be offloaded to a separate virtualization utility or `VirtualizedCollection` primitive. This keeps Listbox focused on accessibility and interaction logic while enabling high-performance rendering through composition. Developers are encouraged to use the `items` and render function pattern in conjunction with virtualization tools like [`react-virtual`](https://github.com/TanStack/virtual) or a shared `useVirtualizedCollection` hook for optimal scalability.
@@ -116,7 +116,7 @@ Horizontal mode still supports full keyboard navigation via left/right arrows an
 * Async and virtualized content
 * Slot-based overrides and style customizations
 
-#***REMOVED***Accessibility Highlights
+## Accessibility Highlights
 
 * **Roles**: [`listbox`](https://www.w3.org/TR/wai-aria-1.2/#listbox), [`option`](https://www.w3.org/TR/wai-aria-1.2/#option), [`group`](https://www.w3.org/TR/wai-aria-1.2/#group)
 * **Attributes**: [`aria-selected`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected), [`aria-activedescendant`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant), [`aria-multiselectable`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-multiselectable), [`aria-orientation`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation)
@@ -135,23 +135,23 @@ Horizontal mode still supports full keyboard navigation via left/right arrows an
   * `data-focus-visible` for focus ring styling
   * `autoFocus` support
 
-#***REMOVED***Internationalization, RTL, and Mobile Considerations
+## Internationalization, RTL, and Mobile Considerations
 
 * **RTL**: Direction-aware keyboard handling in horizontal orientation
 * **Touch**: Meets [touch target sizing](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) and responsive scroll areas
 * **I18n**: All ARIA and label content fully localizable; typeahead respects locale
 * **Mobile**: Optimized for virtual keyboard, inert overflow, and focus clarity
 
-#***REMOVED***Data Attributes and Slot Map
+## Data Attributes and Slot Map
 
-##***REMOVED***Expected Attributes
+### Expected Attributes
 
 Components in the Listbox family use both ARIA attributes (for accessibility) and data attributes (for styling). This separation ensures:
 
 - **ARIA attributes** provide semantic information to assistive technologies
 - **Data attributes** provide hooks for CSS styling without relying on ARIA for presentation
 
-###***REMOVED***Listbox Container Attributes
+#### Listbox Container Attributes
 
 | Attribute             | Type | Description                             | Example Values                 |
 | --------------------- | ---- | --------------------------------------- | ------------------------------ |
@@ -161,7 +161,7 @@ Components in the Listbox family use both ARIA attributes (for accessibility) an
 | `data-override`       | Data | Indicates customization via props/slots | "style slot"                   |
 | `data-version`        | Data | Dev-only version tag                    | "listbox\@1.0"                 |
 
-###***REMOVED***Item/Option Attributes
+#### Item/Option Attributes
 
 | Attribute             | Type | Description                             | Example Values                 |
 | --------------------- | ---- | --------------------------------------- | ------------------------------ |
@@ -173,7 +173,7 @@ Components in the Listbox family use both ARIA attributes (for accessibility) an
 | `data-hovered`        | Data | Option is hovered by mouse              | "true" / "false"               |
 | `data-pressed`        | Data | Indicates active mouse press state      | "true" / "false"               |
 
-##***REMOVED***Slot Map
+### Slot Map
 
 | Slot Name     | Description                | Required | Default Fallback |
 | ------------- | -------------------------- | -------- | ---------------- |
@@ -185,7 +185,7 @@ Components in the Listbox family use both ARIA attributes (for accessibility) an
 
 **Note on `label` slot**: This does not default to an HTML `<label>` element because labels in listbox sections are text elements referenced by `aria-labelledby`, not form control labels. When provided, this slot typically renders a `<span>` or similar text element.
 
-#***REMOVED***Competitive Research
+## Competitive Research
 
 * **[Radix UI](https://www.radix-ui.com/primitives/docs/components/select)**: Strong accessibility but lacks deep override/slot patterns
 * **[Ark UI](https://ark-ui.com/docs/components/select)**: Similar primitives but limited in customization depth
@@ -194,9 +194,9 @@ Components in the Listbox family use both ARIA attributes (for accessibility) an
 
 Bento provides the best blend of accessibility and full override support via `slots`, `renderProps`, and meta-driven event handling.
 
-#***REMOVED***Code Examples
+## Code Examples
 
-##***REMOVED***Basic Usage
+### Basic Usage
 
 ```tsx
 <ListBox aria-label="Fruits">
@@ -205,7 +205,7 @@ Bento provides the best blend of accessibility and full override support via `sl
 </ListBox>
 ```
 
-##***REMOVED***Controlled vs Uncontrolled
+### Controlled vs Uncontrolled
 
 ```tsx
 // Controlled
@@ -216,7 +216,7 @@ const [selected, setSelected] = useState(new Set(['apple']));
 <ListBox defaultSelectedKeys={["apple"]} />
 ```
 
-##***REMOVED***Dynamic Items with Render Function
+### Dynamic Items with Render Function
 
 ```tsx
 <ListBox items={items}>
@@ -224,7 +224,7 @@ const [selected, setSelected] = useState(new Set(['apple']));
 </ListBox>
 ```
 
-##***REMOVED***Grouped Sections
+### Grouped Sections
 
 ```tsx
 <ListBox>
@@ -241,7 +241,7 @@ const [selected, setSelected] = useState(new Set(['apple']));
 </ListBox>
 ```
 
-##***REMOVED***Slot Overrides and Render Props
+### Slot Overrides and Render Props
 
 ```tsx
 <ListBox
@@ -263,7 +263,7 @@ const [selected, setSelected] = useState(new Set(['apple']));
 </ListBoxItem>
 ```
 
-##***REMOVED***Event Handling with Meta Object
+### Event Handling with Meta Object
 
 ```tsx
 <ListBox onSelectionChange={(keys, { event, state }) => {

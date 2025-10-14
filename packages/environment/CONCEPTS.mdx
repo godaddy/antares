@@ -6,7 +6,7 @@ import CustomButtonExample from './examples/custom-button.tsx?raw';
 
 <Meta of={Stories} name="Concepts" />
 
-***REMOVED***Application level configuration
+# Application level configuration
 
 The `Environment` component is the main entry point for configuring Bento 
 components in your application. It allows you to set up global configurations, 
@@ -18,7 +18,7 @@ You can apply the custom Environment component at the application level, or
 apply it to specific sections of your application for when you want only want
 affect a specific section of your application.
 
-#***REMOVED***Components
+## Components
 
 The `components` prop allows you to override the default components used by
 Bento. This is useful when you want to customize the behavior or appearance of a
@@ -37,7 +37,7 @@ it like this:
 This will replace the default Bento button with your custom button component 
 throughout your application.
 
-##***REMOVED***Overrides
+### Overrides
 
 You can also override the default props of a component by passing an object with
 the component name as the key and the new props as the value. This is useful
@@ -56,7 +56,7 @@ a component that might not have a slot assigned to it, you can do it like this:
 <Source language='tsx' code={ComponentLevelExample} />
 <Story of={Stories.ComponentLevelOverride} />
 
-##***REMOVED***Experimentation
+### Experimentation
 
 The overrides also allows you to introduce experimentation in your application,
 your A/B testing framework of choice can leverage the `components` prop to

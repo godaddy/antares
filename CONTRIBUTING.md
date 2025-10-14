@@ -1,4 +1,4 @@
-***REMOVED***Contributing
+# Contributing
 
 Everyone is welcome to contribute to GoDaddy's Open Source Software.
 Contributing doesn’t just mean submitting pull requests. To get involved,
@@ -9,7 +9,7 @@ No matter how you want to get involved, we ask that you first learn what’s
 expected of anyone who participates in the project by reading the Contribution
 Guidelines and our [Code of Conduct][coc].
 
-#***REMOVED***Answering Questions
+## Answering Questions
 
 One of the most important and immediate ways you can support this project is
 to answer questions on [GitHub][issues]. Whether you’re
@@ -17,7 +17,7 @@ helping a newcomer understand a feature or troubleshooting an edge case with a
 seasoned developer, your knowledge and experience with a programming language
 can go a long way to help others.
 
-#***REMOVED***Reporting Bugs
+## Reporting Bugs
 
 **Do not report potential security vulnerabilities here. Refer to
 [SECURITY.md](./SECURITY.md) for more details about the process of reporting
@@ -37,7 +37,7 @@ Submit a ticket for your issue, assuming one does not already exist:
   - A reproducible (unit) test could be helpful in solving the bug.
   - Describe the environment that (re)produced the problem.
 
-#***REMOVED***Triaging bugs or contributing code
+## Triaging bugs or contributing code
 
 If you're triaging a bug, first make sure that you can reproduce it. Once a bug
 can be reproduced, reduce it to the smallest amount of code possible. Reasoning
@@ -66,7 +66,7 @@ contributors about the change, discuss the best way to go about implementing it.
 > pull requests from branches on your fork. To do this, run:
 >
 > ```bash
-> git remote add upstream https://github.com/godaddy/<this-project>.git
+> git remote add upstream https://github.com/godaddy/bento.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/main main
 >   ```
@@ -77,7 +77,7 @@ contributors about the change, discuss the best way to go about implementing it.
 > can make all of your pull request branches based on this main branch.
 > Whenever you want to update your version of main, do a regular git pull.
 
-#***REMOVED***Code Review
+## Code Review
 
 Any open source project relies heavily on code review to improve software
 quality. All significant changes, by all developers, must be reviewed before
@@ -100,19 +100,19 @@ time from other professional developers.
 **Note that anyone is welcome to review and give feedback on a change, but only
 people with commit access to the repository can approve it.**
 
-#***REMOVED***Attribution of Changes
+## Attribution of Changes
 
 When contributors submit a change to this project, after that change is
 approved, other developers with commit access may commit it for the author. When
 doing so, it is important to retain correct attribution of the contribution.
 Generally speaking, Git handles attribution automatically.
 
-#***REMOVED***Code Style and Documentation
+## Code Style and Documentation
 
 Ensure that your contribution follows the standards set by the project's style
 guide with respect to patterns, naming, documentation and testing.
 
-#***REMOVED***Additional Resources
+## Additional Resources
 
 - [General GitHub Documentation](https://help.github.com/)
 - [GitHub Pull Request documentation](https://help.github.com/send-pull-requests/)

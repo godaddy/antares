@@ -1,6 +1,6 @@
-***REMOVED***Primitive Design Review (PDR)
+# Primitive Design Review (PDR)
 
-#***REMOVED***Purpose
+## Purpose
 
 <!--
 What is the purpose of this primitive?
@@ -9,7 +9,7 @@ What scenarios or user interactions require this to exist?
 What kinds of components or apps would typically consume this?
 -->
 
-##***REMOVED***Unique Attributes
+### Unique Attributes
 
 <!--
 What makes this different from similar primitives or components?
@@ -17,7 +17,7 @@ Does it support specific ARIA roles, keyboard interactions, or novel composition
 What responsibilities or behaviors are unique to this implementation?
 -->
 
-#***REMOVED***Primitive Composition
+## Primitive Composition
 
 <!--
 Which primitives, patterns, or hooks are used to build this?
@@ -27,7 +27,7 @@ Which primitives, patterns, or hooks are used to build this?
 Clarify whether this is a **UI primitive**, a **behavioral hook**, or a **shared pattern**.
 -->
 
-#***REMOVED***Implementation Patterns (Optional)
+## Implementation Patterns (Optional)
 
 <!--
 Summarize how this primitive aligns with Bento patterns.
@@ -48,7 +48,7 @@ Uncomment and fill in relevant rows.
 | Composability       | Supports children, items, render function                    |
 -->
 
-#***REMOVED***Internal Structure & Reuse Potential
+## Internal Structure & Reuse Potential
 
 <!--
 Can this be decomposed into smaller parts or primitives?
@@ -61,7 +61,7 @@ Also consider:
 - If your primitive consumes a collection of items, should a reusable collection API or hook be proposed?
 -->
 
-#***REMOVED***React Aria or External Hook Integration
+## React Aria or External Hook Integration
 
 <!--
 Does this reuse logic from React Aria or another external system?
@@ -70,7 +70,7 @@ Do we extend, wrap, or customize that logic?
 Are there gaps in coverage we needed to solve manually?
 -->
 
-#***REMOVED***Architecture & Features
+## Architecture & Features
 
 <!--
 What architectural decisions shape this component?
@@ -92,7 +92,7 @@ How do we expect developers to use this in apps?
 - Expected usage patterns:
 -->
 
-#***REMOVED***Accessibility Highlights
+## Accessibility Highlights
 
 <!--
 What ARIA roles, labels, and relationships are used?
@@ -103,7 +103,7 @@ How are screen reader announcements managed?
 Is autoFocus supported? How does it behave?
 -->
 
-#***REMOVED***Internationalization, RTL, and Mobile Considerations
+## Internationalization, RTL, and Mobile Considerations
 
 <!--
 Does this component support right-to-left (RTL) layouts?
@@ -112,9 +112,9 @@ Is internationalized content expected to change layout or behavior?
 How does this primitive account for these variations?
 -->
 
-#***REMOVED***Data Attributes and Slot Map
+## Data Attributes and Slot Map
 
-##***REMOVED***Expected `data-*` Attributes (Optional)
+### Expected `data-*` Attributes (Optional)
 
 <!--
 What data attributes are exposed?
@@ -133,7 +133,7 @@ Uncomment and add rows as needed.
 | `data-version`       | Component version in dev only                 | "listbox@1.0"          |
 -->
 
-##***REMOVED***Slot Map (Optional)
+### Slot Map (Optional)
 
 <!--
 What slots are exposed for customization?
@@ -153,7 +153,7 @@ Uncomment and customize as needed.
 | `checkbox`| For multiselect patterns             | No       | No               |
 -->
 
-#***REMOVED***Competitive Research (Optional)
+## Competitive Research (Optional)
 
 <!--
 List similar primitives or components from other design systems or headless libraries.
@@ -161,18 +161,18 @@ What APIs or behaviors do they offer?
 How does your proposal compare in terms of scope, simplicity, and extensibility?
 -->
 
-#***REMOVED***Code Examples
+## Code Examples
 
 <!--
 Include usage examples that demonstrate core behaviors.
 You can use headings like:
 
-##***REMOVED***Basic usage
-##***REMOVED***Controlled vs uncontrolled
-##***REMOVED***Dynamic items with render function
-##***REMOVED***Grouped sections
-##***REMOVED***Orientation variants
-##***REMOVED***Slot overrides and render props
+### Basic usage
+### Controlled vs uncontrolled
+### Dynamic items with render function
+### Grouped sections
+### Orientation variants
+### Slot overrides and render props
 
 Include at least one example that demonstrates a slot or render prop override to ensure customization paths are clear.
 Use code blocks to provide real TSX usage examples that reflect how the component is intended to be used.

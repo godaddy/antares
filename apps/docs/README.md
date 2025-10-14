@@ -1,8 +1,8 @@
-***REMOVED***Documentation
+# Documentation
 
 This application contains our documentation site which is powered by Storybook.
 
-#***REMOVED***Preview
+## Preview
 
 In order to preview the documentation simply run the following command:
 
@@ -14,7 +14,7 @@ The application is configured to not open a browser window every time you start
 the documentation application. The message in your console will tell you the
 what port number the application is hosted on. Defaults to http://localhost:6006/
 
-#***REMOVED***Adding new components
+## Adding new components
 
 Storybook is configured to automatically detect the following files in the
 `packages/<package-name>` folders:
@@ -32,7 +32,7 @@ Storybook is configured to automatically detect the following files in the
   the above mentioned `.mdx` files. This should just be seen as a translation
   layer, you should not be writing any examples inside these files.
 
-##***REMOVED***Examples
+### Examples
 
 As mentioned above, you should not be writing working examples inside your
 `.stories.tsx` files, you should instead be creating isolated example files

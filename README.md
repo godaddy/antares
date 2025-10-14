@@ -1,21 +1,21 @@
-***REMOVED***🍱 Bento
+# 🍱 Bento
 
 Bento is a component library built to support our GoDaddy design system. It is a
 collection of reusable components (i.e., primitives) that can be used to build
 more complex components.
 
-#***REMOVED***🛠️ Development
+## 🛠️ Development
 
 ```sh
 npm install .
 ```
 
-##***REMOVED***📝 Conventional Commits
+### 📝 Conventional Commits
 
 The repo is configured only to accept conventional commits as commit syntax.
 This is enforced using `@commitlint`.
 
-##***REMOVED***📦 Changesets
+### 📦 Changesets
 
 When contributing changes to packages, you must include a changeset:
 
@@ -32,7 +32,7 @@ a `docs:` prefix, as they improve the published package for consumers and AI too
 
 The [Changeset Bot](https://github.com/apps/changeset-bot) will automatically comment on pull requests to remind you if a changeset is needed.
 
-#***REMOVED***📖 Documentation
+## 📖 Documentation
 
 Our documentation is powered by Storybook and can be started by running:
 

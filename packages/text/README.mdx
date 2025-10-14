@@ -8,17 +8,17 @@ import WrapExample from './examples/wrap.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Text
+# Text
 
 The `@bento/text` package exports the **Text** component primitive.
 
-#***REMOVED***Installation
+## Installation
 
 ```bash
 npm install --save @bento/text
 ```
 
-#***REMOVED***Props
+## Props
 
 The `@bento/text` package exports the `Text` component:
 
@@ -28,28 +28,28 @@ The following properties are available to be used on the `Text` component:
 
 <ArgTypes of={Stories.Props} />
 
-#***REMOVED***Examples
+## Examples
 
-##***REMOVED***As
+### As
 
 Setting the `as` prop allows you to change the HTML tag of the `Text` component.
 
 <Source language='tsx' code={ AsExample } />
 
-##***REMOVED***Align
+### Align
 
 Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
 `start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
 
 <Source language='tsx' code={ AlignExample } />
 
-##***REMOVED***Max Lines
+### Max Lines
 
 Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
 
 <Source language='tsx' code={ MaxLinesExample } />
 
-##***REMOVED***Wrap
+### Wrap
 
 Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
 

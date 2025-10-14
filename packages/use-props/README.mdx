@@ -6,20 +6,20 @@ import SourceNestedSlots from './examples/nested.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Props Management
+# Props Management
 
 The `@bento/use-props` package provides a hook that unifies the component
 and slot based props into a single interface. Both the component and slot-based
 props can be specified as a `renderProp`. A `renderProp` is a function that
 returns the value that should be applied as props to the component.
 
-#***REMOVED***Installation
+## Installation
 
 ```shell
 npm install --save @bento/use-props
 ```
 
-#***REMOVED***useProps
+## useProps
 
 The package exposes a `useProps` hook that can be used to apply the
 props to the component. The hook is designed to be used in conjunction
@@ -46,7 +46,7 @@ The `useProps` hook returns an object with two properties:
 
 <ArgTypes of={Stories.hook} />
 
-##***REMOVED***props
+### props
 
 The `props` property is a `props`-like object - specifically a `Proxy` instance. It
 provides the familiar `props` interface for retrieving component props. When props
@@ -103,7 +103,7 @@ const Anchor = withSlots('Anchor', function AnchorComponent(args) {
 }} />
 ```
 
-##***REMOVED***apply
+### apply
 
 The `apply` function is used to apply props to your component. It takes an
 object of props and returns a new object with all the props applied, taking into

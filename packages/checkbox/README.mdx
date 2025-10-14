@@ -8,7 +8,7 @@ import CheckboxGroupIndeterminateExample from './examples/checkbox-group-indeter
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Checkbox
+# Checkbox
 
 The `@bento/checkbox` package provides accessible and customizable checkbox inputs. It exports the **CheckboxGroup** and **Checkbox** primitives, enabling you to build individual or groups of checkboxes with consistent keyboard navigation, focus management, and ARIA support. React Aria is used to ensure that the checkboxes are accessible to all users.
 
@@ -16,31 +16,31 @@ The `CheckboxGroup` allows a user to select multiple items from a list of `Check
 
 The `Checkbox` is a single checkbox option that can be selected by the user.
 
-***REMOVED***Installation
+# Installation
 
 ```bash
 npm install --save @bento/checkbox
 ```
 
-#***REMOVED***Props
+## Props
 
 The following properties are available to be used on the `CheckboxGroup` and `Checkbox` primitives:
 
-##***REMOVED***Checkbox
+### Checkbox
 
 <ArgTypes of={Stories.CheckboxProps} />
 
-##***REMOVED***CheckboxGroup
+### CheckboxGroup
 
 <ArgTypes of={Stories.CheckboxGroupProps} />
 
-#***REMOVED***Data Attributes, Slot Map and Props
+## Data Attributes, Slot Map and Props
 
-##***REMOVED***Data Attributes
+### Data Attributes
 
 The following data attributes can be used to style and customize the `CheckboxGroup` and `Checkbox` primitives.
 
-###***REMOVED***`CheckboxGroup` Data Attributes
+#### `CheckboxGroup` Data Attributes
 
 | Attribute       | Description                     |
 | --------------- | ------------------------------- |
@@ -49,7 +49,7 @@ The following data attributes can be used to style and customize the `CheckboxGr
 | `data-required` | Indicates the checkbox group is required |
 | `data-invalid`  | Indicates the checkbox group is invalid  |
 
-###***REMOVED***`Checkbox` Data Attributes
+#### `Checkbox` Data Attributes
 
 | Attribute       | Description                     |
 | --------------- | ------------------------------- |
@@ -64,11 +64,11 @@ The following data attributes can be used to style and customize the `CheckboxGr
 | `data-focus-visible` | Indicates focus should be visible    |
 | `data-selected`      | Indicates the checkbox is selected      |
 
-##***REMOVED***Slot Map
+### Slot Map
 
 The `CheckboxGroup` and `Checkbox` primitives are built off of the `Control` and `ControlGroup` primitives, which provide a consisten set of slot values, as shown below.
 
-###***REMOVED***`CheckboxGroup` Slot Map
+#### `CheckboxGroup` Slot Map
 
 | Slot Name           | Description                  |
 | ------------------- | ---------------------------- |
@@ -76,7 +76,7 @@ The `CheckboxGroup` and `Checkbox` primitives are built off of the `Control` and
 | `group.description` | Description for checkbox group|
 | `group.error`       | Error message for checkbox group|
 
-###***REMOVED***`Checkbox` Slot Map
+#### `Checkbox` Slot Map
 
 | Slot Name       | Description    |
 | --------------- | -------------- |
@@ -85,33 +85,33 @@ The `CheckboxGroup` and `Checkbox` primitives are built off of the `Control` and
 | `control.icon-indeterminate`  | Icon for indeterminate checkbox |
 | `control.label` | Text for checkbox |
 
-#***REMOVED***Examples
+## Examples
 
-##***REMOVED***Default Checkbox - Uncontrolled
+### Default Checkbox - Uncontrolled
 
 The `Checkbox` primitive is uncontrolled by default, meaning it manages its own state internally. You can also use it in a controlled manner by providing the `checked` and `onChange` props.
 
 <Source language="tsx" code={CheckboxExample} />
 
-##***REMOVED***Controlled Checkbox
+### Controlled Checkbox
 
 The `Checkbox` can also be used in a controlled manner, where you manage its state externally with the `checked` and `onChange` props.
 
 <Source language="tsx" code={CheckboxControlledExample} />
 
-##***REMOVED***Checkbox Group
+### Checkbox Group
 
 The `CheckboxGroup` allows a user to select multiple items from a list of `Checkbox` components.
 
 <Source language="tsx" code={CheckboxGroupExample} />
 
-##***REMOVED***Controlled Checkbox Group
+### Controlled Checkbox Group
 
 The `CheckboxGroup` can also be used in a controlled manner, where you manage the state of the checkboxes externally with the `value` and `onChange` props.
 
 <Source language="tsx" code={CheckboxGroupControlledExample} />
 
-##***REMOVED***Checkbox Group with Indeterminate State
+### Checkbox Group with Indeterminate State
 
 The `CheckboxGroup` can also support an indeterminate state, which is useful when some but not all checkboxes are selected. The complex state management shown here is an example of how to handle indeterminate states in a checkbox group in a common way.
 

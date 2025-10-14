@@ -1,5 +1,4 @@
 // TODO: Temp implementation for VisuallyHidden, Text, FieldError primitives
-// https://
 
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';

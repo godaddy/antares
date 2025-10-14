@@ -1,6 +1,6 @@
-***REMOVED***Container Primitive PDR
+# Container Primitive PDR
 
-#***REMOVED***Summary
+## Summary
 
 Container is the **atomic building block** for polymorphic rendering + slot composition + prop spreading. Zero styling, zero layout logic - just the infrastructure that Text, Box, and all future Bento components build upon.
 
@@ -16,7 +16,7 @@ Container is the **atomic building block** for polymorphic rendering + slot comp
 
 **Target users:** Component authors building primitives and design systems, not end-user developers writing apps.
 
-#***REMOVED***Comparison to Text
+## Comparison to Text
 
 Container is Text without the text-specific opinions:
 
@@ -29,7 +29,7 @@ Container is Text without the text-specific opinions:
 
 **Future**: Text can refactor to extend Container, eliminating duplication.
 
-#***REMOVED***Props Interface
+## Props Interface
 
 ```tsx
 interface ContainerProps extends Slots, React.HTMLAttributes<HTMLElement> {
@@ -48,7 +48,7 @@ interface ContainerProps extends Slots, React.HTMLAttributes<HTMLElement> {
 
 **Type safety**: The `as` prop uses a simple `string` type, accepting any HTML element name. This matches Text's current implementation and keeps the API straightforward. In the future, we could add TypeScript generics (e.g., `Container<'button'>`) to provide element-specific prop types, but that's an additive enhancement that wouldn't break existing usage.
 
-#***REMOVED***React Aria Analysis
+## React Aria Analysis
 
 Container is a **composition primitive**, not a behavioral component. React Aria doesn't have a direct equivalent because:
 
@@ -71,7 +71,7 @@ For polymorphic rendering, React Aria uses:
 
 Container fills the gap by providing a **shared, reusable primitive** for polymorphic rendering that all Bento components can build upon, rather than each component reimplementing this pattern.
 
-#***REMOVED***Usage Examples
+## Usage Examples
 
 ```tsx
 // Basic polymorphic rendering
@@ -93,7 +93,7 @@ function Box({ padding, elevation, children, ...props }) {
 }
 ```
 
-#***REMOVED***Implementation
+## Implementation
 
 ```tsx
 // packages/container/src/index.tsx
@@ -134,7 +134,7 @@ export const Container = withSlots('BentoContainer', function Container(args: Co
 - `data-override` - Tracks when `className`/`style`/slots are customized (see [Text implementation](../../packages/text/src/index.tsx) for this pattern)
 - `data-version` - Component version (dev builds only)
 
-#***REMOVED***Testing
+## Testing
 
 Key test coverage:
 - Renders as `div` by default, custom element via `as`
@@ -143,7 +143,7 @@ Key test coverage:
 - Tracks overrides via `data-override`
 - Supports slot composition
 
-#***REMOVED***Competitive Analysis
+## Competitive Analysis
 
 | Library | Approach | Limitation |
 |---------|----------|------------|

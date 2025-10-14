@@ -6,7 +6,7 @@ import SingleRadio from './examples/single-radio.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Radio
+# Radio
 
 The `@bento/radio` package provides accessible, customizable radio controls. It exports the **RadioGroup** and **Radio** primitives, enabling you to build groups of radio options with consistent keyboard navigation, focus management, and ARIA support.
 
@@ -14,13 +14,13 @@ The `RadioGroup` allows a user to select a single item from a list of `Radio` co
 
 The `Radio` is a single radio option that can be selected by the user.
 
-#***REMOVED***Installation
+## Installation
 
 ```bash
 npm install --save @bento/radio
 ```
 
-#***REMOVED***Props
+## Props
 
 The `@bento/radio` package exports the `RadioGroup` and `Radio` primitives:
 
@@ -36,19 +36,19 @@ import { RadioGroup, Radio } from '@bento/radio';
 
 The following properties are available to be used on the `RadioGroup` and `Radio` primitives:
 
-##***REMOVED***RadioGroup
+### RadioGroup
 
 <ArgTypes of={Stories.RadioGroupProps} />
 
-##***REMOVED***Radio
+### Radio
 
 <ArgTypes of={Stories.RadioProps} />
 
-#***REMOVED***Data Attributes, Slot Map and Props
+## Data Attributes, Slot Map and Props
 
 The data attributes, slot map and props can be used to style and customize the `RadioGroup` and `Radio` primitives.
 
-##***REMOVED***`RadioGroup` Data Attributes
+### `RadioGroup` Data Attributes
 
 | Attribute       | Description                     |
 | --------------- | ------------------------------- |
@@ -57,7 +57,7 @@ The data attributes, slot map and props can be used to style and customize the `
 | `data-required` | Indicates the group is required |
 | `data-invalid`  | Indicates the group is invalid  |
 
-##***REMOVED***`Radio` Data Attributes
+### `Radio` Data Attributes
 
 | Attribute            | Description                          |
 | -------------------- | ------------------------------------ |
@@ -71,7 +71,7 @@ The data attributes, slot map and props can be used to style and customize the `
 | `data-invalid`       | Indicates the radio is invalid       |
 | `data-required`      | Indicates the radio is required      |
 
-##***REMOVED***`RadioGroup` Slot Map
+### `RadioGroup` Slot Map
 
 | Slot Name           | Description                  |
 | ------------------- | ---------------------------- |
@@ -79,7 +79,7 @@ The data attributes, slot map and props can be used to style and customize the `
 | `group.description` | Description for radiogroup   |
 | `group.error`       | Error message for radiogroup |
 
-##***REMOVED***`Radio` Slot Map
+### `Radio` Slot Map
 
 | Slot Name                | Description              |
 | ------------------------ | ------------------------ |
@@ -87,21 +87,21 @@ The data attributes, slot map and props can be used to style and customize the `
 | `control.icon-unchecked` | Icon for unchecked radio |
 | `control.label`          | Text for radio           |
 
-#***REMOVED***Examples
+## Examples
 
-##***REMOVED***Uncontrolled
+### Uncontrolled
 
 The `RadioGroup` is uncontrolled by default.
 
 <Source language="tsx" code={Uncontrolled} />
 
-##***REMOVED***Controlled
+### Controlled
 
 The `RadioGroup` can be controlled by passing a `value` and `onChange` prop.
 
 <Source language="tsx" code={Controlled} />
 
-##***REMOVED***Single Radio
+### Single Radio
 
 Even if you only have one radio option, it must always be placed inside a `RadioGroup`.
 

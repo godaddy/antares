@@ -7,17 +7,17 @@ import VerticalStyleOverride from './examples/vertical-style-override.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Divider
+# Divider
 
 The `@bento/divider` package exports the **Divider** component, which provides a stylable and accessible `<hr>` element which can be oriented horizontally or vertically to visually and semantically separate content.
 
-#***REMOVED***Installation
+## Installation
 
 ```bash
 npm install --save @bento/divider
 ```
 
-#***REMOVED***Props
+## Props
 
 The `@bento/divider` package exports the `Divider` component:
 
@@ -27,30 +27,30 @@ The following properties are available to be used on the `Divider` component:
 
 <ArgTypes of={Stories.Props} />
 
-#***REMOVED***Examples
+## Examples
 
-##***REMOVED***Orientation
+### Orientation
 
 The `orientation` prop allows you to specify the orientation of the divider. It can be set to either `horizontal` or `vertical`. The default value is `horizontal`.
 
 <Source language='tsx' code={ VerticalStyleOverride } />
 
-#***REMOVED***Data Override
+## Data Override
 
 The `Divider` component adds the `data-override` data attribute to the rendered element when the component has been overridden by a custom `className` or `style` respectively. For example, if you override the `Divider` component with a custom `className`, the rendered element will have a `data-override` attribute set to `"classname"`. This allows you to easily identify when the component has been overridden and apply custom styles or behavior accordingly.
 
-#***REMOVED***Accessibility
+## Accessibility
 
 The `Divider` component automatically handles accessibility features:
 
 - **ARIA Attributes/Screen Reader Support**: Automatically applies `aria-orientation` to indicate visual orientation to assistive technologies.
 - **Semantic HTML**: Uses the `<hr>` element to convey the semantic purpose of the rendered element to screen readers.
 
-#***REMOVED***Customization
+## Customization
 
 You can customize the `Divider` component by providing your own class names, `style`s, or by wrapping your `Divider` in another styled component.
 
-##***REMOVED***Add your own styles with a `className`
+### Add your own styles with a `className`
 
 The best way to style the `Divider` component is to add your own `className` to the component and then use that class to style the divider. **The `Divider` component won't automatically merge your class with the default styles. You will need to provide a render function to achieve this, as shown below.**
 
@@ -58,13 +58,13 @@ This will add a `data-override='classname'` attribute to the rendered element.
 
 <Source language='tsx' code={ MergeClassName } />
 
-##***REMOVED***Add your own styles with the `style` prop
+### Add your own styles with the `style` prop
 
 You can also add your own styles to the `Divider` component by using the `style` prop. This allows you to override the default styles of the divider and will add a `data-override='style'` attribute to the rendered element.
 
 <Source language='tsx' code={ VerticalStyleOverride } />
 
-##***REMOVED***Add your own styles by wrapping the `Divider` in another styled component
+### Add your own styles by wrapping the `Divider` in another styled component
 
 You can also wrap the `Divider` component in another styled component to apply your own styles. This allows you to have more control over the styling of the divider and will not require you to merge class names or styles.
 

@@ -6,7 +6,7 @@ import SourceMemo from './examples/memo.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Slots
+# Slots
 
 The `@bento/slots` package provides a way to customize components using slots.
 Allowing developers full control over every part of the component. It
@@ -16,7 +16,7 @@ and introduces the requested changes.
 This package should be used in conjunction with the `@bento/use-render-props`
 package.
 
-#***REMOVED***Installation
+## Installation
 
 ```shell
 npm install --save @bento/slots @bento/use-render-props
@@ -26,7 +26,7 @@ npm install --save @bento/slots @bento/use-render-props
 <Story of={Stories.NestedSlots} inline />
 
 
-#***REMOVED***withSlots
+## withSlots
 
 The `withSlots` function is used to create a new component that supports slots.
 
@@ -52,7 +52,7 @@ the component. This allows the component to be targeted with a global slot
 override, but it will also be used as `displayName` to ensure a readable
 component name in the React DevTools.
 
-#***REMOVED***Modifiers
+## Modifiers
 
 Modifiers are functions that are ran when the supplied component is rendered.
 They can be used to modify the component or received props. This allows common
@@ -121,7 +121,7 @@ export const Example = withSlots('Example', function Example(props) {
 
 The following modifiers are applied to the created component by default:
 
-##***REMOVED***override
+### override
 
 The `override` modifier is used to introduce a `data-override` prop to the
 component when it detects that certain overrides are applied to the component.
@@ -150,7 +150,7 @@ indicates the following modifications:
 import { override } from '@bento/slots/modifiers/override';
 ```
 
-##***REMOVED***replaces
+### replaces
 
 The `replaces` modifier is used to introduce "global" override of components
 in your application. The slot functionality that this package provides is
@@ -162,11 +162,11 @@ case of experimentation.
 import { replaces } from '@bento/slots/modifiers/replaces';
 ```
 
-#***REMOVED***Slot Merging
+## Slot Merging
 
 Slot merging allows slots to be progressively enhanced as they flow through a component tree. When multiple components define slots for the same slot name, these slots are merged together.
 
-##***REMOVED***Object Slot Merging
+### Object Slot Merging
 
 When both parent and child define object slots (props), they are merged with **parent taking precedence**:
 
@@ -180,7 +180,7 @@ When both parent and child define object slots (props), they are merged with **p
 // Result: { className: 'parent', id: 'child-id', title: 'parent-title' }
 ```
 
-##***REMOVED***Function Slot Merging
+### Function Slot Merging
 
 When function slots are merged, the **parent function becomes active** but receives access to all previous implementations via the `previous` parameter:
 
@@ -218,7 +218,7 @@ const SecondEnhancement = () => (
 }} />
 ```
 
-##***REMOVED***Function Slot Parameters
+### Function Slot Parameters
 
 Function slots receive an object with:
 
@@ -226,7 +226,7 @@ Function slots receive an object with:
 - `original`: The original React element
 - `previous`: Array of previous slot implementations (child → parent order)
 
-##***REMOVED***Key Rules
+### Key Rules
 
 - **Object slots**: Parent props override child props for same keys
 - **Function slots**: Parent function is called, previous functions available in `previous` array

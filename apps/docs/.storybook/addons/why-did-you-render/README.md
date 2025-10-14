@@ -1,10 +1,10 @@
-***REMOVED***why did you render
+# why did you render
 
 This addon integrates the `why-did-you-render` package into Storybook to
 provide your stories with additional context on what kind of performance
 optimizations should be made.
 
-#***REMOVED***Integration
+## Integration
 
 The `why-did-you-render` package needs to be the first import so it can start
 intercepting/patching the required React internals in order to track your
@@ -29,7 +29,7 @@ following path in the `addons` array:
 That was the easy part. For the final step of the integration it needs to be
 talking to pandora's blackbox, your bundler of choice:
 
-##***REMOVED***Integrating with Vite
+### Integrating with Vite
 
 The `vite.config.ts` file needs to be updated with the `jsxImportSource` key
 in the `react` plugin. This ensures that all the `jsx` calls are correctly

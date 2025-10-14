@@ -1,6 +1,6 @@
-***REMOVED***Radio and Radio Group Primitives
+# Radio and Radio Group Primitives
 
-#***REMOVED***Purpose
+## Purpose
 
 We are introducing the `Radio` and `RadioGroup` primitives to provide a consistent and accessible way to build radio components.
 
@@ -8,7 +8,7 @@ These primitives provide core behavior and accessibility for radio and radio gro
 
 Radio components are essential for form interactions requiring single-choice selection from predefined options. These primitives ensures consistent, accessible radio behavior across the design system, automatically supporting screen readers, keyboard navigation, and proper ARIA semantics. Components that consume these primitives include form controls, settings panels, and preference selectors.
 
-#***REMOVED***Radio and Checkbox
+## Radio and Checkbox
 
 Although checkboxes and radios often share a similar DOM structure and visual style, their purposes and state management requirements are fundamentally different. Checkboxes represent independent binary choices: each can be selected or deselected on its own, and multiple checkboxes in a group can be selected simultaneously. Additionally, checkboxes can have an indeterminate state, representing a partially selected or mixed state — something radios do not support. Radios, on the other hand, are designed for mutually exclusive selection: only one option in a group can be selected at a time.
 
@@ -16,7 +16,7 @@ Despite these behavioral differences, they share the same structural foundation.
 
 `Control` will serve as the foundational primitive for both checkboxes and radios, while `ControlGroup` will provide a shared group structure for their respective groups. By abstracting the common structure into these primitives, we can create a consistent, reusable base not only for checkboxes and radios, but also for other components such as `Switch`. This approach promotes consistency, makes the codebase easier to maintain, and reduces duplication across form components.
 
-##***REMOVED***Unique Attributes
+### Unique Attributes
 
 The following primitives will be introduced:
 
@@ -30,9 +30,9 @@ The following primitives will be introduced:
 
 - `FieldError` is a primitive for displaying error messages in control groups, following the same behavior as React Aria's [`FieldError`](https://react-spectrum.adobe.com/react-aria/forms.html#built-in-validation) component.
 
-#***REMOVED***Primitive Compositions
+## Primitive Compositions
 
-##***REMOVED***`Control` primitive
+### `Control` primitive
 
 The `Control` primitive defines the shared structure used by both `Radio` and other controls like `Checkbox`. It consists of a `VisuallyHidden` element that wraps the native input, followed by the component's children, and an optional `Text` element for the label.
 
@@ -46,7 +46,7 @@ The `Control` primitive defines the shared structure used by both `Radio` and ot
 </Text>
 ```
 
-##***REMOVED***`ControlGroup` primitive
+### `ControlGroup` primitive
 
 The `ControlGroup` primitive defines the shared structure used by both `RadioGroup` and other groups like `CheckboxGroup`. It consists of a `div` element that wraps the group's children, label, description, and error message.
 
@@ -69,7 +69,7 @@ The `ControlGroup` primitive defines the shared structure used by both `RadioGro
 </div>
 ```
 
-##***REMOVED***`Radio` primitive
+### `Radio` primitive
 
 The `Radio` primitive defines the structure for a single radio option within a mutually exclusive group. It consists of a `Control` component that wraps the icon used to visually indicate the selected state of the radio.
 
@@ -82,7 +82,7 @@ const { labelProps, inputProps, ref } = useRadio(props);
 </Control>;
 ```
 
-##***REMOVED***`RadioGroup` primitive
+### `RadioGroup` primitive
 
 The `RadioGroup` primitive defines a set of radio controls (children). It consists of a `ControlGroup` component that wraps the group's children, label, description and error message.
 
@@ -95,7 +95,7 @@ const { radioGroupProps: groupProps, isInvalid, descriptionProps, errorMessagePr
 </ControlGroup>;
 ```
 
-##***REMOVED***`Control` and `ControlGroup` primitives with state management
+### `Control` and `ControlGroup` primitives with state management
 
 <details>
 <summary>
@@ -170,7 +170,7 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 
 </details>
 
-#***REMOVED***Accessibility Highlights
+## Accessibility Highlights
 
 - **Roles**: [`radiogroup`](https://www.w3.org/TR/wai-aria-1.2/#radiogroup), [`radio`](https://www.w3.org/TR/wai-aria-1.2/#radio)
 - **Attributes**:
@@ -182,9 +182,9 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
   - Space/Enter to select current radio option
   - Tab to move focus out of the group
 
-#***REMOVED***Data Attributes, Slot Map and Props
+## Data Attributes, Slot Map and Props
 
-##***REMOVED***`Radio` Data Attributes
+### `Radio` Data Attributes
 
 | Attribute            | Description                          |
 | -------------------- | ------------------------------------ |
@@ -198,7 +198,7 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 | `data-invalid`       | Indicates the radio is invalid       |
 | `data-required`      | Indicates the radio is required      |
 
-##***REMOVED***`RadioGroup` Data Attributes
+### `RadioGroup` Data Attributes
 
 | Attribute       | Description                     |
 | --------------- | ------------------------------- |
@@ -207,14 +207,14 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 | `data-required` | Indicates the group is required |
 | `data-invalid`  | Indicates the group is invalid  |
 
-##***REMOVED***`Radio` Slot Map
+### `Radio` Slot Map
 
 | Slot Name       | Description    | Required | Default Fallback |
 | --------------- | -------------- | -------- | ---------------- |
 | `control.icon`  | Icon for radio | No       | `<Icon>`         |
 | `control.label` | Text for radio | No       | `<Text>`         |
 
-##***REMOVED***`RadioGroup` Slot Map
+### `RadioGroup` Slot Map
 
 | Slot Name           | Description                  | Required | Default Fallback |
 | ------------------- | ---------------------------- | -------- | ---------------- |
@@ -222,7 +222,7 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 | `group.description` | Description for radiogroup   | No       | `<Text>`         |
 | `group.error`       | Error message for radiogroup | No       | `<Text>`         |
 
-##***REMOVED***`Radio` Props
+### `Radio` Props
 
 | Prop         | Description                                           |
 | ------------ | ----------------------------------------------------- |
@@ -230,7 +230,7 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 | `value`      | The value for this radio option.                      |
 | `isDisabled` | Whether the radio is disabled.                        |
 
-##***REMOVED***`RadioGroup` Props
+### `RadioGroup` Props
 
 | Prop           | Description                                                       |
 | -------------- | ----------------------------------------------------------------- |
@@ -245,9 +245,9 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 | `isRequired`   | Whether selection of a value is required.                         |
 | `onChange`     | Callback fired when the selected value changes.                   |
 
-#***REMOVED***Code Examples
+## Code Examples
 
-##***REMOVED***Basic Usage
+### Basic Usage
 
 ```tsx
 <RadioGroup label="Favorite fruit">
@@ -257,7 +257,7 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 </RadioGroup>
 ```
 
-##***REMOVED***Default Value
+### Default Value
 
 ```tsx
 <RadioGroup defaultValue="apple">
@@ -267,7 +267,7 @@ const { groupProps, isInvalid, descriptionProps, errorMessageProps, validationEr
 </RadioGroup>
 ```
 
-##***REMOVED***Controlled
+### Controlled
 
 ```tsx
 const [value, setValue] = useState(null);
@@ -280,7 +280,7 @@ const [value, setValue] = useState(null);
 </RadioGroup>;
 ```
 
-##***REMOVED***Uncontrolled
+### Uncontrolled
 
 ```tsx
 <RadioGroup>
@@ -292,7 +292,7 @@ const [value, setValue] = useState(null);
 </RadioGroup>
 ```
 
-##***REMOVED***Single Radio
+### Single Radio
 
 ```tsx
 // Radios are always required to be in a group
@@ -301,7 +301,7 @@ const [value, setValue] = useState(null);
 </RadioGroup>
 ```
 
-##***REMOVED***Customization with slots
+### Customization with slots
 
 ```tsx
 <RadioGroup
@@ -340,7 +340,7 @@ const [value, setValue] = useState(null);
 </RadioGroup>
 ```
 
-#***REMOVED***Appendix
+## Appendix
 
 - [React Aria Radio Group](https://react-spectrum.adobe.com/react-aria/useRadioGroup.html)
 - [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group)

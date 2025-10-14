@@ -5,7 +5,7 @@ import SourceCreate from './examples/create-store.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***External Store
+# External Store
 
 The `@bento/create-external-store` package provides a simple way to create a
 external store that can be used to share global state between components. It's
@@ -18,13 +18,13 @@ hook from React.
 If you are looking for a more feature-rich store, you might want to consider
 using a library like Redux.
 
-#***REMOVED***Installation
+## Installation
 
 ```shell
 npm install --save @bento/create-external-store
 ```
 
-#***REMOVED***createStore
+## createStore
 
 The returned `store` object is designed to be used in combination with the
 `useSyncExternalStore` hook from React. It contains the `subscribe` and
@@ -40,7 +40,7 @@ The created store returns an object with the following methods:
 
 <ArgTypes of={Stories.api} />
 
-##***REMOVED***subscribe
+### subscribe
 
 The `subscribe` function is used to listen for changes to the store. It accepts
 a callback function that is called whenever the store is updated. It returns an
@@ -68,7 +68,7 @@ const unsubscribe = store.subscribe(function (changes) {
 });
 ```
 
-##***REMOVED***getSnapshot
+### getSnapshot
 
 The `getSnapshot` function is used to get the store’s current state. It
 returns a **cached** snapshot of the current state of the store.
@@ -102,7 +102,7 @@ store.getSnapshot() === store.getSnapshot() // true
 snapshot.count = 0;
 ```
 
-##***REMOVED***set
+### set
 
 The `set` function is used to update the store. It accepts an object with the
 state that should be updated. The `set` function triggers the `subscribe` method
@@ -131,7 +131,7 @@ store.set({ count: undefined });
 console.log(store.getSnapshot()) // { foo: 'bar' }
 ```
 
-##***REMOVED***ondemand
+### ondemand
 
 The `ondemand` function updates the store once the data is requested.
 The `ondemand` expects an **async** function that returns the data for the
@@ -173,7 +173,7 @@ force a re-fetch, use the `set` command to set the value to `undefined`.
 store.set({ count: undefined });
 ```
 
-##***REMOVED***pick
+### pick
 
 The `pick` function selects specific keys from the store. When the
 key does not exist in the store; the `ondemand` function is triggered to request
@@ -212,7 +212,7 @@ you should use object destructuring instead:
 const { counter } = useSyncExternalStore(store.subscribe, store.getSnapshot);
 ```
 
-##***REMOVED***only
+### only
 
 The `only` function allows you to only subscribe to changes to specific keys in
 the store. This is useful when you only want to trigger an update when a specific
@@ -257,7 +257,7 @@ function MyCounter() {
 }
 ```
 
-##***REMOVED***dispatch
+### dispatch
 
 The `dispatch` function triggers the functions you supplied to
 the `subscribe` method. This is done automatically when introducing a new state

@@ -8,17 +8,17 @@ import SlotsExample from './examples/slots-dynamic-sections.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***ListBox
+# ListBox
 
 The `@bento/listbox` package provides a flexible, accessible listbox primitive that supports both controlled and uncontrolled selection modes. Built on React Aria for interaction fidelity and designed for composition within higher-level components like Select, Combobox, and Menu.
 
-#***REMOVED***Installation
+## Installation
 
 ```shell
 npm install --save @bento/listbox
 ```
 
-#***REMOVED***Component Structure
+## Component Structure
 
 The `@bento/listbox` package exports five main components:
 
@@ -28,17 +28,17 @@ The `@bento/listbox` package exports five main components:
 - **Header**: Accessible heading for a `ListBoxSection`, forwards props and refs for full styling control
 - **Collection**: Utility for rendering nested dynamic data inside a `ListBoxSection` (or other collection-aware context).
 
-#***REMOVED***Props
+## Props
 
 The following properties are available on the `ListBox` component:
 
 <ArgTypes of={Stories.Props} />
 
-#***REMOVED***Static Items
+## Static Items
 
 <Source language='tsx' code={BasicExample} />
 
-#***REMOVED***Sections
+## Sections
 
 Use `ListBoxSection` to group related options. Use `Header` inside a `ListBoxSection` to render an accessible heading for the group. It automatically links the heading to the section via `aria-labelledby`.
 
@@ -46,18 +46,18 @@ The `<Header>` component accepts standard DOM props and a `slot` prop for Bentoâ
 
 <Source language='tsx' code={SectionsExample} />
 
-#***REMOVED***Dynamic Collections
+## Dynamic Collections
 
 For dynamic data, use the `items` prop with a render function. The ListBox component follows different patterns depending on how it's used:
 
-##***REMOVED***When `items` prop is provided
+### When `items` prop is provided
 When you provide an `items` prop, the `children` function receives **individual items** for React Aria compatibility:
 
 <Source language='tsx' code={DynamicExample} />
 
 In this pattern, `children` is called for each item in the `items` array, receiving the individual item data to render `ListBoxItem` components.
 
-##***REMOVED***When no `items` prop is provided  
+### When no `items` prop is provided  
 When you don't provide an `items` prop but use `children` as a function, it follows **Bento's render prop pattern** and receives an object with render props:
 
 ```tsx
@@ -75,20 +75,20 @@ When you don't provide an `items` prop but use `children` as a function, it foll
 
 This pattern provides access to the ListBox's state, focus status, and other render props following Bento's consistent render prop API.
 
-##***REMOVED***Nested Collections with Sections
+### Nested Collections with Sections
 You can also render nested data inside a section using the exported `Collection` component:
 
 <Source language='tsx' code={DynamicExample} />
 
-#***REMOVED***Customization
+## Customization
 
 The ListBox components provide extensive customization options through data attributes, slots, render props, and standard CSS styling. This section covers all available approaches to customize the appearance and behavior.
 
-##***REMOVED***Styling with Data Attributes
+### Styling with Data Attributes
 
 All ListBox components expose their internal state through `data-` attributes, enabling CSS-based styling without JavaScript. This follows Bento's design philosophy of returning styling control to CSS.
 
-###***REMOVED***ListBox Container Attributes
+#### ListBox Container Attributes
 
 The main `ListBox` component exposes these data attributes:
 
@@ -102,7 +102,7 @@ The main `ListBox` component exposes these data attributes:
 - `[data-allows-tab-navigation]` - Whether tab navigation is enabled
 - `[data-focus-wrap]` - Whether focus wraps around the collection
 
-###***REMOVED***ListBoxItem Attributes
+#### ListBoxItem Attributes
 
 Individual `ListBoxItem` components expose these data attributes:
 
@@ -117,13 +117,13 @@ Individual `ListBoxItem` components expose these data attributes:
 - `[data-selection-behavior]` - Inherited selection behavior
 - `[data-text-value]` - The computed text value for the item
 
-###***REMOVED***ListBoxSection Attributes
+#### ListBoxSection Attributes
 
 The `ListBoxSection` component exposes:
 
 - `[data-level]` - The nesting level of the section
 
-###***REMOVED***CSS Styling Examples
+#### CSS Styling Examples
 
 ```css
 /* Basic item styling */
@@ -181,15 +181,15 @@ The `ListBoxSection` component exposes:
 }
 ```
 
-##***REMOVED***Slots System
+### Slots System
 
 The components use Bento's `@bento/slots` package for fine-grained component overrides. Slots allow you to replace or wrap specific parts of the component tree with custom implementations.
 
-###***REMOVED***Basic Slot Usage
+#### Basic Slot Usage
 
 <Source language='tsx' code={SlotsExample} />
 
-###***REMOVED***Advanced Slot Patterns
+#### Advanced Slot Patterns
 
 You can target specific items or sections using hierarchical slot names:
 
@@ -224,7 +224,7 @@ const slots = {
 </ListBox>
 ```
 
-##***REMOVED***Render Props
+### Render Props
 
 The `ListBoxItem` component supports render prop patterns for dynamic content based on interaction state:
 
@@ -260,7 +260,7 @@ For ListBox-level render props, use the `renderEmptyState` prop to customize emp
 </ListBox>
 ```
 
-##***REMOVED***Empty State Customization
+### Empty State Customization
 
 Customize the appearance when no items are present:
 
@@ -278,7 +278,7 @@ Customize the appearance when no items are present:
 </ListBox>
 ```
 
-##***REMOVED***Accessibility Customization
+### Accessibility Customization
 
 All components support standard ARIA attributes for enhanced accessibility:
 
@@ -296,7 +296,7 @@ All components support standard ARIA attributes for enhanced accessibility:
 </ListBox>
 ```
 
-##***REMOVED***CSS-in-JS and Styled Components
+### CSS-in-JS and Styled Components
 
 The data attributes work seamlessly with CSS-in-JS libraries:
 
@@ -320,7 +320,7 @@ const listboxStyles = css`
 `;
 ```
 
-##***REMOVED***Animation and Transitions
+### Animation and Transitions
 
 Data attributes enable smooth state transitions:
 

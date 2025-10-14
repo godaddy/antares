@@ -5,12 +5,12 @@ import SourceNamespace from './examples/namespace.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***box
+# box
 
 The `@bento/box` package provides the shared React context that is used throughout
 the Bento component ecosystem.
 
-#***REMOVED***Installation
+## Installation
 
 To install the package, use the following command:
 
@@ -18,7 +18,7 @@ To install the package, use the following command:
 npm install --save @bento/box
 ```
 
-#***REMOVED***Context
+## Context
 
 ```javascript
 import { Box } from '@bento/box';
@@ -42,7 +42,7 @@ The above example would output the following:
 
 <Story of={Stories.Namespace} inline />
 
-##***REMOVED***defaults
+### defaults
 
 The package exposes a `defaults` function that will return the default assigned
 values for the `Box` context. You can use this if you need to provide your
@@ -61,7 +61,7 @@ function MyComponent() {
 };
 ```
 
-##***REMOVED***Slots
+### Slots
 
 The `Box` context contains a `slots` object which is consumed by the 
 `@bento/slots` and `@bento/use-render-props` packages. This object
@@ -69,7 +69,7 @@ contains the following properties:
 
 <ArgTypes of={Stories.slots} />
 
-##***REMOVED***Env
+### Env
 
 The `env` object contains `@bento/environment` specific configuration. The
 object contains the following properties:

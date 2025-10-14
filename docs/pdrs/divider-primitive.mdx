@@ -1,14 +1,14 @@
-***REMOVED***Divider Primitive
+# Divider Primitive
 
-#***REMOVED***Purpose
+## Purpose
 
 The purpose of the Divider primitive is to provide a visual separator between sections of content in a user interface. It helps to organize content and improve readability by creating clear visual and semantic distinctions between different areas of the UI.
 
-##***REMOVED***Unique Attributes
+### Unique Attributes
 
 The Divider primitive exists primarily as a visual separator. Its ability to be set vertically or horizontally makes it unique and adaptable to many different layouts. This primitive does not require any additional interaction logic.
 
-#***REMOVED***Primitive Composition
+## Primitive Composition
 
 The following is the proposed implementation of the Divider primitive, which is a simple component that renders a horizontal or vertical line to separate content. It uses the `<hr>` element and applies the appropriate styles based on the `orientation` prop, which affects the `aria-orientation` directly. `useId` is also used to generate a unique identifier for the divider, which is useful to ensure there are no conflicts with other elements in the DOM. The user may override the id if they wish to provide their own unique identifier with the `id` prop spread with the `rest` props.
 
@@ -40,7 +40,7 @@ export default function Divider(props: DividerProps) {
 }
 ```
 
-##***REMOVED***API
+### API
 
 The API for the Bento `Divider` will be composed of the Native DOM `hr` props as well as the `orientation` prop, allowing the user to customize the divider's behavior and appearance.
 
@@ -50,7 +50,7 @@ interface DividerProps extends ComponentProps<'hr'> {
 }
 ```
 
-###***REMOVED***Props
+#### Props
 
 | Prop           | Type                          | Default         | Description                                                                                                                                                         |
 |----------------|-------------------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -58,7 +58,7 @@ interface DividerProps extends ComponentProps<'hr'> {
 | `className`    | `string`                      | `undefined`     | Custom CSS class to apply to the divider.                                                                                                                           |
 | `id`           | `string`                      | `undefined`     | Unique identifier for the divider element.                                                                                                                          |
 
-#***REMOVED***Internal Structure & Reuse Potential
+## Internal Structure & Reuse Potential
 
 The Divider primitive is a simple yet versatile component that is primarily composed of a single `<hr>` HTML element. It can be styled and extended to fit various design requirements, but the basic styles applied will ensure the `orientation` of the divider with the help of the `aria-orientation` attribute.
 
@@ -80,13 +80,13 @@ The Divider primitive is designed to be flexible and reusable across various com
     ```
   - As a separator between large sections of content, such as between the body and footer of a page.
 
-#***REMOVED***React Aria or External Hook Integration
+## React Aria or External Hook Integration
 
 The Divider primitive does not leverage React Aria, more specifically React Aria's `useSeparator` hook, to handle separator behavior because it does not support vertical `hr` dividers. Vertical `hr` elements are semantically correct when given the correct `aria-orientation` attribute, as described in this [article on accessible horizontal rules by Sara Soueidan](https://www.sarasoueidan.com/blog/horizontal-rules/#styling-with-css). I am following the accessibility guidance provided in that article to ensure that the Divider primitive meets ARIA standards for separators and is as simple as possible.
 
-#***REMOVED***Architecture & Features
+## Architecture & Features
 
-##***REMOVED***Accessibility Highlights
+### Accessibility Highlights
 
 The Divider primitive is designed with accessibility in mind to ensure that it meets ARIA standards for separators. Key accessibility features include:
 
@@ -96,7 +96,7 @@ The Divider primitive is designed with accessibility in mind to ensure that it m
 - **Focus Management**: Since the divider is not an interactive element, it does not receive focus. However, it can be used in conjunction with focusable elements without affecting their behavior.
 - **Screen Reader Support**: The `aria-orientation` attribute ensures that screen readers announce the divider correctly, providing context to users with visual impairments.
 
-##***REMOVED***Internationalization, RTL, and Mobile Considerations
+### Internationalization, RTL, and Mobile Considerations
 
 The following considerations are made for internationalization, RTL support, and mobile responsiveness:
 
@@ -104,15 +104,15 @@ The following considerations are made for internationalization, RTL support, and
 - **RTL Support**: This component is not text-based, so there's no need to worry about text direction.
 - **Mobile Responsiveness**: Dividers should maintain their visual appearance on mobile devices. There are possible styling considerations for sufficient thickness and contrast to be visible on smaller screens however. This can be achieved either by allowing style variants to this component, or by simply allowing the user to pass in a custom className to apply their own styles.
 
-##***REMOVED***Attributes
+### Attributes
 
 | Attribute              | Applied When                                | Description                                                                                     |
 |------------------------|---------------------------------------------|-----------------------------------------------------------------------------------------------|
 | `aria-orientation`     | Always.       | Communicates the orientation to assistive technologies. Matches the `orientation` prop value (`horizontal` or `vertical`, defaulting to `horizontal`). |
 
-##***REMOVED***Code Examples
+### Code Examples
 
-###***REMOVED***Default
+#### Default
 
 The following example shows a basic horizontal divider using the default element type `hr`, which renders horizontally by default.
 
@@ -130,7 +130,7 @@ This will render as an `<hr>` element, which is semantically appropriate for hor
 <hr aria-orientation="horizontal" className="divider" />
 ```
 
-###***REMOVED***Vertical Divider
+#### Vertical Divider
 
 The following example shows how to create a vertical divider by setting the `orientation` prop to `vertical`.
 

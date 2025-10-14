@@ -1,18 +1,18 @@
-***REMOVED***@bento/slots
+# @bento/slots
 
-#***REMOVED***0.1.1
+## 0.1.1
 
-##***REMOVED***Patch Changes
+### Patch Changes
 
 - fix: slot merging fixes and test updated in control component ([#162](https://github.com/godaddy/bento/pull/162) by @egaitan-godaddy)
 
-#***REMOVED***0.1.0
+## 0.1.0
 
-##***REMOVED***Minor Changes
+### Minor Changes
 
 - chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/bento/pull/168) by @kbader-godaddy)
 
-##***REMOVED***Patch Changes
+### Patch Changes
 
 <details>
 <summary>Updated dependencies</summary>

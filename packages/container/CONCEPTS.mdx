@@ -3,24 +3,24 @@ import * as Stories from './container.stories.tsx';
 
 <Meta of={Stories} name="Concepts" />
 
-***REMOVED***Container Concepts
+# Container Concepts
 
 Container is an infrastructure primitive for building component libraries. This guide covers the problems it solves, when to use it, and how it enables customization.
 
-#***REMOVED***Why Container?
+## Why Container?
 
 Container solves three fundamental problems when building component libraries:
 
-##***REMOVED***1. **Polymorphic Rendering**
+### 1. **Polymorphic Rendering**
 Components need to render as different HTML elements while maintaining the same API and behavior. Container provides type-safe polymorphism through the `as` prop.
 
-##***REMOVED***2. **Slot Composition**
+### 2. **Slot Composition**
 Design systems need to allow consumers to customize internal component structure without exposing implementation details. Container integrates with `@bento/slots` to enable deep customization.
 
-##***REMOVED***3. **Prop Spreading**
+### 3. **Prop Spreading**
 Components need to accept arbitrary HTML attributes and pass them through safely. Container uses `@bento/use-props` to handle props merging, render props, and filtering.
 
-#***REMOVED***When to Use Container
+## When to Use Container
 
 Container is an **infrastructure primitive** for building component libraries, not a replacement for HTML in application code.
 
@@ -34,7 +34,7 @@ Use Container when you need to expose customization APIs to consumers. The trade
 
 **Prop forwarding**: Does the component accept arbitrary HTML attributes? Container handles prop merging, render props, and filtering automatically.
 
-##***REMOVED***Examples: When to Use Each Approach
+### Examples: When to Use Each Approach
 
 **Use HTML directly** when the component is simple with no customization needs:
 
@@ -91,11 +91,11 @@ export const ControlGroup = withSlots('BentoControlGroup', function ControlGroup
 </ControlGroup>
 ```
 
-#***REMOVED***How Slots Enable Customization
+## How Slots Enable Customization
 
 Container integrates with `@bento/slots` to enable infinite customization through a clean API.
 
-##***REMOVED***Example: Building a Customizable Card
+### Example: Building a Customizable Card
 
 ```tsx
 // card.tsx - Building a Card component

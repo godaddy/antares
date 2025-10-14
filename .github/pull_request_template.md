@@ -3,7 +3,7 @@ Thanks for submitting a pull request! We appreciate you spending the time to wor
 Please provide enough information so that others can review your pull request.
 -->
 
-#***REMOVED***Summary
+## Summary
 
 <!--
 Explain the **motivation** for making this change. What existing problem does the pull request solve?
@@ -14,7 +14,7 @@ Example:
 - What is the impact on users or developers?
 -->
 
-#***REMOVED***Changes Made
+## Changes Made
 
 <!--
 List the key changes in this PR:
@@ -23,7 +23,7 @@ List the key changes in this PR:
 - Fixed behavior in Z
 -->
 
-#***REMOVED***Test Plan
+## Test Plan
 
 <!--
 Demonstrate the code is solid. Include:
@@ -34,7 +34,7 @@ Demonstrate the code is solid. Include:
 - Browser/environment testing notes
 -->
 
-#***REMOVED***Checklist
+## Checklist
 
 <!-- Mark items with [x] when complete -->
 

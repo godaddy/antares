@@ -1,6 +1,6 @@
-***REMOVED***ScrollLock Primitive PDR
+# ScrollLock Primitive PDR
 
-#***REMOVED***Purpose
+## Purpose
 
 The ScrollLock primitive provides a Bento-wrapped interface around React Aria's `usePreventScroll` hook, focusing primarily on API consistency and data attributes for debugging purposes.
 
@@ -8,7 +8,7 @@ The ScrollLock primitive provides a Bento-wrapped interface around React Aria's 
 
 This research indicates that scrollbar compensation is already handled by the underlying React Aria implementation.
 
-##***REMOVED***Actual Unique Attributes
+### Actual Unique Attributes
 
 Given React Aria's comprehensive implementation, the ScrollLock primitive provides:
 - **Data Attributes**: Adds debugging and styling hooks via `data-scroll-locked`
@@ -17,7 +17,7 @@ Given React Aria's comprehensive implementation, the ScrollLock primitive provid
 - **Consistent API**: Follows Bento's hook patterns for familiarity
 - **Optional Enhancements**: Additional configuration options if needed
 
-#***REMOVED***Primitive Composition
+## Primitive Composition
 
 The ScrollLock primitive is built using:
 
@@ -35,7 +35,7 @@ The ScrollLock primitive is built using:
 
 Given React Aria's built-in scrollbar compensation and layout shift prevention, this primitive serves as a **thin wrapper** that adds Bento-specific conventions while leveraging the underlying functionality.
 
-#***REMOVED***Implementation Patterns
+## Implementation Patterns
 
 | Concept             | Implementation                                               |
 |---------------------|--------------------------------------------------------------|
@@ -46,7 +46,7 @@ Given React Aria's built-in scrollbar compensation and layout shift prevention, 
 | Cleanup             | React Aria manages listeners and style restoration         |
 | TypeScript          | Potentially extends PreventScrollOptions if needed          |
 
-#***REMOVED***Internal Structure & Reuse Potential
+## Internal Structure & Reuse Potential
 
 Given that React Aria's `usePreventScroll` already handles scrollbar compensation, the ScrollLock primitive becomes much simpler:
 
@@ -68,7 +68,7 @@ export function useScrollLock(options: ScrollLockOptions = {}) {
 
 The implementation leverages React Aria's existing capabilities rather than duplicating functionality.
 
-#***REMOVED***React Aria or External Hook Integration
+## React Aria or External Hook Integration
 
 ScrollLock is built directly on top of React Aria's `usePreventScroll` hook, which provides comprehensive scroll prevention including:
 
@@ -107,9 +107,9 @@ function BentoModal(props) {
 - Consistent API with other Bento hooks  
 - TypeScript types aligned with Bento patterns
 
-#***REMOVED***Architecture & Features
+## Architecture & Features
 
-##***REMOVED***Hook API
+### Hook API
 
 ```tsx
 import { PreventScrollOptions } from '@react-aria/overlays';
@@ -124,7 +124,7 @@ interface ScrollLockOptions extends PreventScrollOptions {
 }
 ```
 
-##***REMOVED***Implementation Details
+### Implementation Details
 
 ```tsx
 import { usePreventScroll } from '@react-aria/overlays';
@@ -172,7 +172,7 @@ export function useScrollLock(options: ScrollLockOptions = {}) {
 - iOS Safari fixes
 - Proper cleanup and restoration
 
-#***REMOVED***Accessibility Highlights
+## Accessibility Highlights
 
 React Aria's `usePreventScroll` provides comprehensive accessibility support that we inherit:
 
@@ -186,7 +186,7 @@ Our Bento additions maintain accessibility by:
 - **Non-intrusive**: Data attributes don't interfere with React Aria's accessibility
 - **Debug Support**: Helps with accessibility testing without affecting ARIA semantics
 
-#***REMOVED***Internationalization, RTL, and Mobile Considerations
+## Internationalization, RTL, and Mobile Considerations
 
 React Aria's `usePreventScroll` handles:
 - **Mobile Safari**: iOS rubber-band scrolling and position:fixed issues
@@ -198,9 +198,9 @@ Our minimal Bento wrapper ensures:
 - **Full Compatibility**: Inherits all React Aria's RTL and mobile support
 - **No Interference**: Data attributes don't affect React Aria's cross-platform behavior
 
-#***REMOVED***Data Attributes and Slot Map
+## Data Attributes and Slot Map
 
-##***REMOVED***Expected `data-*` Attributes
+### Expected `data-*` Attributes
 
 | Attribute                  | Description                              | Example Values    |
 |---------------------------|------------------------------------------|-------------------|
@@ -209,7 +209,7 @@ Our minimal Bento wrapper ensures:
 
 Note: As a behavioral hook, ScrollLock doesn't use slots but does apply data attributes for debugging and potential styling hooks.
 
-#***REMOVED***Competitive Research
+## Competitive Research
 
 - **React Aria `usePreventScroll`**: Comprehensive solution with scrollbar compensation, mobile support, and accessibility
 - **Radix UI `RemoveScroll`**: Good ref counting but less iOS support
@@ -219,9 +219,9 @@ Note: As a behavioral hook, ScrollLock doesn't use slots but does apply data att
 
 **Key Finding**: React Aria's `usePreventScroll` is already the best-in-class solution. Our wrapper adds minimal value beyond API consistency and debugging attributes.
 
-#***REMOVED***Code Examples
+## Code Examples
 
-##***REMOVED***Basic Integration with React Aria Modal
+### Basic Integration with React Aria Modal
 
 ```tsx
 import { useModal, useOverlay, useDialog } from '@react-aria/overlays';

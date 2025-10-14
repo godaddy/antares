@@ -1,13 +1,13 @@
 #!/bin/sh
 
-***REMOVED***Run lint-staged for code formatting/linting
+# Run lint-staged for code formatting/linting
 npx lint-staged
 
-***REMOVED***Run dependency checks to prevent circular deps and version mismatches
+# Run dependency checks to prevent circular deps and version mismatches
 echo "🔍 Checking dependencies..."
 npm run deps:check
 
-***REMOVED***Run package.json formatting
+# Run package.json formatting
 echo "🔍 Checking package.json formatting..."
 npm run format:package
 

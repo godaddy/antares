@@ -1,8 +1,8 @@
-***REMOVED***Drawer Primitive
+# Drawer Primitive
 
 The `Drawer` primitive is a component that creates an expandable panel. It is meant to hold content and reveal it after some interaction.
 
-#***REMOVED***Purpose
+## Purpose
 
 - Support sidebar navigation, where the drawer can be collapsed to show minimal navigation items and expand to show the full navigation.
 - Support bottom sheet functionality, where the drawer can be expanded to show more options or content.
@@ -12,39 +12,39 @@ The `Drawer` primitive is a component that creates an expandable panel. It is me
 > The drawer _could_ also support a modal-like behavior, where the drawer is expanded from the center of the parent container.
 > See the [Composition](#composition) section below for more information. This would require a component name change to indicate that this component handles this sort of behavior.
 
-#***REMOVED***Primitive Composition
+## Primitive Composition
 
 We may explore using the Disclosure resources from React Aria, either the [component](https://react-spectrum.adobe.com/react-aria/Disclosure.html) or the [hook](https://react-spectrum.adobe.com/react-aria/useDisclosure.html). Though it's implementation may not aligned to our expectations below. Specifically the ability to ship the drawer without a trigger.
 
-#***REMOVED***Props
+## Props
 
-##***REMOVED***placement
+### placement
 
 From the [`useOverlayPosition` hook](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), the placement of the element with respect to its positioning parent. This will accept strings such as `top`, `bottom`, `left`, `right`. The use of left and right will flip in RTL contexts so that the implementation is consistent. See the [Composition](#composition) section for more information on other requirements for this to work.
 
-##***REMOVED***isExpanded
+### isExpanded
 
 From the [`useDisclosure` hook](https://react-spectrum.adobe.com/react-aria/useDisclosure.html), whether the drawer is expanded or collapsed.
 If the `animate` prop is provided, the drawer will animate expanded or collapsed based on this flag.
 
-##***REMOVED***defaultExpanded
+### defaultExpanded
 
 From the [`useDisclosure` hook](https://react-spectrum.adobe.com/react-aria/useDisclosure.html), the `defaultExpanded` prop is a flag that determines if the drawer is expanded or collapsed by default.
 If not provided, the drawer will be collapsed by default.
 
-##***REMOVED***onExpandedChange
+### onExpandedChange
 
 From the [`useDisclosure` hook](https://react-spectrum.adobe.com/react-aria/useDisclosure.html), this is a callback that is fired when the drawer is expanded or collapsed.
 
-##***REMOVED***shouldCloseOnBlur
+### shouldCloseOnBlur
 
 From the [`useOverlay` hook](https://react-spectrum.adobe.com/react-aria/useOverlay.html), whether the overlay should close when focus is lost or moves outside it.
 
-##***REMOVED***isKeyboardDismissDisabled
+### isKeyboardDismissDisabled
 
 From the [`useOverlay` hook](https://react-spectrum.adobe.com/react-aria/useOverlay.html), whether pressing the escape key to close the overlay should be disabled.
 
-##***REMOVED***shouldCloseOnInteractOutside
+### shouldCloseOnInteractOutside
 
 From the [`useOverlay` hook](https://react-spectrum.adobe.com/react-aria/useOverlay.html), when user interacts with the argument element outside of the overlay ref, to return true if onClose should be called. This gives you a chance to filter out interaction with elements that should not dismiss the overlay. By default, onExpandedChange will always be called on interaction outside the overlay ref.
 
@@ -59,13 +59,13 @@ From the [`useOverlay` hook](https://react-spectrum.adobe.com/react-aria/useOver
 > - `isKeyboardDismissDisabled` -> `shouldDismissOnEscape`
 > - `shouldCloseOnInteractOutside` -> `shouldDismissOnElementInteract`
 
-##***REMOVED***maxWidth/maxHeight
+### maxWidth/maxHeight
 
 The maximum width and height of the drawer in CSS units. Percentage is based on the parent.
 When the drawer is **expanded**, the drawer will be constrained to these values.
 If not provided, when the drawer is expanded it will be the size of its contents.
 
-##***REMOVED***minWidth/minHeight
+### minWidth/minHeight
 
 The minimum width and height of the drawer in CSS units. Percentage is based on the parent.
 When the drawer is **collapsed**, the drawer will be constrained to these values.
@@ -75,7 +75,7 @@ If not provided, when the drawer is collapsed these values will be `0`, causing 
 > [!NOTE]
 > If the drawer is an extension of the layout components then these props will be provided from the layout component.
 
-##***REMOVED***isTouch
+### isTouch
 
 The `isTouch` prop is a flag that determines if the drawer should allow touch gestures.
 This will also include a handle on edges opposite of the attachment edge to indicate where the drawer can be swiped.
@@ -87,7 +87,7 @@ This will also include a handle on edges opposite of the attachment edge to indi
 - Swiping a minimized drawer away from it's attached edge will expand the drawer.
 - Swiping a maximized drawer toward it's attached edge will collapse the drawer.
 
-##***REMOVED***animate
+### animate
 
 The `animate` prop determines if and/or how the drawer should animate when it is expanded or collapsed from its minimum size to its maximum size.
 If provided as the flag `true`, the drawer will animate with default settings.
@@ -100,21 +100,21 @@ Otherwise, you may provide a string that represents a CSS transition, specifical
 > [!NOTE]
 > Due to the examples provided by Adobe below, it is possible that we avoid the use of `animate` and instead use Framer Motion to animate the drawer. This is an open question.
 
-#***REMOVED***Relevant Examples from Adobe
+## Relevant Examples from Adobe
 
-##***REMOVED***Gesture Driven Modal Sheet (desktop swipe gestures)
+### Gesture Driven Modal Sheet (desktop swipe gestures)
 An iOS-style gesture driven modal sheet built with React Aria Components, Framer Motion, and Tailwind CSS.
 
 https://react-spectrum.adobe.com/react-aria/examples/framer-modal-sheet.html#gesture-driven-modal-sheet
 
-##***REMOVED***Swipeable Tabs (mobile swipe gestures)
+### Swipeable Tabs (mobile swipe gestures)
 A swipeable Tabs component built with with React Aria Components, Framer Motion, Tailwind CSS, and CSS scroll snapping.
 https://react-spectrum.adobe.com/react-aria/examples/swipeable-tabs.html
 
 > [!NOTE]
 > React Aria Components are wrapped in Framer Motion to support animation values.
 
-#***REMOVED***Vaul
+## Vaul
 
 An existing implementation of a drawer is [Vaul](https://vaul.emilkowal.ski/). One of the features of this library is [snap points](https://vaul.emilkowal.ski/docs/features/snap-points). These indicate where the drawer will snap to when it is opened.
 
@@ -138,7 +138,7 @@ Vaul only supplies components and does not provide any hooks. It might be more b
 
 Vaul provided other features such as [adjusting the placement when a mobile keyboard is displayed](https://github.com/emilkowalski/vaul/blob/main/src/index.tsx#L477-L533) and [nesting drawers](https://github.com/emilkowalski/vaul/blob/main/src/index.tsx#L681-L706).
 
-#***REMOVED***Accessibility
+## Accessibility
 
 - If the drawer is meant to disrupt the user from other tasks, then it should be given a `role="dialog"` and `aria-modal="true"`. Otherwise, it should be given a `role="region"` unless it is provided a more semantic HTML element (eg., `<nav/>`). 
 - `aria-expanded` will be used to indicate the expanded state of the drawer.
@@ -153,7 +153,7 @@ Vaul provided other features such as [adjusting the placement when a mobile keyb
 </Drawer>
 ```
 
-#***REMOVED***Focus Trapping
+## Focus Trapping
 
 If the composition is expecting focus to be trapped within the drawer,
 then a [`<FocusScope/>`](https://react-spectrum.adobe.com/react-aria/FocusScope.html) must be provided.
@@ -166,7 +166,7 @@ then a [`<FocusScope/>`](https://react-spectrum.adobe.com/react-aria/FocusScope.
 </Drawer>
 ```
 
-#***REMOVED***Composition
+## Composition
 
 Specifically in the case of potentionally replacing Application Sidebar, we'll need the ability for the drawer to change between affecting sibling content and appearing above it as a configuration. In React Aria, this is handled by providing a `<Disclosure>` as the parent and a `<DisclosurePanel>` as the panel. Other children to the parent are siblings to the panel.
 

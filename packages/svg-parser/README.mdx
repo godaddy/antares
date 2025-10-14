@@ -8,18 +8,18 @@ import CustomPropsExample from './examples/custom-props.tsx?raw'
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***SVG Parser
+# SVG Parser
 
 A utility for transforming SVG strings into React components with support for 
 custom node and property transformations.
 
-#***REMOVED***Installation
+## Installation
 
 ```bash
 npm install @bento/svg-parser
 ```
 
-#***REMOVED***Basic Usage
+## Basic Usage
 
 Import the `parser` function and pass your SVG string as the first argument. 
 Standard SVG attributes are automatically converted to React-friendly props 
@@ -31,7 +31,7 @@ Standard SVG attributes are automatically converted to React-friendly props
 
 <ArgTypes of={Stories.svgParserAPI} />
 
-#***REMOVED***Custom Property Transformations Example
+## Custom Property Transformations Example
 
 Use property transformations when you need to convert SVG attributes that don't 
 follow React conventions. Each transformation function receives the DOM element 
@@ -42,7 +42,7 @@ like `class` (becomes `className`) or `stroke-width` (becomes `strokeWidth`).
 
 <Story of={Stories.CustomProps} />
 
-#***REMOVED***Custom Node Transformations Example
+## Custom Node Transformations Example
 
 Transform custom SVG elements into standard elements or React components when 
 you have non-standard elements in your SVG. Each transformation function 
@@ -53,7 +53,7 @@ allowing you to extract attributes and create new component properties.
 
 <Story of={Stories.CustomNodes} />
 
-#***REMOVED***Advanced Usage: Combining Transformations Example
+## Advanced Usage: Combining Transformations Example
 
 Combine both transformations when you need to handle custom elements AND 
 custom attributes. The parser applies node transformations first, then 

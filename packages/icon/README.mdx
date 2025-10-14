@@ -7,19 +7,19 @@ import SourceLoading from './examples/loading.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Icon
+# Icon
 
 The `@bento/icon` package provides a way to render SVG-based icons in your
 application. This package does not ship any icons but instead allows you to
 introduce your own icons.
 
-#***REMOVED***Installation
+## Installation
 
 ```shell
 npm install --save @bento/icon
 ```
 
-#***REMOVED***Props
+## Props
 
 The `@bento/icon` package exports the `Icon` component:
 
@@ -38,13 +38,13 @@ For all other properties specified on the `Icon` component, the
 component will pass them down to the root SVG element of the component. Which
 would be the equivalent of you adding them directly to the child component.
 
-##***REMOVED***Example
+### Example
 
 <Source language='tsx' code={ SourceIcon } />
 <Story of={Stories.Demo} inline />
 <Controls of={Stories.Demo} />
 
-#***REMOVED***Introducing content
+## Introducing content
 
 By default, the icon component ships with no icon sets or libraries. You need to
 introduce the icons to the included store. The icon library exposes the
@@ -61,7 +61,7 @@ the required React SVG element.
 > NOTE: If you want to learn more about the store, please refer to the
 > `@bento/create-external-store` package.
 
-##***REMOVED***set
+### set
 
 The `set` method allows you to **synchronously** introduce content to the store.
 The method expects an object where the key is the icon’s name, as you would
@@ -95,7 +95,7 @@ set({ 'icon-name': parser(icon) });
 <Story of={Stories.Demo} inline />
 <Controls of={Stories.Demo} />
 
-##***REMOVED***ondemand
+### ondemand
 
 The `ondemand` method allows you to **asynchronously** introduce content to the
 store. The method expects a function that should return a promise that resolves
@@ -125,13 +125,13 @@ response and renders the [placeholder](#placeholders) content if it's specified.
 <Story of={Stories.Ondemand} inline />
 <Controls of={Stories.Ondemand} />
 
-#***REMOVED***Accessibility
+## Accessibility
 
 The icons are rendered with `role="presentation"` and should be considered
 decorative and should not be used to convey information to the user. They
 should only be used for visual or branding purposes.
 
-##***REMOVED***Semantic Icons
+### Semantic Icons
 
 Semantic icons convey information to the user rather than just pure
 decoration. This includes icons without text next to them that are used for
@@ -148,7 +148,7 @@ import { Icon } from '@bento/icon';
 <Icon icon="wand" title="A magic wand" />
 ```
 
-#***REMOVED***Performance
+## Performance
 
 When introducing content to the store, you should consider the performance
 impact of the content you are introducing. The icons should always be
@@ -185,7 +185,7 @@ the network.
 It's worth noting that there are distinct advantages to rendering the icons as
 full SVG elements when it comes to [server-side rendering](#server-side-rendering).
 
-##***REMOVED***Sprite
+### Sprite
 
 To reduce the amount of duplication in the DOM, you can render the icons as a
 sprite. The optional `mode` prop is used to specify how the icon should be
@@ -235,7 +235,7 @@ This also means that you can inject the spritesheet into the DOM yourself as
 part of the SSR response to ensure they are available and displayed before
 the client-side hydration.
 
-#***REMOVED***Server side rendering
+## Server side rendering
 
 While the `Icon` component can render the icon content during the server-side
 rendering, the content must be available during the rendering of the icons.
@@ -257,7 +257,7 @@ content during the server-side rendering, you have the following options:
 - [Asynchronously](#asynchronously)
 - [Placeholders](#placeholders)
 
-##***REMOVED***SVG element as a response
+### SVG element as a response
 
 As noted above, the `Icon` component can only render the icon if the content
 is available during the server-side rendering. If you want to render
@@ -275,7 +275,7 @@ set({ 'icon-name': <svg /> });
 The `set` method is synchronous. If you are using the `ondemand` method in your
 application, please refer to the [Asynchronously](#asynchronously) section.
 
-##***REMOVED***Asynchronously
+### Asynchronously
 
 When loading your content asynchronously using the `ondemand` method, it's
 unavailable during the server-side rendering. These icons will default render an
@@ -298,7 +298,7 @@ import { Icon } from '@bento/icon';
 
 See [sprite](#sprite) for more information.
 
-##***REMOVED***Placeholders
+### Placeholders
 
 When the icon content is loading or the requested icon doesn't exist the `Icon`
 component will render the provided `children` as placeholder. This allows you to
@@ -335,7 +335,7 @@ import { Icon } from '@bento/icon';
 <Story of={Stories.Loading} inline />
 <Controls of={Stories.Loading} />
 
-#***REMOVED***Customization
+## Customization
 
 As the `Icon` component is a wrapper around the `Illustration` component, you
 can use the `Illustration`'s properties to customize the icon. The `Icon`
@@ -343,7 +343,7 @@ component will pass all properties down to the `Illustration` component
 allowing you to `rotate` or `flip` the icon. This is useful when you need
 to support RTL languages that requires the icon to be altered.
 
-##***REMOVED***Slots
+### Slots
 
 The component is created using our `@bento/slots` package and allows the
 assignment of the custom `slot` property to be used for overrides.
@@ -357,7 +357,7 @@ slots:
 See the `@bento/slots` package for more information on how to use the `slot` and
 `slots` properties.
 
-##***REMOVED***Styling
+### Styling
 
 Once you assign the `className` property to the component, you take full
 responsibility for the styling of the component, and it will remove any

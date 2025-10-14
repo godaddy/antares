@@ -1,15 +1,15 @@
-***REMOVED***Storybook Addon Helpers
+# Storybook Addon Helpers
 
 This addon helps you write less code in your stories (`*.stories.tsx`), less repetitive Storybook boilerplate, less manual typing, less manual documentation, by using the helpers provided which extract the components, args and props from your components and interfaces while keeping your stories type safe.
 
-##***REMOVED***Key Benefits
+### Key Benefits
 
 - **Less Code** - Reduce the amount of repetitive Storybook boilerplate in your stories with helpers such as `getMeta`, `getStory`, `getVariants`, `getComponentDocs` and `getInterfaceDocs`.
 - **Auto Documentation** - Extract component docs directly from components and interfaces using JSDoc to prevent stale documentation.
 - **Type Safe** - Full TypeScript support with IntelliSense while authoring stories.
 - **CSF compatible** - The final output is just a standard [CSF], so you can use them in your stories without any runtime helpers. This helper is designed to align with the new [CSF Factories].
 
-##***REMOVED***Quick Comparison
+### Quick Comparison
 
 ```ts
 // ❌ Before: Repetitive manual typing
@@ -48,13 +48,13 @@ export const Button = getStory(Button);
 export const ButtonProps = getComponentDocs(Button);
 ```
 
-#***REMOVED***Installation
+## Installation
 
 ```bash
 npm install --save-dev @bento/storybook-addon-helpers
 ```
 
-#***REMOVED***Setup
+## Setup
 
 Add the addon to your `.storybook/main.ts`:
 
@@ -67,7 +67,7 @@ export default {
 };
 ```
 
-#***REMOVED***Usage
+## Usage
 
 You can use the following helpers in your story (`*.stories.tsx`) files:
 
@@ -81,7 +81,7 @@ import {
 } from '@bento/storybook-addon-helpers';
 ```
 
-##***REMOVED***`getMeta(storyObj)`
+### `getMeta(storyObj)`
 
 Generates a type-safe Storybook Meta object:
 
@@ -92,7 +92,7 @@ export default getMeta({
 });
 ```
 
-##***REMOVED***`getStory(Component, storyObj)`
+### `getStory(Component, storyObj)`
 
 Generates individual stories with full type safety:
 
@@ -104,7 +104,7 @@ export const MyButton = getStory(Button, {
 });
 ```
 
-##***REMOVED***`getVariants(Component, variants)`
+### `getVariants(Component, variants)`
 
 Generate multiple stories based on the variants object:
 
@@ -122,7 +122,7 @@ export const ButtonVariantsSecondary = { ... }
 export const ButtonVariantsLoading = { ... }
 ```
 
-##***REMOVED***`getComponentDocs(Component)`
+### `getComponentDocs(Component)`
 
 Generates a story useful for documentation from component props and JSDoc using [`react-docgen-typescript`](https://github.com/styleguidist/react-docgen-typescript):
 
@@ -142,7 +142,7 @@ export const ButtonDocs = {
 };
 ```
 
-##***REMOVED***`getInterfaceDocs<InterfaceName>()`
+### `getInterfaceDocs<InterfaceName>()`
 
 Generates a story useful for documentation from TypeScript interfaces and JSDoc comments:
 
@@ -152,14 +152,14 @@ export const ButtonPropsDocs = getInterfaceDocs<ButtonProps>();
 // Generates similar story to the one using getComponentDocs
 ```
 
-##***REMOVED***Comprehensive example
+### Comprehensive example
 
 We use the following files for testing the addon, it showcases multiple ways to use the helpers:
 
 - **How you would write your stories**: [comp-stories.tsx](./test/fixtures/comp-stories.tsx)
 - **How the addon transforms your stories**: [comp-stories-expected.tsx](./test/fixtures/comp-stories-expected.tsx)
 
-#***REMOVED***How It Works
+## How It Works
 
 This addon analyzes your story files and performs a lightweight transformation step:
 
@@ -171,7 +171,7 @@ This addon analyzes your story files and performs a lightweight transformation s
    You still get **TypeScript type checking and IntelliSense** when authoring your stories.
    Your editor will catch mistakes while outputting clean CSF.
 
-#***REMOVED***References
+## References
 
 - [Writing Presets](https://storybook.js.org/docs/addons/writing-presets#advanced-configuration)
 - [Indexers](https://storybook.js.org/docs/api/main-config/main-config-indexers)

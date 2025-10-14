@@ -1,12 +1,12 @@
-***REMOVED***VisuallyHidden Primitive PDR
+# VisuallyHidden Primitive PDR
 
-#***REMOVED***Purpose
+## Purpose
 
 The VisuallyHidden primitive provides content that is accessible to screen readers and other assistive technologies while being visually hidden from sighted users. This is a fundamental accessibility primitive that enables developers to provide additional context, instructions, or navigation aids without cluttering the visual interface.
 
 This primitive is essential for implementing accessible patterns like skip links, screen reader-only form labels, additional context for interactive elements, and descriptive text that supplements visual cues. It serves as a building block for other accessible components throughout the Bento ecosystem and is consumed by form components, navigation systems, and any component requiring accessible hidden content.
 
-##***REMOVED***Unique Attributes
+### Unique Attributes
 
 The VisuallyHidden primitive is unique in its simplicity and critical importance:
 
@@ -17,7 +17,7 @@ The VisuallyHidden primitive is unique in its simplicity and critical importance
 - **Slot-based customization**: Adds Bento's flexible customization system on top of React Aria's solid foundation
 - **Performance optimized**: Minimal runtime overhead with CSS-based hiding
 
-#***REMOVED***Primitive Composition
+## Primitive Composition
 
 The VisuallyHidden primitive is built using:
 
@@ -52,7 +52,7 @@ export const VisuallyHidden = withSlots(
 
 This is a **UI primitive** that renders HTML elements with specific styling to achieve visual hiding while maintaining accessibility.
 
-#***REMOVED***Implementation Patterns
+## Implementation Patterns
 
 | Concept             | Implementation                                               |
 |---------------------|--------------------------------------------------------------|
@@ -63,7 +63,7 @@ This is a **UI primitive** that renders HTML elements with specific styling to a
 | data-override       | Set when className/style props override default behavior    |
 | Composability       | Supports any children content, `as` prop for element types |
 
-#***REMOVED***Internal Structure & Reuse Potential
+## Internal Structure & Reuse Potential
 
 This is already the minimal reusable unit for visual hiding functionality. The primitive:
 
@@ -74,7 +74,7 @@ This is already the minimal reusable unit for visual hiding functionality. The p
 
 The component is intentionally simple and focused, making it perfect for composition in larger components without introducing complexity. It serves as a foundational building block that other Bento components can rely on for accessible hidden content.
 
-#***REMOVED***React Aria or External Hook Integration
+## React Aria or External Hook Integration
 
 The primitive is built directly on React Aria's accessibility utilities:
 
@@ -85,7 +85,7 @@ The primitive is built directly on React Aria's accessibility utilities:
 
 React Aria's implementation handles all edge cases, cross-browser concerns, and accessibility requirements, so no additional logic is required.
 
-#***REMOVED***Architecture & Features
+## Architecture & Features
 
 - **Default element**: Renders as `<span>` by default for inline content
 - **Custom elements**: Supports `as` prop (community standard) and `elementType` (React Aria compatibility) for semantic HTML elements
@@ -94,12 +94,12 @@ React Aria's implementation handles all edge cases, cross-browser concerns, and 
 - **No custom CSS**: Relies entirely on React Aria's proven hiding technique
 - **Slot composition**: Adds Bento's customization layer on top of React Aria's foundation
 
-##***REMOVED***DOM Structure
+### DOM Structure
 ```html
 <span class="react-aria-VisuallyHidden">Screen reader only content</span>
 ```
 
-##***REMOVED***API Interface
+### API Interface
 ```tsx
 interface VisuallyHiddenProps {
   children: React.ReactNode;
@@ -109,7 +109,7 @@ interface VisuallyHiddenProps {
 }
 ```
 
-#***REMOVED***Accessibility Highlights
+## Accessibility Highlights
 
 - **Screen reader accessible**: Content remains available to assistive technologies
 - **Visually hidden**: Completely hidden from sighted users using React Aria's CSS technique
@@ -119,7 +119,7 @@ interface VisuallyHiddenProps {
 - **Cross-browser compatibility**: React Aria handles browser inconsistencies
 - **No interference**: Doesn't affect keyboard navigation or other accessibility features
 
-#***REMOVED***Internationalization, RTL, and Mobile Considerations
+## Internationalization, RTL, and Mobile Considerations
 
 - **RTL support**: Works identically in RTL layouts since content is visually hidden
 - **Mobile accessibility**: Functions correctly with mobile screen readers and assistive technologies
@@ -127,18 +127,18 @@ interface VisuallyHiddenProps {
 - **No layout concerns**: Visual hiding eliminates layout-related RTL or mobile issues
 - **React Aria compatibility**: Inherits React Aria's international and mobile support
 
-#***REMOVED***Data Attributes and Slot Map
+## Data Attributes and Slot Map
 
-##***REMOVED***Expected `data-*` Attributes
+### Expected `data-*` Attributes
 
 | Attribute             | Description                                   | Example Values         |
 |----------------------|-----------------------------------------------|------------------------|
 | `data-override`      | Indicates customization via props/slots       | "style" / "className"  |
 | `data-version`       | Component version in dev only                 | "visually-hidden@1.0"  |
 
-#***REMOVED***Competitive Research
+## Competitive Research
 
-##***REMOVED***React Aria
+### React Aria
 - **Implementation**: Uses proven CSS clipping technique with `position: absolute` and `clip: rect(0, 0, 0, 0)`
 - **API**: Simple `<VisuallyHidden elementType="span">` interface
 - **Customization**: Limited to element type and standard HTML props
@@ -153,7 +153,7 @@ interface VisuallyHiddenProps {
   }
   ```
 
-##***REMOVED***Reach UI
+### Reach UI
 - **Implementation**: Similar CSS approach but with slightly different clipping values
 - **API**: `<VisuallyHidden>` with children only
 - **Customization**: No element type customization, always renders as `<span>`
@@ -167,7 +167,7 @@ interface VisuallyHiddenProps {
   }
   ```
 
-##***REMOVED***Chakra UI
+### Chakra UI
 - **Implementation**: Uses `position: absolute` with `height: 1px` and `overflow: hidden`
 - **API**: `<VisuallyHidden>` with additional styling props support
 - **Customization**: Supports Chakra's styling system (sx, etc.)
@@ -182,14 +182,14 @@ interface VisuallyHiddenProps {
   }
   ```
 
-##***REMOVED***Headless UI
+### Headless UI
 - **Implementation**: Doesn't provide this primitive directly
 - **Approach**: Expects developers to implement their own or use CSS utilities
 - **Alternative**: Recommends using Tailwind's `sr-only` utility class
 - **Philosophy**: Focuses on interactive components, not utility primitives
 - **Props**: N/A - No component provided
 
-##***REMOVED***Radix UI
+### Radix UI
 - **Implementation**: CSS-based hiding with `position: absolute` and clipping
 - **API**: `<VisuallyHidden>` with `asChild` prop for composition
 - **Customization**: Supports `asChild` for polymorphic rendering
@@ -204,7 +204,7 @@ interface VisuallyHiddenProps {
   }
   ```
 
-##***REMOVED***Bento's Approach
+### Bento's Approach
 - **Implementation**: Built directly on React Aria's proven foundation
 - **API**: Combines React Aria's reliability with Bento's slot system
 - **Customization**: Slot-based overrides, render props, and React Aria's element types
@@ -223,7 +223,7 @@ interface VisuallyHiddenProps {
   }
   ```
 
-##***REMOVED***Key Differences Summary
+### Key Differences Summary
 
 | Feature | React Aria | Reach UI | Chakra UI | Radix UI | Bento |
 |---------|------------|----------|-----------|----------|--------|
@@ -236,16 +236,16 @@ interface VisuallyHiddenProps {
 
 **Bento's Advantage**: Combines React Aria's battle-tested accessibility implementation with Bento's flexible slot-based customization system, providing the most reliable foundation with the most customization options. The props API is the most comprehensive, supporting everything from basic usage to advanced slot-based overrides.
 
-#***REMOVED***Code Examples
+## Code Examples
 
-##***REMOVED***Basic usage
+### Basic usage
 ```tsx
 <VisuallyHidden>
   This text is hidden visually but available to screen readers
 </VisuallyHidden>
 ```
 
-##***REMOVED***Skip link pattern
+### Skip link pattern
 ```tsx
 <VisuallyHidden as="a" href="#main-content">
   Skip to main content

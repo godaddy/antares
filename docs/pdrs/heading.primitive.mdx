@@ -1,10 +1,10 @@
-***REMOVED***Heading Primitive PDR
+# Heading Primitive PDR
 
-#***REMOVED***Purpose
+## Purpose
 
 The Heading Primitive will extend the Text Primitive to provide a more semantic and accessible heading component.
 
-#***REMOVED***API
+## API
 
 The API interface for the resource should include the following props, excluding the props from the Text Primitive:
 
@@ -15,13 +15,13 @@ interface HeadingProps extends TextProps {
 }
 ```
 
-##***REMOVED***`level`
+### `level`
 
 The `level` prop is used to specify the level of the heading. If not provided, the heading will automatically determine the level based on the number of nested `Heading.Provider` components or render a span element if no `Heading.Provider` is found.
 
-#***REMOVED***Code examples
+## Code examples
 
-##***REMOVED***Basic usage
+### Basic usage
 
 The `level` prop is used to specify the level of the heading.
 
@@ -30,7 +30,7 @@ The `level` prop is used to specify the level of the heading.
 <Heading level={1}>Hello, world!</Heading>
 ```
 
-##***REMOVED***Auto level
+### Auto level
 
 The `Heading.Provider` component is used to automatically determine the level of the heading based on the number of nested `Heading.Provider` components. If `level` is provided, it will override the automatic level determination.
 
@@ -51,7 +51,7 @@ If no `level` is provided and the `Heading.Provider` is not nested, the heading 
 
 We may also consider adding a `level` to the `Heading.Provider` component override the current level determined by the scope.
 
-#***REMOVED***Appendix
+## Appendix
 
 - [Managing Heading Levels In Design Systems](https://medium.com/@Heydon/managing-heading-levels-in-design-systems-18be9a746fa3)
 - [Ariakit Heading](https://ariakit.org/components/heading)

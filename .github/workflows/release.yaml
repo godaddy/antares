@@ -13,15 +13,15 @@ jobs:
     permissions:
       contents: write
       id-token: write
-      pull-requests: write ***REMOVED***Allow PR creation
+      pull-requests: write # Allow PR creation
     env:
       TURBO_TELEMETRY_DISABLED: 1
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 ***REMOVED***v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 ***REMOVED***v5.0.0
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
           cache: "npm"
@@ -32,13 +32,13 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 ***REMOVED***v1.4.7 (enterprise allowlist approved)
+        uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7 (enterprise allowlist approved)
         with:
           version: npm run version
           commit: "chore: version updates"
-          ***REMOVED***TODO: Uncomment publish when ready for first public release
-          ***REMOVED***publish: npm run release
+          # TODO: Uncomment publish when ready for first public release
+          # publish: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ***REMOVED***NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

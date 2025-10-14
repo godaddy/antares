@@ -8,19 +8,19 @@ import IframeRenderingExample from './examples/iframe-rendering.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-***REMOVED***Environment
+# Environment
 
 The `@bento/environment` package allows you to setup a custom environment for
 your components. It allows you to replace any Bento based component with a
 custom implementation as well as provide custom properties to the components.
 
-#***REMOVED***Installation
+## Installation
 
 ```shell
 npm install --save @bento/environment
 ```
 
-#***REMOVED***Props
+## Props
 
 The `Environment` component is the main entry point for configuring Bento
 components in your application. It allows you to set up global configurations,
@@ -35,7 +35,7 @@ The `Environment` component accepts the following props:
 
 <ArgTypes of={Stories.API} />
 
-##***REMOVED***Example
+### Example
 
 The `components` prop allows you to override the default components used by
 Bento. This is useful when you want to customize the behavior or appearance of a
@@ -45,7 +45,7 @@ corresponding components.
 <Source language='tsx' code={OverrideExample} />
 <Story of={Stories.Demo} />
 
-#***REMOVED***Shadow DOM, Iframes, and other rendering contexts
+## Shadow DOM, Iframes, and other rendering contexts
 
 Our components are designed to work in a variety of rendering contexts. This
 includes the browser, Shadow DOM, and Iframes. The `root` prop allows you to
@@ -61,7 +61,7 @@ prop, we can ensure that the components that reference the `document` and
 <Source language='tsx' code={IframeRenderingExample} />
 <Story of={Stories.IframeRendering} />
 
-#***REMOVED***Component replacement
+## Component replacement
 
 The `components` prop can also be used to replace the default components with
 your own custom components. This is useful when you want to make a change
@@ -78,7 +78,7 @@ custom button component.
 <Source language='tsx' code={CustomButtonExample} />
 <Story of={Stories.Experimentation} />
 
-#***REMOVED***Introducing new props
+## Introducing new props
 
 As the example above shows, you can completely replace any component in the
 system with a custom implementation. This works well for A/B testing, but
