@@ -84,10 +84,10 @@ export const Icon = withSlots('BentoIcon', function Iconic(args: IconProps) {
 
   const data = useDataAttributes({
     //
-    // Solving the chicken and the egg problem. Our `useRenderProps` hook wants
+    // Solving the chicken and the egg problem. Our `useProps` hook wants
     // to know the state so this can be referenced by the renderProp functions.
     // We can't fetch the contents of the store, before interacting with the
-    // returned props from the `useRenderProps` hook. So we need to use state
+    // returned props from the `useProps` hook. So we need to use state
     // to keep track of the loading state instead of simply checking if we have
     // content returned from the store. As we are using state to track the
     // loading state we don't want to introduce another re-render just to set

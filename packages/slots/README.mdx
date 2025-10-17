@@ -13,13 +13,13 @@ Allowing developers full control over every part of the component. It
 automatically intercepts the `slot` and `slots` props of the components
 and introduces the requested changes.
 
-This package should be used in conjunction with the `@bento/use-render-props`
+This package should be used in conjunction with the `@bento/use-props`
 package.
 
 ## Installation
 
 ```shell
-npm install --save @bento/slots @bento/use-render-props
+npm install --save @bento/slots @bento/use-props
 ```
 
 <Source language='tsx' code={ SourceNestedSlots } />
@@ -31,11 +31,11 @@ npm install --save @bento/slots @bento/use-render-props
 The `withSlots` function is used to create a new component that supports slots.
 
 ```javascript
-import { useRenderProps } from '@bento/use-render-props';
+import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 
 export const Button = withSlots('BentoButton', function BentoButton(args) {
-  const [props, apply] = useRenderProps(args);
+  const { props, apply } = useProps(args);
 
   // Do your magic ✨
 });

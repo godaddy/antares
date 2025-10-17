@@ -38,7 +38,7 @@ ondemand(async function fetchIcons(icon: string) {
  */
 export function Loader(args: any): JSX.Element {
   //
-  // spinner and dragon icon used by the loader delayed loader above are fromt:
+  // spinner and dragon icon used by the loader delayed loader above are from:
   // Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.
   //
   return (

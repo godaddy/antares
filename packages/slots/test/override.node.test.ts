@@ -55,7 +55,7 @@ describe('@bento/slots override', function bento() {
     assume(html).contains('<div style="color:red" data-override="boink style"></div>');
   });
 
-  it('seperates multiple causes with a space', function multiple() {
+  it('separates multiple causes with a space', function multiple() {
     const html = createComponent('multiple', {
       style: { color: 'red' },
       className: 'example'

@@ -17,7 +17,7 @@ interface Example {
  */
 export const Container: React.FC<Example> = withSlots('MyDataPropsContainer', function Containers(args: object) {
   //
-  // Always supply the `useRenderProps` hook with the state of your component.
+  // Always supply the `useProps` hook with the state of your component.
   // This allows the renderProps to refer the state of the component and render
   // the correct content accordingly.
   //

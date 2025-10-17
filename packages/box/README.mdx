@@ -54,7 +54,7 @@ import { useContext } from 'react';
 
 function MyComponent() {
   return (
-    <Box.Provider values={defaults()}>
+    <Box.Provider value={defaults()}>
       <MyChildComponent />
     </Box.Provider>
   );
@@ -64,7 +64,7 @@ function MyComponent() {
 ### Slots
 
 The `Box` context contains a `slots` object which is consumed by the 
-`@bento/slots` and `@bento/use-render-props` packages. This object
+`@bento/slots` and `@bento/use-props` packages. This object
 contains the following properties:
 
 <ArgTypes of={Stories.slots} />

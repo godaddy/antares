@@ -4,7 +4,7 @@ import { Nested } from './nested.tsx';
 
 //
 // We define the slots object outside of the component scope to avoid
-// introducing a new object reference on each render wich would cause
+// introducing a new object reference on each render which would cause
 // the Nested component to re-render unnecessarily.
 //
 const slots = {

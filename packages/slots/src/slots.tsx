@@ -160,7 +160,7 @@ export function withSlots<Props extends object>(
     // We want to throw the following error only in a development environment.
     //
     // While the requirement is to have unique components so each component can
-    // be individually and correctly targetted using our provided context we
+    // be individually and correctly targeted using our provided context we
     // want to be mindful that we're breaking an application for the right
     // reasons. We should only throw in production if an application cannot
     // recover from this error.

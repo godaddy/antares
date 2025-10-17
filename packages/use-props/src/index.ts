@@ -110,7 +110,7 @@ export interface Returns {
  * @throws {BentoError} If the hook is used outside of a @bento/slots component.
  *
  * @example
- * const [props, apply] = useRenderProps({ foo: 'bar' });
+ * const { props, apply } = useProps({ foo: 'bar' });
  * if (props.a) doSomething()
  * return <a {...apply({ className: 'foo' }) }>{ props.children }</a>;
  */

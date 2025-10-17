@@ -87,12 +87,12 @@ The component is created using our `@bento/slots` package and allows the
 assignment of the custom `slot` property to be used for overrides.
 
 ```jsx
-import { useRenderProps } from '@bento/use-render-props';
+import { useProps } from '@bento/use-props';
 import { Illustration } from '@bento/illustration';
 import { withSlots } from '@bento/slots';
 
 const MyCustomComponent = withSlots('MyCustomComponent', function Custom(args) {
-  const [props] = useRenderProps(args);
+  const { props } = useProps(args);
 
   return (
     <Illustration {...props} slot="illustration">
@@ -128,7 +128,7 @@ render state:
   using the `rotate` property.
 
 These `data-` attributes are introduced on the root element of the component
-and can be targetted using your previously provided custom `className`:
+and can be targeted using your previously provided custom `className`:
 
 ```css
 .my-component[data-flip] {

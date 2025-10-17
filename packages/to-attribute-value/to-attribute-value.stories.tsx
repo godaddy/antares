@@ -62,7 +62,7 @@ export const output = {
     },
     array: {
       description:
-        'The values in the array are mapped using this `stringify` function. The resulting strings are then joined into a whitespace-seperated list.',
+        'The values in the array are mapped using this `stringify` function. The resulting strings are then joined into a whitespace-separated list.',
       type: 'string',
       table: {
         defaultValue: { summary: 'data-example="1 2 foo-bar"' },

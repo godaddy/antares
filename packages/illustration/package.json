@@ -47,7 +47,12 @@
     "@bento/slots": "^0.1.1",
     "@bento/to-attribute-value": "^0.1.0",
     "@bento/use-data-attributes": "^0.1.0",
-    "@bento/use-props": "^0.1.0"
+    "@bento/use-props": "^0.1.0",
+    "@react-types/shared": "^3.32.1"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

@@ -133,7 +133,7 @@ describe('@bento/use-props', function bento() {
      * @returns {object} An object containing the rendered HTML string, the props, and the apply function.
      * @property {string} html - The rendered HTML string.
      * @property {object} props - The props used in the component.
-     * @property {function} apply - The apply function returned by useRenderProps.
+     * @property {function} apply - The apply function returned by useProps.
      * @private
      */
     function createComponent(name: string, props = {}, slots = {}) {
