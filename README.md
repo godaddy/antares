@@ -1,8 +1,8 @@
 # 🍱 Bento
 
-Bento is a component library built to support our GoDaddy design system. It is a
-collection of reusable components (i.e., primitives) that can be used to build
-more complex components.
+A component library of accessibility primitives for building React design systems.
+
+Bento provides unstyled, accessible building blocks built on [React Aria](https://react-spectrum.adobe.com/react-aria/) that you can use to create your own component library or design system. It embodies the "Primitives" concept - fundamental, highly customizable components with no business logic.
 
 ## 🛠️ Development
 
