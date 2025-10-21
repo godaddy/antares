@@ -20,9 +20,9 @@ import style from './listbox.module.css';
 // ```
 //
 // This example demonstrates several slot override patterns:
-// 1. `bento-list.side-dishes.header` – Custom header component with enhanced styling
-// 2. `bento-list.side-dishes.pickled-vegetables` – Override specific item in specific section
-// 3. `bento-list.main-dishes` – Override entire section styling
+// 1. `side-dishes.header` – Custom header component with enhanced styling
+// 2. `side-dishes.pickled-vegetables` – Override specific item in specific section
+// 3. `main-dishes` – Override entire section styling
 //
 
 /**
@@ -51,18 +51,14 @@ export function SlotsDynamicSectionsExample({ categories, ...args }: any) {
     //
     // Override a header in a specific section with custom styling
     //
-    'bento-list.side-dishes.header': ({
-      props,
-      original
-    }: {
-      props: Record<string, any>;
-      original: React.ReactNode;
-    }) => <Header {...props}>🥢 {original}</Header>,
+    'side-dishes.header': ({ props, original }: { props: Record<string, any>; original: React.ReactNode }) => (
+      <Header {...props}>🥢 {original}</Header>
+    ),
 
     //
     // Override another specific item with custom content
     //
-    'bento-list.side-dishes.pickled-vegetables': ({ original }: { original: React.ReactNode }) => (
+    'side-dishes.pickled-vegetables': ({ original }: { original: React.ReactNode }) => (
       <div style={{ backgroundColor: '#4ade80', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>
         🥒 {original} (Traditional)
       </div>
@@ -71,7 +67,7 @@ export function SlotsDynamicSectionsExample({ categories, ...args }: any) {
     //
     // Override an entire section with custom wrapper
     //
-    'bento-list.main-dishes': ({ original }: { original: React.ReactNode }) => (
+    'main-dishes': ({ original }: { original: React.ReactNode }) => (
       <div style={{ border: '2px dashed #f59e0b', padding: '8px', borderRadius: '6px' }}>{original}</div>
     )
   };

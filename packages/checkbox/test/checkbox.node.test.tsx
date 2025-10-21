@@ -58,10 +58,10 @@ describe('@bento/checkbox', function bento() {
         },
         {
           slots: {
-            'group.control.icon-checked': { style: { color: 'orange' } },
-            'group.control.icon-unchecked': { style: { color: 'purple' } },
-            'group.control.icon-indeterminate': { style: { color: 'pink' } },
-            'group.control.label': { style: { color: 'green' } }
+            'control.icon-checked': { style: { color: 'orange' } },
+            'control.icon-unchecked': { style: { color: 'purple' } },
+            'control.icon-indeterminate': { style: { color: 'pink' } },
+            'control.label': { style: { color: 'green' } }
           }
         }
       );

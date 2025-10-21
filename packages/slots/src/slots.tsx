@@ -68,14 +68,34 @@ export function withSlots<Props extends object>(
     ctx.env = { ...ctx.env };
     ctx.slots = { ...ctx.slots };
     ctx.slots.namespace = [...ctx.slots.namespace, slot].filter(Boolean);
-    ctx.slots.assigned = { ...ctx.slots.assigned };
+
+    const currentNamespace = ctx.slots.namespace.join('.');
+    const inheritedSlots: Record<string, any> = {};
+    const prefix = `${currentNamespace}.`;
+
+    //
+    // Only inherit slots from the parent that match the current namespace.
+    // If the current namespace is empty (root level), inherit all slots
+    // that don't contain a dot (i.e., slots at the root level only).
+    //
+    for (const key in ctx.slots.assigned) {
+      if (currentNamespace === '' && !key.includes('.')) {
+        inheritedSlots[key] = ctx.slots.assigned[key];
+      } else if (key === currentNamespace || key.startsWith(prefix)) {
+        inheritedSlots[key] = ctx.slots.assigned[key];
+      }
+    }
+
+    ctx.slots.assigned = inheritedSlots;
 
     //
     // merge the new slots with the assigned slots,
     // parent component slots should take precedence over child ones.
     //
     for (const slotKey in slots) {
-      const assignedSlot = ctx.slots.assigned[slotKey];
+      // Build the fully qualified slot key by prefixing with current namespace
+      const namespacedKey = ctx.slots.namespace.length > 0 ? `${currentNamespace}.${slotKey}` : slotKey;
+      const assignedSlot = ctx.slots.assigned[namespacedKey];
       const newSlot = slots[slotKey];
 
       //
@@ -83,9 +103,9 @@ export function withSlots<Props extends object>(
       // If the assigned slot exists and is an object, keep it as is.
       //
       if (!assignedSlot) {
-        ctx.slots.assigned[slotKey] = newSlot;
+        ctx.slots.assigned[namespacedKey] = newSlot;
       } else if (typeof assignedSlot === 'object') {
-        ctx.slots.assigned[slotKey] = { ...newSlot, ...assignedSlot };
+        ctx.slots.assigned[namespacedKey] = { ...newSlot, ...assignedSlot };
       } else if (typeof assignedSlot === 'function') {
         const existingPrevious = assignedSlot.__slotPrevious || [];
         const newPrevious = [newSlot, ...existingPrevious];
@@ -94,7 +114,7 @@ export function withSlots<Props extends object>(
         };
 
         mergedFnSlot.__slotPrevious = newPrevious;
-        ctx.slots.assigned[slotKey] = mergedFnSlot;
+        ctx.slots.assigned[namespacedKey] = mergedFnSlot;
       }
     }
 

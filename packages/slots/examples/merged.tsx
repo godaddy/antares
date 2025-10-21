@@ -44,6 +44,7 @@ const BetterDescription = withSlots('SlotsExampleMergedBetterDesc', function Bet
   return (
     <Description
       {...props}
+      slot="description"
       slots={{
         label: { className: 'better-class', title: 'better-title' },
         summary: betterSummarySlot,
@@ -61,9 +62,10 @@ const BestDescription = withSlots('SlotsExampleMergedImprovedDesc', function Imp
   return (
     <BetterDescription
       {...props}
+      slot="better-desc"
       slots={{
-        label: { className: 'best-class', id: 'best' },
-        summary: bestSummarySlot
+        'description.label': { className: 'best-class', id: 'best' },
+        'description.summary': bestSummarySlot
       }}
     />
   );
@@ -77,8 +79,8 @@ export const Merged = withSlots('SlotsExampleMerged', function Merged() {
   return (
     <BestDescription
       slots={{
-        label: { className: 'merged-class', id: 'merged' },
-        summary: function mergedSummary({ previous }: any) {
+        'better-desc.description.label': { className: 'merged-class', id: 'merged' },
+        'better-desc.description.summary': function mergedSummary({ previous }: any) {
           /* v8 ignore next 3: these should not throw */
           if (previous.length !== 2) throw new Error('previous should be an array with 2 slots');
           if (previous[0] !== betterSummarySlot) throw new Error('first slot should be the betterSummarySlot');

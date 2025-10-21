@@ -50,7 +50,7 @@ describe('@bento/radio', function bento() {
         },
         {
           slots: {
-            'group.control.icon-unchecked': { style: { color: 'red' } }
+            'control.icon-unchecked': { style: { color: 'red' } }
           }
         }
       );

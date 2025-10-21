@@ -5,6 +5,12 @@ import { render } from 'vitest-browser-react';
 import { Memo } from '../examples/memo.tsx';
 import { Merged } from '../examples/merged.tsx';
 import { MergedFunction } from '../examples/merged-function.tsx';
+import {
+  Namespace,
+  NamespaceWithSlotNames,
+  NamespaceWithReplacements,
+  NamespaceRootLevelInheritance
+} from '../examples/namespace.tsx';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 import React from 'react';
@@ -111,6 +117,49 @@ describe('@bento/slots examples', function bento() {
           '<div>Second Enhancement</div>' +
           '<div>Third Enhancement: merged-fn</div>' +
           '</div>'
+      );
+    });
+  });
+
+  describe('Namespace', function namespace() {
+    it('should render a component with slots', function test() {
+      const { container } = render(<Namespace />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        '<label data-override="className slot" class="title-1">title</label>' +
+          '<label data-override="className slot" class="description-1">title</label>'
+      );
+    });
+
+    it('should render a component with correct slot names', function test() {
+      const { container } = render(<NamespaceWithSlotNames />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        '<label data-override="className slot" class="title-2">title</label>' +
+          '<label data-override="className slot" class="description-2">title</label>'
+      );
+    });
+
+    it('should render a component with correct replacements', function test() {
+      const { container } = render(<NamespaceWithReplacements />);
+      const result = container.innerHTML;
+
+      assume(result).equals(
+        '<label data-override="className slot" class="title-3">title</label>' +
+          '<label data-override="className slot" class="description-3">title</label>'
+      );
+    });
+
+    it('should allow children to inherit root-level slots', function test() {
+      const { container } = render(<NamespaceRootLevelInheritance />);
+      const result = container.innerHTML;
+
+      console.log('bbbb', result);
+
+      assume(result).equals(
+        '<div>' + '<label data-override="className slot" class="inherited-title">title</label>Content' + '</div>'
       );
     });
   });

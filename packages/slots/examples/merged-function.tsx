@@ -34,6 +34,7 @@ export const FirstEnhancement = withSlots('SlotsExampleMergedFunctionFirst', fun
   return (
     <BaseComponent
       {...props}
+      slot="base-comp"
       slots={{
         container: function firstWrapper({ previous, original, props }: any) {
           return <div>First Enhancement</div>;
@@ -52,8 +53,9 @@ export const SecondEnhancement = withSlots('SlotsExampleMergedFunctionSecond', f
   return (
     <FirstEnhancement
       {...props}
+      slot="first-enh"
       slots={{
-        container: function secondWrapper({ previous, original, props }: any) {
+        'base-comp.container': function secondWrapper({ previous, original, props }: any) {
           return <div>Second Enhancement</div>;
         }
       }}
@@ -70,8 +72,9 @@ export const ThirdEnhancement = withSlots('SlotsExampleMergedFunctionThird', fun
   return (
     <SecondEnhancement
       {...props}
+      slot="second-enh"
       slots={{
-        container: function thirdWrapper({ previous, original, props }: any) {
+        'first-enh.base-comp.container': function thirdWrapper({ previous, original, props }: any) {
           return <div>Third Enhancement: {props.className}</div>;
         }
       }}
@@ -87,7 +90,7 @@ export const MergedFunction = withSlots('SlotsExampleMergedFunctionExample', fun
     <ThirdEnhancement
       className="merged-fn"
       slots={{
-        container: function wrapper({ previous, original, props }: any) {
+        'second-enh.first-enh.base-comp.container': function wrapper({ previous, original, props }: any) {
           return (
             <div>
               {previous[0]({ original, props })}
