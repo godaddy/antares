@@ -30,15 +30,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.4.7 (enterprise allowlist approved)
         with:
           version: npm run version
           commit: "chore: version updates"
-          # TODO: Uncomment publish when ready for first public release
-          # publish: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+
+      - name: Trigger Publish Workflow
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-publish
