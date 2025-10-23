@@ -1,7 +1,7 @@
 name: Continuous Integration
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: null
   pull_request:
     branches:
       - main
@@ -9,7 +9,7 @@ on:
   # This satisfies required status checks since GITHUB_TOKEN doesn't trigger pull_request events
   push:
     branches:
-      - "changeset-release/**"
+      - 'changeset-release/**'
 
 # Avoid redundant runs for same PRs
 concurrency:
@@ -29,8 +29,8 @@ jobs:
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: .nvmrc
-          cache: "npm"
-          cache-dependency-path: "package-lock.json"
+          cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Restore Turbo Cache
         uses: actions/cache@v4

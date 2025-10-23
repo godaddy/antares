@@ -1,9 +1,8 @@
 name: Publish
 
 on:
-  workflow_dispatch:
-  repository_dispatch:
-    types: [run-publish]
+  workflow_dispatch: null
+  workflow_call: null
 
 jobs:
   publish:
@@ -22,18 +21,20 @@ jobs:
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: .nvmrc
-          cache: "npm"
-          cache-dependency-path: "package-lock.json"
+          cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install Dependencies
         run: npm ci
 
       - name: Publish to npm
-        run: |
-          npm run release
-          git push --follow-tags
+        run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
+      - name: Push tags and commits
+        run: git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
