@@ -1,0 +1,225 @@
+# Select Primitive PDR
+
+## Purpose
+
+The Select primitive provides an accessible, customizable dropdown that overcomes native `<select>` limitations—enabling custom option rendering, grouped sections, and rich UX patterns while remaining headless. Follows [W3C ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
+
+### Unique Attributes
+
+- **Compound components** (`Select.Trigger`, `.Value`, `.Content`, `.Option`, `.Group`): Enables flexible composition vs monolithic component that would limit customization
+- **Builds on ListBox**: Reuses proven selection patterns rather than duplicating accessibility/keyboard logic
+- **Portal rendering**: Solves [dropdown clipping issues](https://github.com/floating-ui/floating-ui/discussions/1965) common with overflow:hidden containers
+- **[Floating UI](https://floating-ui.com/) positioning**: Chosen over Popper for [smaller bundle](https://bundlephobia.com/package/@floating-ui/dom) and better tree-shaking
+- **Hidden native `<select>`**: Maintains form submission and [autofill](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) compatibility
+- **Custom value rendering**: Allows different display format than option (e.g., "USA" in dropdown, "🇺🇸 United States" when selected)
+- **Typeahead navigation**: Essential UX for long lists without complexity of full search
+
+## Primitive Composition
+
+**Components**: `Select` (context), `.Trigger` (Pressable-based), `.Value`, `.Content` (portal + [Floating UI](https://floating-ui.com/docs/computePosition)), `.Option` (extends ListBox), `.Group`/`.Label`
+
+**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useButton`](https://react-spectrum.adobe.com/react-aria/useButton.html), `useProps`, `useDataAttributes`, `withSlots`
+
+This is a **UI component** that combines behavioral hooks with compound component composition.
+
+## Implementation Patterns
+
+| Concept            | Implementation                                                            |
+| ------------------ | ------------------------------------------------------------------------- |
+| React Aria         | useSelect, useSelectState, useButton, useListBox                          |
+| Slots              | withSlots on all sub-components, slot prop for targeting                  |
+| Render Props       | value/option renderers with state/props access                            |
+| data-\* Attributes | data-open, data-disabled, data-invalid, data-selected, data-focus-visible |
+| data-override      | Applied when slots/props override default behavior                        |
+| data-version       | Dev-only component version tracking                                       |
+| Composability      | Compound components, children/items support                               |
+
+## Internal Structure & Reuse Potential
+
+Behavioral hooks separated from rendering for reusability:
+
+- **SelectContext**: Manages state across compound components (avoids prop drilling)
+- **useSelectTrigger/Value/Popover**: Modular hooks reusable in Combobox, Autocomplete, DatePicker
+- **SelectListBox**: Extends ListBox with select-specific behavior
+
+## React Aria & External Integration
+
+**React Aria provides core behavior** ([`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useButton`](https://react-spectrum.adobe.com/react-aria/useButton.html))—handling ARIA attributes, keyboard nav, and state. We extend with:
+
+- **Slots/render props**: Enable deep customization without forking
+- **Data attributes**: Expose state for CSS (avoiding [ARIA for styling](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/#do-not-use-aria-to-style-content))
+- **[Floating UI](https://floating-ui.com/docs/computePosition)**: Smart positioning with [`flip`](https://floating-ui.com/docs/flip)/[`shift`](https://floating-ui.com/docs/shift) collision detection
+
+## Architecture & Features
+
+### Component Structure
+
+```jsx
+<Select>
+  <Select.Trigger>
+    <Select.Value placeholder='Choose an option' />
+    <Select.Icon />
+  </Select.Trigger>
+  <Select.Portal>
+    <Select.Content>
+      <Select.Option value='1'>Option 1</Select.Option>
+      <Select.Group>
+        <Select.Label>Group Label</Select.Label>
+        <Select.Option value='2'>Option 2</Select.Option>
+      </Select.Group>
+    </Select.Content>
+  </Select.Portal>
+</Select>
+```
+
+### Rendered DOM Structure
+
+```html
+<!-- Trigger (follows ARIA combobox pattern) -->
+<button
+  role="combobox"
+  aria-expanded="false"
+  aria-haspopup="listbox"
+  data-open="false"
+>
+  <span>Selected Value</span>
+  <svg><!-- chevron icon --></svg>
+</button>
+
+<!-- Hidden native select for forms -->
+<select aria-hidden="true" tabindex="-1" style="position: absolute; ...">
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+</select>
+
+<!-- Portal-rendered dropdown -->
+<div style="position: fixed; ...">
+  <div role="listbox" aria-label="Select options">
+    <div role="option" aria-selected="true" data-selected="true">Option 1</div>
+    <div role="group" aria-labelledby="group-1">
+      <span id="group-1">Group Label</span>
+      <div role="option" aria-selected="false">Option 2</div>
+    </div>
+  </div>
+</div>
+```
+
+### Key Props & State
+
+| Prop                              | Type              | Purpose                                     |
+| --------------------------------- | ----------------- | ------------------------------------------- |
+| `value`/`defaultValue`            | `string`          | Controlled/uncontrolled selection           |
+| `open`/`defaultOpen`              | `boolean`         | Controlled/uncontrolled dropdown visibility |
+| `onValueChange`                   | `(value) => void` | Selection callback                          |
+| `onOpenChange`                    | `(open) => void`  | Visibility callback                         |
+| `disabled`, `required`, `invalid` | `boolean`         | Form states                                 |
+| `placeholder`                     | `string`          | Empty state text                            |
+| `name`                            | `string`          | Form submission field name                  |
+| `items`                           | `Iterable<T>`     | Dynamic collections                         |
+| `disabledKeys`                    | `Set<string>`     | Disable specific options                    |
+
+**State management**: Supports controlled/uncontrolled modes, syncs with hidden `<select>` for forms, manages focus and typeahead buffer.
+
+## Accessibility & Platform Support
+
+**ARIA** ([combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/#keyboard-interaction-12)):
+
+- Roles: `combobox`, `listbox`, `option`, `group`
+- Attributes: `aria-expanded`, `aria-selected`, `aria-invalid`, `aria-required`
+- Keyboard: Arrow nav, `Enter`/`Space` select, `Escape` close, typeahead
+- Focus: [Roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex), returns to trigger, `data-focus-visible`
+
+**Platform**:
+
+- **RTL**: [Auto-flip positioning](https://react-spectrum.adobe.com/react-aria/internationalization.html#rtl) and icons
+- **Mobile**: [44px tap targets](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html), scroll locking
+- **I18n**: Localizable strings, locale-aware typeahead
+
+## Customization
+
+**Data attributes** for CSS ([not ARIA](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/#do-not-use-aria-to-style-content)):
+
+- Trigger: `data-open`, `data-disabled`, `data-invalid`, `data-required`, `data-placeholder`
+- Option: `data-selected`, `data-disabled`, `data-highlighted`
+- Interactive: `data-focus-visible`, `data-hovered`, `data-pressed`
+
+**Slots** for composition:
+
+- `trigger`, `trigger.value`, `trigger.icon` - Button customization
+- `content`, `content.viewport` - Dropdown container
+- `option`, `option.label`, `option.icon` - Option rendering
+- `group`, `group.label` - Grouped sections
+
+## Prior Art
+
+- **[React Aria](https://react-spectrum.adobe.com/react-aria/Select.html)**: Our accessibility foundation (hooks only, no components)
+- **[Radix UI](https://www.radix-ui.com/primitives/docs/components/select)**: Good compound pattern (but limited slot customization)
+- **[Headless UI](https://headlessui.com/react/listbox)**: Clean API (but rigid structure)
+- **[Arco](https://arco.design/react/en-US/components/select)/[Ant](https://ant.design/components/select)**: Virtual scrolling, search (future scope)
+
+**Why Bento**: Combines React Aria's accessibility with deep customization via slots/render props—avoiding the "all or nothing" approach of other libraries.
+
+## Usage Examples
+
+```tsx
+// Basic controlled select with groups
+const [value, setValue] = useState('apple');
+<Select value={value} onValueChange={setValue} name="fruit" required>
+  <Select.Trigger>
+    <Select.Value placeholder="Select a fruit" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Group>
+      <Select.Label>Fruits</Select.Label>
+      <Select.Option value="apple">Apple</Select.Option>
+      <Select.Option value="orange" disabled>Orange (Out of Stock)</Select.Option>
+    </Select.Group>
+  </Select.Content>
+</Select>
+
+// Customization via slots and render props
+<Select
+  slots={{
+    'option': ({ props, children, state }) => (
+      <div {...props}>
+        {state.isSelected && <CheckIcon />}
+        {children}
+      </div>
+    )
+  }}
+>
+  <Select.Content>
+    <Select.Option
+      value="custom"
+      className={({ isFocused }) => isFocused ? 'focused' : ''}
+    >
+      Custom Option
+    </Select.Option>
+  </Select.Content>
+</Select>
+
+// Dynamic items API
+const items = [{ id: 'apple', name: 'Apple' }, { id: 'orange', name: 'Orange' }];
+<Select items={items}>
+  {item => <Select.Option key={item.id}>{item.name}</Select.Option>}
+</Select>
+```
+
+## Implementation Rationale
+
+**Architecture decisions**:
+
+- **Compound components**: Maximum flexibility vs monolithic API that limits customization
+- **Build on ListBox**: Reuse [ARIA listbox](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/) patterns rather than duplicate
+- **Portal rendering**: Solve [overflow clipping](https://github.com/floating-ui/floating-ui/discussions/1965) and z-index issues
+- **Hidden `<select>`**: Maintain form submission and [autofill](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) compatibility
+- **Floating UI vs Popper**: [Smaller bundle](https://bundlephobia.com/package/@floating-ui/dom), better tree-shaking
+
+**Future optimizations** (large lists):
+
+- Virtual scrolling via [react-window](https://react-window.vercel.app/)
+- Debounced typeahead
+- Lazy section loading
+- [React.memo](https://react.dev/reference/react/memo) for options
+
+**Testing focus**: Keyboard navigation, screen readers, RTL, form submission, positioning edge cases.
