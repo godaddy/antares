@@ -1,8 +1,8 @@
 name: Publish
 
 on:
-  workflow_dispatch: null
-  workflow_call: null
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   publish:
