@@ -13,6 +13,7 @@ npm run changeset
 ### 2. Release Workflow Creates PR
 
 When a PR is merged to main:
+
 - The Release workflow runs automatically
 - It creates/updates a "Version Packages" PR
 - Review the version bumps and changelogs
@@ -20,6 +21,7 @@ When a PR is merged to main:
 ### 3. Merge the PR
 
 When ready to release:
+
 - Merge the "Version Packages" PR
 - This triggers the Publish workflow automatically
 - Packages are published to npm
@@ -49,11 +51,14 @@ Already configured with OIDC. No action needed.
 ## Troubleshooting
 
 ### NPM_TOKEN Issues
+
 - Ensure it's an "Automation" token
 - Verify publish access for `@bento` scope
 
 ### Version Already Exists
+
 - Check: `npm view @bento/button versions`
 
 ### Build Failures
+
 - Run locally: `npm run build && npm run test`
