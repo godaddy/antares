@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write
+      id-token: write # Required for OIDC trusted publishing
     env:
       TURBO_TELEMETRY_DISABLED: 1
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -29,13 +28,14 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Publish to npm
-        run: npm run release
+      - name: Ensure npm supports trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Publish to npm and create releases
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
+        with:
+          publish: npm run release
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-
-      - name: Push tags and commits
-        run: git push --follow-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
