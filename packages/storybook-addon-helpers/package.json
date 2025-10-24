@@ -46,7 +46,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "vite": "^7.1.11"
+    "vite": "^7.1.12"
   },
   "peerDependencies": {
     "storybook": "^9.1.6"
