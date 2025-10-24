@@ -1,5 +1,17 @@
 # @bento/checkbox
 
+## 0.1.2
+
+### Patch Changes
+
+- fix: slot namespaces now resolved relative to the slotted component, also updated slot tests across multiple components ([b9ddb93](https://github.com/godaddy/bento/commit/b9ddb932628bf84b5b3c969aa7f08dcf6b58ade6))
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.1.2
+</details>
+
 ## 0.1.1
 
 ### Patch Changes
