@@ -1,6 +1,6 @@
 {
   "name": "@bento/slots",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The slots implementation of Bento",
   "type": "module",
   "main": "./dist/index.cjs",
