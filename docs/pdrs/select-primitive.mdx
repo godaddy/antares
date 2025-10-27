@@ -24,7 +24,7 @@ This is a **UI component** that combines behavioral hooks with compound componen
 
 ## Implementation Pattern
 
-Each component follows Bento's Sacred Trinity (withSlots/useProps/useDataAttributes):
+Each component uses withSlots, useProps, and useDataAttributes:
 
 ```tsx
 // SelectTrigger - Button that opens dropdown
@@ -79,11 +79,13 @@ export const SelectContent = withSlots('BentoSelectContent', function SelectCont
 });
 ```
 
+> **Note:** This is a simplified example. For the full implementation including dismiss and focus handling, see the [Portal & Overlay Strategy](#portal--overlay-strategy) section.
+
 **Context provides:** `state` (useSelectState), `triggerRef`, `popoverRef`, ARIA props  
 **Hooks used:** useSelect, useSelectState, useButton, useOption, useOverlayPosition  
 **See:** ListBox implementation for detailed option/group patterns
 
-## Implementation Patterns
+## Core Concepts Summary
 
 | Concept            | Implementation                                                            |
 | ------------------ | ------------------------------------------------------------------------- |
@@ -243,7 +245,7 @@ Uses React Aria's `HiddenSelect` component for native form compatibility:
 **Data attributes** for CSS ([not ARIA](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/#do-not-use-aria-to-style-content)):
 
 - Trigger: `data-open`, `data-disabled`, `data-invalid`, `data-required`, `data-placeholder`
-- Option: `data-selected`, `data-disabled`, `data-highlighted`
+- Option: `data-selected`, `data-disabled`, `data-focused`
 - Interactive: `data-focus-visible`, `data-hovered`, `data-pressed`
 
 **Slots** for composition:
