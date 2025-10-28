@@ -579,7 +579,10 @@ const ListBoxInner: React.FC<{
  * ```
  * @public
  */
-function ListBoxComponent<T>(args: ListBoxProps<T>, ref: React.ForwardedRef<HTMLDivElement>): React.ReactElement {
+const ListBoxComponent = React.forwardRef(function ListBoxComponent<T>(
+  args: ListBoxProps<T>,
+  ref: React.ForwardedRef<HTMLDivElement>
+): React.ReactElement {
   return (
     <CollectionBuilder content={<AriaCollection {...(args as unknown as Parameters<typeof AriaCollection>[0])} />}>
       {function buildCollection(collection: unknown) {
@@ -587,7 +590,7 @@ function ListBoxComponent<T>(args: ListBoxProps<T>, ref: React.ForwardedRef<HTML
       }}
     </CollectionBuilder>
   );
-}
+}) as <T>(props: ListBoxProps<T> & { ref?: React.ForwardedRef<HTMLDivElement> }) => React.ReactElement;
 
 /**
  * Standalone ListBox component that manages its own state and collection.
