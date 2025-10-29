@@ -173,7 +173,7 @@ export const SelectLabel = ListBoxSection.Label;
 
 | Concept            | Implementation                                                            |
 | ------------------ | ------------------------------------------------------------------------- |
-| React Aria         | useSelect (includes useMenuTrigger), useSelectState, useOverlay, useOverlayPosition, useListBox (via ListBox component) |
+| React Aria         | useSelect (includes useMenuTrigger internally), useSelectState, useOverlay, useOverlayPosition; ListBox component internally uses useListBox |
 | Slots              | withSlots on all sub-components, slot prop for targeting                  |
 | Render Props       | value/option renderers with state/props access                            |
 | data-\* Attributes | data-open, data-disabled, data-invalid, data-selected, data-focus-visible |
@@ -195,7 +195,7 @@ export const SelectLabel = ListBoxSection.Label;
 
 ## React Aria & External Integration
 
-**React Aria provides core behavior** ([`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) (which internally uses `useMenuTrigger`), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html))—handling ARIA attributes, keyboard nav, and state. We extend with:
+**React Aria provides core behavior**—[`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) (which internally uses `useMenuTrigger`) and [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html) handle ARIA attributes, keyboard nav, and state. We extend with:
 
 - **Slots/render props**: Enable deep customization without forking
 - **Data attributes**: Expose state for CSS (avoiding [ARIA for styling](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/#do-not-use-aria-to-style-content))
@@ -355,7 +355,7 @@ Uses React Aria's `HiddenSelect` component for native form compatibility. As sho
 - Roles: `combobox`, `listbox`, `option`, `group`
 - Attributes: `aria-expanded`, `aria-selected`, `aria-invalid`, `aria-required`
 - Keyboard: Arrow nav, `Enter`/`Space` select, `Escape` close, typeahead
-- Focus: [Roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex), returns to trigger, `data-focus-visible`
+- Focus: [Roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex), returns to the trigger, `data-focus-visible`
 
 **Platform**:
 
@@ -439,7 +439,7 @@ const [value, setValue] = useState('apple');
 // Dynamic items API
 const items = [{ id: 'apple', name: 'Apple' }, { id: 'orange', name: 'Orange' }];
 <Select items={items}>
-  {item => <SelectOption key={item.id}>{item.name}</SelectOption>}
+  {item => <SelectOption value={item.id}>{item.name}</SelectOption>}
 </Select>
 ```
 
