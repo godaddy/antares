@@ -9,16 +9,16 @@ The Select primitive provides an accessible, customizable dropdown that overcome
 - **Compound components** (`Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectOption`, `SelectGroup`, `SelectLabel`): Enables flexible composition vs monolithic component that would limit customization
 - **Builds on ListBox**: Reuses proven selection patterns rather than duplicating accessibility/keyboard logic
 - **Portal rendering**: Solves [dropdown clipping issues](https://github.com/floating-ui/floating-ui/discussions/1965) common with overflow:hidden containers
-- **[Floating UI](https://floating-ui.com/) positioning**: Chosen over Popper for [smaller bundle](https://bundlephobia.com/package/@floating-ui/dom) and better tree-shaking
+- **React Aria positioning**: Uses [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) for smart positioning with flip/shift collision detection and RTL support, integrated with React Aria's accessibility system
 - **Hidden native `<select>`**: Maintains form submission and [autofill](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) compatibility
 - **Custom value rendering**: Allows different display format than option (e.g., "USA" in dropdown, "🇺🇸 United States" when selected)
 - **Typeahead navigation**: Essential UX for long lists without complexity of full search
 
 ## Primitive Composition
 
-**Components**: `Select` (root with context), `SelectTrigger` (Pressable-based button), `SelectValue`, `SelectContent` (portal + [Floating UI](https://floating-ui.com/docs/computePosition)), `SelectOption` (extends ListBox patterns), `SelectGroup`, `SelectLabel`
+**Components**: `Select` (root with context), `SelectTrigger` (button using triggerProps from useSelect), `SelectValue`, `SelectContent` (portal + React Aria positioning + Bento's ListBox), `SelectOption` (wrapper around ListBoxItem, maps value→key), `SelectGroup` (alias for ListBoxSection), `SelectLabel`
 
-**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useButton`](https://react-spectrum.adobe.com/react-aria/useButton.html), `useProps`, `useDataAttributes`, `withSlots`
+**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) (includes useMenuTrigger internally), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), `useProps`, `useDataAttributes`, `withSlots`
 
 This is a **UI component** that combines behavioral hooks with compound component composition.
 
@@ -27,16 +27,70 @@ This is a **UI component** that combines behavioral hooks with compound componen
 Each component uses withSlots, useProps, and useDataAttributes:
 
 ```tsx
+import { useSelect, HiddenSelect, useOverlay, useOverlayPosition, mergeProps } from 'react-aria';
+import { useSelectState } from 'react-stately';
+import { useRef } from 'react';
+import { ListBox, ListBoxItem, ListBoxSection, ListStateContext } from '@bento/listbox';
+import { createPortal } from 'react-dom';
+import { useDataAttributes } from '@bento/use-data-attributes';
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+
+// Select - Root component that provides context and renders HiddenSelect
+export const Select = withSlots('BentoSelect', function Select(args) {
+  const { props, apply } = useProps(args);
+  const state = useSelectState(props);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  
+  const {
+    triggerProps,
+    valueProps,
+    menuProps,
+    labelProps,
+    descriptionProps,
+    errorMessageProps,
+    hiddenSelectProps
+  } = useSelect(props, state, triggerRef);
+  
+  const contextValue = {
+    state,
+    triggerRef,
+    popoverRef,
+    triggerProps,
+    valueProps,
+    menuProps,
+    labelProps,
+    descriptionProps,
+    errorMessageProps
+  };
+  
+  return (
+    <SelectContext.Provider value={contextValue}>
+      <ListStateContext.Provider value={state}>
+        {props.children}
+      </ListStateContext.Provider>
+      {props.name && (
+        <HiddenSelect
+          state={state}
+          triggerRef={triggerRef}
+          {...hiddenSelectProps}
+        />
+      )}
+    </SelectContext.Provider>
+  );
+});
+
 // SelectTrigger - Button that opens dropdown
+// triggerProps from useSelect already includes button behavior via useMenuTrigger
 export const SelectTrigger = withSlots('BentoSelectTrigger', function SelectTrigger(args) {
   const { props, apply } = useProps(args);
-  const { state, triggerRef } = useSelectContext();
-  const { buttonProps } = useButton(props, triggerRef);
+  const { state, triggerRef, triggerProps } = useSelectContext();
   
   return (
     <button
       ref={triggerRef}
-      {...apply(buttonProps, ['children'])}
+      {...apply(triggerProps, ['children'])}
       {...useDataAttributes({ open: state.isOpen, disabled: state.isDisabled })}
     >
       {props.children}
@@ -44,52 +98,82 @@ export const SelectTrigger = withSlots('BentoSelectTrigger', function SelectTrig
   );
 });
 
-// SelectOption - Extends ListBox.Item with select-specific behavior
-export const SelectOption = withSlots('BentoSelectOption', function SelectOption(args) {
-  const { props, apply } = useProps(args);
-  const { state } = useSelectContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const { optionProps, isSelected, isFocused } = useOption({ key: props.value }, state, ref);
+// SelectValue - Displays the selected value or placeholder
+export const SelectValue = withSlots('BentoSelectValue', function SelectValue(args) {
+  const { props } = useProps(args);
+  const { state, valueProps } = useSelectContext();
+  const selectedItem = state.selectedKey != null ? state.collection.getItem(state.selectedKey) : null;
   
   return (
-    <div
-      ref={ref}
-      {...apply(optionProps, ['children'])}
-      {...useDataAttributes({ selected: isSelected, focused: isFocused })}
-    >
-      {props.children}
-    </div>
+    <span {...valueProps}>
+      {selectedItem ? selectedItem.textValue : props.placeholder}
+    </span>
   );
 });
 
-// SelectContent - Portal-rendered with Floating UI positioning
+// SelectContent - Portal-rendered dropdown using Bento's ListBox
 export const SelectContent = withSlots('BentoSelectContent', function SelectContent(args) {
   const { props, apply } = useProps(args);
-  const { state, popoverRef, triggerRef } = useSelectContext();
-  const { overlayProps } = useOverlayPosition({ targetRef: triggerRef, overlayRef: popoverRef });
+  const { state, popoverRef, triggerRef, menuProps } = useSelectContext();
+  const { overlayProps } = useOverlay({ isOpen: state.isOpen, onClose: () => state.close() }, popoverRef);
+  const { overlayProps: positionProps } = useOverlayPosition({
+    targetRef: triggerRef,
+    overlayRef: popoverRef,
+    placement: 'bottom start',
+    offset: 8
+  });
   
   if (!state.isOpen) return null;
   
+  // Bento's ListBox consumes ListStateContext provided by Select root
+  // menuProps from useSelect provide ARIA attributes for the listbox
   return createPortal(
-    <div ref={popoverRef} {...apply(overlayProps, ['children'])} {...useDataAttributes({ open: true })}>
-      {props.children}
+    <div 
+      ref={popoverRef} 
+      {...apply(mergeProps(overlayProps, positionProps), ['children'])} 
+      {...useDataAttributes({ open: true })}
+    >
+      <ListBox {...menuProps}>
+        {props.children}
+      </ListBox>
     </div>,
     document.body
   );
 });
+
+// SelectOption - Wrapper around ListBoxItem that maps value prop to key
+export const SelectOption = withSlots('BentoSelectOption', function SelectOption(args) {
+  const { props } = useProps(args);
+  // Map value prop (Select API) to key prop (ListBoxItem/React Aria API)
+  const { value, ...restProps } = props;
+  
+  return <ListBoxItem key={value} {...restProps} />;
+});
+
+// SelectGroup - Reuses Bento's ListBoxSection
+export const SelectGroup = ListBoxSection;
+
+// SelectLabel - Reuses ListBoxSection.Label pattern
+export const SelectLabel = ListBoxSection.Label;
 ```
 
 > **Note:** This is a simplified example. For the full implementation including dismiss and focus handling, see the [Portal & Overlay Strategy](#portal--overlay-strategy) section.
 
-**Context provides:** `state` (useSelectState), `triggerRef`, `popoverRef`, ARIA props  
-**Hooks used:** useSelect, useSelectState, useButton, useOption, useOverlayPosition  
+**Context provides:** `state` (useSelectState extends ListState), `triggerRef`, `popoverRef`, `menuProps`, `triggerProps`, `valueProps`, ARIA props  
+**Hooks used:** useSelect, useSelectState, useOverlay, useOverlayPosition  
+**Components reused:** 
+- `SelectContent` renders Bento's `ListBox` component with `menuProps` from `useSelect`
+- `SelectOption` = thin wrapper around `ListBoxItem` that maps `value` prop → `key` prop for more intuitive Select API
+- `SelectGroup` = `ListBoxSection` (alias)  
+- `SelectLabel` = `ListBoxSection.Label` (alias)
+
 **See:** ListBox implementation for detailed option/group patterns
 
 ## Core Concepts Summary
 
 | Concept            | Implementation                                                            |
 | ------------------ | ------------------------------------------------------------------------- |
-| React Aria         | useSelect, useSelectState, useButton, useListBox                          |
+| React Aria         | useSelect (includes useMenuTrigger), useSelectState, useOverlay, useOverlayPosition, useListBox (via ListBox component) |
 | Slots              | withSlots on all sub-components, slot prop for targeting                  |
 | Render Props       | value/option renderers with state/props access                            |
 | data-\* Attributes | data-open, data-disabled, data-invalid, data-selected, data-focus-visible |
@@ -99,30 +183,34 @@ export const SelectContent = withSlots('BentoSelectContent', function SelectCont
 
 ## Internal Structure & Reuse Potential
 
-Behavioral hooks separated from rendering for reusability:
+**Component reuse strategy**:
+- **SelectContent**: Renders Bento's `ListBox` component internally, passing `menuProps` from `useSelect`. The Select root provides `ListStateContext` (from `useSelectState` which extends `ListState`), which `ListBox` consumes automatically.
+- **SelectOption**: Thin wrapper around `ListBoxItem` that maps the `value` prop (intuitive for Select API) to the `key` prop (required by ListBoxItem/React Aria collection system). This provides a better API surface while reusing existing primitives.
+- **SelectGroup, SelectLabel**: Direct aliases around `ListBoxSection` and `ListBoxSection.Label` respectively. This maximizes reuse of existing, tested primitives.
+- **SelectContext**: Provides Select-specific context (triggerRef, popoverRef, menuProps) while `ListStateContext` (provided by Select root) handles shared list state.
 
-- **SelectContext**: Manages state across compound components (avoids prop drilling)
-- **useSelectTrigger/Value/Popover**: Modular hooks reusable in Combobox, Autocomplete, DatePicker
-- **SelectListBox**: Extends ListBox with select-specific behavior
+**Future reuse potential**:
+- Select trigger/value patterns reusable in Combobox, Autocomplete, DatePicker
+- Overlay positioning pattern reusable in Popover, Menu, etc.
 
 ## React Aria & External Integration
 
-**React Aria provides core behavior** ([`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useButton`](https://react-spectrum.adobe.com/react-aria/useButton.html))—handling ARIA attributes, keyboard nav, and state. We extend with:
+**React Aria provides core behavior** ([`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) (which internally uses `useMenuTrigger`), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html))—handling ARIA attributes, keyboard nav, and state. We extend with:
 
 - **Slots/render props**: Enable deep customization without forking
 - **Data attributes**: Expose state for CSS (avoiding [ARIA for styling](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/#do-not-use-aria-to-style-content))
-- **[Floating UI](https://floating-ui.com/docs/computePosition)**: Smart positioning with [`flip`](https://floating-ui.com/docs/flip)/[`shift`](https://floating-ui.com/docs/shift) collision detection
+- **Positioning**: [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) provides smart positioning with flip/shift collision detection, RTL support, and viewport boundary handling, fully integrated with React Aria's accessibility system
 
 ### Portal & Overlay Strategy
 
 `SelectContent` uses React Aria's overlay system with native portals:
 
-- **Positioning**: `useOverlayPosition` wraps Floating UI with ARIA semantics
+- **Positioning**: [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) handles smart positioning with flip/shift collision detection, RTL support, and viewport boundaries
 - **Overlay behavior**: `useOverlay` handles dismiss, focus trap, and accessibility
 - **Portal rendering**: Native `createPortal` to `document.body` prevents clipping by overflow containers
 
 ```tsx
-import { useOverlay, useOverlayPosition } from 'react-aria';
+import { useOverlay, useOverlayPosition, mergeProps } from 'react-aria';
 import { createPortal } from 'react-dom';
 
 const { overlayProps } = useOverlay({ isOpen: state.isOpen, onClose: state.close }, overlayRef);
@@ -133,9 +221,43 @@ const { overlayProps: positionProps } = useOverlayPosition({
   offset: 8
 });
 
+// Merge React Aria hook props together
+const mergedAriaProps = mergeProps(overlayProps, positionProps);
+
 return createPortal(
-  <div ref={overlayRef} {...mergeProps(overlayProps, positionProps)}>
+  <div ref={overlayRef} {...mergedAriaProps}>
     {children}
+  </div>,
+  document.body
+);
+```
+
+When integrating with Bento's `useProps` and `apply()` to support user props and slot customization:
+
+```tsx
+import { useOverlay, useOverlayPosition, mergeProps } from 'react-aria';
+import { createPortal } from 'react-dom';
+import { useProps } from '@bento/use-props';
+
+const { props, apply } = useProps(args);
+const { overlayProps } = useOverlay({ isOpen: state.isOpen, onClose: state.close }, overlayRef);
+const { overlayProps: positionProps } = useOverlayPosition({
+  targetRef: triggerRef,
+  overlayRef,
+  placement: 'bottom start',
+  offset: 8
+});
+
+// Merge React Aria hook props, then apply with user props via Bento's apply()
+const mergedAriaProps = mergeProps(overlayProps, positionProps);
+
+return createPortal(
+  <div 
+    ref={overlayRef} 
+    {...apply(mergedAriaProps, ['children'])}
+    {...useDataAttributes({ open: true })}
+  >
+    {props.children}
   </div>,
   document.body
 );
@@ -220,10 +342,11 @@ import {
 
 ### Form Integration
 
-Uses React Aria's `HiddenSelect` component for native form compatibility:
-- Renders when `name` prop provided
+Uses React Aria's `HiddenSelect` component for native form compatibility. As shown in the [Implementation Pattern](#implementation-pattern) section, `useSelect` returns `hiddenSelectProps` which are passed to `HiddenSelect`. The hidden select:
+- Renders conditionally when `name` prop is provided (enables form submission)
 - Syncs automatically with select state
-- Handles form submission and autofill
+- Handles native form submission and browser autofill
+- Maintains HTML form compatibility for server-side form handling
 
 ## Accessibility & Platform Support
 
@@ -328,7 +451,7 @@ const items = [{ id: 'apple', name: 'Apple' }, { id: 'orange', name: 'Orange' }]
 - **Build on ListBox**: Reuse [ARIA listbox](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/) patterns rather than duplicate
 - **Portal rendering**: Solve [overflow clipping](https://github.com/floating-ui/floating-ui/discussions/1965) and z-index issues
 - **Hidden `<select>`**: Maintain form submission and [autofill](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) compatibility
-- **Floating UI vs Popper**: [Smaller bundle](https://bundlephobia.com/package/@floating-ui/dom), better tree-shaking
+- **React Aria positioning**: Use [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) for consistency with existing Bento primitives (e.g., Drawer), seamless integration with React Aria's accessibility hooks, and proven positioning logic that handles edge cases (RTL, viewport boundaries, visual viewport on mobile)
 
 **Future optimizations** (large lists):
 
