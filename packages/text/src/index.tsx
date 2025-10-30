@@ -1,3 +1,4 @@
+import { Container } from '@bento/container';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import React, { ReactNode } from 'react';
@@ -57,7 +58,9 @@ export const Text = withSlots('BentoText', function Text(args: TextProps) {
     '--wrap': wrap
   };
 
-  const applied = apply({ className: styles.text, style }, ['align', 'as', 'maxLines', 'wrap']);
-
-  return React.createElement(as, { ...applied }, children);
+  return (
+    <Container as={as} {...apply({ className: styles.text, style }, ['align', 'as', 'maxLines', 'wrap'])}>
+      {children}
+    </Container>
+  );
 });

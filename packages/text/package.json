@@ -40,6 +40,7 @@
     "package.json"
   ],
   "dependencies": {
+    "@bento/container": "^0.1.0",
     "@bento/slots": "^0.1.1",
     "@bento/use-props": "^0.1.0"
   },
