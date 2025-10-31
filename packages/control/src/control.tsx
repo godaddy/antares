@@ -1,7 +1,8 @@
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
+import { Text } from '@bento/text';
 import React, { type ComponentProps } from 'react';
-import { Text, VisuallyHidden } from './other-primitives';
+import { VisuallyHidden } from './other-primitives';
 
 export interface ControlProps extends ComponentProps<'label'> {
   /** A ref for the HTML input element. */
