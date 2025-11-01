@@ -50,7 +50,7 @@ Bento provides a comprehensive collection of primitives organized into three cat
 - [**to-attribute-value**](./packages/to-attribute-value) - Serialize JavaScript values into HTML attribute-compatible strings
 - [**types**](./packages/types) - Centralized TypeScript type definitions shared across Bento packages
 
-## 📦 Getting Started
+## 🚀 Getting Started
 
 See individual package READMEs in [`packages/`](./packages) for installation and usage instructions.
 
@@ -101,7 +101,7 @@ npm run test
 The repo is configured only to accept conventional commits as commit syntax.
 This is enforced using `@commitlint`.
 
-### 📦 Changesets
+### 🔄 Changesets
 
 When contributing changes to packages, you must include a changeset:
 
