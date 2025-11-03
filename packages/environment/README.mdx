@@ -5,6 +5,7 @@ import OverridePropsExample from './examples/override-props.tsx?raw';
 import CustomButtonExample from './examples/custom-button.tsx?raw';
 import ComponentLevelExample from './examples/component-level.tsx?raw';
 import IframeRenderingExample from './examples/iframe-rendering.tsx?raw';
+import LockNoOverrideExample from './examples/lock-no-override.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -55,7 +56,7 @@ context.
 
 In the example below we are using the `react-frame-component` package to render
 our components in an iframe. By passing the new `document` object as `root`
-prop, we can ensure that the components that reference the `document` and 
+prop, we can ensure that the components that reference the `document` and
 `window` objects will correctly access the new document and window objects.
 
 <Source language='tsx' code={IframeRenderingExample} />
@@ -94,3 +95,33 @@ can do it like this:
 
 <Source language='tsx' code={ComponentLevelExample} />
 <Story of={Stories.ComponentLevelOverride} />
+
+## Lock Boundaries
+
+If you're building a design system on top of Bento and distributing components to other teams, the `lock` prop helps you distinguish between your internal component composition and modifications made by your consumers.
+
+The problem this solves is simple: when you compose components internally using slots, all those modifications show up with `data-override` attributes. This makes it impossible to tell which modifications are part of your design system's intentional structure versus which ones are customizations made by the people using your components.
+
+Here's what it looks like in practice:
+
+<Source language='tsx' code={LockNoOverrideExample} />
+
+The `<Environment lock={true}>` wrapper tells Bento that everything inside is internal to your design system. When you modify slots within that boundary (like changing the button text or adding className to the radio labels), those modifications won't get flagged with `data-override`.
+
+But when someone using your design system passes their own slots:
+
+```tsx
+<DesignSystemComponent 
+  slots={{ 'composed.root.trigger': { children: 'Custom Text' } }}
+/>
+```
+
+That modification happens outside your lock boundary, so it gets flagged with `data-override="slot"`. Now you can tell the difference.
+
+This information becomes useful when you want to understand how your design system is actually being used. You could build dev tools that warn about certain overrides, track usage patterns to inform your roadmap, or generate migration guides based on which slots people are actually customizing in production.
+
+For more details about how the generation tracking system works and when to use locks, see the [Concepts](/docs/environment-concepts--docs) page.
+
+## Props
+
+<ArgTypes of={Stories.API} />
