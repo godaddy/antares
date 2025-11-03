@@ -1,5 +1,4 @@
 import { Box, type BoxContext } from '@bento/box';
-import { useInternalProps } from '@bento/internal-props';
 import { AnyObject } from '@bento/types';
 import { useContext } from 'react';
 
@@ -116,11 +115,11 @@ export interface Returns {
  */
 export function useProps(args: AnyObject, state: object = {}): Returns {
   const { slots } = useContext<BoxContext<AnyObject>>(Box);
-  const [props, internal] = useInternalProps(args);
+  const props = args;
   const { namespace, assigned } = slots;
   const dot = namespace.join('.');
   const slotted = assigned[dot] || {};
-  const propsy = { ...internal, ...props, ...slotted };
+  const propsy = { ...props, ...slotted };
 
   /**
    * Applies the given attributes to an object.
@@ -140,7 +139,7 @@ export function useProps(args: AnyObject, state: object = {}): Returns {
       memo[key] = renderProp(key, {
         original: data[key],
         slots: slotted,
-        props: { ...props, ...internal },
+        props,
         state
       });
 
@@ -157,7 +156,7 @@ export function useProps(args: AnyObject, state: object = {}): Returns {
         return renderProp(name, {
           original: isRenderProp(name, props[name]) ? undefined : props[name],
           slots: slotted,
-          props: { ...props, ...internal },
+          props,
           state
         });
       }

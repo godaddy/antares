@@ -71,6 +71,7 @@ export function withSlots<Props extends object>(
 
     const currentNamespace = ctx.slots.namespace.join('.');
     const inheritedSlots: Record<string, any> = {};
+    const inheritedGenerations: Record<string, number> = {};
     const prefix = `${currentNamespace}.`;
 
     //
@@ -81,17 +82,26 @@ export function withSlots<Props extends object>(
     for (const key in ctx.slots.assigned) {
       if (currentNamespace === '' && !key.includes('.')) {
         inheritedSlots[key] = ctx.slots.assigned[key];
+        if (ctx.slots.slotGenerations && key in ctx.slots.slotGenerations) {
+          inheritedGenerations[key] = ctx.slots.slotGenerations[key];
+        }
       } else if (key === currentNamespace || key.startsWith(prefix)) {
         inheritedSlots[key] = ctx.slots.assigned[key];
+        if (ctx.slots.slotGenerations && key in ctx.slots.slotGenerations) {
+          inheritedGenerations[key] = ctx.slots.slotGenerations[key];
+        }
       }
     }
 
     ctx.slots.assigned = inheritedSlots;
+    ctx.slots.slotGenerations = inheritedGenerations;
 
     //
     // merge the new slots with the assigned slots,
     // parent component slots should take precedence over child ones.
     //
+    const currentGeneration = ctx.env.lockGeneration || 0;
+
     for (const slotKey in slots) {
       // Build the fully qualified slot key by prefixing with current namespace
       const namespacedKey = ctx.slots.namespace.length > 0 ? `${currentNamespace}.${slotKey}` : slotKey;
@@ -104,8 +114,19 @@ export function withSlots<Props extends object>(
       //
       if (!assignedSlot) {
         ctx.slots.assigned[namespacedKey] = newSlot;
+        // Tag new slot with current generation
+        ctx.slots.slotGenerations = ctx.slots.slotGenerations || {};
+        ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
       } else if (typeof assignedSlot === 'object') {
         ctx.slots.assigned[namespacedKey] = { ...newSlot, ...assignedSlot };
+        // Keep the earliest (lowest) generation when merging
+        // If the slot doesn't have a generation yet, use current generation
+        ctx.slots.slotGenerations = ctx.slots.slotGenerations || {};
+        if (!(namespacedKey in ctx.slots.slotGenerations)) {
+          ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
+        }
+        // If newSlot is from an earlier generation (consumer slot), update the tag
+        // We assume parent slots (assignedSlot) are from consumer, so keep their generation
       } else if (typeof assignedSlot === 'function') {
         const existingPrevious = assignedSlot.__slotPrevious || [];
         const newPrevious = [newSlot, ...existingPrevious];
@@ -115,6 +136,11 @@ export function withSlots<Props extends object>(
 
         mergedFnSlot.__slotPrevious = newPrevious;
         ctx.slots.assigned[namespacedKey] = mergedFnSlot;
+        // For functions, keep the parent function's generation (it takes precedence)
+        ctx.slots.slotGenerations = ctx.slots.slotGenerations || {};
+        if (!(namespacedKey in ctx.slots.slotGenerations)) {
+          ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
+        }
       }
     }
 

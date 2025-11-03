@@ -133,4 +133,118 @@ describe('@bento/slots override', function bento() {
 
     assume(html).equals('<div><p data-override="context">Should have data-override</p></div>');
   });
+
+  describe('lock-based override detection', function lockBasedOverrides() {
+    it('does not flag className when environment is locked and slot is from same generation', function lockedSameGen() {
+      const TestComponent = withSlots('LockSameGen', function Component(args: any) {
+        return React.createElement('div', { ...args });
+      });
+
+      const value = defaults();
+      value.env.locked = true;
+      value.env.lockGeneration = 1;
+      value.slots.assigned = { test: {} };
+      value.slots.slotGenerations = { test: 1 }; // Same generation
+
+      const html = renderToString(
+        React.createElement(
+          Box.Provider,
+          { value },
+          React.createElement(TestComponent, { slot: 'test', className: 'internal' })
+        )
+      );
+
+      // Should NOT have data-override since it's internal composition (same generation)
+      assume(html).contains('<div class="internal"></div>');
+      assume(html).does.not.contain('data-override');
+    });
+
+    it('flags className when environment is locked and slot is from earlier generation', function lockedEarlierGen() {
+      const TestComponent = withSlots('LockEarlierGen', function Component(args: any) {
+        return React.createElement('div', { ...args });
+      });
+
+      const value = defaults();
+      value.env.locked = true;
+      value.env.lockGeneration = 2;
+      value.slots.assigned = { test: {} };
+      value.slots.slotGenerations = { test: 0 }; // Earlier generation (consumer)
+
+      const html = renderToString(
+        React.createElement(
+          Box.Provider,
+          { value },
+          React.createElement(TestComponent, { slot: 'test', className: 'consumer' })
+        )
+      );
+
+      // SHOULD have data-override since it's from earlier generation (consumer modification)
+      assume(html).contains('<div class="consumer" data-override="className slot"></div>');
+    });
+
+    it('flags slot modifications from earlier generation even without className or style', function slotOnly() {
+      const TestComponent = withSlots('LockSlotOnly', function Component(args: any) {
+        return React.createElement('div', { ...args });
+      });
+
+      const value = defaults();
+      value.env.locked = true;
+      value.env.lockGeneration = 2;
+      value.slots.assigned = { test: { children: 'Hello' } };
+      value.slots.slotGenerations = { test: 0 }; // Earlier generation
+
+      const html = renderToString(
+        React.createElement(Box.Provider, { value }, React.createElement(TestComponent, { slot: 'test' }))
+      );
+
+      // SHOULD have data-override="slot" since slot is from earlier generation
+      assume(html).contains('<div data-override="slot"></div>');
+    });
+
+    it('does not flag slots when not locked', function notLocked() {
+      const TestComponent = withSlots('NotLocked', function Component(args: any) {
+        return React.createElement('div', { ...args });
+      });
+
+      const value = defaults();
+      value.env.locked = false;
+      value.env.lockGeneration = 0;
+      value.slots.assigned = { test: { className: 'test' } };
+      value.slots.slotGenerations = { test: 0 };
+
+      const html = renderToString(
+        React.createElement(
+          Box.Provider,
+          { value },
+          React.createElement(TestComponent, { slot: 'test', style: { color: 'red' } })
+        )
+      );
+
+      // Original behavior: flags className and style
+      assume(html).contains('<div style="color:red" data-override="style className slot"></div>');
+    });
+
+    it('flags style modifications from earlier generation when locked', function lockedStyleEarlier() {
+      const TestComponent = withSlots('LockStyleEarlier', function Component(args: any) {
+        return React.createElement('div', { ...args });
+      });
+
+      const value = defaults();
+      value.env.locked = true;
+      value.env.lockGeneration = 3;
+      value.slots.assigned = { test: {} };
+      value.slots.slotGenerations = { test: 1 }; // Earlier generation
+
+      const html = renderToString(
+        React.createElement(
+          Box.Provider,
+          { value },
+          React.createElement(TestComponent, { slot: 'test', style: { color: 'blue' } })
+        )
+      );
+
+      // SHOULD have data-override for style from earlier generation
+      assume(html).contains('<div style="color:blue" data-override="style slot"></div>');
+    });
+  });
 });

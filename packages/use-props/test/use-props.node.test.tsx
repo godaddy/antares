@@ -239,6 +239,25 @@ describe('@bento/use-props', function bento() {
 
         assume(props.title).equals('my title');
       });
+
+      it('merges slot props directly without internal-props separation', function noInternalProps() {
+        const { props } = createComponent(
+          'no-internal',
+          {
+            id: 'component',
+            className: 'from-props'
+          },
+          {
+            className: 'from-slot',
+            'data-test': 'slot-data'
+          }
+        );
+
+        // Slot values should override component props directly
+        assume(props.id).equals('component');
+        assume(props.className).equals('from-slot');
+        assume(props['data-test']).equals('slot-data');
+      });
     });
 
     describe('apply', function applying() {

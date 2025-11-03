@@ -110,6 +110,69 @@ describe('@bento/slots', function bento() {
     });
   });
 
+  describe('generation tracking', function generationTracking() {
+    it('verifies generation tracking is initialized', function initialization() {
+      const ctx = defaults();
+      
+      // Check that generation tracking properties exist
+      assume(ctx.env.lockGeneration).equals(0);
+      assume(ctx.env.locked).equals(false);
+      assume(ctx.slots.slotGenerations).is.a('object');
+    });
+
+    it('slots are correctly applied and tracked', function application() {
+      const Child = withSlots('TrackChild', (props: any) => {
+        return React.createElement('span', props, 'child');
+      });
+
+      const Parent = withSlots('TrackParent', (props: any) => {
+        return React.createElement('div', props, React.createElement(Child, { slot: 'child' }));
+      });
+
+      const ctx = defaults();
+      ctx.env.lockGeneration = 1;
+
+      const html = renderToString(
+        React.createElement(
+          Box.Provider,
+          { value: ctx },
+          React.createElement(Parent, {
+            slot: 'parent',
+            slots: { child: { className: 'tracked' } }
+          })
+        )
+      );
+
+      // Verify slot is applied (with data-override since lockGeneration > 0)
+      assume(html).contains('data-override="className slot"');
+      assume(html).contains('child');
+    });
+
+    it('generation tracking does not break existing functionality', function noBreakage() {
+      const Component = withSlots('NoBreakTest', (props: any) => {
+        return React.createElement('div', props, props.children);
+      });
+
+      const ctx = defaults();
+      
+      const html = renderToString(
+        React.createElement(
+          Box.Provider,
+          { value: ctx },
+          React.createElement(Component, {
+            id: 'test',
+            className: 'example'
+          }, 'content')
+        )
+      );
+
+      // Verify normal rendering works
+      assume(html).contains('id="test"');
+      assume(html).contains('class="example"');
+      assume(html).contains('content');
+    });
+  });
+
   describe('modifiers', function modifiers() {
     it('allows custom modifiers to be passed', function custom() {
       let ran = false;
