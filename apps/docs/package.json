@@ -22,7 +22,6 @@
     "@bento/heading": "*",
     "@bento/icon": "*",
     "@bento/illustration": "*",
-    "@bento/internal-props": "*",
     "@bento/listbox": "*",
     "@bento/pressable": "*",
     "@bento/radio": "*",

@@ -113,7 +113,7 @@ describe('@bento/slots', function bento() {
   describe('generation tracking', function generationTracking() {
     it('verifies generation tracking is initialized', function initialization() {
       const ctx = defaults();
-      
+
       // Check that generation tracking properties exist
       assume(ctx.env.lockGeneration).equals(0);
       assume(ctx.env.locked).equals(false);
@@ -154,7 +154,7 @@ describe('@bento/slots', function bento() {
       });
 
       const ctx = defaults();
-      
+
       const html = renderToString(
         React.createElement(
           Box.Provider,
