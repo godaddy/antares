@@ -24,6 +24,8 @@
         "test/**/*.ts",
         "examples/**/*.tsx",
         "examples/**/*.ts",
+        "../../scripts/**/*.ts",
+        "../../scripts/**/*.tsx",
         "tsconfig*.json",
         "vitest.config.*",
         "../../biome.json",

@@ -26,6 +26,7 @@ function extractRawImports(content: string, sourceDir: string): Map<string, stri
 
 /**
  * Collect all Source component matches from content.
+ * Parses various Source component patterns to extract code references and language settings.
  */
 function collectSourceMatches(
   content: string
@@ -37,8 +38,8 @@ function collectSourceMatches(
     /<Source\s+[^>]*code=\{(\w+)\}[^>]*\/>/g
   ];
 
-  for (const pattern of patterns) {
-    for (const m of content.matchAll(pattern)) {
+  patterns.forEach(function processPattern(pattern) {
+    [...content.matchAll(pattern)].forEach(function processMatch(m) {
       const idx = m.index!;
 
       if (!sourceMatches.has(idx)) {
@@ -49,8 +50,8 @@ function collectSourceMatches(
           index: idx
         });
       }
-    }
-  }
+    });
+  });
 
   return sourceMatches;
 }
@@ -68,6 +69,7 @@ function determineLanguage(lang: string | null, filePath: string): string {
 
 /**
  * Replace Source components with code blocks.
+ * Reads source files and inserts their content as markdown code blocks.
  */
 async function replaceSourceComponents(
   content: string,
@@ -76,6 +78,9 @@ async function replaceSourceComponents(
 ): Promise<string> {
   const sortedMatches = [...sourceMatches.values()].sort((a, b) => b.index - a.index);
 
+  /**
+   * Replace a single Source component match with its code block.
+   */
   async function replaceSourceMatch(
     accPromise: Promise<string>,
     { match, varName, lang }: { match: string; varName: string; lang: string | null }
@@ -122,12 +127,21 @@ function findComponentSourceFiles(sourceDir: string, componentName: string): str
 
 /**
  * Extract props from source content.
+ * Parses TypeScript interface properties with JSDoc comments to extract prop metadata.
  */
-function extractProps(
-  propsContent: string
-): Array<{ name: string; type: string; description: string; required: boolean }> {
+function extractProps(propsContent: string): Array<{
+  name: string;
+  type: string;
+  description: string;
+  required: boolean;
+}> {
   const propRegex = /\/\*\*([^*]*(?:\*(?!\/)[^*]*)*)\*\/\s*(\w+)(\??):\s*([^;]+);/g;
-  const props: Array<{ name: string; type: string; description: string; required: boolean }> = [];
+  const props: Array<{
+    name: string;
+    type: string;
+    description: string;
+    required: boolean;
+  }> = [];
 
   for (const propMatch of propsContent.matchAll(propRegex)) {
     const [, jsDoc, propNameInner, optional, propType] = propMatch;
@@ -149,13 +163,22 @@ function extractProps(
 
 /**
  * Generate prop table markdown.
+ * Creates a markdown table from extracted props with columns for name, type, required flag, and description.
  */
 function generatePropTable(
-  props: Array<{ name: string; type: string; description: string; required: boolean }>
+  props: Array<{
+    name: string;
+    type: string;
+    description: string;
+    required: boolean;
+  }>
 ): string {
   if (props.length === 0) return '';
   const header = '\n| Prop | Type | Required | Description |\n|------|------|----------|------------|\n';
 
+  /**
+   * Format a single prop as a markdown table row.
+   */
   function formatPropRow(prop: { name: string; type: string; description: string; required: boolean }): string {
     const type = prop.type.replace(/\|/g, '\\|').replace(/\n/g, ' ');
     const req = prop.required ? 'Yes' : 'No';
@@ -223,12 +246,16 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
 
 /**
  * Replace ArgTypes components with prop tables.
+ * Extracts component prop interfaces and generates markdown tables.
  */
 async function replaceArgTypes(content: string, storyFilePath: string | null, sourceDir: string): Promise<string> {
   if (!storyFilePath) return content;
 
   const argTypesMatches = [...content.matchAll(/<ArgTypes\s+of=\{\w+\.(\w+)\}[^>]*\/>/g)];
 
+  /**
+   * Replace a single ArgTypes component match with its prop table.
+   */
   async function replaceArgTypeMatch(accPromise: Promise<string>, m: RegExpMatchArray): Promise<string> {
     const acc = await accPromise;
     const propName = m[1]!;
@@ -261,7 +288,7 @@ function removeStorybookComponents(content: string): string {
 /**
  * Process content transformations.
  */
-async function processContent(content: string, sourceDir: string): Promise<string> {
+export async function processContent(content: string, sourceDir: string): Promise<string> {
   const rawImportMap = extractRawImports(content, sourceDir);
   const sourceMatches = collectSourceMatches(content);
   const withSourceReplaced = await replaceSourceComponents(content, sourceMatches, rawImportMap);
@@ -301,4 +328,7 @@ async function compileReadme(): Promise<void> {
   }
 }
 
-compileReadme();
+// Only run CLI if executed directly (not imported)
+if (import.meta.url === `file://${process.argv[1]}`) {
+  compileReadme();
+}
