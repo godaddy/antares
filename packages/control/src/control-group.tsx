@@ -1,7 +1,8 @@
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
+import { Text } from '@bento/text';
 import React, { type ComponentProps } from 'react';
-import { FieldError, Text } from './other-primitives';
+import { FieldError } from './other-primitives';
 
 export interface ControlGroupProps extends ComponentProps<'div'> {
   /** The control elements to render within the group. */

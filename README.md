@@ -12,7 +12,45 @@ A component library of accessibility primitives for building React design system
 
 Bento provides unstyled, accessible building blocks built on [React Aria](https://react-spectrum.adobe.com/react-aria/) that you can use to create your own component library or design system. It embodies the "Primitives" concept - fundamental, highly customizable components with no business logic.
 
-## 📦 Getting Started
+## 📦 Packages
+
+Bento provides a comprehensive collection of primitives organized into three categories:
+
+### Components
+
+- [**box**](./packages/box) - React context for passing configuration through component tree
+- [**button**](./packages/button) - Button component with press interactions and disabled states
+- [**checkbox**](./packages/checkbox) - Checkbox controls supporting single, grouped, and indeterminate selections
+- [**container**](./packages/container) - Polymorphic component that renders as any HTML element via `as` prop
+- [**control**](./packages/control) - Form control primitive providing label and visually hidden input structure
+- [**divider**](./packages/divider) - Horizontal or vertical content separator
+- [**environment**](./packages/environment) - Swap or override any Bento component with custom implementations
+- [**heading**](./packages/heading) - Heading component with automatic level tracking through nesting
+- [**icon**](./packages/icon) - Icon component with lazy loading and sprite mode
+- [**illustration**](./packages/illustration) - SVG illustration component with rotation and flip support
+- [**listbox**](./packages/listbox) - List selection primitive for building Select, Combobox, and Menu
+- [**pressable**](./packages/pressable) - Make any element clickable with keyboard and interaction state support
+- [**radio**](./packages/radio) - Radio button controls with single-selection group management
+- [**text**](./packages/text) - Text component with alignment, wrapping, and line clamping
+
+### Hooks
+
+- [**use-data-attributes**](./packages/use-data-attributes) - Expose component state to DOM via data attributes for CSS styling
+- [**use-props**](./packages/use-props) - Unify component and slot-based props with render prop support
+- [**use-svg-sprite**](./packages/use-svg-sprite) - Optimize repeated SVG usage by registering icons into shared sprite
+
+### Utilities
+
+- [**create-external-store**](./packages/create-external-store) - Low-level external store for useSyncExternalStore hook integration
+- [**error**](./packages/error) - Enhanced error objects with documentation links and support information
+- [**internal-props**](./packages/internal-props) - Internal prop passing mechanism bypassing slot system restrictions
+- [**slots**](./packages/slots) - Enable infinite component customization without exposing individual props
+- [**storybook-addon-helpers**](./packages/storybook-addon-helpers) - Auto-generate Storybook metadata from TypeScript types and JSDoc
+- [**svg-parser**](./packages/svg-parser) - Parse SVG strings into React elements with custom node transformations
+- [**to-attribute-value**](./packages/to-attribute-value) - Serialize JavaScript values into HTML attribute-compatible strings
+- [**types**](./packages/types) - Centralized TypeScript type definitions shared across Bento packages
+
+## 🚀 Getting Started
 
 See individual package READMEs in [`packages/`](./packages) for installation and usage instructions.
 
@@ -63,7 +101,7 @@ npm run test
 The repo is configured only to accept conventional commits as commit syntax.
 This is enforced using `@commitlint`.
 
-### 📦 Changesets
+### 🔄 Changesets
 
 When contributing changes to packages, you must include a changeset:
 
@@ -71,11 +109,11 @@ When contributing changes to packages, you must include a changeset:
 npm run changeset
 ```
 
-Select the affected packages, choose the version bump type (patch/minor/major), 
-and write a description using conventional commit syntax (e.g., "fix: resolve issue", 
+Select the affected packages, choose the version bump type (patch/minor/major),
+and write a description using conventional commit syntax (e.g., "fix: resolve issue",
 "feat: add feature", "docs: update readme").
 
-**Note:** Documentation changes in packages should use `patch` version bumps with 
+**Note:** Documentation changes in packages should use `patch` version bumps with
 a `docs:` prefix, as they improve the published package for consumers and AI tooling.
 
 The [Changeset Bot](https://github.com/apps/changeset-bot) will automatically comment on pull requests to remind you if a changeset is needed.
