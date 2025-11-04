@@ -121,11 +121,11 @@ describe('@bento/slots', function bento() {
     });
 
     it('slots are correctly applied and tracked', function application() {
-      const Child = withSlots('TrackChild', (props: any) => {
+      const Child = withSlots('TrackChild', function TrackChildComponent(props: any) {
         return React.createElement('span', props, 'child');
       });
 
-      const Parent = withSlots('TrackParent', (props: any) => {
+      const Parent = withSlots('TrackParent', function TrackParentComponent(props: any) {
         return React.createElement('div', props, React.createElement(Child, { slot: 'child' }));
       });
 
@@ -149,7 +149,7 @@ describe('@bento/slots', function bento() {
     });
 
     it('generation tracking does not break existing functionality', function noBreakage() {
-      const Component = withSlots('NoBreakTest', (props: any) => {
+      const Component = withSlots('NoBreakTest', function NoBreakTestComponent(props: any) {
         return React.createElement('div', props, props.children);
       });
 
