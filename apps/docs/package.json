@@ -13,7 +13,6 @@
     "@bento/box": "*",
     "@bento/button": "*",
     "@bento/checkbox": "*",
-    "@bento/compile-readme-tests": "*",
     "@bento/container": "*",
     "@bento/control": "*",
     "@bento/create-external-store": "*",

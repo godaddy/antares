@@ -10,7 +10,7 @@
     "dev": "tsup-node src/index.tsx --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
-    "prepublishOnly": "node ../../scripts/compile-readme.ts README.mdx README.md",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
@@ -35,7 +35,6 @@
   "homepage": "https://github.com/godaddy/bento#readme",
   "files": [
     "dist",
-    "README.md",
     "src",
     "package.json"
   ],

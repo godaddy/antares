@@ -1,20 +1,11 @@
 #!/usr/bin/env node
-import { access, readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import ts from 'typescript';
+import { extractComponentDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
+import type { ItemDoc } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
 
 const [mdxPath = 'README.mdx', outPath = 'README.md'] = process.argv.slice(2);
-
-/**
- * Check if a file exists.
- */
-async function fileExists(filePath: string): Promise<boolean> {
-  try {
-    await access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 /**
  * Extract raw imports from content and map variable names to file paths.
@@ -88,7 +79,7 @@ async function replaceSourceComponents(
     const acc = await accPromise;
     const filePath = rawImportMap.get(varName);
 
-    if (filePath && (await fileExists(filePath))) {
+    if (filePath) {
       try {
         const code = await readFile(filePath, 'utf-8');
         const resolvedLang = determineLanguage(lang, filePath);
@@ -192,11 +183,29 @@ function generatePropTable(
 }
 
 /**
+ * Generate prop table markdown from argTypes (Storybook docgen format).
+ * Converts ItemDoc format from react-docgen-typescript to markdown table.
+ */
+function generatePropTableFromArgTypes(argTypes: ItemDoc): string {
+  const entries = Object.values(argTypes || {}).filter((v): v is NonNullable<typeof v> => v != null);
+  if (entries.length === 0) return '';
+
+  const header = '\n| Prop | Type | Required | Description |\n|------|------|----------|------------|\n';
+
+  const rows = entries.map(function formatArgTypeRow(prop) {
+    const type = (prop.type?.name || 'any').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+    const req = prop.required ? 'Yes' : 'No';
+    const desc = prop.description || '';
+    return `| \`${prop.name}\` | \`${type}\` | ${req} | ${desc} |\n`;
+  });
+
+  return header + rows.join('');
+}
+
+/**
  * Find props in source file.
  */
 async function findPropsInSourceFile(sourceFile: string, propsInterfaceName: string): Promise<string | null> {
-  if (!(await fileExists(sourceFile))) return null;
-
   try {
     const sourceContent = await readFile(sourceFile, 'utf-8');
     const propsPattern = new RegExp(
@@ -215,8 +224,6 @@ async function findPropsInSourceFile(sourceFile: string, propsInterfaceName: str
  * Extract prop table for a component.
  */
 async function extractPropTable(propName: string, storyFilePath: string, sourceDir: string): Promise<string> {
-  if (!(await fileExists(storyFilePath))) return '';
-
   try {
     const storyContent = await readFile(storyFilePath, 'utf-8');
     const componentDocRegex = new RegExp(`export\\s+const\\s+${propName}\\s*=\\s*getComponentDocs\\(([^)]+)\\)`, 's');
@@ -225,6 +232,20 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
     if (!componentDocMatch) return '';
 
     const componentName = componentDocMatch[1].trim();
+
+    // Try using Storybook's react-docgen-typescript extractor first
+    const storySourceFile = ts.createSourceFile(
+      storyFilePath,
+      storyContent,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX
+    );
+    const { argTypes } = extractComponentDoc(componentName, storySourceFile);
+    const tableFromDocgen = generatePropTableFromArgTypes(argTypes);
+    if (tableFromDocgen) return tableFromDocgen;
+
+    // Fallback to interface-based regex parsing if docgen returns empty
     const propsInterfaceName = `${componentName}Props`;
     const sourceFiles = findComponentSourceFiles(sourceDir, componentName);
 
