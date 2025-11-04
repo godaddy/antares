@@ -3,6 +3,8 @@ import { ComponentLevelExample } from '../examples/component-level.tsx';
 import { CustomButtonExample } from '../examples/custom-button.tsx';
 import { OverrideProps } from '../examples/override-props.tsx';
 import { Override } from '../examples/override.tsx';
+import { LockNoOverride } from '../examples/lock-no-override.tsx';
+import { LockWithOverride } from '../examples/lock-with-override.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -176,6 +178,84 @@ describe('@bento/environment examples', function bento() {
       // Check background color changed to lightgreen
       const secondUpdatedBgColor = iframeDoc?.body.style.backgroundColor;
       assume(secondUpdatedBgColor).equals('lightgreen');
+    });
+  });
+
+  describe('LockNoOverride', function lockNoOverride() {
+    it('should render without any data-override attributes', function test() {
+      const { container } = render(<LockNoOverride />);
+      const result = container.innerHTML;
+
+      // Should have NO data-override attributes since all slots are internal composition
+      assume(result).equals(
+        '<div><button type="button" tabindex="0" data-react-aria-pressable="true" class="_pressable_1heya_1">Click Me</button><div id="fruit-group" role="radiogroup" aria-orientation="vertical" aria-labelledby="react-aria-:r5:" aria-describedby="react-aria-:r7:" data-orientation="vertical"><span class="label" id="react-aria-:r5:">Favorite fruit</span><div><label class="_text_vfk41_1" data-react-aria-pressable="true"><span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;"><input data-react-aria-pressable="true" tabindex="0" type="radio" name="react-aria-:r9:" aria-describedby="react-aria-:r7:" value="apple"></span><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="_icon_1xscy_1" data-loading="true" data-icon="radioUnchecked" role="presentation" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="gray" stroke-width="2"></circle></svg><span class="_text_vfk41_1">Apple</span></label><label class="_text_vfk41_1" data-react-aria-pressable="true"><span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;"><input data-react-aria-pressable="true" tabindex="0" type="radio" name="react-aria-:r9:" aria-describedby="react-aria-:r7:" value="banana"></span><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="_icon_1xscy_1" data-loading="true" data-icon="radioUnchecked" role="presentation" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="gray" stroke-width="2"></circle></svg><span class="_text_vfk41_1">Banana</span></label><label class="_text_vfk41_1" data-react-aria-pressable="true"><span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;"><input data-react-aria-pressable="true" tabindex="0" type="radio" name="react-aria-:r9:" aria-describedby="react-aria-:r7:" value="orange"></span><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="_icon_1xscy_1" data-loading="true" data-icon="radioUnchecked" role="presentation" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="gray" stroke-width="2"></circle></svg><span class="_text_vfk41_1">Orange</span></label></div><span class="describe" id="react-aria-:r7:">Pick your favorite</span></div></div>'
+      );
+    });
+
+    it('should render the button with internal composition text', function test() {
+      const { container } = render(<LockNoOverride />);
+      const button = container.querySelector('button');
+
+      assume(button).to.not.equal(null);
+      assume(button?.textContent).equals('Click Me');
+    });
+
+    it('should render the radio group with all options', function test() {
+      const { container } = render(<LockNoOverride />);
+      const radioInputs = container.querySelectorAll('input[type="radio"]');
+
+      assume(radioInputs.length).equals(3);
+    });
+
+    it('should have label and description with internal composition classes', function test() {
+      const { container } = render(<LockNoOverride />);
+
+      // Check for label element
+      const label = container.querySelector('.label');
+      assume(label).to.not.equal(null);
+
+      // Check for description element
+      const description = container.querySelector('.describe');
+      assume(description).to.not.equal(null);
+    });
+  });
+
+  describe('LockWithOverride', function lockWithOverride() {
+    it('should render with data-override only on the trigger button', function test() {
+      const { container } = render(<LockWithOverride />);
+
+      assume(container.innerHTML).equals(
+        '<div><button type="button" tabindex="0" data-react-aria-pressable="true" data-override="slot" class="_pressable_1heya_1">Hello World</button><div id="fruit-group" role="radiogroup" aria-orientation="vertical" aria-labelledby="react-aria-:r19:" aria-describedby="react-aria-:r1b:" data-orientation="vertical"><span class="label" id="react-aria-:r19:">Favorite fruit</span><div><label class="_text_vfk41_1" data-react-aria-pressable="true"><span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;"><input data-react-aria-pressable="true" tabindex="0" type="radio" name="react-aria-:r1d:" aria-describedby="react-aria-:r1b:" value="apple"></span><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="_icon_1xscy_1" data-loading="true" data-icon="radioUnchecked" role="presentation" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="gray" stroke-width="2"></circle></svg><span class="_text_vfk41_1">Apple</span></label><label class="_text_vfk41_1" data-react-aria-pressable="true"><span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;"><input data-react-aria-pressable="true" tabindex="0" type="radio" name="react-aria-:r1d:" aria-describedby="react-aria-:r1b:" value="banana"></span><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="_icon_1xscy_1" data-loading="true" data-icon="radioUnchecked" role="presentation" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="gray" stroke-width="2"></circle></svg><span class="_text_vfk41_1">Banana</span></label><label class="_text_vfk41_1" data-react-aria-pressable="true"><span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;"><input data-react-aria-pressable="true" tabindex="0" type="radio" name="react-aria-:r1d:" aria-describedby="react-aria-:r1b:" value="orange"></span><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="_icon_1xscy_1" data-loading="true" data-icon="radioUnchecked" role="presentation" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="gray" stroke-width="2"></circle></svg><span class="_text_vfk41_1">Orange</span></label></div><span class="describe" id="react-aria-:r1b:">Pick your favorite</span></div></div>'
+      );
+    });
+
+    it('should render the button with consumer override text', function test() {
+      const { container } = render(<LockWithOverride />);
+      const button = container.querySelector('button');
+
+      assume(button).to.not.equal(null);
+      assume(button?.textContent).equals('Hello World');
+    });
+
+    it('should not flag internal label and description with data-override', function test() {
+      const { container } = render(<LockWithOverride />);
+      const label = container.querySelector('.label');
+      const description = container.querySelector('.describe');
+
+      // Internal composition should not be flagged with data-override
+      assume(label).to.not.equal(null);
+      assume(description).to.not.equal(null);
+      assume(label?.hasAttribute('data-override')).equals(false);
+      assume(description?.hasAttribute('data-override')).equals(false);
+    });
+
+    it('should only have data-override on consumer-modified slots', function test() {
+      const { container } = render(<LockWithOverride />);
+      const elementsWithOverride = container.querySelectorAll('[data-override]');
+
+      // Only the trigger button should have data-override
+      assume(elementsWithOverride.length).equals(1);
+      assume(elementsWithOverride[0]?.tagName.toLowerCase()).equals('button');
     });
   });
 });

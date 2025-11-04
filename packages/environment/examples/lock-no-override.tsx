@@ -33,7 +33,7 @@ const Composed = withSlots('LockNoOverride.Composed', function ComposedComponent
   return (
     <Container slot="root">
       <Button slot="trigger">Press Me</Button>
-      <RadioGroup slots={slots} label="Favorite fruit" description="Pick your favorite">
+      <RadioGroup id="fruit-group" slots={slots} label="Favorite fruit" description="Pick your favorite">
         <Radio value="apple">Apple</Radio>
         <Radio value="banana">Banana</Radio>
         <Radio value="orange">Orange</Radio>
@@ -49,20 +49,23 @@ const Composed = withSlots('LockNoOverride.Composed', function ComposedComponent
  * @returns {JSX.Element} The rendered design system component.
  * @public
  */
-export const DesignSystemVersion = withSlots('LockNoOverride.DSVersion', function DSVersionComponent(props: ComponentProps) {
-  const { props: p } = useProps(props);
-  const slots = {
-    'root.trigger': {
-      children: 'Click Me'
-    }
-  };
+export const DesignSystemVersion = withSlots(
+  'LockNoOverride.DSVersion',
+  function DSVersionComponent(props: ComponentProps) {
+    const { props: p } = useProps(props);
+    const slots = {
+      'root.trigger': {
+        children: 'Click Me'
+      }
+    };
 
-  return (
-    <Environment lock={true}>
-      <Composed slot="composed" slots={slots} {...p} />
-    </Environment>
-  );
-});
+    return (
+      <Environment lock={true}>
+        <Composed slot="composed" slots={slots} {...p} />
+      </Environment>
+    );
+  }
+);
 
 /**
  * Example demonstrating lock with NO consumer overrides.

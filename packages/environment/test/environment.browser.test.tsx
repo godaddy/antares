@@ -66,5 +66,36 @@ describe('@bento/environment', function bento() {
 
       assume(env).equals('Hello World');
     });
+
+    it('should handle nested environments with lock boundaries', async function test() {
+      let firstGeneration: number;
+      let secondGeneration: number;
+
+      const env = renderToString(
+        <Environment lock={true}>
+          <Box.Consumer>
+            {function firstConsumer({ env }) {
+              firstGeneration = env.lockGeneration;
+              assume(env.locked).to.equal(true);
+
+              return (
+                <Environment lock={true}>
+                  <Box.Consumer>
+                    {function secondConsumer({ env }) {
+                      secondGeneration = env.lockGeneration;
+                      assume(env.locked).to.equal(true);
+                      return 'Nested Lock';
+                    }}
+                  </Box.Consumer>
+                </Environment>
+              );
+            }}
+          </Box.Consumer>
+        </Environment>
+      );
+
+      assume(env).equals('Nested Lock');
+      assume(secondGeneration!).to.be.above(firstGeneration!);
+    });
   });
 });
