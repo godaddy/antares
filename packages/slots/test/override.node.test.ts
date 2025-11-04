@@ -206,7 +206,6 @@ describe('@bento/slots override', function bento() {
         })
       );
 
-      // SHOULD have data-override="slot" since slot is from earlier generation
       assume(html).contains('<div data-override="slot">Hello</div>');
     });
 
@@ -231,8 +230,7 @@ describe('@bento/slots override', function bento() {
         })
       );
 
-      // Original behavior: flags className and style
-      assume(html).contains('<div style="color:red" data-override="style className slot"></div>');
+      assume(html).contains('<div style="color:red" data-override="style className slot" class="test"></div>');
     });
 
     it('flags style modifications from earlier generation when locked', function lockedStyleEarlier() {
@@ -259,7 +257,6 @@ describe('@bento/slots override', function bento() {
         })
       );
 
-      // SHOULD have data-override for style from earlier generation
       assume(html).contains('<div style="color:blue" data-override="style slot"></div>');
     });
   });
