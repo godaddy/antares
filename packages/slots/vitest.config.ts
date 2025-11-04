@@ -6,7 +6,15 @@ export default mergeConfig(
   defineConfig({
     test: {
       coverage: {
-        exclude: ['src/index.ts']
+        exclude: ['src/index.ts'],
+        thresholds: {
+          'src/**.{ts,tsx}': {
+            statements: 90,
+            functions: 100,
+            branches: 90,
+            lines: 95
+          }
+        }
       },
       projects: [ssr, browser]
     }
