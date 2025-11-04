@@ -41,7 +41,6 @@
   ],
   "dependencies": {
     "@bento/box": "^0.1.0",
-    "@bento/internal-props": "^0.1.0",
     "@bento/types": "^0.1.0"
   },
   "peerDependencies": {

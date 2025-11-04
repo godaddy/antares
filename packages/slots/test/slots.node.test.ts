@@ -159,10 +159,14 @@ describe('@bento/slots', function bento() {
         React.createElement(
           Box.Provider,
           { value: ctx },
-          React.createElement(Component, {
-            id: 'test',
-            className: 'example'
-          }, 'content')
+          React.createElement(
+            Component,
+            {
+              id: 'test',
+              className: 'example'
+            },
+            'content'
+          )
         )
       );
 

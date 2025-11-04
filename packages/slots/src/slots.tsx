@@ -115,13 +115,11 @@ export function withSlots<Props extends object>(
       if (!assignedSlot) {
         ctx.slots.assigned[namespacedKey] = newSlot;
         // Tag new slot with current generation
-        ctx.slots.slotGenerations = ctx.slots.slotGenerations || {};
         ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
       } else if (typeof assignedSlot === 'object') {
         ctx.slots.assigned[namespacedKey] = { ...newSlot, ...assignedSlot };
         // Keep the earliest (lowest) generation when merging
         // If the slot doesn't have a generation yet, use current generation
-        ctx.slots.slotGenerations = ctx.slots.slotGenerations || {};
         if (!(namespacedKey in ctx.slots.slotGenerations)) {
           ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
         }
