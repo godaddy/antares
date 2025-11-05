@@ -1,0 +1,321 @@
+# Input Primitive
+
+## Purpose
+
+The Input primitive provides a headless, foundational, reusable input component built on React Aria's form field implementations. It serves as the universal base for all HTML input types in Bento, offering consistent accessibility, interaction behaviors, and styling capabilities across text inputs, checkboxes, radio buttons, and more.
+
+This primitive solves the common need for accessible form inputs across applications while providing the flexibility for custom styling and behavior through Bento's slot system. It handles standard input interactions including hover states and focus management for any HTML input type.
+
+**Use cases:**
+- Foundation for all HTML input types (text, email, password, checkbox, radio, etc.).
+- Base component for search fields, toggle inputs, and form controls.
+- Building custom input variations while maintaining accessibility.
+- Creating consistent input experiences across applications regardless of input type.
+
+**Consuming components:**
+- Custom form libraries and components.
+- Design systems with specific input components (TextField, Checkbox, RadioGroup, etc.).
+  - Input is intended to replace the HTML input element in the Bento Control primitive, used in Checkbox and Radio primitives.
+
+### Unique Attributes
+
+- **Universal Input Support**: Works seamlessly with all HTML `input` types through a single component interface.
+- **Headless Design**: Provides a headless API for building custom input components without sacrificing accessibility.
+- **Slot-Based Architecture**: Uses Bento's `@bento/slots` system for customization of input structure and styling across all input types, allowing for flexibility in use with other Bento primitives.
+- **Comprehensive State Management**: Exposes all input states (hover, focus-visible, disabled, invalid, checked, etc.) via data attributes.
+- **Cross-Platform Normalization**: Handles browser inconsistencies in hover and focus behavior across devices and input types with `useHover` and `useFocusRing` from React Aria.
+
+## Primitive Composition
+
+This is a UI primitive that combines accessibility state hooks with rendering logic to create a complete input component system supporting all HTML input types.
+
+**Core React Aria hooks used:**
+- `mergeRefs` - Utility for combining multiple refs into one for proper ref forwarding
+- `useHover` - Handles pointer hover interactions with proper touch device support (all types)
+- `useFocusRing` - Manages focus visibility states for keyboard navigation (all types)
+
+**Bento packages integrated:**
+- `@bento/slots` - Enables component customization through the slot system
+- `@bento/use-props` - Provides prop merging and data attribute management
+- `@bento/use-data-attributes` - Manages consistent application of data attributes based on input state
+
+## Implementation Patterns
+
+| Concept             | Implementation                                               |
+|---------------------|--------------------------------------------------------------|
+| React Aria          | Uses React Aria hooks for accessibility and interaction (`mergeRefs`, `useHover`, `useFocusRing`)      |
+| Slots               | withSlots with adaptive `input` slot, meant to be targetable in other slottable components and by itself |
+| Render Props        | `className` and `style` as functions receiving state metadata for any input type, memoized for performance. |
+| data-* Attributes   | data-hovered, data-focus-visible, data-disabled, data-invalid, data-checked, data-readonly, data-empty |
+| data-override       | Applied when slots or render props customize behavior         |
+| data-version        | Component version tracking in development                     |
+| Prop Filtering      | Type-specific prop filtering to avoid irrelevant attributes, meant to prevent warnings and DOM clutter.   |
+| ARIA forwarding    | Passes through appropriate ARIA attributes based on input type and state |
+| Ref Forwarding      | Forwards ref to the underlying input element for direct access  |
+| State Management   | Controlled and uncontrolled modes native to `input` elements |
+| Prop Validation    | Validates props based on input type to ensure correct usage, dev-time warnings issued for common mistakes and irrelevant props ignored. |
+
+## Internal Structure & Reuse Potential
+
+The Input primitive can be broken down into several reusable parts:
+
+**Extractable behaviors:**
+- **Input validation utilities** - Reusable validation helpers for all form component types.
+- **Focus management patterns** - Can be applied to other interactive components across input types.
+- **Ref & imperative API:** The component forwards and merges refs (mergeRefs) to expose the underlying HTMLInputElement. Consumers can rely on the forwarded ref for imperative calls such as focus().
+- **Prop filtering:** The Input primitive only applies attributes valid for the chosen HTML input `type` (for example, `checked`/`defaultChecked` only for `checkbox`/`radio`; `min`/`max`/`step` only for `number`/`range`; `multiple`/`accept` only for `file`). Irrelevant props are ignored to prevent React warnings and DOM clutter; in development builds the primitive may emit dev-only warnings for obvious mismatches (e.g., `checked` on `type="text"`).
+- **ARIA implementation:** The primitive forwards all received aria-* props and role to the underlying input (aria-label, aria-labelledby, aria-describedby, aria-invalid, etc.).
+
+**Shared logic with other primitives:**
+- State data attribute patterns (shared across all interactive components)
+- Slot architecture (consistent across all Bento components, adapts to input type structure)
+- React Aria integration patterns (template for other form and interactive primitives)
+
+**Minimal reusable unit:** This primitive represents the minimal unit for universal HTML input functionality while maintaining full accessibility and customization capabilities.
+
+## React Aria or External Hook Integration
+
+**Direct React Aria dependencies:**
+- `useHover` - Normalized hover interactions across devices (all input types)
+- `useFocusRing` - Keyboard focus visibility management (all input types)
+
+**Coverage gaps addressed:**
+- Consistent data attribute naming for styling across different input behaviors
+- Integration with Bento's slot system for all input type customization needs
+
+## Architecture & Features
+
+**Core architectural decisions:**
+- Slot-based architecture allows complete customization of input structure
+- Data attributes provide styling hooks without requiring CSS-in-JS
+- Ref forwarding enables direct input element access
+- Type-specific prop filtering ensures only relevant props are passed to each input type, preventing React warnings and maintaining clean DOM output
+
+**Props interface (essentially an extended form of HTMLInputElement):**
+```typescript
+export interface InputRenderProps {
+  isHovered: boolean;
+  isFocused: boolean;
+  isFocusVisible: boolean;
+  isDisabled: boolean;
+  isInvalid: boolean;
+  isReadOnly: boolean;
+  isRequired: boolean;
+  isEmpty: boolean;
+}
+
+export interface InputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'style'>,
+    HoverEvents {
+  // core styling render-props
+  className?: ClassNameOrFunction<InputRenderProps>;
+  style?: StyleOrFunction<InputRenderProps>;
+
+  // Optional validation helpers (primitive remains headless; these are helpers)
+  validationBehavior?: 'native' | 'aria';
+  validate?: (value: any) => ValidationResult | Promise<ValidationResult>;
+
+  // Type narrowing hints (still compatible with native attributes)
+  type?: InputHTMLAttributes<HTMLInputElement>['type'];
+
+  // checkbox / radio
+  checked?: boolean;
+  defaultChecked?: boolean;
+
+  // number / range
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
+
+  // file
+  multiple?: boolean;
+  accept?: string;
+
+  // pattern, readOnly, required remain in native attrs but re-declared for clarity
+  pattern?: string;
+  readOnly?: boolean;
+  required?: boolean;
+
+  // slotting helpers (optional)
+  slot?: string;
+  slots?: Record<string, any>;
+}
+```
+
+**Rendered DOM structure (adapts based on input type):**
+```html
+<!-- Checkbox example -->
+<input type="checkbox" name="checkbox-name" value="checkbox-value" />
+
+<!-- Empty Focused Text input example -->
+<input type="text" name="text-name" value="" placeholder="Enter text" />
+```
+
+**State management:**
+- **Controlled**: Value managed by parent component via native `value` and `onChange`.
+- **Uncontrolled**: Internal state with optional `defaultValue`.
+- **Validation**: Supports both native HTML validation and custom validation functions across all input types.
+- **Type-specific prop filtering**: Only relevant props are applied based on the input type (e.g., `checked` only for checkbox/radio, `min`/`max`/`step` only for number/range, `multiple` only for file inputs), preventing React warnings and keeping the DOM clean.
+
+**Styling via data attributes:**
+- Generic: `data-disabled`, `data-invalid`, `data-readonly`, `data-required`, `data-hovered`, `data-focus-visible`, `data-focused`
+- Type-specific: `data-checked` (checkbox/radio), `data-pressed` (buttons)
+
+**Nesting/compound support:** Due to the simplicity of the primitive, it can be easily nested or composed within larger form structures since it relies on parent components for all attributes and state handling. The user is expected to provide these attributes themselves either directly or via higher-level form components or hooks. This primitive will work within other Bento primitives since they rely on React Aria state management hooks.
+
+## Accessibility Information
+
+**ARIA implementation:** This primitive is very low-level and relies heavily on passed down props to manage ARIA attributes appropriately for each input type. This is due to the fact that it is agnostic of higher-level form field structures that are typically built on top of it, like external labels or descriptive text.
+
+**Keyboard interactions** Keyboard interactions are innately handled by using the native HTML `input`, which has built-in keyboard support for all input types in every major browser.
+
+**Focus management:**
+- `useFocusRing` provides keyboard-only focus visibility
+- `data-focus-visible` enables CSS focus styling
+- `data-focused` indicates current focus state
+
+**AutoFocus support:** Controlled via `autoFocus` prop with proper timing and focus management.
+
+## Internationalization, RTL, and Mobile Considerations
+
+Most aspects of internationalization, RTL, and mobile considerations are inherently handled by using native HTML input elements and React Aria's hooks.
+
+**Mobile Considerations:**
+- `useHover` properly handles touch devices
+- `useFocusRing` manages focus visibility on mobile
+
+## Data Attributes and Slot Map
+
+### Expected `data-*` Attributes
+
+| Attribute             | Description                                   | Example Values         |
+|----------------------|-----------------------------------------------|------------------------|
+| `data-hovered`       | Indicates hover state                         | "true" / "false"       |
+| `data-focus-visible` | Whether focus ring should be shown            | "true" / "false"       |
+| `data-focused`       | Current focus state                           | "true" / "false"       |
+| `data-disabled`      | Indicates disabled state                      | "true" / "false"       |
+| `data-readonly`      | Indicates read-only state                     | "true" / "false"       |
+| `data-invalid`       | Indicates validation error                    | "true" / "false"       |
+| `data-required`      | Indicates required field                      | "true" / "false"       |
+| `data-empty`         | Whether input has no value                    | "true" / "false"       |
+| `data-checked`       | For checkbox/radio inputs                     | "true" / "false"       |
+| `data-override`      | Mark for locally overridden logic/UI          | "true"                 |
+| `data-version`       | Component version in dev only                 | "input@1.0"            |
+
+### Slot Map
+
+This primitive is **slottable** but does **not** define its slot name itself. The component renders a single `input`, whose slot name is determined by its usage context. For example, when used within a form field component, the form field would assign the appropriate slot name to the input, which allows multiple instances to coexist.
+
+## Competitive Research
+
+While formulating my approach I considered the following libraries and frameworks that provide input primitives or components that offer varying levels of accessibility, customization, and features:
+
+* **[React Aria](https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Input.tsx)**: Provides a comprehensive input primitive built on top of React Aria hooks. Does not come with built-in slot customization or accessibility features out of the box since it relies on parent components using its other hooks.
+* **[Radix UI](https://www.radix-ui.com/primitives/docs/components/form#control)**: Offers a Control primitive for form inputs that can be adapted for different input types. However, it requires the user to define their own input and lacks a universal input primitive. It also doesn't expose state via data attributes as comprehensively as Bento's approach.
+* **[Ark UI](https://ark-ui.com/docs/components/field#input)**: Ark UI provides a `Field` component that can be used to build an input field within the root with `Field.Input`. This requires the user to wrap the input in a `Field` component for proper context, which adds additional structure and complexity while limiting flexibility. Bento's Input primitive aims to be more flexible and reusable on its own without requiring additional wrappers.
+* **[Headless UI](https://headlessui.com/react/input)**: Headless UI provides a flexible input component that can be used within or without a context. Bento's implementation took inspiration from their approach, with the addition of comprehensive data attributes and slot support for enhanced customization.
+* **[Chakra UI](https://chakra-ui.com/docs/components/input)**: Provides styled input components with accessibility features. However, this component is tightly coupled to Chakra's styling system and doesn't separate primitive functionality from styling concerns.
+
+This Bento primitive would provide the best blend of accessibility, customization, and universal input support across all HTML input types for our use case, since it is meant to be a foundational primitive with slot and data attribute support.
+
+## Code Examples
+
+### Uncontrolled Input Example
+
+The following example shows an uncontrolled text input with a default value and placeholder.
+
+```tsx
+<Input type="text" defaultValue="Hello" placeholder="Uncontrolled input" />
+```
+
+Rendered as HTML:
+
+```html
+<input type="text" value="Hello" placeholder="Uncontrolled input" />
+```
+
+### Controlled Input Example
+
+The following example shows a controlled text input with a value and placeholder.
+
+```tsx
+function ControlledInputExample() {
+  const [value, setValue] = React.useState('');
+  return (
+    <Input
+      type="text"
+      value={value}
+      onChange={e => setValue(e.target.value)}
+      placeholder="Controlled input"
+    />
+  );
+}
+```
+
+Rendered as HTML:
+
+```html
+<input type="text" value="" placeholder="Controlled input" />
+```
+
+### Filtered Props Example
+
+The following example shows a number input with type-specific props like `min`, `max`, and `step`. The `checked` prop is ignored since it is not relevant for number inputs. A dev-time warning will be issued if irrelevant props like this are passed.
+
+```tsx
+<Input
+  type="number"
+  min={0}
+  max={100}
+  step={1}
+  defaultValue={50}
+  checked={true}  // This prop will be ignored for number inputs
+/>
+```
+
+Rendered as HTML:
+
+```html
+<input
+  type="number"
+  min="0"
+  max="100"
+  step="1"
+  value="50"
+/>
+```
+
+### Visible label example
+
+The following example shows an email input with an associated visible label. The label is linked to the input via the `htmlFor` and `id` attributes, supporting accessibility.
+
+```tsx
+<label htmlFor="email">Email</label>
+<Input id="email" type="email" />
+```
+
+Rendered as HTML:
+
+```html
+<label for="email">Email</label>
+<input id="email" type="email" />
+```
+
+### Non-visible label example
+
+The following example shows a password input with an associated non-visible label for screen readers. The label is linked to the input via the `aria-label` attribute.
+
+```tsx
+<Input type="password" aria-label="Password" />
+```
+
+Rendered as HTML:
+
+```html
+<input type="password" aria-label="Password" />
+```
+
+## Notes
+
+- **Labels**: In order to keep this primitive maximally reusable by itself and in other Bento components, we avoid coupling it directly with label rendering. Instead, we allow labels to be passed in via props or slots, enabling flexible usage patterns. This allows the Input primitive to be used both as a standalone input and within more complex form field components that handle label rendering.
+- **Validation**: There is no special form validation logic implemented directly in this primitive beyond what is provided by HTML. Validation handling is expected to be managed by higher-level form components or via custom validation functions passed in as props.
