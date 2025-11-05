@@ -5,7 +5,8 @@ import ts from 'typescript';
 import { extractComponentDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
 import type { ItemDoc } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
 
-const [mdxPath = 'README.mdx', outPath = 'README.md'] = process.argv.slice(2);
+const mdxPath = 'README.mdx';
+const outPath = 'README.md';
 
 /**
  * Extract raw imports from content and map variable names to file paths.
