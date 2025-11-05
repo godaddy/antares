@@ -3,6 +3,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import ts from 'typescript';
 import { extractComponentDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
+import { extractInterfaceDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-interface-doc.ts';
+import { resolveImport } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
 import type { ItemDoc } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
 
 const mdxPath = 'README.mdx';
@@ -120,7 +122,7 @@ function generatePropTableFromArgTypes(argTypes: ItemDoc): string {
 /**
  * Extract prop table for a component.
  */
-async function extractPropTable(propName: string, storyFilePath: string): Promise<string> {
+async function extractPropTable(propName: string, storyFilePath: string, sourceDir: string): Promise<string> {
   try {
     const storyContent = await readFile(storyFilePath, 'utf-8');
     const componentDocRegex = new RegExp(`export\\s+const\\s+${propName}\\s*=\\s*getComponentDocs\\(([^)]+)\\)`, 's');
@@ -139,7 +141,20 @@ async function extractPropTable(propName: string, storyFilePath: string): Promis
       ts.ScriptKind.TSX
     );
     const { argTypes } = extractComponentDoc(componentName, storySourceFile);
-    return generatePropTableFromArgTypes(argTypes);
+    const tableFromDocgen = generatePropTableFromArgTypes(argTypes);
+
+    // If component extraction succeeded, return the table
+    if (tableFromDocgen) return tableFromDocgen;
+
+    // Fallback to interface extraction when component extraction fails
+    // (e.g., for wrapped components that react-docgen-typescript can't parse)
+    // First, resolve the component's source file to find where the interface might be
+    const resolved = resolveImport(componentName, storySourceFile);
+    if (resolved && !resolved.sameFile) {
+      const propsInterfaceName = `${componentName}Props`;
+      const { argTypes: interfaceArgTypes } = extractInterfaceDoc(propsInterfaceName, resolved.targetSourceFile);
+      return generatePropTableFromArgTypes(interfaceArgTypes);
+    }
   } catch {
     // Failed to process
   }
@@ -151,7 +166,7 @@ async function extractPropTable(propName: string, storyFilePath: string): Promis
  * Replace ArgTypes components with prop tables.
  * Extracts component prop interfaces and generates markdown tables.
  */
-async function replaceArgTypes(content: string, storyFilePath: string | null): Promise<string> {
+async function replaceArgTypes(content: string, storyFilePath: string | null, sourceDir: string): Promise<string> {
   if (!storyFilePath) return content;
 
   const argTypesMatches = [...content.matchAll(/<ArgTypes\s+of=\{\w+\.(\w+)\}[^>]*\/>/g)];
@@ -162,7 +177,7 @@ async function replaceArgTypes(content: string, storyFilePath: string | null): P
   async function replaceArgTypeMatch(accPromise: Promise<string>, m: RegExpMatchArray): Promise<string> {
     const acc = await accPromise;
     const propName = m[1]!;
-    const propTable = await extractPropTable(propName, storyFilePath!);
+    const propTable = await extractPropTable(propName, storyFilePath!, sourceDir);
 
     return acc.replace(m[0], propTable);
   }
@@ -199,7 +214,7 @@ export async function processContent(content: string, sourceDir: string): Promis
   const storyFileMatch = withSourceReplaced.match(/^import\s+\*\s+as\s+\w+\s+from\s+['"](.+?\.stories\.tsx)['"]/m);
   const storyFilePath = storyFileMatch ? resolve(sourceDir, storyFileMatch[1]!) : null;
 
-  const withArgTypesReplaced = await replaceArgTypes(withSourceReplaced, storyFilePath);
+  const withArgTypesReplaced = await replaceArgTypes(withSourceReplaced, storyFilePath, sourceDir);
 
   return removeStorybookComponents(withArgTypesReplaced);
 }
