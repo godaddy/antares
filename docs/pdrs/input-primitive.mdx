@@ -167,7 +167,7 @@ export interface InputProps
 
 **ARIA implementation:** This primitive is very low-level and relies heavily on passed down props to manage ARIA attributes appropriately for each input type. This is due to the fact that it is agnostic of higher-level form field structures that are typically built on top of it, like external labels or descriptive text.
 
-**Keyboard interactions** Keyboard interactions are innately handled by using the native HTML `input`, which has built-in keyboard support for all input types in every major browser.
+**Keyboard interactions:** Keyboard interactions are innately handled by using the native HTML `input`, which has built-in keyboard support for all input types in every major browser.
 
 **Focus management:**
 - `useFocusRing` provides keyboard-only focus visibility
@@ -210,7 +210,7 @@ This primitive is **slottable** but does **not** define its slot name itself. Th
 
 While formulating my approach I considered the following libraries and frameworks that provide input primitives or components that offer varying levels of accessibility, customization, and features:
 
-* **[React Aria](https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Input.tsx)**: Provides a comprehensive input primitive built on top of React Aria hooks. Does not come with built-in slot customization or accessibility features out of the box since it relies on parent components using its other hooks.
+* **[React Aria](https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Input.tsx)**: Provides a comprehensive input primitive built on top of React Aria hooks, offering robust accessibility features through its hooks. Does not include Bento's slot-based customization system and requires composition with other React Aria components for complete form field functionality.
 * **[Radix UI](https://www.radix-ui.com/primitives/docs/components/form#control)**: Offers a Control primitive for form inputs that can be adapted for different input types. However, it requires the user to define their own input and lacks a universal input primitive. It also doesn't expose state via data attributes as comprehensively as Bento's approach.
 * **[Ark UI](https://ark-ui.com/docs/components/field#input)**: Ark UI provides a `Field` component that can be used to build an input field within the root with `Field.Input`. This requires the user to wrap the input in a `Field` component for proper context, which adds additional structure and complexity while limiting flexibility. Bento's Input primitive aims to be more flexible and reusable on its own without requiring additional wrappers.
 * **[Headless UI](https://headlessui.com/react/input)**: Headless UI provides a flexible input component that can be used within or without a context. Bento's implementation took inspiration from their approach, with the addition of comprehensive data attributes and slot support for enhanced customization.
