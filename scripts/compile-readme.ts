@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 import ts from 'typescript';
 import { extractComponentDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
 import { extractInterfaceDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-interface-doc.ts';
+import { GET_COMPONENT_DOCS } from '../packages/storybook-addon-helpers/src/getters-parser.ts';
 import { resolveImport } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
 import type { ItemDoc } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
 
@@ -125,7 +126,10 @@ function generatePropTableFromArgTypes(argTypes: ItemDoc): string {
 async function extractPropTable(propName: string, storyFilePath: string, sourceDir: string): Promise<string> {
   try {
     const storyContent = await readFile(storyFilePath, 'utf-8');
-    const componentDocRegex = new RegExp(`export\\s+const\\s+${propName}\\s*=\\s*getComponentDocs\\(([^)]+)\\)`, 's');
+    const componentDocRegex = new RegExp(
+      `export\\s+const\\s+${propName}\\s*=\\s*${GET_COMPONENT_DOCS}\\(([^)]+)\\)`,
+      's'
+    );
     const componentDocMatch = storyContent.match(componentDocRegex);
 
     if (!componentDocMatch) return '';
