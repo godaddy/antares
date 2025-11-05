@@ -1,6 +1,6 @@
 export { Header, HeaderContext } from './header';
-export { ListBoxItem } from './listbox-item';
-export { ListBox, Collection } from './listbox';
+export { ListBoxItem, ListBoxItemImpl } from './listbox-item';
+export { ListBox, Collection, ListStateContext } from './listbox';
 export { ListBoxSection } from './listbox-section';
 
 export type { HeaderProps } from './header';
