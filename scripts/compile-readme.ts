@@ -98,92 +98,6 @@ async function replaceSourceComponents(
 }
 
 /**
- * Find component source files.
- */
-function findComponentSourceFiles(sourceDir: string, componentName: string): string[] {
-  const kebabCase = componentName
-    .replace(/([A-Z])/g, '-$1')
-    .toLowerCase()
-    .replace(/^-/, '');
-  const lowerName = componentName.toLowerCase();
-
-  return [
-    resolve(sourceDir, 'src/index.tsx'),
-    resolve(sourceDir, 'src/index.ts'),
-    resolve(sourceDir, `src/${lowerName}.tsx`),
-    resolve(sourceDir, `src/${lowerName}.ts`),
-    resolve(sourceDir, `src/${kebabCase}.tsx`),
-    resolve(sourceDir, `src/${kebabCase}.ts`)
-  ];
-}
-
-/**
- * Extract props from source content.
- * Parses TypeScript interface properties with JSDoc comments to extract prop metadata.
- */
-function extractProps(propsContent: string): Array<{
-  name: string;
-  type: string;
-  description: string;
-  required: boolean;
-}> {
-  const propRegex = /\/\*\*([^*]*(?:\*(?!\/)[^*]*)*)\*\/\s*(\w+)(\??):\s*([^;]+);/g;
-  const props: Array<{
-    name: string;
-    type: string;
-    description: string;
-    required: boolean;
-  }> = [];
-
-  for (const propMatch of propsContent.matchAll(propRegex)) {
-    const [, jsDoc, propNameInner, optional, propType] = propMatch;
-    const description = jsDoc
-      .replace(/\*/g, '')
-      .replace(/^[\s\n]+|[\s\n]+$/g, '')
-      .trim();
-
-    props.push({
-      name: propNameInner,
-      type: propType.trim(),
-      description,
-      required: !optional
-    });
-  }
-
-  return props;
-}
-
-/**
- * Generate prop table markdown.
- * Creates a markdown table from extracted props with columns for name, type, required flag, and description.
- */
-function generatePropTable(
-  props: Array<{
-    name: string;
-    type: string;
-    description: string;
-    required: boolean;
-  }>
-): string {
-  if (props.length === 0) return '';
-  const header = '\n| Prop | Type | Required | Description |\n|------|------|----------|------------|\n';
-
-  /**
-   * Format a single prop as a markdown table row.
-   */
-  function formatPropRow(prop: { name: string; type: string; description: string; required: boolean }): string {
-    const type = prop.type.replace(/\|/g, '\\|').replace(/\n/g, ' ');
-    const req = prop.required ? 'Yes' : 'No';
-
-    return `| \`${prop.name}\` | \`${type}\` | ${req} | ${prop.description} |\n`;
-  }
-
-  const rows = props.map(formatPropRow);
-
-  return header + rows.join('');
-}
-
-/**
  * Generate prop table markdown from argTypes (Storybook docgen format).
  * Converts ItemDoc format from react-docgen-typescript to markdown table.
  */
@@ -204,27 +118,9 @@ function generatePropTableFromArgTypes(argTypes: ItemDoc): string {
 }
 
 /**
- * Find props in source file.
- */
-async function findPropsInSourceFile(sourceFile: string, propsInterfaceName: string): Promise<string | null> {
-  try {
-    const sourceContent = await readFile(sourceFile, 'utf-8');
-    const propsPattern = new RegExp(
-      `(?:export\\s+)?(?:interface|type)\\s+${propsInterfaceName}[^=]*(?:extends[^\\{]*)?\\{([^}]+)\\}`,
-      's'
-    );
-    const propsMatch = sourceContent.match(propsPattern);
-
-    return propsMatch?.[1] ?? null;
-  } catch {
-    return null;
-  }
-}
-
-/**
  * Extract prop table for a component.
  */
-async function extractPropTable(propName: string, storyFilePath: string, sourceDir: string): Promise<string> {
+async function extractPropTable(propName: string, storyFilePath: string): Promise<string> {
   try {
     const storyContent = await readFile(storyFilePath, 'utf-8');
     const componentDocRegex = new RegExp(`export\\s+const\\s+${propName}\\s*=\\s*getComponentDocs\\(([^)]+)\\)`, 's');
@@ -234,7 +130,7 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
 
     const componentName = componentDocMatch[1].trim();
 
-    // Try using Storybook's react-docgen-typescript extractor first
+    // Use Storybook's react-docgen-typescript extractor
     const storySourceFile = ts.createSourceFile(
       storyFilePath,
       storyContent,
@@ -243,22 +139,7 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
       ts.ScriptKind.TSX
     );
     const { argTypes } = extractComponentDoc(componentName, storySourceFile);
-    const tableFromDocgen = generatePropTableFromArgTypes(argTypes);
-    if (tableFromDocgen) return tableFromDocgen;
-
-    // Fallback to interface-based regex parsing if docgen returns empty
-    const propsInterfaceName = `${componentName}Props`;
-    const sourceFiles = findComponentSourceFiles(sourceDir, componentName);
-
-    for (const sourceFile of sourceFiles) {
-      const propsContent = await findPropsInSourceFile(sourceFile, propsInterfaceName);
-
-      if (propsContent) {
-        const props = extractProps(propsContent);
-
-        return generatePropTable(props);
-      }
-    }
+    return generatePropTableFromArgTypes(argTypes);
   } catch {
     // Failed to process
   }
@@ -270,7 +151,7 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
  * Replace ArgTypes components with prop tables.
  * Extracts component prop interfaces and generates markdown tables.
  */
-async function replaceArgTypes(content: string, storyFilePath: string | null, sourceDir: string): Promise<string> {
+async function replaceArgTypes(content: string, storyFilePath: string | null): Promise<string> {
   if (!storyFilePath) return content;
 
   const argTypesMatches = [...content.matchAll(/<ArgTypes\s+of=\{\w+\.(\w+)\}[^>]*\/>/g)];
@@ -281,7 +162,7 @@ async function replaceArgTypes(content: string, storyFilePath: string | null, so
   async function replaceArgTypeMatch(accPromise: Promise<string>, m: RegExpMatchArray): Promise<string> {
     const acc = await accPromise;
     const propName = m[1]!;
-    const propTable = await extractPropTable(propName, storyFilePath!, sourceDir);
+    const propTable = await extractPropTable(propName, storyFilePath!);
 
     return acc.replace(m[0], propTable);
   }
@@ -318,7 +199,7 @@ export async function processContent(content: string, sourceDir: string): Promis
   const storyFileMatch = withSourceReplaced.match(/^import\s+\*\s+as\s+\w+\s+from\s+['"](.+?\.stories\.tsx)['"]/m);
   const storyFilePath = storyFileMatch ? resolve(sourceDir, storyFileMatch[1]!) : null;
 
-  const withArgTypesReplaced = await replaceArgTypes(withSourceReplaced, storyFilePath, sourceDir);
+  const withArgTypesReplaced = await replaceArgTypes(withSourceReplaced, storyFilePath);
 
   return removeStorybookComponents(withArgTypesReplaced);
 }
