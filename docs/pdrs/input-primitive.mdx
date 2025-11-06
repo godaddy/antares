@@ -111,36 +111,16 @@ export interface InputProps
   className?: ClassNameOrFunction<InputRenderProps>;
   style?: StyleOrFunction<InputRenderProps>;
 
-  // Optional validation helpers (primitive remains headless; these are helpers)
-  validationBehavior?: 'native' | 'aria';
-  validate?: (value: any) => ValidationResult | Promise<ValidationResult>;
-
   // Type narrowing hints (still compatible with native attributes)
   type?: InputHTMLAttributes<HTMLInputElement>['type'];
-
-  // checkbox / radio
-  checked?: boolean;
-  defaultChecked?: boolean;
-
-  // number / range
-  min?: number | string;
-  max?: number | string;
-  step?: number | string;
-
-  // file
-  multiple?: boolean;
-  accept?: string;
-
-  // pattern, readOnly, required remain in native attrs but re-declared for clarity
-  pattern?: string;
-  readOnly?: boolean;
-  required?: boolean;
 
   // slotting helpers (optional)
   slot?: string;
   slots?: Record<string, any>;
 }
 ```
+
+All other native HTMLInputElement attributes are supported and passed through to the underlying input element depending on the `type` attribute value. For instance, `size` is only available for `text`, `password`, `email`, `search`, `tel`, and `url` input types so it will be filtered out for other types and reflected in the full type definition.
 
 **Rendered DOM structure (adapts based on input type):**
 ```html
