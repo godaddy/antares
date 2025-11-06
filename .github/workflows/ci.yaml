@@ -59,7 +59,9 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm test -- --concurrency=1
+        run: npm test
+        env:
+          TURBO_CONCURRENCY: 1
 
       - name: Lint
         run: npm run lint
