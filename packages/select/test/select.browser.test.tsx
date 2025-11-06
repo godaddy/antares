@@ -5,7 +5,7 @@ import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { Select, SelectOption } from '@bento/select';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
-import { ListBox, ListBoxItem, ListBoxSection, Header } from '@bento/listbox';
+import { ListBox, ListBoxSection, Header } from '@bento/listbox';
 
 // Simple Popover component for testing (actual Popover component doesn't exist yet)
 function Popover({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) {
@@ -456,7 +456,7 @@ describe('@bento/select', function bento() {
       assume(trigger?.getAttribute('data-open')).equals('false');
 
       // Click to open
-      trigger?.click();
+      (trigger as HTMLElement)?.click();
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Should be open (note: due to React Aria state update timing)

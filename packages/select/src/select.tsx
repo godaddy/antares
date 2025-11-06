@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useRef, ReactNode, cloneElement, isValidElement, Children } from 'react';
+import React, { createContext, useContext, useRef, ReactNode } from 'react';
 import { useSelect, HiddenSelect, useOverlay, useOverlayPosition } from 'react-aria';
 import { useSelectState, SelectState } from 'react-stately';
 import { AriaSelectProps } from '@react-types/select';
 import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
 import { Node, Collection as AriaCollectionType } from '@react-types/shared';
-import { mergeRefs } from '@react-aria/utils';
 import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { withSlots, Slots } from '@bento/slots';
+import { Container } from '@bento/container';
 import { ListStateContext } from '@bento/listbox';
 import type { PressableProps } from '@bento/pressable';
 import type { ListBoxProps } from '@bento/listbox';
@@ -146,6 +146,8 @@ export interface SelectProps<T> extends Omit<AriaSelectProps<T>, 'children'>, Sl
   readonly children?: ReactNode;
   /** Optional render prop for dynamic chrome (e.g., conditional errors) */
   readonly render?: (props: SelectRenderProps<T>) => ReactNode;
+  /** CSS className for the root container */
+  readonly className?: string;
 }
 
 /**
@@ -213,7 +215,8 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
       isOpen: state.isOpen,
       onClose: function handleClose() {
         state.close();
-      }
+      },
+      isDismissable: true
     },
     popoverRef
   );
@@ -221,240 +224,86 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
     targetRef: triggerRef,
     overlayRef: popoverRef,
     placement: 'bottom start',
-    offset: 8
+    offset: 8,
+    isOpen: state.isOpen
   });
 
-  // Extract styles before merging to avoid mergeProps style merging issues
-  const overlayStyle = 'style' in overlayProps ? overlayProps.style : undefined;
-  const positionStyle = 'style' in positionProps ? positionProps.style : undefined;
-  const { style: _omitted1, ...overlayPropsWithoutStyle } = overlayProps;
-  const { style: _omitted2, ...positionPropsWithoutStyle } = positionProps;
-  // Convert CSSStyleDeclaration to plain object if needed
+  // Helper to convert CSSStyleDeclaration or style objects to plain objects
   // Preserves numeric CSS values for React to auto-add units (e.g., top: 123 -> "123px")
-  function convertStyleToObjectTopLevel(style: unknown): Record<string, string | number> {
+  function convertStyleToPlainObject(style: unknown): Record<string, string | number> {
     if (!style || typeof style !== 'object' || Array.isArray(style)) {
-      return (style as Record<string, string | number>) || {};
+      return {};
     }
-    // Check if it's a CSSStyleDeclaration
-    if ('cssText' in style && typeof (style as CSSStyleDeclaration).setProperty === 'function') {
-      const plainObj: Record<string, string> = {};
-      for (let i = 0; i < (style as CSSStyleDeclaration).length; i++) {
-        const prop = (style as CSSStyleDeclaration)[i];
-        plainObj[prop] = (style as CSSStyleDeclaration).getPropertyValue(prop);
-      }
-      return plainObj;
-    }
-    // If it has setProperty but we haven't handled it, convert via iteration
-    if ('setProperty' in style || 'cssText' in style || 'length' in style) {
+
+    // If it's a CSSStyleDeclaration, iterate via indexed access
+    if ('cssText' in style && 'length' in style && typeof (style as any).length === 'number') {
+      const cssStyle = style as CSSStyleDeclaration;
       const plainObj: Record<string, string | number> = {};
-      for (const key in style as Record<string, unknown>) {
-        if (
-          Object.hasOwn(style, key) &&
-          key !== 'setProperty' &&
-          key !== 'cssText' &&
-          key !== 'length' &&
-          key !== 'getPropertyValue' &&
-          key !== 'removeProperty'
-        ) {
-          const value = (style as Record<string, unknown>)[key];
-          if (value != null && typeof value !== 'function') {
-            // Preserve numeric values for CSS properties that accept numbers
-            // React will automatically add "px" units for numeric values
-            plainObj[key] = typeof value === 'number' ? value : String(value);
-          }
+      for (let i = 0; i < cssStyle.length; i++) {
+        const prop = cssStyle[i];
+        const value = cssStyle.getPropertyValue(prop);
+        if (value) {
+          plainObj[prop] = value;
         }
       }
       return plainObj;
     }
-    // Create a completely plain object from the style object
-    // Preserve numeric values so React can auto-add units
+
+    // Plain object - copy only enumerable own properties that aren't functions
     const plainObj: Record<string, string | number> = {};
     for (const key in style as Record<string, unknown>) {
       if (Object.hasOwn(style, key)) {
         const value = (style as Record<string, unknown>)[key];
         if (value != null && typeof value !== 'function') {
-          // Preserve numeric values for CSS properties that accept numbers
-          // React will automatically add "px" units for numeric values
           plainObj[key] = typeof value === 'number' ? value : String(value);
         }
       }
     }
     return plainObj;
   }
-  // Merge styles manually (convert CSSStyleDeclaration to plain object if needed)
-  const overlayStyleObj = convertStyleToObjectTopLevel(overlayStyle);
-  const positionStyleObj = convertStyleToObjectTopLevel(positionStyle);
-  const mergedOverlayStyle =
-    overlayStyleObj && positionStyleObj
-      ? { ...overlayStyleObj, ...positionStyleObj }
-      : overlayStyleObj || positionStyleObj || undefined;
-  // Merge props manually (don't use mergeProps to avoid style merging issues)
-  // Ensure style is a completely plain object by recreating it from entries
-  // Preserve numeric values so React can auto-add units
-  // Use Object.create(null) to ensure no prototype chain that React might misinterpret
-  const mergedOverlayStylePlain = mergedOverlayStyle
-    ? (function createPlainStyle() {
-        const plain = Object.create(null) as Record<string, string | number>;
-        for (const [key, value] of Object.entries(mergedOverlayStyle)) {
-          plain[key] = value;
-        }
-        return plain;
-      })()
-    : undefined;
+
+  // Merge overlay and position props with safe style handling
+  const overlayStyle = 'style' in overlayProps ? overlayProps.style : undefined;
+  const positionStyle = 'style' in positionProps ? positionProps.style : undefined;
+  const { style: _omitted1, ...overlayPropsWithoutStyle } = overlayProps;
+  const { style: _omitted2, ...positionPropsWithoutStyle } = positionProps;
+
+  // Create a completely plain style object for React
+  const createCompletelyPlainStyle = (styles: Record<string, string | number>): Record<string, string | number> => {
+    const plain = Object.create(null) as Record<string, string | number>;
+    for (const [key, value] of Object.entries(styles)) {
+      if (typeof value === 'string' || typeof value === 'number') {
+        plain[key] = value;
+      }
+    }
+    return plain;
+  };
+
+  const overlayStyleObj = convertStyleToPlainObject(overlayStyle);
+  const positionStyleObj = convertStyleToPlainObject(positionStyle);
+  const mergedStyleObj = { ...overlayStyleObj, ...positionStyleObj };
+
+  const mergedStyle = Object.keys(mergedStyleObj).length > 0 ? createCompletelyPlainStyle(mergedStyleObj) : undefined;
+
   const mergedOverlayPropsWithStyle = {
     ...overlayPropsWithoutStyle,
     ...positionPropsWithoutStyle,
-    ...(mergedOverlayStylePlain && { style: mergedOverlayStylePlain })
+    ...(mergedStyle && { style: mergedStyle })
   };
 
-  // Recursively find and enhance children by slot
-  function enhanceChildren(children: ReactNode): ReactNode {
-    return Children.map(children, function mapChild(child) {
-      if (!isValidElement(child)) return child;
+  // Get selected item for value slots
+  const selectedItem = state.selectedKey != null ? state.collection.getItem(state.selectedKey) : null;
 
-      const slot = child.props.slot;
-      let enhancedChild: React.ReactElement | null = null;
-
-      // Apply props based on slot
-      if (slot === 'trigger') {
-        const childRef = 'ref' in child.props && child.props.ref ? child.props.ref : undefined;
-        // Merge triggerProps with data attributes, ensuring triggerProps (with role="combobox") takes precedence
-        // Also explicitly add validation ARIA attributes since Button's useButton might not preserve them
-        const triggerPropsAsHtml = triggerProps as React.HTMLAttributes<HTMLElement>;
-        const dataAttributes = useDataAttributes({
-          open: state.isOpen,
-          disabled: processedProps.isDisabled,
-          invalid: processedProps.isInvalid,
-          required: processedProps.isRequired
-        });
-        // Explicitly add data-open for false values (useDataAttributes skips false)
-        const explicitDataAttributes = {
-          ...dataAttributes,
-          'data-open': state.isOpen ? 'true' : 'false'
-        };
-        // Merge props manually (avoid mergeProps to prevent style merging issues)
-        const triggerPropsAsRecord = triggerProps as Record<string, unknown>;
-        const { style: _omittedTriggerStyle, ...triggerPropsWithoutStyle } = triggerPropsAsRecord;
-        const finalTriggerProps: Record<string, unknown> = {
-          ...triggerPropsWithoutStyle,
-          ...explicitDataAttributes,
-          // Explicitly add role="combobox" if triggerProps doesn't override it
-          // Button's useButton sets role="button", but triggerProps should override it
-          role: triggerPropsAsHtml.role || 'combobox',
-          // Explicitly add validation ARIA attributes (Button's useButton might not preserve them)
-          'aria-disabled': processedProps.isDisabled ? true : triggerPropsAsHtml['aria-disabled'],
-          'aria-invalid': processedProps.isInvalid ? true : triggerPropsAsHtml['aria-invalid'],
-          'aria-required': processedProps.isRequired ? true : triggerPropsAsHtml['aria-required']
-        };
-        enhancedChild = cloneElement(child, {
-          ...finalTriggerProps,
-          ref: mergeRefs(triggerRef, childRef),
-          // Recursively process nested children
-          children: child.props.children ? enhanceChildren(child.props.children) : child.props.children
-        });
-      } else if (slot === 'value' || slot === 'trigger.value') {
-        const selectedItem = state.selectedKey != null ? state.collection.getItem(state.selectedKey) : null;
-        enhancedChild = cloneElement(child, {
-          ...valueProps,
-          selectedItem,
-          placeholder: processedProps.placeholder
-        });
-      } else if (slot === 'popover') {
-        // Always render popover for CollectionBuilder to see children, but hide when closed
-        const childRef = 'ref' in child.props && child.props.ref ? child.props.ref : undefined;
-        // Extract styles separately to avoid React DOM issues
-        // mergedOverlayStylePlain is already a plain object with numeric values preserved
-        // Only convert if it's not already a plain object
-        const overlayStyleRaw = mergedOverlayPropsWithStyle.style;
-        const overlayStyle = overlayStyleRaw
-          ? typeof overlayStyleRaw === 'object' && !Array.isArray(overlayStyleRaw) && 'setProperty' in overlayStyleRaw
-            ? convertStyleToObjectTopLevel(overlayStyleRaw)
-            : (overlayStyleRaw as Record<string, string | number>)
-          : undefined;
-        const childStyle = child.props.style;
-        const { style: _omitOverlayStyle, ...overlayPropsNoStyle } = mergedOverlayPropsWithStyle as Record<
-          string,
-          unknown
-        >;
-        const { style: _omitChildStyle, ...childPropsNoStyle } = child.props;
-
-        // Merge props without styles
-        const mergedPropsNoStyle = {
-          ...overlayPropsNoStyle,
-          isOpen: state.isOpen,
-          ...useDataAttributes({ open: state.isOpen }),
-          ...childPropsNoStyle
-        };
-
-        // Merge styles manually to avoid React DOM CSSStyleDeclaration issues
-        const overlayStyleObj = overlayStyle ? convertStyleToObjectTopLevel(overlayStyle) : {};
-        const childStyleObj = childStyle ? convertStyleToObjectTopLevel(childStyle) : {};
-
-        // Merge styles as plain objects - collect all style properties
-        const allStyleKeys = new Set<string>([...Object.keys(overlayStyleObj), ...Object.keys(childStyleObj)]);
-
-        // Create final style object from scratch preserving numeric values
-        // This ensures no CSSStyleDeclaration-like properties exist
-        // Numeric values are preserved so React can auto-add "px" units (e.g., top: 123 -> "123px")
-        // Use Object.fromEntries to create a completely plain object without prototype chain
-        const finalStyleEntries: [string, string | number][] = [];
-        allStyleKeys.forEach(function forEachStyleKey(key) {
-          const overlayValue = overlayStyleObj[key];
-          const childValue = childStyleObj[key];
-          // Child style takes precedence
-          const value = childValue ?? overlayValue;
-          // Preserve both string and number values (React handles numeric CSS values)
-          if (value != null && (typeof value === 'string' || typeof value === 'number')) {
-            if (typeof value === 'string' && value !== '') {
-              finalStyleEntries.push([key, value]);
-            } else if (typeof value === 'number') {
-              finalStyleEntries.push([key, value]);
-            }
-          }
-        });
-        // Override display to hide when closed
-        finalStyleEntries.push([
-          'display',
-          state.isOpen ? finalStyleEntries.find(([k]) => k === 'display')?.[1] || 'block' : 'none'
-        ]);
-
-        // Create final style object from entries to ensure it's a completely plain object
-        // Use Object.create(null) to ensure no prototype chain that React might misinterpret
-        const finalStyle = Object.create(null) as Record<string, string | number>;
-        finalStyleEntries.forEach(function forEachEntry([key, value]) {
-          finalStyle[key] = value;
-        });
-
-        enhancedChild = cloneElement(child, {
-          ...mergedPropsNoStyle,
-          ref: mergeRefs(popoverRef, childRef),
-          style: finalStyle,
-          // Recursively process nested children
-          children: child.props.children ? enhanceChildren(child.props.children) : child.props.children
-        });
-      } else if (slot === 'list' || slot === 'listbox') {
-        enhancedChild = cloneElement(child, {
-          ...menuProps,
-          // Pass children as-is - don't recursively process them
-          // Let ListBox's CollectionBuilder handle SelectOption/ListBoxItem discovery
-          children: child.props.children
-        });
-      } else if (slot === 'description') {
-        enhancedChild = cloneElement(child, descriptionProps);
-      } else if (slot === 'errorMessage') {
-        enhancedChild = cloneElement(child, errorMessageProps);
-      } else {
-        // No slot match - recursively process nested children in case they have slots
-        enhancedChild = cloneElement(child, {
-          children: child.props.children ? enhanceChildren(child.props.children) : child.props.children
-        });
-      }
-
-      return enhancedChild;
-    });
-  }
-
-  const slottedChildren = enhanceChildren(processedProps.children);
+  // Prepare trigger props with explicit ARIA attributes
+  const triggerPropsAsHtml = triggerProps as React.HTMLAttributes<HTMLElement>;
+  const finalTriggerProps = {
+    ...triggerProps,
+    role: triggerPropsAsHtml.role || 'combobox',
+    'aria-disabled': processedProps.isDisabled ? true : triggerPropsAsHtml['aria-disabled'],
+    'aria-invalid': processedProps.isInvalid ? true : triggerPropsAsHtml['aria-invalid'],
+    'aria-required': processedProps.isRequired ? true : triggerPropsAsHtml['aria-required'],
+    ref: triggerRef
+  };
 
   // Optional render prop for dynamic chrome (e.g., conditional error messages)
   const dynamic = props.render?.({
@@ -467,7 +316,39 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
   return (
     <SelectContext.Provider value={{ state, triggerRef, popoverRef }}>
       <ListStateContext.Provider value={state as any}>
-        {slottedChildren}
+        <Container
+          className={processedProps.className}
+          {...useDataAttributes({
+            open: state.isOpen,
+            disabled: processedProps.isDisabled,
+            invalid: processedProps.isInvalid,
+            required: processedProps.isRequired
+          })}
+          slots={{
+            trigger: finalTriggerProps,
+            'trigger.value': {
+              ...valueProps,
+              selectedItem,
+              placeholder: processedProps.placeholder
+            },
+            value: {
+              ...valueProps,
+              selectedItem,
+              placeholder: processedProps.placeholder
+            },
+            popover: {
+              ...mergedOverlayPropsWithStyle,
+              isOpen: state.isOpen,
+              ref: popoverRef
+            },
+            list: { ...menuProps },
+            listbox: { ...menuProps },
+            description: descriptionProps,
+            errorMessage: errorMessageProps
+          }}
+        >
+          {processedProps.children}
+        </Container>
         {dynamic}
       </ListStateContext.Provider>
       {processedProps.name && (
