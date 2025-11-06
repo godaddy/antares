@@ -1,6 +1,6 @@
 {
   "name": "@bento/slots",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "The slots implementation of Bento",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,9 +40,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.1.0",
-    "@bento/error": "^0.1.0",
-    "@bento/use-data-attributes": "^0.1.0",
+    "@bento/box": "^0.1.1",
+    "@bento/error": "^0.1.1",
+    "@bento/use-data-attributes": "^0.1.1",
     "use-deep-compare": "^1.3.0"
   },
   "peerDependencies": {
