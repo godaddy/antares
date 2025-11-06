@@ -1,15 +1,11 @@
-import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-import { Pressable, type PressableProps } from '@bento/pressable';
-import { useButton } from 'react-aria';
-import React, { ComponentProps } from 'react';
+import { useProps } from '@bento/use-props';
+import { useButton, type AriaButtonProps, HoverEvents } from 'react-aria';
+import React, { ForwardedRef, forwardRef } from 'react';
 
 export interface ButtonProps
-  extends Omit<PressableProps, 'children'>,
-    Omit<ComponentProps<'button'>, keyof PressableProps> {
-  /** A ref to the button element. This is useful if you want to access the button element directly. */
-  childRef?: React.Ref<HTMLButtonElement>;
-
+  extends Omit<AriaButtonProps, 'children' | 'href' | 'target' | 'rel' | 'elementType'>,
+    HoverEvents {
   /** The content to display inside the button. */
   children: React.ReactNode;
 }
@@ -23,16 +19,18 @@ export interface ButtonProps
  * <Button onPress={() => console.log('Button pressed!')}>Click me</Button>
  * ```
  */
-export const Button = withSlots('BentoButton', function Button(args: ButtonProps) {
-  const { props } = useProps(args);
-  const { children, childRef, ...restProps } = props;
-  const { buttonProps } = useButton(restProps, childRef);
+export const Button = withSlots(
+  'BentoButton',
+  forwardRef(function Button(args: ButtonProps, ref: ForwardedRef<HTMLButtonElement | null>) {
+    const {
+      props: { children, ref: slotRef, ...props }
+    } = useProps(args);
+    const { buttonProps } = useButton(props, slotRef);
 
-  return (
-    <Pressable {...restProps} slot="pressable">
-      <button {...buttonProps} ref={childRef}>
+    return (
+      <button {...buttonProps} ref={slotRef}>
         {children}
       </button>
-    </Pressable>
-  );
-});
+    );
+  })
+);

@@ -580,6 +580,13 @@ const ListBoxInner: React.FC<{
  * @public
  */
 function ListBoxComponent<T>(args: ListBoxProps<T>, ref: React.ForwardedRef<HTMLDivElement>): React.ReactElement {
+  const state = useContext(ListStateContext);
+  const listboxRef = useSafeObjectRef(ref);
+
+  if (state) {
+    return <ListBoxInner state={state} listBoxRef={listboxRef} {...(args as ListBoxProps<unknown>)} />;
+  }
+
   return (
     <CollectionBuilder content={<AriaCollection {...(args as unknown as Parameters<typeof AriaCollection>[0])} />}>
       {function buildCollection(collection: unknown) {

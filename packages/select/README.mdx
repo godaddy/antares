@@ -1,0 +1,28 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import SelectExample from './examples/select.tsx?raw';
+import * as Stories from './select.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+# Select
+
+The `@bento/select` package exports the **Select** component, which is a complete select component built on top of the [**ListBox**](/docs/components-listbox--overview) primitive.
+
+## Installation
+
+```bash
+npm install --save @bento/select
+```
+
+## Props
+
+The following properties are available to be used on the `Select` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+<Source language="tsx" code={SelectExample} />
+
+
+
