@@ -6,11 +6,10 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 
 ### Unique Attributes
 
-- **Slot-based composition**: Coordinator applies props to slotted children (Button, ListBox, etc.)
+- **Container-based composition**: Uses `@bento/container` with `slots` prop to apply props to slotted children (Button, ListBox, etc.)
 - **Builds on ListBox**: Reuses selection patterns, following [React Aria's pattern](https://react-spectrum.adobe.com/react-aria/Select.html#example)
-- **Coordinator pattern**: Internally handles overlay positioning, portal rendering, and scroll locking
-- **Scroll locking**: Uses [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) to lock body scroll when open (floating elements should scroll lock)
-- **Hidden native `<select>`**: Maintains form submission and autofill compatibility
+- **Coordinator pattern**: Internally handles overlay positioning, form integration, and state management
+- **Hidden native `<select>`**: Maintains form submission and autofill compatibility (client + SSR)
 - **SelectOption convenience**: Maps `value` → `id` prop (users can use `ListBoxItem` directly with `id`)
 - **Typed slot interfaces**: TypeScript interfaces extend component interfaces for type safety
 
@@ -27,26 +26,46 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 
 **Note on description/error slots**: Provided for convenience and accessibility. They enforce a specific rendering order similar to `ControlGroup`. Users who prefer more flexibility can handle description/error messages themselves.
 
-**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html), `useProps`, `useDataAttributes`, `withSlots`
+**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), `useProps`, `useDataAttributes`
 
-**Utilities**: [`mergeRefs`](https://www.npmjs.com/package/@react-aria/utils) from `@react-aria/utils` (already used in Bento's Radio, Checkbox, and Pressable primitives)
+**HOC**: `withSlots`
+
+**Primitives**: `Container` from `@bento/container` (handles slot composition)
 
 ## Implementation Pattern
 
-Select acts as **coordinator** that builds collection, creates state, and applies props to slotted children. **Slot children are stateless**—they receive props but don't manage state. **Validation is external**—consumers pass `isInvalid`.
+Select acts as **coordinator** that builds collection, creates state, and applies props to slotted children using **Container-based slot composition**. **Slot children are stateless**—they receive props but don't manage state. **Validation is external**—consumers pass `isInvalid`.
 
 **Key patterns**:
 - Collection building at `Select` root via `CollectionBuilder` (items must stay in `children`)
 - State created after collection is built, shared with ListBox via `ListStateContext`
-- Overlay container created internally with portal rendering, positioned via [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html)
-- Scroll locking via [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) when dropdown is open
+- **Container-based composition**: Uses `@bento/container` with `slots` prop to map props to slotted children
+- Overlay positioning via [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html) and [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html)
 - Value slot receives `placeholder` prop—component should display it when `selectedItem` is null (Text doesn't have `placeholder` prop)
 
+**Container-based slot mapping**:
+```tsx
+<Container
+  slots={{
+    trigger: { ...triggerProps, role: 'combobox', ref: triggerRef },
+    'trigger.value': { ...valueProps, selectedItem, placeholder },
+    value: { ...valueProps, selectedItem, placeholder },
+    list: { ...menuProps },
+    description: descriptionProps,
+    errorMessage: errorMessageProps
+  }}
+>
+  {children}
+</Container>
+```
+
+**Note**: The overlay/popover container is managed internally by Select and is not exposed as a slot.
+
 **Props per slot**:
-- `trigger` - `triggerProps`, merged ref, data attributes (`data-open`, `data-disabled`, `data-invalid`)
-- `value` - `valueProps`, `selectedItem`, `placeholder`
+- `trigger` - `triggerProps`, explicit ARIA attributes (`role="combobox"`, `aria-disabled`, `aria-invalid`, `aria-required`), ref, data attributes
+- `value` / `trigger.value` - `valueProps`, `selectedItem`, `placeholder`
 - `list` / `listbox` - `menuProps`
-- `description` / `errorMessage` - Respective props
+- `description` / `errorMessage` - Respective props from `useSelect`
 
 **SelectOption vs ListBoxItem**: `SelectOption` maps `value` → `id`. Users can use `ListBoxItem` directly with `id` prop. There is no `ListItem` component in Bento.
 
@@ -263,14 +282,21 @@ const items = [{ id: 'apple', name: 'Apple' }, { id: 'orange', name: 'Orange' }]
 ## Implementation Rationale
 
 **Key decisions**:
-- **Slot-based composition**: Coordinator finds children by `slot`, applies props. Users bring custom components.
+- **Container-based composition**: Uses `@bento/container` with `slots` prop for cleaner architecture—no manual child traversal or `cloneElement` recursion
 - **Build on ListBox**: Reuse ARIA listbox patterns, share state via `ListStateContext`
-- **Coordinator pattern**: Select manages overlay positioning, portal rendering, and scroll locking internally; slot children are stateless
-- **Scroll locking**: [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) locks body scroll when open
+- **Coordinator pattern**: Select manages overlay positioning, form integration, and state internally; slot children are stateless
+- **Explicit ARIA attributes**: Ensures correct `role="combobox"` and validation ARIA (`aria-disabled`, `aria-invalid`, `aria-required`) regardless of trigger implementation
+- **Form integration**: Uses React Aria's `HiddenSelect` for client-side rendering; custom SSR fallback ensures form submission works server-side
+- **Safe style merging**: Converts `CSSStyleDeclaration` to plain objects to avoid React DOM warnings; preserves numeric values for auto-unit conversion
 - **SelectOption convenience**: Maps `value` → `id` (users can use `ListBoxItem` directly)
 - **Typed slots**: Interfaces extend component interfaces for type safety
 - **Description/error slots**: Optional, enforce rendering order (users can handle themselves)
 
+**Architecture benefits**:
+- Reduced complexity: ~200 fewer lines vs manual child enhancement
+- Cleaner separation: Container handles slot composition; Select handles coordination
+- Easier maintenance: Slot logic centralized in Container; Select focuses on state/ARIA
+
 **Future optimizations**: Virtual scrolling, debounced typeahead, lazy section loading, React.memo for options.
 
-**Testing focus**: Keyboard navigation, screen readers, RTL, form submission, positioning edge cases, scroll locking behavior.
+**Testing focus**: Keyboard navigation, screen readers, RTL, form submission, positioning edge cases, SSR compatibility.
