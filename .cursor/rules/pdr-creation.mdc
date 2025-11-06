@@ -1,0 +1,131 @@
+---
+globs: docs/pdrs/*.mdx
+description: Rules for creating new PDRs without AI slop or hallucinations
+---
+
+# PDR Creation Requirements
+
+When creating NEW Primitive Design Records (PDRs) for not-yet-implemented primitives, you MUST verify all information against the actual Bento codebase. Never introduce AI-generated inaccuracies, unverified assumptions, or hallucinations.
+
+**Note**: These rules apply only to creating NEW PDRs. Existing PDRs for already-implemented primitives are historical records and should be left as-is.
+
+## Understanding PDRs
+
+PDRs (Primitive Design Records) are **design documents** created before implementation. They explain the **why** and **what** (rationale, patterns, decisions), not just the **how to use it**.
+
+**These rules apply only to creating NEW PDRs for not-yet-implemented primitives.**
+
+PDRs for already-implemented primitives (like `listbox.mdx` for `@bento/listbox`) are historical records stored in the repo. They show what was planned before implementation and should be left as-is.
+
+### Creating PDRs for Not-Yet-Implemented Primitives
+
+When creating a PDR for a primitive that doesn't exist yet (e.g., `select-primitive.mdx` before `@bento/select` is built, or `dialog-primitive.mdx` before `@bento/dialog` is built):
+
+- The primitive package does not exist yet - this is expected
+- Being in the `docs/pdrs/` folder indicates it's a design document (no need to state "Design Proposal")
+- Code examples represent the **proposed API**, not working implementations
+- Any dependent primitives referenced must still be verified to exist in the codebase
+- Patterns must still match existing Bento conventions
+- React Aria hooks should be verified against React Aria documentation
+
+## Critical Verification Requirements
+
+### 1. Import Statements
+- **NEVER** use non-existent import paths like `@bento/components`
+- Components are imported individually: `import { Button } from '@bento/button'`, not from a central package
+- Import for the proposed primitive (e.g., `import { Select } from '@bento/select'` or `import { Dialog } from '@bento/dialog'`) is acceptable - the package doesn't exist yet
+- **MUST** still verify all dependent imports exist in the codebase
+
+### 2. Dependent Component APIs
+- When referencing existing components, **ALWAYS** read the actual source code
+- **NEVER** assume a component has a prop without verifying in the component's TypeScript interface
+- **ALWAYS** check component README files for documented APIs
+- Example: `Text` component does NOT have a `placeholder` prop - always verify component APIs in their source files like [packages/text/src/index.tsx](mdc:packages/text/src/index.tsx)
+
+### 3. Dependent Primitive Existence
+- The main primitive being designed does not exist yet - this is expected
+- **MUST** verify all dependent primitives referenced exist in [packages/](mdc:packages/)
+- **MUST** verify patterns match existing Bento implementations
+- If referencing another primitive that doesn't exist yet (e.g., a `Popover` primitive):
+  - Document it as a future requirement in the PDR
+  - Remove references until it exists
+  - Or create a separate PDR for the missing primitive first
+
+### 4. Pattern Verification
+- **ALWAYS** check existing PDRs for established patterns:
+  - [docs/pdrs/listbox.mdx](mdc:docs/pdrs/listbox.mdx)
+  - [docs/pdrs/button-primitive.mdx](mdc:docs/pdrs/button-primitive.mdx)
+  - [docs/pdrs/checkbox-primitive.mdx](mdc:docs/pdrs/checkbox-primitive.mdx)
+- **ALWAYS** verify render prop patterns match Bento's actual implementation in [packages/use-props/](mdc:packages/use-props/)
+- **NEVER** invent patterns that don't match existing Bento code
+
+### 5. Hook and Utility Verification
+- **ALWAYS** verify hooks exist and check their actual signatures
+- **ALWAYS** verify utility functions exist in their respective packages
+- Check actual implementations in:
+  - [packages/use-props/src/index.ts](mdc:packages/use-props/src/index.ts)
+  - [packages/use-data-attributes/](mdc:packages/use-data-attributes/)
+  - [packages/slots/](mdc:packages/slots/)
+
+### 6. Code Examples
+- Code examples represent **proposed API** (implicit from being in docs/pdrs/)
+- **MUST** verify any dependent components use correct APIs
+- **MUST** follow existing Bento patterns and conventions
+- **NEVER** include examples with non-existent dependent components or props
+
+### 7. TypeScript Type Safety
+- Proposed types should follow existing Bento TypeScript patterns
+- Verify dependent component types exist (e.g., `PressableProps` from `@bento/pressable`, `ButtonProps` from `@bento/button`)
+- **NEVER** use `any` in proposed type definitions
+- Check existing primitives for similar patterns (e.g., how primitives like `ListBox` or `Radio` define slot types)
+
+### 8. Accessibility Verification
+- **ALWAYS** verify ARIA attributes match React Aria patterns
+- **ALWAYS** check keyboard navigation is properly documented
+- **ALWAYS** verify focus management patterns are correct
+- Reference [React Aria documentation](https://react-spectrum.adobe.com/react-aria/) for accessibility patterns
+
+## Verification Checklist
+
+Before finalizing a PDR for a not-yet-implemented primitive:
+
+- [ ] PDR is written as a **design document** (explains why/what, not just how to use)
+- [ ] All dependent primitives referenced are verified to exist in the codebase
+- [ ] All dependent component APIs are verified (check prop interfaces in source files)
+- [ ] Code examples represent proposed API (being in docs/pdrs/ makes this clear)
+- [ ] All patterns match existing Bento implementations
+- [ ] All React Aria hooks are verified against actual React Aria documentation
+- [ ] All slot names match actual slot system implementation
+- [ ] All ARIA attributes and accessibility patterns are verified
+- [ ] Keyboard navigation and focus management are properly documented
+- [ ] Proposed TypeScript types follow existing Bento patterns
+
+## Red Flags to Avoid
+
+1. **Hallucinated imports**: `import { X } from '@bento/components'` (doesn't exist - components are imported individually)
+2. **Unverified dependencies**: Referencing dependent primitives that don't exist in the codebase
+3. **Unverified dependent APIs**: Using props on dependent components that don't exist (e.g., using a non-existent `placeholder` prop on `Text`)
+4. **Invented patterns**: Creating patterns that don't match existing Bento conventions
+5. **Incorrect render prop usage**: Using render props in ways that don't match Bento's `useProps` implementation
+6. **Assumed APIs**: Assuming component APIs without reading source code
+7. **Missing accessibility patterns**: Not following established ARIA patterns from React Aria
+
+## When in Doubt
+
+1. **Read the source code** - Don't guess, verify
+2. **Check existing PDRs** - Follow established patterns
+3. **Search the codebase** - Use codebase_search to find actual implementations
+4. **Ask for clarification** - If something is unclear, ask rather than invent
+
+## Accuracy Over Completeness
+
+It is better to have an incomplete but accurate PDR than a complete but inaccurate one. If you're unsure about something, either:
+- Mark it as "TBD" or "Future consideration"
+- Remove it until it can be verified
+- Ask for clarification
+
+Remember: 
+- **PDRs are design documents** created before implementation, not implementation documentation (README/Storybook)
+- **These rules only apply to NEW PDRs** for not-yet-implemented primitives
+- Dependent primitives and patterns must be verifiable against the actual Bento codebase
+- The proposed API should follow existing Bento conventions

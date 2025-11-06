@@ -9,7 +9,7 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 - **Slot-based composition**: Coordinator applies props to slotted children (Button, ListBox, etc.)
 - **Builds on ListBox**: Reuses selection patterns, following [React Aria's pattern](https://react-spectrum.adobe.com/react-aria/Select.html#example)
 - **Coordinator pattern**: Internally handles overlay positioning, portal rendering, and scroll locking
-- **Scroll locking**: Uses `usePreventScroll` to lock body scroll when open (floating elements should scroll lock)
+- **Scroll locking**: Uses [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) to lock body scroll when open (floating elements should scroll lock)
 - **Hidden native `<select>`**: Maintains form submission and autofill compatibility
 - **SelectOption convenience**: Maps `value` → `id` prop (users can use `ListBoxItem` directly with `id`)
 - **Typed slot interfaces**: TypeScript interfaces extend component interfaces for type safety
@@ -27,9 +27,9 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 
 **Note on description/error slots**: Provided for convenience and accessibility. They enforce a specific rendering order similar to `ControlGroup`. Users who prefer more flexibility can handle description/error messages themselves.
 
-**Hooks**: `useSelect`, `useSelectState`, `useOverlay`, `useOverlayPosition`, `usePreventScroll`, `useProps`, `useDataAttributes`, `withSlots`
+**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html), `useProps`, `useDataAttributes`, `withSlots`
 
-**Utilities**: `mergeRefs` from `@react-aria/utils`
+**Utilities**: [`mergeRefs`](https://www.npmjs.com/package/@react-aria/utils) from `@react-aria/utils` (already used in Bento's Radio, Checkbox, and Pressable primitives)
 
 ## Implementation Pattern
 
@@ -38,8 +38,8 @@ Select acts as **coordinator** that builds collection, creates state, and applie
 **Key patterns**:
 - Collection building at `Select` root via `CollectionBuilder` (items must stay in `children`)
 - State created after collection is built, shared with ListBox via `ListStateContext`
-- Overlay container created internally with portal rendering, positioned via `useOverlayPosition`
-- Scroll locking via `usePreventScroll` when dropdown is open
+- Overlay container created internally with portal rendering, positioned via [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html)
+- Scroll locking via [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) when dropdown is open
 - Value slot receives `placeholder` prop—component should display it when `selectedItem` is null (Text doesn't have `placeholder` prop)
 
 **Props per slot**:
@@ -54,29 +54,29 @@ Select acts as **coordinator** that builds collection, creates state, and applie
 
 | Concept | Implementation |
 |---------|----------------|
-| React Aria | useSelect, useSelectState, useOverlay, useOverlayPosition, usePreventScroll |
+| React Aria | [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) |
 | Coordinator | Select manages state/refs/overlay internally; slot children are stateless |
 | Slot Composition | `slot` attribute + `slots` prop (via Box context) |
 | Typed Slots | TypeScript interfaces extend component interfaces |
 | data-\* Attributes | data-open, data-disabled, data-invalid, data-selected, data-focus-visible |
-| Scroll Locking | usePreventScroll locks body scroll when open |
+| Scroll Locking | [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) locks body scroll when open |
 
 ## React Aria Integration
 
 - **Collection building**: `CollectionBuilder` at root level, shared via state
 - **State creation**: After collection built, shared with ListBox via `ListStateContext`
-- **Overlay management**: Select internally creates overlay container, uses `useOverlay` and `useOverlayPosition` for positioning with flip/shift collision detection, RTL support
+- **Overlay management**: Select internally creates overlay container, uses [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html) and [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) for positioning with flip/shift collision detection, RTL support
 - **Portal rendering**: Overlay rendered via `createPortal` to document.body
-- **Scroll locking**: `usePreventScroll` locks body scroll when open
+- **Scroll locking**: [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) locks body scroll when open
 
 ### Overlay Implementation
 
 Select internally creates and manages the overlay container that wraps the listbox. This includes:
 
 - **Portal rendering**: Overlay is rendered via `createPortal` to `document.body` to avoid z-index issues
-- **Positioning**: Uses `useOverlayPosition` with flip/shift collision detection and RTL support
-- **Click-outside handling**: Uses `useOverlay` to handle dismiss on outside click
-- **Scroll locking**: Uses `usePreventScroll` to lock body scroll when open
+- **Positioning**: Uses [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) with flip/shift collision detection and RTL support
+- **Click-outside handling**: Uses [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html) to handle dismiss on outside click
+- **Scroll locking**: Uses [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) to lock body scroll when open
 - **Focus management**: Returns focus to trigger when closed
 
 The overlay container is always mounted but hidden via `display: none` when closed. Users only need to provide the `ListBox` via the `list` or `listbox` slot.
@@ -266,7 +266,7 @@ const items = [{ id: 'apple', name: 'Apple' }, { id: 'orange', name: 'Orange' }]
 - **Slot-based composition**: Coordinator finds children by `slot`, applies props. Users bring custom components.
 - **Build on ListBox**: Reuse ARIA listbox patterns, share state via `ListStateContext`
 - **Coordinator pattern**: Select manages overlay positioning, portal rendering, and scroll locking internally; slot children are stateless
-- **Scroll locking**: `usePreventScroll` locks body scroll when open
+- **Scroll locking**: [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) locks body scroll when open
 - **SelectOption convenience**: Maps `value` → `id` (users can use `ListBoxItem` directly)
 - **Typed slots**: Interfaces extend component interfaces for type safety
 - **Description/error slots**: Optional, enforce rendering order (users can handle themselves)
