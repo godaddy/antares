@@ -292,14 +292,15 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
   // Ensure style is a completely plain object by recreating it from entries
   // Preserve numeric values so React can auto-add units
   // Use Object.create(null) to ensure no prototype chain that React might misinterpret
-  const createPlainStyle = function createPlainStyle() {
-    const plain = Object.create(null) as Record<string, string | number>;
-    for (const [key, value] of Object.entries(mergedOverlayStyle)) {
-      plain[key] = value;
-    }
-    return plain;
-  };
-  const mergedOverlayStylePlain = mergedOverlayStyle ? createPlainStyle() : undefined;
+  const mergedOverlayStylePlain = mergedOverlayStyle
+    ? (function createPlainStyle() {
+        const plain = Object.create(null) as Record<string, string | number>;
+        for (const [key, value] of Object.entries(mergedOverlayStyle)) {
+          plain[key] = value;
+        }
+        return plain;
+      })()
+    : undefined;
   const mergedOverlayPropsWithStyle = {
     ...overlayPropsWithoutStyle,
     ...positionPropsWithoutStyle,
@@ -463,100 +464,6 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
     state: state as SelectState<any>
   });
 
-  // Render hidden select options for SSR compatibility
-  const renderHiddenSelectOptions = function renderHiddenSelectOptions() {
-    // In SSR, if we have selectedKey or value, always render at least that option for form submission
-    // This ensures form submission works even if collection iteration fails
-    // React Aria uses state.value for the select value, but state.selectedKey for the key
-    const selectedKey = state.selectedKey ?? (state.value as string | number | null);
-    if (selectedKey) {
-      // Render option with the selectedKey value - ensures form submission works
-      // This is the minimal fallback that always works
-      const selectedKeyStr = String(selectedKey);
-
-      // Try to use state.collection first, then fallback to originalCollection
-      let collection: typeof state.collection | typeof originalCollection | null = state.collection;
-      if (!collection || collection.size === 0) {
-        collection = originalCollection || null;
-      }
-
-      // Try to get the item from the collection if available
-      if (collection && typeof collection.getItem === 'function') {
-        try {
-          const item = collection.getItem(selectedKey);
-          if (item && (item.type === 'item' || item.type === undefined)) {
-            return (
-              <option key={item.key} value={selectedKeyStr}>
-                {item.textValue || selectedKeyStr}
-              </option>
-            );
-          }
-        } catch {
-          // Fall through to render with just the key
-        }
-      }
-      // Render option with the selectedKey value - ensures form submission works
-      return (
-        <option key={selectedKey} value={selectedKeyStr}>
-          {selectedKeyStr}
-        </option>
-      );
-    }
-
-    // If no selectedKey, try to render all items from collection
-    let collection: typeof state.collection | typeof originalCollection | null = state.collection;
-    if (!collection || collection.size === 0) {
-      collection = originalCollection || null;
-    }
-    if (!collection) return null;
-
-    // Try React Aria collection API first (getKeys/getItem)
-    if (typeof collection.getKeys === 'function' && typeof collection.getItem === 'function') {
-      try {
-        const keys = [...collection.getKeys()];
-        const options = keys
-          .map(function mapOption(key) {
-            const item = collection.getItem(key);
-            // Match React Aria's HiddenSelect: only render items with type === 'item'
-            if (item && item.type === 'item') {
-              return (
-                <option key={item.key} value={String(item.key)}>
-                  {item.textValue || ''}
-                </option>
-              );
-            }
-            return null;
-          })
-          .filter(Boolean);
-        // If we got options, return them
-        if (options.length > 0) return options;
-      } catch {
-        // Fall through to direct iteration
-      }
-    }
-
-    // Fallback: try direct iteration
-    try {
-      const options = [...collection]
-        .map(function mapOptionDirect(item) {
-          if (item && item.type === 'item') {
-            return (
-              <option key={item.key} value={String(item.key)}>
-                {item.textValue || ''}
-              </option>
-            );
-          }
-          return null;
-        })
-        .filter(Boolean);
-      if (options.length > 0) return options;
-    } catch {
-      // Fall through
-    }
-
-    return null;
-  };
-
   return (
     <SelectContext.Provider value={{ state, triggerRef, popoverRef }}>
       <ListStateContext.Provider value={state as any}>
@@ -604,7 +511,98 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
                 <select tabIndex={-1} name={processedProps.name} value={String(state.selectedKey ?? '')}>
                   {/* Match React Aria's HiddenSelect implementation exactly
                       Use originalCollection if state.collection is empty in SSR */}
-                  {renderHiddenSelectOptions()}
+                  {(function renderHiddenSelectOptions() {
+                    // In SSR, if we have selectedKey or value, always render at least that option for form submission
+                    // This ensures form submission works even if collection iteration fails
+                    // React Aria uses state.value for the select value, but state.selectedKey for the key
+                    const selectedKey = state.selectedKey ?? (state.value as string | number | null);
+                    if (selectedKey) {
+                      // Render option with the selectedKey value - ensures form submission works
+                      // This is the minimal fallback that always works
+                      const selectedKeyStr = String(selectedKey);
+
+                      // Try to use state.collection first, then fallback to originalCollection
+                      let collection: typeof state.collection | typeof originalCollection | null = state.collection;
+                      if (!collection || collection.size === 0) {
+                        collection = originalCollection || null;
+                      }
+
+                      // Try to get the item from the collection if available
+                      if (collection && typeof collection.getItem === 'function') {
+                        try {
+                          const item = collection.getItem(selectedKey);
+                          if (item && (item.type === 'item' || item.type === undefined)) {
+                            return (
+                              <option key={item.key} value={selectedKeyStr}>
+                                {item.textValue || selectedKeyStr}
+                              </option>
+                            );
+                          }
+                        } catch {
+                          // Fall through to render with just the key
+                        }
+                      }
+                      // Render option with the selectedKey value - ensures form submission works
+                      return (
+                        <option key={selectedKey} value={selectedKeyStr}>
+                          {selectedKeyStr}
+                        </option>
+                      );
+                    }
+
+                    // If no selectedKey, try to render all items from collection
+                    let collection: typeof state.collection | typeof originalCollection | null = state.collection;
+                    if (!collection || collection.size === 0) {
+                      collection = originalCollection || null;
+                    }
+                    if (!collection) return null;
+
+                    // Try React Aria collection API first (getKeys/getItem)
+                    if (typeof collection.getKeys === 'function' && typeof collection.getItem === 'function') {
+                      try {
+                        const keys = [...collection.getKeys()];
+                        const options = keys
+                          .map(function mapOption(key) {
+                            const item = collection.getItem(key);
+                            // Match React Aria's HiddenSelect: only render items with type === 'item'
+                            if (item && item.type === 'item') {
+                              return (
+                                <option key={item.key} value={String(item.key)}>
+                                  {item.textValue || ''}
+                                </option>
+                              );
+                            }
+                            return null;
+                          })
+                          .filter(Boolean);
+                        // If we got options, return them
+                        if (options.length > 0) return options;
+                      } catch {
+                        // Fall through to direct iteration
+                      }
+                    }
+
+                    // Fallback: try direct iteration
+                    try {
+                      const options = [...collection]
+                        .map(function mapOptionDirect(item) {
+                          if (item && item.type === 'item') {
+                            return (
+                              <option key={item.key} value={String(item.key)}>
+                                {item.textValue || ''}
+                              </option>
+                            );
+                          }
+                          return null;
+                        })
+                        .filter(Boolean);
+                      if (options.length > 0) return options;
+                    } catch {
+                      // Fall through
+                    }
+
+                    return null;
+                  })()}
                 </select>
               </label>
             </div>
