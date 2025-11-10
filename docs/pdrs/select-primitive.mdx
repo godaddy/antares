@@ -10,130 +10,190 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 - **Builds on ListBox**: Reuses selection patterns, following [React Aria's pattern](https://react-spectrum.adobe.com/react-aria/Select.html#example)
 - **Coordinator pattern**: Internally handles overlay positioning, form integration, and state management
 - **Hidden native `<select>`**: Maintains form submission and autofill compatibility (client + SSR)
-- **SelectOption convenience**: Maps `value` → `id` prop (users can use `ListBoxItem` directly with `id`)
 - **Typed slot interfaces**: TypeScript interfaces extend component interfaces for type safety
 
 ## Primitive Composition
 
-**Components**: `Select` (coordinator), `SelectOption` (optional wrapper, maps `value` → `id`)
+**Components**: `Select` (coordinator)
 
 **Slots**:
-- `slot="trigger"` - Receives `triggerProps` (must implement `PressableProps`)
-- `slot="value"` or `slot="trigger.value"` - Receives `valueProps`, `selectedItem`, `placeholder`
-- `slot="list"` or `slot="listbox"` - Receives `menuProps` (typically `ListBox`)
+- `slot="trigger"` - Receives `triggerProps`, `focusProps`, `hoverProps`, `ref` (should forward ARIA/press props; `@bento/button` already satisfies this)
+- `slot="label"` - Receives `labelProps` (optional, for accessible name)
+- `slot="value"` - Receives `valueProps`, `selectedItem`, `placeholder`
+  - In `slots` prop, target nested value with namespaced key `'trigger.value'`
+- `slot="popover"` - Receives `overlayProps`, `positionProps`, `ref` (consumer handles portal rendering and structure)
+  - **Note**: Currently consumers manually handle portal rendering. A future `@bento/popover` or `@bento/overlay` component would consume these props for cleaner composition.
+- `slot="listbox"` - Receives `menuProps` (typically `ListBox`)
 - `slot="description"` - Receives `descriptionProps` (optional)
-- `slot="errorMessage"` - Receives `errorMessageProps` (optional)
+- `slot="error"` - Receives `errorMessageProps` (optional, follows Bento convention of `slot="error"`)
 
 **Note on description/error slots**: Provided for convenience and accessibility. They enforce a specific rendering order similar to `ControlGroup`. Users who prefer more flexibility can handle description/error messages themselves.
 
-**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), `useProps`, `useDataAttributes`
+**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html), `useProps`, `useDataAttributes`
+
+**Contexts**: `OverlayTriggerStateContext`, `PopoverContext` (from `react-aria-components`), `ListStateContext` (from `@bento/listbox`)
+
+**Note**: The RAC contexts (`OverlayTriggerStateContext`, `PopoverContext`) are used in the [select-poc implementation](https://github.com/godaddy/bento/blob/select-poc/packages/select/src/select.tsx) and are key to eliminating manual coordination complexity. These contexts handle trigger-overlay coordination automatically, eliminating the need for custom `shouldCloseOnInteractOutside` logic or `useButton` wrappers that were required in proof-of-concept implementations without contexts.
 
 **HOC**: `withSlots`
 
 **Primitives**: `Container` from `@bento/container` (handles slot composition)
 
-## Implementation Pattern
+**Future dependencies**: A `@bento/popover` or `@bento/overlay` component would provide cleaner overlay composition, consuming the `overlayProps` and `positionProps` from the popover slot. Currently, consumers manually handle portal rendering and overlay structure.
 
-Select acts as **coordinator** that builds collection, creates state, and applies props to slotted children using **Container-based slot composition**. **Slot children are stateless**—they receive props but don't manage state. **Validation is external**—consumers pass `isInvalid`.
+## Design Constraints
 
-**Key patterns**:
-- Collection building at `Select` root via `CollectionBuilder` (items must stay in `children`)
-- State created after collection is built, shared with ListBox via `ListStateContext`
-- **Container-based composition**: Uses `@bento/container` with `slots` prop to map props to slotted children
-- Overlay positioning via [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html) and [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html)
-- Value slot receives `placeholder` prop—component should display it when `selectedItem` is null (Text doesn't have `placeholder` prop)
+### Single Selection Only
 
-**Container-based slot mapping**:
+**This primitive only supports single selection.** React Aria's [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) hook is specifically designed for single-selection scenarios and does not support multiple selection.
+
+- ✅ Use `@bento/select` for: Dropdown menus, form fields, single-choice pickers
+- ❌ Don't use for: Multi-select, tag inputs, checkbox lists
+
+**For multiple selection**, use [`@bento/listbox`](../../packages/listbox) directly with `selectionMode="multiple"`:
+
 ```tsx
-<Container
-  slots={{
-    trigger: { ...triggerProps, role: 'combobox', ref: triggerRef },
-    'trigger.value': { ...valueProps, selectedItem, placeholder },
-    value: { ...valueProps, selectedItem, placeholder },
-    list: { ...menuProps },
-    description: descriptionProps,
-    errorMessage: errorMessageProps
-  }}
->
-  {children}
-</Container>
+// Multi-select use case - use ListBox instead
+<ListBox selectionMode="multiple" aria-label="Choose options">
+  <ListBoxItem id="1">Option 1</ListBoxItem>
+  <ListBoxItem id="2">Option 2</ListBoxItem>
+</ListBox>
 ```
 
-**Note**: The overlay/popover container is managed internally by Select and is not exposed as a slot.
+### Manual Portal Management
+
+Consumers must manually handle portal rendering for the popover overlay:
+
+```tsx
+{state.isOpen && ReactDOM.createPortal(
+  <FocusScope restoreFocus contain autoFocus>
+    <div slot="popover" {...overlayProps} {...positionProps}>
+      <DismissButton onDismiss={state.close} />
+      <ListBox slot="listbox">...</ListBox>
+      <DismissButton onDismiss={state.close} />
+    </div>
+  </FocusScope>,
+  document.body
+)}
+```
+
+**Rationale**: Provides maximum flexibility for portal placement and overlay structure. A future `@bento/popover` primitive will simplify this for common use cases while preserving the low-level escape hatch.
+
+### Value Component Boilerplate
+
+The `@bento/text` component doesn't have a `placeholder` prop, so consumers must create a wrapper component for the trigger value:
+
+```tsx
+function SelectValue({ placeholder, selectedItem, ...props }) {
+  return <Text {...props}>{selectedItem ? selectedItem.textValue : placeholder}</Text>;
+}
+```
+
+**Future improvement**: A built-in `@bento/select-value` component could reduce this boilerplate while preserving flexibility for custom implementations.
+
+### Fixed Positioning Defaults
+
+Overlay positioning uses sensible defaults that cannot currently be customized via props:
+
+- `placement: 'bottom start'` - Opens below trigger, aligned to start edge
+- `offset: 4` - 4px spacing between trigger and overlay
+- Auto-flip and collision detection enabled
+
+**Future improvement**: Expose `placement`, `offset`, `crossOffset`, and other positioning options as optional props.
+
+## Implementation Pattern
+
+Select acts as **coordinator** using `CollectionBuilder` → `useSelectState` → Context Providers → `Container` slots pattern. **Slot children are stateless**, receiving props but not managing state. **Validation is external** via `isInvalid` prop.
+
+**Architecture flow**:
+1. `CollectionBuilder` at root builds collection from children
+2. State created via `useSelectState({ ...props, collection, children: undefined })`
+3. Three React Aria Components contexts eliminate manual coordination:
+   - `OverlayTriggerStateContext` - Open/close state (consumed by `DismissButton`)
+   - `PopoverContext` - Trigger ref, scroll ref, placement (for positioning)
+   - `ListStateContext` - Selection state (consumed by `ListBox`/`ListBoxItem`)
+4. `Container` maps props to slots via `slots` prop
+5. Consumers handle portal rendering with `FocusScope` wrapper (see [Manual Portal Management](#manual-portal-management))
+
+**Context benefits**: Eliminates `shouldCloseOnInteractOutside`, race condition guards (`isTogglingRef`), `e.stopPropagation()`, and custom event coordination (~100 lines saved vs manual approach)
+
+**Slot mapping implementation**:
+```tsx
+// Hook setup
+const state = useSelectState({ ...props, collection, children: undefined });
+const { labelProps, triggerProps, valueProps, menuProps, descriptionProps, errorMessageProps } = useSelect(props, state, triggerRef);
+const { focusProps, isFocused, isFocusVisible } = useFocusRing();
+const { hoverProps, isHovered } = useHover({ isDisabled: props.isDisabled });
+const buttonProps = mergeProps(triggerProps, focusProps, hoverProps);
+
+usePreventScroll({ isDisabled: !state.isOpen });
+const { overlayProps } = useOverlay({ onClose: () => state.close(), isOpen: state.isOpen, isDismissable: true }, popoverRef);
+const { overlayProps: positionProps } = useOverlayPosition({ targetRef: triggerRef, overlayRef: popoverRef, placement: 'bottom start', offset: 4, isOpen: state.isOpen });
+
+// Context + Container composition
+<OverlayTriggerStateContext.Provider value={state}>
+  <PopoverContext.Provider value={{ trigger: 'Select', triggerRef, placement: 'bottom start' }}>
+    <ListStateContext.Provider value={state}>
+      <Container
+        slots={{
+          trigger: { ...buttonProps, ref: triggerRef },
+          popover: { ...overlayProps, ...positionProps, ref: popoverRef },
+          listbox: { ...menuProps, ref: listRef },
+          label: { ...labelProps, as: 'label' },
+          'trigger.value': { ...valueProps, selectedItem: state.selectedItem, placeholder, children: state.selectedItem?.textValue ?? placeholder, ref: valueRef },
+          value: { selectedItem: state.selectedItem, children: state.selectedItem?.textValue },
+          description: { ...descriptionProps },
+          error: { ...errorMessageProps }
+        }}
+        {...useDataAttributes({ open: state.isOpen, disabled: isDisabled, focused: isFocused, 'focus-visible': isFocusVisible, hovered: isHovered, invalid: props.isInvalid, required: props.isRequired })}
+      >
+        {children}
+      </Container>
+    </ListStateContext.Provider>
+  </PopoverContext.Provider>
+</OverlayTriggerStateContext.Provider>
+```
+
+**Key implementation notes**:
+- `triggerProps` from `useSelect` works directly—no `useButton` wrapper needed
+- `state.selectedItem` (singular) for single-selection—not `selectedItems[0]`
+- Contexts handle coordination—no `shouldCloseOnInteractOutside` or race condition guards
+- Select orchestrates hooks/state; consumers compose overlay structure (portals, animations, wrappers)
 
 **Props per slot**:
-- `trigger` - `triggerProps`, explicit ARIA attributes (`role="combobox"`, `aria-disabled`, `aria-invalid`, `aria-required`), ref, data attributes
-- `value` / `trigger.value` - `valueProps`, `selectedItem`, `placeholder`
-- `list` / `listbox` - `menuProps`
-- `description` / `errorMessage` - Respective props from `useSelect`
+- `trigger` - `triggerProps`, `focusProps`, `hoverProps`, `ref`, ARIA attributes (`aria-disabled`, `aria-invalid`, `aria-required`, `aria-expanded`, `aria-haspopup`), data attributes (should forward all props; native `<button>` or `@bento/button` work)
+- `label` - `labelProps`
+- `value` (namespaced as `'trigger.value'` in `slots` prop) - `valueProps`, `selectedItem`, `placeholder`, `ref`
+- `popover` - `overlayProps`, `positionProps`, `ref` (consumer handles portal rendering)
+- `listbox` - `menuProps`, `ref`
+- `description` / `error` - `descriptionProps` / `errorMessageProps` from `useSelect`
 
-**SelectOption vs ListBoxItem**: `SelectOption` maps `value` → `id`. Users can use `ListBoxItem` directly with `id` prop. There is no `ListItem` component in Bento.
+**Fallback without RAC contexts**: If RAC contexts unavailable, use `shouldCloseOnInteractOutside`:
+```tsx
+const shouldCloseOnInteractOutside = React.useCallback((el: Element) => !triggerRef.current?.contains(el), []);
+const { overlayProps } = useOverlay({ onClose: () => state.close(), isOpen: state.isOpen, isDismissable: true, shouldCloseOnInteractOutside }, popoverRef);
+```
 
 ## Core Concepts
 
 | Concept | Implementation |
 |---------|----------------|
-| React Aria | [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) |
-| Coordinator | Select manages state/refs/overlay internally; slot children are stateless |
-| Slot Composition | `slot` attribute + `slots` prop (via Box context) |
-| Typed Slots | TypeScript interfaces extend component interfaces |
-| data-\* Attributes | data-open, data-disabled, data-invalid, data-selected, data-focus-visible |
-| Scroll Locking | [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) locks body scroll when open |
-
-## React Aria Integration
-
-- **Collection building**: `CollectionBuilder` at root level, shared via state
-- **State creation**: After collection built, shared with ListBox via `ListStateContext`
-- **Overlay management**: Select internally creates overlay container, uses [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html) and [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) for positioning with flip/shift collision detection, RTL support
-- **Portal rendering**: Overlay rendered via `createPortal` to document.body
-- **Scroll locking**: [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) locks body scroll when open
-
-### Overlay Implementation
-
-Select internally creates and manages the overlay container that wraps the listbox. This includes:
-
-- **Portal rendering**: Overlay is rendered via `createPortal` to `document.body` to avoid z-index issues
-- **Positioning**: Uses [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html) with flip/shift collision detection and RTL support
-- **Click-outside handling**: Uses [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html) to handle dismiss on outside click
-- **Scroll locking**: Uses [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html) to lock body scroll when open
-- **Focus management**: Returns focus to trigger when closed
-
-The overlay container is always mounted but hidden via `display: none` when closed. Users only need to provide the `ListBox` via the `list` or `listbox` slot.
+| React Aria Hooks | [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html) |
+| RAC Contexts | `OverlayTriggerStateContext`, `PopoverContext`, `ListStateContext` eliminate manual coordination |
+| CollectionBuilder | Wraps component to build collection from children before state creation |
+| Coordinator Pattern | Select manages state/refs/overlays; slot children are stateless |
+| Container Slots | `slot` attribute + `slots` prop for prop mapping to slotted children |
+| data-\* Attributes | `data-open`, `data-disabled`, `data-invalid`, `data-selected`, `data-focus-visible` for styling |
 
 ## Architecture & Features
 
-### Component Structure
-
-```tsx
-import { Select, SelectOption } from '@bento/select';
-import { Button } from '@bento/button';
-import { Text } from '@bento/text';
-import { ListBox, ListBoxItem } from '@bento/listbox';
-
-// Custom value component (Text doesn't have placeholder prop)
-function SelectValue({ placeholder, selectedItem, ...props }) {
-  const displayText = selectedItem ? selectedItem.textValue : placeholder;
-  return <Text {...props}>{displayText}</Text>;
-}
-
-<Select>
-  <Button slot="trigger">
-    <SelectValue slot="value" placeholder="Choose an option" />
-  </Button>
-  <ListBox slot="list">
-    <SelectOption value="1">Option 1</SelectOption>
-    <SelectOption value="2">Option 2</SelectOption>
-  </ListBox>
-  <Text slot="description">Optional description</Text>
-  <Text slot="errorMessage">Optional error</Text>
-</Select>
-```
-
 ### Rendered DOM Structure
 
+**Note**: React Aria's `useSelect` provides `triggerProps` which includes appropriate ARIA attributes. The exact attributes depend on React Aria's implementation, but typically include `aria-expanded`, `aria-haspopup`, and related attributes for the combobox pattern.
+
 ```html
-<!-- Trigger (follows ARIA combobox pattern) -->
-<button role="combobox" aria-expanded="false" aria-haspopup="listbox" data-open="false">
+<!-- Trigger (ARIA attributes provided by React Aria's triggerProps) -->
+<button aria-expanded="false" aria-haspopup="listbox" data-open="false">
   <span>Selected Value</span>
 </button>
 
@@ -156,23 +216,26 @@ function SelectValue({ placeholder, selectedItem, ...props }) {
 
 | Prop | Type | Purpose |
 |------|------|---------|
-| `value`/`defaultValue` | `string` | Controlled/uncontrolled selection |
+| `value`/`defaultValue` | `Key` | Controlled/uncontrolled selection (React Aria `Key` type) |
 | `open`/`defaultOpen` | `boolean` | Dropdown visibility |
-| `onValueChange` | `(value) => void` | Selection callback |
-| `onOpenChange` | `(open) => void` | Visibility callback |
+| `onValueChange` | `(value: Key) => void` | Selection callback |
+| `onOpenChange` | `(open: boolean) => void` | Visibility callback |
 | `isDisabled`, `isRequired`, `isInvalid` | `boolean` | Form states |
 | `placeholder` | `string` | Empty state text (passed to value slot) |
 | `name` | `string` | Form submission field name |
+| `aria-label` | `string` | Accessible name when no visible label slot is provided |
 | `items` | `Iterable<T>` | Dynamic collections |
-| `disabledKeys` | `Set<string>` | Disable specific options |
+| `disabledKeys` | `Iterable<Key>` | Disable specific options |
+
+**React Aria mapping**: `value` ↔ `selectedKey`, `defaultValue` ↔ `defaultSelectedKey`, `onValueChange` ↔ `onSelectionChange`.
 
 **Form integration**: Uses React Aria's `HiddenSelect` when `name` prop provided—enables form submission, syncs with state, handles autofill.
 
 ## Accessibility & Platform Support
 
 **ARIA** ([combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/#keyboard-interaction-12)):
-- Roles: `combobox`, `listbox`, `option`, `group`
-- Attributes: `aria-expanded`, `aria-selected`, `aria-invalid`, `aria-required`
+- Roles/attributes: Consistent with select-only combobox pattern (e.g., trigger exposes appropriate ARIA for a listbox popup; list exposes `role="listbox"`, options expose `role="option"`)
+- Common attributes: `aria-expanded`, `aria-selected`, `aria-invalid`, `aria-required`
 - Keyboard: Arrow nav, `Enter`/`Space` select, `Escape` close, typeahead
 - Focus: Roving tabindex, returns to trigger
 
@@ -185,29 +248,33 @@ function SelectValue({ placeholder, selectedItem, ...props }) {
 
 **Data attributes** (not ARIA):
 - Trigger: `data-open`, `data-disabled`, `data-invalid`, `data-required`
-- Overlay container: `data-open` (internal, not exposed to users)
+- Popover: `data-open` (provided via popover slot, consumer applies to their container)
 - Option: `data-selected`, `data-disabled`, `data-focused`
 - Interactive: `data-focus-visible`, `data-hovered`, `data-pressed`
 
 **Slot customization** (using `slots` prop):
-- `slots.trigger`, `slots.trigger.value` - Customize trigger/value
-- `slots.list`, `slots.listbox` - Customize list
+- `slots.trigger`, `slots['trigger.value']` — Customize trigger/value (namespaced keys apply to nested slots)
+- `slots.popover` — Customize overlay container (consumer handles portal rendering)
+- `slots.listbox` — Customize list
 
 ### TypeScript Slot Safety
 
 ```ts
 export type SelectSlots = {
   trigger: SelectTriggerSlotProps;
+  label: React.HTMLAttributes<HTMLLabelElement>;
   'trigger.value': SelectValueSlotProps;
-  value: SelectValueSlotProps;
-  list: SelectListSlotProps;
+  value: SelectValueSlotProps;  // Standalone value slot for advanced layouts; typically use 'trigger.value'
+  popover: SelectPopoverSlotProps;
   listbox: SelectListSlotProps;
   description: React.HTMLAttributes<HTMLElement>;
-  errorMessage: React.HTMLAttributes<HTMLElement>;
+  error: React.HTMLAttributes<HTMLElement>;
 };
 
 export type PropsFromSelectSlot<S extends keyof SelectSlots> = SelectSlots[S];
 ```
+
+**Note on `value` slot**: The `value` slot is provided for advanced layouts where the value is rendered outside the trigger. Most consumers should use `'trigger.value'` for nested customization within the trigger button.
 
 **Usage**:
 ```tsx
@@ -219,7 +286,7 @@ function MyTrigger(props: PropsFromSelectSlot<'trigger'> & { tone?: 'neutral' | 
 // Use `satisfies` (TypeScript 4.9+) for compile-time slot validation
 const mySlots = {
   trigger: MyTrigger,
-  list: MyListBox
+  listbox: MyListBox
 } satisfies Partial<Record<keyof SelectSlots, React.ComponentType<any>>>;
 ```
 
@@ -236,67 +303,64 @@ const mySlots = {
 ## Usage Examples
 
 ```tsx
-import { Select, SelectOption } from '@bento/select';
+import { Select } from '@bento/select';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
 import { ListBox, ListBoxItem } from '@bento/listbox';
+import { Item } from '@react-stately/collections';
 
 function SelectValue({ placeholder, selectedItem, ...props }) {
   return <Text {...props}>{selectedItem ? selectedItem.textValue : placeholder}</Text>;
 }
 
-// Basic usage
+// Basic usage with ListBoxItem
 <Select>
   <Button slot="trigger">
     <SelectValue slot="value" placeholder="Select..." />
   </Button>
-  <ListBox slot="list">
-    <SelectOption value="apple">Apple</SelectOption>
-    <SelectOption value="orange">Orange</SelectOption>
-  </ListBox>
-</Select>
-
-// Using ListBoxItem directly
-<Select>
-  <Button slot="trigger">
-    <SelectValue slot="value" />
-  </Button>
-  <ListBox slot="list">
+  <ListBox slot="listbox">
     <ListBoxItem id="apple">Apple</ListBoxItem>
     <ListBoxItem id="orange">Orange</ListBoxItem>
   </ListBox>
 </Select>
 
-// Dynamic items
+// Dynamic items with React Aria's Item component
 const items = [{ id: 'apple', name: 'Apple' }, { id: 'orange', name: 'Orange' }];
 <Select items={items}>
   <Button slot="trigger">
     <SelectValue slot="value" />
   </Button>
-  <ListBox slot="list">
-    {item => <SelectOption value={item.id}>{item.name}</SelectOption>}
+  <ListBox slot="listbox">
+    {item => <Item key={item.id}>{item.name}</Item>}
   </ListBox>
+</Select>
+
+// With description and error
+<Select isInvalid>
+  <Button slot="trigger">
+    <SelectValue slot="value" />
+  </Button>
+  <ListBox slot="listbox">
+    <ListBoxItem id="option1">Option 1</ListBoxItem>
+  </ListBox>
+  <Text slot="description">Choose an option</Text>
+  <Text slot="error">This field is required</Text>
 </Select>
 ```
 
 ## Implementation Rationale
 
-**Key decisions**:
-- **Container-based composition**: Uses `@bento/container` with `slots` prop for cleaner architecture—no manual child traversal or `cloneElement` recursion
-- **Build on ListBox**: Reuse ARIA listbox patterns, share state via `ListStateContext`
-- **Coordinator pattern**: Select manages overlay positioning, form integration, and state internally; slot children are stateless
-- **Explicit ARIA attributes**: Ensures correct `role="combobox"` and validation ARIA (`aria-disabled`, `aria-invalid`, `aria-required`) regardless of trigger implementation
-- **Form integration**: Uses React Aria's `HiddenSelect` for client-side rendering; custom SSR fallback ensures form submission works server-side
-- **Safe style merging**: Converts `CSSStyleDeclaration` to plain objects to avoid React DOM warnings; preserves numeric values for auto-unit conversion
-- **SelectOption convenience**: Maps `value` → `id` (users can use `ListBoxItem` directly)
-- **Typed slots**: Interfaces extend component interfaces for type safety
-- **Description/error slots**: Optional, enforce rendering order (users can handle themselves)
+**Why this architecture**:
+- **RAC contexts over manual coordination**: Eliminates ~100 LOC of race condition guards, `shouldCloseOnInteractOutside`, and `e.stopPropagation()` calls
+- **Container-based slots**: No `cloneElement` recursion or manual child traversal—cleaner and more maintainable
+- **Build on existing primitives**: Reuses `@bento/listbox` patterns via `ListStateContext` instead of reimplementing
+- **Single-selection focus**: React Aria's `useSelect` is single-only; multi-select users should use `ListBox` directly
+- **Flexible overlay composition**: Like React Aria's `DialogTrigger`/`TooltipTrigger`—Select orchestrates, consumers compose portals/animations
+- **Form integration**: `HiddenSelect` component when `name` provided—enables native form submission and autofill
 
-**Architecture benefits**:
-- Reduced complexity: ~200 fewer lines vs manual child enhancement
-- Cleaner separation: Container handles slot composition; Select handles coordination
-- Easier maintenance: Slot logic centralized in Container; Select focuses on state/ARIA
+**Trade-offs accepted**:
+- Manual portal management (flexibility over convenience—future `@bento/popover` will simplify)
+- Value component boilerplate (precision over magic—future `@bento/select-value` could help)
+- Fixed positioning defaults (simplicity over customization—future props could expose options)
 
-**Future optimizations**: Virtual scrolling, debounced typeahead, lazy section loading, React.memo for options.
-
-**Testing focus**: Keyboard navigation, screen readers, RTL, form submission, positioning edge cases, SSR compatibility.
+**Future work**: Virtual scrolling, debounced typeahead, `@bento/popover` primitive, `@bento/select-value` component, customizable positioning props, lazy section loading.
