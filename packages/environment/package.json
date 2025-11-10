@@ -1,6 +1,6 @@
 {
   "name": "@bento/environment",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Setup a custom environment for your Bento application",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -10,6 +10,7 @@
     "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
@@ -39,8 +40,8 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.1.0",
-    "@bento/slots": "^0.1.1",
+    "@bento/box": "^0.1.1",
+    "@bento/slots": "^0.1.3",
     "ts-deepmerge": "^7.0.3",
     "use-deep-compare": "^1.3.0"
   },
