@@ -86,7 +86,7 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
         hovered: isHovered,
         focused: isFocused,
         focusVisible: isFocusVisible,
-        disabled: props.isDisabled || isDisabled,
+        disabled: interactionDisabled,
         readonly: isReadOnly,
         invalid: isInvalid,
         required: props.isRequired,
