@@ -1,0 +1,195 @@
+# Dismiss Button
+
+## Purpose
+
+Provide a visually hidden, focusable dismissal control that ensures users
+(including screen reader users) can reliably dismiss modal or popup content via
+linear navigation. This control complements ESC and outside‑click behavior, and
+is intended to be placed at the start and end of the focus boundary of
+dismissible overlays.
+
+## Rationale
+
+- **Accessibility**: Screen reader users navigating linearly need a guaranteed,
+  focusable “escape” inside modal focus traps (in addition to ESC/outside-click).
+- **Composition-first**: We can achieve this with `VisuallyHidden` + `Button`
+  (built on React Aria `useButton` via our Pressable), keeping the implementation
+  simple and transparent.
+- **Consistency**: By standardizing the recipe, MFEs and versions can implement
+  a11y dismissal consistently without introducing extra context or state.
+
+### Unique Attributes
+
+- Visually hidden, focusable control that triggers dismissal
+- Works alongside ESC and outside-click behaviors from React Aria’s overlay hooks
+- Slot-friendly, no custom context, compatible across MFEs/versions
+
+## Composition
+
+```tsx
+import * as React from 'react';
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+import { useDataAttributes } from '@bento/use-data-attributes';
+import { VisuallyHidden } from '@bento/visually-hidden';
+import { Button } from '@bento/button';
+
+export interface DismissProps {
+  onDismiss?: () => void;
+  ariaLabel?: string;
+  className?: string | ((state: Record<string, unknown>) => string);
+  style?: React.CSSProperties | ((state: Record<string, unknown>) => React.CSSProperties);
+
+  // Optional slot to customize the VisuallyHidden wrapper
+  slots?: {
+    hidden?:
+      | ((args: { props: Record<string, unknown>; children: React.ReactNode }) => React.ReactNode)
+      | Record<string, unknown>;
+  };
+}
+
+export const Dismiss = withSlots(
+  'BentoDismiss',
+  function Dismiss(args: DismissProps) {
+    const { props, apply } = useProps(args, {});
+    const { onDismiss, ariaLabel = 'Dismiss' } = props;
+
+    const data = useDataAttributes({
+      dismiss: true
+    });
+
+    return (
+      <VisuallyHidden slot="hidden">
+        <Button
+          {...apply({
+            type: 'button',
+            'aria-label': ariaLabel,
+            tabIndex: -1,
+            onPress: onDismiss,
+            // Defensive fallback: width/height set for some SRs while inside VisuallyHidden
+            style: { width: 1, height: 1 },
+            ...data
+          })}
+        />
+      </VisuallyHidden>
+    );
+  }
+);
+```
+
+## Primitive Composition
+
+- `@bento/visually-hidden` — visually hides content while keeping it operable by assistive tech
+- `@bento/button` — press semantics via React Aria `useButton`
+- `@bento/slots` + `@bento/use-props` + `@bento/use-data-attributes` — slot-based composition and data-* exposure
+
+## Slot Map
+
+| Slot Name | Description                            | Required | Default Fallback |
+|-----------|----------------------------------------|----------|------------------|
+| `hidden`  | Customize/replace VisuallyHidden wrapper | No       | Yes              |
+
+Notes:
+- Use `hidden` as an object slot to merge props (e.g., className, as) into the default wrapper, or as a function slot to fully replace the wrapper.
+- Placement of this primitive remains controlled by the parent composite (e.g., first/last in Overlay `content`).
+
+## Props
+
+### DismissProps
+
+| Prop        | Type                                                                      | Default   | Description                                                     |
+|-------------|---------------------------------------------------------------------------|-----------|-----------------------------------------------------------------|
+| `onDismiss` | `() => void`                                                              | `undefined` | Called when the dismiss control is activated                    |
+| `ariaLabel` | `string`                                                                  | `"Dismiss"` | Accessible label, should be localized                           |
+| `...rest`   | All other props supported by `@bento/button` (passes through via `apply`) | —         | ClassName/style as render props, data attributes, etc.          |
+
+Behavioral requirements:
+- Renders as a native button with `type="button"` and `tabIndex={-1}`.
+- Wrapped in `VisuallyHidden` for SR visibility without visual chrome.
+- Adds `data-dismiss="true"` for diagnostics and testing.
+
+## Data attributes
+
+- `data-dismiss="true"` on the hidden button for ease of testing and diagnostics.
+
+### Expected `data-*` Attributes
+
+| Attribute        | Description                                 | Example Values     |
+|------------------|---------------------------------------------|--------------------|
+| `data-dismiss`   | Marks control as an SR-only dismiss affordance | `"true"`           |
+| `data-version`   | Dev-only component version tag (optional)   | `"dismiss@1.0"`    |
+| `data-override`  | Set when className/style were overridden    | `"style"`, `"className"` |
+
+## Usage
+
+Place at the very start and end of the overlay `content` slot so
+forward/backward navigation always encounters a dismiss target:
+
+```tsx
+<Container slot="content" className="dialog">
+  <Dismiss onDismiss={() => onOpenChange(false)} />
+
+  <Text as="h2">Title</Text>
+  <Text>Description</Text>
+  <Container as="button" onClick={() => onOpenChange(false)}><Text>Close</Text></Container>
+
+  <Dismiss onDismiss={() => onOpenChange(false)} />
+  {/* Both SR-only dismiss controls complement ESC/outside-click and a visible close */}
+</Container>
+```
+
+## Behavior and a11y
+
+- Focusable and operable by SR users (linear navigation) and keyboard users.
+- Complements ESC/outside-click handling from `useModalOverlay` + Focus containment from `FocusLock`.
+- Works with `Portal` and `Stack`—these controls render inside the same container as the overlay content.
+
+## React Aria or External Hook Integration
+
+Equivalent in purpose to React Aria’s DismissButton: a visually hidden button
+that calls `onDismiss` and is intended to be placed at the start and end of
+modal content for linear navigation dismissal.
+
+Reference source: React Aria DismissButton — [github.com/adobe/react-spectrum/.../DismissButton.tsx](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/DismissButton.tsx)
+
+### Internal requirements (aligned with React Aria’s intent)
+
+- Element: native button semantics (`type="button"`)
+- Labeling: `aria-label` default “Dismiss” (localizable by consumers)
+- Focus: `tabIndex={-1}` to avoid tab order while remaining SR-operable
+- Visual hiding: wrap in `VisuallyHidden`; add `style={{ width: 1, height: 1 }}` as a defensive fallback
+- Handler: `onPress` → `onDismiss`
+
+## Integration tips
+
+Keep inside the focus boundary (`FocusLock`) and in the same container as overlay content.
+
+## Non‑modal surfaces
+
+Skip dismiss controls for surfaces that aren’t focus-trapped (e.g., simple
+tooltips). Use them when dismissal is required and linear navigation must always
+find an exit.
+
+## Expected usage and placement
+
+### Where it SHOULD be used
+- Modal dialogs/overlays (required): place one at the start and one at the end of the `content` slot. Complements visible close, ESC, and outside‑click.
+- Drawers/Sheets (modal variants) (required): same placement as modals.
+- Popovers/Menus (recommended when dismissible without a visible close): include start/end dismiss controls to ensure screen reader users can exit via linear navigation.
+- Coachmarks/Tour steps (recommended when dismissible): include when the step can be dismissed; otherwise provide explicit action buttons.
+
+### Where it MAY be used
+- Combobox/Select popovers (recommended): helps screen reader users exit the popup even when focus is managed on the field/trigger.
+- Non‑modal anchored popovers (optional): omit if ESC/outside‑click and return‑to‑trigger are sufficient; include only if testing shows SR users struggle to dismiss.
+
+### Where it should NOT be used
+- Tooltips: non‑interactive, no focus trap.
+- Toasts/Growls: not focus‑trapped; use a visible close if needed.
+- Non‑dismissible/legal consent: provide explicit action buttons instead of a generic dismiss.
+
+### Placement rules
+- Put a dismiss control immediately inside the `content` slot at the first and last focusable positions.
+- Maintain a visible close button for sighted users, dismiss buttons are SR‑only safeguards.
+- Provide a localizable `aria-label` (default “Dismiss”).
+
+
