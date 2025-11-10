@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
-import { userEvent } from '@testing-library/user-event';
 import assume from 'assume';
 import { DefaultExample } from '../examples/default.tsx';
 

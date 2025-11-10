@@ -1,5 +1,5 @@
 import { renderToString } from 'react-dom/server';
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import React from 'react';
 import assume from 'assume';
 import { VisuallyHidden } from '../src';
