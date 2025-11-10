@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server';
 import { withSlots, library } from '@bento/slots';
 import { Nested } from '../examples/nested.tsx';
 import { Box, defaults } from '@bento/box';
+import { Environment } from '@bento/environment';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
@@ -88,21 +89,53 @@ describe('@bento/slots', function bento() {
       verify();
     });
 
-    it('can override the components used', function override() {
-      let id;
+    it('overrides the components used without introducing data-override when unlocked', function overrideUnlocked() {
+      let id: string | undefined;
 
-      const value = defaults();
-      value.env.components = {
-        SlotsButton: function Button(props) {
-          assume(props['data-override']).equals('context');
-          assume(props.id).startsWith(':R');
-          id = props.id;
+      const nested = renderToString(
+        React.createElement(
+          Environment,
+          {
+            components: {
+              SlotsButton: function Button(props: any) {
+                assume(props['data-override']).is.undefined();
+                assume(props.id).startsWith(':R');
+                id = props.id;
 
-          return React.createElement('p', props, 'No more button, only text');
-        }
-      };
+                return React.createElement('p', props, 'No more button, only text');
+              }
+            }
+          },
+          React.createElement(Nested)
+        )
+      );
 
-      const nested = renderToString(React.createElement(Box.Provider, { value }, React.createElement(Nested)));
+      assume(nested).contains('Hello World');
+      assume(nested).does.not.contain('Click Me');
+      assume(nested).contains(`<p id="${id}">No more button, only text</p>`);
+    });
+
+    it('flags component overrides with context when locked', function overrideLocked() {
+      let id: string | undefined;
+
+      const nested = renderToString(
+        React.createElement(
+          Environment,
+          {
+            lock: true,
+            components: {
+              SlotsButton: function Button(props: any) {
+                assume(props['data-override']).equals('context');
+                assume(props.id).startsWith(':R');
+                id = props.id;
+
+                return React.createElement('p', props, 'No more button, only text');
+              }
+            }
+          },
+          React.createElement(Nested)
+        )
+      );
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
@@ -120,7 +153,7 @@ describe('@bento/slots', function bento() {
       assume(ctx.slots.slotGenerations).is.a('object');
     });
 
-    it('slots are correctly applied and tracked', function application() {
+    it('slots are correctly applied and tracked when locked', function applicationLocked() {
       const Child = withSlots('TrackChild', function TrackChildComponent(props: any) {
         return React.createElement('span', props, 'child');
       });
@@ -129,23 +162,41 @@ describe('@bento/slots', function bento() {
         return React.createElement('div', props, React.createElement(Child, { slot: 'child' }));
       });
 
-      const ctx = defaults();
-      ctx.env.lockGeneration = 1;
-
       const html = renderToString(
-        React.createElement(
-          Box.Provider,
-          { value: ctx },
-          React.createElement(Parent, {
+        React.createElement(Environment, {
+          lock: true,
+          children: React.createElement(Parent, {
             slot: 'parent',
             slots: { child: { className: 'tracked' } }
           })
-        )
+        })
       );
 
       // Verify slot is applied (with data-override since lockGeneration > 0)
-      assume(html).contains('data-override="className slot"');
+      assume(html).contains('data-override="slot className"');
       assume(html).contains('child');
+    });
+
+    it('does not flag slot tracking when environment is unlocked', function applicationUnlocked() {
+      const Child = withSlots('TrackChildUnlocked', function TrackChildComponent(props: any) {
+        return React.createElement('span', props, 'child');
+      });
+
+      const Parent = withSlots('TrackParentUnlocked', function TrackParentComponent(props: any) {
+        return React.createElement('div', props, React.createElement(Child, { slot: 'child' }));
+      });
+
+      const html = renderToString(
+        React.createElement(Environment, {
+          children: React.createElement(Parent, {
+            slot: 'parent',
+            slots: { child: { className: 'tracked' } }
+          })
+        })
+      );
+
+      assume(html).contains('<span>');
+      assume(html).does.not.contain('data-override');
     });
 
     it('generation tracking does not break existing functionality', function noBreakage() {
