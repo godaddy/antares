@@ -1,4 +1,10 @@
-import { Meta, ArgTypes, Story, Controls, Source } from '@storybook/addon-docs/blocks';
+import {
+  Meta,
+  ArgTypes,
+  Story,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
 import * as Stories from './radio.stories.tsx';
 import Uncontrolled from './examples/uncontrolled.tsx?raw';
 import Controlled from './examples/controlled.tsx?raw';
@@ -21,18 +27,6 @@ npm install --save @bento/radio
 ```
 
 ## Props
-
-The `@bento/radio` package exports the `RadioGroup` and `Radio` primitives:
-
-```jsx
-import { RadioGroup, Radio } from '@bento/radio';
-
-<RadioGroup label="Favorite fruit">
-  <Radio value="apple">Apple</Radio>
-  <Radio value="banana">Banana</Radio>
-  <Radio value="orange">Orange</Radio>
-</RadioGroup>;
-```
 
 The following properties are available to be used on the `RadioGroup` and `Radio` primitives:
 
@@ -73,19 +67,18 @@ The data attributes, slot map and props can be used to style and customize the `
 
 ### `RadioGroup` Slot Map
 
-| Slot Name           | Description                  |
-| ------------------- | ---------------------------- |
-| `group.label`       | Label for radiogroup         |
-| `group.description` | Description for radiogroup   |
-| `group.error`       | Error message for radiogroup |
+| Slot Name      | Description                   |
+| -------------- | ----------------------------- |
+| `label`        | Label for radio group         |
+| `description`  | Description for radio group   |
+| `errorMessage` | Error message for radio group |
 
 ### `Radio` Slot Map
 
-| Slot Name                | Description              |
-| ------------------------ | ------------------------ |
-| `control.icon-checked`   | Icon for checked radio   |
-| `control.icon-unchecked` | Icon for unchecked radio |
-| `control.label`          | Text for radio           |
+| Slot Name        | Description              |
+| ---------------- | ------------------------ |
+| `icon-checked`   | Icon for checked radio   |
+| `icon-unchecked` | Icon for unchecked radio |
 
 ## Examples
 

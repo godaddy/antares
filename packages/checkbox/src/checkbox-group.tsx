@@ -1,16 +1,14 @@
-import React, { useMemo } from 'react';
-import { useProps } from '@bento/use-props';
-import { ControlGroup, ControlGroupProps } from '@bento/control';
-import { useDataAttributes } from '@bento/use-data-attributes';
-import { type ValidationResult } from '@react-types/shared';
-import { AriaCheckboxGroupProps, useCheckboxGroup } from 'react-aria';
-import { useCheckboxGroupState } from 'react-stately';
+import React from 'react';
 import { withSlots } from '@bento/slots';
+import { Container, type ContainerProps } from '@bento/container';
+import { useProps } from '@bento/use-props';
+import { useCheckboxGroup, type AriaCheckboxGroupProps } from 'react-aria';
+import { filterDOMProps } from '@react-aria/utils';
+import { useCheckboxGroupState } from 'react-stately';
 import { CheckboxGroupStateContext } from './checkbox-group-state';
+import { useDataAttributes } from '@bento/use-data-attributes';
 
-export interface CheckboxGroupProps
-  extends AriaCheckboxGroupProps,
-    Partial<Omit<ControlGroupProps, keyof AriaCheckboxGroupProps>> {
+export interface CheckboxGroupProps extends AriaCheckboxGroupProps, Omit<ContainerProps, keyof AriaCheckboxGroupProps> {
   /** The current value of the checkbox group (controlled). */
   value?: string[];
 
@@ -33,66 +31,46 @@ export interface CheckboxGroupProps
   name?: string;
 
   /**
-   * The <form> element to associate the input with.
-   * The value of this attribute must be the id of a <form> in the same document.
+   * The `<form>` element to associate the input with.
+   * The value of this attribute must be the id of a `<form>` in the same document.
    */
   form?: string;
 
-  /** Description for the checkbox group. */
-  description?: string;
-
   /** Checkbox children. */
   children?: React.ReactNode;
-
-  /** Error message for the checkbox group. */
-  errorMessage?: React.ReactNode | ((val: ValidationResult) => React.ReactNode);
 }
 
 /**
  * The `CheckboxGroup` allows a user to select items from a list of `Checkbox` components.
- *
- * @component
- * @param {CheckboxGroupProps} args - The props passed to the CheckboxGroup component.
- *
- * @public
  */
 export const CheckboxGroup = withSlots('BentoCheckboxGroup', function CheckboxGroup(args: CheckboxGroupProps) {
-  const { errorMessage, ...restArgs } = args;
-  const { props, apply } = useProps(restArgs);
+  const { props } = useProps(args);
   const state = useCheckboxGroupState(props);
-  const { children } = props;
   const { groupProps, labelProps, descriptionProps, errorMessageProps, ...validationResult } = useCheckboxGroup(
-    props,
+    { ...props, label: props.label ?? 'Checkbox Group', description: props.description ?? 'Description' },
     state
   );
 
-  const displayedErrorMessage = useMemo(
-    function getErrorMessage() {
-      return typeof errorMessage === 'function'
-        ? errorMessage(validationResult)
-        : errorMessage || validationResult.validationErrors.join(', ');
-    },
-    [errorMessage, validationResult]
-  );
-
   return (
-    <ControlGroup
-      slot="group"
-      labelProps={labelProps}
-      descriptionProps={descriptionProps}
-      errorMessage={displayedErrorMessage}
-      errorMessageProps={errorMessageProps}
-      {...groupProps}
-      {...apply(props, ['isInvalid', 'isDisabled', 'isReadOnly', 'isRequired', 'validationBehavior'])}
-      {...useDataAttributes({
-        orientation: props.orientation || 'vertical',
-        invalid: state.isInvalid,
-        disabled: state.isDisabled,
-        readonly: state.isReadOnly,
-        required: state.isRequired
-      })}
-    >
-      <CheckboxGroupStateContext.Provider value={state}>{children}</CheckboxGroupStateContext.Provider>
-    </ControlGroup>
+    <CheckboxGroupStateContext.Provider value={state}>
+      <Container
+        {...groupProps}
+        {...filterDOMProps(props, { propNames: new Set(['className', 'style']) })}
+        {...useDataAttributes({
+          orientation: props.orientation || 'vertical',
+          invalid: state.isInvalid,
+          disabled: state.isDisabled,
+          readonly: state.isReadOnly,
+          required: state.isRequired
+        })}
+        slots={{
+          label: { ...labelProps },
+          description: { ...descriptionProps },
+          errorMessage: { ...errorMessageProps, ...validationResult }
+        }}
+      >
+        {props.children}
+      </Container>
+    </CheckboxGroupStateContext.Provider>
   );
 });

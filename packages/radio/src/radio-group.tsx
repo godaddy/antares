@@ -1,16 +1,14 @@
-import React, { useMemo } from 'react';
-import { ControlGroup, ControlGroupProps } from '@bento/control';
+import React from 'react';
 import { withSlots } from '@bento/slots';
+import { Container, type ContainerProps } from '@bento/container';
 import { useProps } from '@bento/use-props';
 import { useRadioGroup, type AriaRadioGroupProps } from 'react-aria';
+import { filterDOMProps } from '@react-aria/utils';
 import { useRadioGroupState } from 'react-stately';
 import { RadioGroupStateContext } from './radio-group-state';
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { type ValidationResult } from '@react-types/shared';
 
-export interface RadioGroupProps
-  extends AriaRadioGroupProps,
-    Partial<Omit<ControlGroupProps, keyof AriaRadioGroupProps>> {
+export interface RadioGroupProps extends AriaRadioGroupProps, Omit<ContainerProps, keyof AriaRadioGroupProps> {
   /** The current value (controlled). */
   value?: string;
 
@@ -33,57 +31,46 @@ export interface RadioGroupProps
   name?: string;
 
   /**
-   * The <form> element to associate the input with.
-   * The value of this attribute must be the id of a <form> in the same document.
+   * The `<form>` element to associate the input with.
+   * The value of this attribute must be the id of a `<form>` in the same document.
    */
   form?: string;
 
   /** Radio children. */
   children: React.ReactNode;
-
-  /** Error message for the radio group. */
-  errorMessage?: React.ReactNode | ((val: ValidationResult) => React.ReactNode);
 }
 
 /**
  * The `RadioGroup` allows a user to select a single item from a list of `Radio` components.
  */
 export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args: RadioGroupProps) {
-  const { errorMessage, ...restArgs } = args;
-  const { props, apply } = useProps(restArgs);
+  const { props } = useProps(args);
   const state = useRadioGroupState(props);
   const { radioGroupProps, labelProps, descriptionProps, errorMessageProps, ...validationResult } = useRadioGroup(
-    props,
+    { ...props, label: props.label ?? 'Radio Group', description: props.description ?? 'Description' },
     state
   );
 
-  const displayedErrorMessage = useMemo(
-    function getErrorMessage() {
-      return typeof errorMessage === 'function'
-        ? errorMessage(validationResult)
-        : errorMessage || validationResult.validationErrors.join(', ');
-    },
-    [errorMessage, validationResult]
-  );
-
   return (
-    <ControlGroup
-      slot="group"
-      labelProps={labelProps}
-      descriptionProps={descriptionProps}
-      errorMessage={displayedErrorMessage}
-      errorMessageProps={errorMessageProps}
-      {...radioGroupProps}
-      {...apply(props, ['isInvalid', 'isDisabled', 'isReadOnly', 'isRequired', 'validationBehavior'])}
-      {...useDataAttributes({
-        orientation: props.orientation || 'vertical',
-        invalid: state.isInvalid,
-        disabled: state.isDisabled,
-        readonly: state.isReadOnly,
-        required: state.isRequired
-      })}
-    >
-      <RadioGroupStateContext.Provider value={state}>{props.children}</RadioGroupStateContext.Provider>
-    </ControlGroup>
+    <RadioGroupStateContext.Provider value={state}>
+      <Container
+        {...radioGroupProps}
+        {...filterDOMProps(props, { propNames: new Set(['className', 'style']) })}
+        {...useDataAttributes({
+          orientation: props.orientation || 'vertical',
+          invalid: state.isInvalid,
+          disabled: state.isDisabled,
+          readonly: state.isReadOnly,
+          required: state.isRequired
+        })}
+        slots={{
+          label: { ...labelProps },
+          description: { ...descriptionProps },
+          errorMessage: { ...errorMessageProps, ...validationResult }
+        }}
+      >
+        {props.children}
+      </Container>
+    </RadioGroupStateContext.Provider>
   );
 });

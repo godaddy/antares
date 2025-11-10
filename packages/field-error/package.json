@@ -1,7 +1,7 @@
 {
-  "name": "@bento/checkbox",
-  "version": "0.1.3",
-  "description": "Checkbox component",
+  "name": "@bento/field-error",
+  "version": "0.1.0",
+  "description": "FieldError component",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -22,8 +22,8 @@
     "accessibility",
     "aria",
     "bento",
-    "checkbox",
     "component",
+    "fielderror",
     "interactive",
     "library",
     "react"
@@ -40,15 +40,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/container": "^0.1.1",
-    "@bento/icon": "^0.1.2",
     "@bento/slots": "^0.1.3",
-    "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.1.1",
-    "@bento/visually-hidden": "^0.1.0",
-    "@react-aria/utils": "^3.30.0",
-    "react-aria": "^3.44.0",
-    "react-stately": "^3.42.0"
+    "@bento/text": "^0.1.2",
+    "@bento/use-props": "^0.1.1"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
