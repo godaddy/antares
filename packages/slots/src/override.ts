@@ -66,8 +66,11 @@ export function override<Props extends Record<string, any>>({
   const currentNamespace = namespace.join('.');
   const slot: Record<string, any> | undefined = assigned[currentNamespace];
 
-  // Get lock state
-  const isLocked = context.env?.locked ?? false;
+  //
+  // Data override is only supported when the environment is locked.
+  //
+  if (!(context.env?.locked ?? false)) return;
+
   const currentLockGeneration = context.env?.lockGeneration ?? 0;
   const slotGeneration = context.slots?.slotGenerations?.[currentNamespace] ?? currentLockGeneration;
 
@@ -77,11 +80,9 @@ export function override<Props extends Record<string, any>>({
 
   if (overrideFlag && !causes.includes('context')) causes.push('context');
 
-  // Only flag className if environment is NOT locked, or if slot is from earlier generation
-  if ('className' in props && !causes.includes('className')) {
-    if (!isLocked || slotGeneration < currentLockGeneration) {
-      causes.push('className');
-    }
+  // Only flag className if slot is from an earlier generation
+  if ('className' in props && !causes.includes('className') && slotGeneration < currentLockGeneration) {
+    causes.push('className');
   }
 
   //
@@ -93,17 +94,13 @@ export function override<Props extends Record<string, any>>({
     const style = props.style as CSSProperties;
     const keys = Object.keys(style);
 
-    if (keys.some((key) => !isCSSVariable(key))) {
-      if (!isLocked || slotGeneration < currentLockGeneration) {
-        causes.push('style');
-      }
+    if (keys.some((key) => !isCSSVariable(key)) && slotGeneration < currentLockGeneration) {
+      causes.push('style');
     }
   }
 
-  // Only flag slot modifications if:
-  // 1. Environment is locked
-  // 2. The slot's generation is less than the current lock generation
-  if (slot && isLocked && slotGeneration < currentLockGeneration) {
+  // Only flag slot modifications if the slot's generation is less than the current lock generation
+  if (slot && slotGeneration < currentLockGeneration) {
     // Any slot modification from an earlier generation should be flagged
     if (!causes.includes('slot')) {
       causes.push('slot');
@@ -113,12 +110,6 @@ export function override<Props extends Record<string, any>>({
       if (triggers.includes(name) && !causes.includes(name)) {
         causes.push(name);
       }
-    });
-  } else if (slot && !isLocked) {
-    // Original behavior when not locked
-    Object.keys(slot).forEach(function forEach(name) {
-      if (triggers.includes(name) && !causes.includes(name)) causes.push(name);
-      if (!causes.includes('slot')) causes.push('slot');
     });
   }
 
