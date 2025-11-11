@@ -12,9 +12,9 @@ dismissible overlays.
 
 - **Accessibility**: Screen reader users navigating linearly need a guaranteed,
   focusable “escape” inside modal focus traps (in addition to ESC/outside-click).
-- **Composition-first**: We can achieve this with `VisuallyHidden` + `Button`
-  (built on React Aria `useButton` via our Pressable), keeping the implementation
-  simple and transparent.
+- **Composition-first**: We can achieve this with `VisuallyHidden` + `Container`
+  (rendered as a native `button`), keeping the implementation simple and
+  transparent.
 - **Consistency**: By standardizing the recipe, MFEs and versions can implement
   a11y dismissal consistently without introducing extra context or state.
 
@@ -30,9 +30,8 @@ dismissible overlays.
 import * as React from 'react';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
-import { useDataAttributes } from '@bento/use-data-attributes';
 import { VisuallyHidden } from '@bento/visually-hidden';
-import { Button } from '@bento/button';
+import { Container } from '@bento/container';
 
 export interface DismissProps {
   onDismiss?: () => void;
@@ -58,18 +57,25 @@ export const Dismiss = withSlots(
       dismiss: true
     });
 
+    function handleClick() {
+      onDismiss?.();
+    }
+
     return (
       <VisuallyHidden slot="hidden">
-        <Button
-          {...apply({
-            type: 'button',
-            'aria-label': ariaLabel,
-            tabIndex: -1,
-            onPress: onDismiss,
-            // Defensive fallback: width/height set for some SRs while inside VisuallyHidden
-            style: { width: 1, height: 1 },
-            ...data
-          })}
+        <Container
+          {...apply(
+            {
+              as: 'button',
+              'aria-label': ariaLabel,
+              tabIndex: -1,
+              // Defensive fallback: width/height set for some SRs while inside VisuallyHidden
+              style: { width: 1, height: 1 },
+              ...data
+            },
+            ['children', 'onDismiss']
+          )}
+          onClick={handleClick}
         />
       </VisuallyHidden>
     );
@@ -80,7 +86,7 @@ export const Dismiss = withSlots(
 ## Primitive Composition
 
 - `@bento/visually-hidden` — visually hides content while keeping it operable by assistive tech
-- `@bento/button` — press semantics via React Aria `useButton`
+- `@bento/container` — polymorphic element used to render the native `button` affordance
 - `@bento/slots` + `@bento/use-props` + `@bento/use-data-attributes` — slot-based composition and data-* exposure
 
 ## Slot Map
@@ -97,16 +103,16 @@ Notes:
 
 ### DismissProps
 
-| Prop        | Type                                                                      | Default   | Description                                                     |
-|-------------|---------------------------------------------------------------------------|-----------|-----------------------------------------------------------------|
-| `onDismiss` | `() => void`                                                              | `undefined` | Called when the dismiss control is activated                    |
-| `ariaLabel` | `string`                                                                  | `"Dismiss"` | Accessible label, should be localized                           |
-| `...rest`   | All other props supported by `@bento/button` (passes through via `apply`) | —         | ClassName/style as render props, data attributes, etc.          |
+| Prop        | Type                                                                              | Default     | Description                                                                |
+|-------------|-----------------------------------------------------------------------------------|-------------|----------------------------------------------------------------------------|
+| `onDismiss` | `() => void`                                                                      | `undefined` | Called when the dismiss button is activated                               |
+| `ariaLabel` | `string`                                                                          | `"Dismiss"` | Accessible label, should be localized                                      |
+| `...rest`   | All other props supported by `@bento/container` when `as="button"` (via `apply`) | —           | ClassName/style as render props, data attributes, etc.                     |
 
 Behavioral requirements:
 - Renders as a native button with `type="button"` and `tabIndex={-1}`.
 - Wrapped in `VisuallyHidden` for SR visibility without visual chrome.
-- Adds `data-dismiss="true"` for diagnostics and testing.
+- Keeps the control visually hidden while remaining screen-reader operable.
 
 ## Data attributes
 
@@ -154,11 +160,11 @@ Reference source: React Aria DismissButton — [github.com/adobe/react-spectrum/
 
 ### Internal requirements (aligned with React Aria’s intent)
 
-- Element: native button semantics (`type="button"`)
+- Element: render a native `button` via `Container as="button"`
 - Labeling: `aria-label` default “Dismiss” (localizable by consumers)
 - Focus: `tabIndex={-1}` to avoid tab order while remaining SR-operable
 - Visual hiding: wrap in `VisuallyHidden`; add `style={{ width: 1, height: 1 }}` as a defensive fallback
-- Handler: `onPress` → `onDismiss`
+- Handler: `onClick` → `onDismiss` (if provided)
 
 ## Integration tips
 
