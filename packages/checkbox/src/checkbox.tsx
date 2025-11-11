@@ -98,19 +98,19 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
 
       {props.isIndeterminate ? (
         <Icon slot="icon-indeterminate" icon="checkboxIndeterminate">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <rect x="6" y="11" width="12" height="2" fill="currentColor" />
           </svg>
         </Icon>
       ) : isSelected ? (
         <Icon slot="icon-checked" icon="checkboxChecked">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M9,16.2L4.8,12l-1.4,1.4L9,19L21,7l-1.4-1.4L9,16.2z" fill="currentColor" />
           </svg>
         </Icon>
       ) : (
         <Icon slot="icon-unchecked" icon="checkboxUnchecked">
-          <svg width={24} height={24} aria-hidden="true">
+          <svg width={24} height={24}>
             <rect x={4} y={4} width={16} height={16} rx={3} fill="none" stroke="gray" strokeWidth={2} />
           </svg>
         </Icon>

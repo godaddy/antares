@@ -67,13 +67,13 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
 
       {isSelected ? (
         <Icon slot="icon-checked" icon="radioChecked">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx={12} cy={12} r={8 - 6 / 2} fill="none" stroke="orange" strokeWidth={6} />
           </svg>
         </Icon>
       ) : (
         <Icon slot="icon-unchecked" icon="radioUnchecked">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx={12} cy={12} r={8} fill="none" stroke="gray" strokeWidth={2} />
           </svg>
         </Icon>
