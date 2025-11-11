@@ -7,7 +7,9 @@ export interface VisuallyHiddenProps extends AriaVisuallyHiddenProps {
   /** The element type to render the component as. Community standard (preferred) @default 'span' */
   as?: keyof JSX.IntrinsicElements;
 
-  /** The element type to render the component as. For React Aria compatibility. @default 'span' */
+  /**
+   * @deprecated Use `as` instead.
+   * The element type to render the component as. For React Aria compatibility. @default 'span' */
   elementType?: keyof JSX.IntrinsicElements;
 }
 
@@ -18,12 +20,8 @@ export const VisuallyHidden = withSlots('BentoVisuallyHidden', function Visually
   const { props } = useProps(args);
   const { children, as, elementType, ...rest } = props;
 
-  // Support both `as` (community standard) and `elementType` (React Aria)
-  // Prefer `as` if provided, otherwise use `elementType`, default to 'span'
-  const element = as ?? elementType ?? 'span';
-
   return (
-    <AriaVisuallyHidden {...rest} elementType={element}>
+    <AriaVisuallyHidden {...rest} elementType={as ?? elementType ?? 'span'}>
       {children}
     </AriaVisuallyHidden>
   );
