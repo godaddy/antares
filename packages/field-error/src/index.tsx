@@ -11,5 +11,5 @@ export interface FieldErrorProps extends TextProps, React.HTMLAttributes<HTMLEle
  */
 export const FieldError = withSlots('BentoFieldError', function FieldError(args: FieldErrorProps) {
   const { props } = useProps(args);
-  return props.isInvalid ? <Text {...props}>{props.children}</Text> : null;
+  return props.isInvalid ? <Text {...props} /> : null;
 });

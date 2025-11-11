@@ -3,7 +3,6 @@ import { withSlots } from '@bento/slots';
 import { Container, type ContainerProps } from '@bento/container';
 import { useProps } from '@bento/use-props';
 import { useCheckboxGroup, type AriaCheckboxGroupProps } from 'react-aria';
-import { filterDOMProps } from '@react-aria/utils';
 import { useCheckboxGroupState } from 'react-stately';
 import { CheckboxGroupStateContext } from './checkbox-group-state';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -44,7 +43,7 @@ export interface CheckboxGroupProps extends AriaCheckboxGroupProps, Omit<Contain
  * The `CheckboxGroup` allows a user to select items from a list of `Checkbox` components.
  */
 export const CheckboxGroup = withSlots('BentoCheckboxGroup', function CheckboxGroup(args: CheckboxGroupProps) {
-  const { props } = useProps(args);
+  const { props, apply } = useProps(args);
   const state = useCheckboxGroupState(props);
   const { groupProps, labelProps, descriptionProps, errorMessageProps, ...validationResult } = useCheckboxGroup(
     { ...props, label: props.label ?? 'Checkbox Group', description: props.description ?? 'Description' },
@@ -54,8 +53,7 @@ export const CheckboxGroup = withSlots('BentoCheckboxGroup', function CheckboxGr
   return (
     <CheckboxGroupStateContext.Provider value={state}>
       <Container
-        {...groupProps}
-        {...filterDOMProps(props, { propNames: new Set(['className', 'style']) })}
+        {...apply(groupProps)}
         {...useDataAttributes({
           orientation: props.orientation || 'vertical',
           invalid: state.isInvalid,

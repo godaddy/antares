@@ -1,7 +1,7 @@
 {
   "name": "@bento/field-error",
   "version": "0.1.0",
-  "description": "FieldError component",
+  "description": "The FieldError component renders error messages for form controls, such as RadioGroup or CheckboxGroup",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

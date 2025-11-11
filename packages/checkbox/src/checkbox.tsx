@@ -5,7 +5,7 @@ import { Icon } from '@bento/icon';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 import { VisuallyHidden } from '@bento/visually-hidden';
-import { filterDOMProps, mergeProps, mergeRefs, useObjectRef } from '@react-aria/utils';
+import { mergeProps, mergeRefs, useObjectRef } from '@react-aria/utils';
 import { useFocusRing, useHover, useCheckbox, useCheckboxGroupItem, type AriaCheckboxProps } from 'react-aria';
 import { useToggleState } from 'react-stately';
 import { CheckboxGroupStateContext } from './checkbox-group-state';
@@ -49,7 +49,7 @@ export interface CheckboxProps extends AriaCheckboxProps, Omit<ContainerProps, k
  * The `Checkbox` is a single checkbox option that can be selected by the user.
  */
 export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: CheckboxProps) {
-  const { props } = useProps(args);
+  const { props, apply } = useProps(args);
   const groupState = useContext(CheckboxGroupStateContext);
   const ref = useRef<HTMLInputElement>(null);
   const inputRef = useObjectRef(useMemo(() => mergeRefs(ref, props.inputRef), [ref, props.inputRef]));
@@ -78,8 +78,7 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
     <Container
       as="label"
       aria-checked={props.isIndeterminate ? 'mixed' : undefined}
-      {...mergeProps(labelProps, hoverProps)}
-      {...filterDOMProps(props, { propNames: new Set(['className', 'style']) })}
+      {...apply({ ...mergeProps(labelProps, hoverProps) })}
       {...useDataAttributes({
         selected: isSelected,
         pressed: isPressed,

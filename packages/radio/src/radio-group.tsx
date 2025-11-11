@@ -3,7 +3,6 @@ import { withSlots } from '@bento/slots';
 import { Container, type ContainerProps } from '@bento/container';
 import { useProps } from '@bento/use-props';
 import { useRadioGroup, type AriaRadioGroupProps } from 'react-aria';
-import { filterDOMProps } from '@react-aria/utils';
 import { useRadioGroupState } from 'react-stately';
 import { RadioGroupStateContext } from './radio-group-state';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -44,7 +43,7 @@ export interface RadioGroupProps extends AriaRadioGroupProps, Omit<ContainerProp
  * The `RadioGroup` allows a user to select a single item from a list of `Radio` components.
  */
 export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args: RadioGroupProps) {
-  const { props } = useProps(args);
+  const { props, apply } = useProps(args);
   const state = useRadioGroupState(props);
   const { radioGroupProps, labelProps, descriptionProps, errorMessageProps, ...validationResult } = useRadioGroup(
     { ...props, label: props.label ?? 'Radio Group', description: props.description ?? 'Description' },
@@ -54,8 +53,7 @@ export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args:
   return (
     <RadioGroupStateContext.Provider value={state}>
       <Container
-        {...radioGroupProps}
-        {...filterDOMProps(props, { propNames: new Set(['className', 'style']) })}
+        {...apply(radioGroupProps)}
         {...useDataAttributes({
           orientation: props.orientation || 'vertical',
           invalid: state.isInvalid,

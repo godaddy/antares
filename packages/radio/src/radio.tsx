@@ -5,7 +5,7 @@ import { Icon } from '@bento/icon';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 import { VisuallyHidden } from '@bento/visually-hidden';
-import { filterDOMProps, mergeProps, mergeRefs, useObjectRef } from '@react-aria/utils';
+import { mergeProps, mergeRefs, useObjectRef } from '@react-aria/utils';
 import { useFocusRing, useHover, useRadio, type AriaRadioProps } from 'react-aria';
 import { RadioGroupStateContext } from './radio-group-state';
 
@@ -33,7 +33,7 @@ export interface RadioProps extends AriaRadioProps, Omit<ContainerProps, keyof A
  * The `Radio` is a single radio option that can be selected by the user.
  */
 export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
-  const { props } = useProps(args);
+  const { props, apply } = useProps(args);
   const state = React.useContext(RadioGroupStateContext)!;
   const ref = React.useRef<HTMLInputElement>(null);
   const inputRef = useObjectRef(useMemo(() => mergeRefs(ref, props.inputRef), [ref, props.inputRef]));
@@ -48,8 +48,7 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
   return (
     <Container
       as="label"
-      {...mergeProps(labelProps, hoverProps)}
-      {...filterDOMProps(props, { propNames: new Set(['className', 'style']) })}
+      {...apply({ ...mergeProps(labelProps, hoverProps) })}
       {...useDataAttributes({
         selected: isSelected,
         pressed: isPressed,
