@@ -1,0 +1,113 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './portal.stories.tsx';
+import BasicExample from './examples/basic.tsx?raw';
+import CustomContainerExample from './examples/custom-container.tsx?raw';
+import PortalProviderExample from './examples/portal-provider.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Portal
+
+The `@bento/portal` package exports the **Portal** component, which renders children into a target DOM container outside the normal React component hierarchy. Portal solves common UI challenges like z-index conflicts, clipping issues, and overlay stacking by rendering content to `document.body` or a custom container.
+
+Portal integrates seamlessly with React ARIA's `UNSAFE_PortalProvider` while remaining fully independent and functional without it.
+
+## Use Cases
+
+Portal is essential for UI elements that need to escape their parent container's boundaries:
+
+- **Overlays and Modals**: Prevent clipping and z-index conflicts
+- **Dropdown Menus**: Render above all other content regardless of parent constraints
+- **Tooltips**: Position freely without overflow hidden issues
+- **Toast Notifications**: Display at the application level
+- **Popovers and Dialogs**: Ensure proper stacking and positioning
+
+## Installation
+
+```bash
+npm install --save @bento/portal
+```
+
+## Props
+
+The `@bento/portal` package exports the `Portal` component:
+
+<Source language='tsx' code={ BasicExample } />
+
+The following properties are available to be used on the `Portal` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+Basic portal usage that renders content to `document.body`:
+
+<Source language='tsx' code={ BasicExample } />
+
+### Custom Container
+
+Portal can render to a custom container instead of `document.body`. This is useful when you need to control the exact DOM location where portal content appears:
+
+<Source language='tsx' code={ CustomContainerExample } />
+
+## React ARIA Integration
+
+Portal optionally integrates with React ARIA's `UNSAFE_PortalProvider` to provide consistent portal container management across your application. This example demonstrates how Portal automatically detects and uses the PortalProvider's container:
+
+<Source language='tsx' code={ PortalProviderExample } />
+
+**Container priority:**
+1. Explicit `container` prop (highest priority)
+2. React ARIA's `UNSAFE_PortalProvider` container (via `useUNSAFE_PortalContext`)
+3. `document.body` (fallback)
+
+**Benefits:**
+- **Stacking context**: All overlays share the same stacking context
+- **Custom location**: Control where overlays render in DOM
+- **Multiple overlays**: Proper stacking when multiple portals/overlays are open
+- **React ARIA compatibility**: Works seamlessly with React ARIA components
+- **Graceful degradation**: Works without React ARIA installed
+
+## SSR Safety
+
+Portal is SSR-safe and will not render content on the server. The `mounted` prop should be set to `true` only after the component has mounted on the client:
+
+```tsx
+function MyComponent() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <Portal mounted={mounted}>
+      <Container>Content</Container>
+    </Portal>
+  );
+}
+```
+
+## Accessibility
+
+Portal is designed with accessibility in mind:
+
+- **Semantic HTML**: Portal doesn't interfere with semantic HTML structure
+- **Screen Reader Support**: Content rendered through Portal remains accessible to screen readers
+- **Focus Management**: Portal doesn't trap or redirect focus - implement your own focus management as needed for modals/dialogs
+- **Keyboard Navigation**: Portal preserves keyboard navigation of its content
+- **ARIA Support**: All ARIA attributes applied to portal content are preserved
+
+**Note**: Portal is a rendering utility and doesn't provide built-in focus trapping or modal behavior. For accessible modals and dialogs, combine Portal with proper focus management and ARIA attributes.
+
+## Data Attributes
+
+Portal applies the following data attributes to portal content:
+
+| Attribute        | Description                          | Example Values    |
+|------------------|--------------------------------------|-------------------|
+| `data-portal`    | Marks content rendered via portal    | "true"            |
+| `data-mounted`   | Whether portal content has mounted   | "true" / "false"  |
+

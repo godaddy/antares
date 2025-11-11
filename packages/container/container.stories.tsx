@@ -6,7 +6,7 @@ import { BuildingBlockExample } from './examples/building-block.tsx';
 import { NestedExample } from './examples/nested.tsx';
 
 export default getMeta({
-  title: 'primitives/container'
+  title: 'components/container'
 });
 
 export const Props = getComponentDocs(ContainerComponent);
