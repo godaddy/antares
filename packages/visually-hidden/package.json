@@ -1,7 +1,7 @@
 {
   "name": "@bento/visually-hidden",
   "version": "0.1.0",
-  "description": "VisuallyHidden component",
+  "description": "The VisuallyHidden component renders content that is accessible to screen readers and other assistive technologies while being visually hidden from sighted users",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
