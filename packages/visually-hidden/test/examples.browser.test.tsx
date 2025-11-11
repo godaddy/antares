@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
+import { userEvent } from '@testing-library/user-event';
 import { DefaultExample } from '../examples/default.tsx';
 import { CustomElementExample } from '../examples/custom-element.tsx';
 
@@ -13,6 +14,15 @@ describe('@bento/visually-hidden examples', function bento() {
 
       assume(result).includes('Skip to main content');
       assume(result).includes('<button');
+    });
+
+    it('renders the hidden content when focused on tabbing and proper data-hidden attribute', async function rendersDefault() {
+      const { container } = render(<DefaultExample />);
+
+      container.focus();
+      assume(container.innerHTML).includes('data-hidden="true"');
+      await userEvent.tab();
+      assume(container.innerHTML).does.not.include('data-hidden="true"');
     });
 
     it('renders the custom element example', function rendersCustomElement() {

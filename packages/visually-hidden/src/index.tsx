@@ -25,7 +25,7 @@ export const VisuallyHidden = withSlots('BentoVisuallyHidden', function Visually
 
   return (
     <Element
-      {...apply(visuallyHiddenProps)}
+      {...apply(visuallyHiddenProps, ['isFocusable'])}
       {...useDataAttributes({
         // If the style is set, the content is visually hidden
         hidden: Boolean(visuallyHiddenProps.style)
