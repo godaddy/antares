@@ -64,7 +64,7 @@ export const CheckboxGroup = withSlots('BentoCheckboxGroup', function CheckboxGr
         slots={{
           label: { ...labelProps },
           description: { ...descriptionProps },
-          errorMessage: { ...errorMessageProps, ...validationResult }
+          error: { ...errorMessageProps, ...validationResult }
         }}
       >
         {props.children}

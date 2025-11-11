@@ -64,7 +64,7 @@ export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args:
         slots={{
           label: { ...labelProps },
           description: { ...descriptionProps },
-          errorMessage: { ...errorMessageProps, ...validationResult }
+          error: { ...errorMessageProps, ...validationResult }
         }}
       >
         {props.children}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
-import { VisuallyHidden as AriaVisuallyHidden, VisuallyHiddenProps as AriaVisuallyHiddenProps } from 'react-aria';
+import { VisuallyHiddenProps as AriaVisuallyHiddenProps, useVisuallyHidden } from 'react-aria';
+import { useDataAttributes } from '@bento/use-data-attributes';
 
 export interface VisuallyHiddenProps extends AriaVisuallyHiddenProps {
   /** The element type to render the component as. Community standard (preferred) @default 'span' */
@@ -17,12 +18,18 @@ export interface VisuallyHiddenProps extends AriaVisuallyHiddenProps {
  * The `VisuallyHidden` component is used to hide content visually while keeping it accessible to screen readers and assistive technologies.
  */
 export const VisuallyHidden = withSlots('BentoVisuallyHidden', function VisuallyHidden(args: VisuallyHiddenProps) {
-  const { props } = useProps(args);
-  const { children, as, elementType, ...rest } = props;
+  const { props, apply } = useProps(args);
+  const { as, elementType, ...rest } = props;
+  const Element = as ?? elementType ?? 'span';
+  const { visuallyHiddenProps } = useVisuallyHidden(rest);
 
   return (
-    <AriaVisuallyHidden {...rest} elementType={as ?? elementType ?? 'span'}>
-      {children}
-    </AriaVisuallyHidden>
+    <Element
+      {...apply(visuallyHiddenProps)}
+      {...useDataAttributes({
+        // If the style is set, the content is visually hidden
+        hidden: Boolean(visuallyHiddenProps.style)
+      })}
+    />
   );
 });

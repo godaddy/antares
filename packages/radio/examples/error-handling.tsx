@@ -12,7 +12,7 @@ export function ErrorHandlingExample() {
       <Radio value="apple">Apple</Radio>
       <Radio value="banana">Banana</Radio>
       <Radio value="orange">Orange</Radio>
-      <FieldError slot="errorMessage">Error! banana selected</FieldError>
+      <FieldError slot="error">Error! banana selected</FieldError>
     </RadioGroup>
   );
 }
@@ -25,7 +25,7 @@ export function ErrorHandlingExampleWithState() {
       <Radio value="apple">Apple</Radio>
       <Radio value="banana">Banana</Radio>
       <Radio value="orange">Orange</Radio>
-      <FieldError slot="errorMessage">
+      <FieldError slot="error">
         {/* @ts-ignore: Passing a function as a children is allowed but lacking type safety */}
         {function FieldError(args: any) {
           return args.slots.isInvalid && `Invalid fruit: ${value}`;

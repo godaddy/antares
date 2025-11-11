@@ -20,7 +20,7 @@ function RadioGroupExample(props: {
       <Radio value="banana">Banana</Radio>
       <Radio value="cherry">Cherry</Radio>
 
-      <FieldError slot="errorMessage">error message</FieldError>
+      <FieldError slot="error">error message</FieldError>
     </RadioGroup>
   );
 }

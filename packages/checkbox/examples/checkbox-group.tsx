@@ -11,7 +11,7 @@ export function CheckboxGroupExample(args: React.ComponentProps<typeof CheckboxG
       <Checkbox value="checkbox-1">Checkbox 1</Checkbox>
       <Checkbox value="checkbox-2">Checkbox 2</Checkbox>
       <Text slot="description">Select your options</Text>
-      <FieldError slot="errorMessage">This is an error message</FieldError>
+      <FieldError slot="error">This is an error message</FieldError>
     </CheckboxGroup>
   );
 }
