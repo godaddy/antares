@@ -5,10 +5,9 @@ import React from 'react';
 export function DefaultExample(args: VisuallyHiddenProps) {
   return (
     <div>
-      <button>
-        <VisuallyHidden {...args}>Skip to main content</VisuallyHidden>
-        <span aria-hidden="true">→</span>
-      </button>
+      <VisuallyHidden isFocusable {...args}>
+        <button>Skip to main content</button>
+      </VisuallyHidden>
     </div>
   );
 }
