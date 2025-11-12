@@ -2,7 +2,7 @@ import React from 'react';
 import { withSlots } from '@bento/slots';
 import { Container, type ContainerProps } from '@bento/container';
 import { useProps } from '@bento/use-props';
-import { useCheckboxGroup, type AriaCheckboxGroupProps } from 'react-aria';
+import { useCheckboxGroup, mergeProps, type AriaCheckboxGroupProps } from 'react-aria';
 import { useCheckboxGroupState } from 'react-stately';
 import { CheckboxGroupStateContext } from './checkbox-group-state';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -62,9 +62,9 @@ export const CheckboxGroup = withSlots('BentoCheckboxGroup', function CheckboxGr
           required: state.isRequired
         })}
         slots={{
-          label: { ...labelProps },
-          description: { ...descriptionProps },
-          error: { ...errorMessageProps, ...validationResult }
+          label: labelProps,
+          description: descriptionProps,
+          error: mergeProps(errorMessageProps, validationResult)
         }}
       >
         {props.children}

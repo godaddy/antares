@@ -2,7 +2,7 @@ import React from 'react';
 import { withSlots } from '@bento/slots';
 import { Container, type ContainerProps } from '@bento/container';
 import { useProps } from '@bento/use-props';
-import { useRadioGroup, type AriaRadioGroupProps } from 'react-aria';
+import { useRadioGroup, mergeProps, type AriaRadioGroupProps } from 'react-aria';
 import { useRadioGroupState } from 'react-stately';
 import { RadioGroupStateContext } from './radio-group-state';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -62,9 +62,9 @@ export const RadioGroup = withSlots('BentoRadioGroup', function RadioGroup(args:
           required: state.isRequired
         })}
         slots={{
-          label: { ...labelProps },
-          description: { ...descriptionProps },
-          error: { ...errorMessageProps, ...validationResult }
+          label: labelProps,
+          description: descriptionProps,
+          error: mergeProps(errorMessageProps, validationResult)
         }}
       >
         {props.children}

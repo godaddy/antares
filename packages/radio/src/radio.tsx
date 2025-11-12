@@ -48,7 +48,7 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
   return (
     <Container
       as="label"
-      {...apply({ ...mergeProps(labelProps, hoverProps) })}
+      {...apply(mergeProps(labelProps, hoverProps))}
       {...useDataAttributes({
         selected: isSelected,
         pressed: isPressed,

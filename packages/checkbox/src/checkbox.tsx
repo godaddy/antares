@@ -78,7 +78,7 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
     <Container
       as="label"
       aria-checked={props.isIndeterminate ? 'mixed' : undefined}
-      {...apply({ ...mergeProps(labelProps, hoverProps) })}
+      {...apply(mergeProps(labelProps, hoverProps))}
       {...useDataAttributes({
         selected: isSelected,
         pressed: isPressed,
