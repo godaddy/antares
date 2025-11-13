@@ -400,10 +400,24 @@ const MyPopover = withSlots('MyPopover', function MyPopover(args) {
 - Option: `data-selected`, `data-disabled`, `data-focused`
 - Interactive: `data-focus-visible`, `data-hovered`, `data-pressed`
 
-**Slot customization** (using `slots` prop):
-- `slots.trigger`, `slots['trigger.value']` — Customize trigger/value (namespaced keys apply to nested slots)
-- `slots.popover` — Customize overlay container (consumer handles portal rendering)
-- `slots.listbox` — Customize list
+**Slot customization** (via the `slots` prop object):
+
+Slots are customized by passing an object to the `slots` prop. Access slots using standard JavaScript object notation:
+
+```tsx
+<Select 
+  slots={{
+    trigger: { className: 'custom-trigger' },
+    'trigger.value': { className: 'custom-value' }
+  }}
+>
+```
+
+Common slot customizations:
+- `trigger` — Customize the trigger button props
+- `'trigger.value'` — Customize the nested value element (dot notation targets nested slots)
+- `popover` — Customize overlay container props (consumer handles portal rendering)
+- `listbox` — Customize the list container props
 
 ### TypeScript Slot Safety
 
