@@ -23,6 +23,7 @@ Bento provides a comprehensive collection of primitives organized into three cat
 - [**checkbox**](./packages/checkbox) - Checkbox controls supporting single, grouped, and indeterminate selections
 - [**container**](./packages/container) - Polymorphic component that renders as any HTML element via `as` prop
 - [**control**](./packages/control) - Form control primitive providing label and visually hidden input structure
+- [**dismiss**](./packages/dismiss) - Visually hidden, focusable dismissal control for accessible modal dismissal
 - [**divider**](./packages/divider) - Horizontal or vertical content separator
 - [**environment**](./packages/environment) - Swap or override any Bento component with custom implementations
 - [**heading**](./packages/heading) - Heading component with automatic level tracking through nesting

@@ -1,0 +1,118 @@
+import { Meta, Story, ArgTypes, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './dismiss.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceCustomLabel from './examples/custom-label.tsx?raw';
+import SourceSlotCustomization from './examples/slot-customization.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Dismiss
+
+The `@bento/dismiss` package provides a visually hidden, focusable dismissal control that ensures users (including screen reader users) can reliably dismiss modal or popup content via linear navigation. This control complements ESC and outside-click behavior, and is intended to be placed at the start and end of the focus boundary of dismissible overlays.
+
+## Installation
+
+```shell
+npm install --save @bento/dismiss
+```
+
+## Props
+
+The `@bento/dismiss` package exports the `Dismiss` component:
+
+<Source language='tsx' code={ SourceBasic } />
+
+The following properties are available to be used on the `Dismiss` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+Place the `Dismiss` component at the very start and end of the overlay content slot so forward/backward navigation always encounters a dismiss target:
+
+<Source language='tsx' code={ SourceBasic } />
+<Story of={Stories.Basic} inline />
+
+### Custom Label
+
+You can customize the accessible label by providing the `ariaLabel` prop. This should be localized for your application:
+
+<Source language='tsx' code={ SourceCustomLabel } />
+<Story of={Stories.CustomLabel} inline />
+
+## Usage and Placement
+
+### Where it SHOULD be used
+
+- **Modal dialogs/overlays (required)**: Place one at the start and one at the end of the `content` slot. Complements visible close, ESC, and outside-click.
+- **Drawers/Sheets (modal variants) (required)**: Same placement as modals.
+- **Popovers/Menus (recommended when dismissible without a visible close)**: Include start/end dismiss controls to ensure screen reader users can exit via linear navigation.
+- **Coachmarks/Tour steps (recommended when dismissible)**: Include when the step can be dismissed; otherwise provide explicit action buttons.
+
+### Where it MAY be used
+
+- **Combobox/Select popovers (recommended)**: Helps screen reader users exit the popup even when focus is managed on the field/trigger.
+- **Non-modal anchored popovers (optional)**: Omit if ESC/outside-click and return-to-trigger are sufficient; include only if testing shows SR users struggle to dismiss.
+
+### Where it should NOT be used
+
+- **Tooltips**: Non-interactive, no focus trap.
+- **Toasts/Growls**: Not focus-trapped; use a visible close if needed.
+- **Non-dismissible/legal consent**: Provide explicit action buttons instead of a generic dismiss.
+
+### Placement rules
+
+- Put a dismiss control immediately inside the `content` slot at the first and last focusable positions.
+- Maintain a visible close button for sighted users; dismiss buttons are SR-only safeguards.
+- Provide a localizable `aria-label` (default "Dismiss").
+
+## Accessibility
+
+The `Dismiss` component automatically handles accessibility features:
+
+- **Screen reader accessible**: Content remains available to assistive technologies while being visually hidden
+- **Keyboard accessible**: The button can be focused and activated via keyboard navigation
+- **ARIA attributes**: Automatically applies `aria-label` for screen reader context
+- **Focus management**: Uses `tabIndex={-1}` to avoid tab order while remaining screen-reader operable
+- **Semantic HTML**: Renders as a native `button` element with `type="button"`
+
+The component works alongside ESC and outside-click handling from React Aria's overlay hooks and focus containment from FocusLock. It should be placed inside the focus boundary and in the same container as overlay content.
+
+## Customization
+
+As the `Dismiss` component is built using our slot system, you can customize various parts of the component using slots and data attributes.
+
+### Slots
+
+The component is created using our `@bento/slots` package and allows the assignment of custom `slot` properties to be used for overrides.
+
+The `@bento/dismiss` is registered as `BentoDismiss` and introduces the following slots:
+
+- `hidden`: Assigned to the `VisuallyHidden` component that wraps the dismiss button. Use this slot to customize or replace the visually hidden wrapper.
+
+See the `@bento/slots` package for more information on how to use the `slot` and `slots` properties.
+
+<Source language='tsx' code={ SourceSlotCustomization } />
+<Story of={Stories.SlotCustomization} inline />
+
+### Styling
+
+The dismiss button is visually hidden by default, so styling is typically not necessary. However, if you need to customize the appearance of the button itself, you can use the `className` or `style` props. Note that the button is wrapped in a `VisuallyHidden` component, so visual styling will not be visible to sighted users.
+
+Once you assign the `className` property to the component, you take full responsibility for the styling of the component, and it will remove any default styling that might be applied as part of this component.
+
+```jsx
+import { Dismiss } from '@bento/dismiss';
+
+<Dismiss onDismiss={handleDismiss} className="my-dismiss-button" />
+```
+
+The component renders a native `button` element with the following default attributes:
+
+- `type="button"`: Prevents form submission
+- `tabIndex={-1}`: Removes from tab order while remaining screen-reader operable
+- `aria-label="Dismiss"`: Default accessible label (can be customized)
+
