@@ -1,9 +1,19 @@
-import React, { createContext, useContext, useRef, ReactNode } from 'react';
-import { useSelect, HiddenSelect, useOverlay, useOverlayPosition } from 'react-aria';
-import { useSelectState, SelectState } from 'react-stately';
+import React, { useRef, ReactNode } from 'react';
+import {
+  useSelect,
+  HiddenSelect,
+  useFocusRing,
+  useHover,
+  usePreventScroll,
+  mergeProps,
+  useOverlay,
+  useOverlayPosition
+} from 'react-aria';
+import type { Placement } from 'react-aria';
+import { useSelectState } from 'react-stately';
 import { AriaSelectProps } from '@react-types/select';
-import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
-import { Node, Collection as AriaCollectionType } from '@react-types/shared';
+import { CollectionBuilder } from '@react-aria/collections';
+import { Node, Collection as AriaCollectionType, Key } from '@react-types/shared';
 import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { withSlots, Slots } from '@bento/slots';
@@ -13,39 +23,9 @@ import type { PressableProps } from '@bento/pressable';
 import type { ListBoxProps } from '@bento/listbox';
 
 /**
- * Context value for Select component, providing state and refs.
- * Kept minimal for backwards compatibility, but slot-based composition is preferred.
- * @interface SelectContextValue
- * @internal
+ * Selection mode for Select component
  */
-interface SelectContextValue {
-  /** The select state from useSelectState */
-  readonly state: SelectState<unknown>;
-  /** Ref to the trigger button element */
-  readonly triggerRef: React.RefObject<HTMLButtonElement>;
-  /** Ref to the popover/content element */
-  readonly popoverRef: React.RefObject<HTMLDivElement>;
-}
-
-/**
- * Context for Select component.
- * @internal
- */
-const SelectContext = createContext<SelectContextValue | null>(null);
-
-/**
- * Hook to access Select context.
- * @throws {Error} If used outside of a Select component
- * @returns {SelectContextValue} The Select context value
- * @internal
- */
-export function useSelectContext(): SelectContextValue {
-  const context = useContext(SelectContext);
-  if (!context) {
-    throw new Error('Select components must be used within a Select root component');
-  }
-  return context;
-}
+export type SelectionMode = 'single' | 'multiple';
 
 /**
  * TypeScript interfaces for typed slot components.
@@ -70,22 +50,22 @@ export interface SelectValueSlotProps {
   readonly valueProps: React.HTMLAttributes<HTMLElement>;
   /** Placeholder text when no value is selected */
   readonly placeholder?: string;
-  /** Currently selected item */
+  /** Currently selected item (single mode) */
   readonly selectedItem?: Node<unknown> | null;
+  /** Currently selected items (multiple mode) */
+  readonly selectedItems?: Node<unknown>[];
 }
 
 /**
  * Popover slot receives overlay positioning props
  */
-export interface SelectPopoverSlotProps {
-  /** Props from useOverlay */
-  readonly overlayProps: React.HTMLAttributes<HTMLElement>;
-  /** Props from useOverlayPosition */
-  readonly positionProps: React.HTMLAttributes<HTMLElement>;
+export interface SelectPopoverSlotProps extends React.HTMLAttributes<HTMLElement> {
   /** Ref to the popover element */
   readonly ref?: React.RefObject<HTMLElement>;
   /** Whether the popover is open */
   readonly isOpen: boolean;
+  /** Handler to close the popover (called by overlay dismiss events) */
+  readonly onClose?: () => void;
 }
 
 /**
@@ -97,35 +77,20 @@ export interface SelectListSlotProps extends Omit<ListBoxProps<unknown>, 'childr
 }
 
 /**
- * Render props for dynamic chrome (e.g., conditional error messages).
- * Items/collection must stay in children for React Aria to discover them.
- * @interface SelectRenderProps
- * @template T The type of items in the select
- */
-export interface SelectRenderProps<T = unknown> {
-  /** Whether the select is open */
-  readonly isOpen: boolean;
-  /** Whether the select is in an invalid state */
-  readonly isInvalid?: boolean;
-  /** Whether the select is disabled */
-  readonly isDisabled?: boolean;
-  /** The select state from useSelectState */
-  readonly state: SelectState<T>;
-}
-
-/**
  * Slot type map for Select component.
  * Provides type safety for custom slot components.
  * @public
  */
 export type SelectSlots = {
   trigger: SelectTriggerSlotProps;
+  label: React.HTMLAttributes<HTMLLabelElement>;
   'trigger.value': SelectValueSlotProps;
   value: SelectValueSlotProps;
   popover: SelectPopoverSlotProps;
-  list: SelectListSlotProps;
   listbox: SelectListSlotProps;
   description: React.HTMLAttributes<HTMLElement>;
+  error: React.HTMLAttributes<HTMLElement>;
+  /** @deprecated Use 'error' instead. Legacy alias for backwards compatibility. */
   errorMessage: React.HTMLAttributes<HTMLElement>;
 };
 
@@ -137,18 +102,95 @@ export type SelectSlots = {
 export type PropsFromSelectSlot<S extends keyof SelectSlots> = SelectSlots[S];
 
 /**
- * Props for the Select component.
- * @interface SelectProps
+ * Base props shared between single and multiple selection modes
+ * @interface BaseSelectProps
  * @template T The type of items in the select
  */
-export interface SelectProps<T> extends Omit<AriaSelectProps<T>, 'children'>, Slots {
+interface BaseSelectProps<T>
+  extends Omit<
+      AriaSelectProps<T>,
+      | 'children'
+      | 'selectedKey'
+      | 'defaultSelectedKey'
+      | 'onSelectionChange'
+      | 'selectedKeys'
+      | 'defaultSelectedKeys'
+      | 'selectionMode'
+      | 'value'
+      | 'defaultValue'
+      | 'onValueChange'
+    >,
+    Slots {
   /** Children of the Select component (items/collection must stay here for React Aria) */
   readonly children?: ReactNode;
-  /** Optional render prop for dynamic chrome (e.g., conditional errors) */
-  readonly render?: (props: SelectRenderProps<T>) => ReactNode;
   /** CSS className for the root container */
   readonly className?: string;
+  /**
+   * Position of the popover relative to the trigger.
+   * @default 'bottom start'
+   */
+  readonly placement?: Placement;
+  /**
+   * Distance in pixels between the trigger and popover along the main axis.
+   * @default 4
+   */
+  readonly offset?: number;
+  /**
+   * Additional offset along the cross axis in pixels.
+   * Use positive values to shift right/down, negative to shift left/up.
+   * @default 0
+   */
+  readonly crossOffset?: number;
+  /**
+   * Whether the popover should automatically flip when there is insufficient space.
+   * @default true
+   */
+  readonly shouldFlip?: boolean;
+  /**
+   * Minimum padding required between the popover and the viewport edge in pixels.
+   * @default 12
+   */
+  readonly containerPadding?: number;
 }
+
+/**
+ * Props for single selection mode
+ * @interface SingleSelectProps
+ * @template T The type of items in the select
+ */
+export interface SingleSelectProps<T> extends BaseSelectProps<T> {
+  /** Selection mode for single selection */
+  readonly selectionMode?: 'single';
+  /** Controlled value (user-friendly API that maps to selectedKey) */
+  readonly value?: Key;
+  /** Uncontrolled default value (user-friendly API that maps to defaultSelectedKey) */
+  readonly defaultValue?: Key;
+  /** Callback when value changes (user-friendly API that maps to onSelectionChange) */
+  readonly onValueChange?: (value: Key) => void;
+}
+
+/**
+ * Props for multiple selection mode
+ * @interface MultipleSelectProps
+ * @template T The type of items in the select
+ */
+export interface MultipleSelectProps<T> extends BaseSelectProps<T> {
+  /** Selection mode for multiple selection */
+  readonly selectionMode: 'multiple';
+  /** Controlled value (user-friendly API that maps to selectedKeys) */
+  readonly value?: Set<Key>;
+  /** Uncontrolled default value (user-friendly API that maps to defaultSelectedKeys) */
+  readonly defaultValue?: Set<Key>;
+  /** Callback when value changes (user-friendly API that maps to onSelectionChange) */
+  readonly onValueChange?: (value: Set<Key>) => void;
+}
+
+/**
+ * Props for the Select component.
+ * Union type that supports both single and multiple selection modes.
+ * @template T The type of items in the select
+ */
+export type SelectProps<T> = SingleSelectProps<T> | MultipleSelectProps<T>;
 
 /**
  * Root Select component that builds collection and applies props to slotted children.
@@ -160,14 +202,28 @@ export interface SelectProps<T> extends Omit<AriaSelectProps<T>, 'children'>, Sl
  * @template T The type of items in the select
  * @example
  * ```tsx
+ * // Single select
  * <Select value={value} onValueChange={setValue} name="fruit">
  *   <Button slot="trigger">
  *     <Text slot="value" placeholder="Select a fruit" />
  *   </Button>
  *   <Popover slot="popover">
- *     <ListBox slot="list">
- *       <SelectOption value="apple">Apple</SelectOption>
- *       <SelectOption value="orange">Orange</SelectOption>
+ *     <ListBox slot="listbox">
+ *       <ListBoxItem id="apple">Apple</ListBoxItem>
+ *       <ListBoxItem id="orange">Orange</ListBoxItem>
+ *     </ListBox>
+ *   </Popover>
+ * </Select>
+ *
+ * // Multiple select
+ * <Select selectionMode="multiple" value={values} onValueChange={setValues} name="fruits">
+ *   <Button slot="trigger">
+ *     <Text slot="value" placeholder="Select fruits" />
+ *   </Button>
+ *   <Popover slot="popover">
+ *     <ListBox slot="listbox">
+ *       <ListBoxItem id="apple">Apple</ListBoxItem>
+ *       <ListBoxItem id="orange">Orange</ListBoxItem>
  *     </ListBox>
  *   </Popover>
  * </Select>
@@ -176,7 +232,7 @@ export interface SelectProps<T> extends Omit<AriaSelectProps<T>, 'children'>, Sl
  */
 export const Select = withSlots('BentoSelect', function Select<T>(args: SelectProps<T>) {
   return (
-    <CollectionBuilder content={<AriaCollection {...(args as unknown as Parameters<typeof AriaCollection>[0])} />}>
+    <CollectionBuilder content={args.children}>
       {function buildCollection(collection: unknown) {
         return <SelectInner props={args as unknown as SelectProps<object>} collection={collection} />;
       }}
@@ -196,300 +252,157 @@ interface SelectInnerProps {
 const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, collection }) {
   const { props: processedProps } = useProps(props);
   const originalCollection = collection as AriaCollectionType<Node<object>> | undefined;
-  const state = useSelectState({
+
+  // Map user-friendly API to React Aria API
+  // Handle both single and multiple selection modes
+  const isMultiple = processedProps.selectionMode === 'multiple';
+  const ariaProps = {
     ...processedProps,
-    collection: originalCollection
-  });
+    // Map value/defaultValue/onValueChange based on selection mode
+    ...(isMultiple
+      ? {
+          selectedKeys: processedProps.value ?? processedProps.selectedKeys,
+          defaultSelectedKeys: processedProps.defaultValue ?? processedProps.defaultSelectedKeys,
+          onSelectionChange: processedProps.onValueChange ?? processedProps.onSelectionChange
+        }
+      : {
+          selectedKey: processedProps.value ?? processedProps.selectedKey,
+          defaultSelectedKey: processedProps.defaultValue ?? processedProps.defaultSelectedKey,
+          onSelectionChange: processedProps.onValueChange ?? processedProps.onSelectionChange
+        }),
+    collection: originalCollection,
+    // Set children to undefined to prevent React Aria from trying to rebuild the collection
+    children: undefined
+  };
+
+  const state = useSelectState(ariaProps);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
-  const { triggerProps, valueProps, menuProps, descriptionProps, errorMessageProps, hiddenSelectProps } = useSelect(
-    processedProps,
-    state,
-    triggerRef
+  const { labelProps, triggerProps, valueProps, menuProps, descriptionProps, errorMessageProps, hiddenSelectProps } =
+    useSelect(ariaProps, state, triggerRef);
+
+  // Handler for overlay dismiss (called by React Aria on Escape, outside click, etc.)
+  const handleOverlayClose = React.useCallback(
+    function handleOverlayClose() {
+      state.close();
+    },
+    [state]
   );
 
-  // Overlay positioning - Select coordinates this and applies to popover slot
+  // Overlay positioning for popover
   const { overlayProps } = useOverlay(
     {
       isOpen: state.isOpen,
-      onClose: function handleClose() {
-        state.close();
-      },
+      onClose: handleOverlayClose,
       isDismissable: true
     },
     popoverRef
   );
+
   const { overlayProps: positionProps } = useOverlayPosition({
     targetRef: triggerRef,
     overlayRef: popoverRef,
-    placement: 'bottom start',
-    offset: 8,
+    placement: processedProps.placement ?? 'bottom start',
+    offset: processedProps.offset ?? 4,
+    crossOffset: processedProps.crossOffset,
+    shouldFlip: processedProps.shouldFlip ?? true,
+    containerPadding: processedProps.containerPadding ?? 12,
     isOpen: state.isOpen
   });
 
-  // Helper to convert CSSStyleDeclaration or style objects to plain objects
-  // Preserves numeric CSS values for React to auto-add units (e.g., top: 123 -> "123px")
-  function convertStyleToPlainObject(style: unknown): Record<string, string | number> {
-    if (!style || typeof style !== 'object' || Array.isArray(style)) {
-      return {};
-    }
+  // Add focus and hover interactions
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing();
+  const { hoverProps, isHovered } = useHover({ isDisabled: processedProps.isDisabled });
 
-    // If it's a CSSStyleDeclaration, iterate via indexed access
-    if ('cssText' in style && 'length' in style && typeof (style as any).length === 'number') {
-      const cssStyle = style as CSSStyleDeclaration;
-      const plainObj: Record<string, string | number> = {};
-      for (let i = 0; i < cssStyle.length; i++) {
-        const prop = cssStyle[i];
-        const value = cssStyle.getPropertyValue(prop);
-        if (value) {
-          plainObj[prop] = value;
-        }
-      }
-      return plainObj;
-    }
+  // Prevent scroll when open
+  usePreventScroll({ isDisabled: !state.isOpen });
 
-    // Plain object - copy only enumerable own properties that aren't functions
-    const plainObj: Record<string, string | number> = {};
-    for (const key in style as Record<string, unknown>) {
-      if (Object.hasOwn(style, key)) {
-        const value = (style as Record<string, unknown>)[key];
-        if (value != null && typeof value !== 'function') {
-          plainObj[key] = typeof value === 'number' ? value : String(value);
-        }
-      }
-    }
-    return plainObj;
-  }
-
-  // Merge overlay and position props with safe style handling
-  const overlayStyle = 'style' in overlayProps ? overlayProps.style : undefined;
-  const positionStyle = 'style' in positionProps ? positionProps.style : undefined;
-  const { style: _omitted1, ...overlayPropsWithoutStyle } = overlayProps;
-  const { style: _omitted2, ...positionPropsWithoutStyle } = positionProps;
-
-  // Create a completely plain style object for React
-  const createCompletelyPlainStyle = (styles: Record<string, string | number>): Record<string, string | number> => {
-    const plain = Object.create(null) as Record<string, string | number>;
-    for (const [key, value] of Object.entries(styles)) {
-      if (typeof value === 'string' || typeof value === 'number') {
-        plain[key] = value;
-      }
-    }
-    return plain;
-  };
-
-  const overlayStyleObj = convertStyleToPlainObject(overlayStyle);
-  const positionStyleObj = convertStyleToPlainObject(positionStyle);
-  const mergedStyleObj = { ...overlayStyleObj, ...positionStyleObj };
-
-  const mergedStyle = Object.keys(mergedStyleObj).length > 0 ? createCompletelyPlainStyle(mergedStyleObj) : undefined;
-
-  const mergedOverlayPropsWithStyle = {
-    ...overlayPropsWithoutStyle,
-    ...positionPropsWithoutStyle,
-    ...(mergedStyle && { style: mergedStyle })
-  };
-
-  // Get selected item for value slots
+  // Get selected item(s) for value slots
   const selectedItem = state.selectedKey != null ? state.collection.getItem(state.selectedKey) : null;
+  const selectedItems = isMultiple
+    ? Array.from(state.selectionManager.selectedKeys)
+        .map((key) => state.collection.getItem(key))
+        .filter((item): item is Node<object> => item != null)
+    : [];
 
-  // Prepare trigger props with explicit ARIA attributes
-  const triggerPropsAsHtml = triggerProps as React.HTMLAttributes<HTMLElement>;
+  // Merge trigger props with focus and hover props
+  const buttonProps = mergeProps(triggerProps, focusProps, hoverProps);
+
+  // Handle both `required` (HTML attribute) and `isRequired` (React Aria prop)
+  const isRequired = (processedProps as any).required || processedProps.isRequired;
+
+  // Ensure trigger has proper ARIA attributes
   const finalTriggerProps = {
-    ...triggerProps,
-    role: triggerPropsAsHtml.role || 'combobox',
-    'aria-disabled': processedProps.isDisabled ? true : triggerPropsAsHtml['aria-disabled'],
-    'aria-invalid': processedProps.isInvalid ? true : triggerPropsAsHtml['aria-invalid'],
-    'aria-required': processedProps.isRequired ? true : triggerPropsAsHtml['aria-required'],
+    ...buttonProps,
+    role: buttonProps.role || 'combobox',
+    'aria-expanded': state.isOpen ? 'true' : 'false',
+    'aria-invalid': processedProps.isInvalid ? 'true' : buttonProps['aria-invalid'],
+    'aria-disabled': processedProps.isDisabled ? 'true' : buttonProps['aria-disabled'],
+    'aria-required': isRequired ? 'true' : buttonProps['aria-required'],
+    'data-open': state.isOpen ? 'true' : 'false',
+    // If user explicitly provides aria-labelledby, use it exactly as provided
+    // This overrides React Aria's automatic ID concatenation
+    ...(processedProps['aria-labelledby'] && { 'aria-labelledby': processedProps['aria-labelledby'] }),
     ref: triggerRef
   };
 
-  // Optional render prop for dynamic chrome (e.g., conditional error messages)
-  const dynamic = props.render?.({
-    isOpen: state.isOpen,
-    isInvalid: processedProps.isInvalid,
-    isDisabled: processedProps.isDisabled,
-    state: state as SelectState<any>
-  });
-
   return (
-    <SelectContext.Provider value={{ state, triggerRef, popoverRef }}>
-      <ListStateContext.Provider value={state as any}>
-        <Container
-          className={processedProps.className}
-          {...useDataAttributes({
-            open: state.isOpen,
-            disabled: processedProps.isDisabled,
-            invalid: processedProps.isInvalid,
-            required: processedProps.isRequired
-          })}
-          slots={{
-            trigger: finalTriggerProps,
-            'trigger.value': {
-              ...valueProps,
-              selectedItem,
-              placeholder: processedProps.placeholder
-            },
-            value: {
-              ...valueProps,
-              selectedItem,
-              placeholder: processedProps.placeholder
-            },
-            popover: {
-              ...mergedOverlayPropsWithStyle,
-              isOpen: state.isOpen,
-              ref: popoverRef
-            },
-            list: { ...menuProps },
-            listbox: { ...menuProps },
-            description: descriptionProps,
-            errorMessage: errorMessageProps
-          }}
-        >
-          {processedProps.children}
-        </Container>
-        {dynamic}
-      </ListStateContext.Provider>
+    <ListStateContext.Provider value={state as any}>
+      <Container
+        className={processedProps.className}
+        {...useDataAttributes({
+          open: state.isOpen ? 'true' : 'false',
+          disabled: processedProps.isDisabled ? 'true' : 'false',
+          invalid: processedProps.isInvalid ? 'true' : 'false',
+          required: processedProps.isRequired ? 'true' : 'false',
+          focused: isFocused ? 'true' : 'false',
+          'focus-visible': isFocusVisible ? 'true' : 'false',
+          hovered: isHovered ? 'true' : 'false'
+        })}
+        slots={{
+          trigger: { ...finalTriggerProps, slot: 'trigger' },
+          label: { ...labelProps, as: 'label', slot: 'label' },
+          'trigger.value': {
+            ...valueProps,
+            selectedItem,
+            selectedItems,
+            placeholder: processedProps.placeholder,
+            slot: 'value'
+          },
+          value: {
+            ...valueProps,
+            selectedItem,
+            selectedItems,
+            placeholder: processedProps.placeholder,
+            slot: 'value'
+          },
+          popover: {
+            isOpen: state.isOpen,
+            ref: popoverRef,
+            slot: 'popover',
+            ...overlayProps,
+            ...positionProps,
+            onClose: handleOverlayClose // Must come AFTER spreads to avoid being overridden
+          },
+          listbox: { ...menuProps, ref: listRef, slot: 'listbox' },
+          description: { ...descriptionProps, slot: 'description' },
+          error: { ...errorMessageProps, slot: 'error' },
+          errorMessage: { ...errorMessageProps, slot: 'errorMessage' }
+        }}
+      >
+        {processedProps.children}
+      </Container>
+      {/* Hidden select for form submission - React Aria's HiddenSelect supports SSR */}
       {processedProps.name && (
-        <>
-          {/* Use HiddenSelect for client-side rendering only */}
-          {typeof window !== 'undefined' && (
-            <HiddenSelect
-              {...hiddenSelectProps}
-              state={state}
-              triggerRef={triggerRef}
-              {...(processedProps.label && { label: processedProps.label })}
-            />
-          )}
-          {/* Manually create hidden select for SSR compatibility
-              HiddenSelect in React Aria may not properly render options in SSR,
-              so we create a fallback hidden select with manually rendered options.
-              Match React Aria's HiddenSelect implementation exactly.
-              Use originalCollection if state.collection is empty in SSR */}
-          {typeof window === 'undefined' && (originalCollection || state.collection) && (
-            <div
-              style={{
-                border: 0,
-                clip: 'rect(0 0 0 0)',
-                clipPath: 'inset(50%)',
-                height: '1px',
-                margin: '-1px',
-                overflow: 'hidden',
-                padding: 0,
-                position: 'fixed',
-                width: '1px',
-                whiteSpace: 'nowrap',
-                top: 0,
-                left: 0
-              }}
-              aria-hidden="true"
-              data-react-aria-prevent-focus="true"
-              data-a11y-ignore="aria-hidden-focus"
-              data-testid="hidden-select-container"
-            >
-              <label>
-                <select tabIndex={-1} name={processedProps.name} value={String(state.selectedKey ?? '')}>
-                  {/* Match React Aria's HiddenSelect implementation exactly
-                      Use originalCollection if state.collection is empty in SSR */}
-                  {(function renderHiddenSelectOptions() {
-                    // In SSR, if we have selectedKey or value, always render at least that option for form submission
-                    // This ensures form submission works even if collection iteration fails
-                    // React Aria uses state.value for the select value, but state.selectedKey for the key
-                    const selectedKey = state.selectedKey ?? (state.value as string | number | null);
-                    if (selectedKey) {
-                      // Render option with the selectedKey value - ensures form submission works
-                      // This is the minimal fallback that always works
-                      const selectedKeyStr = String(selectedKey);
-
-                      // Try to use state.collection first, then fallback to originalCollection
-                      let collection: typeof state.collection | typeof originalCollection | null = state.collection;
-                      if (!collection || collection.size === 0) {
-                        collection = originalCollection || null;
-                      }
-
-                      // Try to get the item from the collection if available
-                      if (collection && typeof collection.getItem === 'function') {
-                        try {
-                          const item = collection.getItem(selectedKey);
-                          if (item && (item.type === 'item' || item.type === undefined)) {
-                            return (
-                              <option key={item.key} value={selectedKeyStr}>
-                                {item.textValue || selectedKeyStr}
-                              </option>
-                            );
-                          }
-                        } catch {
-                          // Fall through to render with just the key
-                        }
-                      }
-                      // Render option with the selectedKey value - ensures form submission works
-                      return (
-                        <option key={selectedKey} value={selectedKeyStr}>
-                          {selectedKeyStr}
-                        </option>
-                      );
-                    }
-
-                    // If no selectedKey, try to render all items from collection
-                    let collection: typeof state.collection | typeof originalCollection | null = state.collection;
-                    if (!collection || collection.size === 0) {
-                      collection = originalCollection || null;
-                    }
-                    if (!collection) return null;
-
-                    // Try React Aria collection API first (getKeys/getItem)
-                    if (typeof collection.getKeys === 'function' && typeof collection.getItem === 'function') {
-                      try {
-                        const keys = [...collection.getKeys()];
-                        const options = keys
-                          .map(function mapOption(key) {
-                            const item = collection.getItem(key);
-                            // Match React Aria's HiddenSelect: only render items with type === 'item'
-                            if (item && item.type === 'item') {
-                              return (
-                                <option key={item.key} value={String(item.key)}>
-                                  {item.textValue || ''}
-                                </option>
-                              );
-                            }
-                            return null;
-                          })
-                          .filter(Boolean);
-                        // If we got options, return them
-                        if (options.length > 0) return options;
-                      } catch {
-                        // Fall through to direct iteration
-                      }
-                    }
-
-                    // Fallback: try direct iteration
-                    try {
-                      const options = [...collection]
-                        .map(function mapOptionDirect(item) {
-                          if (item && item.type === 'item') {
-                            return (
-                              <option key={item.key} value={String(item.key)}>
-                                {item.textValue || ''}
-                              </option>
-                            );
-                          }
-                          return null;
-                        })
-                        .filter(Boolean);
-                      if (options.length > 0) return options;
-                    } catch {
-                      // Fall through
-                    }
-
-                    return null;
-                  })()}
-                </select>
-              </label>
-            </div>
-          )}
-        </>
+        <HiddenSelect
+          {...hiddenSelectProps}
+          state={state}
+          triggerRef={triggerRef}
+          {...(processedProps.label && { label: processedProps.label })}
+        />
       )}
-    </SelectContext.Provider>
+    </ListStateContext.Provider>
   );
 };

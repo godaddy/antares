@@ -26,6 +26,7 @@
     "@bento/listbox": "*",
     "@bento/pressable": "*",
     "@bento/radio": "*",
+    "@bento/select": "*",
     "@bento/slots": "*",
     "@bento/storybook-addon-helpers": "*",
     "@bento/svg-parser": "*",

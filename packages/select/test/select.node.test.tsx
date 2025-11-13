@@ -1,6 +1,6 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { Select, SelectOption, useSelectContext } from '../src';
+import { Select, SelectOption } from '../src';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
 import { ListBox, ListBoxSection, Header } from '@bento/listbox';
@@ -35,7 +35,7 @@ function renderToStringSelect(args = {}) {
         <ValueDisplay slot="value" placeholder="Choose" />
       </Button>
       <Popover slot="popover">
-        <ListBox slot="list">
+        <ListBox slot="listbox">
           <SelectOption value="test" textValue="Test">
             Test
           </SelectOption>
@@ -66,7 +66,7 @@ describe('@bento/select', function bento() {
           <ValueDisplay slot="value" placeholder="Select a fruit" />
         </Button>
         <Popover slot="popover">
-          <ListBox slot="list">
+          <ListBox slot="listbox">
             <ListBoxSection>
               <Header>Fruits</Header>
               <SelectOption value="apple" textValue="Apple">
@@ -136,12 +136,12 @@ describe('@bento/select', function bento() {
   describe('Server-Side Rendering', function serverSideRendering() {
     it('renders select with default selected value', function test() {
       const result = renderToString(
-        <Select defaultSelectedKey="apple">
+        <Select defaultValue="apple">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -159,12 +159,12 @@ describe('@bento/select', function bento() {
 
     it('renders select with form integration', function test() {
       const result = renderToString(
-        <Select name="fruit" selectedKey="apple">
+        <Select name="fruit" value="apple">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -179,14 +179,36 @@ describe('@bento/select', function bento() {
       assume(result).includes('value="apple"');
     });
 
-    it('does not render hidden select without name prop', function test() {
+    it('renders hidden select with label prop', function test() {
       const result = renderToString(
-        <Select selectedKey="apple">
+        <Select name="fruit" label="Choose a fruit" value="apple">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
+              <SelectOption value="apple" textValue="Apple">
+                Apple
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Verify hidden select exists with correct attributes
+      assume(result).includes('<select');
+      assume(result).includes('name="fruit"');
+      assume(result).includes('value="apple"');
+    });
+
+    it('does not render hidden select without name prop', function test() {
+      const result = renderToString(
+        <Select value="apple">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -208,7 +230,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -226,7 +248,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -244,7 +266,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -264,7 +286,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Category 1</Header>
                 <SelectOption value="option1" textValue="Option 1">
@@ -288,20 +310,133 @@ describe('@bento/select', function bento() {
       assume(result).includes('Option 1');
       assume(result).includes('Option 2');
     });
+  });
 
-    it('renders with render prop output', function test() {
+  describe('SSR Edge Cases', function ssrEdgeCases() {
+    it('handles empty state collection with fallback to original collection', function test() {
+      // This tests the fallback logic when state.collection is empty
       const result = renderToString(
-        <Select
-          isInvalid
-          render={function renderChrome({ isInvalid }) {
-            return isInvalid ? <div data-testid="render-output">Error!</div> : null;
-          }}
-        >
+        <Select name="fallback" defaultSelectedKey="option1">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
+              <SelectOption value="option1" textValue="Option 1">
+                Option 1
+              </SelectOption>
+              <SelectOption value="option2" textValue="Option 2">
+                Option 2
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should render hidden select with options
+      assume(result).includes('<select');
+      assume(result).includes('name="fallback"');
+      assume(result).includes('value="option1"');
+      assume(result).includes('Option 1');
+    });
+
+    it('handles SSR with no selected key and renders all options', function test() {
+      // This tests the collection iteration fallback when no selectedKey
+      const result = renderToString(
+        <Select name="all-options">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="a" textValue="A">
+                A
+              </SelectOption>
+              <SelectOption value="b" textValue="B">
+                B
+              </SelectOption>
+              <SelectOption value="c" textValue="C">
+                C
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should render all options in hidden select
+      assume(result).includes('value="a"');
+      assume(result).includes('value="b"');
+      assume(result).includes('value="c"');
+    });
+
+    it('handles SSR with groups and sections', function test() {
+      // This tests collection iteration with sections (non-item types)
+      // When there's a selected key in SSR, only that option is rendered (optimization)
+      const result = renderToString(
+        <Select name="grouped" defaultSelectedKey="fruit1">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <ListBoxSection>
+                <Header>Fruits</Header>
+                <SelectOption value="fruit1" textValue="Apple">
+                  Apple
+                </SelectOption>
+                <SelectOption value="fruit2" textValue="Banana">
+                  Banana
+                </SelectOption>
+              </ListBoxSection>
+              <ListBoxSection>
+                <Header>Vegetables</Header>
+                <SelectOption value="veg1" textValue="Carrot">
+                  Carrot
+                </SelectOption>
+              </ListBoxSection>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should render the selected option
+      assume(result).includes('value="fruit1"');
+      assume(result).includes('Apple');
+      // Headers should not be in select options
+      assume(result).not.includes('<option>Fruits</option>');
+      assume(result).not.includes('<option>Vegetables</option>');
+    });
+
+    it('handles SSR with selected key and empty collection', function test() {
+      // This tests the selectedKey fallback rendering when collection is problematic
+      const result = renderToString(
+        <Select name="minimal" defaultSelectedKey="selected">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="selected" textValue="Selected Item">
+                Selected Item
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should render at least the selected value
+      assume(result).includes('value="selected"');
+    });
+
+    it('handles SSR without name prop (no hidden select)', function test() {
+      // This tests that hidden select is not rendered when name is not provided
+      const result = renderToString(
+        <Select defaultSelectedKey="test">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -310,31 +445,141 @@ describe('@bento/select', function bento() {
         </Select>
       );
 
-      // Verify render prop output
-      assume(result).includes('data-testid="render-output"');
-      assume(result).includes('Error!');
+      // Should NOT render hidden select
+      assume(result).not.includes('<select');
     });
-  });
 
-  describe('Context API', function contextAPI() {
-    it('useSelectContext throws error when used outside Select', function test() {
-      function ComponentUsingContext() {
-        useSelectContext();
-        return <div>Test</div>;
-      }
+    it('handles multi-select mode in SSR', function test() {
+      // This tests multi-select specific logic
+      const result = renderToString(
+        <Select selectionMode="multiple" defaultValue={new Set(['option1', 'option2'])} name="multi">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="option1" textValue="Option 1">
+                Option 1
+              </SelectOption>
+              <SelectOption value="option2" textValue="Option 2">
+                Option 2
+              </SelectOption>
+              <SelectOption value="option3" textValue="Option 3">
+                Option 3
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
 
-      let errorThrown = false;
-      let errorMessage = '';
+      // Should render hidden select with name
+      assume(result).includes('name="multi"');
+      assume(result).includes('<select');
+    });
 
-      try {
-        renderToString(<ComponentUsingContext />);
-      } catch (error) {
-        errorThrown = true;
-        errorMessage = (error as Error).message;
-      }
+    it('handles SSR with items missing textValue', function test() {
+      // This tests items with missing textValue (fallback to empty string)
+      const result = renderToString(
+        <Select name="no-text-value">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="notext">No Text Value</SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
 
-      assume(errorThrown).equals(true);
-      assume(errorMessage).includes('Select components must be used within a Select root component');
+      // Should still render the option
+      assume(result).includes('value="notext"');
+    });
+
+    it('handles SSR with complex collection structure', function test() {
+      // This tests the full collection iteration paths
+      const result = renderToString(
+        <Select name="complex">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <ListBoxSection>
+                <Header>Section 1</Header>
+                <SelectOption value="item1" textValue="Item 1">
+                  Item 1
+                </SelectOption>
+              </ListBoxSection>
+              <ListBoxSection>
+                <Header>Section 2</Header>
+                <SelectOption value="item2" textValue="Item 2">
+                  Item 2
+                </SelectOption>
+                <SelectOption value="item3" textValue="Item 3">
+                  Item 3
+                </SelectOption>
+              </ListBoxSection>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should render all item options
+      assume(result).includes('value="item1"');
+      assume(result).includes('value="item2"');
+      assume(result).includes('value="item3"');
+    });
+
+    it('handles SSR with deeply nested sections', function test() {
+      // This tests the direct iteration fallback path
+      const result = renderToString(
+        <Select name="nested">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <ListBoxSection>
+                <Header>Nested Section</Header>
+                <SelectOption value="nested1" textValue="Nested 1">
+                  Nested 1
+                </SelectOption>
+                <SelectOption value="nested2" textValue="Nested 2">
+                  Nested 2
+                </SelectOption>
+              </ListBoxSection>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should render nested options
+      assume(result).includes('value="nested1"');
+      assume(result).includes('value="nested2"');
+    });
+
+    it('handles SSR with empty textValue in collection items', function test() {
+      // This tests the textValue || '' fallback
+      const result = renderToString(
+        <Select name="empty-text">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Choose" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="test1" textValue="">
+                Empty Text
+              </SelectOption>
+              <SelectOption value="test2">No TextValue</SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      // Should still render options even with empty/missing textValue
+      assume(result).includes('value="test1"');
+      assume(result).includes('value="test2"');
     });
   });
 });

@@ -1,13 +1,11 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { Select } from '@bento/select';
-import {
-  BasicSelectExample,
-  SelectWithGroupsExample,
-  SelectWithFormExample,
-  CustomComponentsExample,
-  UsingListBoxItemExample
-} from './examples/basic-select';
+import { BasicSelectExample } from './examples/basic-select';
+import { SelectWithGroupsExample } from './examples/select-with-groups';
+import { SelectWithFormExample } from './examples/select-with-form';
+import { CustomComponentsExample } from './examples/custom-components';
+import { UsingListBoxItemExample } from './examples/using-listbox-item';
 
 const meta: Meta<typeof Select> = {
   title: 'components/Select',
@@ -32,20 +30,20 @@ const defaultArgs = {
 };
 
 const defaultArgTypes = {
-  selectedKey: {
+  value: {
     control: { type: 'text' },
-    description: 'The currently selected key (controlled mode).',
+    description: 'The currently selected value (controlled mode).',
     table: { type: { summary: 'Key' } }
   },
-  defaultSelectedKey: {
+  defaultValue: {
     control: { type: 'text' },
-    description: 'The initial selected key (uncontrolled mode).',
+    description: 'The initial selected value (uncontrolled mode).',
     table: { type: { summary: 'Key' } }
   },
-  onSelectionChange: {
-    action: 'selection changed',
-    description: 'Callback when selection changes.',
-    table: { type: { summary: '(key: Key) => void' } }
+  onValueChange: {
+    action: 'value changed',
+    description: 'Callback when value changes.',
+    table: { type: { summary: '(value: Key) => void' } }
   },
   isDisabled: {
     control: { type: 'boolean' },
@@ -90,7 +88,7 @@ export const Props: Story = {
     ...defaultArgTypes,
     children: {
       description:
-        'Slotted children: Button with slot="trigger", Text with slot="value", Popover with slot="popover", ListBox with slot="list".',
+        'Slotted children: Button with slot="trigger", Text with slot="value", Popover with slot="popover", ListBox with slot="listbox".',
       table: { type: { summary: 'ReactNode' } }
     }
   }
@@ -203,7 +201,7 @@ export const States: Story = {
       </div>
       <div>
         <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>With Selected Value</label>
-        <BasicSelectExample selectedKey="banana" placeholder="Select a fruit..." />
+        <BasicSelectExample value="banana" placeholder="Select a fruit..." />
       </div>
     </div>
   ),

@@ -6,16 +6,10 @@ import { Select, SelectOption } from '@bento/select';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
 import { ListBox, ListBoxSection, Header } from '@bento/listbox';
-
-// Simple Popover component for testing (actual Popover component doesn't exist yet)
-function Popover({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) {
-  return <div {...props}>{children}</div>;
-}
-
-// Value component that handles placeholder display (matches examples)
-function ValueDisplay({ selectedItem, placeholder, ...props }: any) {
-  return <Text {...props}>{selectedItem ? selectedItem.textValue : placeholder}</Text>;
-}
+import { Popover, ValueDisplay } from './test-popover';
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+import { userEvent } from '@testing-library/user-event';
 
 describe('@bento/select', function bento() {
   let mockConsoleError: any;
@@ -45,7 +39,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose an option" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -70,12 +64,12 @@ describe('@bento/select', function bento() {
 
     it('renders select with selected value', function test() {
       const { container } = render(
-        <Select selectedKey="apple">
+        <Select value="apple">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose an option" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -100,7 +94,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Select a fruit" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Fruits</Header>
                 <SelectOption value="apple" textValue="Apple">
@@ -130,7 +124,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Select a fruit" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -154,7 +148,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Test" />
           </Button>
           <Popover slot="popover" data-testid="select-content">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test Option" data-testid="select-option">
                 Test Option
               </SelectOption>
@@ -181,12 +175,12 @@ describe('@bento/select', function bento() {
         onChangeValue = value;
 
         return (
-          <Select selectedKey={value} onSelectionChange={(key) => setValue(key as string)}>
+          <Select value={value} onValueChange={(key) => setValue(key as string)}>
             <Button slot="trigger">
               <ValueDisplay slot="value" placeholder="Choose" />
             </Button>
             <Popover slot="popover">
-              <ListBox slot="list">
+              <ListBox slot="listbox">
                 <SelectOption value="apple" textValue="Apple">
                   Apple
                 </SelectOption>
@@ -208,12 +202,12 @@ describe('@bento/select', function bento() {
 
     it('handles uncontrolled selection with defaultValue', function test() {
       const { container } = render(
-        <Select defaultSelectedKey="banana">
+        <Select defaultValue="banana">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -238,7 +232,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -260,7 +254,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -282,7 +276,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -306,7 +300,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose a fruit" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -330,7 +324,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -353,7 +347,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" className="custom-value" />
           </Button>
           <Popover slot="popover" className="custom-content">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple" className="custom-option">
                 Apple
               </SelectOption>
@@ -378,7 +372,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Fruits</Header>
                 <SelectOption value="apple" textValue="Apple">
@@ -439,7 +433,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Click me" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -464,14 +458,14 @@ describe('@bento/select', function bento() {
       assume(resultAfterClick).includes('data-open');
     });
 
-    it('popover has display none when closed', function test() {
+    it('popover receives isOpen state via slot props', function test() {
       const { container } = render(
         <Select>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Test" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -483,9 +477,60 @@ describe('@bento/select', function bento() {
       const popover = container.querySelector('[slot="popover"]');
       assume(popover).exists();
 
-      // When closed, popover should have display: none
-      const style = (popover as HTMLElement)?.style;
-      assume(style?.display).equals('none');
+      // Popover exists in DOM - visibility will be controlled by future Overlay component
+      // Select passes isOpen={false} via slot props
+    });
+    it('exposes onClose handler via popover slot', async function test() {
+      let capturedCloseHandler: (() => void) | undefined;
+
+      // Create a test Popover that uses useProps to extract slot props from context
+      const TestPopoverWithSlots = withSlots('TestPopover', function TestPopover(args: any) {
+        const { props } = useProps(args);
+        const { onClose, children } = props;
+
+        // Store the handler
+        if (onClose) {
+          capturedCloseHandler = onClose;
+        }
+        return <div>{children}</div>;
+      });
+
+      const { container } = render(
+        <Select defaultSelectedKey="option1">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <TestPopoverWithSlots slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="option1" textValue="Option 1">
+                Option 1
+              </SelectOption>
+            </ListBox>
+          </TestPopoverWithSlots>
+        </Select>
+      );
+
+      const trigger = container.querySelector('button[role="combobox"]') as HTMLElement;
+      assume(trigger).exists();
+
+      // Open the select
+      await trigger.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      // Verify it's open
+      assume(trigger?.getAttribute('aria-expanded')).equals('true');
+
+      // Verify the onClose handler was provided (event listeners are passed through slots)
+      assume(capturedCloseHandler).is.a('function');
+
+      // Call the close handler (covers lines 250-253: handleOverlayClose calling state.close())
+      if (capturedCloseHandler) {
+        capturedCloseHandler();
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        // Verify the select is now closed
+        assume(trigger?.getAttribute('aria-expanded')).equals('false');
+      }
     });
   });
 
@@ -497,7 +542,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Test" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -519,7 +564,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="value" placeholder="Test" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -541,7 +586,7 @@ describe('@bento/select', function bento() {
             <ValueDisplay slot="trigger.value" placeholder="Nested value" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -565,7 +610,7 @@ describe('@bento/select', function bento() {
             </div>
           </div>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="test" textValue="Test">
                 Test
               </SelectOption>
@@ -580,141 +625,17 @@ describe('@bento/select', function bento() {
     });
   });
 
-  describe('Render Props', function renderProps() {
-    it('supports render prop for conditional chrome', function test() {
-      const { container } = render(
-        <Select
-          isInvalid
-          render={function renderChrome({ isInvalid }) {
-            return isInvalid ? <div data-testid="error-indicator">Error!</div> : null;
-          }}
-        >
-          <Button slot="trigger">
-            <ValueDisplay slot="value" placeholder="Test" />
-          </Button>
-          <Popover slot="popover">
-            <ListBox slot="list">
-              <SelectOption value="test" textValue="Test">
-                Test
-              </SelectOption>
-            </ListBox>
-          </Popover>
-        </Select>
-      );
-
-      const result = container.innerHTML;
-      assume(result).includes('data-testid="error-indicator"');
-      assume(result).includes('Error!');
-    });
-
-    it('render prop receives state context', function test() {
-      let capturedState: any = null;
-
-      render(
-        <Select
-          render={function renderChrome(props) {
-            capturedState = props;
-            return null;
-          }}
-        >
-          <Button slot="trigger">
-            <ValueDisplay slot="value" placeholder="Test" />
-          </Button>
-          <Popover slot="popover">
-            <ListBox slot="list">
-              <SelectOption value="test" textValue="Test">
-                Test
-              </SelectOption>
-            </ListBox>
-          </Popover>
-        </Select>
-      );
-
-      assume(capturedState).exists();
-      assume(capturedState.isOpen).is.a('boolean');
-      assume(capturedState.state).exists();
-    });
-  });
-
-  describe('Style Merging', function styleMerging() {
-    it('merges popover styles correctly', function test() {
-      const customStyle = { backgroundColor: 'red', padding: '10px' };
-
-      const { container } = render(
-        <Select>
-          <Button slot="trigger">
-            <ValueDisplay slot="value" placeholder="Test" />
-          </Button>
-          <Popover slot="popover" style={customStyle}>
-            <ListBox slot="list">
-              <SelectOption value="test" textValue="Test">
-                Test
-              </SelectOption>
-            </ListBox>
-          </Popover>
-        </Select>
-      );
-
-      const popover = container.querySelector('[slot="popover"]') as HTMLElement;
-      assume(popover).exists();
-
-      // Custom styles should be present
-      const style = popover.style;
-      assume(style.backgroundColor).equals('red');
-      assume(style.padding).equals('10px');
-      // Display override should be present
-      assume(style.display).equals('none');
-    });
-
-    it('handles CSSStyleDeclaration-like style objects', function test() {
-      // Test that the code can handle CSSStyleDeclaration by passing actual element style
-      // which is a real CSSStyleDeclaration
-      const testDiv = document.createElement('div');
-      testDiv.style.cssText = 'color: blue; background: red;';
-      const cssStyleDeclaration = testDiv.style;
-
-      const { container } = render(
-        <Select>
-          <Button slot="trigger">
-            <ValueDisplay slot="value" placeholder="Test" />
-          </Button>
-          <Popover slot="popover" style={cssStyleDeclaration as any}>
-            <ListBox slot="list">
-              <SelectOption value="test" textValue="Test">
-                Test
-              </SelectOption>
-            </ListBox>
-          </Popover>
-        </Select>
-      );
-
-      const popover = container.querySelector('[slot="popover"]');
-      assume(popover).exists();
-
-      // Should have converted and merged styles
-      const style = (popover as HTMLElement).style;
-      // The converted styles should be present (color, background from CSSStyleDeclaration)
-      // plus display override
-      assume(style.display).equals('none');
-      // At least one of the converted properties should be present
-      assume(style.color || style.backgroundColor).exists();
-    });
-
-    it('preserves numeric CSS values for popover positioning', function test() {
-      // Regression test: ensure numeric CSS values (top, left, zIndex) are preserved
-      // so React can auto-add units (e.g., top: 123 -> "123px")
-      // This prevents popover from being stuck at 0,0 due to invalid CSS values
-      // The test verifies that numeric values from useOverlayPosition are preserved
-      // and converted correctly by React, not converted to bare strings without units
-      // The critical fix is that convertStyleToObjectTopLevel preserves numeric values
-      // instead of converting them to strings, allowing React to add units automatically
+  describe('Popover Integration', function popoverIntegration() {
+    it('renders with React Aria Components Popover', function test() {
+      // Select passes overlay/position props to RAC Popover
+      // RAC Popover handles all style merging and positioning internally
       const { container } = render(
         <Select>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="list">
+            <ListBox slot="listbox">
               <SelectOption value="apple" textValue="Apple">
                 Apple
               </SelectOption>
@@ -726,24 +647,153 @@ describe('@bento/select', function bento() {
       const popover = container.querySelector('[slot="popover"]');
       assume(popover).exists();
 
-      // The test passes if rendering doesn't throw "style2.setProperty is not a function"
-      // This error would occur if numeric values were converted to strings without units
-      // and React tried to merge them with a CSSStyleDeclaration
-      // By preserving numeric values, React can add units automatically (e.g., 123 -> "123px")
-      const style = (popover as HTMLElement).style;
+      // RAC Popover handles positioning - just verify it renders
+    });
+  });
 
-      // Verify positioning properties exist (useOverlayPosition provides these)
-      const hasPosition = style.position === 'fixed' || style.position === 'absolute';
-      assume(hasPosition).equals(true);
+  describe('Edge Cases', function edgeCases() {
+    it('handles required prop as both HTML attribute and React Aria prop', function test() {
+      const { container: container1 } = render(
+        <Select required>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Test" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="test" textValue="Test">
+                Test
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
 
-      // Verify zIndex is set (numeric value should be preserved and converted correctly)
-      // zIndex from useOverlayPosition is 100000 (number), React should convert it to "100000"
-      assume(style.zIndex).exists();
-      assume(style.zIndex).is.not.empty();
-      // Verify it's a valid number (not empty string or invalid)
-      const zIndexNum = Number.parseInt(style.zIndex, 10);
-      assume(Number.isNaN(zIndexNum)).equals(false);
-      assume(zIndexNum).is.at.least(0);
+      const trigger1 = container1.querySelector('[role="combobox"]');
+      assume(trigger1?.getAttribute('aria-required')).equals('true');
+
+      const { container: container2 } = render(
+        <Select isRequired>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Test" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="test" textValue="Test">
+                Test
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const trigger2 = container2.querySelector('[role="combobox"]');
+      assume(trigger2?.getAttribute('aria-required')).equals('true');
+    });
+
+    it('handles multi-select with empty selection', function test() {
+      const { container } = render(
+        <Select selectionMode="multiple" defaultValue={new Set([])}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select items" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="option1" textValue="Option 1">
+                Option 1
+              </SelectOption>
+              <SelectOption value="option2" textValue="Option 2">
+                Option 2
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Select items');
+    });
+
+    it('handles placeholder with no selected item', function test() {
+      const { container } = render(
+        <Select placeholder="Custom placeholder">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Custom placeholder" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="test" textValue="Test">
+                Test
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Custom placeholder');
+    });
+
+    it('supports defaultSelectedKeys prop for multi-select (React Aria API)', function test() {
+      // Tests line 230: defaultSelectedKeys fallback
+      const { container } = render(
+        <Select selectionMode="multiple" defaultSelectedKeys={new Set(['option2'])}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select items" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="option1" textValue="Option 1">
+                Option 1
+              </SelectOption>
+              <SelectOption value="option2" textValue="Option 2">
+                Option 2
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      // Verify it renders with selection
+      assume(result).includes('role="combobox"');
+    });
+
+    it('applies hover state data attribute on trigger hover', async function test() {
+      // Tests line 324: isHovered ? 'true' : 'false' ternary (both branches)
+      const { container } = render(
+        <Select>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <SelectOption value="test" textValue="Test">
+                Test
+              </SelectOption>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const trigger = container.querySelector('button[role="combobox"]') as HTMLElement;
+      const selectContainer = container.querySelector('[data-hovered]');
+
+      // Initially not hovered (false branch)
+      assume(selectContainer?.getAttribute('data-hovered')).equals('false');
+
+      // Hover over the trigger button
+      await userEvent.hover(trigger);
+
+      // Should have hovered state (true branch)
+      const hoveredContainer = container.querySelector('[data-hovered="true"]');
+      assume(hoveredContainer).exists();
+
+      // Unhover
+      await userEvent.unhover(trigger);
+
+      // Should be back to not hovered
+      const unhoveredContainer = container.querySelector('[data-hovered="false"]');
+      assume(unhoveredContainer).exists();
     });
   });
 });

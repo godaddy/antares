@@ -2,13 +2,11 @@ import React from 'react';
 import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi } from 'vitest';
 import assume from 'assume';
-import {
-  BasicSelectExample,
-  SelectWithGroupsExample,
-  SelectWithFormExample,
-  CustomComponentsExample,
-  UsingListBoxItemExample
-} from '../examples/basic-select';
+import { BasicSelectExample } from '../examples/basic-select';
+import { SelectWithGroupsExample } from '../examples/select-with-groups';
+import { SelectWithFormExample } from '../examples/select-with-form';
+import { CustomComponentsExample } from '../examples/custom-components';
+import { UsingListBoxItemExample } from '../examples/using-listbox-item';
 
 describe('@bento/select examples', function bento() {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -40,7 +38,7 @@ describe('@bento/select examples', function bento() {
     });
 
     it('renders with selected value', function test() {
-      const { container } = render(<BasicSelectExample selectedKey="apple" />);
+      const { container } = render(<BasicSelectExample value="apple" />);
       const result = container.innerHTML;
 
       // Should show selected value
@@ -73,7 +71,7 @@ describe('@bento/select examples', function bento() {
     });
 
     it('renders with selected value from groups', function test() {
-      const { container } = render(<SelectWithGroupsExample selectedKey="salmon-bento" />);
+      const { container } = render(<SelectWithGroupsExample value="salmon-bento" />);
       const result = container.innerHTML;
 
       assume(result).includes('Salmon Bento');
@@ -139,7 +137,7 @@ describe('@bento/select examples', function bento() {
     });
 
     it('renders with selected ListBoxItem', function test() {
-      const { container } = render(<UsingListBoxItemExample selectedKey="item2" />);
+      const { container } = render(<UsingListBoxItemExample value="item2" />);
       const result = container.innerHTML;
 
       assume(result).includes('Item 2');

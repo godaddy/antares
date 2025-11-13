@@ -1,7 +1,12 @@
-export { Select, useSelectContext } from './select';
+export { Select } from './select';
 export { SelectOption } from './select-option';
 
-export type { SelectProps, SelectRenderProps } from './select';
+export type {
+  SelectProps,
+  SingleSelectProps,
+  MultipleSelectProps,
+  SelectionMode
+} from './select';
 export type { SelectOptionProps } from './select-option';
 export type {
   SelectTriggerSlotProps,
@@ -11,3 +16,6 @@ export type {
   SelectSlots,
   PropsFromSelectSlot
 } from './select';
+
+// Re-export Placement type from React Aria for convenience
+export type { Placement } from 'react-aria';
