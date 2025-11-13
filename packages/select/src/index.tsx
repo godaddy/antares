@@ -1,11 +1,11 @@
-// Components
+// Component exports
 export { Select } from './select';
 export { SelectOption } from './select-option';
 
 // State hooks (following architectural principle: hooks own state)
 export { useSelectState } from './use-select-state';
 
-// Component types
+// Type exports
 export type {
   SelectProps,
   SingleSelectProps,
@@ -13,8 +13,6 @@ export type {
   SelectionMode
 } from './select';
 export type { SelectOptionProps } from './select-option';
-
-// Slot types
 export type {
   SelectTriggerSlotProps,
   SelectValueSlotProps,
@@ -23,9 +21,8 @@ export type {
   SelectSlots,
   PropsFromSelectSlot
 } from './select';
+export type { SelectStateOptions } from './use-select-state';
+export type { SelectState } from 'react-stately';
 
-// State types
-export type { SelectStateOptions, SelectState } from './use-select-state';
-
-// Re-export Placement type from React Aria for convenience
+// Re-exports
 export type { Placement } from 'react-aria';

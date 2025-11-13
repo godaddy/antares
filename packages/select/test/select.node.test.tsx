@@ -1,6 +1,6 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { Select, SelectOption } from '../src';
+import { Select, SelectOption } from '@bento/select';
 import { Button } from '@bento/button';
 import { ListBox, ListBoxSection, Header } from '@bento/listbox';
 import { Popover, ValueDisplay } from './test-popover';

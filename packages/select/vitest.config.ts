@@ -5,6 +5,9 @@ export default mergeConfig(
   sharedConfig,
   defineConfig({
     test: {
+      coverage: {
+        exclude: ['**/src/index.{ts,tsx}']
+      },
       projects: [ssr, browser]
     }
   })

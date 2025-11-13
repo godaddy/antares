@@ -51,6 +51,3 @@ export interface SelectStateOptions<T> extends AriaSelectProps<T> {
 export function useSelectState<T>(props: SelectStateOptions<T>): SelectState<T> {
   return useReactAriaSelectState(props as any) as SelectState<T>;
 }
-
-// Re-export SelectState type for convenience
-export type { SelectState } from 'react-stately';
