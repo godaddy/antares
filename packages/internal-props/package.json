@@ -1,6 +1,6 @@
 {
   "name": "@bento/internal-props",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Internal utilities for managing prefixed component properties",
   "type": "module",
   "main": "./dist/index.cjs",

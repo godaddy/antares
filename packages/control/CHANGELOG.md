@@ -1,5 +1,20 @@
 # @bento/control
 
+## 0.1.2
+
+### Patch Changes
+
+- Replaced redundant Text imports in control-group.tsx and control.tsx with @bento/text ([#20](https://github.com/godaddy/bento/pull/20) by @kawikabader)
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/bento/pull/23) by @kawikabader)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/use-props@0.1.1
+- @bento/slots@0.1.3
+- @bento/text@0.1.2
+</details>
+
 ## 0.1.1
 
 ### Patch Changes
