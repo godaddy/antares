@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+/* v8 ignore next */
+import React from 'react';
 import { Select, SelectOption } from '@bento/select';
 import { Button } from '@bento/button';
 import { ListBox, ListBoxSection, Header } from '@bento/listbox';
 import { Popover, ValueDisplay } from '../test/test-popover';
 
 /**
- * Select with groups example showing how to use ListBoxSection for organizing options.
+ * Example component demonstrating Select with grouped options using ListBoxSection.
+ * Shows how to organize options into sections with headers.
+ *
+ * Note: This example is stateless for demonstration purposes. In real applications,
+ * you would typically use controlled state with useState and onValueChange handlers.
+ *
+ * @param {any} args - The Select component props.
+ * @returns {JSX.Element} The rendered Select with sectioned options.
+ * @public
  */
 export function SelectWithGroupsExample(args: any) {
-  const [value, setValue] = useState<string | undefined>(args.value || undefined);
-
   return (
-    <Select
-      {...args}
-      value={value}
-      onValueChange={function handleValueChange(key: React.Key) {
-        setValue(key as string);
-        args.onValueChange?.(key);
-      }}
-    >
+    <Select {...args}>
       <Button slot="trigger">
         <ValueDisplay slot="value" placeholder="Choose a meal..." />
       </Button>

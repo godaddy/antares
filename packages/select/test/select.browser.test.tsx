@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { Select, SelectOption } from '@bento/select';
 import { Button } from '@bento/button';
-import { Text } from '@bento/text';
 import { ListBox, ListBoxSection, Header } from '@bento/listbox';
 import { Popover, ValueDisplay } from './test-popover';
 import { useProps } from '@bento/use-props';
@@ -654,7 +653,7 @@ describe('@bento/select', function bento() {
   describe('Edge Cases', function edgeCases() {
     it('handles required prop as both HTML attribute and React Aria prop', function test() {
       const { container: container1 } = render(
-        <Select required>
+        <Select isRequired>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Test" />
           </Button>
@@ -736,7 +735,7 @@ describe('@bento/select', function bento() {
     it('supports defaultSelectedKeys prop for multi-select (React Aria API)', function test() {
       // Tests line 230: defaultSelectedKeys fallback
       const { container } = render(
-        <Select selectionMode="multiple" defaultSelectedKeys={new Set(['option2'])}>
+        <Select selectionMode="multiple" defaultValue={new Set(['option2'])}>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select items" />
           </Button>

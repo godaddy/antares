@@ -1,6 +1,5 @@
+import sharedConfig, { ssr, browser } from '../../configs/vitest.config.mts';
 import { defineConfig, mergeConfig } from 'vitest/config';
-
-import sharedConfig, { browser, ssr } from '../../configs/vitest.config.mts';
 
 export default mergeConfig(
   sharedConfig,

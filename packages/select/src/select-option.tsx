@@ -6,23 +6,78 @@ import type { ListBoxItemProps, ListBoxItemRenderProps } from '@bento/listbox';
 
 /**
  * Props for the SelectOption component.
- * This component maps the `value` prop (intuitive for Select API) to the `id` prop
- * (required by React Aria collection system), while reusing ListBoxItem's rendering logic.
- * Users can also use ListBoxItem directly with `id` prop if they prefer.
+ *
+ * SelectOption provides a more intuitive API for Select by using a `value` prop instead of `id`.
+ * This is a common pattern in HTML select elements and feels more natural for developers.
+ * Internally, the `value` is mapped to `id` for React Aria's collection system, which requires
+ * each item to have a unique `id` for selection state management and keyboard navigation.
+ *
+ * Design Decision:
+ * - SelectOption is a convenience wrapper that most users will prefer for its familiar API
+ * - Advanced users can still use ListBoxItem directly with `id` prop for complete control
+ * - Both components share the same underlying rendering logic via ListBoxItemImpl
+ * - Both work seamlessly together in the same Select (same 'item' node type)
+ *
  * @interface SelectOptionProps
+ * @public
  */
 export interface SelectOptionProps extends Omit<ListBoxItemProps<object>, 'id' | 'value'> {
-  /** The value of the option (mapped to id for React Aria collection system) */
+  /**
+   * The value of the option.
+   * This is mapped internally to `id` for React Aria's collection system.
+   * Supports both string and number types for maximum flexibility.
+   * @example
+   * ```tsx
+   * <SelectOption value="apple">Apple</SelectOption>
+   * <SelectOption value={1}>Option 1</SelectOption>
+   * ```
+   */
   readonly value: string | number;
-  /** The unique id of the item. If not provided, value is used as id. */
+  /**
+   * The unique id of the item.
+   * If not provided, `value` is used as `id`.
+   * Most users can omit this and just use `value`.
+   */
   readonly id?: string | number;
-  /** The contents of the option. Can be a render function that receives render props. */
+  /**
+   * The contents of the option.
+   * Can be static content (ReactNode) or a render function that receives state props
+   * for dynamic styling based on hover, selection, focus, etc.
+   * @example
+   * ```tsx
+   * <SelectOption value="a">Simple text</SelectOption>
+   * <SelectOption value="b">{({ isSelected }) => isSelected ? '✓ ' : ''}Option B</SelectOption>
+   * ```
+   */
   readonly children?: ReactNode | ((values: ListBoxItemRenderProps) => ReactNode);
 }
 
 /**
- * Optional convenience wrapper that maps value → id.
- * Users can also use ListBoxItem directly with id prop.
+ * Adapter component that connects SelectOption to React Aria's collection system.
+ *
+ * This function serves as the bridge between React Aria's `createLeafComponent` and
+ * our ListBoxItemImpl component. It's called by React Aria's collection builder during
+ * the rendering phase, receiving the node metadata and forwarded ref from the collection.
+ *
+ * Architecture:
+ * 1. React Aria's CollectionBuilder discovers SelectOption elements in the tree
+ * 2. For each SelectOption, React Aria calls this adapter function with:
+ *    - props: The original SelectOption props (including 'value')
+ *    - forwardedRef: A ref from React Aria for DOM access
+ *    - item: A Node object with metadata (key, level, textValue, etc.)
+ * 3. This adapter strips the 'value' prop (which was already mapped to 'id' by SelectOption)
+ * 4. Passes remaining props + ref + node to ListBoxItemImpl for rendering
+ *
+ * Why strip 'value'?
+ * - ListBoxItemImpl expects standard ListBoxItemProps which has 'id', not 'value'
+ * - The 'value' was already mapped to 'id' in the parent SelectOption component
+ * - Keeping 'value' would cause TypeScript errors and prop pollution
+ *
+ * @template T - The type of the item value (always object for SelectOption)
+ * @param {SelectOptionProps} props - The original SelectOption props including 'value'
+ * @param {React.ForwardedRef<HTMLDivElement>} forwardedRef - Ref from React Aria's collection system
+ * @param {Node<object>} item - React Aria node containing item metadata and collection info
+ * @returns {React.ReactElement} ListBoxItemImpl with proper props, ref, and node wiring
  * @internal
  */
 function SelectOptionComponent(
@@ -30,38 +85,104 @@ function SelectOptionComponent(
   forwardedRef: ForwardedRef<HTMLDivElement>,
   item: Node<object>
 ) {
-  // Extract value prop (Select API) - it's already mapped to id by SelectOption
-  // Pass remaining props through to ListBoxItemImpl - it handles all the rendering logic
-  // Omit 'value' since ListBoxItemImpl expects 'id', not 'value'
+  //
+  // Strip the 'value' prop since it's already been mapped to 'id' by the parent SelectOption.
+  // ListBoxItemImpl expects standard ListBoxItemProps (with 'id') not SelectOptionProps (with 'value').
+  // The underscore prefix on _value indicates it's intentionally unused (TypeScript convention).
+  //
   const { value: _value, ...restProps } = props;
+
+  //
+  // Forward all remaining props to ListBoxItemImpl along with the ref and node.
+  // Type assertion is necessary because TypeScript still sees 'value' in the restProps type
+  // even though it's been destructured out of the actual object. This is a known TypeScript
+  // limitation with destructuring and rest props.
+  //
   return <ListBoxItemImpl {...(restProps as Omit<SelectOptionProps, 'value'>)} ref={forwardedRef} __node={item} />;
 }
 
 /**
  * Base SelectOption component created through React Aria's collection system.
- * Uses 'item' node type (same as ListBoxItem) so they work together.
+ *
+ * This component is generated by React Aria's `createLeafComponent` factory function,
+ * which connects our SelectOptionComponent adapter to the collection builder.
+ *
+ * React Aria Collection System Integration:
+ * - The first argument ('item') specifies the node type in React Aria's collection tree
+ * - Using 'item' (not 'option' or 'select-option') ensures SelectOption and ListBoxItem
+ *   are interchangeable - they're both leaf nodes of type 'item' in the collection
+ * - React Aria's CollectionBuilder can handle both component types seamlessly
+ * - This enables users to mix SelectOption and ListBoxItem in the same Select if desired
+ *
+ * Why 'item' node type?
+ * - Consistency: Both SelectOption and ListBoxItem use 'item' for maximum compatibility
+ * - Flexibility: Users can choose the component that best fits their mental model
+ * - Simplicity: No special handling needed for different option component types
+ *
  * @internal
  */
 const SelectOptionBase = createLeafComponent('item', SelectOptionComponent);
 
 /**
- * SelectOption component that provides an intuitive API for Select while
- * reusing the same rendering logic as ListBoxItem.
- * Maps `value` prop to `id` prop for React Aria's collection system.
+ * SelectOption component that provides an intuitive API for Select options.
+ *
+ * Design Rationale:
+ * SelectOption uses a `value` prop instead of `id` to align with the familiar HTML select
+ * element API and provide a more intuitive developer experience. Under the hood, it maps
+ * `value` to `id` for React Aria's collection system, which requires unique identifiers
+ * for managing selection state, keyboard navigation, and accessibility attributes.
+ *
+ * Key Features:
+ * - Familiar `value` prop matching HTML select elements
+ * - Full compatibility with ListBoxItem (same underlying implementation)
+ * - Supports both static content and render functions for dynamic styling
+ * - Handles accessibility, selection state, keyboard navigation, and focus management
+ * - Can be mixed with ListBoxItem in the same Select for flexibility
+ *
+ * API Design Decision:
+ * Rather than forcing users to learn React Aria's `id` prop convention, SelectOption
+ * provides a `value` prop that feels natural for select elements. Advanced users who
+ * prefer explicit `id` props can use ListBoxItem directly. Both approaches are valid.
  *
  * @component
+ * @param {SelectOptionProps} args - Component props including value, children, and accessibility props
+ * @returns {React.ReactElement} A collection-aware option component that integrates with Select
  * @example
+ * Basic usage:
  * ```tsx
  * <SelectOption value="apple">Apple</SelectOption>
+ * ```
+ * @example
+ * With render function for dynamic styling:
+ * ```tsx
+ * <SelectOption value="apple">
+ *   {({ isSelected, isHovered }) => (
+ *     <span style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+ *       {isSelected && '✓ '}Apple
+ *     </span>
+ *   )}
+ * </SelectOption>
  * ```
  * @public
  */
 export const SelectOption = function SelectOption(args: SelectOptionProps) {
+  //
+  // Extract the 'value' prop (user-facing API) from the rest of the props.
+  // The 'value' will be mapped to 'id' (React Aria's internal API) when passing to SelectOptionBase.
+  // This transformation is the core purpose of SelectOption - providing a more intuitive API.
+  //
   const { value, ...restProps } = args;
-  // Map value prop (Select API) to id prop (React Aria collection API)
-  // restProps doesn't include 'value' since we destructured it, which is correct
-  // since SelectOptionBase (created from createLeafComponent) expects ListBoxItemProps,
-  // which has 'id' not 'value'. TypeScript requires assertion since restProps type
-  // still includes 'value' in its type even though it's not in the object.
+
+  //
+  // Pass all props to SelectOptionBase, mapping 'value' to 'id'.
+  // Type assertion (as any) is necessary here because:
+  // 1. TypeScript infers restProps as Omit<SelectOptionProps, 'value'>
+  // 2. But SelectOptionBase expects props matching the signature from createLeafComponent
+  // 3. The createLeafComponent type signature is complex and doesn't directly align with our prop types
+  // 4. We know this is safe because SelectOptionComponent (the adapter) handles the prop transformation
+  //
+  // The 'id={value}' prop does the actual mapping - taking the user's 'value' and passing it
+  // as 'id' to React Aria's collection system.
+  //
   return <SelectOptionBase {...(restProps as any)} id={value} />;
 };

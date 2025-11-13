@@ -3,6 +3,7 @@ import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi } from 'vitest';
 import assume from 'assume';
 import { BasicSelectExample } from '../examples/basic-select';
+import { MultiSelectExample } from '../examples/multi-select';
 import { SelectWithGroupsExample } from '../examples/select-with-groups';
 import { SelectWithFormExample } from '../examples/select-with-form';
 import { CustomComponentsExample } from '../examples/custom-components';
@@ -121,6 +122,17 @@ describe('@bento/select examples', function bento() {
       assume(result).includes('Option 2');
       assume(result).includes('Option 3');
     });
+
+    it('renders with custom placeholder', function test() {
+      const { container } = render(<CustomComponentsExample />);
+      const result = container.innerHTML;
+
+      // Verify custom placeholder shows through CustomValue component
+      assume(result).includes('Pick something...');
+
+      // Verify custom styling is applied (via data attributes)
+      assume(result).includes('data-open="false"');
+    });
   });
 
   describe('UsingListBoxItemExample', function usingListBoxItemExample() {
@@ -141,6 +153,38 @@ describe('@bento/select examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).includes('Item 2');
+    });
+  });
+
+  describe('MultiSelectExample', function multiSelectExample() {
+    it('renders multi-select with multiple selection mode', function test() {
+      const { container } = render(<MultiSelectExample />);
+      const result = container.innerHTML;
+
+      // Verify placeholder
+      assume(result).includes('Choose ingredients...');
+      // Verify multi-select mode
+      assume(result).includes('aria-multiselectable="true"');
+      // Verify options
+      assume(result).includes('Rice');
+      assume(result).includes('Chicken');
+      assume(result).includes('Salmon');
+      assume(result).includes('Tofu');
+    });
+
+    it('renders all ingredient options', function test() {
+      const { container } = render(<MultiSelectExample />);
+      const result = container.innerHTML;
+
+      // Verify all options are rendered
+      assume(result).includes('Rice');
+      assume(result).includes('Chicken');
+      assume(result).includes('Salmon');
+      assume(result).includes('Tofu');
+      assume(result).includes('Edamame');
+      assume(result).includes('Seaweed');
+      assume(result).includes('Tempura');
+      assume(result).includes('Pickled Vegetables');
     });
   });
 });

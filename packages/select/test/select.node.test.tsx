@@ -2,24 +2,14 @@ import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { Select, SelectOption } from '../src';
 import { Button } from '@bento/button';
-import { Text } from '@bento/text';
 import { ListBox, ListBoxSection, Header } from '@bento/listbox';
+import { Popover, ValueDisplay } from './test-popover';
 import { renderToString } from 'react-dom/server';
 import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';
-
-// Simple Popover component for testing (actual Popover component doesn't exist yet)
-function Popover({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) {
-  return <div {...props}>{children}</div>;
-}
-
-// Value component that handles placeholder display (matches examples)
-function ValueDisplay({ selectedItem, placeholder, ...props }: any) {
-  return <Text {...props}>{selectedItem ? selectedItem.textValue : placeholder}</Text>;
-}
 
 /**
  * Renders the `Select` component to a string with the provided props.
