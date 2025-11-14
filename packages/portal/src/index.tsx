@@ -7,11 +7,11 @@ import React, { type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
- * Base props for the Portal component.
+ * Props for the Portal component.
  *
  * @public
  */
-export interface PortalBaseProps extends Slots {
+export interface PortalProps extends Slots {
   /**
    * The container to render the portal content into.
    * If not provided, Portal will check for React ARIA's PortalProvider,
@@ -34,13 +34,6 @@ export interface PortalBaseProps extends Slots {
    */
   children: ReactNode | ((data: { props: { mounted?: boolean } }) => ReactNode);
 }
-
-/**
- * Props for the Portal component.
- *
- * @public
- */
-export type PortalProps = PortalBaseProps;
 
 /**
  * Portal renders children into a target DOM container (default `document.body`) to avoid
