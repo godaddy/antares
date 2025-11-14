@@ -17,6 +17,21 @@ PDRs (Primitive Design Records) are **design documents** created before implemen
 
 PDRs for already-implemented primitives (like `listbox.mdx` for `@bento/listbox`) are historical records stored in the repo. They show what was planned before implementation and should be left as-is.
 
+### PDR Tone and Style
+
+PDRs are technical design documents for internal team use, not marketing materials:
+- **DO**: Explain technical rationale and architectural decisions
+- **DO**: Compare with prior art to justify design choices
+- **DON'T**: Use marketing language or "sales pitch" tone
+- **DON'T**: Try to "convince" readers to use Bento (readers are Bento authors)
+- **DON'T**: Say "Why Bento" - instead say "Design rationale" or "Why this approach"
+
+**Example - Bad (marketing tone):**
+> **Why Bento**: Combines React Aria's accessibility with slot-based composition, allowing users to bring their own components while Select acts as coordinator.
+
+**Example - Good (technical rationale):**
+> **Design rationale**: This primitive combines React Aria's accessibility hooks with Bento's slot-based composition system. This approach allows consumers to provide their own styled components while Select coordinates state and ARIA attributes. This maintains the coordinator pattern established in other Bento primitives like ListBox and Checkbox.
+
 ### Creating PDRs for Not-Yet-Implemented Primitives
 
 When creating a PDR for a primitive that doesn't exist yet (e.g., `select-primitive.mdx` before `@bento/select` is built, or `dialog-primitive.mdx` before `@bento/dialog` is built):

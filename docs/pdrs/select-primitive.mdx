@@ -468,11 +468,11 @@ const mySlots = {
 
 ## Prior Art
 
-- **[React Aria](https://react-spectrum.adobe.com/react-aria/Select.html)**: Accessibility foundation (hooks only)
-- **[Radix UI](https://www.radix-ui.com/primitives/docs/components/select)**: Good compound pattern (limited slot customization)
-- **[Headless UI](https://headlessui.com/react/listbox)**: Clean API (rigid structure)
+- **[React Aria](https://react-spectrum.adobe.com/react-aria/Select.html)**: Provides accessibility foundation through hooks, but no component structure
+- **[Radix UI](https://www.radix-ui.com/primitives/docs/components/select)**: Compound component pattern with good ergonomics, but limited slot-level customization
+- **[Headless UI](https://headlessui.com/react/listbox)**: Clean API but rigid component structure
 
-**Why Bento**: Combines React Aria's accessibility with slot-based composition, allowing users to bring their own components while Select acts as coordinator.
+**Design rationale**: This primitive combines React Aria's accessibility hooks with Bento's slot-based composition system. This approach allows consumers to provide their own styled components (Button, ListBox, etc.) while Select coordinates state, ARIA attributes, and positioning. This maintains the coordinator pattern established in other Bento primitives like ListBox and Checkbox, where components remain stateless and the primitive handles orchestration.
 
 ## Usage Examples
 
