@@ -157,7 +157,7 @@ Select acts as **coordinator** using [`CollectionBuilder`](https://react-spectru
 1. [`CollectionBuilder`](https://react-spectrum.adobe.com/react-aria/CollectionBuilder.html) at root builds collection from children
 2. State created via `useSelectState({ ...props, collection, children: undefined })`
 3. [`ListStateContext.Provider`](../../packages/listbox/src/listbox.tsx#L107) for selection state (consumed by `ListBox`/`ListBoxItem`)
-4. `Container` maps props to slots via `slots` prop
+4. Props from `slots` prop distributed to children via context based on their `slot` attribute
 5. Consumers handle portal rendering with [`FocusScope`](https://react-spectrum.adobe.com/react-aria/FocusScope.html) wrapper (see [Manual Portal Management](#manual-portal-management))
 
 **Slot mapping implementation**:
