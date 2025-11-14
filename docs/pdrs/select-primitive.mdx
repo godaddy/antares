@@ -30,7 +30,7 @@ Both components work identically within Select and can be mixed in the same comp
   <ListBoxItem id="apple">Apple</ListBoxItem>
   ```
 
-**Why both exist:** SelectOption makes common cases ergonomic (mirroring native `<select>`/`<option>` patterns), while ListBoxItem remains available for advanced use cases. Internally, SelectOption maps `value` to `id` and delegates to the same rendering logic as ListBoxItem via `ListBoxItemImpl`.
+**Why both exist:** SelectOption makes common cases ergonomic (mirroring native `<select>`/`<option>` patterns), while ListBoxItem remains available for advanced use cases.
 
 **Slots**:
 
@@ -490,7 +490,6 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
 
 **Trade-offs accepted**:
 - Manual portal management (flexibility over convenience)
-- Value component boilerplate (precision over magic—future `@bento/select-value` could help)
+- Value component boilerplate (precision over magic)
 - Slot children must use `withSlots` + `useProps` to receive event handlers (architectural consistency over convenience)
 
-**Future work**: Virtual scrolling, debounced typeahead, `@bento/select-value` component, lazy section loading.
