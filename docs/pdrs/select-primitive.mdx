@@ -13,7 +13,25 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 
 ## Primitive Composition
 
-**Components**: [`Select`](../../packages/select/src/select.tsx) (coordinator), [`SelectOption`](../../packages/select/src/select-option.tsx) (convenience wrapper for [`ListBoxItem`](../../packages/listbox))
+**Components**:
+- `Select` — Coordinator component that manages state, hooks, positioning, and distributes props to slotted children
+- `SelectOption` — Convenience wrapper around [`ListBoxItem`](../../packages/listbox) that provides a `value` prop API instead of `id`
+
+**SelectOption vs ListBoxItem:**
+
+Both components work identically within Select and can be mixed in the same component. The choice is purely about API preference:
+
+- **`SelectOption`** — Uses `value` prop (familiar HTML `<option>` API). Most users will prefer this for its intuitive developer experience.
+  ```tsx
+  <SelectOption value="apple">Apple</SelectOption>
+  ```
+
+- **`ListBoxItem`** — Uses `id` prop (React Aria's collection API). Provides explicit control over item identity, useful when `value` and `id` need to differ or for advanced collection patterns.
+  ```tsx
+  <ListBoxItem id="apple">Apple</ListBoxItem>
+  ```
+
+**Why both exist:** SelectOption makes common cases ergonomic (mirroring native `<select>`/`<option>` patterns), while ListBoxItem remains available for advanced use cases. Internally, SelectOption maps `value` to `id` and delegates to the same rendering logic as ListBoxItem via `ListBoxItemImpl`.
 
 **Slots**:
 
@@ -147,8 +165,6 @@ These props pass directly through to React Aria's [`useOverlayPosition`](https:/
 ## Implementation Pattern
 
 Select acts as **coordinator** using [`CollectionBuilder`](https://react-spectrum.adobe.com/react-aria/CollectionBuilder.html) → `useSelectState` → Context Provider → `Container` slots pattern. **Slot children are stateless**, receiving props but not managing state. **Validation is external** via `isInvalid` prop.
-
-> **Reference Implementation**: See [`packages/select/src/select.tsx`](../../packages/select/src/select.tsx) for the complete Select implementation.
 
 **Architecture flow**:
 1. [`CollectionBuilder`](https://react-spectrum.adobe.com/react-aria/CollectionBuilder.html) at root builds collection from children
@@ -299,8 +315,6 @@ const MyPopover = withSlots('MyPopover', function MyPopover(args) {
 - **Not using `useProps`**: Event handlers won't be extracted from context
 - **Incorrect slot name**: Handlers only flow to components with matching slot assignments
 
-> **Implementation Reference**: See [`packages/select/test/select.browser.test.tsx`](../../packages/select/test/select.browser.test.tsx) for test examples demonstrating the `onClose` handler pattern.
->
 > **Pattern Documentation**: See [`@bento/slots` CONCEPTS](../../packages/slots/CONCEPTS.mdx#event-handlers-via-slots) for more details on this architectural pattern.
 
 ## Core Concepts
@@ -310,7 +324,7 @@ const MyPopover = withSlots('MyPopover', function MyPopover(args) {
 | React Aria Hooks | [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html) |
 | Context | [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L50) for selection state coordination |
 | CollectionBuilder | [`CollectionBuilder`](https://react-spectrum.adobe.com/react-aria/CollectionBuilder.html) wraps component to build collection from children before state creation |
-| Coordinator Pattern | Select manages state/refs/overlays; slot children are stateless ([implementation](../../packages/select/src/select.tsx)) |
+| Coordinator Pattern | Select manages state/refs/overlays; slot children are stateless |
 | Container Slots | [`slot` attribute](../../packages/slots) + `slots` prop for prop mapping to slotted children |
 | Event Handler Passing | Bento slots system passes event handlers (e.g., `onClose`) via context to [`withSlots`](../../packages/slots) components |
 | data-\* Attributes | `data-open`, `data-disabled`, `data-invalid`, `data-selected`, `data-focus-visible` for styling (via [`useDataAttributes`](../../packages/use-data-attributes)) |
@@ -373,7 +387,7 @@ const MyPopover = withSlots('MyPopover', function MyPopover(args) {
 | `shouldFlip` | `boolean` | Auto-flip when no space (default: `true`) |
 | `containerPadding` | `number` | Min padding from viewport edge in pixels (default: `12`) |
 
-**React Aria mapping**: For single selection: `value` ↔ `selectedKey`, `defaultValue` ↔ `defaultSelectedKey`. For multiple selection: `value` ↔ `selectedKeys`, `defaultValue` ↔ `defaultSelectedKeys`. Both modes: `onValueChange` ↔ `onSelectionChange`. Additionally supports `open` ↔ `isOpen` for dropdown visibility. See [implementation](../../packages/select/src/select.tsx#L223-L236) for the complete mapping logic.
+**React Aria mapping**: For single selection: `value` ↔ `selectedKey`, `defaultValue` ↔ `defaultSelectedKey`. For multiple selection: `value` ↔ `selectedKeys`, `defaultValue` ↔ `defaultSelectedKeys`. Both modes: `onValueChange` ↔ `onSelectionChange`. Additionally supports `open` ↔ `isOpen` for dropdown visibility.
 
 **Form integration**: Uses [React Aria's `HiddenSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html#forms) when `name` prop provided—enables form submission, syncs with state, handles autofill, and provides SSR support automatically.
 
@@ -480,7 +494,8 @@ const mySlots = {
 import { Select, SelectOption } from '@bento/select';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
-import { ListBox } from '@bento/listbox';
+import { ListBox, ListBoxItem } from '@bento/listbox';
+import { Icon } from '@bento/icon';
 
 function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
   if (selectedItem) {
@@ -540,6 +555,35 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
   </Select>
   <button type="submit">Submit</button>
 </form>
+
+// Using ListBoxItem directly (alternative to SelectOption)
+<Select>
+  <Button slot="trigger">
+    <SelectValue slot="value" placeholder="Select..." />
+  </Button>
+  <ListBox slot="listbox">
+    <ListBoxItem id="apple">
+      <Text>Apple</Text>
+    </ListBoxItem>
+    <ListBoxItem id="orange">
+      <Text>Orange</Text>
+    </ListBoxItem>
+  </ListBox>
+</Select>
+
+// Mixing SelectOption and ListBoxItem (both work together)
+<Select>
+  <Button slot="trigger">
+    <SelectValue slot="value" placeholder="Select..." />
+  </Button>
+  <ListBox slot="listbox">
+    <SelectOption value="apple">Apple</SelectOption>
+    <ListBoxItem id="orange">
+      <Icon name="orange" />
+      <Text>Orange (with icon)</Text>
+    </ListBoxItem>
+  </ListBox>
+</Select>
 ```
 
 ## Implementation Rationale
