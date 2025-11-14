@@ -255,41 +255,7 @@ const selectedItems = isMultiple
 | data-\* Attributes | `data-open`, `data-disabled`, `data-invalid`, `data-selected`, `data-focus-visible` for styling (via [`useDataAttributes`](../../packages/use-data-attributes)) |
 | SSR Support | [React Aria's `HiddenSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html#forms) component handles SSR automatically |
 
-## Architecture & Features
-
-### Rendered DOM Structure
-
-**Note**: [React Aria's `useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) provides `triggerProps` which includes appropriate ARIA attributes. The exact attributes depend on React Aria's implementation, but typically include `aria-expanded`, `aria-haspopup`, and related attributes for the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/).
-
-```html
-<!-- Trigger (ARIA attributes provided by React Aria's triggerProps) -->
-<button 
-  role="combobox"
-  aria-expanded="false" 
-  aria-haspopup="listbox" 
-  data-open="false"
-  data-hovered="false"
-  data-focused="false"
->
-  <span>Selected Value</span>
-</button>
-
-<!-- Hidden native select for forms (React Aria's HiddenSelect) -->
-<select aria-hidden="true" tabindex="-1" style="position: absolute; ...">
-  <option value="1">Option 1</option>
-  <option value="2">Option 2</option>
-</select>
-
-<!-- Portal-rendered dropdown -->
-<div style="position: fixed; ...">
-  <div role="listbox" aria-label="Select options">
-    <div role="option" aria-selected="true" data-selected="true">Option 1</div>
-    <div role="option" aria-selected="false">Option 2</div>
-  </div>
-</div>
-```
-
-### Key Props
+## Key Props
 
 | Prop | Type | Purpose |
 |------|------|---------|
