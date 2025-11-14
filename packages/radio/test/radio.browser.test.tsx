@@ -1,4 +1,6 @@
 import { Radio, RadioGroup } from '@bento/radio';
+import { FieldError } from '@bento/field-error';
+import { Text } from '@bento/text';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it, vi } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
@@ -10,12 +12,15 @@ function RadioGroupExample(props: {
   radioProps?: Partial<ComponentProps<typeof Radio>>;
 }) {
   return (
-    <RadioGroup label="Favorite fruit" name="fruit" {...props.groupProps}>
+    <RadioGroup name="fruit" {...props.groupProps}>
+      <Text slot="label">Favorite fruit</Text>
       <Radio value="apple" {...props.radioProps}>
         Apple
       </Radio>
       <Radio value="banana">Banana</Radio>
       <Radio value="cherry">Cherry</Radio>
+
+      <FieldError slot="error">error message</FieldError>
     </RadioGroup>
   );
 }
@@ -212,10 +217,7 @@ describe('@bento/radio', function bento() {
           <RadioGroupExample
             groupProps={{
               isRequired: true,
-              validationBehavior: 'native',
-              errorMessage: function errorMessage(validation) {
-                return validation.isInvalid ? <span>error message</span> : null;
-              }
+              validationBehavior: 'native'
             }}
           />
           <button type="submit">Submit</button>
@@ -228,7 +230,7 @@ describe('@bento/radio', function bento() {
       assume(form.innerHTML).does.not.include('error message');
 
       await userEvent.click(submitButton);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve));
 
       assume(form.innerHTML).includes('error message');
     });
