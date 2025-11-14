@@ -60,7 +60,7 @@ See individual package READMEs in [`packages/`](./packages) for installation and
 Our documentation is powered by Storybook and can be started by running:
 
 ```sh
-npm run storybook
+npm start
 ```
 
 From inside of the `apps/docs` folder. Storybook is configured to automatically
