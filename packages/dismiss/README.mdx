@@ -1,4 +1,10 @@
-import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import {
+  Meta,
+  Story,
+  ArgTypes,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
 import * as Stories from './dismiss.stories.tsx';
 
 import SourceBasic from './examples/basic.tsx?raw';
@@ -280,11 +286,11 @@ visible to sighted users.
 
 ### Data Attributes
 
-The following `data-` attributes are automatically applied to the component:
+The following data attributes are automatically applied to the component:
 
-- `data-hidden=true`: Applied to the visually hidden wrapper (from
-  `@bento/visually-hidden`), indicating the content is visually hidden but
-  accessible to screen readers.
+| Attribute     | Description                                                                  | Example Values |
+| ------------- | ---------------------------------------------------------------------------- | -------------- |
+| `data-hidden` | Applied to the visually hidden wrapper, indicating content is accessible to screen readers | "true"         |
 
 These attributes are provided by the underlying `@bento/visually-hidden`
 component and can be used for debugging or specialized styling scenarios:
