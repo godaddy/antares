@@ -49,14 +49,6 @@ Both components work identically within Select and can be mixed in the same comp
 
 **Note on popover slot event handlers**: The Bento slots system passes event handlers (props matching `/^on[A-Z]/`) through to child components via context. Slotted children must use `withSlots` + `useProps` to extract these handlers from context. See [Slot System Event Handler Pattern](#slot-system-event-handler-pattern) for details.
 
-**Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html), [`useProps`](../../packages/use-props), [`useDataAttributes`](../../packages/use-data-attributes)
-
-**Contexts**: [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) (from [`@bento/listbox`](../../packages/listbox))
-
-**HOC**: [`withSlots`](../../packages/slots)
-
-**Primitives**: [`Container`](../../packages/container) from [`@bento/container`](../../packages/container) (handles slot composition)
-
 ## Design Constraints
 
 ### Selection Behavior
