@@ -1,0 +1,208 @@
+# Primitive Design Review (PDR): Portal
+
+## Purpose
+
+Render children into a target DOM container (default `document.body`) to avoid
+clipping and establish consistent layering for overlays, drawers, popovers,
+toasts, etc.
+
+## Requirements
+
+- Headless placement utility using React portals
+- Default container is `document.body` but can be overridden to allow custom container
+- SSR-safe: avoid accessing `document` before mount
+- Works with slots, `use-props`, and `data-attributes`
+
+## Integration
+
+This primitive could be consumed by the following components:
+
+- Overlay components (modals, dialogs, drawers)
+- Positioning-dependent components (tooltips, popovers, dropdown menus)
+- Notification systems (toasts, alerts)
+- Any component requiring rendering outside its parent hierarchy
+
+In MFE scenarios, the host orchestrator provides the container Element to
+`Portal`; clients should not assume `document.body`. In no-host P2P scenarios,
+the elected leader creates and exposes `Stack` roots; MFEs should resolve the
+container via orchestrator bus before rendering
+
+## Primitive Composition
+
+The Portal primitive is built using:
+
+1. **React DOM's `createPortal`**: Core API for rendering outside the component tree
+2. **`withSlots`**: Bento's slot system for composability
+3. **`useProps`**: Bento's prop handling with render prop support
+4. **React hooks**: `useEffect`, `useState` for mount detection and lifecycle management
+
+The primitive does not handle:
+
+- Focus management (delegated to FocusLock primitive)
+- Scroll prevention (delegated to other primitives)
+- Backdrop rendering (delegated to Underlay primitive)
+- Positioning logic (delegated to positioning utilities)
+
+This separation ensures Portal remains a minimal, reusable building block.
+
+## React Aria PortalProvider integration
+
+The Portal primitive **integrates with React ARIA's `UNSAFE_PortalProvider`** while remaining independent and flexible.
+**Reference:** [React ARIA PortalProvider](https://react-spectrum.adobe.com/react-aria/PortalProvider.html)
+
+### PortalProvider Integration
+
+Portal checks for React ARIA's `UNSAFE_PortalProvider` and uses it when available:
+
+```tsx
+const portalContext = useUNSAFE_PortalContext();
+const portalContainer = portalContext?.getContainer?.();
+const container = containerProp || portalContainer || document.body;
+```
+
+**Container Priority:**
+1. Explicit `container` prop (highest priority)
+2. React ARIA's `UNSAFE_PortalProvider` container (via `useUNSAFE_PortalContext`)
+3. `document.body` (fallback)
+
+
+### Why This Matters
+
+**With UNSAFE_PortalProvider:**
+
+```tsx
+import { UNSAFE_PortalProvider } from 'react-aria';
+import { Portal } from '@bento/portal';
+import { useRef } from 'react';
+
+function App() {
+  const containerRef = useRef(null);
+
+  return (
+    <>
+      <UNSAFE_PortalProvider getContainer={() => containerRef.current}>
+        <YourApp>
+          {/* Portal automatically uses PortalProvider's container */}
+          <Portal>
+            <Container>
+              <Text>This renders in the custom container</Text>
+            </Container>
+          </Portal>
+        </YourApp>
+      </UNSAFE_PortalProvider>
+
+      <Container ref={containerRef} className="portal-container" />
+    </>
+  );
+}
+```
+
+**Benefits:**
+- **Stacking context**: All overlays share the same stacking context
+- **Custom location**: Control where overlays render in DOM
+- **Multiple overlays**: Proper stacking when multiple portals/overlays are open
+- **React ARIA compatibility**: Works seamlessly with React ARIA components
+
+
+**Without PortalProvider:**
+
+```tsx
+<App>
+  {/* Portal works standalone */}
+  <Portal>
+    <Container>
+      <Text>This renders to document.body</Text>
+    </Container>
+  </Portal>
+</App>
+```
+
+Portal remains fully functional without PortalProvider, falling back to document.body, or a provided container.
+
+### Compatibility with React ARIA Hooks
+
+Portal works seamlessly with React ARIA's overlay hooks and `UNSAFE_PortalProvider`:
+
+```tsx
+import { useModalOverlay } from 'react-aria';
+import { UNSAFE_PortalProvider } from 'react-aria';
+import { Portal } from '@bento/portal';
+import { Container } from '@bento/container';
+import { useRef } from 'react';
+
+function App() {
+  const portalContainerRef = useRef(null);
+
+  return (
+    <>
+      <UNSAFE_PortalProvider getContainer={() => portalContainerRef.current}>
+        <Modal isOpen={isOpen} onClose={handleClose}>
+          <Container>
+            <Text>Modal content</Text>
+          </Container>
+        </Modal>
+      </UNSAFE_PortalProvider>
+
+      <Container ref={portalContainerRef} className="overlay-container" />
+    </>
+  );
+}
+
+function Modal({ isOpen, onClose, children }) {
+  const ref = useRef();
+  const { modalProps, underlayProps } = useModalOverlay(
+    { isOpen, onClose },
+    { isOpen },
+    ref
+  );
+
+  return (
+    <Portal>
+      {/* React ARIA hooks work correctly */}
+      {/* Portal uses PortalProvider's container */}
+      <Container {...underlayProps}>
+        <Container {...modalProps} ref={ref}>
+          {children}
+        </Container>
+      </Container>
+    </Portal>
+  );
+}
+```
+
+**Key Point**: Portal does not interfere with React ARIA's overlay behavior. It only changes the render location.
+
+
+### Props Interface
+
+We expect the following props to be passed to the Portal component:
+
+```tsx
+interface PortalProps extends Slots {
+  /**
+   * The container to render the portal content into.
+   */
+  container?: Element;
+
+  /**
+   * Should the portal content be mounted, false by default for server-side rendering compatibility
+   * Should not render children if not mounted.
+   */
+  mounted: boolean;
+
+  /**
+   * The content to render inside the portal.
+   */
+  */
+  children?: ReactNode;
+}
+```
+
+### Expected `data-*` Attributes
+
+The Portal component itself does not render any DOM elements by default, so data attributes apply to content customized via slots:
+
+| Attribute        | Description                          | Example Values    |
+|------------------|--------------------------------------|-------------------|
+| `data-portal`    | Marks content rendered via portal    | "true"            |
+| `data-mounted`   | Whether portal content has mounted   | "true" / "false"  |

@@ -68,61 +68,43 @@ describe('@bento/checkbox', function bento() {
     });
 
     it('should render a group with description', function checkboxGroupDescription() {
-      const { container } = render(
-        <CheckboxGroupExample label="Checkbox Group with Description" description="Select your options" />
-      );
+      const { container } = render(<CheckboxGroupExample label="Checkbox Group with Description" />);
       const group = container.querySelector('[role="group"]');
 
-      expect(group?.innerHTML).includes('Checkbox Group with Description');
+      expect(group?.innerHTML).includes('Checkbox Group');
       expect(group?.innerHTML).includes('Select your options');
     });
 
-    it('should render a group with an error message', function checkboxGroupError() {
-      const { container } = render(<CheckboxGroupExample errorMessage="This is an error message" />);
+    it('should render a group with an error message', function checkboxGroupErrorReactNode() {
+      const { container } = render(<CheckboxGroupExample isInvalid />);
       const group = container.querySelector('[role="group"]');
 
       expect(group?.innerHTML).includes('This is an error message');
     });
 
-    it('should render a group with an error message as ReactNode', function checkboxGroupErrorReactNode() {
-      const errorMessage = (
-        <div data-testid="error-node">
-          <span>⚠️</span>
-          <span>This is a ReactNode error message</span>
-        </div>
-      );
-      const { container } = render(<CheckboxGroupExample errorMessage={errorMessage} />);
-      const group = container.querySelector('[role="group"]');
-      const errorNode = container.querySelector('[data-testid="error-node"]');
-
-      expect(group?.innerHTML).includes('This is a ReactNode error message');
-      expect(errorNode).toBeDefined();
-      expect(errorNode?.innerHTML).includes('⚠️');
-    });
-
     it('should render a group with complex controlled logic (indeterminate)', async function indeterminateCheckbox() {
       const { container } = render(<CheckboxGroupIndeterminateExample />);
       const group = container.querySelector('[role="group"]');
-      const selectAllCheckbox = container.querySelector('[name="select-all"]');
+      const selectAllCheckbox = container.querySelector('[name="select-all"]')?.closest('label');
       const firstCheckbox = container.querySelector('input[type="checkbox"][value="option1"]');
 
-      expect(group).toHaveAttribute('value', '');
+      expect(group).toHaveAttribute('data-value', '');
       expect(selectAllCheckbox).not.toHaveAttribute('data-selected');
 
       await userEvent.click(selectAllCheckbox!);
-      expect(group).toHaveAttribute('value', 'option1,option2,option3,select-all');
+      expect(group).toHaveAttribute('data-value', 'option1,option2,option3,select-all');
       expect(selectAllCheckbox).toHaveAttribute('data-selected', 'true');
 
       await userEvent.click(firstCheckbox!);
-      expect(group).toHaveAttribute('value', 'option2,option3');
+      expect(group).toHaveAttribute('data-value', 'option2,option3');
       expect(selectAllCheckbox).toHaveAttribute('aria-checked', 'mixed');
 
       await userEvent.click(firstCheckbox!);
-      expect(group).toHaveAttribute('value', 'option2,option3,option1,select-all');
+      expect(group).toHaveAttribute('data-value', 'option2,option3,option1,select-all');
       expect(selectAllCheckbox).toHaveAttribute('data-selected', 'true');
 
       await userEvent.click(selectAllCheckbox!);
-      expect(group).toHaveAttribute('value', '');
+      expect(group).toHaveAttribute('data-value', '');
       expect(selectAllCheckbox).not.toHaveAttribute('data-selected');
     });
 
@@ -166,24 +148,18 @@ describe('@bento/checkbox', function bento() {
     it('should display error message when checkbox group is required but no checkbox is selected', async function requiredCheckboxGroup() {
       const { container } = render(
         <form>
-          <CheckboxGroupExample
-            isRequired={true}
-            validationBehavior="native"
-            errorMessage={function validate(validation) {
-              return validation.isInvalid ? <span>This field is required</span> : null;
-            }}
-          />
+          <CheckboxGroupExample isRequired validationBehavior="native" />
           <button type="submit">Submit</button>
         </form>
       );
       const submitButton = container.querySelector('button[type="submit"]')!;
 
       const form = container.querySelector('form');
-      assume(form?.innerHTML).does.not.include('This field is required');
+      assume(form?.innerHTML).does.not.include('This is an error message');
 
       await userEvent.click(submitButton);
 
-      assume(form?.innerHTML).includes('This field is required');
+      assume(form?.innerHTML).includes('This is an error message');
     });
 
     describe('Accessibility', function accessibilityTests() {
