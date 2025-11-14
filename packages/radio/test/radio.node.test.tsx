@@ -42,15 +42,14 @@ describe('@bento/radio', function bento() {
       renderToStringRadioGroup();
       const result = renderToStringRadioGroup(
         {
-          description: 'This is a description',
           slots: {
-            'group.label': { style: { color: 'yellow' } },
-            'group.description': { style: { color: 'blue' } }
+            label: { style: { color: 'yellow' }, className: 'random-class-label' },
+            description: { style: { color: 'blue' }, className: 'random-class-description' }
           }
         },
         {
           slots: {
-            'control.icon-unchecked': { style: { color: 'red' } }
+            'icon-unchecked': { style: { color: 'red' } }
           }
         }
       );
@@ -59,6 +58,8 @@ describe('@bento/radio', function bento() {
       assume(result).includes('color:yellow');
       assume(result).includes('color:blue');
       assume(result).includes('color:red');
+      assume(result).includes('random-class-label');
+      assume(result).includes('random-class-description');
     });
   });
 

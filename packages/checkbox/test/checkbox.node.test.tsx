@@ -3,6 +3,7 @@ import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { CheckboxGroup, Checkbox } from '@bento/checkbox';
 import { renderToString } from 'react-dom/server';
+import { Text } from '@bento/text';
 import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
@@ -21,7 +22,9 @@ function renderToStringCheckbox(
   checkboxProps: Partial<ComponentProps<typeof Checkbox>> = {}
 ) {
   return renderToString(
-    <CheckboxGroup label="Choose an option" name="options" className="random-class-group" {...groupProps}>
+    <CheckboxGroup name="options" className="random-class-group" {...groupProps}>
+      <Text slot="label">Choose an option</Text>
+      <Text slot="description">This is a description</Text>
       <Checkbox value="only-choice" className="random-class-checkbox" {...checkboxProps}>
         Only choice
       </Checkbox>
@@ -48,30 +51,24 @@ describe('@bento/checkbox', function bento() {
     it('renders correct slot values', function correctSlotValues() {
       const result = renderToStringCheckbox(
         {
-          description: 'This is a description',
-          errorMessage: 'This is an error message',
           slots: {
-            'group.label': { style: { color: 'yellow' } },
-            'group.description': { style: { color: 'blue' } },
-            'group.error': { style: { color: 'red' } }
+            label: { style: { color: 'yellow' } },
+            description: { style: { color: 'blue' } }
           }
         },
         {
           slots: {
-            'control.icon-checked': { style: { color: 'orange' } },
-            'control.icon-unchecked': { style: { color: 'purple' } },
-            'control.icon-indeterminate': { style: { color: 'pink' } },
-            'control.label': { style: { color: 'green' } }
+            'icon-checked': { style: { color: 'orange' } },
+            'icon-unchecked': { style: { color: 'purple' } },
+            'icon-indeterminate': { style: { color: 'pink' } }
           }
         }
       );
 
-      // 5 slot styles can be present at once
-      assume((result.match(/color:/g) || []).length).equals(5);
+      // 3 slot styles can be present at once
+      assume((result.match(/color:/g) || []).length).equals(3);
       assume(result).includes('color:yellow');
       assume(result).includes('color:blue');
-      assume(result).includes('color:red');
-      assume(result).includes('color:green');
       assume(result).includes('color:purple');
     });
   });

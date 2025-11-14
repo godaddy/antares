@@ -1,15 +1,16 @@
 import React, { useContext, useRef, useMemo } from 'react';
-import { Control, ControlProps } from '@bento/control';
+import { Container, type ContainerProps } from '@bento/container';
+import { useDataAttributes } from '@bento/use-data-attributes';
 import { Icon } from '@bento/icon';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
-import { useFocusRing, useHover, type AriaCheckboxProps, useCheckboxGroupItem, useCheckbox } from 'react-aria';
+import { VisuallyHidden } from '@bento/visually-hidden';
 import { mergeProps, mergeRefs, useObjectRef } from '@react-aria/utils';
+import { useFocusRing, useHover, useCheckbox, useCheckboxGroupItem, type AriaCheckboxProps } from 'react-aria';
 import { useToggleState } from 'react-stately';
-import { useDataAttributes } from '@bento/use-data-attributes';
 import { CheckboxGroupStateContext } from './checkbox-group-state';
 
-export interface CheckboxProps extends AriaCheckboxProps, Partial<Omit<ControlProps, keyof AriaCheckboxProps>> {
+export interface CheckboxProps extends AriaCheckboxProps, Omit<ContainerProps, keyof AriaCheckboxProps> {
   /** The value of the checkbox, used when submitting an HTML form. */
   value?: string;
 
@@ -46,28 +47,15 @@ export interface CheckboxProps extends AriaCheckboxProps, Partial<Omit<ControlPr
 
 /**
  * The `Checkbox` is a single checkbox option that can be selected by the user.
- *
- * @component
- * @param args - The props {@link CheckboxProps} passed to the Checkbox component.
- *
- * @public
  */
 export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: CheckboxProps) {
   const { props, apply } = useProps(args);
-  const {
-    isRequired = false,
-    isIndeterminate = false,
-    isDisabled: isDisabledProp = false,
-    isSelected: isSelectedProp = false,
-    isReadOnly: isReadOnlyProp = false
-  } = props;
-
   const groupState = useContext(CheckboxGroupStateContext);
-
   const ref = useRef<HTMLInputElement>(null);
   const inputRef = useObjectRef(useMemo(() => mergeRefs(ref, props.inputRef), [ref, props.inputRef]));
+  const { isFocused, isFocusVisible, focusProps } = useFocusRing();
 
-  let { labelProps, inputProps, isSelected, isReadOnly, isDisabled, isPressed, isInvalid } = groupState
+  const { labelProps, inputProps, isSelected, isPressed, isDisabled, isReadOnly, isInvalid } = groupState
     ? useCheckboxGroupItem(
         {
           ...props,
@@ -78,44 +66,37 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
         groupState,
         inputRef
       )
-    : useCheckbox(
-        {
-          ...props
-        },
-        useToggleState(props),
-        inputRef
-      );
+    : useCheckbox(props, useToggleState(props), inputRef);
 
-  const interactionDisabled = isDisabledProp || isDisabled || isReadOnly || isReadOnlyProp;
+  const interactionDisabled = props.isDisabled || isDisabled || isReadOnly;
   const { hoverProps, isHovered } = useHover({
     ...props,
     isDisabled: interactionDisabled
   });
-  const { isFocused, isFocusVisible, focusProps } = useFocusRing();
 
   return (
-    <Control
-      slot="control"
-      labelProps={mergeProps(labelProps, hoverProps)}
-      inputProps={mergeProps(inputProps, focusProps)}
-      label={props.children}
-      inputRef={inputRef}
-      aria-checked={isIndeterminate ? 'mixed' : undefined}
-      {...apply(props, ['isReadOnly', 'isSelected', 'isIndeterminate', 'isDisabled', 'value', 'autoFocus'])}
+    <Container
+      as="label"
+      aria-checked={props.isIndeterminate ? 'mixed' : undefined}
+      {...apply(mergeProps(labelProps, hoverProps))}
       {...useDataAttributes({
-        selected: isSelected || isSelectedProp,
+        selected: isSelected,
         pressed: isPressed,
         hovered: isHovered,
         focused: isFocused,
         focusVisible: isFocusVisible,
         disabled: interactionDisabled,
-        readOnly: isReadOnly || isReadOnlyProp,
+        readonly: isReadOnly,
         invalid: isInvalid,
-        required: isRequired,
-        indeterminate: isIndeterminate
+        required: props.isRequired,
+        indeterminate: props.isIndeterminate
       })}
     >
-      {isIndeterminate ? (
+      <VisuallyHidden>
+        <input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
+      </VisuallyHidden>
+
+      {props.isIndeterminate ? (
         <Icon slot="icon-indeterminate" icon="checkboxIndeterminate">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <rect x="6" y="11" width="12" height="2" fill="currentColor" />
@@ -129,11 +110,12 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
         </Icon>
       ) : (
         <Icon slot="icon-unchecked" icon="checkboxUnchecked">
-          <svg width={24} height={24} aria-hidden="true">
+          <svg width={24} height={24}>
             <rect x={4} y={4} width={16} height={16} rx={3} fill="none" stroke="gray" strokeWidth={2} />
           </svg>
         </Icon>
       )}
-    </Control>
+      {props.children}
+    </Container>
   );
 });

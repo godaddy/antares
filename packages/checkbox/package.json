@@ -40,11 +40,12 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/control": "^0.1.2",
+    "@bento/container": "^0.1.1",
     "@bento/icon": "^0.1.2",
     "@bento/slots": "^0.1.3",
     "@bento/use-data-attributes": "^0.1.1",
     "@bento/use-props": "^0.1.1",
+    "@bento/visually-hidden": "^0.1.0",
     "@react-aria/utils": "^3.30.0",
     "react-aria": "^3.44.0",
     "react-stately": "^3.42.0"
