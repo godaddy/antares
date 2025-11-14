@@ -40,7 +40,7 @@ Both components work identically within Select and can be mixed in the same comp
 | `slot="trigger"` | `triggerProps`, `focusProps`, `hoverProps`, `ref` | Should forward ARIA/press props; [`@bento/button`](../../packages/button) already satisfies this ([button implementation](../../packages/button/src/index.tsx)) |
 | `slot="label"` | `labelProps` | Optional, for accessible name |
 | `slot="value"` | `valueProps`, `selectedItem`, `selectedItems`, `placeholder` | In `slots` prop, target nested value with namespaced key `'trigger.value'`. Receives `selectedItems` array in multi-select mode. |
-| `slot="popover"` | `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref` | Consumer handles portal rendering and structure. `onClose` handler provided for programmatic dismiss. A future `@bento/popover` or `@bento/overlay` component would consume these props for cleaner composition. |
+| `slot="popover"` | `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref` | Consumer handles portal rendering and structure. `onClose` handler provided for programmatic dismiss. |
 | `slot="listbox"` | `menuProps`, `ref` | Typically used with `ListBox` component |
 | `slot="description"` | `descriptionProps` | Optional |
 | `slot="error"` | `errorMessageProps` | Optional, follows Bento convention of `slot="error"` |
@@ -51,13 +51,11 @@ Both components work identically within Select and can be mixed in the same comp
 
 **Hooks**: [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html), [`useProps`](../../packages/use-props), [`useDataAttributes`](../../packages/use-data-attributes)
 
-**Contexts**: [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L50) (from [`@bento/listbox`](../../packages/listbox))
+**Contexts**: [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) (from [`@bento/listbox`](../../packages/listbox))
 
 **HOC**: [`withSlots`](../../packages/slots)
 
 **Primitives**: [`Container`](../../packages/container) from [`@bento/container`](../../packages/container) (handles slot composition)
-
-**Future dependencies**: A `@bento/popover` or `@bento/overlay` component would provide cleaner overlay composition, consuming the `overlayProps` and `positionProps` from the popover slot. Currently, consumers manually handle portal rendering and overlay structure.
 
 ## Design Constraints
 
@@ -114,7 +112,7 @@ Consumers must manually handle portal rendering for the popover overlay:
 
 **Note**: This example uses React Aria's [`FocusScope`](https://react-spectrum.adobe.com/react-aria/FocusScope.html) and [`DismissButton`](https://react-spectrum.adobe.com/react-aria/DismissButton.html) for focus restoration and keyboard dismiss behavior, but consumers can implement their own portal structure.
 
-**Rationale**: Provides maximum flexibility for portal placement and overlay structure. A future `@bento/popover` primitive will simplify this for common use cases while preserving the low-level escape hatch.
+**Rationale**: Provides maximum flexibility for portal placement and overlay structure.
 
 ### Value Component Boilerplate
 
@@ -169,7 +167,7 @@ Select acts as **coordinator** using [`CollectionBuilder`](https://react-spectru
 **Architecture flow**:
 1. [`CollectionBuilder`](https://react-spectrum.adobe.com/react-aria/CollectionBuilder.html) at root builds collection from children
 2. State created via `useSelectState({ ...props, collection, children: undefined })`
-3. [`ListStateContext.Provider`](../../packages/listbox/src/listbox.tsx#L50) for selection state (consumed by `ListBox`/`ListBoxItem`)
+3. [`ListStateContext.Provider`](../../packages/listbox/src/listbox.tsx#L107) for selection state (consumed by `ListBox`/`ListBoxItem`)
 4. `Container` maps props to slots via `slots` prop
 5. Consumers handle portal rendering with [`FocusScope`](https://react-spectrum.adobe.com/react-aria/FocusScope.html) wrapper (see [Manual Portal Management](#manual-portal-management))
 
@@ -322,7 +320,7 @@ const MyPopover = withSlots('MyPopover', function MyPopover(args) {
 | Concept | Implementation |
 |---------|----------------|
 | React Aria Hooks | [`useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html), [`useSelectState`](https://react-spectrum.adobe.com/react-stately/useSelectState.html), [`useOverlay`](https://react-spectrum.adobe.com/react-aria/useOverlay.html), [`useOverlayPosition`](https://react-spectrum.adobe.com/react-aria/useOverlayPosition.html), [`usePreventScroll`](https://react-spectrum.adobe.com/react-aria/usePreventScroll.html), [`useFocusRing`](https://react-spectrum.adobe.com/react-aria/useFocusRing.html), [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html) |
-| Context | [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L50) for selection state coordination |
+| Context | [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) for selection state coordination |
 | CollectionBuilder | [`CollectionBuilder`](https://react-spectrum.adobe.com/react-aria/CollectionBuilder.html) wraps component to build collection from children before state creation |
 | Coordinator Pattern | Select manages state/refs/overlays; slot children are stateless |
 | Container Slots | [`slot` attribute](../../packages/slots) + `slots` prop for prop mapping to slotted children |
@@ -598,9 +596,8 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
 - **Event handler pattern**: Bento's slots system cleanly passes event handlers via context to [`withSlots`](../../packages/slots) components
 
 **Trade-offs accepted**:
-- Manual portal management (flexibility over convenience—future `@bento/popover` will simplify)
+- Manual portal management (flexibility over convenience)
 - Value component boilerplate (precision over magic—future `@bento/select-value` could help)
-- Fixed positioning defaults (simplicity over customization—future props could expose options)
 - Slot children must use `withSlots` + `useProps` to receive event handlers (architectural consistency over convenience)
 
-**Future work**: Virtual scrolling, debounced typeahead, `@bento/popover` primitive, `@bento/select-value` component, customizable positioning props, lazy section loading.
+**Future work**: Virtual scrolling, debounced typeahead, `@bento/select-value` component, lazy section loading.
