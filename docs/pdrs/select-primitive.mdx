@@ -6,7 +6,6 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 
 ### Unique Attributes
 
-- **Container-based composition**: Uses [`@bento/container`](../../packages/container) with [`slots` prop](../../packages/slots) to apply props to slotted children (Button, ListBox, etc.)
 - **Builds on ListBox**: Reuses selection patterns from [`@bento/listbox`](../../packages/listbox), following [React Aria's pattern](https://react-spectrum.adobe.com/react-aria/Select.html#example)
 - **Coordinator pattern**: Select manages all state/hooks/positioning and distributes props to slot children; components like Button and ListBox remain stateless
 - **Hidden native `<select>`**: When `name` prop is provided, uses [React Aria's `HiddenSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html#forms) component which renders a visually-hidden native `<select>` (with `<option>` elements) that syncs with state, enabling native form submission, browser autofill, and SSR support without JavaScript
