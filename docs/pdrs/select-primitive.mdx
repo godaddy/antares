@@ -46,7 +46,7 @@ Both components work identically within Select and can be mixed in the same comp
 
 **Note on description/error slots**: Provided for convenience and accessibility. They enforce a specific rendering order similar to `ControlGroup`. Users who prefer more flexibility can handle description/error messages themselves.
 
-**Note on popover slot event handlers**: The Bento slots system passes event handlers (props matching `/^on[A-Z]/`) through to child components via context. Slotted children must use `withSlots` + `useProps` to extract these handlers from context. See [Slot System Event Handler Pattern](#slot-system-event-handler-pattern) for details.
+**Note on popover slot event handlers**: The Bento slots system passes event handlers (props matching `/^on[A-Z]/`) through to child components via context. Slotted children must use `withSlots` + `useProps` to extract these handlers from context.
 
 ## Design Constraints
 
@@ -241,68 +241,6 @@ const selectedItems = isMultiple
 - `popover` - `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref` (consumer handles portal rendering)
 - `listbox` - `menuProps`, `ref`
 - `description` / `error` - `descriptionProps` / `errorMessageProps` from `useSelect`
-
-### Slot System Event Handler Pattern
-
-**Event handlers are passed through the Bento slots system** when child components are wrapped with `withSlots` and use `useProps`. This is a core Bento architectural pattern that enables flexible prop distribution without explicit prop drilling.
-
-#### Why This Pattern?
-
-Traditional prop drilling requires manually passing props through every layer of the component tree. In a slot-based composition model where users bring their own components, the coordinator (Select) can't know the component hierarchy structure in advance. The slot event handler pattern solves this by:
-
-1. **Enabling flexible composition** - Child components receive props without the coordinator needing to know their structure
-2. **Maintaining separation of concerns** - Coordinator manages state/logic, children handle rendering
-3. **Supporting deep nesting** - Props flow through context to properly wrapped components at any depth
-4. **Preserving type safety** - TypeScript slot interfaces define expected props for each slot
-
-#### How It Works
-
-```tsx
-// Select passes onClose via slots
-<Container
-  slots={{
-    popover: { ...overlayProps, ...positionProps, onClose: handleOverlayClose }
-  }}
->
-  {/* Child component must use withSlots + useProps to receive handlers */}
-  <MyPopover slot="popover">...</MyPopover>
-</Container>
-
-// Consuming component extracts handler from context
-const MyPopover = withSlots('MyPopover', function MyPopover(args) {
-  const { props } = useProps(args);
-  const { onClose, children, ...rest } = props;  // ✅ onClose extracted from context
-  
-  return <div {...rest} onClick={onClose}>{children}</div>;
-});
-```
-
-**Implementation flow**:
-1. Event handlers (props matching `/^on[A-Z]/`) are identified by [`@bento/use-props`](../../packages/use-props)
-2. These handlers are passed through the Bento context system (via [`@bento/box`](../../packages/box))
-3. Child components wrapped with [`withSlots`](../../packages/slots) can extract handlers using [`useProps`](../../packages/use-props)
-4. This enables clean prop forwarding while maintaining the coordinator pattern
-
-#### Trade-offs
-
-**Benefits:**
-- No prop drilling through intermediate components
-- Supports arbitrary component nesting
-- Type-safe via slot interfaces
-- Consistent with Bento's composition model
-
-**Requirements:**
-- Child components must use `withSlots` HOC
-- Child components must use `useProps` to extract handlers
-- Architectural consistency over convenience
-
-#### Common Pitfalls
-
-- **Forgetting `withSlots`**: Plain React components won't receive event handlers from slots
-- **Not using `useProps`**: Event handlers won't be extracted from context
-- **Incorrect slot name**: Handlers only flow to components with matching slot assignments
-
-> **Pattern Documentation**: See [`@bento/slots` CONCEPTS](../../packages/slots/CONCEPTS.mdx#event-handlers-via-slots) for more details on this architectural pattern.
 
 ## Core Concepts
 
