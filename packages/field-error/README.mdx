@@ -1,0 +1,35 @@
+import {
+  Meta,
+  ArgTypes,
+  Story,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './field-error.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# FieldError
+
+The `@bento/field-error` package provides the `FieldError` component, which is used to display error messages in form primitives, such as `RadioGroup` or `CheckboxGroup`. It is meant to be used in conjunction with form controls such as the `RadioGroup` or `CheckboxGroup` primitives.
+
+## Installation
+
+```bash
+npm install --save @bento/field-error
+```
+
+## Props
+
+The following properties are available to be used on the `FieldError` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Default
+
+A simple usage of the `FieldError` component. The error message is only displayed when `isInvalid` is `true`.
+
+<Source language="tsx" code={DefaultExample} />
