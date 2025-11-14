@@ -283,7 +283,7 @@ empty (`null`) response. Once your application is hydrated on the client, the
 icons will be available, requested in the `ondemand` method, and rendered
 accordingly.
 
-To avoid the empty response, you can either use 
+To avoid the empty response, you can either use
 [Placeholders](#placeholders) as mentioned below or change the `mode` to
 `sprite` to render the icon as a sprite. When an icon is rendered as a sprite,
 it will return an SVG element with a `use` element that references the icon
@@ -369,21 +369,19 @@ import { Illustration } from '@bento/icon';
 <Icon icon="magic-wand" className="my-component" />
 ```
 
-The following `data-` attributes are introduced as part of the component
-render state:
+The following data attributes are introduced as part of the component render
+state:
 
-- `data-loading=true`: The `Icon` component will add a `data-loading` attribute to
-  the component’s root element when the icon is loading. This can be used
-  to style the component while the icon is loading.
-- `data-icon="icon-name"`: The name of the icon that is currently being rendered.
-- `data-mode="sprite"`: The component is rendering the icon as a sprite.
-- `data-flip=horizontal|vertical`: The component is flipped horizontally or
-  vertically using the provided `flip` property.
-- `data-rotate=90|180|270`: The component is rotated by the provided angle
-  using the `rotate` property.
+| Attribute      | Description                                           | Example Values           |
+| -------------- | ----------------------------------------------------- | ------------------------ |
+| `data-loading` | Indicates the icon is loading                         | "true"                   |
+| `data-icon`    | The name of the icon that is currently being rendered | "magic-wand"             |
+| `data-mode`    | The rendering mode of the icon                        | "sprite" / "svg"         |
+| `data-flip`    | The icon is flipped horizontally or vertically        | "horizontal" / "vertical"|
+| `data-rotate`  | The icon is rotated by the specified angle            | "90" / "180" / "270"     |
 
-These `data-` attributes are introduced on the root element of the component
-and can be targeted using your previously provided custom `className`:
+These data attributes are introduced on the root element of the component and
+can be targeted using your previously provided custom `className`:
 
 ```css
 .my-component[data-loading] {

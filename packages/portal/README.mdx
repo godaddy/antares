@@ -8,9 +8,14 @@ import PortalProviderExample from './examples/portal-provider.tsx?raw';
 
 # Portal
 
-The `@bento/portal` package exports the **Portal** component, which renders children into a target DOM container outside the normal React component hierarchy. Portal solves common UI challenges like z-index conflicts, clipping issues, and overlay stacking by rendering content to `document.body` or a custom container.
+The `@bento/portal` package exports the **Portal** component, which renders
+children into a target DOM container outside the normal React component
+hierarchy. Portal solves common UI challenges like z-index conflicts, clipping
+issues, and overlay stacking by rendering content to `document.body` or a custom
+container.
 
-Portal integrates seamlessly with React ARIA's `UNSAFE_PortalProvider` while remaining fully independent and functional without it.
+Portal integrates seamlessly with React ARIA's `UNSAFE_PortalProvider` while
+remaining fully independent and functional without it.
 
 ## Use Cases
 
@@ -48,13 +53,18 @@ Basic portal usage that renders content to `document.body`:
 
 ### Custom Container
 
-Portal can render to a custom container instead of `document.body`. This is useful when you need to control the exact DOM location where portal content appears:
+Portal can render to a custom container instead of `document.body`. This is
+useful when you need to control the exact DOM location where portal content
+appears:
 
 <Source language='tsx' code={ CustomContainerExample } />
 
 ## React ARIA Integration
 
-Portal optionally integrates with React ARIA's `UNSAFE_PortalProvider` to provide consistent portal container management across your application. This example demonstrates how Portal automatically detects and uses the PortalProvider's container:
+Portal optionally integrates with React ARIA's `UNSAFE_PortalProvider` to
+provide consistent portal container management across your application. This
+example demonstrates how Portal automatically detects and uses the
+PortalProvider's container:
 
 <Source language='tsx' code={ PortalProviderExample } />
 
@@ -72,7 +82,8 @@ Portal optionally integrates with React ARIA's `UNSAFE_PortalProvider` to provid
 
 ## SSR Safety
 
-Portal is SSR-safe and will not render content on the server. The `mounted` prop should be set to `true` only after the component has mounted on the client:
+Portal is SSR-safe and will not render content on the server. The `mounted` prop
+should be set to `true` only after the component has mounted on the client:
 
 ```tsx
 function MyComponent() {
@@ -100,14 +111,75 @@ Portal is designed with accessibility in mind:
 - **Keyboard Navigation**: Portal preserves keyboard navigation of its content
 - **ARIA Support**: All ARIA attributes applied to portal content are preserved
 
-**Note**: Portal is a rendering utility and doesn't provide built-in focus trapping or modal behavior. For accessible modals and dialogs, combine Portal with proper focus management and ARIA attributes.
+**Note**: Portal is a rendering utility and doesn't provide built-in focus
+*trapping or modal behavior. For accessible modals and dialogs, combine Portal
+*with proper focus management and ARIA attributes.
 
 ## Data Attributes
 
 Portal applies the following data attributes to portal content:
 
-| Attribute        | Description                          | Example Values    |
-|------------------|--------------------------------------|-------------------|
-| `data-portal`    | Marks content rendered via portal    | "true"            |
-| `data-mounted`   | Whether portal content has mounted   | "true" / "false"  |
+| Attribute      | Description                        | Example Values    |
+| -------------- | ---------------------------------- | ----------------- |
+| `data-portal`  | Marks content rendered via portal  | "true"            |
+| `data-mounted` | Whether portal content has mounted | "true" / "false"  |
+
+## Customization
+
+Portal is a rendering utility component that doesn't render its own DOM
+elements. Instead, it renders children into a target container using React's
+`createPortal`. Because of this, Portal doesn't introduce internal slots like
+other Bento components.
+
+### Slots
+
+Portal is created using the `@bento/slots` package via `withSlots('BentoPortal',
+...)`, which means it supports the standard `slot` and `slots` props for
+integration with parent components. However, Portal itself doesn't define any
+internal slot assignments since it acts as a transparent rendering boundary.
+
+See the `@bento/slots` package for more information on how to use the `slot` and
+`slots` properties.
+
+### Styling
+
+Portal applies data attributes to the children it renders, making it possible to
+style portal content based on its state. Since Portal doesn't render wrapper
+elements, you should apply `className` or `style` props directly to the children
+you pass to Portal.
+
+The data attributes Portal applies can be used in your CSS selectors:
+
+```css
+/* Target all portal content */
+[data-portal="true"] {
+  /* Styles for content rendered through Portal */
+}
+
+/* Target mounted portal content */
+[data-portal="true"][data-mounted="true"] {
+  /* Styles for mounted portal content */
+  animation: fadeIn 200ms ease-in;
+}
+```
+
+When using Portal with other Bento components like `Container`, you can apply
+styling through those components:
+
+```tsx
+<Portal mounted={mounted}>
+  <Container className="my-overlay">
+    <Text>Styled portal content</Text>
+  </Container>
+</Portal>
+```
+
+The data attributes will be applied to the Container element, allowing you to
+target it:
+
+```css
+.my-overlay[data-portal="true"] {
+  /* Your custom styles */
+}
+```
 

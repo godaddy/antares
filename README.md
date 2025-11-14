@@ -29,6 +29,7 @@ Bento provides a comprehensive collection of primitives organized into three cat
 - [**icon**](./packages/icon) - Icon component with lazy loading and sprite mode
 - [**illustration**](./packages/illustration) - SVG illustration component with rotation and flip support
 - [**listbox**](./packages/listbox) - List selection primitive for building Select, Combobox, and Menu
+- [**portal**](./packages/portal) - Render children into a target DOM container outside the component hierarchy
 - [**pressable**](./packages/pressable) - Make any element clickable with keyboard and interaction state support
 - [**radio**](./packages/radio) - Radio button controls with single-selection group management
 - [**text**](./packages/text) - Text component with alignment, wrapping, and line clamping
