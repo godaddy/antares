@@ -14,23 +14,28 @@ Accessible, customizable dropdown that overcomes native `<select>` limitations. 
 
 **Components**:
 - `Select` — Coordinator component that manages state, hooks, positioning, and distributes props to slotted children
-- `SelectOption` — Convenience wrapper around [`ListBoxItem`](../../packages/listbox) that provides a `value` prop API instead of `id`
 
-**SelectOption vs ListBoxItem:**
+**Using ListBoxItem with Select:**
 
-Both components work identically within Select and can be mixed in the same component. The choice is purely about API preference:
+`ListBoxItem` from `@bento/listbox` works directly with Select. The `value` prop stores item data, and both `id` and `textValue` are optional:
 
-- **`SelectOption`** — Uses `value` prop (familiar HTML `<option>` API). Most users will prefer this for its intuitive developer experience.
-  ```tsx
-  <SelectOption value="apple">Apple</SelectOption>
-  ```
+- **`value` prop** — Stores the item's data value. Accessible via `state.selectedItems[0]?.value` (React Aria's `Node<T>` interface exposes `.value` property)
+- **`id` prop** — Optional. If not provided, React Aria auto-generates a unique key
+- **`textValue` prop** — Optional. If not provided, React Aria auto-derives it from children. Only needed when using custom markup/icons to ensure proper typeahead functionality
 
-- **`ListBoxItem`** — Uses `id` prop (React Aria's collection API). Provides explicit control over item identity, useful when `value` and `id` need to differ or for advanced collection patterns.
-  ```tsx
-  <ListBoxItem id="apple">Apple</ListBoxItem>
-  ```
+```tsx
+// Simple usage - id auto-generated, value accessible via state.selectedItems[0]?.value
+<ListBoxItem>Apple</ListBoxItem>
 
-**Why both exist:** SelectOption makes common cases ergonomic (mirroring native `<select>`/`<option>` patterns), while ListBoxItem remains available for advanced use cases.
+// Explicit value for form submission or data storage
+<ListBoxItem value="apple">Apple</ListBoxItem>
+
+// Complex markup - textValue for typeahead/accessibility
+<ListBoxItem textValue="Apple" value="apple">
+  <Icon name="apple" />
+  <Text>Apple Special</Text>
+</ListBoxItem>
+```
 
 **Slots**:
 
@@ -64,8 +69,8 @@ Both components work identically within Select and can be mixed in the same comp
     <SelectValue slot="value" />
   </Button>
   <ListBox slot="listbox">
-    <SelectOption value="1">Option 1</SelectOption>
-    <SelectOption value="2">Option 2</SelectOption>
+    <ListBoxItem value="1">Option 1</ListBoxItem>
+    <ListBoxItem value="2">Option 2</ListBoxItem>
   </ListBox>
 </Select>
 ```
@@ -77,8 +82,8 @@ Both components work identically within Select and can be mixed in the same comp
     <SelectValue slot="value" />
   </Button>
   <ListBox slot="listbox">
-    <SelectOption value="1">Option 1</SelectOption>
-    <SelectOption value="2">Option 2</SelectOption>
+    <ListBoxItem value="1">Option 1</ListBoxItem>
+    <ListBoxItem value="2">Option 2</ListBoxItem>
   </ListBox>
 </Select>
 ```
@@ -230,6 +235,8 @@ const selectedItems = isMultiple
 **Key implementation notes**:
 - `triggerProps` from `useSelect` works directly—no `useButton` wrapper needed
 - `state.selectedKey` for single-selection access; `state.selectedKeys` for multiple selection; derive full item with `state.collection.getItem(key)`
+- Access item values via `state.selectedItems[0]?.value` (React Aria's `Node<T>` interface exposes `.value` property from `ListBoxItem`'s `value` prop)
+- `id` and `textValue` props on `ListBoxItem` are optional—React Aria auto-generates `id` and auto-derives `textValue` from children
 - React Aria's `HiddenSelect` handles SSR, form submission, and browser autofill automatically
 - Select orchestrates hooks/state; consumers compose overlay structure (portals, animations, wrappers)
 - Data attributes explicitly convert booleans to strings (`'true'` / `'false'`) for consistent CSS attribute selectors
@@ -382,7 +389,7 @@ const mySlots = {
 ## Usage Examples
 
 ```tsx
-import { Select, SelectOption } from '@bento/select';
+import { Select } from '@bento/select';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
 import { ListBox, ListBoxItem } from '@bento/listbox';
@@ -398,14 +405,14 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
   return <Text {...props}>{placeholder}</Text>;
 }
 
-// Basic usage with SelectOption
+// Basic usage
 <Select>
   <Button slot="trigger">
     <SelectValue slot="value" placeholder="Select..." />
   </Button>
   <ListBox slot="listbox">
-    <SelectOption value="apple">Apple</SelectOption>
-    <SelectOption value="orange">Orange</SelectOption>
+    <ListBoxItem value="apple">Apple</ListBoxItem>
+    <ListBoxItem value="orange">Orange</ListBoxItem>
   </ListBox>
 </Select>
 
@@ -415,9 +422,9 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
     <SelectValue slot="value" placeholder="Select items..." />
   </Button>
   <ListBox slot="listbox">
-    <SelectOption value="apple">Apple</SelectOption>
-    <SelectOption value="orange">Orange</SelectOption>
-    <SelectOption value="banana">Banana</SelectOption>
+    <ListBoxItem value="apple">Apple</ListBoxItem>
+    <ListBoxItem value="orange">Orange</ListBoxItem>
+    <ListBoxItem value="banana">Banana</ListBoxItem>
   </ListBox>
 </Select>
 
@@ -427,7 +434,7 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
     <SelectValue slot="value" placeholder="Choose..." />
   </Button>
   <ListBox slot="listbox">
-    <SelectOption value="option1">Option 1</SelectOption>
+    <ListBoxItem value="option1">Option 1</ListBoxItem>
   </ListBox>
   <Text slot="description">Choose an option</Text>
   <Text slot="error">This field is required</Text>
@@ -440,38 +447,26 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
       <SelectValue slot="value" placeholder="Select a fruit" />
     </Button>
     <ListBox slot="listbox">
-      <SelectOption value="apple">Apple</SelectOption>
-      <SelectOption value="orange">Orange</SelectOption>
+      <ListBoxItem value="apple">Apple</ListBoxItem>
+      <ListBoxItem value="orange">Orange</ListBoxItem>
     </ListBox>
   </Select>
   <button type="submit">Submit</button>
 </form>
 
-// Using ListBoxItem directly (alternative to SelectOption)
+// Complex markup with textValue for typeahead
 <Select>
   <Button slot="trigger">
     <SelectValue slot="value" placeholder="Select..." />
   </Button>
   <ListBox slot="listbox">
-    <ListBoxItem id="apple">
-      <Text>Apple</Text>
+    <ListBoxItem textValue="Apple" value="apple">
+      <Icon name="apple" />
+      <Text>Apple Special</Text>
     </ListBoxItem>
-    <ListBoxItem id="orange">
-      <Text>Orange</Text>
-    </ListBoxItem>
-  </ListBox>
-</Select>
-
-// Mixing SelectOption and ListBoxItem (both work together)
-<Select>
-  <Button slot="trigger">
-    <SelectValue slot="value" placeholder="Select..." />
-  </Button>
-  <ListBox slot="listbox">
-    <SelectOption value="apple">Apple</SelectOption>
-    <ListBoxItem id="orange">
+    <ListBoxItem textValue="Orange" value="orange">
       <Icon name="orange" />
-      <Text>Orange (with icon)</Text>
+      <Text>Orange</Text>
     </ListBoxItem>
   </ListBox>
 </Select>
