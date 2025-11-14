@@ -1,9 +1,9 @@
-import React from 'react';
-import { Dismiss } from '@bento/dismiss';
-import { render } from 'vitest-browser-react';
-import { describe, it, vi, expect } from 'vitest';
-import assume from 'assume';
 import { userEvent } from '@testing-library/user-event';
+import { describe, it, vi, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { Dismiss } from '@bento/dismiss';
+import assume from 'assume';
+import React from 'react';
 
 describe('@bento/dismiss', function bento() {
   describe('Dismiss', function dismissTests() {

@@ -1,15 +1,15 @@
-import pkg from '../package.json' with { type: 'json' };
+import { SlotCustomization } from '../examples/slot-customization.tsx';
 import { Dismiss, type DismissProps } from '@bento/dismiss';
+import { CustomLabel } from '../examples/custom-label.tsx';
+import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
+import { Basic } from '../examples/basic.tsx';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';
-import { Basic } from '../examples/basic.tsx';
-import { CustomLabel } from '../examples/custom-label.tsx';
-import { SlotCustomization } from '../examples/slot-customization.tsx';
 
 /**
  * Renders the `Dismiss` component to a string with the provided props.

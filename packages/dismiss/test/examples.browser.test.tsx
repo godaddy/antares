@@ -1,11 +1,11 @@
-import React from 'react';
+import { SlotCustomization } from '../examples/slot-customization.tsx';
+import { CustomLabel } from '../examples/custom-label.tsx';
+import { userEvent } from '@testing-library/user-event';
+import { Basic } from '../examples/basic.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import { userEvent } from '@testing-library/user-event';
-import { Basic } from '../examples/basic.tsx';
-import { CustomLabel } from '../examples/custom-label.tsx';
-import { SlotCustomization } from '../examples/slot-customization.tsx';
+import React from 'react';
 
 describe('@bento/dismiss', function bento() {
   describe('Examples', function examplesTests() {

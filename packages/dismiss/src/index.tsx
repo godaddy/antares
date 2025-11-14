@@ -1,9 +1,8 @@
 import { VisuallyHidden } from '@bento/visually-hidden';
 import { withSlots, type Slots } from '@bento/slots';
-import { useProps } from '@bento/use-props';
-import { Container } from '@bento/container';
-/* v8 ignore next */
 import React, { type ReactNode } from 'react';
+import { Container } from '@bento/container';
+import { useProps } from '@bento/use-props';
 
 /**
  * Props for the Dismiss component.
