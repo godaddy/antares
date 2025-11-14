@@ -578,9 +578,9 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
 ## Implementation Rationale
 
 **Why this architecture**:
-- **Simplified coordination**: Uses [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L50) and React Aria's built-in overlay hooks, eliminating the need for custom context providers and complex coordination logic
+- **Simplified coordination**: Uses [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) and React Aria's built-in overlay hooks, eliminating the need for custom context providers and complex coordination logic
 - **Container-based slots**: No `cloneElement` recursion or manual child traversal—cleaner and more maintainable ([`@bento/container`](../../packages/container), [`@bento/slots`](../../packages/slots))
-- **Build on existing primitives**: Reuses [`@bento/listbox`](../../packages/listbox) patterns via [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L50) instead of reimplementing
+- **Build on existing primitives**: Reuses [`@bento/listbox`](../../packages/listbox) patterns via [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) instead of reimplementing
 - **Flexible selection modes**: Supports both single and multiple selection through [React Aria's `useSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html) with `selectionMode` prop
 - **Flexible overlay composition**: Like React Aria's [`DialogTrigger`](https://react-spectrum.adobe.com/react-aria/DialogTrigger.html)/[`TooltipTrigger`](https://react-spectrum.adobe.com/react-aria/TooltipTrigger.html)—Select orchestrates, consumers compose portals/animations
 - **Form integration**: [React Aria's `HiddenSelect`](https://react-spectrum.adobe.com/react-aria/useSelect.html#forms) component provides native form submission, autofill, and SSR support automatically
