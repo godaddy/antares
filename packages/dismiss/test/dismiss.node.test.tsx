@@ -25,7 +25,11 @@ function renderToStringDismiss(args: DismissProps) {
 describe('@bento/dismiss', function bento() {
   describe('Dismiss', function dismissTests() {
     it('renders a dismiss button with default props', function defaultProps() {
-      const result = renderToStringDismiss({ onDismiss: () => {} });
+      const result = renderToStringDismiss({
+        onDismiss: function noop() {
+          /* intentionally empty */
+        }
+      });
 
       assume(result).includes('aria-label="Dismiss"');
       assume(result).includes('tabindex="-1"');
@@ -35,7 +39,9 @@ describe('@bento/dismiss', function bento() {
 
     it('renders with custom aria-label', function customLabel() {
       const result = renderToStringDismiss({
-        onDismiss: () => {},
+        onDismiss: function noop() {
+          /* intentionally empty */
+        },
         ariaLabel: 'Close dialog'
       });
 
@@ -43,16 +49,22 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('renders button inside VisuallyHidden wrapper', function visuallyHidden() {
-      const result = renderToStringDismiss({ onDismiss: () => {} });
+      const result = renderToStringDismiss({
+        onDismiss: function noop() {
+          /* intentionally empty */
+        }
+      });
 
-      // Check that the button is wrapped in a visually hidden element
-      assume(result).includes('class="react-aria-VisuallyHidden"');
+      // Check that the button is wrapped in a visually hidden element (with data-hidden attribute)
+      assume(result).includes('data-hidden="true"');
       assume(result).includes('<button');
     });
 
     it('excludes onDismiss and ariaLabel from HTML attributes', function excludes() {
       const result = renderToStringDismiss({
-        onDismiss: () => {},
+        onDismiss: function noop() {
+          /* intentionally empty */
+        },
         ariaLabel: 'Close'
       });
 
@@ -61,7 +73,11 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('applies defensive width and height styles', function defensiveStyles() {
-      const result = renderToStringDismiss({ onDismiss: () => {} });
+      const result = renderToStringDismiss({
+        onDismiss: function noop() {
+          /* intentionally empty */
+        }
+      });
 
       assume(result).includes('width:1');
       assume(result).includes('height:1');
@@ -69,7 +85,9 @@ describe('@bento/dismiss', function bento() {
 
     it('renders with slot customization', function slotCustomization() {
       const result = renderToStringDismiss({
-        onDismiss: () => {},
+        onDismiss: function noop() {
+          /* intentionally empty */
+        },
         slots: {
           hidden: {
             className: 'custom-hidden'
@@ -89,7 +107,9 @@ describe('@bento/dismiss', function bento() {
 
     it('renders with children', function withChildren() {
       const result = renderToStringDismiss({
-        onDismiss: () => {},
+        onDismiss: function noop() {
+          /* intentionally empty */
+        },
         children: 'Close'
       });
 
@@ -145,4 +165,3 @@ describe('@bento/dismiss', function bento() {
     });
   });
 });
-

@@ -88,7 +88,7 @@ export const Dismiss = withSlots('BentoDismiss', function Dismiss(args: DismissP
         )}
         onClick={handleClick}
       >
-        {children}
+        {children ?? ''}
       </Container>
     </VisuallyHidden>
   );

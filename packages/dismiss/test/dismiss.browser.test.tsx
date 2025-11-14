@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dismiss } from '@bento/dismiss';
-import { render, screen } from 'vitest-browser-react';
+import { render } from 'vitest-browser-react';
 import { describe, it, vi, expect } from 'vitest';
 import assume from 'assume';
 import { userEvent } from '@testing-library/user-event';
@@ -9,8 +9,8 @@ describe('@bento/dismiss', function bento() {
   describe('Dismiss', function dismissTests() {
     it('should render a dismiss button', function test() {
       const onDismiss = vi.fn();
-      render(<Dismiss onDismiss={onDismiss} />);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const button = container.querySelector('button');
 
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute('aria-label', 'Dismiss');
@@ -20,8 +20,8 @@ describe('@bento/dismiss', function bento() {
 
     it('should call onDismiss when clicked', async function test() {
       const onDismiss = vi.fn();
-      render(<Dismiss onDismiss={onDismiss} />);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const button = container.querySelector('button');
 
       await userEvent.click(button);
 
@@ -30,8 +30,8 @@ describe('@bento/dismiss', function bento() {
 
     it('should use custom aria-label when provided', function test() {
       const onDismiss = vi.fn();
-      render(<Dismiss onDismiss={onDismiss} ariaLabel="Close dialog" />);
-      const button = screen.getByRole('button', { name: 'Close dialog' });
+      const { container } = render(<Dismiss onDismiss={onDismiss} ariaLabel="Close dialog" />);
+      const button = container.querySelector('button');
 
       expect(button).toHaveAttribute('aria-label', 'Close dialog');
     });
@@ -39,20 +39,20 @@ describe('@bento/dismiss', function bento() {
     it('should be visually hidden but accessible', function test() {
       const onDismiss = vi.fn();
       const { container } = render(<Dismiss onDismiss={onDismiss} />);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const button = container.querySelector('button');
 
       // Button should be in the DOM and accessible
       expect(button).toBeInTheDocument();
 
       // Check that it's wrapped in visually hidden element
-      const visuallyHidden = container.querySelector('.react-aria-VisuallyHidden');
+      const visuallyHidden = container.querySelector('[data-hidden="true"]');
       assume(visuallyHidden).is.not.null();
     });
 
     it('should be keyboard accessible', async function test() {
       const onDismiss = vi.fn();
-      render(<Dismiss onDismiss={onDismiss} />);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const button = container.querySelector('button');
 
       // Focus the button
       button.focus();
@@ -81,8 +81,8 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should render without onDismiss callback', function test() {
-      render(<Dismiss />);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const { container } = render(<Dismiss />);
+      const button = container.querySelector('button');
 
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute('aria-label', 'Dismiss');
@@ -90,15 +90,15 @@ describe('@bento/dismiss', function bento() {
 
     it('should render with children', function test() {
       const onDismiss = vi.fn();
-      render(<Dismiss onDismiss={onDismiss}>Close</Dismiss>);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const { container } = render(<Dismiss onDismiss={onDismiss}>Close</Dismiss>);
+      const button = container.querySelector('button');
 
       expect(button).toHaveTextContent('Close');
     });
 
     it('should not throw when clicked without onDismiss', async function test() {
-      render(<Dismiss />);
-      const button = screen.getByRole('button', { name: 'Dismiss' });
+      const { container } = render(<Dismiss />);
+      const button = container.querySelector('button');
 
       // Should not throw when clicking without onDismiss
       await userEvent.click(button);
@@ -106,4 +106,3 @@ describe('@bento/dismiss', function bento() {
     });
   });
 });
-

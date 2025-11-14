@@ -1,7 +1,7 @@
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { Basic } from './examples/basic.tsx';
-import { CustomLabel } from './examples/custom-label.tsx';
-import { SlotCustomization } from './examples/slot-customization.tsx';
+import { Basic as BasicExample } from './examples/basic.tsx';
+import { CustomLabel as CustomLabelExample } from './examples/custom-label.tsx';
+import { SlotCustomization as SlotCustomizationExample } from './examples/slot-customization.tsx';
 import { Dismiss as DismissComponent } from './src/index.tsx';
 
 export default getMeta({
@@ -10,9 +10,8 @@ export default getMeta({
 
 export const Props = getComponentDocs(DismissComponent);
 
-export const Basic = getStory(Basic);
+export const Basic = getStory(BasicExample);
 
-export const CustomLabel = getStory(CustomLabel);
+export const CustomLabel = getStory(CustomLabelExample);
 
-export const SlotCustomization = getStory(SlotCustomization);
-
+export const SlotCustomization = getStory(SlotCustomizationExample);
