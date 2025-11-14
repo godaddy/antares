@@ -37,7 +37,7 @@ describe('@bento/slots examples', function bento() {
       };
 
       assume(result).equals(
-        '<div data-override="slot" id=":r0:" class="example"><label for="example">Hello World</label><button id=":r1:" data-override="slot">Click Me</button></div>'
+        '<div id=":r0:" class="example"><label for="example">Hello World</label><button id=":r1:">Click Me</button></div>'
       );
       await screen.getByRole('button', { name: 'Click me' }).click();
 
@@ -72,7 +72,7 @@ describe('@bento/slots examples', function bento() {
       };
 
       assume(result).equals(
-        '<div class="example"><label for="example">Hello World</label><button id=":r3:" data-override="style slot" style="background: red; border: 2px solid black;">Click Me</button></div>'
+        '<div class="example"><label for="example">Hello World</label><button id=":r3:" style="background: red; border: 2px solid black;">Click Me</button></div>'
       );
       await screen.getByRole('button', { name: 'Click me' }).click();
 
@@ -92,7 +92,7 @@ describe('@bento/slots examples', function bento() {
         [
           '<p>',
           '  <span>Description: </span>',
-          '  <label data-override="className slot" class="merged-class" title="better-title" id="merged">',
+          '  <label class="merged-class" title="better-title" id="merged">',
           '  </label>',
           '  <span>Merged summary</span>',
           '  <span>Better error</span>',
@@ -127,8 +127,8 @@ describe('@bento/slots examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<label data-override="className slot" class="title-1">title</label>' +
-          '<label data-override="className slot" class="description-1">title</label>'
+        '<label class="title-1">title</label>' +
+          '<label class="description-1">title</label>'
       );
     });
 
@@ -137,8 +137,8 @@ describe('@bento/slots examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<label data-override="className slot" class="title-2">title</label>' +
-          '<label data-override="className slot" class="description-2">title</label>'
+        '<label class="title-2">title</label>' +
+          '<label class="description-2">title</label>'
       );
     });
 
@@ -147,8 +147,8 @@ describe('@bento/slots examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<label data-override="className slot" class="title-3">title</label>' +
-          '<label data-override="className slot" class="description-3">title</label>'
+        '<label class="title-3">title</label>' +
+          '<label class="description-3">title</label>'
       );
     });
 
@@ -159,7 +159,7 @@ describe('@bento/slots examples', function bento() {
       console.log('bbbb', result);
 
       assume(result).equals(
-        '<div>' + '<label data-override="className slot" class="inherited-title">title</label>Content' + '</div>'
+        '<div>' + '<label class="inherited-title">title</label>Content' + '</div>'
       );
     });
   });
