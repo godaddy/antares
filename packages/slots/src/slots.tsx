@@ -101,6 +101,9 @@ export function withSlots<Props extends object>(
     // parent component slots should take precedence over child ones.
     //
     const currentGeneration = ctx.env.lockGeneration || 0;
+    // Slots passed via props come from the parent context, so they should be
+    // tagged with the generation before the current component if inside a lock
+    const slotPropsGeneration = currentGeneration > 0 ? currentGeneration - 1 : 0;
 
     for (const slotKey in slots) {
       // Build the fully qualified slot key by prefixing with current namespace
@@ -114,14 +117,14 @@ export function withSlots<Props extends object>(
       //
       if (!assignedSlot) {
         ctx.slots.assigned[namespacedKey] = newSlot;
-        // Tag new slot with current generation
-        ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
+        // Tag new slot with generation from props (before current component)
+        ctx.slots.slotGenerations[namespacedKey] = slotPropsGeneration;
       } else if (typeof assignedSlot === 'object') {
         ctx.slots.assigned[namespacedKey] = { ...newSlot, ...assignedSlot };
         // Keep the earliest (lowest) generation when merging
-        // If the slot doesn't have a generation yet, use current generation
+        // If the slot doesn't have a generation yet, use props generation
         if (!(namespacedKey in ctx.slots.slotGenerations)) {
-          ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
+          ctx.slots.slotGenerations[namespacedKey] = slotPropsGeneration;
         }
         // If newSlot is from an earlier generation (consumer slot), update the tag
         // We assume parent slots (assignedSlot) are from consumer, so keep their generation
@@ -137,7 +140,7 @@ export function withSlots<Props extends object>(
         // For functions, keep the parent function's generation (it takes precedence)
         ctx.slots.slotGenerations = ctx.slots.slotGenerations || {};
         if (!(namespacedKey in ctx.slots.slotGenerations)) {
-          ctx.slots.slotGenerations[namespacedKey] = currentGeneration;
+          ctx.slots.slotGenerations[namespacedKey] = slotPropsGeneration;
         }
       }
     }

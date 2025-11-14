@@ -7,6 +7,7 @@ import { Nested } from '../examples/nested.tsx';
 import { Box, defaults } from '@bento/box';
 import { Environment } from '@bento/environment';
 import { fileURLToPath } from 'node:url';
+import { useProps } from '@bento/use-props';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import React from 'react';
@@ -93,21 +94,18 @@ describe('@bento/slots', function bento() {
       let id: string | undefined;
 
       const nested = renderToString(
-        React.createElement(
-          Environment,
-          {
-            components: {
-              SlotsButton: function Button(props: any) {
-                assume(props['data-override']).is.undefined();
-                assume(props.id).startsWith(':R');
-                id = props.id;
+        React.createElement(Environment, {
+          components: {
+            SlotsButton: function Button(props: any) {
+              assume(props['data-override']).equals(undefined);
+              assume(props.id).startsWith(':R');
+              id = props.id;
 
-                return React.createElement('p', props, 'No more button, only text');
-              }
+              return React.createElement('p', props, 'No more button, only text');
             }
           },
-          React.createElement(Nested)
-        )
+          children: React.createElement(Nested)
+        })
       );
 
       assume(nested).contains('Hello World');
@@ -119,22 +117,19 @@ describe('@bento/slots', function bento() {
       let id: string | undefined;
 
       const nested = renderToString(
-        React.createElement(
-          Environment,
-          {
-            lock: true,
-            components: {
-              SlotsButton: function Button(props: any) {
-                assume(props['data-override']).equals('context');
-                assume(props.id).startsWith(':R');
-                id = props.id;
+        React.createElement(Environment, {
+          lock: true,
+          components: {
+            SlotsButton: function Button(props: any) {
+              assume(props['data-override']).equals('context');
+              assume(props.id).startsWith(':R');
+              id = props.id;
 
-                return React.createElement('p', props, 'No more button, only text');
-              }
+              return React.createElement('p', props, 'No more button, only text');
             }
           },
-          React.createElement(Nested)
-        )
+          children: React.createElement(Nested)
+        })
       );
 
       assume(nested).contains('Hello World');
@@ -154,7 +149,8 @@ describe('@bento/slots', function bento() {
     });
 
     it('slots are correctly applied and tracked when locked', function applicationLocked() {
-      const Child = withSlots('TrackChild', function TrackChildComponent(props: any) {
+      const Child = withSlots('TrackChild', function TrackChildComponent(args: any) {
+        const { props } = useProps(args);
         return React.createElement('span', props, 'child');
       });
 

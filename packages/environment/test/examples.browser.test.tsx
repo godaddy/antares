@@ -18,7 +18,7 @@ describe('@bento/environment examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<div><a href="foo.html" class="button-link" data-override="context">foo</a><div><a href="bar.html" class="button-link" data-override="context">bar</a></div></div>'
+        '<div><a href="foo.html" class="button-link">foo</a><div><a href="bar.html" class="button-link">bar</a></div></div>'
       );
     });
   });
@@ -30,7 +30,7 @@ describe('@bento/environment examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<div><button class="ho ho ho" href="foo.html" data-example="example" data-override="context className">foo</button><div><button class="ho ho ho" href="bar.html" data-example="example" data-override="context className">bar</button></div></div>'
+        '<div><button class="ho ho ho" href="foo.html" data-example="example">foo</button><div><button class="ho ho ho" href="bar.html" data-example="example">bar</button></div></div>'
       );
     });
   });
@@ -40,7 +40,7 @@ describe('@bento/environment examples', function bento() {
       const { container } = await render(<CustomButtonExample />);
       const result = container.innerHTML;
       assume(result).to.equal(
-        '<div class="example-container"><div class="bento-card"><p class="bento-text">This text will be rendered with default styling</p><button class="custom-button" data-override="context" style="background-color: blue; color: white;">This button will be replaced with a custom one</button></div></div>'
+        '<div class="example-container"><div class="bento-card"><p class="bento-text">This text will be rendered with default styling</p><button class="custom-button" style="background-color: blue; color: white;">This button will be replaced with a custom one</button></div></div>'
       );
     });
 

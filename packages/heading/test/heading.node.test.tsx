@@ -62,20 +62,6 @@ describe('@bento/heading', function bento() {
     assume(result).match(/^<span[^>]*>Handgloves<\/span>$/);
   });
 
-  describe('#slots', function slots() {
-    it('renders correct [data-override] attribute values', function dataOverride() {
-      const result = renderToStringHeading({
-        children: 'Handgloves',
-        className: 'custom-class',
-        style: {
-          color: 'red'
-        }
-      });
-
-      assume(result).includes('data-override="className style"');
-    });
-  });
-
   describe('Public API', function packageSuite() {
     it('has HeadingProvider attached', function hasProvider() {
       assume(HeadingProvider).to.be.an('object');

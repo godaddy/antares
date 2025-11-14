@@ -137,6 +137,7 @@ describe('@bento/slots replace', function bento() {
         true
       );
 
+      // Context and className should both be flagged
       assume(html).contains('<div id="overridden" data-override="context className" class="custom-class"></div>');
     });
   });

@@ -29,24 +29,6 @@ describe('@bento/pressable', function bento() {
     assume(result).match(/^<div[^>]*>Press me<\/div>$/);
   });
 
-  describe('#slots', function slots() {
-    it('renders correct [data-override] attribute values', function overrides() {
-      const result = renderToStringPressable({
-        className: 'custom-class',
-        style: { color: 'red' },
-        children: <div>Press me</div>,
-        onClick: () => void 0,
-        onPress: () => void 0,
-        onPressStart: () => void 0,
-        onPressEnd: () => void 0,
-        onPressUp: () => void 0,
-        onPressChange: () => void 0
-      });
-
-      assume(result).includes('data-override="className style"');
-    });
-  });
-
   describe('Public API', function packageSuite() {
     const __dirname = dirname(fileURLToPath(import.meta.url));
 

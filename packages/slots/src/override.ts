@@ -72,7 +72,11 @@ export function override<Props extends Record<string, any>>({
   if (!(context.env?.locked ?? false)) return;
 
   const currentLockGeneration = context.env?.lockGeneration ?? 0;
-  const slotGeneration = context.slots?.slotGenerations?.[currentNamespace] ?? currentLockGeneration;
+  //
+  // Default to generation 0 (before any locks) if no slot generation is tracked
+  // This ensures props are flagged as overrides unless explicitly tracked at current generation
+  //
+  const slotGeneration = context.slots?.slotGenerations?.[currentNamespace] ?? 0;
 
   if (typeof props['data-override'] === 'string') {
     causes.push(...props['data-override'].split(' '));

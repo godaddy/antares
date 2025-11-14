@@ -64,15 +64,28 @@ export function replace<Props extends Record<string, any>>({ props, name, contex
         override: !!target
       }
     },
-    props: {}
+    props: undefined as Record<string, any> | undefined,
+    Component: undefined as ComponentType<Props> | undefined
   } as any;
-
-  const causes = (props['data-override'] || '').split(' ').filter(Boolean);
-  if (!causes.includes('context')) causes.push('context');
-  result.props = useDataAttributes({ override: causes });
 
   if (isPropsOverride(target)) result.props = { ...target.props };
   else result.Component = target;
+
+  const locked = context.env?.locked ?? false;
+  if (!locked) return result;
+
+  const causes = (props['data-override'] || '').split(' ').filter(Boolean);
+  if (!causes.includes('context')) causes.push('context');
+
+  const overrideProps = useDataAttributes({ override: causes });
+  if (isPropsOverride(target)) {
+    result.props = {
+      ...overrideProps,
+      ...result.props
+    };
+  } else {
+    result.props = overrideProps;
+  }
 
   return result;
 }
