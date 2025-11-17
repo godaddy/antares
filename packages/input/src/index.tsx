@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, type ReactNode } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
@@ -7,55 +7,37 @@ import { useFocusRing, useHover, mergeProps } from 'react-aria';
 import { mergeRefs, useObjectRef } from '@react-aria/utils';
 import type { HoverEvents } from 'react-aria';
 
+const allowedPropsMap: Record<string, (keyof InputProps)[]> = {
+  checkbox: ['checked', 'defaultChecked', 'value', 'name', 'required', 'disabled', 'readOnly', 'onChange'],
+  radio: ['checked', 'defaultChecked', 'value', 'name', 'required', 'disabled', 'readOnly', 'onChange'],
+  number: ['min', 'max', 'step', 'value', 'defaultValue', 'required', 'disabled', 'readOnly', 'name', 'onChange'],
+  range: ['min', 'max', 'step', 'value', 'defaultValue', 'required', 'disabled', 'readOnly', 'name', 'onChange'],
+  file: ['multiple', 'accept', 'required', 'disabled', 'name', 'onChange'],
+  default: [
+    'value',
+    'defaultValue',
+    'placeholder',
+    'required',
+    'disabled',
+    'readOnly',
+    'name',
+    'pattern',
+    'autoComplete',
+    'minLength',
+    'maxLength',
+    'onChange'
+  ]
+};
+
 function getTypeSpecificProps(type: string, props: InputProps) {
-  switch (type) {
-    case 'checkbox':
-    case 'radio':
-      return {
-        checked: props.checked,
-        defaultChecked: props.defaultChecked,
-        value: props.value,
-        name: props.name,
-        required: props.required,
-        disabled: props.disabled,
-        readOnly: props.readOnly
-      };
-    case 'number':
-    case 'range':
-      return {
-        min: props.min,
-        max: props.max,
-        step: props.step,
-        value: props.value,
-        defaultValue: props.defaultValue,
-        required: props.required,
-        disabled: props.disabled,
-        readOnly: props.readOnly,
-        name: props.name
-      };
-    case 'file':
-      return {
-        multiple: props.multiple,
-        accept: props.accept,
-        required: props.required,
-        disabled: props.disabled,
-        name: props.name
-      };
-    default: // text, email, password, etc.
-      return {
-        value: props.value,
-        defaultValue: props.defaultValue,
-        placeholder: props.placeholder,
-        required: props.required,
-        disabled: props.disabled,
-        readOnly: props.readOnly,
-        name: props.name,
-        pattern: props.pattern,
-        autoComplete: props.autoComplete,
-        minLength: props.minLength,
-        maxLength: props.maxLength
-      };
+  const keys = allowedPropsMap[type as keyof typeof allowedPropsMap] || allowedPropsMap.default;
+  const filtered: Partial<InputProps> = {};
+  for (const key of keys) {
+    if (props[key] !== undefined) {
+      filtered[key] = props[key];
+    }
   }
+  return filtered;
 }
 
 /**
@@ -123,6 +105,9 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
    * The inline style for the element. A function may be provided to compute the style based on component state.
    */
   style?: React.CSSProperties | ((renderProps: InputRenderProps) => React.CSSProperties);
+
+  children?: ReactNode;
+  as?: keyof JSX.IntrinsicElements;
 }
 
 /**
@@ -149,7 +134,6 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  *
  * @public
  */
-
 export const Input = withSlots(
   'BentoInput',
   React.forwardRef<HTMLInputElement, InputProps>(function Input(args, ref) {
@@ -169,12 +153,10 @@ export const Input = withSlots(
       autoFocus: autoFocus
     });
     const { hoverProps, isHovered } = useHover(props);
-    console.log({ focusProps, hoverProps, typeSpecificProps, props });
 
     return (
       <input
-        {...mergeProps(props, focusProps, hoverProps)}
-        {...apply(typeSpecificProps)}
+        {...apply({ ...mergeProps(typeSpecificProps, focusProps, hoverProps) })}
         ref={inputRef}
         role={role}
         aria-label={props['aria-label']}

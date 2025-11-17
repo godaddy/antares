@@ -10,6 +10,7 @@ export function ControlledInput() {
         setValue(e.target.value);
       }}
       type="text"
+      step={1}
     />
   );
 }

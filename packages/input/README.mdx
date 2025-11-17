@@ -1,1 +1,171 @@
-import { Meta, Story, ArgTypes, Source } from '@storybook/addon-docs/blocks';
+import {
+  Meta,
+  Story,
+  ArgTypes,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './input.stories.tsx';
+
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceForm from './examples/basic-form.tsx?raw';
+import SourceUncontrolled from './examples/uncontrolled.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Input
+
+The `@bento/input` package provides a universal input primitive component that renders an `<input>` element with React Aria interactions. It supports all HTML input types with proper accessibility, hover, and focus management.
+
+This primitive is built with accessibility and flexibility in mind, providing state-based render props, comprehensive data attributes, and integration with React Aria's focus and hover hooks. It can be used for text inputs, checkboxes, radio buttons, file uploads, and any other input type supported by HTML.
+
+## Installation
+
+```shell
+npm install --save @bento/input
+```
+
+## Props
+
+The `@bento/input` package exports the `Input` component:
+
+```jsx
+import { Input } from '@bento/input';
+
+<Input type="text" placeholder="Enter text" />
+```
+
+The following properties are available to be used on the `Input` component:
+
+<ArgTypes of={Stories.Props} />
+
+For all other properties specified on the `Input` component, the component
+will pass them down to the underlying `<input>` element. This includes properties
+such as `id`, `data-*` attributes, or additional ARIA attributes that you might
+need for specialized use cases.
+
+## Examples
+
+### Controlled Input
+
+The most common pattern for the `Input` component is to use it as a controlled component, where the value is managed by React state. This allows you to easily read and update the input value.
+
+<Source language='tsx' code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+<Controls of={Stories.Controlled} />
+
+In this example, the input value is stored in state and updated via the `onChange` handler. This is the recommended pattern for most use cases where you need to read or validate the input value.
+
+### Uncontrolled Input
+
+For simpler use cases where you don't need to track the input value in React state, you can use an uncontrolled input with a `defaultValue`. The DOM will manage the input's value internally.
+
+<Source language='tsx' code={SourceUncontrolled} />
+<Story of={Stories.Uncontrolled} inline />
+<Controls of={Stories.Uncontrolled} />
+
+Uncontrolled inputs are useful when you only need to read the value on form submission, or when integrating with form libraries that manage values through refs.
+
+### Form Example
+
+The `Input` component supports all HTML input types, making it versatile for building complete forms. This example demonstrates multiple input types working together in a single form.
+
+<Source language='tsx' code={SourceForm} />
+<Story of={Stories.BasicForm} inline collapsed />
+<Controls of={Stories.BasicForm} />
+
+The component intelligently handles type-specific props, ensuring that only relevant attributes are applied to each input type. For example, `min` and `max` are only applied to number and range inputs, while `checked` is only applied to checkbox and radio inputs.
+
+## Usage Guidelines
+
+The `Input` component is a low-level primitive that provides the foundation for building input fields. Understanding when and how to use it will help you create accessible, user-friendly forms.
+
+### Supported Input Types
+
+The `Input` component supports all HTML input types:
+
+**Text-based inputs:** `text`, `email`, `password`, `url`, `tel`, `search`  
+**Numeric inputs:** `number`, `range`  
+**Date/time inputs:** `date`, `datetime-local`, `time`, `month`, `week`  
+**Choice inputs:** `checkbox`, `radio`  
+**File input:** `file`  
+**Color input:** `color`  
+**Hidden input:** `hidden`
+
+Each input type receives appropriate type-specific props automatically. You don't need to worry about which props are valid for which types—the component handles this for you.
+
+### Accessibility Best Practices
+
+Always provide labels for your inputs using the `<label>` element with a matching `htmlFor` attribute, or by using `aria-label` or `aria-labelledby`. Never rely solely on `placeholder` text for labeling, as it disappears when the user starts typing.
+
+For invalid inputs, set `aria-invalid` to provide semantic meaning to assistive technologies. Combine this with `aria-describedby` to reference error messages that explain what went wrong.
+
+Use appropriate input types to enable better mobile keyboards and native browser features. For example, `type="email"` shows an email-optimized keyboard on mobile devices, while `type="date"` shows a native date picker.
+
+## Accessibility
+
+The `Input` component is built with accessibility as a core requirement. It provides comprehensive keyboard support, ARIA attributes, and integration with React Aria's focus management system.
+
+**Keyboard Navigation**
+
+All input types are fully keyboard accessible. Text inputs can be focused with Tab and navigated with arrow keys. Checkboxes and radio buttons can be toggled with Space. The component integrates with React Aria's `useFocusRing` hook to provide intelligent focus indicators that only appear during keyboard navigation, not mouse clicks.
+
+**Focus Management**
+
+The component distinguishes between mouse focus and keyboard focus through the `isFocused` and `isFocusVisible` states. This allows you to style focus rings appropriately—showing them only when the user is navigating with a keyboard, which reduces visual noise for mouse users while maintaining accessibility for keyboard users.
+
+**ARIA Support**
+
+The component passes through all ARIA attributes you provide, including `aria-label`, `aria-labelledby`, `aria-describedby`, and `aria-invalid`. These attributes are essential for screen reader users to understand the purpose and state of form fields.
+
+**State Communication**
+
+The component provides comprehensive data attributes that communicate its state to both CSS selectors and assistive technologies. These include `data-focused`, `data-focus-visible`, `data-hovered`, `data-disabled`, `data-invalid`, `data-readonly`, `data-required`, `data-empty`, and `data-checked`. These attributes make it easy to style inputs based on their state and ensure consistent visual feedback.
+
+## Customization
+
+The `Input` component is built using the `@bento/slots` package, allowing you to customize styling based on component state through render props and data attributes.
+
+### Render Props
+
+The `className` and `style` props can accept functions that receive render props describing the current state of the input:
+
+```jsx
+<Input
+  type="text"
+  className={(state) => 
+    state.isFocusVisible ? 'input-focused' : 'input-default'
+  }
+  style={(state) => ({
+    borderColor: state.isInvalid ? 'red' : state.isFocused ? 'blue' : 'gray'
+  })}
+/>
+```
+
+The render props object includes:
+- `isHovered`: Whether the input is currently hovered with a mouse
+- `isFocused`: Whether the input is focused (via mouse or keyboard)
+- `isFocusVisible`: Whether the input is keyboard focused
+- `isDisabled`: Whether the input is disabled
+- `isInvalid`: Whether the input has `aria-invalid` set
+
+### Data Attributes
+
+The component automatically applies data attributes that correspond to its state, allowing you to style with CSS selectors:
+
+| Attribute              | Description                                    | Example Values    |
+| ---------------------- | ---------------------------------------------- | ----------------- |
+| `data-focused`         | Whether the input is focused                   | "true" / "false"  |
+| `data-focus-visible`   | Whether keyboard focus ring should be visible | "true" / "false"  |
+| `data-hovered`         | Whether the input is hovered                   | "true" / "false"  |
+| `data-disabled`        | Whether the input is disabled                  | "true" / "false"  |
+| `data-invalid`         | Whether the input is invalid                   | "true" / "false"  |
+| `data-readonly`        | Whether the input is read-only                 | "true" / "false"  |
+| `data-required`        | Whether the input is required                  | "true" / "false"  |
+| `data-empty`           | Whether the input has no value                 | "true" / "false"  |
+| `data-checked`         | Whether checkbox/radio is checked              | "true" / "false"  |
+
+### Slots
+
+The component is registered as `BentoInput` in the slots system. While the base Input component doesn't introduce additional slots, it can be extended with slot-based composition for building higher-level components.
+
