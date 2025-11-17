@@ -52,6 +52,15 @@
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"
   },
+  "devDependencies": {
+    "@bento/button": "*",
+    "@bento/container": "*",
+    "@bento/heading": "*",
+    "@bento/listbox": "*",
+    "@bento/portal": "*",
+    "@bento/radio": "*",
+    "@bento/text": "*"
+  },
   "exports": {
     ".": {
       "import": {
@@ -70,4 +79,3 @@
     "registry": "https://registry.npmjs.org/"
   }
 }
-
