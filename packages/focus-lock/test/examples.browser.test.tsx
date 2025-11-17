@@ -4,7 +4,6 @@ import { FormExample } from '../examples/form';
 import { SelectExample } from '../examples/select';
 import { NestedExample } from '../examples/nested';
 import { OverlayExample } from '../examples/overlay';
-import { Button } from '@bento/button';
 import { render } from 'vitest-browser-react';
 import { describe, it, expect } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
