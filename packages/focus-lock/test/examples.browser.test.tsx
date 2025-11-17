@@ -6,7 +6,7 @@ import { NestedExample } from '../examples/nested';
 import { OverlayExample } from '../examples/overlay';
 import { Button } from '@bento/button';
 import { render } from 'vitest-browser-react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
 import { page } from '@vitest/browser/context';
 import assume from 'assume';
