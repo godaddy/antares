@@ -1,4 +1,7 @@
 import { FocusLock } from '@bento/focus-lock';
+import { Button } from '@bento/button';
+import { Container } from '@bento/container';
+import { ListBox, ListBoxItem } from '@bento/listbox';
 /* v8 ignore next */
 import React, { useState } from 'react';
 
@@ -6,37 +9,36 @@ export function SelectExample() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('');
 
-  const selectOption = function selectOption(option: string) {
-    return function handleSelect() {
-      setSelected(option);
+  const handleSelectionChange = function handleSelectionChange(keys: 'all' | Set<React.Key>) {
+    if (keys !== 'all' && keys.size > 0) {
+      const selectedKey = Array.from(keys)[0] as string;
+      setSelected(selectedKey);
       setIsOpen(false);
-    };
+    }
   };
 
+
   return (
-    <div>
-      <button type="button" onClick={() => setIsOpen(!isOpen)}>
-        {selected || 'Select an option...'}
-      </button>
+    <Container>
+      <Button onClick={() => setIsOpen(!isOpen)}>{selected || 'Select an option...'}</Button>
 
       {isOpen && (
         <FocusLock contain restoreFocus autoFocus>
           {/* Single child - popover container receives data-focus-contained attribute */}
-          <div className="popover" data-slot="popover" data-testid="select-popover">
-            <ul role="listbox">
-              <li role="option" tabIndex={0} onClick={selectOption('Apple')}>
-                Apple
-              </li>
-              <li role="option" tabIndex={0} onClick={selectOption('Orange')}>
-                Orange
-              </li>
-              <li role="option" tabIndex={0} onClick={selectOption('Banana')}>
-                Banana
-              </li>
-            </ul>
-          </div>
+          <Container as="aside" className="popover" data-slot="popover" data-testid="select-popover">
+            <ListBox
+              aria-label="Fruit selection"
+              selectionMode="single"
+              selectedKeys={selected ? new Set([selected]) : new Set()}
+              onSelectionChange={handleSelectionChange}
+            >
+              <ListBoxItem id="apple">Apple</ListBoxItem>
+              <ListBoxItem id="orange">Orange</ListBoxItem>
+              <ListBoxItem id="banana">Banana</ListBoxItem>
+            </ListBox>
+          </Container>
         </FocusLock>
       )}
-    </div>
+    </Container>
   );
 }

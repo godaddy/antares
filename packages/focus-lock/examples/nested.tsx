@@ -1,4 +1,8 @@
 import { FocusLock } from '@bento/focus-lock';
+import { Button } from '@bento/button';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Container } from '@bento/container';
 /* v8 ignore next */
 import React, { useState } from 'react';
 
@@ -8,40 +12,40 @@ export function NestedExample() {
 
   return (
     <>
-      <button type="button" onClick={() => setOuterOpen(true)}>
+      <Button onClick={() => setOuterOpen(true)} data-testid="open-outer-button">
         Open Outer Modal
-      </button>
+      </Button>
 
       {outerOpen && (
-        <div className="modal-backdrop">
+        <Container className="modal-backdrop">
           <FocusLock contain restoreFocus autoFocus>
             {/* Outer modal content */}
-            <div className="modal-content" data-testid="outer-modal">
-              <h2>Outer Modal</h2>
-              <button type="button" onClick={() => setInnerOpen(true)}>
+            <Container as="dialog" className="modal-content" data-testid="outer-modal">
+              <Heading level={2}>Outer Modal</Heading>
+              <Button onClick={() => setInnerOpen(true)} data-testid="open-inner-button">
                 Open Inner Modal
-              </button>
-              <button type="button" onClick={() => setOuterOpen(false)}>
+              </Button>
+              <Button onClick={() => setOuterOpen(false)} data-testid="close-outer-button">
                 Close
-              </button>
+              </Button>
 
               {innerOpen && (
-                <div className="modal-backdrop">
+                <Container className="modal-backdrop">
                   <FocusLock contain restoreFocus autoFocus>
                     {/* Inner modal content */}
-                    <div className="modal-content" data-testid="inner-modal">
-                      <h2>Inner Modal</h2>
-                      <p>Focus is contained within this inner modal.</p>
-                      <button type="button" onClick={() => setInnerOpen(false)}>
+                    <Container as="dialog" className="modal-content" data-testid="inner-modal">
+                      <Heading level={2}>Inner Modal</Heading>
+                      <Text>Focus is contained within this inner modal.</Text>
+                      <Button onClick={() => setInnerOpen(false)} data-testid="close-inner-button">
                         Close Inner
-                      </button>
-                    </div>
+                      </Button>
+                    </Container>
                   </FocusLock>
-                </div>
+                </Container>
               )}
-            </div>
+            </Container>
           </FocusLock>
-        </div>
+        </Container>
       )}
     </>
   );

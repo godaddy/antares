@@ -1,20 +1,28 @@
 import { FocusLock } from '@bento/focus-lock';
+import { Button } from '@bento/button';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Container } from '@bento/container';
+import { RadioGroup, Radio } from '@bento/radio';
+import { FieldError } from '@bento/field-error';
 /* v8 ignore next */
 import React, { useState } from 'react';
 
 export function FormExample() {
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = ['Personal', 'Contact', 'Review'];
+  const [accountType, setAccountType] = useState<string>();
+  const [contactMethod, setContactMethod] = useState<string>();
+  const steps = ['Account Type', 'Contact Preference', 'Review'];
 
   return (
-    <div className="form-wizard">
-      <div className="step-indicator">
+    <Container as="section" className="form-wizard">
+      <Container as="nav" className="step-indicator">
         {steps.map((step, index) => (
-          <div key={step} className={`step ${index === currentStep ? 'active' : ''}`}>
+          <Container as="span" key={step} className={`step ${index === currentStep ? 'active' : ''}`}>
             {step}
-          </div>
+          </Container>
         ))}
-      </div>
+      </Container>
 
       <FocusLock
         contain={true}
@@ -22,45 +30,45 @@ export function FormExample() {
         autoFocus={true}
         key={currentStep} // Re-mount to reset focus
       >
-        <div className="step-content" data-testid={`step-${currentStep}`}>
+        <Container as="form" className="step-content" data-testid={`step-${currentStep}`}>
           {currentStep === 0 && (
-            <div>
-              <h2>Personal Information</h2>
-              <input type="text" placeholder="First Name" />
-              <input type="text" placeholder="Last Name" />
-              <button type="button" onClick={() => setCurrentStep(1)}>
-                Next
-              </button>
-            </div>
+            <Container as="fieldset">
+              <Heading level={2}>Account Type</Heading>
+              <RadioGroup value={accountType} onChange={setAccountType} isInvalid={false}>
+                <Text slot="label">Select your account type</Text>
+                <Radio value="personal">Personal</Radio>
+                <Radio value="business">Business</Radio>
+                <Radio value="enterprise">Enterprise</Radio>
+              </RadioGroup>
+              <Button onClick={() => setCurrentStep(1)}>Next</Button>
+            </Container>
           )}
 
           {currentStep === 1 && (
-            <div>
-              <h2>Contact Information</h2>
-              <input type="email" placeholder="Email" />
-              <input type="tel" placeholder="Phone" />
-              <button type="button" onClick={() => setCurrentStep(0)}>
-                Previous
-              </button>
-              <button type="button" onClick={() => setCurrentStep(2)}>
-                Next
-              </button>
-            </div>
+            <Container as="fieldset">
+              <Heading level={2}>Contact Preference</Heading>
+              <RadioGroup value={contactMethod} onChange={setContactMethod} isInvalid={false}>
+                <Text slot="label">How would you like to be contacted?</Text>
+                <Radio value="email">Email</Radio>
+                <Radio value="phone">Phone</Radio>
+                <Radio value="sms">SMS</Radio>
+              </RadioGroup>
+              <Button onClick={() => setCurrentStep(0)}>Previous</Button>
+              <Button onClick={() => setCurrentStep(2)}>Next</Button>
+            </Container>
           )}
 
           {currentStep === 2 && (
-            <div>
-              <h2>Review</h2>
-              <p>Please review your information.</p>
-              <button type="button" onClick={() => setCurrentStep(1)}>
-                Previous
-              </button>
-              <button type="submit">Submit</button>
-            </div>
+            <Container as="fieldset">
+              <Heading level={2}>Review</Heading>
+              <Text>Account Type: {accountType || 'Not selected'}</Text>
+              <Text>Contact Method: {contactMethod || 'Not selected'}</Text>
+              <Button onClick={() => setCurrentStep(1)}>Previous</Button>
+              <Button type="submit">Submit</Button>
+            </Container>
           )}
-        </div>
+        </Container>
       </FocusLock>
-    </div>
+    </Container>
   );
 }
-

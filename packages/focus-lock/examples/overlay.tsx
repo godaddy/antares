@@ -1,4 +1,8 @@
 import { FocusLock } from '@bento/focus-lock';
+import { Button } from '@bento/button';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Container } from '@bento/container';
 /* v8 ignore next */
 import React, { useState } from 'react';
 
@@ -10,12 +14,12 @@ export function OverlayExample() {
 
   return (
     <>
-      <button type="button" onClick={() => setIsOpen(true)}>
+      <Button onClick={() => setIsOpen(true)} data-testid="open-overlay-button">
         Open Overlay
-      </button>
+      </Button>
 
       {isOpen && (
-        <div className="overlay-root">
+        <Container className="overlay-root">
           <FocusLock
             contain
             restoreFocus
@@ -33,7 +37,7 @@ export function OverlayExample() {
             onFocusLeave={handleFocusLeave}
           >
             {/* Backdrop - receives data-focus-contained attribute */}
-            <div
+            <Container
               className="backdrop"
               data-slot="backdrop"
               onClick={() => setIsOpen(false)}
@@ -47,7 +51,8 @@ export function OverlayExample() {
               }}
             />
             {/* Content - receives data-focus-contained attribute */}
-            <div
+            <Container
+              as="dialog"
               className="content"
               data-slot="content"
               data-testid="overlay-content"
@@ -63,16 +68,16 @@ export function OverlayExample() {
                 minWidth: '300px'
               }}
             >
-              <h2>Overlay with Render Props</h2>
-              <p>This overlay demonstrates multiple children with render props for dynamic styling.</p>
-              <p>Focus is trapped within this overlay. Both backdrop and content receive data attributes.</p>
-              <button type="button">First Button</button>
-              <button type="button" onClick={() => setIsOpen(false)}>
+              <Heading level={2}>Overlay with Render Props</Heading>
+              <Text>This overlay demonstrates multiple children with render props for dynamic styling.</Text>
+              <Text>Focus is trapped within this overlay. Both backdrop and content receive data attributes.</Text>
+              <Button>First Button</Button>
+              <Button onClick={() => setIsOpen(false)} data-testid="close-overlay-button">
                 Close
-              </button>
-            </div>
+              </Button>
+            </Container>
           </FocusLock>
-        </div>
+        </Container>
       )}
     </>
   );

@@ -1,4 +1,8 @@
 import { FocusLock } from '@bento/focus-lock';
+import { Button } from '@bento/button';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Container } from '@bento/container';
 /* v8 ignore next */
 import React, { useState } from 'react';
 
@@ -7,25 +11,24 @@ export function BasicExample() {
 
   return (
     <>
-      <button type="button" onClick={() => setIsOpen(true)}>
+      <Button onClick={() => setIsOpen(true)} data-testid="open-button">
         Open Modal
-      </button>
+      </Button>
 
       {isOpen && (
-        <div className="modal-backdrop">
+        <Container className="modal-backdrop">
           <FocusLock contain restoreFocus autoFocus>
             {/* Single child receives data-focus-contained attribute */}
-            <div className="modal-content" data-testid="basic-modal">
-              <h2>Modal Title</h2>
-              <p>Modal content with contained focus.</p>
-              <button type="button" onClick={() => setIsOpen(false)}>
+            <Container as="dialog" className="modal-content" data-testid="basic-modal">
+              <Heading level={2}>Modal Title</Heading>
+              <Text>Modal content with contained focus.</Text>
+              <Button onClick={() => setIsOpen(false)} data-testid="close-button">
                 Close
-              </button>
-            </div>
+              </Button>
+            </Container>
           </FocusLock>
-        </div>
+        </Container>
       )}
     </>
   );
 }
-
