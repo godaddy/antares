@@ -4,7 +4,6 @@ import { Heading } from '@bento/heading';
 import { Text } from '@bento/text';
 import { Container } from '@bento/container';
 import { RadioGroup, Radio } from '@bento/radio';
-import { FieldError } from '@bento/field-error';
 /* v8 ignore next */
 import React, { useState } from 'react';
 
