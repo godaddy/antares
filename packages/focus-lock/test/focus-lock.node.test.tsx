@@ -168,7 +168,14 @@ describe('@bento/focus-lock', function bento() {
 
     it('renders without onFocusEnter/onFocusLeave callbacks in SSR', function callbackProps() {
       const html = renderToString(
-        <FocusLock onFocusEnter={() => {}} onFocusLeave={() => {}}>
+        <FocusLock
+          onFocusEnter={function noop() {
+            /* intentionally empty */
+          }}
+          onFocusLeave={function noop() {
+            /* intentionally empty */
+          }}
+        >
           <Button>Button</Button>
         </FocusLock>
       );

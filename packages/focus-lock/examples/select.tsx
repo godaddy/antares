@@ -17,7 +17,6 @@ export function SelectExample() {
     }
   };
 
-
   return (
     <Container>
       <Button onClick={() => setIsOpen(!isOpen)}>{selected || 'Select an option...'}</Button>
