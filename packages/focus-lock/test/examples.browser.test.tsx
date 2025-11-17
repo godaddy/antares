@@ -4,9 +4,11 @@ import { FormExample } from '../examples/form';
 import { SelectExample } from '../examples/select';
 import { NestedExample } from '../examples/nested';
 import { OverlayExample } from '../examples/overlay';
+import { Button } from '@bento/button';
 import { render } from 'vitest-browser-react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
+import { page } from '@vitest/browser/context';
 import assume from 'assume';
 
 describe('@bento/focus-lock examples', function bento() {
@@ -219,7 +221,7 @@ describe('@bento/focus-lock examples', function bento() {
       const content = container.querySelector('[data-testid="overlay-content"]');
       assume(content).is.truthy();
       assume(content?.getAttribute('data-focus-contained')).equals('true');
-      assume(container.innerHTML).includes('Overlay with Render Props');
+      assume(container.innerHTML).includes('Overlay with Multiple Children');
     });
 
     it('closes overlay with close button', async function test() {
@@ -231,6 +233,19 @@ describe('@bento/focus-lock examples', function bento() {
 
       const closeButton = container.querySelector('[data-testid="close-overlay-button"]');
       await userEvent.click(closeButton!);
+
+      assume(container.innerHTML).does.not.include('data-testid="overlay-content"');
+    });
+
+    it('closes overlay when clicking backdrop', async function test() {
+      const { container } = render(<OverlayExample />);
+
+      const openButton = container.querySelector('[data-testid="open-overlay-button"]');
+      await userEvent.click(openButton!);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const backdrop = container.querySelector('[data-testid="overlay-backdrop"]');
+      await userEvent.click(backdrop!);
 
       assume(container.innerHTML).does.not.include('data-testid="overlay-content"');
     });

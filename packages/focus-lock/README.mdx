@@ -41,13 +41,17 @@ and enable focus containment.
 <Story of={Stories.Basic} inline />
 <Controls of={Stories.Basic} />
 
-Focus scopes can be nested, allowing you to have multiple layers of focus containment. When a nested scope is active, focus is trapped within the innermost scope.
+Focus scopes can be nested, allowing you to have multiple layers of focus
+containment. When a nested scope is active, focus is trapped within the
+innermost scope.
 
 <Source language='tsx' code={ SourceNested } />
 <Story of={Stories.Nested} inline />
 <Controls of={Stories.Nested} />
 
-The `FocusLock` component applies data attributes directly to its children without introducing a wrapper element. This example demonstrates multiple children (backdrop and content) along with render props for dynamic styling.
+The `FocusLock` component applies data attributes directly to its children
+without introducing a wrapper element. This example demonstrates multiple
+children (backdrop and content).
 
 <Source language='tsx' code={ SourceOverlay } />
 <Story of={Stories.Overlay} inline />
@@ -78,28 +82,7 @@ The `@bento/focus-lock` component is registered as `BentoFocusLock` and can be
 customized using the slot system. See the `@bento/slots` package for more
 information on how to use the `slot` and `slots` properties.
 
-### Styling
-
-Once you assign the `className` property to the component, you take full
-responsibility for styling. The component itself has no default styling.
-
-```tsx
-import { FocusLock } from '@bento/focus-lock';
-
-<FocusLock
-  contain
-  restoreFocus
-  autoFocus
-  className={({ hasFocus, isContained }) =>
-    `focus-lock ${isContained ? 'contained' : ''} ${hasFocus ? 'focused' : ''}`
-  }
->
-  <div>Content</div>
-</FocusLock>
-```
-
-The props support render prop functions that receive the focus state. The render
-prop function receives a state object with the following properties:
+Render prop function receives a state object with the following properties:
 
 ```typescript
 interface FocusLockState {
@@ -107,6 +90,8 @@ interface FocusLockState {
   isContained: boolean;   // Whether focus is contained (same as contain prop)
 }
 ```
+
+### Data Attributes
 
 The following data attributes are automatically applied to the children of the `FocusLock` component:
 

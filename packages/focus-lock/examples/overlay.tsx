@@ -9,9 +9,6 @@ import React, { useState } from 'react';
 export function OverlayExample() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleFocusEnter = () => console.log('Focus entered overlay');
-  const handleFocusLeave = () => console.log('Focus left overlay');
-
   return (
     <>
       <Button onClick={() => setIsOpen(true)} data-testid="open-overlay-button">
@@ -20,36 +17,24 @@ export function OverlayExample() {
 
       {isOpen && (
         <Container className="overlay-root">
-          <FocusLock
-            contain
-            restoreFocus
-            autoFocus
-            className={function renderClassName({ hasFocus, isContained }) {
-              return `focus-lock contained-${isContained} focused-${hasFocus}`;
+          {/* Backdrop - outside FocusLock so it renders */}
+          <Container
+            className="backdrop"
+            data-slot="backdrop"
+            onClick={() => setIsOpen(false)}
+            data-testid="overlay-backdrop"
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              cursor: 'pointer',
+              zIndex: 1000
             }}
-            style={function renderStyle({ hasFocus }) {
-              return {
-                content: `hasFocus: ${hasFocus}`,
-                transition: 'opacity 0.2s'
-              };
-            }}
-            onFocusEnter={handleFocusEnter}
-            onFocusLeave={handleFocusLeave}
           >
-            {/* Backdrop - receives data-focus-contained attribute */}
-            <Container
-              className="backdrop"
-              data-slot="backdrop"
-              onClick={() => setIsOpen(false)}
-              data-testid="overlay-backdrop"
-              style={{
-                position: 'fixed',
-                inset: 0,
-                background: 'rgba(0, 0, 0, 0.5)',
-                cursor: 'pointer',
-                zIndex: 1000
-              }}
-            />
+            {/* Non-empty content so Container renders */}
+            <span style={{ display: 'none' }}>backdrop</span>
+          </Container>
+          <FocusLock contain restoreFocus autoFocus>
             {/* Content - receives data-focus-contained attribute */}
             <Container
               as="dialog"
@@ -68,9 +53,9 @@ export function OverlayExample() {
                 minWidth: '300px'
               }}
             >
-              <Heading level={2}>Overlay with Render Props</Heading>
-              <Text>This overlay demonstrates multiple children with render props for dynamic styling.</Text>
-              <Text>Focus is trapped within this overlay. Both backdrop and content receive data attributes.</Text>
+              <Heading level={2}>Overlay with Multiple Children</Heading>
+              <Text>This overlay demonstrates how FocusLock works with a backdrop and content.</Text>
+              <Text>Focus is trapped within the dialog content.</Text>
               <Button>First Button</Button>
               <Button onClick={() => setIsOpen(false)} data-testid="close-overlay-button">
                 Close
