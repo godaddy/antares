@@ -113,3 +113,71 @@ export function defaults(root?: RootNode): BoxContext<any> {
  * @public
  */
 export const Box = createContext<BoxContext<any>>(defaults());
+
+/**
+ * Props for the Slot component.
+ *
+ * @public
+ */
+export interface SlotProps {
+  /**
+   * Slots to assign and pass to children via Box context.
+   * These slots will be merged with any existing slots from parent context.
+   */
+  slots: Record<string, any>;
+
+  /**
+   * Children to render with the slot context.
+   */
+  children: React.ReactNode;
+}
+
+/**
+ * Slot component that handles Box context setup for passing slots to children.
+ * This component simplifies the pattern of merging slots into the Box context.
+ *
+ * @component
+ * @param props - The properties {@link SlotProps} passed to the Slot component.
+ *
+ * @example
+ * ```tsx
+ * import { Slot } from '@bento/box';
+ *
+ * function MyComponent({ children }) {
+ *   const slots = {
+ *     trigger: { onClick: handleClick },
+ *     content: { role: 'dialog' }
+ *   };
+ *
+ *   return (
+ *     <Slot slots={slots}>
+ *       {children}
+ *     </Slot>
+ *   );
+ * }
+ * ```
+ *
+ * @public
+ */
+export function Slot({ slots, children }: SlotProps): React.ReactElement {
+  const ctx = React.useContext<BoxContext<any>>(Box);
+
+  // Create new context with slots merged in
+  const newContext: BoxContext<any> = React.useMemo(
+    function createContext() {
+      return {
+        env: { ...ctx.env },
+        slots: {
+          ...ctx.slots,
+          assigned: {
+            ...ctx.slots.assigned,
+            ...slots
+          }
+        }
+      };
+    },
+    [ctx, slots]
+  );
+
+  return <Box.Provider value={newContext}>{children}</Box.Provider>;
+}
