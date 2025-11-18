@@ -7,7 +7,6 @@ import { OverlayExample } from '../examples/overlay';
 import { render } from 'vitest-browser-react';
 import { describe, it, expect } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
-import { page } from '@vitest/browser/context';
 import assume from 'assume';
 
 describe('@bento/focus-lock examples', function bento() {
