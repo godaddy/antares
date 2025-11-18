@@ -4,6 +4,7 @@ import BasicExample from './examples/basic.tsx?raw';
 import AsExample from './examples/as.tsx?raw';
 import BuildingBlockExample from './examples/building-block.tsx?raw';
 import NestedExample from './examples/nested.tsx?raw';
+import EmptyExample from './examples/empty.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -47,3 +48,8 @@ Container components can be nested to create semantic HTML structures with prope
 
 <Source language='tsx' code={ NestedExample } />
 
+### Empty Containers
+
+Container renders even without children, making it ideal for presentational elements like backdrops, spacers, or decorative elements that rely solely on styling.
+
+<Source language='tsx' code={ EmptyExample } />
