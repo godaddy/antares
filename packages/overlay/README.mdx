@@ -1,0 +1,280 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './overlay.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceModal from './examples/modal.tsx?raw';
+import SourceDrawer from './examples/drawer.tsx?raw';
+import SourceUncontrolled from './examples/uncontrolled.tsx?raw';
+import SourcePopover from './examples/popover.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Overlay
+
+The `@bento/overlay` package provides the **Overlay** component, a foundational
+primitive for creating layered UI experiences where content appears above the
+main application view. Overlay manages state and coordinates React Aria hooks,
+passing props via slots to children for flexible composition.
+
+## Purpose
+
+Overlay serves as a coordinator that brings together focused primitives like
+Portal, FocusLock, ScrollLock, and Dismiss. It handles state management and
+React Aria integration while delegating rendering and behavior to composed
+primitives.
+
+### Use Cases
+
+Overlay addresses several key scenarios:
+
+- **Modal dialogs**: Displaying content that requires immediate user attention
+- **Drawers and sheets**: Side panels or bottom sheets common in mobile interfaces
+- **Loading states**: Fullscreen loading indicators that block interaction
+- **Image viewers**: Lightbox-style image viewing experiences
+- **Onboarding flows**: Step-by-step tutorials that overlay the application
+
+## Installation
+
+```bash
+npm install --save @bento/overlay @bento/portal @bento/focus-lock @bento/scroll-lock @bento/dismiss
+```
+
+## Props
+
+The `@bento/overlay` package exports the `Overlay` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+The simplest overlay usage demonstrates controlled state management:
+
+<Source language='tsx' code={ SourceBasic } />
+
+### Complete Modal
+
+A complete modal dialog combining all overlay primitives. This example
+demonstrates best practices for accessible modal patterns using Portal for DOM
+rendering, ScrollLock for background scroll prevention, FocusLock for focus
+containment, and Dismiss for screen reader accessibility:
+
+<Source language='tsx' code={ SourceModal } />
+
+### Drawer
+
+Drawers use the same overlay primitives as modals but with different
+positioning. This example shows a drawer sliding in from the right side:
+
+<Source language='tsx' code={ SourceDrawer } />
+
+### Uncontrolled with Trigger
+
+An uncontrolled overlay that manages its own state internally. The trigger
+button uses the trigger slot to receive toggle handlers from the Overlay
+component:
+
+<Source language='tsx' code={ SourceUncontrolled } />
+
+### Non-Modal Popover
+
+A lightweight popover without ScrollLock or backdrop, suitable for non-blocking
+UI elements:
+
+<Source language='tsx' code={ SourcePopover } />
+
+## Composition
+
+Overlay follows Bento's composition model by managing state and passing handlers
+via slots to children. It does not render DOM elements itself but coordinates
+the behavior of composed primitives.
+
+### Slot System
+
+Overlay passes props to children through the slot system. Children with slot
+assignments automatically receive the appropriate props:
+
+| Slot | Purpose | Props Provided | Required |
+|------|---------|---------------|----------|
+| `trigger` | Element that opens/closes the overlay | `triggerProps` from React Aria | No |
+| `backdrop` | Visual backdrop behind content | `overlayProps` from React Aria | No |
+| `content` | Main overlay content container | `overlayProps` from React Aria | Yes |
+
+### Component Structure
+
+The recommended overlay structure follows this hierarchy:
+
+```
+Overlay (state management, coordination)
+├─ Trigger (slot="trigger", optional)
+└─ Portal (DOM rendering location, when open)
+   ├─ ScrollLock (background scroll prevention)
+   ├─ Backdrop (slot="backdrop", optional, for modal overlays)
+   └─ FocusLock (focus trapping and restoration)
+      └─ Content (slot="content", user-provided content)
+         ├─ Dismiss (accessible dismiss at start)
+         ├─ User content (Text, buttons, etc.)
+         └─ Dismiss (accessible dismiss at end)
+```
+
+### Controlled vs Uncontrolled
+
+Overlay supports both controlled and uncontrolled state management using React
+Aria's `useOverlayTriggerState` hook.
+
+**Controlled** - Parent component manages state:
+```tsx
+const [open, setOpen] = useState(false);
+<Overlay open={open} onOpenChange={setOpen}>
+  {/* content */}
+</Overlay>
+```
+
+**Uncontrolled** - Overlay manages state internally:
+```tsx
+<Overlay defaultOpen={false}>
+  <Button slot="trigger">Open</Button>
+  {/* content */}
+</Overlay>
+```
+
+## React Aria Integration
+
+Overlay integrates React Aria's overlay hooks to provide accessible behavior:
+
+- **useOverlayTriggerState**: Manages controlled/uncontrolled state
+- **useOverlayTrigger**: Provides trigger and overlay props
+- **useModalOverlay**: For modal semantics (via composed children)
+- **useOverlay**: For dismissal behavior (via composed children)
+
+The component passes React Aria hook return values to children via slots,
+allowing consumers to manually compose primitives while maintaining proper
+accessibility.
+
+## Accessibility
+
+Overlay is designed with accessibility as a foundation:
+
+**State Management**
+- Controlled and uncontrolled state patterns via React Aria
+- Proper trigger-overlay relationship through ARIA attributes
+- State communicated to children via slots
+
+**Focus Management**
+- Delegated to FocusLock primitive when composed
+- Focus trapping for modal patterns
+- Focus restoration on close
+- Initial focus control
+
+**Keyboard Support**
+- ESC key handling via React Aria overlayProps
+- Tab navigation contained within FocusLock
+- Trigger activation via Space/Enter
+
+**Screen Reader Support**
+- Proper ARIA attributes from React Aria hooks
+- Dismiss components for linear navigation
+- Modal semantics when appropriate
+
+## Data Attributes
+
+Overlay applies the following data attribute to help with styling and testing:
+
+| Attribute | Description | Example Values |
+|-----------|-------------|----------------|
+| `data-state` | Current open state | "open" / "closed" |
+
+These attributes are passed via the Box context to children, allowing styling based on overlay state:
+
+```css
+.my-overlay [slot="content"][data-state="open"] {
+  animation: fadeIn 200ms ease-in;
+}
+
+.my-overlay [slot="backdrop"][data-state="open"] {
+  animation: fadeIn 200ms ease-in;
+}
+```
+
+## Related Packages
+
+Overlay is designed to work with these Bento primitives:
+
+- **@bento/portal**: Renders content outside normal DOM hierarchy
+- **@bento/focus-lock**: Traps focus within overlay boundaries
+- **@bento/scroll-lock**: Prevents background scrolling
+- **@bento/dismiss**: Accessible dismiss controls for screen readers
+- **@bento/container**: Base primitive for polymorphic rendering
+- **@bento/button**: Accessible button component for triggers and actions
+- **@bento/text**: Typography component for overlay content
+
+## Server-Side Rendering
+
+Overlay is SSR-safe and works correctly in server-side rendering environments.
+The component only manages state and does not attempt to access browser APIs.
+Ensure composed primitives like Portal are properly configured for SSR.
+
+## Browser Support
+
+Overlay supports all modern browsers through React Aria's cross-browser
+compatibility layer. The component handles platform-specific behavior
+transparently.
+
+## Customization
+
+### Slots
+
+Overlay is created using the `@bento/slots` package via
+`withSlots('BentoOverlay', ...)`, which means it supports the standard `slot`
+and `slots` props for integration with parent components.
+
+Overlay defines three slot assignments that children can use to receive overlay-specific props:
+- `trigger`: Receives trigger props from `useOverlayTrigger`
+- `backdrop`: Receives overlay props for backdrop interactions
+- `content`: Receives overlay props for content container
+
+See the `@bento/slots` package for more information on how to use the `slot` and `slots` properties.
+
+### Styling
+
+Since Overlay doesn't render DOM elements itself, styling is applied to composed
+children. Use the `className` or `style` props on Portal children, or target
+elements using data attributes:
+
+```tsx
+<Overlay open={open} onOpenChange={setOpen}>
+  <Container slot="backdrop" className="my-backdrop" />
+  <Container slot="content" className="my-content">
+    {/* content */}
+  </Container>
+</Overlay>
+```
+
+CSS targeting:
+
+```css
+.my-backdrop[data-state="open"] {
+  animation: fadeIn 200ms;
+}
+
+.my-content[data-state="open"] {
+  animation: slideUp 300ms;
+}
+```
+
+## Best Practices
+
+**Always provide a way to close**: Ensure users can dismiss overlays via backdrop click, ESC key, close button, or Dismiss controls.
+**Use appropriate patterns**: Modal overlays should use FocusLock and ScrollLock. Non-modal popovers may skip these primitives for lightweight interactions.
+**Position carefully**: Use Portal to avoid clipping issues. Consider viewport boundaries and scrolling when positioning overlay content.
+**Manage focus**: Always use FocusLock with `restoreFocus` for modal patterns to ensure focus returns to the trigger.
+**Screen reader accessibility**: Include Dismiss controls at start and end of modal content for users navigating linearly.
+**Semantic HTML**: Use appropriate heading levels and ARIA labels within overlay content.
+
+## Performance
+
+Overlay is lightweight and only manages state and context. Performance
+characteristics depend on composed children. Use conditional rendering to avoid
+mounting Portal, FocusLock, and other primitives when the overlay is closed.
+
