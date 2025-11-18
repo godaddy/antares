@@ -2,9 +2,9 @@ import assume from 'assume';
 import { render } from 'vitest-browser-react';
 import React, { useState } from 'react';
 import { describe, it, vi, beforeEach, afterEach } from 'vitest';
-import { Select, SelectOption } from '@bento/select';
+import { Select } from '@bento/select';
 import { Button } from '@bento/button';
-import { ListBox, ListBoxSection, Header } from '@bento/listbox';
+import { ListBox, ListBoxItem, ListBoxSection, Header } from '@bento/listbox';
 import { Popover, ValueDisplay } from './test-popover';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
@@ -24,9 +24,9 @@ describe('@bento/select', function bento() {
   });
 
   describe('Exports', function exports() {
-    it('exports Select and SelectOption components', function test() {
+    it('exports Select and ListBoxItem components', function test() {
       assume(Select).exists();
-      assume(SelectOption).exists();
+      assume(ListBoxItem).exists();
     });
   });
 
@@ -39,12 +39,12 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
-              <SelectOption value="banana" textValue="Banana">
+              </ListBoxItem>
+              <ListBoxItem id="banana" textValue="Banana">
                 Banana
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -69,12 +69,12 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
-              <SelectOption value="banana" textValue="Banana">
+              </ListBoxItem>
+              <ListBoxItem id="banana" textValue="Banana">
                 Banana
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -96,12 +96,12 @@ describe('@bento/select', function bento() {
             <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Fruits</Header>
-                <SelectOption value="apple" textValue="Apple">
+                <ListBoxItem id="apple" textValue="Apple">
                   Apple
-                </SelectOption>
-                <SelectOption value="banana" textValue="Banana">
+                </ListBoxItem>
+                <ListBoxItem id="banana" textValue="Banana">
                   Banana
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
             </ListBox>
           </Popover>
@@ -124,9 +124,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -148,9 +148,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover" data-testid="select-content">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test Option" data-testid="select-option">
+              <ListBoxItem id="test" textValue="Test Option" data-testid="select-option">
                 Test Option
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -174,18 +174,18 @@ describe('@bento/select', function bento() {
         onChangeValue = value;
 
         return (
-          <Select value={value} onValueChange={(key) => setValue(key as string)}>
+          <Select value={value} onChange={(val) => setValue(val as string)}>
             <Button slot="trigger">
               <ValueDisplay slot="value" placeholder="Choose" />
             </Button>
             <Popover slot="popover">
               <ListBox slot="listbox">
-                <SelectOption value="apple" textValue="Apple">
+                <ListBoxItem id="apple" textValue="Apple">
                   Apple
-                </SelectOption>
-                <SelectOption value="orange" textValue="Orange">
+                </ListBoxItem>
+                <ListBoxItem id="orange" textValue="Orange">
                   Orange
-                </SelectOption>
+                </ListBoxItem>
               </ListBox>
             </Popover>
           </Select>
@@ -207,12 +207,12 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
-              <SelectOption value="banana" textValue="Banana">
+              </ListBoxItem>
+              <ListBoxItem id="banana" textValue="Banana">
                 Banana
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -232,9 +232,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -254,9 +254,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -276,9 +276,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -300,9 +300,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -324,9 +324,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -347,9 +347,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover" className="custom-content">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple" className="custom-option">
+              <ListBoxItem id="apple" textValue="Apple" className="custom-option">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -374,18 +374,18 @@ describe('@bento/select', function bento() {
             <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Fruits</Header>
-                <SelectOption value="apple" textValue="Apple">
+                <ListBoxItem id="apple" textValue="Apple">
                   Apple
-                </SelectOption>
-                <SelectOption value="banana" textValue="Banana">
+                </ListBoxItem>
+                <ListBoxItem id="banana" textValue="Banana">
                   Banana
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
               <ListBoxSection>
                 <Header>Vegetables</Header>
-                <SelectOption value="carrot" textValue="Carrot">
+                <ListBoxItem id="carrot" textValue="Carrot">
                   Carrot
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
             </ListBox>
           </Popover>
@@ -410,9 +410,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -433,9 +433,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -465,9 +465,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -501,9 +501,9 @@ describe('@bento/select', function bento() {
           </Button>
           <TestPopoverWithSlots slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="option1" textValue="Option 1">
+              <ListBoxItem id="option1" textValue="Option 1">
                 Option 1
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </TestPopoverWithSlots>
         </Select>
@@ -542,9 +542,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
           <div slot="description">This is a description</div>
@@ -556,7 +556,7 @@ describe('@bento/select', function bento() {
       assume(result).includes('slot="description"');
     });
 
-    it('supports errorMessage slot', function test() {
+    it('supports error slot', function test() {
       const { container } = render(
         <Select isInvalid>
           <Button slot="trigger">
@@ -564,38 +564,18 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
-          <div slot="errorMessage">This field is required</div>
+          <div slot="error">This field is required</div>
         </Select>
       );
 
       const result = container.innerHTML;
       assume(result).includes('This field is required');
-      assume(result).includes('slot="errorMessage"');
-    });
-
-    it('supports trigger.value slot alias', function test() {
-      const { container } = render(
-        <Select>
-          <Button slot="trigger">
-            <ValueDisplay slot="trigger.value" placeholder="Nested value" />
-          </Button>
-          <Popover slot="popover">
-            <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
-                Test
-              </SelectOption>
-            </ListBox>
-          </Popover>
-        </Select>
-      );
-
-      const result = container.innerHTML;
-      assume(result).includes('Nested value');
+      assume(result).includes('slot="error"');
     });
 
     it('recursively processes nested non-slotted children', function test() {
@@ -610,9 +590,9 @@ describe('@bento/select', function bento() {
           </div>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -635,9 +615,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -659,9 +639,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -677,9 +657,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -691,18 +671,18 @@ describe('@bento/select', function bento() {
 
     it('handles multi-select with empty selection', function test() {
       const { container } = render(
-        <Select selectionMode="multiple" defaultValue={new Set([])}>
+        <Select selectionMode="multiple" defaultValue={[]}>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select items" />
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="option1" textValue="Option 1">
+              <ListBoxItem id="option1" textValue="Option 1">
                 Option 1
-              </SelectOption>
-              <SelectOption value="option2" textValue="Option 2">
+              </ListBoxItem>
+              <ListBoxItem id="option2" textValue="Option 2">
                 Option 2
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -714,15 +694,15 @@ describe('@bento/select', function bento() {
 
     it('handles placeholder with no selected item', function test() {
       const { container } = render(
-        <Select placeholder="Custom placeholder">
+        <Select>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Custom placeholder" />
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -735,18 +715,18 @@ describe('@bento/select', function bento() {
     it('supports defaultSelectedKeys prop for multi-select (React Aria API)', function test() {
       // Tests line 230: defaultSelectedKeys fallback
       const { container } = render(
-        <Select selectionMode="multiple" defaultValue={new Set(['option2'])}>
+        <Select selectionMode="multiple" defaultValue={['option2']}>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select items" />
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="option1" textValue="Option 1">
+              <ListBoxItem id="option1" textValue="Option 1">
                 Option 1
-              </SelectOption>
-              <SelectOption value="option2" textValue="Option 2">
+              </ListBoxItem>
+              <ListBoxItem id="option2" textValue="Option 2">
                 Option 2
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -766,9 +746,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -793,6 +773,55 @@ describe('@bento/select', function bento() {
       // Should be back to not hovered
       const unhoveredContainer = container.querySelector('[data-hovered="false"]');
       assume(unhoveredContainer).exists();
+    });
+
+    it('popover slot receives data-open attribute matching state', function test() {
+      const { container } = render(
+        <Select>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover" data-testid="test-popover">
+            <ListBox slot="listbox">
+              <ListBoxItem id="test" textValue="Test">
+                Test
+              </ListBoxItem>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const popover = container.querySelector('[slot="popover"]');
+      assume(popover).exists();
+
+      // When closed, popover should have data-open="false"
+      assume(popover?.getAttribute('data-open')).equals('false');
+    });
+
+    it('multi-select mode renders with correct ARIA attributes', function test() {
+      const { container } = render(
+        <Select selectionMode="multiple">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select items" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">
+              <ListBoxItem id="option1" textValue="Option 1">
+                Option 1
+              </ListBoxItem>
+              <ListBoxItem id="option2" textValue="Option 2">
+                Option 2
+              </ListBoxItem>
+            </ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+
+      // Verify multi-select mode with aria-multiselectable
+      assume(result).includes('aria-multiselectable="true"');
+      assume(result).includes('role="combobox"');
     });
   });
 });

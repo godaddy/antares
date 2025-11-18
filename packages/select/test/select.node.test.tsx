@@ -1,8 +1,8 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { Select, SelectOption } from '@bento/select';
+import { Select } from '@bento/select';
 import { Button } from '@bento/button';
-import { ListBox, ListBoxSection, Header } from '@bento/listbox';
+import { ListBox, ListBoxItem, ListBoxSection, Header } from '@bento/listbox';
 import { Popover, ValueDisplay } from './test-popover';
 import { renderToString } from 'react-dom/server';
 import { describe, it } from 'vitest';
@@ -26,9 +26,9 @@ function renderToStringSelect(args = {}) {
       </Button>
       <Popover slot="popover">
         <ListBox slot="listbox">
-          <SelectOption value="test" textValue="Test">
+          <ListBoxItem id="test" textValue="Test">
             Test
-          </SelectOption>
+          </ListBoxItem>
         </ListBox>
       </Popover>
     </Select>
@@ -59,18 +59,18 @@ describe('@bento/select', function bento() {
           <ListBox slot="listbox">
             <ListBoxSection>
               <Header>Fruits</Header>
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
-              <SelectOption value="banana" textValue="Banana">
+              </ListBoxItem>
+              <ListBoxItem id="banana" textValue="Banana">
                 Banana
-              </SelectOption>
+              </ListBoxItem>
             </ListBoxSection>
             <ListBoxSection>
               <Header>Vegetables</Header>
-              <SelectOption value="carrot" textValue="Carrot">
+              <ListBoxItem id="carrot" textValue="Carrot">
                 Carrot
-              </SelectOption>
+              </ListBoxItem>
             </ListBoxSection>
           </ListBox>
         </Popover>
@@ -132,12 +132,12 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
-              <SelectOption value="orange" textValue="Orange">
+              </ListBoxItem>
+              <ListBoxItem id="orange" textValue="Orange">
                 Orange
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -155,9 +155,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -177,9 +177,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -199,9 +199,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="apple" textValue="Apple">
+              <ListBoxItem id="apple" textValue="Apple">
                 Apple
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -221,9 +221,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -239,9 +239,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -257,9 +257,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -279,15 +279,15 @@ describe('@bento/select', function bento() {
             <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Category 1</Header>
-                <SelectOption value="option1" textValue="Option 1">
+                <ListBoxItem id="option1" textValue="Option 1">
                   Option 1
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
               <ListBoxSection>
                 <Header>Category 2</Header>
-                <SelectOption value="option2" textValue="Option 2">
+                <ListBoxItem id="option2" textValue="Option 2">
                   Option 2
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
             </ListBox>
           </Popover>
@@ -312,12 +312,12 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="option1" textValue="Option 1">
+              <ListBoxItem id="option1" textValue="Option 1">
                 Option 1
-              </SelectOption>
-              <SelectOption value="option2" textValue="Option 2">
+              </ListBoxItem>
+              <ListBoxItem id="option2" textValue="Option 2">
                 Option 2
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -339,15 +339,15 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="a" textValue="A">
+              <ListBoxItem id="a" textValue="A">
                 A
-              </SelectOption>
-              <SelectOption value="b" textValue="B">
+              </ListBoxItem>
+              <ListBoxItem id="b" textValue="B">
                 B
-              </SelectOption>
-              <SelectOption value="c" textValue="C">
+              </ListBoxItem>
+              <ListBoxItem id="c" textValue="C">
                 C
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -371,18 +371,18 @@ describe('@bento/select', function bento() {
             <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Fruits</Header>
-                <SelectOption value="fruit1" textValue="Apple">
+                <ListBoxItem id="fruit1" textValue="Apple">
                   Apple
-                </SelectOption>
-                <SelectOption value="fruit2" textValue="Banana">
+                </ListBoxItem>
+                <ListBoxItem id="fruit2" textValue="Banana">
                   Banana
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
               <ListBoxSection>
                 <Header>Vegetables</Header>
-                <SelectOption value="veg1" textValue="Carrot">
+                <ListBoxItem id="veg1" textValue="Carrot">
                   Carrot
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
             </ListBox>
           </Popover>
@@ -406,9 +406,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="selected" textValue="Selected Item">
+              <ListBoxItem id="selected" textValue="Selected Item">
                 Selected Item
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -427,9 +427,9 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test" textValue="Test">
+              <ListBoxItem id="test" textValue="Test">
                 Test
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -442,21 +442,21 @@ describe('@bento/select', function bento() {
     it('handles multi-select mode in SSR', function test() {
       // This tests multi-select specific logic
       const result = renderToString(
-        <Select selectionMode="multiple" defaultValue={new Set(['option1', 'option2'])} name="multi">
+        <Select selectionMode="multiple" defaultValue={['option1', 'option2']} name="multi">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Choose" />
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="option1" textValue="Option 1">
+              <ListBoxItem id="option1" textValue="Option 1">
                 Option 1
-              </SelectOption>
-              <SelectOption value="option2" textValue="Option 2">
+              </ListBoxItem>
+              <ListBoxItem id="option2" textValue="Option 2">
                 Option 2
-              </SelectOption>
-              <SelectOption value="option3" textValue="Option 3">
+              </ListBoxItem>
+              <ListBoxItem id="option3" textValue="Option 3">
                 Option 3
-              </SelectOption>
+              </ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -476,7 +476,7 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="notext">No Text Value</SelectOption>
+              <ListBoxItem id="notext">No Text Value</ListBoxItem>
             </ListBox>
           </Popover>
         </Select>
@@ -497,18 +497,18 @@ describe('@bento/select', function bento() {
             <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Section 1</Header>
-                <SelectOption value="item1" textValue="Item 1">
+                <ListBoxItem id="item1" textValue="Item 1">
                   Item 1
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
               <ListBoxSection>
                 <Header>Section 2</Header>
-                <SelectOption value="item2" textValue="Item 2">
+                <ListBoxItem id="item2" textValue="Item 2">
                   Item 2
-                </SelectOption>
-                <SelectOption value="item3" textValue="Item 3">
+                </ListBoxItem>
+                <ListBoxItem id="item3" textValue="Item 3">
                   Item 3
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
             </ListBox>
           </Popover>
@@ -532,12 +532,12 @@ describe('@bento/select', function bento() {
             <ListBox slot="listbox">
               <ListBoxSection>
                 <Header>Nested Section</Header>
-                <SelectOption value="nested1" textValue="Nested 1">
+                <ListBoxItem id="nested1" textValue="Nested 1">
                   Nested 1
-                </SelectOption>
-                <SelectOption value="nested2" textValue="Nested 2">
+                </ListBoxItem>
+                <ListBoxItem id="nested2" textValue="Nested 2">
                   Nested 2
-                </SelectOption>
+                </ListBoxItem>
               </ListBoxSection>
             </ListBox>
           </Popover>
@@ -558,10 +558,10 @@ describe('@bento/select', function bento() {
           </Button>
           <Popover slot="popover">
             <ListBox slot="listbox">
-              <SelectOption value="test1" textValue="">
+              <ListBoxItem id="test1" textValue="">
                 Empty Text
-              </SelectOption>
-              <SelectOption value="test2">No TextValue</SelectOption>
+              </ListBoxItem>
+              <ListBoxItem id="test2">No TextValue</ListBoxItem>
             </ListBox>
           </Popover>
         </Select>

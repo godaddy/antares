@@ -2,12 +2,7 @@ import React from 'react';
 import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi } from 'vitest';
 import assume from 'assume';
-import { BasicSelectExample } from '../examples/basic-select';
-import { MultiSelectExample } from '../examples/multi-select';
-import { SelectWithGroupsExample } from '../examples/select-with-groups';
-import { SelectWithFormExample } from '../examples/select-with-form';
-import { CustomComponentsExample } from '../examples/custom-components';
-import { UsingListBoxItemExample } from '../examples/using-listbox-item';
+import { BasicSelectExample } from '../examples/basic-example';
 
 describe('@bento/select examples', function bento() {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -24,7 +19,7 @@ describe('@bento/select examples', function bento() {
   });
 
   describe('BasicSelectExample', function basicSelectExample() {
-    it('renders the basic select with placeholder', function test() {
+    it('renders the select with default placeholder', function test() {
       const { container } = render(<BasicSelectExample />);
       const result = container.innerHTML;
 
@@ -38,153 +33,86 @@ describe('@bento/select examples', function bento() {
       assume(result).includes('Orange');
     });
 
-    it('renders with selected value', function test() {
-      const { container } = render(<BasicSelectExample value="apple" />);
+    it('renders with custom placeholder', function test() {
+      const { container } = render(<BasicSelectExample placeholder="Choose one..." />);
       const result = container.innerHTML;
 
-      // Should show selected value
-      assume(result).includes('Apple');
+      assume(result).includes('Choose one...');
     });
 
-    it('renders with description and errorMessage slots', function test() {
+    it('renders with grouped options when withGroups is true', function test() {
+      const { container } = render(<BasicSelectExample withGroups={true} />);
+      const result = container.innerHTML;
+
+      // Verify group headers
+      assume(result).includes('Popular Fruits');
+      assume(result).includes('Exotic Fruits');
+      assume(result).includes('Berries');
+    });
+
+    it('renders without groups by default', function test() {
       const { container } = render(<BasicSelectExample />);
       const result = container.innerHTML;
 
-      // Component includes description and errorMessage slots
+      // Should not have group headers
+      assume(result).not.includes('Popular Fruits');
+      assume(result).not.includes('Exotic Fruits');
+    });
+
+    it('renders with description when showDescription is true', function test() {
+      const { container } = render(<BasicSelectExample showDescription={true} />);
+      const result = container.innerHTML;
+
+      assume(result).includes('Choose your favorite fruit from the list');
       assume(result).includes('slot="description"');
-      assume(result).includes('slot="errorMessage"');
-    });
-  });
-
-  describe('SelectWithGroupsExample', function selectWithGroupsExample() {
-    it('renders select with grouped options', function test() {
-      const { container } = render(<SelectWithGroupsExample />);
-      const result = container.innerHTML;
-
-      // Verify placeholder
-      assume(result).includes('Choose a meal...');
-      // Verify group headers
-      assume(result).includes('Main Dishes');
-      assume(result).includes('Side Dishes');
-      // Verify options
-      assume(result).includes('Chicken Teriyaki');
-      assume(result).includes('Edamame');
     });
 
-    it('renders with selected value from groups', function test() {
-      const { container } = render(<SelectWithGroupsExample value="salmon-bento" />);
+    it('renders with error when showError is true', function test() {
+      const { container } = render(<BasicSelectExample showError={true} />);
       const result = container.innerHTML;
 
-      assume(result).includes('Salmon Bento');
+      assume(result).includes('Please select a fruit');
+      assume(result).includes('slot="error"');
     });
-  });
 
-  describe('SelectWithFormExample', function selectWithFormExample() {
-    it('renders select within a form', function test() {
-      const { container } = render(<SelectWithFormExample />);
+    it('renders with disabled state', function test() {
+      const { container } = render(<BasicSelectExample isDisabled={true} />);
       const result = container.innerHTML;
 
-      // Verify form elements
-      assume(result).includes('<form');
-      assume(result).includes('Favorite Fruit');
-      assume(result).includes('type="submit"');
+      assume(result).includes('aria-disabled="true"');
+      assume(result).includes('data-disabled="true"');
+    });
+
+    it('renders with required attribute', function test() {
+      const { container } = render(<BasicSelectExample isRequired={true} />);
+      const result = container.innerHTML;
+
+      assume(result).includes('aria-required="true"');
+      assume(result).includes('data-required="true"');
+    });
+
+    it('renders with invalid state', function test() {
+      const { container } = render(<BasicSelectExample isInvalid={true} />);
+      const result = container.innerHTML;
+
+      assume(result).includes('aria-invalid="true"');
+      assume(result).includes('data-invalid="true"');
+    });
+
+    it('renders with form name for form integration', function test() {
+      const { container } = render(<BasicSelectExample name="fruit" />);
+      const result = container.innerHTML;
+
       // Verify hidden select with name attribute
       assume(result).includes('name="fruit"');
       assume(result).includes('<select');
     });
 
-    it('renders with required attribute', function test() {
-      const { container } = render(<SelectWithFormExample required />);
+    it('supports multiple selection mode', function test() {
+      const { container } = render(<BasicSelectExample selectionMode="multiple" />);
       const result = container.innerHTML;
 
-      assume(result).includes('aria-required="true"');
-    });
-
-    it('renders with description slot content', function test() {
-      const { container } = render(<SelectWithFormExample />);
-      const result = container.innerHTML;
-
-      assume(result).includes('Choose your favorite fruit from the list');
-    });
-  });
-
-  describe('CustomComponentsExample', function customComponentsExample() {
-    it('renders with custom trigger and value components', function test() {
-      const { container } = render(<CustomComponentsExample />);
-      const result = container.innerHTML;
-
-      // Verify custom placeholder
-      assume(result).includes('Pick something...');
-      // Verify custom styling attributes
-      assume(result).includes('data-open');
-      // Verify options
-      assume(result).includes('Option 1');
-      assume(result).includes('Option 2');
-      assume(result).includes('Option 3');
-    });
-
-    it('renders with custom placeholder', function test() {
-      const { container } = render(<CustomComponentsExample />);
-      const result = container.innerHTML;
-
-      // Verify custom placeholder shows through CustomValue component
-      assume(result).includes('Pick something...');
-
-      // Verify custom styling is applied (via data attributes)
-      assume(result).includes('data-open="false"');
-    });
-  });
-
-  describe('UsingListBoxItemExample', function usingListBoxItemExample() {
-    it('renders select using ListBoxItem instead of SelectOption', function test() {
-      const { container } = render(<UsingListBoxItemExample />);
-      const result = container.innerHTML;
-
-      // Verify placeholder
-      assume(result).includes('Select an option...');
-      // Verify ListBoxItem options are rendered
-      assume(result).includes('Item 1');
-      assume(result).includes('Item 2');
-      assume(result).includes('Item 3');
-    });
-
-    it('renders with selected ListBoxItem', function test() {
-      const { container } = render(<UsingListBoxItemExample value="item2" />);
-      const result = container.innerHTML;
-
-      assume(result).includes('Item 2');
-    });
-  });
-
-  describe('MultiSelectExample', function multiSelectExample() {
-    it('renders multi-select with multiple selection mode', function test() {
-      const { container } = render(<MultiSelectExample />);
-      const result = container.innerHTML;
-
-      // Verify placeholder
-      assume(result).includes('Choose ingredients...');
-      // Verify multi-select mode
       assume(result).includes('aria-multiselectable="true"');
-      // Verify options
-      assume(result).includes('Rice');
-      assume(result).includes('Chicken');
-      assume(result).includes('Salmon');
-      assume(result).includes('Tofu');
-    });
-
-    it('renders all ingredient options', function test() {
-      const { container } = render(<MultiSelectExample />);
-      const result = container.innerHTML;
-
-      // Verify all options are rendered
-      assume(result).includes('Rice');
-      assume(result).includes('Chicken');
-      assume(result).includes('Salmon');
-      assume(result).includes('Tofu');
-      assume(result).includes('Edamame');
-      assume(result).includes('Seaweed');
-      assume(result).includes('Tempura');
-      assume(result).includes('Pickled Vegetables');
     });
   });
 });

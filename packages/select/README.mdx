@@ -1,0 +1,67 @@
+import { Meta, ArgTypes, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './select.stories.tsx';
+import BasicExample from './examples/basic-example.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Select
+
+The `@bento/select` package provides an accessible, customizable dropdown that overcomes native `<select>` limitations. It exports the **Select** primitive and **ListBoxItem** component, enabling you to build flexible select dropdowns with slot-based composition where Select acts as coordinator, applying necessary props to slotted children.
+
+Users can slot custom components (Button, Popover, ListBox, etc.) for maximum flexibility while maintaining accessibility through React Aria integration.
+
+## Installation
+
+```bash
+npm install --save @bento/select
+```
+
+## Props
+
+The following properties are available to be used on the `Select` primitive and `ListBoxItem` component:
+
+### Select
+
+<ArgTypes of={Stories.Basic} />
+
+## Slot Map
+
+The `Select` primitive uses a slot-based architecture where you provide child components with specific slot names. The Select component coordinates props to these slotted children.
+
+| Slot Name   | Component Type | Description                                |
+| ----------- | -------------- | ------------------------------------------ |
+| `trigger`   | Button-like    | The button that opens the select dropdown  |
+| `value`     | Text-like      | Displays the currently selected value      |
+| `popover`   | Popover-like   | The overlay container for the options list |
+| `listbox`   | ListBox        | The list of selectable options             |
+| `description` | Text         | Optional description text                  |
+| `error`     | Text           | Optional error message                     |
+
+## Data Attributes
+
+The `Select` primitive provides the following data attributes for styling:
+
+| Attribute       | Description                              |
+| --------------- | ---------------------------------------- |
+| `data-disabled` | Indicates the select is disabled         |
+| `data-required` | Indicates the select is required         |
+| `data-invalid`  | Indicates the select has validation errors |
+| `data-open`     | Indicates the select dropdown is open    |
+
+## Selection Modes
+
+The Select component supports two selection modes:
+
+- **single** (default): Allows selecting one value. The value prop/state is a `Key`.
+- **multiple**: Allows selecting multiple values. The value prop/state is a `Set<Key>`.
+
+## Example
+
+### Basic Select
+
+The `Select` primitive manages its own state internally by default (uncontrolled). You can also use it in controlled mode by providing the `value` and `onChange` props.
+
+The example below demonstrates all Select features including single/multi selection, grouped options, validation states, form integration, and positioning options. Use the Controls panel in Storybook to explore different configurations.
+
+<Source language="tsx" code={BasicExample} />
+

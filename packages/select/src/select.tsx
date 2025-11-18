@@ -10,76 +10,37 @@ import {
   useOverlayPosition
 } from 'react-aria';
 import type { Placement } from 'react-aria';
-import { SelectState } from 'react-stately';
-import { useSelectState } from './use-select-state';
+import { useSelectState } from 'react-stately';
 import { AriaSelectProps } from '@react-types/select';
 import { CollectionBuilder } from '@react-aria/collections';
-import { Node, Collection as AriaCollectionType, Key } from '@react-types/shared';
+import { Node, Collection as AriaCollectionType } from '@react-types/shared';
 import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { withSlots, Slots } from '@bento/slots';
 import { Container } from '@bento/container';
 import { ListStateContext } from '@bento/listbox';
 import type { PressableProps } from '@bento/pressable';
-import type { ListBoxProps } from '@bento/listbox';
 
-/**
- * Selection mode for Select component.
- * Determines whether users can select one item ('single') or multiple items ('multiple').
- * - 'single': User can select only one option at a time. Value is a single Key.
- * - 'multiple': User can select multiple options. Value is a Set<Key>.
- * @typedef {'single' | 'multiple'} SelectionMode
- * @public
- */
 export type SelectionMode = 'single' | 'multiple';
 
-/**
- * TypeScript interfaces for typed slot components.
- * Slot interfaces extend component interfaces so custom components must implement the same contracts.
- */
-
-/**
- * Trigger slot must implement Pressable interface (button-like, pressable component)
- */
 export interface SelectTriggerSlotProps extends PressableProps {
-  /** Props from useSelect for the trigger */
-  readonly triggerProps: React.HTMLAttributes<HTMLElement>;
-  /** Ref to the trigger element */
   readonly ref?: React.RefObject<HTMLElement>;
 }
 
-/**
- * Value slot receives value props and display data
- */
-export interface SelectValueSlotProps {
-  /** Props from useSelect for the value display */
-  readonly valueProps: React.HTMLAttributes<HTMLElement>;
-  /** Placeholder text when no value is selected */
+export interface SelectValueSlotProps extends React.HTMLAttributes<HTMLElement> {
   readonly placeholder?: string;
-  /** Currently selected item (single mode) */
   readonly selectedItem?: Node<unknown> | null;
-  /** Currently selected items (multiple mode) */
   readonly selectedItems?: Node<unknown>[];
 }
 
-/**
- * Popover slot receives overlay positioning props
- */
 export interface SelectPopoverSlotProps extends React.HTMLAttributes<HTMLElement> {
-  /** Ref to the popover element */
   readonly ref?: React.RefObject<HTMLElement>;
-  /** Whether the popover is open */
   readonly isOpen: boolean;
-  /** Handler to close the popover (called by overlay dismiss events) */
   readonly onClose?: () => void;
 }
 
-/**
- * List slot must implement ListBox interface
- */
-export interface SelectListSlotProps extends Omit<ListBoxProps<unknown>, 'children' | 'items'> {
-  /** Props from useSelect for the menu/listbox */
-  readonly menuProps: React.HTMLAttributes<HTMLElement>;
+export interface SelectListSlotProps extends React.HTMLAttributes<HTMLElement> {
+  readonly ref?: React.RefObject<HTMLElement>;
 }
 
 /**
@@ -90,35 +51,33 @@ export interface SelectListSlotProps extends Omit<ListBoxProps<unknown>, 'childr
 export type SelectSlots = {
   trigger: SelectTriggerSlotProps;
   label: React.HTMLAttributes<HTMLLabelElement>;
-  'trigger.value': SelectValueSlotProps;
   value: SelectValueSlotProps;
   popover: SelectPopoverSlotProps;
   listbox: SelectListSlotProps;
   description: React.HTMLAttributes<HTMLElement>;
   error: React.HTMLAttributes<HTMLElement>;
-  /** @deprecated Use 'error' instead. Legacy alias for backwards compatibility. */
-  errorMessage: React.HTMLAttributes<HTMLElement>;
 };
 
 /**
- * Helper to extract slot prop types (inspired by MUI's PropsFromSlot).
+ * Utility type for extracting slot prop types.
+ * Enables type-safe slot component implementations without importing individual interfaces.
  * @template S The slot name
  * @public
  */
 export type PropsFromSelectSlot<S extends keyof SelectSlots> = SelectSlots[S];
 
 /**
- * Base props shared between single and multiple selection modes
- * @interface BaseSelectProps
+ * Props for the Select component.
+ * Extends React Aria's AriaSelectProps with additional layout and styling props.
  * @template T The type of items in the select
+ * @template M The selection mode ('single' | 'multiple')
  */
-interface BaseSelectProps<T>
-  extends Omit<AriaSelectProps<T>, 'children' | 'selectionMode' | 'value' | 'defaultValue' | 'onValueChange'>,
+export interface SelectProps<T, M extends SelectionMode = 'single'>
+  extends Omit<AriaSelectProps<T, M>, 'children' | 'placeholder'>,
+    Omit<React.ComponentProps<'div'>, keyof AriaSelectProps<T, M> | 'children'>,
     Slots {
   /** Children of the Select component (items/collection must stay here for React Aria) */
   readonly children?: ReactNode;
-  /** CSS className for the root container */
-  readonly className?: string;
   /**
    * Position of the popover relative to the trigger.
    * @default 'bottom start'
@@ -145,63 +104,7 @@ interface BaseSelectProps<T>
    * @default 12
    */
   readonly containerPadding?: number;
-  /**
-   * Optional state object from useSelectState hook.
-   * If provided, the Select operates in fully controlled mode.
-   * If not provided, Select manages state internally.
-   *
-   * Note: Collection building happens internally via CollectionBuilder.
-   * This prop is for advanced use cases where external state management is needed.
-   *
-   * @example
-   * ```typescript
-   * const state = useSelectState({ defaultSelectedKey: 'option1', collection });
-   * <Select state={state}>
-   *   <SelectOption value="option1">Option 1</SelectOption>
-   * </Select>
-   * ```
-   */
-  readonly state?: SelectState<object>;
 }
-
-/**
- * Props for single selection mode
- * @interface SingleSelectProps
- * @template T The type of items in the select
- */
-export interface SingleSelectProps<T> extends BaseSelectProps<T> {
-  /** Selection mode for single selection */
-  readonly selectionMode?: 'single';
-  /** Controlled value (user-friendly API that maps to selectedKey) */
-  readonly value?: Key;
-  /** Uncontrolled default value (user-friendly API that maps to defaultSelectedKey) */
-  readonly defaultValue?: Key;
-  /** Callback when value changes (user-friendly API that maps to onSelectionChange) */
-  readonly onValueChange?: (value: Key) => void;
-}
-
-/**
- * Props for multiple selection mode
- * @interface MultipleSelectProps
- * @template T The type of items in the select
- */
-export interface MultipleSelectProps<T> extends BaseSelectProps<T> {
-  /** Selection mode for multiple selection */
-  readonly selectionMode: 'multiple';
-  /** Controlled value (user-friendly API that maps to selectedKeys) */
-  readonly value?: Set<Key>;
-  /** Uncontrolled default value (user-friendly API that maps to defaultSelectedKeys) */
-  readonly defaultValue?: Set<Key>;
-  /** Callback when value changes (user-friendly API that maps to onSelectionChange) */
-  readonly onValueChange?: (value: Set<Key>) => void;
-}
-
-/**
- * Props for the Select component.
- * Union type that supports both single and multiple selection modes.
- * @template T The type of items in the select
- */
-export type SelectProps<T> = SingleSelectProps<T> | MultipleSelectProps<T>;
 
 /**
  * Root Select component that builds collection and applies props to slotted children.
@@ -216,15 +119,15 @@ export type SelectProps<T> = SingleSelectProps<T> | MultipleSelectProps<T>;
  * - Overlay positioning
  * - Keyboard navigation
  *
- * For most use cases, Select manages state internally.
- * For advanced control, use the `state` prop with `useSelectState`.
+ * Select always manages state internally.
+ * For external control, use props: `selectedKey`/`onSelectionChange` (controlled).
  *
  * @component
  * @template T The type of items in the select
  * @example
  * ```tsx
  * // Single select (internal state)
- * <Select value={value} onValueChange={setValue} name="fruit">
+ * <Select selectedKey={selectedKey} onSelectionChange={setSelectedKey} name="fruit">
  *   <Button slot="trigger">
  *     <Text slot="value" placeholder="Select a fruit" />
  *   </Button>
@@ -237,7 +140,7 @@ export type SelectProps<T> = SingleSelectProps<T> | MultipleSelectProps<T>;
  * </Select>
  *
  * // Multiple select (internal state)
- * <Select selectionMode="multiple" value={values} onValueChange={setValues} name="fruits">
+ * <Select selectionMode="multiple" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys} name="fruits">
  *   <Button slot="trigger">
  *     <Text slot="value" placeholder="Select fruits" />
  *   </Button>
@@ -251,41 +154,37 @@ export type SelectProps<T> = SingleSelectProps<T> | MultipleSelectProps<T>;
  * ```
  * @public
  */
-export const Select = withSlots('BentoSelect', function Select<T>(args: SelectProps<T>) {
+export const Select = withSlots('BentoSelect', function Select<
+  T,
+  M extends SelectionMode = 'single'
+>(args: SelectProps<T, M>) {
   return (
     <CollectionBuilder content={args.children}>
       {function buildCollection(collection: unknown) {
-        return <SelectInner props={args as unknown as SelectProps<object>} collection={collection} />;
+        return <SelectInner props={args as unknown as SelectProps<object, SelectionMode>} collection={collection} />;
       }}
     </CollectionBuilder>
   );
 });
 
 /**
- * Props for the SelectInner component.
- * Contains the processed Select props and the built collection from React Aria's CollectionBuilder.
+ * Internal component props after collection building.
  * @interface SelectInnerProps
  * @internal
  */
 interface SelectInnerProps {
-  /** The processed Select component props */
-  readonly props: SelectProps<object>;
-  /** The built collection from React Aria's CollectionBuilder */
+  readonly props: SelectProps<object, SelectionMode>;
   readonly collection: unknown;
 }
 
 /**
- * Internal Select component that manages state and rendering after collection is built.
- * This component follows the architectural principle with a three-tier state strategy:
- * 1. If explicit state prop provided: Use it (hook owns state) ✅
- * 2. Otherwise: Use internal state for convenience (coordinator pattern)
+ * SelectInner manages state and DOM rendering after React Aria builds the collection.
+ * Split into two components (Select → SelectInner) because CollectionBuilder requires
+ * a render function callback, necessitating this architecture for collection processing.
  *
- * Flow:
- * 1. Processes props via useProps
- * 2. Maps user-facing API (value/defaultValue) to React Aria API (selectedKey/selectedKeys)
- * 3. Uses provided state or creates internal state with useSelectState
- * 4. Sets up overlay positioning and interactions
- * 5. Distributes props to slotted children through Container
+ * State ownership: Select always manages its own state via useSelectState.
+ * External control happens via props (selectedKey, onSelectionChange), not context.
+ * Select provides state to children (ListBox) via ListStateContext for React Aria orchestration.
  *
  * @param {SelectInnerProps} props - Props containing processed Select props and built collection
  * @returns {React.ReactElement} Complete Select with context provider and optional hidden select for form submission
@@ -295,65 +194,31 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
   const { props: processedProps } = useProps(props);
   const originalCollection = collection as AriaCollectionType<Node<object>> | undefined;
 
-  //
-  // Map user-friendly API (value, defaultValue, onValueChange) to React Aria's internal API
-  // (selectedKey/selectedKeys, defaultSelectedKey/defaultSelectedKeys, onSelectionChange)
-  // based on selection mode. This provides a more intuitive API for users while maintaining
-  // compatibility with React Aria's collection hooks.
-  //
-  const isMultiple = processedProps.selectionMode === 'multiple';
+  // Set children to undefined because CollectionBuilder already processed them in parent.
+  // Passing children here would cause React Aria to rebuild the collection unnecessarily.
   const ariaProps = {
     ...processedProps,
-    // Map based on selection mode:
-    // - Single mode: value → selectedKey (single Key)
-    // - Multiple mode: value → selectedKeys (Set<Key>)
-    ...(isMultiple
-      ? {
-          selectedKeys: processedProps.value ?? processedProps.selectedKeys,
-          defaultSelectedKeys: processedProps.defaultValue ?? processedProps.defaultSelectedKeys,
-          onSelectionChange: processedProps.onValueChange ?? processedProps.onSelectionChange
-        }
-      : {
-          selectedKey: processedProps.value ?? processedProps.selectedKey,
-          defaultSelectedKey: processedProps.defaultValue ?? processedProps.defaultSelectedKey,
-          onSelectionChange: processedProps.onValueChange ?? processedProps.onSelectionChange
-        }),
     collection: originalCollection,
-    // Set children to undefined to prevent React Aria from trying to rebuild the collection
-    // (collection is already built by CollectionBuilder in the parent component)
     children: undefined
-  };
+  } as unknown as AriaSelectProps<object>;
 
-  //
-  // State management follows architectural principle:
-  // 1. If explicit state prop provided: Use it (hook owns state) ✅
-  // 2. Otherwise: Use internal state for convenience (coordinator pattern)
-  //
-  // This provides flexibility while maintaining backward compatibility.
-  //
-  const internalState = useSelectState(ariaProps as any);
-  const state = processedProps.state || internalState;
+  const state = useSelectState(ariaProps);
+  const isMultiple = processedProps.selectionMode === 'multiple';
 
-  //
-  // Refs for DOM elements that need to be referenced by React Aria hooks.
-  // These enable proper focus management, overlay positioning, and keyboard interactions.
-  //
+  // React Aria hooks require refs to DOM elements for accessibility features
+  // (focus management, overlay positioning, ARIA attribute wiring).
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  //
-  // Get all necessary props from React Aria's useSelect hook.
-  // This hook handles ARIA attributes, keyboard interactions, and accessibility compliance.
-  //
+  // useSelect provides all props needed for ARIA-compliant select behavior:
+  // labelProps (associates label), triggerProps (button behavior), valueProps (selected display),
+  // menuProps (listbox behavior), descriptionProps/errorMessageProps (help text).
   const { labelProps, triggerProps, valueProps, menuProps, descriptionProps, errorMessageProps, hiddenSelectProps } =
     useSelect(ariaProps, state, triggerRef);
 
-  //
-  // Handler for overlay dismiss events (Escape key, outside clicks, etc.).
-  // This callback is passed to slotted popover components via Bento's slot context,
-  // allowing them to trigger overlay closure without direct coupling to Select.
-  //
+  // Expose close handler via slot props to allow custom popover components
+  // to dismiss the overlay without tight coupling to Select internals.
   const handleOverlayClose = React.useCallback(
     function handleOverlayClose() {
       state.close();
@@ -361,25 +226,21 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
     [state]
   );
 
-  //
-  // Set up overlay behavior (dismissal on Escape, outside clicks, etc.).
-  // useOverlay manages overlay dismiss interactions and provides props for the popover.
-  //
+  // useOverlay handles dismiss behavior (Escape key, outside clicks).
+  // isDismissable allows users to close by clicking outside the popover.
+  // shouldCloseOnBlur is false because Select manages focus differently.
   const { overlayProps } = useOverlay(
     {
       isOpen: state.isOpen,
       onClose: handleOverlayClose,
-      isDismissable: true
+      isDismissable: true,
+      shouldCloseOnBlur: false
     },
     popoverRef
   );
 
-  //
-  // Calculate overlay positioning based on trigger and popover refs.
-  // useOverlayPosition handles automatic placement, flipping when space is limited,
-  // and collision detection with viewport edges. Uses customizable positioning props
-  // with sensible defaults for common use cases.
-  //
+  // useOverlayPosition calculates optimal popover placement relative to trigger,
+  // automatically flipping to opposite side when space is limited.
   const { overlayProps: positionProps } = useOverlayPosition({
     targetRef: triggerRef,
     overlayRef: popoverRef,
@@ -391,24 +252,16 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
     isOpen: state.isOpen
   });
 
-  //
-  // Track focus and hover states for visual feedback and styling.
-  // These hooks provide interaction states that are exposed via data attributes.
-  //
+  // Expose interaction states via data attributes for CSS styling hooks.
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
   const { hoverProps, isHovered } = useHover({ isDisabled: processedProps.isDisabled });
 
-  //
-  // Prevent page scrolling when the select is open to maintain focus on the overlay.
-  // This improves UX by keeping the select options in view during interaction.
-  //
+  // Prevent body scroll when open to keep options in viewport during keyboard navigation.
   usePreventScroll({ isDisabled: !state.isOpen });
 
-  //
-  // Retrieve selected item(s) from the collection for display in value slots.
-  // Single mode: returns the selected Node or null
-  // Multiple mode: returns array of selected Nodes
-  //
+  // Retrieve selected item(s) from collection to pass to value slots for display.
+  // Single mode: Uses state.selectedKey to get one Node or null.
+  // Multiple mode: Uses selectionManager.selectedKeys to get array of Nodes.
   const selectedItem = state.selectedKey != null ? state.collection.getItem(state.selectedKey) : null;
   const selectedItems = isMultiple
     ? Array.from(state.selectionManager.selectedKeys)
@@ -416,26 +269,17 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
         .filter((item): item is Node<object> => item != null)
     : [];
 
-  //
-  // Merge trigger props from useSelect with focus and hover interaction props.
-  // This combines accessibility attributes, keyboard handlers, and interaction states.
-  //
+  // Combine trigger props from useSelect with interaction states (focus, hover)
+  // for complete button behavior and styling hooks.
   const buttonProps = mergeProps(triggerProps, focusProps, hoverProps);
 
-  //
-  // Normalize required prop to handle both HTML 'required' attribute and React Aria 'isRequired' prop.
-  // This ensures form validation works correctly regardless of which prop the user provides.
-  //
+  // Support both HTML `required` attribute and React Aria `isRequired` prop
+  // for maximum compatibility with form libraries and native validation.
   const isRequired = (processedProps as any).required || processedProps.isRequired;
 
-  //
-  // Compose final trigger props with all necessary ARIA attributes and interaction handlers.
-  // Ensures proper accessibility compliance by:
-  // - Setting role="combobox" for screen reader compatibility
-  // - Providing explicit aria-expanded state (boolean as string for consistency)
-  // - Handling aria-invalid, aria-disabled, aria-required states
-  // - Respecting user's aria-labelledby if explicitly provided (overrides React Aria's auto-concatenation)
-  //
+  // Compose final trigger props with normalized ARIA attributes.
+  // Convert booleans to strings ('true'/'false') for consistency with HTML attributes
+  // and to ensure proper styling via attribute selectors like [aria-expanded="true"].
   const finalTriggerProps = {
     ...buttonProps,
     role: buttonProps.role || 'combobox',
@@ -444,19 +288,14 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
     'aria-disabled': processedProps.isDisabled ? 'true' : buttonProps['aria-disabled'],
     'aria-required': isRequired ? 'true' : buttonProps['aria-required'],
     'data-open': state.isOpen ? 'true' : 'false',
-    // If user explicitly provides aria-labelledby, use it exactly as provided.
-    // This overrides React Aria's automatic ID concatenation behavior.
+    // Allow explicit aria-labelledby to override React Aria's auto-concatenation
+    // for cases where consumers need precise control over label associations.
     ...(processedProps['aria-labelledby'] && { 'aria-labelledby': processedProps['aria-labelledby'] }),
     ref: triggerRef
   };
 
-  //
-  // Render the complete Select component structure:
-  // 1. Wrap in ListStateContext.Provider to share state with ListBox children
-  // 2. Use Container with slots to distribute props to slotted children
-  // 3. Apply data attributes for styling hooks and state indication
-  // 4. Optionally render hidden select element for native form submission
-  //
+  // ListStateContext shares selection state with ListBox/ListBoxItem children,
+  // enabling reuse of existing Bento listbox primitives without duplication.
   return (
     <ListStateContext.Provider value={state as any}>
       <Container
@@ -471,51 +310,32 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
           hovered: isHovered ? 'true' : 'false'
         })}
         slots={{
-          // Trigger slot: receives all button props, accessibility attributes, and ref
           trigger: { ...finalTriggerProps, slot: 'trigger' },
-          // Label slot: receives props for associating label with trigger
           label: { ...labelProps, as: 'label', slot: 'label' },
-          // Value slots: support both nested (trigger.value) and standalone (value) placement
-          // Receives selected item data and placeholder for display purposes
-          'trigger.value': {
-            ...valueProps,
-            selectedItem,
-            selectedItems,
-            placeholder: processedProps.placeholder,
-            slot: 'value'
-          },
           value: {
             ...valueProps,
             selectedItem,
             selectedItems,
-            placeholder: processedProps.placeholder,
             slot: 'value'
           },
-          // Popover slot: receives overlay positioning, dismiss handlers, and open state
-          // onClose must come AFTER spreads to ensure it's not overridden
+          // onClose positioned after spreads to prevent accidental override by consumer props.
           popover: {
             isOpen: state.isOpen,
             ref: popoverRef,
             slot: 'popover',
+            'data-open': state.isOpen ? 'true' : 'false',
             ...overlayProps,
             ...positionProps,
-            onClose: handleOverlayClose // Must come AFTER spreads to avoid being overridden
+            onClose: handleOverlayClose
           },
-          // ListBox slot: receives menu props for keyboard navigation and selection
           listbox: { ...menuProps, ref: listRef, slot: 'listbox' },
-          // Description and error message slots for accessible help text
           description: { ...descriptionProps, slot: 'description' },
-          error: { ...errorMessageProps, slot: 'error' },
-          errorMessage: { ...errorMessageProps, slot: 'errorMessage' } // Legacy alias for backwards compatibility
+          error: { ...errorMessageProps, slot: 'error' }
         }}
       >
         {processedProps.children}
       </Container>
-      {/*
-        Hidden select for native form submission and autofill compatibility.
-        Only rendered when 'name' prop is provided. React Aria's HiddenSelect
-        handles SSR properly and syncs with the Select state automatically.
-      */}
+      {/* HiddenSelect enables form submission and autofill. Only rendered when `name` prop provided. */}
       {processedProps.name && (
         <HiddenSelect
           {...hiddenSelectProps}
