@@ -2,7 +2,7 @@
 
 ## Overview
 
-PDR describing a proposed `Select` primitive built on React Aria's `useSelect` and `useSelectState` hooks, intended to follow the [W3C ARIA combobox (select-only) pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
+PDR describing the `Select` primitive built on React Aria's `useSelect` and `useSelectState` hooks, following the [W3C ARIA combobox (select-only) pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
 
 ### Unique Attributes
 
@@ -41,7 +41,7 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 
 **Using ListBoxItem with Select:**
 
-`ListBoxItem` from `@bento/listbox` is the proposed option primitive for Select. In the existing implementation, the `value`, `id`, and `textValue` props are all optional:
+`ListBoxItem` from `@bento/listbox` is the option primitive for Select. The `value`, `id`, and `textValue` props are all optional:
 
 - **`value` prop** — Optional. Source: [`ListBoxItemProps.value`](../../packages/listbox/src/listbox-item.tsx#L92) is `readonly value?: T`. If provided, stored in `node.value`. Source: [`Document.setProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/collections/src/Document.ts#L334) extracts `value` from props (line 334) and assigns to `node.value` (line 346). If prop is missing, `value` variable is `undefined` (line 334 destructuring), so `node.value` becomes `undefined`. [`Node<T>` interface](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/collections.d.ts#L195) defines `value: T | null`, but runtime assignment can be `undefined` when prop is omitted.
 - **`id` prop** — Optional. Source: [`ListBoxItemProps.id`](../../packages/listbox/src/listbox-item.tsx#L90) is `readonly id?: Key`. If not provided, React Aria auto-generates a unique key. Source: [`Document.setProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/collections/src/Document.ts#L336) uses `id ?? \`react-aria-${++this.ownerDocument.nodeId}\``
@@ -120,7 +120,7 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 - `required` — Native HTML attribute for form validation, inherited from `React.ComponentProps<'div'>`. Works alongside `isRequired` for compatibility with native HTML forms and form libraries.
 - `aria-labelledby` — ARIA attribute for custom label associations, inherited from `React.ComponentProps<'div'>`. Can override React Aria's auto-generated label associations when explicit control is needed.
 
-**Slot structure** (proposed):
+**Slot structure**:
 - `trigger` — Receives `triggerProps` (type: `AriaButtonProps`), `focusProps`, `hoverProps`, `ref`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L40) returns `triggerProps: AriaButtonProps`.
 - `label` — Receives `labelProps` (type: `DOMAttributes`). Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L37) returns `labelProps: DOMAttributes`.
 - `value` — Receives `valueProps` (type: `DOMAttributes` with `id`), `selectedItem`, `selectedItems`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L215) returns `valueProps: { id: valueId }`. Consumers handle placeholder rendering using the provided selection data.
