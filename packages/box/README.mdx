@@ -2,13 +2,21 @@ import { Meta, Story, ArgTypes, Source } from '@storybook/addon-docs/blocks';
 import * as Stories from './box.stories.tsx';
 
 import SourceNamespace from './examples/namespace.tsx?raw';
+import SourceSlot from './examples/slot.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-# box
+# Box
 
 The `@bento/box` package provides the shared React context that is used throughout
-the Bento component ecosystem.
+the Bento component ecosystem. It includes the `Box` context for managing component
+environment and slots, and the `Slot` component for easily passing slot props to children.
+
+> [!DANGER]
+>
+> The `Box` context is not meant to be used directly in your application. It is
+> used internally by the Bento component ecosystem to manage the component environment
+> and slots.
 
 ## Installation
 
@@ -16,6 +24,116 @@ To install the package, use the following command:
 
 ```shell
 npm install --save @bento/box
+```
+
+## Slot Component
+
+The `Slot` component is a convenience wrapper that simplifies passing slot props to
+children via the Box context. This is particularly useful when building coordinator
+components that need to distribute props to multiple children through the slot system
+and does not introduce children as part of it's composition.
+
+> [!DANGER]
+>
+> You should be using the `slots` props instead of the `Slot` component. This
+> component is only meant to be used when composing components that do not
+> introduce their own children as part of it's composition.
+
+### Basic Usage
+
+```tsx
+import { Slot } from '@bento/box';
+
+const Example = withSlots('Example', function MyComponent(args) {
+  const { props } = useProps(args);
+  const slots = {
+    trigger: { onClick: handleClick },
+    content: { role: 'dialog' }
+  };
+
+  return (
+    <Slot slots={slots}>
+      {props.children}
+    </Slot>
+  );
+}
+```
+
+<Source language='tsx' code={ SourceSlot } />
+
+### How It Works
+
+The `Slot` component:
+
+1. Receives a `slots` prop containing slot assignments
+2. Merges these slots with any existing slots from parent Box context
+3. Provides the merged context to children via `Box.Provider`
+4. Preserves all other Box context properties (env, namespace, override flags)
+
+Children that use the `slot` prop (via `@bento/slots`) or `useProps` hook will
+automatically receive the appropriate slot props.
+
+### Use Cases
+
+The `Slot` component is ideal for:
+
+**Coordinator Components**: Components that manage state and pass handlers to children
+```tsx
+const Example = withSlots('Example', function Overlay(args) {
+  const { props } = useProps(args);
+
+  const slots = {
+    trigger: { onClick: () => props.onOpenChange(true) },
+    backdrop: { onClick: () => props.onOpenChange(false) },
+    content: { role: 'dialog', 'aria-modal': true }
+  };
+
+  return <Slot slots={slots}>{props.children}</Slot>;
+});
+```
+
+**Compound Components**: Components that need to distribute props across
+multiple child types
+
+```tsx
+const Example = withSlots('Example', function Tabs(args) {
+  const { props } = useProps(args);
+
+  const slots = {
+    tab: {
+      'aria-selected': (tab) => tab === props.activeTab,
+      onClick: (tab) => props.onChange(tab)
+    },
+    panel: {
+      hidden: (panel) => panel !== props.activeTab
+    }
+  };
+
+  return <Slot slots={slots}>{props.children}</Slot>;
+});
+```
+
+### Slot Merging Behavior
+
+When multiple `Slot` components are nested, slots are merged with child values
+taking precedence over parent values:
+
+```tsx
+<Slot slots={{ trigger: { value: 'parent' } }}>
+  <Slot slots={{ trigger: { value: 'child' } }}>
+    {/* trigger slot will have value: 'child' */}
+  </Slot>
+</Slot>
+```
+
+New slots from children are added to existing parent slots:
+
+```tsx
+<Slot slots={{ trigger: { onClick: handler1 } }}>
+  <Slot slots={{ content: { role: 'dialog' } }}>
+    {/* Both trigger and content slots are available */}
+  </Slot>
+</Slot>
 ```
 
 ## Context
@@ -63,7 +181,7 @@ function MyComponent() {
 
 ### Slots
 
-The `Box` context contains a `slots` object which is consumed by the 
+The `Box` context contains a `slots` object which is consumed by the
 `@bento/slots` and `@bento/use-props` packages. This object
 contains the following properties:
 

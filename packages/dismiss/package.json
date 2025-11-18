@@ -1,7 +1,7 @@
 {
-  "name": "@bento/field-error",
+  "name": "@bento/dismiss",
   "version": "0.0.0",
-  "description": "The FieldError component renders error messages for form controls, such as RadioGroup or CheckboxGroup",
+  "description": "Dismiss button component for accessible modal dismissal",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -23,9 +23,9 @@
     "aria",
     "bento",
     "component",
-    "fielderror",
-    "interactive",
+    "dismiss",
     "library",
+    "modal",
     "react"
   ],
   "author": "GoDaddy Operating Company, LLC",
@@ -40,13 +40,15 @@
     "package.json"
   ],
   "dependencies": {
+    "@bento/container": "^0.1.1",
     "@bento/slots": "^0.1.3",
-    "@bento/text": "^0.1.2",
-    "@bento/use-props": "^0.1.1"
+    "@bento/use-props": "^0.1.1",
+    "@bento/visually-hidden": "^0.1.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
+    "react-dom": "18.x || 19.x",
+    "react-aria": "^3.29.0"
   },
   "exports": {
     ".": {
