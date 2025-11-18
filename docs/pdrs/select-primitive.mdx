@@ -2,7 +2,7 @@
 
 ## Overview
 
-PDR describing a proposed `Select` primitive built on React Aria's `useSelect` and `useSelectState` hooks, intended to follow the [W3C ARIA combobox (select-only) pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
+PDR describing the `Select` primitive built on React Aria's `useSelect` and `useSelectState` hooks, following the [W3C ARIA combobox (select-only) pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
 
 ### Unique Attributes
 
@@ -27,7 +27,7 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 ## API
 
 **Components**:
-- `Select` — Coordinator component (not yet implemented)
+- `Select` — Coordinator component
 
 **Dependencies**:
 - `@bento/listbox` — Provides `ListBox`, `ListBoxItem`, and `ListStateContext`. Source: [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) exists.
@@ -41,7 +41,7 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 
 **Using ListBoxItem with Select:**
 
-`ListBoxItem` from `@bento/listbox` is the proposed option primitive for Select. In the existing implementation, the `value`, `id`, and `textValue` props are all optional:
+`ListBoxItem` from `@bento/listbox` is the option primitive for Select. The `value`, `id`, and `textValue` props are all optional:
 
 - **`value` prop** — Optional. Source: [`ListBoxItemProps.value`](../../packages/listbox/src/listbox-item.tsx#L92) is `readonly value?: T`. If provided, stored in `node.value`. Source: [`Document.setProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/collections/src/Document.ts#L334) extracts `value` from props (line 334) and assigns to `node.value` (line 346). If prop is missing, `value` variable is `undefined` (line 334 destructuring), so `node.value` becomes `undefined`. [`Node<T>` interface](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/collections.d.ts#L195) defines `value: T | null`, but runtime assignment can be `undefined` when prop is omitted.
 - **`id` prop** — Optional. Source: [`ListBoxItemProps.id`](../../packages/listbox/src/listbox-item.tsx#L90) is `readonly id?: Key`. If not provided, React Aria auto-generates a unique key. Source: [`Document.setProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/collections/src/Document.ts#L336) uses `id ?? \`react-aria-${++this.ownerDocument.nodeId}\``
@@ -117,11 +117,13 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 - `label` — From `LabelableProps`. Source: [`AriaSelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L69) extends `LabelableProps`.
 - `isDisabled`, `isRequired`, `isInvalid` — From React Aria types. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) includes these from `InputBase` and `Validation`.
 - `placement`, `offset`, `crossOffset`, `shouldFlip`, `containerPadding` — From `useOverlayPosition`. Source: [`PositionProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/overlays/src/index.d.ts#L25) interface defines these props.
+- `required` — Native HTML attribute for form validation, inherited from `React.ComponentProps<'div'>`. Works alongside `isRequired` for compatibility with native HTML forms and form libraries.
+- `aria-labelledby` — ARIA attribute for custom label associations, inherited from `React.ComponentProps<'div'>`. Can override React Aria's auto-generated label associations when explicit control is needed.
 
-**Slot structure** (proposed):
+**Slot structure**:
 - `trigger` — Receives `triggerProps` (type: `AriaButtonProps`), `focusProps`, `hoverProps`, `ref`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L40) returns `triggerProps: AriaButtonProps`.
 - `label` — Receives `labelProps` (type: `DOMAttributes`). Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L37) returns `labelProps: DOMAttributes`.
-- `value` — Receives `valueProps` (type: `DOMAttributes` with `id`), `selectedItem`, `selectedItems`, and a `placeholder` prop passed via the `value` slot. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L215) returns `valueProps: { id: valueId }`. `SelectProps` and `TextProps` do not include a `placeholder` prop, so `placeholder` is slot-only state, not a Select prop.
+- `value` — Receives `valueProps` (type: `DOMAttributes` with `id`), `selectedItem`, `selectedItems`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L215) returns `valueProps: { id: valueId }`. Consumers handle placeholder rendering using the provided selection data.
 - `popover` — Receives `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref`. Consumer handles portal rendering.
 - `listbox` — Receives `menuProps` (type: `AriaListBoxOptions<T>`), `ref`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L46) returns `menuProps: AriaListBoxOptions<T>`.
 - `description` — Receives `descriptionProps` (type: `DOMAttributes`). Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L49) returns `descriptionProps: DOMAttributes`.
@@ -179,8 +181,8 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 |-----------|-------------|----------|------------------|----------------|
 | `trigger` | Button that opens/closes the select | Yes | No | `triggerProps` (AriaButtonProps), `focusProps`, `hoverProps`, `ref` |
 | `label` | Accessible label | No | No | `labelProps` (DOMAttributes) |
-| `value` | Displayed selected value | No | No | `valueProps` (DOMAttributes with `id`), `selectedItem`, `selectedItems`, `placeholder` (slot-only) |
-| `popover` | Overlay container | Yes | No | `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref` |
+| `value` | Displayed selected value | No | No | `valueProps` (DOMAttributes with `id`), `selectedItem`, `selectedItems` |
+| `popover` | Overlay container | Yes | No | `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref`, `data-open` |
 | `listbox` | List of options | Yes | No | `menuProps` (AriaListBoxOptions), `ref` |
 | `description` | Help text | No | No | `descriptionProps` (DOMAttributes) |
 | `error` | Error message | No | No | `errorMessageProps` (DOMAttributes) |
@@ -191,9 +193,8 @@ Optional `description` and `error` slots mirror the form help/error pattern show
 
 ## Open Questions
 
-1. **Focus wrapper ownership**: Current examples use React Aria’s `FocusScope` around the popover content. A focus-lock primitive is described in `focus-lock-primtive.mdx`, but no `@bento/focus-lock` package exists yet. It remains undecided whether `Select` itself should wrap the popover in a focus-management primitive or require consumers to do so.
+1. **Focus wrapper ownership**: Current examples use React Aria's `FocusScope` around the popover content. A focus-lock primitive is described in `focus-lock-primtive.mdx`, but no `@bento/focus-lock` package exists yet. It remains undecided whether `Select` itself should wrap the popover in a focus-management primitive or require consumers to do so.
 2. **Dismiss behavior primitive**: Should Select provide dismiss affordances via a dedicated primitive (e.g. a future `@bento/dismiss`), or require consumers to add their own buttons/handlers inside the popover? A `Dismiss` primitive is described in [`docs/pdrs/dismiss-primitive.mdx`](./dismiss-primitive.mdx), but no `@bento/dismiss` package exists yet; integration pattern is unverified.
-3. **Value helper component**: The design passes raw `selectedItem`, `selectedItems`, and `placeholder` props to the `value` slot for maximum flexibility. Open question: should we additionally ship a `<SelectValue>` helper component for the common “text-only” case, or leave all value rendering entirely to consumers?
 
 ## Code Examples
 
@@ -202,61 +203,51 @@ Optional `description` and `error` slots mirror the form help/error pattern show
 ```tsx
 import { Select } from '@bento/select';
 import { Button } from '@bento/button';
-import { Text } from '@bento/text';
 import { ListBox, ListBoxItem } from '@bento/listbox';
-import { Container } from '@bento/container';
-import { FocusScope } from 'react-aria';
-import ReactDOM from 'react-dom';
 
-function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
-  if (selectedItem) {
-    return <Text {...props}>{selectedItem.textValue}</Text>;
-  }
-  if (selectedItems?.length > 0) {
-    return <Text {...props}>{selectedItems.map(i => i.textValue).join(', ')}</Text>;
-  }
-  return <Text {...props}>{placeholder}</Text>;
-}
-
-<Select>
+<Select
+  slots={{
+    value: ({ props }) => <span {...props}>{props.selectedItem?.textValue || 'Select...'}</span>
+  }}
+>
   <Button slot="trigger">
-    <SelectValue slot="value" placeholder="Select..." />
+    <span slot="value" />
   </Button>
-  {state.isOpen &&
-    ReactDOM.createPortal(
-      <FocusScope restoreFocus contain autoFocus>
-        <Container slot="popover">
-  <ListBox slot="listbox">
-            <ListBoxItem id="apple">Apple</ListBoxItem>
-            <ListBoxItem id="orange">Orange</ListBoxItem>
-  </ListBox>
-        </Container>
-      </FocusScope>,
-      document.body
-    )}
+  <div slot="popover" style={{ display: 'block' }}>
+    <ListBox slot="listbox">
+      <ListBoxItem id="apple">Apple</ListBoxItem>
+      <ListBoxItem id="orange">Orange</ListBoxItem>
+    </ListBox>
+  </div>
 </Select>
 ```
 
 ### Multi-select
 
 ```tsx
-<Select selectionMode="multiple" defaultValue={['apple']}>
+<Select
+  selectionMode="multiple"
+  defaultValue={['apple']}
+  slots={{
+    value: ({ props }) => (
+      <span {...props}>
+        {props.selectedItems?.length > 0
+          ? props.selectedItems.map(i => i.textValue).join(', ')
+          : 'Select items...'}
+      </span>
+    )
+  }}
+>
   <Button slot="trigger">
-    <SelectValue slot="value" placeholder="Select items..." />
+    <span slot="value" />
   </Button>
-  {state.isOpen &&
-    ReactDOM.createPortal(
-      <FocusScope restoreFocus contain autoFocus>
-        <Container slot="popover">
-  <ListBox slot="listbox">
-            <ListBoxItem id="apple">Apple</ListBoxItem>
-            <ListBoxItem id="orange">Orange</ListBoxItem>
-            <ListBoxItem id="banana">Banana</ListBoxItem>
-  </ListBox>
-        </Container>
-      </FocusScope>,
-      document.body
-    )}
+  <div slot="popover" style={{ display: 'block' }}>
+    <ListBox slot="listbox">
+      <ListBoxItem id="apple">Apple</ListBoxItem>
+      <ListBoxItem id="orange">Orange</ListBoxItem>
+      <ListBoxItem id="banana">Banana</ListBoxItem>
+    </ListBox>
+  </div>
 </Select>
 ```
 
@@ -264,22 +255,22 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
 
 ```tsx
 <form>
-  <Select name="fruit" defaultValue="apple">
+  <Select
+    name="fruit"
+    defaultValue="apple"
+    slots={{
+      value: ({ props }) => <span {...props}>{props.selectedItem?.textValue || 'Select a fruit'}</span>
+    }}
+  >
     <Button slot="trigger">
-      <SelectValue slot="value" placeholder="Select a fruit" />
+      <span slot="value" />
     </Button>
-    {state.isOpen &&
-      ReactDOM.createPortal(
-        <FocusScope restoreFocus contain autoFocus>
-          <Container slot="popover">
-    <ListBox slot="listbox">
-              <ListBoxItem id="apple">Apple</ListBoxItem>
-              <ListBoxItem id="orange">Orange</ListBoxItem>
-    </ListBox>
-          </Container>
-        </FocusScope>,
-        document.body
-      )}
+    <div slot="popover" style={{ display: 'block' }}>
+      <ListBox slot="listbox">
+        <ListBoxItem id="apple">Apple</ListBoxItem>
+        <ListBoxItem id="orange">Orange</ListBoxItem>
+      </ListBox>
+    </div>
   </Select>
   <button type="submit">Submit</button>
 </form>

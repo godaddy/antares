@@ -275,7 +275,7 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
 
   // Support both HTML `required` attribute and React Aria `isRequired` prop
   // for maximum compatibility with form libraries and native validation.
-  const isRequired = (processedProps as any).required || processedProps.isRequired;
+  const isRequired = processedProps.required || processedProps.isRequired;
 
   // Compose final trigger props with normalized ARIA attributes.
   // Convert booleans to strings ('true'/'false') for consistency with HTML attributes
