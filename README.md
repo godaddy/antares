@@ -26,6 +26,7 @@ Bento provides a comprehensive collection of primitives organized into three cat
 - [**dismiss**](./packages/dismiss) - Visually hidden, focusable dismissal control for accessible modal dismissal
 - [**divider**](./packages/divider) - Horizontal or vertical content separator
 - [**environment**](./packages/environment) - Swap or override any Bento component with custom implementations
+- [**focus-lock**](./packages/focus-lock) - Focus management primitive for containing and controlling focus within a scope
 - [**heading**](./packages/heading) - Heading component with automatic level tracking through nesting
 - [**icon**](./packages/icon) - Icon component with lazy loading and sprite mode
 - [**illustration**](./packages/illustration) - SVG illustration component with rotation and flip support
