@@ -12,6 +12,7 @@
     "lint": "turbo lint",
     "postinstall": "turbo telemetry disable && npm run build",
     "prepare": "husky",
+    "start": "npm run storybook --workspace=docs",
     "test": "npm run test:turbo && npm run test:scripts",
     "test:turbo": "turbo test",
     "test:root": "vitest",
