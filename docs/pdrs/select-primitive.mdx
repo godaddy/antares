@@ -48,16 +48,21 @@ PDR describing a proposed `Select` primitive built on React Aria's `useSelect` a
 - **`textValue` prop** — Optional. Source: [`ListBoxItemProps.textValue`](../../packages/listbox/src/listbox-item.tsx#L94) is `readonly textValue?: string`. If not provided, React Aria auto-derives it from children. Source: [`Document.setProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/collections/src/Document.ts#L350) uses `textValue || (typeof props.children === 'string' ? props.children : '') || obj['aria-label'] || ''`
 
 ```tsx
-// Simple usage - id auto-generated (no value prop, so state.selectedItems[0]?.value will be undefined)
+// Simple usage - id auto-generated, textValue derived from children
 <ListBoxItem>Apple</ListBoxItem>
 
-// Explicit value for application state or domain data
-<ListBoxItem value="apple">Apple</ListBoxItem>
+// Explicit id for selection state - state.value will be "apple"
+<ListBoxItem id="apple">Apple</ListBoxItem>
 
-// Complex markup - textValue for typeahead/accessibility
-<ListBoxItem textValue="Apple" value="apple">
+// Complex markup - explicit textValue for typeahead, id for selection
+<ListBoxItem id="apple" textValue="Apple">
   <Icon name="apple" />
   <Text>Apple Special</Text>
+</ListBoxItem>
+
+// Storing additional data - value prop stores metadata, id identifies item
+<ListBoxItem id="apple" value={{ name: "Apple", calories: 52 }}>
+  Apple
 </ListBoxItem>
 ```
 
@@ -222,8 +227,8 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
       <FocusScope restoreFocus contain autoFocus>
         <Container slot="popover">
   <ListBox slot="listbox">
-            <ListBoxItem value="apple">Apple</ListBoxItem>
-            <ListBoxItem value="orange">Orange</ListBoxItem>
+            <ListBoxItem id="apple">Apple</ListBoxItem>
+            <ListBoxItem id="orange">Orange</ListBoxItem>
   </ListBox>
         </Container>
       </FocusScope>,
@@ -244,9 +249,9 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
       <FocusScope restoreFocus contain autoFocus>
         <Container slot="popover">
   <ListBox slot="listbox">
-            <ListBoxItem value="apple">Apple</ListBoxItem>
-            <ListBoxItem value="orange">Orange</ListBoxItem>
-            <ListBoxItem value="banana">Banana</ListBoxItem>
+            <ListBoxItem id="apple">Apple</ListBoxItem>
+            <ListBoxItem id="orange">Orange</ListBoxItem>
+            <ListBoxItem id="banana">Banana</ListBoxItem>
   </ListBox>
         </Container>
       </FocusScope>,
@@ -268,8 +273,8 @@ function SelectValue({ placeholder, selectedItem, selectedItems, ...props }) {
         <FocusScope restoreFocus contain autoFocus>
           <Container slot="popover">
     <ListBox slot="listbox">
-              <ListBoxItem value="apple">Apple</ListBoxItem>
-              <ListBoxItem value="orange">Orange</ListBoxItem>
+              <ListBoxItem id="apple">Apple</ListBoxItem>
+              <ListBoxItem id="orange">Orange</ListBoxItem>
     </ListBox>
           </Container>
         </FocusScope>,
