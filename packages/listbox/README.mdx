@@ -57,7 +57,7 @@ When you provide an `items` prop, the `children` function receives **individual 
 
 In this pattern, `children` is called for each item in the `items` array, receiving the individual item data to render `ListBoxItem` components.
 
-### When no `items` prop is provided  
+### When no `items` prop is provided
 When you don't provide an `items` prop but use `children` as a function, it follows **Bento's render prop pattern** and receives an object with render props:
 
 ```tsx
@@ -86,42 +86,50 @@ The ListBox components provide extensive customization options through data attr
 
 ### Styling with Data Attributes
 
-All ListBox components expose their internal state through `data-` attributes, enabling CSS-based styling without JavaScript. This follows Bento's design philosophy of returning styling control to CSS.
+All ListBox components expose their internal state through data attributes,
+enabling CSS-based styling without JavaScript. This follows Bento's design
+philosophy of returning styling control to CSS.
 
 #### ListBox Container Attributes
 
 The main `ListBox` component exposes these data attributes:
 
-- `[data-empty]` - Applied when the listbox contains no items
-- `[data-focused]` - Applied when the listbox is focused
-- `[data-focus-visible]` - Applied when the listbox has keyboard focus
-- `[data-layout="stack"]` - The layout type (currently only "stack" supported)
-- `[data-orientation="vertical|horizontal"]` - The primary orientation
-- `[data-selection-mode="none|single|multiple"]` - The selection mode
-- `[data-selection-behavior="toggle|replace"]` - How selection behaves
-- `[data-allows-tab-navigation]` - Whether tab navigation is enabled
-- `[data-focus-wrap]` - Whether focus wraps around the collection
+| Attribute                    | Description                                       | Example Values                |
+| ---------------------------- | ------------------------------------------------- | ----------------------------- |
+| `data-empty`                 | Applied when the listbox contains no items        | "true"                        |
+| `data-focused`               | Applied when the listbox is focused               | "true"                        |
+| `data-focus-visible`         | Applied when the listbox has keyboard focus       | "true"                        |
+| `data-layout`                | The layout type                                   | "stack"                       |
+| `data-orientation`           | The primary orientation                           | "vertical" / "horizontal"     |
+| `data-selection-mode`        | The selection mode                                | "none" / "single" / "multiple"|
+| `data-selection-behavior`    | How selection behaves                             | "toggle" / "replace"          |
+| `data-allows-tab-navigation` | Whether tab navigation is enabled                 | "true"                        |
+| `data-focus-wrap`            | Whether focus wraps around the collection         | "true"                        |
 
 #### ListBoxItem Attributes
 
 Individual `ListBoxItem` components expose these data attributes:
 
-- `[data-selected]` - Applied when the item is selected
-- `[data-disabled]` - Applied when the item is disabled
-- `[data-hovered]` - Applied when the item is being hovered
-- `[data-focused]` - Applied when the item is focused
-- `[data-focus-visible]` - Applied when the item has keyboard focus
-- `[data-pressed]` - Applied when the item is being pressed
-- `[data-level]` - The nesting level (useful for indentation)
-- `[data-selection-mode]` - Inherited selection mode
-- `[data-selection-behavior]` - Inherited selection behavior
-- `[data-text-value]` - The computed text value for the item
+| Attribute                | Description                                | Example Values                |
+| ------------------------ | ------------------------------------------ | ----------------------------- |
+| `data-selected`          | Applied when the item is selected          | "true"                        |
+| `data-disabled`          | Applied when the item is disabled          | "true"                        |
+| `data-hovered`           | Applied when the item is being hovered     | "true"                        |
+| `data-focused`           | Applied when the item is focused           | "true"                        |
+| `data-focus-visible`     | Applied when the item has keyboard focus   | "true"                        |
+| `data-pressed`           | Applied when the item is being pressed     | "true"                        |
+| `data-level`             | The nesting level (useful for indentation) | "0" / "1" / "2"               |
+| `data-selection-mode`    | Inherited selection mode                   | "none" / "single" / "multiple"|
+| `data-selection-behavior`| Inherited selection behavior               | "toggle" / "replace"          |
+| `data-text-value`        | The computed text value for the item       | "Item text"                   |
 
 #### ListBoxSection Attributes
 
 The `ListBoxSection` component exposes:
 
-- `[data-level]` - The nesting level of the section
+| Attribute    | Description                      | Example Values  |
+| ------------ | -------------------------------- | --------------- |
+| `data-level` | The nesting level of the section | "0" / "1" / "2" |
 
 #### CSS Styling Examples
 
@@ -199,12 +207,12 @@ const slots = {
   'my-listbox.fruits.header': ({ original, props }) => (
     <Header {...props}>🍎 {original}</Header>
   ),
-  
+
   // Override a specific item in a specific section
   'my-listbox.fruits.apple': ({ original }) => (
     <div className="special-item">⭐ {original}</div>
   ),
-  
+
   // Override an entire section
   'my-listbox.vegetables': ({ original }) => (
     <div className="veggie-section">{original}</div>
@@ -283,7 +291,7 @@ Customize the appearance when no items are present:
 All components support standard ARIA attributes for enhanced accessibility:
 
 ```tsx
-<ListBox 
+<ListBox
   aria-label="Food menu"
   aria-describedby="menu-description"
 >
@@ -306,7 +314,7 @@ const StyledListBox = styled.div`
   &[data-focused] {
     box-shadow: 0 0 0 2px blue;
   }
-  
+
   [role="option"][data-selected] {
     background: ${props => props.theme.primary};
   }
