@@ -91,4 +91,4 @@ export const Container = withSlots(
 
     return React.createElement(as, { ref, ...apply({}, ['as']) }, children);
   })
-) as <T extends React.ElementType = 'div'>(props: ContainerProps<T>) => React.ReactElement | null;
+) as <T extends React.ElementType = 'div'>(props: ContainerProps<T>) => React.ReactElement;
