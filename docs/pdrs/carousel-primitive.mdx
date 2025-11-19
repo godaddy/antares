@@ -1,0 +1,237 @@
+# Carousel Primitive PDR
+
+## Purpose
+
+The Carousel primitive provides an accessible, touch-enabled, and keyboard-navigable sliding content component that allows users to browse through a sequence of items. It encapsulates complex interaction patterns including swipe gestures, keyboard navigation, auto-play behavior, and pagination indicators while remaining completely unstyled and highly composable. This component is essential for image galleries, product showcases, testimonial displays, feature highlights, and any interface requiring sequential content presentation.
+
+The carousel primitive serves as the foundation for building both standardized and custom sliding interfaces, maintaining consistent accessibility, interaction behavior, and responsive touch handling across devices. It supports single or multiple visible items, customizable pagination controls, looping behavior, and flexible navigation patterns.
+
+### Unique Attributes
+
+- **Behavior-first abstraction**: Pure interaction logic without prescriptive visual styling
+- **Touch-first design**: Native swipe/drag support provided by Embla Carousel
+- **Flexible pagination**: Multiple items per slide with configurable advance increments
+- **Auto-play**: Automatic rotation that respects user interaction and accessibility
+- **Navigation flexibility**: Internal and external navigation controls with full customization
+- **Accessibility-driven**: ARIA live regions, keyboard navigation, and screen reader announcements
+- **Orientation support**: Both horizontal and vertical layouts with RTL awareness
+- **Peek mode**: Partial visibility of adjacent slides for visual context
+
+## Primitive Composition
+
+- `@bento/box`: Layout foundation for carousel container and slides
+- `@bento/use-props`: Enables render function overrides for all carousel elements
+- `@bento/use-data-attributes`: Applies state-reflective `data-*` attributes
+- `useImperativeHandle`: Manages imperative handle for the carousel
+- `Embla Carousel`: Core carousel behavior (sliding, gestures, auto-play) provided by [Embla Carousel](https://www.embla-carousel.com/)
+- `Bento wrapper`: For custom navigation controls, indicators and other internal components via `slots`
+
+## Implementation Patterns
+
+| Concept            | Implementation                                                   |
+| ------------------ | ---------------------------------------------------------------- |
+| Gesture Handling   | Enabled by Embla Carousel                                        |
+| data-\* Attributes | with `useDataAttributes`                                         |
+| Composability      | Children and slot/prop overrides with full state and prop access |
+| State Management   | Embla API wrapped with Bento controlled/uncontrolled patterns    |
+
+## Architecture & Features
+
+### Core Props
+
+Props are a combination of Bento-specific controls, Embla Carousel options, and Embla Autoplay plugin options.
+
+| Prop                   | Type                      | Default | Description                                            |
+| ---------------------- | ------------------------- | ------- | ------------------------------------------------------ |
+| `selectedIndex`        | `number`                  | -       | Controlled selected slide index                        |
+| `defaultSelectedIndex` | `number`                  | -       | Initial selected slide index for uncontrolled mode     |
+| `onSelect`             | `(index: number) => void` | -       | Callback when selected slide changes (controlled mode) |
+| `axis`                 | `'x' \| 'y'`              | `'x'`   | Scroll axis: x=horizontal, y=vertical                  |
+| `direction`            | `'ltr' \| 'rtl'`          | `'ltr'` | Content direction                                      |
+| `loop`                 | `boolean`                 | `false` | Enable infinite looping                                |
+| `slidesToScroll`       | `number \| 'auto'`        | `1`     | Number of slides to scroll per action                  |
+| `startIndex`           | `number`                  | `0`     | Initial scroll snap index                              |
+| `autoplay`             | `boolean \| number`       | `false` | Enable auto-play (true=4000ms, number=custom ms)       |
+| `stopOnInteraction`    | `boolean`                 | `true`  | Stop auto-play after user interaction                  |
+| `stopOnMouseEnter`     | `boolean`                 | `false` | Stop auto-play on mouse enter                          |
+| `stopOnFocusIn`        | `boolean`                 | `true`  | Stop auto-play when carousel receives focus            |
+
+**Embla API References:**
+
+- [Embla Carousel Options](https://www.embla-carousel.com/api/options/)
+- [Embla Autoplay Plugin](https://www.embla-carousel.com/plugins/autoplay/)
+
+### Supported Patterns
+
+- Controlled and uncontrolled state management
+- Custom navigation controls and indicators via slots
+- Multiple slides per view (CSS-based width/flexbox)
+- Variable scroll amounts via `slidesToScroll`
+
+### One Slide or Multiple Slides Display
+
+Embla handles one slide or multiple slides display through CSS:
+
+- One slide: Set slide width via CSS (e.g., `100%`)
+- Multiple slides: Set slide width via CSS (e.g., `25%` for 4 slides per view)
+- Setting breakpoints for different screen sizes to control the number of slides per view can be done with plain CSS.
+- More information regarding these techniques can be found in the [Breakpoints Guide](https://www.embla-carousel.com/guides/breakpoints/) and [Slide sizes Guide](https://www.embla-carousel.com/guides/slide-sizes/).
+
+## Accessibility Highlights
+
+Following [W3C ARIA Authoring Practices Guide - Carousel Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/):
+
+- **Carousel container**: `role="region"` (or `group`) with `aria-roledescription="carousel"` and `aria-label` (without the word "carousel")
+
+- **Each slide**: `role="group"` with `aria-roledescription="slide"` and accessible name via `aria-label` (e.g., "3 of 10")
+
+- **Live region for slides**: Wrapping slides element with `aria-atomic="false"` and:
+
+  - `aria-live="off"` when auto-rotating
+  - `aria-live="polite"` when NOT auto-rotating
+
+- **Keyboard interaction**:
+
+  - Automatic rotation stops when any carousel element receives focus
+  - Does not resume unless user activates rotation control
+  - Tab/Shift+Tab moves through interactive elements (rotation control, prev/next buttons, indicators)
+  - Rotation control (if present) is first in tab sequence
+  - Enter/Space activates focused button
+  - Navigation buttons don't move focus on activation (allows easy repetition)
+
+- **Auto-play requirements** ([WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)):
+  - Button label changes to match action ("Stop slide rotation" / "Start slide rotation")
+  - Stops on keyboard focus entering carousel
+  - Stops when mouse hovers over carousel
+  - Respects `prefers-reduced-motion` media query
+
+## Internationalization, RTL, and Mobile
+
+- **RTL**: Horizontal orientation auto-reverses in RTL contexts using Embla's `direction` option
+- **Touch targets**: Meet minimum size requirements per [WCAG 2.5.5](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)
+- **Touch gestures**: Native swipe with momentum provided by Embla
+- **Localization**: All ARIA labels and slide position formatting fully localizable
+
+## Data Attributes and Slot Map
+
+### Expected Attributes
+
+Components in the Carousel primitive use both ARIA attributes (for accessibility) and data attributes (for styling).
+
+#### Carousel Container Attributes
+
+| Attribute              | Type | Description                      | Example Values     |
+| ---------------------- | ---- | -------------------------------- | ------------------ |
+| `role`                 | ARIA | Semantic role                    | "region" / "group" |
+| `aria-label`           | ARIA | Descriptive label for carousel   | "Product showcase" |
+| `aria-roledescription` | ARIA | Role description                 | "carousel"         |
+| `data-axis`            | Data | Carousel scroll axis for styling | "x" / "y"          |
+| `data-loop`            | Data | Whether carousel loops           | "true" / "false"   |
+| `data-autoplay`        | Data | Whether auto-play is enabled     | "true" / "false"   |
+
+#### Slide Attributes
+
+| Attribute              | Type | Description                         | Example Values   |
+| ---------------------- | ---- | ----------------------------------- | ---------------- |
+| `role`                 | ARIA | Semantic role                       | "group"          |
+| `aria-roledescription` | ARIA | Role description for slide          | "slide"          |
+| `aria-label`           | ARIA | Position label for assistive tech   | "3 of 8"         |
+| `data-selected`        | Data | Whether slide is currently selected | "true" / "false" |
+| `data-index`           | Data | Zero-based slide index              | "0", "1", "2"    |
+
+#### Navigation Control Attributes
+
+| Attribute            | Type | Description                        | Example Values                  |
+| -------------------- | ---- | ---------------------------------- | ------------------------------- |
+| `aria-label`         | ARIA | Accessible label for button        | "Next slide" / "Previous slide" |
+| `aria-disabled`      | ARIA | Whether control is disabled        | "true" / "false"                |
+| `data-disabled`      | Data | Disabled state for styling         | "true" / "false"                |
+| `data-focus-visible` | Data | Whether focus ring should be shown | "true" / "false"                |
+
+#### Indicator Attributes
+
+| Attribute       | Type | Description                    | Example Values   |
+| --------------- | ---- | ------------------------------ | ---------------- |
+| `aria-label`    | ARIA | Accessible label for indicator | "Slide 1"        |
+| `aria-selected` | ARIA | Whether indicator is selected  | "true" / "false" |
+| `data-selected` | Data | Selected state for styling     | "true" / "false" |
+| `data-index`    | Data | Zero-based index               | "0", "1", "2"    |
+
+### Slot Map
+
+| Slot Name    | Description                         |
+| ------------ | ----------------------------------- |
+| `previous`   | Previous button                     |
+| `next`       | Next button                         |
+| `indicators` | indicators container                |
+| `indicator`  | Individual pagination indicator/dot |
+
+## Competitive Research
+
+- **[Embla Carousel](https://www.embla-carousel.com/)** ✅ **Selected**: Modern, responsive, lightweight, and good accessibility. Plugin architecture provides flexibility without being overly complex. Used as reference in the Figma design spec, making it the ideal foundation for Bento's carousel primitive.
+
+- **[React Slick](https://react-slick.neostack.com/)**: Feature-rich with auto-play, responsive breakpoints, and lazy loading. However, it's jQuery-based legacy code and larger in size compared to Embla.
+
+- **[Swiper](https://swiperjs.com/react)**: Powerful and performant but comes with opinionated styling, mobile first approach and is heavier than Embla. Strong gesture support and effects library.
+
+- **[Ark UI Carousel](https://ark-ui.com/react/docs/components/carousel)**: Headless pattern, good accessibility, less mature than Embla. It is also a good choice though.
+
+- **[ShadCN](https://ui.shadcn.com/docs/components/carousel)**: It uses Embla Carousel under the hood and provides a styled carousel component with a similar API to Embla.
+
+## Code Examples
+
+### Basic Usage
+
+```tsx
+<Carousel>
+  <CarouselContent>
+    <CarouselSlide>Content for slide 1</CarouselSlide>
+    <CarouselSlide>Content for slide 2</CarouselSlide>
+    <CarouselSlide>Content for slide 3</CarouselSlide>
+  </CarouselContent>
+
+  <Button slot="previous">Previous</Button>
+  <Button slot="next">Next</Button>
+</Carousel>
+```
+
+### Controlled
+
+```tsx
+const [selectedIndex, setSelectedIndex] = useState(0);
+
+<Carousel
+  selectedIndex={selectedIndex}
+  onSelect={setSelectedIndex}
+  autoplay={4000}
+>
+  {/* content */}
+</Carousel>;
+```
+
+### Custom Indicators
+
+```tsx
+<Carousel
+  slots={{
+    indicators: { className: 'custom-indicators-container' },
+    indicator: ({ props }) => (
+      <Button
+        onClick={() => props.onSelect(props.index)}
+        aria-label={`Go to slide ${props.index + 1}`}
+      >
+        <img
+          src={products[index].thumbnail}
+          alt={`View ${products[index].name}`}
+        />
+      </Button>
+    ),
+  }}
+>
+  {products.map((product) => (
+    <CarouselSlide key={product.id}>
+      <img src={product.image} alt={product.name} />
+    </CarouselSlide>
+  ))}
+</Carousel>
+```
