@@ -97,9 +97,11 @@ assignments automatically receive the appropriate props:
 
 | Slot | Purpose | Props Provided | Required |
 |------|---------|---------------|----------|
-| `trigger` | Element that opens/closes the overlay | `triggerProps` from React Aria | No |
+| `trigger` | Element that opens/closes the overlay | `triggerProps` from React Aria (requires a pressable component) | No |
 | `backdrop` | Visual backdrop behind content | `overlayProps` from React Aria | No |
 | `content` | Main overlay content container | `overlayProps` from React Aria | Yes |
+
+> **Note:** The trigger slot must be filled with a component that consumes React Aria press events (for example `@bento/button` or any primitive built on `@bento/pressable`). Passing a raw DOM element (e.g. `Container as="button"`) leaves the `onPress` handler on the native element, which React ignores and will log warnings.
 
 ### Component Structure
 
@@ -277,4 +279,3 @@ CSS targeting:
 Overlay is lightweight and only manages state and context. Performance
 characteristics depend on composed children. Use conditional rendering to avoid
 mounting Portal, FocusLock, and other primitives when the overlay is closed.
-

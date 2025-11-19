@@ -18,7 +18,7 @@ export function Popover() {
 
   return (
     <Container style={{ position: 'relative' }}>
-      <Button ref={triggerRef} onPress={() => setOpen(!open)}>
+      <Button childRef={triggerRef} onPress={() => setOpen(!open)}>
         Open Popover
       </Button>
       <Overlay open={open} onOpenChange={setOpen}>
@@ -58,4 +58,3 @@ export function Popover() {
     </Container>
   );
 }
-

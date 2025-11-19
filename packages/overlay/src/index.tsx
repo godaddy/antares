@@ -2,7 +2,8 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTrigger, useModalOverlay } from '@react-aria/overlays';
 import { Slot } from '@bento/box';
 import { withSlots, type Slots } from '@bento/slots';
-import { useProps } from '@bento/use-props';
+import { useProps, type RenderPropData } from '@bento/use-props';
+/* v8 ignore next */
 import React, { type ReactNode, useRef } from 'react';
 
 /**
@@ -21,7 +22,40 @@ export interface State {
  *
  * @public
  */
+type TriggerSlotObject = Record<string, unknown> & {
+  /**
+   * React Aria press handler surface for trigger composition.
+   * Components that consume the trigger slot should wire these into their interaction primitives.
+   */
+  onPress?: (event: unknown) => void;
+
+  /**
+   * Optional press state change handler exposed by React Aria.
+   */
+  onPressChange?: (isPressed: boolean) => void;
+
+  /**
+   * Additional press lifecycle handlers surfaced by React Aria.
+   */
+  onPressStart?: (event: unknown) => void;
+  onPressEnd?: (event: unknown) => void;
+  onPressUp?: (event: unknown) => void;
+};
+
+type TriggerSlotRender = (args: RenderPropData & { state: State }) => TriggerSlotObject;
+
+type TriggerSlotValue = TriggerSlotObject | TriggerSlotRender;
+
 export interface OverlayProps extends Slots {
+  /**
+   * Slot overrides for the overlay.
+   * The trigger slot is typed to expose React Aria press handlers so consumers
+   * are guided toward using pressable-aware primitives (e.g. @bento/button).
+   */
+  slots?: (Slots['slots'] & {
+    trigger?: TriggerSlotValue;
+  }) | undefined;
+
   /**
    * Whether the overlay is open (controlled).
    */
@@ -167,8 +201,7 @@ export const Overlay = withSlots('BentoOverlay', function Overlay(args: OverlayP
       slots={{
         trigger: {
           ...triggerProps,
-          ref: triggerRef,
-          onClick: () => state.toggle()
+          ref: triggerRef
         },
         backdrop: underlayProps,
         content: {

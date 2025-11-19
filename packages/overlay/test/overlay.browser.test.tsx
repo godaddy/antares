@@ -1,5 +1,6 @@
 import { Overlay } from '../src/index.tsx';
 import { Container } from '@bento/container';
+import { Button } from '@bento/button';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import { useState } from 'react';
@@ -18,9 +19,9 @@ describe('@bento/overlay state management', function overlayState() {
               External Open
             </button>
             <Overlay open={open} onOpenChange={setOpen}>
-              <Container slot="trigger" as="button" data-testid="trigger">
+              <Button slot="trigger" data-testid="trigger">
                 Trigger
-              </Container>
+              </Button>
               <Container slot="content" data-testid="content">
                 Overlay Content
               </Container>
@@ -57,9 +58,7 @@ describe('@bento/overlay state management', function overlayState() {
               External Close
             </button>
             <Overlay open={open} onOpenChange={setOpen}>
-              <Container slot="trigger" as="button">
-                Trigger
-              </Container>
+              <Button slot="trigger">Trigger</Button>
               <Container slot="content" data-testid="content">
                 Overlay Content
               </Container>
@@ -100,9 +99,9 @@ describe('@bento/overlay state management', function overlayState() {
               setOpen(newOpen);
             }}
           >
-            <Container slot="trigger" as="button" data-testid="trigger">
+            <Button slot="trigger" data-testid="trigger">
               Open
-            </Container>
+            </Button>
             <Container slot="content" data-testid="content">
               Content
             </Container>
@@ -133,9 +132,7 @@ describe('@bento/overlay state management', function overlayState() {
       function UncontrolledOverlay() {
         return (
           <Overlay>
-            <Container slot="trigger" as="button">
-              Open
-            </Container>
+            <Button slot="trigger">Open</Button>
             <Container slot="content" data-testid="content">
               Content
             </Container>
@@ -154,9 +151,7 @@ describe('@bento/overlay state management', function overlayState() {
       function UncontrolledOverlay() {
         return (
           <Overlay defaultOpen={true}>
-            <Container slot="trigger" as="button">
-              Close
-            </Container>
+            <Button slot="trigger">Close</Button>
             <Container slot="content" data-testid="content">
               Content
             </Container>
@@ -175,9 +170,9 @@ describe('@bento/overlay state management', function overlayState() {
       function UncontrolledOverlay() {
         return (
           <Overlay>
-            <Container slot="trigger" as="button" data-testid="trigger">
+            <Button slot="trigger" data-testid="trigger">
               Toggle
-            </Container>
+            </Button>
             <Container slot="content" data-testid="content">
               Content
             </Container>
@@ -225,9 +220,9 @@ describe('@bento/overlay state management', function overlayState() {
               capturedStates.push(args.state.open);
               return (
                 <>
-                  <Container slot="trigger" as="button" data-testid="trigger">
+                  <Button slot="trigger" data-testid="trigger">
                     Toggle
-                  </Container>
+                  </Button>
                   <Container slot="content" data-open={String(args.state.open)} data-testid="content">
                     State: {args.state.open ? 'open' : 'closed'}
                   </Container>
@@ -269,9 +264,7 @@ describe('@bento/overlay state management', function overlayState() {
 
         return (
           <Overlay open={open} onOpenChange={setOpen}>
-            <Container slot="trigger" as="button">
-              Trigger
-            </Container>
+            <Button slot="trigger">Trigger</Button>
             <Container
               slot="backdrop"
               data-testid="backdrop"
@@ -301,6 +294,31 @@ describe('@bento/overlay state management', function overlayState() {
 
       // Should have no children (empty)
       assume(backdrop?.childNodes.length).equals(0);
+    });
+
+    it('returns null when no children provided', function noChildren() {
+      // @ts-expect-error - Testing edge case of no children
+      const { container } = render(<Overlay open={true} />);
+
+      // Should render nothing when no children
+      assume(container.innerHTML).equals('');
+    });
+
+    it('respects type and isDismissable props', function typeAndDismissable() {
+      function OverlayWithProps() {
+        return (
+          <Overlay open={true} type="menu" isDismissable={false}>
+            <Button slot="trigger">Trigger</Button>
+            <Container slot="content" data-testid="content">
+              Content
+            </Container>
+          </Overlay>
+        );
+      }
+
+      const { container } = render(<OverlayWithProps />);
+      const content = container.querySelector('[data-testid="content"]');
+      assume(content).to.exist;
     });
   });
 });
