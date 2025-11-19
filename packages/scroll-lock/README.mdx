@@ -1,0 +1,105 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './scroll-lock.stories.tsx';
+import BasicExample from './examples/basic.tsx?raw';
+import HookExample from './examples/hook.tsx?raw';
+import ModalExample from './examples/modal.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# ScrollLock
+
+The `@bento/scroll-lock` package provides both a `ScrollLock` component and a
+`useScrollLock` hook that prevent background scrolling while overlays, modals,
+or other UI elements require user focus. This primitive wraps React Aria's
+`usePreventScroll` hook, adding Bento-specific data attributes for debugging and
+styling.
+
+## Installation
+
+```bash
+npm install --save @bento/scroll-lock
+```
+
+## Props
+
+The following properties are available to be used on the `ScrollLock` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+The simplest usage is to render the `ScrollLock` component. It will prevent
+scrolling while mounted.
+
+<Source language='tsx' code={ BasicExample } />
+
+### Using the Hook
+
+For more control or when building custom components, use the `useScrollLock`
+hook directly.
+
+<Source language='tsx' code={ HookExample } />
+
+### Modal Integration
+
+ScrollLock is commonly used with modals and overlays to prevent background
+scrolling while the overlay is active.
+
+<Source language='tsx' code={ ModalExample } />
+
+## Accessibility
+
+The `ScrollLock` component automatically handles accessibility features:
+
+- **Screen Reader Compatibility**: Doesn't interfere with virtual cursor navigation
+- **Focus Management Integration**: Works seamlessly with React Aria's `useFocusScope` and `useModal`
+- **Keyboard Support**: Properly handles all keyboard-based scrolling methods
+- **Touch Accessibility**: Maintains touch event handling on mobile devices while preventing scroll
+
+## React Aria Integration
+
+ScrollLock wraps React Aria's `usePreventScroll` hook, which provides
+comprehensive scroll prevention including scrollbar compensation, mobile
+support, and proper cleanup. The Bento wrapper adds data attributes for
+debugging and provides a consistent API with other Bento hooks and components.
+
+## Customization
+
+### Slots
+
+ScrollLock is created using the `@bento/slots` package and supports the standard
+`slot` and `slots` props for integration with parent components. Since
+ScrollLock doesn't render DOM elements, it doesn't define internal slot
+assignments.
+
+See the `@bento/slots` package for more information on how to use the `slot` and
+`slots` properties.
+
+### Styling
+
+Since ScrollLock doesn't render any DOM elements, styling is applied through the
+data attributes it adds to `document.body`. You can use these attributes to
+style your application based on scroll lock state.
+
+The following data attributes are applied to `document.body`:
+
+| Attribute            | Description                           | Example Values |
+| -------------------- | ------------------------------------- | -------------- |
+| `data-scroll-locked` | Indicates when scroll lock is active  | "true"         |
+
+These data attributes can be targeted in your CSS:
+
+```css
+body[data-scroll-locked="true"] {
+  /* Styles when scroll is locked */
+}
+```
+
+## Server-Side Rendering
+
+ScrollLock is SSR-safe and will not execute scroll prevention logic on the
+server. The component and hook check for the existence of `document` before
+applying scroll prevention, ensuring compatibility with server-side rendering
+environments.
