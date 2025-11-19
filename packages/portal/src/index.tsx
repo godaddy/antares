@@ -1,9 +1,9 @@
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useUNSAFE_PortalContext } from '@react-aria/overlays';
+import React, { useContext, type ReactNode } from 'react';
 import { withSlots, type Slots } from '@bento/slots';
+import { Box, type BoxContext } from '@bento/box';
 import { useProps } from '@bento/use-props';
-/* v8 ignore next */
-import React, { type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
@@ -84,6 +84,7 @@ export interface PortalProps extends Slots {
  */
 export const Portal = withSlots('BentoPortal', function Portal(args: PortalProps) {
   const { props, apply } = useProps(args);
+  const { env } = useContext<BoxContext<any>>(Box);
   const { container: containerProp, mounted = false, children } = props;
 
   // Check for React ARIA's PortalProvider (optional)
@@ -102,8 +103,19 @@ export const Portal = withSlots('BentoPortal', function Portal(args: PortalProps
   // Determine the target container with priority:
   // 1. Explicit container prop
   // 2. React ARIA PortalProvider container
-  // 3. document.body (fallback)
-  const container = containerProp || portalContainer || (typeof document !== 'undefined' ? document.body : null);
+  // 3. document.body from Box environment (fallback)
+  let container = containerProp || portalContainer;
+
+  // Only try to access document.body if no container is provided
+  if (!container) {
+    try {
+      const doc = env.document();
+      container = doc?.body || null;
+    } catch {
+      // SSR safety: document may not be available
+      container = null;
+    }
+  }
 
   // Don't render if not mounted (SSR safety)
   if (!mounted || container == null || children == null) return null;
