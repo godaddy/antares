@@ -20,7 +20,6 @@ function renderToStringInput(inputProps: Partial<ComponentProps<typeof Input>> =
 }
 
 describe('@bento/input', function bento() {
-  // Basic render test
   it('renders a basic Input with the correct attributes', function correctAttributes() {
     const result = renderToStringInput();
     assume(result).to.contain('<input');
@@ -28,7 +27,6 @@ describe('@bento/input', function bento() {
     assume(result).to.contain('class="random-class-input"');
   });
 
-  // Application tests - invalid
   it('applies data-invalid and aria-invalid when aria-invalid is true', function invalidTrue() {
     const result = renderToStringInput({ 'aria-invalid': true });
     assume(result).to.contain('data-invalid="true"');
@@ -41,7 +39,6 @@ describe('@bento/input', function bento() {
     assume(result).to.contain('aria-invalid="false"');
   });
 
-  // Application tests - disabled
   it('applies data-disabled and disabled when disabled is true', function disabledTrue() {
     const result = renderToStringInput({ disabled: true });
     assume(result).to.contain('data-disabled="true"');
@@ -53,7 +50,6 @@ describe('@bento/input', function bento() {
     assume(result).not.to.contain('data-disabled="true"');
   });
 
-  // Application tests - required
   it('applies data-required and required when required is true', function requiredTrue() {
     const result = renderToStringInput({ required: true });
     assume(result).to.contain('data-required="true"');
@@ -63,11 +59,9 @@ describe('@bento/input', function bento() {
   it('does not apply data-required when required is false', function requiredFalse() {
     const result = renderToStringInput({ required: false });
     assume(result).not.to.contain('data-required="true"');
-    // The 'required' attribute should not be present
     assume(result).not.to.contain('required');
   });
 
-  // Application tests - empty
   it('applies data-empty when value is empty string', function emptyString() {
     const result = renderToStringInput({ value: '' });
     assume(result).to.contain('data-empty="true"');
@@ -88,7 +82,6 @@ describe('@bento/input', function bento() {
     assume(result).not.to.contain('data-empty="true"');
   });
 
-  // Application tests - checked for checkbox
   it('applies checked attribute for checkbox when checked is true', function checkedCheckboxTrue() {
     const result = renderToString(<Input type="checkbox" checked={true} />);
     assume(result).to.contain('type="checkbox"');
@@ -101,7 +94,6 @@ describe('@bento/input', function bento() {
     assume(result).not.to.contain('checked');
   });
 
-  // Application tests - checked for radio
   it('applies checked attribute for radio when checked is true', function checkedRadioTrue() {
     const result = renderToString(<Input type="radio" checked={true} />);
     assume(result).to.contain('type="radio"');
