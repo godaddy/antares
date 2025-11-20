@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '@bento/input';
 import { render } from 'vitest-browser-react';
-import { describe, vi, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import assume from 'assume';
 
 describe('@bento/input', function bento() {
