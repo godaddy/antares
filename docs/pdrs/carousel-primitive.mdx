@@ -221,8 +221,8 @@ const [selectedIndex, setSelectedIndex] = useState(0);
         aria-label={`Go to slide ${props.index + 1}`}
       >
         <img
-          src={products[index].thumbnail}
-          alt={`View ${products[index].name}`}
+          src={products[props.index].thumbnail}
+          alt={`View ${products[props.index].name}`}
         />
       </Button>
     ),
