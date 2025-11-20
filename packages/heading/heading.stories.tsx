@@ -7,7 +7,7 @@ import { HeadingProviderExample } from './examples/provider.tsx';
 import { HeadingOverrideExample } from './examples/override.tsx';
 
 const meta = {
-  title: 'components/heading',
+  title: 'components/Heading',
   component: () => null
 } satisfies Meta<HeadingProps>;
 
