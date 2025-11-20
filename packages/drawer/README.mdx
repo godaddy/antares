@@ -1,0 +1,63 @@
+import { Meta, Story, ArgTypes, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './drawer.stories.tsx';
+import BasicExample from './examples/basic.tsx?raw';
+import ConstrainedExample from './examples/constrained.tsx?raw';
+import BottomSheetExample from './examples/bottom-sheet.tsx?raw';
+import DismissalExample from './examples/dismissal.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Drawer
+
+The `@bento/drawer` package exports the **Drawer** component, which creates an expandable panel that can be used for sidebar navigation, bottom sheets, and disclosures.
+
+## Installation
+
+```bash
+npm install --save @bento/drawer
+```
+
+## Props
+
+The `@bento/drawer` package exports the `Drawer` component:
+
+<Source language='tsx' code={ BasicExample } />
+
+The following properties are available to be used on the `Drawer` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Constrained
+
+A drawer with minimum and maximum size constraints:
+
+<Source language='tsx' code={ ConstrainedExample } />
+
+### Bottom Sheet
+
+A drawer that is portaled and appears as a bottom sheet:
+
+<Source language='tsx' code={ BottomSheetExample } />
+
+### Dismissal
+
+A drawer that demonstrates dismissal behaviors using React Aria hooks:
+
+<Source language='tsx' code={ DismissalExample } />
+
+## Accessibility
+
+The Drawer component is a fully controlled component that requires you to manage its state:
+
+- **ARIA attributes**: You should set `aria-expanded` based on your state management
+- **Role support**: Can be configured with `role="dialog"` for modal-like behavior or `role="region"` for non-modal content
+- **State management**: Use `useState` or your preferred state management solution to control `isExpanded`
+
+## React Aria Integration
+
+The Drawer component can be used with React Aria hooks for advanced behaviors:
+
+- **useOverlay**: Can be used in your components to handle overlay behavior (dismissal, keyboard interactions) when the drawer is portaled
+- See the dismissal example for a complete implementation using React Aria hooks
