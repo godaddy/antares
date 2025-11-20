@@ -15,6 +15,7 @@
     "@bento/checkbox": "*",
     "@bento/container": "*",
     "@bento/create-external-store": "*",
+    "@bento/dismiss": "*",
     "@bento/divider": "*",
     "@bento/drawer": "*",
     "@bento/environment": "*",
