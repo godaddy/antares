@@ -5,6 +5,7 @@ import assume from 'assume';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { UncontrolledExample } from '../examples/uncontrolled.tsx';
 import { SingleRadioExample } from '../examples/single-radio.tsx';
+import { ErrorHandlingExample, ErrorHandlingExampleWithState } from '../examples/error-handling.tsx';
 import userEvent from '@testing-library/user-event';
 
 describe('@bento/radio examples', function bento() {
@@ -40,5 +41,21 @@ describe('@bento/radio examples', function bento() {
       await userEvent.click(radio);
       assume(radio.checked).equals(true);
     });
+  });
+
+  describe('ErrorHandling', function errorHandlingExample() {
+    it('should display the correct error message when the radio is invalid', async function displayErrorMessage() {
+      const { container } = render(<ErrorHandlingExample />);
+      const radio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
+      await userEvent.click(radio);
+      assume(container.innerHTML).includes('Error! banana selected');
+    });
+  });
+
+  it('should display the correct custom error message when the radio is invalid', async function displayErrorMessage() {
+    const { container } = render(<ErrorHandlingExampleWithState />);
+    const radio = container.querySelector<HTMLInputElement>('input[value="orange"]')!;
+    await userEvent.click(radio);
+    assume(container.innerHTML).includes('Invalid fruit: orange');
   });
 });

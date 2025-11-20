@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
-import { Control, type ControlProps } from '@bento/control';
+import { Container, type ContainerProps } from '@bento/container';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { Icon } from '@bento/icon';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
+import { VisuallyHidden } from '@bento/visually-hidden';
 import { mergeProps, mergeRefs, useObjectRef } from '@react-aria/utils';
 import { useFocusRing, useHover, useRadio, type AriaRadioProps } from 'react-aria';
 import { RadioGroupStateContext } from './radio-group-state';
 
-export interface RadioProps extends AriaRadioProps, Partial<Omit<ControlProps, keyof AriaRadioProps>> {
+export interface RadioProps extends AriaRadioProps, Omit<ContainerProps, keyof AriaRadioProps> {
   /** The value of the radio button, used when submitting an HTML form. */
   value: string;
 
@@ -45,13 +46,9 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
   });
 
   return (
-    <Control
-      slot="control"
-      label={props.children}
-      labelProps={mergeProps(labelProps, hoverProps)}
-      inputRef={inputRef}
-      inputProps={mergeProps(inputProps, focusProps)}
-      {...apply(props, ['isDisabled', 'value', 'autoFocus'])}
+    <Container
+      as="label"
+      {...apply(mergeProps(labelProps, hoverProps))}
       {...useDataAttributes({
         selected: isSelected,
         pressed: isPressed,
@@ -64,19 +61,24 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
         required: state.isRequired
       })}
     >
+      <VisuallyHidden>
+        <input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
+      </VisuallyHidden>
+
       {isSelected ? (
         <Icon slot="icon-checked" icon="radioChecked">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx={12} cy={12} r={8 - 6 / 2} fill="none" stroke="orange" strokeWidth={6} />
           </svg>
         </Icon>
       ) : (
         <Icon slot="icon-unchecked" icon="radioUnchecked">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx={12} cy={12} r={8} fill="none" stroke="gray" strokeWidth={2} />
           </svg>
         </Icon>
       )}
-    </Control>
+      {props.children}
+    </Container>
   );
 });
