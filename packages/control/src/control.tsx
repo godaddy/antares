@@ -1,6 +1,7 @@
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 import { Text } from '@bento/text';
+import { Input } from '@bento/input';
 import React, { type ComponentProps } from 'react';
 import { VisuallyHidden } from './other-primitives';
 
@@ -32,7 +33,7 @@ export const Control = withSlots('BentoControl', function Control(args: ControlP
   return (
     <Text as="label" {...labelProps} {...restProps}>
       <VisuallyHidden as="span">
-        <input {...inputProps} ref={inputRef} />
+        <Input {...inputProps} ref={inputRef} />
       </VisuallyHidden>
       {children}
       {label && <Text slot="label">{label}</Text>}

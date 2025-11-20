@@ -1,3 +1,4 @@
+/* v8 ignore next */
 import React, { useState } from 'react';
 import { Input } from '../src/index.tsx';
 
@@ -9,8 +10,7 @@ export function BasicFormExample() {
 
   function handleChange(field: string) {
     function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-      const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-      setFormData((prev) => ({ ...prev, [field]: value }));
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }));
     }
     return onInputChange;
   }
@@ -43,16 +43,13 @@ export function BasicFormExample() {
       </div>
 
       <div>
-        <button
+        <Input
           type="submit"
           onClick={function HandleClick(e) {
             e.preventDefault();
-            console.log('Form Data:', formData);
-            alert('Form submitted! Check console for data.');
           }}
-        >
-          Submit
-        </button>
+          value="Submit"
+        />
       </div>
 
       <div>

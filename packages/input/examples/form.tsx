@@ -1,3 +1,4 @@
+/* v8 ignore next */
 import React, { useState } from 'react';
 import { Input } from '../src/index.tsx';
 
@@ -22,6 +23,8 @@ export function FormExample() {
     }
     return onInputChange;
   }
+
+  const isPhoneInvalid = formData.phone.length > 0 && formData.phone.length < 7;
 
   return (
     <form>
@@ -82,45 +85,47 @@ export function FormExample() {
 
       {/* Checkbox Input */}
       <div>
-        <label>
-          <Input type="checkbox" checked={formData.newsletter} onChange={handleChange('newsletter')} />
+        <label htmlFor="newsletter">
+          <Input id="newsletter" type="checkbox" checked={formData.newsletter} onChange={handleChange('newsletter')} />
           Subscribe to newsletter
         </label>
       </div>
 
       {/* Radio Buttons - Favorite Fruit */}
       <div>
-        <div>Favorite Fruit</div>
-        <label>
-          <Input
-            type="radio"
-            name="favoriteFruit"
-            value="apple"
-            checked={formData.favoriteFruit === 'apple'}
-            onChange={handleChange('favoriteFruit')}
-          />
-          Apple
-        </label>
-        <label>
-          <Input
-            type="radio"
-            name="favoriteFruit"
-            value="banana"
-            checked={formData.favoriteFruit === 'banana'}
-            onChange={handleChange('favoriteFruit')}
-          />
-          Banana
-        </label>
-        <label>
-          <Input
-            type="radio"
-            name="favoriteFruit"
-            value="orange"
-            checked={formData.favoriteFruit === 'orange'}
-            onChange={handleChange('favoriteFruit')}
-          />
-          Orange
-        </label>
+        <fieldset>
+          <legend>Favorite Fruit</legend>
+          <label>
+            <Input
+              type="radio"
+              name="favoriteFruit"
+              value="apple"
+              checked={formData.favoriteFruit === 'apple'}
+              onChange={handleChange('favoriteFruit')}
+            />
+            Apple
+          </label>
+          <label>
+            <Input
+              type="radio"
+              name="favoriteFruit"
+              value="banana"
+              checked={formData.favoriteFruit === 'banana'}
+              onChange={handleChange('favoriteFruit')}
+            />
+            Banana
+          </label>
+          <label>
+            <Input
+              type="radio"
+              name="favoriteFruit"
+              value="orange"
+              checked={formData.favoriteFruit === 'orange'}
+              onChange={handleChange('favoriteFruit')}
+            />
+            Orange
+          </label>
+        </fieldset>
       </div>
 
       {/* Color Input */}
@@ -155,8 +160,18 @@ export function FormExample() {
           type="tel"
           value={formData.phone}
           onChange={handleChange('phone')}
+          style={() => ({
+            borderColor: isPhoneInvalid ? 'red' : 'gray'
+          })}
           placeholder="+1 (555) 123-4567"
+          aria-invalid={isPhoneInvalid}
+          aria-describedby={isPhoneInvalid ? 'phone-error' : undefined}
         />
+        {isPhoneInvalid && (
+          <span id="phone-error" style={{ color: 'red', fontSize: '0.875rem' }}>
+            Phone number must be at least 7 characters or empty
+          </span>
+        )}
       </div>
 
       {/* Submit Button */}

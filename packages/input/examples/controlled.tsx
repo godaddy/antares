@@ -1,3 +1,4 @@
+/* v8 ignore next */
 import React, { useState } from 'react';
 import { Input } from '@bento/input';
 

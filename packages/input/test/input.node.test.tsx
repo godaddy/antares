@@ -20,6 +20,7 @@ function renderToStringInput(inputProps: Partial<ComponentProps<typeof Input>> =
 }
 
 describe('@bento/input', function bento() {
+  // Basic render test
   it('renders a basic Input with the correct attributes', function correctAttributes() {
     const result = renderToStringInput();
     assume(result).to.contain('<input');
@@ -27,12 +28,107 @@ describe('@bento/input', function bento() {
     assume(result).to.contain('class="random-class-input"');
   });
 
+  // Application tests - invalid
+  it('applies data-invalid and aria-invalid when aria-invalid is true', function invalidTrue() {
+    const result = renderToStringInput({ 'aria-invalid': true });
+    assume(result).to.contain('data-invalid="true"');
+    assume(result).to.contain('aria-invalid="true"');
+  });
+
+  it('does not apply data-invalid when aria-invalid is false', function invalidFalse() {
+    const result = renderToStringInput({ 'aria-invalid': false });
+    assume(result).not.to.contain('data-invalid="true"');
+    assume(result).to.contain('aria-invalid="false"');
+  });
+
+  // Application tests - disabled
+  it('applies data-disabled and disabled when disabled is true', function disabledTrue() {
+    const result = renderToStringInput({ disabled: true });
+    assume(result).to.contain('data-disabled="true"');
+    assume(result).to.contain('disabled');
+  });
+
+  it('does not apply data-disabled when disabled is false', function disabledFalse() {
+    const result = renderToStringInput({ disabled: false });
+    assume(result).not.to.contain('data-disabled="true"');
+  });
+
+  // Application tests - required
+  it('applies data-required and required when required is true', function requiredTrue() {
+    const result = renderToStringInput({ required: true });
+    assume(result).to.contain('data-required="true"');
+    assume(result).to.contain('required');
+  });
+
+  it('does not apply data-required when required is false', function requiredFalse() {
+    const result = renderToStringInput({ required: false });
+    assume(result).not.to.contain('data-required="true"');
+    // The 'required' attribute should not be present
+    assume(result).not.to.contain('required');
+  });
+
+  // Application tests - empty
+  it('applies data-empty when value is empty string', function emptyString() {
+    const result = renderToStringInput({ value: '' });
+    assume(result).to.contain('data-empty="true"');
+  });
+
+  it('applies data-empty when value is undefined', function emptyUndefined() {
+    const result = renderToStringInput({ value: undefined });
+    assume(result).to.contain('data-empty="true"');
+  });
+
+  it('applies data-empty when value is not provided', function emptyDefault() {
+    const result = renderToStringInput();
+    assume(result).to.contain('data-empty="true"');
+  });
+
+  it('does not apply data-empty when value is non-empty', function notEmpty() {
+    const result = renderToStringInput({ value: 'foo' });
+    assume(result).not.to.contain('data-empty="true"');
+  });
+
+  // Application tests - checked for checkbox
+  it('applies checked attribute for checkbox when checked is true', function checkedCheckboxTrue() {
+    const result = renderToString(<Input type="checkbox" checked={true} />);
+    assume(result).to.contain('type="checkbox"');
+    assume(result).to.contain('checked');
+  });
+
+  it('does not apply checked attribute for checkbox when checked is false', function checkedCheckboxFalse() {
+    const result = renderToString(<Input type="checkbox" checked={false} />);
+    assume(result).to.contain('type="checkbox"');
+    assume(result).not.to.contain('checked');
+  });
+
+  // Application tests - checked for radio
+  it('applies checked attribute for radio when checked is true', function checkedRadioTrue() {
+    const result = renderToString(<Input type="radio" checked={true} />);
+    assume(result).to.contain('type="radio"');
+    assume(result).to.contain('checked');
+  });
+
+  it('does not apply checked attribute for radio when checked is false', function checkedRadioFalse() {
+    const result = renderToString(<Input type="radio" checked={false} />);
+    assume(result).to.contain('type="radio"');
+    assume(result).not.to.contain('checked');
+  });
+
+  it('renders correct [data-override] attribute values', function overrides() {
+    const result = renderToStringInput({
+      className: 'custom-class',
+      style: { color: 'red' }
+    });
+    assume(result).includes('data-override="className style"');
+  });
+
   describe('#slots', function slots() {
-    it('renders correct slot values', function correctSlotValues() {
+    it('does not have a slot name by default', function correctSlotValues() {
       const result = renderToStringInput();
       assume(result).to.contain('<input');
       assume(result).to.contain('type="text"');
       assume(result).to.contain('class="random-class-input"');
+      assume(result).not.to.contain('slot=');
     });
   });
 

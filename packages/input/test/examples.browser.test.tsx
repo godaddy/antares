@@ -11,20 +11,30 @@ import userEvent from '@testing-library/user-event';
 describe('@bento/checkbox examples', function bento() {
   it('renders inputs that work in basic forms', async function test() {
     const { container } = render(<BasicFormExample />);
-    const nameInput = container.querySelector('input[id="name"]')!;
-    const emailInput = container.querySelector('input[id="email"]')!;
+    const nameInput = container.querySelector<HTMLInputElement>('input[id="name"]')!;
+    const emailInput = container.querySelector<HTMLInputElement>('input[id="email"]')!;
+    const submitButton = container.querySelector<HTMLInputElement>('input[type="submit"]')!;
 
     assume(nameInput).to.exist();
     assume(emailInput).to.exist();
+    assume(submitButton).to.exist();
+
+    assume(nameInput.value).to.equal('');
+    assume(emailInput.value).to.equal('');
+    await userEvent.type(nameInput, 'Amanda');
+    await userEvent.type(emailInput, 'amanda@example.com');
+    await userEvent.click(submitButton);
+    assume(nameInput.value).to.equal('Amanda');
+    assume(emailInput.value).to.equal('amanda@example.com');
   });
 
   it('renders a controlled input', async function test() {
     const { container } = render(<ControlledInput />);
-    const input = container.querySelector<HTMLInputElement>('input[type="text"]')!;
+    const input = container.querySelectorAll<HTMLInputElement>('input[type="text"]')!;
 
-    assume(input.value).to.equal('');
-    await userEvent.type(input, 'Hello');
-    assume(input.value).to.equal('Hello');
+    assume(input[0].value).to.equal('');
+    await userEvent.type(input[0], 'Hello');
+    assume(input[0].value).to.equal('Hello');
   });
 
   it('renders an uncontrolled input', async function test() {

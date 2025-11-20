@@ -1,44 +1,12 @@
-import React, { useMemo, type ReactNode } from 'react';
+/* v8 ignore next */
+import React, { useMemo } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { useFocusRing, useHover, mergeProps } from 'react-aria';
-import { mergeRefs, useObjectRef } from '@react-aria/utils';
+import { useFocusRing, useHover } from 'react-aria';
+import { mergeRefs, useObjectRef, mergeProps } from '@react-aria/utils';
 import type { HoverEvents } from 'react-aria';
-
-const allowedPropsMap: Record<string, (keyof InputProps)[]> = {
-  checkbox: ['checked', 'defaultChecked', 'value', 'name', 'required', 'disabled', 'readOnly', 'onChange'],
-  radio: ['checked', 'defaultChecked', 'value', 'name', 'required', 'disabled', 'readOnly', 'onChange'],
-  number: ['min', 'max', 'step', 'value', 'defaultValue', 'required', 'disabled', 'readOnly', 'name', 'onChange'],
-  range: ['min', 'max', 'step', 'value', 'defaultValue', 'required', 'disabled', 'readOnly', 'name', 'onChange'],
-  file: ['multiple', 'accept', 'required', 'disabled', 'name', 'onChange'],
-  default: [
-    'value',
-    'defaultValue',
-    'placeholder',
-    'required',
-    'disabled',
-    'readOnly',
-    'name',
-    'pattern',
-    'autoComplete',
-    'minLength',
-    'maxLength',
-    'onChange'
-  ]
-};
-
-function getTypeSpecificProps(type: string, props: InputProps) {
-  const keys = allowedPropsMap[type as keyof typeof allowedPropsMap] || allowedPropsMap.default;
-  const filtered: Partial<InputProps> = {};
-  for (const key of keys) {
-    if (props[key] !== undefined) {
-      filtered[key] = props[key];
-    }
-  }
-  return filtered;
-}
 
 /**
  * Render props provided to className and style functions.
@@ -105,9 +73,6 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
    * The inline style for the element. A function may be provided to compute the style based on component state.
    */
   style?: React.CSSProperties | ((renderProps: InputRenderProps) => React.CSSProperties);
-
-  children?: ReactNode;
-  as?: keyof JSX.IntrinsicElements;
 }
 
 /**
@@ -134,11 +99,11 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  *
  * @public
  */
-export const Input = withSlots(
+export const Input = withSlots<InputProps>(
   'BentoInput',
-  React.forwardRef<HTMLInputElement, InputProps>(function Input(args, ref) {
+  React.forwardRef<HTMLInputElement, InputProps>(function Input(args: InputProps, ref) {
     const { props, apply } = useProps(args);
-    const { disabled, readOnly, type, required, inputPropRef, value, checked, role, autoFocus } = props;
+    const { disabled, readOnly, type, required, inputPropRef, value, checked, autoFocus } = props;
     const isInvalid = !!props['aria-invalid'] && props['aria-invalid'] !== 'false';
     const isDisabled = disabled || false;
     const isReadOnly = readOnly || false;
@@ -146,7 +111,6 @@ export const Input = withSlots(
     const isEmpty = value === '' || value === undefined || value === null;
     const isChecked = type === 'checkbox' || type === 'radio' ? !!checked : undefined;
 
-    const typeSpecificProps = getTypeSpecificProps(type, props);
     const inputRef = useObjectRef(useMemo(() => mergeRefs(ref, inputPropRef), [ref, inputPropRef]));
     const { isFocused, isFocusVisible, focusProps } = useFocusRing({
       isTextInput: type !== 'checkbox' && type !== 'radio' && type !== 'range',
@@ -156,12 +120,8 @@ export const Input = withSlots(
 
     return (
       <input
-        {...apply({ ...mergeProps(typeSpecificProps, focusProps, hoverProps) })}
+        {...apply({ ...mergeProps(props, focusProps, hoverProps) })}
         ref={inputRef}
-        role={role}
-        aria-label={props['aria-label']}
-        aria-labelledby={props['aria-labelledby']}
-        aria-describedby={props['aria-describedby']}
         aria-invalid={isInvalid}
         {...useDataAttributes({
           focused: isFocused,
