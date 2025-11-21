@@ -183,9 +183,10 @@ const fruitsById = {
 - `SelectState.selectedKey` exists but is deprecated. Source: [`SelectState.selectedKey`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/select/src/useSelectState.ts#L28) is marked `@deprecated`. `SelectState.value` is the current API. Source: [`SelectState.value`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/select/src/useSelectState.ts#L43) is `readonly value: ValueType<M>`.
 
 **Props from React Aria**:
-- `value`/`defaultValue` — Type: `Key | null` (single) or `Key[]` (multiple). Source: [`ValueType<M>`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L35) is `M extends 'single' ? Key | null : Key[]`.
+- `value`/`defaultValue` — Type: `Key | null` (single) or `Key[]` (multiple). Selection state control. Source: [`ValueBase`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L65) provides these props.
+- `onChange` — Handler called when selection changes. Type: `(value: Key | null) => void` (single) or `(value: Key[]) => void` (multiple). Source: [`ValueBase.onChange`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L71).
 - `selectionMode` — Type: `'single' | 'multiple'`, default `'single'`. Source: [`SelectProps.selectionMode`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L43) with default `'single'` from [`useSelectState`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/select/src/useSelectState.ts#L82).
-- `isOpen`/`defaultOpen`/`onOpenChange` — From `OverlayTriggerProps`. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) includes `isOpen`, `defaultOpen`, `onOpenChange` from `OverlayTriggerProps`.
+- `isOpen`/`defaultOpen`/`onOpenChange` — From `OverlayTriggerProps`. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L59-64) includes these props from `OverlayTriggerProps`.
 - `onChange` — From `ValueBase`. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) extends `ValueBase<ValueType<M>>` which provides `onChange?: (value: C) => void`. Source: [`ValueBase.onChange`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L71).
 - `name` — For form submission. Source: [`AriaSelectProps.name`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L77).
 - `label` — From `LabelableProps`. Source: [`AriaSelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L69) extends `LabelableProps`.
@@ -198,7 +199,7 @@ const fruitsById = {
 - `aria-labelledby` — ARIA attribute for custom label associations, inherited from `React.ComponentProps<'div'>`. Can override React Aria's auto-generated label associations when explicit control is needed.
 
 **Slot structure**:
-- `trigger` — Receives `triggerProps` (type: `AriaButtonProps`), `focusProps`, `hoverProps`, `role="combobox"`, `aria-required`, `aria-invalid`, `aria-disabled`, `data-open`, `ref`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L40) returns `triggerProps: AriaButtonProps`. Additional ARIA attributes added by Select as React Aria doesn't provide them automatically.
+- `trigger` — Receives `triggerProps` (type: `AriaButtonProps`), `focusProps`, `hoverProps`, `role="combobox"`, `aria-haspopup="listbox"`, `aria-expanded`, `aria-controls`, `aria-required`, `aria-invalid`, `aria-disabled`, `data-open`, `ref`. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L40) returns `triggerProps: AriaButtonProps`. React Aria provides `aria-haspopup`, `aria-expanded` (boolean), `aria-controls` via `useOverlayTrigger`. Bento adds `role="combobox"`, converts `aria-expanded` to string, and adds `aria-required`, `aria-invalid`, `aria-disabled`.
 - `label` — Receives `labelProps` (type: `DOMAttributes`). Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L37) returns `labelProps: DOMAttributes`.
 - `value` / `trigger.value` — Receives `valueProps` (type: `DOMAttributes` with `id`), `selectedItem` (Node\<T\> | null), `selectedItems` (Node\<T\>[]). Slot alias `trigger.value` allows nesting value display inside trigger. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts#L215) returns `valueProps: { id: valueId }`. React Aria's [`SelectState.selectedItems`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/select/src/useSelectState.ts#L58) provides the Node array. For dynamic collections, `Node.value` holds the original item object. Consumers handle placeholder rendering using the provided selection data.
 - `popover` — Receives `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref`, `data-open`. Consumer handles portal rendering and styling.
@@ -217,14 +218,35 @@ const fruitsById = {
 - Generic type `T` is intentionally erased when passing to `SelectInner` - the inner component only needs keys and nodes, not specific item types
 - `ListStateContext.Provider` requires type cast from `SelectState<object, SelectionMode>` to `ListState<unknown>` - this is safe because `SelectState` extends `ListState` (Bento invariants #42, #43)
 
-**Ref Type Specificity**:
-- `trigger` slot: `React.RefObject<HTMLButtonElement>` (Button component renders native `<button>`)
-- `popover` slot: `React.RefObject<HTMLDivElement>` (typically portal-rendered container)
-- `listbox` slot: `React.RefObject<HTMLDivElement>` (ListBox renders `<div>` with `role="listbox"`)
+**Ref Type Constraints**:
 
-These typed refs enable React Aria's positioning and overlay management hooks to access correct DOM APIs.
+Select's implementation uses specific ref types to ensure type compatibility with slotted primitives:
+
+| Slot | Ref Type | Reason | Could Be Relaxed? |
+|------|----------|--------|-------------------|
+| `trigger` | `HTMLButtonElement` | Button primitive expects this specific type | ❌ No - constrained by Button's forwardRef type |
+| `popover` | `HTMLDivElement` | Implementation detail, could accept any HTMLElement | ✅ Yes - React Aria accepts `Element` |
+| `listbox` | `HTMLDivElement` | ListBox primitive renders `<div role="listbox">` | ❌ No - constrained by ListBox implementation |
+
+**Note**: While React Aria's `useOverlayPosition` accepts `RefObject<Element>` (flexible), Bento's specific ref types ensure type safety when composing with Button and ListBox primitives. The `popover` constraint is the most arbitrary and could be relaxed to `HTMLElement` in future versions if needed for semantic HTML like `<section>` or `<aside>`.
 
 ## Accessibility
+
+**W3C ARIA Combobox Pattern Conformance**:
+
+Select implements the [W3C ARIA combobox (select-only) pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/) with the following ARIA attributes:
+
+| Attribute | Source | Notes |
+|-----------|--------|-------|
+| `role="combobox"` | Bento Select | Added explicitly (line 271). React Aria's `useSelect` doesn't provide this. |
+| `aria-haspopup="listbox"` | React Aria | Provided by `useOverlayTrigger` (called by `useMenuTrigger`). Source: [`useOverlayTrigger.ts:57`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/useOverlayTrigger.ts#L57) |
+| `aria-expanded` | React Aria + Bento | React Aria provides as boolean. Bento converts to string (`"true"`/`"false"`) for CSS attribute selector compatibility. |
+| `aria-controls` | React Aria | Provided by `useOverlayTrigger`, references listbox `id`. Source: [`useOverlayTrigger.ts:65`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/useOverlayTrigger.ts#L65) |
+| `aria-labelledby` | React Aria | Auto-generated by `useSelect` to concatenate label and value IDs. Can be overridden via prop. |
+| `aria-required` | Bento Select | Added when `isRequired` or `required` prop is set. React Aria doesn't add this. |
+| `aria-invalid` | Bento Select | Added when `isInvalid` prop is set. React Aria doesn't add this. |
+| `aria-disabled` | Bento Select | Added when `isDisabled` prop is set. React Aria doesn't add this. |
+| `role="listbox"` | React Aria | Provided by `useListBox` (via `@bento/listbox`). Source: [`useListBox.ts:121`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/listbox/src/useListBox.ts#L121) |
 
 **ARIA attributes**: Provided by React Aria's `useSelect` hook. Source: [`useSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/useSelect.ts) returns props with ARIA attributes via `triggerProps` and `menuProps`. `useMenuTrigger` calls `useOverlayTrigger`, which sets `aria-haspopup`, `aria-expanded`, and `aria-controls` on the trigger. Sources: [`useMenuTrigger`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/menu/src/useMenuTrigger.ts#L55-L56) calls `useOverlayTrigger`, and [`useOverlayTrigger`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/useOverlayTrigger.ts#L62-L66) sets these attributes.
 
@@ -255,7 +277,7 @@ These typed refs enable React Aria's positioning and overlay management hooks to
 - Trigger props memoized with `React.useMemo` using explicit dependencies to prevent unnecessary re-computation of merged props (`triggerProps`, `focusProps`, `hoverProps`, ARIA attributes).
 - Slots object memoized with explicit dependency tracking (Bento invariant #45). All slot props must be listed in dependency array to prevent stale closures and unnecessary re-renders of slotted children.
 - Props merged using React Aria's `mergeProps` to combine `triggerProps`, `focusProps`, and `hoverProps` without duplicate event handlers.
-- Children prop destructured before passing to React Aria to prevent unnecessary re-renders. React Aria's `useCollection` includes `children` in its `useMemo` dependency array, causing re-renders on every reference change even though `CollectionBuilder` already processed children.
+- Children prop destructured before passing to React Aria to prevent unnecessary re-renders. React Stately's `useCollection` includes `children` in its `useMemo` dependency array (even with early-return when `collection` is provided), causing re-renders on every reference change even though `CollectionBuilder` already processed children. Source: [`useCollection.ts:32`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/collections/src/useCollection.ts#L32).
 
 ## Implementation Subtleties & Maintainer Notes
 
@@ -278,9 +300,9 @@ This section documents non-obvious implementation decisions that prevent regress
 
 **Pattern**: `const { children: _, ...propsWithoutChildren } = processedProps;`
 
-**Why**: React Aria's `useCollection` hook includes `children` in its `useMemo` dependency array. Even though `CollectionBuilder` already processed children in the parent component and passes the built `collection`, the presence of `children` triggers re-renders on every reference change.
+**Why**: React Stately's `useCollection` hook includes `children` in its `useMemo` dependency array. Even though `CollectionBuilder` already processed children in the parent component and passes the built `collection`, the presence of `children` triggers re-renders on every reference change.
 
-**Evidence**: [`useCollection` source](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/collections/src/useCollection.ts) - `children` in dependency array.
+**Evidence**: [`useCollection` source](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/collections/src/useCollection.ts#L26-L32) - `children` in dependency array at line 32. Even though line 27-29 early-returns when `collection` is provided, React's `useMemo` still evaluates all dependencies before executing the function.
 
 **Risk if removed**: Performance degradation - unnecessary re-renders of entire Select tree on every parent re-render.
 
@@ -383,7 +405,7 @@ Select provides the positioning and state; consumers handle focus policy via the
 
 | Slot Name | Description | Required | Default Fallback | Props Received |
 |-----------|-------------|----------|------------------|----------------|
-| `trigger` | Button that opens/closes the select | Yes | No | `triggerProps`, `focusProps`, `hoverProps`, `role="combobox"`, `aria-*` attributes, `data-open`, `ref` |
+| `trigger` | Button that opens/closes the select | Yes | No | `triggerProps` (AriaButtonProps with `aria-haspopup`, `aria-expanded`, `aria-controls` from React Aria), `focusProps`, `hoverProps`, `role="combobox"`, `aria-required`, `aria-invalid`, `aria-disabled`, `data-open`, `ref` |
 | `label` | Accessible label | No | No | `labelProps` (DOMAttributes) |
 | `value` / `trigger.value` | Displayed selected value | No | No | `valueProps` (DOMAttributes with `id`), `selectedItem` (Node\<T\> or null), `selectedItems` (Node\<T\>[]) — for dynamic collections, `selectedItem?.value` / `selectedItems[i].value` is the backing object. Alias `trigger.value` enables nesting value inside trigger. |
 | `popover` | Overlay container | Yes | No | `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref`, `data-open` |
