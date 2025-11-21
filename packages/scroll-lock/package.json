@@ -1,7 +1,7 @@
 {
-  "name": "@bento/portal",
+  "name": "@bento/scroll-lock",
   "version": "0.0.0",
-  "description": "Portal component primitive - render children into a target DOM container",
+  "description": "ScrollLock component primitive - prevents background scrolling with React Aria integration",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -22,10 +22,13 @@
     "bento",
     "component",
     "library",
-    "portal",
+    "scroll-lock",
     "primitive",
     "react",
-    "slots"
+    "slots",
+    "accessibility",
+    "overlay",
+    "modal"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
@@ -67,3 +70,4 @@
     "registry": "https://registry.npmjs.org/"
   }
 }
+
