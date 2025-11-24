@@ -9,37 +9,6 @@ import { mergeRefs, useObjectRef, mergeProps } from '@react-aria/utils';
 import type { HoverEvents } from 'react-aria';
 
 /**
- * Render props provided to className and style functions.
- */
-export interface InputRenderProps {
-  /**
-   * Whether the input is currently hovered with a mouse.
-   * @selector [data-hovered]
-   */
-  isHovered: boolean;
-  /**
-   * Whether the input is focused, either via a mouse or keyboard.
-   * @selector [data-focused]
-   */
-  isFocused: boolean;
-  /**
-   * Whether the input is keyboard focused.
-   * @selector [data-focus-visible]
-   */
-  isFocusVisible: boolean;
-  /**
-   * Whether the input is disabled.
-   * @selector [data-disabled]
-   */
-  isDisabled: boolean;
-  /**
-   * Whether the input is invalid.
-   * @selector [data-invalid]
-   */
-  isInvalid: boolean;
-}
-
-/**
  * Props for the Input component.
  */
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'style'>, HoverEvents {
@@ -63,16 +32,6 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
    * Whether the input should be focused on mount.
    */
   autoFocus?: boolean;
-
-  /**
-   * The CSS className for the element. A function may be provided to compute the class based on component state.
-   */
-  className?: string | ((renderProps: InputRenderProps) => string);
-
-  /**
-   * The inline style for the element. A function may be provided to compute the style based on component state.
-   */
-  style?: React.CSSProperties | ((renderProps: InputRenderProps) => React.CSSProperties);
 }
 
 /**
