@@ -7,14 +7,14 @@ PDR describing the `Select` primitive built on React Aria's `useSelect` and `use
 ### Unique Attributes
 
 - **Reuses ListBox selection patterns**: Uses existing [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) from `@bento/listbox` to share selection state with `ListBox` and `ListBoxItem` components. Source: [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) is exported and consumed by [`ListBoxItem`](../../packages/listbox/src/listbox-item.tsx#L133).
-- **Form integration via HiddenSelect**: React Aria provides [`HiddenSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L142) component that renders a hidden native `<select>` element (lines 152-172) with `<option>` elements (lines 158-169) for form submission and browser autofill. Source: [`HiddenSelect.tsx`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L142) renders hidden `<select>` when `state.collection.size <= 300` (line 151), otherwise renders hidden `<input type="hidden">` when `name` prop is provided (lines 174-214).
+- **Form integration via HiddenSelect**: React Aria provides [`HiddenSelect`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L142) which renders a visually hidden native [`<select>` with `<option>` elements](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L152-L172) when [`state.collection.size <= 300`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L151), and for larger collections renders one or more hidden inputs ([`type="hidden"`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L174-L214) or [`type="text"`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L216-L264) when `validationBehavior="native"`) wired to the `name`/`form` props for native form submission (browser autofill is only supported in the `<select>` path when `state.collection.size <= 300`). Source: [`HiddenSelect.tsx`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/select/src/HiddenSelect.tsx#L142).
 
 ## Goals
 
 - Provide a single- and multi-select dropdown primitive built on React Aria's `useSelect` and `useSelectState` hooks.
 - Reuse existing Bento primitives (`ListBox`, `ListBoxItem`, `Container`, slots) rather than introducing new option or popover primitives.
 - Integrate with native HTML forms via React Aria's `HiddenSelect` using the `name` prop.
-- Expose a minimal public API that largely forwards to React Aria `SelectProps` while using Bento's slot system for composition.
+- Expose a small public API surface that forwards most props to React Aria `SelectProps` while using Bento's slot system for composition.
 
 ## Constraints
 
@@ -30,11 +30,17 @@ PDR describing the `Select` primitive built on React Aria's `useSelect` and `use
 - `Select` — Coordinator component
 
 **Type Safety Exports**:
+- `SelectProps` — Generic props interface for the `Select` component (`SelectProps<T, M extends SelectionMode>`).
 - `SelectionMode` — Type alias for selection modes: `'single' | 'multiple'`.
 - `SelectSlots` — Type map for all slot prop types. Enables type-safe slot component implementations.
 - `PropsFromSelectSlot<S>` — Utility type for extracting individual slot prop types without importing each interface.
 - `SelectRenderProps` — Type for render props passed to `renderEmptyState` function.
-- Individual slot prop interfaces: `SelectTriggerSlotProps`, `SelectValueSlotProps`, `SelectPopoverSlotProps`, `SelectListSlotProps` — Available for direct import when needed.
+- Individual slot prop interfaces: `SelectTriggerSlotProps`, `SelectValueSlotProps`, `SelectPopoverSlotProps`, `SelectListSlotProps` — Available for direct import when needed (derivable from `PropsFromSelectSlot`).
+
+**Advanced type & hook exports (optional)**:
+- `SelectState` — React Stately `SelectState<T, M>` type (re-exported for advanced integrations; not required for normal usage).
+- `Placement` — Popover placement type from React Aria (re-exported for convenience).
+- `useSelectState` — React Stately hook for Select state management (re-exported for advanced control flows).
 
 **Dependencies**:
 - `@bento/listbox` — Provides `ListBox`, `ListBoxItem`, and `ListStateContext`. Source: [`ListStateContext`](../../packages/listbox/src/listbox.tsx#L107) exists.
@@ -71,9 +77,12 @@ PDR describing the `Select` primitive built on React Aria's `useSelect` and `use
 
 ### Working with item data
 
-**For dynamic collections**, use `items` on `Select`/`ListBox` and read `Node.value` in the `value` slot:
+**For dynamic collections**, use `items` on `Select`/`ListBox` and read `Node.value` from `selectedItem`:
 
 ```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+
 type Fruit = { id: string; name: string; calories: number };
 
 const fruits: Fruit[] = [
@@ -81,21 +90,22 @@ const fruits: Fruit[] = [
   { id: 'orange', name: 'Orange', calories: 47 }
 ];
 
-<Select<Fruit>
-  items={fruits}
-  slots={{
-    value: ({ selectedItem, ...props }) => {
-      const fruit = selectedItem?.value as Fruit | undefined;
-      return (
-        <span {...props}>
-          {fruit ? `${fruit.name} (${fruit.calories} kcal)` : 'Select a fruit'}
-        </span>
-      );
-    }
-  }}
->
+// Value display component using withSlots pattern
+const FruitValue = withSlots('FruitValue', function FruitValue(args: any) {
+  const { props } = useProps(args);
+  const { selectedItem, ...rest } = props;
+  const fruit = selectedItem?.value as Fruit | undefined;
+  
+  return (
+    <span {...rest}>
+      {fruit ? `${fruit.name} (${fruit.calories} kcal)` : 'Select a fruit'}
+    </span>
+  );
+});
+
+<Select<Fruit> items={fruits}>
   <Button slot="trigger">
-    <span slot="value" />
+    <FruitValue slot="value" />
   </Button>
   <div slot="popover" style={{ display: 'block' }}>
     <ListBox<Fruit> slot="listbox">
@@ -108,27 +118,31 @@ const fruits: Fruit[] = [
 **For static children**, map keys to your own data:
 
 ```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+
 const fruitsById = {
   apple: { name: 'Apple', calories: 52 },
   orange: { name: 'Orange', calories: 47 }
 } as const;
 
-<Select
-  defaultValue="apple"
-  slots={{
-    value: ({ selectedItem, ...props }) => {
-      const id = selectedItem?.key as keyof typeof fruitsById | undefined;
-      const fruit = id ? fruitsById[id] : undefined;
-      return (
-        <span {...props}>
-          {fruit ? `${fruit.name} (${fruit.calories} kcal)` : 'Select a fruit'}
-        </span>
-      );
-    }
-  }}
->
+// Value display component using withSlots pattern
+const FruitValue = withSlots('FruitValue', function FruitValue(args: any) {
+  const { props } = useProps(args);
+  const { selectedItem, ...rest } = props;
+  const id = selectedItem?.key as keyof typeof fruitsById | undefined;
+  const fruit = id ? fruitsById[id] : undefined;
+  
+  return (
+    <span {...rest}>
+      {fruit ? `${fruit.name} (${fruit.calories} kcal)` : 'Select a fruit'}
+    </span>
+  );
+});
+
+<Select defaultValue="apple">
   <Button slot="trigger">
-    <span slot="value" />
+    <FruitValue slot="value" />
   </Button>
   <Popover slot="popover">
     <ListBox slot="listbox">
@@ -138,6 +152,10 @@ const fruitsById = {
   </Popover>
 </Select>
 ```
+
+**Pattern requirements**:
+- If you want a **component** to receive slot props (like `selectedItem`, `selectedItems`) via `useProps`, it must be wrapped with `withSlots`.
+- Plain elements like `<span slot="value" />` do not receive `selectedItem` themselves via `useProps`; they only act as slot markers for a slotted component (e.g. `ValueDisplay`) that actually consumes the props.
 
 ## Implementation Notes
 
@@ -184,10 +202,9 @@ const fruitsById = {
 
 **Props from React Aria**:
 - `value`/`defaultValue` — Type: `Key | null` (single) or `Key[]` (multiple). Selection state control. Source: [`ValueBase`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L65) provides these props.
-- `onChange` — Handler called when selection changes. Type: `(value: Key | null) => void` (single) or `(value: Key[]) => void` (multiple). Source: [`ValueBase.onChange`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L71).
+- `onChange` — Handler called when selection/value changes. Type: `(value: Key | null) => void` (single) or `(value: Key[]) => void` (multiple). Source: [`SelectProps<T, M>`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) extends [`ValueBase<ValueType<M>>`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L65) from `@react-types/shared`, which defines [`onChange?: (value: C) => void`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L71).
 - `selectionMode` — Type: `'single' | 'multiple'`, default `'single'`. Source: [`SelectProps.selectionMode`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L43) with default `'single'` from [`useSelectState`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/select/src/useSelectState.ts#L82).
-- `isOpen`/`defaultOpen`/`onOpenChange` — From `OverlayTriggerProps`. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L59-64) includes these props from `OverlayTriggerProps`.
-- `onChange` — From `ValueBase`. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) extends `ValueBase<ValueType<M>>` which provides `onChange?: (value: C) => void`. Source: [`ValueBase.onChange`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/shared/src/inputs.d.ts#L71).
+- `isOpen` / `defaultOpen` / `onOpenChange` — Overlay trigger-style props controlling the open state of the menu. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts) in `@react-types/select`.
 - `name` — For form submission. Source: [`AriaSelectProps.name`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L77).
 - `label` — From `LabelableProps`. Source: [`AriaSelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L69) extends `LabelableProps`.
 - `isDisabled`, `isRequired`, `isInvalid` — From React Aria types. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) includes these from `InputBase` and `Validation`.
@@ -195,7 +212,7 @@ const fruitsById = {
   - **React Aria defaults**: `placement='bottom'`, `offset=0`, `crossOffset=0`, `shouldFlip=true`, `containerPadding=12`. Source: [`useOverlayPosition.ts`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/useOverlayPosition.ts#L100-104).
   - **Bento Select will override**: `placement='bottom start'` (aligns popover to start edge like React Spectrum's Picker).
 - `renderEmptyState` — Render function or element to display when collection is empty. Receives `SelectRenderProps` with `{ isOpen, isDisabled, isInvalid, isRequired, selectedItem, selectedItems, isEmpty }`. Extracted before `useProps` to prevent render prop corruption (Bento invariant #16).
-- `required` — Native HTML attribute for form validation, inherited from `React.ComponentProps<'div'>`. Works alongside `isRequired` for compatibility with native HTML forms and form libraries.
+- `required` — Native HTML attribute available via `React.ComponentProps<'div'>`. Select combines `required` and `isRequired` when computing ARIA decoration (`aria-required`), but React Aria's `HiddenSelect` and validation behavior are driven by `isRequired` + `validationBehavior`, not `required`.
 - `aria-labelledby` — ARIA attribute for custom label associations, inherited from `React.ComponentProps<'div'>`. Can override React Aria's auto-generated label associations when explicit control is needed.
 
 **Slot structure**:
@@ -209,7 +226,7 @@ const fruitsById = {
 
 **Rendered DOM structure**: Consumer-controlled via slots. Select coordinator only distributes props via context.
 
-**Controlled vs Uncontrolled**: Supports both via `value`/`defaultValue` and `isOpen`/`defaultOpen` props. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) extends `ValueBase<ValueType<M>>` and `OverlayTriggerProps`.
+**Controlled vs Uncontrolled**: Supports both via `value` / `defaultValue` (selection) and `isOpen` / `defaultOpen` (menu open state). Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) extends `ValueBase<ValueType<M>>` and includes explicit open-state props.
 
 ## TypeScript Considerations
 
@@ -225,10 +242,10 @@ Select's implementation uses specific ref types to ensure type compatibility wit
 | Slot | Ref Type | Reason | Could Be Relaxed? |
 |------|----------|--------|-------------------|
 | `trigger` | `HTMLButtonElement` | Button primitive expects this specific type | ❌ No - constrained by Button's forwardRef type |
-| `popover` | `HTMLDivElement` | Implementation detail, could accept any HTMLElement | ✅ Yes - React Aria accepts `Element` |
+| `popover` | `HTMLDivElement` internal, `HTMLElement` in public slot props | Internal implementation detail; React Aria only requires `Element` | 🔶 Internally could be generalized further if needed |
 | `listbox` | `HTMLDivElement` | ListBox primitive renders `<div role="listbox">` | ❌ No - constrained by ListBox implementation |
 
-**Note**: While React Aria's `useOverlayPosition` accepts `RefObject<Element>` (flexible), Bento's specific ref types ensure type safety when composing with Button and ListBox primitives. The `popover` constraint is the most arbitrary and could be relaxed to `HTMLElement` in future versions if needed for semantic HTML like `<section>` or `<aside>`.
+**Note**: The internal `popoverRef` uses `HTMLDivElement` for now, but the public `SelectPopoverSlotProps.ref` is already `RefObject<HTMLElement>`, and React Aria's `useOverlayPosition` only requires `RefObject<Element>`. The `trigger` and `listbox` constraints are fundamental - Button expects `HTMLButtonElement` and ListBox renders a `div`.
 
 ## Accessibility
 
@@ -287,7 +304,7 @@ This section documents non-obvious implementation decisions that prevent regress
 
 **Pattern**: `<ListStateContext.Provider value={state as ListState<unknown>}>`
 
-**Why**: React Aria's ListBox components expect `ListState<unknown>` via context, but Select provides `SelectState<object, SelectionMode>`. The cast is safe because:
+**Why**: Bento's `ListBox` components expect `ListState<unknown>` via `ListStateContext`, but Select provides `SelectState<object, SelectionMode>`. The cast is safe because:
 - `SelectState` extends `ListState<T>` (verified in React Aria source)
 - `object` is compatible with `unknown` in this contravariant position
 - ListBox only accesses ListState methods, not Select-specific ones
@@ -325,14 +342,11 @@ popover: {
 
 **Pattern**: `const isRequired = processedProps.required || processedProps.isRequired;`
 
-**Why**: Supports two use cases:
-- **HTML forms**: Native `required` attribute enables browser validation
-- **Form libraries** (React Hook Form, Formik): Often use `isRequired` prop
-- **React Aria**: Uses `isRequired` prop convention
+**Why**: Call sites may use either the native `required` attribute or React Aria's `isRequired` prop. Select combines them when computing `aria-required` so ARIA decoration is correct even if only `required` is set.
 
-Both are applied: `required` goes on hidden select, `isRequired` controls ARIA and validation state.
+**Behavior**: React Aria's `HiddenSelect` and validation behavior are driven by `isRequired` + `validationBehavior` (stored via `selectData` inside `useSelect`), not by the native `required` attribute. The combined `isRequired` here only affects ARIA decoration on the trigger, not the underlying `HiddenSelect` validation logic.
 
-**Risk if removed**: Breaks compatibility with either native forms or form libraries.
+**Risk if removed**: If we stopped considering `required` when computing `aria-required`, consumers relying on the native attribute alone would lose ARIA-level required semantics on the trigger.
 
 **Consider**: Should this pattern be standardized across all Bento form primitives?
 
@@ -373,7 +387,7 @@ Both are applied: `required` goes on hidden select, `isRequired` controls ARIA a
 
 **Status**: Consumer responsibility (not an open question)
 
-**Pattern**: Examples show `<FocusScope>` wrapper in consumer's Popover component
+**Pattern**: Consumer popover components are expected to wrap contents in React Aria's `<FocusScope>` when they need focus containment and restore behavior.
 
 **Why**: Different applications need different focus management:
 - Modals: Trap focus completely
@@ -383,6 +397,23 @@ Both are applied: `required` goes on hidden select, `isRequired` controls ARIA a
 Select provides the positioning and state; consumers handle focus policy via their Popover implementation.
 
 **Risk if changed**: Forcing focus management in Select reduces flexibility for different UX patterns.
+
+### 9. Deliberate ARIA Invariant Deviation
+
+**Pattern**: `Select` manually sets certain ARIA attributes on the trigger:
+- `role="combobox"`
+- `aria-required`, `aria-invalid`, `aria-disabled`
+- Stringified `aria-expanded` (`"true"` / `"false"`)
+
+**Why**: React Aria's `useSelect` and `useOverlayTrigger` provide most ARIA attributes (`aria-haspopup`, boolean `aria-expanded`, `aria-controls`, `aria-labelledby`), but:
+- WAI-ARIA combobox (select-only) requires `role="combobox"` on the trigger, which `useSelect` does not set.
+- React Aria does not set `aria-required`, `aria-invalid`, or `aria-disabled` on the trigger; Bento adds these to align with other form primitives and to expose state to assistive tech and CSS.
+
+**Invariant impact**: This is a deliberate, narrow exception to Bento invariant #22 ("ARIA Props from React Aria"). All other ARIA attributes still come from React Aria hooks; manual ARIA is limited to the attributes above and documented here.
+
+**Risk if changed**: Removing these manual attributes would:
+- Break strict conformance with the WAI-ARIA combobox select-only pattern (`role="combobox"`).
+- Make `isRequired` / `isInvalid` / `isDisabled` states invisible to assistive tech and CSS on the trigger element.
 
 ## Data Attributes and Slot Map
 
@@ -405,7 +436,7 @@ Select provides the positioning and state; consumers handle focus policy via the
 
 | Slot Name | Description | Required | Default Fallback | Props Received |
 |-----------|-------------|----------|------------------|----------------|
-| `trigger` | Button that opens/closes the select | Yes | No | `triggerProps` (AriaButtonProps with `aria-haspopup`, `aria-expanded`, `aria-controls` from React Aria), `focusProps`, `hoverProps`, `role="combobox"`, `aria-required`, `aria-invalid`, `aria-disabled`, `data-open`, `ref` |
+| `trigger` | Button that opens/closes the select | Yes | No | Merged trigger props from React Aria (`triggerProps` with `aria-haspopup`, `aria-expanded`, `aria-controls`) and Bento (`useFocusRing`, `useHover`), plus `role="combobox"`, `aria-required`, `aria-invalid`, `aria-disabled`, `data-open`, `ref` |
 | `label` | Accessible label | No | No | `labelProps` (DOMAttributes) |
 | `value` / `trigger.value` | Displayed selected value | No | No | `valueProps` (DOMAttributes with `id`), `selectedItem` (Node\<T\> or null), `selectedItems` (Node\<T\>[]) — for dynamic collections, `selectedItem?.value` / `selectedItems[i].value` is the backing object. Alias `trigger.value` enables nesting value inside trigger. |
 | `popover` | Overlay container | Yes | No | `overlayProps`, `positionProps`, `isOpen`, `onClose`, `ref`, `data-open` |
@@ -420,7 +451,7 @@ Optional `description` and `error` slots mirror the form help/error pattern show
 **Popover Implementation Requirements**:
 Consumers must implement popover components that handle:
 1. **Portal rendering**: Render outside parent DOM hierarchy to escape overflow/z-index constraints
-2. **Positioning styles**: Apply `style` prop from `positionProps` for correct placement
+2. **Positioning styles**: Spread the `popover` slot props (which include `style` from `useOverlayPosition`) onto the popover element so it is correctly positioned relative to the trigger.
 3. **Display toggling**: Show/hide based on `isOpen` prop or `data-open` attribute
 4. **Focus management**: Typically wrap contents in React Aria's `FocusScope` with `contain`, `restoreFocus`, `autoFocus`
 
@@ -435,20 +466,23 @@ Select provides positioning via `useOverlayPosition` but does not render portals
 ### Basic Usage
 
 ```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
 import { Select } from '@bento/select';
 import { Button } from '@bento/button';
 import { ListBox, ListBoxItem } from '@bento/listbox';
 import { Popover } from './popover'; // Consumer-provided popover component
 
-<Select
-  value={selectedKey}
-  onChange={setSelectedKey}
-  slots={{
-    value: ({ props }) => <span {...props}>{props.selectedItem?.textValue || 'Select...'}</span>
-  }}
->
+// Slottable value component
+const ValueDisplay = withSlots('SelectValue', function SelectValue(args: any) {
+  const { props } = useProps(args);
+  const { selectedItem, ...rest } = props;
+  return <span {...rest}>{selectedItem?.textValue || 'Select...'}</span>;
+});
+
+<Select value={selectedKey} onChange={setSelectedKey}>
   <Button slot="trigger">
-    <span slot="value" />
+    <ValueDisplay slot="value" />
   </Button>
   <Popover slot="popover">
     <ListBox slot="listbox">
@@ -464,22 +498,29 @@ import { Popover } from './popover'; // Consumer-provided popover component
 ### Multi-select
 
 ```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+
+// Slottable value component for multi-select
+const MultiValueDisplay = withSlots('MultiSelectValue', function MultiSelectValue(args: any) {
+  const { props } = useProps(args);
+  const { selectedItems, ...rest } = props;
+  return (
+    <span {...rest}>
+      {selectedItems?.length > 0
+        ? selectedItems.map(i => i.textValue).join(', ')
+        : 'Select items...'}
+    </span>
+  );
+});
+
 <Select
   selectionMode="multiple"
   value={selectedKeys}
   onChange={setSelectedKeys}
-  slots={{
-    value: ({ props }) => (
-      <span {...props}>
-        {props.selectedItems?.length > 0
-          ? props.selectedItems.map(i => i.textValue).join(', ')
-          : 'Select items...'}
-      </span>
-    )
-  }}
 >
   <Button slot="trigger">
-    <span slot="value" />
+    <MultiValueDisplay slot="value" />
   </Button>
   <Popover slot="popover">
     <ListBox slot="listbox">
@@ -494,17 +535,24 @@ import { Popover } from './popover'; // Consumer-provided popover component
 ### With Form Integration
 
 ```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+
+// Slottable value component
+const ValueDisplay = withSlots('SelectValue', function SelectValue(args: any) {
+  const { props } = useProps(args);
+  const { selectedItem, ...rest } = props;
+  return <span {...rest}>{selectedItem?.textValue || 'Select a fruit'}</span>;
+});
+
 <form>
   <Select
     name="fruit"
     value={selectedKey}
     onChange={setSelectedKey}
-    slots={{
-      value: ({ props }) => <span {...props}>{props.selectedItem?.textValue || 'Select a fruit'}</span>
-    }}
   >
     <Button slot="trigger">
-      <span slot="value" />
+      <ValueDisplay slot="value" />
     </Button>
     <Popover slot="popover">
       <ListBox slot="listbox">
@@ -522,6 +570,16 @@ import { Popover } from './popover'; // Consumer-provided popover component
 ### With Empty State
 
 ```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+
+// Slottable value component
+const ValueDisplay = withSlots('SelectValue', function SelectValue(args: any) {
+  const { props } = useProps(args);
+  const { selectedItem, ...rest } = props;
+  return <span {...rest}>{selectedItem?.textValue || 'Select...'}</span>;
+});
+
 <Select
   value={selectedKey}
   onChange={setSelectedKey}
@@ -530,12 +588,9 @@ import { Popover } from './popover'; // Consumer-provided popover component
       No options available
     </div>
   )}
-  slots={{
-    value: ({ props }) => <span {...props}>{props.selectedItem?.textValue || 'Select...'}</span>
-  }}
 >
   <Button slot="trigger">
-    <span slot="value" />
+    <ValueDisplay slot="value" />
   </Button>
   <Popover slot="popover">
     <ListBox slot="listbox">
