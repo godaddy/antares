@@ -182,7 +182,7 @@ function DrawerComponent(args: DrawerProps, ref: React.ForwardedRef<HTMLDivEleme
   });
 
   return (
-    <Container {...dataAttributes} {...appliedUserProps} style={style} ref={ref} slot="drawer">
+    <Container {...dataAttributes} {...appliedUserProps} style={style} ref={ref}>
       <div
         style={{
           // min-height: 0 and min-width: 0 are critical - allows grid item to shrink below content size
