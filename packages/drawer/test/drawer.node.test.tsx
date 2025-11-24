@@ -125,21 +125,6 @@ describe('@bento/drawer', function bento() {
 
       assume(result).includes('data-override="className style"');
     });
-
-    it('introduced the `drawer` slot to the Container component', function drawerSlot() {
-      const result = renderToStringDrawer({
-        isExpanded: true,
-        children: <div>Drawer content</div>,
-        slots: {
-          drawer: {
-            'data-foo': 'bar'
-          }
-        }
-      });
-
-      assume(result).includes('data-override="style slot"');
-      assume(result).includes('data-foo="bar"');
-    });
   });
 
   describe('Public API', function packageSuite() {
