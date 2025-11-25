@@ -1,5 +1,15 @@
 # @bento/use-props
 
+## 0.1.2
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/box@0.2.0
+</details>
+
 ## 0.1.1
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @bento/container
 
+## 0.1.2
+
+### Patch Changes
+
+- Allow no children to be specified when creating presentational elements. Correctly inherits slot overrides. ([#45](https://github.com/godaddy/bento/pull/45) by @akazemier-godaddy)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.1.4
+- @bento/use-props@0.1.2
+</details>
+
 ## 0.1.1
 
 ### Patch Changes

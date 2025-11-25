@@ -1,6 +1,6 @@
 {
   "name": "@bento/environment",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Setup a custom environment for your Bento application",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,8 +40,8 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.1.1",
-    "@bento/slots": "^0.1.3",
+    "@bento/box": "^0.2.0",
+    "@bento/slots": "^0.1.4",
     "ts-deepmerge": "^7.0.3",
     "use-deep-compare": "^1.3.0"
   },
