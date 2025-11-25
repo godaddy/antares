@@ -4,7 +4,7 @@
  * The drawer uses CSS scroll snap to provide smooth gesture interactions without
  * requiring a motion library dependency.
  */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Drawer } from '@bento/drawer';
 import { Button } from '@bento/button';
 import { Portal } from '@bento/portal';

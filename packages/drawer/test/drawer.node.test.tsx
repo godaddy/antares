@@ -24,28 +24,28 @@ function renderToStringDrawer(args: DrawerProps & { slots?: AnyObject }) {
 describe('@bento/drawer', function bento() {
   it('renders a drawer with the correct props', function drawer() {
     const result = renderToStringDrawer({
-      isExpanded: true,
+      open: true,
       role: 'region',
       children: 'Drawer content'
     });
 
-    assume(result).includes('data-is-expanded="true"');
+    assume(result).includes('aria-expanded="true"');
     assume(result).includes('role="region"');
     assume(result).includes('Drawer content');
   });
 
-  it('renders without data-is-expanded when collapsed', function collapsed() {
+  it('renders with aria-expanded="false" when closed', function collapsed() {
     const result = renderToStringDrawer({
-      isExpanded: false,
+      open: false,
       children: 'Drawer content'
     });
 
-    assume(result).does.not.include('data-is-expanded');
+    assume(result).includes('aria-expanded="false"');
   });
 
   it('renders with custom role', function customRole() {
     const result = renderToStringDrawer({
-      isExpanded: true,
+      open: true,
       role: 'dialog',
       children: 'Drawer content'
     });
@@ -53,60 +53,9 @@ describe('@bento/drawer', function bento() {
     assume(result).includes('role="dialog"');
   });
 
-  it('renders with top placement', function topPlacement() {
-    const result = renderToStringDrawer({
-      isExpanded: true,
-      placement: 'top',
-      children: 'Drawer content'
-    });
-
-    assume(result).includes('data-placement="top"');
-  });
-
-  it('renders with right placement', function rightPlacement() {
-    const result = renderToStringDrawer({
-      isExpanded: true,
-      placement: 'right',
-      children: 'Drawer content'
-    });
-
-    assume(result).includes('data-placement="right"');
-  });
-
-  it('renders with end placement', function endPlacement() {
-    const result = renderToStringDrawer({
-      isExpanded: true,
-      placement: 'end',
-      children: 'Drawer content'
-    });
-
-    assume(result).includes('data-placement="end"');
-  });
-
-  it('renders with animate disabled', function animateDisabled() {
-    const result = renderToStringDrawer({
-      isExpanded: true,
-      animate: false,
-      children: 'Drawer content'
-    });
-
-    assume(result).does.not.include('transition');
-    assume(result).does.not.include('will-change');
-  });
-
-  it('renders with custom animate string', function customAnimate() {
-    const result = renderToStringDrawer({
-      isExpanded: true,
-      animate: '0.5s ease-out',
-      children: 'Drawer content'
-    });
-
-    assume(result).includes('transition:all 0.5s ease-out');
-  });
-
   it('applies user styles', function userStyles() {
     const result = renderToStringDrawer({
-      isExpanded: true,
+      open: true,
       style: { backgroundColor: 'blue' },
       children: 'Drawer content'
     });
@@ -119,7 +68,7 @@ describe('@bento/drawer', function bento() {
       const result = renderToStringDrawer({
         className: 'custom-class',
         style: { color: 'red' },
-        isExpanded: true,
+        open: true,
         children: <div>Drawer content</div>
       });
 

@@ -44,9 +44,9 @@ A drawer that is portaled and appears as a bottom sheet:
 
 The Drawer component is a fully controlled component that requires you to manage its state:
 
-- **ARIA attributes**: You should set `aria-expanded` based on your state management
+- **ARIA attributes**: The component automatically sets `aria-expanded` based on the `open` prop
 - **Role support**: Can be configured with `role="dialog"` for modal-like behavior or `role="region"` for non-modal content
-- **State management**: Use `useState` or your preferred state management solution to control `isExpanded`
+- **State management**: Use `useState` or your preferred state management solution to control the `open` prop
 
 ## React Aria Integration
 

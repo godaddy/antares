@@ -34,7 +34,7 @@ function DrawerComponent(args: DrawerProps): React.ReactElement {
   const containerProps = apply(
     {
       ...dataAttributes,
-      'aria-expanded': open
+      'aria-expanded': String(open)
     },
     ['open', 'children']
   );

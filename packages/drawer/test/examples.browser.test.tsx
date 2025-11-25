@@ -4,7 +4,7 @@ import React from 'react';
 import { BasicDrawerExample } from '../examples/basic.tsx';
 import { ConstrainedDrawerExample } from '../examples/constrained.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
-import { DismissalDrawerExample } from '../examples/dismissal.tsx';
+import { GestureDrawerExample } from '../examples/gestures.tsx';
 import userEvent from '@testing-library/user-event';
 
 describe('@bento/drawer examples', function examples() {
@@ -14,20 +14,34 @@ describe('@bento/drawer examples', function examples() {
       expect(container).toBeTruthy();
     });
 
-    it('should toggle drawer and show both button text states', async function test() {
+    it('should have aria-expanded="false" when drawer is closed', function test() {
       const { container } = render(<BasicDrawerExample />);
-      const button = container.querySelector('button');
+      const drawer = container.querySelector('[aria-expanded]');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+    });
 
-      // Initially collapsed, button should say "Expand"
-      expect(button?.textContent).toContain('Expand');
+    it('should change aria-expanded to "true" when drawer opens', async function test() {
+      const { container } = render(<BasicDrawerExample />);
+      const button = container.querySelector('button') as HTMLElement;
+      const drawer = container.querySelector('[aria-expanded]') as HTMLElement;
 
-      // Click to expand
-      await userEvent.click(button!);
-      expect(button?.textContent).toContain('Collapse');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
+    });
 
-      // Click to collapse
-      await userEvent.click(button!);
-      expect(button?.textContent).toContain('Expand');
+    it('should change aria-expanded back to "false" when drawer closes', async function test() {
+      const { container } = render(<BasicDrawerExample />);
+      const button = container.querySelector('button') as HTMLElement;
+      const drawer = container.querySelector('[aria-expanded]') as HTMLElement;
+
+      // Open drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
+
+      // Close drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
   });
 
@@ -37,20 +51,34 @@ describe('@bento/drawer examples', function examples() {
       expect(container).toBeTruthy();
     });
 
-    it('should toggle drawer and show both button text states', async function test() {
+    it('should have aria-expanded="false" when drawer is closed', function test() {
       const { container } = render(<ConstrainedDrawerExample />);
-      const button = container.querySelector('button');
+      const drawer = container.querySelector('[aria-expanded]');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+    });
 
-      // Initially collapsed, button should say "Expand"
-      expect(button?.textContent).toContain('Expand');
+    it('should change aria-expanded to "true" when drawer opens', async function test() {
+      const { container } = render(<ConstrainedDrawerExample />);
+      const button = container.querySelector('button') as HTMLElement;
+      const drawer = container.querySelector('[aria-expanded]') as HTMLElement;
 
-      // Click to expand
-      await userEvent.click(button!);
-      expect(button?.textContent).toContain('Collapse');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
+    });
 
-      // Click to collapse
-      await userEvent.click(button!);
-      expect(button?.textContent).toContain('Expand');
+    it('should change aria-expanded back to "false" when drawer closes', async function test() {
+      const { container } = render(<ConstrainedDrawerExample />);
+      const button = container.querySelector('button') as HTMLElement;
+      const drawer = container.querySelector('[aria-expanded]') as HTMLElement;
+
+      // Open drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
+
+      // Close drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
   });
 
@@ -60,112 +88,103 @@ describe('@bento/drawer examples', function examples() {
       expect(container).toBeTruthy();
     });
 
-    it('should toggle drawer and show both button text states', async function test() {
-      const { container } = render(<BottomSheetExample />);
-      const button = container.querySelector('button');
-
-      // Initially collapsed, button should say "Open"
-      expect(button?.textContent).toContain('Open');
-
-      // Click to expand
-      await userEvent.click(button!);
-      expect(button?.textContent).toContain('Close');
-
-      // Click to collapse
-      await userEvent.click(button!);
-      expect(button?.textContent).toContain('Open');
+    it('should have aria-expanded="false" when drawer is closed', function test() {
+      render(<BottomSheetExample />);
+      const drawer = document.querySelector('[aria-expanded]');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('should show overlay when expanded and hide when collapsed', async function test() {
-      const { container } = render(<BottomSheetExample />);
-      const button = container.querySelector('button');
-      const overlay = document.querySelector('div[style*="position: fixed"]');
+    it('should change aria-expanded to "true" when drawer opens', async function test() {
+      render(<BottomSheetExample />);
+      const button = document.querySelector('#bottom-sheet button') as HTMLElement;
+      const drawer = document.querySelector('[aria-expanded]') as HTMLElement;
 
-      // Initially collapsed, overlay should be transparent
-      expect(overlay?.getAttribute('style')).toContain('transparent');
-
-      // Click to expand
-      await userEvent.click(button!);
-      expect(overlay?.getAttribute('style')).toContain('rgba(0, 0, 0, 0.5)');
-
-      // Click to collapse
-      await userEvent.click(button!);
-      expect(overlay?.getAttribute('style')).toContain('transparent');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
     });
 
-    it('should call handleOverlayClick when overlay is clicked', async function test() {
-      const { container } = render(<BottomSheetExample />);
-      const button = container.querySelector('button');
+    it('should change aria-expanded back to "false" when drawer closes', async function test() {
+      render(<BottomSheetExample />);
+      const button = document.querySelector('#bottom-sheet button') as HTMLElement;
+      const drawer = document.querySelector('[aria-expanded]') as HTMLElement;
 
-      // Expand the drawer first
-      await userEvent.click(button!);
+      // Open drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
 
-      // Find the overlay div (it's the first child of the Portal)
-      const overlays = document.querySelectorAll('div[style*="position: fixed"]');
-      const overlay = Array.from(overlays).find((el) =>
-        el.getAttribute('style')?.includes('rgba(0, 0, 0, 0.5)')
-      ) as HTMLElement;
-
-      if (overlay) {
-        // Click the overlay - this should call handleOverlayClick and close the drawer
-        await userEvent.click(overlay);
-      }
+      // Close drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('should call handleDrawerClick when drawer is clicked', async function test() {
-      const { container } = render(<BottomSheetExample />);
-      const button = container.querySelector('button');
+    it('should change aria-expanded to "false" when overlay is clicked', async function test() {
+      render(<BottomSheetExample />);
+      const button = document.querySelector('#bottom-sheet button') as HTMLElement;
+      const drawer = document.querySelector('[aria-expanded]') as HTMLElement;
 
-      // Expand the drawer first
-      await userEvent.click(button!);
+      // Open drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
 
-      // Find the drawer element
-      const drawer = document.querySelector('[role="dialog"]') as HTMLElement;
-
-      if (drawer) {
-        // Click the drawer - this should call handleDrawerClick and stop propagation
-        // The drawer should still be open (click didn't propagate to overlay)
-        await userEvent.click(drawer);
-        expect(drawer).toBeTruthy();
-      }
+      // Click overlay to close
+      const overlay = document.querySelector('.drawer-overlay') as HTMLElement;
+      await userEvent.click(overlay);
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('should call close button handler when close button is clicked', async function test() {
-      const { container } = render(<BottomSheetExample />);
-      const button = container.querySelector('button');
+    it('should change aria-expanded to "false" when close button is clicked', async function test() {
+      render(<BottomSheetExample />);
+      const button = document.querySelector('#bottom-sheet button') as HTMLElement;
+      const drawer = document.querySelector('[aria-expanded]') as HTMLElement;
 
-      // Expand the drawer first
-      await userEvent.click(button!);
+      // Open drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
 
-      // Find the close button inside the drawer
+      // Click close button inside drawer
       const buttons = document.querySelectorAll('button');
-      const closeButton = Array.from(buttons).find((btn) => btn.textContent === 'Close') as HTMLElement;
-
-      if (closeButton) {
-        // Click the close button - this should call the inline arrow function
-        await userEvent.click(closeButton);
-      }
+      const closeButton = Array.from(buttons).find((btn) => btn.textContent === 'Close' && btn !== button) as HTMLElement;
+      await userEvent.click(closeButton);
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
+
   });
 
-  describe('DismissalDrawerExample', function dismissalExample() {
-    it('should render DismissalDrawerExample', function test() {
-      const { container } = render(<DismissalDrawerExample />);
+  describe('GestureDrawerExample', function gestureExample() {
+    it('should render GestureDrawerExample', function test() {
+      const { container } = render(<GestureDrawerExample />);
       expect(container).toBeTruthy();
     });
 
-    it('should render with drawer expanded', function test() {
-      const { container } = render(<DismissalDrawerExample />);
-      // Just verify the component renders - the shouldCloseOnInteractOutside function
-      // is marked with v8 ignore since it's hard to test both branches directly
-      expect(container).toBeTruthy();
+    it('should have aria-expanded="false" when drawer is closed', function test() {
+      render(<GestureDrawerExample />);
+      const drawer = document.querySelector('[aria-expanded]');
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
     });
-  });
 
-  it.skip('should render GestureDrawerExample', function test() {
-    // Skipped: gesture tests don't work yet
-    // const { GestureDrawerExample } = await import('../examples/gestures.tsx');
-    // const { container } = render(<GestureDrawerExample />);
-    // expect(container).toBeTruthy();
+    it('should change aria-expanded to "true" when drawer opens', async function test() {
+      render(<GestureDrawerExample />);
+      const button = document.querySelector('#gestures button') as HTMLElement;
+      const drawer = document.querySelector('[aria-expanded]') as HTMLElement;
+
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('should change aria-expanded back to "false" when drawer closes', async function test() {
+      render(<GestureDrawerExample />);
+      const button = document.querySelector('#gestures button') as HTMLElement;
+      const drawer = document.querySelector('[aria-expanded]') as HTMLElement;
+
+      // Open drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'true');
+
+      // Close drawer
+      await userEvent.click(button);
+      expect(drawer).toHaveAttribute('aria-expanded', 'false');
+    });
   });
 });

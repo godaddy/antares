@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Drawer } from '@bento/drawer';
 import { Button } from '@bento/button';
 import { Portal } from '@bento/portal';
@@ -16,7 +16,11 @@ import { useOverlay } from 'react-aria';
 /* v8 ignore next */
 export function BottomSheetExample(args: any) {
   const [open, setOpen] = useState(false);
-  const { overlayProps } = useOverlay({ onClose: () => setOpen(false) }, { open: true });
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  // onClose callback is triggered by useOverlay when Escape is pressed (delegated functionality)
+  /* v8 ignore next */
+  const { overlayProps } = useOverlay({ onClose: () => setOpen(false), isOpen: open }, overlayRef);
   return (
     <div className="drawer-parent-flex" id="bottom-sheet">
       <div className="main-content">
@@ -26,7 +30,13 @@ export function BottomSheetExample(args: any) {
 
       <Portal mounted={true}>
         {open && (
-          <Container {...overlayProps} className="drawer-overlay" onClick={() => setOpen(false)} role="dialog" />
+          <Container
+            {...overlayProps}
+            ref={overlayRef}
+            className="drawer-overlay"
+            onClick={() => setOpen(false)}
+            role="dialog"
+          />
         )}
         <Drawer {...args} open={open} aria-hidden={!open} className="drawer-content">
           <section>
