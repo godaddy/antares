@@ -57,7 +57,6 @@
     "@bento/container": "*",
     "@bento/heading": "*",
     "@bento/listbox": "*",
-    "@bento/portal": "*",
     "@bento/radio": "*",
     "@bento/text": "*"
   },

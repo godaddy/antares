@@ -4,7 +4,7 @@ import { ButtonExample } from './examples/button.tsx';
 import { ButtonVariantsExample } from './examples/variants.tsx';
 
 export default getMeta({
-  title: 'components/button'
+  title: 'components/Button'
 });
 
 export const Props = getComponentDocs(Button);

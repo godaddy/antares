@@ -5,7 +5,7 @@ import { Dismiss as DismissComponent } from './src/index.tsx';
 import { Basic as BasicExample } from './examples/basic.tsx';
 
 export default getMeta({
-  title: 'components/dismiss'
+  title: 'components/Dismiss'
 });
 
 export const Props = getComponentDocs(DismissComponent);
