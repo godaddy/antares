@@ -3,7 +3,6 @@ import { Drawer } from './src/index.tsx';
 import { BasicDrawerExample } from './examples/basic.tsx';
 import { ConstrainedDrawerExample } from './examples/constrained.tsx';
 import { BottomSheetExample } from './examples/bottom-sheet.tsx';
-import { DismissalDrawerExample } from './examples/dismissal.tsx';
 import { GestureDrawerExample } from './examples/gestures.tsx';
 import './examples/examples.css';
 
@@ -18,7 +17,5 @@ export const Default = getStory(BasicDrawerExample);
 export const Constrained = getStory(ConstrainedDrawerExample);
 
 export const BottomSheet = getStory(BottomSheetExample);
-
-export const Dismissal = getStory(DismissalDrawerExample);
 
 export const Gestures = getStory(GestureDrawerExample);

@@ -12,11 +12,11 @@ import { Container } from '@bento/container';
  * @public
  */
 export function BasicDrawerExample(args: any) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="drawer-parent-flex" id="basic">
-      <Drawer {...args} isOpen={isOpen} className="drawer-content">
+      <Drawer {...args} open={open} aria-hidden={!open} className="drawer-content">
         <nav>
           <h3>Navigation</h3>
           <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -28,7 +28,7 @@ export function BasicDrawerExample(args: any) {
       </Drawer>
       <Container className="main-content">
         <p>Main content area</p>
-        <Button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close' : 'Open'} Drawer</Button>
+        <Button onClick={() => setOpen(!open)}>{open ? 'Close' : 'Open'} Drawer</Button>
       </Container>
     </div>
   );

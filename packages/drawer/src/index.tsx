@@ -9,7 +9,7 @@ export interface DrawerProps extends ContainerProps {
    * Whether the drawer is open or closed.
    * The drawer is a fully controlled component, so this prop must be managed by the parent.
    */
-  readonly isOpen: boolean;
+  readonly open: boolean;
 }
 
 /**
@@ -24,9 +24,9 @@ export interface DrawerProps extends ContainerProps {
 function DrawerComponent(args: DrawerProps): React.ReactElement {
   const { props, apply } = useProps(args);
 
-  const { isOpen, children } = props;
+  const { open, children } = props;
 
-  const state = { isOpen };
+  const state = { open };
 
   const dataAttributes = useDataAttributes(state);
 
@@ -34,9 +34,9 @@ function DrawerComponent(args: DrawerProps): React.ReactElement {
   const containerProps = apply(
     {
       ...dataAttributes,
-      'aria-expanded': isOpen
+      'aria-expanded': open
     },
-    ['isOpen', 'children']
+    ['open', 'children']
   );
 
   return <Container {...containerProps}>{children}</Container>;

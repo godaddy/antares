@@ -18,22 +18,27 @@ import { Container } from '@bento/container';
  * @public
  */
 export function GestureDrawerExample(args: any) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="drawer-parent-flex" id="gestures">
       <div className="main-content">
         <p>Main content area</p>
-        <Button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close' : 'Open'} Bottom Sheet</Button>
+        <Button onClick={() => setOpen(!open)}>{open ? 'Close' : 'Open'} Bottom Sheet</Button>
       </div>
 
-      <Portal mounted={isOpen}>
-        <Container className="drawer-overlay" onClick={() => setIsOpen(false)} />
-        <Drawer {...args} isOpen={isOpen} className="drawer-content">
-          <h2>Bottom Sheet</h2>
-          <p>This is a bottom sheet drawer example.</p>
-          <p>You can add any content here.</p>
-          <Button onPress={() => setIsOpen(false)}>Close</Button>
+      <Portal mounted={true}>
+        {open && (
+          <Container className="drawer-overlay" onClick={() => setOpen(false)} />
+        )}
+        <Drawer {...args} open={open} aria-hidden={!open} className="drawer-content">
+          <section>
+            <span className="drawer-handle"/>
+            <h2>Bottom Sheet</h2>
+            <p>You can drag the handle to expand or collapse the drawer.</p>
+            <p>You can add any content here.</p>
+            <Button onPress={() => setOpen(false)}>Close</Button>
+          </section>
         </Drawer>
       </Portal>
     </div>

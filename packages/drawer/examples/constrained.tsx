@@ -12,11 +12,11 @@ import { Container } from '@bento/container';
  * @public
  */
 export function ConstrainedDrawerExample(args: any) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="drawer-parent-flex" id="constrained">
-      <Drawer {...args} isOpen={isOpen} className="drawer-content">
+      <Drawer {...args} open={open} className="drawer-content">
         <nav>
           <h3>Navigation</h3>
           <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -28,7 +28,8 @@ export function ConstrainedDrawerExample(args: any) {
       </Drawer>
       <Container className="main-content">
         <p>Main content area</p>
-        <Button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close' : 'Open'} Drawer</Button>
+        <p>In this example <code>aria-hidden</code> is not used since the content remains visible when the drawer is closed.</p>
+        <Button onClick={() => setOpen(!open)}>{open ? 'Close' : 'Open'} Drawer</Button>
       </Container>
     </div>
   );

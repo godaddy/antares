@@ -18,14 +18,20 @@
     inset: 0;
 }
 
+
+.drawer-handle {
+    display: block;
+    width: 40px;
+    height: 8px;
+    background: lightgray;
+    border-radius: 8px;
+    margin: 8px auto;
+}
+
 .drawer-content {
     width: 0;
     overflow: hidden;
     transition: .3s ease-in-out;
-    background: white;
-    position: absolute;
-    inset: 0;
-    top: auto;
 
     nav, section {
         padding: 8px;
@@ -35,13 +41,24 @@
         width: calc-size(auto, size);
     }
 
+    /* Example has content peeking out */
     :where(#constrained) & {
         width: 40px;
     }
-}
 
-/* Bottom sheet examples portal to the body, show as rounded top corners */
-body > .drawer-content {
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
+    /* Bottom sheet examples portal to the body, show as rounded top corners */
+    body > & {
+        position: absolute;
+        inset: 0;
+        top: auto;
+        height: 0;
+        width: auto;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        background: white;
+
+        &[aria-expanded="true"] {
+            height: calc-size(auto, size);
+        }
+    }
 }

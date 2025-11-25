@@ -15,23 +15,25 @@ import { useOverlay } from 'react-aria';
  */
 /* v8 ignore next */
 export function BottomSheetExample(args: any) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { overlayProps } = useOverlay({ onClose: () => setIsOpen(false) }, { isOpen: true });
+  const [open, setOpen] = useState(false);
+  const { overlayProps } = useOverlay({ onClose: () => setOpen(false) }, { open: true });
   return (
     <div className="drawer-parent-flex" id="bottom-sheet">
       <div className="main-content">
         <p>Main content area</p>
-        <Button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close' : 'Open'} Bottom Sheet</Button>
+        <Button onClick={() => setOpen(!open)}>{open ? 'Close' : 'Open'} Bottom Sheet</Button>
       </div>
 
-      <Portal mounted={isOpen}>
-        <Container {...overlayProps} className="drawer-overlay" onClick={() => setIsOpen(false)} role="dialog" />
-        <Drawer {...args} isOpen={isOpen} className="drawer-content">
+      <Portal mounted={true}>
+        {open && (
+          <Container {...overlayProps} className="drawer-overlay" onClick={() => setOpen(false)} role="dialog" />
+        )}
+        <Drawer {...args} open={open} aria-hidden={!open} className="drawer-content">
           <section>
             <h2>Bottom Sheet</h2>
             <p>This is a bottom sheet drawer example.</p>
             <p>You can add any content here.</p>
-            <Button onPress={() => setIsOpen(false)}>Close</Button>
+            <Button onPress={() => setOpen(false)}>Close</Button>
           </section>
         </Drawer>
       </Portal>
