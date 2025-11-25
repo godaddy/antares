@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import React, { useContext, memo } from 'react';
+import { useDataAttributes } from '@bento/use-data-attributes';
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { Box, type BoxContext } from '@bento/box';
 import { BentoError } from '@bento/error';
@@ -55,6 +56,7 @@ export function withSlots<Props extends object>(
 ) {
   function WrappedComponent(propsAndSlots: Props & Slots) {
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
+    const dataAttrs = useDataAttributes({ slot });
     let props = { ...restProps } as Props;
     let Element = Component;
 
@@ -156,7 +158,7 @@ export function withSlots<Props extends object>(
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
       <Box.Provider value={context}>
-        <Element {...props} />
+        <Element {...props} {...dataAttrs} />
       </Box.Provider>
     );
 
