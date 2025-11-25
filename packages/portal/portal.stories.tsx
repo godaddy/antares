@@ -5,7 +5,7 @@ import { CustomContainerExample } from './examples/custom-container.tsx';
 import { PortalProviderExample } from './examples/portal-provider.tsx';
 
 export default getMeta({
-  title: 'components/portal'
+  title: 'components/Portal'
 });
 
 export const Props = getComponentDocs(PortalComponent);
