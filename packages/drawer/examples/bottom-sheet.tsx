@@ -13,13 +13,11 @@ import { useOverlay } from 'react-aria';
  * @returns {JSX.Element} The rendered bottom sheet Drawer.
  * @public
  */
-/* v8 ignore next */
 export function BottomSheetExample(args: any) {
   const [open, setOpen] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
   // onClose callback is triggered by useOverlay when Escape is pressed (delegated functionality)
-  /* v8 ignore next */
   const { overlayProps } = useOverlay({ onClose: () => setOpen(false), isOpen: open }, overlayRef);
   return (
     <div className="drawer-parent-flex" id="bottom-sheet">
