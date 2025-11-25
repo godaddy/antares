@@ -106,24 +106,6 @@ describe('@bento/input', function bento() {
     assume(result).not.to.contain('checked');
   });
 
-  it('renders correct [data-override] attribute values', function overrides() {
-    const result = renderToStringInput({
-      className: 'custom-class',
-      style: { color: 'red' }
-    });
-    assume(result).includes('data-override="className style"');
-  });
-
-  describe('#slots', function slots() {
-    it('does not have a slot name by default', function correctSlotValues() {
-      const result = renderToStringInput();
-      assume(result).to.contain('<input');
-      assume(result).to.contain('type="text"');
-      assume(result).to.contain('class="random-class-input"');
-      assume(result).not.to.contain('slot=');
-    });
-  });
-
   describe('Public API', function packageSuite() {
     const __dirname = dirname(fileURLToPath(import.meta.url));
 

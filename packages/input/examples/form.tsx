@@ -99,6 +99,7 @@ export function FormExample() {
             <Input
               type="radio"
               name="favoriteFruit"
+              id="fruit-apple"
               value="apple"
               checked={formData.favoriteFruit === 'apple'}
               onChange={handleChange('favoriteFruit')}
@@ -109,6 +110,7 @@ export function FormExample() {
             <Input
               type="radio"
               name="favoriteFruit"
+              id="fruit-banana"
               value="banana"
               checked={formData.favoriteFruit === 'banana'}
               onChange={handleChange('favoriteFruit')}
@@ -119,6 +121,7 @@ export function FormExample() {
             <Input
               type="radio"
               name="favoriteFruit"
+              id="fruit-orange"
               value="orange"
               checked={formData.favoriteFruit === 'orange'}
               onChange={handleChange('favoriteFruit')}
@@ -176,16 +179,15 @@ export function FormExample() {
 
       {/* Submit Button */}
       <div>
-        <button
+        <input
           type="submit"
           onClick={function HandleClick(e) {
             e.preventDefault();
             console.log('Form Data:', formData);
             alert('Form submitted! Check console for data.');
           }}
-        >
-          Submit
-        </button>
+          value="Submit"
+        />
       </div>
 
       {/* Display form data */}

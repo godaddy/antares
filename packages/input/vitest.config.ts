@@ -5,9 +5,6 @@ export default mergeConfig(
   sharedConfig,
   defineConfig({
     test: {
-      coverage: {
-        exclude: ['examples/form.tsx']
-      },
       projects: [ssr, browser]
     }
   })
