@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Drawer } from '@bento/drawer';
 import { Button } from '@bento/button';
 import { Portal } from '@bento/portal';
+import { Container } from '@bento/container';
+import { useOverlay } from 'react-aria';
 
 /**
  * Example component demonstrating bottom sheet Drawer usage.
@@ -13,57 +15,25 @@ import { Portal } from '@bento/portal';
  */
 /* v8 ignore next */
 export function BottomSheetExample(args: any) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  /* v8 ignore next */
-  const handleOverlayClick = () => setIsExpanded(false);
-  /* v8 ignore next */
-  const handleDrawerClick = (e: React.MouseEvent) => e.stopPropagation();
-
+  const [isOpen, setIsOpen] = useState(false);
+  const { overlayProps } = useOverlay({ onClose: () => setIsOpen(false) }, { isOpen: true });
   return (
-    <div style={{ position: 'relative', height: '400px' }}>
-      <div style={{ padding: '16px' }}>
-        <Button onPress={() => setIsExpanded(!isExpanded)}>{isExpanded ? 'Close' : 'Open'} Bottom Sheet</Button>
+    <div className="drawer-parent-flex" id="bottom-sheet">
+      <div className="main-content">
         <p>Main content area</p>
+        <Button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close' : 'Open'} Bottom Sheet</Button>
       </div>
-      <Portal mounted={true}>
-        <div
-          style={{
-            position: 'fixed',
-            display: 'flex',
-            inset: 0,
-            backgroundColor: isExpanded ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
-            pointerEvents: isExpanded ? 'auto' : 'none',
-            transition: 'background-color 0.3s ease-in-out'
-          }}
-          onClick={handleOverlayClick}
-        >
-          <Drawer
-            {...args}
-            placement="bottom"
-            isExpanded={isExpanded}
-            minHeight="0"
-            maxHeight="50vh"
-            role="dialog"
-            aria-expanded={isExpanded}
-            aria-hidden={!isExpanded}
-            onClick={handleDrawerClick}
-          >
-            <div
-              style={{
-                backgroundColor: 'white',
-                borderTopLeftRadius: '16px',
-                borderTopRightRadius: '16px',
-                padding: '24px'
-              }}
-            >
-              <h2>Bottom Sheet</h2>
-              <p>This is a bottom sheet drawer example.</p>
-              <p>You can add any content here.</p>
-              <Button onPress={() => setIsExpanded(false)}>Close</Button>
-            </div>
-          </Drawer>
-        </div>
+
+      <Portal mounted={isOpen}>
+        <Container {...overlayProps} className="drawer-overlay" onClick={() => setIsOpen(false)} role="dialog" />
+        <Drawer {...args} isOpen={isOpen} className="drawer-content">
+          <section>
+            <h2>Bottom Sheet</h2>
+            <p>This is a bottom sheet drawer example.</p>
+            <p>You can add any content here.</p>
+            <Button onPress={() => setIsOpen(false)}>Close</Button>
+          </section>
+        </Drawer>
       </Portal>
     </div>
   );

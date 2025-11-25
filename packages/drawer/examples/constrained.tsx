@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Drawer } from '@bento/drawer';
 import { Button } from '@bento/button';
+import { Container } from '@bento/container';
 
 /**
  * Example component demonstrating constrained Drawer usage with min and max width.
@@ -11,19 +12,12 @@ import { Button } from '@bento/button';
  * @public
  */
 export function ConstrainedDrawerExample(args: any) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div style={{ display: 'flex', height: '400px', position: 'relative' }}>
-      <Drawer
-        {...args}
-        placement="left"
-        isExpanded={isExpanded}
-        minWidth="60px"
-        maxWidth="300px"
-        aria-expanded={isExpanded}
-      >
-        <nav style={{ padding: '16px' }}>
+    <div className="drawer-parent-flex" id="constrained">
+      <Drawer {...args} isOpen={isOpen} className="drawer-content">
+        <nav>
           <h3>Navigation</h3>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             <li style={{ marginBottom: '8px' }}>Home</li>
@@ -32,10 +26,10 @@ export function ConstrainedDrawerExample(args: any) {
           </ul>
         </nav>
       </Drawer>
-      <div style={{ flex: 1, padding: '16px' }}>
-        <Button onPress={() => setIsExpanded(!isExpanded)}>{isExpanded ? 'Collapse' : 'Expand'} Drawer</Button>
+      <Container className="main-content">
         <p>Main content area</p>
-      </div>
+        <Button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close' : 'Open'} Drawer</Button>
+      </Container>
     </div>
   );
 }

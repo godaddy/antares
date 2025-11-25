@@ -5,6 +5,7 @@ import { ConstrainedDrawerExample } from './examples/constrained.tsx';
 import { BottomSheetExample } from './examples/bottom-sheet.tsx';
 import { DismissalDrawerExample } from './examples/dismissal.tsx';
 import { GestureDrawerExample } from './examples/gestures.tsx';
+import './examples/examples.css';
 
 export default getMeta({
   title: 'components/drawer'

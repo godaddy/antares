@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+}
+
+.drawer-parent-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-content {
+    flex: 1;
+    padding: 8px;
+}
+
+.drawer-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0;
+}
+
+.drawer-content {
+    width: 0;
+    overflow: hidden;
+    transition: .3s ease-in-out;
+    background: white;
+    position: absolute;
+    inset: 0;
+    top: auto;
+
+    nav, section {
+        padding: 8px;
+    }
+
+    &[aria-expanded="true"] {
+        width: calc-size(auto, size);
+    }
+
+    :where(#constrained) & {
+        width: 40px;
+    }
+}
+
+/* Bottom sheet examples portal to the body, show as rounded top corners */
+body > .drawer-content {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
