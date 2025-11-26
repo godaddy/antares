@@ -185,14 +185,15 @@ export const Overlay = withSlots('BentoOverlay', function Overlay(args: OverlayP
     overlayRef
   );
 
-  // useProps automatically handles render props via its Proxy
-  // If children is a function, it will be executed with { original, props, slots, state }
   const { children } = props;
-
   if (!children) return null;
 
-  // Use the Slot component to provide slots to children
-  // Children that use slots will automatically receive the overlay slots
+  //
+  // Use the Slot component to provide slots to children as we do not provide
+  // a wrapping container where the slots could be assigned to instead.
+  // We expect our children to have `slot` assignments so they can receive the
+  // expected functionality.
+  //
   return (
     <Slot
       slots={{
