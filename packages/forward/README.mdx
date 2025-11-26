@@ -1,0 +1,79 @@
+import { Meta, Story, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './forward.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceAlreadyWrapped from './examples/already-wrapped.tsx?raw';
+import SourceNoRef from './examples/no-ref.tsx?raw';
+import SourceRestParams from './examples/rest-params.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Forward
+
+The `@bento/forward` package provides the `withForwardRef` utility for React 19-compatible ref forwarding. It automatically detects whether your component needs `forwardRef` wrapping and applies it only when necessary.
+
+## Installation
+
+```shell
+npm install --save @bento/forward
+```
+
+## How It Works
+
+The `withForwardRef` utility wraps functional components with `forwardRef` in React 18 when they might accept a ref parameter.
+
+**Wrapping occurs when `Component.length !== 1`:**
+- `length === 0` - Rest parameters: `function Component(...args)` - Wrapped
+- `length === 2` - Explicit ref: `function Component(props, ref)` - Wrapped
+- `length === 1` - Props only: `function Component(props)` - Not wrapped
+
+**React 19**: No wrapping needed - refs are passed as props natively.
+
+| Component Pattern | React 18 | React 19 |
+|------------------|----------|----------|
+| `function Component(props, ref)` | **Wrapped** | Unchanged |
+| `function Component(...args)` | **Wrapped** | Unchanged |
+| `function Component(props)` | Unchanged | Unchanged |
+| `React.forwardRef(Component)` | Unchanged | Unchanged |
+
+## Examples
+
+### Basic Usage
+
+Component with 2 parameters will be automatically wrapped in React 18:
+
+<Source language="tsx" code={SourceBasic} />
+
+### Rest Parameters (Spread)
+
+Component using rest parameters for the future `useProps(...args)` API:
+
+<Source language="tsx" code={SourceRestParams} />
+
+### Already Using forwardRef
+
+Components already wrapped with `forwardRef` are returned unchanged:
+
+<Source language="tsx" code={SourceAlreadyWrapped} />
+
+### Component Without Ref
+
+Components that don't accept a ref parameter are returned unchanged:
+
+<Source language="tsx" code={SourceNoRef} />
+
+## Migration from React 18 to React 19
+
+Components using `withForwardRef` will work seamlessly when upgrading from React 18 to React 19 with no code changes required. The utility handles the difference automatically.
+
+## API
+
+### `withForwardRef<Props>(Component)`
+
+Wraps a component with `forwardRef` if needed for React 18 compatibility.
+
+**Parameters:**
+- `Component: React.ComponentType<Props>` - The component to wrap
+
+**Returns:**
+- `React.ComponentType<Props>` - The component, optionally wrapped with `forwardRef`

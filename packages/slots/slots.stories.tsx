@@ -1,4 +1,5 @@
 import { getMeta, getInterfaceDocs, getStory } from '@bento/storybook-addon-helpers';
+import { ForwardRefExample } from './examples/forward-ref.tsx';
 import { SlotFunction } from './examples/slot-function.tsx';
 import { SlotProps } from './examples/slot-props.tsx';
 import { Nested } from './examples/nested.tsx';
@@ -78,3 +79,5 @@ export const PropsSlots = getStory(SlotProps);
 export const FunctionalSlots = getStory(SlotFunction);
 
 export const MergedSlots = getStory(Merged);
+
+export const ForwardRefSlots = getStory(ForwardRefExample);

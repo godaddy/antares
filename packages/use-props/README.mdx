@@ -42,7 +42,34 @@ arguments:
 
 <ArgTypes of={Stories.useProps} />
 
-The `useProps` hook returns an object with two properties:
+### Forward Refs
+
+The `useProps` hook also accepts an optional third parameter for forwarded refs. When provided, it merges the forwarded ref with any refs from props and slots:
+
+```javascript
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+import React from 'react';
+
+const Button = withSlots(
+  'Button',
+  React.forwardRef(function ButtonComponent(args, forwardedRef) {
+    const { props, apply, ref } = useProps(args, {}, forwardedRef);
+
+    // ref contains the merged reference from forwardedRef, props.ref, and slots
+    return <button {...apply({}, ['ref'])} ref={ref}>{props.children}</button>;
+  })
+);
+```
+
+The merged `ref` combines:
+- The forwarded ref from the parent component
+- Any ref passed through props
+- Any ref supplied via slots
+
+All refs are properly merged using `mergeRefs` from `@react-aria/utils`, ensuring all refs are called/updated when the element is mounted.
+
+The `useProps` hook returns an object with three properties:
 
 <ArgTypes of={Stories.hook} />
 

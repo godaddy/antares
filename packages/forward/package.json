@@ -1,7 +1,7 @@
 {
-  "name": "@bento/use-props",
-  "version": "0.1.1",
-  "description": "Context aware props transformation for Bento",
+  "name": "@bento/forward",
+  "version": "0.0.0",
+  "description": "React 19-compatible forwardRef utility for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -22,12 +22,11 @@
   "keywords": [
     "bento",
     "component",
-    "library",
-    "props",
+    "forward",
+    "forwardRef",
     "react",
-    "render",
-    "render-props",
-    "renderprops"
+    "react19",
+    "ref"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
@@ -40,12 +39,6 @@
     "src",
     "package.json"
   ],
-  "dependencies": {
-    "@bento/box": "^0.1.1",
-    "@bento/internal-props": "^0.1.1",
-    "@bento/types": "^0.1.0",
-    "@react-aria/utils": "^3.26.0"
-  },
   "peerDependencies": {
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"
