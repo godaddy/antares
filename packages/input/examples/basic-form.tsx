@@ -1,6 +1,8 @@
 /* v8 ignore next */
 import React, { useState } from 'react';
-import { Input } from '../src/index.tsx';
+import { Container } from '@bento/container';
+import { Input } from '@bento/input';
+import { Text } from '@bento/text';
 
 export function BasicFormExample() {
   const [formData, setFormData] = useState({
@@ -16,10 +18,10 @@ export function BasicFormExample() {
   }
 
   return (
-    <form>
-      <h2>Basic Form</h2>
+    <Container as="form">
+      <Text as="h2">Basic Form</Text>
 
-      <div>
+      <Container as="div">
         <label htmlFor="name">Name</label>
         <Input
           id="name"
@@ -28,9 +30,9 @@ export function BasicFormExample() {
           onChange={handleChange('name')}
           placeholder="Enter your name"
         />
-      </div>
+      </Container>
 
-      <div>
+      <Container as="div">
         <label htmlFor="email">Email</label>
         <Input
           id="email"
@@ -40,9 +42,9 @@ export function BasicFormExample() {
           placeholder="you@example.com"
           required
         />
-      </div>
+      </Container>
 
-      <div>
+      <Container as="div">
         <Input
           type="submit"
           onClick={function HandleClick(e) {
@@ -50,12 +52,12 @@ export function BasicFormExample() {
           }}
           value="Submit"
         />
-      </div>
+      </Container>
 
-      <div>
-        <h3>Form Data (live preview):</h3>
+      <Container as="div">
+        <Text as="h3">Form Data (live preview):</Text>
         <pre>{JSON.stringify(formData, null, 2)}</pre>
-      </div>
-    </form>
+      </Container>
+    </Container>
   );
 }

@@ -1,6 +1,8 @@
 /* v8 ignore next */
 import React, { useState } from 'react';
-import { Input } from '../src/index.tsx';
+import { Container } from '@bento/container';
+import { Input } from '@bento/input';
+import { Text } from '@bento/text';
 
 export function FormExample() {
   const [formData, setFormData] = useState({
@@ -27,11 +29,11 @@ export function FormExample() {
   const isPhoneInvalid = formData.phone.length > 0 && formData.phone.length < 7;
 
   return (
-    <form>
-      <h2>Sample Form with Multiple Input Types</h2>
+    <Container as="form">
+      <Text as="h2">Sample Form with Multiple Input Types</Text>
 
       {/* Text Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="name">Name</label>
         <Input
           id="name"
@@ -40,10 +42,10 @@ export function FormExample() {
           onChange={handleChange('name')}
           placeholder="Enter your name"
         />
-      </div>
+      </Container>
 
       {/* Email Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="email">Email</label>
         <Input
           id="email"
@@ -53,10 +55,10 @@ export function FormExample() {
           placeholder="you@example.com"
           required
         />
-      </div>
+      </Container>
 
       {/* Number Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="age">Age</label>
         <Input
           id="age"
@@ -67,10 +69,10 @@ export function FormExample() {
           max={120}
           placeholder="Enter your age"
         />
-      </div>
+      </Container>
 
       {/* Range Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="quantity">Quantity: {formData.quantity}</label>
         <Input
           id="quantity"
@@ -81,20 +83,20 @@ export function FormExample() {
           max={10}
           step={1}
         />
-      </div>
+      </Container>
 
       {/* Checkbox Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="newsletter">
           <Input id="newsletter" type="checkbox" checked={formData.newsletter} onChange={handleChange('newsletter')} />
           Subscribe to newsletter
         </label>
-      </div>
+      </Container>
 
       {/* Radio Buttons - Favorite Fruit */}
-      <div>
-        <fieldset>
-          <legend>Favorite Fruit</legend>
+      <Container as="div">
+        <Container as="fieldset">
+          <Text as="legend">Favorite Fruit</Text>
           <label>
             <Input
               type="radio"
@@ -128,23 +130,23 @@ export function FormExample() {
             />
             Orange
           </label>
-        </fieldset>
-      </div>
+        </Container>
+      </Container>
 
       {/* Color Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="color">Favorite Color</label>
         <Input id="color" type="color" value={formData.favoriteColor} onChange={handleChange('favoriteColor')} />
-      </div>
+      </Container>
 
       {/* Date Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="birthdate">Birthdate</label>
         <Input id="birthdate" type="date" value={formData.birthdate} onChange={handleChange('birthdate')} />
-      </div>
+      </Container>
 
       {/* URL Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="website">Website</label>
         <Input
           id="website"
@@ -153,10 +155,10 @@ export function FormExample() {
           onChange={handleChange('website')}
           placeholder="https://example.com"
         />
-      </div>
+      </Container>
 
       {/* Tel Input */}
-      <div>
+      <Container as="div">
         <label htmlFor="phone">Phone</label>
         <Input
           id="phone"
@@ -171,15 +173,15 @@ export function FormExample() {
           aria-describedby={isPhoneInvalid ? 'phone-error' : undefined}
         />
         {isPhoneInvalid && (
-          <span id="phone-error" style={{ color: 'red', fontSize: '0.875rem' }}>
+          <Container as="span" id="phone-error" style={{ color: 'red', fontSize: '0.875rem' }}>
             Phone number must be at least 7 characters or empty
-          </span>
+          </Container>
         )}
-      </div>
+      </Container>
 
       {/* Submit Button */}
-      <div>
-        <input
+      <Container as="div">
+        <Input
           type="submit"
           onClick={function HandleClick(e) {
             e.preventDefault();
@@ -188,13 +190,13 @@ export function FormExample() {
           }}
           value="Submit"
         />
-      </div>
+      </Container>
 
       {/* Display form data */}
-      <div>
-        <h3>Form Data (live preview):</h3>
+      <Container as="div">
+        <Text as="h3">Form Data (live preview):</Text>
         <pre>{JSON.stringify(formData, null, 2)}</pre>
-      </div>
-    </form>
+      </Container>
+    </Container>
   );
 }

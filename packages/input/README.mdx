@@ -124,30 +124,7 @@ The component provides comprehensive data attributes that communicate its state 
 
 ## Customization
 
-The `Input` component is built using the `@bento/slots` package, allowing you to customize styling based on component state through render props and data attributes.
-
-### Render Props
-
-The `className` and `style` props can accept functions that receive render props describing the current state of the input:
-
-```jsx
-<Input
-  type="text"
-  className={(state) => 
-    state.isFocusVisible ? 'input-focused' : 'input-default'
-  }
-  style={(state) => ({
-    borderColor: state.isInvalid ? 'red' : state.isFocused ? 'blue' : 'gray'
-  })}
-/>
-```
-
-The render props object includes:
-- `isHovered`: Whether the input is currently hovered with a mouse
-- `isFocused`: Whether the input is focused (via mouse or keyboard)
-- `isFocusVisible`: Whether the input is keyboard focused
-- `isDisabled`: Whether the input is disabled
-- `isInvalid`: Whether the input has `aria-invalid` set
+The `Input` component is built using the `@bento/slots` package, allowing you to customize styling based on component state through render props, slots, and data attributes.
 
 ### Data Attributes
 
