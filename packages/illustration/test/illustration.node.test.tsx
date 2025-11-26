@@ -17,7 +17,7 @@ import React from 'react';
  * @private
  */
 function renderToStringWithChildren(args: IllustrationProps) {
-  return renderToString(<Illustration {...args} />);
+  return renderToString(<Illustration {...(args as any)} />);
 }
 
 /**

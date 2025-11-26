@@ -25,62 +25,68 @@ export interface IllustrationProps extends SVGProps<SVGSVGElement>, AriaLabeling
 /**
  * Illustration component that renders an SVG with optional transformations and accessibility features.
  *
- * @param args - The properties passed to the Illustration component.
+ * @param props - The properties passed to the Illustration component.
+ * @param ref - The ref forwarded to the SVG element.
  * @returns The rendered Illustration component.
  * @public
  */
-export const Illustration = withSlots('BentoIllustration', function Illustrated(args: IllustrationProps) {
-  const id = useId();
-  const { props, apply } = useProps(args);
-  const { title, children, rotate, flip, ...rest } = props;
-  const svgProps = children.props;
+export const Illustration = withSlots(
+  'BentoIllustration',
+  function Illustrated(...args: [IllustrationProps, React.ForwardedRef<SVGSVGElement>?]) {
+    const id = useId();
+    const { props, apply } = useProps(args);
+    const { title, children, rotate, flip } = props;
+    const svgProps = children.props;
 
-  //
-  // We need to know the viewBox in order to correctly apply transformations
-  // to the SVG. If the viewBox is not provided then we will do a best effort
-  // to generate one by assuming that this information is provided to us using
-  // the component props.
-  //
-  const { viewBox, drawings } = transformers(
-    {
-      viewBox:
-        svgProps.viewBox ||
-        toViewBox({
-          height: props.height || 24,
-          width: props.width || 24,
-          left: props.x || 0,
-          top: props.y || 0
-        }),
-      rotate,
-      flip
-    },
-    svgProps.children
-  );
-
-  return React.cloneElement(
-    children,
-    {
-      //
-      // We cannot use the @react-aria/utils/filterDOMProps function here
-      // because it will remove valid SVG attributes. We will spread the
-      // all the props instead without any filtering.
-      //
-      ...rest,
-      ...apply({
-        'aria-labelledby': title ? id : undefined,
-        role: title ? 'img' : 'presentation',
-        viewBox: toViewBox(viewBox),
-        focusable: false
-      }),
-
-      ...useDataAttributes({
+    //
+    // We need to know the viewBox in order to correctly apply transformations
+    // to the SVG. If the viewBox is not provided then we will do a best effort
+    // to generate one by assuming that this information is provided to us using
+    // the component props.
+    //
+    const { viewBox, drawings } = transformers(
+      {
+        viewBox:
+          svgProps.viewBox ||
+          toViewBox({
+            height: props.height || 24,
+            width: props.width || 24,
+            left: props.x || 0,
+            top: props.y || 0
+          }),
         rotate,
         flip
-      })
-    },
-    <>
-      {title && <title id={id}>{title}</title>}
-      {drawings}
-    </>
-  );
-});
+      },
+      svgProps.children
+    );
+
+    return React.cloneElement(
+      children,
+      {
+        //
+        // We cannot use the @react-aria/utils/filterDOMProps function here
+        // because it will remove valid SVG attributes. We will spread the
+        // all the props instead without any filtering.
+        //
+        ...apply(
+          {
+            'aria-labelledby': title ? id : undefined,
+            role: title ? 'img' : 'presentation',
+            viewBox: toViewBox(viewBox),
+            focusable: false
+          },
+          ['flip', 'rotate', 'title', 'children']
+        ),
+
+        ...useDataAttributes({
+          rotate,
+          flip
+        })
+      },
+      <>
+        {title && <title id={id}>{title}</title>}
+        {drawings}
+      </>
+    );
+  }
+);
