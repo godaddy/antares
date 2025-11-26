@@ -52,9 +52,11 @@ export interface OverlayProps extends Slots {
    * The trigger slot is typed to expose React Aria press handlers so consumers
    * are guided toward using pressable-aware primitives (e.g. @bento/button).
    */
-  slots?: (Slots['slots'] & {
-    trigger?: TriggerSlotValue;
-  }) | undefined;
+  slots?:
+    | (Slots['slots'] & {
+        trigger?: TriggerSlotValue;
+      })
+    | undefined;
 
   /**
    * Whether the overlay is open (controlled).
@@ -183,16 +185,11 @@ export const Overlay = withSlots('BentoOverlay', function Overlay(args: OverlayP
     overlayRef
   );
 
-  // Access children - if it's a render prop function, execute it
-  // Otherwise pass through via props.children for slot merging
-  const rawChildren = args.children;
-  const isRenderProp = typeof rawChildren === 'function';
+  // useProps automatically handles render props via its Proxy
+  // If children is a function, it will be executed with { original, props, slots, state }
+  const { children } = props;
 
-  const renderedChildren = isRenderProp
-    ? (rawChildren as Function)({ state: { open: state.isOpen }, props: args, slots: {} })
-    : props.children;
-
-  if (!renderedChildren) return null;
+  if (!children) return null;
 
   // Use the Slot component to provide slots to children
   // Children that use slots will automatically receive the overlay slots
@@ -211,7 +208,7 @@ export const Overlay = withSlots('BentoOverlay', function Overlay(args: OverlayP
         }
       }}
     >
-      {renderedChildren}
+      {children}
     </Slot>
   );
 }) as (props: OverlayProps) => React.ReactElement | null;

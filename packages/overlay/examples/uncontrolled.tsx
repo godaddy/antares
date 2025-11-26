@@ -18,7 +18,7 @@ export function UncontrolledWithTrigger() {
 
   return (
     <Overlay defaultOpen={false}>
-      {({ open }) => (
+      {({ state: { open } }) => (
         <>
           <Button slot="trigger">Toggle Overlay</Button>
           {open && (
