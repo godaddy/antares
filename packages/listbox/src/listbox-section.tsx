@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useContext } from 'react';
+import React, { useRef, useContext } from 'react';
 import { useListBoxSection, mergeProps } from 'react-aria';
 import { createBranchComponent } from '@react-aria/collections';
 import { CollectionRendererContext } from 'react-aria-components';
@@ -64,7 +64,7 @@ interface ListBoxSectionInnerProps {
  */
 const BentoListBoxSectionImpl = withSlots(
   'BentoListBoxSection',
-  forwardRef(function BentoListBoxSectionImpl<T>(
+  function BentoListBoxSectionImpl<T>(
     { __node, children, title: titleProp, ...rest }: BentoListBoxSectionImplProps<T>,
     ref: React.ForwardedRef<HTMLElement>
   ) {
@@ -90,7 +90,7 @@ const BentoListBoxSectionImpl = withSlots(
         </HeaderContext.Provider>
       </section>
     );
-  })
+  }
 );
 
 /**
