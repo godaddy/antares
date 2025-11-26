@@ -11,7 +11,7 @@ import React from 'react';
  * @public
  */
 export const Button = withSlots('SlotsButton', function ButtonComponent(args: any) {
-  const { apply, props } = useProps(args);
+  const { apply } = useProps(args);
 
-  return <button {...apply({}, ['children'])}>{props.children}</button>;
+  return <button {...apply()} />
 });
