@@ -124,7 +124,7 @@ describe('@bento/slots', function bento() {
         assume(data.props.id).equals('example');
         // Custom is wrapped with forwardRef since it has 0 parameters (length !== 1)
         // so data.Component will be the wrapped version, not the original
-        assume(data.Component).is.not.null();
+        assume(data.Component).exist();
 
         assume(data.context.env).is.a('object');
         assume(data.context.slots).is.a('object');

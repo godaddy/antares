@@ -23,17 +23,8 @@ export interface ForwardRefExampleProps extends Slots, Omit<React.HTMLAttributes
  * </ForwardRefExample>
  * ```
  */
-export const ForwardRefExample = withSlots(
-  'SlotsForwardRefExample',
-  function ForwardRefExample(args, forwardedRef: React.ForwardedRef<HTMLDivElement>) {
-    const { props, apply, ref } = useProps(args, {}, forwardedRef);
-    const { children } = props;
-    const rest = apply({}, ['children', 'ref']) as React.HTMLAttributes<HTMLDivElement>;
+export const ForwardRefExample = withSlots('SlotsForwardRefExample', function ForwardRefExample(...rest: any[]) {
+  const { apply } = useProps(rest);
 
-    return (
-      <div {...rest} ref={ref}>
-        {children}
-      </div>
-    );
-  }
-);
+  return <div {...apply()} />;
+});
