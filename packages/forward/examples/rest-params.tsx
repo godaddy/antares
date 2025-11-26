@@ -19,7 +19,7 @@ export const RestParams = withForwardRef<RestParamsProps>(
     // Future API pattern: const { props, ref } = useProps(args, state);
     // For now, just demonstrate the pattern
     const [props, ref] = args;
-    
+
     return (
       <div ref={ref} className={props?.className}>
         {props?.children}

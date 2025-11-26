@@ -13,10 +13,7 @@ interface AlreadyWrappedProps {
  * @public
  */
 export const AlreadyWrapped = withForwardRef(
-  React.forwardRef<HTMLDivElement, AlreadyWrappedProps>(
-    function AlreadyWrapped(props, ref) {
-      return <div ref={ref}>{props.children}</div>;
-    }
-  )
+  React.forwardRef<HTMLDivElement, AlreadyWrappedProps>(function AlreadyWrapped(props, ref) {
+    return <div ref={ref}>{props.children}</div>;
+  })
 );
-

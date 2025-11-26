@@ -12,9 +12,6 @@ interface NoRefProps {
  *
  * @public
  */
-export const NoRef = withForwardRef<NoRefProps>(
-  function NoRef(props) {
-    return <div>{props.children}</div>;
-  }
-);
-
+export const NoRef = withForwardRef<NoRefProps>(function NoRef(props) {
+  return <div>{props.children}</div>;
+});

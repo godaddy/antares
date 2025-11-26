@@ -14,13 +14,13 @@ interface BasicExampleProps {
  *
  * @public
  */
-export const BasicExample = withForwardRef<BasicExampleProps>(
-  function BasicExample(props, ref: React.ForwardedRef<HTMLDivElement>) {
-    return (
-      <div ref={ref} className={props.className}>
-        {props.children}
-      </div>
-    );
-  }
-);
-
+export const BasicExample = withForwardRef<BasicExampleProps>(function BasicExample(
+  props,
+  ref: React.ForwardedRef<HTMLDivElement>
+) {
+  return (
+    <div ref={ref} className={props.className}>
+      {props.children}
+    </div>
+  );
+});
