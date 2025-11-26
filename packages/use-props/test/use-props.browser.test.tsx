@@ -17,10 +17,10 @@ describe('@bento/use-props', function suite() {
 
           assume(ref).equals(testRef);
           assume(props.ref).equals(testRef);
-          assume(apply().ref).equals(testRef);
+          assume((apply() as any).ref).equals(testRef);
 
           const merged = apply({}, ['ref']);
-          assume(merged.ref).is.a('undefined');
+          assume((merged as any).ref).is.a('undefined');
 
           return <div {...apply()}>Test Content</div>;
         }
