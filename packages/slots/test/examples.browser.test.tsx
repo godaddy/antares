@@ -1,6 +1,7 @@
 import { SlotFunction } from '../examples/slot-function.tsx';
 import { SlotProps } from '../examples/slot-props.tsx';
 import { Button } from '../examples/button.tsx';
+import { ForwardRefExample } from '../examples/forward-ref.tsx';
 import { render } from 'vitest-browser-react';
 import { Memo } from '../examples/memo.tsx';
 import { Merged } from '../examples/merged.tsx';
@@ -161,6 +162,43 @@ describe('@bento/slots examples', function bento() {
       assume(result).equals(
         '<div>' + '<label data-override="className slot" class="inherited-title">title</label>Content' + '</div>'
       );
+    });
+  });
+
+  describe('ForwardRefExample', function forwardRef() {
+    it('forwards refs to the rendered element', function forwardsRefs() {
+      const ref = React.createRef<HTMLDivElement>();
+
+      render(
+        <ForwardRefExample ref={ref} data-testid="panel">
+          Forwarded
+        </ForwardRefExample>
+      );
+
+      assume(ref.current).exist();
+      assume(ref.current?.tagName).equals('DIV');
+      assume(ref.current?.textContent).equals('Forwarded');
+    });
+
+    it('merges slot-provided refs with forwarded refs', async function mergesRefs() {
+      const forwardedRef = React.createRef<HTMLDivElement>();
+      const slotRef = React.createRef<HTMLDivElement>();
+
+      const slots = {
+        panel: { ref: slotRef }
+      };
+
+      render(
+        <ForwardRefExample slots={slots}>
+          <ForwardRefExample slot="panel" ref={forwardedRef} data-testid="slot-target">
+            Combined
+          </ForwardRefExample>
+        </ForwardRefExample>
+      );
+
+      assume(forwardedRef.current).exist();
+      assume(forwardedRef.current).equals(slotRef.current);
+      assume(forwardedRef.current?.textContent).equals('Combined');
     });
   });
 });

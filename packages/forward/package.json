@@ -1,13 +1,14 @@
 {
-  "name": "@bento/focus-lock",
+  "name": "@bento/forward",
   "version": "0.0.0",
-  "description": "Focus lock primitive for managing focus within a scope",
+  "description": "React 19-compatible forwardRef utility for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
-    "lint": "biome lint && tsc",
+    "dev": "tsup-node --watch",
+    "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
     "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
@@ -19,16 +20,13 @@
     "url": "git+https://github.com/godaddy/bento.git"
   },
   "keywords": [
-    "accessibility",
-    "aria",
     "bento",
     "component",
-    "focus",
-    "focus-lock",
-    "focus-scope",
-    "focus-trap",
-    "library",
-    "react"
+    "forward",
+    "forwardRef",
+    "react",
+    "react19",
+    "ref"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
@@ -41,24 +39,9 @@
     "src",
     "package.json"
   ],
-  "dependencies": {
-    "@bento/slots": "^0.1.3",
-    "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.1.1",
-    "@react-aria/focus": "^3.18.6",
-    "@react-aria/interactions": "^3.22.6"
-  },
   "peerDependencies": {
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"
-  },
-  "devDependencies": {
-    "@bento/button": "*",
-    "@bento/container": "*",
-    "@bento/heading": "*",
-    "@bento/listbox": "*",
-    "@bento/radio": "*",
-    "@bento/text": "*"
   },
   "exports": {
     ".": {
