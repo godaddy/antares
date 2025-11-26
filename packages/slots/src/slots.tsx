@@ -1,8 +1,9 @@
 /// <reference types="vite/client" />
-import React, { useContext, memo } from 'react';
+import React, { useContext, memo, forwardRef } from 'react';
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { Box, type BoxContext } from '@bento/box';
 import { BentoError } from '@bento/error';
+import { withForwardRef } from '@bento/forward';
 import { override } from './override.ts';
 import { replace } from './replace.ts';
 
@@ -53,10 +54,16 @@ export function withSlots<Props extends object>(
   Component: React.ComponentType<Props>,
   modifiers = [replace, override]
 ) {
-  function WrappedComponent(propsAndSlots: Props & Slots) {
+  // Use @bento/forward to handle ref forwarding for React 18/19 compatibility
+  const ComponentWithRef = withForwardRef(Component);
+
+  const SlottedForwardRef = forwardRef<any, Props & Slots>(function SlottedComponent(
+    propsAndSlots,
+    forwardedRef
+  ) {
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
     let props = { ...restProps } as Props;
-    let Element = Component;
+    let Element: React.ComponentType<any> = ComponentWithRef;
 
     //
     // We need to create a new context object to prevent introducing properties
@@ -150,23 +157,35 @@ export function withSlots<Props extends object>(
         };
 
       if (typeof mods.props === 'object') props = { ...props, ...mods.props };
-      if (mods.Component) Element = mods.Component;
+      if (mods.Component) Element = mods.Component as React.ComponentType<any>;
     });
+
+    const baseProps = { ...(props as object) } as Props;
+
+    // ComponentWithRef is wrapped with forwardRef (or is the original component in React 19),
+    // so we need to pass the ref to it
+    const elementProps = forwardedRef != null
+      ? ({ ...baseProps, ref: forwardedRef } as Props)
+      : baseProps;
+
+    const slotProps = forwardedRef != null
+      ? ({ ...baseProps, ref: forwardedRef } as Props)
+      : elementProps;
 
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
       <Box.Provider value={context}>
-        <Element {...props} />
+        <Element {...elementProps} />
       </Box.Provider>
     );
 
     const slotted = ctx.slots.assigned[ctx.slots.namespace.join('.')];
 
     if (typeof slotted !== 'function') return rendered;
-    return slotted({ props, original: rendered.props.children });
-  }
+    return slotted({ props: slotProps, original: rendered.props.children });
+  });
 
-  const SlottedComponent = memo<Props & Slots>(WrappedComponent);
+  const SlottedComponent = memo(SlottedForwardRef);
   SlottedComponent.displayName = `Slotted(${name})`;
 
   if (process.env.NODE_ENV !== 'production') {
