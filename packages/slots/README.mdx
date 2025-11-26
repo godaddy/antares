@@ -3,6 +3,7 @@ import * as Stories from './slots.stories.tsx';
 
 import SourceNestedSlots from './examples/nested.tsx?raw';
 import SourceMemo from './examples/memo.tsx?raw';
+import SourceForwardRef from './examples/forward-ref.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -51,6 +52,47 @@ The reason why we require the name to be unique is because it's used to identify
 the component. This allows the component to be targeted with a global slot
 override, but it will also be used as `displayName` to ensure a readable
 component name in the React DevTools.
+
+## Forwarding Refs
+
+Components created with `withSlots` automatically support ref forwarding. The `withSlots` function:
+
+1. Detects if your component accepts a ref parameter (by checking if it has 2 parameters)
+2. Automatically wraps it with `React.forwardRef` in React 18 (if not already wrapped)
+3. In React 19+, it relies on the native ref-as-prop behavior (no wrapping needed)
+
+When using `useProps`, you can access the merged ref that combines:
+- The ref passed directly to the component
+- Any refs supplied through slots
+- The forwarded ref from parent components
+
+```javascript
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+import React from 'react';
+
+export const Button = withSlots(
+  'BentoButton',
+  React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function BentoButton(args, forwardedRef) {
+    const { props, apply, ref } = useProps(args, {}, forwardedRef);
+
+    return <button {...apply({}, ['ref'])} ref={ref}>{ props.children }</button>;
+  })
+);
+```
+
+The `ForwardRefExample` demonstrates how refs coming from the top-level consumer and from slot overrides are merged into a single handle.
+
+<Source language='tsx' code={ SourceForwardRef } />
+
+### React 19 Compatibility
+
+The ref forwarding implementation is designed to be React 19-compatible:
+
+- **React 18**: Components with 2 parameters are automatically wrapped with `forwardRef`
+- **React 19**: Components use the native ref-as-prop behavior, no wrapping needed
+
+This means your components will work seamlessly when upgrading from React 18 to React 19 without any code changes.
 
 ## Modifiers
 
