@@ -219,7 +219,7 @@ export function useProps(...rest: any[]): Returns {
         if (name === 'ref') return ref;
 
         return renderProp(name, {
-          original: isRenderProp(name as string, props[name as string]) ? undefined : props[name as string],
+          original: isRenderProp(name, props[name]) ? undefined : props[name],
           props: { ...props, ...internal },
           slots: slotted,
           state
