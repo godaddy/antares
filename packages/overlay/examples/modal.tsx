@@ -12,14 +12,21 @@ import { Text } from '@bento/text';
 export function Modal() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   useEffect(function mount() {
     setMounted(true);
   }, []);
 
+  function handleConfirm() {
+    setConfirmed(true);
+    setOpen(false);
+  }
+
   return (
     <>
       <Button onPress={() => setOpen(true)}>Open Modal</Button>
+      {confirmed && <Text data-testid="confirmed">Action confirmed</Text>}
       <Overlay open={open} onOpenChange={setOpen}>
         {open && (
           <Portal mounted={mounted}>
@@ -63,7 +70,7 @@ export function Modal() {
                 <Text>Background scrolling is prevented, and focus is trapped within the modal.</Text>
                 <Container style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
                   <Button onPress={() => setOpen(false)}>Close</Button>
-                  <Button onPress={() => alert('Action performed')}>Confirm</Button>
+                  <Button onPress={handleConfirm}>Confirm</Button>
                 </Container>
                 <Dismiss onDismiss={() => setOpen(false)} />
               </Container>

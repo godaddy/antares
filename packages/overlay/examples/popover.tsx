@@ -29,8 +29,8 @@ export function Popover() {
                 slot="content"
                 style={{
                   position: 'absolute',
-                  top: triggerRef.current ? triggerRef.current.offsetTop + triggerRef.current.offsetHeight + 8 : 0,
-                  left: triggerRef.current ? triggerRef.current.offsetLeft : 0,
+                  top: triggerRef?.current?.offsetTop + triggerRef?.current?.offsetHeight + 8,
+                  left: triggerRef?.current?.offsetLeft,
                   padding: '1rem',
                   background: 'white',
                   border: '1px solid #ccc',

@@ -55,10 +55,6 @@ describe('@bento/overlay examples', function overlayExamples() {
       assume(document.body.innerHTML).includes('Modal Dialog');
       assume(document.body.innerHTML).includes('backdrop, focus lock, scroll lock');
 
-      // Test confirm button (triggers alert - just verify it exists)
-      const confirmButton = getButton('Confirm');
-      assume(confirmButton).exist();
-
       // Close modal
       const closeButton = getButton('Close');
       assume(closeButton).exist();
@@ -67,6 +63,59 @@ describe('@bento/overlay examples', function overlayExamples() {
 
       // Modal should be closed
       assume(document.body.innerHTML).does.not.include('Modal Dialog');
+    });
+
+    it('closes modal via dismiss buttons', async function testModalDismissButtons() {
+      render(<Modal />);
+      const getButton = (text: string) =>
+        Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
+
+      // Test first dismiss button
+      const openButton = getButton('Open Modal');
+      assume(openButton).exist();
+      openButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      assume(document.body.innerHTML).includes('Modal Dialog');
+
+      const dismissButtons = document.querySelectorAll<HTMLButtonElement>('button[aria-label="Dismiss"]');
+      assume(dismissButtons.length).equals(2);
+
+      dismissButtons[0]?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(document.body.innerHTML).does.not.include('Modal Dialog');
+
+      // Test second dismiss button
+      openButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(document.body.innerHTML).includes('Modal Dialog');
+
+      const dismissButtons2 = document.querySelectorAll<HTMLButtonElement>('button[aria-label="Dismiss"]');
+      dismissButtons2[1]?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(document.body.innerHTML).does.not.include('Modal Dialog');
+    });
+
+    it('confirms action and closes modal', async function testModalConfirm() {
+      render(<Modal />);
+      const getButton = (text: string) =>
+        Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
+
+      const openButton = getButton('Open Modal');
+      assume(openButton).exist();
+      openButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      assume(document.body.innerHTML).includes('Modal Dialog');
+      assume(document.body.innerHTML).does.not.include('Action confirmed');
+
+      const confirmButton = getButton('Confirm');
+      assume(confirmButton).exist();
+      confirmButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      assume(document.body.innerHTML).does.not.include('Modal Dialog');
+      assume(document.body.innerHTML).includes('Action confirmed');
     });
   });
 
@@ -95,6 +144,62 @@ describe('@bento/overlay examples', function overlayExamples() {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Drawer should be closed
+      assume(document.body.innerHTML).does.not.include('Side Drawer');
+    });
+
+    it('closes drawer via dismiss buttons', async function testDrawerDismissButtons() {
+      render(<Drawer />);
+      const getButton = (text: string) =>
+        Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
+
+      // Test first dismiss button
+      const openButton = getButton('Open Drawer');
+      assume(openButton).exist();
+      openButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      assume(document.body.innerHTML).includes('Side Drawer');
+
+      const dismissButtons = document.querySelectorAll<HTMLButtonElement>('button[aria-label="Dismiss"]');
+      assume(dismissButtons.length).equals(2);
+
+      dismissButtons[0]?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(document.body.innerHTML).does.not.include('Side Drawer');
+
+      // Test second dismiss button
+      openButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(document.body.innerHTML).includes('Side Drawer');
+
+      const dismissButtons2 = document.querySelectorAll<HTMLButtonElement>('button[aria-label="Dismiss"]');
+      dismissButtons2[1]?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      assume(document.body.innerHTML).does.not.include('Side Drawer');
+    });
+
+    it('closes drawer via backdrop click', async function testDrawerBackdropClick() {
+      render(<Drawer />);
+      const getButton = (text: string) =>
+        Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
+
+      const openButton = getButton('Open Drawer');
+      assume(openButton).exist();
+      openButton?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      assume(document.body.innerHTML).includes('Side Drawer');
+
+      // Find backdrop by its unique styling (fixed position with inset: 0 and semi-transparent background)
+      const backdrop = Array.from(document.querySelectorAll('div')).find((el) => {
+        const style = window.getComputedStyle(el);
+        return style.position === 'fixed' && style.backgroundColor === 'rgba(0, 0, 0, 0.5)' && style.zIndex === '999';
+      });
+
+      assume(backdrop).exist();
+      backdrop?.click();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       assume(document.body.innerHTML).does.not.include('Side Drawer');
     });
   });
