@@ -80,15 +80,9 @@ export type ContainerProps<T extends React.ElementType = 'div'> = PolymorphicCom
  *
  * @public
  */
-export const Container = withSlots(
-  'BentoContainer',
-  React.forwardRef(function Container(
-    args: PolymorphicProps<React.ElementType, ContainerBaseProps>,
-    ref: PolymorphicRef<React.ElementType>
-  ) {
-    const { props, apply } = useProps(args);
-    const { children, as = 'div' } = props;
+export const Container = withSlots('BentoContainer', function Container(...rest: any[]) {
+  const { props, apply } = useProps(rest);
+  const { children, as = 'div' } = props;
 
-    return React.createElement(as, { ref, ...apply({}, ['as']) }, children);
-  })
-) as <T extends React.ElementType = 'div'>(props: ContainerProps<T>) => React.ReactElement;
+  return React.createElement(as, { ...apply({}, ['as']) }, children);
+}) as <T extends React.ElementType = 'div'>(props: ContainerProps<T>) => React.ReactElement;
