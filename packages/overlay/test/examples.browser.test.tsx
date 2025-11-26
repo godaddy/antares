@@ -191,7 +191,7 @@ describe('@bento/overlay examples', function overlayExamples() {
       assume(document.body.innerHTML).includes('Side Drawer');
 
       // Find backdrop by its unique styling (fixed position with inset: 0 and semi-transparent background)
-      const backdrop = Array.from(document.querySelectorAll('div')).find((el) => {
+      const backdrop = Array.from(document.querySelectorAll('div')).find(function findBackdrop(el) {
         const style = window.getComputedStyle(el);
         return style.position === 'fixed' && style.backgroundColor === 'rgba(0, 0, 0, 0.5)' && style.zIndex === '999';
       });

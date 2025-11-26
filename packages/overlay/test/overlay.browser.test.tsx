@@ -91,14 +91,13 @@ describe('@bento/overlay state management', function overlayState() {
       function ControlledOverlay() {
         const [open, setOpen] = useState(false);
 
+        function handleOpenChange(newOpen: boolean) {
+          capturedOpen = newOpen;
+          setOpen(newOpen);
+        }
+
         return (
-          <Overlay
-            open={open}
-            onOpenChange={(newOpen) => {
-              capturedOpen = newOpen;
-              setOpen(newOpen);
-            }}
-          >
+          <Overlay open={open} onOpenChange={handleOpenChange}>
             <Button slot="trigger" data-testid="trigger">
               Open
             </Button>
@@ -214,23 +213,21 @@ describe('@bento/overlay state management', function overlayState() {
       const capturedStates: boolean[] = [];
 
       function StatefulOverlay() {
-        return (
-          <Overlay defaultOpen={false}>
-            {(args) => {
-              capturedStates.push(args.state.open);
-              return (
-                <>
-                  <Button slot="trigger" data-testid="trigger">
-                    Toggle
-                  </Button>
-                  <Container slot="content" data-open={String(args.state.open)} data-testid="content">
-                    State: {args.state.open ? 'open' : 'closed'}
-                  </Container>
-                </>
-              );
-            }}
-          </Overlay>
-        );
+        function renderChildren(args: any) {
+          capturedStates.push(args.state.open);
+          return (
+            <>
+              <Button slot="trigger" data-testid="trigger">
+                Toggle
+              </Button>
+              <Container slot="content" data-open={String(args.state.open)} data-testid="content">
+                State: {args.state.open ? 'open' : 'closed'}
+              </Container>
+            </>
+          );
+        }
+
+        return <Overlay defaultOpen={false}>{renderChildren}</Overlay>;
       }
 
       const { container } = render(<StatefulOverlay />);

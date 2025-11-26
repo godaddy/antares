@@ -100,12 +100,13 @@ describe('@bento/overlay', function bento() {
   describe('Render props with state', function renderProps() {
     it('children render prop receives state from controlled open prop', function controlledOpen() {
       let capturedState: any;
+      function renderChildren(args: any) {
+        capturedState = args.state;
+        return <div>Content</div>;
+      }
       renderToStringWithChildren({
         open: true,
-        children: (args) => {
-          capturedState = args.state;
-          return <div>Content</div>;
-        }
+        children: renderChildren
       });
 
       assume(capturedState).is.a('object');
@@ -114,12 +115,13 @@ describe('@bento/overlay', function bento() {
 
     it('children render prop receives state from defaultOpen', function uncontrolledDefaultOpen() {
       let capturedState: any;
+      function renderChildren(args: any) {
+        capturedState = args.state;
+        return <div>Content</div>;
+      }
       renderToStringWithChildren({
         defaultOpen: true,
-        children: (args) => {
-          capturedState = args.state;
-          return <div>Content</div>;
-        }
+        children: renderChildren
       });
 
       assume(capturedState).is.a('object');
@@ -128,11 +130,12 @@ describe('@bento/overlay', function bento() {
 
     it('children render prop receives false state when defaultOpen is not provided', function uncontrolledDefaultClosed() {
       let capturedState: any;
+      function renderChildren(args: any) {
+        capturedState = args.state;
+        return <div>Content</div>;
+      }
       renderToStringWithChildren({
-        children: (args) => {
-          capturedState = args.state;
-          return <div>Content</div>;
-        }
+        children: renderChildren
       });
 
       assume(capturedState).is.a('object');
@@ -141,12 +144,13 @@ describe('@bento/overlay', function bento() {
 
     it('type render prop receives state and is evaluated before React Aria hooks', function typeWithState() {
       let capturedState: any;
+      function renderType(args: any) {
+        capturedState = args.state;
+        return args.state.open ? 'dialog' : 'menu';
+      }
       renderToStringWithChildren({
         defaultOpen: true,
-        type: (args) => {
-          capturedState = args.state;
-          return args.state.open ? 'dialog' : 'menu';
-        },
+        type: renderType,
         children: <div>Content</div>
       });
 
@@ -156,12 +160,13 @@ describe('@bento/overlay', function bento() {
 
     it('isDismissable render prop receives state and is evaluated before React Aria hooks', function isDismissableWithState() {
       let capturedState: any;
+      function renderIsDismissable(args: any) {
+        capturedState = args.state;
+        return !args.state.open;
+      }
       renderToStringWithChildren({
         defaultOpen: false,
-        isDismissable: (args) => {
-          capturedState = args.state;
-          return !args.state.open;
-        },
+        isDismissable: renderIsDismissable,
         children: <div>Content</div>
       });
 
