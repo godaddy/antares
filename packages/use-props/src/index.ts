@@ -1,7 +1,9 @@
 import { Box, type BoxContext } from '@bento/box';
 import { useInternalProps } from '@bento/internal-props';
 import { AnyObject } from '@bento/types';
+import { mergeRefs } from '@react-aria/utils';
 import { useContext } from 'react';
+import type { ForwardedRef, Ref } from 'react';
 
 export interface RenderPropData {
   /**
@@ -80,6 +82,22 @@ export function renderProp(name: string, args: RenderPropData): any {
   return execute(name, slots, args) || execute(name, props, args) || original;
 }
 
+/**
+ * Merges multiple refs into a single ref callback.
+ *
+ * @param refs - Array of refs to merge (can include undefined/null).
+ * @returns A single merged ref, undefined if no refs provided.
+ * @private
+ */
+function mergeRefList(refs: Array<ForwardedRef<any> | Ref<any> | undefined>): Ref<any> | undefined {
+  const filtered = refs.filter((ref): ref is ForwardedRef<any> | Ref<any> => ref != null);
+
+  if (!filtered.length) return undefined;
+  if (filtered.length === 1) return filtered[0] as Ref<any>;
+
+  return mergeRefs(...(filtered as Array<Ref<any>>)) as Ref<any>;
+}
+
 export interface Returns {
   /**
    * Proxy object that have access to the original props, slotted values, and internal props. When
@@ -99,28 +117,64 @@ export interface Returns {
    * @default function(attr)
    */
   apply: (attributes?: object, except?: string[]) => object;
+  /**
+   * The merged ref combining forwarded refs with any ref supplied via slots.
+   */
+  ref?: Ref<any>;
 }
 
 /**
  * Hook that merges props with slotted props and provides a proxy for accessing them.
  *
- * @param args - The initial props to use.
+ * @param args - The initial props to use, or array when using rest parameters.
  * @param state - The state object to use.
+ * @param forwardedRef - The ref forwarded to the component.
  * @returns An object containing the proxy based props object and the apply function.
  * @throws {BentoError} If the hook is used outside of a @bento/slots component.
  *
  * @example
- * const { props, apply } = useProps({ foo: 'bar' });
+ * const { props, apply, ref } = useProps({ foo: 'bar' }, {}, forwardedRef);
  * if (props.a) doSomething()
- * return <a {...apply({ className: 'foo' }) }>{ props.children }</a>;
+ * return <a {...apply({ className: 'foo' }, ['ref']) } ref={ref}>{ props.children }</a>;
+ *
+ * @example
+ * // With rest parameters
+ * function Component(...rest) {
+ *   const { props, apply, ref } = useProps(rest);
+ *   return <div {...apply()} />;
+ * }
  */
-export function useProps(args: AnyObject, state: object = {}): Returns {
+export function useProps(...rest: any[]): Returns {
+  let forwardedRef: ForwardedRef<any> | undefined;
+  let args: AnyObject;
+  let state: object;
+
+  if (Array.isArray(rest[0])) {
+    [args, forwardedRef] = rest[0];
+    state = rest[1];
+  } else {
+    [args, state, forwardedRef] = rest;
+  }
+
   const { slots } = useContext<BoxContext<AnyObject>>(Box);
   const [props, internal] = useInternalProps(args);
   const { namespace, assigned } = slots;
   const dot = namespace.join('.');
   const slotted = assigned[dot] || {};
-  const propsy = { ...internal, ...props, ...slotted };
+
+  const ref = mergeRefList([
+    (props as AnyObject)?.ref as ForwardedRef<any> | Ref<any> | undefined,
+    (slotted as AnyObject)?.ref as ForwardedRef<any> | Ref<any> | undefined,
+    forwardedRef
+  ]);
+
+  const slotNoRef = { ...slotted } as AnyObject;
+  const propsNoRef = { ...props } as AnyObject;
+
+  delete slotNoRef.ref;
+  delete propsNoRef.ref;
+
+  const propsy: AnyObject = { ...internal, ...propsNoRef, ...slotNoRef };
 
   /**
    * Applies the given attributes to an object.
@@ -131,37 +185,48 @@ export function useProps(args: AnyObject, state: object = {}): Returns {
    * @public
    */
   function apply(attributes?: object, except?: string[]): object {
-    const data = attributes || propsy;
-    const returned = {};
+    const data = (attributes || propsy) as AnyObject;
+    const returned: AnyObject = {};
 
     function reduce(memo: AnyObject, key: string) {
       if (except && except.includes(key)) return memo;
 
       memo[key] = renderProp(key, {
+        props: { ...props, ...internal },
         original: data[key],
         slots: slotted,
-        props: { ...props, ...internal },
         state
       });
 
       return memo;
     }
 
-    if (!attributes) return Object.keys(propsy).reduce(reduce, returned);
-    return Object.keys(propsy).reduce(reduce, Object.keys(attributes).reduce(reduce, returned));
+    let result: AnyObject;
+
+    if (!attributes) result = Object.keys(propsy).reduce(reduce, returned);
+    else result = Object.keys(propsy).reduce(reduce, Object.keys(attributes).reduce(reduce, returned));
+
+    // Always include the merged ref unless specifically excluded
+    if (except && except.includes('ref')) return result;
+    if (ref) result.ref = ref;
+
+    return result;
   }
 
   return {
     props: new Proxy(propsy, {
       get: function getter(_: object, name: string) {
+        if (name === 'ref') return ref;
+
         return renderProp(name, {
           original: isRenderProp(name, props[name]) ? undefined : props[name],
-          slots: slotted,
           props: { ...props, ...internal },
+          slots: slotted,
           state
         });
       }
     }),
-    apply
+    apply,
+    ref
   };
 }
