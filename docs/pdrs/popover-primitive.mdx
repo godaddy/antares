@@ -1,0 +1,165 @@
+# Popover primitive
+
+## Purpose
+
+A `Popover` is an overlay element positioned relative to a trigger. It is used to reveal additional information or functionality without taking the user away from their current context.
+
+Common use cases include:
+
+- **Action Menus**: Presenting a list of actions related to a specific object.
+- **Contextual Help**: Providing explanations or guidance for a specific UI element.
+- **Pickers**: Selectors like color pickers or date pickers that appear near an input.
+
+### Core Primitive Packages
+
+- **@bento/popover**: The coordinator component that integrates positioning logic with the Overlay primitive.
+- **@bento/overlay**: The container primitive that handles portal rendering, focus management, and outside interactions.
+
+### React Aria Integration
+
+The Popover primitive heavily relies on React Aria for accessibility and behavior:
+
+- **usePopover**: Used for positioning the popover relative to the trigger and managing its lifecycle (open/close). It handles:
+  - **Positioning**: Calculates the position of the popover based on the trigger's location and preferred placement (top, bottom, left, right).
+  - **Arrow Positioning**: Calculates the position of the arrow to point correctly at the trigger.
+  - **Adaptivity**: Adjusts placement to fit within the viewport (flipping, shifting).
+- **useOverlayTriggerState**: Manages the state of the Popover
+
+## Internal Structure & Reuse Potential
+
+The Popover serves as a specialized configuration of the **Overlay** primitive. It leverages `Overlay` for the heavy lifting of portaling and focus containment, while injecting the specific positioning logic provided by `usePopover`. Also, provides the necessary slots with data and accesibility features to both the trigger and arrow components.
+
+### Component Structure
+
+```
+Popover (State, Positioning Logic)
+└─ Overlay (Container)
+  ├─ Trigger (slot="trigger")
+  ├─ Arrow (slot="arrow")
+  └─ Content (slot="content", user-provided content)
+```
+
+## Foundations and Requirements
+
+- **MUST** use `@bento/overlay` as the underlying container implementation.
+- **MUST** support `placement` prop (top, bottom, left, right) with RTL support.
+- **MUST** support an `arrow` element that aligns correctly with the trigger.
+- **MUST** support custom trigger element from outside the Popover component.
+- **MUST** support controlled/uncontrolled handling.
+- **MUST** support RTL positioning.
+
+## Integration Approach
+
+The `Popover` component will act as a wrapper that:
+
+- Accepts `placement`, `offset`, and other positioning props.
+- Uses `usePopover` to calculate the styles and attributes required for the popover and arrow.
+- Uses `useLocale` to calculate the correct direction.
+- Passes these calculated props down to the `Overlay` and its children via slots.
+
+### Props Interface
+
+```tsx
+import { AriaPopoverProps } from 'react-aria';
+
+interface PopoverProps extends AriaPopoverProps {
+  /**
+   * The placement of the popover relative to the trigger.
+   */
+  placement?: 'top' | 'bottom' | 'left' | 'right';
+
+  /**
+   * The visual offset from the trigger.
+   */
+  offset?: number;
+
+  /**
+   * The ref for the element which the popover positions itself with respect to.
+   */
+  triggerRef?: RefObject<Element | null>;
+
+  /**
+   * Whether the popover is open (controlled). Pass this prop to control the open state.
+   */
+  isOpen?: boolean;
+
+  /**
+   * Whether the popover is open by default (uncontrolled). Use this for uncontrolled usage.
+   */
+  defaultOpen?: boolean;
+
+  /** Handler that is called when the popover's open state changes. */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * The user provided content
+   */
+  children?: React.ReactNode;
+}
+```
+
+## Composition
+
+The Popover follows the Bento composition model. It exposes slots for consumers.
+
+```tsx
+function DefaultExample() {
+  return (
+    <Popover>
+      <Button slot="trigger">Open Popover</Button>
+
+      <Icon slot="arrow">{/* ... */}</Icon>
+
+      <Container slot="content">
+        <Text as="h3">Popover Title</Text>
+        <Text>This is the popover content.</Text>
+      </Container>
+    </Popover>
+  );
+}
+```
+
+When the `trigger` is outside the `Popover` , you can use `triggerRef` prop to pass the ref to the component the popover should be positioned relative to.
+
+```tsx
+function CustomTriggerControlled() {
+  let [isOpen, setOpen] = React.useState(false);
+  let triggerRef = React.useRef(null);
+
+  return (
+    <>
+      <span ref={triggerRef}>Popover will be positioned relative to me</span>
+
+      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>
+        <Text slot="content">I'm over here!</Text>
+      </Popover>
+    </>
+  );
+}
+```
+
+## Slot map
+
+| Slot      | Purpose                               | Required |
+| --------- | ------------------------------------- | -------- |
+| `trigger` | The element that toggles the popover. | Yes      |
+| `content` | The main content of the popover.      | Yes      |
+| `arrow`   | The arrow visual indicator            | No       |
+
+## Data Attributes
+
+| Attribute        | Description                                      | Example Values   |
+| ---------------- | ------------------------------------------------ | ---------------- |
+| `data-placement` | The actual placement of the popover (after flip) | `top`, `bottom`  |
+| `data-state`     | Open/closed state (provided by Overlay)          | `open`, `closed` |
+| `data-entering`  | Indicates if popover is entering (for animation) | `true`           |
+| `data-exiting`   | Indicates if popover is exiting (for animation)  | `true`           |
+
+## Internationalization, RTL, and Mobile
+
+- **RTL**: `usePopover` automatically handles RTL flipping for placement (e.g., `left` becomes `right`).
+
+## Resources
+
+- [usePopover](https://react-spectrum.adobe.com/react-aria/usePopover.html)
+- [React Aria's Implementation](https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Popover.tsx)
