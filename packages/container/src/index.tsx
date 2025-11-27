@@ -1,7 +1,6 @@
 import { withSlots, type Slots } from '@bento/slots';
-import { useProps } from '@bento/use-props';
-/* v8 ignore next */
 import React, { type ReactNode } from 'react';
+import { useProps } from '@bento/use-props';
 
 /**
  * Extracts the proper ref type for a polymorphic component.
@@ -83,16 +82,12 @@ export type ContainerProps<T extends React.ElementType = 'div'> = PolymorphicCom
  */
 export const Container = withSlots(
   'BentoContainer',
-  React.forwardRef(function Container(
-    { as, ...args }: PolymorphicProps<React.ElementType, ContainerBaseProps>,
-    ref: PolymorphicRef<React.ElementType>
+  function Container(
+    ...args: [PolymorphicProps<React.ElementType, ContainerBaseProps>, PolymorphicRef<React.ElementType>?]
   ) {
     const { props, apply } = useProps(args);
-    const { children } = props;
-    const Component = as || 'div';
+    const { children, as = 'div' } = props;
 
-    if (children == null) return null;
-
-    return React.createElement(Component, { ref, ...apply({}, []) }, children);
-  })
-) as <T extends React.ElementType = 'div'>(props: ContainerProps<T>) => React.ReactElement | null;
+    return React.createElement(as, { ...apply({}, ['as']) }, children);
+  }
+) as <T extends React.ElementType = 'div'>(props: ContainerProps<T>) => React.ReactElement;

@@ -26,14 +26,22 @@ describe('@bento/container (node)', function bentoNode() {
       expect(props.as).toBe('div');
     });
 
-    it('handles null children on server', function handlesNullOnServer() {
+    it('renders empty div with null children on server', function handlesNullOnServer() {
       const html = renderToString(<Container>{null}</Container>);
-      expect(html).toBe('');
+      expect(html).equals('<div></div>');
     });
 
-    it('handles undefined children on server', function handlesUndefinedOnServer() {
+    it('renders empty div with undefined children on server', function handlesUndefinedOnServer() {
       const html = renderToString(<Container>{undefined}</Container>);
-      expect(html).toBe('');
+      expect(html).equals('<div></div>');
+    });
+
+    it('renders empty div for presentational use on server', function rendersEmptyOnServer() {
+      const html = renderToString(<Container style={{ width: '100px' }} className="backdrop" />);
+      expect(html).toContain('<div');
+      expect(html).toContain('class="backdrop"');
+      expect(html).toContain('style="width:100px"');
+      expect(html).toContain('></div>');
     });
 
     it('renders with props on server', function rendersWithPropsOnServer() {

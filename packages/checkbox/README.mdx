@@ -1,4 +1,10 @@
-import { Meta, ArgTypes, Story, Controls, Source } from '@storybook/addon-docs/blocks';
+import {
+  Meta,
+  ArgTypes,
+  Story,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
 import * as Stories from './checkbox.stories.tsx';
 import CheckboxControlledExample from './examples/checkbox-controlled.tsx?raw';
 import CheckboxExample from './examples/checkbox.tsx?raw';
@@ -42,48 +48,43 @@ The following data attributes can be used to style and customize the `CheckboxGr
 
 #### `CheckboxGroup` Data Attributes
 
-| Attribute       | Description                     |
-| --------------- | ------------------------------- |
-| `data-disabled` | Indicates the checkbox group is disabled |
-| `data-read-only` | Indicates the checkbox group is readonly |
-| `data-required` | Indicates the checkbox group is required |
-| `data-invalid`  | Indicates the checkbox group is invalid  |
+| Attribute        | Description                              | Example Values |
+| ---------------- | ---------------------------------------- | -------------- |
+| `data-disabled`  | Indicates the checkbox group is disabled | "true"         |
+| `data-readonly`  | Indicates the checkbox group is readonly | "true"         |
+| `data-required`  | Indicates the checkbox group is required | "true"         |
+| `data-invalid`   | Indicates the checkbox group is invalid  | "true"         |
 
 #### `Checkbox` Data Attributes
 
-| Attribute       | Description                     |
-| --------------- | ------------------------------- |
-| `data-disabled` | Indicates the checkbox is disabled |
-| `data-read-only` | Indicates the checkbox is readonly |
-| `data-required` | Indicates the checkbox is required |
-| `data-invalid`  | Indicates the checkbox is invalid  |
-| `data-indeterminate` | Indicates the checkbox is in an indeterminate state |
-| `data-pressed`       | Indicates the checkbox is being pressed |
-| `data-hovered`       | Indicates the checkbox is hovered       |
-| `data-focused`       | Indicates the checkbox has focus        |
-| `data-focus-visible` | Indicates focus should be visible    |
-| `data-selected`      | Indicates the checkbox is selected      |
+| Attribute            | Description                                         | Example Values |
+| -------------------- | --------------------------------------------------- | -------------- |
+| `data-disabled`      | Indicates the checkbox is disabled                  | "true"         |
+| `data-readonly`      | Indicates the checkbox is readonly                  | "true"         |
+| `data-required`      | Indicates the checkbox is required                  | "true"         |
+| `data-invalid`       | Indicates the checkbox is invalid                   | "true"         |
+| `data-indeterminate` | Indicates the checkbox is in an indeterminate state | "true"         |
+| `data-pressed`       | Indicates the checkbox is being pressed             | "true"         |
+| `data-hovered`       | Indicates the checkbox is hovered                   | "true"         |
+| `data-focused`       | Indicates the checkbox has focus                    | "true"         |
+| `data-focus-visible` | Indicates focus should be visible                   | "true"         |
+| `data-selected`      | Indicates the checkbox is selected                  | "true"         |
 
-### Slot Map
+### `CheckboxGroup` Slot Map
 
-The `CheckboxGroup` and `Checkbox` primitives are built off of the `Control` and `ControlGroup` primitives, which provide a consisten set of slot values, as shown below.
+| Slot Name     | Description                    |
+| ------------- | ------------------------------ |
+| `label`       | Label for checkbox group       |
+| `description` | Description for checkbox group |
+| `error`       | Error for checkbox group       |
 
-#### `CheckboxGroup` Slot Map
+### `Checkbox` Slot Map
 
-| Slot Name           | Description                  |
-| ------------------- | ---------------------------- |
-| `group.label`       | Label for checkbox group     |
-| `group.description` | Description for checkbox group|
-| `group.error`       | Error message for checkbox group|
-
-#### `Checkbox` Slot Map
-
-| Slot Name       | Description    |
-| --------------- | -------------- |
-| `control.icon-checked`  | Icon for checked checkbox |
-| `control.icon-unchecked`  | Icon for unchecked checkbox |
-| `control.icon-indeterminate`  | Icon for indeterminate checkbox |
-| `control.label` | Text for checkbox |
+| Slot Name            | Description                     |
+| -------------------- | ------------------------------- |
+| `icon-checked`       | Icon for checked checkbox       |
+| `icon-unchecked`     | Icon for unchecked checkbox     |
+| `icon-indeterminate` | Icon for indeterminate checkbox |
 
 ## Examples
 

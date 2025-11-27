@@ -1,6 +1,7 @@
 /* v8 ignore next */
 import React, { useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@bento/checkbox';
+import { Text } from '@bento/text';
 
 export function CheckboxGroupIndeterminateExample() {
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
@@ -46,7 +47,8 @@ export function CheckboxGroupIndeterminateExample() {
   }
 
   return (
-    <CheckboxGroup label="Select Items" value={Array.from(checkedItems)}>
+    <CheckboxGroup value={Array.from(checkedItems)} data-value={Array.from(checkedItems)}>
+      <Text slot="label">Select Items</Text>
       <Checkbox
         name="select-all"
         value="select-all"
