@@ -91,16 +91,6 @@ export interface OverlayProps extends Slots {
    * Consumers provide Portal, ScrollLock, FocusLock, and content via slots.
    */
   children?: ReactNode;
-
-  /**
-   * Render prop for className
-   */
-  className?: ((state: State) => string) | string;
-
-  /**
-   * Render prop for style
-   */
-  style?: ((state: State) => React.CSSProperties) | React.CSSProperties;
 }
 
 /**
