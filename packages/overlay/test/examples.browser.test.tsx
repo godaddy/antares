@@ -3,6 +3,9 @@ import { Modal } from '../examples/modal.tsx';
 import { Drawer } from '../examples/drawer.tsx';
 import { Popover } from '../examples/popover.tsx';
 import { UncontrolledWithTrigger } from '../examples/uncontrolled.tsx';
+import { Overlay } from '../src/index.tsx';
+import { Button } from '@bento/button';
+import { Container } from '@bento/container';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -253,6 +256,63 @@ describe('@bento/overlay examples', function overlayExamples() {
 
       // Overlay should be closed
       assume(document.body.innerHTML).does.not.include('Uncontrolled Overlay');
+    });
+  });
+
+  describe('Validation', function validationSuite() {
+    it('throws error when content slot is missing', function missingContent() {
+      const InvalidOverlay = () => (
+        <Overlay>
+          <Container>No slots assigned</Container>
+        </Overlay>
+      );
+
+      assume(() => render(<InvalidOverlay />)).throws(
+        [
+          '@bento/overlay(Overlay): Missing required slot assignment. Overlay requires a child with slot="content".',
+          'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
+        ].join('\n')
+      );
+    });
+
+    it('throws error when no slots are assigned', function missingBoth() {
+      const InvalidOverlay = () => (
+        <Overlay>
+          <div>No slots assigned</div>
+        </Overlay>
+      );
+
+      assume(() => render(<InvalidOverlay />)).throws(
+        [
+          '@bento/overlay(Overlay): Missing required slot assignment. Overlay requires a child with slot="content".',
+          'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
+        ].join('\n')
+      );
+    });
+
+    it('does not throw when content slot is present', function validContent() {
+      const ValidOverlay = () => (
+        <Overlay open={false}>
+          <Container slot="content">Content</Container>
+        </Overlay>
+      );
+
+      // Should not throw
+      const { container } = render(<ValidOverlay />);
+      assume(container).exist();
+    });
+
+    it('does not throw when both trigger and content slots are present', function validBoth() {
+      const ValidOverlay = () => (
+        <Overlay open={false}>
+          <Button slot="trigger">Open</Button>
+          <Container slot="content">Content</Container>
+        </Overlay>
+      );
+
+      // Should not throw
+      const { container } = render(<ValidOverlay />);
+      assume(container).exist();
     });
   });
 });

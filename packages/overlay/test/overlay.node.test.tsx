@@ -1,5 +1,6 @@
 import pkg from '../package.json' with { type: 'json' };
 import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
 import { renderToString } from 'react-dom/server';
 import { describe, it } from 'vitest';
 import { dirname, resolve } from 'node:path';
@@ -33,7 +34,7 @@ describe('@bento/overlay', function bento() {
   it('renders children when provided and not open', function withChildrenClosed() {
     const result = renderToStringWithChildren({
       open: false,
-      children: <div>Child content</div>
+      children: <Container slot="content">Child content</Container>
     });
 
     assume(result).includes('Child content');
@@ -42,7 +43,7 @@ describe('@bento/overlay', function bento() {
   it('renders children when provided and open', function withChildrenOpen() {
     const result = renderToStringWithChildren({
       open: true,
-      children: <div>Child content</div>
+      children: <Container slot="content">Child content</Container>
     });
 
     assume(result).includes('Child content');
@@ -51,7 +52,7 @@ describe('@bento/overlay', function bento() {
   it('provides Box context to children', function boxContext() {
     const result = renderToStringWithChildren({
       open: true,
-      children: <div data-testid="child">Content</div>
+      children: <Container slot="content" data-testid="child">Content</Container>
     });
 
     assume(result).includes('data-testid="child"');
@@ -62,7 +63,7 @@ describe('@bento/overlay', function bento() {
     it('respects the open prop when true', function openTrue() {
       const result = renderToStringWithChildren({
         open: true,
-        children: <div>Open</div>
+        children: <Container slot="content">Open</Container>
       });
 
       assume(result).includes('Open');
@@ -71,7 +72,7 @@ describe('@bento/overlay', function bento() {
     it('respects the open prop when false', function openFalse() {
       const result = renderToStringWithChildren({
         open: false,
-        children: <div>Closed</div>
+        children: <Container slot="content">Closed</Container>
       });
 
       assume(result).includes('Closed');
@@ -82,7 +83,7 @@ describe('@bento/overlay', function bento() {
     it('uses defaultOpen when provided', function defaultOpenTrue() {
       const result = renderToStringWithChildren({
         defaultOpen: true,
-        children: <div>Default open</div>
+        children: <Container slot="content">Default open</Container>
       });
 
       assume(result).includes('Default open');
@@ -90,7 +91,7 @@ describe('@bento/overlay', function bento() {
 
     it('defaults to closed when defaultOpen is not provided', function defaultClosed() {
       const result = renderToStringWithChildren({
-        children: <div>Default closed</div>
+        children: <Container slot="content">Default closed</Container>
       });
 
       assume(result).includes('Default closed');
@@ -102,7 +103,7 @@ describe('@bento/overlay', function bento() {
       let capturedState: any;
       function renderChildren(args: any) {
         capturedState = args.state;
-        return <div>Content</div>;
+        return <Container slot="content">Content</Container>;
       }
       renderToStringWithChildren({
         open: true,
@@ -117,7 +118,7 @@ describe('@bento/overlay', function bento() {
       let capturedState: any;
       function renderChildren(args: any) {
         capturedState = args.state;
-        return <div>Content</div>;
+        return <Container slot="content">Content</Container>;
       }
       renderToStringWithChildren({
         defaultOpen: true,
@@ -132,7 +133,7 @@ describe('@bento/overlay', function bento() {
       let capturedState: any;
       function renderChildren(args: any) {
         capturedState = args.state;
-        return <div>Content</div>;
+        return <Container slot="content">Content</Container>;
       }
       renderToStringWithChildren({
         children: renderChildren
@@ -151,7 +152,7 @@ describe('@bento/overlay', function bento() {
       renderToStringWithChildren({
         defaultOpen: true,
         type: renderType,
-        children: <div>Content</div>
+        children: <Container slot="content">Content</Container>
       });
 
       assume(capturedState).is.a('object');
@@ -167,7 +168,7 @@ describe('@bento/overlay', function bento() {
       renderToStringWithChildren({
         defaultOpen: false,
         isDismissable: renderIsDismissable,
-        children: <div>Content</div>
+        children: <Container slot="content">Content</Container>
       });
 
       assume(capturedState).is.a('object');

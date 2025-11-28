@@ -1,8 +1,9 @@
-import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTrigger, useModalOverlay } from '@react-aria/overlays';
-import { Slot } from '@bento/box';
-import { withSlots, type Slots } from '@bento/slots';
+import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useProps, type RenderPropData } from '@bento/use-props';
+import { withSlots, contains, type Slots } from '@bento/slots';
+import { BentoError } from '@bento/error';
+import { Slot } from '@bento/box';
 /* v8 ignore next */
 import React, { type ReactNode, useRef } from 'react';
 
@@ -177,6 +178,23 @@ export const Overlay = withSlots('BentoOverlay', function Overlay(args: OverlayP
 
   const { children } = props;
   if (!children) return null;
+
+  //
+  // Validate that required slots are present. The Overlay component requires
+  // children with specific slot assignments to function properly:
+  // - content: Required UNLESS a trigger is present (trigger allows conditional rendering)
+  // - trigger (optional): The element that opens/closes the overlay (e.g., Button)
+  //
+  if (!contains(['trigger'], children) && !contains(['content'], children)) {
+    throw new BentoError({
+      name: 'overlay',
+      method: 'Overlay',
+      message: [
+        'Missing required slot assignment. Overlay requires a child with slot="content".',
+        'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
+      ].join('\n')
+    });
+  }
 
   //
   // Use the Slot component to provide slots to children as we do not provide
