@@ -13,7 +13,7 @@ Common use cases include:
 ### Core Primitive Packages
 
 - **@bento/popover**: The coordinator component that integrates positioning logic with the Overlay primitive.
-- **@bento/overlay**: The container primitive that handles portal rendering, focus management, and outside interactions.
+- **@bento/overlay**: The container primitive that handles portal rendering, focus management, and outside interactions. These are achieved via Overlay composition with the usage of its [core primitive packages](./overlay-primitive.mdx#core-primitive-packages).
 
 ### React Aria Integration
 
@@ -142,8 +142,8 @@ function CustomTriggerControlled() {
 
 | Slot      | Purpose                               | Required |
 | --------- | ------------------------------------- | -------- |
-| `trigger` | The element that toggles the popover. | Yes      |
 | `content` | The main content of the popover.      | Yes      |
+| `trigger` | The element that toggles the popover. | No       |
 | `arrow`   | The arrow visual indicator            | No       |
 
 ## Data Attributes
