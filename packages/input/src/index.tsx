@@ -1,9 +1,10 @@
 /* v8 ignore next */
 import React from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { useProps } from '@bento/use-props';
-import { withSlots } from '@bento/slots';
 import { useDataAttributes } from '@bento/use-data-attributes';
+import { useProps } from '@bento/use-props';
+import { withForwardRef } from '@bento/forward';
+import { withSlots } from '@bento/slots';
 import { useFocusRing, useHover } from 'react-aria';
 import { mergeProps } from '@react-aria/utils';
 import type { HoverEvents } from 'react-aria';
@@ -42,7 +43,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  */
 export const Input = withSlots<InputProps>(
   'BentoInput',
-  React.forwardRef<HTMLInputElement, InputProps>(function Input(args: InputProps) {
+  withForwardRef(function Input(args: InputProps, ref: React.Ref<HTMLInputElement>) {
     const { props, apply } = useProps(args);
     const { autoFocus } = props;
 
@@ -55,6 +56,7 @@ export const Input = withSlots<InputProps>(
     return (
       <input
         {...apply({ ...mergeProps(props, focusProps, hoverProps) })}
+        ref={ref}
         {...useDataAttributes({
           focused: isFocused,
           hovered: isHovered,
