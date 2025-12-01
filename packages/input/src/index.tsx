@@ -1,36 +1,18 @@
 /* v8 ignore next */
-import React, { useMemo } from 'react';
+import React from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useFocusRing, useHover } from 'react-aria';
-import { mergeRefs, useObjectRef, mergeProps } from '@react-aria/utils';
+import { mergeProps } from '@react-aria/utils';
 import type { HoverEvents } from 'react-aria';
 
 /**
  * Props for the Input component.
  */
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'style'>, HoverEvents {
-  /**
-   * The id of the input element. This is useful for accessibility purposes.
-   */
-  id?: string;
-
-  /**
-   * The type of the input element.
-   * @default 'text'
-   */
-  type?: InputHTMLAttributes<HTMLInputElement>['type'];
-
-  /**
-   * Temporary text that occupies the text input when it is empty.
-   */
-  placeholder?: string;
-
-  /**
-   * Whether the input should be focused on mount.
-   */
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, keyof HoverEvents> {
+  /** Whether the input should be focused on mount. */
   autoFocus?: boolean;
 }
 
@@ -60,13 +42,12 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  */
 export const Input = withSlots<InputProps>(
   'BentoInput',
-  React.forwardRef<HTMLInputElement, InputProps>(function Input(args: InputProps, ref) {
+  React.forwardRef<HTMLInputElement, InputProps>(function Input(args: InputProps) {
     const { props, apply } = useProps(args);
-    const { disabled, readOnly, type, required, inputPropRef, value, checked, autoFocus } = props;
+    const { autoFocus } = props;
 
-    const inputRef = useObjectRef(useMemo(() => mergeRefs(ref, inputPropRef), [ref, inputPropRef]));
     const { isFocused, isFocusVisible, focusProps } = useFocusRing({
-      isTextInput: type !== 'checkbox' && type !== 'radio' && type !== 'range',
+      isTextInput: props.type !== 'checkbox' && props.type !== 'radio' && props.type !== 'range',
       autoFocus: autoFocus
     });
     const { hoverProps, isHovered } = useHover(props);
@@ -74,17 +55,16 @@ export const Input = withSlots<InputProps>(
     return (
       <input
         {...apply({ ...mergeProps(props, focusProps, hoverProps) })}
-        ref={inputRef}
         {...useDataAttributes({
           focused: isFocused,
           hovered: isHovered,
           focusVisible: isFocusVisible,
-          disabled: disabled || false,
+          disabled: props.disabled || false,
           invalid: !!props['aria-invalid'] && props['aria-invalid'] !== 'false',
-          readonly: readOnly || false,
-          required: required || false,
-          empty: value === '' || value === undefined || value === null,
-          checked: type === 'checkbox' || type === 'radio' ? !!checked : undefined
+          readonly: props.readOnly || false,
+          required: props.required || false,
+          empty: props.value === '' || props.value === undefined || props.value === null,
+          checked: props.type === 'checkbox' || props.type === 'radio' ? !!props.checked : undefined
         })}
       />
     );
