@@ -1,7 +1,7 @@
 {
-  "name": "@bento/control",
-  "version": "0.1.1",
-  "description": "Control component",
+  "name": "@bento/field-error",
+  "version": "0.1.0",
+  "description": "The FieldError component renders error messages for form controls, such as RadioGroup or CheckboxGroup",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -9,6 +9,7 @@
     "build": "tsup-node",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
@@ -22,7 +23,7 @@
     "aria",
     "bento",
     "component",
-    "control",
+    "fielderror",
     "interactive",
     "library",
     "react"
@@ -39,9 +40,9 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.1.1",
-    "@bento/use-props": "^0.1.0",
-    "react-aria": "^3.44.0"
+    "@bento/slots": "^0.1.3",
+    "@bento/text": "^0.1.2",
+    "@bento/use-props": "^0.1.1"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

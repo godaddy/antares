@@ -1,6 +1,6 @@
 {
   "name": "@bento/use-svg-sprite",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A React hook for managing SVG sprites",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -10,6 +10,7 @@
     "dev": "tsup-node src/index.tsx --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
@@ -39,10 +40,10 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.1.0"
+    "@bento/box": "^0.1.1"
   },
   "devDependencies": {
-    "@bento/environment": "^0.1.0"
+    "@bento/environment": "^0.1.2"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

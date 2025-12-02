@@ -1,4 +1,5 @@
 import { Radio, RadioGroup } from '@bento/radio';
+import { Text } from '@bento/text';
 /* v8 ignore next */
 import React, { type ComponentProps } from 'react';
 
@@ -8,10 +9,12 @@ export function SingleRadioExample(props: {
 }) {
   return (
     // Radios are always required to be in a group
-    <RadioGroup label="Favorite fruit (single radio)" name="fruit" {...props.groupProps}>
+    <RadioGroup name="fruit" {...props.groupProps}>
+      <Text slot="label">Favorite fruit (single radio)</Text>
       <Radio value="apple" {...props.radioProps}>
         Apple
       </Radio>
+      <Text slot="description">This is the description</Text>
     </RadioGroup>
   );
 }

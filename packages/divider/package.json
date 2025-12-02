@@ -1,6 +1,6 @@
 {
   "name": "@bento/divider",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Divider component",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -9,6 +9,7 @@
     "build": "tsup-node",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
@@ -38,8 +39,8 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.1.1",
-    "@bento/use-props": "^0.1.0"
+    "@bento/slots": "^0.1.3",
+    "@bento/use-props": "^0.1.1"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

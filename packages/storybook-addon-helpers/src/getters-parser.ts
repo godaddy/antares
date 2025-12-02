@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import fs from 'node:fs';
 import camelCase from 'camelcase';
-import { toLiteralValue } from './ats-utils';
+import { toLiteralValue } from './ats-utils.ts';
 
 export const GET_META = 'getMeta';
 export const GET_STORY = 'getStory';

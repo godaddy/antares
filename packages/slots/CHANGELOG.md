@@ -1,5 +1,19 @@
 # @bento/slots
 
+## 0.1.3
+
+### Patch Changes
+
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/bento/pull/23) by @kawikabader)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/use-data-attributes@0.1.1
+- @bento/error@0.1.1
+- @bento/box@0.1.1
+</details>
+
 ## 0.1.2
 
 ### Patch Changes
