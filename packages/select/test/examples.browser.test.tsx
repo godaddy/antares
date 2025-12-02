@@ -114,5 +114,52 @@ describe('@bento/select examples', function bento() {
 
       assume(result).includes('aria-multiselectable="true"');
     });
+
+    it('updates internal state and closes popover when an option is selected', async function test() {
+      const { container } = render(<BasicSelectExample />);
+
+      // Verify initial state
+      let html = container.innerHTML;
+      assume(html).includes('Select a fruit...');
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      assume(trigger).exists();
+      assume(trigger?.getAttribute('data-open')).equals(null);
+      assume(trigger?.getAttribute('aria-expanded')).equals('false');
+
+      // Click trigger to open
+      await trigger.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      // Verify popover opened
+      assume(trigger?.getAttribute('data-open')).equals('true');
+      assume(trigger?.getAttribute('aria-expanded')).equals('true');
+
+      // Find and click the "Apple" option
+      const listbox = container.querySelector('[role="listbox"]') as HTMLElement;
+      assume(listbox).exists();
+
+      const appleOption = Array.from(listbox.querySelectorAll('[role="option"]')).find(
+        (el) => el.textContent === 'Apple'
+      ) as HTMLElement;
+      assume(appleOption).exists();
+
+      await appleOption.click();
+
+      // Wait for state to update
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      // Verify selection state updated (option has aria-selected)
+      html = container.innerHTML;
+      assume(html).includes('data-selected="true"');
+      assume(html).includes('aria-selected="true"');
+
+      // Verify popover closed
+      assume(trigger?.getAttribute('data-open')).equals(null);
+      assume(trigger?.getAttribute('aria-expanded')).equals('false');
+
+      // Verify trigger text updates to selected value
+      assume(html).includes('Apple');
+    });
   });
 });

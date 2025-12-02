@@ -45,7 +45,8 @@ describe('@bento/select', function bento() {
     assume(emptyResult).includes('role="combobox"');
     assume(emptyResult).includes('aria-haspopup="listbox"');
     assume(emptyResult).includes('aria-expanded="false"');
-    assume(emptyResult).includes('data-open="false"');
+    // data-open attribute is omitted when false (invariant #16)
+    assume(emptyResult).not.includes('data-open');
 
     // Verify placeholder
     assume(emptyResult).includes('Choose');

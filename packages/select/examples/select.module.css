@@ -1,0 +1,85 @@
+/**
+ * Minimal Select Example Styles
+ * Just enough to demonstrate functionality in Storybook
+ */
+
+.selectWrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+}
+
+.trigger {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.trigger::after {
+  content: '▼';
+  font-size: 0.75rem;
+}
+
+.trigger[data-open="true"]::after {
+  transform: rotate(180deg);
+}
+
+.trigger[data-focus-visible="true"] {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.trigger[data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trigger [slot="value"][data-placeholder="true"] {
+  color: #999;
+  font-style: italic;
+}
+
+.popover {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.popover:not([data-open="true"]) {
+  display: none;
+}
+
+.listbox {
+  border: none;
+  padding: 0;
+}
+
+.listbox [role="option"] {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.listbox [role="option"][data-focused] {
+  background: #e5e7eb;
+}
+
+.listbox [role="option"][aria-selected="true"] {
+  background: Highlight;
+  color: HighlightText;
+}
+
+.listbox [role="option"][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
