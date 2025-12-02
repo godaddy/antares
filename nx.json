@@ -1,0 +1,64 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tui": {
+    "autoExit": 3
+  },
+  "telemetry": {
+    "telemetryLevel": "off"
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/.env*",
+        "{projectRoot}/../../configs/*.json",
+        "{projectRoot}/../../configs/*.mjs",
+        "{projectRoot}/../../configs/*.mts",
+        "{projectRoot}/../../biome.json",
+        "{projectRoot}/../../.grit/**/*"
+      ],
+      "outputs": [
+        "{projectRoot}/.next/**",
+        "!{projectRoot}/.next/cache/**",
+        "{projectRoot}/storybook-static/**",
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "{projectRoot}/src/**/*.tsx",
+        "{projectRoot}/src/**/*.ts",
+        "{projectRoot}/test/**/*.js",
+        "{projectRoot}/test/**/*.ts",
+        "{projectRoot}/examples/**/*.tsx",
+        "{projectRoot}/examples/**/*.ts",
+        "{projectRoot}/tsconfig*.json",
+        "{projectRoot}/vitest.config.*",
+        "{projectRoot}/../../biome.json",
+        "{projectRoot}/../../.grit/**/*"
+      ],
+      "cache": true
+    },
+    "lint": {
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/src/**/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/test/**/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/examples/**/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/tsconfig*.json",
+        "{projectRoot}/biome.json",
+        "{projectRoot}/.grit/**/*",
+        "{projectRoot}/../../biome.json",
+        "{projectRoot}/../../.grit/**/*"
+      ],
+      "cache": true
+    },
+    "dev": {
+      "cache": false
+    }
+  }
+}

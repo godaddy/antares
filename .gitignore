@@ -58,3 +58,7 @@ packages/**/test/__screenshots__/
 
 # Claude
 .claude
+
+# Nx
+.nx/cache
+.nx/workspace-data
