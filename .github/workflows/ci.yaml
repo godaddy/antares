@@ -32,7 +32,7 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Restore Turbo Cache
+      - name: Restore NX Cache
         uses: actions/cache@v4
         with:
           path: .nx/cache
@@ -53,15 +53,13 @@ jobs:
             playwright-${{ runner.os }}-
 
       - name: Install Playwright Browsers
-        run: npx playwright install
+        run: npx playwright install --with-deps
 
       - name: Build Packages
         run: npm run build
 
       - name: Test
         run: npm test
-        env:
-          TURBO_CONCURRENCY: 1
 
       - name: Lint
         run: npm run lint
