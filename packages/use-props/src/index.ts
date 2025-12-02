@@ -77,7 +77,14 @@ export function execute(name: string, data: AnyObject, args: RenderPropData): an
 export function renderProp(name: string, args: RenderPropData): any {
   const { props, slots, original } = args;
 
-  return execute(name, slots, args) || execute(name, props, args) || original;
+  // Use nullish coalescing (??) instead of || to properly handle falsy values like false, 0, ''
+  const slotValue = execute(name, slots, args);
+  if (slotValue !== undefined && slotValue !== null) return slotValue;
+
+  const propValue = execute(name, props, args);
+  if (propValue !== undefined && propValue !== null) return propValue;
+
+  return original;
 }
 
 export interface Returns {
