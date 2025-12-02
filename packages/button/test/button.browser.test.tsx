@@ -56,26 +56,16 @@ describe('@bento/button', function bento() {
       assume(result).includes('disabled');
     });
 
-    it('should allow to use ref', function test() {
-      const onPress = vi.fn();
+    it('should support children as render function', async function test() {
+      const { container: staticContainer } = render(<Button>Static Text</Button>);
+      const staticButton = staticContainer.querySelector('button');
+      expect(staticButton?.textContent).toBe('Static Text');
 
-      function PressableWithRef() {
-        const ref = useRef<HTMLButtonElement>(null);
-
-        return (
-          <Button childRef={ref} onPress={() => onPress(ref.current)}>
-            click me
-          </Button>
-        );
-      }
-
-      const { container } = render(<PressableWithRef />);
-
-      const button = container.querySelector('button');
-      button?.click();
-
-      expect(onPress).toHaveBeenCalledTimes(1);
-      expect(onPress).toHaveBeenCalledWith(button);
+      const { container: renderContainer } = render(
+        <Button>{({ isPressed }) => (isPressed ? 'Pressed!' : 'Click me')}</Button>
+      );
+      const renderButton = renderContainer.querySelector('button');
+      expect(renderButton?.textContent).toBe('Click me');
     });
   });
 });

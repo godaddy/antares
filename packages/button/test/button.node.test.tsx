@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from '@bento/button';
+import { Button, type ButtonProps, resolveChildren } from '@bento/button';
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
@@ -21,6 +21,34 @@ function renderToStringButton(args: ButtonProps & { slots?: AnyObject }) {
 }
 
 describe('@bento/button', function bento() {
+  describe('resolveChildren', function resolveChildrenTests() {
+    const mockRenderProps = {
+      isPressed: false,
+      isHovered: false,
+      isFocused: false,
+      isFocusVisible: false
+    };
+
+    it('should return static children unchanged', function test() {
+      const result = resolveChildren('Static text', mockRenderProps);
+      assume(result).equals('Static text');
+    });
+
+    it('should call function children with render props', function test() {
+      const result = resolveChildren(({ isPressed }) => (isPressed ? 'Pressed' : 'Not pressed'), {
+        ...mockRenderProps,
+        isPressed: true
+      });
+      assume(result).equals('Pressed');
+    });
+
+    it('should handle JSX elements as static children', function test() {
+      const element = <span>Test</span>;
+      const result = resolveChildren(element, mockRenderProps);
+      assume(result).equals(element);
+    });
+  });
+
   it('renders a button with the correct props', function button() {
     const result = renderToStringButton({
       children: 'Click me'
@@ -47,18 +75,12 @@ describe('@bento/button', function bento() {
       assume(result).includes('data-override="className style"');
     });
 
-    it('introduced the `pressable` slot to the Pressable component', function pressable() {
+    it('should support children as render function', function test() {
       const result = renderToStringButton({
-        children: <div>Press me</div>,
-        slots: {
-          pressable: {
-            'data-foo': 'bar'
-          }
-        }
+        children: ({ isPressed }: { isPressed: boolean }) => (isPressed ? 'Pressed' : 'Not Pressed')
       });
 
-      assume(result).includes('data-override="slot"');
-      assume(result).includes('data-foo="bar"');
+      assume(result).includes('Not Pressed');
     });
   });
 

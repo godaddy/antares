@@ -1,21 +1,43 @@
-import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-import { Pressable, type PressableProps } from '@bento/pressable';
-import { useButton } from 'react-aria';
-import React, { ComponentProps } from 'react';
+import { useProps } from '@bento/use-props';
+import { useDataAttributes } from '@bento/use-data-attributes';
+import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, HoverEvents } from 'react-aria';
+import React, { forwardRef, type ForwardedRef } from 'react';
 
 export interface ButtonProps
-  extends Omit<PressableProps, 'children'>,
-    Omit<ComponentProps<'button'>, keyof PressableProps> {
-  /** A ref to the button element. This is useful if you want to access the button element directly. */
-  childRef?: React.Ref<HTMLButtonElement>;
-
+  extends Omit<AriaButtonProps, 'children' | 'href' | 'target' | 'rel' | 'elementType'>,
+    HoverEvents {
   /** The content to display inside the button. */
-  children: React.ReactNode;
+  children: React.ReactNode | ((props: ButtonRenderProps) => React.ReactNode);
+}
+
+export interface ButtonRenderProps {
+  /** Whether the button is currently pressed. */
+  isPressed: boolean;
+  /** Whether the button is currently hovered. */
+  isHovered: boolean;
+  /** Whether the button is focused. */
+  isFocused: boolean;
+  /** Whether the button is keyboard focused. */
+  isFocusVisible: boolean;
 }
 
 /**
- * A complete button component built on top of the Pressable primitive.
+ * Resolves button children - either renders the function with state or returns static content.
+ * @internal
+ */
+export function resolveChildren(
+  children: React.ReactNode | ((props: ButtonRenderProps) => React.ReactNode),
+  renderProps: ButtonRenderProps
+): React.ReactNode {
+  if (typeof children === 'function') {
+    return children(renderProps);
+  }
+  return children;
+}
+
+/**
+ * A complete button component built on top of React Aria's useButton.
  * Renders as a native button element with all accessibility and interaction features.
  *
  * @example
@@ -23,16 +45,60 @@ export interface ButtonProps
  * <Button onPress={() => console.log('Button pressed!')}>Click me</Button>
  * ```
  */
-export const Button = withSlots('BentoButton', function Button(args: ButtonProps) {
-  const { props } = useProps(args);
-  const { children, childRef, ...restProps } = props;
-  const { buttonProps } = useButton(restProps, childRef);
+export const Button = withSlots(
+  'BentoButton',
+  forwardRef(function Button(args: ButtonProps, forwardedRef: ForwardedRef<HTMLButtonElement | null>) {
+    const innerRef = React.useRef<HTMLButtonElement>(null);
 
-  return (
-    <Pressable {...restProps} slot="pressable">
-      <button {...buttonProps} ref={childRef}>
-        {children}
+    // Extract merged props first (includes slot props from context)
+    // We need this to get the ref and onPress that might come from slots
+    const { props: mergedProps } = useProps(args, {});
+
+    // Determine which ref to use: slots ref from mergedProps, forwardedRef, or fallback innerRef
+    // Type cast: mergedProps may contain a ref from slots, which isn't in ButtonProps type
+    const slotRef = (mergedProps as any).ref;
+    const ref = slotRef || forwardedRef || innerRef;
+
+    // Use mergedProps (which includes slot props) for React Aria hooks
+    // Type casts: mergedProps may have additional slot props, ref may be ForwardedRef
+    const { buttonProps, isPressed } = useButton(mergedProps as ButtonProps, ref as React.RefObject<HTMLButtonElement>);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
+    const { hoverProps, isHovered } = useHover(mergedProps);
+
+    const renderProps: ButtonRenderProps = {
+      isPressed,
+      isHovered,
+      isFocused,
+      isFocusVisible
+    };
+
+    // Re-extract props with renderProps for children resolution
+    const { props, apply } = useProps(args, renderProps);
+
+    const dataAttrs = useDataAttributes({
+      pressed: isPressed,
+      hovered: isHovered,
+      focused: isFocused,
+      focusVisible: isFocusVisible,
+      disabled: props.isDisabled
+    });
+
+    const content = resolveChildren(props.children, renderProps);
+
+    return (
+      <button
+        {...apply(mergeProps(buttonProps, focusProps, hoverProps, dataAttrs), [
+          'children',
+          'onPress',
+          'onPressStart',
+          'onPressEnd',
+          'onPressUp',
+          'onPressChange'
+        ])}
+        ref={ref}
+      >
+        {content}
       </button>
-    </Pressable>
-  );
-});
+    );
+  })
+);
