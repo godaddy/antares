@@ -177,5 +177,25 @@ describe('@bento/container', function bento() {
       expect(inner?.nodeName).toBe('SECTION');
       expect(inner?.textContent).toBe('Inner content');
     });
+
+    it('forwards refs provided by the consumer and slot to the DOM element', async function forwardsMergedRefs() {
+      const forwardedRef = React.createRef<HTMLDivElement>();
+      const slotRef = React.createRef<HTMLDivElement>();
+
+      render(
+        <Container slots={{ trigger: { ref: slotRef } }}>
+          <Container slot="trigger" ref={forwardedRef}>
+            Ref content
+          </Container>
+        </Container>
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      assume(slotRef.current).exist();
+      assume(forwardedRef.current).exist();
+      assume(forwardedRef.current).equals(slotRef.current);
+      assume(forwardedRef.current?.textContent).equals('Ref content');
+    });
   });
 });
