@@ -80,16 +80,13 @@ export interface ListBoxItemRenderProps {
 /**
  * Props for the ListBoxItem component.
  * @interface ListBoxItemProps
- * @template T The type of the item value
  */
-export interface ListBoxItemProps<T = object>
+export interface ListBoxItemProps
   extends LinkDOMProps,
     HoverEvents,
     Omit<React.HTMLAttributes<HTMLElement>, keyof LinkDOMProps | keyof HoverEvents | 'id' | 'children'> {
   /** The unique id of the item. If not provided, React Aria will auto-generate one. */
   readonly id?: Key;
-  /** The object value that this item represents. When using dynamic collections, this is set automatically. */
-  readonly value?: T;
   /** A string representation of the item's contents, used for features like typeahead. If not provided, React Aria will derive it from children automatically. */
   readonly textValue?: string;
   /**
@@ -127,7 +124,7 @@ export interface ListBoxItemProps<T = object>
  * @internal
  */
 const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends object>(
-  { __node, ...props }: ListBoxItemProps<T> & { readonly __node: Node<T> },
+  { __node, ...props }: ListBoxItemProps & { readonly __node: Node<T> },
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const state = useContext(ListStateContext)!;
@@ -219,14 +216,14 @@ export const ListBoxItemImpl = withSlots('BentoListBoxItem', forwardRef(ListBoxI
  * the internal ListBoxItemImpl, ensuring proper prop forwarding and node injection.
  *
  * @template T - The type of the item value
- * @param {ListBoxItemProps<T>} props - ListBoxItem component props
+ * @param {ListBoxItemProps} props - ListBoxItem component props
  * @param {React.ForwardedRef<HTMLDivElement>} forwardedRef - Ref forwarded from the collection system
  * @param {Node<T>} item - React Aria node containing item metadata and collection info
  * @returns {React.ReactElement} The ListBoxItemImpl component with proper node and ref wiring
  * @internal
  */
 function ListBoxItemComponent<T extends object>(
-  props: ListBoxItemProps<T>,
+  props: ListBoxItemProps,
   forwardedRef: ForwardedRef<HTMLDivElement>,
   item: Node<T>
 ) {

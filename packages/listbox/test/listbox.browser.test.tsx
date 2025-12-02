@@ -816,12 +816,9 @@ describe('@bento/listbox', function bento() {
 
       assume(listBoxActionResult).includes('Item 1');
 
-      const itemValue = { id: 'test', data: 'value' };
       const { container: valueContainer } = render(
         <ListBox aria-label="Value test">
-          <ListBoxItem textValue="Value Item" value={itemValue}>
-            Value Item
-          </ListBoxItem>
+          <ListBoxItem textValue="Value Item">Value Item</ListBoxItem>
         </ListBox>
       );
       const valueResult = valueContainer.innerHTML;

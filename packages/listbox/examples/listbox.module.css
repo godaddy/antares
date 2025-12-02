@@ -1,181 +1,44 @@
 /**
- * Listbox selection styles using CSS modules
- *
- * Uses system colors and data attributes following Bento's design approach.
- * Provides accessible styling that adapts to user preferences and themes.
+ * Minimal ListBox Example Styles
+ * Just enough to demonstrate functionality in Storybook
  */
 
-/* Base option styling with smooth transitions - using descendant selector */
+.listbox {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  padding: 4px;
+}
+
 .listbox [role="option"] {
   padding: 8px 12px;
-  border-radius: 6px;
-  transition: all 0.15s ease-in-out;
   cursor: pointer;
-  border: 1px solid transparent;
-  position: relative;
 }
 
-/* Selected listbox items - more prominent styling */
-.listbox [role="option"][aria-selected="true"] {
-  background: linear-gradient(
-    135deg,
-    Highlight 0%,
-    color-mix(in srgb, Highlight 80%, black) 100%
-  );
-  color: HighlightText;
-  border-color: color-mix(in srgb, Highlight 70%, white);
-  box-shadow: 0 2px 4px color-mix(in srgb, Highlight 30%, transparent);
-  transform: translateY(-1px);
-}
-
-/* Focused listbox items (keyboard navigation) - enhanced outline */
-.listbox [role="option"][data-focused="true"] {
-  outline: 2px solid Highlight;
-  outline-offset: -2px;
-  background: color-mix(in srgb, Highlight 10%, transparent);
-  border-color: color-mix(in srgb, Highlight 50%, transparent);
-}
-
-/* Hovered listbox items - subtle lift effect */
-.listbox [role="option"][data-hovered="true"] {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, Highlight 5%, white) 0%,
-    color-mix(in srgb, Highlight 8%, white) 100%
-  );
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px color-mix(in srgb, black 8%, transparent);
-  border-color: color-mix(in srgb, Highlight 20%, transparent);
-}
-
-/* Pressed listbox items - tactile feedback */
-.listbox [role="option"][data-pressed="true"] {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px color-mix(in srgb, Highlight 20%, transparent);
-  background: color-mix(in srgb, Highlight 15%, white);
-}
-
-/* Disabled listbox items - reduced opacity and interaction */
-.listbox [role="option"][data-disabled="true"] {
-  opacity: 0.6;
-  cursor: not-allowed;
-  color: #9ca3af;
-  background: color-mix(in srgb, gray 3%, transparent);
-}
-
-/* Enhanced state for data-focused without specific value */
 .listbox [role="option"][data-focused] {
-  outline: 2px solid Highlight;
-  outline-offset: -2px;
-  background: color-mix(in srgb, Highlight 8%, transparent);
+  background: #e5e7eb;
 }
 
-/* Enhanced state for data-hovered without specific value */
-.listbox [role="option"][data-hovered] {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, Highlight 6%, white) 0%,
-    color-mix(in srgb, Highlight 10%, white) 100%
-  );
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px color-mix(in srgb, black 6%, transparent);
+.listbox [role="option"][aria-selected="true"] {
+  background: Highlight;
+  color: HighlightText;
 }
 
-/* Combined states for richer interaction */
-.listbox [role="option"][data-focused][data-hovered] {
-  outline: 2px solid Highlight;
-  outline-offset: -2px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, Highlight 12%, white) 0%,
-    color-mix(in srgb, Highlight 15%, white) 100%
-  );
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px color-mix(in srgb, black 10%, transparent);
-  border-color: color-mix(in srgb, Highlight 40%, transparent);
+.listbox [role="option"][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* Selected + hovered - enhanced visual feedback */
-.listbox [role="option"][aria-selected="true"][data-hovered] {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, Highlight 90%, white) 0%,
-    color-mix(in srgb, Highlight 70%, black) 100%
-  );
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px color-mix(in srgb, Highlight 40%, transparent);
-}
-
-/* Disabled + pressed - prevent interaction */
-.listbox [role="option"][data-disabled="true"][data-pressed] {
-  transform: none;
-  box-shadow: none;
-}
-
-/* Disabled + hovered (with value) - prevent hover effects */
-.listbox [role="option"][data-disabled="true"][data-hovered="true"] {
-  background: color-mix(in srgb, gray 5%, transparent);
-  transform: none;
-  box-shadow: none;
-}
-
-/* Disabled + focused (with value) - prevent focus effects while maintaining outline */
-.listbox [role="option"][data-disabled="true"][data-focused="true"] {
-  background: color-mix(in srgb, gray 5%, transparent);
-  transform: none;
-  box-shadow: none;
-  outline: 1px solid color-mix(in srgb, gray 40%, transparent);
-}
-
-/* Disabled + hovered (general) - prevent hover effects */
-.listbox [role="option"][data-disabled="true"][data-hovered] {
-  background: color-mix(in srgb, gray 5%, transparent);
-  transform: none;
-  box-shadow: none;
-}
-
-/* Disabled + focused - prevent focus effects while maintaining outline for accessibility */
-.listbox [role="option"][data-disabled="true"][data-focused] {
-  background: color-mix(in srgb, gray 5%, transparent);
-  transform: none;
-  box-shadow: none;
-  outline: 1px solid color-mix(in srgb, gray 40%, transparent);
-}
-
-/* Additional utility classes for listbox styling */
-.listbox {
-  /* Enhanced base listbox container styles */
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-  padding: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.2s ease-in-out;
-}
-
-.listbox:focus-within {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  border-color: color-mix(in srgb, Highlight 30%, transparent);
-}
-
-/* Horizontal orientation: lay out options in a row for clear visual change */
+/* Horizontal orientation */
 .listbox[data-orientation="horizontal"] {
   display: flex;
-  flex-wrap: nowrap;
   gap: 8px;
   overflow-x: auto;
-  overflow-y: hidden;
 }
 
-.listbox[data-orientation="horizontal"] [role="option"] {
-  flex: 0 0 auto;
-}
-
+/* Section styling */
 .section {
-  /* Enhanced section styling */
-  margin-bottom: 12px;
-  padding: 4px 0;
-  border-radius: 4px;
+  margin-bottom: 8px;
 }
 
 .section:last-child {
@@ -183,15 +46,10 @@
 }
 
 .header {
-  /* Enhanced section header styling */
+  font-size: 0.75rem;
   font-weight: 600;
-  font-size: 0.875rem;
-  color: #64748b;
-  padding: 6px 12px;
-  margin-bottom: 4px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 4px;
-  border-left: 3px solid color-mix(in srgb, Highlight 60%, transparent);
+  color: #666;
+  padding: 4px 12px;
+  margin-bottom: 2px;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
 }
