@@ -1,6 +1,7 @@
 import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi } from 'vitest';
 import assume from 'assume';
+import React from 'react';
 import { BasicSelectExample } from '../examples/basic-example';
 
 describe('@bento/select examples', function bento() {

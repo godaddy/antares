@@ -1,6 +1,6 @@
 import assume from 'assume';
 import { render } from 'vitest-browser-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { Select } from '@bento/select';
 import { Button } from '@bento/button';
@@ -874,6 +874,153 @@ describe('@bento/select', function bento() {
       // Verify JSX empty state is rendered
       assume(result).includes('data-testid="empty-jsx"');
       assume(result).includes('No options');
+    });
+  });
+
+  describe('Dynamic Collections', function dynamicCollections() {
+    type FruitItem = { id: string; name: string };
+    const fruitItems: FruitItem[] = [
+      { id: 'apple', name: 'Apple' },
+      { id: 'banana', name: 'Banana' },
+      { id: 'orange', name: 'Orange' }
+    ];
+
+    const renderFruitItem = function renderFruitItem(item: unknown) {
+      const fruit = item as FruitItem;
+      return (
+        <ListBoxItem id={fruit.id} textValue={fruit.name}>
+          {fruit.name}
+        </ListBoxItem>
+      );
+    };
+
+    it('renders select with items prop and render function', function test() {
+      const { container } = render(
+        <Select items={fruitItems}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select a fruit" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+
+      // Verify items are rendered
+      assume(result).includes('Apple');
+      assume(result).includes('Banana');
+      assume(result).includes('Orange');
+    });
+
+    it('extracts render function from nested ListBox in Popover', function test() {
+      // Tests extractListBoxRenderFunction traversing into Popover children
+      const { container } = render(
+        <Select items={fruitItems}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <div>
+              <ListBox slot="listbox">{renderFruitItem}</ListBox>
+            </div>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Apple');
+    });
+
+    it('handles dynamic collection with selected value', function test() {
+      const { container } = render(
+        <Select items={fruitItems} defaultValue="banana">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Banana');
+    });
+
+    it('handles empty items array with renderEmptyState', function test() {
+      const { container } = render(
+        <Select items={[]} renderEmptyState={() => <div data-testid="empty">No items</div>}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('data-testid="empty"');
+      assume(result).includes('No items');
+    });
+
+    it('stops searching for render function once found (extractListBoxRenderFunction early exit)', function test() {
+      // Tests the `|| renderFunc` branch on line 30 - early exit when renderFunc already found
+      // Using multiple ListBox slots ensures the function continues iteration after finding one
+      const { container } = render(
+        <Select items={fruitItems}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+            {/* Second ListBox should be ignored since renderFunc already found */}
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      // Should still render correctly with first render function
+      assume(result).includes('Apple');
+    });
+
+    it('handles multi-select with selectedItems populated', function test() {
+      // Tests line 324: selectedItems branch when selection exists
+      const { container } = render(
+        <Select items={fruitItems} selectionMode="multiple" defaultValue={['apple', 'banana']}>
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Apple');
+      assume(result).includes('Banana');
+    });
+
+    it('handles single-select mode where selectedItems is undefined', function test() {
+      // Tests line 324: the ?? fallback to empty array when selectedItems is undefined
+      // In single-select mode, state.selectedItems may be undefined
+      const { container } = render(
+        <Select items={fruitItems} selectionMode="single" defaultValue="apple">
+          <Button slot="trigger">
+            <ValueDisplay slot="value" placeholder="Select" />
+          </Button>
+          <Popover slot="popover">
+            <ListBox slot="listbox">{renderFruitItem}</ListBox>
+          </Popover>
+        </Select>
+      );
+
+      const result = container.innerHTML;
+      assume(result).includes('Apple');
     });
   });
 });

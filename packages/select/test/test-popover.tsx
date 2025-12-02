@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 

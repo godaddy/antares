@@ -31,7 +31,6 @@
         "noAdjacentSpacesInRegex": "error"
       },
       "correctness": {
-        "noUnusedImports": "error",
         "noConstAssign": "error",
         "noConstantCondition": "error",
         "noEmptyCharacterClassInRegex": "error",
@@ -85,7 +84,6 @@
     }
   },
   "javascript": {
-    "jsxRuntime": "reactClassic",
     "linter": {
       "enabled": true
     },

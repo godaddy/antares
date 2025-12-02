@@ -7,7 +7,8 @@ import React, { forwardRef, type ForwardedRef } from 'react';
 
 export interface ButtonProps
   extends Omit<AriaButtonProps, 'children' | 'href' | 'target' | 'rel' | 'elementType'>,
-    HoverEvents {
+    HoverEvents,
+    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof AriaButtonProps | 'children'> {
   /** The content to display inside the button. */
   children: React.ReactNode | ((props: ButtonRenderProps) => React.ReactNode);
 }

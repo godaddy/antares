@@ -1,5 +1,6 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
+import React from 'react';
 import { Select } from '@bento/select';
 import { Button } from '@bento/button';
 import { ListBox, ListBoxItem, ListBoxSection, Header } from '@bento/listbox';
