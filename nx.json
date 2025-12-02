@@ -26,8 +26,22 @@
       ],
       "cache": true
     },
+    "pretest": {
+      "dependsOn": ["build"],
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/src/**/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/test/**/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/examples/**/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/*.{js,jsx,ts,tsx}",
+        "{projectRoot}/tsconfig*.json",
+        "{projectRoot}/biome.json",
+        "{projectRoot}/.grit/**/*"
+      ],
+      "cache": true
+    },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["pretest"],
       "inputs": [
         "{projectRoot}/src/**/*.tsx",
         "{projectRoot}/src/**/*.ts",
