@@ -51,6 +51,9 @@
     "@bento/use-props": "^0.1.1",
     "@react-types/shared": "^3.32.1"
   },
+  "devDependencies": {
+    "@bento/types": "^0.1.0"
+  },
   "peerDependencies": {
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"

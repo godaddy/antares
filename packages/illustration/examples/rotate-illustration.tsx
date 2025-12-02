@@ -1,5 +1,5 @@
 import { Illustration } from '@bento/illustration';
-import { UnknownObject } from '@bento/types';
+import { type UnknownObject } from '@bento/types';
 /* v8 ignore next */
 import React from 'react';
 
