@@ -58,14 +58,14 @@ export interface PressableProps extends PressProps, Omit<HTMLAttributes<HTMLElem
  * ```
  */
 export const Pressable = withSlots('BentoPressable', function Pressable(args: PressableProps) {
-  const { props, apply } = useProps(args);
   const ref = useRef<HTMLElement | null>(null);
-  const { children, ...restProps } = props;
-  const child = React.Children.only(children);
-  const { focusableProps } = useFocusable(restProps, ref);
-  const { focusProps, isFocused, isFocusVisible } = useFocusRing(restProps);
-  const { hoverProps, isHovered } = useHover(restProps);
-  const { pressProps, isPressed } = usePress({ ...restProps, ref });
+  const { focusableProps } = useFocusable(args, ref);
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing(args);
+  const { hoverProps, isHovered } = useHover(args);
+  const { pressProps, isPressed } = usePress({ ...args, ref });
+
+  const { props, apply } = useProps(args, { isHovered, isFocused, isFocusVisible, isPressed });
+  const child = React.Children.only(props.children);
 
   return React.cloneElement(child, {
     ...apply(
