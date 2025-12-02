@@ -106,7 +106,62 @@ describe('@bento/slots', function bento() {
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
-      assume(nested).contains(`<p id="${id}" data-override="context">No more button, only text</p>`);
+      assume(nested).contains(`<p id="${id}" data-override="context" data-slot="button">No more button, only text</p>`);
+    });
+  });
+
+  describe('data-slot attribute', function dataSlot() {
+    it('adds data-slot attribute when slot prop is provided', function withSlot() {
+      const Component = withSlots('TestSlot', (props: any) => React.createElement('div', props, 'Content'));
+      const html = renderToString(React.createElement(Component, { slot: 'example' }));
+
+      assume(html).contains('data-slot="example"');
+      assume(html).contains('<div data-slot="example">Content</div>');
+    });
+
+    it('does not add data-slot attribute when slot prop is not provided', function noSlot() {
+      const Component = withSlots('NoSlot', (props: any) => React.createElement('div', props, 'Content'));
+      const html = renderToString(React.createElement(Component));
+
+      assume(html).does.not.contain('data-slot');
+      assume(html).contains('<div>Content</div>');
+    });
+
+    it('adds data-slot with direct slot name when nested', function nestedSlot() {
+      const Inner = withSlots('Inner', (props: any) => React.createElement('span', props, 'Inner'));
+      const Outer = withSlots('Outer', (props: any) =>
+        React.createElement('div', props, React.createElement(Inner, { slot: 'inner' }))
+      );
+
+      const html = renderToString(React.createElement(Outer, { slot: 'outer' }));
+
+      assume(html).contains('data-slot="outer"');
+      assume(html).contains('data-slot="inner"');
+    });
+
+    it('preserves data-slot when other data attributes are present', function multipleDataAttrs() {
+      const Component = withSlots('MultiData', (props: any) => React.createElement('div', props, 'Content'));
+      const html = renderToString(
+        React.createElement(Component, {
+          slot: 'test',
+          'data-testid': 'my-test'
+        })
+      );
+
+      assume(html).contains('data-slot="test"');
+      assume(html).contains('data-testid="my-test"');
+    });
+
+    it('adds data-slot to deeply nested components', function deepNesting() {
+      const nested = renderToString(
+        React.createElement(Nested, {
+          slots: {
+            'example-container': { slot: 'custom-container' }
+          }
+        })
+      );
+
+      assume(nested).contains('data-slot');
     });
   });
 

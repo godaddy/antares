@@ -38,7 +38,7 @@ describe('@bento/slots replace', function bento() {
       }
     );
 
-    assume(html).contains('<div id="example" data-override="context"></div>');
+    assume(html).contains('<div id="example" data-override="context" data-slot="test"></div>');
   });
 
   it('allows props to be overridden through component replacement', function propsOverride() {
@@ -56,7 +56,9 @@ describe('@bento/slots replace', function bento() {
       }
     );
 
-    assume(html).contains('<div id="overridden" class="custom-class" data-override="context className"></div>');
+    assume(html).contains(
+      '<div id="overridden" class="custom-class" data-override="context className" data-slot="test"></div>'
+    );
   });
 
   it('combines data-override values when component has existing overrides', function combinedOverrides() {
@@ -72,7 +74,7 @@ describe('@bento/slots replace', function bento() {
       }
     );
 
-    assume(html).contains('<div style="color:red" data-override="context style"></div>');
+    assume(html).contains('<div style="color:red" data-override="context style" data-slot="test"></div>');
   });
 
   it('handles falsy target components gracefully', function falsyTarget() {
@@ -86,6 +88,6 @@ describe('@bento/slots replace', function bento() {
     );
 
     // Should render the original component without any replacement
-    assume(html).contains('<div id="example"></div>');
+    assume(html).contains('<div id="example" data-slot="test"></div>');
   });
 });
