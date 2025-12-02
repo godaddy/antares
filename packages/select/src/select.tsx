@@ -340,7 +340,7 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
       ...(isRequired && { 'aria-required': 'true' }),
       ...(processedProps.isInvalid && { 'aria-invalid': 'true' }),
       ...(processedProps.isDisabled && { 'aria-disabled': 'true' }),
-      'data-open': state.isOpen,
+      ...(state.isOpen && { 'data-open': true }),
       // Allow explicit aria-labelledby to override React Aria's auto-concatenation
       // for cases where consumers need precise control over label associations.
       ...(processedProps['aria-labelledby'] && { 'aria-labelledby': processedProps['aria-labelledby'] }),
@@ -383,7 +383,7 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
         isOpen: state.isOpen,
         ref: popoverRef,
         slot: 'popover',
-        'data-open': state.isOpen,
+        ...(state.isOpen && { 'data-open': true }),
         ...overlayProps,
         ...positionProps,
         onClose: handleOverlayClose
