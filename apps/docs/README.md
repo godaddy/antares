@@ -39,3 +39,19 @@ As mentioned above, you should not be writing working examples inside your
 in pure JSX/TypeScript. These examples can then be re-used for testing to
 ensure that the examples that we present in our documentation are fully tested
 and working as intended.
+
+### Story Title Naming Conventions
+
+Story titles follow the format `[category]/[element]` where:
+- `[category]` (components, hooks, utility, internal) is always lowercase
+- `[element]` uses **PascalCase** for React Components, **dash-case** for everything else
+
+**PascalCase** - React Components:
+- `components/Button`
+- `components/VisuallyHidden`
+
+**dash-case** - hooks, utilities, and other non-components:
+- `hooks/use-props`
+- `utility/to-attribute-value`
+- `internal/box`
+- `higher-order components/slots`

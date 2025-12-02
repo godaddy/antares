@@ -1,6 +1,6 @@
 {
   "name": "@bento/use-props",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Context aware props transformation for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -10,6 +10,7 @@
     "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
@@ -40,9 +41,10 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.1.0",
-    "@bento/internal-props": "^0.1.0",
-    "@bento/types": "^0.1.0"
+    "@bento/box": "^0.1.1",
+    "@bento/internal-props": "^0.1.1",
+    "@bento/types": "^0.1.0",
+    "@react-aria/utils": "^3.30.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

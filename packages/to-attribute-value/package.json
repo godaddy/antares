@@ -1,6 +1,6 @@
 {
   "name": "@bento/to-attribute-value",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Format a value as an HTML attribute value.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -10,6 +10,7 @@
     "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
+    "prepublishOnly": "node ../../scripts/compile-readme.ts",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"

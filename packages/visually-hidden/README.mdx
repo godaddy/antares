@@ -1,0 +1,38 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './visually-hidden.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import CustomElementExample from './examples/custom-element.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# VisuallyHidden
+
+The `@bento/visually-hidden` package provides the `VisuallyHidden` component which renders content that is accessible to screen readers and other assistive technologies while being visually hidden from sighted users. This is a fundamental accessibility primitive that enables developers to provide additional context, instructions, or navigation aids without cluttering the visual interface.
+
+This primitive is essential for implementing accessible patterns like skip links, screen reader-only form labels, additional context for interactive elements, and descriptive text that supplements visual cues. It serves as a building block for other accessible components throughout the Bento ecosystem and is consumed by form components, navigation systems, and any component requiring accessible hidden content.
+
+## Installation
+
+```bash
+npm install --save @bento/visually-hidden
+```
+
+## Props
+
+The following properties are available to be used on the `VisuallyHidden` component:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Default
+
+A simple usage of the `VisuallyHidden` component for a skip link button. The hidden text provides context for screen readers while the arrow icon provides a visual cue.
+
+<Source language='tsx' code={ DefaultExample } />
+
+### Custom Element
+
+You can customize the rendered element type using the `as` prop. By default, `VisuallyHidden` renders a `span` element.
+
+<Source language='tsx' code={ CustomElementExample } />

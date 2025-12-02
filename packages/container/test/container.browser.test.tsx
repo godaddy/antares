@@ -61,22 +61,39 @@ describe('@bento/container', function bento() {
       expect(clicked).toBe(true);
     });
 
-    it('returns null when no children provided', function returnsNull() {
+    it('renders empty div when no children provided', function rendersEmptyDiv() {
       const { container } = render(<Container />);
+      const element = container.firstChild as HTMLElement;
 
-      expect(container.innerHTML).toBe('');
+      expect(element?.nodeName).toBe('DIV');
+      expect(element?.childNodes.length).toBe(0);
     });
 
-    it('returns null when children is null', function returnsNullWithNullChildren() {
+    it('renders empty div when children is null', function rendersEmptyDivWithNullChildren() {
       const { container } = render(<Container>{null}</Container>);
+      const element = container.firstChild as HTMLElement;
 
-      expect(container.innerHTML).toBe('');
+      expect(element?.nodeName).toBe('DIV');
+      expect(element?.childNodes.length).toBe(0);
     });
 
-    it('returns null when children is undefined', function returnsNullWithUndefinedChildren() {
+    it('renders empty div when children is undefined', function rendersEmptyDivWithUndefinedChildren() {
       const { container } = render(<Container>{undefined}</Container>);
+      const element = container.firstChild as HTMLElement;
 
-      expect(container.innerHTML).toBe('');
+      expect(element?.nodeName).toBe('DIV');
+      expect(element?.childNodes.length).toBe(0);
+    });
+
+    it('renders empty element with styles for presentational use cases', function rendersEmptyWithStyles() {
+      const { container } = render(<Container style={{ width: '100px', height: '100px', backgroundColor: 'red' }} />);
+      const element = container.firstChild as HTMLElement;
+
+      expect(element?.nodeName).toBe('DIV');
+      expect(element?.childNodes.length).toBe(0);
+      expect(element?.style.width).toBe('100px');
+      expect(element?.style.height).toBe('100px');
+      expect(element?.style.backgroundColor).toBe('red');
     });
 
     it('renders with multiple children', function rendersMultipleChildren() {
@@ -137,6 +154,48 @@ describe('@bento/container', function bento() {
         const { container } = render(<Container as={element}>Content</Container>);
         expect(container.firstChild?.nodeName).toBe(element.toUpperCase());
       });
+    });
+
+    it('changes the as prop of a nested child via slots system', function slotsChangeAsProp() {
+      // Parent container passes slots to nested child
+      const { container } = render(
+        <Container slots={{ inner: { as: 'section' } }} data-testid="outer">
+          {/* We assign as="article" to verify that slot overrides are correctly applied */}
+          <Container slot="inner" as="article" data-testid="inner">
+            Inner content
+          </Container>
+        </Container>
+      );
+
+      const outer = container.querySelector('[data-testid="outer"]') as HTMLElement;
+      const inner = container.querySelector('[data-testid="inner"]') as HTMLElement;
+
+      // Outer should be default div
+      expect(outer?.nodeName).toBe('DIV');
+
+      // Inner should be section (changed via slots)
+      expect(inner?.nodeName).toBe('SECTION');
+      expect(inner?.textContent).toBe('Inner content');
+    });
+
+    it('forwards refs provided by the consumer and slot to the DOM element', async function forwardsMergedRefs() {
+      const forwardedRef = React.createRef<HTMLDivElement>();
+      const slotRef = React.createRef<HTMLDivElement>();
+
+      render(
+        <Container slots={{ trigger: { ref: slotRef } }}>
+          <Container slot="trigger" ref={forwardedRef}>
+            Ref content
+          </Container>
+        </Container>
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      assume(slotRef.current).exist();
+      assume(forwardedRef.current).exist();
+      assume(forwardedRef.current).equals(slotRef.current);
+      assume(forwardedRef.current?.textContent).equals('Ref content');
     });
   });
 });

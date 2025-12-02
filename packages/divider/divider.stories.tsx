@@ -6,7 +6,7 @@ import { VerticalStyleOverride } from './examples/vertical-style-override.tsx';
 import { VerticalDiv } from './examples/vertical-div.tsx';
 
 export default getMeta({
-  title: 'components/divider'
+  title: 'components/Divider'
 });
 
 export const Props = getComponentDocs(DividerComponent);

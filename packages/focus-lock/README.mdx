@@ -1,0 +1,142 @@
+import { Meta, Story, ArgTypes, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './focus-lock.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceNested from './examples/nested.tsx?raw';
+import SourceOverlay from './examples/overlay.tsx?raw';
+import SourceSelect from './examples/select.tsx?raw';
+import SourceForm from './examples/form.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# FocusLock
+
+The `@bento/focus-lock` package provides focus management for containing and
+controlling keyboard focus within specific areas of your application. Built on
+top of React ARIA's FocusScope, it ensures focus remains trapped within
+designated boundaries, making it essential for modals, dialogs, drawers, select
+popovers, and other overlay components.
+
+## Installation
+
+```shell
+npm install --save @bento/focus-lock
+```
+
+## Props
+
+The following properties are available to be used on the `FocusLock` component:
+
+<ArgTypes of={Stories.Props} />
+
+For all other properties specified on the `FocusLock` component, they will be
+passed down to the underlying React ARIA FocusScope component.
+
+## Examples
+
+The simplest use case is to wrap your modal or dialog content with `FocusLock`
+and enable focus containment.
+
+<Source language='tsx' code={ SourceBasic } />
+<Story of={Stories.Basic} inline />
+<Controls of={Stories.Basic} />
+
+Focus scopes can be nested, allowing you to have multiple layers of focus
+containment. When a nested scope is active, focus is trapped within the
+innermost scope.
+
+<Source language='tsx' code={ SourceNested } />
+<Story of={Stories.Nested} inline />
+<Controls of={Stories.Nested} />
+
+The `FocusLock` component applies data attributes directly to its children
+without introducing a wrapper element. This example demonstrates multiple
+children (backdrop and content).
+
+<Source language='tsx' code={ SourceOverlay } />
+<Story of={Stories.Overlay} inline />
+<Controls of={Stories.Overlay} />
+
+When used with a single child, the focus lock applies data attributes to that child element.
+
+<Source language='tsx' code={ SourceSelect } />
+<Story of={Stories.Select} inline />
+<Controls of={Stories.Select} />
+
+Focus lock is particularly useful for multi-step forms where you want to keep focus within the current step.
+
+<Source language='tsx' code={ SourceForm } />
+<Story of={Stories.Form} inline />
+<Controls of={Stories.Form} />
+
+## Customization
+
+The `FocusLock` component is created using the `@bento/slots` package and allows
+assignment of the custom `slot` property for overrides. The component applies
+props to the underlying React ARIA `FocusScope` component and data attributes to
+its children.
+
+### Slots
+
+The `@bento/focus-lock` component is registered as `BentoFocusLock` and can be
+customized using the slot system. See the `@bento/slots` package for more
+information on how to use the `slot` and `slots` properties.
+
+Render prop function receives a state object with the following properties:
+
+```typescript
+interface FocusLockState {
+  hasFocus: boolean;      // Whether focus is currently within the scope
+  isContained: boolean;   // Whether focus is contained (same as contain prop)
+}
+```
+
+### Data Attributes
+
+The following data attributes are automatically applied to the children of the `FocusLock` component:
+
+| Attribute              | Description                                      | Example Values  |
+| ---------------------- | ------------------------------------------------ | --------------- |
+| `data-focus-contained` | Indicates whether focus is contained             | "true" / "false"|
+| `data-has-focus`       | Indicates whether the scope currently has focus  | "true" / "false"|
+
+These data attributes can be targeted using CSS selectors for styling. When
+using data attributes for styling, ensure you scope them properly with a
+className to avoid affecting unrelated elements:
+
+```css
+.my-modal[data-focus-contained="true"] {
+  outline: 2px solid blue;
+}
+
+.my-modal[data-has-focus="true"] {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+```
+
+Apply the scoping className to your FocusLock children:
+
+```tsx
+<FocusLock contain restoreFocus autoFocus>
+  <div className="my-modal">
+    Modal content
+  </div>
+</FocusLock>
+```
+
+## Accessibility
+
+Focus management is crucial for accessibility. The `FocusLock` component ensures
+that keyboard users can navigate within the focus scope using Tab and Shift+Tab,
+focus is trapped within the scope when `contain` is enabled, focus is
+automatically restored to the previously focused element when the scope is
+removed (when `restoreFocus` is enabled), and the first focusable element is
+automatically focused when the scope is mounted (when `autoFocus` is enabled).
+
+When using focus lock, follow these accessibility guidelines:
+
+- Always provide a way to exit the focus scope (e.g., a close button or escape key handler)
+- Use `restoreFocus` to ensure users return to their previous location when the scope is closed
+- Use `autoFocus` to immediately draw attention to important content like modals
+- Consider using `aria-modal` on modal dialogs to provide additional context to screen readers
+- Ensure all focusable elements within the scope are keyboard accessible
