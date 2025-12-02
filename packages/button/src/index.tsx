@@ -2,7 +2,8 @@ import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, HoverEvents } from 'react-aria';
-import React, { forwardRef, type ForwardedRef } from 'react';
+import { useObjectRef, mergeRefs } from '@react-aria/utils';
+import React, { forwardRef, useMemo, type ForwardedRef } from 'react';
 
 export interface ButtonProps
   extends Omit<AriaButtonProps, 'children' | 'href' | 'target' | 'rel' | 'elementType'>,
@@ -54,14 +55,13 @@ export const Button = withSlots(
     // We need this to get the ref and onPress that might come from slots
     const { props: mergedProps } = useProps(args, {});
 
-    // Determine which ref to use: slots ref from mergedProps, forwardedRef, or fallback innerRef
-    // Type cast: mergedProps may contain a ref from slots, which isn't in ButtonProps type
+    // Merge all refs (slot ref, forwarded ref, inner ref) into a stable RefObject.
+    // useObjectRef handles both callback refs and RefObjects safely.
     const slotRef = (mergedProps as any).ref;
-    const ref = slotRef || forwardedRef || innerRef;
+    const buttonRef = useObjectRef(useMemo(() => mergeRefs(innerRef, forwardedRef, slotRef), [forwardedRef, slotRef]));
 
     // Use mergedProps (which includes slot props) for React Aria hooks
-    // Type casts: mergedProps may have additional slot props, ref may be ForwardedRef
-    const { buttonProps, isPressed } = useButton(mergedProps as ButtonProps, ref as React.RefObject<HTMLButtonElement>);
+    const { buttonProps, isPressed } = useButton(mergedProps as ButtonProps, buttonRef);
     const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
     const { hoverProps, isHovered } = useHover(mergedProps);
 
@@ -95,7 +95,7 @@ export const Button = withSlots(
           'onPressUp',
           'onPressChange'
         ])}
-        ref={ref}
+        ref={buttonRef}
       >
         {content}
       </button>

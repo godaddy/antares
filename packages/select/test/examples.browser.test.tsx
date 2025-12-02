@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi } from 'vitest';
 import assume from 'assume';

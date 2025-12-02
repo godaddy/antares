@@ -1,8 +1,8 @@
 import { Button } from '@bento/button';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi, expect } from 'vitest';
-import React, { useRef } from 'react';
 import assume from 'assume';
+import React from 'react';
 
 describe('@bento/button', function bento() {
   describe('Button', function buttonTests() {

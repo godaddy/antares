@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { SelectProps } from '@bento/select';
 import { BasicSelectExample } from './examples/basic-example';

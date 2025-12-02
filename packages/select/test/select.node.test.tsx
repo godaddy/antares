@@ -9,7 +9,6 @@ import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
-import React from 'react';
 
 /**
  * Renders the `Select` component to a string with the provided props.

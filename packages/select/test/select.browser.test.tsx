@@ -1,6 +1,6 @@
 import assume from 'assume';
 import { render } from 'vitest-browser-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { Select } from '@bento/select';
 import { Button } from '@bento/button';
@@ -8,7 +8,6 @@ import { ListBox, ListBoxItem, ListBoxSection, Header } from '@bento/listbox';
 import { Popover, ValueDisplay } from './test-popover';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-import { userEvent } from '@testing-library/user-event';
 
 describe('@bento/select', function bento() {
   let mockConsoleError: any;
