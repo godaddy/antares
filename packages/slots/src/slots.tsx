@@ -4,6 +4,7 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { Box, type BoxContext } from '@bento/box';
 import { BentoError } from '@bento/error';
+import { withForwardRef } from '@bento/forward';
 import { override } from './override.ts';
 import { replace } from './replace.ts';
 
@@ -54,11 +55,16 @@ export function withSlots<Props extends object>(
   Component: React.ComponentType<Props>,
   modifiers = [replace, override]
 ) {
-  function WrappedComponent(propsAndSlots: Props & Slots) {
+  //
+  // Use @bento/forward to handle ref forwarding for React 18/19 compatibility
+  // and to ensure the component is wrapped with forwardRef if needed.
+  //
+  const ComponentWithRef = withForwardRef(Component);
+  const SlottedForwardRef = withForwardRef(function SlottedComponent(propsAndSlots: Props & Slots, forwardedRef: any) {
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
     const dataAttrs = useDataAttributes({ slot });
     let props = { ...restProps } as Props;
-    let Element = Component;
+    let Element: React.ComponentType<any> = ComponentWithRef;
 
     //
     // We need to create a new context object to prevent introducing properties
@@ -66,6 +72,7 @@ export function withSlots<Props extends object>(
     // properties like `namespace` will become corrupted as they would start to
     // include the slot name of siblings instead of just being a pure parent/child
     // relationship.
+    //
     let ctx = { ...useContext<BoxContext<Props>>(Box) };
     ctx.env = { ...ctx.env };
     ctx.slots = { ...ctx.slots };
@@ -152,23 +159,30 @@ export function withSlots<Props extends object>(
         };
 
       if (typeof mods.props === 'object') props = { ...props, ...mods.props };
-      if (mods.Component) Element = mods.Component;
+      if (mods.Component) Element = mods.Component as React.ComponentType<any>;
     });
+
+    const baseProps = { ...(props as object) } as Props;
+
+    // Add ref to props. withForwardRef handles the React 18/19 differences:
+    // - React 18: Component is wrapped with forwardRef, so ref is passed separately
+    // - React 19: ref is just a regular prop
+    const propsWithRef = forwardedRef != null ? ({ ...baseProps, ref: forwardedRef } as Props) : baseProps;
 
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
       <Box.Provider value={context}>
-        <Element {...props} {...dataAttrs} />
+        <Element {...propsWithRef} {...dataAttrs} />
       </Box.Provider>
     );
 
     const slotted = ctx.slots.assigned[ctx.slots.namespace.join('.')];
 
     if (typeof slotted !== 'function') return rendered;
-    return slotted({ props, original: rendered.props.children });
-  }
+    return slotted({ props: propsWithRef, original: rendered.props.children });
+  });
 
-  const SlottedComponent = memo<Props & Slots>(WrappedComponent);
+  const SlottedComponent = memo(SlottedForwardRef);
   SlottedComponent.displayName = `Slotted(${name})`;
 
   if (process.env.NODE_ENV !== 'production') {

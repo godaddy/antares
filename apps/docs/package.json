@@ -21,6 +21,7 @@
     "@bento/error": "*",
     "@bento/field-error": "*",
     "@bento/focus-lock": "*",
+    "@bento/forward": "*",
     "@bento/heading": "*",
     "@bento/icon": "*",
     "@bento/illustration": "*",

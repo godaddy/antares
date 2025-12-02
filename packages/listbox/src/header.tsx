@@ -1,4 +1,4 @@
-import React, { forwardRef, createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { createLeafComponent } from '@react-aria/collections';
 import { useProps } from '@bento/use-props';
 import { withSlots, type Slots } from '@bento/slots';
@@ -52,7 +52,7 @@ export const HeaderContext = createContext<HeaderContextValue>({});
  */
 const BentoHeaderImpl = withSlots(
   'BentoHeader',
-  forwardRef(function BentoHeader(props: BentoHeaderProps, ref: React.ForwardedRef<HTMLElement>) {
+  function BentoHeader(props: BentoHeaderProps, ref: React.ForwardedRef<HTMLElement>) {
     const { props: processedProps, apply } = useProps(props);
     const contextProps = useContext(HeaderContext);
 
@@ -69,7 +69,7 @@ const BentoHeaderImpl = withSlots(
         {processedProps.children}
       </header>
     );
-  })
+  }
 );
 
 /**

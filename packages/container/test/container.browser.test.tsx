@@ -160,7 +160,7 @@ describe('@bento/container', function bento() {
       // Parent container passes slots to nested child
       const { container } = render(
         <Container slots={{ inner: { as: 'section' } }} data-testid="outer">
-          { /* We assign as="article" to verify that slot overrides are correctly applied */ }
+          {/* We assign as="article" to verify that slot overrides are correctly applied */}
           <Container slot="inner" as="article" data-testid="inner">
             Inner content
           </Container>
@@ -176,6 +176,26 @@ describe('@bento/container', function bento() {
       // Inner should be section (changed via slots)
       expect(inner?.nodeName).toBe('SECTION');
       expect(inner?.textContent).toBe('Inner content');
+    });
+
+    it('forwards refs provided by the consumer and slot to the DOM element', async function forwardsMergedRefs() {
+      const forwardedRef = React.createRef<HTMLDivElement>();
+      const slotRef = React.createRef<HTMLDivElement>();
+
+      render(
+        <Container slots={{ trigger: { ref: slotRef } }}>
+          <Container slot="trigger" ref={forwardedRef}>
+            Ref content
+          </Container>
+        </Container>
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      assume(slotRef.current).exist();
+      assume(forwardedRef.current).exist();
+      assume(forwardedRef.current).equals(slotRef.current);
+      assume(forwardedRef.current?.textContent).equals('Ref content');
     });
   });
 });
