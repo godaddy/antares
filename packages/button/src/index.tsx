@@ -3,7 +3,7 @@ import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, HoverEvents } from 'react-aria';
 import { useObjectRef, mergeRefs } from '@react-aria/utils';
-import React, { forwardRef, useMemo, type ForwardedRef } from 'react';
+import React, { forwardRef, type ForwardedRef } from 'react';
 
 export interface ButtonProps
   extends Omit<AriaButtonProps, 'children' | 'href' | 'target' | 'rel' | 'elementType'>,
@@ -57,8 +57,7 @@ export const Button = withSlots(
 
     // Merge all refs (slot ref, forwarded ref, inner ref) into a stable RefObject.
     // useObjectRef handles both callback refs and RefObjects safely.
-    const slotRef = (mergedProps as any).ref;
-    const buttonRef = useObjectRef(useMemo(() => mergeRefs(innerRef, forwardedRef, slotRef), [forwardedRef, slotRef]));
+    const buttonRef = useObjectRef(mergeRefs(innerRef, forwardedRef, (mergedProps as any).ref));
 
     // Use mergedProps (which includes slot props) for React Aria hooks
     const { buttonProps, isPressed } = useButton(mergedProps as ButtonProps, buttonRef);

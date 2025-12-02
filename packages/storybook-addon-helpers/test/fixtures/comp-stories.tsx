@@ -1,5 +1,6 @@
 import React from 'react';
 import { getComponentDocs, getInterfaceDocs, getMeta, getStory, getVariants } from '@bento/storybook-addon-helpers';
+// biome-ignore lint/correctness/noUnusedImports: Test fixture - imports are used by transformer macros
 import { Button, Component as AnotherComponent, type InterfaceProps } from './comp.tsx';
 
 // getMeta

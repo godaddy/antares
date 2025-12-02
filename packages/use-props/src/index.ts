@@ -79,12 +79,15 @@ export function execute(name: string, data: AnyObject, args: RenderPropData): an
 export function renderProp(name: string, args: RenderPropData): any {
   const { props, slots, original } = args;
 
-  // Check explicitly for null/undefined to preserve intentional falsy values (false, 0, '')
-  const slotValue = execute(name, slots, args);
-  if (slotValue !== undefined && slotValue !== null) return slotValue;
+  // If slot explicitly has this property, use its value (even if null/undefined/falsy)
+  if (name in slots) {
+    return execute(name, slots, args);
+  }
 
-  const propValue = execute(name, props, args);
-  if (propValue !== undefined && propValue !== null) return propValue;
+  // If props explicitly has this property, use its value (even if null/undefined/falsy)
+  if (name in props) {
+    return execute(name, props, args);
+  }
 
   return original;
 }

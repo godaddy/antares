@@ -1,5 +1,4 @@
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Button } from './examples/button.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
