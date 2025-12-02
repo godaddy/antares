@@ -6,7 +6,7 @@ import { SingleRadioExample } from './examples/single-radio.tsx';
 import { ErrorHandlingExample, ErrorHandlingExampleWithState } from './examples/error-handling.tsx';
 
 export default getMeta({
-  title: 'components/radio'
+  title: 'components/Radio'
 });
 
 export const RadioGroupProps = getComponentDocs(RadioGroup);

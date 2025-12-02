@@ -7,7 +7,7 @@ import { MaxLinesExample } from './examples/max-lines.tsx';
 import { WrapExample } from './examples/wrap.tsx';
 
 export default getMeta({
-  title: 'components/text'
+  title: 'components/Text'
 });
 
 export const Props = getComponentDocs(TextComponent);

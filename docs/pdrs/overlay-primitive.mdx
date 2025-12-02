@@ -1,0 +1,303 @@
+# Overlay
+
+## Purpose
+
+The Overlay primitive serves as a foundational building block for creating
+layered UI experiences where content appears above the main application view.
+
+The Overlay component addresses several key scenarios:
+
+- **Modal dialogs**: Displaying content that requires immediate user attention
+- **Drawers and sheets**: Side panels or bottom sheets common in mobile interfaces
+- **Loading states**: Fullscreen loading indicators that block interaction
+- **Image viewers**: Lightbox-style image viewing experiences
+- **Onboarding flows**: Step-by-step tutorials that overlay the application
+
+### Core Primitive Packages
+
+**Already exist:**
+
+- **@bento/focus-lock**: Contains keyboard focus within a boundary. Manages focus trapping, restoration, and initial focus placement. See `focus-lock-primitive.mdx` for details.
+- **@bento/scroll-lock**: Prevents background scrolling while overlay is open. Handles cross-browser scroll prevention including iOS Safari edge cases. See `scrolllock-pdr.mdx` for details.
+- **@bento/visually-hidden**: Provides screen reader helpers for accessible content that should not be visually displayed. See `visually-hidden-primitive.mdx` for details.
+- **@bento/container**: Base primitive for polymorphic rendering, used for overlay content structure.
+
+**New to add:**
+
+- **@bento/portal**: Handles DOM rendering placement outside the normal hierarchy. Renders overlay content at a specific DOM location (typically `document.body` or a custom container). Enables proper z-index stacking and avoids DOM hierarchy issues.
+- **@bento/dismiss**: Wrapper for React Aria's `DismissButton` component. Provides accessible dismiss functionality for screen readers, typically placed at the start and end of overlay content.
+
+The Overlay component manages state (open/close) and passes handlers and props via slots to children, following Bento's composition guidelines.
+
+### React Aria Integration
+
+Bento's Overlay component uses React Aria's hooks directly rather than React Aria's `Overlay` component. This allows for maximum composition flexibility, where consumers manually compose Portal, FocusLock, and ScrollLock primitives.
+
+**React Aria hooks used:**
+- **useModalOverlay**: For backdrop and modal behavior (hiding content from screen readers, backdrop interactions)
+- **useOverlay**: For core overlay behavior (dismissal, escape key handling, outside click detection)
+- **useModal**: For hiding content outside overlay container from assistive technologies
+- **useOverlayTrigger**: For trigger elements to open/close overlays (props passed via slots)
+- **usePreventScroll**: For scroll locking (wrapped in @bento/scroll-lock primitive)
+
+**Note:** React Aria also provides an `Overlay` component (see [React Aria Overlay.tsx](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/Overlay.tsx)) that combines portal rendering and focus scope. Bento intentionally separates these concerns into individual primitives (`@bento/portal` and `@bento/focus-lock`) to enable more flexible composition patterns, following Bento's composition guidelines.
+
+### Internal Structure & Reuse Potential
+
+The Overlay component is designed as a coordinator that brings together focused
+primitives. It manages React Aria hooks and coordinates all child components via
+slots, following Bento's composition model.
+
+### Component Structure
+
+The Overlay component structure follows this hierarchy:
+
+```
+Overlay (state management, coordination)
+├─ Trigger (slot="trigger", optional)
+└─ Portal (DOM rendering location, conditionally rendered when open)
+   ├─ ScrollLock (background scroll prevention, sibling)
+   └─ FocusLock (focus trapping and restoration)
+      ├─ Backdrop (slot="backdrop", optional, for modal overlays)
+      └─ Content (slot="content", user-provided content)
+         ├─ Dismiss (accessible dismiss at start)
+         ├─ User content (Text, buttons, etc.)
+         └─ Dismiss (accessible dismiss at end)
+```
+
+Each piece can be used independently:
+
+- **Portal**: Use alone for tooltips, popovers (no backdrop needed)
+- **FocusLock**: Use for focus trapping without full overlay pattern
+- **ScrollLock**: Use for preventing background scroll in any context
+- **Overlay**: Use as complete solution for overlay patterns
+
+## Foundations and Requirements
+
+- MUST integrate React Aria for a11y behaviors:
+  - `useModalOverlay` (modal semantics, underlay/backdrop interactions, ESC/outside-click dismissal)
+  - `useOverlayTrigger` (trigger relationship)
+  - `useOverlay` / `useOverlayPosition` (non-modal patterns)
+  - `usePreventScroll` (via Scroll Lock primitive)
+- MUST follow composition guidelines:
+  - Pass state/handlers via slots (no custom context for these concerns)
+  - Semantic slot names
+  - Prefer `Container` for structure and polymorphism
+- MUST use existing primitives where applicable: `@bento/container`, `@bento/text`, `@bento/focus-lock`, `@bento/scroll-lock`, `@bento/visually-hidden`
+- MUST expose data-* attributes to support styling, animations, testing etc
+- MUST be composable: consumers can replace, or remove pieces via slots without losing behavior
+
+### Integration Approach
+
+We extend and wrap React Aria's hooks to fit Bento's composition model:
+
+- **State management**: Uses React Aria's `useOverlayTriggerState` for controlled/uncontrolled state handling
+- **Props distribution**: React Aria's hook return values are distributed via slots to children, following Bento's composition guidelines
+- **Primitive wrapping**: React Aria hooks are wrapped in Bento primitives (FocusLock, ScrollLock) for consistent API and behavior
+- **No gaps**: React Aria handles all edge cases for overlay behavior across devices - no additional logic needed beyond integration
+
+## Architecture & Features
+
+### Props Interface
+
+The Overlay component accepts the following props:
+
+```tsx
+interface OverlayProps extends Slots {
+  /**
+   * Whether the overlay is open (controlled).
+   */
+  open?: boolean;
+
+  /**
+   * Default open state (uncontrolled).
+   * @default false
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Callback fired when open state changes.
+   */
+  onOpenChange?: (open: boolean) => void;
+
+  /**
+   * Content to render inside the overlay.
+   * Consumers provide Portal, ScrollLock, FocusLock, and content via slots.
+   */
+  children?: React.ReactNode;
+}
+```
+
+The Overlay component manages state and coordinates React Aria hooks, passing
+props via slots to children. Dismissal behavior, modal configuration, and other
+overlay behaviors are controlled by the consumer through manual composition of
+primitives (Portal, ScrollLock, FocusLock, Dismiss, etc.) as shown in the
+Composition section.
+
+### Controlled vs Uncontrolled Usage
+
+The Overlay supports both controlled and uncontrolled state management:
+
+**Controlled** - Component manages state externally:
+```tsx
+const [open, setOpen] = useState(false);
+<Overlay open={open} onOpenChange={setOpen}>
+  {/* content */}
+</Overlay>
+```
+
+**Uncontrolled** - Overlay manages state internally:
+```tsx
+<Overlay defaultOpen={false}>
+  <Button slot="trigger">
+    Requires a trigger slot so it can set the relevant props on the trigger element
+  </Button>
+</Overlay>
+```
+
+State management uses React Aria's `useOverlayTriggerState` hook, which handles
+synchronization and event composition automatically.
+
+### Dismissal Behavior
+
+Dismissal behavior is controlled by the consumer through manual composition:
+- **Click outside**: Handled via React Aria's `underlayProps` passed to `slot="backdrop"` children
+- **Escape key**: Handled via React Aria's `overlayProps` passed to `slot="content"` children
+- **Programmatic**: Consumers control dismissal via state updates (`onOpenChange`) or Dismiss components with `onDismiss` callbacks
+
+### Focus Management
+
+- **Focus trapping**: Prevents tabbing outside the overlay while it's open (modal only, via FocusLock primitive)
+- **Initial focus control**: Allows specifying which element receives focus when opened (autoFocus)
+- **Return focus**: Returns focus to the trigger element when closed (restoreFocus)
+- **Focus visibility**: Keyboard focus indicators shown appropriately for keyboard users
+
+### Keyboard Support
+
+Keyboard support is provided through React Aria hooks and primitives:
+- **Escape key**: Handled via React Aria's `overlayProps` passed to `slot="content"` children
+- **Tab navigation**: Contained within overlay via FocusLock primitive (configured by consumer)
+- **Focus restoration**: Handled by FocusLock primitive's `restoreFocus` prop (configured by consumer)
+
+## Internationalization, RTL, and Mobile Considerations
+
+The Overlay primitive is designed to work across different languages and layouts:
+
+- **Direction-agnostic**: The overlay is direction-agnostic and uses logical properties for layout
+- **Portal rendering**: Portal rendering is direction-independent
+- **Text expansion**: The component handles text expansion from different languages by using flexible layouts
+- **No hardcoded text**: No text content in component itself - all text provided by consumers
+- **ARIA labels**: ARIA labels provided by consumers in appropriate locale
+- **Content direction**: Content direction handled by consumers
+
+## Composition
+
+Parent composite (Overlay) owns state and passes handlers via slots. Children
+(primitives like `Container`, `Button`, `Text`) receive state through slots.
+
+```tsx
+import * as React from 'react';
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Text } from '@bento/text';
+import { Portal } from '@bento/portal';
+import { FocusLock } from '@bento/focus-lock';
+import { ScrollLock } from '@bento/scroll-lock';
+import { Dismiss } from '@bento/dismiss-button';
+import { UNSAFE_PortalProvider } from 'react-aria';
+
+function App() {
+  const [container, setContainer] = React.useState<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    setContainer(document.getElementById('target-example-container'));
+  }, []);
+
+  if (!container) return null;
+
+  return (
+    {/* Container could be provided through portal provider or passed into portal component*/}
+    <UNSAFE_PortalProvider getContainer={() => container}>
+      <Modal container={container} />
+    </UNSAFE_PortalProvider>
+  );
+}
+
+function ModalExampleCodeNotImplementationCodeDemonstratingCompositionPatterns({ container }: { container: HTMLElement }) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Overlay open={open} onOpenChange={setOpen}>
+      {/* Trigger provided via slot; Overlay merges triggerProps */}
+      <Container slot="trigger" as="button" onClick={() => setOpen(true)}>
+        <Text>Open modal</Text>
+      </Container>
+
+      {open && (
+        <Portal container={container}>
+          {/* Body scroll is prevented while open */}
+          <ScrollLock />
+          {/* Focus contained within modal, restores on close */}
+          <FocusLock contain restoreFocus autoFocus>
+            {/* Underlay/backdrop; Overlay injects React Aria underlayProps via slots */}
+            <Container slot="backdrop" as="div" />
+
+            {/* Foreground content; Overlay injects overlayProps via slots */}
+            <Container slot="content" className="dialog" as="div">
+              {/* Screen-reader accessible dismiss controls at start/end */}
+              <Dismiss onDismiss={() => setOpen(false)} />
+
+              <Text as="h2">Complete Modal</Text>
+              <Text>All infrastructure in one example.</Text>
+
+              {/* Visible close button for sighted users, i know, you can use BentoButton as well */}
+              <Container as="button" onClick={() => setOpen(false)}>
+                <Text>Close</Text>
+              </Container>
+
+              <DismissButton onDismiss={() => setOpen(false)} />
+            </Container>
+          </FocusLock>
+        </Portal>
+      )}
+    </Overlay>
+  );
+}
+```
+
+- `trigger` slot: Element that opens/closes the overlay (uses React Aria's `useOverlayTrigger`)
+- `backdrop` slot: Visual backdrop behind content (conditionally rendered for modal overlays)
+- `content` slot: Main overlay content with proper layering, focus handling, and dismissal
+
+
+### Slot map and state
+
+| Slot          | Purpose                                 | Required | Default |
+|---------------|------------------------------------------|----------|---------|
+| `backdrop`    | Underlay behind content                  | No       | Yes     |
+| `content`     | Foreground content container             | Yes      | Yes     |
+| `trigger`     | Element that opens/closes the overlay    | No       | No      |
+
+### Data attributes
+
+| Attribute            | Description                          | Example Values                      |
+|----------------------|--------------------------------------|-------------------------------------|
+| `data-state`         | Current state of the overlay        | "open" / "closed"                   |
+| `data-override`      | Indicates customized behavior        | "style", "className"               |
+| `data-version`       | Component version (dev only)         | "overlay@1.0"                       |
+
+Note: There is no separate `data-topmost` attribute; topmost determination relies on DOM/portal order and React Aria overlay container semantics.
+
+Example CSS-based animations:
+
+```css
+.my-overlay [slot="content"][data-state="open"] { /* fade in */ }
+.my-overlay [slot="content"][data-state="closed"] { /* fade out */ }
+```
+
+The component distributes the following props via slots:
+
+- `triggerProps` (from useOverlayTrigger) to `slot="trigger"` children
+- `underlayProps` (from useModalOverlay) to `slot="backdrop"` children
+- `overlayProps` (from useOverlay) to `slot="content"` children
+- `modalProps` (from useModal) to content container

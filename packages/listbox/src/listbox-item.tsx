@@ -1,4 +1,4 @@
-import React, { ForwardedRef, ReactNode, createContext, useContext, useMemo, forwardRef } from 'react';
+import React, { ForwardedRef, ReactNode, createContext, useContext, useMemo } from 'react';
 import { mergeProps, useOption, useHover } from 'react-aria';
 import { createLeafComponent } from '@react-aria/collections';
 import { HoverEvents, Key, LinkDOMProps, Node } from '@react-types/shared';
@@ -208,7 +208,7 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
  * for advanced composition and styling capabilities.
  * @internal
  */
-export const ListBoxItemImpl = withSlots('BentoListBoxItem', forwardRef(ListBoxItemImplComponent));
+export const ListBoxItemImpl = withSlots('BentoListBoxItem', ListBoxItemImplComponent);
 
 /**
  * Adapter component that connects ListBoxItemImpl to React Aria's collection system.
@@ -227,7 +227,7 @@ function ListBoxItemComponent<T extends object>(
   forwardedRef: ForwardedRef<HTMLDivElement>,
   item: Node<T>
 ) {
-  return <ListBoxItemImpl {...props} ref={forwardedRef} __node={item} />;
+  return <ListBoxItemImpl {...props} ref={forwardedRef as any} __node={item} />;
 }
 
 /**
