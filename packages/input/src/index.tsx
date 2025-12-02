@@ -48,7 +48,7 @@ export const Input = withSlots<InputProps>(
     const { autoFocus } = props;
 
     const { isFocused, isFocusVisible, focusProps } = useFocusRing({
-      isTextInput: props.type !== 'checkbox' && props.type !== 'radio' && props.type !== 'range',
+      isTextInput: true,
       autoFocus: autoFocus
     });
     const { hoverProps, isHovered } = useHover(props);
