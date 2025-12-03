@@ -1,5 +1,5 @@
 import React, { useRef, ReactNode, Children, isValidElement } from 'react';
-import { useSelect, HiddenSelect, useFocusRing, useHover, mergeProps } from 'react-aria';
+import { useSelect, HiddenSelect, useFocusRing, useHover, usePopover, mergeProps } from 'react-aria';
 import type { Placement } from 'react-aria';
 import { useSelectState } from 'react-stately';
 import type { ListState } from 'react-stately';
@@ -11,7 +11,6 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { withSlots, Slots } from '@bento/slots';
 import { Container } from '@bento/container';
 import { ListStateContext } from '@bento/listbox';
-import { useSelectOverlay } from './use-select-overlay';
 
 /**
  * Extracts the render function from nested ListBox children.
@@ -310,11 +309,19 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
   const { labelProps, triggerProps, valueProps, menuProps, descriptionProps, errorMessageProps, hiddenSelectProps } =
     useSelect(ariaProps, state, triggerRef);
 
-  const {
-    overlayProps,
-    positionProps,
-    onClose: handleOverlayClose
-  } = useSelectOverlay(state, processedProps, popoverRef, triggerRef);
+  const { popoverProps } = usePopover(
+    {
+      triggerRef,
+      popoverRef,
+      placement: processedProps.placement ?? 'bottom start',
+      offset: processedProps.offset,
+      crossOffset: processedProps.crossOffset,
+      shouldFlip: processedProps.shouldFlip ?? true,
+      containerPadding: processedProps.containerPadding ?? 12,
+      isNonModal: true
+    },
+    state
+  );
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
   const { hoverProps, isHovered } = useHover({ isDisabled: processedProps.isDisabled });
@@ -381,15 +388,13 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
         selectedItems,
         slot: 'value'
       },
-      // onClose positioned after spreads to prevent accidental override by consumer props.
       popover: {
         isOpen: state.isOpen,
         ref: popoverRef,
         slot: 'popover',
         ...(state.isOpen && { 'data-open': true }),
-        ...overlayProps,
-        ...positionProps,
-        onClose: handleOverlayClose
+        ...popoverProps,
+        onClose: state.close
       },
       listbox: { ...menuProps, ref: listRef, slot: 'listbox' },
       description: { ...descriptionProps, slot: 'description' },
@@ -402,9 +407,8 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
       selectedItem,
       selectedItems,
       state.isOpen,
-      overlayProps,
-      positionProps,
-      handleOverlayClose,
+      state.close,
+      popoverProps,
       menuProps,
       descriptionProps,
       errorMessageProps
