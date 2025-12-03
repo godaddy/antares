@@ -1,8 +1,11 @@
 import { render } from 'vitest-browser-react';
-import { beforeEach, afterEach, describe, it, vi } from 'vitest';
+import { beforeEach, afterEach, describe, it, vi, expect } from 'vitest';
 import assume from 'assume';
 import React from 'react';
 import { BasicSelectExample } from '../examples/basic-example';
+import { StaticSelectExample } from '../examples/static-select';
+import { GroupedSelectExample } from '../examples/grouped-select';
+import { DynamicSelectExample, DynamicValueDisplay } from '../examples/dynamic-select';
 
 describe('@bento/select examples', function bento() {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -16,6 +19,137 @@ describe('@bento/select examples', function bento() {
   afterEach(function afterEach() {
     consoleLogSpy.mockRestore();
     vi.clearAllMocks();
+  });
+
+  describe('StaticSelectExample', function staticSelectExample() {
+    it('renders with default placeholder and options', function test() {
+      const { container } = render(<StaticSelectExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('Select a fruit...');
+      assume(result).includes('Apple');
+      assume(result).includes('Banana');
+      assume(result).includes('Strawberry');
+    });
+
+    it('renders with custom placeholder', function test() {
+      const { container } = render(<StaticSelectExample placeholder="Pick a fruit" />);
+      assume(container.innerHTML).includes('Pick a fruit');
+    });
+
+    it('calls onChange when selection changes', async function test() {
+      const onChange = vi.fn();
+      const { container } = render(<StaticSelectExample onChange={onChange} />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      const option = container.querySelector('[role="option"]') as HTMLElement;
+      await option.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      expect(onChange).toHaveBeenCalled();
+    });
+  });
+
+  describe('GroupedSelectExample', function groupedSelectExample() {
+    it('renders with section headers', function test() {
+      const { container } = render(<GroupedSelectExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('Popular Fruits');
+      assume(result).includes('Exotic Fruits');
+      assume(result).includes('Berries');
+    });
+
+    it('renders items within sections', function test() {
+      const { container } = render(<GroupedSelectExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('Apple');
+      assume(result).includes('Mango');
+      assume(result).includes('Strawberry');
+      assume(result).includes('Dragon Fruit');
+    });
+
+    it('renders disabled item', function test() {
+      const { container } = render(<GroupedSelectExample />);
+      assume(container.innerHTML).includes('Grape (Out of Stock)');
+    });
+
+    it('calls onChange when selection changes', async function test() {
+      const onChange = vi.fn();
+      const { container } = render(<GroupedSelectExample onChange={onChange} />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      const option = container.querySelector('[role="option"]') as HTMLElement;
+      await option.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      expect(onChange).toHaveBeenCalled();
+    });
+  });
+
+  describe('DynamicSelectExample', function dynamicSelectExample() {
+    it('renders with dynamic items', function test() {
+      const { container } = render(<DynamicSelectExample />);
+      const result = container.innerHTML;
+
+      assume(result).includes('🍎');
+      assume(result).includes('Apple');
+      assume(result).includes('52 cal');
+    });
+
+    it('renders empty state when showEmptyState is true', function test() {
+      const { container } = render(<DynamicSelectExample showEmptyState={true} />);
+      const result = container.innerHTML;
+
+      assume(result).includes('No fruits available');
+      assume(result).includes('🍽️');
+    });
+
+    it('calls onChange when selection changes', async function test() {
+      const onChange = vi.fn();
+      const { container } = render(<DynamicSelectExample onChange={onChange} />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      const option = container.querySelector('[role="option"]') as HTMLElement;
+      await option.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      expect(onChange).toHaveBeenCalled();
+    });
+
+    it('displays selected item with rich data', async function test() {
+      const { container } = render(<DynamicSelectExample />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      const option = container.querySelector('[role="option"]') as HTMLElement;
+      await option.click();
+      await new Promise((r) => setTimeout(r, 100));
+
+      const result = container.innerHTML;
+      assume(result).includes('🍎');
+      assume(result).includes('52 cal');
+    });
+  });
+
+  describe('DynamicValueDisplay', function dynamicValueDisplayTests() {
+    it('is exported for reuse', function test() {
+      assume(DynamicValueDisplay).exists();
+      // withSlots returns a component (object with render function)
+      expect(DynamicValueDisplay).toBeDefined();
+    });
   });
 
   describe('BasicSelectExample', function basicSelectExample() {
@@ -160,6 +294,88 @@ describe('@bento/select examples', function bento() {
 
       // Verify trigger text updates to selected value
       assume(html).includes('Apple');
+    });
+
+    it('supports controlled open state', async function test() {
+      const { container } = render(<BasicSelectExample controlledOpen={true} />);
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+
+      // Initially closed
+      assume(trigger?.getAttribute('aria-expanded')).equals('false');
+
+      // Click to open - internal state should update
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      assume(trigger?.getAttribute('aria-expanded')).equals('true');
+    });
+
+    it('renders with useDynamicCollection', function test() {
+      const { container } = render(<BasicSelectExample useDynamicCollection={true} />);
+      const result = container.innerHTML;
+
+      assume(result).includes('🍎');
+      assume(result).includes('Apple');
+    });
+
+    it('renders empty state with useDynamicCollection and showEmptyState', function test() {
+      const { container } = render(<BasicSelectExample useDynamicCollection={true} showEmptyState={true} />);
+      const result = container.innerHTML;
+
+      assume(result).includes('No fruits available');
+      assume(result).includes('🍽️');
+    });
+
+    it('uses DynamicValueDisplay when useDynamicCollection is true', async function test() {
+      const { container } = render(<BasicSelectExample useDynamicCollection={true} />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      const option = container.querySelector('[role="option"]') as HTMLElement;
+      await option.click();
+      await new Promise((r) => setTimeout(r, 100));
+
+      // DynamicValueDisplay shows emoji in selected value
+      const result = container.innerHTML;
+      assume(result).includes('🍎');
+    });
+
+    it('renders with explicit label prop', function test() {
+      const { container } = render(<BasicSelectExample label="My Label" />);
+      assume(container.innerHTML).includes('aria-label="My Label"');
+    });
+
+    it('renders without label prop (uses default)', function test() {
+      const { container } = render(<BasicSelectExample />);
+      assume(container.innerHTML).includes('Fruit options');
+    });
+
+    it('calls onChange callback when provided', async function test() {
+      const onChange = vi.fn();
+      const { container } = render(<BasicSelectExample onChange={onChange} />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      const option = container.querySelector('[role="option"]') as HTMLElement;
+      await option.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      expect(onChange).toHaveBeenCalled();
+    });
+
+    it('calls onOpenChange when in controlled mode', async function test() {
+      const onOpenChange = vi.fn();
+      const { container } = render(<BasicSelectExample controlledOpen={true} onOpenChange={onOpenChange} />);
+
+      const trigger = container.querySelector('[role="combobox"]') as HTMLElement;
+      await trigger.click();
+      await new Promise((r) => setTimeout(r, 50));
+
+      expect(onOpenChange).toHaveBeenCalledWith(true);
     });
   });
 });

@@ -328,8 +328,7 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
 
   // For dynamic collections (items prop), Node.value holds the original item object.
   const selectedItem = state.selectedItem as Node<object> | null;
-  // React Stately always provides selectedItems as an iterable, but the ?? fallback
-  // handles edge cases in the type system where it could theoretically be undefined.
+  // Fallback never executes (React Stately always provides selectedItems), but satisfies TypeScript.
   /* v8 ignore next */
   const selectedItems = (state.selectedItems ?? []) as Node<object>[];
 
