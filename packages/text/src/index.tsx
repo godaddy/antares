@@ -14,7 +14,7 @@ export interface TextProps {
    * The HTML element to render the text as.
    * @default 'span'
    */
-  as?: string;
+  as?: React.ElementType;
 
   /**
    * The content to display inside the text.
