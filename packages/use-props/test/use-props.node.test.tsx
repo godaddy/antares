@@ -121,6 +121,66 @@ describe('@bento/use-props', function bento() {
       assume(result).equals('bar-baz-bar');
       done();
     });
+
+    it('returns false from slots when explicitly set', function falsySlot() {
+      const result = renderProp('disabled', {
+        props: { disabled: true },
+        slots: { disabled: false },
+        state: {}
+      });
+
+      assume(result).equals(false);
+    });
+
+    it('returns 0 from slots when explicitly set', function zeroSlot() {
+      const result = renderProp('count', {
+        props: { count: 5 },
+        slots: { count: 0 },
+        state: {}
+      });
+
+      assume(result).equals(0);
+    });
+
+    it('returns empty string from slots when explicitly set', function emptyStringSlot() {
+      const result = renderProp('label', {
+        props: { label: 'default' },
+        slots: { label: '' },
+        state: {}
+      });
+
+      assume(result).equals('');
+    });
+
+    it('returns null from slots when explicitly set', function nullSlot() {
+      const result = renderProp('value', {
+        props: { value: 'something' },
+        slots: { value: null },
+        state: {}
+      });
+
+      assume(result).equals(null);
+    });
+
+    it('returns false from props when explicitly set', function falsyProp() {
+      const result = renderProp('disabled', {
+        props: { disabled: false },
+        slots: {},
+        state: {}
+      });
+
+      assume(result).equals(false);
+    });
+
+    it('returns 0 from props when explicitly set', function zeroProp() {
+      const result = renderProp('count', {
+        props: { count: 0 },
+        slots: {},
+        state: {}
+      });
+
+      assume(result).equals(0);
+    });
   });
 
   describe('useProps', function renderProps() {
