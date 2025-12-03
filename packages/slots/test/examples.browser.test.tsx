@@ -56,7 +56,7 @@ describe('@bento/slots examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<div data-slot="example-container" class="example"><label for="example"><strong>Hello World</strong></label><button id=":r2:" data-slot="button">Click Me</button></div>'
+        '<div data-slot="example-container" class="example"><label for="example" data-slot="label"><strong>Hello World</strong></label><button id=":r2:" data-slot="button">Click Me</button></div>'
       );
     });
   });

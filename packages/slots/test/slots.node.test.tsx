@@ -4,6 +4,7 @@ import { beforeEach, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { withSlots, library, contains } from '@bento/slots';
 import { Nested } from '../examples/nested.tsx';
+import { SlotFunction } from '../examples/slot-function.tsx';
 import { Box, defaults } from '@bento/box';
 import { useProps } from '@bento/use-props';
 import { fileURLToPath } from 'node:url';
@@ -167,6 +168,14 @@ describe('@bento/slots', function bento() {
       );
 
       assume(nested).contains('data-slot');
+    });
+
+    it('adds data-slot when a slot override function is provided', function slotOverride() {
+      const slotFunction = renderToString(React.createElement(SlotFunction));
+
+      assume(slotFunction).contains('data-slot="example-container"');
+      assume(slotFunction).contains('data-slot="label"');
+      assume(slotFunction).contains('data-slot="button"');
     });
   });
 
