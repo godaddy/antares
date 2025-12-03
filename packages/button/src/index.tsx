@@ -39,41 +39,63 @@ export function resolveChildren(
 }
 
 /**
- * A complete button component built on top of React Aria's useButton.
- * Renders as a native button element with all accessibility and interaction features.
+ * Props that parent components (like Select) can pass to Button via slots.
+ * These override useButton's defaults when explicitly set.
+ */
+const SLOT_PASSTHROUGH_PROPS = [
+  'className',
+  'style',
+  'type',
+  'disabled',
+  'name',
+  'form',
+  'value',
+  'formAction',
+  'formMethod',
+  'formNoValidate',
+  'formTarget',
+  'role',
+  'aria-required',
+  'aria-invalid',
+  'aria-disabled',
+  'aria-expanded',
+  'aria-haspopup',
+  'aria-controls'
+] as const;
+
+/**
+ * JSX spreads undefined values, which override existing props. Filter them out.
+ * @internal
+ */
+function pickDefined(obj: Record<string, unknown>, keys: readonly string[]): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  for (const key of keys) {
+    if (obj[key] !== undefined) {
+      result[key] = obj[key];
+    }
+  }
+  return result;
+}
+
+/**
+ * A button component built on React Aria's useButton.
  *
  * @example
- * ```tsx
- * <Button onPress={() => console.log('Button pressed!')}>Click me</Button>
- * ```
+ * <Button onPress={() => console.log('pressed')}>Click me</Button>
+ *
+ * @example
+ * <Button>{({ isPressed }) => isPressed ? 'Pressing...' : 'Click me'}</Button>
  */
 export const Button = withSlots(
   'BentoButton',
   forwardRef(function Button(args: ButtonProps, forwardedRef: ForwardedRef<HTMLButtonElement | null>) {
     const innerRef = React.useRef<HTMLButtonElement>(null);
+    const { props, ref } = useProps(args, {});
+    const buttonRef = useObjectRef(mergeRefs(innerRef, forwardedRef, ref));
 
-    // Extract merged props first (includes slot props from context)
-    // We need this to get the ref and onPress that might come from slots
-    const { props: mergedProps } = useProps(args, {});
-
-    // Merge all refs (slot ref, forwarded ref, inner ref) into a stable RefObject.
-    // useObjectRef handles both callback refs and RefObjects safely.
-    const buttonRef = useObjectRef(mergeRefs(innerRef, forwardedRef, (mergedProps as any).ref));
-
-    // Use mergedProps (which includes slot props) for React Aria hooks
-    const { buttonProps, isPressed } = useButton(mergedProps as ButtonProps, buttonRef);
-    const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
-    const { hoverProps, isHovered } = useHover(mergedProps);
-
-    const renderProps: ButtonRenderProps = {
-      isPressed,
-      isHovered,
-      isFocused,
-      isFocusVisible
-    };
-
-    // Re-extract props with renderProps for children resolution
-    const { props, apply } = useProps(args, renderProps);
+    const { buttonProps, isPressed } = useButton(props as ButtonProps, buttonRef);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+    const { hoverProps, isHovered } = useHover(props);
 
     const dataAttrs = useDataAttributes({
       pressed: isPressed,
@@ -83,20 +105,12 @@ export const Button = withSlots(
       disabled: props.isDisabled
     });
 
-    const content = resolveChildren(props.children, renderProps);
+    // Use args.children to avoid useProps proxy executing render functions with wrong args
+    const content = resolveChildren(args.children, { isPressed, isHovered, isFocused, isFocusVisible });
+    const slotOverrides = pickDefined(props as Record<string, unknown>, SLOT_PASSTHROUGH_PROPS);
 
     return (
-      <button
-        {...apply(mergeProps(buttonProps, focusProps, hoverProps, dataAttrs), [
-          'children',
-          'onPress',
-          'onPressStart',
-          'onPressEnd',
-          'onPressUp',
-          'onPressChange'
-        ])}
-        ref={buttonRef}
-      >
+      <button {...mergeProps(buttonProps, focusProps, hoverProps, dataAttrs, slotOverrides)} ref={buttonRef}>
         {content}
       </button>
     );
