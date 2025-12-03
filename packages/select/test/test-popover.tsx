@@ -9,12 +9,13 @@ import { useProps } from '@bento/use-props';
  * Wrapped with withSlots to properly receive slot props from Select.
  */
 export const Popover = withSlots('TestPopover', function Popover(args: any) {
+  const fallbackRef = useRef<HTMLDivElement>(null);
   const { props, apply } = useProps(args);
   const { children, style = {}, ref } = props;
   const open = props['data-open'] === true || props['data-open'] === 'true';
 
-  // Use the ref from Select (passed via slot props), or create a fallback
-  const popoverRef = ref || useRef<HTMLDivElement>(null);
+  // Use the ref from Select (passed via slot props), or fallback to local ref
+  const popoverRef = ref || fallbackRef;
 
   return (
     <div
