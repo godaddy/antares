@@ -42,6 +42,18 @@ describe('@bento/use-props', function suite() {
       assume(testRef.current?.textContent).equals('Test Content');
     });
 
+    it('supports useProps(rest) without state argument', async function restNoState() {
+      const testRef = React.createRef<HTMLDivElement>();
+
+      const TestComponent = withSlots('RestNoStateTest', function Component(...rest: any[]) {
+        const { apply } = useProps(rest);
+        return <div {...apply()}>No State</div>;
+      });
+
+      render(<TestComponent ref={testRef}>No State</TestComponent>);
+      assume(testRef.current?.textContent).equals('No State');
+    });
+
     it('overrides the ref when a slot overrides the ref', async function slotted() {
       const testRef = React.createRef<HTMLDivElement>();
       const slotRef = React.createRef<HTMLDivElement>();

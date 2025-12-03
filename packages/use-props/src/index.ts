@@ -154,16 +154,31 @@ export interface Returns {
  *   return <div {...apply()} />;
  * }
  */
-export function useProps(...rest: any[]): Returns {
+export function useProps<T extends AnyObject, S extends object = object>(args: T, state?: S): Returns;
+export function useProps<T extends AnyObject, S extends object = object>(
+  args: T,
+  state: S,
+  forwardedRef: ForwardedRef<any>
+): Returns;
+// Supports ...rest pattern: function Component(...rest) { useProps(rest) }
+export function useProps<T extends AnyObject, S extends object = object>(
+  argsWithRef: [T, ForwardedRef<any>?],
+  state?: S
+): Returns;
+export function useProps(...rest: unknown[]): Returns {
   let forwardedRef: ForwardedRef<any> | undefined;
   let args: AnyObject;
-  let state: object;
+  let state: object = {};
 
   if (Array.isArray(rest[0])) {
-    [args, forwardedRef] = rest[0];
-    state = rest[1];
+    const tuple = rest[0] as [AnyObject, ForwardedRef<any>?];
+    args = tuple[0];
+    forwardedRef = tuple[1];
+    state = (rest[1] as object) ?? {};
   } else {
-    [args, state, forwardedRef] = rest;
+    args = rest[0] as AnyObject;
+    state = (rest[1] as object) ?? {};
+    forwardedRef = rest[2] as ForwardedRef<any> | undefined;
   }
 
   const { slots } = useContext<BoxContext<AnyObject>>(Box);
