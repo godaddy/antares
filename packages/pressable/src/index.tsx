@@ -59,11 +59,17 @@ export interface PressableProps extends PressProps, Omit<HTMLAttributes<HTMLElem
  */
 export const Pressable = withSlots('BentoPressable', function Pressable(args: PressableProps) {
   const ref = useRef<HTMLElement | null>(null);
-  const { focusableProps } = useFocusable(args, ref);
-  const { focusProps, isFocused, isFocusVisible } = useFocusRing(args);
-  const { hoverProps, isHovered } = useHover(args);
-  const { pressProps, isPressed } = usePress({ ...args, ref });
 
+  // First pass: merge slot props so React Aria hooks see values like isDisabled
+  const { props: mergedProps } = useProps(args);
+
+  // React Aria hooks now receive slot-merged props
+  const { focusableProps } = useFocusable(mergedProps, ref);
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
+  const { hoverProps, isHovered } = useHover(mergedProps);
+  const { pressProps, isPressed } = usePress({ ...mergedProps, ref });
+
+  // Second pass: get apply function with interaction state for render props
   const { props, apply } = useProps(args, { isHovered, isFocused, isFocusVisible, isPressed });
   const child = React.Children.only(props.children);
 
