@@ -2,9 +2,10 @@ import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { beforeEach, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { withSlots, library } from '@bento/slots';
+import { withSlots, library, contains } from '@bento/slots';
 import { Nested } from '../examples/nested.tsx';
 import { Box, defaults } from '@bento/box';
+import { useProps } from '@bento/use-props';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
@@ -51,14 +52,14 @@ describe('@bento/slots', function bento() {
 
   describe('slots', function nested() {
     it('can render components without a `slot` property', function render() {
-      const Plain = withSlots('Plain', (props: any) => React.createElement('p', props, 'Hello World'));
-      const plain = renderToString(React.createElement(Plain, { id: 'example' }));
+      const Plain = withSlots('Plain', (props: any) => <p {...props}>Hello World</p>);
+      const plain = renderToString(<Plain id="example" />);
 
       assume(plain).contains('<p id="example">Hello World</p>');
     });
 
     it('renders the nested components', function render() {
-      const nested = renderToString(React.createElement(Nested, null));
+      const nested = renderToString(<Nested />);
 
       assume(nested).contains('Hello World');
       assume(nested).contains('Click Me');
@@ -67,8 +68,8 @@ describe('@bento/slots', function bento() {
     it('uses dot notation to deeply affect slots', function override() {
       const verify = assume.plan(6);
       const nested = renderToString(
-        React.createElement(Nested, {
-          slots: {
+        <Nested
+          slots={{
             'example-container.label': function overrideLabel({ props, original }: any) {
               assume(props.htmlFor).equals('example');
               assume(props.children).equals('Hello World');
@@ -78,8 +79,8 @@ describe('@bento/slots', function bento() {
 
               return 'Overridden';
             }
-          }
-        })
+          }}
+        />
       );
 
       assume(nested).contains('Overridden');
@@ -98,11 +99,15 @@ describe('@bento/slots', function bento() {
           assume(props.id).startsWith(':R');
           id = props.id;
 
-          return React.createElement('p', props, 'No more button, only text');
+          return <p {...props}>No more button, only text</p>;
         }
       };
 
-      const nested = renderToString(React.createElement(Box.Provider, { value }, React.createElement(Nested)));
+      const nested = renderToString(
+        <Box.Provider value={value}>
+          <Nested />
+        </Box.Provider>
+      );
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
@@ -195,7 +200,7 @@ describe('@bento/slots', function bento() {
 
       const Component: any = withSlots('CustomNameHere', Custom, [modifier as any]);
 
-      renderToString(React.createElement(Component, { id: 'example' }));
+      renderToString(<Component id="example" />);
       assume(ran).is.true();
     });
 
@@ -208,6 +213,166 @@ describe('@bento/slots', function bento() {
       assume(trigger).throws('@bento/slots(withSlots)');
       assume(trigger).throws('The supplied component modifier is not a function.');
       assume(trigger).throws('https://example.com/docs/errors/#9F4D92');
+    });
+  });
+
+  describe('contains', function containsSuite() {
+    it('is a function', function fn() {
+      assume(contains).is.a('function');
+    });
+
+    it('validates slots in a real compositional component', function realComponent() {
+      // Create a parent component that requires specific child slots
+      const Dialog = withSlots('ContainsDialog', function Dialog(props: any) {
+        const { children } = props;
+
+        // Validate that required slots are present
+        if (!contains(['title', 'content'], children)) {
+          throw new Error('Dialog requires title and content slots');
+        }
+
+        return <div className="dialog">{children}</div>;
+      });
+
+      const Title = withSlots('ContainsDialogTitle', (props: any) => <h1 {...props} />);
+      const Content = withSlots('ContainsDialogContent', (props: any) => <div {...props} />);
+
+      // Valid usage - should not throw
+      const valid = renderToString(
+        <Dialog>
+          <Title slot="title">My Title</Title>
+          <Content slot="content">My Content</Content>
+        </Dialog>
+      );
+
+      assume(valid).contains('My Title');
+      assume(valid).contains('My Content');
+
+      // Invalid usage - missing content slot should throw
+      assume(() =>
+        renderToString(
+          <Dialog>
+            <Title slot="title">My Title</Title>
+          </Dialog>
+        )
+      ).throws('Dialog requires title and content slots');
+    });
+
+    it('works with namespaced slots in nested components', function namespacedSlots() {
+      // Parent component that validates deeply nested slot paths
+      const Form = withSlots('ContainsForm', function Form(props: any) {
+        const { children } = props;
+
+        // Should find the top-level 'submit' slot
+        assume(contains(['submit'], children)).is.true();
+
+        // Should also find the nested 'submit.icon' path by traversing children
+        assume(contains(['submit.icon'], children)).is.true();
+
+        return <form>{children}</form>;
+      });
+
+      // Button component that can have nested icon slots - must use useProps to get slot values
+      const Button = withSlots('ContainsButton', function Button(args: any) {
+        const { props } = useProps(args);
+        return <button {...props}>{props.children}</button>;
+      });
+
+      const Icon = withSlots('ContainsIcon', function Icon(args: any) {
+        const { props } = useProps(args);
+        return <span {...props} />;
+      });
+
+      // Valid: Button has slot="submit", Icon is nested inside with namespaced slot values
+      const valid = renderToString(
+        <Form slots={{ 'submit.icon': { className: 'custom-icon' } }}>
+          <Button slot="submit">
+            <Icon slot="icon">→</Icon>
+            Submit
+          </Button>
+        </Form>
+      );
+
+      assume(valid).contains('<form>');
+      assume(valid).contains('<button');
+      assume(valid).contains('Submit');
+      // The icon should get the custom class from namespaced slots prop
+      assume(valid).contains('custom-icon');
+    });
+
+    it('validates with render prop children', function renderPropValidation() {
+      const Dropdown = withSlots('ContainsDropdown', function Dropdown(props: any) {
+        const { children } = props;
+        const [open, setOpen] = React.useState(false);
+
+        // Render props can't be validated - contains returns true for functions
+        assume(contains(['trigger', 'menu'], children)).is.true();
+
+        // Execute the render prop
+        const rendered = typeof children === 'function' ? children({ open, setOpen }) : children;
+
+        return <div className="dropdown">{rendered}</div>;
+      });
+
+      const Button = withSlots('ContainsDropdownButton', (props: any) => <button {...props} />);
+      const Menu = withSlots('ContainsDropdownMenu', (props: any) => <ul {...props} />);
+
+      // Render prop usage
+      const output = renderToString(
+        <Dropdown>
+          {({ open }: any) => (
+            <>
+              <Button slot="trigger">Toggle</Button>
+              {open && (
+                <Menu slot="menu">
+                  <li>Item</li>
+                </Menu>
+              )}
+            </>
+          )}
+        </Dropdown>
+      );
+
+      assume(output).contains('dropdown');
+    });
+
+    it('returns false when children are null or undefined', function nullUndefined() {
+      assume(contains(['trigger'], null)).is.false();
+      assume(contains(['trigger'], undefined)).is.false();
+    });
+
+    it('returns true when checking for empty slot array', function emptyArray() {
+      assume(contains([], <div>anything</div>)).is.true();
+    });
+
+    it('searches through wrapper components without slot props', function wrapperSearch() {
+      const Content = withSlots('ContainsWrapperContent', (props: any) => <div {...props} />);
+
+      // Content with slot="content" is wrapped in a div without a slot prop
+      // contains() should still find it by searching through the wrapper
+      const children = (
+        <div className="wrapper">
+          <Content slot="content">My Content</Content>
+        </div>
+      );
+
+      assume(contains(['content'], children)).is.true();
+    });
+
+    it('ignores raw HTML elements with slot props (not withSlots components)', function ignoresRawElements() {
+      const Content = withSlots('ContainsValidContent', (props: any) => <div {...props} />);
+
+      // A raw div with slot="invalid" should be ignored
+      // Only the withSlots component with slot="content" should be found
+      const children = (
+        <>
+          <div slot="invalid">This is not a withSlots component</div>
+          <Content slot="content">Valid slotted content</Content>
+        </>
+      );
+
+      assume(contains(['content'], children)).is.true();
+      assume(contains(['invalid'], children)).is.false(); // Raw div is ignored
     });
   });
 

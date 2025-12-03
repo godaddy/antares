@@ -185,6 +185,12 @@ export function withSlots<Props extends object>(
   const SlottedComponent = memo(SlottedForwardRef);
   SlottedComponent.displayName = `Slotted(${name})`;
 
+  //
+  // Mark this as a Bento component wrapped with withSlots
+  // This is used by the contains() utility to identify valid slotted components
+  //
+  (SlottedComponent as any).bento = true;
+
   if (process.env.NODE_ENV !== 'production') {
     //
     // This enables re-render tracking for every Bento based component using the
