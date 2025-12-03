@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Overlay } from '@bento/overlay';
 import { Portal } from '@bento/portal';
 import { FocusLock } from '@bento/focus-lock';
@@ -7,10 +7,16 @@ import { Container } from '@bento/container';
 import { Button } from '@bento/button';
 import { Text } from '@bento/text';
 
+function getPosition(el: HTMLElement | null) {
+  if (!el) return { top: 0, left: 0 };
+  return { top: el.offsetTop + el.offsetHeight + 8, left: el.offsetLeft };
+}
+
 export function Popover() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [trigger, setTrigger] = useState<HTMLButtonElement | null>(null);
+  const { top, left } = getPosition(trigger);
 
   useEffect(function mount() {
     setMounted(true);
@@ -18,7 +24,7 @@ export function Popover() {
 
   return (
     <Container style={{ position: 'relative' }}>
-      <Button childRef={triggerRef} onPress={() => setOpen(!open)}>
+      <Button ref={setTrigger} onPress={() => setOpen(!open)}>
         Open Popover
       </Button>
       <Overlay open={open} onOpenChange={setOpen}>
@@ -29,8 +35,8 @@ export function Popover() {
                 slot="content"
                 style={{
                   position: 'absolute',
-                  top: triggerRef?.current?.offsetTop + triggerRef?.current?.offsetHeight + 8,
-                  left: triggerRef?.current?.offsetLeft,
+                  top,
+                  left,
                   padding: '1rem',
                   background: 'white',
                   border: '1px solid #ccc',
