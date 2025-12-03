@@ -55,6 +55,7 @@ const SLOT_PASSTHROUGH_PROPS = [
   'formNoValidate',
   'formTarget',
   'role',
+  'aria-labelledby',
   'aria-required',
   'aria-invalid',
   'aria-disabled',
