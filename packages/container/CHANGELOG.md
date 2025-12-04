@@ -1,5 +1,22 @@
 # @bento/container
 
+## 0.2.0
+
+### Minor Changes
+
+- The slot system now handles forwarding ([#59](https://github.com/godaddy/bento/pull/59) by @akazemier-godaddy)
+
+### Patch Changes
+
+- Allow no children to be specified when creating presentational elements. Correctly inherits slot overrides. ([#45](https://github.com/godaddy/bento/pull/45) by @akazemier-godaddy)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/use-props@0.2.0
+- @bento/slots@0.2.0
+</details>
+
 ## 0.1.1
 
 ### Patch Changes

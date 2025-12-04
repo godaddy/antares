@@ -27,6 +27,7 @@
     "@bento/illustration": "*",
     "@bento/internal-props": "*",
     "@bento/listbox": "*",
+    "@bento/overlay": "*",
     "@bento/portal": "*",
     "@bento/pressable": "*",
     "@bento/radio": "*",
