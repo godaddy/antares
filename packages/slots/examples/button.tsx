@@ -13,5 +13,5 @@ import React from 'react';
 export const Button = withSlots('SlotsButton', function ButtonComponent(args: any) {
   const { apply } = useProps(args);
 
-  return <button {...apply()} />
+  return <button {...apply()} />;
 });

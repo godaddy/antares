@@ -1,5 +1,21 @@
 # @bento/slots
 
+## 0.2.0
+
+### Minor Changes
+
+- Forward ref support ([#59](https://github.com/godaddy/bento/pull/59) by @akazemier-godaddy)
+- New contains method added to help with validation of required slots ([#48](https://github.com/godaddy/bento/pull/48) by @akazemier-godaddy)
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/forward@0.1.0
+- @bento/box@0.2.0
+</details>
+
 ## 0.1.3
 
 ### Patch Changes
