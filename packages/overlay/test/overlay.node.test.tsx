@@ -52,7 +52,11 @@ describe('@bento/overlay', function bento() {
   it('provides Box context to children', function boxContext() {
     const result = renderToStringWithChildren({
       open: true,
-      children: <Container slot="content" data-testid="child">Content</Container>
+      children: (
+        <Container slot="content" data-testid="child">
+          Content
+        </Container>
+      )
     });
 
     assume(result).includes('data-testid="child"');
