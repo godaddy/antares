@@ -1,6 +1,6 @@
 {
   "name": "@bento/illustration",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Illustration component",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -45,10 +45,10 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.1.3",
+    "@bento/slots": "^0.2.0",
     "@bento/to-attribute-value": "^0.1.1",
     "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.1.1",
+    "@bento/use-props": "^0.2.0",
     "@react-types/shared": "^3.32.1"
   },
   "devDependencies": {
