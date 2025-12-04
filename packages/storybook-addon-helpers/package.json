@@ -41,7 +41,7 @@
     "package.json"
   ],
   "dependencies": {
-    "camelcase": "^8.0.0",
+    "camelcase": "^9.0.0",
     "react-docgen-typescript": "^2.4.0",
     "typescript": "^5.9.3"
   },
