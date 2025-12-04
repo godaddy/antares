@@ -47,7 +47,7 @@
     "@bento/error": "^0.1.1",
     "@bento/slots": "^0.1.3",
     "@bento/use-props": "^0.1.1",
-    "@react-aria/overlays": "^3.24.7",
+    "@react-aria/overlays": "^3.25.3",
     "@react-stately/overlays": "^3.6.20"
   },
   "devDependencies": {
