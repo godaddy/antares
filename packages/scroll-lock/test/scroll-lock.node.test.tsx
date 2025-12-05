@@ -44,4 +44,3 @@ describe('@bento/scroll-lock (node)', function bentoNode() {
     });
   });
 });
-

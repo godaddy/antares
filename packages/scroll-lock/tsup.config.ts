@@ -5,4 +5,3 @@ export default defineConfig({
   ...shared,
   entry: ['src/index.tsx']
 });
-

@@ -32,4 +32,3 @@ export function EmptyExample(args: ContainerProps) {
     </Container>
   );
 }
-

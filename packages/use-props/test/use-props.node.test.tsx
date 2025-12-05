@@ -4,7 +4,7 @@ import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { Box, defaults } from '@bento/box';
 import { withSlots } from '@bento/slots';
-import { UnknownObject } from '@bento/types';
+import { type UnknownObject } from '@bento/types';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
