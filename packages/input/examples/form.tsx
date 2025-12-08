@@ -34,7 +34,9 @@ export function FormExample() {
 
       {/* Text Input */}
       <Container as="div">
-        <label htmlFor="name">Name</label>
+        <Container as="label" htmlFor="name">
+          Name
+        </Container>
         <Input
           id="name"
           type="text"
@@ -46,7 +48,9 @@ export function FormExample() {
 
       {/* Email Input */}
       <Container as="div">
-        <label htmlFor="email">Email</label>
+        <Container as="label" htmlFor="email">
+          Email
+        </Container>
         <Input
           id="email"
           type="email"
@@ -59,7 +63,9 @@ export function FormExample() {
 
       {/* Number Input */}
       <Container as="div">
-        <label htmlFor="age">Age</label>
+        <Container as="label" htmlFor="age">
+          Age
+        </Container>
         <Input
           id="age"
           type="number"
@@ -73,7 +79,9 @@ export function FormExample() {
 
       {/* Range Input */}
       <Container as="div">
-        <label htmlFor="quantity">Quantity: {formData.quantity}</label>
+        <Container as="label" htmlFor="quantity">
+          Quantity: {formData.quantity}
+        </Container>
         <Input
           id="quantity"
           type="range"
@@ -87,17 +95,17 @@ export function FormExample() {
 
       {/* Checkbox Input */}
       <Container as="div">
-        <label htmlFor="newsletter">
+        <Container as="label" htmlFor="newsletter">
           <Input id="newsletter" type="checkbox" checked={formData.newsletter} onChange={handleChange('newsletter')} />
           Subscribe to newsletter
-        </label>
+        </Container>
       </Container>
 
       {/* Radio Buttons - Favorite Fruit */}
       <Container as="div">
         <Container as="fieldset">
           <Text as="legend">Favorite Fruit</Text>
-          <label>
+          <Container as="label">
             <Input
               type="radio"
               name="favoriteFruit"
@@ -107,8 +115,8 @@ export function FormExample() {
               onChange={handleChange('favoriteFruit')}
             />
             Apple
-          </label>
-          <label>
+          </Container>
+          <Container as="label">
             <Input
               type="radio"
               name="favoriteFruit"
@@ -118,8 +126,8 @@ export function FormExample() {
               onChange={handleChange('favoriteFruit')}
             />
             Banana
-          </label>
-          <label>
+          </Container>
+          <Container as="label">
             <Input
               type="radio"
               name="favoriteFruit"
@@ -129,25 +137,31 @@ export function FormExample() {
               onChange={handleChange('favoriteFruit')}
             />
             Orange
-          </label>
+          </Container>
         </Container>
       </Container>
 
       {/* Color Input */}
       <Container as="div">
-        <label htmlFor="color">Favorite Color</label>
+        <Container as="label" htmlFor="color">
+          Favorite Color
+        </Container>
         <Input id="color" type="color" value={formData.favoriteColor} onChange={handleChange('favoriteColor')} />
       </Container>
 
       {/* Date Input */}
       <Container as="div">
-        <label htmlFor="birthdate">Birthdate</label>
+        <Container as="label" htmlFor="birthdate">
+          Birthdate
+        </Container>
         <Input id="birthdate" type="date" value={formData.birthdate} onChange={handleChange('birthdate')} />
       </Container>
 
       {/* URL Input */}
       <Container as="div">
-        <label htmlFor="website">Website</label>
+        <Container as="label" htmlFor="website">
+          Website
+        </Container>
         <Input
           id="website"
           type="url"
@@ -159,7 +173,9 @@ export function FormExample() {
 
       {/* Tel Input */}
       <Container as="div">
-        <label htmlFor="phone">Phone</label>
+        <Container as="label" htmlFor="phone">
+          Phone
+        </Container>
         <Input
           id="phone"
           type="tel"
@@ -195,7 +211,7 @@ export function FormExample() {
       {/* Display form data */}
       <Container as="div">
         <Text as="h3">Form Data (live preview):</Text>
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
+        <Container as="pre">{JSON.stringify(formData, null, 2)}</Container>
       </Container>
     </Container>
   );

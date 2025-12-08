@@ -22,7 +22,9 @@ export function BasicFormExample() {
       <Text as="h2">Basic Form</Text>
 
       <Container as="div">
-        <label htmlFor="name">Name</label>
+        <Container as="label" htmlFor="name">
+          Name
+        </Container>
         <Input
           id="name"
           type="text"
@@ -33,7 +35,9 @@ export function BasicFormExample() {
       </Container>
 
       <Container as="div">
-        <label htmlFor="email">Email</label>
+        <Container as="label" htmlFor="email">
+          Email
+        </Container>
         <Input
           id="email"
           type="email"
@@ -56,7 +60,7 @@ export function BasicFormExample() {
 
       <Container as="div">
         <Text as="h3">Form Data (live preview):</Text>
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
+        <Container as="pre">{JSON.stringify(formData, null, 2)}</Container>
       </Container>
     </Container>
   );
