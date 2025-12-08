@@ -63,7 +63,7 @@ export const Radio = withSlots('BentoRadio', function Radio(args: RadioProps) {
       })}
     >
       <VisuallyHidden>
-        <Input {...mergeProps(inputProps, focusProps)} ref={inputRef as any} />
+        <Input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
       </VisuallyHidden>
 
       {isSelected ? (
