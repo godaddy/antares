@@ -3,7 +3,6 @@ import {
   ButtonExample,
   ButtonWithAriaExample,
   ButtonWithDataAttributesExample,
-  ButtonInFormExample,
   DisabledButtonExample,
   ButtonWithRenderPropExample
 } from '../examples/button';
