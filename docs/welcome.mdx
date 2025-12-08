@@ -1,0 +1,77 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Bento" />
+
+# Bento
+
+**Bento** is a headless, accessible React component library built on [React Aria](https://react-spectrum.adobe.com/react-aria/) that provides the foundational primitives for building design systems.
+
+## Vision
+
+Bento aims to be the **invisible foundation** that powers your design system. We believe:
+
+- **Accessibility is not optional** — Every component is built with WCAG compliance from day one
+- **Flexibility over opinions** — Primitives should adapt to your design, not the other way around
+- **Composition over configuration** — Build complex UIs by combining simple, focused primitives
+- **Developer experience matters** — Clear APIs, excellent TypeScript support, and comprehensive documentation
+
+## Core Concepts
+
+### Headless by Design
+
+Bento components ship with zero styling. They provide:
+
+- **Accessibility** — ARIA attributes, keyboard navigation, focus management
+- **Behavior** — State management, event handling
+- **Structure** — Semantic HTML, DOM relationships
+
+You provide the styles, we handle everything else.
+
+### Infinite Customizability
+
+Every layer of a Bento component can be customized through multiple mechanisms:
+
+**Slots** — Override or replace any internal element:
+
+```tsx
+<Select
+  slots={{
+    trigger: { className: 'my-trigger' },
+    list: ({ props }) => <CustomList {...props} />
+  }}
+/>
+```
+
+**Render Props** — Access internal state for dynamic rendering:
+
+```tsx
+<Button className={({ isPressed }) => isPressed ? 'active' : ''}>
+  {({ isHovered }) => isHovered ? 'Hovering!' : 'Click me'}
+</Button>
+```
+
+**Environment** — Configure behavior across your entire app:
+
+```tsx
+<Environment components={{ Button: MyButton }}>
+  {/* All Buttons in this tree use MyButton */}
+</Environment>
+```
+
+**Data Attributes** — Style based on component state:
+
+```css
+[data-pressed="true"] { transform: scale(0.98); }
+[data-focus-visible="true"] { outline: 2px solid blue; }
+```
+
+### Built on React Aria
+
+We leverage [React Aria](https://react-spectrum.adobe.com/react-aria/) hooks for battle-tested accessibility patterns, then wrap them with our composition model to provide a more ergonomic API.
+
+## Next Steps
+
+- **Explore Components** — Browse the sidebar to see available primitives like Button, Checkbox, ListBox, and Overlay
+- **Understand the Slot System** — Check out [withSlots](/docs/higher-order-components-slots--overview) to learn how customization works
+- **Learn the Patterns** — Expand the Architecture section for PDRs and composition guidelines
+- **Contribute** — See our [Contributing Guide](https://github.com/godaddy/bento/blob/main/CONTRIBUTING.md) to get involved

@@ -1,4 +1,8 @@
+import { Meta } from '@storybook/addon-docs/blocks';
 
+<Meta title="Architecture/PDRs/Focus Lock" />
+
+# Focus Lock Primitive PDR
 
 ## Code Examples
 
@@ -9,11 +13,11 @@ import { FocusLock } from '@bento/focus-lock';
 
 function BasicModal() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Open Modal</button>
-      
+
       {isOpen && (
         <div className="modal-backdrop">
           <FocusLock contain restoreFocus autoFocus>
@@ -38,11 +42,11 @@ import { FocusLock } from '@bento/focus-lock';
 function NestedModals() {
   const [outerOpen, setOuterOpen] = useState(false);
   const [innerOpen, setInnerOpen] = useState(false);
-  
+
   return (
     <>
       <button onClick={() => setOuterOpen(true)}>Open Outer Modal</button>
-      
+
       {outerOpen && (
         <div className="modal-backdrop">
           <FocusLock contain restoreFocus autoFocus>
@@ -50,7 +54,7 @@ function NestedModals() {
               <h2>Outer Modal</h2>
               <button onClick={() => setInnerOpen(true)}>Open Inner Modal</button>
               <button onClick={() => setOuterOpen(false)}>Close</button>
-              
+
               {innerOpen && (
                 <div className="modal-backdrop">
                   <FocusLock contain restoreFocus autoFocus>
@@ -78,17 +82,17 @@ import { FocusLock } from '@bento/focus-lock';
 
 function CustomFocusExample() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Open Custom Modal</button>
-      
+
       {isOpen && (
-        <FocusLock 
-          contain={true} 
-          restoreFocus={true} 
+        <FocusLock
+          contain={true}
+          restoreFocus={true}
           autoFocus={true}
-          className={({ isContained, hasFocus }) => 
+          className={({ isContained, hasFocus }) =>
             `modal-content ${isContained ? 'focus-contained' : ''} ${hasFocus ? 'has-focus' : ''}`
           }
           onFocusEnter={(event) => console.log('Focus entered scope')}
@@ -114,7 +118,7 @@ import { useFocusLock } from '@bento/focus-lock';
 function AdvancedFocusControl() {
   const [isActive, setIsActive] = useState(false);
   const scopeRef = useRef<HTMLDivElement>(null);
-  
+
   const focusLock = useFocusLock({
     contain: isActive,
     restoreFocus: true,
@@ -123,14 +127,14 @@ function AdvancedFocusControl() {
     onFocusEnter: () => console.log('Focus entered'),
     onFocusLeave: () => console.log('Focus left')
   });
-  
+
   return (
     <div>
       <button onClick={() => setIsActive(!isActive)}>
         {isActive ? 'Deactivate' : 'Activate'} Focus Lock
       </button>
-      
-      <div 
+
+      <div
         ref={scopeRef}
         className={`focus-area ${isActive ? 'active' : ''}`}
       >
@@ -152,7 +156,7 @@ import { FocusLock } from '@bento/focus-lock';
 function FormWithFocusManagement() {
   const [currentStep, setCurrentStep] = useState(0);
   const steps = ['Personal', 'Contact', 'Review'];
-  
+
   return (
     <div className="form-wizard">
       <div className="step-indicator">
@@ -162,10 +166,10 @@ function FormWithFocusManagement() {
           </div>
         ))}
       </div>
-      
-      <FocusLock 
-        contain={true} 
-        restoreFocus={false} 
+
+      <FocusLock
+        contain={true}
+        restoreFocus={false}
         autoFocus={true}
         key={currentStep} // Re-mount to reset focus
       >
@@ -178,7 +182,7 @@ function FormWithFocusManagement() {
               <button onClick={() => setCurrentStep(1)}>Next</button>
             </div>
           )}
-          
+
           {currentStep === 1 && (
             <div>
               <h2>Contact Information</h2>
@@ -188,7 +192,7 @@ function FormWithFocusManagement() {
               <button onClick={() => setCurrentStep(2)}>Next</button>
             </div>
           )}
-          
+
           {currentStep === 2 && (
             <div>
               <h2>Review</h2>
@@ -211,16 +215,16 @@ import { FocusLock } from '@bento/focus-lock';
 
 function SlotBasedModal() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
-    <FocusLock 
-      contain={isOpen} 
-      restoreFocus={true} 
+    <FocusLock
+      contain={isOpen}
+      restoreFocus={true}
       autoFocus={isOpen}
       slots={{
         root: ({ props, children }) => (
-          <div 
-            {...props} 
+          <div
+            {...props}
             className="custom-focus-container"
             data-modal-open={isOpen}
           >

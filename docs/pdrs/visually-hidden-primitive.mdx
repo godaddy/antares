@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/PDRs/VisuallyHidden" />
+
 # VisuallyHidden Primitive PDR
 
 ## Purpose
@@ -30,16 +34,16 @@ import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 
 export const VisuallyHidden = withSlots(
-  'BentoVisuallyHidden', 
+  'BentoVisuallyHidden',
   function VisuallyHidden(args) {
     const { props, apply } = useProps(args);
     const { children, as, elementType, ...rest } = props;
-    
+
     // Support both `as` (community standard) and `elementType` (React Aria)
     const element = as || elementType;
-    
+
     return (
-      <AriaVisuallyHidden 
+      <AriaVisuallyHidden
         {...apply(rest)}
         elementType={element}
       >

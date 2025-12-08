@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/PDRs/ScrollLock" />
+
 # ScrollLock Primitive PDR
 
 ## Purpose
@@ -12,7 +16,7 @@ This research indicates that scrollbar compensation is already handled by the un
 
 Given React Aria's comprehensive implementation, the ScrollLock primitive provides:
 - **Data Attributes**: Adds debugging and styling hooks via `data-scroll-locked`
-- **Environment Integration**: Uses Bento's Box context for consistent document/window access  
+- **Environment Integration**: Uses Bento's Box context for consistent document/window access
 - **TypeScript Types**: Provides Bento-aligned type definitions
 - **Consistent API**: Follows Bento's hook patterns for familiarity
 - **Optional Enhancements**: Additional configuration options if needed
@@ -55,7 +59,7 @@ Given that React Aria's `usePreventScroll` already handles scrollbar compensatio
 export function useScrollLock(options: ScrollLockOptions = {}) {
   // React Aria handles everything including scrollbar compensation
   usePreventScroll(options);
-  
+
   // Add minimal Bento-specific enhancements
   useDataAttributes(options);
   // Environment integration if needed
@@ -90,13 +94,13 @@ function BentoModal(props) {
   // React Aria for modal behavior
   const { modalProps } = useModal();
   const { overlayProps } = useOverlay(props, ref);
-  
+
   // Bento wrapper around usePreventScroll
-  useScrollLock({ 
+  useScrollLock({
     isDisabled: !props.isOpen,
     preserveScrollBarGap: true // Our addition
   });
-  
+
   // Combine for complete solution
   return <div {...modalProps} {...overlayProps} />;
 }
@@ -104,7 +108,7 @@ function BentoModal(props) {
 
 **What Bento Adds**:
 - Data attributes for debugging and styling
-- Consistent API with other Bento hooks  
+- Consistent API with other Bento hooks
 - TypeScript types aligned with Bento patterns
 
 ## Architecture & Features
@@ -118,7 +122,7 @@ interface ScrollLockOptions extends PreventScrollOptions {
   // From React Aria's PreventScrollOptions:
   // - isDisabled?: boolean
   // React Aria includes built-in scrollbar compensation
-  
+
   // Note: Data attributes are automatically generated using @bento/use-data-attributes
   // The hook exposes scroll lock state as data-scroll-locked="true|false"
 }
@@ -133,28 +137,28 @@ import { useLayoutEffect } from 'react';
 
 export function useScrollLock(options: ScrollLockOptions = {}) {
   const { isDisabled = false, ...reactAriaOptions } = options;
-  
+
   // React Aria provides comprehensive scroll prevention
   usePreventScroll({
     isDisabled,
     ...reactAriaOptions
   });
-  
+
   // Generate data attributes for debugging
   const dataAttributes = useDataAttributes({
     scrollLocked: !isDisabled
   });
-  
+
   // Apply data attributes to document body
   useLayoutEffect(() => {
     const entries = Object.entries(dataAttributes);
-    
+
     entries.forEach(([key, value]) => {
       if (value) {
         document.body.setAttribute(key, value);
       }
     });
-    
+
     return () => {
       entries.forEach(([key]) => {
         document.body.removeAttribute(key);
@@ -166,7 +170,7 @@ export function useScrollLock(options: ScrollLockOptions = {}) {
 
 **Implementation Note**: React Aria's `usePreventScroll` provides the following features:
 - Scrollbar width calculation and compensation
-- Layout shift prevention  
+- Layout shift prevention
 - Cross-browser scroll prevention
 - Touch event handling
 - iOS Safari fixes
@@ -231,7 +235,7 @@ import { withSlots } from '@bento/slots';
 export const Modal = withSlots('BentoModal', function Modal(props) {
   const { isOpen, onClose, children } = props;
   const ref = useRef<HTMLDivElement>(null);
-  
+
   // React Aria hooks for modal behavior
   const { overlayProps, underlayProps } = useOverlay(
     { isOpen, onClose, isDismissable: true },
@@ -239,14 +243,14 @@ export const Modal = withSlots('BentoModal', function Modal(props) {
   );
   const { modalProps } = useModal();
   const { dialogProps } = useDialog({}, ref);
-  
+
   // Bento scroll lock (thin wrapper around React Aria's usePreventScroll)
-  useScrollLock({ 
+  useScrollLock({
     isDisabled: !isOpen
   });
-  
+
   if (!isOpen) return null;
-  
+
   return (
     <div {...underlayProps} className="underlay">
       <div

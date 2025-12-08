@@ -10,7 +10,17 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['components', 'hooks', 'higher-order components', 'utility', 'internal', '*']
+        order: [
+          'Bento',
+          'Architecture',
+          ['Guides', 'PDRs'],
+          'components',
+          'hooks',
+          'higher-order components',
+          'utility',
+          'internal',
+          '*'
+        ]
       }
     },
     docs: {
