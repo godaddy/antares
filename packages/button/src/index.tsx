@@ -1,8 +1,9 @@
 import { withSlots } from '@bento/slots';
-import { useProps } from '@bento/use-props';
+import { useProps, isEventListener } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, HoverEvents } from 'react-aria';
-import { useObjectRef, mergeRefs } from '@react-aria/utils';
+import { useObjectRef, mergeRefs, filterDOMProps } from '@react-aria/utils';
+/* v8 ignore next */
 import React, { forwardRef, type ForwardedRef } from 'react';
 
 export interface ButtonProps
@@ -39,43 +40,60 @@ export function resolveChildren(
 }
 
 /**
- * Props that parent components (like Select) can pass to Button via slots.
- * These override useButton's defaults when explicitly set.
- */
-const SLOT_PASSTHROUGH_PROPS = [
-  'className',
-  'style',
-  'type',
-  'disabled',
-  'name',
-  'form',
-  'value',
-  'formAction',
-  'formMethod',
-  'formNoValidate',
-  'formTarget',
-  'role',
-  'aria-labelledby',
-  'aria-required',
-  'aria-invalid',
-  'aria-disabled',
-  'aria-expanded',
-  'aria-haspopup',
-  'aria-controls'
-] as const;
-
-/**
- * JSX spreads undefined values, which override existing props. Filter them out.
+ * Extracts slot-provided DOM/ARIA/data-* props that should override useButton defaults.
+ * Filters out event handlers (useButton handles those) and undefined values.
  * @internal
  */
-function pickDefined(obj: Record<string, unknown>, keys: readonly string[]): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
-  for (const key of keys) {
-    if (obj[key] !== undefined) {
-      result[key] = obj[key];
+function getSlotOverrides(props: ButtonProps): Record<string, unknown> {
+  const overrides: Record<string, unknown> = {};
+
+  // Iterate through all props
+  for (const [key, value] of Object.entries(props)) {
+    // Skip undefined values
+    if (value === undefined) continue;
+
+    // Skip event handlers - useButton handles those
+    if (isEventListener(key)) continue;
+
+    // Skip internal React Aria props
+    if (
+      key === 'isDisabled' ||
+      key === 'excludeFromTabOrder' ||
+      key === 'onPress' ||
+      key === 'onPressStart' ||
+      key === 'onPressEnd' ||
+      key === 'onPressUp' ||
+      key === 'onPressChange' ||
+      key === 'onHoverStart' ||
+      key === 'onHoverEnd' ||
+      key === 'onHoverChange' ||
+      key === 'children' ||
+      key === 'ref'
+    ) {
+      continue;
+    }
+
+    // Always include aria-*, data-*, and common styling/semantic props that filterDOMProps misses
+    if (
+      key.startsWith('aria-') ||
+      key.startsWith('data-') ||
+      key === 'className' ||
+      key === 'style' ||
+      key === 'role' ||
+      key === 'title'
+    ) {
+      overrides[key] = value;
+      continue;
+    }
+
+    // Use filterDOMProps for standard HTML attributes (type, disabled, form*, name, value, etc.)
+    const filtered = filterDOMProps({ [key]: value } as any, { labelable: true });
+    if (Object.hasOwn(filtered, key)) {
+      overrides[key] = value;
     }
   }
-  return result;
+
+  return overrides;
 }
 
 /**
@@ -108,7 +126,7 @@ export const Button = withSlots(
 
     // Use args.children to avoid useProps proxy executing render functions with wrong args
     const content = resolveChildren(args.children, { isPressed, isHovered, isFocused, isFocusVisible });
-    const slotOverrides = pickDefined(props as Record<string, unknown>, SLOT_PASSTHROUGH_PROPS);
+    const slotOverrides = getSlotOverrides(props as ButtonProps);
 
     return (
       <button {...mergeProps(buttonProps, focusProps, hoverProps, dataAttrs, slotOverrides)} ref={buttonRef}>
