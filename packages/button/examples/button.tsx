@@ -38,8 +38,6 @@ export function DisabledButtonExample() {
 
 export function ButtonWithRenderPropExample() {
   return (
-    <Button onPress={() => console.log('pressed')}>
-      {({ isPressed, isHovered }) => (isPressed ? 'Pressing...' : isHovered ? 'Hover!' : 'Click me')}
-    </Button>
+    <Button onPress={() => console.log('pressed')}>{({ isHovered }) => (isHovered ? 'Hover!' : 'Click me')}</Button>
   );
 }

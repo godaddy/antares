@@ -99,5 +99,18 @@ describe('@bento/button examples', function examples() {
 
       consoleSpy.mockRestore();
     });
+
+    it('updates content on hover in render prop example', async function updatesOnHover() {
+      const { container } = render(<ButtonWithRenderPropExample />);
+      const button = container.querySelector('button')!;
+
+      expect(button.textContent).toBe('Click me');
+
+      await userEvent.hover(button);
+      expect(button.textContent).toBe('Hover!');
+
+      await userEvent.unhover(button);
+      expect(button.textContent).toBe('Click me');
+    });
   });
 });
