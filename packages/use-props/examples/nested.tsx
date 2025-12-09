@@ -1,6 +1,6 @@
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-import { UnknownObject } from '@bento/types';
+import { type UnknownObject } from '@bento/types';
 import { Button } from './button.tsx';
 /* v8 ignore next */
 import React, { useId } from 'react';

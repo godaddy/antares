@@ -1,5 +1,11 @@
 # @bento/box
 
+## 0.2.0
+
+### Minor Changes
+
+- Introduces a new Slot component that enables flexible composition of child components by allowing content to be injected into predefined slots. ([#47](https://github.com/godaddy/bento/pull/47) by @akazemier-godaddy)
+
 ## 0.1.1
 
 ### Patch Changes

@@ -14,17 +14,14 @@ interface RestParamsProps {
  *
  * @public
  */
-export const RestParams = withForwardRef<RestParamsProps>(
-  function RestParams(...args: any[]) {
-    // Future API pattern: const { props, ref } = useProps(args, state);
-    // For now, just demonstrate the pattern
-    const [props, ref] = args;
+export const RestParams = withForwardRef<RestParamsProps>(function RestParams(...args: any[]) {
+  // Future API pattern: const { props, ref } = useProps(args, state);
+  // For now, just demonstrate the pattern
+  const [props, ref] = args;
 
-    return (
-      <div ref={ref} className={props?.className}>
-        {props?.children}
-      </div>
-    );
-  }
-);
-
+  return (
+    <div ref={ref} className={props?.className}>
+      {props?.children}
+    </div>
+  );
+});

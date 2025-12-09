@@ -160,7 +160,7 @@ describe('@bento/container', function bento() {
       // Parent container passes slots to nested child
       const { container } = render(
         <Container slots={{ inner: { as: 'section' } }} data-testid="outer">
-          { /* We assign as="article" to verify that slot overrides are correctly applied */ }
+          {/* We assign as="article" to verify that slot overrides are correctly applied */}
           <Container slot="inner" as="article" data-testid="inner">
             Inner content
           </Container>
