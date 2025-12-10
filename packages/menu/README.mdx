@@ -1,0 +1,296 @@
+import { Meta, ArgTypes, Story, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './menu.stories.tsx';
+
+import BasicExample from './examples/basic-menu.tsx?raw';
+import SelectionExample from './examples/selection-menu.tsx?raw';
+import SectionsExample from './examples/sections.tsx?raw';
+import TriggerExample from './examples/menu-trigger.tsx?raw';
+import DynamicExample from './examples/dynamic-menu.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# Menu
+
+The `@bento/menu` package provides a headless, accessible ARIA Menu primitive for building action menus, dropdowns, and context menus. Built on React Aria with full keyboard navigation, typeahead, and selection support.
+
+## Installation
+
+```shell
+npm install --save @bento/menu
+```
+
+## Component Structure
+
+The `@bento/menu` package exports four main components:
+
+- **Menu**: The main menu container with ARIA `role="menu"` that manages keyboard navigation, selection state, and accessibility
+- **MenuItem**: Individual menu items that can trigger actions or represent selections
+- **MenuSection**: Optional grouping component for organizing items into labeled sections
+- **MenuTrigger**: Coordinator component that ties a trigger element and menu together with controlled open/close state
+
+## Props
+
+The following properties are available on the `Menu` component:
+
+<ArgTypes of={Stories.BasicMenu} />
+
+## Basic Action Menu
+
+A simple action menu that calls `onAction` when items are clicked:
+
+<Source language='tsx' code={BasicExample} />
+
+## Selection Menu
+
+Menus can support single or multiple selection modes. Use `selectedKeys` and `onSelectionChange` for controlled selection:
+
+<Source language='tsx' code={SelectionExample} />
+
+## Menu Sections
+
+Use `MenuSection` to group related menu items with headings:
+
+<Source language='tsx' code={SectionsExample} />
+
+## Menu with Trigger
+
+Use `MenuTrigger` to coordinate the open/close state of a menu and its trigger element:
+
+<Source language='tsx' code={TriggerExample} />
+
+The `MenuTrigger` component is headless and doesn't impose any overlay structure. Compose it with `@bento/overlay`, `@bento/portal`, etc. to create the desired popup experience.
+
+## Dynamic Collections
+
+For dynamic data, use the `items` prop with a render function:
+
+<Source language='tsx' code={DynamicExample} />
+
+## Customization
+
+### Styling with Data Attributes
+
+All Menu components expose their internal state through data attributes for CSS-based styling.
+
+#### Menu Container Attributes
+
+The main `Menu` component exposes these data attributes:
+
+| Attribute                    | Description                                       | Example Values                |
+| ---------------------------- | ------------------------------------------------- | ----------------------------- |
+| `data-empty`                 | Applied when the menu contains no items           | "true"                        |
+| `data-focused`               | Applied when the menu is focused                  | "true"                        |
+| `data-focus-visible`         | Applied when keyboard focus should be visible     | "true"                        |
+| `data-open`                  | Applied when the menu is open (via MenuTrigger)   | "true"                        |
+| `data-selection-mode`        | The current selection mode                        | "none", "single", "multiple"  |
+| `data-orientation`           | The menu's orientation                            | "vertical", "horizontal"      |
+
+#### MenuItem Attributes
+
+Menu items expose detailed state through data attributes:
+
+| Attribute                    | Description                                       | Example Values                |
+| ---------------------------- | ------------------------------------------------- | ----------------------------- |
+| `data-selected`              | Applied when the item is selected                 | "true"                        |
+| `data-checked`               | Applied for checkbox/radio style items            | "true"                        |
+| `data-disabled`              | Applied when the item is disabled                 | "true"                        |
+| `data-hovered`               | Applied when the item is hovered                  | "true"                        |
+| `data-focused`               | Applied when the item is focused                  | "true"                        |
+| `data-focus-visible`         | Applied when keyboard focus should be visible     | "true"                        |
+| `data-pressed`               | Applied when the item is being pressed            | "true"                        |
+| `data-has-submenu`           | Applied when the item opens a submenu             | "true"                        |
+| `data-selection-mode`        | The menu's selection mode                         | "none", "single", "multiple"  |
+| `data-selection-behavior`    | How selection behaves                             | "toggle", "replace"           |
+
+### Example Styling
+
+```css
+/* Menu container */
+[role="menu"] {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 4px;
+  min-width: 200px;
+}
+
+[role="menu"][data-empty="true"] {
+  padding: 16px;
+  color: #999;
+}
+
+/* Menu items */
+[role="menuitem"],
+[role="menuitemradio"],
+[role="menuitemcheckbox"] {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+[role="menuitem"][data-hovered="true"] {
+  background-color: #f5f5f5;
+}
+
+[role="menuitem"][data-focused="true"][data-focus-visible="true"] {
+  outline: 2px solid #007bff;
+  outline-offset: -2px;
+}
+
+[role="menuitem"][data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[role="menuitem"][data-selected="true"]::before {
+  content: "✓";
+  margin-right: 8px;
+}
+
+/* Menu sections */
+[role="group"] {
+  margin-bottom: 4px;
+}
+
+[role="group"] > div:first-child {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #666;
+  padding: 8px 12px 4px;
+}
+```
+
+## Accessibility
+
+The Menu primitive provides full ARIA compliance:
+
+- **Roles**: `role="menu"` on the container, `role="menuitem"`, `role="menuitemradio"`, or `role="menuitemcheckbox"` on items, `role="group"` on sections
+- **Keyboard Navigation**:
+  - Arrow keys move focus between items
+  - Home/End jump to first/last item
+  - Typeahead navigation based on item text
+  - Escape closes the menu (when used with MenuTrigger)
+  - Enter/Space activates the focused item
+- **ARIA Attributes**: Automatically managed `aria-activedescendant`, `aria-checked`, `aria-disabled`, `aria-label`, `aria-labelledby`
+- **Focus Management**: Focus scope ensures focus stays within the menu while open
+
+## API Reference
+
+### Menu
+
+The main menu component.
+
+**Props:**
+- `aria-label` (string, required): Accessible label for the menu
+- `selectionMode` ('none' | 'single' | 'multiple'): Selection mode (default: 'none')
+- `selectedKeys` (Iterable<Key>): Controlled selected keys
+- `defaultSelectedKeys` (Iterable<Key>): Default selected keys (uncontrolled)
+- `onSelectionChange` ((keys: Selection) => void): Called when selection changes
+- `onAction` ((key: Key) => void): Called when an item is activated
+- `onClose` (() => void): Called when the menu should close
+- `disabledKeys` (Iterable<Key>): Keys to disable
+- `orientation` ('vertical' | 'horizontal'): Menu orientation (default: 'vertical')
+- `items` (Iterable<T>): Dynamic collection items
+- `children`: Static children or render function
+- `renderEmptyState` ((props) => ReactNode): Render function for empty state
+
+### MenuItem
+
+Individual menu item.
+
+**Props:**
+- `textValue` (string): Text for typeahead navigation
+- `onAction` (() => void): Called when the item is activated
+- `isDisabled` (boolean): Whether the item is disabled
+- `children`: Static children or render function with render props
+
+### MenuSection
+
+Section grouping for menu items.
+
+**Props:**
+- `title` (ReactNode): Section heading
+- `children`: Menu items to group
+
+### MenuTrigger
+
+Coordinator for menu open/close state.
+
+**Props:**
+- `isOpen` (boolean): Controlled open state
+- `defaultOpen` (boolean): Default open state (uncontrolled)
+- `onOpenChange` ((isOpen: boolean) => void): Called when open state changes
+- `children`: Should contain elements with `slot="trigger"` and `slot="menu"`
+
+## Advanced Usage
+
+### Controlled Selection State
+
+```tsx
+function ControlledMenu() {
+  const [selectedKeys, setSelectedKeys] = useState(new Set(['option1']));
+
+  return (
+    <Menu
+      aria-label="Options"
+      selectionMode="single"
+      selectedKeys={selectedKeys}
+      onSelectionChange={setSelectedKeys}
+    >
+      <MenuItem key="option1">Option 1</MenuItem>
+      <MenuItem key="option2">Option 2</MenuItem>
+    </Menu>
+  );
+}
+```
+
+### Action Menu with Disabled Items
+
+```tsx
+<Menu
+  aria-label="Actions"
+  onAction={(key) => console.log('Action:', key)}
+  disabledKeys={['delete']}
+>
+  <MenuItem key="edit">Edit</MenuItem>
+  <MenuItem key="duplicate">Duplicate</MenuItem>
+  <MenuItem key="delete">Delete</MenuItem>
+</Menu>
+```
+
+### Multiple Selection
+
+```tsx
+<Menu
+  aria-label="Features"
+  selectionMode="multiple"
+  defaultSelectedKeys={['feature1', 'feature2']}
+>
+  <MenuItem key="feature1">Feature 1</MenuItem>
+  <MenuItem key="feature2">Feature 2</MenuItem>
+  <MenuItem key="feature3">Feature 3</MenuItem>
+</Menu>
+```
+
+## Design Principles
+
+1. **Headless**: No built-in styling; full control via CSS and data attributes
+2. **Accessible**: Full ARIA compliance and keyboard navigation out of the box
+3. **Composable**: Works with Bento's slot system and can be composed with overlay primitives
+4. **Flexible**: Supports both action menus and selection menus
+5. **React Aria**: Built on proven accessibility primitives from Adobe
+
+## Related Packages
+
+- `@bento/listbox` - For listbox selections (role="listbox")
+- `@bento/overlay` - For positioning menus as popups
+- `@bento/portal` - For rendering menus in a portal
+- `@bento/focus-lock` - For trapping focus within menus
+- `@bento/dismiss` - For closing menus on outside clicks
+
+## License
+
+MIT
+
