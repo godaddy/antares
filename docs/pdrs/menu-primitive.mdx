@@ -1,0 +1,352 @@
+# Menu Primitive PDR
+
+## Purpose
+
+The Menu primitive is intended to provide a headless, accessible implementation of ARIA menus for action menus, dropdowns, and context menus, and to act as the menu surface for future form-related composites (e.g. “menu field”/action menus attached to inputs). It encapsulates React Aria’s menu behavior (keyboard nav, typeahead, selection, optional submenus, dismissal wiring) behind Bento’s slot, props, and data-attribute patterns so callers can build anything from simple button menus to more complex command menus without reimplementing logic.
+
+It fills a gap between `ListBox` (selection-oriented, `role="listbox"`/`option`) and higher-level form controls like `Select` by providing a `role="menu"`/`menuitem*` surface that can be used as:
+
+- **Action menu** (primary: `onAction(key)` callbacks)
+- **Input-like control** when `selectionMode` and `selectedKeys` / `defaultSelectedKeys` are used by a higher-level field wrapper
+
+All state surfaces (selection and open state) should support controlled and uncontrolled usage via existing React Aria / React Stately props.
+
+### Unique Attributes
+
+- **Separate from ListBox by design**: Mirrors React Aria’s choice to implement Menu on top of `useMenu` + `TreeState` rather than reusing `useListBox` + `ListState` (see `@react-aria/menu` and `react-aria-components/src/Menu.tsx` vs `react-aria-components/src/ListBox.tsx`). This keeps ARIA semantics (`menu`, `menuitem*`) and hierarchical menus correct without overloading `ListBox`.
+- **Headless, slottable surface**: No styling; integrates with `@bento/slots`, `@bento/use-props`, and `@bento/use-data-attributes` so menus can be embedded within fields, overlays, or arbitrary layouts.
+- **Hierarchical support path**: Designed to layer `MenuSection` and a future `SubmenuTrigger`-style composite on top of a shared menu state (`TreeState` + `RootMenuTriggerState`), enabling nested menus when needed without forcing that complexity into v1.
+- **Form-friendly (via wrappers)**: When used as a field-like input, selection state is controlled via React Aria’s `MultipleSelection` props (`selectedKeys`, `defaultSelectedKeys`, `onSelectionChange`) and can be wired into higher-level `Control`/`field-error` primitives for validation/error display by separate composites.
+- **Overlay-agnostic**: Coordinates with `@bento/overlay`, `@bento/portal`, `@bento/focus-lock`, `@bento/scroll-lock`, and `@bento/dismiss`, but does not hard-code any specific overlay UI; callers compose those primitives explicitly.
+
+## Goals
+
+- Provide a **headless ARIA menu surface** (`role="menu"`/`menuitem*`) for lists of actions or options, built entirely on React Aria / React Stately.
+- Support both **action menus** (`onAction(key)`) and **selection-based menus** (`selectionMode`, `selectedKeys`, `defaultSelectedKeys`) without inventing parallel “value” state.
+- Allow **controlled and uncontrolled** selection and open state, deferring to React Aria’s `MultipleSelection` and overlay trigger patterns.
+- Stay **overlay-agnostic** so menus can be used inside existing Bento overlay/portal/focus-lock primitives without coupling.
+- Keep the **core usage surface minimal** (primarily `Menu`, `MenuItem`, `MenuSection`), relying on composition rather than configuration or extra globals, while keeping additional coordinator components and types as advanced APIs.
+
+## Constraints
+
+- **No new shared packages or public hooks**: any helpers (e.g. data-attribute mappers) must be file-local, similar to `useListBoxDataAttributes` in `@bento/listbox`.
+- **React Aria as single source of behavior**: keyboard interaction, focus, selection, and ARIA attributes must come from React Aria / React Stately hooks, not custom logic.
+- **Menu is not built on ListBox**: Menu uses React Aria’s menu stack (`useMenu`, `TreeState`, `useMenuItem`, etc.), not `useListBox` / `ListState`, to preserve semantics and submenu support.
+- **Overlay-agnostic**: core `@bento/menu` may not depend on a specific portal/overlay/focus-lock implementation; those live in overlay-related primitives/composites.
+- **v1 scope**: designed for non-virtualized, relatively small menus; drag & drop and virtualization are explicitly out of scope for this primitive.
+
+## Primitive Composition
+
+This is a **UI primitive + behavioral hooks** package, very similar in structure to `@bento/listbox`:
+
+- **React Aria hooks and types**:
+  - `useMenu`, `useMenuItem`, `useMenuSection`, `useMenuTrigger`, `useSubmenuTrigger` from `@react-aria/menu` (see `packages/@react-aria/menu/src/useMenu.ts` and `react-aria-components/src/Menu.tsx`).
+  - `useMenuTriggerState`, `RootMenuTriggerState` from `@react-stately/menu` (`packages/@react-stately/menu/src/useMenuTriggerState.ts`).
+  - `TreeState` / `useTreeState` from `@react-stately/tree` (used in React Aria components’ `MenuInner` to power collections of menu items).
+  - `CollectionBuilder`, `Collection`, `ItemNode`, `SectionNode` from `@react-aria/collections` for dynamic collections and sectioning.
+  - `AriaMenuProps`, `MenuProps`, `MenuTriggerProps` from `@react-types/menu` for prop surfaces (selection, `onAction`, `onClose`, `escapeKeyBehavior`, trigger configuration).
+  - Shared utilities like `FocusScope`, `mergeProps`, `useHover`, `useFocusRing`, and `filterDOMProps` from `react-aria` utilities, similar to how `@bento/listbox` and `@bento/select` integrate.
+
+- **Bento packages**:
+  - `@bento/slots` — `withSlots` wrapper to make `Menu`, `MenuItem`, etc. slottable and forward meta/handlers.
+  - `@bento/use-props` — merges caller props and meta state (e.g. hover/focus/selection) into className/style/event handlers.
+  - `@bento/use-data-attributes` — applies consistent `data-*` attributes from menu and item state.
+  - `@bento/container` — optional polymorphic wrapper when callers want a menu rendered as something other than a `div` but still need ARIA/menu behavior.
+  - `@bento/overlay`, `@bento/portal`, `@bento/focus-lock`, `@bento/scroll-lock`, `@bento/dismiss` — used by higher-level compositions (e.g. button-triggered menus, context menus), not by core menu logic itself.
+
+The primitive is implemented as a set of headless UI components (rendering DOM with ARIA roles) backed by React Aria + React Stately for behavior. There is no homegrown keyboard/focus/selection logic.
+
+## React Aria Menu vs ListBox (Why Menu Is Not ListBox)
+
+React Aria explicitly diverges Menu from ListBox rather than making Menu a thin alias over ListBox:
+
+- **Different backing state**:
+  - `useMenu` expects a `TreeState<T>` and uses the tree for hierarchical menus, selection, and focus (`TreeState` import/use in `@react-aria/menu/src/useMenu.ts` and `react-aria-components/src/Menu.tsx`).
+  - `useListBox` expects a `ListState<T>` (`react-aria-components/src/ListBox.tsx`), optimized for flat/virtualized lists, drag & drop, and listbox semantics.
+- **Different ARIA semantics**:
+  - `useMenu` composes `useSelectableList` but always returns `role: 'menu'` and delegates to menuitem roles (e.g. `menuitem`, `menuitemcheckbox`, `menuitemradio`) via `useMenuItem`.
+  - `useListBox` returns `role: 'listbox'` + `option` roles via `useOption`.
+- **Hierarchical vs flat**:
+  - Menus support submenus; React Stately’s `RootMenuTriggerState` tracks a stack of expanded submenu keys (`expandedKeysStack`) and exposes `openSubmenu` / `closeSubmenu` APIs for nested `SubmenuTrigger` (see `@react-stately/menu/src/useMenuTriggerState.ts`).
+  - ListBox focuses on single-level collections; hierarchy is better modeled as `Tree`/`Menu`, not `ListBox`.
+
+Bento should follow this separation: **`@bento/menu` is not built on `@bento/listbox`**, but both share the same React Aria selection infrastructure (via `useSelectableList` and React Stately state), and they use the same Bento patterns for slots and data attributes. This keeps ARIA conformance and mental models aligned with React Aria while avoiding ad-hoc reuse that would blur semantics.
+
+## Implementation Patterns
+
+| Concept                | Implementation                                                                                           |
+|------------------------|----------------------------------------------------------------------------------------------------------|
+| React Aria             | `useMenu`, `useMenuItem`, `useMenuSection`, `useMenuTrigger`, `useSubmenuTrigger`, `useMenuTriggerState` |
+| State container        | `TreeState<T>` from `useTreeState` for the menu collection and selection                                |
+| Collections            | `CollectionBuilder` + `Collection` to support static and dynamic (items-based) menus                    |
+| Slots                  | `withSlots('BentoMenu', ...)`, `withSlots('BentoMenuItem', ...)` etc., plus `Slots` in props           |
+| Render props           | `className`/`style`/children as functions with `{ isOpen, isFocused, isSelected, hasSubmenu, ... }`    |
+| data-* Attributes      | `useDataAttributes` to reflect menu and item state (e.g. `data-empty`, `data-selected`, `data-focus-visible`) |
+| data-override          | Used when caller overrides structure/behavior via slots/render props                                    |
+| Open state             | `useMenuTriggerState` for controlled/uncontrolled open (`isOpen`, `defaultOpen`, `onOpenChange`) in trigger/overlay composites       |
+| Selection state        | React Aria `MultipleSelection` (`selectedKeys`, `defaultSelectedKeys`, `onSelectionChange`)             |
+| Form integration       | Treat `selectedKeys`/`selectionMode` as the value surface; higher-level `Control`/form field wraps map it to field state |
+| Overlay integration    | `useMenuTrigger` + `@bento/overlay` composition in higher-level components; Menu does not bake in portals or focus traps          |
+
+## Internal Structure & Reuse Potential
+
+- **Reusable pieces**:
+  - Shared Tree/collection state via a `MenuStateContext` (analogous to `ListStateContext` in `@bento/listbox` but based on `TreeState<object>`).
+  - A context holding `RootMenuTriggerState` to coordinate nested menus and future submenu support (patterned on React Aria components’ `RootMenuTriggerStateContext`), if needed.
+  - A small hook (e.g. `useMenuDataAttributes`) that maps menu state (`isOpen`, `selectionMode`, `hasSubmenu`) to a stable `data-*` map via `useDataAttributes`.
+- **Relation to other primitives**:
+  - Can be used inside `@bento/overlay` content for anchored menus, context menus, and action menus.
+  - Can be used as the internal menu surface for future “menu field”/`ActionMenu`-style form components, which would wire `selectedKeys` into `Control`, `field-error`, and form validation.
+- **Minimality**:
+  - v1 can ship **without** drag & drop, virtualized menus, or arbitrary submenu depth; those can be added by layering more React Aria hooks if/when needed.
+  - No new shared utilities are introduced if existing `useProps`, `useDataAttributes`, and `CollectionBuilder` cover the needs.
+
+This keeps Menu as the minimal reusable unit for ARIA menus while leaving higher-level concerns (fields, overlays, complex layouts) to composition.
+
+## React Aria or External Hook Integration
+
+**Hooks and types used directly**:
+
+- `useMenu<T>(props, state, ref)` — from `@react-aria/menu`. Provides `menuProps` with `role="menu"`, ARIA labeling, and keyboard behavior (`ArrowUp/Down`, Home/End, typeahead) driven by `useSelectableList` and the menu’s `TreeState`.
+- `useMenuItem(props, state, ref)` — attaches `role="menuitem"` / `menuitemcheckbox` / `menuitemradio`, manages pressed/hovered/selected/focus-visible state, and integrates with `selectionManager`.
+- `useMenuSection` — wires section headings and `role="group"` semantics for grouped menus.
+- `useMenuTrigger` — provides `menuTriggerProps` and `menuProps` for trigger elements + popup menu; intended for higher-level composites that connect a trigger slot, overlay slot, and the `Menu` content.
+- `useSubmenuTrigger` + `useMenuTriggerState` — optional advanced API for nested menus. `useMenuTriggerState` tracks `focusStrategy`, `isOpen`, and `expandedKeysStack` for submenus, and extends `OverlayTriggerState`.
+- `useTreeState` — `TreeState<T>` backing for menu collections, which adds hierarchical structure vs `ListState<T>` used by ListBox.
+- `AriaMenuProps<T>` / `MenuProps<T>` / `MenuTriggerProps` — source of `selectedKeys`, `defaultSelectedKeys`, `selectionMode`, `onAction`, `onClose`, `isVirtualized`, etc.
+
+**No reimplementation of logic**:
+
+- All keyboard interaction (arrow keys, typeahead, Escape to close, tab behavior), typeahead search, selection behavior, and ARIA attributes come from React Aria.
+- Bento only:
+  - Adapts prop shapes slightly to match other primitives (e.g. optional additional `data-*` attributes or render-prop surfaces).
+  - Distributes these props through slots/context (`withSlots` + `useProps`).
+  - Adds controlled/uncontrolled plumbing that forwards to React Aria’s own controlled/uncontrolled patterns (no second source of truth).
+
+## Architecture & Features
+
+### Public API (v1 target)
+
+**Components** (all generic in `T extends object` like ListBox/Select):
+
+- `Menu<T>` — root menu surface (`role="menu"`), renders the collection of `MenuItem` and `MenuSection` children.
+- `MenuItem<T>` — individual menu actions/options (maps to `useMenuItem`).
+- `MenuSection<T>` — labeled group of items (maps to `useMenuSection`).
+  - A `MenuTrigger` coordinator is provided in this package to tie a trigger element and a `Menu` together using `useMenuTrigger` + `useMenuTriggerState`, but this is treated as an advanced API rather than required surface for basic menu usage.
+
+**Types & hooks (re-exports/thin wrappers over React Aria/Stately)**:
+
+- `MenuProps<T>` — extends `AriaMenuProps<T>` + `React.ComponentProps<'div'>` minus conflicting props, plus Bento `Slots`.
+- `MenuItemProps<T>` / `MenuSectionProps<T>` — prop types for item/section components.
+- `MenuState<T>` — alias for `TreeState<T>` used internally and exported for advanced usage.
+- `MenuTriggerState` — re-export of React Stately `MenuTriggerState` for advanced overlay/trigger integrations.
+- `SelectionMode` — `'none' | 'single' | 'multiple'` (same as ListBox).
+
+### Controlled vs Uncontrolled
+
+- **Selection (input-like aspect)**:
+  - Controlled: `selectedKeys` + `onSelectionChange`.
+  - Uncontrolled: `defaultSelectedKeys`.
+  - Backed entirely by React Aria’s `MultipleSelection` via `AriaMenuProps<T>`.
+- **Open state (overlay/popup aspect)**:
+  - Controlled: `isOpen` + `onOpenChange` on a trigger/overlay composite.
+  - Uncontrolled: `defaultOpen` on that composite.
+  - Backed by React Stately `useMenuTriggerState` / `OverlayTriggerState` in those composites, not by `Menu` itself.
+
+The primitive does not add any parallel `value` state; consumers who want a “field-like” API (e.g. `value: Key | Key[]`) should build a thin wrapper that maps `value` ↔ `selectedKeys` using React Aria’s existing patterns, similar to how `Select` maps through `useSelectState`.
+
+### DOM structure (conceptual)
+
+Basic single-level menu:
+
+```html
+<div role="menu" aria-label="File actions" data-selection-mode="single">
+  <div role="menuitem" data-selected="false">New file</div>
+  <div role="menuitem" data-selected="false">Open...</div>
+  <div role="menuitem" data-selected="true" aria-checked="true" data-checked="true">
+    Autosave
+  </div>
+</div>
+```
+
+Submenus (future-friendly, driven by a `SubmenuTrigger`-style component + `useSubmenuTrigger`):
+
+- Parent menu item gets `aria-haspopup="menu"`, `aria-expanded`, and `data-has-submenu="true"`.
+- Submenu uses another `Menu` instance, sharing a `RootMenuTriggerState` so keyboard/focus behavior is consistent across the menu tree.
+
+### Form / Field Integration
+
+- When used as an **input-like control**:
+  - Callers treat `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange` as the field’s “value” surface.
+  - A higher-level field component (e.g. `MenuField` or `ActionMenuField`) would wrap a trigger + `Menu` composite and integrate with:
+    - `@bento/control` for label/help/error layout.
+    - `@bento/field-error` for error messages.
+    - `@bento/input`-style conventions for `isRequired`, `isInvalid`, etc.
+  - Native `<select>`/`HiddenSelect`-style form submission is **not** part of v1 Menu; like React Spectrum, native select integration is reserved for `Select` rather than `Menu`.
+- When used as an **action menu**:
+  - Callers rely on `onAction(key)`; selection state may be `selectionMode="none"` or ephemeral.
+
+This keeps Menu focused on ARIA menu semantics while allowing form-like usage via wrapper components.
+
+## Accessibility Highlights
+
+- **Roles & structure** (from React Aria hooks):
+  - Root: `role="menu"`, with required `aria-label` or `aria-labelledby`.
+  - Items: `role="menuitem"`, `menuitemcheckbox`, or `menuitemradio` depending on props/selection mode.
+  - Sections: `role="group"` with headings wired via `aria-labelledby`.
+- **Keyboard interactions**:
+  - Arrow keys move focus between items; Home/End jump to first/last.
+  - Typeahead navigation (based on item text) via `useSelectableList`.
+  - Escape closes the menu when composed with React Aria’s trigger/overlay hooks (`useMenuTriggerState` + `useOverlayTriggerState`).
+  - Tab typically exits the menu; roving focus is handled by React Aria.
+- **Focus management**:
+  - `FocusScope` around `Menu` ensures focus stays within the menu while open when composed with an overlay.
+  - `useHover` + focus-visible patterns allow keyboard vs pointer focus styling with `data-focus-visible`.
+- **Screen readers**:
+  - ARIA attributes and relationships from React Aria (`aria-activedescendant`, `aria-checked`, `aria-disabled`, `aria-haspopup`, `aria-expanded`).
+  - Menu sections and submenus exposed via ARIA roles and structure consistent with WAI-ARIA menu patterns.
+
+## Internationalization, RTL, and Mobile Considerations
+
+- **RTL**:
+  - Keyboard navigation respects direction via `useLocale` (same as ListBox); left/right mapping flips in RTL when horizontal/compound patterns are used.
+  - Submenu placement can respect `direction` if/when we expose placement hooks similar to React Spectrum’s `MenuTrigger`.
+- **Mobile**:
+  - Pointer vs touch interactions normalized by React Aria’s `useHover`/`usePress` within `useMenuItem`.
+  - Works with the same overlay primitives (`Portal`, `ScrollLock`, `FocusLock`) used by `Overlay` and `Select`.
+- **I18n**:
+  - All visible text and ARIA labels supplied by consumers; Menu does not hard-code any copy.
+  - Typeahead behavior leverages locale-aware collators via React Aria/React Stately internals.
+
+## Performance
+
+- Menu relies on React Aria / React Stately (`TreeState`, `useSelectableList`, `useSelectableCollection`) for all collection, keyboard, and focus behavior and does not introduce additional algorithmic complexity.
+- v1 targets small, non-virtualized menus; callers should avoid very large collections or use different patterns (e.g. ListBox + virtualization) for large datasets.
+
+
+## Data Attributes and Slot Map
+
+### Expected `data-*` Attributes
+
+Menu and menu items expose styling/test hooks via `@bento/use-data-attributes`:
+
+**Menu container**
+
+| Attribute                 | Description                                     | Example Values                  |
+|---------------------------|-------------------------------------------------|---------------------------------|
+| `data-empty`             | When the collection has no items                | `"true"` / omitted              |
+| `data-focused`           | Whether the menu is currently focused           | `"true"` / omitted              |
+| `data-focus-visible`     | Whether focus ring should be shown              | `"true"` / omitted              |
+| `data-selection-mode`    | Selection mode                                  | `"none"`, `"single"`, `"multiple"` |
+
+**Menu item**
+
+| Attribute                 | Description                                     | Example Values        |
+|---------------------------|-------------------------------------------------|-----------------------|
+| `data-selected`          | Whether the item is selected                    | `"true"` / omitted    |
+| `data-checked`           | For checkbox/radio style menu items             | `"true"` / omitted    |
+| `data-disabled`          | Disabled state                                  | `"true"` / omitted    |
+| `data-hovered`           | Hover state                                     | `"true"` / omitted    |
+| `data-focused`           | Focused state                                   | `"true"` / omitted    |
+| `data-focus-visible`     | Keyboard focus visibility                       | `"true"` / omitted    |
+| `data-pressed`           | Pointer pressed state                           | `"true"` / omitted    |
+| `data-has-submenu`       | Whether the item opens a submenu                | `"true"` / omitted    |
+| `data-open`              | Whether the submenu for this item is open       | `"true"` / omitted    |
+
+Boolean conversion follows the same rule as other primitives: `true` → `"true"` string; falsy → attribute omitted (via `to-attribute-value`).
+
+### Slot Map
+
+Menu is primarily composed from its own components (`Menu`, `MenuItem`, `MenuSection`), but the root Menu and any trigger coordinator in higher-level composites should be slottable to integrate into other primitives:
+
+| Slot Name        | Description                                             | Required | Default Fallback |
+|------------------|---------------------------------------------------------|----------|------------------|
+| `menu`           | Root menu surface inside a composite (e.g. overlay)     | No       | `Menu` itself    |
+| `trigger`        | Trigger element for a composite that opens/closes Menu (button, icon, etc.) | No       | None             |
+| `submenu-trigger`| Optional control to mark an item as submenu opener      | No       | `MenuItem` with `aria-haspopup` (proposed; see Open Questions) |
+
+Note: like `ListBox`, `Menu` itself is wrapped in `withSlots` so it can be slotted into other components (e.g. `<Menu slot="menu">`) and receive extra meta props via `useProps`. Internal sub-slots (e.g. label/description/header) can be modeled with contextual primitives if needed, but are not required in v1.
+
+## Open Questions
+
+- **MenuTrigger placement**: Should `MenuTrigger` live in `@bento/menu` or be implemented as a higher-level “ActionMenu”/overlay composite that depends on both `@bento/menu` and `@bento/overlay`?
+- **Submenu support in v1**: Do we ship an explicit `SubmenuTrigger` component or `submenu-trigger` slot in the first version, or keep submenus out of the public API until there is a concrete product need?
+- **Context exports**: Should any internal state contexts (e.g. `MenuStateContext`, `RootMenuTriggerStateContext`) be exported, or can all cross-composition be expressed via slots and props as with other primitives?
+
+## Competitive Research (Optional)
+
+- **React Aria / React Spectrum**:
+  - React Aria’s `useMenu` + `useMenuTrigger` + `useMenuItem` + `useMenuSection` provide the behavioral baseline and are the primary source of truth.
+  - React Spectrum’s `@react-spectrum/menu` and `react-aria-components` `Menu` validate how to compose menu logic with overlays, triggers, and submenus without leaking implementation details.
+- **Headless UI / Radix / Ark**:
+  - Provide menu primitives but often couple overlay and menu logic more tightly, or lack Bento-style `data-*` + slots and React Aria’s breadth of accessibility behavior.
+
+Bento’s Menu aims to combine React Aria behavior with Bento’s compositional primitives and data-attribute styling hooks rather than inventing new patterns.
+
+## Code Examples
+
+### Basic action menu
+
+```tsx
+<Menu onAction={(key) => console.log('action', key)} aria-label="File actions">
+  <MenuItem key="new">New file</MenuItem>
+  <MenuItem key="open">Open…</MenuItem>
+  <MenuItem key="rename">Rename</MenuItem>
+</Menu>
+```
+
+### Controlled vs uncontrolled selection
+
+```tsx
+// Controlled single-selection menu
+const [selectedKeys, setSelectedKeys] = React.useState<Iterable<Key>>(new Set(['autosave']));
+
+<Menu
+  selectionMode="single"
+  selectedKeys={selectedKeys}
+  onSelectionChange={setSelectedKeys}
+  aria-label="Settings"
+>
+  <MenuItem key="autosave">Autosave</MenuItem>
+  <MenuItem key="notifications">Notifications</MenuItem>
+</Menu>;
+
+// Uncontrolled
+<Menu
+  selectionMode="single"
+  defaultSelectedKeys={['autosave']}
+  aria-label="Settings"
+>
+  <MenuItem key="autosave">Autosave</MenuItem>
+  <MenuItem key="notifications">Notifications</MenuItem>
+</Menu>;
+```
+
+### MenuTrigger with overlay composition
+
+```tsx
+// Pseudocode sketch – actual Overlay / Popover primitives come from @bento/overlay + @bento/portal,
+// and a higher-level composite (e.g. ActionMenu) would coordinate trigger + Menu using React Aria's useMenuTrigger.
+
+function ActionMenu() {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <ActionMenuPrimitive isOpen={open} onOpenChange={setOpen}>
+      <Button slot="trigger">Actions</Button>
+
+      <MyPopover slot="popover">
+        <Menu aria-label="Row actions" onAction={() => setOpen(false)}>
+          <MenuItem key="edit">Edit</MenuItem>
+          <MenuItem key="duplicate">Duplicate</MenuItem>
+          <MenuItem key="delete">Delete</MenuItem>
+        </Menu>
+      </MyPopover>
+    </ActionMenuPrimitive>
+  );
+}
+```
+
+This demonstrates the intended pattern: **React Aria drives menu behavior and state**, while Bento coordinates composition (slots, overlays, data attributes) without reinventing menu logic.
+
+
