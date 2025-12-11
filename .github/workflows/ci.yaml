@@ -56,7 +56,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Build Packages
-        run: nx run-many -t build --all
+        run: npm run build:all
 
       - name: Test
         run: npm test

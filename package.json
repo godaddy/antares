@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "nx run-many -t build",
+    "build:all": "nx run-many -t build --all",
     "clean": "npm exec --workspaces -- npx rimraf node_modules dist && npx rimraf node_modules",
     "deps:check": "syncpack list-mismatches && knip --reporter=symbols",
     "deps:fix": "syncpack fix-mismatches",
