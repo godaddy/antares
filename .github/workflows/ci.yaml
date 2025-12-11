@@ -33,7 +33,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Restore NX Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .nx/cache
           key: nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -45,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: Restore Playwright Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
