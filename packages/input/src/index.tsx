@@ -41,8 +41,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  * @public
  */
 export const Input = withSlots('BentoInput', function Input(...args: [InputProps, React.Ref<HTMLInputElement>?]) {
-  const flatArgs = Object.assign({}, ...args);
-  const { props, apply } = useProps(flatArgs);
+  const { props, apply, ref } = useProps(args);
   const { autoFocus } = props;
 
   const { isFocused, isFocusVisible, focusProps } = useFocusRing({
@@ -53,19 +52,28 @@ export const Input = withSlots('BentoInput', function Input(...args: [InputProps
 
   const mergedProps = mergeProps(props, focusProps, hoverProps);
 
+  // function isValidRef(ref: unknown): ref is React.Ref<HTMLInputElement> {
+  //   if (typeof ref === 'function') return true;
+  //   if (typeof ref === 'object' && ref !== null) {
+  //     return 'current' in ref;
+  //   }
+  //   return false;
+  // }
+
   return (
     <input
-      {...apply(mergedProps)}
+      {...apply(mergedProps, ['ref'])}
+      ref={ref}
       {...useDataAttributes({
         focused: isFocused,
         hovered: isHovered,
         focusVisible: isFocusVisible,
-        disabled: mergedProps.disabled || false,
-        invalid: !!mergedProps['aria-invalid'] && mergedProps['aria-invalid'] !== 'false',
-        readonly: mergedProps.readOnly || false,
-        required: mergedProps.required || false,
-        empty: mergedProps.value === '' || mergedProps.value === undefined || mergedProps.value === null,
-        checked: mergedProps.type === 'checkbox' || mergedProps.type === 'radio' ? !!mergedProps.checked : undefined
+        disabled: props.disabled || false,
+        invalid: !!props['aria-invalid'] && props['aria-invalid'] !== 'false',
+        readonly: props.readOnly || false,
+        required: props.required || false,
+        empty: props.value === '' || props.value === undefined || props.value === null,
+        checked: props.type === 'checkbox' || props.type === 'radio' ? !!props.checked : undefined
       })}
     />
   );
