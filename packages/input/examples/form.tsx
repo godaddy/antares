@@ -181,9 +181,9 @@ export function FormExample() {
           type="tel"
           value={formData.phone}
           onChange={handleChange('phone')}
-          style={() => ({
+          style={{
             borderColor: isPhoneInvalid ? 'red' : 'gray'
-          })}
+          }}
           placeholder="+1 (555) 123-4567"
           aria-invalid={isPhoneInvalid}
           aria-describedby={isPhoneInvalid ? 'phone-error' : undefined}

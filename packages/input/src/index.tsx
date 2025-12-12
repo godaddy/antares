@@ -40,33 +40,33 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  *
  * @public
  */
-export const Input = withSlots(
-  'BentoInput',
-  function Input(...args: [InputProps, React.Ref<HTMLInputElement>?]) {
-    const { props, apply } = useProps(args);
-    const { autoFocus } = props;
+export const Input = withSlots('BentoInput', function Input(...args: [InputProps, React.Ref<HTMLInputElement>?]) {
+  const flatArgs = Object.assign({}, ...args);
+  const { props, apply } = useProps(flatArgs);
+  const { autoFocus } = props;
 
-    const { isFocused, isFocusVisible, focusProps } = useFocusRing({
-      isTextInput: true,
-      autoFocus: autoFocus
-    });
-    const { hoverProps, isHovered } = useHover(props);
+  const { isFocused, isFocusVisible, focusProps } = useFocusRing({
+    isTextInput: true,
+    autoFocus: autoFocus
+  });
+  const { hoverProps, isHovered } = useHover(props);
 
-    return (
-      <input
-        {...apply(mergeProps(props, focusProps, hoverProps))}
-        {...useDataAttributes({
-          focused: isFocused,
-          hovered: isHovered,
-          focusVisible: isFocusVisible,
-          disabled: props.disabled || false,
-          invalid: !!props['aria-invalid'] && props['aria-invalid'] !== 'false',
-          readonly: props.readOnly || false,
-          required: props.required || false,
-          empty: props.value === '' || props.value === undefined || props.value === null,
-          checked: props.type === 'checkbox' || props.type === 'radio' ? !!props.checked : undefined
-        })}
-      />
-    );
-  }
-) as React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
+  const mergedProps = mergeProps(props, focusProps, hoverProps);
+
+  return (
+    <input
+      {...apply(mergedProps)}
+      {...useDataAttributes({
+        focused: isFocused,
+        hovered: isHovered,
+        focusVisible: isFocusVisible,
+        disabled: mergedProps.disabled || false,
+        invalid: !!mergedProps['aria-invalid'] && mergedProps['aria-invalid'] !== 'false',
+        readonly: mergedProps.readOnly || false,
+        required: mergedProps.required || false,
+        empty: mergedProps.value === '' || mergedProps.value === undefined || mergedProps.value === null,
+        checked: mergedProps.type === 'checkbox' || mergedProps.type === 'radio' ? !!mergedProps.checked : undefined
+      })}
+    />
+  );
+}) as React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
