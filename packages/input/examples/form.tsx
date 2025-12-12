@@ -202,7 +202,6 @@ export function FormExample() {
           onClick={function HandleClick(e) {
             e.preventDefault();
             console.log('Form Data:', formData);
-            alert('Form submitted! Check console for data.');
           }}
           value="Submit"
         />

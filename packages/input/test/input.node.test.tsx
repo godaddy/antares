@@ -19,6 +19,14 @@ function renderToStringInput(inputProps: Partial<ComponentProps<typeof Input>> =
   return renderToString(<Input type="text" className="random-class-input" {...inputProps} />);
 }
 
+/**
+ * A no-op function for use as a default event handler (e.g., onChange).
+ * Useful when a named function is required instead of an arrow function.
+ */
+export function noop() {
+  /* Intentionally left blank. */
+}
+
 describe('@bento/input', function bento() {
   it('renders a basic Input with the correct attributes', function correctAttributes() {
     const result = renderToStringInput();
@@ -63,7 +71,7 @@ describe('@bento/input', function bento() {
   });
 
   it('applies data-empty when value is empty string', function emptyString() {
-    const result = renderToStringInput({ value: '' });
+    const result = renderToStringInput({ value: '', onChange: noop });
     assume(result).to.contain('data-empty="true"');
   });
 
@@ -78,30 +86,30 @@ describe('@bento/input', function bento() {
   });
 
   it('does not apply data-empty when value is non-empty', function notEmpty() {
-    const result = renderToStringInput({ value: 'foo' });
+    const result = renderToStringInput({ value: 'foo', onChange: noop });
     assume(result).not.to.contain('data-empty="true"');
   });
 
   it('applies checked attribute for checkbox when checked is true', function checkedCheckboxTrue() {
-    const result = renderToString(<Input type="checkbox" checked={true} />);
+    const result = renderToString(<Input type="checkbox" checked={true} onChange={noop} />);
     assume(result).to.contain('type="checkbox"');
     assume(result).to.contain('checked');
   });
 
   it('does not apply checked attribute for checkbox when checked is false', function checkedCheckboxFalse() {
-    const result = renderToString(<Input type="checkbox" checked={false} />);
+    const result = renderToString(<Input type="checkbox" checked={false} onChange={noop} />);
     assume(result).to.contain('type="checkbox"');
     assume(result).not.to.contain('checked');
   });
 
   it('applies checked attribute for radio when checked is true', function checkedRadioTrue() {
-    const result = renderToString(<Input type="radio" checked={true} />);
+    const result = renderToString(<Input type="radio" checked={true} onChange={noop} />);
     assume(result).to.contain('type="radio"');
     assume(result).to.contain('checked');
   });
 
   it('does not apply checked attribute for radio when checked is false', function checkedRadioFalse() {
-    const result = renderToString(<Input type="radio" checked={false} />);
+    const result = renderToString(<Input type="radio" checked={false} onChange={noop} />);
     assume(result).to.contain('type="radio"');
     assume(result).not.to.contain('checked');
   });
