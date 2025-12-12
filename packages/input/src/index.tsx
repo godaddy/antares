@@ -41,7 +41,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  * @public
  */
 export const Input = withSlots('BentoInput', function Input(...args: [InputProps, React.Ref<HTMLInputElement>?]) {
-  const { props, apply, ref } = useProps(args);
+  const { props, apply } = useProps(args);
   const { autoFocus } = props;
 
   const { isFocused, isFocusVisible, focusProps } = useFocusRing({
@@ -52,18 +52,9 @@ export const Input = withSlots('BentoInput', function Input(...args: [InputProps
 
   const mergedProps = mergeProps(props, focusProps, hoverProps);
 
-  // function isValidRef(ref: unknown): ref is React.Ref<HTMLInputElement> {
-  //   if (typeof ref === 'function') return true;
-  //   if (typeof ref === 'object' && ref !== null) {
-  //     return 'current' in ref;
-  //   }
-  //   return false;
-  // }
-
   return (
     <input
-      {...apply(mergedProps, ['ref'])}
-      ref={ref}
+      {...apply(mergedProps)}
       {...useDataAttributes({
         focused: isFocused,
         hovered: isHovered,
