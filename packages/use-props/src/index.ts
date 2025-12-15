@@ -105,6 +105,8 @@ function mergeRefList(refs: Array<ForwardedRef<any> | Ref<any> | undefined>): Re
   if (!filtered.length) return undefined;
   if (filtered.length === 1) return filtered[0] as Ref<any>;
 
+  // Type assertion: filtered array guaranteed non-null by filter above, safe for mergeRefs
+  // Return type cast: mergeRefs returns RefCallback but we widen to Ref for flexibility
   return mergeRefs(...(filtered as Array<Ref<any>>)) as Ref<any>;
 }
 
@@ -154,31 +156,16 @@ export interface Returns {
  *   return <div {...apply()} />;
  * }
  */
-export function useProps<T extends AnyObject, S extends object = object>(args: T, state?: S): Returns;
-export function useProps<T extends AnyObject, S extends object = object>(
-  args: T,
-  state: S,
-  forwardedRef: ForwardedRef<any>
-): Returns;
-// Supports ...rest pattern: function Component(...rest) { useProps(rest) }
-export function useProps<T extends AnyObject, S extends object = object>(
-  argsWithRef: [T, ForwardedRef<any>?],
-  state?: S
-): Returns;
-export function useProps(...rest: unknown[]): Returns {
+export function useProps(...rest: any[]): Returns {
   let forwardedRef: ForwardedRef<any> | undefined;
   let args: AnyObject;
   let state: object = {};
 
   if (Array.isArray(rest[0])) {
-    const tuple = rest[0] as [AnyObject, ForwardedRef<any>?];
-    args = tuple[0];
-    forwardedRef = tuple[1];
-    state = (rest[1] as object) ?? {};
+    [args, forwardedRef] = rest[0];
+    state = rest[1] ?? {};
   } else {
-    args = rest[0] as AnyObject;
-    state = (rest[1] as object) ?? {};
-    forwardedRef = rest[2] as ForwardedRef<any> | undefined;
+    [args, state = {}, forwardedRef] = rest;
   }
 
   const { slots } = useContext<BoxContext<AnyObject>>(Box);

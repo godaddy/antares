@@ -1,10 +1,9 @@
 import { withSlots } from '@bento/slots';
-import { useProps, isEventListener } from '@bento/use-props';
+import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, HoverEvents } from 'react-aria';
-import { useObjectRef, mergeRefs, filterDOMProps } from '@react-aria/utils';
+import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, type HoverEvents } from 'react-aria';
 /* v8 ignore next */
-import React, { forwardRef, type ForwardedRef } from 'react';
+import React from 'react';
 
 export interface ButtonProps
   extends Omit<AriaButtonProps, 'children' | 'href' | 'target' | 'rel' | 'elementType'>,
@@ -26,77 +25,6 @@ export interface ButtonRenderProps {
 }
 
 /**
- * Resolves button children - either renders the function with state or returns static content.
- * @internal
- */
-export function resolveChildren(
-  children: React.ReactNode | ((props: ButtonRenderProps) => React.ReactNode),
-  renderProps: ButtonRenderProps
-): React.ReactNode {
-  if (typeof children === 'function') {
-    return children(renderProps);
-  }
-  return children;
-}
-
-/**
- * Extracts slot-provided DOM/ARIA/data-* props that should override useButton defaults.
- * Filters out event handlers (useButton handles those) and undefined values.
- * @internal
- */
-function getSlotOverrides(props: ButtonProps): Record<string, unknown> {
-  const overrides: Record<string, unknown> = {};
-
-  // Iterate through all props
-  for (const [key, value] of Object.entries(props)) {
-    // Skip undefined values
-    if (value === undefined) continue;
-
-    // Skip event handlers - useButton handles those
-    if (isEventListener(key)) continue;
-
-    // Skip internal React Aria props
-    if (
-      key === 'isDisabled' ||
-      key === 'excludeFromTabOrder' ||
-      key === 'onPress' ||
-      key === 'onPressStart' ||
-      key === 'onPressEnd' ||
-      key === 'onPressUp' ||
-      key === 'onPressChange' ||
-      key === 'onHoverStart' ||
-      key === 'onHoverEnd' ||
-      key === 'onHoverChange' ||
-      key === 'children' ||
-      key === 'ref'
-    ) {
-      continue;
-    }
-
-    // Always include aria-*, data-*, and common styling/semantic props that filterDOMProps misses
-    if (
-      key.startsWith('aria-') ||
-      key.startsWith('data-') ||
-      key === 'className' ||
-      key === 'style' ||
-      key === 'role' ||
-      key === 'title'
-    ) {
-      overrides[key] = value;
-      continue;
-    }
-
-    // Use filterDOMProps for standard HTML attributes (type, disabled, form*, name, value, etc.)
-    const filtered = filterDOMProps({ [key]: value } as any, { labelable: true });
-    if (Object.hasOwn(filtered, key)) {
-      overrides[key] = value;
-    }
-  }
-
-  return overrides;
-}
-
-/**
  * A button component built on React Aria's useButton.
  *
  * @example
@@ -107,31 +35,66 @@ function getSlotOverrides(props: ButtonProps): Record<string, unknown> {
  */
 export const Button = withSlots(
   'BentoButton',
-  forwardRef(function Button(args: ButtonProps, forwardedRef: ForwardedRef<HTMLButtonElement | null>) {
-    const innerRef = React.useRef<HTMLButtonElement>(null);
-    const { props, ref } = useProps(args, {});
-    const buttonRef = useObjectRef(mergeRefs(innerRef, forwardedRef, ref));
+  function Button(args: ButtonProps, forwardedRef: React.Ref<HTMLButtonElement>) {
+    // First pass: merge slot props so React Aria hooks see complete props
+    const { props: mergedProps, ref: mergedRef } = useProps(args, {}, forwardedRef);
 
-    const { buttonProps, isPressed } = useButton(props as ButtonProps, buttonRef);
-    const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
-    const { hoverProps, isHovered } = useHover(props);
+    // React Aria hooks receive slot-merged props
+    const { buttonProps, isPressed } = useButton(mergedProps, mergedRef as React.RefObject<HTMLButtonElement>);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
+    const { hoverProps, isHovered } = useHover(mergedProps);
+
+    // Render state for children render function
+    const renderState: ButtonRenderProps = {
+      isPressed,
+      isHovered,
+      isFocused,
+      isFocusVisible
+    };
+
+    // Execute children render prop explicitly (before useProps to prevent incorrect execution)
+    const content = typeof args.children === 'function' ? args.children(renderState) : args.children;
+
+    // Second pass: apply user props with render state via apply()
+    // Apply merges React Aria props as defaults that slots can override
+    const { apply } = useProps(args, renderState);
 
     const dataAttrs = useDataAttributes({
       pressed: isPressed,
       hovered: isHovered,
       focused: isFocused,
       focusVisible: isFocusVisible,
-      disabled: props.isDisabled
+      disabled: mergedProps.isDisabled
     });
 
-    // Use args.children to avoid useProps proxy executing render functions with wrong args
-    const content = resolveChildren(args.children, { isPressed, isHovered, isFocused, isFocusVisible });
-    const slotOverrides = getSlotOverrides(props as ButtonProps);
-
     return (
-      <button {...mergeProps(buttonProps, focusProps, hoverProps, dataAttrs, slotOverrides)} ref={buttonRef}>
+      <button
+        {...apply(
+          {
+            ...mergeProps(buttonProps, focusProps, hoverProps)
+          },
+          [
+            'ref',
+            'children',
+            'isDisabled',
+            'excludeFromTabOrder',
+            'preventFocusOnPress',
+            'onPress',
+            'onPressStart',
+            'onPressEnd',
+            'onPressUp',
+            'onPressChange',
+            'onHoverStart',
+            'onHoverEnd',
+            'onHoverChange',
+            'onFocusChange'
+          ]
+        )}
+        {...dataAttrs}
+        ref={mergedRef}
+      >
         {content}
       </button>
     );
-  })
+  }
 );

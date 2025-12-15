@@ -7,6 +7,7 @@
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
+    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "prepublishOnly": "node ../../scripts/compile-readme.ts",
@@ -44,7 +45,6 @@
     "@bento/slots": "^0.2.0",
     "@bento/use-data-attributes": "^0.1.0",
     "@bento/use-props": "^0.2.0",
-    "@react-aria/utils": "^3.30.0",
     "react-aria": "^3.44.0"
   },
   "peerDependencies": {
