@@ -163,7 +163,8 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
 
   const content = typeof originalChildren === 'function' ? originalChildren(renderValues) : originalChildren;
 
-  const { apply } = useProps(mergedProps, renderValues);
+  // Second pass: reprocess original props with render state for render prop support
+  const { apply } = useProps(props, renderValues);
 
   const dataAttributes = useDataAttributes({
     selected: states.isSelected,
