@@ -94,7 +94,7 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
       })}
     >
       <VisuallyHidden>
-        <Input {...mergeProps(inputProps, focusProps)} ref={inputRef as any} />
+        <Input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
       </VisuallyHidden>
 
       {props.isIndeterminate ? (
