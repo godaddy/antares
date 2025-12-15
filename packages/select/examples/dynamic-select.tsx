@@ -35,7 +35,16 @@ export const DynamicValueDisplay = withSlots('DynamicValue', function DynamicVal
     // Type cast is safe: items prop is typed as Fruit[], so Node<T>.value will be Fruit
     const fruit = selectedItem.value as Fruit;
     return (
-      <span {...apply(props, ['selectedItem', 'placeholder', 'selectedItems', 'preventFocusOnPress', 'isDisabled'])}>
+      <span
+        {...apply(props, [
+          'children',
+          'selectedItem',
+          'placeholder',
+          'selectedItems',
+          'preventFocusOnPress',
+          'isDisabled'
+        ])}
+      >
         {fruit.emoji} {fruit.name} ({fruit.calories} cal)
       </span>
     );
@@ -43,7 +52,14 @@ export const DynamicValueDisplay = withSlots('DynamicValue', function DynamicVal
 
   return (
     <span
-      {...apply(props, ['selectedItem', 'placeholder', 'selectedItems', 'preventFocusOnPress', 'isDisabled'])}
+      {...apply(props, [
+        'children',
+        'selectedItem',
+        'placeholder',
+        'selectedItems',
+        'preventFocusOnPress',
+        'isDisabled'
+      ])}
       data-placeholder="true"
     >
       {placeholder}
@@ -52,8 +68,8 @@ export const DynamicValueDisplay = withSlots('DynamicValue', function DynamicVal
 });
 
 /**
- * Dynamic collection Select example.
- * Demonstrates using the items prop with typed data and Node<T>.value pattern.
+ * Dynamic collection Select example using the recommended renderItem pattern.
+ * Demonstrates using the items prop with typed data and the explicit renderItem prop.
  *
  * @param {any} props - Props passed from parent
  * @returns {JSX.Element} The rendered Select
@@ -76,15 +92,15 @@ export function DynamicSelectExample(props: any) {
     props.onChange?.(newValue);
   };
 
-  const renderFruitItem = function renderFruitItem(item: unknown) {
-    // Type cast is safe: items prop is typed as Fruit[], so each item will be Fruit
+  // Explicit renderItem function - type-safe and decoupled from slot structure
+  function renderItem(item: unknown) {
     const fruit = item as Fruit;
     return (
       <ListBoxItem id={fruit.id} textValue={fruit.name}>
         {fruit.emoji} {fruit.name} ({fruit.calories} cal)
       </ListBoxItem>
     );
-  };
+  }
 
   return (
     <Select
@@ -92,6 +108,7 @@ export function DynamicSelectExample(props: any) {
       value={value}
       onChange={handleChange}
       items={showEmptyState ? [] : items}
+      renderItem={renderItem}
       {...(showEmptyState && {
         renderEmptyState: () => (
           <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>
@@ -107,9 +124,8 @@ export function DynamicSelectExample(props: any) {
         <DynamicValueDisplay slot="value" placeholder={placeholder} />
       </Button>
       <Popover slot="popover" className={styles.popover}>
-        <ListBox slot="listbox" aria-label={label} className={styles.listbox}>
-          {renderFruitItem}
-        </ListBox>
+        {/* ListBox slot is presentational only for dynamic collections */}
+        <ListBox slot="listbox" aria-label={label} className={styles.listbox} />
       </Popover>
     </Select>
   );

@@ -1,4 +1,4 @@
-import React, { useRef, ReactNode, Children, isValidElement } from 'react';
+import React, { useRef, ReactNode } from 'react';
 import { useSelect, HiddenSelect, useFocusRing, useHover, usePopover, mergeProps } from 'react-aria';
 import type { Placement } from 'react-aria';
 import { useSelectState } from 'react-stately';
@@ -11,43 +11,7 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { withSlots, Slots } from '@bento/slots';
 import { Container } from '@bento/container';
 import { ListStateContext } from '@bento/listbox';
-
-/**
- * Extracts the render function from nested ListBox children.
- * For dynamic collections, the render function is passed as children to ListBox,
- * but useSelectState needs it at the Select level.
- *
- * @param children - The children of the Select component (slot components)
- * @returns The render function from the ListBox, or undefined if not found
- * @internal
- */
-function extractListBoxRenderFunction(children: ReactNode): ((item: unknown) => ReactNode) | undefined {
-  let renderFunc: ((item: unknown) => ReactNode) | undefined;
-
-  function findRenderFunction(nodes: ReactNode): void {
-    Children.forEach(nodes, function processChild(child) {
-      if (!isValidElement(child) || renderFunc) return;
-
-      const childProps = child.props as Record<string, unknown>;
-
-      // Found the ListBox slot - extract its children (the render function)
-      if (childProps.slot === 'listbox') {
-        if (typeof childProps.children === 'function') {
-          renderFunc = childProps.children as (item: unknown) => ReactNode;
-        }
-        return;
-      }
-
-      // Recurse into children (e.g., Popover contains ListBox)
-      if (childProps.children) {
-        findRenderFunction(childProps.children as ReactNode);
-      }
-    });
-  }
-
-  findRenderFunction(children);
-  return renderFunc;
-}
+import { BentoError } from '@bento/error';
 
 export type SelectionMode = 'single' | 'multiple';
 
@@ -125,17 +89,14 @@ export type SelectSlots = {
 export type PropsFromSelectSlot<S extends keyof SelectSlots> = SelectSlots[S];
 
 /**
- * Props for the Select component.
- * Extends React Aria's AriaSelectProps with additional layout and styling props.
+ * Base props shared between static and dynamic Select configurations.
  * @template T The type of items in the select
  * @template M The selection mode ('single' | 'multiple')
  */
-export interface SelectProps<T, M extends SelectionMode = 'single'>
-  extends Omit<AriaSelectProps<T, M>, 'children' | 'placeholder'>,
+interface SelectBaseProps<T, M extends SelectionMode = 'single'>
+  extends Omit<AriaSelectProps<T, M>, 'children' | 'placeholder' | 'items'>,
     Omit<React.ComponentProps<'div'>, keyof AriaSelectProps<T, M> | 'children'>,
     Slots {
-  /** Children of the Select component (items/collection must stay here for React Aria) */
-  readonly children?: ReactNode;
   /**
    * Render function or element to display when the collection is empty.
    * Called with render props containing selection state and collection info.
@@ -174,6 +135,55 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
    */
   readonly containerPadding?: number;
 }
+
+/**
+ * Props for Select with static collection (ListBoxItem children).
+ * @template T The type of items in the select
+ * @template M The selection mode ('single' | 'multiple')
+ */
+export interface SelectStaticProps<T, M extends SelectionMode = 'single'> extends SelectBaseProps<T, M> {
+  /** Static children containing slot components and ListBoxItem elements */
+  readonly children?: ReactNode;
+  readonly items?: never;
+  readonly renderItem?: never;
+}
+
+/**
+ * Props for Select with dynamic collection (items array).
+ * @template T The type of items in the select
+ * @template M The selection mode ('single' | 'multiple')
+ */
+export interface SelectDynamicProps<T, M extends SelectionMode = 'single'> extends SelectBaseProps<T, M> {
+  /** Array of items to render in the select */
+  readonly items: Iterable<T>;
+  /**
+   * Render function for each item in the collection.
+   * Receives the item and should return a ListBoxItem element.
+   * @example
+   * ```tsx
+   * <Select
+   *   items={fruits}
+   *   renderItem={(fruit) => <ListBoxItem id={fruit.id}>{fruit.name}</ListBoxItem>}
+   * >
+   *   <Button slot="trigger">...</Button>
+   *   <Popover slot="popover">
+   *     <ListBox slot="listbox" />
+   *   </Popover>
+   * </Select>
+   * ```
+   */
+  readonly renderItem: (item: T) => ReactNode;
+  /** Slot components (Button, Popover, ListBox) - ListBox slot is presentational only for dynamic collections */
+  readonly children?: ReactNode;
+}
+
+/**
+ * Props for the Select component.
+ * Supports both static collections (ListBoxItem children) and dynamic collections (items + renderItem).
+ * @template T The type of items in the select
+ * @template M The selection mode ('single' | 'multiple')
+ */
+export type SelectProps<T, M extends SelectionMode = 'single'> = SelectStaticProps<T, M> | SelectDynamicProps<T, M>;
 
 /**
  * Root Select component that builds collection and applies props to slotted children.
@@ -235,7 +245,19 @@ export const Select = withSlots('BentoSelect', function Select<
   // to properly process the render function + items into a collection.
   // This matches how ListBox handles dynamic collections.
   if ('items' in restArgs && restArgs.items != null) {
-    const renderFunc = extractListBoxRenderFunction(restArgs.children);
+    const renderFunc = restArgs.renderItem;
+
+    // Error if renderItem is not provided
+    if (!renderFunc) {
+      throw new BentoError({
+        name: 'select',
+        method: 'Select',
+        message:
+          'When using `items` prop, you must provide a `renderItem` function. ' +
+          'Example: <Select items={items} renderItem={(item) => <ListBoxItem id={item.id}>{item.name}</ListBoxItem>}>'
+      });
+    }
+
     // Create collection props for AriaCollection
     const collectionProps = {
       items: restArgs.items,

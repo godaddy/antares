@@ -70,6 +70,16 @@ export function BasicSelectExample(props: any) {
     props.onOpenChange?.(open);
   };
 
+  // Render function for dynamic collections
+  const renderFruitItem = function renderFruitItem(item: unknown) {
+    const fruit = item as Fruit;
+    return (
+      <ListBoxItem id={fruit.id} textValue={fruit.name}>
+        {fruit.emoji} {fruit.name}
+      </ListBoxItem>
+    );
+  };
+
   const selectProps = {
     ...restProps,
     selectionMode,
@@ -83,7 +93,10 @@ export function BasicSelectExample(props: any) {
     ...(name && { name }),
     ...(label && { 'aria-label': label }),
     ...(controlledOpen ? { isOpen, onOpenChange: handleOpenChange } : { defaultOpen }),
-    ...(useDynamicCollection && { items: showEmptyState ? [] : FRUIT_DATA }),
+    ...(useDynamicCollection && {
+      items: showEmptyState ? [] : FRUIT_DATA,
+      renderItem: renderFruitItem
+    }),
     ...(showEmptyState && {
       renderEmptyState: () => (
         <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>
@@ -92,16 +105,6 @@ export function BasicSelectExample(props: any) {
         </div>
       )
     })
-  };
-
-  // Render function for dynamic collections
-  const renderFruitItem = function renderFruitItem(item: unknown) {
-    const fruit = item as Fruit;
-    return (
-      <ListBoxItem id={fruit.id} textValue={fruit.name}>
-        {fruit.emoji} {fruit.name}
-      </ListBoxItem>
-    );
   };
 
   return (
@@ -115,9 +118,7 @@ export function BasicSelectExample(props: any) {
       </Button>
       <Popover slot="popover" className={styles.popover}>
         <ListBox slot="listbox" aria-label={label || 'Fruit options'} className={styles.listbox}>
-          {useDynamicCollection ? (
-            renderFruitItem
-          ) : withGroups ? (
+          {useDynamicCollection ? null : withGroups ? (
             <>
               <ListBoxSection>
                 <Header>Popular Fruits</Header>
