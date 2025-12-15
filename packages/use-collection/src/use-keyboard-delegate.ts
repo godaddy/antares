@@ -4,16 +4,29 @@ import type { Orientation } from 'react-stately';
 
 /**
  * Configuration for the keyboard delegate hook.
+ *
+ * **Type annotations use `any` for collection and key types**: React Stately collections
+ * (ListState, TreeState) use complex generic signatures that vary by consumer. Using `any`
+ * here allows this utility to work with any collection type without requiring consumers
+ * to thread generics through multiple layers. The actual type safety is preserved at the
+ * call site where the collection and selectionManager come from strongly-typed React Stately hooks.
+ *
  * @public
  */
 export interface KeyboardDelegateConfig {
-  /** The collection of items */
+  /**
+   * The collection of items.
+   * Uses `any` because React Stately Collection<T> generics vary by consumer context.
+   */
   readonly collection: any;
   /** Intl collator for string comparison in type-ahead */
   readonly collator: Intl.Collator;
   /** Reference to the collection DOM element */
   readonly ref: RefObject<HTMLElement>;
-  /** Selection manager from the state */
+  /**
+   * Selection manager from the state.
+   * Uses `any` for disabledKeys because key types vary by consumer (string, number, etc).
+   */
   readonly selectionManager: {
     readonly disabledBehavior?: 'selection' | 'all';
     readonly disabledKeys?: Set<any>;

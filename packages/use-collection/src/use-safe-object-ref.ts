@@ -1,3 +1,4 @@
+// v8 ignore: Import statement is not executable code and doesn't affect coverage.
 /* v8 ignore next */
 import { type ForwardedRef, useEffect, useRef } from 'react';
 
@@ -39,6 +40,9 @@ export function useSafeObjectRef<T>(ref: ForwardedRef<T>): React.RefObject<T> {
       ref(current);
     } else if (ref && 'current' in ref) {
       try {
+        // Type cast required: ForwardedRef<T> is a union of RefCallback | MutableRefObject | null.
+        // We've already handled RefCallback above and null check is implicit.
+        // TypeScript cannot narrow the union in this branch, so we assert MutableRefObject.
         (ref as React.MutableRefObject<T | null>).current = current;
         /* v8 ignore start */
       } catch {
