@@ -29,28 +29,28 @@ jobs:
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
+          # cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Restore NX Cache
-        uses: actions/cache@v4
-        with:
-          path: .nx/cache
-          key: nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
-            nx-${{ runner.os }}-
+      # - name: Restore NX Cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: .nx/cache
+      #     key: nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+      #     restore-keys: |
+      #       nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+      #       nx-${{ runner.os }}-
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Restore Playwright Cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
+      # - name: Restore Playwright Cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.cache/ms-playwright
+      #     key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       playwright-${{ runner.os }}-
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
