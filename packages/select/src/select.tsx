@@ -226,9 +226,10 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 export const Select = withSlots('BentoSelect', function Select<
   T,
   M extends SelectionMode = 'single'
->(args: SelectProps<T, M>) {
-  // Erase generic type T: SelectInner only works with keys and nodes, not specific item types.
-  const { ref, ...restArgs } = args as any;
+>(args: SelectProps<T, M>, forwardedRef?: React.Ref<HTMLDivElement>) {
+  // Type cast: Erase generic type T to 'any' since SelectInner only works with keys and nodes.
+  // React Aria's collection system handles type-specific items internally.
+  const restArgs = args as any;
 
   // For dynamic collections (items prop), use CollectionBuilder with AriaCollection
   // to properly process the render function + items into a collection.
@@ -242,14 +243,18 @@ export const Select = withSlots('BentoSelect', function Select<
     };
     return (
       <CollectionBuilder
-        content={<AriaCollection {...(collectionProps as unknown as Parameters<typeof AriaCollection>[0])} />}
+        content={
+          // Type cast: AriaCollection requires specific type shape but we handle generic T
+          <AriaCollection {...(collectionProps as unknown as Parameters<typeof AriaCollection>[0])} />
+        }
       >
         {function buildCollection(collection: unknown) {
           return (
             <SelectInner
+              // Type cast: Erase specific item type T to object for internal processing
               props={restArgs as unknown as SelectProps<object, SelectionMode>}
               collection={collection}
-              forwardedRef={ref}
+              forwardedRef={forwardedRef}
             />
           );
         }}
@@ -263,9 +268,10 @@ export const Select = withSlots('BentoSelect', function Select<
       {function buildCollection(collection: unknown) {
         return (
           <SelectInner
+            // Type cast: Erase specific item type T to object for internal processing
             props={restArgs as unknown as SelectProps<object, SelectionMode>}
             collection={collection}
-            forwardedRef={ref}
+            forwardedRef={forwardedRef}
           />
         );
       }}
@@ -288,13 +294,16 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
   // Extract renderEmptyState before useProps processes it to avoid render prop corruption
   const originalRenderEmptyState = props.renderEmptyState;
 
-  const { props: processedProps } = useProps(props);
+  // Extract merged ref that combines forwardedRef, slot refs, and props.ref
+  const { props: processedProps, ref: mergedRef } = useProps(props, {}, forwardedRef);
   const originalCollection = collection as AriaCollectionType<Node<object>> | undefined;
 
   // Destructure to remove children: CollectionBuilder already processed them in parent.
   // React Aria's useCollection won't rebuild when collection is provided, but children
   // is in the useMemo dependency array, triggering re-renders on every reference change.
   const { children: _, ...propsWithoutChildren } = processedProps;
+  // Type cast: Convert processed Bento props to React Aria's AriaSelectProps interface.
+  // Collection is pre-built by CollectionBuilder, so we pass it directly to React Aria.
   const ariaProps = {
     ...propsWithoutChildren,
     collection: originalCollection
@@ -433,10 +442,10 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
       : null;
 
   return (
-    // Cast required: SelectState extends ListState. Context only needs the ListState portion for ListBox coordination.
+    // Type cast: SelectState extends ListState. Context only needs the ListState portion for ListBox coordination.
     <ListStateContext.Provider value={state as ListState<unknown>}>
       <Container
-        ref={forwardedRef}
+        ref={mergedRef}
         className={processedProps.className}
         {...useDataAttributes({
           open: state.isOpen,
