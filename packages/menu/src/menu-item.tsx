@@ -97,14 +97,20 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const state = useContext(MenuStateContext)!;
-  const safeRef = useSafeObjectRef(ref);
+
+  // Extract children before first useProps call to avoid render prop corruption
+  const originalChildren = props.children;
+
+  // First pass: merge slot props before React Aria hooks
+  const { props: mergedProps, ref: mergedRef } = useProps(props, {}, ref);
+  const safeRef = useSafeObjectRef(mergedRef ?? null);
 
   const { menuItemProps, ...states } = useMenuItem(
     {
       key: __node.key,
-      'aria-label': props['aria-label'],
-      isDisabled: props.isDisabled,
-      onAction: props.onAction
+      'aria-label': mergedProps['aria-label'],
+      isDisabled: mergedProps.isDisabled,
+      onAction: mergedProps.onAction
     },
     state,
     safeRef
@@ -112,9 +118,9 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
 
   const { hoverProps, isHovered } = useHover({
     isDisabled: states.isDisabled,
-    onHoverStart: props.onHoverStart,
-    onHoverChange: props.onHoverChange,
-    onHoverEnd: props.onHoverEnd
+    onHoverStart: mergedProps.onHoverStart,
+    onHoverChange: mergedProps.onHoverChange,
+    onHoverEnd: mergedProps.onHoverEnd
   });
 
   const renderValues: MenuItemRenderProps = {
@@ -124,8 +130,9 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
     selectionBehavior: state.selectionManager.selectionBehavior
   };
 
-  const content = typeof props.children === 'function' ? props.children(renderValues) : props.children;
+  const content = typeof originalChildren === 'function' ? originalChildren(renderValues) : originalChildren;
 
+  // Second pass: reprocess original props with render state for render prop support
   const { apply } = useProps(props, renderValues);
 
   const dataAttributes = useMenuItemDataAttributes({

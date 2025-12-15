@@ -157,6 +157,7 @@ function useKeyboardDelegate({
  */
 function useComposedProps({
   otherProps,
+  originalProps,
   renderValues,
   menuProps,
   focusProps,
@@ -164,13 +165,15 @@ function useComposedProps({
   menuRef
 }: {
   readonly otherProps: Record<string, unknown>;
+  readonly originalProps: Record<string, unknown>;
   readonly renderValues: MenuRenderProps;
   readonly menuProps: Record<string, unknown>;
   readonly focusProps: Record<string, unknown>;
   readonly dataAttributes: Record<string, unknown>;
   readonly menuRef: React.RefObject<HTMLDivElement>;
 }) {
-  const { apply } = useProps(otherProps, renderValues);
+  // Second pass: reprocess original props with render state for render prop support
+  const { apply } = useProps(originalProps, renderValues);
 
   const propsToExclude = [
     'renderEmptyState',
@@ -284,7 +287,16 @@ const MenuInner: React.FC<{
   readonly onAction?: (key: any) => void;
   readonly onClose?: () => void;
   readonly selectionMode?: SelectionMode;
-}> = function MenuInner({ state, renderEmptyState: renderEmptyStateProp, children, items, menuRef, ...otherProps }) {
+  readonly originalProps: Record<string, unknown>;
+}> = function MenuInner({
+  state,
+  renderEmptyState: renderEmptyStateProp,
+  children,
+  items,
+  menuRef,
+  originalProps,
+  ...otherProps
+}) {
   const { orientation = 'vertical' } = otherProps;
 
   const { collection, selectionManager } = state;
@@ -336,6 +348,7 @@ const MenuInner: React.FC<{
 
   const composedProps = useComposedProps({
     otherProps,
+    originalProps,
     renderValues,
     menuProps: menuProps as Record<string, unknown>,
     focusProps: focusProps as Record<string, unknown>,
@@ -397,6 +410,7 @@ const StandaloneMenu: React.FC<{
       state={state}
       menuRef={processedRef}
       renderEmptyState={originalRenderEmptyState}
+      originalProps={props as Record<string, unknown>}
       {...cleanProcessedProps}
     />
   );
