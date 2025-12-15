@@ -581,9 +581,17 @@ const ListBoxInner: React.FC<{
  */
 function ListBoxComponent<T>(args: ListBoxProps<T>, ref: React.ForwardedRef<HTMLDivElement>): React.ReactElement {
   return (
-    <CollectionBuilder content={<AriaCollection {...(args as unknown as Parameters<typeof AriaCollection>[0])} />}>
+    <CollectionBuilder
+      content={
+        // Type cast: AriaCollection requires specific type shape but we handle generic T
+        <AriaCollection {...(args as unknown as Parameters<typeof AriaCollection>[0])} />
+      }
+    >
       {function buildCollection(collection: unknown) {
-        return <StandaloneListBox props={args as ListBoxProps<unknown>} listBoxRef={ref} collection={collection} />;
+        return (
+          // Type cast: Erase specific item type T to unknown for internal processing
+          <StandaloneListBox props={args as ListBoxProps<unknown>} listBoxRef={ref} collection={collection} />
+        );
       }}
     </CollectionBuilder>
   );
@@ -612,10 +620,14 @@ const StandaloneListBox: React.FC<{
   //
   const originalRenderEmptyState = props.renderEmptyState;
 
-  const { props: processedProps } = useProps(props);
-  const processedRef = useSafeObjectRef(listBoxRef);
+  // Extract merged ref that combines forwardedRef, slot refs, and props.ref
+  const { props: processedProps, ref: mergedRef } = useProps(props, {}, listBoxRef);
+  // Use safe ref wrapper for test environment compatibility
+  // mergedRef may be undefined if no refs provided, fallback to null for useSafeObjectRef
+  const processedRef = useSafeObjectRef(mergedRef ?? null);
   const { state, contextState } = useListBoxState({ ...processedProps, collection });
 
+  // Type cast: Extract renderEmptyState for separate handling while maintaining type safety
   const { renderEmptyState: _, ...cleanProcessedProps } = processedProps as ListBoxProps<unknown> & {
     renderEmptyState?: unknown;
   };

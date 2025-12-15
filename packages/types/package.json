@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup-node",
+    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
     "posttest": "npm run lint",
     "pretest": "npm run build",

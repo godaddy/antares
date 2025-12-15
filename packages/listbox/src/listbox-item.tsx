@@ -128,13 +128,20 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const state = useContext(ListStateContext)!;
-  const safeRef = useSafeObjectRef(ref);
+
+  // Extract children before useProps to avoid render prop corruption
+  const originalChildren = props.children;
+
+  // Extract merged ref that combines forwardedRef, slot refs, and props.ref
+  const { props: mergedProps, ref: mergedRef } = useProps(props, {}, ref);
+  // Use safe ref wrapper for test environment compatibility
+  const safeRef = useSafeObjectRef(mergedRef ?? null);
 
   const { optionProps, labelProps, descriptionProps, ...states } = useOption(
     {
       key: __node.key,
-      'aria-label': props['aria-label'],
-      isDisabled: props.isDisabled
+      'aria-label': mergedProps['aria-label'],
+      isDisabled: mergedProps.isDisabled
     },
     state,
     safeRef
@@ -142,9 +149,9 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
 
   const { hoverProps, isHovered } = useHover({
     isDisabled: states.isDisabled,
-    onHoverStart: props.onHoverStart,
-    onHoverChange: props.onHoverChange,
-    onHoverEnd: props.onHoverEnd
+    onHoverStart: mergedProps.onHoverStart,
+    onHoverChange: mergedProps.onHoverChange,
+    onHoverEnd: mergedProps.onHoverEnd
   });
 
   const renderValues: ListBoxItemRenderProps = {
@@ -154,9 +161,9 @@ const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends obj
     selectionBehavior: state.selectionManager.selectionBehavior
   };
 
-  const content = typeof props.children === 'function' ? props.children(renderValues) : props.children;
+  const content = typeof originalChildren === 'function' ? originalChildren(renderValues) : originalChildren;
 
-  const { apply } = useProps(props, renderValues);
+  const { apply } = useProps(mergedProps, renderValues);
 
   const dataAttributes = useDataAttributes({
     selected: states.isSelected,
@@ -227,6 +234,8 @@ function ListBoxItemComponent<T extends object>(
   forwardedRef: ForwardedRef<HTMLDivElement>,
   item: Node<T>
 ) {
+  // Type cast: React Aria's createLeafComponent passes ForwardedRef but withSlots expects it as a prop
+  // The ref forwarding is handled correctly by withSlots internally
   return <ListBoxItemImpl {...props} ref={forwardedRef as any} __node={item} />;
 }
 

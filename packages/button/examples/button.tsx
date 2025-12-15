@@ -1,6 +1,6 @@
 /* v8 ignore next */
 import React from 'react';
-import { Button, type ButtonProps } from '../src/index';
+import { Button, type ButtonProps } from '@bento/button';
 
 export function ButtonExample(props: ButtonProps) {
   return <Button {...props}>{props.children || 'Click me'}</Button>;

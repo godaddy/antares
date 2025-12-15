@@ -7,6 +7,7 @@
   "module": "./dist/index.js",
   "scripts": {
     "build": "tsup-node",
+    "dev": "tsup-node --watch",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "prepublishOnly": "node ../../scripts/compile-readme.ts",
