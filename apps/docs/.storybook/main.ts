@@ -22,7 +22,14 @@ function getAbsolutePath(value: string): string {
 }
 
 const config: StorybookConfig = {
-  stories: ['../../../packages/**/*.mdx', '../../../packages/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: [
+    '../../../packages/*/*.mdx',
+    '../../../packages/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/*/src/**/*.mdx',
+    '../../../packages/*/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/*/examples/**/*.mdx',
+    '../../../packages/*/examples/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+  ],
 
   addons: [
     {
