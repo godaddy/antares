@@ -57,36 +57,41 @@ export interface PressableProps extends PressProps, Omit<HTMLAttributes<HTMLElem
  * </Pressable>
  * ```
  */
-export const Pressable = withSlots('BentoPressable', function Pressable(args: PressableProps) {
-  const ref = useRef<HTMLElement | null>(null);
+export const Pressable = withSlots(
+  'BentoPressable',
+  function Pressable(args: PressableProps, forwardedRef: React.Ref<HTMLElement>) {
+    const ref = useRef<HTMLElement | null>(null);
 
-  // First pass: merge slot props so React Aria hooks see values like isDisabled
-  const { props: mergedProps } = useProps(args);
+    // First pass: merge slot props so React Aria hooks see values like isDisabled
+    // Extract merged ref that combines forwarded ref, slot refs, and props.ref
+    const { props: mergedProps, ref: mergedRef } = useProps(args, {}, forwardedRef);
 
-  // React Aria hooks now receive slot-merged props
-  const { focusableProps } = useFocusable(mergedProps, ref);
-  const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
-  const { hoverProps, isHovered } = useHover(mergedProps);
-  const { pressProps, isPressed } = usePress({ ...mergedProps, ref });
+    // React Aria hooks receive slot-merged props and internal ref
+    const { focusableProps } = useFocusable(mergedProps, ref);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
+    const { hoverProps, isHovered } = useHover(mergedProps);
+    const { pressProps, isPressed } = usePress({ ...mergedProps, ref });
 
-  // Second pass: get apply function with interaction state for render props
-  const { props, apply } = useProps(args, { isHovered, isFocused, isFocusVisible, isPressed });
-  const child = React.Children.only(props.children);
+    // Second pass: get apply function with interaction state for render props
+    const { props, apply } = useProps(args, { isHovered, isFocused, isFocusVisible, isPressed });
+    const child = React.Children.only(props.children);
 
-  return React.cloneElement(child, {
-    ...apply(
-      {
-        ...mergeProps(pressProps, focusProps, focusableProps, hoverProps),
-        className: style.pressable
-      },
-      ['onPress', 'onPressStart', 'onPressEnd', 'onPressUp', 'onPressChange', 'children']
-    ),
-    ...useDataAttributes({
-      pressed: isPressed,
-      hovered: isHovered,
-      focused: isFocused,
-      focusVisible: isFocusVisible
-    }),
-    ref: mergeRefs((child as { ref?: React.Ref<HTMLElement> }).ref, ref)
-  });
-});
+    return React.cloneElement(child, {
+      ...apply(
+        {
+          ...mergeProps(pressProps, focusProps, focusableProps, hoverProps),
+          className: style.pressable
+        },
+        ['onPress', 'onPressStart', 'onPressEnd', 'onPressUp', 'onPressChange', 'children']
+      ),
+      ...useDataAttributes({
+        pressed: isPressed,
+        hovered: isHovered,
+        focused: isFocused,
+        focusVisible: isFocusVisible
+      }),
+
+      ref: mergeRefs((child as { ref?: React.Ref<HTMLElement> }).ref, ref, mergedRef)
+    });
+  }
+);
