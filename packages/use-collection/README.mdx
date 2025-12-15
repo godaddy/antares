@@ -1,0 +1,206 @@
+# @bento/use-collection
+
+Shared utilities for collection-based primitives like ListBox and Menu. This package provides reusable hooks and helpers that eliminate duplication and fix common patterns in collection components.
+
+## Purpose
+
+Collection-based primitives (ListBox, Menu, GridList, Table) share several patterns:
+
+1. **SSR-safe ref handling** for React Aria hooks
+2. **Rules-of-hooks compliant state management** with context fallback
+3. **Context wrapping** for standalone vs composed usage
+4. **Keyboard navigation delegation** to React Aria's keyboard delegate
+
+This package centralizes these patterns into shared utilities, ensuring consistency and maintainability across all collection primitives in the Bento design system.
+
+## Installation
+
+```bash
+npm install @bento/use-collection
+```
+
+## Exports
+
+### `useSafeObjectRef<T>(ref: ForwardedRef<T>): RefObject<T>`
+
+Safe wrapper for React Aria's ref handling that works in all environments, including Vitest browser mode with frozen objects.
+
+**Why this exists**: React Aria hooks require `RefObject`, but `forwardRef` provides `ForwardedRef` which can be null or a callback. Additionally, Vitest's browser mode with Playwright can freeze ref objects during test isolation, breaking React Aria's `useObjectRef` which tries to dynamically add properties.
+
+**Solution**: Creates an internal ref that's always mutable, then safely forwards values using `useEffect` with try/catch for frozen object scenarios.
+
+```tsx
+import { useSafeObjectRef } from '@bento/use-collection';
+import { forwardRef } from 'react';
+
+const MyComponent = forwardRef<HTMLDivElement, Props>((props, ref) => {
+  const safeRef = useSafeObjectRef(ref);
+  
+  // Pass safeRef to React Aria hooks
+  const { buttonProps } = useButton(props, safeRef);
+  
+  return <div ref={safeRef} {...buttonProps} />;
+});
+```
+
+### `useCollectionState<TState>({ props, context, useStateHook })`
+
+Generic state hook for collection components. Always calls the state hook unconditionally (rules-of-hooks compliance), then chooses context state if available.
+
+**Fixes rules-of-hooks violation**: The previous pattern `contextState ?? useListState(props)` conditionally called hooks based on `contextState`, which violates React's rules. This hook always calls `useStateHook` unconditionally.
+
+```tsx
+import { useCollectionState } from '@bento/use-collection';
+import { useListState } from 'react-stately';
+import { ListStateContext } from './context';
+
+function useMyListBoxState(props) {
+  const stateProps = {
+    ...props,
+    children: undefined,
+    items: undefined
+  };
+
+  return useCollectionState({
+    props: stateProps,
+    context: ListStateContext,
+    useStateHook: useListState
+  });
+}
+```
+
+### `renderWithOptionalContext<TState>(content, state, contextState, StateContext)`
+
+Renders content with optional context provider wrapper. If no context state exists, wraps the content in the provided `StateContext.Provider`.
+
+```tsx
+import { renderWithOptionalContext } from '@bento/use-collection';
+import { ListStateContext } from './context';
+
+function StandaloneListBox({ props, listBoxRef, collection }) {
+  const { state, contextState } = useListBoxState({ ...props, collection });
+  
+  const content = (
+    <ListBoxInner state={state} listBoxRef={listBoxRef} {...props} />
+  );
+  
+  return renderWithOptionalContext(content, state, contextState, ListStateContext);
+}
+```
+
+### `useKeyboardDelegate(config): ListKeyboardDelegate<unknown>`
+
+Creates and memoizes a keyboard delegate that delegates to React Aria's `ListKeyboardDelegate`.
+
+**React Aria Delegation**: This hook delegates keyboard navigation to [React Aria's `ListKeyboardDelegate`](https://react-spectrum.adobe.com/react-aria/useListBox.html#keyboard-delegate), which implements WAI-ARIA APG 1.2 keyboard patterns for collections (arrow keys, home/end, type-ahead search).
+
+**Why React Aria**: React Aria defines the canonical keyboard navigation patterns. Bento primitives must delegate keyboard behavior to React Aria rather than implementing custom keyboard handling.
+
+**Explicit Dependencies**: Every value referenced inside the memoized function appears in the dependency array to prevent stale closures and unnecessary re-renders (bento-invariants #44).
+
+```tsx
+import { useKeyboardDelegate } from '@bento/use-collection';
+import { useCollator, useLocale } from 'react-aria';
+
+function MyListBox({ state, listBoxRef, orientation }) {
+  const { direction } = useLocale();
+  const collator = useCollator({ usage: 'search', sensitivity: 'base' });
+  
+  const keyboardDelegate = useKeyboardDelegate({
+    collection: state.collection,
+    collator,
+    ref: listBoxRef,
+    selectionManager: state.selectionManager,
+    direction,
+    orientation,
+    layout: 'stack' // optional: 'stack' | 'grid'
+  });
+  
+  const { listBoxProps } = useListBox(
+    { ...props, keyboardDelegate },
+    state,
+    listBoxRef
+  );
+  
+  return <div {...listBoxProps} ref={listBoxRef} />;
+}
+```
+
+## Usage in ListBox
+
+```tsx
+import {
+  useSafeObjectRef,
+  useCollectionState,
+  renderWithOptionalContext,
+  useKeyboardDelegate
+} from '@bento/use-collection';
+
+function useListBoxState(props) {
+  return useCollectionState({
+    props: { ...props, children: undefined, items: undefined },
+    context: ListStateContext,
+    useStateHook: useListState
+  });
+}
+
+const StandaloneListBox = ({ props, listBoxRef, collection }) => {
+  const { props: processedProps } = useProps(props);
+  const processedRef = useSafeObjectRef(listBoxRef);
+  const { state, contextState } = useListBoxState({ ...processedProps, collection });
+  
+  const content = <ListBoxInner state={state} listBoxRef={processedRef} {...processedProps} />;
+  
+  return renderWithOptionalContext(content, state, contextState, ListStateContext);
+};
+```
+
+## Usage in Menu
+
+```tsx
+import {
+  useSafeObjectRef,
+  useCollectionState,
+  renderWithOptionalContext,
+  useKeyboardDelegate
+} from '@bento/use-collection';
+
+function useMenuState(props) {
+  return useCollectionState({
+    props: { ...props, children: undefined, items: undefined },
+    context: MenuStateContext,
+    useStateHook: useTreeState
+  });
+}
+
+const StandaloneMenu = ({ props, menuRef, collection }) => {
+  const { props: processedProps } = useProps(props);
+  const processedRef = useSafeObjectRef(menuRef);
+  const { state, contextState } = useMenuState({ ...processedProps, collection });
+  
+  const content = <MenuInner state={state} menuRef={processedRef} {...processedProps} />;
+  
+  return renderWithOptionalContext(content, state, contextState, MenuStateContext);
+};
+```
+
+## Type Safety
+
+All utilities are fully typed with TypeScript generics:
+
+- `useSafeObjectRef<T>` - Generic over ref element type
+- `useCollectionState<TState>` - Generic over state type (ListState, TreeState, etc.)
+- `renderWithOptionalContext<TState>` - Generic over state type
+- `useKeyboardDelegate` returns `ListKeyboardDelegate<unknown>`
+
+## React Aria Source
+
+This package delegates keyboard behavior to React Aria's `ListKeyboardDelegate`:
+
+- [React Aria ListBox Documentation](https://react-spectrum.adobe.com/react-aria/useListBox.html)
+- [WAI-ARIA Authoring Practices 1.2 - Listbox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)
+
+## License
+
+MIT © GoDaddy Operating Company, LLC.
+

@@ -39,6 +39,7 @@
     "@bento/text": "*",
     "@bento/to-attribute-value": "*",
     "@bento/types": "*",
+    "@bento/use-collection": "*",
     "@bento/use-data-attributes": "*",
     "@bento/use-props": "*",
     "@bento/use-svg-sprite": "*",
