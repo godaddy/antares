@@ -1,0 +1,7 @@
+/* v8 ignore next */
+import React from 'react';
+import { Input } from '@bento/input';
+
+export function UncontrolledInput() {
+  return <Input defaultValue="" type="text" />;
+}
