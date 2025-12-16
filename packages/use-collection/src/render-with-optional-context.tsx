@@ -19,9 +19,5 @@ export function renderWithOptionalContext<TState>(
   contextState: TState | null,
   StateContext: React.Context<TState | null>
 ): React.ReactNode {
-  // v8 ignore: Branch coverage for ternary is impractical to test - both branches are
-  // exercised by different consumers (standalone vs composed), but v8 requires both
-  // in a single test file. The logic is trivial and verified by ListBox/Menu integration tests.
-  /* v8 ignore next */
   return contextState ? content : <StateContext.Provider value={state}>{content}</StateContext.Provider>;
 }
