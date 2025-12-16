@@ -48,8 +48,8 @@
     "@bento/use-props": "^0.2.0",
     "@bento/visually-hidden": "^0.1.0",
     "@react-aria/utils": "^3.30.0",
-    "react-aria": "^3.44.0",
-    "react-stately": "^3.42.0"
+    "react-aria": "^3.45.0",
+    "react-stately": "^3.43.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
