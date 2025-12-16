@@ -1,4 +1,5 @@
-import React from 'react';
+/* v8 ignore next */
+import React, { type Context, type ReactNode } from 'react';
 
 /**
  * Renders content with optional context provider wrapper.
@@ -14,10 +15,10 @@ import React from 'react';
  * @public
  */
 export function renderWithOptionalContext<TState>(
-  content: React.ReactNode,
+  content: ReactNode,
   state: TState,
   contextState: TState | null,
-  StateContext: React.Context<TState | null>
-): React.ReactNode {
+  StateContext: Context<TState | null>
+): ReactNode {
   return contextState ? content : <StateContext.Provider value={state}>{content}</StateContext.Provider>;
 }
