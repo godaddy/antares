@@ -1,6 +1,6 @@
 import { getMeta, getInterfaceDocs, getStory } from '@bento/storybook-addon-helpers';
 import { ContextExample } from './examples/namespace.tsx';
-import { type EnvContext, type SlotsContext } from './src/index.tsx';
+import { type EnvContext, type SlotsContext } from './src/index.ts';
 
 export default getMeta({
   title: 'internal/box'
