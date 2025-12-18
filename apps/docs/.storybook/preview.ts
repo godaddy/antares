@@ -5,6 +5,26 @@
 //
 import './why-did-you-render.ts';
 import type { Preview } from '@storybook/react-vite';
+import React from 'react';
+import { MermaidDiagram } from './components/MermaidDiagram';
+
+function Pre(props: React.ComponentProps<'pre'>) {
+  const child = props.children;
+
+  if (React.isValidElement(child)) {
+    const className = (child.props as { className?: string }).className;
+    const isMermaid = typeof className === 'string' && className.includes('language-mermaid');
+
+    if (isMermaid) {
+      const code = (child.props as { children?: unknown }).children;
+      return React.createElement(MermaidDiagram, {
+        code: typeof code === 'string' ? code : String(code ?? '')
+      });
+    }
+  }
+
+  return React.createElement('pre', props);
+}
 
 const preview: Preview = {
   parameters: {
@@ -13,7 +33,7 @@ const preview: Preview = {
         order: [
           'Bento',
           'Architecture',
-          ['Guides', 'PDRs'],
+          ['Guides', ['Primitives', 'Composition', 'Customization', 'Styling'], 'PDRs'],
           'components',
           'hooks',
           'higher-order components',
@@ -29,7 +49,10 @@ const preview: Preview = {
         headingSelector: 'h2, h3'
       },
 
-      codePanel: true
+      codePanel: true,
+      components: {
+        pre: Pre
+      }
     }
   }
 };
