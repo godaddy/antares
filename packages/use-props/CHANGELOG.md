@@ -1,5 +1,11 @@
 # @bento/use-props
 
+## 0.2.1
+
+### Patch Changes
+
+- Adds data-slot data attribute to named slotted primitives. ([#63](https://github.com/godaddy/bento/pull/63) by @amarques-godaddy)
+
 ## 0.2.0
 
 ### Minor Changes

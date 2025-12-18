@@ -1,5 +1,17 @@
 # @bento/text
 
+## 0.1.4
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.3.0
+- @bento/use-props@0.2.1
+- @bento/container@0.2.1
+</details>
+
 ## 0.1.3
 
 ### Patch Changes
