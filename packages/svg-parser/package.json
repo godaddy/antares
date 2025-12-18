@@ -39,7 +39,7 @@
     "package.json"
   ],
   "dependencies": {
-    "camelcase": "^8.0.0"
+    "camelcase": "^9.0.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

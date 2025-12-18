@@ -49,8 +49,8 @@
     "@react-aria/collections": "^3.0.0",
     "@react-types/listbox": "^3.7.1",
     "react-aria": "^3.44.0",
-    "react-aria-components": "^1.13.0",
-    "react-stately": "^3.42.0"
+    "react-aria-components": "^1.14.0",
+    "react-stately": "^3.43.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
