@@ -67,7 +67,7 @@ export function useScrollLock(options: ScrollLockOptions = {}) {
 
       entries.forEach(function applyAttribute([key, value]) {
         // Always set the attribute, even if the value is "false"
-        doc?.body?.setAttribute(key, value);
+        doc?.body?.setAttribute(key, value as string);
       });
 
       return function cleanup() {

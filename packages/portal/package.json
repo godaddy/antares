@@ -1,6 +1,6 @@
 {
   "name": "@bento/portal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Portal component primitive - render children into a target DOM container",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,9 +40,9 @@
   ],
   "dependencies": {
     "@bento/box": "^0.2.0",
-    "@bento/slots": "^0.2.0",
+    "@bento/slots": "^0.3.0",
     "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.2.0",
+    "@bento/use-props": "^0.2.1",
     "@react-aria/overlays": "^3.25.3"
   },
   "peerDependencies": {
