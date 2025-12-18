@@ -1,5 +1,15 @@
 # @bento/environment
 
+## 0.1.4
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.3.0
+</details>
+
 ## 0.1.3
 
 ### Patch Changes
