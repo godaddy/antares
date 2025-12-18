@@ -101,7 +101,7 @@ describe('@bento/use-props', function suite() {
       const html = container.innerHTML;
 
       assume(html).equals(
-        '<div data-testid="outer-component"><div data-testid="inner-component">Sike! Different content!</div></div>'
+        '<div data-testid="outer-component"><div data-testid="inner-component" data-slot="content">Sike! Different content!</div></div>'
       );
       assume(testRef.current?.textContent).equals('Sike! Different content!');
     });
