@@ -2,6 +2,7 @@ import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, type HoverEvents } from 'react-aria';
+import { mergeRefs } from '@react-aria/utils';
 /* v8 ignore next */
 import React from 'react';
 
@@ -38,9 +39,10 @@ export const Button = withSlots(
   function Button(args: ButtonProps, forwardedRef: React.Ref<HTMLButtonElement>) {
     // First pass: merge slot props so React Aria hooks see complete props
     const { props: mergedProps, ref: mergedRef } = useProps(args, {}, forwardedRef);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
 
-    // React Aria hooks receive slot-merged props
-    const { buttonProps, isPressed } = useButton(mergedProps, mergedRef as React.RefObject<HTMLButtonElement>);
+    // React Aria hooks receive slot-merged props and internal ref
+    const { buttonProps, isPressed } = useButton(mergedProps, buttonRef);
     const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
     const { hoverProps, isHovered } = useHover(mergedProps);
 
@@ -91,7 +93,7 @@ export const Button = withSlots(
           ]
         )}
         {...dataAttrs}
-        ref={mergedRef}
+        ref={mergeRefs(buttonRef, mergedRef)}
       >
         {content}
       </button>
