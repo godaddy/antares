@@ -4,14 +4,13 @@ import type { Placement } from 'react-aria';
 import { useSelectState } from 'react-stately';
 import type { ListState } from 'react-stately';
 import { AriaSelectProps } from '@react-types/select';
-import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
+import { CollectionBuilder } from '@react-aria/collections';
 import { Node, Collection as AriaCollectionType } from '@react-types/shared';
 import { useProps } from '@bento/use-props';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { withSlots, Slots } from '@bento/slots';
 import { Container } from '@bento/container';
 import { ListStateContext } from '@bento/listbox';
-import { BentoError } from '@bento/error';
 
 export type SelectionMode = 'single' | 'multiple';
 
@@ -89,11 +88,11 @@ export type SelectSlots = {
 export type PropsFromSelectSlot<S extends keyof SelectSlots> = SelectSlots[S];
 
 /**
- * Base props shared between static and dynamic Select configurations.
+ * Props for the Select component.
  * @template T The type of items in the select
  * @template M The selection mode ('single' | 'multiple')
  */
-interface SelectBaseProps<T, M extends SelectionMode = 'single'>
+export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<AriaSelectProps<T, M>, 'children' | 'placeholder' | 'items'>,
     Omit<React.ComponentProps<'div'>, keyof AriaSelectProps<T, M> | 'children'>,
     Slots {
@@ -103,7 +102,9 @@ interface SelectBaseProps<T, M extends SelectionMode = 'single'>
    * @example
    * ```tsx
    * <Select renderEmptyState={() => <div>No options available</div>}>
-   *   <ListBox slot="listbox" />
+   *   <ListBox slot="listbox">
+   *     <ListBoxItem id="apple">Apple</ListBoxItem>
+   *   </ListBox>
    * </Select>
    * ```
    */
@@ -134,69 +135,24 @@ interface SelectBaseProps<T, M extends SelectionMode = 'single'>
    * @default 12
    */
   readonly containerPadding?: number;
-}
-
-/**
- * Props for Select with static collection (ListBoxItem children).
- * @template T The type of items in the select
- * @template M The selection mode ('single' | 'multiple')
- */
-export interface SelectStaticProps<T, M extends SelectionMode = 'single'> extends SelectBaseProps<T, M> {
-  /** Static children containing slot components and ListBoxItem elements */
-  readonly children?: ReactNode;
-  readonly items?: never;
-  readonly renderItem?: never;
-}
-
-/**
- * Props for Select with dynamic collection (items array).
- * @template T The type of items in the select
- * @template M The selection mode ('single' | 'multiple')
- */
-export interface SelectDynamicProps<T, M extends SelectionMode = 'single'> extends SelectBaseProps<T, M> {
-  /** Array of items to render in the select */
-  readonly items: Iterable<T>;
-  /**
-   * Render function for each item in the collection.
-   * Receives the item and should return a ListBoxItem element.
-   * @example
-   * ```tsx
-   * <Select
-   *   items={fruits}
-   *   renderItem={(fruit) => <ListBoxItem id={fruit.id}>{fruit.name}</ListBoxItem>}
-   * >
-   *   <Button slot="trigger">...</Button>
-   *   <Popover slot="popover">
-   *     <ListBox slot="listbox" />
-   *   </Popover>
-   * </Select>
-   * ```
-   */
-  readonly renderItem: (item: T) => ReactNode;
-  /** Slot components (Button, Popover, ListBox) - ListBox slot is presentational only for dynamic collections */
+  /** Slot components and ListBox with collection */
   readonly children?: ReactNode;
 }
 
 /**
- * Props for the Select component.
- * Supports both static collections (ListBoxItem children) and dynamic collections (items + renderItem).
- * @template T The type of items in the select
- * @template M The selection mode ('single' | 'multiple')
- */
-export type SelectProps<T, M extends SelectionMode = 'single'> = SelectStaticProps<T, M> | SelectDynamicProps<T, M>;
-
-/**
- * Root Select component that builds collection and applies props to slotted children.
+ * Root Select component that coordinates overlay, state, and form integration.
  * This component uses slot-based composition where it finds children by `slot` attribute
  * and applies appropriate props using `cloneElement`. Users can bring custom components
  * (Button, Popover, ListBox, etc.) for maximum flexibility.
  *
  * **Architecture:**
  * Select is a coordinator component that manages:
- * - Collection building (via CollectionBuilder)
  * - Selection state (via useSelectState)
  * - Overlay positioning
- * - Keyboard navigation
+ * - Form integration
+ * - Keyboard navigation coordination
+ *
+ * ListBox handles its own collection building and rendering.
  *
  * Select always manages state internally.
  * For external control, use props: `value`/`onChange` (controlled).
@@ -230,6 +186,18 @@ export type SelectProps<T, M extends SelectionMode = 'single'> = SelectStaticPro
  *     </ListBox>
  *   </Popover>
  * </Select>
+ *
+ * // Dynamic collection
+ * <Select value={selectedKey} onChange={setSelectedKey}>
+ *   <Button slot="trigger">
+ *     <Text slot="value" placeholder="Select a fruit" />
+ *   </Button>
+ *   <Popover slot="popover">
+ *     <ListBox slot="listbox" items={fruits}>
+ *       {(fruit) => <ListBoxItem id={fruit.id}>{fruit.name}</ListBoxItem>}
+ *     </ListBox>
+ *   </Popover>
+ * </Select>
  * ```
  * @public
  */
@@ -237,61 +205,12 @@ export const Select = withSlots('BentoSelect', function Select<
   T,
   M extends SelectionMode = 'single'
 >(args: SelectProps<T, M>, forwardedRef?: React.Ref<HTMLDivElement>) {
-  // Type cast: Erase generic type T to 'any' since SelectInner only works with keys and nodes.
-  // React Aria's collection system handles type-specific items internally.
-  const restArgs = args as any;
-
-  // For dynamic collections (items prop), use CollectionBuilder with AriaCollection
-  // to properly process the render function + items into a collection.
-  // This matches how ListBox handles dynamic collections.
-  if ('items' in restArgs && restArgs.items != null) {
-    const renderFunc = restArgs.renderItem;
-
-    // Error if renderItem is not provided
-    if (!renderFunc) {
-      throw new BentoError({
-        name: 'select',
-        method: 'Select',
-        message:
-          'When using `items` prop, you must provide a `renderItem` function. ' +
-          'Example: <Select items={items} renderItem={(item) => <ListBoxItem id={item.id}>{item.name}</ListBoxItem>}>'
-      });
-    }
-
-    // Create collection props for AriaCollection
-    const collectionProps = {
-      items: restArgs.items,
-      children: renderFunc
-    };
-    return (
-      <CollectionBuilder
-        content={
-          // Type cast: AriaCollection requires specific type shape but we handle generic T
-          <AriaCollection {...(collectionProps as unknown as Parameters<typeof AriaCollection>[0])} />
-        }
-      >
-        {function buildCollection(collection: unknown) {
-          return (
-            <SelectInner
-              // Type cast: Erase specific item type T to object for internal processing
-              props={restArgs as unknown as SelectProps<object, SelectionMode>}
-              collection={collection}
-              forwardedRef={forwardedRef}
-            />
-          );
-        }}
-      </CollectionBuilder>
-    );
-  }
-
-  // For static collections, use CollectionBuilder to process ListBoxItem elements
   return (
-    <CollectionBuilder content={restArgs.children}>
+    <CollectionBuilder content={args.children}>
       {function buildCollection(collection: unknown) {
         return (
           <SelectInner
-            // Type cast: Erase specific item type T to object for internal processing
-            props={restArgs as unknown as SelectProps<object, SelectionMode>}
+            props={args as unknown as SelectProps<object, SelectionMode>}
             collection={collection}
             forwardedRef={forwardedRef}
           />
@@ -304,7 +223,7 @@ export const Select = withSlots('BentoSelect', function Select<
 interface SelectInnerProps {
   readonly props: SelectProps<object, SelectionMode>;
   readonly collection: unknown;
-  readonly forwardedRef?: React.Ref<HTMLDivElement>;
+  readonly forwardedRef?: React.Ref<HTMLDivElement> | null;
 }
 
 /**
@@ -317,7 +236,7 @@ const SelectInner: React.FC<SelectInnerProps> = function SelectInner({ props, co
   const originalRenderEmptyState = props.renderEmptyState;
 
   // Extract merged ref that combines forwardedRef, slot refs, and props.ref
-  const { props: processedProps, ref: mergedRef } = useProps(props, {}, forwardedRef);
+  const { props: processedProps, ref: mergedRef } = useProps(props, {}, forwardedRef ?? null);
   const originalCollection = collection as AriaCollectionType<Node<object>> | undefined;
 
   // Destructure to remove children: CollectionBuilder already processed them in parent.

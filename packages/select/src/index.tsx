@@ -8,8 +8,6 @@ export type { SelectState } from 'react-stately';
 // Types
 export type {
   SelectProps,
-  SelectStaticProps,
-  SelectDynamicProps,
   SelectionMode,
   SelectRenderProps,
   SelectTriggerSlotProps,

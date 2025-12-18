@@ -68,8 +68,8 @@ export const DynamicValueDisplay = withSlots('DynamicValue', function DynamicVal
 });
 
 /**
- * Dynamic collection Select example using the recommended renderItem pattern.
- * Demonstrates using the items prop with typed data and the explicit renderItem prop.
+ * Dynamic collection Select example using items on ListBox.
+ * Demonstrates using the items prop with typed data on the ListBox component.
  *
  * @param {any} props - Props passed from parent
  * @returns {JSX.Element} The rendered Select
@@ -92,7 +92,7 @@ export function DynamicSelectExample(props: any) {
     props.onChange?.(newValue);
   };
 
-  // Explicit renderItem function - type-safe and decoupled from slot structure
+  // Render function for each item
   function renderItem(item: unknown) {
     const fruit = item as Fruit;
     return (
@@ -107,8 +107,6 @@ export function DynamicSelectExample(props: any) {
       {...rest}
       value={value}
       onChange={handleChange}
-      items={showEmptyState ? [] : items}
-      renderItem={renderItem}
       {...(showEmptyState && {
         renderEmptyState: () => (
           <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>
@@ -124,8 +122,9 @@ export function DynamicSelectExample(props: any) {
         <DynamicValueDisplay slot="value" placeholder={placeholder} />
       </Button>
       <Popover slot="popover" className={styles.popover}>
-        {/* ListBox slot is presentational only for dynamic collections */}
-        <ListBox slot="listbox" aria-label={label} className={styles.listbox} />
+        <ListBox slot="listbox" aria-label={label} className={styles.listbox} items={showEmptyState ? [] : items}>
+          {renderItem}
+        </ListBox>
       </Popover>
     </Select>
   );

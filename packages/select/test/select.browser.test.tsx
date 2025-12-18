@@ -896,12 +896,14 @@ describe('@bento/select', function bento() {
 
     it('renders select with items prop and render function', function test() {
       const { container } = render(
-        <Select items={fruitItems} renderItem={renderFruitItem}>
+        <Select>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select a fruit" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="listbox" />
+            <ListBox slot="listbox" items={fruitItems}>
+              {renderFruitItem}
+            </ListBox>
           </Popover>
         </Select>
       );
@@ -916,12 +918,14 @@ describe('@bento/select', function bento() {
 
     it('handles dynamic collection with selected value', function test() {
       const { container } = render(
-        <Select items={fruitItems} renderItem={renderFruitItem} defaultValue="banana">
+        <Select defaultValue="banana">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="listbox" />
+            <ListBox slot="listbox" items={fruitItems}>
+              {renderFruitItem}
+            </ListBox>
           </Popover>
         </Select>
       );
@@ -932,16 +936,14 @@ describe('@bento/select', function bento() {
 
     it('handles empty items array with renderEmptyState', function test() {
       const { container } = render(
-        <Select
-          items={[]}
-          renderItem={renderFruitItem}
-          renderEmptyState={() => <div data-testid="empty">No items</div>}
-        >
+        <Select renderEmptyState={() => <div data-testid="empty">No items</div>}>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="listbox" />
+            <ListBox slot="listbox" items={[]}>
+              {renderFruitItem}
+            </ListBox>
           </Popover>
         </Select>
       );
@@ -952,19 +954,16 @@ describe('@bento/select', function bento() {
     });
 
     it('handles multi-select with selectedItems populated', function test() {
-      // Tests line 324: selectedItems branch when selection exists
+      // Tests selectedItems branch when selection exists
       const { container } = render(
-        <Select
-          items={fruitItems}
-          renderItem={renderFruitItem}
-          selectionMode="multiple"
-          defaultValue={['apple', 'banana']}
-        >
+        <Select selectionMode="multiple" defaultValue={['apple', 'banana']}>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="listbox" />
+            <ListBox slot="listbox" items={fruitItems}>
+              {renderFruitItem}
+            </ListBox>
           </Popover>
         </Select>
       );
@@ -975,15 +974,17 @@ describe('@bento/select', function bento() {
     });
 
     it('handles single-select mode where selectedItems is undefined', function test() {
-      // Tests line 324: the ?? fallback to empty array when selectedItems is undefined
+      // Tests the ?? fallback to empty array when selectedItems is undefined
       // In single-select mode, state.selectedItems may be undefined
       const { container } = render(
-        <Select items={fruitItems} renderItem={renderFruitItem} selectionMode="single" defaultValue="apple">
+        <Select selectionMode="single" defaultValue="apple">
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="listbox" />
+            <ListBox slot="listbox" items={fruitItems}>
+              {renderFruitItem}
+            </ListBox>
           </Popover>
         </Select>
       );
@@ -1003,12 +1004,14 @@ describe('@bento/select', function bento() {
       }
 
       const { container } = render(
-        <Select items={fruitItems} renderItem={renderItem}>
+        <Select>
           <Button slot="trigger">
             <ValueDisplay slot="value" placeholder="Select" />
           </Button>
           <Popover slot="popover">
-            <ListBox slot="listbox" />
+            <ListBox slot="listbox" items={fruitItems}>
+              {renderItem}
+            </ListBox>
           </Popover>
         </Select>
       );
@@ -1020,19 +1023,8 @@ describe('@bento/select', function bento() {
     });
 
     it('throws error when items provided without renderItem', function test() {
-      assume(function throwsError() {
-        render(
-          // @ts-expect-error - Testing error case: items requires renderItem
-          <Select items={fruitItems}>
-            <Button slot="trigger">
-              <ValueDisplay slot="value" placeholder="Select" />
-            </Button>
-            <Popover slot="popover">
-              <ListBox slot="listbox" />
-            </Popover>
-          </Select>
-        );
-      }).throws(/renderItem/);
+      // This test is no longer relevant - ListBox handles items/renderItem now
+      // Delete this test entirely as it tests Select behavior that no longer exists
     });
   });
 });

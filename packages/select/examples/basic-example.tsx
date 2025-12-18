@@ -93,10 +93,6 @@ export function BasicSelectExample(props: any) {
     ...(name && { name }),
     ...(label && { 'aria-label': label }),
     ...(controlledOpen ? { isOpen, onOpenChange: handleOpenChange } : { defaultOpen }),
-    ...(useDynamicCollection && {
-      items: showEmptyState ? [] : FRUIT_DATA,
-      renderItem: renderFruitItem
-    }),
     ...(showEmptyState && {
       renderEmptyState: () => (
         <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>
@@ -117,8 +113,15 @@ export function BasicSelectExample(props: any) {
         )}
       </Button>
       <Popover slot="popover" className={styles.popover}>
-        <ListBox slot="listbox" aria-label={label || 'Fruit options'} className={styles.listbox}>
-          {useDynamicCollection ? null : withGroups ? (
+        <ListBox
+          slot="listbox"
+          aria-label={label || 'Fruit options'}
+          className={styles.listbox}
+          {...(useDynamicCollection && { items: showEmptyState ? [] : FRUIT_DATA })}
+        >
+          {useDynamicCollection ? (
+            renderFruitItem
+          ) : withGroups ? (
             <>
               <ListBoxSection>
                 <Header>Popular Fruits</Header>
