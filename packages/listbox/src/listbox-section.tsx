@@ -62,36 +62,32 @@ interface ListBoxSectionInnerProps {
  *
  * @internal
  */
-const BentoListBoxSectionImpl = withSlots(
-  'BentoListBoxSection',
-  function BentoListBoxSectionImpl<T>(
-    { __node, children, title: titleProp, ...rest }: BentoListBoxSectionImplProps<T>,
-    ref: React.ForwardedRef<HTMLElement>
-  ) {
-    const { props, apply } = useProps(rest);
-    const data = useDataAttributes({ level: __node?.level });
-    const headingRef = useRef<HTMLDivElement>(null);
+const BentoListBoxSectionImpl = withSlots('BentoListBoxSection', function BentoListBoxSectionImpl<
+  T
+>({ __node, children, title: titleProp, ...rest }: BentoListBoxSectionImplProps<T>, ref: React.ForwardedRef<HTMLElement>) {
+  const { props, apply } = useProps(rest);
+  const data = useDataAttributes({ level: __node?.level });
+  const headingRef = useRef<HTMLDivElement>(null);
 
-    const title = titleProp ?? props.title ?? __node?.rendered;
-    const { groupProps, headingProps } = useListBoxSection({
-      heading: title,
-      'aria-label': props['aria-label']
-    });
+  const title = titleProp ?? props.title ?? __node?.rendered;
+  const { groupProps, headingProps } = useListBoxSection({
+    heading: title,
+    'aria-label': props['aria-label']
+  });
 
-    const composed = mergeProps(apply({ ...data, ...props }, ['children', 'title', 'slot']), groupProps);
+  const composed = mergeProps(apply({ ...data, ...props }, ['children', 'title', 'slot']), groupProps);
 
-    const sectionContent = children || props.children;
+  const sectionContent = children || props.children;
 
-    return (
-      <section {...composed} ref={ref}>
-        <HeaderContext.Provider value={{ ...headingProps, ref: headingRef }}>
-          {title && <div {...headingProps}>{title}</div>}
-          {sectionContent}
-        </HeaderContext.Provider>
-      </section>
-    );
-  }
-);
+  return (
+    <section {...composed} ref={ref}>
+      <HeaderContext.Provider value={{ ...headingProps, ref: headingRef }}>
+        {title && <div {...headingProps}>{title}</div>}
+        {sectionContent}
+      </HeaderContext.Provider>
+    </section>
+  );
+});
 
 /**
  * Wrapper component that connects BentoListBoxSectionImpl to React Aria's collection system.

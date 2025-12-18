@@ -2,6 +2,7 @@ import React, { useContext, useRef, useMemo } from 'react';
 import { Container, type ContainerProps } from '@bento/container';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { Icon } from '@bento/icon';
+import { Input } from '@bento/input';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
 import { VisuallyHidden } from '@bento/visually-hidden';
@@ -93,7 +94,7 @@ export const Checkbox = withSlots('BentoCheckbox', function Checkbox(args: Check
       })}
     >
       <VisuallyHidden>
-        <input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
+        <Input {...mergeProps(inputProps, focusProps)} ref={inputRef} />
       </VisuallyHidden>
 
       {props.isIndeterminate ? (

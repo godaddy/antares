@@ -60,3 +60,44 @@ const YourComponentDeclaration = withSlots('your-component', function Component(
 - Double check that you've spelled the name of your modifier correctly
 - You may have an additional comma at the end of the array that introduces an item.
 - Iterate through all the items and `console.log` them to see which item breaks.
+
+## Missing required slot assignment. Overlay requires a child with slot="content".
+<a name="33A6A2"></a>
+
+The `@bento/overlay` component requires a child with the `slot="content"` property.
+This is because the overlay component needs to display content when it is open.
+
+```javascript
+import { Container } from '@bento/container';
+import { Overlay } from '@bento/overlay';
+
+<Overlay>
+  <Container slot="content">Content</Container>
+</Overlay>
+```
+
+If you do have a `slot="content"` property, but you are still getting this error,
+it is likely because you are not using a Bento based component. You can use the
+`withSlots` function from `@bento/slots` to wrap the component and read the
+received props using the `useProps` function from `@bento/use-props`:
+
+```javascript
+import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
+import { Overlay } from '@bento/overlay';
+
+const Content = withSlots('Content', function Content(...args) {
+  const { apply } = useProps(args);
+
+  return <Container { ...apply({ className: 'my-content-container' })} />;
+});
+
+<Overlay>
+  <Content slot="content">Content</Content>
+</Overlay>
+```
+
+In summary check the following:
+
+- The child must be a component that is wrapped with the `withSlots` function.
+- The child must be a Bento based component that has the `slot="content"` property.

@@ -56,7 +56,7 @@ describe('@bento/slots examples', function bento() {
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<div class="example"><label for="example"><strong>Hello World</strong></label><button id=":r2:">Click Me</button></div>'
+        '<div data-slot="example-container" class="example"><label for="example" data-slot="label"><strong>Hello World</strong></label><button id=":r2:" data-slot="button">Click Me</button></div>'
       );
     });
   });
@@ -91,7 +91,7 @@ describe('@bento/slots examples', function bento() {
 
       assume(result).equals(
         [
-          '<p>',
+          '<p data-slot="description">',
           '  <span>Description: </span>',
           '  <label class="merged-class" title="better-title" id="merged">',
           '  </label>',
@@ -127,30 +127,21 @@ describe('@bento/slots examples', function bento() {
       const { container } = render(<Namespace />);
       const result = container.innerHTML;
 
-      assume(result).equals(
-        '<label class="title-1">title</label>' +
-          '<label class="description-1">title</label>'
-      );
+      assume(result).equals('<label class="title-1">title</label>' + '<label class="description-1">title</label>');
     });
 
     it('should render a component with correct slot names', function test() {
       const { container } = render(<NamespaceWithSlotNames />);
       const result = container.innerHTML;
 
-      assume(result).equals(
-        '<label class="title-2">title</label>' +
-          '<label class="description-2">title</label>'
-      );
+      assume(result).equals('<label class="title-2">title</label>' + '<label class="description-2">title</label>');
     });
 
     it('should render a component with correct replacements', function test() {
       const { container } = render(<NamespaceWithReplacements />);
       const result = container.innerHTML;
 
-      assume(result).equals(
-        '<label class="title-3">title</label>' +
-          '<label class="description-3">title</label>'
-      );
+      assume(result).equals('<label class="title-3">title</label>' + '<label class="description-3">title</label>');
     });
 
     it('should allow children to inherit root-level slots', function test() {
@@ -159,9 +150,7 @@ describe('@bento/slots examples', function bento() {
 
       console.log('bbbb', result);
 
-      assume(result).equals(
-        '<div>' + '<label class="inherited-title">title</label>Content' + '</div>'
-      );
+      assume(result).equals('<div>' + '<label class="inherited-title">title</label>Content' + '</div>');
     });
   });
 

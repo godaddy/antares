@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 import React, { useContext, memo } from 'react';
+import { mergeProps } from 'react-aria';
+import { useDataAttributes } from '@bento/use-data-attributes';
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { Box, type BoxContext } from '@bento/box';
 import { BentoError } from '@bento/error';
@@ -61,6 +63,7 @@ export function withSlots<Props extends object>(
   const ComponentWithRef = withForwardRef(Component);
   const SlottedForwardRef = withForwardRef(function SlottedComponent(propsAndSlots: Props & Slots, forwardedRef: any) {
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
+    const dataAttrs = useDataAttributes({ slot });
     let props = { ...restProps } as Props;
     let Element: React.ComponentType<any> = ComponentWithRef;
 
@@ -193,22 +196,29 @@ export function withSlots<Props extends object>(
     // - React 18: Component is wrapped with forwardRef, so ref is passed separately
     // - React 19: ref is just a regular prop
     const propsWithRef = forwardedRef != null ? ({ ...baseProps, ref: forwardedRef } as Props) : baseProps;
+    const mergedProps = mergeProps(propsWithRef, dataAttrs) as Props;
 
     const context = useDeepCompareMemo(() => ctx, [ctx]);
     const rendered = (
       <Box.Provider value={context}>
-        <Element {...propsWithRef} />
+        <Element {...mergedProps} />
       </Box.Provider>
     );
 
     const slotted = ctx.slots.assigned[ctx.slots.namespace.join('.')];
 
     if (typeof slotted !== 'function') return rendered;
-    return slotted({ props: propsWithRef, original: rendered.props.children });
+    return slotted({ props: mergedProps, original: rendered.props.children });
   });
 
   const SlottedComponent = memo(SlottedForwardRef);
   SlottedComponent.displayName = `Slotted(${name})`;
+
+  //
+  // Mark this as a Bento component wrapped with withSlots
+  // This is used by the contains() utility to identify valid slotted components
+  //
+  (SlottedComponent as any).bento = true;
 
   if (process.env.NODE_ENV !== 'production') {
     //

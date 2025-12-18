@@ -1,0 +1,1050 @@
+# Overlay
+
+## Purpose
+
+The Overlay primitive serves as a foundational building block for creating layered UI experiences where content appears above the main application view. It provides the core backdrop functionality that supports various overlay-based patterns such as modals, dialogs, drawers, and loading indicators.
+
+The Overlay primitive addresses several key scenarios:
+
+- Displaying content that requires immediate user attention or action
+- Creating focused interaction spaces that temporarily obscure the main content
+- Supporting mobile-first patterns like drawers, sheets, and action menus
+- Enabling rich compositional patterns through layering of UI elements
+
+This primitive will typically be consumed by:
+- Application developers building modal interfaces or drawers
+- Component authors creating specialized dialog components
+- Teams building loading indicators or notification systems
+- Any UI pattern requiring a visual layer between content and application
+
+### Unique Attributes
+
+The Overlay primitive differs from similar components in these key ways:
+
+- **Pure foundation**: Unlike most dialog components that combine multiple concerns, the Overlay provides only the backdrop and layering functionality, allowing maximum composition flexibility
+- **Layering management**: Built-in support for handling multiple overlays with proper stacking context and accessibility
+- **Focus management**: Integrated focus trapping capabilities that follow WAI-ARIA best practices
+- **Scroll locking**: Cross-browser scroll management that prevents background content scrolling
+- **Animation support**: First-class support for entrance/exit animations and transitions
+
+## Primitive Composition
+
+The Overlay primitive composes several standalone reusable primitives, maximizing code sharing across the Bento ecosystem:
+
+### Core Primitive Packages (New)
+Each primitive will be its own package following Bento's architecture:
+
+- **@bento/layer-stack**: Manages stacking order for all layered UI elements
+- **@bento/portal**: Handles DOM rendering placement
+- **@bento/focus-scope**: Contains keyboard focus within a boundary
+- **@bento/scroll-lock**: Prevents background scrolling
+- **@bento/visually-hidden**: Provides screen reader only content
+- **@bento/dismiss-button**: Accessible dismiss functionality
+
+### Overlay Components
+- **OverlayRoot**: State container that manages overlay visibility
+- **OverlayBackdrop**: Visual backdrop that sits behind content
+- **OverlayContent**: Container for overlay content with proper layering and focus handling
+- **OverlayTrigger**: Element that triggers the overlay
+- **OverlayClose**: Button for dismissing the overlay
+
+### React Aria Integration
+All primitives build directly upon React Aria's accessibility-focused hooks:
+- **useModalOverlay**: For backdrop and modal behavior
+- **useFocusScope**: For focus containment
+- **usePreventScroll**: For scroll locking
+- **useOverlayTrigger**: For trigger elements
+- **useOverlay**: For core overlay behavior
+
+## Implementation Patterns
+
+| Concept             | Implementation                                               |
+|---------------------|--------------------------------------------------------------|
+| React Aria          | useModalOverlay, useFocusScope, useOverlayTrigger, useOverlay |
+| Slots               | withSlots for component customization                        |
+| Render Props        | Support for className and style render props with meta object |
+| data-* Attributes   | data-state, data-open, data-animated, data-placement         |
+| data-override       | Used when user customizes backdrop or content behavior       |
+| data-version        | Dev-only attribute for version tracking                      |
+| Composability       | Support for nested content, multiple overlays, context providers |
+
+## Internal Structure & Reuse Potential
+
+Each primitive is designed for maximum reusability across the Bento ecosystem:
+
+### @bento/layer-stack
+
+The LayerStack primitive provides a generalized system for managing any kind of layered UI element, not just overlays. This enables consistent stacking behavior, focus management, and accessibility across different UI patterns.
+
+```jsx
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import { withSlots } from '@bento/slots';
+import { useRenderProps } from '@bento/use-render-props';
+
+const LayerContext = createContext(null);
+
+export const useLayerStack = () => {
+  const context = useContext(LayerContext);
+  if (context === null) {
+    throw new Error('useLayerStack must be used within a LayerProvider');
+  }
+  return context;
+};
+
+export const Provider = withSlots('BentoLayerProvider', function LayerProvider(args) {
+  const [props, apply] = useRenderProps(args);
+  const { children } = props;
+  const [layers, setLayers] = useState([]);
+
+  // Register a new layer with optional type and configuration
+  const register = useCallback((id, options = {}) => {
+    const type = options.type || 'generic';
+    const newLayer = { id, type, ...options };
+
+    setLayers(prev => {
+      // Find the highest z-index for this type
+      const sameTypeMax = Math.max(
+        ...prev
+          .filter(layer => layer.type === type)
+          .map(layer => layer.zIndex || 0),
+        0
+      );
+
+      // Base z-index depends on layer type
+      const baseIndex = {
+        tooltip: 600,
+        popover: 700,
+        dropdown: 800,
+        overlay: 1000,
+        modal: 1100,
+        toast: 1200,
+        alert: 1300
+      }[type] || 500;
+
+      // Calculate new z-index
+      const zIndex = sameTypeMax > 0
+        ? sameTypeMax + 10
+        : baseIndex;
+
+      return [...prev, { ...newLayer, zIndex }];
+    });
+
+    return {
+      getInfo: () => {
+        const currentLayers = layers;
+        const currentLayer = currentLayers.find(l => l.id === id);
+        return {
+          zIndex: currentLayer?.zIndex,
+          isTopmost: currentLayers.length > 0 &&
+            currentLayers[currentLayers.length - 1].id === id,
+          isTopmostOfType: currentLayers.filter(l => l.type === type).length > 0 &&
+            currentLayers.filter(l => l.type === type).slice(-1)[0].id === id
+        };
+      }
+    };
+  }, [layers]);
+
+  // Unregister a layer
+  const unregister = useCallback((id) => {
+    const index = layers.findIndex(layer => layer.id === id);
+    if (index >= 0) {
+      const wasTopmost = index === layers.length - 1;
+      const type = layers[index].type;
+
+      setLayers(prev => prev.filter(layer => layer.id !== id));
+
+      // Return the next layer that should receive focus
+      if (wasTopmost && layers.length > 1) {
+        // Find the next topmost layer of the same type, or any type if none
+        const sameTypeLayer = [...layers]
+          .filter(layer => layer.id !== id && layer.type === type)
+          .pop();
+
+        if (sameTypeLayer) return sameTypeLayer.id;
+
+        // Return the overall topmost layer
+        return layers[layers.length - 2].id;
+      }
+    }
+    return null;
+  }, [layers]);
+
+  // Get the topmost layer, optionally filtered by type
+  const getTopmost = useCallback((type) => {
+    const filteredLayers = type
+      ? layers.filter(layer => layer.type === type)
+      : layers;
+
+    return filteredLayers.length > 0
+      ? filteredLayers[filteredLayers.length - 1].id
+      : null;
+  }, [layers]);
+
+  const value = useMemo(() => ({
+    register,
+    unregister,
+    getTopmost,
+    isTopmost: (id, options = {}) => {
+      const { ofType = false } = options;
+      const layer = layers.find(layer => layer.id === id);
+
+      if (!layer) return false;
+
+      return ofType
+        ? getTopmost(layer.type) === id
+        : getTopmost() === id;
+    },
+    getLayers: () => [...layers]
+  }), [register, unregister, getTopmost, layers]);
+
+  return (
+    <LayerContext.Provider value={value}>
+      {children}
+    </LayerContext.Provider>
+  );
+});
+
+export const Layer = {
+  Provider,
+  Context: LayerContext
+};
+```
+
+**Reusable across:**
+- Modals and dialogs
+- Tooltips and popovers
+- Dropdown menus
+- Toast notifications
+- Alert messages
+- Any stacked UI element
+
+### @bento/portal
+
+The Portal primitive handles rendering content at a specific DOM location:
+
+```jsx
+import { createPortal } from 'react-dom';
+import { useEffect, useState } from 'react';
+import { withSlots } from '@bento/slots';
+import { useRenderProps } from '@bento/use-render-props';
+
+export const Portal = withSlots('BentoPortal', function Portal(args) {
+  const [props, apply] = useRenderProps(args);
+  const {
+    container = document.body,
+    children,
+    whenMounted = true // Only render when component is mounted
+  } = props;
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  // Don't render anything on the server or if not mounted and whenMounted is true
+  if ((!mounted && whenMounted) || typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(children, container);
+});
+```
+
+**Reusable across:**
+- Modals, dialogs, and drawers
+- Tooltips and popovers
+- Dropdown menus
+- Toasts and notification systems
+- Any component that needs to render outside its parent hierarchy
+
+### @bento/focus-scope
+
+The FocusScope primitive manages keyboard focus containment:
+
+```jsx
+import { FocusScope as AriaFocusScope } from '@react-aria/focus';
+import { withSlots } from '@bento/slots';
+import { useRenderProps } from '@bento/use-render-props';
+
+export const FocusScope = withSlots('BentoFocusScope', function FocusScope(args) {
+  const [props, apply] = useRenderProps(args);
+  const {
+    children,
+    contain = true,
+    restoreFocus = true,
+    autoFocus = true,
+    ...rest
+  } = props;
+
+  return (
+    <AriaFocusScope
+      {...apply({
+        contain,
+        restoreFocus,
+        autoFocus,
+        ...rest
+      })}
+    >
+      {children}
+    </AriaFocusScope>
+  );
+});
+```
+
+**Reusable across:**
+- Modals and dialogs
+- Dropdown menus and selects
+- Comboboxes
+- Navigation menus
+- Tab panels
+- Any interactive component that needs focus containment
+
+### @bento/scroll-lock
+
+The ScrollLock primitive prevents background scrolling:
+
+```jsx
+import { usePreventScroll } from '@react-aria/overlays';
+import { withSlots } from '@bento/slots';
+import { useRenderProps } from '@bento/use-render-props';
+
+export const ScrollLock = withSlots('BentoScrollLock', function ScrollLock(args) {
+  const [props, apply] = useRenderProps(args);
+  const {
+    isDisabled = false,
+    children,
+    options = {}
+  } = props;
+
+  // React Aria handles all the scroll locking logic
+  usePreventScroll({
+    isDisabled,
+    ...options
+  });
+
+  return children || null;
+});
+```
+
+**Reusable across:**
+- Modals and dialogs
+- Fullscreen menus
+- Image viewers and carousels
+- Bottom sheets and drawers
+- Any component that should prevent background scrolling
+
+### @bento/visually-hidden
+
+The VisuallyHidden primitive provides screen reader support without visual elements:
+
+```jsx
+import { withSlots } from '@bento/slots';
+import { useRenderProps } from '@bento/use-render-props';
+
+const visuallyHiddenStyles = {
+  border: 0,
+  clip: 'rect(0 0 0 0)',
+  height: '1px',
+  margin: '-1px',
+  overflow: 'hidden',
+  padding: 0,
+  position: 'absolute',
+  width: '1px',
+  whiteSpace: 'nowrap',
+  wordWrap: 'normal'
+};
+
+export const VisuallyHidden = withSlots('BentoVisuallyHidden', function VisuallyHidden(args) {
+  const [props, apply] = useRenderProps(args);
+  const { as: Component = 'span', children, ...rest } = props;
+
+  return (
+    <Component
+      {...apply({
+        style: visuallyHiddenStyles,
+        ...rest
+      })}
+    >
+      {children}
+    </Component>
+  );
+});
+```
+
+**Reusable across:**
+- Skip links
+- Screen reader announcements
+- Hidden form labels
+- Accessible icons and buttons
+- Any content that should be available to screen readers but not visually
+
+### @bento/dismiss-button
+
+The DismissButton primitive provides accessible dismissal functionality:
+
+```jsx
+import { DismissButton as AriaDismissButton } from '@react-aria/overlays';
+import { withSlots } from '@bento/slots';
+import { useRenderProps } from '@bento/use-render-props';
+
+export const DismissButton = withSlots('BentoDismissButton', function DismissButton(args) {
+  const [props, apply] = useRenderProps(args);
+  const { onDismiss, ...rest } = props;
+
+  return <AriaDismissButton {...apply(rest)} onDismiss={onDismiss} />;
+});
+```
+
+**Reusable across:**
+- Modals and dialogs
+- Popovers and tooltips
+- Toast notifications
+- Any dismissible component that needs keyboard accessibility
+
+## React Aria Integration
+
+### Why React Aria?
+
+After extensive research of different overlay implementations, React Aria stands out as the optimal foundation for several reasons:
+
+1. **Accessibility excellence**: React Aria is built from the ground up with accessibility as the primary focus, ensuring WCAG compliance.
+
+2. **Comprehensive feature set**: React Aria provides a complete solution for overlay functionality:
+   - Focus management with `useFocusScope`
+   - Scroll locking with `usePreventScroll`
+   - Backdrop interaction with `useModalOverlay`
+   - Trigger management with `useOverlayTrigger`
+
+3. **Battle-tested in production**: Used extensively in Adobe's product ecosystem, ensuring robust performance in real-world applications.
+
+4. **Excellent mobile support**: Handles complex mobile edge cases that other libraries miss, including iOS Safari scroll handling.
+
+5. **Active maintenance**: Regular updates and community support ensure the library stays current with browser changes and accessibility standards.
+
+### Comparative Analysis
+
+We evaluated several libraries for overlay implementation:
+
+| Library | Strengths | Weaknesses | Focus Management | Multiple Overlay Support |
+|---------|-----------|------------|------------------|--------------------------|
+| React Aria | Exceptional a11y, robust focus management, strong mobile support | Less composable API | FocusScope component with complete trapping | Overlay container system |
+| Radix UI | Highly composable API, excellent animation support | Some mobile edge cases | Dialog-specific focus handling | Built-in dialog stack |
+| AriaKit | Flexible API, excellent composition | More complex API | FocusTrap component | Store-based dialog state |
+| Headless UI | Simplicity, good animation integration | Less flexible | Dialog-specific focus handling | Limited |
+| Material UI | Performance optimizations, comprehensive features | Less headless, more opinionated | Uses custom FocusTrap | ModalManager utility |
+
+React Aria provides the strongest foundation for accessibility and mobile support, which are top priorities. We'll enhance it with Bento's composition model and additional features from other libraries where appropriate.
+
+## Multiple Overlay Management
+
+A key consideration is handling multiple active overlays simultaneously. Our research across implementations revealed several approaches:
+
+### Stacking and Focus Management Challenges
+
+When multiple overlays are active, three aspects must be managed:
+
+1. **Visual stacking**: Which overlay appears on top
+2. **Keyboard focus**: Which overlay receives focus
+3. **Interaction boundaries**: How interactions propagate between layers
+
+### ARIA Requirements for Multiple Overlays
+
+For proper accessibility:
+- Only the topmost modal overlay should have `aria-modal="true"`
+- Lower overlays should receive `aria-hidden="true"`
+- Focus should transfer between overlays in a predictable manner matching the visual hierarchy
+
+### Implementation Approaches
+
+Different libraries handle multiple overlays in different ways:
+
+- **Radix UI**: Uses a global dialog stack to track open dialogs
+- **AriaKit**: Uses a dialog store to manage state and explicit ordering
+- **React Aria**: Uses overlay containers with built-in stacking
+- **MUI**: Uses a dedicated ModalManager to handle multiple modals
+
+Our `@bento/layer-stack` primitive incorporates the best aspects of these approaches while maintaining full compatibility with React Aria:
+
+```jsx
+function OverlayProvider({ children }) {
+  // Use React Aria's overlay container as the foundation
+  const ref = useRef();
+  const { overlayContainerRef } = useOverlayContainer();
+
+  useEffect(() => {
+    // Connect our ref to React Aria's overlay container
+    if (ref.current) {
+      overlayContainerRef.current = ref.current;
+    }
+  }, [overlayContainerRef]);
+
+  // Add Bento-specific overlay stack management
+  const [overlayStack, setOverlayStack] = useState([]);
+
+  // Implementation details...
+
+  return (
+    <LayerContext.Provider value={value}>
+      {children}
+      <div ref={ref} />
+    </LayerContext.Provider>
+  );
+}
+```
+
+## Focus Management
+
+Focus management is consistently the most critical and complex aspect of overlay implementations. Based on our research, we identified these key requirements:
+
+1. **Focus trapping**: Prevents tabbing outside the overlay while it's open
+2. **Initial focus control**: Allows specifying which element receives focus when opened
+3. **Return focus**: Returns focus to the trigger element when closed
+4. **Focus stack**: Manages focus between multiple overlays
+
+React Aria's FocusScope is the most robust solution we evaluated, handling edge cases like:
+- Browser extensions that inject focusable elements
+- Shadow DOM boundaries
+- Dynamic content changes
+- Screen reader navigation
+
+Our `@bento/focus-scope` primitive preserves these capabilities while adapting to Bento's patterns.
+
+## Animation Support
+
+Animation is a crucial part of a good overlay experience. Our research identified several approaches:
+
+1. **CSS-based animations**: Using data attributes for state-driven animations
+2. **Component-based animations**: Providing animation components for common patterns
+3. **Hook-based animations**: Exposing animation state for custom animations
+
+Different libraries handle animations in different ways:
+- **Radix UI**: Uses data attributes (`data-state`, `data-side`, etc.) for CSS animations
+- **Chakra UI**: Provides transition components for common animations
+- **Material UI**: Offers dedicated transition components
+- **AriaKit**: Supports CSS transitions and library integration
+
+Our approach leverages data attributes for maximum flexibility:
+
+```jsx
+<Overlay.Content
+  className={({ state }) => {
+    if (state.open && state.animated) return styles.contentAnimateIn;
+    if (!state.open && state.animated) return styles.contentAnimateOut;
+    return styles.content;
+  }}
+>
+  Content with CSS animations
+</Overlay.Content>
+```
+
+## Mobile Considerations
+
+Mobile devices present unique challenges for overlays:
+
+1. **Touch interactions**: Mobile-friendly dismissal and interaction patterns
+2. **Virtual keyboard handling**: Adjusting for keyboard appearance that may cover content
+3. **Safe areas**: Respecting device-specific safe areas (notches, home indicators)
+4. **Scroll management**: Preventing background content scroll without breaking overlay scrolling
+
+Specific issues identified in our research:
+- iOS Safari has unique scroll behavior requiring special handling
+- Android Chrome can have focus-related scrolling issues
+- Virtual keyboards can push content out of view
+
+React Aria handles most of these issues effectively, particularly with its `usePreventScroll` hook that properly manages iOS Safari edge cases.
+
+## Scrolling Behavior
+
+Scroll management is a complex aspect of overlay implementation. Our research revealed several approaches:
+
+1. **Body overflow technique**: Setting `overflow: hidden` on the document body
+2. **Position fixed technique**: Using `position: fixed` with saved scroll position
+3. **Inert attribute**: Using the `inert` attribute on background elements (limited browser support)
+
+React Aria's `usePreventScroll` hook provides the most robust solution:
+
+```javascript
+// Excerpt from React Aria's implementation
+useLayoutEffect(() => {
+  if (!isDisabled && isMounted.current) {
+    activeCount++;
+    if (activeCount === 1) {
+      // Save the initial body style
+      originalStyles.current = {
+        overflow: document.body.style.overflow,
+        paddingRight: document.body.style.paddingRight
+      };
+
+      // Get the scrollbar width
+      let scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      // Add padding to prevent layout shift
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
+
+      // Prevent scrolling
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      activeCount--;
+      if (activeCount === 0) {
+        // Restore the initial body style
+        document.body.style.overflow = originalStyles.current.overflow;
+        document.body.style.paddingRight = originalStyles.current.paddingRight;
+      }
+    };
+  }
+}, [isDisabled]);
+```
+
+## Performance Considerations
+
+Performance is critical for overlays, especially on mobile devices. Our research identified several optimization opportunities:
+
+1. **Conditional rendering**: Only mount components when they're visible
+2. **Memoization**: Use React.memo and useMemo for complex overlay content
+3. **Animation optimization**: Animate only transform and opacity properties when possible
+4. **Lazy loading**: Support code-splitting for heavy overlay content
+5. **Cleanup**: Ensure proper removal of event listeners and cleanup of effects
+
+Implementation examples for performance optimization:
+
+```jsx
+// Conditional rendering
+function OptimizedOverlay() {
+  const [open, setOpen] = useState(false);
+
+  // Only render overlay content when open
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open</button>
+      {open && (
+        <Overlay.Root>
+          <Overlay.Content>
+            {/* Content here */}
+          </Overlay.Content>
+        </Overlay.Root>
+      )}
+    </>
+  );
+}
+
+// Memoization for expensive content
+const MemoizedOverlayContent = React.memo(function OverlayContent() {
+  // Complex content here
+  return <div>{/* ... */}</div>;
+});
+```
+
+## Accessibility Highlights
+
+The Overlay primitive inherits React Aria's excellent accessibility features:
+
+- **ARIA roles:** Automatically applies `role="dialog"` or `role="alertdialog"` when appropriate
+- **Modal state:** Uses `aria-modal="true"` for modal overlays
+- **Focus management:** Implements proper focus trapping via the FocusScope primitive
+- **Keyboard support:**
+  - Escape key to dismiss
+  - Tab navigation contained within the overlay
+  - Return focus to trigger element on close
+- **Screen reader announcements** for overlay state changes
+- **Proper handling of focus order** with multiple overlays
+
+For mobile accessibility specifically:
+- Touch targets follow accessibility guidelines (minimum 44×44px)
+- Screen reader gestures are properly supported
+- Visible focus indicators are maintained for keyboard users
+
+## Internationalization, RTL, and Mobile Considerations
+
+The Overlay primitive is designed to work across different languages and layouts:
+
+- **RTL support:** The overlay positioning and animations work correctly in right-to-left layouts
+- **Mobile considerations:**
+  - Larger touch targets for mobile interactions
+  - Special handling for iOS Safari to prevent background content scrolling
+  - Support for mobile gestures (swipe to dismiss)
+  - Adjustments for virtual keyboard appearance
+  - Responsive sizing and positioning
+
+- **Internationalization:** The component handles text expansion from different languages by using flexible layouts
+
+## Data Attributes and Slot Map
+
+### Expected `data-*` Attributes
+
+| Attribute             | Description                                   | Example Values         |
+|----------------------|-----------------------------------------------|------------------------|
+| `data-state`         | Current state of the overlay                  | "open", "closed"       |
+| `data-open`          | Whether the overlay is open                   | "true", "false"        |
+| `data-modal`         | Whether the overlay blocks interactions       | "true", "false"        |
+| `data-animated`      | Whether the overlay is animated               | "true", "false"        |
+| `data-placement`     | Positioning of the overlay                    | "center", "top", etc.  |
+| `data-override`      | Indicates customized behavior                 | "style", "className"   |
+| `data-version`       | Component version (dev only)                  | "overlay@1.0"          |
+| `data-top-most`      | Whether overlay is the topmost in stack       | "true", "false"        |
+
+### Slot Map
+
+| Slot Name    | Description                           | Required | Default Fallback |
+|--------------|---------------------------------------|----------|------------------|
+| `root`       | Top-level overlay container           | Yes      | Yes              |
+| `backdrop`   | Background layer behind content       | No       | Yes              |
+| `content`    | Container for overlay content         | Yes      | Yes              |
+| `trigger`    | Element that opens the overlay        | No       | No               |
+| `close`      | Close button/trigger                  | No       | No               |
+
+## Code Examples
+
+### Basic usage
+
+```jsx
+import { Overlay } from '@bento/overlay';
+import { Layer } from '@bento/layer-stack';
+
+function BasicModal() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Layer.Provider>
+      <button onClick={() => setOpen(true)}>Open Overlay</button>
+
+      <Overlay.Root open={open} onOpenChange={setOpen}>
+        <Overlay.Backdrop />
+        <Overlay.Content>
+          <h2>Basic Overlay</h2>
+          <p>This is a simple overlay with backdrop and content.</p>
+          <Overlay.Close>Close</Overlay.Close>
+        </Overlay.Content>
+      </Overlay.Root>
+    </Layer.Provider>
+  );
+}
+```
+
+### Multiple overlays demonstrating stacking
+
+```jsx
+function MultipleOverlays() {
+  const [firstOpen, setFirstOpen] = useState(false);
+  const [secondOpen, setSecondOpen] = useState(false);
+
+  return (
+    <Layer.Provider>
+      <button onClick={() => setFirstOpen(true)}>Open First Overlay</button>
+
+      <Overlay.Root open={firstOpen} onOpenChange={setFirstOpen}>
+        <Overlay.Content>
+          <h2>First Overlay</h2>
+          <button onClick={() => setSecondOpen(true)}>Open Second Overlay</button>
+          <Overlay.Close>Close First</Overlay.Close>
+        </Overlay.Content>
+      </Overlay.Root>
+
+      <Overlay.Root open={secondOpen} onOpenChange={setSecondOpen}>
+        <Overlay.Content>
+          <h2>Second Overlay</h2>
+          <p>This overlay appears above the first one.</p>
+          <Overlay.Close>Close Second</Overlay.Close>
+        </Overlay.Content>
+      </Overlay.Root>
+    </Layer.Provider>
+  );
+}
+```
+
+### Animation with render props
+
+```jsx
+function AnimatedOverlay() {
+  return (
+    <Overlay.Root>
+      <Overlay.Trigger>Open animated overlay</Overlay.Trigger>
+
+      <Overlay.Backdrop
+        className={({ state }) =>
+          state.open ? styles.backdropOpen : styles.backdropClosed
+        }
+      />
+
+      <Overlay.Content
+        className={({ state }) => {
+          if (state.open && state.animated) return styles.contentAnimateIn;
+          if (!state.open && state.animated) return styles.contentAnimateOut;
+          return styles.content;
+        }}
+      >
+        <h2>Animated Overlay</h2>
+        <p>This overlay has custom enter/exit animations.</p>
+        <Overlay.Close>Close</Overlay.Close>
+      </Overlay.Content>
+    </Overlay.Root>
+  );
+}
+```
+
+### Non-modal overlay with custom positioning
+
+```jsx
+function PositionedOverlay() {
+  return (
+    <Overlay.Root modal={false}>
+      <Overlay.Trigger>Open positioned overlay</Overlay.Trigger>
+
+      <Overlay.Content
+        placement="bottom-start"
+        offset={8}
+        // These props are passed through to React Aria's positioning
+      >
+        <p>This overlay is positioned relative to its trigger.</p>
+        <Overlay.Close>Close</Overlay.Close>
+      </Overlay.Content>
+    </Overlay.Root>
+  );
+}
+```
+
+### Toast system using the same primitives
+
+```jsx
+function ToastSystem() {
+  const { toasts, removeToast } = useToasts();
+  const layerStack = useLayerStack();
+
+  return (
+    <Portal>
+      <div className="toast-container">
+        {toasts.map(toast => {
+          // Register each toast with the layer system
+          const layer = layerStack.register(toast.id, { type: 'toast' });
+
+          return (
+            <div
+              key={toast.id}
+              style={{ zIndex: layer.getInfo().zIndex }}
+              className="toast"
+              data-topmost={layer.getInfo().isTopmostOfType}
+            >
+              {toast.message}
+              <button onClick={() => removeToast(toast.id)}>Dismiss</button>
+              {/* Use VisuallyHidden for screen readers */}
+              <VisuallyHidden>
+                {toast.isError ? 'Error notification' : 'Notification'}
+              </VisuallyHidden>
+            </div>
+          );
+        })}
+      </div>
+    </Portal>
+  );
+}
+```
+
+## Competitive Research
+
+We conducted comprehensive research across major component libraries to identify the best approaches to overlay implementation:
+
+### React Aria
+
+React Aria provides a robust set of hooks for building accessible overlays:
+
+- **useOverlay**: Manages ARIA attributes and keyboard interactions
+- **useModalOverlay**: Adds modal-specific behaviors like backdrop interaction
+- **useFocusScope**: Handles focus containment
+- **usePreventScroll**: Manages scroll locking with excellent cross-browser support
+- **useOverlayPosition**: Supports positioning relative to trigger elements
+- **useOverlayTrigger**: Connects trigger elements to overlays
+
+React Aria excels at accessibility but has a more imperative API that requires additional work to fit into Bento's composable component model.
+
+### Radix UI
+
+Radix UI offers a highly composable dialog component:
+
+```jsx
+// Radix UI approach
+<Dialog.Root>
+  <Dialog.Trigger />
+  <Dialog.Portal>
+    <Dialog.Overlay />
+    <Dialog.Content>
+      <Dialog.Title />
+      <Dialog.Description />
+      <Dialog.Close />
+    </Dialog.Content>
+  </Dialog.Portal>
+</Dialog.Root>
+```
+
+Strengths:
+- Excellent composition model
+- Good animation support via data attributes
+- Solid accessibility
+
+Weaknesses:
+- Some mobile edge cases
+- Occasional focus management issues in complex scenarios
+
+### AriaKit
+
+AriaKit provides a flexible, store-based approach:
+
+```jsx
+// AriaKit approach
+const dialog = useDialogStore();
+
+<Dialog store={dialog}>
+  <DialogHeading>Title</DialogHeading>
+  <DialogDescription>Description</DialogDescription>
+  <div>Content</div>
+  <DialogDismiss>Close</DialogDismiss>
+</Dialog>
+```
+
+Strengths:
+- Powerful, flexible API
+- Excellent composition
+- Strong accessibility
+
+Weaknesses:
+- More complex API with steeper learning curve
+- Less direct React Aria integration
+
+### Headless UI
+
+Headless UI offers a simpler approach with good animation integration:
+
+```jsx
+// Headless UI approach
+<Transition show={isOpen}>
+  <Dialog onClose={setIsOpen}>
+    <Dialog.Overlay />
+    <Dialog.Title>Title</Dialog.Title>
+    <Dialog.Description>Description</Dialog.Description>
+    <div>Content</div>
+  </Dialog>
+</Transition>
+```
+
+Strengths:
+- Simplicity
+- Good animation integration
+- Solid accessibility
+
+Weaknesses:
+- Less flexible
+- Fewer customization options
+
+### Material UI
+
+Material UI provides a comprehensive modal implementation:
+
+```jsx
+// Material UI approach
+<Modal
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="modal-title"
+  aria-describedby="modal-description"
+>
+  <Box>
+    <h2 id="modal-title">Title</h2>
+    <p id="modal-description">Description</p>
+  </Box>
+</Modal>
+```
+
+Strengths:
+- Comprehensive features
+- Good performance optimizations
+- Built-in transitions
+
+Weaknesses:
+- More opinionated
+- Less headless
+- Less compositional
+
+## UX Best Practices for Multiple Overlays
+
+From a user experience perspective, multiple active overlays require careful consideration:
+
+1. **Visual hierarchy**: Each new overlay should clearly appear above previous ones
+2. **Contextual relationship**: Related overlays should maintain visual connection
+3. **Consistent dismissal pattern**: Users should be able to dismiss overlays in reverse order of appearance
+
+Our research identified several effective patterns:
+
+- **Overlay groups**: Supporting parent-child relationships between overlays
+- **Contextual positioning**: Positioning new overlays relative to their trigger elements
+- **Backdrop variation**: Using different backdrop opacities or colors to indicate hierarchy
+- **Animation coordination**: Coordinating enter/exit animations between overlays
+
+These patterns can be implemented using our proposed primitives:
+
+```jsx
+// Managing parent-child overlay relationships
+<Overlay.Root>
+  <Overlay.Trigger>Open parent</Overlay.Trigger>
+  <Overlay.Content>
+    <Overlay.Root>
+      <Overlay.Trigger>Open child</Overlay.Trigger>
+      <Overlay.Content>
+        Child overlay content
+      </Overlay.Content>
+    </Overlay.Root>
+  </Overlay.Content>
+</Overlay.Root>
+```
+
+## Animation Capabilities
+
+All modern overlay implementations support animations, with varying approaches:
+
+- **CSS-based**: Using data attributes for state-driven animations
+- **Component-based**: Providing animation components for common patterns
+- **Hook-based**: Exposing animation state for custom animation
+
+Our approach leverages data attributes for maximum flexibility while supporting integration with animation libraries:
+
+```css
+/* CSS-based animation example */
+.overlay[data-state="open"] {
+  animation: fadeIn 200ms ease;
+}
+
+.overlay[data-state="closed"] {
+  animation: fadeOut 200ms ease;
+}
+```
+
+This approach works well with:
+- Pure CSS animations
+- CSS-in-JS libraries
+- Animation libraries like Framer Motion
+
+## Z-index Management
+
+Stacking context and z-index management require a systematic approach, which our LayerStack primitive provides:
+
+- **Established z-index scale**: Predefined ranges for different UI layer types
+- **Dynamic z-index calculation**: Based on layer type and existing layers
+- **Proper stacking of multiple layers**: Ensuring correct visual hierarchy
+- **Integration with React Aria's overlay container**: For maximum compatibility
+
+The LayerStack primitive handles these concerns automatically, providing a consistent approach across all Bento components.
+
+## Conclusion
+
+By creating a suite of generalized primitives as individual packages, the Bento Overlay component can leverage reusable building blocks that serve multiple UI patterns. This approach:
+
+1. **Maximizes reusability** across the component system
+2. **Follows Bento's established architecture** of separate primitive packages
+3. **Leverages React Aria** for best-in-class accessibility
+4. **Enables consistent behavior** across different UI patterns
+5. **Promotes compositional flexibility** for developers
+
+The resulting Overlay component will be built on a solid foundation of primitives that can be used and maintained independently, making the entire Bento system more robust, consistent, and developer-friendly.

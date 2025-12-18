@@ -1,6 +1,6 @@
 {
   "name": "@bento/forward",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React 19-compatible forwardRef utility for Bento",
   "type": "module",
   "main": "./dist/index.cjs",

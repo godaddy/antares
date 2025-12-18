@@ -1,6 +1,6 @@
 {
   "name": "@bento/use-props",
-  "version": "0.1.1",
+  "version": "0.2.2",
   "description": "Context aware props transformation for Bento",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -41,10 +41,11 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/box": "^0.1.1",
+    "@bento/box": "^0.2.0",
     "@bento/types": "^0.1.0",
-    "@react-aria/utils": "^3.26.0"
+    "@react-aria/utils": "^3.30.0"
   },
+  "devDependencies": {},
   "peerDependencies": {
     "react": "18.x || 19.x",
     "react-dom": "18.x || 19.x"

@@ -38,8 +38,8 @@
     "package.json"
   ],
   "devDependencies": {
-    "@bento/slots": "^0.1.3",
-    "@bento/use-props": "^0.1.1"
+    "@bento/slots": "^0.3.0",
+    "@bento/use-props": "^0.2.1"
   },
   "exports": {
     ".": {

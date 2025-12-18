@@ -1,0 +1,1571 @@
+# Overlay Component PDR
+
+## Purpose
+
+The Overlay component serves as the primary building block for creating layered UI experiences where content appears above the main application view. It provides a complete, accessible foundation for modal dialogs, drawers, fullscreen overlays, and other patterns requiring content to appear on top of the page.
+
+**For micro-frontend architectures**, Overlay integrates with Layer Orchestration (see `layer-orchestration.mdx`) to coordinate layers across independent JavaScript bundles **without requiring a host application**. Using a DOM-based registry, MFEs self-organize to ensure proper z-index management, priority resolution, and ARIA coordination when multiple MFEs compete for screen space.
+
+The Overlay component addresses several key scenarios:
+
+- **Modal dialogs**: Displaying content that requires immediate user attention
+- **Drawers and sheets**: Side panels or bottom sheets common in mobile interfaces
+- **Loading states**: Fullscreen loading indicators that block interaction
+- **Image viewers**: Lightbox-style image viewing experiences
+- **Onboarding flows**: Step-by-step tutorials that overlay the application
+
+This component will be consumed by:
+- Application developers building modal interfaces
+- Design system teams creating specialized dialog components
+- Product teams implementing mobile-first drawer patterns
+- Any UI pattern requiring layered content with focus management
+
+### Unique Attributes
+
+The Overlay component differs from simple portal+backdrop combinations in these key ways:
+
+- **Complete accessibility**: Built on React Aria's `useModalOverlay` with proper ARIA attributes and focus management
+- **Composable architecture**: Combines Portal, Underlay, and FocusLock primitives through Bento's slot system
+- **Flexible rendering**: Supports both modal (blocking) and non-modal (non-blocking) overlays
+- **Scroll management**: Integrates with React Aria's `usePreventScroll` to handle background scrolling
+- **Mobile-optimized**: Handles iOS Safari scroll quirks and mobile gesture patterns
+- **Bento patterns**: Built with `withSlots`, `useProps`, and `useDataAttributes` for ecosystem consistency
+
+## Primitive Composition
+
+The Overlay component composes several Bento primitives and systems:
+
+1. **`Portal`** (@bento/portal): Renders overlay content outside parent DOM hierarchy
+2. **`Underlay`** (@bento/underlay): Provides backdrop with click-to-dismiss behavior
+3. **`FocusLock`** (@bento/focus-lock): Manages focus containment within overlay
+4. **`Container`** (@bento/container): Polymorphic container for overlay content
+5. **`useLayerOrchestration`** (@bento/layer-orchestration): Registers layer in DOM registry for multi-MFE coordination (optional)
+6. **`useModalOverlay`** (React Aria): Provides modal overlay behavior and accessibility
+7. **`useModal`** (React Aria): Manages aria-hidden coordination
+8. **`usePreventScroll`** (React Aria): Prevents background scrolling when overlay is open
+9. **`useDialog`** (React Aria): Provides dialog ARIA attributes when needed
+10. **`useOverlayTriggerState`** (React Aria): State management for overlays
+11. **`withSlots`**: Bento's slot system for composition
+12. **`useProps`**: Bento's prop handling with state exposure
+13. **`useDataAttributes`**: Exposes state as data attributes
+
+### Implementation
+
+```tsx
+import { useRef } from 'react';
+import { useModalOverlay, useDialog, usePreventScroll, useModal } from '@react-aria/overlays';
+import { useOverlayTriggerState } from '@react-stately/overlays';
+import { withSlots, type Slots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+import { useDataAttributes } from '@bento/use-data-attributes';
+import { Portal } from '@bento/portal';
+import { Underlay } from '@bento/underlay';
+import { FocusLock } from '@bento/focus-lock';
+import { Container } from '@bento/container';
+
+export interface OverlayProps extends Slots {
+  /**
+   * Micro-frontend identifier for cross-bundle coordination.
+   * Required when using Layer Orchestrator.
+   * @example 'checkout-mfe', 'legal-compliance', 'marketing'
+   */
+  mfeId?: string;
+
+  /**
+   * Priority level for layer orchestration.
+   * Determines z-index and blocking behavior in multi-MFE scenarios.
+   * @default 'normal'
+   */
+  priority?: 'critical' | 'high' | 'normal' | 'low';
+
+  /**
+   * Whether the overlay is open.
+   * Controlled prop - component is fully controlled when provided.
+   */
+  isOpen?: boolean;
+
+  /**
+   * Default open state for uncontrolled usage.
+   * @default false
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Called when the overlay's open state changes.
+   */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * Whether the overlay is modal (blocking).
+   * @default true
+   */
+  isModal?: boolean;
+
+  /**
+   * Whether the overlay can be dismissed.
+   * @default true
+   */
+  isDismissable?: boolean;
+
+  shouldCloseOnInteractOutside?: boolean;
+  shouldCloseOnEscape?: boolean;
+  portalContainer?: Element | DocumentFragment;
+  shouldBlockScroll?: boolean;
+  shouldRestoreFocus?: boolean;
+  shouldAutoFocus?: boolean;
+  shouldContainFocus?: boolean;
+  role?: 'dialog' | 'alertdialog' | 'menu' | 'listbox';
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+  'aria-label'?: string;
+  children?: React.ReactNode;
+  className?: string | ((state: OverlayState) => string);
+  style?: React.CSSProperties | ((state: OverlayState) => React.CSSProperties);
+}
+
+export interface OverlayState {
+  isOpen: boolean;
+  isModal: boolean;
+  isDismissable: boolean;
+}
+
+export const Overlay = withSlots('BentoOverlay', function Overlay(args: OverlayProps) {
+  const {
+    mfeId,                           // Micro-frontend ID for orchestration
+    priority = 'normal',             // Priority level
+    isModal = true,
+    isDismissable = true,
+    shouldCloseOnInteractOutside = isDismissable,
+    shouldCloseOnEscape = isDismissable,
+    shouldBlockScroll = isModal,
+    shouldRestoreFocus = true,
+    shouldAutoFocus = true,
+    shouldContainFocus = isModal,
+    portalContainer,
+    role = 'dialog',
+    ...restArgs
+  } = args;
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  // State management
+  const state = useOverlayTriggerState(args);
+  const { isOpen } = state;
+
+  // Register with Layer Orchestration (if mfeId provided)
+  const orchestration = mfeId
+    ? useLayerOrchestration({
+        type: 'overlay',
+        priority,
+        mfeId,
+        isOpen
+      })
+    : null;
+
+  // Use orchestrated z-index/ARIA if available
+  const orchestratedZIndex = orchestration?.zIndex;
+  const orchestratedAriaHidden = orchestration?.ariaHidden;
+  const orchestratedAriaModal = orchestration?.ariaModal;
+
+  // Modal overlay behavior (React ARIA)
+  const { modalProps, underlayProps } = useModalOverlay(
+    {
+      isOpen,
+      onClose: () => state.setOpen(false),
+      isDismissable,
+      shouldCloseOnInteractOutside
+    },
+    state,
+    ref
+  );
+
+  // useModal manages aria-hidden for single-tree coordination
+  // Layer orchestration overrides this for multi-MFE scenarios
+  useModal({
+    isDisabled: !isModal || !isOpen || !!orchestration
+  });
+
+  // Dialog ARIA attributes
+  const { dialogProps } = useDialog(
+    {
+      role,
+      'aria-labelledby': args['aria-labelledby'],
+      'aria-describedby': args['aria-describedby'],
+      'aria-label': args['aria-label']
+    },
+    ref
+  );
+
+  // Prevent background scroll
+  usePreventScroll({ isDisabled: !shouldBlockScroll || !isOpen });
+
+  // Process props with state
+  const { props, apply } = useProps(restArgs, {
+    isOpen,
+    isModal,
+    isDismissable,
+    priority
+  });
+
+  // Data attributes
+  const dataAttributes = useDataAttributes({
+    open: isOpen,
+    modal: isModal,
+    dismissable: isDismissable,
+    priority
+  });
+
+  if (!isOpen) return null;
+
+  return (
+    <Portal container={portalContainer}>
+      {isModal && (
+        <Underlay
+          {...underlayProps}
+          isOpen={isOpen}
+          isDismissable={isDismissable}
+          onDismiss={() => state.setOpen(false)}
+          slot="underlay"
+          style={{
+            zIndex: orchestratedZIndex ? orchestratedZIndex - 1 : undefined
+          }}
+        />
+      )}
+
+      <FocusLock
+        contain={shouldContainFocus}
+        restoreFocus={shouldRestoreFocus}
+        autoFocus={shouldAutoFocus}
+        slot="focus-lock"
+      >
+        <Container
+          {...apply({ ...modalProps, ...dialogProps, ...dataAttributes })}
+          ref={ref}
+          slot="content"
+          style={{
+            zIndex: orchestratedZIndex,
+            ...props.style
+          }}
+          aria-hidden={orchestratedAriaHidden ? 'true' : undefined}
+          aria-modal={orchestratedAriaModal ? 'true' : undefined}
+        >
+          {props.children}
+        </Container>
+      </FocusLock>
+    </Portal>
+  );
+});
+```
+
+**Key Points:**
+
+1. **Layer Orchestration Integration**: When `mfeId` is provided, registers layer in DOM registry for cross-MFE coordination
+2. **Priority-based stacking**: Uses numeric `priority` for version-agnostic coordination
+3. **Orchestrated z-index**: Calculated from DOM registry by all bundles
+4. **Orchestrated ARIA**: Calculated from DOM registry for multi-MFE scenarios
+5. **React ARIA fallback**: When no `mfeId`, uses React ARIA's OverlayProvider pattern
+6. **Backward compatible**: Works with or without orchestration
+7. **No host needed**: MFEs self-organize via DOM without host application
+
+## Implementation Patterns
+
+| Concept             | Implementation                                               |
+|---------------------|--------------------------------------------------------------|
+| React Aria          | useModalOverlay, usePreventScroll, useDialog, useOverlayTrigger |
+| Slots               | withSlots for customizing underlay, content, and structure   |
+| Render Props        | className and style as functions with state object           |
+| data-* Attributes   | data-open, data-modal, data-dismissable                      |
+| data-version        | Dev-only attribute for version tracking                      |
+| Composability       | Supports nested overlays, custom containers, slot overrides  |
+
+## Internal Structure & Reuse Potential
+
+The Overlay component is designed as a coordinator that brings together focused primitives:
+
+```
+Overlay (state management, coordination)
+├─ Portal (DOM rendering location)
+│  ├─ Underlay (backdrop, click-to-dismiss)
+│  └─ FocusLock (focus containment)
+│     └─ Container (overlay content)
+│        └─ children (user content)
+```
+
+Each piece can be used independently:
+
+- **Portal**: Use alone for tooltips, popovers (no backdrop needed)
+- **Underlay**: Use with custom overlay implementations
+- **FocusLock**: Use for focus trapping without full overlay pattern
+- **Overlay**: Use as complete solution for modal experiences
+
+This separation enables:
+- High reuse of primitives across different patterns
+- Clear separation of concerns (rendering, focus, backdrop, content)
+- Flexibility to compose custom overlay experiences
+- Minimal, focused primitive implementations
+
+## React Aria Integration
+
+The Overlay component leverages multiple React Aria hooks:
+
+### useModalOverlay
+
+Provides core overlay behavior:
+
+```tsx
+const { modalProps, underlayProps } = useModalOverlay(props, state, ref);
+```
+
+Benefits:
+- ARIA attributes for modal overlays (`aria-modal="true"`)
+- Click-outside-to-dismiss behavior
+- Escape key handling
+- Proper event handling across devices
+
+### usePreventScroll
+
+Prevents background scrolling while overlay is open:
+
+```tsx
+usePreventScroll({ isDisabled: !isOpen });
+```
+
+Benefits:
+- Cross-browser scroll prevention
+- Handles iOS Safari scroll quirks
+- Preserves scroll position
+- Accounts for scrollbar width to prevent layout shift
+
+### useDialog (optional)
+
+Provides dialog-specific ARIA attributes when overlay contains a dialog:
+
+```tsx
+const { dialogProps, titleProps } = useDialog(props, ref);
+```
+
+Benefits:
+- Proper `role="dialog"` or `role="alertdialog"`
+- Associates title with dialog via `aria-labelledby`
+- Associates description via `aria-describedby`
+
+### useOverlayTrigger (for parent integration)
+
+Not used directly by Overlay, but provided for components that trigger overlays:
+
+```tsx
+const { triggerProps, overlayProps } = useOverlayTrigger(props, state);
+```
+
+This is exported for consumers building trigger+overlay patterns.
+
+## Architecture & Features
+
+### Core Behavior
+
+The Overlay component:
+
+1. **Manages open/closed state**: Controlled or uncontrolled
+2. **Renders via portal**: Content appears at document.body (customizable)
+3. **Shows backdrop**: Optional underlay with click-to-dismiss
+4. **Locks focus**: Traps keyboard focus within overlay content
+5. **Prevents scroll**: Locks background scrolling while open
+6. **Handles dismissal**: Escape key, outside click, programmatic close
+7. **Exposes state**: Via data attributes and render props
+
+### API
+
+```tsx
+interface OverlayProps extends Slots {
+  /**
+   * Whether the overlay is open.
+   * Controlled prop - component is fully controlled when provided.
+   */
+  isOpen?: boolean;
+
+  /**
+   * Default open state for uncontrolled usage.
+   * @default false
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Called when the overlay's open state changes.
+   */
+  onOpenChange?: (isOpen: boolean) => void;
+
+  /**
+   * Whether the overlay is modal (blocking).
+   * Modal overlays:
+   * - Show a backdrop/underlay
+   * - Prevent background interaction
+   * - Lock focus within overlay
+   * - Prevent background scrolling
+   *
+   * Non-modal overlays:
+   * - No backdrop
+   * - Allow background interaction
+   * - Focus not locked (returns to trigger on Tab out)
+   *
+   * @default true
+   */
+  isModal?: boolean;
+
+  /**
+   * Whether the overlay can be dismissed by:
+   * - Clicking the backdrop/underlay
+   * - Pressing Escape key
+   *
+   * @default true
+   */
+  isDismissable?: boolean;
+
+  /**
+   * Whether to close the overlay when clicking outside.
+   * Only applies when isDismissable is true.
+   * @default true (when isDismissable is true)
+   */
+  shouldCloseOnInteractOutside?: boolean;
+
+  /**
+   * Whether pressing Escape should close the overlay.
+   * Only applies when isDismissable is true.
+   * @default true (when isDismissable is true)
+   */
+  shouldCloseOnEscape?: boolean;
+
+  /**
+   * The container element to portal into.
+   * @default document.body
+   */
+  portalContainer?: Element | DocumentFragment;
+
+  /**
+   * Whether to prevent scrolling on the body while overlay is open.
+   * @default true (when isModal is true)
+   */
+  shouldBlockScroll?: boolean;
+
+  /**
+   * Whether to restore focus to the trigger element when overlay closes.
+   * @default true
+   */
+  shouldRestoreFocus?: boolean;
+
+  /**
+   * Whether to auto-focus the first focusable element when overlay opens.
+   * @default true
+   */
+  shouldAutoFocus?: boolean;
+
+  /**
+   * Whether to contain focus within the overlay.
+   * @default true (when isModal is true)
+   */
+  shouldContainFocus?: boolean;
+
+  /**
+   * ARIA role for the overlay content.
+   * @default 'dialog'
+   */
+  role?: 'dialog' | 'alertdialog' | 'menu' | 'listbox';
+
+  /**
+   * ID of the element that labels the overlay.
+   */
+  'aria-labelledby'?: string;
+
+  /**
+   * ID of the element that describes the overlay.
+   */
+  'aria-describedby'?: string;
+
+  /**
+   * Accessible label for the overlay when aria-labelledby is not provided.
+   */
+  'aria-label'?: string;
+
+  /**
+   * The content to render inside the overlay.
+   */
+  children?: React.ReactNode;
+
+  /**
+   * Custom className for the overlay content.
+   * Can be a string or render prop receiving state.
+   */
+  className?: string | ((state: OverlayState) => string);
+
+  /**
+   * Custom styles for the overlay content.
+   * Can be an object or render prop receiving state.
+   */
+  style?: React.CSSProperties | ((state: OverlayState) => React.CSSProperties);
+}
+
+interface OverlayState {
+  /** Whether the overlay is currently open */
+  isOpen: boolean;
+  /** Whether the overlay is modal (blocking) */
+  isModal: boolean;
+  /** Whether the overlay can be dismissed */
+  isDismissable: boolean;
+}
+```
+
+### Rendered DOM Structure
+
+```html
+<!-- Portal renders to document.body by default -->
+<div data-portal="true">
+  <!-- Underlay (only when isModal=true) -->
+  <div
+    data-underlay="true"
+    data-dismissable="true"
+    class="overlay-underlay"
+  ></div>
+
+  <!-- Focus lock container (only when shouldContainFocus=true) -->
+  <div data-focus-lock="true">
+    <!-- Overlay content -->
+    <div
+      role="dialog"
+      aria-modal="true"
+      data-open="true"
+      data-modal="true"
+      data-dismissable="true"
+      class="overlay-content"
+    >
+      <!-- User content goes here -->
+    </div>
+  </div>
+</div>
+```
+
+### Controlled vs Uncontrolled
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Button } from '@bento/button';
+import { Text } from '@bento/text';
+import { useState } from 'react';
+
+// Controlled - component manages state
+function ControlledExample() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Container>
+      <Button onPress={() => setIsOpen(true)}>
+        <Text>Open</Text>
+      </Button>
+      <Overlay isOpen={isOpen} onOpenChange={setIsOpen}>
+        <Container>
+          <Heading level={2}>Modal Content</Heading>
+          <Button onPress={() => setIsOpen(false)}>
+            <Text>Close</Text>
+          </Button>
+        </Container>
+      </Overlay>
+    </Container>
+  );
+}
+
+// Uncontrolled - Overlay manages state internally
+function UncontrolledExample() {
+  return (
+    <Overlay defaultOpen={false}>
+      {({ close }) => (
+        <Container>
+          <Heading level={2}>Modal Content</Heading>
+          <Button onPress={close}>
+            <Text>Close</Text>
+          </Button>
+        </Container>
+      )}
+    </Overlay>
+  );
+}
+```
+
+### Slot Map
+
+| Slot Name    | Description                          | Required | Default Fallback |
+|--------------|--------------------------------------|----------|------------------|
+| `underlay`   | Backdrop/underlay element            | No       | Yes (when modal) |
+| `content`    | Main overlay content container       | No       | Yes              |
+| `focus-lock` | Focus containment wrapper            | No       | Yes (when modal) |
+
+### State Management
+
+The Overlay uses React Aria's overlay state management pattern:
+
+```tsx
+// Internal state management
+const state = useOverlayTriggerState(props);
+const { isOpen } = state;
+```
+
+This provides:
+- Controlled/uncontrolled state handling
+- Open/close methods
+- State synchronization
+- Event handler composition
+
+### Modal vs Non-Modal
+
+**Modal overlays** (`isModal={true}`, default):
+- Show backdrop/underlay
+- Lock focus within overlay
+- Prevent background scrolling
+- Block background interaction
+- Apply `aria-modal="true"`
+
+**Non-modal overlays** (`isModal={false}`):
+- No backdrop
+- Focus not locked (can tab to background)
+- Background scrolling allowed
+- Background remains interactive
+- No `aria-modal` attribute
+
+Use cases:
+- Modal: Dialogs requiring user action, critical alerts
+- Non-modal: Tooltips, popovers, dropdown menus
+
+## Accessibility Highlights
+
+The Overlay component provides comprehensive accessibility:
+
+### ARIA Attributes
+
+- **`role`**: Defaults to `"dialog"`, can be `"alertdialog"`, `"menu"`, `"listbox"`
+- **`aria-modal`**: Set to `"true"` for modal overlays
+- **`aria-labelledby`**: Associates overlay with labeling element
+- **`aria-describedby`**: Associates overlay with describing element
+- **`aria-label`**: Direct label when no labelledby element exists
+
+### Focus Management
+
+- **Auto-focus**: First focusable element receives focus on open
+- **Focus containment**: Tab/Shift+Tab cycle within overlay (modal only)
+- **Focus restoration**: Focus returns to trigger element on close
+- **Focus visible**: Keyboard focus indicators shown appropriately
+
+### Keyboard Support
+
+- **Escape**: Closes dismissable overlays
+- **Tab**: Cycles focus within modal overlays
+- **Shift+Tab**: Reverse cycles focus within modal overlays
+
+### Screen Reader Support
+
+- **Role announcement**: Screen readers announce dialog role
+- **Modal state**: `aria-modal` hides background from screen readers
+- **Labeling**: Proper label associations for context
+- **Dismissal**: Screen readers can access close mechanisms
+
+## Internationalization, RTL, and Mobile Considerations
+
+### RTL Support
+
+The Overlay is direction-agnostic:
+- Uses logical properties for layout (`inset`, flexbox)
+- Portal rendering is direction-independent
+- Content direction handled by children
+
+### Mobile Considerations
+
+#### Touch Interactions
+
+- **Touch-to-dismiss**: Underlay responds to touch events
+- **Swipe gestures**: Can be added via custom handlers
+- **Pull-to-close**: Supported via custom implementations
+
+#### iOS Safari Handling
+
+React Aria's `usePreventScroll` handles iOS Safari quirks:
+- Prevents rubber-band scrolling
+- Maintains scroll position
+- Handles virtual keyboard appearance
+
+#### Safe Areas
+
+Overlays respect device safe areas via CSS:
+
+```tsx
+<Overlay
+  style={{
+    paddingTop: 'env(safe-area-inset-top)',
+    paddingBottom: 'env(safe-area-inset-bottom)'
+  }}
+>
+  {/* content */}
+</Overlay>
+```
+
+#### Mobile Patterns
+
+Common mobile overlay patterns:
+
+- **Bottom sheets**: Overlay from bottom edge
+- **Drawers**: Overlay from side edges
+- **Fullscreen modals**: Cover entire viewport
+
+All supported via styling and slot customization.
+
+### Internationalization
+
+- No text content in component itself
+- ARIA labels provided by consumers in appropriate locale
+- Content direction handled by consumers
+
+## Data Attributes and Slot Map
+
+### Expected `data-*` Attributes
+
+| Attribute            | Description                          | Example Values                      |
+|----------------------|--------------------------------------|-------------------------------------|
+| `data-open`          | Whether overlay is open              | "true" / "false"                    |
+| `data-modal`         | Whether overlay is modal             | "true" / "false"                    |
+| `data-dismissable`   | Whether overlay is dismissable       | "true" / "false"                    |
+| `data-priority`      | Priority level (with orchestrator)   | "critical" / "high" / "normal" / "low" |
+| `data-version`       | Component version (dev only)         | "overlay@1.0"                       |
+
+### Slot Map
+
+| Slot Name    | Description                             | Required | Default Fallback |
+|--------------|-----------------------------------------|----------|------------------|
+| `underlay`   | Backdrop/underlay props                 | No       | Yes (modal only) |
+| `content`    | Main overlay content container props    | No       | Yes              |
+| `focus-lock` | Focus containment wrapper props         | No       | Yes (modal only) |
+
+## Competitive Research
+
+### React Aria
+
+React Aria provides `useModalOverlay` and related hooks but no component. Our Overlay wraps these hooks in a complete, composable component.
+
+**Key learnings**:
+- Separation of modal vs non-modal is essential
+- Focus management is complex and benefits from proven implementation
+- Scroll prevention needs special handling for iOS
+
+**Reference**: [React Aria useModalOverlay](https://react-spectrum.adobe.com/react-aria/useModalOverlay.html)
+
+### Radix UI Dialog
+
+Radix provides a comprehensive Dialog primitive with excellent composition:
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger />
+  <Dialog.Portal>
+    <Dialog.Overlay />
+    <Dialog.Content>
+      <Dialog.Title />
+      <Dialog.Description />
+    </Dialog.Content>
+  </Dialog.Portal>
+</Dialog.Root>
+```
+
+**Key learnings**:
+- Explicit Portal component gives control over rendering
+- Separate Overlay (backdrop) from Content is clearer
+- Trigger integration is valuable for common patterns
+
+**Differences**:
+- Radix uses compound components, Bento uses slots
+- Radix more opinionated about structure
+- Bento more flexible for custom compositions
+
+**Reference**: [Radix Dialog](https://www.radix-ui.com/primitives/docs/components/dialog)
+
+### Headless UI Dialog
+
+Headless UI provides a simpler Dialog component:
+
+```tsx
+<Dialog open={isOpen} onClose={setIsOpen}>
+  <Dialog.Overlay />
+  <Dialog.Panel>
+    <Dialog.Title />
+    <Dialog.Description />
+  </Dialog.Panel>
+</Dialog>
+```
+
+**Key learnings**:
+- Simplicity is valuable for common cases
+- Overlay and Panel separation is intuitive
+- Close handling through onClose prop is straightforward
+
+**Differences**:
+- Headless UI less flexible for advanced composition
+- Bento provides more control via slots
+
+**Reference**: [Headless UI Dialog](https://headlessui.com/react/dialog)
+
+### Chakra UI Modal
+
+Chakra provides a styled Modal component:
+
+```tsx
+<Modal isOpen={isOpen} onClose={onClose}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader />
+    <ModalBody />
+    <ModalFooter />
+  </ModalContent>
+</Modal>
+```
+
+**Key learnings**:
+- Separate overlay from content container
+- Header/Body/Footer structure for common layouts
+- Size variants for different use cases
+
+**Differences**:
+- Chakra includes styling, Bento is headless
+- Chakra more prescriptive about structure
+
+**Reference**: [Chakra Modal](https://chakra-ui.com/docs/components/modal)
+
+### Material UI Dialog
+
+Material UI provides a comprehensive Dialog:
+
+```tsx
+<Dialog open={open} onClose={handleClose}>
+  <DialogTitle />
+  <DialogContent>
+    <DialogContentText />
+  </DialogContent>
+  <DialogActions />
+</Dialog>
+```
+
+**Key learnings**:
+- Structured content areas (Title, Content, Actions)
+- Transition support built-in
+- Various sizing modes
+
+**Differences**:
+- Material UI very opinionated about styling
+- Bento more primitive and flexible
+
+**Reference**: [Material UI Dialog](https://mui.com/material-ui/react-dialog/)
+
+### Ark UI Dialog
+
+Ark UI (Park UI's headless library) provides similar patterns to Radix:
+
+**Key learnings**:
+- Headless approach aligns with Bento
+- Composition via explicit components
+- Strong accessibility foundation
+
+**Reference**: [Ark UI Dialog](https://ark-ui.com/react/docs/components/dialog)
+
+## Multiple Overlays and Stacking
+
+### The Problem
+
+Complex applications frequently need to handle multiple overlays simultaneously:
+
+1. **Nested modals**: A confirmation dialog opens from within a settings modal
+2. **Micro-frontend scenarios**: Multiple independent widgets each opening overlays
+3. **Sequential workflows**: Step-by-step wizards with modal confirmations
+4. **Multiple concurrent overlays**: Chat window + notification + modal
+
+### React ARIA's Solution: OverlayProvider
+
+React ARIA provides `OverlayProvider` to manage multiple overlays **within a single React tree/JavaScript bundle**. This works well for single applications but **has limitations for micro-frontends**.
+
+**Limitations with MFEs:**
+- Only works within single React tree
+- Cannot coordinate across independent JavaScript bundles
+- MFEs can't share OverlayProvider context
+- Z-index conflicts between MFEs
+
+### Layer Orchestration: Cross-MFE Solution
+
+For micro-frontend architectures, use **Layer Orchestration** (see `layer-orchestration.mdx`). This is the **recommended approach for multi-MFE applications**.
+
+**Key Innovation:**
+- **No host required**: MFEs self-organize via DOM registry
+- **Version-agnostic**: Works across Bento v1, v2, v3, etc.
+- **Simple protocol**: DOM attributes as source of truth
+- **No leader election**: All bundles are equal
+
+#### How It Works
+
+```tsx
+import { OverlayProvider } from '@react-aria/overlays';
+import { Overlay } from '@bento/overlay';
+
+function App() {
+  return (
+    <OverlayProvider>
+      <YourApp>
+        {/* All Overlays automatically coordinate */}
+        <Modal1 />
+        <Modal2 />
+      </YourApp>
+    </OverlayProvider>
+  );
+}
+```
+
+**OverlayProvider manages:**
+- **Automatic z-index**: Each overlay gets progressively higher z-index
+- **Focus stack**: Only topmost overlay receives focus
+- **ARIA coordination**: Topmost overlay gets `aria-modal="true"`, others get `aria-hidden="true"`
+- **Shared container**: All overlays portal to the same container
+
+### Stacking Behavior
+
+When multiple overlays are open:
+
+**Visual Stack (Top → Bottom):**
+```
+Inner Modal (z-index: 1020, aria-modal="true")
+Inner Modal Backdrop
+Outer Modal (z-index: 1010, aria-hidden="true")
+Outer Modal Backdrop
+Application (aria-hidden="true" when any modal is open)
+```
+
+**Focus Management:**
+1. Focus moves to newest overlay automatically
+2. Escape key closes topmost overlay
+3. When overlay closes, focus returns to previous overlay (if nested) or trigger element
+
+**ARIA Attributes:**
+- Only topmost modal has `aria-modal="true"`
+- Lower modals have `aria-hidden="true"`
+- Application content has `aria-hidden="true"` when any modal is open
+
+### Backdrop Management
+
+**Bento uses multiple backdrops** (one per overlay) for clearer visual hierarchy:
+
+```tsx
+// Each overlay has its own backdrop
+<Overlay isOpen={modal1Open}>
+  {/* Has its own backdrop */}
+</Overlay>
+
+<Overlay isOpen={modal2Open}>
+  {/* Has its own backdrop on top */}
+</Overlay>
+```
+
+**Benefits:**
+- Shows depth through stacking
+- Each overlay can customize backdrop appearance
+- Matches user expectations from modern UI libraries
+
+### Nested Overlays Example
+
+```tsx
+import { OverlayProvider } from '@react-aria/overlays';
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Button } from '@bento/button';
+import { useState } from 'react';
+
+function App() {
+  return (
+    <OverlayProvider>
+      <MultiOverlayExample />
+    </OverlayProvider>
+  );
+}
+
+function MultiOverlayExample() {
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  return (
+    <Container>
+      <Button onPress={() => setSettingsOpen(true)}>
+        <Text>Open Settings</Text>
+      </Button>
+
+      {/* Settings Modal */}
+      <Overlay
+        isOpen={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        aria-labelledby="settings-title"
+      >
+        <Container className="modal-content">
+          <Heading id="settings-title" level={2}>
+            Settings
+          </Heading>
+          <Text>Adjust your preferences</Text>
+
+          <Button onPress={() => setConfirmOpen(true)}>
+            <Text>Delete Account</Text>
+          </Button>
+
+          <Button onPress={() => setSettingsOpen(false)}>
+            <Text>Close</Text>
+          </Button>
+
+          {/* Confirmation Modal (nested) */}
+          <Overlay
+            isOpen={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            isDismissable={false}
+            role="alertdialog"
+            aria-labelledby="confirm-title"
+          >
+            <Container className="modal-content">
+              <Heading id="confirm-title" level={2}>
+                Confirm Deletion
+              </Heading>
+              <Text>This action cannot be undone. Continue?</Text>
+
+              <Container className="modal-actions">
+                <Button onPress={() => setConfirmOpen(false)}>
+                  <Text>Cancel</Text>
+                </Button>
+                <Button onPress={() => {
+                  // Handle deletion
+                  setConfirmOpen(false);
+                  setSettingsOpen(false);
+                }}>
+                  <Text>Delete</Text>
+                </Button>
+              </Container>
+            </Container>
+          </Overlay>
+        </Container>
+      </Overlay>
+    </Container>
+  );
+}
+```
+
+**Behavior:**
+1. Opening confirmation modal: Settings modal backdrop visible, confirmation modal backdrop on top
+2. Focus: Automatically moves to confirmation modal
+3. Escape: Closes confirmation modal, focus returns to settings modal
+4. ARIA: Confirmation has `aria-modal="true"`, settings has `aria-hidden="true"`
+
+### Micro-Frontend Integration
+
+For micro-frontend architectures, wrap the shell in `OverlayProvider`:
+
+```tsx
+// Shell application
+import { OverlayProvider } from '@react-aria/overlays';
+
+function Shell() {
+  return (
+    <OverlayProvider>
+      <Header />
+      <MicroFrontend1 />
+      <MicroFrontend2 />
+      <Footer />
+    </OverlayProvider>
+  );
+}
+
+// Micro-frontend 1
+function MicroFrontend1() {
+  // Uses Bento Overlay - automatically coordinates with Shell's OverlayProvider
+  return (
+    <Overlay isOpen={isOpen} onOpenChange={setIsOpen}>
+      <Container>
+        <Text>MFE1 Modal Content</Text>
+      </Container>
+    </Overlay>
+  );
+}
+
+// Micro-frontend 2
+function MicroFrontend2() {
+  // Also uses Bento Overlay - stacks correctly with MFE1's modals
+  return (
+    <Overlay isOpen={isOpen} onOpenChange={setIsOpen}>
+      <Container>
+        <Text>MFE2 Modal Content</Text>
+      </Container>
+    </Overlay>
+  );
+}
+```
+
+**Result**: All micro-frontends' overlays:
+- Share the same stacking context
+- Coordinate z-index automatically
+- Manage focus correctly
+- Maintain proper ARIA attributes
+
+### Without OverlayProvider
+
+Overlay works standalone without `OverlayProvider`, but:
+
+**Limitations:**
+- No automatic z-index coordination between separate overlay instances
+- Manual z-index management required
+- Focus management less robust for multiple overlays
+- ARIA attributes not coordinated across overlays
+
+**When acceptable:**
+- Simple applications with only one overlay at a time
+- Controlled environments where z-index can be managed manually
+- Prototyping and development
+
+**Recommendation**: Always use `OverlayProvider` in production applications, especially:
+- Micro-frontend architectures
+- Applications with nested modals
+- Complex workflows with multiple overlays
+- Design systems supporting multiple consumers
+
+### Z-Index Management
+
+With `OverlayProvider`, z-index is managed automatically:
+
+**Base z-indexes by overlay type:**
+- Tooltips: 600
+- Popovers: 700
+- Dropdown Menus: 800
+- Modals/Dialogs: 1000
+- Toast Notifications: 1200
+
+**Stacking within type:**
+- First modal: 1000
+- Second modal (nested): 1010
+- Third modal (nested): 1020
+
+React ARIA increments z-index by 10 for each new overlay of the same type, ensuring proper stacking regardless of nesting depth.
+
+### Testing Multiple Overlays
+
+```tsx
+test('multiple modals stack correctly', async () => {
+  render(
+    <OverlayProvider>
+      <MultiOverlayExample />
+    </OverlayProvider>
+  );
+
+  // Open first modal
+  await user.click(screen.getByRole('button', { name: 'Open Settings' }));
+  const settingsDialog = screen.getByRole('dialog', { name: 'Settings' });
+  expect(settingsDialog).toHaveAttribute('aria-modal', 'true');
+
+  // Open second modal (nested)
+  await user.click(screen.getByRole('button', { name: 'Delete Account' }));
+  const confirmDialog = screen.getByRole('alertdialog', { name: 'Confirm Deletion' });
+
+  // Confirm modal is topmost
+  expect(confirmDialog).toHaveAttribute('aria-modal', 'true');
+  expect(settingsDialog).toHaveAttribute('aria-hidden', 'true');
+
+  // Close confirmation
+  await user.keyboard('{Escape}');
+  expect(confirmDialog).not.toBeInTheDocument();
+
+  // Settings modal is topmost again
+  expect(settingsDialog).toHaveAttribute('aria-modal', 'true');
+  expect(settingsDialog).not.toHaveAttribute('aria-hidden');
+});
+```
+
+### Best Practices
+
+1. **Always use OverlayProvider** in production apps
+2. **Test nested overlay scenarios** for complex UIs
+3. **Limit nesting depth** - typically max 2-3 levels for UX
+4. **Use appropriate roles** - `dialog` for modals, `alertdialog` for confirmations
+5. **Handle focus restoration** - let React ARIA manage it automatically
+6. **Customize backdrop opacity** - consider reducing opacity for nested overlays
+
+## Code Examples
+
+### Basic modal dialog
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Button } from '@bento/button';
+import { useState } from 'react';
+
+function BasicModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Container>
+      <Button onPress={() => setIsOpen(true)}>
+        <Text>Open Modal</Text>
+      </Button>
+
+      <Overlay
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        aria-labelledby="modal-title"
+      >
+        <Container className="modal-content">
+          <Heading id="modal-title" level={2}>
+            Modal Title
+          </Heading>
+          <Text>This is a basic modal dialog.</Text>
+          <Button onPress={() => setIsOpen(false)}>
+            <Text>Close</Text>
+          </Button>
+        </Container>
+      </Overlay>
+    </Container>
+  );
+}
+```
+
+### Non-dismissable loading overlay
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Text } from '@bento/text';
+
+function LoadingOverlay({ isLoading }) {
+  return (
+    <Overlay
+      isOpen={isLoading}
+      isDismissable={false}
+      aria-label="Loading"
+    >
+      <Container className="loading-spinner">
+        {/* Custom spinner component */}
+        <Text>Loading...</Text>
+      </Container>
+    </Overlay>
+  );
+}
+```
+
+### Alert dialog (non-dismissable)
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Button } from '@bento/button';
+
+function AlertDialog({ isOpen, onConfirm, onCancel, title, message }) {
+  return (
+    <Overlay
+      isOpen={isOpen}
+      isDismissable={false}
+      role="alertdialog"
+      aria-labelledby="alert-title"
+      aria-describedby="alert-description"
+    >
+      <Container className="alert-dialog">
+        <Heading id="alert-title" level={2}>{title}</Heading>
+        <Text id="alert-description">{message}</Text>
+        <Container className="alert-actions">
+          <Button onPress={onCancel}>
+            <Text>Cancel</Text>
+          </Button>
+          <Button onPress={onConfirm}>
+            <Text>Confirm</Text>
+          </Button>
+        </Container>
+      </Container>
+    </Overlay>
+  );
+}
+```
+
+### Drawer pattern (side panel)
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Button } from '@bento/button';
+import { Text } from '@bento/text';
+
+function Drawer({ isOpen, onClose, side = 'right', children }) {
+  return (
+    <Overlay
+      isOpen={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+      className={({ isOpen }) =>
+        `drawer drawer-${side} ${isOpen ? 'drawer-open' : 'drawer-closed'}`
+      }
+      slots={{
+        underlay: {
+          className: 'drawer-underlay'
+        },
+        content: {
+          className: `drawer-content drawer-${side}`,
+          style: {
+            position: 'fixed',
+            top: 0,
+            bottom: 0,
+            [side]: 0,
+            width: '80%',
+            maxWidth: '400px'
+          }
+        }
+      }}
+    >
+      <Container className="drawer-inner">
+        <Button onPress={onClose} className="drawer-close">
+          <Text>×</Text>
+        </Button>
+        {children}
+      </Container>
+    </Overlay>
+  );
+}
+```
+
+### Bottom sheet pattern (mobile)
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+
+function BottomSheet({ isOpen, onClose, children }) {
+  return (
+    <Overlay
+      isOpen={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+      className="bottom-sheet"
+      slots={{
+        content: {
+          style: {
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            maxHeight: '80vh',
+            paddingBottom: 'env(safe-area-inset-bottom)'
+          }
+        }
+      }}
+    >
+      <Container className="bottom-sheet-handle" />
+      <Container className="bottom-sheet-content">
+        {children}
+      </Container>
+    </Overlay>
+  );
+}
+```
+
+### Non-modal popover
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+
+function Popover({ isOpen, onClose, triggerRef, children }) {
+  return (
+    <Overlay
+      isOpen={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+      isModal={false}
+      shouldCloseOnInteractOutside={true}
+      role="menu"
+    >
+      <Container
+        className="popover"
+        style={{
+          position: 'absolute',
+          // Position relative to trigger
+          // (positioning logic omitted for brevity)
+        }}
+      >
+        {children}
+      </Container>
+    </Overlay>
+  );
+}
+```
+
+### Nested modals
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Button } from '@bento/button';
+import { useState } from 'react';
+
+function NestedModals() {
+  const [outerOpen, setOuterOpen] = useState(false);
+  const [innerOpen, setInnerOpen] = useState(false);
+
+  return (
+    <Container>
+      <Button onPress={() => setOuterOpen(true)}>
+        <Text>Open Outer Modal</Text>
+      </Button>
+
+      <Overlay
+        isOpen={outerOpen}
+        onOpenChange={setOuterOpen}
+        aria-label="Outer modal"
+      >
+        <Container className="modal-content">
+          <Heading level={2}>Outer Modal</Heading>
+          <Text>This is the outer modal.</Text>
+          <Button onPress={() => setInnerOpen(true)}>
+            <Text>Open Inner Modal</Text>
+          </Button>
+          <Button onPress={() => setOuterOpen(false)}>
+            <Text>Close</Text>
+          </Button>
+
+          <Overlay
+            isOpen={innerOpen}
+            onOpenChange={setInnerOpen}
+            aria-label="Inner modal"
+          >
+            <Container className="modal-content">
+              <Heading level={2}>Inner Modal</Heading>
+              <Text>This is nested inside the outer modal.</Text>
+              <Button onPress={() => setInnerOpen(false)}>
+                <Text>Close Inner</Text>
+              </Button>
+            </Container>
+          </Overlay>
+        </Container>
+      </Overlay>
+    </Container>
+  );
+}
+```
+
+### Custom portal container
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Text } from '@bento/text';
+import { Button } from '@bento/button';
+import { useRef, useState } from 'react';
+
+function CustomPortalOverlay() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Container>
+      <Container ref={containerRef} className="custom-overlay-container" />
+
+      <Button onPress={() => setIsOpen(true)}>
+        <Text>Open Modal</Text>
+      </Button>
+
+      <Overlay
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        portalContainer={containerRef.current}
+      >
+        <Container className="modal-content">
+          <Heading level={2}>Custom Portal</Heading>
+          <Text>This renders in a custom container.</Text>
+          <Button onPress={() => setIsOpen(false)}>
+            <Text>Close</Text>
+          </Button>
+        </Container>
+      </Overlay>
+    </Container>
+  );
+}
+```
+
+### Render prop styling
+
+```tsx
+import { Overlay } from '@bento/overlay';
+
+function StyledOverlay({ isOpen, onClose, children }) {
+  return (
+    <Overlay
+      isOpen={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+      className={({ isOpen, isModal, isDismissable }) =>
+        `overlay ${isOpen ? 'overlay-open' : 'overlay-closed'} ${isModal ? 'overlay-modal' : ''}`
+      }
+      style={({ isOpen }) => ({
+        opacity: isOpen ? 1 : 0,
+        transform: isOpen ? 'scale(1)' : 'scale(0.95)',
+        transition: 'opacity 200ms, transform 200ms'
+      })}
+      slots={{
+        underlay: {
+          className: ({ isDismissable }) =>
+            `underlay ${isDismissable ? 'cursor-pointer' : ''}`
+        }
+      }}
+    >
+      {children}
+    </Overlay>
+  );
+}
+```
+
+### Integration with useOverlayTrigger
+
+```tsx
+import { Overlay } from '@bento/overlay';
+import { Container } from '@bento/container';
+import { Heading } from '@bento/heading';
+import { Button } from '@bento/button';
+import { Text } from '@bento/text';
+import { useOverlayTrigger } from '@react-aria/overlays';
+import { useOverlayTriggerState } from '@react-stately/overlays';
+import { useRef } from 'react';
+
+function TriggerableOverlay() {
+  const state = useOverlayTriggerState({});
+  const triggerRef = useRef(null);
+  const { triggerProps, overlayProps } = useOverlayTrigger(
+    { type: 'dialog' },
+    state,
+    triggerRef
+  );
+
+  return (
+    <Container>
+      <Button {...triggerProps} childRef={triggerRef}>
+        <Text>Open Dialog</Text>
+      </Button>
+
+      <Overlay
+        isOpen={state.isOpen}
+        onOpenChange={state.setOpen}
+        {...overlayProps}
+      >
+        <Container className="modal-content">
+          <Heading level={2}>Dialog Content</Heading>
+          <Button onPress={state.close}>
+            <Text>Close</Text>
+          </Button>
+        </Container>
+      </Overlay>
+    </Container>
+  );
+}
+```
+

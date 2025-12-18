@@ -4,7 +4,7 @@ import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
 import { Box, defaults } from '@bento/box';
 import { withSlots } from '@bento/slots';
-import { UnknownObject } from '@bento/types';
+import { type UnknownObject } from '@bento/types';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
@@ -181,7 +181,7 @@ describe('@bento/use-props', function bento() {
     it('returns a destructured array', function array() {
       const { html, props, apply } = createComponent('array', { id: 'example' });
 
-      assume(html).contains('<div id="example"></div>');
+      assume(html).contains('<div id="example" data-slot="test"></div>');
       assume(props.id).equals('example');
       assume(apply).is.a('function');
     });
@@ -272,8 +272,8 @@ describe('@bento/use-props', function bento() {
 
         const result = apply();
 
-        assume(result).is.size(1);
-        assume(result).deep.equals({ id: 'example' });
+        assume(result).is.size(2);
+        assume(result).deep.equals({ id: 'example', 'data-slot': 'test' });
       });
 
       it('executes the renderProp function if it exists', function renderProp() {
@@ -286,7 +286,7 @@ describe('@bento/use-props', function bento() {
 
         const result = apply({ title: 'example-world' });
 
-        assume(result).is.size(1);
+        assume(result).is.size(2);
         assume(result.title).equals('EXAMPLE-WORLD');
       });
 
@@ -303,8 +303,8 @@ describe('@bento/use-props', function bento() {
 
         const result = apply();
 
-        assume(result).is.size(2);
-        assume(result).deep.equals({ id: 'modified', 'data-override': 'slot' });
+        assume(result).is.size(3);
+        assume(result).deep.equals({ id: 'modified', 'data-override': 'slot', 'data-slot': 'test' });
       });
 
       it('excludes specified properties when no attributes are provided', function excludeNoAttrs() {
@@ -315,8 +315,8 @@ describe('@bento/use-props', function bento() {
 
         const result = apply(undefined, ['foo']);
 
-        assume(result).is.size(1);
-        assume(result).deep.equals({ baz: 'qux' });
+        assume(result).is.size(2);
+        assume(result).deep.equals({ baz: 'qux', 'data-slot': 'test' });
       });
 
       it('excludes specified properties when attributes are provided', function excludeWithAttrs() {
@@ -327,8 +327,8 @@ describe('@bento/use-props', function bento() {
 
         const result = apply({ id: 'example' }, ['foo']);
 
-        assume(result).is.size(2);
-        assume(result).deep.equals({ id: 'example', baz: 'qux' });
+        assume(result).is.size(3);
+        assume(result).deep.equals({ id: 'example', baz: 'qux', 'data-slot': 'test' });
       });
     });
 

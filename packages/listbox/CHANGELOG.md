@@ -1,5 +1,31 @@
 # @bento/listbox
 
+## 0.2.1
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.3.0
+- @bento/use-props@0.2.1
+</details>
+
+## 0.2.0
+
+### Minor Changes
+
+- The slot system now handles forwarding ([#59](https://github.com/godaddy/bento/pull/59) by @akazemier-godaddy)
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/use-props@0.2.0
+- @bento/slots@0.2.0
+</details>
+
 ## 0.1.3
 
 ### Patch Changes

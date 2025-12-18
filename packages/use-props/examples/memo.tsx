@@ -1,6 +1,6 @@
 /* v8 ignore next */
 import React, { useCallback } from 'react';
-import { UnknownObject } from '@bento/types';
+import { type UnknownObject } from '@bento/types';
 import { Button } from './button.tsx';
 
 /**

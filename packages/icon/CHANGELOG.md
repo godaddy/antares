@@ -1,5 +1,30 @@
 # @bento/icon
 
+## 0.1.4
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.3.0
+- @bento/use-props@0.2.1
+- @bento/illustration@0.1.4
+</details>
+
+## 0.1.3
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/use-props@0.2.0
+- @bento/slots@0.2.0
+- @bento/illustration@0.1.3
+- @bento/use-svg-sprite@0.1.2
+</details>
+
 ## 0.1.2
 
 ### Patch Changes

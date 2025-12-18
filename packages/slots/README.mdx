@@ -53,6 +53,36 @@ the component. This allows the component to be targeted with a global slot
 override, but it will also be used as `displayName` to ensure a readable
 component name in the React DevTools.
 
+## Data Attributes
+
+When a `slot` prop is added to a slottable component, a `data-slot` attribute is automatically added to the rendered DOM element. This allows developers to target specific slots using CSS selectors or for debugging purposes.
+
+```tsx
+<Button slot="submit">Submit</Button>
+// Renders: <button data-slot="submit">Submit</button>
+```
+
+This is particularly useful for:
+- **CSS Targeting**: Style specific slots without additional classes.
+- **Debugging**: Quickly identify which slot a component belongs to in DevTools.
+- **Testing**: Select elements by their slot name in tests.
+
+```css
+/* Target all elements with a slot name "submit" */
+[data-slot="submit"] {
+  background-color: blue;
+}
+
+/* Note: Each component only receives its direct slot prop value as data-slot,
+   not a concatenated namespace. For example, if you have nested slots like
+   "form.submit", the submit button will have data-slot="submit", not data-slot="form.submit". */
+
+/* Target nested slots using attribute selectors */
+[data-slot="form"] [data-slot="submit"] {
+  margin-top: 1rem;
+}
+```
+
 ## Forwarding Refs
 
 Components created with `withSlots` automatically support ref forwarding. The `withSlots` function:
@@ -274,3 +304,69 @@ Function slots receive an object with:
 - **Function slots**: Parent function is called, previous functions available in `previous` array
 - **Mixed types**: Function slots take precedence over object slots
 - **Previous array**: Ordered from closest child to furthest ancestor
+
+## Validation
+
+Compositional components often depend on specific child slots to function
+correctly. For example, an `Overlay` component needs content to display, or a
+`Dialog` component requires both a title and body. Without validation, missing
+required slots would cause runtime errors or silent failures that are difficult
+to debug.
+
+### contains
+
+The `contains` utility validates that required slot assignments are present in
+children. This is useful for compositional components that depend on specific
+child slots to function correctly.
+
+```javascript
+import { contains } from '@bento/slots';
+import { BentoError } from '@bento/error';
+import { Container } from '@bento/container';
+
+export const Dialog = withSlots('Dialog', function Dialog(args) {
+  const { children } = args;
+
+  // Validate required slots are present
+  if (!contains(['title', 'content'], children)) {
+    throw new BentoError({
+      name: 'dialog',
+      method: 'Dialog',
+      message: 'Dialog requires children with slot="title" and slot="content"'
+    });
+  }
+
+  return <Container>{children}</Container>;
+});
+```
+
+The `contains` function recursively searches through React children to find
+components with matching `slot` props. It only validates components wrapped with
+`withSlots()` - raw HTML elements with slot props are ignored since they are not
+part of the Bento slot system.
+
+#### Namespaced Slot Validation
+
+You can validate deeply nested slot structures using dot notation. When
+searching for `'submit.icon'`, `contains` will look for a component with
+`slot="submit"` that has a child component with `slot="icon"`:
+
+```javascript
+import { Button } from '@bento/button';
+import { Icon } from '@bento/icon';
+import { BentoError } from '@bento/error';
+
+// Check for a nested slot path
+if (!contains(['submit.icon'], children)) {
+  throw new BentoError({
+    name: 'form',
+    method: 'Form',
+    message: 'Submit button must have an icon'
+  });
+}
+
+// This will find:
+// <Button slot="submit">
+//   <Icon slot="icon">→</Icon>
+// </Button>
+```
