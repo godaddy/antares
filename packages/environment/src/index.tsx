@@ -137,5 +137,3 @@ export function Environment({ children, lock = false, ...config }: EnvironmentPr
 
   return <Box.Provider value={context}>{children}</Box.Provider>;
 }
-
-export { withLock } from './with-lock.tsx';
