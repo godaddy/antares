@@ -104,7 +104,7 @@ describe('@bento/box', function bento() {
       };
 
       const result = renderToString(
-        <Box.Provider value={{ env: customEnv, slots: { override: false, namespace: [], assigned: {} } }}>
+        <Box.Provider value={{ env: { ...customEnv, locked: false, lockGeneration: 0 }, slots: { override: false, namespace: [], assigned: {}, slotGenerations: {} } }}>
           <Slot slots={{ trigger: { test: 'value' } }}>
             <Box.Consumer>
               {function render(ctx) {
@@ -175,8 +175,8 @@ describe('@bento/box', function bento() {
       const result = renderToString(
         <Box.Provider
           value={{
-            env: { components: {}, sprite: '', document: () => document, window: () => window },
-            slots: { override: true, namespace: ['parent', 'child'], assigned: {} }
+            env: { components: {}, sprite: '', document: () => document, window: () => window, locked: false, lockGeneration: 0 },
+            slots: { override: true, namespace: ['parent', 'child'], assigned: {}, slotGenerations: {} }
           }}
         >
           <Slot slots={{ trigger: { test: 'value' } }}>

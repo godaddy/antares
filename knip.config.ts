@@ -26,7 +26,8 @@ const config: KnipConfig = {
       // Ignore circular dependencies in examples and tests - these are for demo purposes
       ignore: [
         'examples/**/*', // Example files that may use circular dependencies for demos
-        'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
+        'test/**/*.test.tsx', // Test files that may need circular dependencies for testing
+        'test/**/*.test.ts' // Test files that may need circular dependencies for testing
       ]
     },
     'packages/storybook-addon-helpers': {
