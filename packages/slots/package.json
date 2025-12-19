@@ -48,8 +48,8 @@
     "use-deep-compare": "^1.3.0"
   },
   "devDependencies": {
-    "@bento/environment": "*",
-    "@bento/use-props": "*"
+    "@bento/environment": "^0.1.4",
+    "@bento/use-props": "^0.2.2"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

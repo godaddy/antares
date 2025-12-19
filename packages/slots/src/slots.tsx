@@ -111,9 +111,16 @@ export function withSlots<Props extends object>(
     // parent component slots should take precedence over child ones.
     //
     const currentGeneration = ctx.env.lockGeneration || 0;
-    // Slots passed via props come from the parent context, so they should be
-    // tagged with the generation before the current component if inside a lock
-    const slotPropsGeneration = currentGeneration > 0 ? currentGeneration - 1 : 0;
+    //
+    // Slots passed via props at this point are part of the CURRENT render tree.
+    // If we're inside a locked environment, these are "internal composition" slots
+    // and should be tagged with the CURRENT generation (not flagged as overrides).
+    //
+    // Consumer slots (passed from OUTSIDE the lock) are tagged by the Environment
+    // component BEFORE it increments the generation, so they have a lower generation
+    // and will be flagged as overrides.
+    //
+    const slotPropsGeneration = currentGeneration;
 
     for (const slotKey in slots) {
       // Build the fully qualified slot key by prefixing with current namespace

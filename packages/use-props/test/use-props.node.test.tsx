@@ -136,7 +136,7 @@ describe('@bento/use-props', function bento() {
      * @property {function} apply - The apply function returned by useProps.
      * @private
      */
-    function createComponent(name: string, props = {}, slots = {}) {
+    function createComponent(name: string, props = {}, slots = {}, locked = false) {
       let result: any;
 
       const TestReturn = withSlots(`BentoRenderProps-${name}`, function Component(args) {
@@ -149,6 +149,14 @@ describe('@bento/use-props', function bento() {
       context.slots.assigned = { test: slots };
       context.slots.namespace = [];
       context.slots.override = false;
+
+      // Set up locked environment if requested
+      if (locked) {
+        context.env.locked = true;
+        context.env.lockGeneration = 1;
+        // Mark the slot as from an earlier generation (before lock)
+        context.slots.slotGenerations = { test: 0 };
+      }
 
       return {
         html: renderToString(
@@ -298,7 +306,8 @@ describe('@bento/use-props', function bento() {
           },
           {
             id: 'modified'
-          }
+          },
+          true // locked environment to trigger data-override
         );
 
         const result = apply();
@@ -340,7 +349,8 @@ describe('@bento/use-props', function bento() {
         },
         {
           id: 'modified'
-        }
+        },
+        true // locked environment to trigger data-override
       );
 
       const result = apply({ id: 'hello-there' });

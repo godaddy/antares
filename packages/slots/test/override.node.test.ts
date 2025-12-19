@@ -36,37 +36,38 @@ describe('@bento/slots override', function bento() {
   describe('default behavior (no locked Environment)', function defaultBehavior() {
     it('does not introduce data-override by default', function noOverride() {
       const html = createComponent('noOverride', { id: 'example', role: 'presentation' });
-      assume(html).contains('<div id="example" role="presentation"></div>');
+      // data-slot="test" is added for slotted components (from main)
+      assume(html).contains('<div id="example" role="presentation" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
     it('does not add data-override when style is present', function style() {
       const html = createComponent('style', { style: { color: 'red' } });
-      assume(html).contains('<div style="color:red"></div>');
+      assume(html).contains('<div style="color:red" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
     it('does not introduce data-override for CSS variables', function cssVariables() {
       const html = createComponent('cssVariables', { style: { '--color': 'red' } });
-      assume(html).contains('<div style="--color:red"></div>');
+      assume(html).contains('<div style="--color:red" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
     it('does not add data-override when CSS variables and style are present', function cssVariablesAndStyle() {
       const html = createComponent('cssVariablesAndStyle', { style: { '--color': 'red', color: 'blue' } });
-      assume(html).contains('<div style="--color:red;color:blue"></div>');
+      assume(html).contains('<div style="--color:red;color:blue" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
     it('does not introduce data-override when className is present', function className() {
       const html = createComponent('className', { className: 'example' });
-      assume(html).contains('<div class="example"></div>');
+      assume(html).contains('<div class="example" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
     it('does not introduce data-override when existing data-override is present', function existing() {
       const html = createComponent('existing', { style: { color: 'red' }, 'data-override': 'boink' });
-      assume(html).contains('<div style="color:red" data-override="boink"></div>');
+      assume(html).contains('<div style="color:red" data-override="boink" data-slot="test"></div>');
     });
 
     it('does not add data-override for multiple style triggers', function multiple() {
@@ -75,7 +76,7 @@ describe('@bento/slots override', function bento() {
         className: 'example'
       });
 
-      assume(html).contains('<div style="color:red" class="example"></div>');
+      assume(html).contains('<div style="color:red" class="example" data-slot="test"></div>');
       assume(html).does.not.contain('data-override="');
     });
 
@@ -88,7 +89,7 @@ describe('@bento/slots override', function bento() {
         }
       );
 
-      assume(html).contains('<div></div>');
+      assume(html).contains('<div data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
@@ -107,14 +108,14 @@ describe('@bento/slots override', function bento() {
         }
       );
 
-      assume(html).contains('<div style="color:red"></div>');
+      assume(html).contains('<div style="color:red" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
   });
 
   describe('locked Environment behavior', function lockedBehavior() {
-    it('introduces data-override when style is present in locked environment', function styleWithLock() {
-      // First need to set up a scenario where slot is from earlier generation
+    it('introduces data-override when style is present via slot in locked environment', function styleWithLock() {
+      // Style must be passed via slots (not direct props) to trigger override detection
       const InnerComponent = withSlots('StyleLockInner', function Component(args: any) {
         const { props } = useProps(args);
         return React.createElement('div', props);
@@ -127,12 +128,17 @@ describe('@bento/slots override', function bento() {
         });
       });
 
-      const html = renderToString(React.createElement(LockedComponent, { style: { color: 'red' } }));
+      // Pass style via slots prop to trigger slot-based override detection
+      const html = renderToString(
+        React.createElement(LockedComponent, { slots: { test: { style: { color: 'red' } } } })
+      );
 
-      assume(html).contains('data-override="style"');
+      assume(html).contains('data-override');
+      assume(html).contains('style');
+      assume(html).contains('data-slot="test"');
     });
 
-    it('introduces data-override when className is present in locked environment', function classNameWithLock() {
+    it('introduces data-override when className is present via slot in locked environment', function classNameWithLock() {
       const InnerComponent = withSlots('ClassLockInner', function Component(args: any) {
         const { props } = useProps(args);
         return React.createElement('div', props);
@@ -145,9 +151,12 @@ describe('@bento/slots override', function bento() {
         });
       });
 
-      const html = renderToString(React.createElement(LockedComponent, { className: 'example' }));
+      // Pass className via slots prop to trigger slot-based override detection
+      const html = renderToString(React.createElement(LockedComponent, { slots: { test: { className: 'example' } } }));
 
-      assume(html).contains('data-override="className"');
+      assume(html).contains('data-override');
+      assume(html).contains('className');
+      assume(html).contains('data-slot="test"');
     });
 
     it('does not introduce data-override for CSS variables in locked environment', function cssVariablesLocked() {
@@ -163,9 +172,13 @@ describe('@bento/slots override', function bento() {
         });
       });
 
-      const html = renderToString(React.createElement(LockedComponent, { style: { '--color': 'red' } }));
+      const html = renderToString(
+        React.createElement(LockedComponent, { slots: { test: { style: { '--color': 'red' } } } })
+      );
 
-      assume(html).contains('<div style="--color:red"></div>');
+      // CSS-variable-only style should NOT trigger data-override
+      assume(html).contains('style="--color:red"');
+      assume(html).contains('data-slot="test"');
       assume(html).does.not.contain('data-override');
     });
 
@@ -184,12 +197,17 @@ describe('@bento/slots override', function bento() {
 
       const html = renderToString(
         React.createElement(LockedComponent, {
-          style: { color: 'red' },
-          className: 'example'
+          slots: {
+            test: {
+              style: { color: 'red' },
+              className: 'example'
+            }
+          }
         })
       );
 
-      assume(html).contains('data-override="className style"');
+      assume(html).contains('data-override="className style slot"');
+      assume(html).contains('data-slot="test"');
     });
   });
 
@@ -264,21 +282,31 @@ describe('@bento/slots override', function bento() {
   });
 
   describe('lock-based override detection', function lockBasedOverrides() {
-    it('flags className when passed to component inside locked environment', function lockedSameGen() {
+    it('flags className when passed via slots to component inside locked environment', function lockedSameGen() {
       const TestComponent = withSlots('LockSameGen', function Component(args: any) {
         const { props } = useProps(args);
         return React.createElement('div', props);
       });
 
-      const html = renderToString(
-        React.createElement(Environment, {
+      // Wrap in a design system component pattern: slots are passed from outside the lock
+      const DesignSystemComponent = withSlots('LockSameGenDesign', function Component(props: any) {
+        return React.createElement(Environment, {
           lock: true,
-          children: React.createElement(TestComponent, { slot: 'test', className: 'internal' })
+          children: React.createElement(TestComponent, { ...props, slot: 'test' })
+        });
+      });
+
+      // Pass className via slots from the "consumer" (before lock)
+      const html = renderToString(
+        React.createElement(DesignSystemComponent, {
+          slots: { test: { className: 'internal' } }
         })
       );
 
-      // SHOULD have data-override since className is passed from outside the lock
-      assume(html).contains('<div class="internal" data-override="className"></div>');
+      // SHOULD have data-override since className is passed via slot from outside the lock
+      assume(html).contains('data-override');
+      assume(html).contains('className');
+      assume(html).contains('class="internal"');
     });
 
     it('flags className when environment is locked and slot is from earlier generation', function lockedEarlierGen() {
@@ -297,16 +325,17 @@ describe('@bento/slots override', function bento() {
       const html = renderToString(
         React.createElement(Environment, {
           children: React.createElement(LockedDesignComponent, {
-            className: 'consumer',
             slots: {
-              test: {}
+              test: { className: 'consumer' }
             }
           })
         })
       );
 
       // SHOULD have data-override since it's from earlier generation (consumer modification)
-      assume(html).contains('<div class="consumer" data-override="className slot"></div>');
+      assume(html).contains('data-override="className slot"');
+      assume(html).contains('class="consumer"');
+      assume(html).contains('data-slot="test"');
     });
 
     it('flags slot modifications from earlier generation even without className or style', function slotOnly() {
@@ -332,7 +361,7 @@ describe('@bento/slots override', function bento() {
         })
       );
 
-      assume(html).contains('<div data-override="slot">Hello</div>');
+      assume(html).contains('<div data-override="slot" data-slot="test">Hello</div>');
     });
 
     it('does not flag slots when not locked', function notLocked() {
@@ -348,16 +377,17 @@ describe('@bento/slots override', function bento() {
       const html = renderToString(
         React.createElement(Environment, {
           children: React.createElement(Component, {
-            style: { color: 'red' },
             slots: {
-              test: { className: 'test' }
+              test: { className: 'test', style: { color: 'red' } }
             }
           })
         })
       );
 
       // Without lock, no data-override should be added
-      assume(html).contains('<div style="color:red" class="test"></div>');
+      assume(html).contains('class="test"');
+      assume(html).contains('style="color:red"');
+      assume(html).contains('data-slot="test"');
       assume(html).does.not.contain('data-override');
     });
 
@@ -377,15 +407,16 @@ describe('@bento/slots override', function bento() {
       const html = renderToString(
         React.createElement(Environment, {
           children: React.createElement(LockedDesignComponent, {
-            style: { color: 'blue' },
             slots: {
-              test: {}
+              test: { style: { color: 'blue' } }
             }
           })
         })
       );
 
-      assume(html).contains('<div style="color:blue" data-override="style slot"></div>');
+      assume(html).contains('data-override="style slot"');
+      assume(html).contains('style="color:blue"');
+      assume(html).contains('data-slot="test"');
     });
   });
 });

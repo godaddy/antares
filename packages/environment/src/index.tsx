@@ -90,14 +90,37 @@ export function Environment({ children, lock = false, ...config }: EnvironmentPr
       const { root, ...options } = config;
 
       ctx.env = merge(ctx.env, options) as EnvContext<Record<string, any>>;
+      ctx.slots = { ...ctx.slots };
 
       // Handle lock generation
       if (lock && !ctx.env.locked) {
-        // First lock in the tree - set locked and increment generation
+        // First lock in the tree
+        // IMPORTANT: Before incrementing generation, tag ALL existing slots
+        // with the current (pre-lock) generation. This marks them as "consumer slots"
+        // that were passed before the lock boundary.
+        const preLockGeneration = ctx.env.lockGeneration;
+        ctx.slots.slotGenerations = { ...ctx.slots.slotGenerations };
+
+        for (const slotKey in ctx.slots.assigned) {
+          if (!(slotKey in ctx.slots.slotGenerations)) {
+            ctx.slots.slotGenerations[slotKey] = preLockGeneration;
+          }
+        }
+
+        // Now set locked and increment generation
         ctx.env.locked = true;
         ctx.env.lockGeneration = ctx.env.lockGeneration + 1;
       } else if (lock && ctx.env.locked) {
-        // Nested lock - increment generation
+        // Nested lock - tag existing slots and increment generation
+        const preLockGeneration = ctx.env.lockGeneration;
+        ctx.slots.slotGenerations = { ...ctx.slots.slotGenerations };
+
+        for (const slotKey in ctx.slots.assigned) {
+          if (!(slotKey in ctx.slots.slotGenerations)) {
+            ctx.slots.slotGenerations[slotKey] = preLockGeneration;
+          }
+        }
+
         ctx.env.lockGeneration = ctx.env.lockGeneration + 1;
       }
       // If lock={false}, don't increment generation (inherit parent's generation)
@@ -114,3 +137,5 @@ export function Environment({ children, lock = false, ...config }: EnvironmentPr
 
   return <Box.Provider value={context}>{children}</Box.Provider>;
 }
+
+export { withLock } from './with-lock.tsx';

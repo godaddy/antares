@@ -110,7 +110,8 @@ describe('@bento/slots', function bento() {
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
-      assume(nested).contains(`<p id="${id}">No more button, only text</p>`);
+      // data-slot is added for slotted components (from main)
+      assume(nested).contains(`<p id="${id}" data-slot="button">No more button, only text</p>`);
     });
 
     it('flags component overrides with context when locked', function overrideLocked() {
@@ -134,7 +135,8 @@ describe('@bento/slots', function bento() {
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
-      assume(nested).contains(`<p id="${id}" data-override="context">No more button, only text</p>`);
+      // data-slot is added for slotted components (from main)
+      assume(nested).contains(`<p id="${id}" data-override="context" data-slot="button">No more button, only text</p>`);
     });
   });
 
@@ -168,8 +170,12 @@ describe('@bento/slots', function bento() {
         })
       );
 
-      // Verify slot is applied (with data-override since lockGeneration > 0)
-      assume(html).contains('data-override="slot className"');
+      // Verify slot is applied. Since the slots are passed INSIDE the locked environment
+      // (internal composition), they should NOT trigger data-override.
+      // data-slot is added for slotted components (from main)
+      assume(html).does.not.contain('data-override');
+      assume(html).contains('data-slot="child"');
+      assume(html).contains('class="tracked"');
       assume(html).contains('child');
     });
 
@@ -191,7 +197,8 @@ describe('@bento/slots', function bento() {
         })
       );
 
-      assume(html).contains('<span>');
+      // data-slot is added for slotted components (from main)
+      assume(html).contains('<span data-slot="child">');
       assume(html).does.not.contain('data-override');
     });
 

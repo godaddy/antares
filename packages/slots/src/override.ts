@@ -45,8 +45,6 @@ interface OverrideResult {
   };
 }
 
-const triggers: string[] = ['className', 'style'];
-
 /**
  * Overrides the properties of a given context based on certain conditions.
  * When the environment is locked, only flags slots that were added before
@@ -73,10 +71,10 @@ export function override<Props extends Record<string, any>>({
 
   const currentLockGeneration = context.env?.lockGeneration ?? 0;
   //
-  // Default to generation 0 (before any locks) if no slot generation is tracked
-  // This ensures props are flagged as overrides unless explicitly tracked at current generation
+  // Get slot generation for this namespace. Default to current generation if not tracked.
   //
-  const slotGeneration = context.slots?.slotGenerations?.[currentNamespace] ?? 0;
+  const slotGeneration = context.slots?.slotGenerations?.[currentNamespace] ?? currentLockGeneration;
+  const isEarlierGeneration = slotGeneration < currentLockGeneration;
 
   if (typeof props['data-override'] === 'string') {
     causes.push(...props['data-override'].split(' '));
@@ -84,37 +82,40 @@ export function override<Props extends Record<string, any>>({
 
   if (overrideFlag && !causes.includes('context')) causes.push('context');
 
-  // Only flag className if slot is from an earlier generation
-  if ('className' in props && !causes.includes('className') && slotGeneration < currentLockGeneration) {
-    causes.push('className');
-  }
-
   //
-  // For style we need to take a more sophisticated approach, users are allowed
-  // to define CSS variables in the style prop, so we need to check if the keys
-  // are prefixed with `--` or not.
+  // Only flag className/style if they came from a slot assignment (exist in the slot object)
+  // AND the slot is from an earlier generation. Props that are only in `props` (not from slots)
+  // might be from the component's own render (e.g., CSS modules) and shouldn't be flagged.
   //
-  if ('style' in props && !causes.includes('style')) {
-    const style = props.style as CSSProperties;
-    const keys = Object.keys(style);
+  if (slot && isEarlierGeneration) {
+    let hasFlaggableChanges = false;
 
-    if (keys.some((key) => !isCSSVariable(key)) && slotGeneration < currentLockGeneration) {
-      causes.push('style');
+    if ('className' in slot && !causes.includes('className')) {
+      causes.push('className');
+      hasFlaggableChanges = true;
     }
-  }
 
-  // Only flag slot modifications if the slot's generation is less than the current lock generation
-  if (slot && slotGeneration < currentLockGeneration) {
-    // Any slot modification from an earlier generation should be flagged
-    if (!causes.includes('slot')) {
+    if ('style' in slot && !causes.includes('style')) {
+      const style = slot.style as CSSProperties;
+      const keys = Object.keys(style);
+      const hasNonCSSVariables = keys.some((key) => !isCSSVariable(key));
+
+      if (hasNonCSSVariables) {
+        causes.push('style');
+        hasFlaggableChanges = true;
+      }
+    }
+
+    // Check for other slot modifications (not className/style/children which are handled separately)
+    const slotKeys = Object.keys(slot).filter((key) => !['className', 'style'].includes(key));
+    if (slotKeys.length > 0) {
+      hasFlaggableChanges = true;
+    }
+
+    // Only add 'slot' if there are actual modifications worth flagging
+    if (hasFlaggableChanges && !causes.includes('slot')) {
       causes.push('slot');
     }
-    // Also add specific triggers if present
-    Object.keys(slot).forEach(function forEach(name) {
-      if (triggers.includes(name) && !causes.includes(name)) {
-        causes.push(name);
-      }
-    });
   }
 
   if (!causes.length) return;

@@ -81,7 +81,8 @@ describe('@bento/slots replace', function bento() {
         false
       );
 
-      assume(html).contains('<div id="example"></div>');
+      // data-slot="test" is added for slotted components (from main)
+      assume(html).contains('<div id="example" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
@@ -98,7 +99,7 @@ describe('@bento/slots replace', function bento() {
         true
       );
 
-      assume(html).contains('<div id="example" data-override="context"></div>');
+      assume(html).contains('<div id="example" data-override="context" data-slot="test"></div>');
     });
   });
 
@@ -118,7 +119,8 @@ describe('@bento/slots replace', function bento() {
         false
       );
 
-      assume(html).contains('<div id="overridden" class="custom-class"></div>');
+      // data-slot="test" is added for slotted components (from main)
+      assume(html).contains('<div id="overridden" class="custom-class" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
@@ -138,7 +140,9 @@ describe('@bento/slots replace', function bento() {
       );
 
       // Context and className should both be flagged
-      assume(html).contains('<div id="overridden" data-override="context className" class="custom-class"></div>');
+      assume(html).contains(
+        '<div id="overridden" data-override="context className" class="custom-class" data-slot="test"></div>'
+      );
     });
   });
 
@@ -156,7 +160,8 @@ describe('@bento/slots replace', function bento() {
         false
       );
 
-      assume(html).contains('<div style="color:red"></div>');
+      // data-slot="test" is added for slotted components (from main)
+      assume(html).contains('<div style="color:red" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
@@ -173,7 +178,7 @@ describe('@bento/slots replace', function bento() {
         true
       );
 
-      assume(html).contains('<div style="color:red" data-override="context style"></div>');
+      assume(html).contains('<div style="color:red" data-override="context style" data-slot="test"></div>');
     });
   });
 
@@ -188,7 +193,8 @@ describe('@bento/slots replace', function bento() {
         false
       );
 
-      assume(html).contains('<div id="example"></div>');
+      // data-slot="test" is added for slotted components (from main)
+      assume(html).contains('<div id="example" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
 
@@ -202,7 +208,8 @@ describe('@bento/slots replace', function bento() {
         true
       );
 
-      assume(html).contains('<div id="example"></div>');
+      // data-slot="test" is added for slotted components (from main)
+      assume(html).contains('<div id="example" data-slot="test"></div>');
       assume(html).does.not.contain('data-override');
     });
   });

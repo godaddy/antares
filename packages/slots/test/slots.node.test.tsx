@@ -94,6 +94,9 @@ describe('@bento/slots', function bento() {
       let id;
 
       const value = defaults();
+      // Set locked: true to trigger data-override behavior
+      value.env.locked = true;
+      value.env.lockGeneration = 1;
       value.env.components = {
         SlotsButton: function Button(props) {
           assume(props['data-override']).equals('context');
@@ -112,6 +115,7 @@ describe('@bento/slots', function bento() {
 
       assume(nested).contains('Hello World');
       assume(nested).does.not.contain('Click Me');
+      // data-slot is added for slotted components (from main)
       assume(nested).contains(`<p id="${id}" data-override="context" data-slot="button">No more button, only text</p>`);
     });
   });
