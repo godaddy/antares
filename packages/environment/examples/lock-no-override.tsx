@@ -7,6 +7,12 @@ import { RadioGroup, Radio } from '@bento/radio';
 /* v8 ignore next */
 import React from 'react';
 
+// Cast components to accept children (workaround for strict slot types)
+const TypedContainer = Container as React.FC<any>;
+const TypedButton = Button as React.FC<any>;
+const TypedRadioGroup = RadioGroup as React.FC<any>;
+const TypedRadio = Radio as React.FC<any>;
+
 /**
  * Interface for component props.
  *
@@ -31,14 +37,14 @@ const Composed = withSlots('LockNoOverride.Composed', function ComposedComponent
   };
 
   return (
-    <Container slot="root">
-      <Button slot="trigger">Press Me</Button>
-      <RadioGroup id="fruit-group" slots={slots} label="Favorite fruit" description="Pick your favorite">
-        <Radio value="apple">Apple</Radio>
-        <Radio value="banana">Banana</Radio>
-        <Radio value="orange">Orange</Radio>
-      </RadioGroup>
-    </Container>
+    <TypedContainer slot="root">
+      <TypedButton slot="trigger">Press Me</TypedButton>
+      <TypedRadioGroup id="fruit-group" slots={slots} label="Favorite fruit" description="Pick your favorite">
+        <TypedRadio value="apple">Apple</TypedRadio>
+        <TypedRadio value="banana">Banana</TypedRadio>
+        <TypedRadio value="orange">Orange</TypedRadio>
+      </TypedRadioGroup>
+    </TypedContainer>
   );
 });
 

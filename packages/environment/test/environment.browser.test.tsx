@@ -97,5 +97,60 @@ describe('@bento/environment', function bento() {
       assume(env).equals('Nested Lock');
       assume(secondGeneration!).to.be.above(firstGeneration!);
     });
+
+    it('should tag pre-existing slots with generation when entering first lock', async function test() {
+      const env = renderToString(
+        <Box.Provider
+          value={{
+            env: { components: {}, sprite: '', document: () => document, window: () => window, locked: false, lockGeneration: 0 },
+            slots: { override: false, namespace: [], assigned: { mySlot: { className: 'test' } }, slotGenerations: {} }
+          }}
+        >
+          <Environment lock={true}>
+            <Box.Consumer>
+              {function consumer({ env, slots }) {
+                // The pre-existing slot should be tagged with generation 0 (before lock)
+                assume(slots.slotGenerations.mySlot).to.equal(0);
+                assume(env.lockGeneration).to.equal(1);
+                assume(env.locked).to.equal(true);
+                return 'Tagged Slots';
+              }}
+            </Box.Consumer>
+          </Environment>
+        </Box.Provider>
+      );
+
+      assume(env).equals('Tagged Slots');
+    });
+
+    it('should tag pre-existing slots with generation when entering nested lock', async function test() {
+      const env = renderToString(
+        <Environment lock={true}>
+          <Box.Consumer>
+            {function firstConsumer({ env, slots }) {
+              // Add a slot after first lock
+              slots.assigned = { ...slots.assigned, nestedSlot: { id: 'nested' } };
+
+              return (
+                <Box.Provider value={{ env, slots }}>
+                  <Environment lock={true}>
+                    <Box.Consumer>
+                      {function secondConsumer({ env, slots }) {
+                        // The slot added after first lock should be tagged with generation 1
+                        assume(slots.slotGenerations.nestedSlot).to.equal(1);
+                        assume(env.lockGeneration).to.equal(2);
+                        return 'Nested Tagged Slots';
+                      }}
+                    </Box.Consumer>
+                  </Environment>
+                </Box.Provider>
+              );
+            }}
+          </Box.Consumer>
+        </Environment>
+      );
+
+      assume(env).equals('Nested Tagged Slots');
+    });
   });
 });
