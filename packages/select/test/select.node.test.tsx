@@ -41,8 +41,7 @@ describe('@bento/select', function bento() {
       'aria-label': 'Select an option'
     });
 
-    // Verify basic structure
-    assume(emptyResult).includes('role="combobox"');
+    // Verify basic structure - button pattern, not combobox
     assume(emptyResult).includes('aria-haspopup="listbox"');
     assume(emptyResult).includes('aria-expanded="false"');
     // data-open attribute is omitted when false (invariant #16)
@@ -83,9 +82,8 @@ describe('@bento/select', function bento() {
     assume(complexResult).includes('name="fruit"');
     assume(complexResult).includes('aria-hidden="true"');
 
-    // Verify ARIA attributes
-    assume(complexResult).includes('role="combobox"');
-    assume(complexResult).includes('aria-required="true"');
+    // Verify ARIA attributes - button pattern
+    assume(complexResult).includes('aria-haspopup="listbox"');
     assume(complexResult).includes('data-required="true"');
 
     // Verify content structure
@@ -231,7 +229,7 @@ describe('@bento/select', function bento() {
       );
 
       assume(invalidResult).includes('data-invalid="true"');
-      assume(invalidResult).includes('aria-invalid="true"');
+      // aria-invalid is not set on button trigger - validation exposed via render props
 
       const requiredResult = renderToString(
         <Select isRequired>
@@ -249,7 +247,7 @@ describe('@bento/select', function bento() {
       );
 
       assume(requiredResult).includes('data-required="true"');
-      assume(requiredResult).includes('aria-required="true"');
+      // aria-required is not set on button trigger
 
       const disabledResult = renderToString(
         <Select isDisabled>
@@ -267,7 +265,8 @@ describe('@bento/select', function bento() {
       );
 
       assume(disabledResult).includes('data-disabled="true"');
-      assume(disabledResult).includes('aria-disabled="true"');
+      // React Aria sets disabled attribute on <button> elements (not aria-disabled)
+      assume(disabledResult).includes('disabled=""');
     });
 
     it('renders select with groups and labels', function test() {

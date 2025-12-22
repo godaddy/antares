@@ -19,7 +19,7 @@ export const Popover = withSlots('TestPopover', function Popover(args: any) {
 
   return (
     <div
-      {...apply(props, ['children', 'style', 'ref'])}
+      {...apply(props, ['children', 'style', 'ref', 'isOpen', 'onClose'])}
       ref={popoverRef}
       style={{
         ...style,
