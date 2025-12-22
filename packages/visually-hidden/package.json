@@ -43,7 +43,7 @@
     "@bento/slots": "^0.3.0",
     "@bento/use-data-attributes": "^0.1.1",
     "@bento/use-props": "^0.2.1",
-    "react-aria": "^3.44.0"
+    "react-aria": "^3.45.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
