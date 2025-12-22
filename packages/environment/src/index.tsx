@@ -35,6 +35,16 @@ export interface EnvironmentProps {
    */
   sprite?: string;
 
+  /**
+   * When true, creates a lock boundary. Slot modifications applied after this
+   * lock will be detected and flagged with data-override attributes.
+   * This is used by design systems to distinguish between internal composition
+   * and consumer modifications.
+   *
+   * @defaultValue false
+   */
+  lock?: boolean;
+
   //
   // Catch all, to allow users specify custom configuration that can be shared
   // between Bento component that does need strong typing.
@@ -55,6 +65,7 @@ export interface EnvironmentProps {
  * - If a value in the configuration is an array, it will be concatenated with the existing array in the context.
  * - If a value in the configuration is an object, it will be deeply merged with the existing object in the context.
  * - Primitive values in the configuration will overwrite the existing values in the context.
+ * - When `lock={true}`, the lockGeneration is incremented, creating a boundary for detecting consumer modifications.
  *
  * @example
  * ```tsx
@@ -62,8 +73,16 @@ export interface EnvironmentProps {
  *   <ChildComponent />
  * </Environment>
  * ```
+ *
+ * @example
+ * ```tsx
+ * // Create a lock boundary for a design system component
+ * <Environment lock={true}>
+ *   <MyComponent />
+ * </Environment>
+ * ```
  */
-export function Environment({ children, ...config }: EnvironmentProps) {
+export function Environment({ children, lock = false, ...config }: EnvironmentProps) {
   let ctx = { ...useContext<BoxContext<Record<string, any>>>(Box) };
 
   const context = useDeepCompareMemo(
@@ -71,6 +90,40 @@ export function Environment({ children, ...config }: EnvironmentProps) {
       const { root, ...options } = config;
 
       ctx.env = merge(ctx.env, options) as EnvContext<Record<string, any>>;
+      ctx.slots = { ...ctx.slots };
+
+      // Handle lock generation
+      if (lock && !ctx.env.locked) {
+        // First lock in the tree
+        // IMPORTANT: Before incrementing generation, tag ALL existing slots
+        // with the current (pre-lock) generation. This marks them as "consumer slots"
+        // that were passed before the lock boundary.
+        const preLockGeneration = ctx.env.lockGeneration;
+        ctx.slots.slotGenerations = { ...ctx.slots.slotGenerations };
+
+        for (const slotKey in ctx.slots.assigned) {
+          if (!(slotKey in ctx.slots.slotGenerations)) {
+            ctx.slots.slotGenerations[slotKey] = preLockGeneration;
+          }
+        }
+
+        // Now set locked and increment generation
+        ctx.env.locked = true;
+        ctx.env.lockGeneration = ctx.env.lockGeneration + 1;
+      } else if (lock && ctx.env.locked) {
+        // Nested lock - tag existing slots and increment generation
+        const preLockGeneration = ctx.env.lockGeneration;
+        ctx.slots.slotGenerations = { ...ctx.slots.slotGenerations };
+
+        for (const slotKey in ctx.slots.assigned) {
+          if (!(slotKey in ctx.slots.slotGenerations)) {
+            ctx.slots.slotGenerations[slotKey] = preLockGeneration;
+          }
+        }
+
+        ctx.env.lockGeneration = ctx.env.lockGeneration + 1;
+      }
+      // If lock={false}, don't increment generation (inherit parent's generation)
 
       if (root) {
         const { document, window } = defaults(root).env;
@@ -79,7 +132,7 @@ export function Environment({ children, ...config }: EnvironmentProps) {
 
       return ctx;
     },
-    [ctx, config]
+    [ctx, config, lock]
   );
 
   return <Box.Provider value={context}>{children}</Box.Provider>;

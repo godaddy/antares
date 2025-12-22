@@ -31,22 +31,6 @@ describe('@bento/button', function bento() {
   });
 
   describe('#slots', function slots() {
-    it('renders correct [data-override] attribute values', function overrides() {
-      const result = renderToStringButton({
-        className: 'custom-class',
-        style: { color: 'red' },
-        children: <div>Press me</div>,
-        onClick: () => void 0,
-        onPress: () => void 0,
-        onPressStart: () => void 0,
-        onPressEnd: () => void 0,
-        onPressUp: () => void 0,
-        onPressChange: () => void 0
-      });
-
-      assume(result).includes('data-override="className style"');
-    });
-
     it('introduced the `pressable` slot to the Pressable component', function pressable() {
       const result = renderToStringButton({
         children: <div>Press me</div>,
@@ -57,7 +41,6 @@ describe('@bento/button', function bento() {
         }
       });
 
-      assume(result).includes('data-override="slot"');
       assume(result).includes('data-foo="bar"');
     });
   });

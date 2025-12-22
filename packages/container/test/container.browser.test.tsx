@@ -110,17 +110,6 @@ describe('@bento/container', function bento() {
       expect(element?.children[1].textContent).toBe('Second');
     });
 
-    it('tracks overrides via data-override attribute', function tracksOverrides() {
-      const { container } = render(
-        <Container className="custom" style={{ color: 'blue' }}>
-          Overridden
-        </Container>
-      );
-      const element = container.firstChild as HTMLElement;
-
-      expect(element?.getAttribute('data-override')).toBeTruthy();
-    });
-
     it('renders with data attributes', function rendersDataAttributes() {
       const { container } = render(
         <Container data-testid="test-container" data-custom="value">

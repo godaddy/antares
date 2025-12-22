@@ -36,7 +36,6 @@ describe('@bento/divider examples', function bento() {
 
       expect(divider).toHaveAttribute('style');
       expect(divider).toHaveStyle('height: 100px');
-      expect(divider).toHaveAttribute('data-override', 'style');
     });
 
     it('renders a vertical divider in a div', function verticalInDivTest() {

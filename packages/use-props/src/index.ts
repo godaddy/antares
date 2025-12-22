@@ -1,5 +1,4 @@
 import { Box, type BoxContext } from '@bento/box';
-import { useInternalProps } from '@bento/internal-props';
 import { AnyObject } from '@bento/types';
 import { mergeRefs } from '@react-aria/utils';
 import { useContext } from 'react';
@@ -100,9 +99,9 @@ function mergeRefList(refs: Array<ForwardedRef<any> | Ref<any> | undefined>): Re
 
 export interface Returns {
   /**
-   * Proxy object that have access to the original props, slotted values, and internal props. When
-   * accessing a property, it will first check the slotted values, then the original props, and finally
-   * the internal props. If the property is a render prop, it will execute the function with the provided
+   * Proxy object that have access to the original props and slotted values. When
+   * accessing a property, it will first check the slotted values, then the original props.
+   * If the property is a render prop, it will execute the function with the provided
    * arguments.
    *
    * @default { ...props, ...slots }
@@ -157,7 +156,7 @@ export function useProps(...rest: any[]): Returns {
   }
 
   const { slots } = useContext<BoxContext<AnyObject>>(Box);
-  const [props, internal] = useInternalProps(args);
+  const props = args;
   const { namespace, assigned } = slots;
   const dot = namespace.join('.');
   const slotted = assigned[dot] || {};
@@ -174,7 +173,7 @@ export function useProps(...rest: any[]): Returns {
   delete slotNoRef.ref;
   delete propsNoRef.ref;
 
-  const propsy: AnyObject = { ...internal, ...propsNoRef, ...slotNoRef };
+  const propsy: AnyObject = { ...propsNoRef, ...slotNoRef };
 
   /**
    * Applies the given attributes to an object.
@@ -192,7 +191,7 @@ export function useProps(...rest: any[]): Returns {
       if (except && except.includes(key)) return memo;
 
       memo[key] = renderProp(key, {
-        props: { ...props, ...internal },
+        props,
         original: data[key],
         slots: slotted,
         state
@@ -220,7 +219,7 @@ export function useProps(...rest: any[]): Returns {
 
         return renderProp(name, {
           original: isRenderProp(name, props[name]) ? undefined : props[name],
-          props: { ...props, ...internal },
+          props,
           slots: slotted,
           state
         });

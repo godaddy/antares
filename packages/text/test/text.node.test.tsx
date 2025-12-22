@@ -78,18 +78,6 @@ describe('@bento/text', function bento() {
     assume(result).includes('--wrap:pretty');
   });
 
-  describe('#slots', function slots() {
-    it('renders correct [data-override] attribute values', function dataOverride() {
-      const result = renderToStringText({
-        className: 'custom-class',
-        style: { color: 'red' },
-        children: 'Handgloves'
-      });
-
-      assume(result).includes('data-override="className style"');
-    });
-  });
-
   describe('Public API', function packageSuite() {
     const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -64,15 +64,44 @@ export function replace<Props extends Record<string, any>>({ props, name, contex
         override: !!target
       }
     },
-    props: {}
+    props: undefined as Record<string, any> | undefined,
+    Component: undefined as ComponentType<Props> | undefined
   } as any;
-
-  const causes = (props['data-override'] || '').split(' ').filter(Boolean);
-  if (!causes.includes('context')) causes.push('context');
-  result.props = useDataAttributes({ override: causes });
 
   if (isPropsOverride(target)) result.props = { ...target.props };
   else result.Component = target;
+
+  const locked = context.env?.locked ?? false;
+  if (!locked) return result;
+
+  const causes = (props['data-override'] || '').split(' ').filter(Boolean);
+  if (!causes.includes('context')) causes.push('context');
+
+  // Merge props from original and override target for override detection
+  const mergedProps = isPropsOverride(target) ? { ...props, ...target.props } : props;
+
+  // Check for className and style overrides in the merged props
+  if ('className' in mergedProps && !causes.includes('className')) {
+    causes.push('className');
+  }
+  if ('style' in mergedProps && !causes.includes('style')) {
+    // Check if style contains non-CSS-variable properties
+    const styleKeys = Object.keys(mergedProps.style || {});
+    const hasNonCSSVariables = styleKeys.some((key) => !key.startsWith('--'));
+    if (hasNonCSSVariables) {
+      causes.push('style');
+    }
+  }
+
+  const overrideProps = useDataAttributes({ override: causes });
+  if (isPropsOverride(target)) {
+    result.props = {
+      ...overrideProps,
+      ...result.props
+    };
+  } else {
+    result.props = overrideProps;
+  }
 
   return result;
 }

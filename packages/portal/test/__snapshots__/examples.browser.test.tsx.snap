@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@bento/portal examples > BasicExample > renders basic portal example 1`] = `"<div data-testid="basic-portal" data-portal="true" data-mounted="true"><span class="_text_vfk41_1">Portal content</span></div>"`;
+
+exports[`@bento/portal examples > CustomContainerExample > renders custom container example 1`] = `"<div data-testid="custom-content" data-portal="true" data-mounted="true"><span class="_text_vfk41_1">Custom container content</span></div>"`;
+
+exports[`@bento/portal examples > PortalProviderExample > renders portal provider example 1`] = `"<div data-testid="portal-provider-portal" data-portal="true" data-mounted="true"><span class="_text_vfk41_1">Portal content using PortalProvider</span><span class="_text_vfk41_1">Container: Custom via PortalProvider</span></div>"`;

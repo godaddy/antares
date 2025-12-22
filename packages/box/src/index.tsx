@@ -26,6 +26,19 @@ export interface EnvContext<Props> {
    */
   sprite: string;
 
+  /**
+   * Indicates if the environment is currently locked.
+   * When locked, modifications applied after the lock are flagged with data-override.
+   */
+  locked: boolean;
+
+  /**
+   * Current lock generation number.
+   * Increments each time a new Environment with lock={true} is created.
+   * Used to determine if a slot was added before or after a lock boundary.
+   */
+  lockGeneration: number;
+
   [key: string]: any;
 }
 
@@ -44,6 +57,12 @@ export interface SlotsContext {
    * Indicator if a `components` override has been applied to the parent or current component.
    */
   override: boolean;
+
+  /**
+   * Tracks the lock generation for each slot.
+   * Maps slot name to the lockGeneration value when the slot was first assigned.
+   */
+  slotGenerations: Record<string, number>;
 }
 
 export interface BoxContext<Props> {
@@ -96,13 +115,16 @@ export function defaults(root?: RootNode): BoxContext<any> {
     env: {
       components: {},
       sprite: '',
+      locked: false,
+      lockGeneration: 0,
       document: () => getDocument(root),
       window: () => getWindow(root)
     },
     slots: {
       override: false,
       namespace: [],
-      assigned: {}
+      assigned: {},
+      slotGenerations: {}
     }
   };
 }

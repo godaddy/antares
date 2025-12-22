@@ -26,7 +26,6 @@
     "@bento/icon": "*",
     "@bento/illustration": "*",
     "@bento/input": "*",
-    "@bento/internal-props": "*",
     "@bento/listbox": "*",
     "@bento/overlay": "*",
     "@bento/portal": "*",

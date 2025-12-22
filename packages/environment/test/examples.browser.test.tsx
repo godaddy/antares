@@ -3,8 +3,10 @@ import { ComponentLevelExample } from '../examples/component-level.tsx';
 import { CustomButtonExample } from '../examples/custom-button.tsx';
 import { OverrideProps } from '../examples/override-props.tsx';
 import { Override } from '../examples/override.tsx';
+import { LockNoOverride } from '../examples/lock-no-override.tsx';
+import { LockWithOverride } from '../examples/lock-with-override.tsx';
 import { render } from 'vitest-browser-react';
-import { describe, it } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import assume from 'assume';
 import React from 'react';
 
@@ -12,34 +14,21 @@ describe('@bento/environment examples', function bento() {
   describe('Override', function container() {
     it('should render the Container component', function test() {
       const { container } = render(<Override />);
-
-      const result = container.innerHTML;
-
-      assume(result).equals(
-        '<div><a href="foo.html" class="button-link" data-override="context">foo</a><div><a href="bar.html" class="button-link" data-override="context">bar</a></div></div>'
-      );
+      expect(container.innerHTML).toMatchSnapshot();
     });
   });
 
   describe('OverrideProps', function container() {
     it('should render the Container component', function test() {
       const { container } = render(<OverrideProps />);
-
-      const result = container.innerHTML;
-
-      assume(result).equals(
-        '<div><button class="ho ho ho" href="foo.html" data-example="example" data-override="context className">foo</button><div><button class="ho ho ho" href="bar.html" data-example="example" data-override="context className">bar</button></div></div>'
-      );
+      expect(container.innerHTML).toMatchSnapshot();
     });
   });
 
   describe('CustomButtonExample', function container() {
     it('should render the custom button component', async function testCustomButtonRender() {
       const { container } = await render(<CustomButtonExample />);
-      const result = container.innerHTML;
-      assume(result).to.equal(
-        '<div class="example-container"><div class="bento-card"><p class="bento-text">This text will be rendered with default styling</p><button class="custom-button" data-override="context" style="background-color: blue; color: white;">This button will be replaced with a custom one</button></div></div>'
-      );
+      expect(container.innerHTML).toMatchSnapshot();
     });
 
     it('should not render the BentoButton', async function testBentoButtonNotRendered() {
@@ -176,6 +165,108 @@ describe('@bento/environment examples', function bento() {
       // Check background color changed to lightgreen
       const secondUpdatedBgColor = iframeDoc?.body.style.backgroundColor;
       assume(secondUpdatedBgColor).equals('lightgreen');
+    });
+  });
+
+  describe('LockNoOverride', function lockNoOverride() {
+    it('should render without any data-override attributes', function test() {
+      const { container } = render(<LockNoOverride />);
+      const result = container.innerHTML;
+
+      // Should have NO data-override attributes since all slots are internal composition
+      assume(result).does.not.include('data-override');
+    });
+
+    it('should render the button with internal composition text', function test() {
+      const { container } = render(<LockNoOverride />);
+      const button = container.querySelector('button');
+
+      assume(button).to.not.equal(null);
+      assume(button?.textContent).equals('Click Me');
+    });
+
+    it('should render the radio group with all options', function test() {
+      const { container } = render(<LockNoOverride />);
+      const radioInputs = container.querySelectorAll('input[type="radio"]');
+
+      assume(radioInputs.length).equals(3);
+    });
+
+    it('should have data-slot attributes on slotted components', function test() {
+      const { container } = render(<LockNoOverride />);
+
+      // Container should have data-slot="root"
+      const rootSlot = container.querySelector('[data-slot="root"]');
+      assume(rootSlot).to.not.equal(null);
+
+      // Button should have data-slot="pressable"
+      const buttonSlot = container.querySelector('[data-slot="pressable"]');
+      assume(buttonSlot).to.not.equal(null);
+    });
+
+    it('should have label and description on radio group', function test() {
+      const { container } = render(<LockNoOverride />);
+
+      // Check for radio group with label attribute
+      const radioGroup = container.querySelector('[role="radiogroup"]');
+      assume(radioGroup).to.not.equal(null);
+      assume(radioGroup?.getAttribute('label')).equals('Favorite fruit');
+      assume(radioGroup?.getAttribute('description')).equals('Pick your favorite');
+    });
+  });
+
+  describe('LockWithOverride', function lockWithOverride() {
+    it('should render with data-override only on the trigger button', function test() {
+      const { container } = render(<LockWithOverride />);
+      const button = container.querySelector('button');
+
+      // Button should have data-override="slot" because consumer modified it
+      assume(button).to.not.equal(null);
+      assume(button?.getAttribute('data-override')).equals('slot');
+    });
+
+    it('should render the button with consumer override text', function test() {
+      const { container } = render(<LockWithOverride />);
+      const button = container.querySelector('button');
+
+      assume(button).to.not.equal(null);
+      assume(button?.textContent).equals('Hello World');
+    });
+
+    it('should have data-slot on slotted components', function test() {
+      const { container } = render(<LockWithOverride />);
+
+      // Button should have data-slot="pressable"
+      const buttonSlot = container.querySelector('[data-slot="pressable"]');
+      assume(buttonSlot).to.not.equal(null);
+
+      // RadioGroup icons should have data-slot="content"
+      const iconSlots = container.querySelectorAll('[data-slot="content"]');
+      assume(iconSlots.length).equals(3);
+    });
+
+    it('should not flag internal composition with data-override', function test() {
+      const { container } = render(<LockWithOverride />);
+
+      // RadioGroup should not have data-override
+      const radioGroup = container.querySelector('[role="radiogroup"]');
+      assume(radioGroup).to.not.equal(null);
+      assume(radioGroup?.hasAttribute('data-override')).equals(false);
+
+      // Icons should not have data-override
+      const icons = container.querySelectorAll('svg');
+      icons.forEach(function checkIcon(icon) {
+        assume(icon.hasAttribute('data-override')).equals(false);
+      });
+    });
+
+    it('should only have data-override on consumer-modified slots', function test() {
+      const { container } = render(<LockWithOverride />);
+      const elementsWithOverride = container.querySelectorAll('[data-override]');
+
+      // Only the trigger button should have data-override
+      assume(elementsWithOverride.length).equals(1);
+      assume(elementsWithOverride[0]?.tagName.toLowerCase()).equals('button');
     });
   });
 });

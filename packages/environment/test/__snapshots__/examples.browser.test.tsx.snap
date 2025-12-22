@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@bento/environment examples > CustomButtonExample > should render the custom button component 1`] = `"<div class="example-container"><div class="bento-card"><p class="bento-text">This text will be rendered with default styling</p><button class="custom-button" style="background-color: blue; color: white;">This button will be replaced with a custom one</button></div></div>"`;
+
+exports[`@bento/environment examples > Override > should render the Container component 1`] = `"<div><a href="foo.html" class="button-link">foo</a><div><a href="bar.html" class="button-link">bar</a></div></div>"`;
+
+exports[`@bento/environment examples > OverrideProps > should render the Container component 1`] = `"<div><button class="ho ho ho" href="foo.html" data-example="example">foo</button><div><button class="ho ho ho" href="bar.html" data-example="example">bar</button></div></div>"`;

@@ -46,15 +46,6 @@ describe('@bento/divider', function bento() {
     assume(result).doesnt.include(' orientation=');
   });
 
-  it('renders correct [data-override] attribute values when directly overridden', function overrides() {
-    const result = renderToStringDivider({
-      className: 'custom-class',
-      style: { color: 'red' }
-    });
-
-    assume(result).includes('data-override="className style"');
-  });
-
   it('allows user to override classname fully', function classname() {
     const result = renderToStringDivider({
       className: 'custom-class'

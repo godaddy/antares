@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@bento/use-props examples > Apply Button > should handle additional props correctly 1`] = `"<button class="xyz-hashed-class" data-testid="test" disabled="">Click this button</button>"`;
+
+exports[`@bento/use-props examples > Apply Button > should render a button with applied className 1`] = `"<button class="xyz-hashed-class">Click this button</button>"`;
+
+exports[`@bento/use-props examples > Apply and Omit Button > should handle props correctly 1`] = `"<button class="xyz-hashed-class" data-testid="test" href="test.com">Click this link</button>"`;
+
+exports[`@bento/use-props examples > Apply and Omit Button > should render a button with applied className and omitted props 1`] = `"<button class="xyz-hashed-class">Click this button</button>"`;
+
+exports[`@bento/use-props examples > Basic Button > can be rendered as an anchor with className 1`] = `"<a class="xyz-hashed-class" href="foo.bar">Click this link</a>"`;
+
+exports[`@bento/use-props examples > Basic Button > should render a button without a className 1`] = `"<button>Click this button</button>"`;
+
+exports[`@bento/use-props examples > Memo > should render a memoized button 1`] = `"<a class="xyz-hashed-class my-className my-class" href="https://example.com" target="_blank">This button has a different class Name</a>"`;
+
+exports[`@bento/use-props examples > Nested > renders the changes from a slot assignment 1`] = `"<div class="example" data-slot="example-container"><label for=":r0:" data-slot="label">Hello World</label><a class="xyz-hashed-class button" id=":r0:" data-slot="button" href="https://example.com">Click Me</a></div>"`;

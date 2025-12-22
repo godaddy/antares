@@ -3,14 +3,16 @@ import * as Stories from './environment.stories.tsx';
 
 import ComponentLevelExample from './examples/component-level.tsx?raw';
 import CustomButtonExample from './examples/custom-button.tsx?raw';
+import LockNoOverrideExample from './examples/lock-no-override.tsx?raw';
+import LockWithOverrideExample from './examples/lock-with-override.tsx?raw';
 
 <Meta of={Stories} name="Concepts" />
 
 # Application level configuration
 
-The `Environment` component is the main entry point for configuring Bento 
-components in your application. It allows you to set up global configurations, 
-such as components, and other settings that will be applied throughout your 
+The `Environment` component is the main entry point for configuring Bento
+components in your application. It allows you to set up global configurations,
+such as components, and other settings that will be applied throughout your
 application. This allows you to easily customize the behavior of specific set
 of components.
 
@@ -25,7 +27,7 @@ Bento. This is useful when you want to customize the behavior or appearance of a
 specific component. You can pass a mapping of component names to their
 corresponding components. The keys in the object should match the component
 names used by Bento, and the values should be the new components you want to
-use. 
+use.
 
 This is useful when you want to use a custom implementation of a component
 or when you want to use a different library altogether. For example, if you want
@@ -34,7 +36,7 @@ it like this:
 
 <Source language='tsx' code={CustomButtonExample} />
 
-This will replace the default Bento button with your custom button component 
+This will replace the default Bento button with your custom button component
 throughout your application.
 
 ### Overrides
@@ -65,3 +67,37 @@ application code. This is useful when you want to test a new component or a new
 version of a component without modifying the application code. The custom button example shows how to use a different component implementation for A/B testing:
 
 <Source language='tsx' code={CustomButtonExample} />
+
+## Lock Boundaries
+
+When you're building a design system on top of Bento, you'll often compose components together internally using slots, className, and style props. Without lock boundaries, all these internal modifications get flagged with `data-override` attributes, which makes it really hard to tell the difference between your design system's internal structure and actual customizations made by people using your design system.
+
+Lock boundaries solve this by creating a clear line between "this is how we built it" and "this is what someone changed." Think of it as drawing a circle around your component and saying "everything inside this circle is intentional design system composition."
+
+### How it works
+
+The mechanism uses a generation counter. When you wrap a component with `<Environment lock={true}>`, Bento increments a generation number. Every slot modification gets tagged with the current generation number. Later, when the component renders, Bento checks: was this slot created before or after the lock? If it was created before (lower generation number), it came from a consumer, so it gets flagged. If it was created after (same or higher generation), it's part of your design system's internal structure, so no flag.
+
+Here's a practical example. Let's say you're building a design system and you create a component that internally uses a Button and RadioGroup:
+
+<Source language='tsx' code={LockNoOverrideExample} />
+
+Notice the `<Environment lock={true}>` wrapper. Everything you do with slots inside that wrapper is considered internal composition. The `root.trigger` slot that changes the button text, the `group.label` and `group.description` slots that style the radio group—none of these get `data-override` attributes because they're all happening after the lock.
+
+Now when someone uses your design system component and wants to customize it:
+
+<Source language='tsx' code={LockWithOverrideExample} />
+
+This slot modification happens *before* entering your locked environment (because it's passed as a prop to `DesignSystemVersion`). Bento sees it crossed the lock boundary and adds `data-override="slot"`. Now you know exactly what your consumers are customizing.
+
+### When to use this
+
+Use lock boundaries when you're building a design system that other developers will consume. If you're just building application components or working directly with Bento primitives, you probably don't need this. The lock is specifically for the boundary between design system authors and design system consumers.
+
+You might skip locks if you're debugging and want to see all modifications flagged, or if you're building one-off components that won't be reused across teams.
+
+### What you can do with this information
+
+Once you have accurate `data-override` tracking, you can build tooling around it. You could create a development mode that warns when consumers override certain slots, track which components are being customized most often to inform your roadmap, or generate migration guides when you need to make breaking changes by analyzing which overrides exist in production.
+
+The `data-override` attributes are just data attributes in the DOM. Your dev tools, browser extensions, or analytics can read them to understand how your design system is being used in the wild.

@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@bento/slots examples > Button > should render a button 1`] = `"<button id="foo">Click me</button>"`;
+
+exports[`@bento/slots examples > Memo > should render a memoized component 1`] = `"<div data-slot="example-container" id=":r0:" class="example"><label for="example" data-slot="label">Hello World</label><button id=":r1:" data-slot="button">Click Me</button></div>"`;
+
+exports[`@bento/slots examples > Merged > should render a component with the correct merged slots 1`] = `"<p data-slot="description"><span>Description: </span><label data-slot="label" class="merged-class" title="better-title" id="merged"></label><span>Merged summary</span><span>Better error</span>Expect class "merged-class", id "merged" and title "better-title".</p>"`;
+
+exports[`@bento/slots examples > MergedFunction > should render all enhancement levels in correct order 1`] = `"<div><div>First Enhancement</div><div>Second Enhancement</div><div>Third Enhancement: merged-fn</div></div>"`;
+
+exports[`@bento/slots examples > Namespace > should allow children to inherit root-level slots 1`] = `"<div><label data-slot="title" class="inherited-title">title</label>Content</div>"`;
+
+exports[`@bento/slots examples > Namespace > should render a component with correct replacements 1`] = `"<label data-slot="title" class="title-3">title</label><label data-slot="title" class="description-3">title</label>"`;
+
+exports[`@bento/slots examples > Namespace > should render a component with correct slot names 1`] = `"<label data-slot="title" class="title-2">title</label><label data-slot="title" class="description-2">title</label>"`;
+
+exports[`@bento/slots examples > Namespace > should render a component with slots 1`] = `"<label data-slot="title" class="title-1">title</label><label data-slot="title" class="description-1">title</label>"`;
+
+exports[`@bento/slots examples > SlotFunction > should render a slot function override 1`] = `"<div data-slot="example-container" class="example"><label for="example" data-slot="label"><strong>Hello World</strong></label><button id=":r2:" data-slot="button">Click Me</button></div>"`;
+
+exports[`@bento/slots examples > SlotProps > should render a component with slot props, creating a red button 1`] = `"<div data-slot="example-container" class="example"><label for="example" data-slot="label">Hello World</label><button id=":r3:" data-slot="button" style="background: red; border: 2px solid black;">Click Me</button></div>"`;
