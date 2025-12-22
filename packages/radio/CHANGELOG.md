@@ -1,5 +1,22 @@
 # @bento/radio
 
+## 0.2.1
+
+### Patch Changes
+
+- Adds @bento/input to the repo and to the @bento/checkbox and @bento/radio primitives. ([#54](https://github.com/godaddy/bento/pull/54) by @amarques-godaddy)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/slots@0.3.0
+- @bento/use-props@0.2.1
+- @bento/input@0.1.0
+- @bento/container@0.2.1
+- @bento/icon@0.1.4
+- @bento/visually-hidden@0.1.1
+</details>
+
 ## 0.2.0
 
 ### Minor Changes

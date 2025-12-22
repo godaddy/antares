@@ -1,0 +1,123 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/Guides/Styling" />
+
+# Styling
+
+The components in Bento are unstyled by default, this however does not mean that you are not able to style the components. Every aspect of the component can be styled. We believe in giving you the freedom to style them as you see fit, with frameworks like Tailwind, CSS Modules, or CSS-in-JS.
+
+It's worth noting that when we say "unstyled" we are referring to cosmetic styles that are not part of the component's accessibility or behavior. Functional styles e.g. positional, or accessibility related styles can still be part of the component's styling contract.
+
+While Bento does not prescribe a specific styling solution, we do provide a few hooks that you can use to style the Primitives. As you style the Primitives, you should expect that your styles will interact with Bento's internals.
+
+## The Styling Contract
+
+Our components do not assign classNames, but as previously mentioned they might provide behavior, functional or accessibility related styles. When you pass `className` or `style` to a Bento component, your value may **overwrite** whatever the component applied internally. This is intentional, it gives you as the developer full control over the component's styling.
+
+It's up to you to decided if you want to merge your styles with the component's internal styles, or completely overwrite them,
+only your application knows the right strategy—ordering, deduplication, conditional classes, CSS-in-JS precedence, Tailwind class merging, etc. Bento won't guess.
+
+## Style Hooks
+
+### className
+
+`className` can be a string or a render function.
+
+**Simple override:**
+
+```tsx
+<Divider className="my-divider" />
+```
+
+**Merge with original:**
+
+```tsx
+<Divider
+  className={({ original }) => ['my-divider', original].filter(Boolean).join(' ')}
+/>
+```
+
+The `original` value is whatever class the component applied internally. For example, if the `Divider` component applies a baseline class that normalizes the `<hr>` element, the `original` value will be that class. When you merge with `original`, you preserve those styles while adding your own. If a component doesn't set an internal class, `original` will be `undefined` (which `.filter(Boolean)` handles safely).
+
+### style
+
+`style` works the same way—an object for override, or a render function for merge:
+
+```tsx
+<MyComponent
+  style={({ original }) => ({ ...original, opacity: 0.5 })}
+/>
+```
+
+Most Bento primitives don't set internal inline styles, so `original` will typically be `undefined`. The render-function form is still useful when you want to compute styles based on component state (see below).
+
+### Data Attributes
+
+Bento exposes internal state via `data-*` attributes. Use these for state-based styling without coupling to implementation details:
+
+```css
+.my-button[data-pressed='true'] {
+  transform: scale(0.98);
+}
+
+.my-button[data-focus-visible='true'] {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+```
+
+Components like `Button` (via `Pressable`) expose: `data-pressed`, `data-hovered`, `data-focused`, `data-focus-visible`.
+
+Components like `Checkbox` expose: `data-selected`, `data-pressed`, `data-hovered`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-indeterminate`.
+
+Each component's documentation page lists the specific data attributes it exposes.
+
+## Common Styling Approaches
+
+### Tailwind / Utility Classes
+
+Pass class names directly and use Tailwind's `data-*` variant selectors for state:
+
+```tsx
+<Button
+  className={[
+    'inline-flex items-center rounded-md px-3 py-2',
+    'data-[pressed=true]:scale-[0.98]',
+    'data-[focus-visible=true]:outline data-[focus-visible=true]:outline-2',
+  ].join(' ')}
+>
+  Save
+</Button>
+```
+
+### CSS Modules
+
+Define scoped classes and use `data-*` attribute selectors for state:
+
+```tsx
+import styles from './button.module.css';
+
+<Button className={styles.root}>Save</Button>
+```
+
+```css
+.root[data-pressed='true'] {
+  transform: scale(0.98);
+}
+```
+
+### CSS-in-JS
+
+Wrap Bento primitives with a "design-system component" layer. The wrapper owns the merge strategy:
+
+```tsx
+function DsButton({ className, ...props }: React.ComponentProps<typeof Button>) {
+  return <Button {...props} className={['ds-button', className].filter(Boolean).join(' ')} />;
+}
+```
+
+See the [Customization guide](/docs/architecture-guides-customization--docs) for more on the wrapper pattern.
+
+## Debugging: data-override
+
+Bento adds a `data-override` attribute when a component has been overridden through `className`, `style`, slots, or environment replacement. The value lists what was overridden (e.g., `data-override="className slot"`). This helps you identify instances that may need attention during upgrades.

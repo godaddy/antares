@@ -1,6 +1,6 @@
 {
   "name": "@bento/button",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Button component built on top of the Pressable primitive",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -42,11 +42,11 @@
     "package.json"
   ],
   "dependencies": {
-    "@bento/slots": "^0.2.0",
+    "@bento/slots": "^0.3.0",
     "@bento/use-data-attributes": "^0.1.0",
-    "@bento/use-props": "^0.2.0",
+    "@bento/use-props": "^0.2.1",
     "@react-aria/utils": "^3.30.0",
-    "react-aria": "^3.44.0"
+    "react-aria": "^3.45.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

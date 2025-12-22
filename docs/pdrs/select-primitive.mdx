@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/PDRs/Select" />
+
 # Select Primitive PDR
 
 ## Overview
@@ -95,7 +99,7 @@ const FruitValue = withSlots('FruitValue', function FruitValue(args: any) {
   const { props } = useProps(args);
   const { selectedItem, ...rest } = props;
   const fruit = selectedItem?.value as Fruit | undefined;
-  
+
   return (
     <span {...rest}>
       {fruit ? `${fruit.name} (${fruit.calories} kcal)` : 'Select a fruit'}
@@ -132,7 +136,7 @@ const FruitValue = withSlots('FruitValue', function FruitValue(args: any) {
   const { selectedItem, ...rest } = props;
   const id = selectedItem?.key as keyof typeof fruitsById | undefined;
   const fruit = id ? fruitsById[id] : undefined;
-  
+
   return (
     <span {...rest}>
       {fruit ? `${fruit.name} (${fruit.calories} kcal)` : 'Select a fruit'}
@@ -208,7 +212,7 @@ const FruitValue = withSlots('FruitValue', function FruitValue(args: any) {
 - `name` — For form submission. Source: [`AriaSelectProps.name`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L77).
 - `label` — From `LabelableProps`. Source: [`AriaSelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L69) extends `LabelableProps`.
 - `isDisabled`, `isRequired`, `isInvalid` — From React Aria types. Source: [`SelectProps`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-types/select/src/index.d.ts#L38) includes these from `InputBase` and `Validation`.
-- `placement`, `offset`, `crossOffset`, `shouldFlip`, `containerPadding` — Positioning props for `useOverlayPosition`. 
+- `placement`, `offset`, `crossOffset`, `shouldFlip`, `containerPadding` — Positioning props for `useOverlayPosition`.
   - **React Aria defaults**: `placement='bottom'`, `offset=0`, `crossOffset=0`, `shouldFlip=true`, `containerPadding=12`. Source: [`useOverlayPosition.ts`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/overlays/src/useOverlayPosition.ts#L100-104).
   - **Bento Select will override**: `placement='bottom start'` (aligns popover to start edge like React Spectrum's Picker).
 - `renderEmptyState` — Render function or element to display when collection is empty. Receives `SelectRenderProps` with `{ isOpen, isDisabled, isInvalid, isRequired, selectedItem, selectedItems, isEmpty }`. Extracted before `useProps` to prevent render prop corruption (Bento invariant #16).
@@ -326,7 +330,7 @@ This section documents non-obvious implementation decisions that prevent regress
 
 ### 3. Prop Merge Order: onClose After Spreads
 
-**Pattern**: 
+**Pattern**:
 ```tsx
 popover: {
   ...overlayProps,
@@ -353,10 +357,10 @@ popover: {
 
 ### 5. aria-labelledby Override Pattern
 
-**Pattern**: 
+**Pattern**:
 ```tsx
-...(processedProps['aria-labelledby'] && { 
-  'aria-labelledby': processedProps['aria-labelledby'] 
+...(processedProps['aria-labelledby'] && {
+  'aria-labelledby': processedProps['aria-labelledby']
 })
 ```
 
