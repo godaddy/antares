@@ -2,7 +2,7 @@ import React, { type ForwardedRef, type ReactNode, useContext } from 'react';
 import { mergeProps, useMenuItem, useHover } from 'react-aria';
 import { useObjectRef } from '@react-aria/utils';
 import { createLeafComponent } from '@react-aria/collections';
-import type { HoverEvents, Key, LinkDOMProps, Node } from '@react-types/shared';
+import type { HoverEvents, Key, LinkDOMProps, Node, PressEvents } from '@react-types/shared';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { useDataAttributes } from '@bento/use-data-attributes';
@@ -43,7 +43,8 @@ function useMenuItemDataAttributes({
     'focus-visible': isFocusVisible,
     pressed: isPressed,
     'has-submenu': hasSubmenu,
-    open: isOpen
+    open: isOpen,
+    'selection-mode': selectionMode !== 'none' ? selectionMode : undefined
   });
 }
 
@@ -86,6 +87,21 @@ export interface MenuItemRenderProps {
    * The type of selection that is allowed in the menu.
    */
   readonly selectionMode: SelectionMode;
+  /**
+   * The selection behavior for the menu.
+   * @selector [data-selection-behavior="toggle | replace"]
+   */
+  readonly selectionBehavior: 'toggle' | 'replace';
+  /**
+   * Whether the item has a submenu.
+   * @selector [data-has-submenu]
+   */
+  readonly hasSubmenu?: boolean;
+  /**
+   * Whether the item's submenu is open.
+   * @selector [data-open]
+   */
+  readonly isOpen?: boolean;
 }
 
 /**
@@ -96,9 +112,15 @@ export interface MenuItemRenderProps {
 export interface MenuItemProps<T = object>
   extends LinkDOMProps,
     HoverEvents,
-    Omit<React.HTMLAttributes<HTMLElement>, keyof LinkDOMProps | keyof HoverEvents | 'id' | 'children'> {
+    PressEvents,
+    Omit<
+      React.HTMLAttributes<HTMLElement>,
+      keyof LinkDOMProps | keyof HoverEvents | keyof PressEvents | 'id' | 'children'
+    > {
   /** The unique id of the item. If not provided, React Aria will auto-generate one. */
   readonly id?: Key;
+  /** Accessible label for the item. */
+  readonly 'aria-label'?: string;
   /** The object value that this item represents. When using dynamic collections, this is set automatically. */
   readonly value?: T;
   /** A string representation of the item's contents, used for features like typeahead. If not provided, React Aria will derive it from children automatically. */
@@ -108,6 +130,11 @@ export interface MenuItemProps<T = object>
    * collection's `selectionBehavior` prop and the interaction modality.
    */
   readonly onAction?: () => void;
+  /**
+   * Whether the menu should close when this item is selected.
+   * Overrides the menu's shouldCloseOnSelect prop.
+   */
+  readonly shouldCloseOnSelect?: boolean;
   /** The contents of the item. Can be a render function that receives render props. */
   readonly children?: ReactNode | ((values: MenuItemRenderProps) => ReactNode);
   /**
@@ -158,7 +185,10 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
   const renderValues: MenuItemRenderProps = {
     ...states,
     isHovered,
-    selectionMode: state.selectionManager.selectionMode as SelectionMode
+    selectionMode: state.selectionManager.selectionMode as SelectionMode,
+    selectionBehavior: state.selectionManager.selectionBehavior,
+    hasSubmenu: (__node.props as any).hasSubmenu,
+    isOpen: (__node.props as any).isOpen
   };
 
   const content = typeof originalChildren === 'function' ? originalChildren(renderValues) : originalChildren;
@@ -173,6 +203,8 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
     isFocused: states.isFocused,
     isFocusVisible: states.isFocusVisible,
     isPressed: states.isPressed,
+    hasSubmenu: (__node.props as any).hasSubmenu,
+    isOpen: (__node.props as any).isOpen,
     selectionMode: state.selectionManager.selectionMode as SelectionMode
   });
 

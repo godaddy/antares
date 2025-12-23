@@ -49,7 +49,7 @@ function useMenuDataAttributes({
     empty: isEmpty,
     focused: isFocused,
     'focus-visible': isFocusVisible,
-    'selection-mode': selectionMode
+    'selection-mode': selectionMode !== 'none' ? selectionMode : undefined
   });
 }
 
@@ -114,7 +114,7 @@ export interface MenuProps<T>
    * Whether the menu should close when an item is selected.
    * @default true for single selection, false for multiple selection
    */
-  readonly closeOnSelect?: boolean;
+  readonly shouldCloseOnSelect?: boolean;
   /**
    * Whether keyboard navigation should wrap from the last item to the first and vice versa.
    * @default true
@@ -175,7 +175,7 @@ function useComposedProps({
     'keyboardDelegate',
     'onAction',
     'onClose',
-    'closeOnSelect',
+    'shouldCloseOnSelect',
     'shouldFocusWrap'
   ];
 
@@ -240,9 +240,17 @@ function renderMenuContent({
   }
 
   if (isEmpty && renderEmptyStateProp) {
-    return typeof renderEmptyStateProp === 'function'
-      ? renderEmptyStateProp(renderValues)
-      : (renderEmptyStateProp as React.ReactNode);
+    const emptyContent =
+      typeof renderEmptyStateProp === 'function'
+        ? renderEmptyStateProp(renderValues)
+        : (renderEmptyStateProp as React.ReactNode);
+
+    // Wrap empty state in role="menuitem" for accessibility
+    return (
+      <div role="menuitem" style={{ display: 'contents' }}>
+        {emptyContent}
+      </div>
+    );
   }
 
   return renderCollectionItems(collection);
@@ -275,12 +283,16 @@ const MenuInner: React.FC<{
   originalProps,
   ...otherProps
 }) {
-  const { menuProps } = useMenu(otherProps, state, menuRef);
+  const triggerState = useContext(MenuTriggerStateContext);
+
+  // Auto-wire onClose to trigger state if not provided
+  const onClose = otherProps.onClose || (() => triggerState?.close());
+
+  const { menuProps } = useMenu({ ...otherProps, onClose }, state, menuRef);
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
   const isEmpty = state.collection.size === 0;
 
-  const triggerState = useContext(MenuTriggerStateContext);
   const isOpen = triggerState?.isOpen ?? true;
 
   const renderValues: MenuRenderProps = {

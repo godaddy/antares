@@ -101,7 +101,7 @@ Menu items expose detailed state through data attributes:
 | `data-focus-visible`         | Applied when keyboard focus should be visible     | "true"                        |
 | `data-pressed`               | Applied when the item is being pressed            | "true"                        |
 | `data-has-submenu`           | Applied when the item opens a submenu             | "true"                        |
-| `data-selection-mode`        | The menu's selection mode                         | "none", "single", "multiple"  |
+| `data-selection-mode`        | The menu's selection mode (when not 'none')       | "single", "multiple"          |
 
 ### Example Styling
 
@@ -193,7 +193,7 @@ The main menu component.
 - `onClose` (() => void): Called when the menu should close
 - `disabledKeys` (Iterable\<Key\>): Keys to disable
 - `orientation` ('vertical' | 'horizontal'): Menu orientation (default: 'vertical')
-- `closeOnSelect` (boolean): Whether to close menu on selection (default: true for single, false for multiple)
+- `shouldCloseOnSelect` (boolean): Whether to close menu on selection (default: true for single, false for multiple)
 - `shouldFocusWrap` (boolean): Whether keyboard navigation wraps (default: true)
 - `items` (Iterable<T>): Dynamic collection items
 - `children`: Static children or render function
@@ -205,10 +205,12 @@ Individual menu item.
 
 **Props:**
 - `id` (Key): Unique identifier for the item (use this for identification, not React's `key`)
+- `aria-label` (string): Accessible label for the item
 - `textValue` (string): Text for typeahead navigation
 - `onAction` (() => void): Called when the item is activated
 - `isDisabled` (boolean): Whether the item is disabled
 - `href` (string): Makes the item render as a link
+- `shouldCloseOnSelect` (boolean): Whether menu closes when this item is selected (overrides menu's setting)
 - `children`: Static children or render function with render props
 
 ### MenuSection
@@ -218,6 +220,7 @@ Section grouping for menu items.
 **Props:**
 - `title` (ReactNode): Section heading
 - `children`: Menu items to group
+- `shouldCloseOnSelect` (boolean): Whether menu closes when items in this section are selected
 
 ### MenuTrigger
 

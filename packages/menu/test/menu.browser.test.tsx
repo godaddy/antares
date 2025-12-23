@@ -125,6 +125,8 @@ describe('@bento/menu', function bento() {
       assume(result).includes('Copy');
       assume(result).includes('Paste');
       assume(result).includes('role="menuitem"');
+      // data-selection-mode should NOT be present when mode is 'none'
+      assume(result).does.not.include('data-selection-mode');
     });
 
     it('supports single selection mode', function test() {

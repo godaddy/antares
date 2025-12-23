@@ -1,9 +1,10 @@
-import React, { useRef, type ReactElement, type ReactNode } from 'react';
+import React, { useRef, useLayoutEffect, type ReactElement, type ReactNode } from 'react';
 import { useMenuTrigger } from '@react-aria/menu';
 import { useMenuTriggerState } from '@react-stately/menu';
+import { useResizeObserver } from '@react-aria/utils';
 import type { MenuTriggerProps as AriaMenuTriggerProps } from '@react-types/menu';
 import { useProps } from '@bento/use-props';
-import { MenuTriggerStateContext } from './context';
+import { MenuTriggerStateContext, RootMenuTriggerStateContext } from './context';
 
 /**
  * Props for the MenuTrigger component.
@@ -54,7 +55,32 @@ export function MenuTrigger(props: MenuTriggerProps): ReactElement {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const { menuTriggerProps, menuProps } = useMenuTrigger({ trigger: processedProps.trigger }, state, triggerRef);
+  const { menuTriggerProps, menuProps } = useMenuTrigger(
+    { trigger: processedProps.trigger, type: 'menu' },
+    state,
+    triggerRef
+  );
+
+  // Track trigger width for popover positioning
+  const [triggerWidth, setTriggerWidth] = React.useState<number | undefined>();
+  useResizeObserver({
+    ref: triggerRef,
+    onResize() {
+      if (triggerRef.current) {
+        setTriggerWidth(triggerRef.current.offsetWidth);
+      }
+    }
+  });
+
+  // Set CSS variable for trigger width
+  useLayoutEffect(
+    function setTriggerWidthVar() {
+      if (menuRef.current && triggerWidth) {
+        menuRef.current.style.setProperty('--trigger-width', `${triggerWidth}px`);
+      }
+    },
+    [triggerWidth]
+  );
 
   // Clone children and inject props
   const children = React.Children.toArray(processedProps.children);
@@ -78,26 +104,30 @@ export function MenuTrigger(props: MenuTriggerProps): ReactElement {
 
     // Support both 'overlay' (from PDR) and 'menu'/'popover' slots
     if (slot === 'overlay') {
-      // For overlay slot, just provide state context (no menuProps)
+      // For overlay slot, provide both trigger state and root state contexts
       return (
-        <MenuTriggerStateContext.Provider value={state}>
-          {React.cloneElement(child as ReactElement)}
-        </MenuTriggerStateContext.Provider>
+        <RootMenuTriggerStateContext.Provider value={state}>
+          <MenuTriggerStateContext.Provider value={state}>
+            {React.cloneElement(child as ReactElement)}
+          </MenuTriggerStateContext.Provider>
+        </RootMenuTriggerStateContext.Provider>
       );
     }
 
     if (slot === 'menu' || slot === 'popover') {
-      // For the menu/popover slot, provide menuProps and state context
+      // For the menu/popover slot, provide menuProps and state contexts
       return (
-        <MenuTriggerStateContext.Provider value={state}>
-          {React.cloneElement(
-            child as ReactElement,
-            {
-              ...menuProps,
-              ref: menuRef
-            } as any
-          )}
-        </MenuTriggerStateContext.Provider>
+        <RootMenuTriggerStateContext.Provider value={state}>
+          <MenuTriggerStateContext.Provider value={state}>
+            {React.cloneElement(
+              child as ReactElement,
+              {
+                ...menuProps,
+                ref: menuRef
+              } as any
+            )}
+          </MenuTriggerStateContext.Provider>
+        </RootMenuTriggerStateContext.Provider>
       );
     }
 

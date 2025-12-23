@@ -24,6 +24,11 @@ export interface MenuSectionProps extends Omit<React.ComponentProps<'section'>, 
    * The children of the section.
    */
   readonly children?: React.ReactNode;
+  /**
+   * Whether the menu should close when an item in this section is selected.
+   * Overrides the menu's shouldCloseOnSelect prop.
+   */
+  readonly shouldCloseOnSelect?: boolean;
 }
 
 /**
