@@ -15,6 +15,15 @@ export interface MenuTriggerProps extends AriaMenuTriggerProps {
    * Children should use the `slot` prop to specify whether they're the trigger or menu.
    */
   readonly children: ReactNode;
+  /**
+   * How the menu is triggered.
+   * @default 'press'
+   */
+  readonly trigger?: 'press' | 'longPress';
+  /**
+   * Whether the menu is open by default (uncontrolled).
+   */
+  readonly defaultOpen?: boolean;
 }
 
 /**
@@ -45,7 +54,7 @@ export function MenuTrigger(props: MenuTriggerProps): ReactElement {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const { menuTriggerProps, menuProps } = useMenuTrigger({}, state, triggerRef);
+  const { menuTriggerProps, menuProps } = useMenuTrigger({ trigger: processedProps.trigger }, state, triggerRef);
 
   // Clone children and inject props
   const children = React.Children.toArray(processedProps.children);
@@ -64,6 +73,16 @@ export function MenuTrigger(props: MenuTriggerProps): ReactElement {
           ...menuTriggerProps,
           ref: triggerRef
         } as any
+      );
+    }
+
+    // Support both 'overlay' (from PDR) and 'menu'/'popover' slots
+    if (slot === 'overlay') {
+      // For overlay slot, just provide state context (no menuProps)
+      return (
+        <MenuTriggerStateContext.Provider value={state}>
+          {React.cloneElement(child as ReactElement)}
+        </MenuTriggerStateContext.Provider>
       );
     }
 

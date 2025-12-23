@@ -22,7 +22,7 @@ export function SelectionMenuExample(props: any) {
         }}
       >
         <MenuItem
-          key="autosave"
+          id="autosave"
           textValue="Autosave"
           style={{
             padding: '8px 12px',
@@ -33,7 +33,7 @@ export function SelectionMenuExample(props: any) {
           ✓ Autosave
         </MenuItem>
         <MenuItem
-          key="notifications"
+          id="notifications"
           textValue="Notifications"
           style={{
             padding: '8px 12px',
@@ -44,7 +44,7 @@ export function SelectionMenuExample(props: any) {
           Notifications
         </MenuItem>
         <MenuItem
-          key="dark-mode"
+          id="dark-mode"
           textValue="Dark mode"
           style={{
             padding: '8px 12px',

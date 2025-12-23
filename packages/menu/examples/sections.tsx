@@ -24,7 +24,7 @@ export function SectionsExample(props: any) {
           }}
         >
           <MenuItem
-            key="new"
+            id="new"
             textValue="New"
             style={{
               padding: '8px 12px',
@@ -35,7 +35,7 @@ export function SectionsExample(props: any) {
             New
           </MenuItem>
           <MenuItem
-            key="open"
+            id="open"
             textValue="Open"
             style={{
               padding: '8px 12px',
@@ -53,7 +53,7 @@ export function SectionsExample(props: any) {
           }}
         >
           <MenuItem
-            key="cut"
+            id="cut"
             textValue="Cut"
             style={{
               padding: '8px 12px',
@@ -64,7 +64,7 @@ export function SectionsExample(props: any) {
             Cut
           </MenuItem>
           <MenuItem
-            key="copy"
+            id="copy"
             textValue="Copy"
             style={{
               padding: '8px 12px',
@@ -75,7 +75,7 @@ export function SectionsExample(props: any) {
             Copy
           </MenuItem>
           <MenuItem
-            key="paste"
+            id="paste"
             textValue="Paste"
             style={{
               padding: '8px 12px',

@@ -47,7 +47,7 @@ export function MenuTriggerExample(props: any) {
               }}
             >
               <MenuItem
-                key="edit"
+                id="edit"
                 textValue="Edit"
                 style={{
                   padding: '8px 12px',
@@ -58,7 +58,7 @@ export function MenuTriggerExample(props: any) {
                 Edit
               </MenuItem>
               <MenuItem
-                key="duplicate"
+                id="duplicate"
                 textValue="Duplicate"
                 style={{
                   padding: '8px 12px',
@@ -69,7 +69,7 @@ export function MenuTriggerExample(props: any) {
                 Duplicate
               </MenuItem>
               <MenuItem
-                key="delete"
+                id="delete"
                 textValue="Delete"
                 style={{
                   padding: '8px 12px',

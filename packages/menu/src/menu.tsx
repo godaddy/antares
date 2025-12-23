@@ -1,24 +1,57 @@
-import React, { useContext, useMemo, type ForwardedRef, type RefObject } from 'react';
-import {
-  FocusScope,
-  mergeProps,
-  useCollator,
-  useLocale,
-  useMenu,
-  useFocusRing,
-  ListKeyboardDelegate
-} from 'react-aria';
+import React, { useContext, type ForwardedRef, type RefObject } from 'react';
+import { mergeProps, useMenu, useFocusRing, useSeparator } from 'react-aria';
+import { useObjectRef } from '@react-aria/utils';
 import { useTreeState, type TreeState, type Orientation, type Node } from 'react-stately';
 import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
 import type { AriaMenuProps } from '@react-types/menu';
 import { useProps } from '@bento/use-props';
 import { withSlots, type Slots } from '@bento/slots';
+import { useDataAttributes } from '@bento/use-data-attributes';
 import { MenuItemImpl } from './menu-item';
 import { MenuSectionInner } from './menu-section';
-import { useSafeObjectRef } from './utils';
 import { MenuStateContext, MenuTriggerStateContext } from './context';
-import { useMenuDataAttributes } from './data-attributes';
-import type { SelectionMode } from './types';
+
+/**
+ * Selection mode for menu items
+ * @public
+ */
+export type SelectionMode = 'none' | 'single' | 'multiple';
+
+/**
+ * Alias for TreeState used internally by Menu components
+ * @public
+ */
+export type MenuState<T> = TreeState<T>;
+
+/**
+ * Generates data attributes for the Menu element based on its current state.
+ * These attributes are used for styling selectors and accessibility indicators.
+ *
+ * @param config - Configuration object containing Menu state flags
+ * @returns Object with data attributes for the Menu element
+ * @internal
+ */
+function useMenuDataAttributes({
+  isOpen,
+  isEmpty,
+  isFocused,
+  isFocusVisible,
+  selectionMode
+}: {
+  readonly isOpen?: boolean;
+  readonly isEmpty: boolean;
+  readonly isFocused: boolean;
+  readonly isFocusVisible: boolean;
+  readonly selectionMode?: SelectionMode;
+}) {
+  return useDataAttributes({
+    open: isOpen,
+    empty: isEmpty,
+    focused: isFocused,
+    'focus-visible': isFocusVisible,
+    'selection-mode': selectionMode
+  });
+}
 
 /**
  * Render props provided to Menu render functions and empty state renderers.
@@ -77,6 +110,16 @@ export interface MenuProps<T>
    * Static children or render function for the Menu.
    */
   readonly children?: React.ReactNode | ((item: T) => React.ReactNode) | ((props: MenuRenderProps) => React.ReactNode);
+  /**
+   * Whether the menu should close when an item is selected.
+   * @default true for single selection, false for multiple selection
+   */
+  readonly closeOnSelect?: boolean;
+  /**
+   * Whether keyboard navigation should wrap from the last item to the first and vice versa.
+   * @default true
+   */
+  readonly shouldFocusWrap?: boolean;
 }
 
 /**
@@ -95,60 +138,6 @@ function useMenuState(props: Record<string, unknown>) {
   const state = contextState ?? useTreeState(stateProps);
 
   return { state, contextState };
-}
-
-/**
- * Renders content with optional context provider wrapper.
- * @internal
- */
-function renderWithOptionalContext(
-  content: React.ReactNode,
-  state: TreeState<unknown>,
-  contextState: TreeState<unknown> | null
-): React.ReactNode {
-  return contextState ? content : <MenuStateContext.Provider value={state}>{content}</MenuStateContext.Provider>;
-}
-
-/**
- * Creates and memoizes a keyboard delegate for the Menu.
- * @internal
- */
-function useKeyboardDelegate({
-  collection,
-  collator,
-  menuRef,
-  selectionManager,
-  orientation,
-  direction,
-  keyboardDelegate: providedDelegate
-}: {
-  readonly collection: TreeState<unknown>['collection'];
-  readonly collator: Intl.Collator;
-  readonly menuRef: React.RefObject<HTMLDivElement>;
-  readonly selectionManager: TreeState<unknown>['selectionManager'];
-  readonly orientation?: Orientation;
-  readonly direction: 'ltr' | 'rtl';
-  readonly keyboardDelegate?: ListKeyboardDelegate<unknown>;
-}): ListKeyboardDelegate<unknown> {
-  const { disabledBehavior, disabledKeys } = selectionManager;
-
-  return useMemo(
-    function createKeyboardDelegate() {
-      return (
-        providedDelegate ||
-        new ListKeyboardDelegate({
-          collection,
-          collator,
-          ref: menuRef,
-          disabledKeys,
-          disabledBehavior,
-          orientation,
-          direction
-        })
-      );
-    },
-    [collection, collator, menuRef, selectionManager, orientation, direction, providedDelegate]
-  );
 }
 
 /**
@@ -185,7 +174,9 @@ function useComposedProps({
     'children',
     'keyboardDelegate',
     'onAction',
-    'onClose'
+    'onClose',
+    'closeOnSelect',
+    'shouldFocusWrap'
   ];
 
   const appliedUserProps = apply(otherProps, propsToExclude);
@@ -202,20 +193,6 @@ function useComposedProps({
   };
 
   return finalProps;
-}
-
-/**
- * Renders the empty state content for the Menu when no items are present.
- * @internal
- */
-function renderEmptyState(
-  renderEmptyStateFn: (props: MenuRenderProps) => React.ReactNode,
-  renderValues: MenuRenderProps
-): React.ReactNode {
-  if (typeof renderEmptyStateFn === 'function') {
-    return renderEmptyStateFn(renderValues);
-  }
-  return renderEmptyStateFn as React.ReactNode;
 }
 
 /**
@@ -263,7 +240,9 @@ function renderMenuContent({
   }
 
   if (isEmpty && renderEmptyStateProp) {
-    return renderEmptyState(renderEmptyStateProp, renderValues);
+    return typeof renderEmptyStateProp === 'function'
+      ? renderEmptyStateProp(renderValues)
+      : (renderEmptyStateProp as React.ReactNode);
   }
 
   return renderCollectionItems(collection);
@@ -283,7 +262,6 @@ const MenuInner: React.FC<{
   readonly items?: Iterable<unknown>;
   readonly menuRef: RefObject<HTMLDivElement>;
   readonly orientation?: Orientation;
-  readonly keyboardDelegate?: ListKeyboardDelegate<unknown>;
   readonly onAction?: (key: any) => void;
   readonly onClose?: () => void;
   readonly selectionMode?: SelectionMode;
@@ -297,30 +275,7 @@ const MenuInner: React.FC<{
   originalProps,
   ...otherProps
 }) {
-  const { orientation = 'vertical' } = otherProps;
-
-  const { collection, selectionManager } = state;
-  const { direction } = useLocale();
-  const collator = useCollator({ usage: 'search', sensitivity: 'base' });
-
-  const keyboardDelegate = useKeyboardDelegate({
-    collection,
-    collator,
-    menuRef,
-    selectionManager,
-    orientation,
-    direction,
-    keyboardDelegate: otherProps.keyboardDelegate
-  });
-
-  const { menuProps } = useMenu(
-    {
-      ...otherProps,
-      keyboardDelegate
-    },
-    state,
-    menuRef
-  );
+  const { menuProps } = useMenu(otherProps, state, menuRef);
 
   const { focusProps, isFocused, isFocusVisible } = useFocusRing();
   const isEmpty = state.collection.size === 0;
@@ -342,8 +297,7 @@ const MenuInner: React.FC<{
     isEmpty,
     isFocused,
     isFocusVisible,
-    orientation,
-    selectionMode: selectionManager.selectionMode as SelectionMode
+    selectionMode: state.selectionManager.selectionMode as SelectionMode
   });
 
   const composedProps = useComposedProps({
@@ -357,18 +311,16 @@ const MenuInner: React.FC<{
   });
 
   return (
-    <FocusScope>
-      <div {...composedProps}>
-        {renderMenuContent({
-          children,
-          items,
-          isEmpty,
-          renderEmptyStateProp,
-          renderValues,
-          collection
-        })}
-      </div>
-    </FocusScope>
+    <div {...composedProps}>
+      {renderMenuContent({
+        children,
+        items,
+        isEmpty,
+        renderEmptyStateProp,
+        renderValues,
+        collection: state.collection
+      })}
+    </div>
   );
 };
 
@@ -398,7 +350,7 @@ const StandaloneMenu: React.FC<{
   const originalRenderEmptyState = props.renderEmptyState;
 
   const { props: processedProps } = useProps(props);
-  const processedRef = useSafeObjectRef(menuRef);
+  const processedRef = useObjectRef(menuRef);
   const { state, contextState } = useMenuState({ ...processedProps, collection });
 
   const { renderEmptyState: _, ...cleanProcessedProps } = processedProps as MenuProps<unknown> & {
@@ -415,7 +367,7 @@ const StandaloneMenu: React.FC<{
     />
   );
 
-  return renderWithOptionalContext(content, state, contextState);
+  return contextState ? content : <MenuStateContext.Provider value={state}>{content}</MenuStateContext.Provider>;
 };
 
 /**
@@ -437,7 +389,20 @@ export const Menu = withSlots('BentoMenu', MenuComponent);
 
 /**
  * Collection component for building dynamic collections in Menu.
- * Re-exported from React Aria Collections.
+ * Re-exported from React Aria Collections for use with the `items` prop
+ * and dynamic menu content. See React Aria Collections documentation for
+ * usage with complex hierarchical data structures.
+ *
+ * @example
+ * ```tsx
+ * <Menu aria-label="Dynamic menu" items={items}>
+ *   {(item) => (
+ *     <MenuItem textValue={item.name}>
+ *       {item.name}
+ *     </MenuItem>
+ *   )}
+ * </Menu>
+ * ```
  * @public
  */
 export { AriaCollection as Collection };
@@ -447,3 +412,94 @@ export { AriaCollection as Collection };
  * @public
  */
 export { MenuStateContext };
+
+/**
+ * Props for the Separator component.
+ * @interface SeparatorProps
+ */
+export interface SeparatorProps extends React.ComponentProps<'div'> {
+  /**
+   * The orientation of the separator.
+   * @default 'horizontal'
+   */
+  readonly orientation?: 'horizontal' | 'vertical';
+}
+
+/**
+ * Internal Separator component implementation.
+ * @internal
+ */
+function SeparatorComponent(props: SeparatorProps, ref: ForwardedRef<HTMLDivElement>): React.ReactElement {
+  const { orientation = 'horizontal', ...rest } = props;
+  const { props: processedProps } = useProps(rest, {}, ref);
+  const objectRef = useObjectRef(ref);
+
+  const { separatorProps } = useSeparator({
+    orientation,
+    elementType: 'div'
+  });
+
+  return <div {...separatorProps} {...processedProps} ref={objectRef} />;
+}
+
+/**
+ * A visual divider component for separating menu items or sections.
+ * Renders a semantic separator with proper ARIA attributes.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Menu aria-label="Actions">
+ *   <MenuItem>Cut</MenuItem>
+ *   <MenuItem>Copy</MenuItem>
+ *   <Separator />
+ *   <MenuItem>Paste</MenuItem>
+ * </Menu>
+ * ```
+ * @public
+ */
+export const Separator = withSlots('BentoSeparator', React.forwardRef(SeparatorComponent));
+
+/**
+ * Props for the SubmenuTrigger component.
+ * @interface SubmenuTriggerProps
+ */
+export interface SubmenuTriggerProps {
+  /**
+   * The trigger menu item and the submenu.
+   * Children should use the `slot` prop to specify 'trigger' or 'submenu'.
+   */
+  readonly children: React.ReactNode;
+  /**
+   * Delay in milliseconds before opening submenu on hover.
+   * @default 200
+   */
+  readonly delay?: number;
+}
+
+/**
+ * SubmenuTrigger coordinates the open/close state of a submenu and its trigger item.
+ * This is a placeholder implementation for future submenu support.
+ *
+ * In v1, this component is exported but not fully implemented. It provides the
+ * API surface for future nested menu functionality.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Menu aria-label="File">
+ *   <SubmenuTrigger delay={200}>
+ *     <MenuItem slot="trigger">Share →</MenuItem>
+ *     <Menu slot="submenu" aria-label="Share">
+ *       <MenuItem>Email</MenuItem>
+ *       <MenuItem>Slack</MenuItem>
+ *     </Menu>
+ *   </SubmenuTrigger>
+ * </Menu>
+ * ```
+ * @public
+ */
+export function SubmenuTrigger({ children }: SubmenuTriggerProps): React.ReactElement {
+  // TODO: Implement submenu coordination with hover/focus management
+  return <>{children}</>;
+}

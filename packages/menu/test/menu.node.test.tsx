@@ -25,7 +25,6 @@ describe('@bento/menu', function bento() {
     assume(emptyResult).includes('role="menu"');
     assume(emptyResult).includes('aria-label="Empty menu"');
     assume(emptyResult).includes('data-empty="true"');
-    assume(emptyResult).includes('data-orientation="vertical"');
 
     const complexResult = renderToString(
       <Menu aria-label="Complex menu" selectionMode="single" orientation="horizontal">
@@ -48,7 +47,6 @@ describe('@bento/menu', function bento() {
     assume(complexResult).includes('role="menu"');
     assume(complexResult).includes('aria-label="Complex menu"');
     assume(complexResult).includes('data-selection-mode="single"');
-    assume(complexResult).includes('data-orientation="horizontal"');
 
     assume(complexResult).includes('role="group"');
     assume(complexResult).includes('role="menuitemradio"');
@@ -121,7 +119,6 @@ describe('@bento/menu', function bento() {
       );
 
       assume(complexResult).exists();
-      assume(complexResult).includes('data-orientation="vertical"');
       assume(complexResult).includes('data-selection-mode="multiple"');
 
       assume(complexResult).includes('Actions');

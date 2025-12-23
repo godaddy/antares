@@ -1,13 +1,51 @@
 import React, { type ForwardedRef, type ReactNode, useContext } from 'react';
 import { mergeProps, useMenuItem, useHover } from 'react-aria';
+import { useObjectRef } from '@react-aria/utils';
 import { createLeafComponent } from '@react-aria/collections';
 import type { HoverEvents, Key, LinkDOMProps, Node } from '@react-types/shared';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
+import { useDataAttributes } from '@bento/use-data-attributes';
 import { MenuStateContext } from './context';
-import { useSafeObjectRef } from './utils';
-import { useMenuItemDataAttributes } from './data-attributes';
-import type { SelectionMode } from './types';
+import type { SelectionMode } from './menu';
+
+/**
+ * Generates data attributes for MenuItem elements based on their state.
+ * @internal
+ */
+function useMenuItemDataAttributes({
+  isSelected,
+  isDisabled,
+  isHovered,
+  isFocused,
+  isFocusVisible,
+  isPressed,
+  hasSubmenu,
+  isOpen,
+  selectionMode
+}: {
+  readonly isSelected: boolean;
+  readonly isDisabled: boolean;
+  readonly isHovered: boolean;
+  readonly isFocused: boolean;
+  readonly isFocusVisible: boolean;
+  readonly isPressed: boolean;
+  readonly hasSubmenu?: boolean;
+  readonly isOpen?: boolean;
+  readonly selectionMode: SelectionMode;
+}) {
+  return useDataAttributes({
+    selected: isSelected,
+    checked: isSelected && (selectionMode === 'single' || selectionMode === 'multiple'),
+    disabled: isDisabled,
+    hovered: isHovered,
+    focused: isFocused,
+    'focus-visible': isFocusVisible,
+    pressed: isPressed,
+    'has-submenu': hasSubmenu,
+    open: isOpen
+  });
+}
 
 /**
  * Render props provided to MenuItem render functions.
@@ -46,14 +84,8 @@ export interface MenuItemRenderProps {
   readonly isDisabled: boolean;
   /**
    * The type of selection that is allowed in the menu.
-   * @selector [data-selection-mode="none | single | multiple"]
    */
   readonly selectionMode: SelectionMode;
-  /**
-   * The selection behavior for the menu.
-   * @selector [data-selection-behavior="toggle | replace"]
-   */
-  readonly selectionBehavior: 'toggle' | 'replace';
 }
 
 /**
@@ -98,12 +130,12 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
 ) {
   const state = useContext(MenuStateContext)!;
 
-  // Extract children before first useProps call to avoid render prop corruption
+  // Extract children before useProps call to avoid render prop corruption
   const originalChildren = props.children;
 
-  // First pass: merge slot props before React Aria hooks
+  // Merge slot props before React Aria hooks
   const { props: mergedProps, ref: mergedRef } = useProps(props, {}, ref);
-  const safeRef = useSafeObjectRef(mergedRef ?? null);
+  const safeRef = useObjectRef(mergedRef ?? null);
 
   const { menuItemProps, ...states } = useMenuItem(
     {
@@ -126,13 +158,12 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
   const renderValues: MenuItemRenderProps = {
     ...states,
     isHovered,
-    selectionMode: state.selectionManager.selectionMode as SelectionMode,
-    selectionBehavior: state.selectionManager.selectionBehavior
+    selectionMode: state.selectionManager.selectionMode as SelectionMode
   };
 
   const content = typeof originalChildren === 'function' ? originalChildren(renderValues) : originalChildren;
 
-  // Second pass: reprocess original props with render state for render prop support
+  // Apply original node props with render values
   const { apply } = useProps(props, renderValues);
 
   const dataAttributes = useMenuItemDataAttributes({
@@ -142,21 +173,18 @@ const MenuItemImplComponent = function MenuItemImplComponent<T extends object>(
     isFocused: states.isFocused,
     isFocusVisible: states.isFocusVisible,
     isPressed: states.isPressed,
-    selectionMode: state.selectionManager.selectionMode as SelectionMode,
-    selectionBehavior: state.selectionManager.selectionBehavior
+    selectionMode: state.selectionManager.selectionMode as SelectionMode
   });
 
   const ElementType = __node.props.href ? 'a' : 'div';
 
-  // Use original node props not filtered finalProps
   const appliedUserProps = apply(__node.props, ['ref']);
 
   const finalAttributes = {
     ...mergeProps(menuItemProps, hoverProps),
     ...dataAttributes,
     ...appliedUserProps,
-    ref: safeRef,
-    'data-text-value': __node.textValue
+    ref: safeRef
   };
 
   return React.createElement(ElementType, finalAttributes, content);

@@ -3,7 +3,6 @@ import { useMenuSection, mergeProps } from 'react-aria';
 import { createBranchComponent } from '@react-aria/collections';
 import { CollectionRendererContext } from 'react-aria-components';
 import type { Node } from '@react-types/shared';
-import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { MenuStateContext } from './context';
@@ -55,7 +54,6 @@ const BentoMenuSectionImpl = withSlots('BentoMenuSection', function BentoMenuSec
   T
 >({ __node, children, title: titleProp, ...rest }: BentoMenuSectionImplProps<T>, ref: React.ForwardedRef<HTMLElement>) {
   const { props, apply } = useProps(rest);
-  const data = useDataAttributes({ level: __node?.level });
   const headingRef = useRef<HTMLDivElement>(null);
 
   const title = titleProp ?? props.title ?? __node?.rendered;
@@ -64,7 +62,7 @@ const BentoMenuSectionImpl = withSlots('BentoMenuSection', function BentoMenuSec
     'aria-label': props['aria-label']
   });
 
-  const composed = mergeProps(apply({ ...data, ...props }, ['children', 'title', 'slot']), groupProps);
+  const composed = mergeProps(apply({ ...props }, ['children', 'title', 'slot']), groupProps);
 
   const sectionContent = children || props.children;
 

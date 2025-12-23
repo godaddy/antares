@@ -4,17 +4,17 @@
  */
 
 // Components
-export { Menu, Collection, MenuStateContext } from './menu';
+export { Menu, Collection, MenuStateContext, Separator, SubmenuTrigger } from './menu';
 export { MenuItem } from './menu-item';
 export { MenuSection } from './menu-section';
 export { MenuTrigger } from './menu-trigger';
 
 // Types
-export type { MenuProps, MenuRenderProps } from './menu';
+export type { MenuProps, MenuRenderProps, SelectionMode, MenuState, SeparatorProps, SubmenuTriggerProps } from './menu';
 export type { MenuItemProps, MenuItemRenderProps } from './menu-item';
 export type { MenuSectionProps } from './menu-section';
 export type { MenuTriggerProps } from './menu-trigger';
-export type { MenuState, MenuTriggerState, SelectionMode } from './types';
+export type { MenuTriggerState } from '@react-stately/menu';
 
 // Contexts
-export { MenuTriggerStateContext } from './context';
+export { MenuTriggerStateContext, RootMenuTriggerStateContext } from './context';

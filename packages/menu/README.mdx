@@ -21,12 +21,15 @@ npm install --save @bento/menu
 
 ## Component Structure
 
-The `@bento/menu` package exports four main components:
+The `@bento/menu` package exports the following components:
 
 - **Menu**: The main menu container with ARIA `role="menu"` that manages keyboard navigation, selection state, and accessibility
 - **MenuItem**: Individual menu items that can trigger actions or represent selections
 - **MenuSection**: Optional grouping component for organizing items into labeled sections
 - **MenuTrigger**: Coordinator component that ties a trigger element and menu together with controlled open/close state
+- **Separator**: Visual divider component for separating menu items or sections
+- **SubmenuTrigger**: Placeholder for future submenu support (v1: API surface only)
+- **Collection**: Re-exported from React Aria for building dynamic collections
 
 ## Props
 
@@ -83,7 +86,6 @@ The main `Menu` component exposes these data attributes:
 | `data-focus-visible`         | Applied when keyboard focus should be visible     | "true"                        |
 | `data-open`                  | Applied when the menu is open (via MenuTrigger)   | "true"                        |
 | `data-selection-mode`        | The current selection mode                        | "none", "single", "multiple"  |
-| `data-orientation`           | The menu's orientation                            | "vertical", "horizontal"      |
 
 #### MenuItem Attributes
 
@@ -100,7 +102,6 @@ Menu items expose detailed state through data attributes:
 | `data-pressed`               | Applied when the item is being pressed            | "true"                        |
 | `data-has-submenu`           | Applied when the item opens a submenu             | "true"                        |
 | `data-selection-mode`        | The menu's selection mode                         | "none", "single", "multiple"  |
-| `data-selection-behavior`    | How selection behaves                             | "toggle", "replace"           |
 
 ### Example Styling
 
@@ -185,13 +186,15 @@ The main menu component.
 **Props:**
 - `aria-label` (string, required): Accessible label for the menu
 - `selectionMode` ('none' | 'single' | 'multiple'): Selection mode (default: 'none')
-- `selectedKeys` (Iterable<Key>): Controlled selected keys
-- `defaultSelectedKeys` (Iterable<Key>): Default selected keys (uncontrolled)
+- `selectedKeys` (Iterable\<Key\>): Controlled selected keys
+- `defaultSelectedKeys` (Iterable\<Key\>): Default selected keys (uncontrolled)
 - `onSelectionChange` ((keys: Selection) => void): Called when selection changes
 - `onAction` ((key: Key) => void): Called when an item is activated
 - `onClose` (() => void): Called when the menu should close
-- `disabledKeys` (Iterable<Key>): Keys to disable
+- `disabledKeys` (Iterable\<Key\>): Keys to disable
 - `orientation` ('vertical' | 'horizontal'): Menu orientation (default: 'vertical')
+- `closeOnSelect` (boolean): Whether to close menu on selection (default: true for single, false for multiple)
+- `shouldFocusWrap` (boolean): Whether keyboard navigation wraps (default: true)
 - `items` (Iterable<T>): Dynamic collection items
 - `children`: Static children or render function
 - `renderEmptyState` ((props) => ReactNode): Render function for empty state
@@ -201,9 +204,11 @@ The main menu component.
 Individual menu item.
 
 **Props:**
+- `id` (Key): Unique identifier for the item (use this for identification, not React's `key`)
 - `textValue` (string): Text for typeahead navigation
 - `onAction` (() => void): Called when the item is activated
 - `isDisabled` (boolean): Whether the item is disabled
+- `href` (string): Makes the item render as a link
 - `children`: Static children or render function with render props
 
 ### MenuSection
@@ -219,10 +224,26 @@ Section grouping for menu items.
 Coordinator for menu open/close state.
 
 **Props:**
+- `trigger` ('press' | 'longPress'): How the menu is triggered (default: 'press')
 - `isOpen` (boolean): Controlled open state
 - `defaultOpen` (boolean): Default open state (uncontrolled)
 - `onOpenChange` ((isOpen: boolean) => void): Called when open state changes
-- `children`: Should contain elements with `slot="trigger"` and `slot="menu"`
+- `children`: Should contain elements with `slot="trigger"` and `slot="menu"` (or `slot="popover"`)
+
+### Separator
+
+Visual divider for menu items or sections.
+
+**Props:**
+- `orientation` ('horizontal' | 'vertical'): Orientation (default: 'horizontal')
+
+### SubmenuTrigger
+
+Placeholder for future submenu support (v1: API surface only).
+
+**Props:**
+- `delay` (number): Hover delay in milliseconds (default: 200)
+- `children`: Should contain elements with `slot="trigger"` and `slot="submenu"`
 
 ## Advanced Usage
 
@@ -239,8 +260,8 @@ function ControlledMenu() {
       selectedKeys={selectedKeys}
       onSelectionChange={setSelectedKeys}
     >
-      <MenuItem key="option1">Option 1</MenuItem>
-      <MenuItem key="option2">Option 2</MenuItem>
+      <MenuItem id="option1">Option 1</MenuItem>
+      <MenuItem id="option2">Option 2</MenuItem>
     </Menu>
   );
 }
@@ -254,9 +275,9 @@ function ControlledMenu() {
   onAction={(key) => console.log('Action:', key)}
   disabledKeys={['delete']}
 >
-  <MenuItem key="edit">Edit</MenuItem>
-  <MenuItem key="duplicate">Duplicate</MenuItem>
-  <MenuItem key="delete">Delete</MenuItem>
+  <MenuItem id="edit">Edit</MenuItem>
+  <MenuItem id="duplicate">Duplicate</MenuItem>
+  <MenuItem id="delete">Delete</MenuItem>
 </Menu>
 ```
 
@@ -268,9 +289,9 @@ function ControlledMenu() {
   selectionMode="multiple"
   defaultSelectedKeys={['feature1', 'feature2']}
 >
-  <MenuItem key="feature1">Feature 1</MenuItem>
-  <MenuItem key="feature2">Feature 2</MenuItem>
-  <MenuItem key="feature3">Feature 3</MenuItem>
+  <MenuItem id="feature1">Feature 1</MenuItem>
+  <MenuItem id="feature2">Feature 2</MenuItem>
+  <MenuItem id="feature3">Feature 3</MenuItem>
 </Menu>
 ```
 

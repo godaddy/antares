@@ -17,7 +17,7 @@ export function BasicMenuExample(props: any) {
         }}
       >
         <MenuItem
-          key="new"
+          id="new"
           textValue="New file"
           style={{
             padding: '8px 12px',
@@ -28,7 +28,7 @@ export function BasicMenuExample(props: any) {
           New file
         </MenuItem>
         <MenuItem
-          key="open"
+          id="open"
           textValue="Open..."
           style={{
             padding: '8px 12px',
@@ -39,7 +39,7 @@ export function BasicMenuExample(props: any) {
           Open...
         </MenuItem>
         <MenuItem
-          key="save"
+          id="save"
           textValue="Save"
           style={{
             padding: '8px 12px',
@@ -50,7 +50,7 @@ export function BasicMenuExample(props: any) {
           Save
         </MenuItem>
         <MenuItem
-          key="save-as"
+          id="save-as"
           textValue="Save As..."
           style={{
             padding: '8px 12px',
