@@ -1,5 +1,17 @@
 # @bento/use-props
 
+## 0.2.2
+
+### Patch Changes
+
+- Fixed type resolution by moving @bento/types to dependencies ([#80](https://github.com/godaddy/bento/pull/80) by @kbader-godaddy)
+
+## 0.2.1
+
+### Patch Changes
+
+- Adds data-slot data attribute to named slotted primitives. ([#63](https://github.com/godaddy/bento/pull/63) by @amarques-godaddy)
+
 ## 0.2.0
 
 ### Minor Changes

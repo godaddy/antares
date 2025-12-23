@@ -27,32 +27,32 @@ describe('@bento/slots override', function bento() {
 
   it('does not introduce data-override by default', function noOverride() {
     const html = createComponent('noOverride', { id: 'example', role: 'presentation' });
-    assume(html).contains('<div id="example" role="presentation"></div>');
+    assume(html).contains('<div id="example" role="presentation" data-slot="test"></div>');
   });
 
   it('introduces data-override when style is present', function style() {
     const html = createComponent('style', { style: { color: 'red' } });
-    assume(html).contains('<div style="color:red" data-override="style"></div>');
+    assume(html).contains('<div style="color:red" data-override="style" data-slot="test"></div>');
   });
 
   it('does not introduce a data-override when CSS variables are introduced', function cssVariables() {
     const html = createComponent('cssVariables', { style: { '--color': 'red' } });
-    assume(html).contains('<div style="--color:red"></div>');
+    assume(html).contains('<div style="--color:red" data-slot="test"></div>');
   });
 
   it('introduces data-override when CSS variables and another style property are present', function cssVariablesAndStyle() {
     const html = createComponent('cssVariablesAndStyle', { style: { '--color': 'red', color: 'blue' } });
-    assume(html).contains('<div style="--color:red;color:blue" data-override="style"></div>');
+    assume(html).contains('<div style="--color:red;color:blue" data-override="style" data-slot="test"></div>');
   });
 
   it('introduces data-override when className is present', function className() {
     const html = createComponent('className', { className: 'example' });
-    assume(html).contains('<div class="example" data-override="className"></div>');
+    assume(html).contains('<div class="example" data-override="className" data-slot="test"></div>');
   });
 
   it('adds to an existing data-override', function existing() {
     const html = createComponent('existing', { style: { color: 'red' }, 'data-override': 'boink' });
-    assume(html).contains('<div style="color:red" data-override="boink style"></div>');
+    assume(html).contains('<div style="color:red" data-override="boink style" data-slot="test"></div>');
   });
 
   it('separates multiple causes with a space', function multiple() {
@@ -61,7 +61,9 @@ describe('@bento/slots override', function bento() {
       className: 'example'
     });
 
-    assume(html).contains('<div style="color:red" class="example" data-override="className style"></div>');
+    assume(html).contains(
+      '<div style="color:red" class="example" data-override="className style" data-slot="test"></div>'
+    );
   });
 
   it('introduces data-override when a slot override is used', function slot() {
@@ -73,7 +75,7 @@ describe('@bento/slots override', function bento() {
       }
     );
 
-    assume(html).contains('<div data-override="style slot"></div>');
+    assume(html).contains('<div data-override="style slot" data-slot="test"></div>');
   });
 
   it('introduces data-override when a component is replaced through Slot.Context', function context() {
@@ -91,7 +93,7 @@ describe('@bento/slots override', function bento() {
       }
     );
 
-    assume(html).contains('<div style="color:red" data-override="context style"></div>');
+    assume(html).contains('<div style="color:red" data-override="context style" data-slot="test"></div>');
   });
 
   it('inherits the context override from the parent component', function parent() {

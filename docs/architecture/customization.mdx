@@ -1,0 +1,139 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/Guides/Customization" />
+
+# Customization
+
+Bento primitives are headless—they provide behavior and accessibility without cosmetic styling. Your design system adds the visual layer on top.
+
+## Choosing an Approach
+
+| Approach | Use When |
+|----------|----------|
+| **Wrapper** | Adding styling, tokens, or variants to a primitive |
+| **Slots** | Replacing an internal part (like an icon) without forking |
+| **Environment** | Swapping a primitive globally across a subtree |
+
+## Wrappers
+
+The most common pattern. Wrap a Bento primitive with your own component that adds styling and design tokens. Use `withSlots` and `useProps` so your wrapper follows the same conventions as Bento primitives—enabling render props, slots, and composition.
+
+This example uses [CVA (Class Variance Authority)](https://cva.style) to manage variants:
+
+```tsx
+import { Button, type ButtonProps } from '@bento/button';
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+import { cva, type VariantProps } from 'cva';
+
+const button = cva({
+  base: 'sushi-button',
+  variants: {
+    intent: {
+      primary: 'sushi-button--primary',
+      secondary: 'sushi-button--secondary',
+      danger: 'sushi-button--danger'
+    },
+    size: {
+      sm: 'sushi-button--sm',
+      md: 'sushi-button--md',
+      lg: 'sushi-button--lg'
+    }
+  },
+  defaultVariants: {
+    intent: 'primary',
+    size: 'md'
+  }
+});
+
+interface SushiButtonProps extends ButtonProps, VariantProps<typeof button> {}
+
+export const SushiButton = withSlots('SushiButton', function SushiButton(
+  ...args: [SushiButtonProps, React.ForwardedRef<HTMLButtonElement>?]
+) {
+  const { apply, props } = useProps(args);
+  const { intent, size } = props;
+
+  return <Button {...apply({ className: button({ intent, size }) }, ['intent', 'size'])} />;
+});
+```
+
+```css
+.sushi-button {
+  border-radius: var(--radius-md);
+}
+
+.sushi-button--primary { background: var(--color-primary); }
+.sushi-button--secondary { background: var(--color-secondary); }
+.sushi-button--danger { background: var(--color-danger); }
+
+.sushi-button--sm { padding: var(--space-1) var(--space-2); }
+.sushi-button--md { padding: var(--space-2) var(--space-4); }
+.sushi-button--lg { padding: var(--space-3) var(--space-6); }
+
+.sushi-button[data-pressed='true'] {
+  transform: scale(0.98);
+}
+```
+
+By using `withSlots` and `useProps`, your wrapper:
+- Supports render props on any prop (className, style, aria-*, etc.)
+- Can be slotted into other components
+- Can define its own slots for further customization
+- Follows the same composition patterns as Bento primitives
+
+For styling patterns (data attributes, Tailwind, CSS Modules), see the [Styling guide](/docs/architecture-guides-styling--docs).
+
+## Slots
+
+When you need to replace an internal part of a primitive without copying the whole implementation.
+
+`@bento/checkbox` exposes slots for its icons: `icon-checked`, `icon-unchecked`, `icon-indeterminate`:
+
+```tsx
+import { Checkbox, type CheckboxProps } from '@bento/checkbox';
+import { Icon } from '@bento/icon';
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+
+export const WasabiCheckbox = withSlots('WasabiCheckbox', function WasabiCheckbox(
+  ...args: [CheckboxProps, React.ForwardedRef<HTMLLabelElement>?]
+) {
+  const { apply } = useProps(args);
+
+  return (
+    <Checkbox
+      {...apply({ className: 'wasabi-checkbox' })}
+      slots={{
+        'icon-checked': ({ props: iconProps }) => (
+          <Icon {...iconProps} icon="checkmark" />
+        ),
+        'icon-unchecked': ({ props: iconProps }) => (
+          <Icon {...iconProps} icon="square-outline" />
+        )
+      }}
+    />
+  );
+});
+```
+
+Each component documents which slots it exposes. For the full slot model, see [withSlots](/docs/higher-order-components-slots--overview).
+
+## Environment
+
+When you need to replace a primitive everywhere within a subtree.
+
+```tsx
+import { Environment } from '@bento/environment';
+
+<Environment components={{ BentoButton: SushiButton }}>
+  <App />
+</Environment>
+```
+
+Every `Button` inside `<App />` renders as `SushiButton` instead. Useful for:
+- Rolling out wrappers incrementally
+- A/B testing component variants
+- Migrations between implementations
+
+See [Environment](/docs/components-environment--overview) for details.

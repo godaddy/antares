@@ -1,0 +1,178 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/Guides/Composition" />
+
+# Composition
+
+Bento components are built using a composition model. Instead of monolithic components with dozens of props, you compose smaller primitives together, with an **orchestrator** component coordinating behavior through the [slot system](/docs/higher-order-components-slots--overview).
+
+## The Orchestrator Pattern
+
+An orchestrator is a component that:
+- Manages state and behavior (often via React Aria hooks)
+- Passes props, handlers, and state to its children through slots
+- Doesn't render much DOM itself—it coordinates
+
+The children are composable primitives that receive functionality from their parent orchestrator via their `slot` prop.
+
+```tsx
+<BentoBox>
+  <Lid slot="trigger">Open</Lid>
+  <Nori slot="overlay">
+    <Rice slot="panel">
+      <Miso slot="title">Confirm Action</Miso>
+      <Edamame slot="description">Are you sure?</Edamame>
+      <Wasabi slot="close">Cancel</Wasabi>
+      <Ginger slot="confirm">OK</Ginger>
+    </Rice>
+  </Nori>
+</BentoBox>
+```
+
+In this example:
+- **BentoBox** is the orchestrator—it manages state and distributes behavior
+- The child primitives receive functionality through their slot assignments
+- The component names are arbitrary—any primitive can fill any slot. What matters is the slot assignment.
+
+This pattern lets you:
+- **Reuse primitives** across different orchestrators
+- **Customize structure** by swapping which primitive fills a slot
+- **Add your own elements** between the slotted children
+- **Style each part independently** without fighting component internals
+
+## Building an Orchestrator
+
+An orchestrator component typically:
+
+1. **Creates state** using React Aria/Stately hooks
+2. **Calls `useProps`** to enable render props and slot processing
+3. **Calls `useDataAttributes`** to expose state for styling
+4. **Passes behavior via `slots`** to distribute props to children
+
+```tsx
+import { withSlots } from '@bento/slots';
+import { useProps } from '@bento/use-props';
+import { useDataAttributes } from '@bento/use-data-attributes';
+import { Container } from '@bento/container';
+import { useOverlayTriggerState } from 'react-stately';
+import { useOverlayTrigger } from 'react-aria';
+
+export const BentoBox = withSlots('BentoBox', function BentoBox(props, ref) {
+  // 1. Create state
+  const state = useOverlayTriggerState(props);
+  const { triggerProps, overlayProps } = useOverlayTrigger({ type: 'dialog' }, state);
+
+  // 2. Enable render props and slot processing
+  const { apply } = useProps(props, { isOpen: state.isOpen }, ref);
+
+  // 3. Expose state for styling
+  const dataAttributes = useDataAttributes({ open: state.isOpen });
+
+  // 4. Pass behavior via slots
+  return (
+    <Container
+      {...apply()}
+      {...dataAttributes}
+      slots={{
+        trigger: { ...triggerProps },
+        overlay: state.isOpen ? { ...overlayProps } : null,
+        close: { onPress: state.close }
+      }}
+    />
+  );
+});
+```
+
+The orchestrator doesn't know or care what component fills each slot. It just passes the right props. Consumers decide the structure.
+
+### Using the Slot Component
+
+Most orchestrators render a `Container` and pass `slots` as a prop. But if your orchestrator shouldn't render any wrapping DOM element, use the `Slot` component from `@bento/box` to provide slots via context:
+
+```tsx
+import { Slot } from '@bento/box';
+
+export const MinimalOrchestrator = withSlots('MinimalOrchestrator', function MinimalOrchestrator(...args) {
+  const { props } = useProps(args);
+
+  return (
+    <Slot slots={{ trigger: { onClick: handleClick }, content: { role: 'dialog' } }}>
+      {props.children}
+    </Slot>
+  );
+});
+```
+
+This is how `Overlay` works—it coordinates children without adding DOM.
+
+For details on how slots receive and merge props, see the [slot system documentation](/docs/higher-order-components-slots--overview).
+
+## Choosing What to Render
+
+When building components, always use Bento primitives or Container:
+
+- **Existing Bento Primitives** — If one exists for what you need, use it. Primitives come with accessibility, keyboard handling, and slot support built in.
+- **Container** — For everything else. It's polymorphic (supports `as`), integrates with `useProps`, and participates in the slot system.
+
+Raw HTML elements (`<button>`, `<input>`, etc.) should only appear inside primitive implementations themselves—not in orchestrators or consumer code. Using raw HTML bypasses the slot system, render props, and ref handling.
+
+## Slot Naming
+
+Name slots by **semantic purpose**, not implementation:
+
+Good: `trigger`, `content`, `title`, `description`, `close`, `icon`
+
+Avoid: `button`, `div`, `wrapper`, `span`
+
+### Nested Slots
+
+For complex components, use dot-separated namespaces:
+
+- `trigger` — the trigger element
+- `trigger.icon` — icon inside the trigger
+- `panel.title` — title inside the panel
+- `panel.footer` — footer inside the panel
+
+### Common Slot Names
+
+| Slot | Purpose |
+|------|---------|
+| `trigger` | Element that activates something |
+| `content` | Main content area |
+| `title` | Heading/title element |
+| `description` | Help or body text |
+| `close` | Dismiss/close action |
+| `icon` | Visual icon |
+| `header` / `footer` | Section containers |
+
+## When Slots Are Needed
+
+Slot assignments are only needed for children that don't receive the orchestrator's spread props directly.
+
+**No slot needed:** The root element receives `{...processedProps}`, so any `className`, `style`, or other props passed to the orchestrator go directly to it. No slot assignment required.
+
+```tsx
+// Container receives spread props — no slot needed
+<Container {...processedProps} {...dataAttributes} slots={{...}}>
+  {children}
+</Container>
+```
+
+**Slot needed:** Child components don't receive the spread props. They need a slot assignment so the orchestrator can pass behavior to them via the `slots` object.
+
+```tsx
+// Children need slots to receive props from the orchestrator
+<Lid slot="trigger">Open</Lid>
+<Nori slot="overlay">...</Nori>
+```
+
+## Summary
+
+The composition model in Bento:
+
+1. **Orchestrators** manage state and distribute behavior through slots
+2. **Primitives** receive functionality via their `slot` prop
+3. **Consumers** compose the structure they need using existing primitives
+4. **Slots** are named semantically
+
+For the full slot API (object slots, function slots, slot merging), see [withSlots](/docs/higher-order-components-slots--overview).

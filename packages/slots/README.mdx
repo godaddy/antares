@@ -53,6 +53,36 @@ the component. This allows the component to be targeted with a global slot
 override, but it will also be used as `displayName` to ensure a readable
 component name in the React DevTools.
 
+## Data Attributes
+
+When a `slot` prop is added to a slottable component, a `data-slot` attribute is automatically added to the rendered DOM element. This allows developers to target specific slots using CSS selectors or for debugging purposes.
+
+```tsx
+<Button slot="submit">Submit</Button>
+// Renders: <button data-slot="submit">Submit</button>
+```
+
+This is particularly useful for:
+- **CSS Targeting**: Style specific slots without additional classes.
+- **Debugging**: Quickly identify which slot a component belongs to in DevTools.
+- **Testing**: Select elements by their slot name in tests.
+
+```css
+/* Target all elements with a slot name "submit" */
+[data-slot="submit"] {
+  background-color: blue;
+}
+
+/* Note: Each component only receives its direct slot prop value as data-slot,
+   not a concatenated namespace. For example, if you have nested slots like
+   "form.submit", the submit button will have data-slot="submit", not data-slot="form.submit". */
+
+/* Target nested slots using attribute selectors */
+[data-slot="form"] [data-slot="submit"] {
+  margin-top: 1rem;
+}
+```
+
 ## Forwarding Refs
 
 Components created with `withSlots` automatically support ref forwarding. The `withSlots` function:
