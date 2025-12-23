@@ -1,6 +1,6 @@
 {
   "name": "@bento/scroll-lock",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "ScrollLock component primitive - prevents background scrolling with React Aria integration",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -43,9 +43,9 @@
   ],
   "dependencies": {
     "@bento/box": "^0.2.0",
-    "@bento/slots": "^0.2.0",
+    "@bento/slots": "^0.3.0",
     "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.2.0",
+    "@bento/use-props": "^0.2.2",
     "@react-aria/overlays": "^3.25.3"
   },
   "peerDependencies": {

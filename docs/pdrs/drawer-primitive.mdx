@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/PDRs/Drawer" />
+
 # Drawer Primitive
 
 The `Drawer` primitive is a component that creates an expandable panel. It is meant to hold content and reveal it after some interaction.
@@ -140,7 +144,7 @@ Vaul provided other features such as [adjusting the placement when a mobile keyb
 
 ## Accessibility
 
-- If the drawer is meant to disrupt the user from other tasks, then it should be given a `role="dialog"` and `aria-modal="true"`. Otherwise, it should be given a `role="region"` unless it is provided a more semantic HTML element (eg., `<nav/>`). 
+- If the drawer is meant to disrupt the user from other tasks, then it should be given a `role="dialog"` and `aria-modal="true"`. Otherwise, it should be given a `role="region"` unless it is provided a more semantic HTML element (eg., `<nav/>`).
 - `aria-expanded` will be used to indicate the expanded state of the drawer.
 - If the drawer is meant to be completely hidden, then it should be given a `aria-hidden="true"` or consider [`hidden="until-found"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/hidden#the_hidden_until_found_state).
 - We may consider making the use of `id` required such that it can be given a connection to a `aria-controls` attribute. Or we could consider some fun slot shenanigans to make it work with `useId()` (maybe?).

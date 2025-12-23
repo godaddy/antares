@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Architecture/PDRs/Checkbox" />
+
 # Checkbox Primitive PDR
 
 ## Purpose
@@ -336,7 +340,7 @@ function IndeterminateCheckboxGroupExample() {
 
   // Handles child checkbox change
   const handleChildChange = useCallback((childName, checked) => {
-    setCheckedValues(prevValues => 
+    setCheckedValues(prevValues =>
       checked ? [...prevValues, childName] : prevValues.filter(name => name !== childName)
     );
   }, []);
