@@ -26,6 +26,87 @@
 
 ---
 
+### 1.75. ⚠️ CRITICAL: Analyze RAC vs Bento Architecture Differences
+
+**Before writing ANY code**, explicitly map how RAC patterns translate to Bento patterns. This prevents multiple rounds of debugging.
+
+---
+
+#### Always Answer (every component):
+
+1. **Wrapper Components**
+   - Does RAC wrap children in helper components (`PressResponder`, `FocusScope`, `Provider`, etc.)?
+   - Bento's slot system handles prop injection → **usually don't need wrapper components**
+   - Pass props through slots instead: `slots={{ trigger: pressProps }}`
+
+2. **Hook Contracts**
+   - Read the React Aria hook signatures you'll use (`useButton`, `useCheckbox`, `useMenuItem`, etc.)
+   - Note which props are **always required** vs conditionally used
+   - **Never conditionally pass hook props** — pass them always, use flags to control behavior
+   - Example: `useMenuItem` expects `onClose` always present; `shouldCloseOnSelect` controls if it's called
+
+3. **Context Dependencies**
+   - What contexts does RAC expect? (`ButtonContext`, `CheckboxGroupContext`, `OverlayTriggerStateContext`, etc.)
+   - Bento uses its own slot context → **RAC contexts won't exist automatically**
+   - Create Bento-specific contexts or pass state via props/slots
+
+4. **Render Props**
+   - Does RAC use render props for state exposure (`children: (state) => ReactNode`)?
+   - If yes, preserve this pattern — it's how users access internal state
+   - Combine with `useDataAttributes` for styling hooks
+
+---
+
+#### Answer If Applicable:
+
+**If component has overlays/popovers (Menu, Select, Popover, Modal, Tooltip):**
+- RAC uses `Popover`, `OverlayContainer`, `Modal` with built-in mount/unmount
+- Bento doesn't have these → **conditionally render overlay content yourself**
+- Use `{state.isOpen && <Content />}` pattern for correct focus management
+
+**If component has triggers (Menu, Popover, Dialog, Tooltip):**
+- RAC often uses `PressResponder` to wrap trigger children
+- Bento slots inject props automatically → **don't wrap in `PressResponder`**
+- Render children directly, pass trigger props via slots
+
+**If component is a form input (Checkbox, Radio, Input, Switch):**
+- RAC uses hidden native inputs for form submission
+- Use `VisuallyHidden` (not `display:none`) for accessibility
+- Support `inputRef` prop for direct input access on primitives
+
+**If component uses collections (ListBox, Menu, Select, ComboBox):**
+- RAC uses `Collection`, `CollectionBuilder` from `@react-aria/collections`
+- These can often be used directly
+- Watch for context dependencies in collection items
+
+**If component is a group (CheckboxGroup, RadioGroup, ToggleGroup):**
+- Create context for group state
+- Use React Stately for state management
+- Pass state through context to child items
+
+---
+
+#### Mapping Template (fill out relevant rows before coding):
+
+```markdown
+## RAC → Bento Mapping for {ComponentName}
+
+| RAC Pattern | Bento Equivalent | Applies? | Notes |
+|-------------|------------------|----------|-------|
+| Wrapper components (`PressResponder`, etc.) | Slot props | ☐ | |
+| Hook X requires prop Y always | Pass Y, use flag Z | ☐ | |
+| Context X expected | Create Bento context / pass via props | ☐ | |
+| Render props for state | Preserve pattern | ☐ | |
+| `Popover`/`Modal` component | Conditional render `{open && ...}` | ☐ | |
+| Hidden native input | `VisuallyHidden` | ☐ | |
+| `Collection`/`CollectionBuilder` | Use directly | ☐ | |
+| Group state context | Create context + React Stately | ☐ | |
+```
+
+**Only proceed to Step 2 after completing this analysis.**
+
+---
+
 ### 2. Refactor to Bento Patterns
 
 #### Always (every component)
@@ -181,6 +262,13 @@ This catches bugs like:
 
 Before considering the component complete:
 
+#### Pre-Implementation
+- [ ] ✅ Step 1.75 RAC→Bento mapping completed BEFORE coding
+- [ ] ✅ Identified wrapper components to remove (PressResponder, etc.)
+- [ ] ✅ Reviewed all hook signatures for required vs optional props
+- [ ] ✅ Identified context dependencies and how to handle them
+- [ ] ✅ Answered applicable conditional questions (overlays, triggers, form inputs, etc.)
+
 #### Source Code
 - [ ] ✅ All code is in ONE file (`src/index.tsx`)
 - [ ] ✅ No separate component files (select.tsx, select-value.tsx, etc.)
@@ -241,6 +329,12 @@ Before considering the component complete:
 ### DON'T copy patterns from other packages blindly
 ❌ "I saw checkbox has multiple files, so I'll do that"
 ✅ Follow THIS document, not existing code patterns
+
+### DON'T skip the RAC→Bento architecture analysis
+❌ "I'll just copy RAC code and adapt it as I go"
+✅ Complete Step 1.75 mapping BEFORE writing any code
+✅ Understand WHY RAC uses wrapper components, contexts, and specific hook patterns
+✅ Know which RAC patterns translate directly vs need Bento-specific handling
 
 ### DON'T skip validation
 ❌ Assuming everything is correct without checking
