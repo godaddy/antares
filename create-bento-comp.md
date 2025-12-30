@@ -3,6 +3,91 @@
 ## Prerequisites
 - Identify the RAC component in react-spectrum repo
 
+## Step 0: Check Existing Bento Primitives FIRST
+
+**Before copying ANY RAC code, check if Bento already has primitives you should compose with.**
+
+### Orchestrators (coordinate children via slots)
+| Package | Use For |
+|---------|---------|
+| `@bento/overlay` | Trigger + content coordination (`type="menu"`, `"listbox"`, `"dialog"`) |
+| `@bento/listbox` | Selectable lists, options, virtualization |
+
+### Interaction Primitives
+| Package | Use For |
+|---------|---------|
+| `@bento/pressable` | Press/click handling with data attributes |
+| `@bento/button` | Accessible buttons (composes pressable) |
+| `@bento/dismiss` | Escape key / click-outside dismissal |
+| `@bento/focus-lock` | Focus trapping within a region |
+| `@bento/scroll-lock` | Prevent body scroll |
+
+### Layout & Containers
+| Package | Use For |
+|---------|---------|
+| `@bento/container` | Base layout primitive with slots |
+| `@bento/box` | Polymorphic container, `Slot` component |
+| `@bento/portal` | Render to document.body, SSR-safe |
+| `@bento/divider` | Visual/semantic separators |
+
+### Form Inputs
+| Package | Use For |
+|---------|---------|
+| `@bento/checkbox` | Checkboxes with groups |
+| `@bento/radio` | Radio buttons with groups |
+| `@bento/input` | Text inputs |
+
+### Typography & Icons
+| Package | Use For |
+|---------|---------|
+| `@bento/heading` | Semantic headings (h1-h6) |
+| `@bento/text` | Text with semantic variants |
+| `@bento/icon` | Icon rendering |
+| `@bento/illustration` | Illustration rendering |
+
+### Accessibility
+| Package | Use For |
+|---------|---------|
+| `@bento/visually-hidden` | Screen-reader-only content |
+| `@bento/field-error` | Form validation messages |
+
+### Core Utilities (always use these)
+| Package | Use For |
+|---------|---------|
+| `@bento/slots` | `withSlots`, `contains`, `Slot` |
+| `@bento/use-props` | `useProps` hook |
+| `@bento/use-data-attributes` | `useDataAttributes` hook |
+| `@bento/forward` | Ref forwarding utilities |
+| `@bento/error` | `BentoError` for validation |
+
+---
+
+### Decision Process
+
+1. **List the patterns your component needs** (overlay, focus trap, form input, etc.)
+2. **Check if Bento has a primitive for each pattern**
+3. **Compose with existing primitives** rather than reimplementing hooks
+
+**Example: Building Menu**
+- Needs: trigger coordination, overlay state, focus management, portal
+- Bento has: `Overlay` (trigger + state), `FocusLock`, `Portal`
+- Solution: Compose with Overlay instead of calling `useOverlayTriggerState`
+
+```tsx
+<Overlay type="menu" defaultOpen={false}>
+  <Button slot="trigger">Open Menu</Button>
+  <Portal mounted={open}>
+    <FocusLock contain restoreFocus>
+      <Menu slot="content">...</Menu>
+    </FocusLock>
+  </Portal>
+</Overlay>
+```
+
+**Only proceed to Step 1 if no existing primitive covers the pattern.**
+
+---
+
 ## ⚠️ IMPORTANT: Follow This Doc EXACTLY
 - Do NOT make assumptions based on other packages
 - Do NOT skip steps or create shortcuts
@@ -263,6 +348,8 @@ This catches bugs like:
 Before considering the component complete:
 
 #### Pre-Implementation
+- [ ] ✅ Step 0 completed — checked existing Bento primitives for overlap
+- [ ] ✅ Composing with existing orchestrators (Overlay, Portal, etc.) where applicable
 - [ ] ✅ Step 1.75 RAC→Bento mapping completed BEFORE coding
 - [ ] ✅ Identified wrapper components to remove (PressResponder, etc.)
 - [ ] ✅ Reviewed all hook signatures for required vs optional props
@@ -305,6 +392,13 @@ Before considering the component complete:
 ---
 
 ## ❌ Common Anti-Patterns to Avoid
+
+### DON'T reimplement what Bento already provides
+❌ Reimplementing hooks that existing orchestrators already handle
+❌ Writing focus trap logic when `@bento/focus-lock` exists
+❌ Writing portal logic when `@bento/portal` exists
+❌ Writing press handlers when `@bento/pressable` or `@bento/button` exists
+✅ Check Step 0 first — list patterns, check primitives, compose
 
 ### DON'T split source files
 ❌ Creating `select.tsx`, `select-value.tsx`, `index.tsx`
