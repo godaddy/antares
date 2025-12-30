@@ -14,7 +14,7 @@
 ## Step-by-Step
 
 ### 1. Copy RAC Component
-- Location: `/Users/kawikabader/Documents/projects/react-spectrum/packages/react-aria-components/src/{component}`
+- Location: `/react-spectrum/packages/react-aria-components/src/{component}`
 - Copy to: `packages/{component}/src/index.tsx`
 - Also copy TypeScript types/interfaces from RAC
 - **ALL component code goes in ONE file** (`src/index.tsx`) — do NOT split into multiple files
@@ -131,19 +131,53 @@
   ❌ **DON'T:** Create multiple example files (controlled, disabled, sections, etc.)
   ✅ **DO:** Create exactly one file: `examples/{component}.tsx`
 
-- [ ] Include story variants for all states:
-  - [ ] BasicExample (default)
-  - [ ] Disabled variant
-  - [ ] Invalid variant  
-  - [ ] Required variant
-  - [ ] ReadOnly variant (if applicable)
-  - [ ] Any other state combinations (selected, pressed, hovered, focused)
+- [ ] **Minimize story variants** — use controls instead of separate stories
+  
+  **Rule**: Only create separate story variants when **JSX structure differs** (e.g., with/without sections).
+  Otherwise, let users toggle states via Storybook controls.
+  
+  ✅ **DO:**
+  - `BasicExample` — all states toggleable via controls (disabled, selection, etc.)
+  - `WithSections` — only if JSX structure is different
+  
+  ❌ **DON'T:**
+  - Create separate stories for Disabled, Required, Invalid, ReadOnly
+  - These are just prop changes — use controls instead
 
 - [ ] Verify every prop can be toggled in Storybook controls panel
 
 ---
 
-### 6. Final Validation Checklist
+### 6. Test with Playwright MCP Browser Tools
+
+After building the component, **always test in Storybook using browser MCP tools**:
+
+```bash
+# Build the component first
+cd packages/{component} && npm run build
+```
+
+Then use the browser tools to verify functionality:
+
+1. **Navigate**: `browser_navigate` to `http://localhost:6006/?path=/story/components-{name}--basic-{name}`
+2. **Snapshot**: `browser_snapshot` to see the accessibility tree and component state
+3. **Interact**: `browser_click` on triggers, buttons, menu items, etc.
+4. **Verify**:
+   - Actions fire correctly (check Actions panel)
+   - State changes work (open/close, select/deselect)
+   - No console errors (check `browser_console_messages`)
+   - Keyboard navigation works (`browser_press_key`)
+5. **Fix issues** before moving to final validation
+
+This catches bugs like:
+- Hooks errors from conditional rendering
+- Focus management issues
+- Missing event handlers
+- Incorrect ARIA attributes
+
+---
+
+### 7. Final Validation Checklist
 
 Before considering the component complete:
 
@@ -165,8 +199,14 @@ Before considering the component complete:
 #### Storybook
 - [ ] ✅ Count props in interface, count argTypes entries — numbers match
 - [ ] ✅ Every prop has: control type, description, table metadata
-- [ ] ✅ Stories exist for: basic, disabled, invalid, required, readonly
-- [ ] ✅ Open Storybook and verify all controls work
+- [ ] ✅ Minimal story variants (only separate when JSX differs)
+- [ ] ✅ All states toggleable via controls (disabled, invalid, required, etc.)
+- [ ] ✅ **Use Playwright MCP browser tools to test in Storybook:**
+  1. Navigate to the story: `browser_navigate` to `http://localhost:6006/?path=/story/components-{name}--basic-{name}`
+  2. Take a snapshot: `browser_snapshot` to see the component state
+  3. Interact with component: `browser_click` on triggers, inputs, items
+  4. Verify behavior: check that actions fire, states change, no console errors
+  5. Test edge cases: disabled states, keyboard navigation, close behavior
 
 #### Package Files
 - [ ] ✅ `package.json` has correct dependency versions (match other packages)
@@ -192,7 +232,11 @@ Before considering the component complete:
 
 ### DON'T use minimal storybook stories
 ❌ Using helpers without argTypes: `getStory(Example)` and nothing else
-✅ Full argTypes for every prop + story variants
+✅ Full argTypes for every prop
+
+### DON'T create unnecessary story variants
+❌ Separate stories for Disabled, Invalid, Required, ReadOnly
+✅ One story with controls — only separate when JSX structure differs
 
 ### DON'T copy patterns from other packages blindly
 ❌ "I saw checkbox has multiple files, so I'll do that"
