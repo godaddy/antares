@@ -5,7 +5,8 @@ const config: KnipConfig = {
     '.': {
       // Root workspace configuration
       entry: [
-        'configs/*.mts' // Shared config files used by packages
+        'configs/*.mts', // Shared config files used by packages
+        'nx.json' // Nx configuration
       ],
       project: ['configs/**/*.{ts,mts}'],
       // Dependencies used in shared configs and ambient types
