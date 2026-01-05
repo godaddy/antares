@@ -79,17 +79,11 @@ export function execute(name: string, data: AnyObject, args: RenderPropData): an
 export function renderProp(name: string, args: RenderPropData): any {
   const { props, slots, original } = args;
 
-  // If slot explicitly has this property, use its value (even if null/undefined/falsy)
-  if (name in slots) {
-    return execute(name, slots, args);
-  }
-
-  // If props explicitly has this property, use its value (even if null/undefined/falsy)
-  if (name in props) {
-    return execute(name, props, args);
-  }
-
-  return original;
+  return Object.hasOwn(slots, name)
+    ? execute(name, slots, args)
+    : Object.hasOwn(props, name)
+      ? execute(name, props, args)
+      : original;
 }
 
 /**
@@ -105,8 +99,6 @@ function mergeRefList(refs: Array<ForwardedRef<any> | Ref<any> | undefined>): Re
   if (!filtered.length) return undefined;
   if (filtered.length === 1) return filtered[0] as Ref<any>;
 
-  // Type assertion: filtered array guaranteed non-null by filter above, safe for mergeRefs
-  // Return type cast: mergeRefs returns RefCallback but we widen to Ref for flexibility
   return mergeRefs(...(filtered as Array<Ref<any>>)) as Ref<any>;
 }
 
@@ -159,7 +151,7 @@ export interface Returns {
 export function useProps(...rest: any[]): Returns {
   let forwardedRef: ForwardedRef<any> | undefined;
   let args: AnyObject;
-  let state: object = {};
+  let state: object;
 
   if (Array.isArray(rest[0])) {
     [args, forwardedRef] = rest[0];
