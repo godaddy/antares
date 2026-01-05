@@ -8,8 +8,7 @@ import {
   ButtonWithAriaExample,
   ButtonWithDataAttributesExample,
   ButtonInFormExample,
-  DisabledButtonExample,
-  ButtonWithRenderPropExample
+  DisabledButtonExample
 } from '../examples/button';
 import { ButtonVariantsExample } from '../examples/variants';
 
@@ -71,46 +70,6 @@ describe('@bento/button examples', function examples() {
       const { container } = render(<DisabledButtonExample />);
       const button = container.querySelector('button');
       expect(button).toBeDisabled();
-    });
-
-    it('renders button with render prop example', function rendersRenderPropExample() {
-      // Mock console.log to capture the call
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(function mockLog() {
-        // Intentionally empty
-      });
-
-      const { container } = render(<ButtonWithRenderPropExample />);
-      const button = container.querySelector('button');
-      expect(button?.textContent).toBe('Click me');
-
-      consoleSpy.mockRestore();
-    });
-
-    it('calls onPress in render prop example', async function callsOnPressRenderProp() {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(function mockLog() {
-        // Intentionally empty
-      });
-
-      const { container } = render(<ButtonWithRenderPropExample />);
-      const button = container.querySelector('button')!;
-
-      await userEvent.click(button);
-      expect(consoleSpy).toHaveBeenCalledWith('pressed');
-
-      consoleSpy.mockRestore();
-    });
-
-    it('updates content on hover in render prop example', async function updatesOnHover() {
-      const { container } = render(<ButtonWithRenderPropExample />);
-      const button = container.querySelector('button')!;
-
-      expect(button.textContent).toBe('Click me');
-
-      await userEvent.hover(button);
-      expect(button.textContent).toBe('Hover!');
-
-      await userEvent.unhover(button);
-      expect(button.textContent).toBe('Click me');
     });
   });
 });

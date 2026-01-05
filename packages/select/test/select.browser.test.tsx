@@ -1066,6 +1066,7 @@ describe('@bento/select', function bento() {
   });
 
   describe('Dynamic Collections', function dynamicCollections() {
+    // Dynamic collections: items and render functions are passed to ListBox, not Select
     type FruitItem = { id: string; name: string };
     const fruitItems: FruitItem[] = [
       { id: 'apple', name: 'Apple' },
@@ -1181,7 +1182,7 @@ describe('@bento/select', function bento() {
       assume(result).includes('Apple');
     });
 
-    it('renders select with explicit renderItem prop', function test() {
+    it('renders with dynamic items', function test() {
       function renderItem(item: unknown) {
         const fruit = item as FruitItem;
         return (
@@ -1208,11 +1209,6 @@ describe('@bento/select', function bento() {
       assume(result).includes('Apple');
       assume(result).includes('Banana');
       assume(result).includes('Orange');
-    });
-
-    it('throws error when items provided without renderItem', function test() {
-      // This test is no longer relevant - ListBox handles items/renderItem now
-      // Delete this test entirely as it tests Select behavior that no longer exists
     });
   });
 });

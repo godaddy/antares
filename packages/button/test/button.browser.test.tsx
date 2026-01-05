@@ -3,14 +3,14 @@ import {
   ButtonExample,
   ButtonWithAriaExample,
   ButtonWithDataAttributesExample,
-  DisabledButtonExample,
-  ButtonWithRenderPropExample
+  DisabledButtonExample
 } from '../examples/button';
 import { render } from 'vitest-browser-react';
 import { describe, vi, it, expect } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
 import assume from 'assume';
 import { Button } from '../src/index';
+import { Slot } from '@bento/box';
 
 describe('@bento/button', function bento() {
   describe('DOM and ARIA forwarding', function domTests() {
@@ -86,6 +86,25 @@ describe('@bento/button', function bento() {
       const button = container.querySelector('button');
 
       expect(button).toHaveClass('custom-button');
+    });
+
+    it('should apply baseline button class', function baselineClass() {
+      const { container } = render(<Button>Button</Button>);
+      const button = container.querySelector('button');
+      const classes = button?.className || '';
+
+      // Should have a hashed CSS module class (contains underscore and hash)
+      expect(classes).toMatch(/_button_/);
+    });
+
+    it('should allow className override to replace baseline class', function classNameOverride() {
+      const { container } = render(<Button className="custom-button">Button</Button>);
+      const button = container.querySelector('button');
+      const classes = button?.className || '';
+
+      // When className is provided, it replaces the baseline class
+      expect(button).toHaveClass('custom-button');
+      expect(classes).not.toMatch(/_button_/);
     });
 
     it('should forward style attribute', function forwardStyle() {
@@ -223,62 +242,6 @@ describe('@bento/button', function bento() {
     });
   });
 
-  describe('Render prop children', function renderPropTests() {
-    it('should render with render prop', function renderProp() {
-      const { container } = render(<ButtonWithRenderPropExample />);
-      const button = container.querySelector('button');
-
-      expect(button?.textContent).toContain('Click me');
-    });
-
-    it('should receive isPressed state', async function isPressedState() {
-      // Note: isPressed updates are tested via data-pressed attribute
-      // Render prop content updates require component state changes
-      const { container } = render(<Button>{({ isPressed }) => (isPressed ? 'Pressing' : 'Not pressing')}</Button>);
-      const button = container.querySelector('button')!;
-
-      // Initial render should show not pressing
-      expect(button.textContent).toBe('Not pressing');
-    });
-
-    it('should receive isHovered state', async function isHoveredState() {
-      const { container } = render(<Button>{({ isHovered }) => (isHovered ? 'Hovered' : 'Not hovered')}</Button>);
-      const button = container.querySelector('button')!;
-
-      expect(button.textContent).toBe('Not hovered');
-
-      await userEvent.hover(button);
-      expect(button.textContent).toBe('Hovered');
-
-      await userEvent.unhover(button);
-      expect(button.textContent).toBe('Not hovered');
-    });
-
-    it('should receive isFocused state', async function isFocusedState() {
-      // Note: isFocused updates are tested via data-focused attribute
-      // Render prop content updates require component state changes
-      const { container } = render(<Button>{({ isFocused }) => (isFocused ? 'Focused' : 'Not focused')}</Button>);
-      const button = container.querySelector('button')!;
-
-      // Initial render should show not focused
-      expect(button.textContent).toBe('Not focused');
-    });
-
-    it('should receive isFocusVisible state', async function isFocusVisibleState() {
-      const { container } = render(
-        <Button>{({ isFocusVisible }) => (isFocusVisible ? 'Focus visible' : 'Focus not visible')}</Button>
-      );
-      const button = container.querySelector('button')!;
-
-      expect(button.textContent).toBe('Focus not visible');
-
-      // Tab to focus (keyboard focus should show focus visible)
-      await userEvent.tab();
-      expect(button.textContent).toBe('Focus visible');
-      expect(button).toHaveAttribute('data-focus-visible', 'true');
-    });
-  });
-
   describe('Data attributes', function dataAttributeTests() {
     it('should add data-pressed attribute when pressed', async function dataPressedAttr() {
       const { container } = render(<ButtonExample>Press</ButtonExample>);
@@ -335,6 +298,33 @@ describe('@bento/button', function bento() {
       expect(button).toHaveAttribute('role', 'combobox');
     });
 
+    it('should allow slots to override children', function slotOverrideChildren() {
+      const { container } = render(
+        <Slot slots={{ trigger: { children: 'Slot children' } }}>
+          <Button slot="trigger">Original children</Button>
+        </Slot>
+      );
+      const button = container.querySelector('button');
+
+      expect(button?.textContent).toBe('Slot children');
+    });
+
+    it('should allow slots to override className', function slotOverrideClassName() {
+      const { container } = render(
+        <Slot slots={{ trigger: { className: 'slot-class' } }}>
+          <Button slot="trigger" className="original-class">
+            Test
+          </Button>
+        </Slot>
+      );
+      const button = container.querySelector('button');
+      const classes = button?.className || '';
+
+      expect(button).toHaveClass('slot-class');
+      // When slot provides className, baseline class is also replaced
+      expect(classes).not.toMatch(/_button_/);
+    });
+
     it('should not double-bind event handlers from slots', async function noDoubleEvents() {
       const onPress = vi.fn();
       // Simulating slots passing both the onPress handler
@@ -381,6 +371,15 @@ describe('@bento/button', function bento() {
       // Undefined values should not be set as attributes
       expect(button).toHaveAttribute('type', 'button');
       expect(button?.hasAttribute('data-test')).toBe(false);
+    });
+
+    it('should throw error when children is a function', function renderPropError() {
+      expect(function expectThrow() {
+        render(
+          // @ts-expect-error - testing runtime guard for removed feature
+          <Button>{() => 'render prop'}</Button>
+        );
+      }).toThrow('@bento/button: render-prop children are no longer supported');
     });
   });
 });

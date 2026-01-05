@@ -35,9 +35,3 @@ export function ButtonInFormExample() {
 export function DisabledButtonExample() {
   return <Button isDisabled>Disabled Button</Button>;
 }
-
-export function ButtonWithRenderPropExample() {
-  return (
-    <Button onPress={() => console.log('pressed')}>{({ isHovered }) => (isHovered ? 'Hover!' : 'Click me')}</Button>
-  );
-}

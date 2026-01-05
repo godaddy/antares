@@ -73,15 +73,6 @@ describe('@bento/button (SSR)', function ssrTests() {
     expect(html).toContain('aria-controls="list-1"');
   });
 
-  it('should render render-prop children correctly', function renderPropChildren() {
-    const html = renderToString(
-      <Button>{({ isPressed, isHovered }) => (isPressed || isHovered ? 'Active' : 'Inactive')}</Button>
-    );
-
-    // In SSR, interaction states should be false
-    expect(html).toContain('Inactive');
-  });
-
   it('should default type to button', function defaultTypeButton() {
     const html = renderToString(<Button>Click</Button>);
 
@@ -92,5 +83,14 @@ describe('@bento/button (SSR)', function ssrTests() {
     const html = renderToString(<Button type="submit">Submit</Button>);
 
     expect(html).toContain('type="submit"');
+  });
+
+  it('should throw error when children is a function', function renderPropError() {
+    expect(function expectThrow() {
+      renderToString(
+        // @ts-expect-error - testing runtime guard for removed feature
+        <Button>{() => 'render prop'}</Button>
+      );
+    }).toThrow('@bento/button: render-prop children are no longer supported');
   });
 });

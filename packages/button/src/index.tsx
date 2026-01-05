@@ -1,9 +1,8 @@
-import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
+import { withSlots } from '@bento/slots';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useButton, useFocusRing, useHover, mergeProps, type AriaButtonProps, type HoverEvents } from 'react-aria';
 import { mergeRefs } from '@react-aria/utils';
-/* v8 ignore next */
 import React from 'react';
 
 export interface ButtonProps
@@ -11,18 +10,7 @@ export interface ButtonProps
     HoverEvents,
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof AriaButtonProps | 'children'> {
   /** The content to display inside the button. */
-  children: React.ReactNode | ((props: ButtonRenderProps) => React.ReactNode);
-}
-
-export interface ButtonRenderProps {
-  /** Whether the button is currently pressed. */
-  isPressed: boolean;
-  /** Whether the button is currently hovered. */
-  isHovered: boolean;
-  /** Whether the button is focused. */
-  isFocused: boolean;
-  /** Whether the button is keyboard focused. */
-  isFocusVisible: boolean;
+  children?: React.ReactNode;
 }
 
 /**
@@ -30,9 +18,6 @@ export interface ButtonRenderProps {
  *
  * @example
  * <Button onPress={() => console.log('pressed')}>Click me</Button>
- *
- * @example
- * <Button>{({ isPressed }) => isPressed ? 'Pressing...' : 'Click me'}</Button>
  */
 export const Button = withSlots(
   'BentoButton',
@@ -46,20 +31,14 @@ export const Button = withSlots(
     const { focusProps, isFocused, isFocusVisible } = useFocusRing(mergedProps);
     const { hoverProps, isHovered } = useHover(mergedProps);
 
-    // Render state for children render function
-    const renderState: ButtonRenderProps = {
+    // Second pass: apply user props with interaction state via apply()
+    // Apply merges React Aria props as defaults that slots can override
+    const { props, apply } = useProps(args, {
       isPressed,
       isHovered,
       isFocused,
       isFocusVisible
-    };
-
-    // Execute children render prop explicitly (before useProps to prevent incorrect execution)
-    const content = typeof args.children === 'function' ? args.children(renderState) : args.children;
-
-    // Second pass: apply user props with render state via apply()
-    // Apply merges React Aria props as defaults that slots can override
-    const { apply } = useProps(args, renderState);
+    });
 
     const dataAttrs = useDataAttributes({
       pressed: isPressed,
@@ -68,6 +47,8 @@ export const Button = withSlots(
       focusVisible: isFocusVisible,
       disabled: mergedProps.isDisabled
     });
+
+    const { children } = props;
 
     return (
       <button
@@ -95,7 +76,7 @@ export const Button = withSlots(
         {...dataAttrs}
         ref={mergeRefs(buttonRef, mergedRef)}
       >
-        {content}
+        {children}
       </button>
     );
   }
