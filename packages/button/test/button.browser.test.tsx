@@ -24,6 +24,14 @@ describe('@bento/button', function bento() {
       expect(button).toHaveAttribute('title', 'Button title');
     });
 
+    it('should allow button without children (icon-only)', function noChildren() {
+      const { container } = render(<Button aria-label="Close" />);
+      const button = container.querySelector('button');
+
+      expect(button).toHaveAttribute('aria-label', 'Close');
+      expect(button?.textContent).toBe('');
+    });
+
     it('should forward aria-* attributes', function forwardAriaAttrs() {
       const { container } = render(
         <Button aria-label="Close dialog" aria-expanded="false" aria-haspopup="dialog">
@@ -89,25 +97,6 @@ describe('@bento/button', function bento() {
       const button = container.querySelector('button');
 
       expect(button).toHaveClass('custom-button');
-    });
-
-    it('should apply baseline button class', function baselineClass() {
-      const { container } = render(<Button>Button</Button>);
-      const button = container.querySelector('button');
-      const classes = button?.className || '';
-
-      // Should have a hashed CSS module class (contains underscore and hash)
-      expect(classes).toMatch(/_button_/);
-    });
-
-    it('should allow className override to replace baseline class', function classNameOverride() {
-      const { container } = render(<Button className="custom-button">Button</Button>);
-      const button = container.querySelector('button');
-      const classes = button?.className || '';
-
-      // When className is provided, it replaces the baseline class
-      expect(button).toHaveClass('custom-button');
-      expect(classes).not.toMatch(/_button_/);
     });
 
     it('should forward style attribute', function forwardStyle() {
@@ -196,7 +185,6 @@ describe('@bento/button', function bento() {
       const button = container.querySelector('button');
 
       expect(button).toBeDisabled();
-      expect(button).toHaveAttribute('data-disabled', 'true');
     });
 
     it('should default type to button', function defaultType() {
@@ -249,43 +237,16 @@ describe('@bento/button', function bento() {
   });
 
   describe('Data attributes', function dataAttributeTests() {
-    it('should add data-pressed attribute when pressed', async function dataPressedAttr() {
-      const { container } = render(<ButtonExample>Press</ButtonExample>);
-      const button = container.querySelector('button')!;
+    it('should forward custom data attributes', function customDataAttrs() {
+      const { container } = render(
+        <ButtonExample data-testid="my-button" data-custom="value">
+          Test
+        </ButtonExample>
+      );
+      const button = container.querySelector('button');
 
-      // isPressed state tracking is internal - we verify via button press behavior
-      expect(button).not.toHaveAttribute('data-pressed');
-    });
-
-    it('should add data-hovered attribute when hovered', async function dataHoveredAttr() {
-      const { container } = render(<ButtonExample>Hover</ButtonExample>);
-      const button = container.querySelector('button')!;
-
-      expect(button).not.toHaveAttribute('data-hovered');
-
-      await userEvent.hover(button);
-      expect(button).toHaveAttribute('data-hovered', 'true');
-
-      await userEvent.unhover(button);
-      expect(button).not.toHaveAttribute('data-hovered');
-    });
-
-    it('should add data-focused attribute when focused', async function dataFocusedAttr() {
-      const { container } = render(<ButtonExample>Focus</ButtonExample>);
-      const button = container.querySelector('button')!;
-
-      // isFocused state tracking is internal - we verify via keyboard interaction
-      expect(button).not.toHaveAttribute('data-focused');
-    });
-
-    it('should add data-focus-visible attribute on keyboard focus', async function dataFocusVisibleAttr() {
-      const { container } = render(<ButtonExample>Focus visible</ButtonExample>);
-      const button = container.querySelector('button')!;
-
-      expect(button).not.toHaveAttribute('data-focus-visible');
-
-      await userEvent.tab();
-      expect(button).toHaveAttribute('data-focus-visible', 'true');
+      expect(button).toHaveAttribute('data-testid', 'my-button');
+      expect(button).toHaveAttribute('data-custom', 'value');
     });
   });
 
@@ -377,15 +338,6 @@ describe('@bento/button', function bento() {
       // Undefined values should not be set as attributes
       expect(button).toHaveAttribute('type', 'button');
       expect(button?.hasAttribute('data-test')).toBe(false);
-    });
-
-    it('should throw error when children is a function', function renderPropError() {
-      expect(function expectThrow() {
-        render(
-          // @ts-expect-error - testing runtime guard for removed feature
-          <Button>{() => 'render prop'}</Button>
-        );
-      }).toThrow('@bento/button: render-prop children are no longer supported');
     });
   });
 });

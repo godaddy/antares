@@ -1,8 +1,7 @@
 import React from 'react';
 import { render } from 'vitest-browser-react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import assume from 'assume';
-import { userEvent } from '@testing-library/user-event';
 import { ButtonExample } from '../examples/button';
 import { ButtonVariantsExample } from '../examples/variants';
 
@@ -16,6 +15,12 @@ describe('@bento/button examples', function examples() {
 
     it('renders button with default children', function rendersButtonDefault() {
       const { container } = render(<ButtonExample />);
+      const button = container.querySelector('button');
+      expect(button?.textContent).toBe('Click me');
+    });
+
+    it('renders button with undefined children', function rendersButtonUndefined() {
+      const { container } = render(<ButtonExample children={undefined} />);
       const button = container.querySelector('button');
       expect(button?.textContent).toBe('Click me');
     });

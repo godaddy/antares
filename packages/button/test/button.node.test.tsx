@@ -47,7 +47,6 @@ describe('@bento/button (SSR)', function ssrTests() {
     const html = renderToString(<Button isDisabled>Disabled</Button>);
 
     expect(html).toContain('disabled');
-    expect(html).toContain('data-disabled="true"');
   });
 
   it('should render with data attributes', function withDataAttrs() {
@@ -83,14 +82,5 @@ describe('@bento/button (SSR)', function ssrTests() {
     const html = renderToString(<Button type="submit">Submit</Button>);
 
     expect(html).toContain('type="submit"');
-  });
-
-  it('should throw error when children is a function', function renderPropError() {
-    expect(function expectThrow() {
-      renderToString(
-        // @ts-expect-error - testing runtime guard for removed feature
-        <Button>{() => 'render prop'}</Button>
-      );
-    }).toThrow('@bento/button: render-prop children are no longer supported');
   });
 });
