@@ -17,7 +17,9 @@ export interface ButtonProps
  * A button component built on React Aria's useButton.
  *
  * @example
- * <Button onPress={() => console.log('pressed')}>Click me</Button>
+ * ```tsx
+ * <Button onPress={() => console.log('Button pressed!')}>Click me</Button>
+ * ```
  */
 export const Button = withSlots(
   'BentoButton',

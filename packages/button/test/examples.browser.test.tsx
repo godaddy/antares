@@ -3,13 +3,7 @@ import { render } from 'vitest-browser-react';
 import { describe, it, expect, vi } from 'vitest';
 import assume from 'assume';
 import { userEvent } from '@testing-library/user-event';
-import {
-  ButtonExample,
-  ButtonWithAriaExample,
-  ButtonWithDataAttributesExample,
-  ButtonInFormExample,
-  DisabledButtonExample
-} from '../examples/button';
+import { ButtonExample } from '../examples/button';
 import { ButtonVariantsExample } from '../examples/variants';
 
 describe('@bento/button examples', function examples() {
@@ -40,7 +34,11 @@ describe('@bento/button examples', function examples() {
     });
 
     it('renders button with ARIA example', function rendersAriaExample() {
-      const { container } = render(<ButtonWithAriaExample />);
+      const { container } = render(
+        <ButtonExample aria-label="Close dialog" aria-expanded="false" aria-haspopup="dialog">
+          Close
+        </ButtonExample>
+      );
       const button = container.querySelector('button');
       expect(button).toHaveAttribute('aria-label', 'Close dialog');
       expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -48,7 +46,11 @@ describe('@bento/button examples', function examples() {
     });
 
     it('renders button with data attributes example', function rendersDataExample() {
-      const { container } = render(<ButtonWithDataAttributesExample />);
+      const { container } = render(
+        <ButtonExample data-testid="my-button" data-foo="bar" data-select-trigger="true">
+          Trigger
+        </ButtonExample>
+      );
       const button = container.querySelector('button');
       expect(button).toHaveAttribute('data-testid', 'my-button');
       expect(button).toHaveAttribute('data-foo', 'bar');
@@ -56,7 +58,13 @@ describe('@bento/button examples', function examples() {
     });
 
     it('renders button in form example', function rendersFormExample() {
-      const { container } = render(<ButtonInFormExample />);
+      const { container } = render(
+        <form id="test-form">
+          <ButtonExample type="submit" form="test-form" name="action" value="submit">
+            Submit
+          </ButtonExample>
+        </form>
+      );
       const button = container.querySelector('button');
       const form = container.querySelector('form');
       expect(button).toHaveAttribute('type', 'submit');
@@ -67,7 +75,7 @@ describe('@bento/button examples', function examples() {
     });
 
     it('renders disabled button example', function rendersDisabledExample() {
-      const { container } = render(<DisabledButtonExample />);
+      const { container } = render(<ButtonExample isDisabled>Disabled Button</ButtonExample>);
       const button = container.querySelector('button');
       expect(button).toBeDisabled();
     });

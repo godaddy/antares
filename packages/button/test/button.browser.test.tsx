@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ButtonExample,
-  ButtonWithAriaExample,
-  ButtonWithDataAttributesExample,
-  DisabledButtonExample
-} from '../examples/button';
+import { ButtonExample } from '../examples/button';
 import { render } from 'vitest-browser-react';
 import { describe, vi, it, expect } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
@@ -30,7 +25,11 @@ describe('@bento/button', function bento() {
     });
 
     it('should forward aria-* attributes', function forwardAriaAttrs() {
-      const { container } = render(<ButtonWithAriaExample />);
+      const { container } = render(
+        <Button aria-label="Close dialog" aria-expanded="false" aria-haspopup="dialog">
+          Close
+        </Button>
+      );
       const button = container.querySelector('button');
 
       expect(button).toHaveAttribute('aria-label', 'Close dialog');
@@ -60,7 +59,11 @@ describe('@bento/button', function bento() {
     });
 
     it('should forward data-* attributes', function forwardDataAttrs() {
-      const { container } = render(<ButtonWithDataAttributesExample />);
+      const { container } = render(
+        <Button data-testid="my-button" data-foo="bar" data-select-trigger="true">
+          Trigger
+        </Button>
+      );
       const button = container.querySelector('button');
 
       expect(button).toHaveAttribute('data-testid', 'my-button');
@@ -180,7 +183,7 @@ describe('@bento/button', function bento() {
 
     it('should not call onPress when disabled', async function noPresswhenDisabled() {
       const onPress = vi.fn();
-      const { container } = render(<DisabledButtonExample />);
+      const { container } = render(<ButtonExample isDisabled>Disabled</ButtonExample>);
       const button = container.querySelector('button')!;
 
       await userEvent.click(button);
@@ -189,7 +192,7 @@ describe('@bento/button', function bento() {
     });
 
     it('should have disabled attribute when isDisabled is true', function disabledAttr() {
-      const { container } = render(<DisabledButtonExample />);
+      const { container } = render(<ButtonExample isDisabled>Disabled Button</ButtonExample>);
       const button = container.querySelector('button');
 
       expect(button).toBeDisabled();
@@ -233,12 +236,15 @@ describe('@bento/button', function bento() {
     });
 
     it('should forward ref to button element', function refForwarding() {
-      const ref = React.createRef<HTMLButtonElement>();
-      const { container } = render(<Button ref={ref}>Ref test</Button>);
+      let buttonRef: any = null;
+      function setButtonRef(el: any) {
+        buttonRef = el;
+      }
+      const { container } = render(<Button ref={setButtonRef}>Ref test</Button>);
       const button = container.querySelector('button');
 
-      expect(ref.current).toBe(button);
-      expect(ref.current?.tagName).toBe('BUTTON');
+      expect(buttonRef).toBe(button);
+      expect(buttonRef?.tagName).toBe('BUTTON');
     });
   });
 
