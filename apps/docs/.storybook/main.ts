@@ -1,25 +1,8 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import remarkGfm from 'remark-gfm';
-import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { mergeConfig } from 'vite';
 import packageJson from '@bento/internal-props/package.json' with { type: 'json' };
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
-
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- *
- * @param value - The package name
- * @returns The absolute path of the package.
- * @private
- */
-function getAbsolutePath(value: string): string {
-  return dirname(require.resolve(join(value, 'package.json')));
-}
 
 const config: StorybookConfig = {
   stories: [
@@ -37,7 +20,7 @@ const config: StorybookConfig = {
 
   addons: [
     {
-      name: getAbsolutePath('@storybook/addon-docs'),
+      name: '@storybook/addon-docs',
       options: {
         mdxPluginOptions: {
           mdxCompileOptions: {
@@ -51,7 +34,7 @@ const config: StorybookConfig = {
   ],
 
   framework: {
-    name: getAbsolutePath('@storybook/react-vite'),
+    name: '@storybook/react-vite',
     options: {}
   },
 
