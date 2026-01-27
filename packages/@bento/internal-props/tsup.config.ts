@@ -1,4 +1,4 @@
-import { shared } from '../../../configs/tsup.config.mjs';
+import { shared } from '../../../configs/tsup.config.mts';
 import { version } from './package.json';
 import { defineConfig } from 'tsup';
 
