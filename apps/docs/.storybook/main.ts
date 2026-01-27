@@ -1,12 +1,8 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import remarkGfm from 'remark-gfm';
-import { join, resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join, resolve } from 'node:path';
 import { mergeConfig } from 'vite';
 import packageJson from '@bento/internal-props/package.json' with { type: 'json' };
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const config: StorybookConfig = {
   stories: [
