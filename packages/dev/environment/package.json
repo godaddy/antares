@@ -1,0 +1,66 @@
+{
+  "name": "@bento/environment",
+  "private": true,
+  "version": "0.1.4",
+  "description": "Setup a custom environment for your Bento application",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsup-node",
+    "dev": "tsup-node --watch",
+    "lint": "biome lint && tsc --noEmit",
+    "posttest": "npm run lint",
+    "prepublishOnly": "node ../../../scripts/compile-readme.ts",
+    "pretest": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/uxcore.git"
+  },
+  "keywords": [
+    "application",
+    "bento",
+    "component",
+    "configure",
+    "environment",
+    "library",
+    "react"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godaddy/uxcore/issues"
+  },
+  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "files": [
+    "dist",
+    "src",
+    "package.json"
+  ],
+  "dependencies": {
+    "@bento/box": "^0.2.0",
+    "@bento/slots": "^0.3.0",
+    "ts-deepmerge": "^7.0.3",
+    "use-deep-compare": "^1.3.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  }
+}

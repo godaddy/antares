@@ -1,0 +1,78 @@
+{
+  "name": "@bento/illustration",
+  "version": "0.1.4",
+  "description": "Illustration component",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsup-node",
+    "dev": "tsup-node --watch",
+    "lint": "biome lint && tsc --noEmit",
+    "posttest": "npm run lint",
+    "prepublishOnly": "node ../../../scripts/compile-readme.ts",
+    "pretest": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/uxcore.git"
+  },
+  "keywords": [
+    "asset",
+    "bento",
+    "component",
+    "graphic",
+    "icon",
+    "illustration",
+    "image",
+    "library",
+    "picture",
+    "react",
+    "svg",
+    "vector"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godaddy/uxcore/issues"
+  },
+  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "files": [
+    "dist",
+    "src",
+    "package.json"
+  ],
+  "dependencies": {
+    "@bento/slots": "^0.3.0",
+    "@bento/to-attribute-value": "^0.1.1",
+    "@bento/use-data-attributes": "^0.1.1",
+    "@bento/use-props": "^0.2.1",
+    "@react-types/shared": "^3.32.1"
+  },
+  "devDependencies": {
+    "@bento/types": "^0.1.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

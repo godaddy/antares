@@ -2,11 +2,11 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import ts from 'typescript';
-import { extractComponentDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
-import { extractInterfaceDoc } from '../packages/storybook-addon-helpers/src/ats-extractor-interface-doc.ts';
-import { GET_COMPONENT_DOCS } from '../packages/storybook-addon-helpers/src/getters-parser.ts';
-import { resolveImport } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
-import type { ItemDoc } from '../packages/storybook-addon-helpers/src/ats-utils.ts';
+import { extractComponentDoc } from '../packages/dev/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
+import { extractInterfaceDoc } from '../packages/dev/storybook-addon-helpers/src/ats-extractor-interface-doc.ts';
+import { GET_COMPONENT_DOCS } from '../packages/dev/storybook-addon-helpers/src/getters-parser.ts';
+import { resolveImport } from '../packages/dev/storybook-addon-helpers/src/ats-utils.ts';
+import type { ItemDoc } from '../packages/dev/storybook-addon-helpers/src/ats-utils.ts';
 
 const mdxPath = 'README.mdx';
 const outPath = 'README.md';
