@@ -1,9 +1,9 @@
 {
   "name": "@godaddy/uxcore",
+  "private": true,
   "version": "0.0.0",
   "description": "UXCore design system components and tokens (placeholder for future migration)",
   "type": "module",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/godaddy/uxcore.git"
