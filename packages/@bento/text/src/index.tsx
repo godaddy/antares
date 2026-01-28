@@ -58,8 +58,10 @@ export const Text = withSlots('BentoText', function Text(args: TextProps) {
     '--wrap': wrap
   };
 
+  const containerProps = apply({ className: styles.text, style }, ['align', 'as', 'maxLines', 'wrap']);
+
   return (
-    <Container as={as} {...apply({ className: styles.text, style }, ['align', 'as', 'maxLines', 'wrap'])}>
+    <Container as={as} {...containerProps}>
       {children}
     </Container>
   );

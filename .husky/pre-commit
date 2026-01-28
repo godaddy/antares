@@ -11,7 +11,7 @@ npm run deps:check
 echo "🔍 Checking package.json formatting..."
 npm run format:package
 
-echo "🧪 Running tests (no cache)..."
-npm test -- --skip-nx-cache
+echo "🧪 Running tests..."
+npm test
 
 echo "✅ All pre-commit checks passed!"
