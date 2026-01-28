@@ -9,4 +9,4 @@ export const shared = {
   loader: { '.css': 'copy' },
   target: browserslistToEsbuild(),
   dts: true
-} as const satisfies Options;
+} satisfies Options;

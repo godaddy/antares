@@ -10,7 +10,7 @@ export const ssr = {
     include: ['./test/**/*.node.test.{ts,tsx}'],
     environment: 'node'
   }
-} as const satisfies UserProjectConfigExport;
+} satisfies UserProjectConfigExport;
 
 export const browser = {
   plugins: [react(), tsconfigPaths()],
@@ -25,7 +25,7 @@ export const browser = {
       enabled: true
     }
   }
-} as const satisfies UserProjectConfigExport;
+} satisfies UserProjectConfigExport;
 
 export default defineConfig({
   test: {
@@ -59,4 +59,4 @@ export default defineConfig({
       }
     }
   }
-} as const satisfies ReturnType<typeof defineConfig>);
+} satisfies ReturnType<typeof defineConfig>);
