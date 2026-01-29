@@ -1,5 +1,5 @@
 {
-  "name": "bento",
+  "name": "uxcore",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -22,10 +22,10 @@
     "version": "changeset version && npm install",
     "release": "npm run build && changeset publish"
   },
-  "homepage": "https://github.com/godaddy/bento/tree/main",
+  "homepage": "https://github.com/godaddy/uxcore/tree/main",
   "devDependencies": {
-    "@bento/storybook-addon-helpers": "file:./packages/storybook-addon-helpers",
-    "@bento/types": "file:./packages/types",
+    "@bento/storybook-addon-helpers": "file:./packages/dev/storybook-addon-helpers",
+    "@bento/types": "file:./packages/@bento/types",
     "@biomejs/biome": "^2.3.11",
     "@changesets/cli": "^2.29.8",
     "@changesets/get-github-info": "^0.7.0",
@@ -51,6 +51,7 @@
     "husky": "^9.1.7",
     "knip": "^5.80.0",
     "lint-staged": "^16.2.7",
+    "markdownlint-cli2": "^0.20.0",
     "nx": "22.3.3",
     "playwright": "^1.50.1",
     "react": "^18.3.1",
@@ -66,18 +67,23 @@
     "vitest-browser-react": "^1.0.1"
   },
   "engines": {
-    "node": ">=23",
+    "node": ">=24.12",
     "npm": ">=10"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,json}": [
-      "biome lint --write",
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,css}": [
+      "biome lint --write --error-on-warnings",
       "biome format --write"
+    ],
+    "*.{md,mdx}": [
+      "markdownlint-cli2 --fix"
     ]
   },
   "packageManager": "npm@10.9.0",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/@bento/*",
+    "packages/@godaddy/*",
+    "packages/dev/*"
   ]
 }

@@ -22,14 +22,28 @@ const config: KnipConfig = {
         'react-diff-viewer-continued' // Used in why-did-you-render addon
       ]
     },
-    'packages/*': {
+    'packages/@bento/*': {
       // Ignore circular dependencies in examples and tests - these are for demo purposes
       ignore: [
         'examples/**/*', // Example files that may use circular dependencies for demos
         'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
       ]
     },
-    'packages/storybook-addon-helpers': {
+    'packages/@godaddy/*': {
+      // Ignore circular dependencies in examples and tests - these are for demo purposes
+      ignore: [
+        'examples/**/*', // Example files that may use circular dependencies for demos
+        'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
+      ]
+    },
+    'packages/dev/*': {
+      // Ignore circular dependencies in examples and tests - these are for demo purposes
+      ignore: [
+        'examples/**/*', // Example files that may use circular dependencies for demos
+        'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
+      ]
+    },
+    'packages/dev/storybook-addon-helpers': {
       ignore: ['test/fixtures/**/*'] // Test fixture files are intentionally unused
     }
   },

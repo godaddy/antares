@@ -1,18 +1,19 @@
-import { defineConfig, defaultExclude } from 'vitest/config';
+import { defineConfig, defaultExclude, type UserProjectConfigExport } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
 
 export const ssr = {
+  plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
     name: 'SSR',
     include: ['./test/**/*.node.test.{ts,tsx}'],
-    environment: 'node',
-    plugins: [react(), tsconfigPaths()]
+    environment: 'node'
   }
-};
+} satisfies UserProjectConfigExport;
 
 export const browser = {
+  plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
     name: 'Browser',
@@ -22,10 +23,9 @@ export const browser = {
       provider: 'playwright',
       headless: true,
       enabled: true
-    },
-    plugins: [react(), tsconfigPaths()]
+    }
   }
-};
+} satisfies UserProjectConfigExport;
 
 export default defineConfig({
   test: {
@@ -38,6 +38,12 @@ export default defineConfig({
       ignoreEmptyLines: true,
       reporter: ['text', 'json', 'html'],
       thresholds: {
+        autoUpdate: false,
+        perFile: true,
+        statements: 100,
+        functions: 100,
+        branches: 100,
+        lines: 100,
         'src/**.{ts,tsx}': {
           statements: 100,
           functions: 100,
@@ -53,4 +59,4 @@ export default defineConfig({
       }
     }
   }
-});
+} satisfies ReturnType<typeof defineConfig>);

@@ -1,7 +1,7 @@
 import { type Options } from 'tsup';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 
-export const shared: Options = {
+export const shared = {
   format: ['esm', 'cjs'],
   sourcemap: true,
   clean: true,
@@ -9,4 +9,4 @@ export const shared: Options = {
   loader: { '.css': 'copy' },
   target: browserslistToEsbuild(),
   dts: true
-};
+} satisfies Options;

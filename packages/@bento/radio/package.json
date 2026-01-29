@@ -1,0 +1,75 @@
+{
+  "name": "@bento/radio",
+  "version": "0.2.1",
+  "description": "Radio component",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsup-node",
+    "lint": "biome lint && tsc",
+    "posttest": "npm run lint",
+    "prepublishOnly": "node ../../../scripts/compile-readme.ts",
+    "pretest": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/uxcore.git"
+  },
+  "keywords": [
+    "accessibility",
+    "aria",
+    "bento",
+    "component",
+    "interactive",
+    "library",
+    "radio",
+    "react"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godaddy/uxcore/issues"
+  },
+  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "files": [
+    "dist",
+    "src",
+    "package.json"
+  ],
+  "dependencies": {
+    "@bento/container": "^0.2.1",
+    "@bento/icon": "^0.1.4",
+    "@bento/input": "^0.1.0",
+    "@bento/slots": "^0.3.0",
+    "@bento/use-data-attributes": "^0.1.1",
+    "@bento/use-props": "^0.2.1",
+    "@bento/visually-hidden": "^0.1.1",
+    "@react-aria/utils": "^3.30.0",
+    "react-aria": "^3.45.0",
+    "react-stately": "^3.43.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

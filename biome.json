@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
   "vcs": {
     "clientKind": "git",
     "enabled": true,
@@ -22,7 +22,15 @@
   ],
   "linter": {
     "enabled": true,
-    "includes": ["**", "!**/package-lock.json", "!.grit/**"],
+    "domains": {
+      "project": "all"
+    },
+    "includes": [
+      "**",
+      "!.grit/**",
+      "!**/package-lock.json",
+      "!**/test/fixtures/**"
+    ],
     "rules": {
       "recommended": false,
       "complexity": {
@@ -43,6 +51,7 @@
         "noSelfAssign": "error",
         "noSetterReturn": "error",
         "noSwitchDeclarations": "error",
+        "noUndeclaredDependencies": "off",
         "noUndeclaredVariables": "error",
         "noUnreachable": "error",
         "noUnreachableSuper": "error",
@@ -115,6 +124,17 @@
       "lineWidth": 80,
       "enabled": true,
       "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "linter": {
+      "enabled": true
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 120
     }
   }
 }
