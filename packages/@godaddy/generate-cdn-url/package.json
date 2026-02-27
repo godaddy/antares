@@ -5,6 +5,21 @@
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "lint": "biome lint && tsc --noEmit",
+    "posttest": "npm run lint",
+    "prepublishOnly": "node ../../../scripts/compile-readme.ts",
+    "pretest": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/bento.git",
+    "directory": "packages/@godaddy/generate-cdn-url"
+  },
   "keywords": [
     "godaddy",
     "cdn",
@@ -12,22 +27,20 @@
     "generator",
     "assets"
   ],
-  "homepage": "https://github.com/godaddy/bento/packages/",
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/godaddy/bento/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/godaddy/bento.git",
-    "directory": "packages/dev/generate-cdn-url"
-  },
-  "license": "MIT",
-  "author": "GoDaddy Operating Company, LLC",
+  "homepage": "https://github.com/godaddy/bento/packages/",
   "files": [
     "dist",
     "src",
     "package.json"
   ],
+  "devDependencies": {
+    "tsdown": "^0.20.3"
+  },
   "exports": {
     ".": {
       "import": {
@@ -41,16 +54,8 @@
     },
     "./package.json": "./package.json"
   },
-  "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "lint": "biome lint && tsc --noEmit",
-    "posttest": "npm run lint",
-    "pretest": "npm run build",
-    "test": "vitest --run",
-    "test:watch": "vitest"
-  },
-  "devDependencies": {
-    "tsdown": "^0.20.3"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

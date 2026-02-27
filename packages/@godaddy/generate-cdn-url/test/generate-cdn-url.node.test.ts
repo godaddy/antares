@@ -175,6 +175,28 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
       assume(url).equals('https://img6.wsimg.com/my-package/1.0.0/dist/file%20with%20spaces.js');
     });
 
+    it('should encode question marks in assetPath', function encodeQuestionMarkInAssetPathTest() {
+      const url = generateCdnUrl({
+        cdn: 'https://img6.wsimg.com',
+        packageName: 'my-package',
+        version: '1.0.0',
+        assetPath: 'dist/file?v=2.js'
+      });
+
+      assume(url).equals('https://img6.wsimg.com/my-package/1.0.0/dist/file%3Fv=2.js');
+    });
+
+    it('should encode hash characters in assetPath', function encodeHashInAssetPathTest() {
+      const url = generateCdnUrl({
+        cdn: 'https://img6.wsimg.com',
+        packageName: 'my-package',
+        version: '1.0.0',
+        assetPath: 'dist/file#section.js'
+      });
+
+      assume(url).equals('https://img6.wsimg.com/my-package/1.0.0/dist/file%23section.js');
+    });
+
     it('should throw error if cdn is missing', function cdnMissingErrorTest() {
       assume(function shouldThrow() {
         generateCdnUrl({
@@ -189,6 +211,26 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
       assume(function shouldThrow() {
         generateCdnUrl({
           cdn: 'not-a-valid-url',
+          packageName: 'my-package',
+          version: '1.0.0'
+        });
+      }).throws('cdn must be a valid URL');
+    });
+
+    it('should throw error if cdn uses non-http protocol', function cdnNonHttpErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'ftp://img6.wsimg.com',
+          packageName: 'my-package',
+          version: '1.0.0'
+        });
+      }).throws('cdn must be a valid URL');
+    });
+
+    it('should throw error if cdn uses javascript protocol', function cdnJavascriptProtocolErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'javascript:alert(1)',
           packageName: 'my-package',
           version: '1.0.0'
         });
@@ -279,6 +321,24 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
       });
 
       assume(url).equals('https://img6.wsimg.com/custom%20path/file%20name.js');
+    });
+
+    it('should encode question marks in path segments', function encodeQuestionMarkTest() {
+      const url = generateCdnUrl({
+        cdn: 'https://img6.wsimg.com',
+        pathSegments: ['path', 'file?v=1.js']
+      });
+
+      assume(url).equals('https://img6.wsimg.com/path/file%3Fv=1.js');
+    });
+
+    it('should encode hash characters in path segments', function encodeHashTest() {
+      const url = generateCdnUrl({
+        cdn: 'https://img6.wsimg.com',
+        pathSegments: ['path', 'file#section.js']
+      });
+
+      assume(url).equals('https://img6.wsimg.com/path/file%23section.js');
     });
 
     it('should throw error if pathSegments is empty', function emptyPathSegmentsErrorTest() {

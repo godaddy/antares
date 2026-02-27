@@ -17,12 +17,12 @@ function isFlexibleUrlOptions(options: GenerateCdnUrlOptions): options is Flexib
 }
 
 /**
- * Validates that a string is a valid URL
+ * Validates that a string is a valid URL with http or https protocol
  */
 function isValidUrl(url: string): boolean {
   try {
-    new URL(url);
-    return true;
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
   } catch {
     return false;
   }
@@ -159,7 +159,8 @@ export function generateCdnUrl(options: GenerateCdnUrlOptions): string {
     throw new Error('Invalid options: must provide either packageName/version or pathSegments');
   }
 
-  // Construct final URL and encode
   const finalUrl = `${baseUrl}/${path}`;
-  return encodeURI(finalUrl);
+
+  // Encode path characters that encodeURI does not handle
+  return encodeURI(finalUrl).replace(/\?/g, '%3F').replace(/#/g, '%23');
 }
