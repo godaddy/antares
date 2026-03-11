@@ -1,0 +1,24 @@
+{
+  "name": "@godaddy/uxcore",
+  "private": true,
+  "version": "0.0.0",
+  "description": "UXCore design system components and tokens (placeholder for future migration)",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/uxcore.git"
+  },
+  "keywords": [
+    "uxcore",
+    "design-system",
+    "components",
+    "tokens",
+    "react"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godaddy/uxcore/issues"
+  },
+  "homepage": "https://github.com/godaddy/uxcore#readme"
+}

@@ -7,12 +7,18 @@ import packageJson from '@bento/internal-props/package.json' with { type: 'json'
 const config: StorybookConfig = {
   stories: [
     // Package stories and documentation
-    '../../../packages/*/*.mdx',
-    '../../../packages/*/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/*/src/**/*.mdx',
-    '../../../packages/*/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/*/examples/**/*.mdx',
-    '../../../packages/*/examples/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/@bento/*/*.mdx',
+    '../../../packages/@bento/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/@bento/*/src/**/*.mdx',
+    '../../../packages/@bento/*/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/@bento/*/examples/**/*.mdx',
+    '../../../packages/@bento/*/examples/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/dev/*/*.mdx',
+    '../../../packages/dev/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/dev/*/src/**/*.mdx',
+    '../../../packages/dev/*/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/dev/*/examples/**/*.mdx',
+    '../../../packages/dev/*/examples/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
     // Documentation (PDRs, Architecture, etc.) - excluding templates
     '../../../docs/**/!(*TEMPLATE)*.mdx'
@@ -57,6 +63,9 @@ const config: StorybookConfig = {
       patch: semver[2]
     };
 
+    // Packages that are in dev/ folder but still use @bento namespace
+    const devPackages = ['storybook-addon-helpers', 'environment'];
+
     return mergeConfig(config, {
       // Set envDir to workspace root for proper monorepo support
       envDir: resolve(__dirname, '../../../'),
@@ -73,9 +82,15 @@ const config: StorybookConfig = {
       // Resolve @bento packages to their source files instead of built dist
       resolve: {
         alias: [
+          // Dev packages with @bento namespace
+          ...devPackages.map((pkg) => ({
+            find: new RegExp(`^@bento/${pkg}$`),
+            replacement: resolve(__dirname, `../../../packages/dev/${pkg}/src`)
+          })),
+          // Regular @bento packages
           {
             find: /^@bento\/(.*)$/,
-            replacement: resolve(__dirname, '../../../packages/$1/src')
+            replacement: resolve(__dirname, '../../../packages/@bento/$1/src')
           }
         ]
       }
