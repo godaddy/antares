@@ -4,7 +4,7 @@
   "description": "Generates CDN URLs for GoDaddy assets hosted at https://img6.wsimg.com/",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/godaddy/bento.git",
+    "url": "git+https://github.com/godaddy/uxcore.git",
     "directory": "packages/@godaddy/generate-cdn-url"
   },
   "keywords": [
@@ -30,22 +30,19 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/godaddy/bento/issues"
+    "url": "https://github.com/godaddy/uxcore/issues"
   },
-  "homepage": "https://github.com/godaddy/bento/packages/",
+  "homepage": "https://github.com/godaddy/uxcore#readme",
   "files": [
     "dist",
     "src",
     "package.json"
   ],
-  "devDependencies": {
-    "tsdown": "^0.20.3"
-  },
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
       "require": {
         "types": "./dist/index.d.cts",

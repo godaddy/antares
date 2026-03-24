@@ -110,6 +110,14 @@ export function generateCdnUrl(options: GenerateCdnUrlOptions): string {
     throw new Error('cdn must be a valid URL');
   }
 
+  // Reject mixed option shapes (both package and flexible fields provided)
+  const hasPackageFields = 'packageName' in options || 'version' in options;
+  const hasFlexibleFields = 'pathSegments' in options;
+
+  if (hasPackageFields && hasFlexibleFields) {
+    throw new Error('Invalid options: cannot provide both packageName/version and pathSegments');
+  }
+
   let baseUrl = options.cdn;
 
   // Replace hostname if provided
