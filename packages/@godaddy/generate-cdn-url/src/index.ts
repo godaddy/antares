@@ -16,13 +16,13 @@ function isFlexibleUrlOptions(options: GenerateCdnUrlOptions): options is Flexib
   return 'pathSegments' in options;
 }
 
-/**
- * Validates that a string is a valid URL with http or https protocol
- */
 function isValidUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+    if (parsed.username || parsed.password) return false;
+    if (parsed.search || parsed.hash) return false;
+    return true;
   } catch {
     return false;
   }
@@ -38,7 +38,8 @@ function normalizeSegment(segment: string): string {
 }
 
 /**
- * Joins path segments with forward slashes, handling empty strings
+ * Joins path segments with forward slashes, handling empty strings.
+ * Rejects path traversal sequences ('..') to prevent directory escape.
  */
 function joinPathSegments(segments: string[]): string {
   const normalized = segments
@@ -46,7 +47,14 @@ function joinPathSegments(segments: string[]): string {
     .map(normalizeSegment)
     .filter((segment) => segment !== '');
 
-  return normalized.join('/');
+  const path = normalized.join('/');
+
+  // Reject path traversal sequences
+  if (/(?:^|\/)\.\.(?:\/|$)/.test(path)) {
+    throw new Error('Path segments must not contain path traversal sequences (..)');
+  }
+
+  return path;
 }
 
 /**

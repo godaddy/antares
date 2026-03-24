@@ -241,6 +241,36 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
       }).throws('cdn must be a valid URL');
     });
 
+    it('should throw error if cdn contains embedded credentials', function cdnCredentialsErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://user:pass@img6.wsimg.com',
+          packageName: 'my-package',
+          version: '1.0.0'
+        });
+      }).throws('cdn must be a valid URL');
+    });
+
+    it('should throw error if cdn contains query string', function cdnQueryStringErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com?foo=bar',
+          packageName: 'my-package',
+          version: '1.0.0'
+        });
+      }).throws('cdn must be a valid URL');
+    });
+
+    it('should throw error if cdn contains hash fragment', function cdnHashFragmentErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com#section',
+          packageName: 'my-package',
+          version: '1.0.0'
+        });
+      }).throws('cdn must be a valid URL');
+    });
+
     it('should throw error if packageName is missing', function packageNameMissingErrorTest() {
       assume(function shouldThrow() {
         generateCdnUrl({
@@ -371,6 +401,24 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
         });
       }).throws('cdn is required');
     });
+
+    it('should throw error if pathSegments contain path traversal sequences', function pathTraversalSegmentsErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com',
+          pathSegments: ['..', '..', 'etc', 'passwd']
+        });
+      }).throws('Path segments must not contain path traversal sequences (..)');
+    });
+
+    it('should throw error if pathSegments contain embedded path traversal', function embeddedPathTraversalErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com',
+          pathSegments: ['assets/../secrets']
+        });
+      }).throws('Path segments must not contain path traversal sequences (..)');
+    });
   });
 
   describe('Error Handling', function errorHandlingTests() {
@@ -391,6 +439,17 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
           pathSegments: ['custom', 'path']
         } as any);
       }).throws('Invalid options: cannot provide both packageName/version and pathSegments');
+    });
+
+    it('should throw error if assetPath contains path traversal', function assetPathTraversalErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com',
+          packageName: 'my-package',
+          version: '1.0.0',
+          assetPath: '../../etc/passwd'
+        });
+      }).throws('Path segments must not contain path traversal sequences (..)');
     });
   });
 
