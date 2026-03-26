@@ -186,7 +186,7 @@ const url = generateCdnUrl(options);
 The TypeScript compiler will catch invalid option combinations at compile time:
 
 ```typescript
-// ❌ TypeScript error: Cannot mix packageName with pathSegments
+// ❌ TypeScript error: Type 'string' is not assignable to type 'undefined'
 const invalid = generateCdnUrl({
   cdn: 'https://img6.wsimg.com',
   packageName: 'my-package',

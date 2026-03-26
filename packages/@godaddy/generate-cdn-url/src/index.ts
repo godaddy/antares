@@ -16,6 +16,10 @@ function isFlexibleUrlOptions(options: GenerateCdnUrlOptions): options is Flexib
   return 'pathSegments' in options;
 }
 
+/**
+ * Validates that a URL is a well-formed HTTP(S) URL with no credentials, query string, or fragment.
+ * Rejects non-http(s) protocols, embedded credentials, and URLs with search/hash components.
+ */
 function isValidUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
@@ -49,9 +53,29 @@ function joinPathSegments(segments: string[]): string {
 
   const path = normalized.join('/');
 
+  const traversalPattern = /(?:^|\/)\.\.(?:\/|$)/;
+
   // Reject path traversal sequences
-  if (/(?:^|\/)\.\.(?:\/|$)/.test(path)) {
+  if (traversalPattern.test(path)) {
     throw new Error('Path segments must not contain path traversal sequences (..)');
+  }
+
+  // Normalize backslashes and check decoded form to catch percent-encoded traversal (e.g. "%2e%2e")
+  const normalizedForTraversal = path.replace(/\\/g, '/');
+  if (traversalPattern.test(normalizedForTraversal)) {
+    throw new Error('Path segments must not contain path traversal sequences (..)');
+  }
+
+  try {
+    const decoded = decodeURIComponent(normalizedForTraversal);
+    if (traversalPattern.test(decoded)) {
+      throw new Error('Path segments must not contain path traversal sequences (..)');
+    }
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('path traversal')) {
+      throw e;
+    }
+    throw new Error('Path segments contain invalid percent-encoding');
   }
 
   return path;
@@ -119,8 +143,9 @@ export function generateCdnUrl(options: GenerateCdnUrlOptions): string {
   }
 
   // Reject mixed option shapes (both package and flexible fields provided)
-  const hasPackageFields = 'packageName' in options || 'version' in options;
-  const hasFlexibleFields = 'pathSegments' in options;
+  const hasPackageFields =
+    isPackageUrlOptions(options) || 'packageName' in options || 'version' in options || 'assetPath' in options;
+  const hasFlexibleFields = isFlexibleUrlOptions(options);
 
   if (hasPackageFields && hasFlexibleFields) {
     throw new Error('Invalid options: cannot provide both packageName/version and pathSegments');

@@ -26,6 +26,9 @@ export interface PackageUrlOptions {
    * Optional hostname to replace the CDN hostname (e.g., 'dev.img6.wsimg.com')
    */
   hostname?: string;
+
+  /** @internal Prevents mixing with FlexibleUrlOptions */
+  pathSegments?: never;
 }
 
 /**
@@ -46,6 +49,13 @@ export interface FlexibleUrlOptions {
    * Optional hostname to replace the CDN hostname (e.g., 'dev.img6.wsimg.com')
    */
   hostname?: string;
+
+  /** @internal Prevents mixing with PackageUrlOptions */
+  packageName?: never;
+  /** @internal Prevents mixing with PackageUrlOptions */
+  version?: never;
+  /** @internal Prevents mixing with PackageUrlOptions */
+  assetPath?: never;
 }
 
 /**

@@ -419,6 +419,33 @@ describe('generateCdnUrl', function generateCdnUrlTests() {
         });
       }).throws('Path segments must not contain path traversal sequences (..)');
     });
+
+    it('should throw error if pathSegments contain percent-encoded path traversal', function percentEncodedTraversalErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com',
+          pathSegments: ['%2e%2e', '%2e%2e', 'etc', 'passwd']
+        });
+      }).throws('Path segments must not contain path traversal sequences (..)');
+    });
+
+    it('should throw error if pathSegments contain backslash path traversal', function backslashTraversalErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com',
+          pathSegments: ['assets\\..\\secrets']
+        });
+      }).throws('Path segments must not contain path traversal sequences (..)');
+    });
+
+    it('should throw error if pathSegments contain mixed-case percent-encoded traversal', function mixedCasePercentTraversalErrorTest() {
+      assume(function shouldThrow() {
+        generateCdnUrl({
+          cdn: 'https://img6.wsimg.com',
+          pathSegments: ['%2E%2E', 'etc', 'passwd']
+        });
+      }).throws('Path segments must not contain path traversal sequences (..)');
+    });
   });
 
   describe('Error Handling', function errorHandlingTests() {
