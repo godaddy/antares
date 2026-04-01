@@ -100,6 +100,7 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
     return function pickSnapshot() {
       if (state.has(key)) return state.get(key);
       if (!loaded.has(key)) load(key);
+      return undefined;
     };
   }
 
@@ -166,7 +167,6 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
         if (!data) continue;
         return set({ [key]: data });
       } catch (_) {
-        continue;
       }
     }
   }

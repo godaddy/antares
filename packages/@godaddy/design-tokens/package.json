@@ -1,0 +1,71 @@
+{
+  "name": "@godaddy/design-tokens",
+  "version": "0.0.1",
+  "description": "The GoDaddy design tokens library",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:sd && npm run build:schema",
+    "build:sd": "tsx src/build-tokens.ts",
+    "build:schema": "shx cp src/schema.json dist/schema.json",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --write",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/anatares.git",
+    "directory": "packages/design-tokens"
+  },
+  "keywords": [
+    "design",
+    "tokens",
+    "design-tokens",
+    "dtcg",
+    "css-variables",
+    "scss",
+    "style-dictionary"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/godaddy/antares/issues"
+  },
+  "homepage": "https://github.com/godaddy/antares/tree/main/packages/design-tokens#readme",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "shx": "^0.3.4",
+    "style-dictionary": "^5.3.2",
+    "tsx": "^4.19.2",
+    "vitest": "^4.0.18",
+    "yaml": "^2.8.3",
+    "ajv": "^8.17.1",
+    "@upft/schemas": "^0.0.6"
+  },
+  "exports": {
+    "./css-in-js": {
+      "import": "./dist/css-in-js.js",
+      "default": "./dist/css-in-js.js"
+    },
+    "./scss": {
+      "default": "./dist/scss.scss"
+    },
+    "./classnames.module.css": {
+      "default": "./dist/classnames.module.css"
+    },
+    "./css-data": {
+      "default": "./dist/design-tokens.css-data.json"
+    },
+    "./dtcg.json": {
+      "default": "./dist/dtcg.json"
+    },
+    "./schema": {
+      "default": "./dist/schema.json"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}

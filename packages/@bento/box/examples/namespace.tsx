@@ -1,6 +1,5 @@
 /* v8 ignore next */
-import React, { ReactNode, useContext } from 'react';
-import { withSlots } from '@bento/slots';
+import React, { type ReactNode, useContext } from 'react';
 import { Box, defaults } from '@bento/box';
 
 /**
@@ -11,7 +10,7 @@ import { Box, defaults } from '@bento/box';
  * @returns {JSX.Element} The rendered example component.
  * @public
  */
-const Example = withSlots('ContextExample', function Example(props: { children?: ReactNode }) {
+function Example(props: { children?: ReactNode }) {
   const { slots } = useContext(Box);
 
   return (
@@ -20,7 +19,7 @@ const Example = withSlots('ContextExample', function Example(props: { children?:
       {props.children}
     </>
   );
-});
+};
 
 //
 // We are declaring our default context state outside of our component scope

@@ -1,10 +1,12 @@
 {
-  "name": "uxcore",
+  "name": "antares-monorepo",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "build": "nx run-many -t build",
-    "clean": "npm exec --workspaces -- npx rimraf node_modules dist && npx rimraf node_modules",
+    "changeset": "changeset",
+    "clean": "nx reset && npm exec --workspaces -- npx rimraf node_modules dist && npx rimraf node_modules",
+    "commitlint": "commitlint --edit",
     "deps:check": "syncpack list-mismatches && knip --reporter=symbols",
     "deps:fix": "syncpack fix-mismatches",
     "format": "biome check",
@@ -12,39 +14,37 @@
     "lint": "nx run-many -t lint",
     "postinstall": "npm run build",
     "prepare": "husky",
-    "start": "npm run storybook --workspace=docs",
-    "test": "npm run test:ci && npm run test:scripts",
-    "test:ci": "nx run-many -t test",
-    "test:root": "vitest",
-    "test:scripts": "vitest run --config scripts/test/vitest.config.ts",
-    "test:visual": "playwright test -c playwright-ct.config.ts",
-    "changeset": "changeset",
-    "version": "changeset version && npm install",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "site": "nx run site:dev",
+    "site:build": "nx run site:build",
+    "storybook": "nx run docs:storybook",
+    "test": "nx run-many -t test",
+    "test:visual": "nx run-many -t test:visual",
+    "test:visual:update": "nx run-many -t test:visual:update",
+    "typecheck": "nx run-many -t typecheck",
+    "version": "changeset version && npm install"
   },
-  "homepage": "https://github.com/godaddy/uxcore/tree/main",
+  "homepage": "https://github.com/godaddy/antares/tree/main",
   "devDependencies": {
-    "@bento/storybook-addon-helpers": "file:./packages/dev/storybook-addon-helpers",
-    "@bento/types": "file:./packages/@bento/types",
     "@biomejs/biome": "^2.3.11",
     "@changesets/cli": "^2.29.8",
     "@changesets/get-github-info": "^0.7.0",
     "@commitlint/cli": "^20.3.0",
     "@commitlint/config-conventional": "^20.3.0",
-    "@microsoft/api-extractor": "^7.55.2",
-    "@playwright/experimental-ct-react": "^1.57.0",
+    "@nx/storybook": "^22.4.5",
+    "@nx/vite": "^22.4.5",
+    "@nx/vitest": "^22.4.5",
     "@react-types/shared": "^3.32.1",
-    "@storybook/react": "^9.1.16",
-    "@storybook/react-vite": "^9.1.16",
     "@testing-library/user-event": "^14.6.1",
     "@types/css-modules": "^1.0.5",
     "@types/dashify": "^1.0.3",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^24.9.1",
-    "@vitejs/plugin-react": "^5.1.2",
-    "@vitest/browser": "^3.2.4",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "^3.0.7",
+    "@types/node": "^24.10.12",
+    "@vitejs/plugin-react": "^5.1.3",
+    "@vitest/browser": "^4.0.18",
+    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
     "assume": "^2.3.0",
     "browserslist-to-esbuild": "^2.1.1",
     "esbuild": "^0.27.2",
@@ -53,7 +53,6 @@
     "lint-staged": "^16.2.7",
     "markdownlint-cli2": "^0.20.0",
     "nx": "22.3.3",
-    "playwright": "^1.50.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-frame-component": "^5.2.7",
@@ -63,24 +62,33 @@
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.7",
-    "vitest-browser-react": "^1.0.1"
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "11"
+    }
   },
   "engines": {
     "node": ">=24.12",
-    "npm": ">=10"
+    "npm": ">=11"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,json,css}": [
       "biome lint --write --error-on-warnings",
       "biome format --write"
     ],
-    "*.{md,mdx}": [
+    "{,!(.agents|.claude|.cursor)/**/}*.{md,mdx}": [
       "markdownlint-cli2 --fix"
     ]
   },
-  "packageManager": "npm@10.9.0",
+  "packageManager": "npm@11.6.2",
   "workspaces": [
     "apps/*",
     "packages/@bento/*",

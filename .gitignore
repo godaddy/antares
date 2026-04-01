@@ -29,7 +29,7 @@ build
 dist
 
 # Compiled README files
-README.md
+packages/@bento/**/README.md
 
 
 # Debug
@@ -65,3 +65,6 @@ packages/**/test/__screenshots__/
 # Nx
 .nx/cache
 .nx/workspace-data
+
+# Zed
+.zed

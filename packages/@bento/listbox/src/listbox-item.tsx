@@ -1,11 +1,11 @@
-import React, { ForwardedRef, ReactNode, createContext, useContext, useMemo } from 'react';
+import React, { type ForwardedRef, type ReactNode, createContext, useContext, useMemo } from 'react';
 import { mergeProps, useOption, useHover } from 'react-aria';
 import { createLeafComponent } from '@react-aria/collections';
-import { HoverEvents, Key, LinkDOMProps, Node } from '@react-types/shared';
+import type { HoverEvents, Key, LinkDOMProps, Node } from '@react-types/shared';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
-import { ListStateContext } from './listbox';
-import { useSafeObjectRef } from './utils';
+import { ListStateContext } from './listbox.tsx';
+import { useSafeObjectRef } from './utils.ts';
 import { withSlots } from '@bento/slots';
 
 /**
@@ -126,10 +126,11 @@ export interface ListBoxItemProps<T = object>
  * @returns {React.ReactElement} A fully interactive listbox item with accessibility and state management
  * @internal
  */
-const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends object>(
-  { __node, ...props }: ListBoxItemProps<T> & { readonly __node: Node<T> },
-  ref: ForwardedRef<HTMLDivElement>
-) {
+const ListBoxItemImplComponent = function ListBoxItemImplComponent<T extends object>(...restArgs: any[]) {
+  const [{ __node, ...props }, ref] = restArgs as [
+    ListBoxItemProps<T> & { readonly __node: Node<T> },
+    ForwardedRef<HTMLDivElement>
+  ];
   const state = useContext(ListStateContext)!;
   const safeRef = useSafeObjectRef(ref);
 

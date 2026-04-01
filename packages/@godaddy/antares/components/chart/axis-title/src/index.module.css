@@ -1,0 +1,13 @@
+.xAxis {
+  width: 100%;
+}
+
+.yAxis {
+  width: 1em;
+  writing-mode: sideways-lr;
+  white-space: nowrap;
+}
+
+.yAxis:dir(rtl) {
+  writing-mode: sideways-rl;
+}

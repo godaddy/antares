@@ -3,10 +3,11 @@
 // first import of the files to ensure it can correctly interface with
 // React and apply re-render tracking.
 //
-import './why-did-you-render.ts';
+// import './why-did-you-render.ts';
 import type { Preview } from '@storybook/react-vite';
 import React from 'react';
 import { MermaidDiagram } from './components/MermaidDiagram';
+import '../../../packages/@godaddy/antares/variables.css';
 
 function Pre(props: React.ComponentProps<'pre'>) {
   const child = props.children;

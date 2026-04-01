@@ -1,4 +1,7 @@
-import { join } from 'node:path';
+import { join, dirname, } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
  * Adds the custom addon entry to the Storybook manager entries.

@@ -1,0 +1,69 @@
+---
+title: MetricsLockup
+description: The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './metrics-lockup.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import WithTrendExample from './examples/with-trend.tsx?raw';
+import CompactExample from './examples/compact.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### With Trend
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of={Stories.WithTrend} inline />
+<Source language="tsx" code={WithTrendExample} />
+
+### Compact
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of={Stories.Compact} inline />
+<Source language="tsx" code={CompactExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key    | Description                                                         |
+| ------ | ------------------------------------------------------------------- |
+| Tab    | Moves focus to the info trigger button and shows the tooltip        |
+| Escape | Closes the tooltip                                                  |
+
+### ARIA
+
+- The info trigger button uses `aria-label="More information"` to describe its purpose.
+- The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+- The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices
+
+- Keep tooltip content concise and informative.
+- The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+- `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+- `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.

@@ -1,0 +1,94 @@
+.container {
+  --edge-fade-width: var(--sp-lg);
+  --edge-clear-width: calc(var(--sp-lg) + var(--sp-sm));
+  --mask-fade-direction-start: to left;
+  --mask-fade-direction-end: to right;
+
+  position: relative;
+}
+
+.container:dir(rtl) {
+  --icon-direction: scaleX(-1);
+  --mask-fade-direction-start: to right;
+  --mask-fade-direction-end: to left;
+}
+
+.viewport {
+  overflow: hidden;
+  position: relative;
+}
+
+.edgeMask {
+  background: transparent;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.edgeMask::before,
+.edgeMask::after {
+  content: "";
+  background: var(--bg-base);
+  width: calc(var(--edge-clear-width) + var(--edge-fade-width));
+  transition: opacity 1s ease;
+  mask-image: linear-gradient(
+    var(--mask-fade-direction-start),
+    transparent 0,
+    transparent calc(var(--edge-clear-width)),
+    black calc((var(--edge-clear-width) + var(--edge-fade-width))),
+    black 100%
+  );
+}
+
+.edgeMask::after {
+  mask-image: linear-gradient(
+    var(--mask-fade-direction-end),
+    transparent 0,
+    transparent calc(var(--edge-clear-width)),
+    black calc((var(--edge-clear-width) + var(--edge-fade-width))),
+    black 100%
+  );
+}
+
+.edgeMask.hideFirst::before,
+.edgeMask.hideLast::after {
+  opacity: 0;
+}
+
+:where(.slide) {
+  flex-shrink: 0;
+  flex-grow: 0;
+  max-width: calc(100% - var(--sp-lg) * 2);
+  width: 100%;
+}
+
+.prev,
+.next {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition:
+    opacity 0.3s ease,
+    visibility 1s ease;
+  visibility: visible;
+  opacity: 1;
+}
+
+.prev [data-icon],
+.next [data-icon] {
+  transform: var(--icon-direction);
+}
+
+.next {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  transform: translateY(-50%);
+}
+
+.prev.hide,
+.next.hide {
+  cursor: inherit;
+  visibility: hidden; /* removes buttons from accessibility tree */
+  opacity: 0;
+}

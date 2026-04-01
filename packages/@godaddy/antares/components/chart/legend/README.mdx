@@ -1,0 +1,37 @@
+---
+title: Legend
+description: The Legend component is an internal component used for displaying series information in chart components.
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './legend.stories.tsx';
+
+import SourceSingleSeries from './examples/single-series.tsx?raw';
+import SourceMultiSeries from './examples/multi-series.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Internal Component
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+## Props
+
+The `Legend` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Single Series
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language='tsx' code={SourceSingleSeries} />
+<Story of={Stories.SingleSeries} inline />
+
+### Multiple Series
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language='tsx' code={SourceMultiSeries} />
+<Story of={Stories.MultipleSeries} inline />

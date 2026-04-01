@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useContext, type ReactElement } from 'react';
+import { useEffect, useMemo, useContext, type ReactElement } from 'react';
 import { Box, type BoxContext } from '@bento/box';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
@@ -87,7 +87,7 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
       //
       queueMicrotask(function delay() {
         flushSync(() => container.render(Graphic));
-        sheet.innerHTML += `<symbol id="${id}" data-symbol="${name}" viewBox="${props?.viewBox}">${target.innerHTML}</symbol>`;
+        sheet.innerHTML += `<symbol id="${id}" data-symbol="${name}" viewBox="${(props as any)?.viewBox}">${target.innerHTML}</symbol>`;
         container.unmount();
       });
     },
@@ -98,10 +98,10 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
     function useReference() {
       return (
         <svg
-          viewBox={Graphic?.props?.viewBox}
+          viewBox={(Graphic?.props as any)?.viewBox}
           xmlns={namespace}
-          width={Graphic?.props?.width}
-          height={Graphic?.props?.height}
+          width={(Graphic?.props as any)?.width}
+          height={(Graphic?.props as any)?.height}
         >
           <use xlinkHref={`${env.sprite}#${id}`} fill="currentColor" />
         </svg>

@@ -1,0 +1,410 @@
+---
+title: Icon
+description: Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
+---
+import { Meta, ArgTypes, Controls, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './icon.stories.tsx';
+
+import SourceIcon from './examples/icon.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the UXCore design system.
+
+## Features
+
+- **On-demand loading**: Icons are loaded asynchronously from CDN only when needed
+- **Automatic caching**: Once loaded, icons are cached for optimal performance
+- **Flexible sizing**: Support for `width` and `height` props
+- **Color inheritance**: Uses `currentColor` by default for seamless theme integration
+- **Accessibility ready**: Built-in support for screen readers and keyboard navigation
+- **TypeScript support**: Fully typed with comprehensive prop interfaces
+- **Bento integration**: Extends Bento Icon with additional UXCore-specific features
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `Icon` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+### Prop Inheritance
+
+The component extends `BentoIconProps` and passes through all standard HTML attributes and accessibility props to the underlying Bento Icon component. This includes:
+
+- **Accessibility**: `aria-label`, `aria-describedby`, `role`, `title`
+- **Events**: `onClick`, `onMouseOver`, `onFocus`, etc.
+- **Styling**: `className`, `style`, `data-*` attributes
+- **Transform**: `rotate`, `flip` for icon transformations
+
+## Basic Usage
+
+<Story of={Stories.Icon} inline />
+<Source language='tsx' code={SourceIcon} />
+
+## Size Variants
+
+Specify explicit width and height values:
+
+```jsx
+<Icon icon="star" width={24} height={24} />
+```
+
+You can use different values for width and height:
+
+```jsx
+<Icon icon="star" width={32} height={16} />
+```
+
+## Customization
+
+### Slots
+
+The Icon component uses Bento's slot system with the following component hierarchy and available slot override points:
+
+#### Component Hierarchy
+
+```text
+Icon (registered as "Icon")
+└── BentoIcon (registered as "BentoIcon", slot="icon")
+    └── BentoIllustration (registered as "BentoIllustration", slot="content")
+```
+
+#### Available Slot Overrides
+
+- **`icon`**: Overrides the entire BentoIcon component - affects icon loading, caching, sprite/SVG mode switching, data attributes, and the overall icon wrapper
+- **`icon.content`**: Overrides the BentoIllustration component - affects SVG transformations (rotate, flip), accessibility attributes (`role`, `focusable`, `aria-labelledby`), viewBox calculations, and final SVG element rendering
+
+For complete slot override patterns and examples, see the `@bento/slots` package documentation.
+
+### Custom Icons
+
+While the Icon component loads design system approved icons from the CDN by default, teams can introduce custom icons using the underlying Bento Icon system.
+
+#### Adding Icons Synchronously
+
+Use the `set` method to add custom icons that are available immediately:
+
+```jsx
+import { Icon, set, parser } from '@godaddy/antares';
+
+// Add a custom icon from an SVG string
+const customIconSvg = '<svg viewBox="0 0 24 24"><path d="..."/></svg>';
+
+set({
+  'custom-logo': parser(customIconSvg),
+  'team-icon': (
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  )
+});
+
+// Now use your custom icon
+<Icon icon="custom-logo" />
+<Icon icon="team-icon" />
+```
+
+#### Adding Icons Asynchronously
+
+Use the `ondemand` method to load custom icons from your own sources:
+
+```jsx
+import { Icon, ondemand, parser } from '@godaddy/antares';
+
+// Add a custom loader for team-specific icons
+const unregister = ondemand(async function loadTeamIcons(iconName) {
+  if (iconName.startsWith('team-')) {
+    const response = await fetch(`/api/team-icons/${iconName}.svg`);
+    const svgContent = await response.text();
+    return parser(svgContent);
+  }
+  // Return undefined to let other loaders handle this icon
+});
+
+// Icons prefixed with 'team-' will load from your custom endpoint
+<Icon icon="team-dashboard" />
+<Icon icon="team-settings" />
+
+// Later, if needed, unregister the loader
+unregister();
+```
+
+#### Custom Icon APIs
+
+The following methods are exported from `@godaddy/uxcore` for custom icon management:
+
+- **`set(icons)`**: Synchronously add icons to the store
+- **`ondemand(loader)`**: Register an asynchronous icon loader (returns unregister function)
+- **`parser(svgString)`**: Parse SVG strings into React elements
+
+These are re-exports of the underlying Bento Icon system methods. For complete API documentation, advanced usage patterns, and implementation details, see the `@bento/icon` and `@bento/svg-parser` package documentation.
+
+#### Notes
+
+- Custom icons integrate seamlessly with all Icon component features (transformations, accessibility, sprite mode, etc.)
+- Multiple `ondemand` loaders can be registered and will be called in order until one returns content
+- Use the `parser` function to convert SVG strings to React elements
+- Custom icons are cached automatically just like CDN icons
+
+### Styling
+
+#### CSS Classes
+
+The component accepts standard `className` and `style` props:
+
+```jsx
+<Icon icon="star" className="my-icon" style={{ margin: '10px' }} />
+```
+
+**Important**: When you supply a `className`, you make a commitment to take over all styling of the component as it will remove the standard class names. Use data attributes for targeted styling instead.
+
+#### Data Attributes
+
+The component automatically adds data attributes for styling hooks:
+
+- `data-icon`: The icon name (always present)
+- `data-color`: Applied when color prop is set
+- `data-loading`: Applied during icon loading from CDN
+- `data-mode`: Applied when mode prop is set (e.g., "sprite")
+- `data-flip`: Applied when flip prop is set ("horizontal" or "vertical")
+- `data-rotate`: Applied when rotate prop is set (90, 180, or 270)
+
+The component also includes accessibility attributes:
+
+- `role="presentation"`: For decorative icons
+- `role="img"`: When title prop is provided
+- `focusable="false"`: Prevents keyboard focus
+
+```css
+/* Style by icon name */
+[data-icon="star"] {
+  color: gold;
+}
+
+/* Style by color */
+[data-color="red"] {
+  border: 1px solid currentColor;
+}
+
+/* Style loading state */
+[data-loading="true"] {
+  opacity: 0.5;
+}
+
+/* Style sprite mode */
+[data-mode="sprite"] {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Style flipped icons */
+[data-flip="horizontal"] {
+  transform-origin: center;
+}
+
+/* Style rotated icons */
+[data-rotate="90"] {
+  transition: transform 0.2s ease;
+}
+```
+
+## Color Customization
+
+### Inherit from Parent (Default)
+
+By default, icons inherit the color from their parent element via `currentColor`:
+
+```jsx
+<div style={{ color: 'blue' }}>
+  <Icon icon="star" /> {/* Will be blue */}
+</div>
+```
+
+### Explicit Colors
+
+Override the color with specific values:
+
+```jsx
+<Icon icon="star" color="#ff6b35" />          // Hex color
+<Icon icon="star" color="rgb(255, 107, 53)" /> // RGB color
+<Icon icon="star" color="var(--primary-color)" /> // CSS variable
+<Icon icon="star" color="currentColor" />     // Explicit inheritance
+```
+
+## Icon Transformations
+
+Transform capabilities are inherited from the Bento Illustration component. For complete transformation options and implementation details, see the `@bento/illustration` package documentation.
+
+### Rotation
+
+Rotate icons by 90-degree increments:
+
+```jsx
+<Icon icon="arrow" rotate={90} />   // 90 degrees
+<Icon icon="arrow" rotate={180} />  // 180 degrees
+<Icon icon="arrow" rotate={270} />  // 270 degrees
+```
+
+### Flipping
+
+Flip icons horizontally or vertically:
+
+```jsx
+<Icon icon="arrow" flip="horizontal" />
+<Icon icon="arrow" flip="vertical" />
+```
+
+## Loading States
+
+### Placeholder Content
+
+Provide fallback SVG content while icons load from the CDN:
+
+```jsx
+<Icon icon="star">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+</Icon>
+```
+
+## Accessibility
+
+### Decorative Icons
+
+For purely decorative icons, no additional attributes are needed. The icon will have `role="presentation"` and be ignored by screen readers:
+
+```jsx
+<Icon icon="star" /> {/* Decorative, screen readers will ignore */}
+```
+
+### Semantic Icons
+
+For icons that convey meaning, use the `title` prop. This automatically adds `role="img"` and provides screen reader accessible text:
+
+```jsx
+{/* Semantic icon - use title prop */}
+<Icon icon="star" title="Favorite item" />
+
+{/* Warning icon with semantic meaning */}
+<Icon icon="alert" title="Warning: Your session will expire soon" />
+
+{/* Status indicator with meaning */}
+<Icon icon="check-circle" title="Task completed successfully" />
+```
+
+### Interactive Icons
+
+For interactive icons within buttons or links, use the `title` prop on the icon and `aria-label` on the interactive element:
+
+```jsx
+{/* Button with icon - label the button, not the icon */}
+<button aria-label="Close dialog">
+  <Icon icon="close" />
+</button>
+
+{/* Icon button where icon has semantic meaning */}
+<button aria-label="Mark as favorite">
+  <Icon icon="star" title="Favorite" />
+</button>
+
+{/* Link with icon */}
+<a href="/settings" aria-label="Go to settings">
+  <Icon icon="settings" />
+</a>
+```
+
+## Performance Considerations
+
+### Default Icon Loading
+
+Icons are loaded on-demand from a CDN using the following process:
+
+1. **First Request**: When an icon is first encountered, it triggers an asynchronous fetch from the CDN
+2. **SVG Parsing**: The fetched SVG string is parsed into a React element using `@bento/svg-parser`
+3. **Automatic Caching**: Once loaded, the icon is cached in memory to avoid subsequent network requests
+4. **Full SVG Rendering**: Each icon instance renders as a complete SVG element with all path data
+
+```jsx
+// Each icon renders as a full SVG element
+<Icon icon="star" />  // <svg><path d="M3 22v-20l18 10-18 10z" /></svg>
+<Icon icon="star" />  // <svg><path d="M3 22v-20l18 10-18 10z" /></svg>
+<Icon icon="star" />  // <svg><path d="M3 22v-20l18 10-18 10z" /></svg>
+```
+
+This approach works well for SSR and small numbers of icons, but can lead to DOM bloat when the same icon appears many times.
+
+### Sprite Mode Optimization
+
+When `mode="sprite"` is enabled, the component switches to a more efficient rendering strategy:
+
+```jsx
+<Icon icon="star" mode="sprite" />
+<Icon icon="star" mode="sprite" />
+<Icon icon="star" mode="sprite" />
+```
+
+**What happens with sprite mode:**
+
+1. **Sprite Sheet Creation**: A hidden SVG sprite sheet is automatically injected into the DOM containing symbol definitions
+2. **Reference Rendering**: Each icon renders as a lightweight `<use>` element that references the sprite
+3. **Deduplication**: Icon path data only exists once in the sprite sheet, regardless of how many times it's used
+4. **Client-Side Hydration**: The sprite sheet is generated and injected after hydration, causing a brief paint event
+
+**DOM Output:**
+
+```html
+<!-- Hidden sprite sheet (created automatically) -->
+<svg id="bento-svg-sprite" style="display: none;">
+  <symbol id="bento-svg-spritesheet-star" viewBox="0 0 24 24">
+    <path d="M3 22v-20l18 10-18 10z" />
+  </symbol>
+</svg>
+
+<!-- Lightweight icon references -->
+<svg><use xlink:href="#bento-svg-spritesheet-star" /></svg>
+<svg><use xlink:href="#bento-svg-spritesheet-star" /></svg>
+<svg><use xlink:href="#bento-svg-spritesheet-star" /></svg>
+```
+
+**Performance Benefits:**
+
+- **Reduced DOM Size**: Path data stored once instead of duplicated
+- **Lower Memory Usage**: Especially beneficial with many repeated icons
+- **Faster Rendering**: Browser optimizations for `<use>` elements
+
+**Trade-offs:**
+
+- **SSR Limitation**: Sprite references render empty until client-side hydration
+- **Initial Flash**: Brief moment where icons appear/disappear during sprite injection
+
+### Recommendations
+
+- **Use default mode** for SSR applications or when icons appear infrequently
+- **Use sprite mode** when the same icons appear many times (navigation, lists, tables)
+- **Consider preloading** frequently used icons to reduce loading delays
+- **Provide fallback content** for critical icons to handle loading states
+
+## Troubleshooting
+
+### Icon Not Loading
+
+If an icon fails to load:
+
+1. **Check icon name**: Ensure the icon exists in the CDN
+2. **Network connectivity**: Verify CDN is accessible
+3. **Check browser console**: Look for network errors
+4. **Fallback content**: Provide placeholder content for loading states
+
+### Performance Issues
+
+For performance optimization:
+
+1. **Preload common icons**: Consider preloading frequently used icons
+2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
+3. **Minimize icon sets**: Only load icons that are actually used

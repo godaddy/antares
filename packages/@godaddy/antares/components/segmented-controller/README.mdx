@@ -1,0 +1,125 @@
+---
+title: SegmentedController
+description: A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceIconOnly from './examples/icon-only.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceIcon from './examples/icon.tsx?raw';
+import SourceOverflow from './examples/overflow.tsx?raw';
+import SourceRTL from './examples/rtl.tsx?raw';
+import * as Stories from './segmented-controller.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceBasic} />
+
+### Controlled
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
+
+### Sizes
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SourceSizes} />
+
+### Icon + Text
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of={Stories.Icon} inline />
+<Source language="tsx" code={SourceIcon} />
+
+### Icon Only
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of={Stories.IconOnly} inline />
+<Source language="tsx" code={SourceIconOnly} />
+
+### Overflow
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of={Stories.Overflow} inline />
+<Source language="tsx" code={SourceOverflow} />
+
+### RTL Direction
+
+By default, the segmented controller is rendered in the direction of the document, which is left to right in most cases.
+You can set the `dir` prop to `rtl` to render the segmented controller from right to left.
+
+<Story of={Stories.RTL} inline />
+<Source language="tsx" code={SourceRTL} />
+
+### Disabled States
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={SourceDisabled} />
+
+## Customization
+
+### Data Attributes
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+## Accessibility
+
+### Keyboard Navigation
+
+- **Tab**: Moves focus to/from the segmented controller
+- **Arrow Left/Right**: Move to next/previous segment
+- **Space/Enter**: Select the focused segment
+
+### ARIA Support
+
+- `role="radiogroup"` on the container
+- `role="radio"` on each segment
+- `aria-checked` indicates selection state
+- `aria-disabled` for disabled segments
+- `aria-label` required on the container for screen readers
+
+## Best Practices
+
+### When to Use a Segmented Controller
+
+- When switching between 2-5 related views within the same context
+- When all options should be visible at once
+- When the selection immediately changes the displayed content
+
+### When Not to Use
+
+- For more than 5 options (use Tabs or Select instead)
+- For form input (use RadioGroup instead)

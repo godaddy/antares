@@ -1,0 +1,46 @@
+---
+title: AxisTitle
+description: The AxisTitle is an internal component used for displaying axis titles in chart components
+---
+
+import { Meta, ArgTypes, Controls, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './axis-title.stories.tsx';
+
+import SourceXAxis from './examples/x-axis.tsx?raw';
+import SourceYAxis from './examples/y-axis.tsx?raw';
+import SourceRTLDirection from './examples/rtl-direction.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Internal Component
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+## Props
+
+The `AxisTitle` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### X-Axis Title
+
+X-axis title with default orientation.
+
+<Story of={Stories.XAxis} inline />
+<Source language='tsx' code={SourceXAxis} />
+
+### Y-Axis Title
+
+Y-axis title with default orientation.
+
+<Story of={Stories.YAxis} inline />
+<Source language='tsx' code={SourceYAxis} />
+
+## RTL (Right-to-Left)
+
+Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
+
+<Story of={Stories.RTLDirection} inline />
+<Source language='tsx' code={SourceRTLDirection} />

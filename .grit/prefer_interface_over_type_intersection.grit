@@ -1,0 +1,10 @@
+// Detect type aliases with intersection types that could use interface extends
+// Pattern: type Name = Base & Something
+// Should be: interface Name extends Base
+`type $name = $left & $right` where {
+    register_diagnostic(
+        span = $name,
+        message = "Consider using 'interface' with 'extends' instead of type alias with intersection. Example: interface MyType extends Base { ... }",
+        severity = "warn"
+    )
+}

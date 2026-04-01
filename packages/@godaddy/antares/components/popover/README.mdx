@@ -1,0 +1,56 @@
+---
+title: Popover
+description: The Popover component is an overlay element positioned relative to a trigger element.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './popover.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import CustomAnchorExample from './examples/custom-anchor.tsx?raw';
+import WithCloseButtonExample from './examples/with-close-button.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Custom Anchor
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of={Stories.CustomAnchor} inline />
+<Source language="tsx" code={CustomAnchorExample} />
+
+### Close Button and Header
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of={Stories.WithCloseButton} inline />
+<Source language="tsx" code={WithCloseButtonExample} />
+
+## Best Practices
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.

@@ -51,7 +51,6 @@ const config: RcFile = {
     }
   ],
   versionGroups: [
-    // React peer dependencies - keep as range for compatibility
     {
       label: 'React peer dependencies',
       packages: ['**'],
@@ -60,12 +59,34 @@ const config: RcFile = {
       isIgnored: true
     },
 
-    // @bento packages - ignore all of them (keep current patterns)
     {
       label: 'Bento packages',
       packages: ['**'],
       dependencies: ['@bento/**'],
       isIgnored: true
+    },
+
+    {
+      label: 'Antares packages',
+      packages: ['**'],
+      dependencies: ['@godaddy/antares/**', '@godaddy/antares'],
+      isIgnored: true
+    },
+
+    {
+      label: 'Vitest version consistency',
+      packages: ['**'],
+      dependencies: ['vitest', '@vitest/coverage-v8', '@vitest/ui'],
+      dependencyTypes: ['dev'],
+      policy: 'sameRange'
+    },
+
+    {
+      label: 'Build tools consistency',
+      packages: ['**'],
+      dependencies: ['tsup', 'typescript'],
+      dependencyTypes: ['dev', 'prod'],
+      policy: 'sameRange'
     }
   ]
 };

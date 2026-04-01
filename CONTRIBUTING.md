@@ -66,7 +66,7 @@ contributors about the change, discuss the best way to go about implementing it.
 > pull requests from branches on your fork. To do this, run:
 >
 > ```bash
-> git remote add upstream https://github.com/godaddy/uxcore.git
+> git remote add upstream https://github.com/godaddy/antares.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/main main
 >   ```

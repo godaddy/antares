@@ -1,0 +1,24 @@
+.text {
+  overflow-wrap: break-word;
+
+  &[style*='--align'] {
+    text-align: var(--align);
+  }
+
+  &[style*='--max-lines'] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @supports (-webkit-line-clamp: 3) {
+      display: -webkit-box;
+      -webkit-line-clamp: var(--max-lines);
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+  }
+
+  &[style*='--wrap'] {
+    text-wrap: var(--wrap);
+  }
+}

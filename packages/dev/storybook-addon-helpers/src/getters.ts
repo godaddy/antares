@@ -18,14 +18,22 @@ export function getMeta<T extends ComponentType<any>>(
 }
 
 /**
- * Get the story object for a Story.
+ * Get the story for a component.
  *
- * @param component - The component to get the story object for.
- * @param storyObj - The story object to return.
- * @returns The story object.
+ * Returns the component itself as a function story. Storybook renders function
+ * stories by calling the component directly; the docs site receives the component
+ * reference via RSC and renders it live.
+ *
+ * The optional `storyObj` is accepted for type-checking purposes (so callers
+ * can annotate args/argTypes) but is ignored at runtime — the csf-transformer
+ * rewrites these calls into proper Storybook story objects at build time.
+ *
+ * @param component - The component to use as the story.
+ * @param _storyObj - Optional story annotations (ignored at runtime).
+ * @returns The component as a function story.
  */
-export function getStory<T extends ComponentType<any>>(component: T, storyObj?: StoryObj<T>) {
-  return storyObj;
+export function getStory<T extends ComponentType<any>>(component: T, _storyObj?: StoryObj<T>): T {
+  return component;
 }
 
 /**
@@ -39,9 +47,11 @@ export function getComponentDocs<T extends ComponentType<any>>(component: T) {
 }
 
 /**
- * Get the interface docs for a component as a StoryObj.
+ * Get the interface docs for a type as a StoryObj.
  *
- * @param T - The type of the interface.
+ * The type parameter `T` specifies the interface whose props the CSF transformer
+ * will extract into argTypes at build time.
+ *
  * @returns The docs as a StoryObj.
  */
 export function getInterfaceDocs<T>() {
@@ -49,10 +59,13 @@ export function getInterfaceDocs<T>() {
 }
 
 /**
- * This is used to generate the variants for a component.
+ * Returns the variants record as-is at runtime.
  *
- * @param component - The component to get the variants from.
- * @param variants - The variants object to return.
+ * The CSF transformer rewrites `getVariants` calls into separate exported story
+ * objects at build time; each key in `variants` becomes its own named export.
+ *
+ * @param component - The component to render each variant with.
+ * @param variants - Map of variant key to StoryObj annotation.
  * @returns The variants object.
  */
 export function getVariants<T extends ComponentType<any>>(component: T, variants: Record<string, StoryObj<T>>) {

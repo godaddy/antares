@@ -1,0 +1,153 @@
+---
+title: Select
+description: Accessible dropdown component supporting single and multiple selection with keyboard navigation and validation
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceSelectStatic from './examples/select-static.tsx?raw';
+import SourceSelectControlled from './examples/select-controlled.tsx?raw';
+import SourceSelectDynamic from './examples/select-dynamic.tsx?raw';
+import SourceSelectMultiple from './examples/select-multiple.tsx?raw';
+import * as Stories from './select.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Static
+
+<Story of={Stories.Static} inline />
+<Source language="tsx" code={SourceSelectStatic} />
+
+### Controlled
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceSelectControlled} />
+
+### Dynamic Items
+
+<Story of={Stories.DynamicItems} inline />
+<Source language="tsx" code={SourceSelectDynamic} />
+
+### Multiple Selection
+
+<Story of={Stories.Multiple} inline />
+<Source language="tsx" code={SourceSelectMultiple} />
+
+## Customization
+
+### Data Attributes
+
+React Aria Components automatically adds data attributes for styling different states:
+
+**Select Container:** `data-invalid`, `data-disabled`, `data-required`, `data-focused`
+
+**Trigger Button:** `data-pressed`, `data-disabled`, `data-focused`, `aria-expanded`
+
+**Select Value:** `data-placeholder`
+
+**Popover:** `data-entering`, `data-exiting`
+
+**List Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`, `data-selection-mode`
+
+```css
+[data-selected] {
+  background-color: #eff6ff;
+  font-weight: 600;
+}
+
+[data-invalid] .button {
+  border-color: #dc2626;
+}
+
+[aria-expanded="true"] {
+  border-color: #3b82f6;
+}
+```
+
+### Component Customization
+
+Individual child components can be styled by passing `className` props:
+
+```jsx
+<Select label="Coffee">
+  <SelectItem id="espresso" className="premium-option">
+    Espresso
+  </SelectItem>
+  <SelectSection className="featured-section">
+    <SelectHeader>Featured</SelectHeader>
+    <SelectItem id="special">Special Blend</SelectItem>
+  </SelectSection>
+</Select>
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+- **Space/Enter**: Opens the popover and focuses the selected item
+- **Arrow Down/Up**: Navigate through options
+- **Home/End**: Jump to first/last option
+- **Escape**: Closes the popover
+- **Tab**: Moves focus to the next focusable element
+- **Type to select**: Type characters to jump to matching options
+- **Space** (in multi-select): Toggle selection of focused item
+
+## Troubleshooting
+
+### Selection Not Updating
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<Select value={value} defaultValue="espresso">
+  <SelectItem id="espresso">Espresso</SelectItem>
+</Select>
+
+// ✅ Controlled mode
+<Select value={value} onChange={setValue}>
+  <SelectItem id="espresso">Espresso</SelectItem>
+</Select>
+
+// ✅ Uncontrolled mode
+<Select defaultValue="espresso">
+  <SelectItem id="espresso">Espresso</SelectItem>
+</Select>
+```
+
+### Styling Overrides Not Applying
+
+```css
+/* ❌ May not have enough specificity */
+.item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes for higher specificity */
+.my-select [data-selected] {
+  background-color: red;
+}
+```
+
+### Keyboard Navigation Not Working
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+.button:focus {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+```

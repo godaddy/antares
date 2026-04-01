@@ -1,7 +1,7 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "extends": "../../configs/tsconfig.json",
+  "include": [".storybook/**/*"],
+  "compilerOptions": {
+    "noEmit": true
+  }
 }

@@ -1,0 +1,66 @@
+---
+title: Text
+description: Text component for displaying and formatting text content with alignment and truncation options
+---
+import {
+  Meta,
+  Story,
+  ArgTypes,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './text.stories.tsx';
+import DefaultExample from './examples/text.tsx?raw';
+import AsExample from './examples/as.tsx?raw';
+import AlignExample from './examples/align.tsx?raw';
+import MaxLinesExample from './examples/max-lines.tsx?raw';
+import WrapExample from './examples/wrap.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `Text` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### As
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code={AsExample} />
+
+### Align
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code={AlignExample} />
+
+### Max Lines
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code={MaxLinesExample} />
+
+### Wrap
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+- `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+- `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+- `balance` is most commonly used for headlines, titles, and labels.
+- `pretty` is most commonly used for body text.
+- `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code={WrapExample} />

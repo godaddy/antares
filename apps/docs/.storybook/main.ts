@@ -1,24 +1,23 @@
+import packageJson from '@godaddy/antares/package.json' with { type: 'json' };
 import type { StorybookConfig } from '@storybook/react-vite';
+import { dirname, resolve, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { mergeConfig, type UserConfig } from 'vite';
+import { remarkFrontmatterHeading } from '../lib/remark-frontmatter-heading.ts';
+import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
-import { join, resolve } from 'node:path';
-import { mergeConfig } from 'vite';
-import packageJson from '@bento/internal-props/package.json' with { type: 'json' };
+import replace from '@rollup/plugin-replace';
+import { generateCdnUrl } from '@godaddy/generate-cdn-url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
   stories: [
     // Package stories and documentation
     '../../../packages/@bento/*/*.mdx',
     '../../../packages/@bento/*/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/@bento/*/src/**/*.mdx',
-    '../../../packages/@bento/*/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/@bento/*/examples/**/*.mdx',
-    '../../../packages/@bento/*/examples/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/dev/*/*.mdx',
-    '../../../packages/dev/*/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/dev/*/src/**/*.mdx',
-    '../../../packages/dev/*/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/dev/*/examples/**/*.mdx',
-    '../../../packages/dev/*/examples/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/@godaddy/antares/components/**/*.mdx',
+    '../../../packages/@godaddy/antares/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
     // Documentation (PDRs, Architecture, etc.) - excluding templates
     '../../../docs/**/!(*TEMPLATE)*.mdx'
@@ -30,12 +29,14 @@ const config: StorybookConfig = {
       options: {
         mdxPluginOptions: {
           mdxCompileOptions: {
-            remarkPlugins: [remarkGfm]
+            remarkPlugins: [remarkFrontmatter, remarkFrontmatterHeading, remarkGfm]
           }
         }
       }
     },
-    join(__dirname, './addons/why-did-you-render/index.ts'),
+    // join(__dirname, './addons/why-did-you-render/index.ts'),
+    '@storybook/addon-a11y',
+    '@storybook/addon-onboarding',
     '@bento/storybook-addon-helpers'
   ],
 
@@ -53,14 +54,13 @@ const config: StorybookConfig = {
     reactDocgen: 'react-docgen-typescript'
   },
 
-  async viteFinal(config) {
-    const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/);
-    const semver = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
+  async viteFinal(config: UserConfig) {
+    const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/)?.slice(1) ?? ['0', '0', '0'];
 
     const define = {
-      major: semver[0],
-      minor: semver[1],
-      patch: semver[2]
+      major: versionMatch[0],
+      minor: versionMatch[1],
+      patch: versionMatch[2]
     };
 
     // Packages that are in dev/ folder but still use @bento namespace
@@ -74,9 +74,20 @@ const config: StorybookConfig = {
         define
       },
 
-      // Exclude @bento packages from optimization so they can be watched and hot-reloaded
+      plugins: [
+        replace({
+          preventAssignment: true,
+          __CDN_URL__: generateCdnUrl({
+            cdn: 'https://img6.wsimg.com/ux-assets',
+            version: '5.0.0',
+            packageName: '@ux/icon',
+          })
+        })
+      ],
+
+      // Exclude @bento and packages from optimization so they can be watched and hot-reloaded
       optimizeDeps: {
-        exclude: ['@bento/*']
+        exclude: ['@bento/*', '@godaddy/*']
       },
 
       // Resolve @bento packages to their source files instead of built dist
@@ -91,6 +102,10 @@ const config: StorybookConfig = {
           {
             find: /^@bento\/(.*)$/,
             replacement: resolve(__dirname, '../../../packages/@bento/$1/src')
+          },
+          {
+            find: /^@godaddy\/(.*)$/,
+            replacement: resolve(__dirname, '../../../packages/@godaddy/$1/index.tsx')
           }
         ]
       }

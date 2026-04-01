@@ -1,0 +1,167 @@
+---
+title: Menu
+description: Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceMenu from './examples/menu.tsx?raw';
+import SourceMenuSubmenu from './examples/menu-submenu.tsx?raw';
+import SourceMenuSelection from './examples/menu-selection.tsx?raw';
+import SourceMenuSections from './examples/menu-sections.tsx?raw';
+import * as Stories from './menu.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceMenu} />
+
+### With Submenus
+
+<Story of={Stories.WithSubmenus} inline />
+<Source language="tsx" code={SourceMenuSubmenu} />
+
+### With Selection
+
+<Story of={Stories.WithSelection} inline />
+<Source language="tsx" code={SourceMenuSelection} />
+
+### With Sections
+
+<Story of={Stories.WithSections} inline />
+<Source language="tsx" code={SourceMenuSections} />
+
+## Customization
+
+### Data Attributes
+
+React Aria Components automatically adds data attributes for styling different states:
+
+**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
+
+**Popover:** `data-entering`, `data-exiting`
+
+```css
+[data-selected] {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-entering] {
+  animation: slideIn 0.2s ease-out;
+}
+```
+
+### Component Customization
+
+Individual child components can be styled by passing `className` props:
+
+```jsx
+<Menu>
+  <MenuItem id="special" className="premium-item">
+    Premium Feature
+  </MenuItem>
+  <MenuSection className="featured-section">
+    <MenuHeader>Featured</MenuHeader>
+    <MenuItem id="new">What's New</MenuItem>
+  </MenuSection>
+</Menu>
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+- **Space/Enter**: Opens menu and activates items
+- **Arrow Down/Up**: Navigate through items
+- **Arrow Right**: Opens submenu
+- **Arrow Left**: Closes submenu
+- **Home/End**: Jump to first/last item
+- **Escape**: Closes menu
+- **Tab**: Closes menu and moves to next element
+- **Type to select**: Type to jump to matching items
+
+## Troubleshooting
+
+### Submenu Not Opening
+
+```jsx
+// ❌ Wrong: MenuItem used directly
+<MenuItem id="share">
+  Share
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</MenuItem>
+
+// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
+<SubmenuTrigger>
+  <MenuItem id="share">Share</MenuItem>
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</SubmenuTrigger>
+```
+
+### Selection Not Working
+
+```jsx
+// ❌ Wrong: Using both controlled and uncontrolled props
+<Menu
+  selectedKeys={selected}
+  defaultSelectedKeys={['option1']}
+  selectionMode="single"
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Controlled mode
+<Menu
+  selectionMode="single"
+  selectedKeys={selected}
+  onSelectionChange={setSelected}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Uncontrolled mode
+<Menu
+  selectionMode="single"
+  defaultSelectedKeys={['option1']}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+```
+
+### Styling Not Applying
+
+```css
+/* ❌ May not have enough specificity */
+.item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes for higher specificity */
+.my-menu [data-selected] {
+  background-color: red;
+}
+```

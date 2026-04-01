@@ -1,0 +1,84 @@
+---
+title: TextField
+description: TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
+---
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './text-field.stories.tsx';
+
+import SourceAdornments from './examples/adornments.tsx?raw';
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceInvalid from './examples/invalid.tsx?raw';
+import SourceMultiline from './examples/multiline.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# TextField
+
+TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
+
+## Features
+
+- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+- **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+- **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+- **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+- **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The TextField component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
+
+### Controlled
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Invalid
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code={SourceInvalid} />
+<Story of={Stories.Invalid} inline />
+
+### Disabled
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
+
+### Adornments
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code={SourceAdornments} />
+<Story of={Stories.Adornments} inline />
+
+### Multiline
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code={SourceMultiline} />
+<Story of={Stories.Multiline} inline />

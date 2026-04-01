@@ -1,0 +1,15 @@
+{
+  "extends": "../../../configs/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "noEmit": true,
+    "paths": {
+      "@godaddy/uxcore": ["./index.tsx"],
+      "#components/*": [
+        "./components/*/src/index.tsx",
+        "./components/chart/types.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

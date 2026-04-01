@@ -1,7 +1,6 @@
-import { shared } from '../../../configs/tsdown.config.mts';
-import { defineConfig } from 'tsdown';
+import { config } from '../../../configs/tsdown.config.mts';
+import { mergeConfig } from 'tsdown';
 
-export default defineConfig({
-  ...shared,
+export default mergeConfig(config, {
   entry: ['src/index.ts']
 });

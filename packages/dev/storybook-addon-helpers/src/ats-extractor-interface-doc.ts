@@ -59,14 +59,12 @@ function extractInterfaceProperties(
   }
   visited.add(interfaceKey);
 
-  // Extract properties from extended interfaces first
+  // Extract properties from extended interfaces first (interfaces only have extends clauses)
   if (interfaceDecl.heritageClauses) {
     for (const heritageClause of interfaceDecl.heritageClauses) {
-      if (heritageClause.token === ts.SyntaxKind.ExtendsKeyword) {
-        for (const typeExpr of heritageClause.types) {
-          const extendedProps = extractPropertiesFromTypeExpression(typeExpr, sourceFile, propFilter, visited);
-          Object.assign(argTypes, extendedProps);
-        }
+      for (const typeExpr of heritageClause.types) {
+        const extendedProps = extractPropertiesFromTypeExpression(typeExpr, sourceFile, propFilter, visited);
+        Object.assign(argTypes, extendedProps);
       }
     }
   }
@@ -87,18 +85,16 @@ function extractInterfaceProperties(
       // Extract JSDoc comments and tags
       let description = '';
       let defaultValue: string | null = null;
-      const jsDocComments = ts.getJSDocCommentsAndTags(member);
+      const jsDocComments = ts.getJSDocCommentsAndTags(member) as ts.JSDoc[];
 
       if (jsDocComments.length > 0) {
         const firstComment = jsDocComments[0];
-        if (ts.isJSDoc(firstComment)) {
-          description = firstComment.comment?.toString() || '';
+        description = firstComment.comment?.toString() || '';
 
-          // Extract @default tag value
-          const defaultTag = firstComment.tags?.find((tag) => tag.tagName.text === 'default');
-          if (defaultTag && defaultTag.comment) {
-            defaultValue = defaultTag.comment.toString();
-          }
+        // Extract @default tag value
+        const defaultTag = firstComment.tags?.find((tag: ts.JSDocTag) => tag.tagName.text === 'default');
+        if (defaultTag && defaultTag.comment) {
+          defaultValue = defaultTag.comment.toString();
         }
       }
 

@@ -1,0 +1,128 @@
+.radioGroup {
+  --radio-size: 1.25rem;
+  --radio-dot-size: 0.5rem;
+
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: bolder;
+  line-height: var(--lh-heading);
+  color: var(--fg-base);
+}
+
+.label--required::after {
+  content: " *";
+  color: var(--critical);
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-size: var(--fs-md);
+  font-weight: normal;
+  line-height: var(--lh-base);
+  color: var(--fg-base);
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.radio[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.indicator {
+  width: var(--radio-size);
+  height: var(--radio-size);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--bd-base);
+  border-radius: 50%;
+  background-color: var(--bg-base);
+  box-sizing: border-box;
+  transition:
+    border-color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    transform 0.15s ease-in-out,
+    opacity 0.15s ease-in-out;
+  position: relative;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.radio:hover:not([data-disabled]) .indicator {
+  border-color: var(--bd-primary);
+}
+
+.radio[data-focused] .indicator {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+  border-color: var(--bd-primary);
+}
+
+.radio[data-pressed]:not([data-disabled]) .indicator {
+  border-color: var(--bd-primary);
+  transform: scale(0.95);
+}
+
+.radio[data-selected] .indicator {
+  border-color: var(--bd-selected);
+  background-color: var(--bg-selected);
+}
+
+.radio[data-selected] .indicator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--radio-dot-size);
+  height: var(--radio-dot-size);
+  border-radius: 50%;
+  background-color: var(--fg-selected);
+  transition:
+    background-color 0.15s ease-in-out,
+    opacity 0.15s ease-in-out;
+}
+
+.radio[data-selected]:hover:not([data-disabled]) .indicator {
+  border-color: var(--bd-selected);
+}
+
+.radioGroup[data-invalid] .indicator,
+.radioGroup[data-invalid] .radio:hover:not([data-disabled]) .indicator,
+.radioGroup[data-invalid] .radio[data-selected] .indicator {
+  border-color: var(--bd-critical);
+}
+
+.radioLabel {
+  user-select: none;
+}
+
+.description {
+  font-size: var(--fs-sm);
+  font-weight: normal;
+  line-height: var(--lh-base);
+  color: var(--passive);
+}
+
+.error {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-xs);
+  font-size: var(--fs-sm);
+  font-weight: normal;
+  line-height: var(--lh-base);
+  color: var(--critical);
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+}

@@ -1,0 +1,30 @@
+---
+title: TooltipDismissStrip
+description: Internal visx XYChart helper that closes the tooltip when the pointer enters a leading-edge strip over scroll-synced axis chrome
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './tooltip-dismiss-strip.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Internal Component
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+## Props
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceBasic} />

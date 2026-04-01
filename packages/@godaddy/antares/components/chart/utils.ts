@@ -1,0 +1,47 @@
+import type { DataPoint, LegendPosition } from './types.ts';
+
+/**
+ * Resolves effective legend position from prop and series count.
+ * When the prop is omitted, shows legend at bottom when there is more than one series; otherwise hidden.
+ * When the prop is null, always hides the legend.
+ *
+ * @param legendPosition - Explicit position ('top' | 'bottom'), null to hide, or undefined for default
+ * @param seriesCount - Number of data series (e.g. lines or bars)
+ * @returns Resolved position to show legend, or undefined to hide
+ */
+export function resolveLegendPosition(
+  legendPosition: LegendPosition | null | undefined,
+  seriesCount: number
+): LegendPosition | undefined {
+  if (legendPosition === null) {
+    return undefined;
+  }
+
+  return legendPosition ?? (seriesCount > 1 ? 'bottom' : undefined);
+}
+
+/**
+ * Returns the Y value from a chart data point.
+ *
+ * Used as the default accessor for vertical (range) values when mapping
+ * data to chart coordinates. Returns null for missing or undefined data points.
+ *
+ * @param d - Chart data point with x and y properties
+ * @returns The y value (number, string, Date, or null for missing data)
+ */
+export function yAccessor(d: DataPoint): number | string | Date | null {
+  return d.y;
+}
+
+/**
+ * Returns the X value from a chart data point.
+ *
+ * Used as the default accessor for horizontal (domain) values when mapping
+ * data to chart coordinates. Accepts numeric, string, or Date X values.
+ *
+ * @param d - Chart data point with x and y properties
+ * @returns The x value (number, string, or Date)
+ */
+export function xAccessor(d: DataPoint): number | string | Date {
+  return d.x;
+}

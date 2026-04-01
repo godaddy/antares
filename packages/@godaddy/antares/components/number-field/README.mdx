@@ -1,0 +1,104 @@
+---
+title: NumberField
+description: NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
+---
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './number-field.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceInvalid from './examples/invalid.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceHideStepper from './examples/hide-stepper.tsx?raw';
+import SourceValueScale from './examples/value-scale.tsx?raw';
+import SourceFormatOptions from './examples/format-options.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The NumberField component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+Minimal usage with label, placeholder, and min/max.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
+
+### Controlled
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Invalid
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code={SourceInvalid} />
+<Story of={Stories.Invalid} inline />
+
+### Disabled
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
+
+### Hide stepper
+
+Use `hideStepper` to show only the input without +/- buttons.
+
+<Source language="tsx" code={SourceHideStepper} />
+<Story of={Stories.HideStepper} inline />
+
+### Value scale
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Source language="tsx" code={SourceValueScale} />
+<Story of={Stories.ValueScale} inline />
+
+### Format options (numbering system)
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
+
+<Source language="tsx" code={SourceFormatOptions} />
+<Story of={Stories.FormatOptions} inline />
+
+## Accessibility
+
+### Keyboard
+
+When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
+
+- **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
+- **Page Up** / **Page Down**: larger increase or decrease when supported
+- **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
+
+Stepper buttons are real buttons and follow standard button keyboard activation. Use **`incrementAriaLabel`** and **`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
+
+### ARIA and labeling
+
+- The input is associated with the visible label and optional description and error content for assistive technologies.
+- Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
+- Set **`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
+
+## Best practices
+
+- Pair **`isInvalid`** with **`errorMessage`** so users get both visual and programmatic feedback.
+- Remember valid steps start from **`minValue`**.
+- Use **`isDisabled`** when the value cannot be changed; use **`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
+- For currency or units, ensure **`formatOptions`** (and locale) match what users are allowed to type.

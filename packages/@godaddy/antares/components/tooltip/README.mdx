@@ -1,0 +1,61 @@
+---
+title: Tooltip
+description: The Tooltip component displays a description of an element on hover or focus.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './tooltip.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import CustomAnchorExample from './examples/custom-anchor.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
+element (for example, a `Button`). The tooltip appears on hover and focus.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Custom Anchor
+
+To position a tooltip relative to a different focusable element, use the
+`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
+
+<Story of={Stories.CustomAnchor} inline />
+<Source language="tsx" code={CustomAnchorExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key    | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| Tab    | Moves focus to the focusable element and shows the tooltip |
+| Escape | Closes the tooltip                                         |
+
+### ARIA
+
+- The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+
+## Best Practices
+
+- Keep tooltip content short and informative.
+- Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+- Do not place interactive content inside tooltips. Use a `Popover` instead.

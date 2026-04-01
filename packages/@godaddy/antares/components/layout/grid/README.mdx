@@ -1,0 +1,102 @@
+---
+title: Grid
+description: Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './grid.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceColumns from './examples/columns.tsx?raw';
+import SourceGap from './examples/gap.tsx?raw';
+import SourceAreas from './examples/areas.tsx?raw';
+import SourceResponsive from './examples/responsive.tsx?raw';
+import SourceAlignment from './examples/alignment.tsx?raw';
+import SourceForm from './examples/form.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `Grid` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Scale Sizes
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples
+
+### Default
+
+Basic 3-column grid layout with gap.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Columns
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of={Stories.Columns} inline />
+<Source language="tsx" code={SourceColumns} />
+
+### Gap
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of={Stories.Gap} inline />
+<Source language="tsx" code={SourceGap} />
+
+### Named Areas
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of={Stories.Areas} inline />
+<Source language="tsx" code={SourceAreas} />
+
+### Responsive Grid
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of={Stories.Responsive} inline />
+<Source language="tsx" code={SourceResponsive} />
+
+### Alignment
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of={Stories.Alignment} inline />
+<Source language="tsx" code={SourceAlignment} />
+
+### Form Layout
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of={Stories.Form} inline />
+<Source language="tsx" code={SourceForm} />
+
+## RTL Support
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |

@@ -1,17 +1,20 @@
 #!/bin/sh
+set -e
 
-# Run lint-staged for code formatting/linting
 npx lint-staged
 
 # Run dependency checks to prevent circular deps and version mismatches
 echo "🔍 Checking dependencies..."
 npm run deps:check
 
-# Run package.json formatting
 echo "🔍 Checking package.json formatting..."
-npm run format:package
+npm run format:packageJson
 
-echo "🧪 Running tests..."
-npm test
+echo "🔍 Typechecking..."
+npm run typecheck
+
+echo "🧪 Running tests (no cache)..."
+npm test -- --skip-nx-cache
+
 
 echo "✅ All pre-commit checks passed!"

@@ -10,7 +10,7 @@ const STORIES_FILE_REGEX = /\.stories\.tsx$/;
  * Adds the custom stories indexer to the existing indexers.
  */
 export const experimental_indexers: StorybookConfig['experimental_indexers'] = async function experimentalIndexers(
-  existingIndexers
+  existingIndexers?: Indexer[]
 ) {
   const customIndexer: Indexer = {
     test: STORIES_FILE_REGEX,
@@ -27,7 +27,7 @@ export const experimental_indexers: StorybookConfig['experimental_indexers'] = a
 /**
  * Adds the plugin to the Storybook config.
  */
-export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config) {
+export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config: any) {
   config.plugins = config.plugins || [];
   config.plugins.push(generateCSFPlugin(STORIES_FILE_REGEX));
   return config;

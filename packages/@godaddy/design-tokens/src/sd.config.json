@@ -1,0 +1,74 @@
+{
+  "source": ["src/tokens.yml"],
+  "parsers": ["tokens-yml"],
+  "platforms": {
+    "dtcg": {
+      "buildPath": "dist/",
+      "transforms": ["name/kebab"],
+      "files": [
+        {
+          "destination": "dtcg.json",
+          "format": "json",
+          "options": {
+            "stripMeta": {
+              "keep": ["$type", "$value", "$description", "$extensions"]
+            }
+          }
+        }
+      ]
+    },
+    "scss": {
+      "buildPath": "dist/",
+      "transformGroup": "css",
+      "transforms": ["name/kebab"],
+      "files": [
+        {
+          "destination": "scss.scss",
+          "format": "scss/tokens-var",
+          "options": {
+            "showFileHeader": true
+          }
+        }
+      ]
+    },
+    "css-in-js": {
+      "buildPath": "dist/",
+      "transformGroup": "css",
+      "transforms": ["name/kebab"],
+      "files": [
+        {
+          "destination": "css-in-js.js",
+          "format": "js/tokens-var",
+          "options": {
+            "showFileHeader": true
+          }
+        }
+      ]
+    },
+    "classnames": {
+      "buildPath": "dist/",
+      "transformGroup": "css",
+      "transforms": ["name/kebab"],
+      "files": [
+        {
+          "destination": "classnames.module.css",
+          "format": "css/classnames",
+          "options": {
+            "showFileHeader": true
+          }
+        }
+      ]
+    },
+    "css-custom-data": {
+      "buildPath": "dist/",
+      "transformGroup": "css",
+      "transforms": ["name/kebab"],
+      "files": [
+        {
+          "destination": "design-tokens.css-data.json",
+          "format": "vscode/css-custom-data"
+        }
+      ]
+    }
+  }
+}

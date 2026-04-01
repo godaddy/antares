@@ -1,0 +1,119 @@
+name: Docs Site PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+concurrency:
+  group: gh-pages-docs-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Docs Site
+        run: npx nx build site
+        env:
+          GITHUB_PAGES: 'true'
+          NEXT_PUBLIC_BASE_PATH: '/pr-${{ github.event.pull_request.number }}-site'
+
+      - name: Prepare for GitHub Pages
+        working-directory: apps/site/out
+        run: |
+          if [ -d 404 ]; then cp 404/index.html 404.html; fi
+
+      - name: Ensure .nojekyll at gh-pages root
+        run: mkdir -p /tmp/root-nojekyll && touch /tmp/root-nojekyll/.nojekyll
+
+      - name: Deploy .nojekyll to gh-pages root
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: /tmp/root-nojekyll
+          clean: false
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: ./apps/site/out
+          target-folder: pr-${{ github.event.pull_request.number }}-site
+          clean: false
+
+      - name: Post Preview URL Comment
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const repo = context.repo;
+            const pagesResponse = await github.rest.repos.getPages({ owner: repo.owner, repo: repo.repo });
+            const pagesBaseUrl = pagesResponse.data.html_url.replace(/\/$/, '');
+            const previewUrl = `${pagesBaseUrl}/pr-${prNumber}-site/`;
+
+            const commentBody = `## Docs Site Preview\n\nPreview URL: ${previewUrl}\n\nPreview will be automatically deleted when this PR is closed.`;
+
+            const comments = await github.rest.issues.listComments({
+              owner: repo.owner,
+              repo: repo.repo,
+              issue_number: prNumber,
+            });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Docs Site Preview')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                comment_id: botComment.id,
+                body: commentBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                issue_number: prNumber,
+                body: commentBody,
+              });
+            }
+
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages Branch
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+
+      - name: Remove PR Directory
+        run: |
+          PR_DIR="pr-${{ github.event.pull_request.number }}-site"
+          if [ -d "$PR_DIR" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git rm -rf "$PR_DIR"
+            git commit -m "Remove docs preview for PR #${{ github.event.pull_request.number }}"
+            git push origin gh-pages
+          else
+            echo "Preview directory $PR_DIR does not exist, nothing to clean up"
+          fi

@@ -1,0 +1,101 @@
+---
+title: Button
+description: The Button component allows users to initiate actions or submit forms with a single click
+---
+import {
+  Meta,
+  ArgTypes,
+  Controls,
+  Source,
+  Story,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './button.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourcePrimary from './examples/primary.tsx?raw';
+import SourceSecondary from './examples/secondary.tsx?raw';
+import SourceCritical from './examples/critical.tsx?raw';
+import SourceInline from './examples/inline.tsx?raw';
+import SourceIcon from './examples/icon.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+import SourceMinimal from './examples/minimal.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `Button` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `LinkButton` component accepts the following props:
+
+<ArgTypes of={Stories.LinkButtonProps} />
+
+## Examples
+
+### Basic Usage
+
+The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Primary
+
+The primary button should be used to indicate the most important action for the user to take in their current experience.
+
+<Story of={Stories.Primary} inline />
+<Source language="tsx" code={SourcePrimary} />
+
+### Secondary
+
+The secondary button indicates an action of secondary importance.
+
+<Story of={Stories.Secondary} inline />
+<Source language="tsx" code={SourceSecondary} />
+
+### Critical
+
+The critical button signifies to the user a destructive action will take place.
+
+<Story of={Stories.Critical} inline />
+<Source language="tsx" code={SourceCritical} />
+
+### Inline
+
+<Story of={Stories.Inline} inline />
+<Source language="tsx" code={SourceInline} />
+
+### Minimal
+
+The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
+
+<Story of={Stories.Minimal} inline />
+<Source language="tsx" code={SourceMinimal} />
+
+### Icon
+
+You may provide an optional [`Icon`](../icon) element to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
+
+<Story of={Stories.Icon} inline />
+<Source language="tsx" code={SourceIcon} />
+
+### Sizes
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SourceSizes} />
+
+### Disabled
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={SourceDisabled} />

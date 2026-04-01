@@ -1,0 +1,284 @@
+---
+title: LineChart
+description: Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceCustomTooltipFormatting from './examples/custom-tooltip-formatting.tsx?raw';
+import SourceCityTemperature from './examples/city-temperature.tsx?raw';
+import SourceCustomAccessors from './examples/custom-accessors.tsx?raw';
+import SourceBitcoinPrice from './examples/bitcoin-price.tsx?raw';
+import SourceBrowserUsage from './examples/browser-usage.tsx?raw';
+import SourceMultipleSeries from './examples/multiple-series.tsx?raw';
+import SourceTooltipDisabled from './examples/tooltip-disabled.tsx?raw';
+import SourceCustomTicks from './examples/custom-ticks.tsx?raw';
+import SourceFixedDomain from './examples/fixed-domain.tsx?raw';
+import SourceFormatting from './examples/formatting.tsx?raw';
+import SourceGridlines from './examples/gridlines.tsx?raw';
+import SourceNiceValues from './examples/nice-values.tsx?raw';
+import SourceBandPadding from './examples/band-padding.tsx?raw';
+import SourceBaselines from './examples/baselines.tsx?raw';
+import SourceCrosshairOnly from './examples/crosshair-only.tsx?raw';
+import SourceFixedSize from './examples/fixed-size.tsx?raw';
+import SourceMissingValues from './examples/missing-values.tsx?raw';
+import SourceSingleSeries from './examples/single-series.tsx?raw';
+import SourceZeroIncluded from './examples/zero-included.tsx?raw';
+import SourceLabels from './examples/labels.tsx?raw';
+import SourceLegend from './examples/legend.tsx?raw';
+import SourceTitles from './examples/titles.tsx?raw';
+import SourceTicks from './examples/ticks.tsx?raw';
+import * as Stories from './line-chart.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+#### Single Series
+
+One line with time-scale X-axis and minimal configuration.
+
+<Story of={Stories.SingleSeries} inline />
+<Source language="tsx" code={SourceSingleSeries} />
+
+#### Multiple Series
+
+Several lines with a bottom legend and shared X-axis.
+
+<Story of={Stories.MultipleSeries} inline />
+<Source language="tsx" code={SourceMultipleSeries} />
+
+### Axis
+
+#### Gridlines
+
+Vertical and horizontal gridlines via `xGridlines` and `yGridlines`.
+
+<Story of={Stories.Gridlines} inline />
+<Source language="tsx" code={SourceGridlines} />
+
+#### Titles
+
+X- and Y-axis titles to label what each axis represents (e.g. "Month", "Temperature (°F)").
+
+<Story of={Stories.Titles} inline />
+<Source language="tsx" code={SourceTitles} />
+
+#### Labels
+
+Tick labels on both axes with `xLabels` and `yLabels`.
+
+<Story of={Stories.Labels} inline />
+<Source language="tsx" code={SourceLabels} />
+
+#### Ticks
+
+Tick marks (short lines) at each tick value. Controlled by `xTickMarks` and `yTickMarks`.
+
+<Story of={Stories.Ticks} inline />
+<Source language="tsx" code={SourceTicks} />
+
+#### Baselines
+
+Axis baseline (the main axis line). Controlled by `xBaseline` and `yBaseline`.
+
+<Story of={Stories.Baselines} inline />
+<Source language="tsx" code={SourceBaselines} />
+
+#### Legend
+
+Legend showing series names and colors, positioned above or below the chart via `legendPosition`.
+
+<Story of={Stories.Legend} inline />
+<Source language="tsx" code={SourceLegend} />
+
+### Formatting
+
+#### Axis and Tooltip Formatting
+
+Custom formatters for axis ticks and tooltip values (e.g. currency, dates). Controlled by `xTickFormat` and `yTickFormat`.
+
+<Story of={Stories.Formatting} inline />
+<Source language="tsx" code={SourceFormatting} />
+
+### Scale
+
+#### Fixed Domain
+
+Explicit X and Y domain for a fixed range or consistent scale across charts.
+
+<Story of={Stories.FixedDomain} inline />
+<Source language="tsx" code={SourceFixedDomain} />
+
+#### Nice Values
+
+Domain extended to nice round values (e.g. 0.2–1.0).
+
+<Story of={Stories.NiceValues} inline />
+<Source language="tsx" code={SourceNiceValues} />
+
+#### Zero Included
+
+X and Y domains include zero via `xZero` and `yZero`.
+
+<Story of={Stories.ZeroIncluded} inline />
+<Source language="tsx" code={SourceZeroIncluded} />
+
+#### Custom Ticks
+
+Explicit tick values or count with `xTickValues` / `yTickValues` or `xNumTicks` / `yNumTicks`.
+
+<Story of={Stories.CustomTicks} inline />
+<Source language="tsx" code={SourceCustomTicks} />
+
+#### Band Padding
+
+Outer padding on a band-scale axis with `xPaddingOuter` / `yPaddingOuter`.
+
+<Story of={Stories.BandPadding} inline />
+<Source language="tsx" code={SourceBandPadding} />
+
+### Interactive
+
+#### Tooltip Disabled
+
+Tooltip, crosshair, and data point glyphs all disabled (`tooltip={false}`, `showCrosshair={false}`, `showDataPoints={false}`).
+
+<Story of={Stories.TooltipDisabled} inline />
+<Source language="tsx" code={SourceTooltipDisabled} />
+
+#### Crosshair Only
+
+Only the vertical crosshair on hover; tooltip and data point glyphs disabled.
+
+<Story of={Stories.CrosshairOnly} inline />
+<Source language="tsx" code={SourceCrosshairOnly} />
+
+#### Custom Tooltip Formatting
+
+Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
+
+<Story of={Stories.CustomTooltipFormatting} inline />
+<Source language="tsx" code={SourceCustomTooltipFormatting} />
+
+### Data
+
+#### Custom Accessors
+
+Custom data shape (e.g. `date`/`value`) with `xAccessor` and `yAccessor`.
+
+<Story of={Stories.CustomAccessors} inline />
+<Source language="tsx" code={SourceCustomAccessors} />
+
+#### Missing Values
+
+Null Y values create breaks in the line.
+
+<Story of={Stories.MissingValues} inline />
+<Source language="tsx" code={SourceMissingValues} />
+
+### Layout
+
+#### Fixed Size
+
+Explicit chart size via `width` and `height` props (e.g. 800×400).
+
+<Story of={Stories.FixedSize} inline />
+<Source language="tsx" code={SourceFixedSize} />
+
+### Featured
+
+#### Bitcoin Price
+
+Time-series with date and currency formatting, gridlines, and nice Y-axis.
+
+<Story of={Stories.BitcoinPrice} inline />
+<Source language="tsx" code={SourceBitcoinPrice} />
+
+#### City Temperature
+
+Multiple series over time with legend, shared time axis, and temperature (°F) formatting.
+
+<Story of={Stories.CityTemperature} inline />
+<Source language="tsx" code={SourceCityTemperature} />
+
+#### Browser Usage
+
+Categorical X-axis (band scale) with multiple series and percentage formatting.
+
+<Story of={Stories.BrowserUsage} inline />
+<Source language="tsx" code={SourceBrowserUsage} />
+
+## Customization
+
+### Data Attributes
+
+The chart root exposes data attributes that reflect prop state for styling:
+
+**Chart container:** `data-width`, `data-height`, `data-x-labels`, `data-y-labels`, `data-x-labels-vertical`, `data-x-baseline`, `data-y-baseline`, `data-x-tick-marks`, `data-y-tick-marks`
+
+### Component Customization
+
+Use the `className` prop on the chart container to add or override styles:
+
+```tsx
+<LineChart series={series} className="my-custom-chart" />
+```
+
+## Accessibility
+
+### ARIA Support
+
+- Provide **`aria-label`** to describe the chart (e.g. "Monthly sales revenue from January to May 2024").
+- Use **`desc`** for a longer description rendered in the SVG `<desc>` for screen readers.
+- The component sets ARIA attributes on interactive and structural elements as needed.
+
+## Troubleshooting
+
+### Chart Not Sizing or Empty
+
+Ensure the chart has a non-zero size. Place it in a container with explicit dimensions or use `width` and `height`:
+
+```tsx
+// ✅ Container with size
+<div style={{ width: '100%', height: 400 }}>
+  <LineChart series={series} />
+</div>
+
+// ✅ Or fixed dimensions on the component
+<LineChart series={series} width={600} height={400} />
+```
+
+### Dates Not Displaying Correctly
+
+Use `xType="time"` when the X-axis values are Date objects:
+
+```tsx
+// ❌ Without xType="time", Date objects may not scale correctly
+<LineChart series={seriesWithDates} />
+
+// ✅ Use time scale for Date X values
+<LineChart series={seriesWithDates} xType="time" />
+```
+
+### Tooltip or Crosshair Not Showing
+
+Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
+
+## Best Practices
+
+### When to Use LineChart
+
+- Use for trends over time or along a continuous scale.
+- Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
+- Prefer a single chart with a legend over multiple small charts when comparing the same X range.

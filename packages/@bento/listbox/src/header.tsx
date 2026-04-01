@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from 'react';
+import type React from 'react';
+import { createContext, useContext } from 'react';
 import { createLeafComponent } from '@react-aria/collections';
 import { useProps } from '@bento/use-props';
 import { withSlots, type Slots } from '@bento/slots';
@@ -23,7 +24,7 @@ interface HeaderContextValue extends React.HTMLAttributes<HTMLElement> {
   /**
    * Reference to the header element for forwarding.
    */
-  readonly ref?: React.RefObject<HTMLDivElement>;
+  readonly ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 /**
@@ -50,27 +51,25 @@ export const HeaderContext = createContext<HeaderContextValue>({});
  *
  * @internal
  */
-const BentoHeaderImpl = withSlots(
-  'BentoHeader',
-  function BentoHeader(props: BentoHeaderProps, ref: React.ForwardedRef<HTMLElement>) {
-    const { props: processedProps, apply } = useProps(props);
-    const contextProps = useContext(HeaderContext);
+const BentoHeaderImpl = withSlots('BentoHeader', function BentoHeader(...args: any[]) {
+  const [props, ref] = args as [BentoHeaderProps, React.ForwardedRef<HTMLElement>];
+  const { props: processedProps, apply } = useProps(props);
+  const contextProps = useContext(HeaderContext);
 
-    // Apply user props directly (preserves className, style, etc.)
-    const appliedUserProps = apply(processedProps);
+  // Apply user props directly (preserves className, style, etc.)
+  const appliedUserProps = apply(processedProps);
 
-    const composed = {
-      ...contextProps,
-      ...appliedUserProps // User props take precedence over context
-    };
+  const composed = {
+    ...contextProps,
+    ...appliedUserProps // User props take precedence over context
+  };
 
-    return (
-      <header {...composed} ref={contextProps.ref || ref}>
-        {processedProps.children}
-      </header>
-    );
-  }
-);
+  return (
+    <header {...composed} ref={contextProps.ref || ref}>
+      {processedProps.children}
+    </header>
+  );
+});
 
 /**
  * Wrapper component that connects the BentoHeaderImpl to React Aria's collection system.

@@ -1,0 +1,12 @@
+---
+title: useNormalizedSeries
+description: A hook that ensures every series config has a stable unique id, generating one from useId when omitted.
+---
+
+## For use with chart components (not exported)
+
+Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
+
+```tsx
+const series = useNormalizedSeries(seriesProp);
+```

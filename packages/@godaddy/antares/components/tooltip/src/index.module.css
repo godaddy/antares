@@ -1,0 +1,70 @@
+.tooltip {
+  --_arrow-width: 10px;
+  --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
+  --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
+  --_content-offset: calc(var(--_arrow-height) + var(--sp-sm));
+  --_arrow-offset: calc(var(--_arrow-height) * -1 + 1px);
+
+  transition:
+    transform 0.1s,
+    opacity 0.1s;
+}
+
+.tooltip[data-noarrow="true"] {
+  --_arrow-width: 0px;
+}
+
+.tooltip[data-entering],
+.tooltip[data-exiting] {
+  transform: var(--_animation-offset);
+  opacity: 0;
+}
+
+.tooltip[data-placement="top"] {
+  --_animation-offset: translateY(-4px);
+  margin-bottom: var(--_content-offset);
+}
+
+.tooltip[data-placement="bottom"] {
+  --_animation-offset: translateY(4px);
+  margin-top: var(--_content-offset);
+}
+
+.tooltip[data-placement="right"] {
+  --_animation-offset: translateX(4px);
+  margin-left: var(--_content-offset);
+}
+
+.tooltip[data-placement="left"] {
+  --_animation-offset: translateX(-4px);
+  margin-right: var(--_content-offset);
+}
+
+.arrow {
+  background: inherit;
+  width: var(--_arrow-rotated-width);
+  height: var(--_arrow-rotated-width);
+  rotate: 45deg;
+}
+
+.arrow[data-placement="top"] {
+  transform-origin: left;
+  rotate: -45deg;
+  margin-top: var(--_arrow-offset);
+}
+
+.arrow[data-placement="bottom"] {
+  transform-origin: left;
+  margin-bottom: var(--_arrow-offset);
+}
+
+.arrow[data-placement="left"] {
+  transform-origin: top;
+  margin-left: var(--_arrow-offset);
+}
+
+.arrow[data-placement="right"] {
+  transform-origin: top;
+  rotate: -45deg;
+  margin-right: var(--_arrow-offset);
+}

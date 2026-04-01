@@ -1,0 +1,43 @@
+name: Storybook Main Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/*/components/**'
+      - 'apps/docs/**'
+      - 'package*.json'
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  deploy-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npx nx build:storybook docs
+
+      - name: Deploy to GitHub Pages (Root)
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: ./apps/docs/storybook-static
+          clean: false

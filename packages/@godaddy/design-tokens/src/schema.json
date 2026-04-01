@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design tokens",
+  "description": "Schema for tokens.yml - root is the token map",
+  "type": "object",
+  "propertyNames": {
+    "pattern": "^[a-zA-Z]+(?:-[a-zA-Z0-9]+)*$"
+  },
+  "additionalProperties": {
+    "type": "object",
+    "required": ["$type", "$value"],
+    "properties": {
+      "$type": {
+        "type": "string",
+        "description": "DTCG token type (e.g. fontFamily, color, dimension)"
+      },
+      "$value": {
+        "description": "Token value (format depends on $type)"
+      },
+      "$description": {
+        "type": "string"
+      },
+      "$deprecated": {
+        "oneOf": [{ "type": "boolean" }, { "type": "string" }]
+      },
+      "$extensions": {
+        "type": "object"
+      }
+    }
+  }
+}

@@ -92,20 +92,20 @@ export function contains(slotNames: string[], children: React.ReactNode): boolea
           foundSlots.add(pathString);
 
           // Continue searching children with the updated path
-          if (child.props?.children) {
-            search(child.props.children, fullPath);
+          if ((child.props as any)?.children) {
+            search((child.props as any).children, fullPath);
           }
         } else {
           // Not a withSlots component - search children without extending path
-          if (child.props?.children) {
-            search(child.props.children, path);
+          if ((child.props as any)?.children) {
+            search((child.props as any).children, path);
           }
         }
       } else {
         // No slot on this child, but continue searching its children
         // without extending the path
-        if (child.props?.children) {
-          search(child.props.children, path);
+        if ((child.props as any)?.children) {
+          search((child.props as any).children, path);
         }
       }
     });

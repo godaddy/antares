@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/godaddy/uxcore.git"
+    "url": "git+https://github.com/godaddy/antares.git"
   },
   "keywords": [
     "attributes",
@@ -45,7 +45,12 @@
     "use-deep-compare": "^1.3.0"
   },
   "devDependencies": {
-    "@bento/types": "^0.1.0"
+    "@bento/types": "^0.1.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

@@ -1,0 +1,94 @@
+---
+title: Box
+description: Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './box.stories.tsx';
+
+import SourcePadding from './examples/padding.tsx?raw';
+import SourceElevation from './examples/elevation.tsx?raw';
+import SourceRounding from './examples/rounding.tsx?raw';
+import SourceAs from './examples/as.tsx?raw';
+import SourceAlignment from './examples/alignment.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `Box` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Scale Sizes
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+- `xs` - Extra small spacing
+- `sm` - Small spacing
+- `md` - Medium spacing
+- `lg` - Large spacing
+- `xl` - Extra large spacing
+- `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Examples
+
+### Padding
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of={Stories.Padding} inline />
+<Source language="tsx" code={SourcePadding} />
+
+### Elevation
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of={Stories.Elevation} inline />
+<Source language="tsx" code={SourceElevation} />
+
+### Rounding
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of={Stories.Rounding} inline />
+<Source language="tsx" code={SourceRounding} />
+
+### Polymorphic `as` Prop
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of={Stories.As} inline />
+<Source language="tsx" code={SourceAs} />
+
+### Alignment
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of={Stories.Alignment} inline />
+<Source language="tsx" code={SourceAlignment} />
+
+## RTL Support
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.

@@ -2,39 +2,29 @@
   "name": "@bento/storybook-addon-helpers",
   "private": true,
   "version": "0.1.0",
-  "description": "Storybook preset addon helpers for Bento",
+  "description": "Storybook preset addon helpers for the Antares design system",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "scripts": {
-    "build": "tsup-node",
+    "build": "tsdown",
     "lint": "biome lint && tsc",
     "posttest": "npm run lint",
     "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/godaddy/uxcore.git"
-  },
   "keywords": [
     "accessibility",
     "aria",
-    "bento",
-    "button",
     "component",
-    "interactive",
     "library",
-    "pressable",
-    "react"
+    "react",
+    "storybook",
+    "antares"
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/godaddy/uxcore/issues"
-  },
-  "homepage": "https://github.com/godaddy/uxcore#readme",
   "files": [
     "dist",
     "src",
@@ -46,16 +36,23 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "vite": "^7.3.1"
+    "@types/react": "^19.2.14",
+    "assume": "^2.3.0",
+    "react": "^19.2.4",
+    "tsdown": "^0.20.3",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
-    "storybook": "^9.1.6"
+    "@storybook/react-vite": ">= 10",
+    "storybook": ">= 10"
   },
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
       "require": {
         "types": "./dist/index.d.cts",

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, ForwardedRef, RefObject } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo, type ForwardedRef, type RefObject } from 'react'
 import {
   FocusScope,
   mergeProps,
@@ -8,15 +9,15 @@ import {
   useFocusRing,
   ListKeyboardDelegate
 } from 'react-aria';
-import { ListState, SelectionBehavior, useListState, Orientation, Node } from 'react-stately';
+import { type ListState, type SelectionBehavior, useListState, type Orientation, type Node } from 'react-stately';
 import { CollectionBuilder, Collection as AriaCollection } from '@react-aria/collections';
-import { AriaListBoxProps } from '@react-types/listbox';
+import type { AriaListBoxProps } from '@react-types/listbox';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
-import { withSlots, Slots } from '@bento/slots';
-import { ListBoxItemImpl } from './listbox-item';
-import { ListBoxSectionInner } from './listbox-section';
-import { useSafeObjectRef } from './utils';
+import { withSlots, type Slots } from '@bento/slots';
+import { ListBoxItemImpl } from './listbox-item.tsx';
+import { ListBoxSectionInner } from './listbox-section.tsx';
+import { useSafeObjectRef } from './utils.ts';
 
 /**
  * Render props provided to ListBox render functions and empty state renderers.
@@ -579,11 +580,12 @@ const ListBoxInner: React.FC<{
  * ```
  * @public
  */
-function ListBoxComponent<T>(args: ListBoxProps<T>, ref: React.ForwardedRef<HTMLDivElement>): React.ReactElement {
+function ListBoxComponent<T>(...args: any[]): React.ReactElement {
+  const [_args, ref] = args as [ListBoxProps<T>, React.ForwardedRef<HTMLDivElement>];
   return (
-    <CollectionBuilder content={<AriaCollection {...(args as unknown as Parameters<typeof AriaCollection>[0])} />}>
+    <CollectionBuilder content={<AriaCollection {...(_args as unknown as Parameters<typeof AriaCollection>[0])} />}>
       {function buildCollection(collection: unknown) {
-        return <StandaloneListBox props={args as ListBoxProps<unknown>} listBoxRef={ref} collection={collection} />;
+        return <StandaloneListBox props={_args as ListBoxProps<unknown>} listBoxRef={ref} collection={collection} />;
       }}
     </CollectionBuilder>
   );

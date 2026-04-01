@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/uxcore > #Popover > renders CustomAnchorExample 1`] = `"<div class="box" style="display:flex;flex-direction:row;align-items:center;gap:var(--sp-sm, 4px)"><button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open Popover</span></button><div class="box" data-elevation="card">Popover will be positioned relative to me</div></div>"`;
+
+exports[`@godaddy/uxcore > #Popover > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open popover</span></button>"`;
+
+exports[`@godaddy/uxcore > #Popover > renders PlaygroundExample 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open popover</span></button></div>"`;
+
+exports[`@godaddy/uxcore > #Popover > renders WithCloseButtonExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open popover</span></button>"`;

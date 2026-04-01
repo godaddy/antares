@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "clientKind": "git",
     "enabled": true,
@@ -12,25 +12,21 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "attributePosition": "auto",
-    "includes": ["**", "!**/package-lock.json", "!.grit/**"]
+    "includes": ["**", "!.grit/**"]
   },
   "assist": { "actions": { "source": { "organizeImports": "off" } } },
   "plugins": [
     "./.grit/no_anonymous_functions.grit",
     "./.grit/no_anonymous_single_param.grit",
-    "./.grit/no_anonymous_function_expressions.grit"
+    "./.grit/no_anonymous_function_expressions.grit",
+    "./.grit/prefer_interface_over_type_intersection.grit"
   ],
   "linter": {
     "enabled": true,
     "domains": {
       "project": "all"
     },
-    "includes": [
-      "**",
-      "!.grit/**",
-      "!**/package-lock.json",
-      "!**/test/fixtures/**"
-    ],
+    "includes": ["**", "!.grit/**", "!**/test/fixtures/**"],
     "rules": {
       "recommended": false,
       "complexity": {
@@ -51,7 +47,6 @@
         "noSelfAssign": "error",
         "noSetterReturn": "error",
         "noSwitchDeclarations": "error",
-        "noUndeclaredDependencies": "off",
         "noUndeclaredVariables": "error",
         "noUnreachable": "error",
         "noUnreachableSuper": "error",
@@ -63,7 +58,13 @@
         "useValidForDirection": "error",
         "useYield": "error",
         "noInvalidBuiltinInstantiation": "error",
-        "useValidTypeof": "error"
+        "useValidTypeof": "error",
+        "useImportExtensions": "off"
+      },
+      "nursery": {
+        "useAwaitThenable": "error",
+        "noMisusedPromises": "error",
+        "noFloatingPromises": "warn"
       },
       "style": { "useBlockStatements": "off" },
       "suspicious": {
@@ -130,11 +131,54 @@
     "linter": {
       "enabled": true
     },
+    "parser": {
+      "tailwindDirectives": true
+    },
     "formatter": {
       "enabled": true,
       "indentStyle": "space",
       "indentWidth": 2,
       "lineWidth": 120
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "**/*.visual.test.tsx",
+        "**/*.browser.test.tsx",
+        "**/*.browser.test.ts",
+        "**/tsdown.config.ts"
+      ],
+      "linter": {
+        "rules": {
+          "nursery": {
+            "useAwaitThenable": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/.storybook/**",
+        "**/*.d.ts",
+        "**/*.mjs",
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
+        "**/*.test.tsx",
+        "**/*.test.ts",
+        "**/tsdown.config.ts",
+        "**/examples/**",
+        "apps/site/**",
+        "knip.config.ts",
+        "**/storybook-addon-helpers/**"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnresolvedImports": "off"
+          }
+        }
+      }
+    }
+  ]
 }

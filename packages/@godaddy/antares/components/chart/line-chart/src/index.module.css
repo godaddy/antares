@@ -1,0 +1,82 @@
+.chart {
+  width: var(--_chart-width, 100%);
+  height: var(--_chart-height, 100%);
+}
+
+/* Baseline enabled */
+.chart[data-x-baseline="true"] .axisX .baseline,
+.chart[data-y-baseline="true"] .axisY .baseline {
+  stroke: var(--fg-base);
+  stroke-width: 1px;
+}
+
+/* Labels: default (hidden) */
+.chart .axisX text,
+.chart .axisY text {
+  display: none;
+}
+
+/* Labels enabled */
+.chart[data-x-labels="true"] .area .axisX text,
+.chart[data-y-labels="true"] .area .axisY text {
+  fill: var(--fg-base);
+  display: block;
+}
+
+/* Labels vertical (X-axis) */
+.chart[data-x-labels-vertical="true"] .area .axisX text {
+  writing-mode: sideways-lr;
+  text-anchor: end;
+}
+
+/* First gridline overlapping axis: hide when baseline shown */
+.chart[data-x-baseline="true"] .area .rows line:first-of-type,
+.chart[data-y-baseline="true"] .area .columns line:first-of-type {
+  display: none;
+}
+
+/* Tick lines */
+.chart[data-x-tick-marks="true"] .axisX .tickMark line,
+.chart[data-y-tick-marks="true"] .axisY .tickMark line {
+  stroke: var(--bd-base);
+  stroke-width: 2px;
+}
+
+.wrapper {
+  overflow: hidden;
+}
+
+.chart[data-legend-position="top"] .legend {
+  order: -1;
+}
+
+.chart[data-legend-position="bottom"] .legend {
+  order: 1;
+}
+
+.area {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+
+  & svg {
+    display: block;
+  }
+}
+
+/*
+ * Override visx tooltip styles to remove their default appearance.
+ * Only reset base visx tooltip styles here; the actual tooltip appearance
+ * will be handled by the Tooltip component itself.
+ */
+.tooltip {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.yAxisBackground {
+  fill: var(--bg-base);
+}

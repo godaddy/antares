@@ -6,12 +6,12 @@ import { getExportedVariables } from './getters-parser.ts';
  * It will generate all the story indexes for the stories file, including the examples.
  *
  * @param storiesFilePath - The path to the *.stories.tsx file.
- * @returns The StoryIndexInput[] for the stories file.
+ * @returns Promise resolving to the StoryIndexInput[] for the stories file.
  */
 export async function storiesIndexer(storiesFilePath: string): Promise<StoryIndexInput[]> {
   const stories: StoryIndexInput[] = [];
 
-  const exportedVariables = getExportedVariables({ filePath: storiesFilePath });
+  const exportedVariables = await getExportedVariables({ filePath: storiesFilePath });
   const title = exportedVariables.get('default')?.title ?? '';
 
   if (!title) {

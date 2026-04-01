@@ -1,7 +1,7 @@
 import { Container } from '@bento/container';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import styles from './index.module.css';
 
 export interface TextProps {

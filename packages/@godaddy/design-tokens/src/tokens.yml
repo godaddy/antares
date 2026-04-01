@@ -1,0 +1,1039 @@
+# yaml-language-server: $schema=./schema.json
+
+# Token values are defaults for development; tune per theme as needed.
+# Order: color → typography → spacing → radius, shadow, blur
+
+# ===
+# Color
+# ===
+
+# --
+# Color — action — Primary
+# --
+color-action-background-primary-default:
+  $type: color
+  $value: "royalblue"
+  $description: "Fill color for the default state of a primary button or other high-emphasis interactive control."
+color-action-background-primary-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Fill color for a primary control when the pointer is over it or it has keyboard focus (hover)."
+color-action-background-primary-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Fill color for a primary control while it is being pressed or activated (active/pressed)."
+color-action-border-primary-default:
+  $type: color
+  $value: "royalblue"
+  $description: "Border color outlining a primary control in its default resting state."
+color-action-border-primary-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Border color for a primary control in the hover or focused state."
+color-action-border-primary-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Border color for a primary control in the pressed or active state."
+color-action-text-primary-default:
+  $type: color
+  $value: "white"
+  $description: "Label and icon color on top of a filled primary control in the default state."
+color-action-text-primary-hovered:
+  $type: color
+  $value: "white"
+  $description: "Label and icon color on a filled primary control when hovered or focused."
+color-action-text-primary-pressed:
+  $type: color
+  $value: "white"
+  $description: "Label and icon color on a filled primary control when pressed or active."
+
+# --
+# Color — action — Secondary
+# --
+color-action-background-secondary-default:
+  $type: color
+  $value: "lavender"
+  $description: "Fill for a secondary (medium-emphasis) control such as a secondary button in its default state."
+color-action-background-secondary-hovered:
+  $type: color
+  $value: "lightgray"
+  $description: "Fill for a secondary control when hovered or keyboard-focused."
+color-action-background-secondary-pressed:
+  $type: color
+  $value: "silver"
+  $description: "Fill for a secondary control while pressed or active."
+color-action-border-secondary-default:
+  $type: color
+  $value: "silver"
+  $description: "Border for a secondary control in the default state."
+color-action-border-secondary-hovered:
+  $type: color
+  $value: "darkgray"
+  $description: "Border for a secondary control when hovered or focused."
+color-action-border-secondary-pressed:
+  $type: color
+  $value: "gray"
+  $description: "Border for a secondary control when pressed or active."
+color-action-text-secondary-default:
+  $type: color
+  $value: "black"
+  $description: "Label and icon color on a secondary control in the default state."
+color-action-text-secondary-hovered:
+  $type: color
+  $value: "black"
+  $description: "Label and icon color on a secondary control when hovered or focused."
+color-action-text-secondary-pressed:
+  $type: color
+  $value: "black"
+  $description: "Label and icon color on a secondary control when pressed or active."
+
+# --
+# Color — action — Tertiary
+# --
+color-action-background-tertiary-default:
+  $type: color
+  $value: "white"
+  $description: "Fill for a low-emphasis control (text-style or ghost button) in the default state."
+color-action-background-tertiary-hovered:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for a tertiary control when hovered or focused."
+color-action-background-tertiary-pressed:
+  $type: color
+  $value: "gainsboro"
+  $description: "Fill for a tertiary control while pressed or active."
+color-action-border-tertiary-default:
+  $type: color
+  $value: "lightgray"
+  $description: "Border for a tertiary control in the default state."
+color-action-border-tertiary-hovered:
+  $type: color
+  $value: "silver"
+  $description: "Border for a tertiary control when hovered or focused."
+color-action-border-tertiary-pressed:
+  $type: color
+  $value: "darkgray"
+  $description: "Border for a tertiary control when pressed or active."
+color-action-text-tertiary-default:
+  $type: color
+  $value: "royalblue"
+  $description: "Label and icon color for a tertiary control in the default state (often the only strong color)."
+color-action-text-tertiary-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Label and icon color for a tertiary control when hovered or focused."
+color-action-text-tertiary-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Label and icon color for a tertiary control when pressed or active."
+
+# --
+# Color — action — Inline
+# --
+color-action-background-inline-default:
+  $type: color
+  $value: "white"
+  $description: "Fill behind an inline text or icon action (e.g. link-style control in a sentence) at rest."
+color-action-background-inline-hovered:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill behind an inline action when hovered or focused."
+color-action-background-inline-pressed:
+  $type: color
+  $value: "gainsboro"
+  $description: "Fill behind an inline action while pressed or active."
+color-action-border-inline-default:
+  $type: color
+  $value: "royalblue"
+  $description: "Optional border or focus ring color for an inline action in the default state."
+color-action-border-inline-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Border or focus treatment for an inline action when hovered or focused."
+color-action-border-inline-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Border or focus treatment for an inline action when pressed or active."
+color-action-text-inline-default:
+  $type: color
+  $value: "royalblue"
+  $description: "Text or icon color for an inline action in body copy or compact UI."
+color-action-text-inline-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Text or icon color for an inline action when hovered or focused."
+color-action-text-inline-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Text or icon color for an inline action when pressed or active."
+
+# --
+# Color — canvas
+# --
+color-canvas-background:
+  $type: color
+  $value: "white"
+  $description: "Root page or application background behind primary layout regions."
+color-canvas-text:
+  $type: color
+  $value: "black"
+  $description: "Default body text color on the canvas when no surface-specific token applies."
+
+# --
+# Color — chart
+# --
+color-chart-001:
+  $type: color
+  $value: "royalblue"
+  $description: "First series color for data visualization (bars, lines, slices)."
+color-chart-002:
+  $type: color
+  $value: "darkcyan"
+  $description: "Second series color; pair with the first series for simple two-series charts."
+color-chart-003:
+  $type: color
+  $value: "orange"
+  $description: "Third series color for multi-series charts and legends."
+color-chart-004:
+  $type: color
+  $value: "mediumorchid"
+  $description: "Fourth series color for extended palettes."
+color-chart-005:
+  $type: color
+  $value: "salmon"
+  $description: "Fifth series color for extended palettes."
+color-chart-006:
+  $type: color
+  $value: "mediumturquoise"
+  $description: "Sixth series color for extended palettes."
+color-chart-007:
+  $type: color
+  $value: "darkgray"
+  $description: "Seventh series color; useful for neutral or secondary data."
+color-chart-008:
+  $type: color
+  $value: "darkslategray"
+  $description: "Eighth series color; completes the default categorical set."
+
+# --
+# Color — feedback (critical)
+# --
+color-feedback-critical-strong:
+  $type: color
+  $value: "firebrick"
+  $description: "High-attention error surface: banners, inline alerts, or invalid field highlights."
+color-feedback-critical-onstrong:
+  $type: color
+  $value: "white"
+  $description: "Foreground (icons, text) placed on a solid critical/error background for sufficient contrast."
+color-feedback-critical-subtle:
+  $type: color
+  $value: "lavenderblush"
+  $description: "Soft error tint for backgrounds that should read as “problem” without dominating the layout."
+color-feedback-critical-onsubtle:
+  $type: color
+  $value: "darkred"
+  $description: "Foreground for critical messaging on a light or tinted error background."
+color-feedback-critical-text:
+  $type: color
+  $value: "darkred"
+  $description: "Standalone error text, helper copy, and inline validation messages."
+
+# --
+# Color — feedback (passive)
+# --
+color-feedback-passive-strong:
+  $type: color
+  $value: "gray"
+  $description: "Strong neutral surface for non-semantic notices and low-priority system messages."
+color-feedback-passive-onstrong:
+  $type: color
+  $value: "white"
+  $description: "Foreground on a solid neutral feedback background (muted banners, disabled-adjacent states)."
+color-feedback-passive-subtle:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Light neutral wash behind passive content without implying error or success."
+color-feedback-passive-onsubtle:
+  $type: color
+  $value: "darkslategray"
+  $description: "Foreground for neutral messaging on a light gray or subtle neutral tint."
+color-feedback-passive-text:
+  $type: color
+  $value: "darkslategray"
+  $description: "Body-style copy for passive or informational text that is not the primary info color."
+
+# --
+# Color — feedback (success)
+# --
+color-feedback-success-strong:
+  $type: color
+  $value: "forestgreen"
+  $description: "Prominent success surface: completed steps, positive alerts, valid states."
+color-feedback-success-onstrong:
+  $type: color
+  $value: "white"
+  $description: "Foreground on a solid success background (checkmarks, confirmation banners)."
+color-feedback-success-subtle:
+  $type: color
+  $value: "honeydew"
+  $description: "Soft success tint for backgrounds that signal completion without heavy contrast."
+color-feedback-success-onsubtle:
+  $type: color
+  $value: "darkgreen"
+  $description: "Foreground for success messaging on a light green or tinted success background."
+color-feedback-success-text:
+  $type: color
+  $value: "darkgreen"
+  $description: "Standalone success copy, toast text, and inline “saved” or confirmation messages."
+
+# --
+# Color — feedback (warning)
+# --
+color-feedback-warning-strong:
+  $type: color
+  $value: "darkorange"
+  $description: "Attention-getting warning surface: irreversible actions, degraded service, caution banners."
+color-feedback-warning-onstrong:
+  $type: color
+  $value: "black"
+  $description: "Foreground on a saturated warning background; use when the warning fill is dark or intense."
+color-feedback-warning-subtle:
+  $type: color
+  $value: "cornsilk"
+  $description: "Light warning tint for callouts that need notice without full alert severity."
+color-feedback-warning-onsubtle:
+  $type: color
+  $value: "orangered"
+  $description: "Foreground for warning copy on pale or yellow-tinted warning backgrounds."
+color-feedback-warning-text:
+  $type: color
+  $value: "orangered"
+  $description: "Warning body text, inline cautions, and labels that accompany warning icons."
+
+# --
+# Color — feedback (info)
+# --
+color-feedback-info-strong:
+  $type: color
+  $value: "dodgerblue"
+  $description: "Primary informational surface: education blocks, informational banners, neutral alerts."
+color-feedback-info-onstrong:
+  $type: color
+  $value: "white"
+  $description: "Foreground on a bold informational background (tips, feature announcements)."
+color-feedback-info-subtle:
+  $type: color
+  $value: "lightcyan"
+  $description: "Soft info wash for inline hints and secondary explanatory regions."
+color-feedback-info-onsubtle:
+  $type: color
+  $value: "teal"
+  $description: "Foreground for info copy on a light blue or cyan informational tint."
+color-feedback-info-text:
+  $type: color
+  $value: "teal"
+  $description: "Standalone informational text and helper lines that are not links."
+
+# --
+# Color — feedback (highlight)
+# --
+color-feedback-highlight-strong:
+  $type: color
+  $value: "gold"
+  $description: "Strong highlight surface for marketing callouts, badges, and “new” emphasis."
+color-feedback-highlight-onstrong:
+  $type: color
+  $value: "black"
+  $description: "Foreground on a vivid highlight or accent fill (promos, featured rows)."
+color-feedback-highlight-subtle:
+  $type: color
+  $value: "lightyellow"
+  $description: "Gentle highlight tint to draw the eye without using semantic warning or success colors."
+color-feedback-highlight-onsubtle:
+  $type: color
+  $value: "saddlebrown"
+  $description: "Foreground for highlight messaging on a soft yellow or cream background."
+color-feedback-highlight-text:
+  $type: color
+  $value: "saddlebrown"
+  $description: "Text and labels paired with highlight surfaces in dashboards and merchandising zones."
+
+# --
+# Color — input
+# --
+color-input-background-default:
+  $type: color
+  $value: "white"
+  $description: "Field fill for text inputs, selects, and text areas in the resting state."
+color-input-background-hovered:
+  $type: color
+  $value: "snow"
+  $description: "Field fill when the pointer is over the control or it is hovered."
+color-input-background-selected:
+  $type: color
+  $value: "lavender"
+  $description: "Field fill when the control has focus, or when an option is actively selected (e.g. a checked checkbox)."
+color-input-background-selected-hovered:
+  $type: color
+  $value: "powderblue"
+  $description: "Field fill when focused or selected—such as a checked checkbox—and the user is still hovering the control."
+color-input-background-selected-pressed:
+  $type: color
+  $value: "lightskyblue"
+  $description: "Field fill while the user is pressing or dragging within a focused or selected control (e.g. clicking a checked checkbox)."
+color-input-border-default:
+  $type: color
+  $value: "lightgray"
+  $description: "Default outline for inputs and other editable fields."
+color-input-border-hovered:
+  $type: color
+  $value: "darkgray"
+  $description: "Input outline when hovered to show the control is interactive."
+color-input-border-selected:
+  $type: color
+  $value: "royalblue"
+  $description: "Focus or selection ring for active inputs and pickers, including a checked checkbox."
+color-input-border-selected-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Border when the control remains focused or selected (e.g. checked checkbox) and is hovered."
+color-input-border-selected-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Border while activating a focused or selected control, such as a checkbox."
+color-input-text-default:
+  $type: color
+  $value: "black"
+  $description: "Typed value and placeholder-adjacent label color in the default state."
+color-input-text-hovered:
+  $type: color
+  $value: "black"
+  $description: "Typed value color when the input is hovered."
+color-input-text-selected:
+  $type: color
+  $value: "black"
+  $description: "Text color when the field or its value is focused or selected (e.g. label next to a checked checkbox)."
+color-input-text-selected-hovered:
+  $type: color
+  $value: "black"
+  $description: "Text color when focused or selected and hovered simultaneously (e.g. checkbox label while hovered)."
+color-input-text-selected-pressed:
+  $type: color
+  $value: "black"
+  $description: "Text color during press on a focused or selected control (e.g. checkbox or its label)."
+
+# --
+# Color — surface
+# --
+color-surface-background-base:
+  $type: color
+  $value: "white"
+  $description: "Primary content region background inside the page shell (main column, default panels)."
+color-surface-background-card:
+  $type: color
+  $value: "white"
+  $description: "Background for card and tile components that sit on the base surface."
+color-surface-background-overlay:
+  $type: color
+  $value: "white"
+  $description: "Background for modal panels, popovers, and drawers above the page."
+color-surface-background-raised:
+  $type: color
+  $value: "snow"
+  $description: "Slightly elevated panels, sticky footers, or chips that sit above the base layer."
+color-surface-background-scrim:
+  $type: color
+  $value: "rgba(0, 0, 0, 0.4)"
+  $description: "Semi-transparent veil behind modals and overlays to dim the content underneath."
+color-surface-border-base:
+  $type: color
+  $value: "lavender"
+  $description: "Dividers and outlines for the main content surface and structural sections."
+color-surface-border-card:
+  $type: color
+  $value: "lavender"
+  $description: "Border or hairline around cards and contained modules."
+color-surface-border-overlay:
+  $type: color
+  $value: "lightgray"
+  $description: "Outer edge or separator for floating overlays and dialogs."
+color-surface-border-raised:
+  $type: color
+  $value: "lavender"
+  $description: "Edge treatment for raised or stacked surfaces to separate them from neighbors."
+color-surface-text-base:
+  $type: color
+  $value: "black"
+  $description: "Default readable text color on the base surface."
+color-surface-text-card:
+  $type: color
+  $value: "black"
+  $description: "Primary text color on card backgrounds."
+color-surface-text-overlay:
+  $type: color
+  $value: "black"
+  $description: "Primary text color inside modals and overlay panels."
+color-surface-text-raised:
+  $type: color
+  $value: "black"
+  $description: "Text on raised or secondary stacked surfaces."
+color-surface-text-scrim:
+  $type: color
+  $value: "white"
+  $description: "Text or icons placed directly on the scrim (rare); prefer content inside the overlay instead."
+
+# --
+# Color — text (links)
+# --
+color-text-link:
+  $type: color
+  $value: "royalblue"
+  $description: "Default color for inline links and link-styled actions in body content."
+color-text-link-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Link color when hovered or keyboard-focused."
+color-text-link-pressed:
+  $type: color
+  $value: "midnightblue"
+  $description: "Link color at the moment of activation."
+color-text-link-visited:
+  $type: color
+  $value: "indigo"
+  $description: "Link color after the user has visited the destination."
+
+# ===
+# Typography
+# ===
+
+# --
+# Typography — body
+# --
+font-body-family:
+  $type: fontFamily
+  $value: "system-ui, sans-serif"
+  $description: "Typeface stack for long-form body copy, descriptions, and default UI labels."
+  $extensions:
+    com.godaddy.classname:
+      property: "font-family"
+font-body-line-height:
+  $type: number
+  $value: 1.5
+  $description: "Line height for comfortable reading in running body text and default paragraphs."
+font-body-size-xs:
+  $type: dimension
+  $value: "0.75rem"
+  $description: "Smallest body size for dense UI, footnotes, and secondary inline text."
+font-body-size-sm:
+  $type: dimension
+  $value: "0.875rem"
+  $description: "Compact body size for tables, forms, and tight layouts."
+font-body-size-md:
+  $type: dimension
+  $value: "1rem"
+  $description: "Default body font size for standard paragraphs and most interface text."
+font-body-size-lg:
+  $type: dimension
+  $value: "1.125rem"
+  $description: "Slightly enlarged body for emphasis or comfortable reading on large screens."
+font-body-size-xl:
+  $type: dimension
+  $value: "1.25rem"
+  $description: "Prominent body scale for intros, hero subcopy, or relaxed reading."
+font-body-size-2xl:
+  $type: dimension
+  $value: "1.5rem"
+  $description: "Largest body size before switching to heading styles."
+font-body-variation:
+  $type: typography
+  $value: "normal"
+  $description: "Variable-font axis settings for the body typeface when using a variable font."
+font-body-weight:
+  $type: fontWeight
+  $value: "normal"
+  $description: "Regular weight for default body text and most UI strings."
+
+# --
+# Typography — detail
+# --
+font-detail-family:
+  $type: fontFamily
+  $value: "system-ui, sans-serif"
+  $description: "Typeface for captions, metadata, timestamps, and fine print."
+  $extensions:
+    com.godaddy.classname:
+      property: "font-family"
+font-detail-line-height:
+  $type: number
+  $value: 1.4
+  $description: "Tighter line height for small caption lines and stacked metadata."
+font-detail-size-xs:
+  $type: dimension
+  $value: "0.6875rem"
+  $description: "Minimum legible caption size for badges and legal microcopy."
+font-detail-size-sm:
+  $type: dimension
+  $value: "0.75rem"
+  $description: "Small supporting text under headings or in list subtitles."
+font-detail-size-md:
+  $type: dimension
+  $value: "0.8125rem"
+  $description: "Default detail tier for form hints and secondary labels."
+font-detail-size-lg:
+  $type: dimension
+  $value: "0.875rem"
+  $description: "Slightly larger detail text that should still read below default body copy."
+font-detail-size-xl:
+  $type: dimension
+  $value: "1rem"
+  $description: "Detail scale approaching body size for emphasized captions."
+font-detail-size-2xl:
+  $type: dimension
+  $value: "1.125rem"
+  $description: "Largest detail size before promoting copy to body styles."
+font-detail-variation:
+  $type: typography
+  $value: "normal"
+  $description: "Variable-font axis settings for detail and caption styles when using a variable font."
+font-detail-weight:
+  $type: fontWeight
+  $value: "normal"
+  $description: "Regular weight for captions; pair with semantic strong tokens for emphasis inside detail text."
+
+# --
+# Typography — heading
+# --
+font-heading-family:
+  $type: fontFamily
+  $value: "system-ui, sans-serif"
+  $description: "Typeface for titles, section headers, and display-style UI headings."
+  $extensions:
+    com.godaddy.classname:
+      property: "font-family"
+font-heading-line-height:
+  $type: number
+  $value: 1.25
+  $description: "Tight line height for multi-line headings without excess vertical rhythm."
+font-heading-size-xs:
+  $type: dimension
+  $value: "1rem"
+  $description: "Smallest heading size for labels that must read as headings (e.g. card titles)."
+font-heading-size-sm:
+  $type: dimension
+  $value: "1.125rem"
+  $description: "Subsection titles and compact module headers."
+font-heading-size-md:
+  $type: dimension
+  $value: "1.25rem"
+  $description: "Default heading size for in-page sections."
+font-heading-size-lg:
+  $type: dimension
+  $value: "1.5rem"
+  $description: "Prominent headings for primary page sections."
+font-heading-size-xl:
+  $type: dimension
+  $value: "1.875rem"
+  $description: "Large marketing or landing headings."
+font-heading-size-2xl:
+  $type: dimension
+  $value: "2.25rem"
+  $description: "Display-scale heading for hero titles and major campaign headers."
+font-heading-variation:
+  $type: typography
+  $value: "normal"
+  $description: "Variable-font axis settings for headings and display type when using a variable font."
+font-heading-weight:
+  $type: fontWeight
+  $value: "bold"
+  $description: "Default heading weight for clear hierarchy above body and detail text."
+
+# --
+# Typography — global size scale
+# --
+font-size-005:
+  $type: dimension
+  $value: "0.625rem"
+  $description: "Micro copy, superscript labels, and the smallest UI text on the global type scale."
+font-size-010:
+  $type: dimension
+  $value: "0.6875rem"
+  $description: "Fine print and legal microcopy just above the minimum legible tier."
+font-size-020:
+  $type: dimension
+  $value: "0.75rem"
+  $description: "Compact captions and dense secondary labels."
+font-size-030:
+  $type: dimension
+  $value: "0.8125rem"
+  $description: "Secondary labels between caption-sized text and default UI copy."
+font-size-040:
+  $type: dimension
+  $value: "0.875rem"
+  $description: "Standard small UI text in tables, forms, and dense interfaces."
+font-size-050:
+  $type: dimension
+  $value: "1rem"
+  $description: "Default body copy and baseline accessible reading size."
+font-size-060:
+  $type: dimension
+  $value: "1.125rem"
+  $description: "Subheadings and emphasized paragraphs that stay below display type."
+font-size-070:
+  $type: dimension
+  $value: "1.25rem"
+  $description: "Section intros and large in-app titles below hero display type."
+font-size-080:
+  $type: dimension
+  $value: "1.5rem"
+  $description: "Prominent headings and marketing subheads."
+font-size-090:
+  $type: dimension
+  $value: "1.875rem"
+  $description: "Hero subheadlines and large type next to display headings."
+font-size-100:
+  $type: dimension
+  $value: "2.25rem"
+  $description: "Primary display headings on standard marketing and landing layouts."
+font-size-200:
+  $type: dimension
+  $value: "3rem"
+  $description: "Oversized headlines for landing pages and campaign layouts."
+font-size-300:
+  $type: dimension
+  $value: "3.75rem"
+  $description: "High-impact hero typography and sparse above-the-fold titles."
+font-size-400:
+  $type: dimension
+  $value: "4.5rem"
+  $description: "Billboard-style display type on wide breakpoints and minimal layouts."
+font-size-500:
+  $type: dimension
+  $value: "6rem"
+  $description: "Largest display tier for rare, high-attention headlines with controlled line length."
+
+# --
+# Typography — emphasis
+# --
+font-style-em:
+  $type: typography
+  $value: "italic"
+  $description: "Italic emphasis for inline quotes and stressed phrases."
+font-weight-strong:
+  $type: fontWeight
+  $value: "bolder"
+  $description: "Strong emphasis for semantic <strong> styling and stressed phrases inside running text."
+
+# ===
+# Spacing
+# ===
+
+
+# --
+# Spacing — numeric scale
+# --
+size-space-005:
+  $type: dimension
+  $value: "2px"
+  $description: "Minimal gap for icon-to-text alignment and optical tweaks between tightly paired elements."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-010:
+  $type: dimension
+  $value: "4px"
+  $description: "Tight stacks, dense toolbars, and compact inline spacing."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-020:
+  $type: dimension
+  $value: "8px"
+  $description: "Default tight padding inside chips and small clusters of related controls."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-030:
+  $type: dimension
+  $value: "12px"
+  $description: "Comfortable rhythm between labels, fields, and short horizontal groups."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-040:
+  $type: dimension
+  $value: "16px"
+  $description: "Standard card padding and default gap between sibling blocks in a layout."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-050:
+  $type: dimension
+  $value: "20px"
+  $description: "Roomier padding inside modules that need more air than the default compact tier."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-060:
+  $type: dimension
+  $value: "24px"
+  $description: "Spacing between sections within a page and between form fieldsets."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-070:
+  $type: dimension
+  $value: "32px"
+  $description: "Separation between major regions on a single screen or viewport."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-080:
+  $type: dimension
+  $value: "40px"
+  $description: "Vertical breathing room between stacked page sections."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-090:
+  $type: dimension
+  $value: "48px"
+  $description: "Large gutters for marketing layouts and spacious dashboards."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-100:
+  $type: dimension
+  $value: "64px"
+  $description: "Hero sections, page mastheads, and major vertical breaks in long pages."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-200:
+  $type: dimension
+  $value: "80px"
+  $description: "Extra-large vertical margin on sparse editorial or campaign pages."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-300:
+  $type: dimension
+  $value: "96px"
+  $description: "Full-bleed section transitions and very open marketing compositions."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-400:
+  $type: dimension
+  $value: "128px"
+  $description: "Outermost layout gutters on very wide breakpoints."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-500:
+  $type: dimension
+  $value: "160px"
+  $description: "Campaign art direction, empty states, and other layouts that need maximum outer whitespace."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+
+# --
+# Spacing — t-shirt aliases
+# --
+size-space-xs:
+  $type: dimension
+  $value: "4px"
+  $description: "Tightest named spacing tier for dense UI, inline clusters, and compact padding."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-sm:
+  $type: dimension
+  $value: "8px"
+  $description: "Compact padding and gaps inside dense components and small control groups."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-md:
+  $type: dimension
+  $value: "16px"
+  $description: "Default comfortable spacing for most layouts, cards, and block gaps."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-lg:
+  $type: dimension
+  $value: "24px"
+  $description: "Section-level padding and separation between stacked blocks."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-xl:
+  $type: dimension
+  $value: "32px"
+  $description: "Roomy whitespace between major UI groups on a single view."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+size-space-2xl:
+  $type: dimension
+  $value: "48px"
+  $description: "Largest named spacing shortcut before the oversized numeric tiers; use for open marketing and dashboard layouts."
+  $extensions:
+    com.godaddy.classname:
+      property:
+        - padding
+        - gap
+
+# ===
+# Radius, shadow, blur
+# ===
+
+# --
+# Radius
+# --
+size-radius-xs:
+  $type: dimension
+  $value: "2px"
+  $description: "Subtle corner rounding for inputs, tables, and data-dense UI where curves should be barely visible."
+size-radius-sm:
+  $type: dimension
+  $value: "4px"
+  $description: "Small components: tags, compact buttons, and nested controls inside cards."
+size-radius-md:
+  $type: dimension
+  $value: "6px"
+  $description: "Default interactive control radius balancing softness with a technical look."
+size-radius-lg:
+  $type: dimension
+  $value: "8px"
+  $description: "Cards, tiles, and medium panels that should read as distinct surfaces."
+size-radius-xl:
+  $type: dimension
+  $value: "12px"
+  $description: "Large modals, marketing cards, and prominent floating elements."
+size-radius-2xl:
+  $type: dimension
+  $value: "16px"
+  $description: "Maximum standard radius for pill-adjacent containers before fully circular caps."
+
+# --
+# Shadow — surface
+# --
+shadow-surface-base:
+  $type: shadow
+  $value:
+    color: "silver"
+    offsetX:
+      value: 0
+      unit: px
+    offsetY:
+      value: 1
+      unit: px
+    blur:
+      value: 2
+      unit: px
+    spread:
+      value: 0
+      unit: px
+  $description: "Lowest elevation: barely lifts the base surface from the canvas (toolbars, sticky headers)."
+shadow-surface-card:
+  $type: shadow
+  $value:
+    color: "darkgray"
+    offsetX:
+      value: 0
+      unit: px
+    offsetY:
+      value: 2
+      unit: px
+    blur:
+      value: 4
+      unit: px
+    spread:
+      value: 0
+      unit: px
+  $description: "Standard card depth for default modules sitting on the page background."
+shadow-surface-overlay:
+  $type: shadow
+  $value:
+    color: "dimgray"
+    offsetX:
+      value: 0
+      unit: px
+    offsetY:
+      value: 8
+      unit: px
+    blur:
+      value: 16
+      unit: px
+    spread:
+      value: 0
+      unit: px
+  $description: "Deep shadow for dialogs, popovers, and menus that must clearly float above other layers."
+shadow-surface-raised:
+  $type: shadow
+  $value:
+    color: "gray"
+    offsetX:
+      value: 0
+      unit: px
+    offsetY:
+      value: 4
+      unit: px
+    blur:
+      value: 8
+      unit: px
+    spread:
+      value: 0
+      unit: px
+  $description: "Mid elevation for toasts, dropdown panels, and secondary floating surfaces between card and overlay."
+
+# --
+# Blur
+# --
+blur-surface-scrim:
+  $type: dimension
+  $value: "8px"
+  $description: "Backdrop blur applied with the scrim to soften content behind modals while keeping focus on the overlay."

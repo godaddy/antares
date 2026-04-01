@@ -1,0 +1,62 @@
+---
+title: Pagination
+description: A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './pagination.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceWithLimit from './examples/with-limit.tsx?raw';
+import SourceOnChange from './examples/on-change.tsx?raw';
+import SourceDefaultActive from './examples/default-active.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Controlled
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
+
+### Default Active Index
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of={Stories.DefaultActive} inline />
+<Source language="tsx" code={SourceDefaultActive} />
+
+### With Limit
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of={Stories.WithLimit} inline />
+<Source language="tsx" code={SourceWithLimit} />
+
+### onChange Event
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of={Stories.OnChange} inline />
+<Source language="tsx" code={SourceOnChange} />

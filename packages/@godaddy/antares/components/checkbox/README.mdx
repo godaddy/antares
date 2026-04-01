@@ -1,0 +1,305 @@
+---
+title: Checkbox
+description: Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceCheckboxBasic from './examples/basic.tsx?raw';
+import SourceCheckboxIndeterminate from './examples/indeterminate.tsx?raw';
+import SourceCheckboxGroup from './examples/group.tsx?raw';
+import SourceCheckboxHorizontal from './examples/horizontal.tsx?raw';
+import SourceCheckboxControlled from './examples/controlled.tsx?raw';
+import SourceCheckboxRequired from './examples/required.tsx?raw';
+import SourceCheckboxDisabled from './examples/disabled.tsx?raw';
+import SourceCheckboxInvalid from './examples/invalid.tsx?raw';
+import * as Stories from './checkbox.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+# Checkbox
+
+Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+A single checkbox with a label.
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceCheckboxBasic} />
+
+### Indeterminate
+
+Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
+
+<Story of={Stories.Indeterminate} inline />
+<Source language="tsx" code={SourceCheckboxIndeterminate} />
+
+### Checkbox Group
+
+Group multiple checkboxes together with a shared label and description.
+
+<Story of={Stories.Group} inline />
+<Source language="tsx" code={SourceCheckboxGroup} />
+
+### Controlled
+
+Manage checkbox group state programmatically with controlled component pattern.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceCheckboxControlled} />
+
+### Horizontal Layout
+
+Display checkboxes in a horizontal row instead of vertical stack.
+
+<Story of={Stories.Horizontal} inline />
+<Source language="tsx" code={SourceCheckboxHorizontal} />
+
+### Disabled States
+
+Individual checkboxes within a group can be disabled while others remain interactive.
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={SourceCheckboxDisabled} />
+
+### Required Indicator
+
+Mark a checkbox group as required with visual indicator and validation.
+
+<Story of={Stories.Required} inline />
+<Source language="tsx" code={SourceCheckboxRequired} />
+
+### Invalid State
+
+Display error state and error message for validation feedback.
+
+<Story of={Stories.Invalid} inline />
+<Source language="tsx" code={SourceCheckboxInvalid} />
+
+## Customization
+
+### Data Attributes
+
+Components automatically add data attributes for styling different states:
+
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-checkbox-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-checkbox-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-checkbox-group [data-indeterminate] {
+  background-color: #1976d2;
+}
+
+.my-checkbox-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<CheckboxGroup label="Select options" className="custom-checkbox-group">
+  <Checkbox value="option1" className="custom-checkbox">
+    Option 1
+  </Checkbox>
+  <Checkbox value="option2" className="highlighted-checkbox">
+    Option 2
+  </Checkbox>
+</CheckboxGroup>
+```
+
+## Key Features
+
+### Indeterminate State
+
+The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
+
+```jsx
+<Checkbox isIndeterminate onChange={handleSelectAll}>
+  Select All
+</Checkbox>
+```
+
+### Group Validation
+
+CheckboxGroup supports validation states and error messages:
+
+- **isRequired**: Marks the group as required with visual indicator
+- **isInvalid**: Shows error state styling
+- **errorMessage**: Displays validation error text below the group
+
+```jsx
+<CheckboxGroup
+  label="Required selection"
+  isRequired
+  isInvalid={!hasSelection}
+  errorMessage="At least one option must be selected"
+>
+  <Checkbox value="a">Option A</Checkbox>
+  <Checkbox value="b">Option B</Checkbox>
+</CheckboxGroup>
+```
+
+### Direction
+
+Control the layout direction with the `direction` prop:
+
+- `column` (default): Stacks checkboxes vertically
+- `row`: Arranges checkboxes in a horizontal row
+- `column-reverse`: Stacks checkboxes vertically in reverse order
+- `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
+
+## Accessibility
+
+### Keyboard Navigation
+
+- **Tab**: Moves focus to the next/previous checkbox
+- **Space**: Toggles the focused checkbox
+- **Shift + Tab**: Moves focus to the previous checkbox
+
+### ARIA Support
+
+- `aria-disabled` for disabled checkboxes
+- `aria-required` when selection is required
+- `aria-invalid` for validation errors
+- Proper labeling with `aria-labelledby` and `aria-describedby`
+
+## Troubleshooting
+
+### Selection Not Updating
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<CheckboxGroup value={value} defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Controlled mode
+<CheckboxGroup value={value} onChange={setValue}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Uncontrolled mode
+<CheckboxGroup defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+```
+
+### Indeterminate State Not Updating
+
+The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
+
+```jsx
+// ✅ Correct: Manually manage indeterminate state
+const [childSelections, setChildSelections] = React.useState([]);
+const allSelected = childSelections.length === totalChildren;
+const someSelected = childSelections.length > 0 && !allSelected;
+
+<Checkbox
+  isSelected={allSelected}
+  isIndeterminate={someSelected}
+  onChange={handleSelectAll}
+>
+  Select All
+</Checkbox>
+```
+
+### Styling Overrides Not Applying
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-checkbox {
+  color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-checkbox-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices
+
+### When to Use Checkboxes
+
+- ✅ For selecting multiple independent options
+- ✅ When users can select zero, one, or many items
+- ✅ For toggling settings or features on/off
+- ✅ When all available options should be visible
+- ❌ For mutually exclusive options (use Radio instead)
+- ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
+
+### Label Guidelines
+
+- Use clear, concise labels that describe what selecting the option means
+- Keep labels short (1-5 words when possible)
+- Ensure labels are descriptive without being verbose
+- Place the most commonly selected options first in groups
+
+### Validation
+
+Always provide clear error messages and use appropriate validation states:
+
+```jsx
+<CheckboxGroup
+  label="Terms and conditions"
+  isRequired
+  isInvalid={!agreedToTerms}
+  errorMessage="You must agree to the terms to continue"
+>
+  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+</CheckboxGroup>
+```
+
+### Group Organization
+
+- Limit checkbox groups to 7-10 options for better usability
+- Use logical ordering (alphabetical, frequency of use, or importance)
+- Consider using CheckboxGroup for related options, even if there are only 2-3
+- Provide a group label that clearly describes the choice being made

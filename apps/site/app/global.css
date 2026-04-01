@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+/* fumadocs-ui/css/lib/shiki.css uses @apply with these utilities but doesn't
+   declare them via @source inline, so Tailwind v4 can't resolve them otherwise. */
+@source inline("top-0 left-4 border-l-2 border -my-px rounded-md font-medium");
+
+figure.shiki pre {
+  min-width: 0;
+  width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+figure.shiki [role="region"] {
+  overflow-x: hidden;
+}

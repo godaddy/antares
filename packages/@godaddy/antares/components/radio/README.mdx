@@ -1,0 +1,223 @@
+---
+title: Radio
+description: Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceRadioDescription from './examples/radio-description.tsx?raw';
+import SourceRadioHorizontal from './examples/radio-horizontal.tsx?raw';
+import SourceRadioControlled from './examples/radio-controlled.tsx?raw';
+import SourceRadioAriaLabel from './examples/radio-aria-label.tsx?raw';
+import SourceRadioDisabled from './examples/radio-disabled.tsx?raw';
+import SourceRadioRequired from './examples/radio-required.tsx?raw';
+import SourceRadioBasic from './examples/radio-basic.tsx?raw';
+import SourceRadioError from './examples/radio-error.tsx?raw';
+import SourceRadioForm from './examples/radio-form.tsx?raw';
+import * as Stories from './radio.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceRadioBasic} />
+
+### Controlled
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceRadioControlled} />
+
+### Horizontal Layout
+
+<Story of={Stories.Horizontal} inline />
+<Source language="tsx" code={SourceRadioHorizontal} />
+
+### Disabled States
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={SourceRadioDisabled} />
+
+### Required Indicator
+
+<Story of={Stories.Required} inline />
+<Source language="tsx" code={SourceRadioRequired} />
+
+### Description Text
+
+<Story of={Stories.Description} inline />
+<Source language="tsx" code={SourceRadioDescription} />
+
+### Error State
+
+<Story of={Stories.ValidationError} inline />
+<Source language="tsx" code={SourceRadioError} />
+
+### Aria Label
+
+<Story of={Stories.AriaLabel} inline />
+<Source language="tsx" code={SourceRadioAriaLabel} />
+
+### Form Submission
+
+<Story of={Stories.Form} inline />
+<Source language="tsx" code={SourceRadioForm} />
+
+## Customization
+
+### Data Attributes
+
+Components automatically add data attributes for styling different states:
+
+**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-radio-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-radio-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-radio-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<RadioGroup label="Select plan" className="custom-radio-group">
+  <Radio value="basic" className="custom-radio">
+    Basic
+  </Radio>
+  <Radio value="premium" className="premium-radio">
+    Premium
+  </Radio>
+</RadioGroup>
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+- **Tab**: Moves focus to/from the radio group
+- **Arrow Down/Right**: Move to next radio button
+- **Arrow Up/Left**: Move to previous radio button
+- **Space**: Select the focused radio button
+
+### ARIA Support
+
+- `role="radiogroup"` on the container
+- `role="radio"` on each option
+- `aria-checked` indicates selection state
+- `aria-disabled` for disabled options
+- `aria-required` when selection is required
+- `aria-invalid` for validation errors
+
+## Troubleshooting
+
+### Selection Not Updating
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<RadioGroup value={value} defaultValue="basic">
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Controlled mode
+<RadioGroup value={value} onChange={setValue}>
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Uncontrolled mode
+<RadioGroup defaultValue="basic">
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+```
+
+### Styling Overrides Not Applying
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-radio {
+  color: red;
+}
+
+/* ✅ Use data attributes and className for higher specificity */
+.my-radio-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices
+
+### When to Use Radio Buttons
+
+- ✅ When there are 2-7 mutually exclusive options
+- ✅ When all options should be visible at once
+- ✅ When the decision is important and deserves space
+- ❌ For more than 7 options (use Select instead)
+- ❌ For binary yes/no choices (use Checkbox or Toggle instead)
+- ❌ When space is limited (use Select dropdown)
+
+### Label Guidelines
+
+- Use clear, concise labels
+- Keep labels short (1-3 words when possible)
+- Place the most common option first
+- Ensure labels are descriptive without being verbose
+
+### Validation
+
+Always provide clear error messages:
+
+```jsx
+<RadioGroup
+  label="Select shipping method"
+  isRequired
+  isInvalid={!selectedShipping}
+  errorMessage="Please select a shipping method"
+>
+  <Radio value="standard">Standard</Radio>
+  <Radio value="express">Express</Radio>
+</RadioGroup>
+```

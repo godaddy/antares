@@ -1,0 +1,35 @@
+---
+title: useChartColor
+description: A hook for assigning deterministic, index-based colors to chart series using design token CSS variables. Safe under React concurrent rendering.
+---
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './use-chart-color.stories.tsx';
+
+import SourceSingleSeries from './examples/single-series.tsx?raw';
+import SourceMultiSeries from './examples/multi-series.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## For use with chart components (not exported)
+
+Wrap your chart (or list) with `ChartColorProvider`; each component that calls `useChartColor()` receives a CSS variable reference. Indices are assigned in an effect at mount, so allocation is safe under React concurrent rendering and StrictMode. Same component instance keeps the same color; colors cycle after the ninth consumer. No need to pass an index—order in the tree determines assignment.
+
+## Props
+
+<ArgTypes of={Stories.ChartColorProviderProps} />
+
+## Examples
+
+### Single series
+
+One series using the first chart color.
+
+<Source language="tsx" code={SourceSingleSeries} />
+<Story of={Stories.SingleSeries} inline />
+
+### Multiple series
+
+Multiple series each receiving the next color in sequence.
+
+<Source language="tsx" code={SourceMultiSeries} />
+<Story of={Stories.MultiSeries} inline />

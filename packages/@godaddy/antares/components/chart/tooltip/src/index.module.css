@@ -1,0 +1,114 @@
+.tooltip {
+  position: relative;
+}
+
+.item {
+  font-size: var(--fs-sm);
+}
+
+.swatch {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+}
+
+.tooltipArrow {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  /* Arrow shape: 28px wide, 15px tall based on the Popover specification */
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 15px solid var(--elevation-raised-bg, #fff);
+}
+
+/* Data visualization colors for tooltip indicators */
+.item:nth-child(9n + 1) .swatch {
+  background-color: var(--viz1);
+}
+
+.item:nth-child(9n + 2) .swatch {
+  background-color: var(--viz2);
+}
+
+.item:nth-child(9n + 3) .swatch {
+  background-color: var(--viz3);
+}
+
+.item:nth-child(9n + 4) .swatch {
+  background-color: var(--viz4);
+}
+
+.item:nth-child(9n + 5) .swatch {
+  background-color: var(--viz5);
+}
+
+.item:nth-child(9n + 6) .swatch {
+  background-color: var(--viz6);
+}
+
+.item:nth-child(9n + 7) .swatch {
+  background-color: var(--viz7);
+}
+
+.item:nth-child(9n + 8) .swatch {
+  background-color: var(--viz8);
+}
+
+.item:nth-child(9n + 9) .swatch {
+  background-color: var(--viz9);
+}
+
+.tooltipArrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid white;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Data visualization colors for tooltip indicators */
+.viz1 {
+  background-color: var(--viz1);
+}
+
+.viz2 {
+  background-color: var(--viz2);
+}
+
+.viz3 {
+  background-color: var(--viz3);
+}
+
+.viz4 {
+  background-color: var(--viz4);
+}
+
+.viz5 {
+  background-color: var(--viz5);
+}
+
+.viz6 {
+  background-color: var(--viz6);
+}
+
+.viz7 {
+  background-color: var(--viz7);
+}
+
+.viz8 {
+  background-color: var(--viz8);
+}
+
+.viz9 {
+  background-color: var(--viz9);
+}

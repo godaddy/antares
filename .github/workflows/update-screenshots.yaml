@@ -1,0 +1,72 @@
+name: Update Visual Regression Screenshots on PR comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  update-screenshots:
+    name: Update Screenshots
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/approve-screenshots')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Checkout PR branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr checkout ${{ github.event.issue.number }}
+
+      - name: Comment - Update Started
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.issue.number }} --body "### 📸 Updating screenshots... [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npx playwright install
+
+      - name: Update Screenshots
+        run: npm run test:visual:update
+
+      - name: Commit and push
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "**/__screenshots__/**"
+          if git diff --staged --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "test: update visual regression screenshots"
+            git push
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ steps.commit.outputs.changes }}" = "true" ]; then
+            gh pr comment ${{ github.event.issue.number }} --body "### 🎉 Successfully updated and committed screenshots!"
+          else
+            gh pr comment ${{ github.event.issue.number }} --body "### ✅ No screenshot changes detected. Screenshots are already up to date."
+          fi
+
+      - name: Comment on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.issue.number }} --body "### ❌ Failed to update screenshots. [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"

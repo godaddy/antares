@@ -1,4 +1,5 @@
-import React, { useRef, useContext } from 'react';
+import type React from 'react';
+import { useRef, useContext } from 'react';
 import { useListBoxSection, mergeProps } from 'react-aria';
 import { createBranchComponent } from '@react-aria/collections';
 import { CollectionRendererContext } from 'react-aria-components';
@@ -6,8 +7,8 @@ import type { Node } from '@react-types/shared';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-import { HeaderContext } from './header';
-import { ListStateContext } from './listbox';
+import { HeaderContext } from './header.tsx';
+import { ListStateContext } from './listbox.tsx';
 
 /**
  * Props for the ListBoxSection component.
@@ -64,7 +65,11 @@ interface ListBoxSectionInnerProps {
  */
 const BentoListBoxSectionImpl = withSlots('BentoListBoxSection', function BentoListBoxSectionImpl<
   T
->({ __node, children, title: titleProp, ...rest }: BentoListBoxSectionImplProps<T>, ref: React.ForwardedRef<HTMLElement>) {
+>(...restArgs: any[]) {
+  const [{ __node, children, title: titleProp, ...rest }, ref] = restArgs as [
+    BentoListBoxSectionImplProps<T>,
+    React.ForwardedRef<HTMLElement>
+  ];
   const { props, apply } = useProps(rest);
   const data = useDataAttributes({ level: __node?.level });
   const headingRef = useRef<HTMLDivElement>(null);

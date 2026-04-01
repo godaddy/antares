@@ -1,0 +1,31 @@
+.chart[data-x-labels-vertical="true"] .area .axisX text {
+  writing-mode: sideways-lr;
+  text-anchor: end;
+}
+
+.chart[data-x-labels-vertical="true"] .area .axisX text:dir(rtl) {
+  writing-mode: sideways-rl;
+}
+
+.area {
+  flex: 1;
+  overflow: auto;
+}
+
+.area svg {
+  display: block;
+}
+
+.tooltipContainer {
+  pointer-events: none !important;
+  position: absolute;
+  transform: translate(-50%, -100%);
+}
+
+.barGroup {
+  cursor: pointer;
+}
+
+.axisBackground {
+  pointer-events: none;
+}

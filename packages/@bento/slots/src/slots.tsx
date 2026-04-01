@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
-import React, { useContext, memo } from 'react';
+import type React from 'react';
+import { useContext, memo } from 'react';
 import { mergeProps } from 'react-aria';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useDeepCompareMemo } from 'use-deep-compare';
@@ -61,7 +62,8 @@ export function withSlots<Props extends object>(
   // and to ensure the component is wrapped with forwardRef if needed.
   //
   const ComponentWithRef = withForwardRef(Component);
-  const SlottedForwardRef = withForwardRef(function SlottedComponent(propsAndSlots: Props & Slots, forwardedRef: any) {
+  const SlottedForwardRef = withForwardRef(function SlottedComponent(...args: any[]) {
+    const [propsAndSlots, forwardedRef] = args as [Props & Slots, any];
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
     const dataAttrs = useDataAttributes({ slot });
     let props = { ...restProps } as Props;

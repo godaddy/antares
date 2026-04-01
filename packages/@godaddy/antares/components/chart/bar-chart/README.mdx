@@ -1,0 +1,344 @@
+---
+title: Bar Chart
+description: A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.
+---
+
+import { Meta, ArgTypes, Controls, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './bar-chart.stories.tsx';
+
+import SourceSingleSeries from './examples/single-series.tsx?raw';
+import SourceMultiSeries from './examples/multi-series.tsx?raw';
+import SourceHorizontalSingleSeries from './examples/horizontal-single-series.tsx?raw';
+import SourceHorizontalMultiSeries from './examples/horizontal-multi-series.tsx?raw';
+import SourceCustomDomain from './examples/custom-domain.tsx?raw';
+import SourceRTL from './examples/rtl-multi-series.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Single and multi-series support**: Display one or multiple data series with grouped bars
+- **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+- **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+- **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+- **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+- **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+- **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+- **RTL support**: Full right-to-left layout support for international audiences *(in development)*
+- **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+- **TypeScript support**: Fully typed with comprehensive prop interfaces
+- **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `BarChart` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+### Core Props
+
+#### `series` (required)
+An array of data series to display. Each series must include:
+- `id`: Unique identifier for the series
+- `name`: Display name for the legend
+- `data`: Array of data points
+- `color`: Hex color for the bars
+
+```tsx
+const series = [
+  {
+    id: 'new-york',
+    name: 'New York',
+    color: '#145FA9',
+    data: [{ date: '2024-01-01', temp: 45 }, ...]
+  }
+];
+```
+
+#### `xAccessor` (required)
+Function that extracts the x-axis value from a data point. Returns a string representing the category or label.
+
+```tsx
+xAccessor={(d) => d.date}
+```
+
+#### `yAccessor` (required)
+Function that extracts the y-axis value from a data point. Returns a number representing the value to display.
+
+```tsx
+yAccessor={(d) => d.temperature}
+```
+
+### Layout Props
+
+#### `orientation`
+Controls whether bars are vertical (default) or horizontal.
+- **Default**: `'vertical'`
+- **Options**: `'vertical'` | `'horizontal'`
+
+Vertical charts are best for time series or categorical data. Horizontal charts work well for rankings or when category labels are long.
+
+#### `width`
+Width of the chart in pixels. The chart uses responsive sizing via `useParentSize`, so this serves as a default when the container size is not yet known.
+- **Default**: `500`
+
+#### `height`
+Height of the chart in pixels.
+- **Default**: `700`
+
+#### `legendPosition`
+Position of the legend relative to the chart.
+- **Default**: `'bottom'`
+- **Options**: `'top'` | `'bottom'`
+
+### Axis Props
+
+#### `xAxisTitle`
+Title displayed below the x-axis.
+- **Type**: `string`
+
+#### `yAxisTitle`
+Title displayed to the left of the y-axis.
+- **Type**: `string`
+
+#### `xBaseline`
+Whether to show the x-axis baseline and labels.
+- **Default**: `true`
+
+#### `yBaseline`
+Whether to show the y-axis baseline and labels.
+- **Default**: `true`
+
+#### `xTickMarks`
+Whether to show tick marks on the x-axis.
+- **Default**: `true`
+
+#### `yTickMarks`
+Whether to show tick marks on the y-axis.
+- **Default**: `true`
+
+#### `xGridlines`
+Whether to show vertical gridlines from the x-axis.
+- **Default**: `true`
+
+#### `yGridlines`
+Whether to show horizontal gridlines from the y-axis.
+- **Default**: `true`
+
+#### `xTickFormat`
+Function to format x-axis tick labels. The value type depends on orientation:
+- Vertical: categories (string | Date) from xAccessor
+- Horizontal: numeric values (number) from xAccessor
+
+- **Type**: `(value: string | number | Date) => string`
+
+#### `yTickFormat`
+Function to format y-axis tick labels. The value type depends on orientation:
+- Vertical: numeric values (number) from yAccessor
+- Horizontal: categories (string | Date) from yAccessor
+
+- **Type**: `(value: string | number | Date) => string`
+
+#### `xNumTicks`
+Suggested number of ticks for the x-axis.
+- **Type**: `number`
+
+#### `yNumTicks`
+Suggested number of ticks for the y-axis.
+- **Type**: `number`
+
+### Domain Props
+
+#### `xDomain`
+Explicit x-axis domain. The type depends on orientation:
+- Vertical: Use `string[]` or `Date[]` to explicitly set categories
+- Horizontal: Use `[number, number]` to set value range [min, max]
+
+Useful for ensuring consistent domains across multiple charts or showing empty slots for missing data.
+
+- **Type**: `string[] | [number, number]`
+
+```tsx
+// Vertical: Show slots for categories A-F even if some are missing from data
+xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+
+// Horizontal: Set value range
+xDomain={[0, 100]}
+```
+
+#### `yDomain`
+Explicit y-axis domain. The type depends on orientation:
+- Vertical: Use `[number, number]` to set value range [min, max]
+- Horizontal: Use `string[]` or `Date[]` to explicitly set categories
+
+Useful for consistent scales across multiple charts or emphasizing specific value ranges.
+
+- **Type**: `[number, number] | string[]`
+
+```tsx
+// Vertical: Always show 0-100 range regardless of data
+yDomain={[0, 100]}
+
+// Horizontal: Show slots for categories A-F
+yDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+```
+
+### Interaction Props
+
+#### `tooltip`
+Whether to show tooltips on hover.
+- **Default**: `true`
+
+#### `rtl`
+Enable right-to-left layout for international audiences. When enabled, the y-axis moves to the right and bars/scales are mirrored.
+- **Default**: `false`
+- **Status**: *In active development*
+
+## Basic Usage
+
+### Single Series
+
+Display a single data series as vertical bars:
+
+<Source language='tsx' code={SourceSingleSeries} />
+<Story of={Stories.SingleSeries} inline />
+
+### Multi-Series
+
+Display multiple data series as grouped bars with a legend:
+
+<Source language='tsx' code={SourceMultiSeries} />
+<Story of={Stories.MultiSeries} inline />
+
+## Orientation
+
+### Horizontal Single Series
+
+Horizontal bars are ideal for ranking, comparison, or when you have long category labels:
+
+<Source language='tsx' code={SourceHorizontalSingleSeries} />
+<Story of={Stories.HorizontalSingleSeries} inline />
+
+### Horizontal Multi-Series
+
+Grouped bars work in horizontal orientation as well:
+
+<Source language='tsx' code={SourceHorizontalMultiSeries} />
+<Story of={Stories.HorizontalMultiSeries} inline />
+
+## Custom Domains
+
+Control the exact categories and value ranges displayed:
+
+<Source language='tsx' code={SourceCustomDomain} />
+<Story of={Stories.CustomDomain} inline />
+
+In this example:
+- `xDomain` includes category 'F' which doesn't exist in the data, showing an empty slot
+- `yDomain` is set to `[0, 40]` to maintain a consistent scale even though the max value is 30
+
+## RTL Support
+
+Full right-to-left support for international audiences:
+
+<Source language='tsx' code={SourceRTL} />
+<Story of={Stories.RTLMultiSeries} inline />
+
+**Note**: RTL support is currently in active development. Axis rendering and tick mark spacing are being refined.
+
+## Design System Alignment
+
+The BarChart component is built to align with UXCore design principles:
+
+### Spacing and Sizing
+- **Bar width**: 12px (1.5 grid units)
+- **Bar padding** (multi-series): 4px between bars within a group
+- **Group gap**: Minimum 24px between bar groups
+- **Border radius**: 8px on all bars
+- **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+### Responsive Behavior
+- **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+- **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+- **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+- **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+### Accessibility
+- **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+- **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+- **Tooltips**: Show on both hover and focus for keyboard users
+
+## Performance Considerations
+
+### Rendering Strategy
+
+The component uses VisX primitives for optimal SVG rendering:
+- **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+- **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+- **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+### Scrolling Strategy
+
+- **Vertical charts**: Horizontal scrolling when many data points exceed container width
+- **Horizontal charts**: Vertical scrolling when many categories exceed container height
+- **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+### Recommendations
+
+- For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+- For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+- Use **custom domains** to maintain consistent scales across multiple charts
+- **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+## Development Status
+
+The BarChart component is in active development. Current focus areas:
+
+- ✅ Single and multi-series support
+- ✅ Vertical and horizontal orientations
+- ✅ Responsive behavior with sticky axes
+- ✅ Interactive tooltips
+- ✅ Custom domains
+- ✅ Design system alignment
+- 🚧 RTL compatibility (axis rendering and spacing refinement)
+- 🚧 Tick mark positioning improvements
+- 🚧 Additional customization options (tick formatting, axis configuration)
+
+## Troubleshooting
+
+### Bars Not Showing
+
+If bars are not visible:
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+### Tooltip Positioning Issues
+
+If tooltips appear in the wrong location:
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+### Performance Issues
+
+For better performance:
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Examples
+
+All examples can be found in the Storybook interface:
+- **Single Series**: Basic vertical bar chart
+- **Multi-Series**: Grouped bars with legend
+- **Horizontal Single Series**: Horizontal orientation
+- **Horizontal Multi-Series**: Grouped horizontal bars
+- **Custom Domain**: Controlled x and y ranges
+- **RTL Multi-Series**: Right-to-left layout *(in development)*

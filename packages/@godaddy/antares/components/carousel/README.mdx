@@ -1,0 +1,95 @@
+---
+title: Carousel
+description: The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
+---
+
+import {
+  Meta,
+  ArgTypes,
+  Controls,
+  Source,
+  Story,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './carousel.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceExternalControlsControlled from './examples/external-controls-controlled.tsx?raw';
+import SourceExternalControlsUncontrolled from './examples/external-controls-uncontrolled.tsx?raw';
+import SourceHideControls from './examples/hide-controls.tsx?raw';
+import SourceVariableWidths from './examples/variable-widths.tsx?raw';
+import SourceEvents from './examples/events.tsx?raw';
+import SourceRTLDirection from './examples/rtl-direction.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/uxcore
+```
+
+## Props
+
+The `Carousel` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Controlled
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
+
+### External Controls (Uncontrolled)
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of={Stories.ExternalControlsUncontrolled} inline />
+<Source language="tsx" code={SourceExternalControlsUncontrolled} />
+
+### External Controls (Controlled)
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of={Stories.ExternalControlsControlled} inline />
+<Source language="tsx" code={SourceExternalControlsControlled} />
+
+### Hide Controls
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of={Stories.HideControls} inline />
+<Source language="tsx" code={SourceHideControls} />
+
+### Variable Widths
+
+It supports multiple slides with different widths.
+
+<Story of={Stories.VariableWidths} inline />
+<Source language="tsx" code={SourceVariableWidths} />
+
+### Events
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of={Stories.Events} inline />
+<Source language="tsx" code={SourceEvents} />
+
+### RTL Direction
+
+By default, the carousel is rendered in the direction of the document, which is left to right in most cases.
+You can set the `dir` prop to `rtl` to render the carousel from right to left.
+
+<Story of={Stories.RTLDirection} inline />
+<Source language="tsx" code={SourceRTLDirection} />

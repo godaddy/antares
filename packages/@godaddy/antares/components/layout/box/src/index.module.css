@@ -1,0 +1,31 @@
+:where(.box) {
+  background: var(--bg-base);
+  color: var(--fg-base);
+}
+
+:where(.box[data-elevation="card"]) {
+  border-width: 1px;
+  border-style: solid;
+  background: var(--bg-card);
+  border-color: var(--bd-card);
+  color: var(--fg-card);
+  filter: var(--sh-card);
+}
+
+:where(.box[data-elevation="raised"]) {
+  border-width: 1px;
+  border-style: solid;
+  background: var(--bg-raised);
+  border-color: var(--bd-raised);
+  color: var(--fg-raised);
+  filter: var(--sh-raised);
+}
+
+:where(.box[data-elevation="overlay"]) {
+  border-width: 1px;
+  border-style: solid;
+  background: var(--bg-overlay);
+  border-color: var(--bd-overlay);
+  color: var(--fg-overlay);
+  filter: var(--sh-overlay);
+}

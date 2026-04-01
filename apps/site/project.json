@@ -1,0 +1,53 @@
+{
+  "name": "site",
+  "targets": {
+    "build": {
+      "dependsOn": [
+        "^build",
+        { "target": "build", "projects": ["@godaddy/uxcore"] }
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/site",
+        "command": "next build"
+      },
+      "inputs": ["default", "^default", { "env": "GITHUB_PAGES" }],
+      "outputs": ["{projectRoot}/.next", "{projectRoot}/out"],
+      "cache": true
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "cd packages/uxcore && npm run watch",
+          "cd apps/site && next dev"
+        ],
+        "parallel": true
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/site",
+        "command": "next start"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/site",
+        "command": "biome check"
+      },
+      "cache": true
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/site",
+        "command": "vitest run"
+      },
+      "cache": true
+    }
+  }
+}

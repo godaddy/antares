@@ -1,6 +1,7 @@
 import ts from 'typescript';
 import { parse } from 'react-docgen-typescript';
 import { type ItemDoc, resolveImport } from './ats-utils.ts';
+import { isExcludedParent } from './prop-filter.ts';
 
 /**
  * Extracts the component or function documentation from the source file.
@@ -25,7 +26,7 @@ export function extractComponentDoc(componentName: string, sourceFile: ts.Source
       }
 
       if (prop.parent) {
-        return !prop.parent.fileName.includes('node_modules');
+        return !isExcludedParent(prop.parent.fileName);
       }
 
       return true;

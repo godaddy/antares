@@ -1,0 +1,55 @@
+.title {
+  font-size: var(--fs-detail-lg);
+  color: var(--passive);
+}
+
+.infoTrigger {
+  position: relative;
+  line-height: 0;
+}
+
+/* Extends the hit area to 44px without affecting layout or fighting Button's padding/margin styles. */
+.infoTrigger::before {
+  content: "";
+  position: absolute;
+  inset: -0.75rem;
+}
+
+.infoTrigger svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.data {
+  font-size: var(--fs-2xl);
+  font-weight: bolder;
+  line-height: var(--lh-heading);
+}
+
+.description {
+  font-size: var(--fs-detail-lg);
+  color: var(--passive);
+}
+
+.trendIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.trendIcon * {
+  fill: currentColor;
+}
+
+.trendIcon[data-trend="positive"] {
+  color: green;
+}
+
+.trendIcon[data-trend="neutral"] {
+  color: var(--passive);
+}
+
+.trendIcon[data-trend="negative"] {
+  color: var(--critical);
+}

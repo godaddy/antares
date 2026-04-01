@@ -1,10 +1,10 @@
-import React from 'react';
+import type { JSX } from 'react';
 import { withSlots } from '@bento/slots';
 import { useProps } from '@bento/use-props';
-import { VisuallyHiddenProps as AriaVisuallyHiddenProps, useVisuallyHidden } from 'react-aria';
+import { type VisuallyHiddenProps as AriaVisuallyHiddenProps, useVisuallyHidden } from 'react-aria';
 import { useDataAttributes } from '@bento/use-data-attributes';
 
-export interface VisuallyHiddenProps extends AriaVisuallyHiddenProps {
+export interface VisuallyHiddenProps extends Omit<AriaVisuallyHiddenProps, 'elementType'> {
   /** The element type to render the component as. Community standard (preferred) @default 'span' */
   as?: keyof JSX.IntrinsicElements;
 

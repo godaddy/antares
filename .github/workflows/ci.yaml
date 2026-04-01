@@ -32,34 +32,28 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Restore NX Cache
-        uses: actions/cache@v5
-        with:
-          path: .nx/cache
-          key: nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
-            nx-${{ runner.os }}-
-
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npx playwright install --with-deps
 
-      - name: Restore Playwright Cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Build Packages
-        run: npm run build
+      - name: Run Type Check
+        run: npm run typecheck
 
       - name: Test
         run: npm test
 
+      - name: Run Visual Tests
+        run: npm run test:visual
+
       - name: Lint
         run: npm run lint
+
+      - name: Upload Visual Test Artifacts
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: visual-test-diffs-pr-${{ github.event.pull_request.number }}
+          path: packages/@godaddy/antares/.vitest-attachments/
+          retention-days: 2
+          if-no-files-found: ignore

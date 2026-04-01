@@ -1,0 +1,10 @@
+.dot {
+  width: var(--sp-sm, 0.5rem);
+  height: var(--sp-sm, 0.5rem);
+  background: var(--bg-selected);
+  border-radius: 50%;
+}
+
+.dot.selected {
+  background: var(--fg-selected);
+}

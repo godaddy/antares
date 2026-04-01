@@ -1,0 +1,97 @@
+---
+title: FieldFrame
+description: Field frame component with integrated Label, description Text, and FieldError for form fields
+---
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './field-frame.stories.tsx';
+
+import SourceTrailingControl from './examples/trailing-control.tsx?raw';
+import SourceLeadingControl from './examples/leading-control.tsx?raw';
+import SourceIconAccessories from './examples/icon-accessories.tsx?raw';
+import SourceBasic from './examples/basic.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+# FieldFrame
+
+**Internal component.** FieldFrame is intended for internal use only. Use the public field components (TextField, NumberField, DateField, Select) instead; they compose FieldFrame internally.
+
+Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
+
+## Features
+
+- **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
+- **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
+- **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
+- **Required indicator**: Shows asterisk next to label when the field is required
+- **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
+- **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
+
+## Usage
+
+### Props
+
+FieldFrame accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+### Basic example
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceBasic} />
+
+Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
+
+## Component composition
+
+### Internal structure
+
+FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
+
+```text
+Provider
+├── Label                     ← when label prop
+├── Group.frame               ← border, focus/invalid/disabled styling
+│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
+├── FieldError                ← when errorMessage prop
+└── Text[slot=description]    ← when description prop
+```
+
+The following list describes the internal React Aria components used to compose FieldFrame:
+
+- **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
+- **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
+- **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
+- **Text** (optional) — Description block rendered when `description` is provided.
+
+Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
+
+### States
+
+The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
+
+| State | CSS Selector |
+| --- | --- |
+| disabled — Applied when the field wrapper is disabled. | `[data-disabled]` |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed). | `[data-invalid]` |
+| readonly — Applied when the field wrapper is read only. | `[data-readonly]` |
+| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard. | `[data-focus-within]` |
+
+## Examples
+
+### Leading control
+
+<Story of={Stories.LeadingControl} inline />
+
+### Trailing control
+
+<Story of={Stories.TrailingControl} inline />
+
+<Source language="tsx" code={SourceTrailingControl} />
+
+### Icon accessories
+
+<Story of={Stories.IconAccessories} inline />
+
+<Source language="tsx" code={SourceIconAccessories} />

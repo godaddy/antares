@@ -14,8 +14,9 @@ export function generateCSFPlugin(storiesFileRegex: RegExp): Plugin {
       if (storiesFileRegex.test(fileName)) {
         this.addWatchFile(fileName);
 
-        return csfTransformer({ filePath: fileName });
+        return await csfTransformer({ filePath: fileName });
       }
+      return null;
     }
   };
 }
