@@ -39,7 +39,7 @@
     "@types/react": "^19.2.14",
     "assume": "^2.3.0",
     "react": "^19.2.4",
-    "tsdown": "^0.20.3",
+    "tsdown": "^0.21.7",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18"
