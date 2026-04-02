@@ -11,7 +11,7 @@ import { RadioFormExample } from '../examples/radio-form.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#RadioGroup', function radioGroupTests() {
     it('renders RadioBasicExample', function basicExample() {
       expect(renderToString(<RadioBasicExample />)).toMatchSnapshot();

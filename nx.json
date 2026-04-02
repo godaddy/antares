@@ -1,20 +1,14 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "tui": {
+    "enabled": false,
     "autoExit": true
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "default",
-        "^default"
-      ],
-      "outputs": [
-        "{projectRoot}/dist"
-      ],
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"],
+      "outputs": ["{projectRoot}/dist"],
       "cache": true
     },
     "test": {
@@ -25,10 +19,7 @@
     },
     "@nx/vitest:test": {
       "cache": true,
-      "inputs": [
-        "default",
-        "^default"
-      ]
+      "inputs": ["default", "^default"]
     }
   },
   "plugins": [
@@ -57,5 +48,6 @@
         "watchDepsTargetName": "watch-deps"
       }
     }
-  ]
+  ],
+  "analytics": false
 }

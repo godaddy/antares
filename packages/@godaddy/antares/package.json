@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gdcorp.github.com:gdcorp-uxp/uxcore.git",
+    "url": "git@gdcorp.github.com:godaddy/antares.git",
     "directory": "packages/@godaddy/antares"
   },
   "keywords": [
@@ -71,7 +71,7 @@
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18",
-    "vitest-browser-react": "^2.0.2"
+    "vitest-browser-react": "^2.1.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

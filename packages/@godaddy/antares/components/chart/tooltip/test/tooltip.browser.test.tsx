@@ -7,7 +7,7 @@ import { ArrowExample } from '../examples/arrow.tsx';
 import { MultipleSeriesExample } from '../examples/multiple-series.tsx';
 import { SingleSeriesExample } from '../examples/single-series.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#single-series', function singleSeriesTests() {
     it('renders single-series tooltip', async function singleSeries() {
       const { locator } = await render(<SingleSeriesExample />);

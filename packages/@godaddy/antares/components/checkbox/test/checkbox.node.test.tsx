@@ -10,7 +10,7 @@ import { PlaygroundExample } from '../examples/playground';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
     it('renders CheckboxBasic', function basicExample() {
       const result = renderToString(<CheckboxBasic />);

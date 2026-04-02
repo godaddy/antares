@@ -5,12 +5,11 @@ import { Basic } from '../examples/basic.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/dismiss', function bento() {
   describe('Examples', function examplesTests() {
-    it('should render basic example in closed state initially', function test() {
-      const { container } = render(<Basic />);
+    it('should render basic example in closed state initially', async function test() {
+      const { container } = await render(<Basic />);
       const openButton = container.querySelector('button');
 
       assume(openButton).is.not.null();
@@ -22,7 +21,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should open and close basic example', async function test() {
-      const { container } = render(<Basic />);
+      const { container } = await render(<Basic />);
 
       // Click to open
       const openButton = container.querySelector('button');
@@ -49,7 +48,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should close basic example with second dismiss button', async function test() {
-      const { container } = render(<Basic />);
+      const { container } = await render(<Basic />);
 
       // Open dialog
       await userEvent.click(container.querySelector('button'));
@@ -64,7 +63,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should close basic example with close button', async function test() {
-      const { container } = render(<Basic />);
+      const { container } = await render(<Basic />);
 
       // Open dialog
       await userEvent.click(container.querySelector('button'));
@@ -78,8 +77,8 @@ describe('@bento/dismiss', function bento() {
       assume(dialog).is.null();
     });
 
-    it('should render custom label example in closed state initially', function test() {
-      const { container } = render(<CustomLabel />);
+    it('should render custom label example in closed state initially', async function test() {
+      const { container } = await render(<CustomLabel />);
       const openButton = container.querySelector('button');
 
       assume(openButton).is.not.null();
@@ -87,7 +86,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should open and close custom label example with custom aria-label', async function test() {
-      const { container } = render(<CustomLabel />);
+      const { container } = await render(<CustomLabel />);
 
       // Open dialog
       await userEvent.click(container.querySelector('button'));
@@ -108,7 +107,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should close custom label example with second dismiss button', async function test() {
-      const { container } = render(<CustomLabel />);
+      const { container } = await render(<CustomLabel />);
 
       // Open dialog
       await userEvent.click(container.querySelector('button'));
@@ -121,8 +120,8 @@ describe('@bento/dismiss', function bento() {
       assume(newDialog).is.null();
     });
 
-    it('should render slot customization example in closed state initially', function test() {
-      const { container } = render(<SlotCustomization />);
+    it('should render slot customization example in closed state initially', async function test() {
+      const { container } = await render(<SlotCustomization />);
       const openButton = container.querySelector('button');
 
       assume(openButton).is.not.null();
@@ -130,7 +129,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should open and close slot customization example', async function test() {
-      const { container } = render(<SlotCustomization />);
+      const { container } = await render(<SlotCustomization />);
 
       // Open dialog
       await userEvent.click(container.querySelector('button'));
@@ -156,7 +155,7 @@ describe('@bento/dismiss', function bento() {
     });
 
     it('should close slot customization example with second dismiss button', async function test() {
-      const { container } = render(<SlotCustomization />);
+      const { container } = await render(<SlotCustomization />);
 
       // Open dialog
       await userEvent.click(container.querySelector('button'));

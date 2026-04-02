@@ -1,6 +1,7 @@
 {
   "extends": "../../../configs/tsconfig.json",
   "include": ["./src", "./test", "./examples"],
+  "exclude": ["**/*.visual.test.tsx"],
   "compilerOptions": {
     "rootDir": "./",
     "declarationDir": "./dist"

@@ -1,6 +1,6 @@
 import { BentoError, type BentoErrorArgs } from '@bento/error';
 /* v8 ignore next */
-import React, { useCallback, type JSX } from 'react';
+import { useCallback, type JSX } from 'react';
 
 /**
  * Throws component renders a button that logs a BentoError to the console when clicked.

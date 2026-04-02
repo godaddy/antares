@@ -1,7 +1,7 @@
 import { toViewBox, parseViewBox, transformers } from '../src/transformers.tsx';
+import type { ReactElement } from 'react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/illustration/transformers', function bento() {
   describe('#toViewBox', function toViewBoxSuite() {
@@ -39,7 +39,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { type, props } = result;
+      const { type, props } = result as ReactElement<Record<string, unknown>>;
 
       assume(type).equals('g');
       assume(props).includes('transform');
@@ -59,7 +59,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { props } = result;
+      const { props } = result as ReactElement<Record<string, unknown>>;
       assume(props.transform).equals('translate(1210 -12) scale(-1 1)');
       assume(viewBox).deep.equals({ left: 0, top: 0, width: 1200, height: 1300 });
     });
@@ -74,7 +74,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { props } = result;
+      const { props } = result as ReactElement<Record<string, unknown>>;
       assume(props.transform).equals('translate(-10 1312) scale(1 -1)');
       assume(viewBox).deep.equals({ left: 0, top: 0, width: 1200, height: 1300 });
     });
@@ -91,7 +91,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { props } = result;
+      const { props } = result as ReactElement<Record<string, unknown>>;
       assume(props.transform).equals('rotate(90 662 662)');
       assume(viewBox).deep.equals({ left: 12, top: 10, width: 1300, height: 1200 });
     });
@@ -106,7 +106,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { props } = result;
+      const { props } = result as ReactElement<Record<string, unknown>>;
       assume(props.transform).equals('rotate(180 610 662)');
       assume(viewBox).deep.equals({ left: 10, top: 12, width: 1200, height: 1300 });
     });
@@ -121,7 +121,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { props } = result;
+      const { props } = result as ReactElement<Record<string, unknown>>;
       assume(props.transform).equals('rotate(-90 610 610)');
       assume(viewBox).deep.equals({ left: 12, top: 10, width: 1300, height: 1200 });
     });
@@ -139,7 +139,7 @@ describe('@bento/illustration/transformers', function bento() {
         drawings
       );
 
-      const { props } = result;
+      const { props } = result as ReactElement<Record<string, unknown>>;
       assume(props.transform).equals('translate(1210 -12) scale(-1 1) rotate(90 650 650)');
       assume(viewBox).deep.equals({ left: 0, top: 0, width: 1300, height: 1200 });
     });

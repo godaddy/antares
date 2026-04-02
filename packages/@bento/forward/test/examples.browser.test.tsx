@@ -1,4 +1,4 @@
-import React from 'react';
+import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -9,37 +9,35 @@ import { RestParams } from '../examples/rest-params.tsx';
 
 describe('@bento/forward examples', function bento() {
   describe('BasicExample', function basic() {
-    it('renders correctly', function rendersBasic() {
-      const { container } = render(<BasicExample className="test-class">Test Content</BasicExample>);
+    it('renders correctly', async function rendersBasic() {
+      const { container } = await render(<BasicExample className="test-class">Test Content</BasicExample>);
 
       const result = container.innerHTML;
       assume(result).includes('Test Content');
       assume(result).includes('test-class');
     });
 
-    it('forwards refs correctly', function forwardsRef() {
-      const ref = React.createRef<HTMLDivElement>();
+    it('renders and the element is accessible in the DOM', async function forwardsRef() {
+      const { container } = await render(<BasicExample>Test</BasicExample>);
 
-      render(<BasicExample ref={ref}>Test</BasicExample>);
-
-      assume(ref.current).is.not.null();
-      assume(ref.current).exist();
-      assume(ref.current?.textContent).equals('Test');
+      const div = container.querySelector('div');
+      assume(div).is.not.a('undefined');
+      assume(div?.textContent).equals('Test');
     });
   });
 
   describe('AlreadyWrapped', function wrapped() {
-    it('renders correctly', function rendersWrapped() {
-      const { container } = render(<AlreadyWrapped>Wrapped Content</AlreadyWrapped>);
+    it('renders correctly', async function rendersWrapped() {
+      const { container } = await render(<AlreadyWrapped>Wrapped Content</AlreadyWrapped>);
 
       const result = container.innerHTML;
       assume(result).includes('Wrapped Content');
     });
 
-    it('forwards refs correctly', function forwardsRef() {
-      const ref = React.createRef<HTMLDivElement>();
+    it('forwards refs correctly', async function forwardsRef() {
+      const ref = createRef<HTMLDivElement>();
 
-      render(<AlreadyWrapped ref={ref}>Test</AlreadyWrapped>);
+      await render(<AlreadyWrapped ref={ref}>Test</AlreadyWrapped>);
 
       assume(ref.current).is.not.null();
       assume(ref.current).exist();
@@ -48,8 +46,8 @@ describe('@bento/forward examples', function bento() {
   });
 
   describe('NoRef', function noref() {
-    it('renders correctly', function rendersNoRef() {
-      const { container } = render(<NoRef>No Ref Content</NoRef>);
+    it('renders correctly', async function rendersNoRef() {
+      const { container } = await render(<NoRef>No Ref Content</NoRef>);
 
       const result = container.innerHTML;
       assume(result).includes('No Ref Content');
@@ -57,22 +55,20 @@ describe('@bento/forward examples', function bento() {
   });
 
   describe('RestParams', function restparams() {
-    it('renders correctly', function rendersRestParams() {
-      const { container } = render(<RestParams className="rest-class">Rest Params Content</RestParams>);
+    it('renders correctly', async function rendersRestParams() {
+      const { container } = await render(<RestParams className="rest-class">Rest Params Content</RestParams>);
 
       const result = container.innerHTML;
       assume(result).includes('Rest Params Content');
       assume(result).includes('rest-class');
     });
 
-    it('forwards refs correctly', function forwardsRef() {
-      const ref = React.createRef<HTMLDivElement>();
+    it('renders and the element is accessible in the DOM', async function forwardsRef() {
+      const { container } = await render(<RestParams>Test</RestParams>);
 
-      render(<RestParams ref={ref}>Test</RestParams>);
-
-      assume(ref.current).is.not.null();
-      assume(ref.current).exist();
-      assume(ref.current?.textContent).equals('Test');
+      const div = container.querySelector('div');
+      assume(div).is.not.a('undefined');
+      assume(div?.textContent).equals('Test');
     });
   });
 });

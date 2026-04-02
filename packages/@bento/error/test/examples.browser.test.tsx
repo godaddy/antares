@@ -2,12 +2,11 @@ import { Throws } from '../examples/throws.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/error examples', function bento() {
   describe('throws', function example() {
     it('logs an error to the console when the button is clicked', async function test() {
-      const screen = render(<Throws message="value here" method="example" name="error" />);
+      const screen = await render(<Throws message="value here" method="example" name="error" />);
       const consoleError = console.error;
       let error: Error | undefined;
 

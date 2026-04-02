@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -8,8 +7,8 @@ import { CustomElementExample } from '../examples/custom-element.tsx';
 
 describe('@bento/visually-hidden examples', function bento() {
   describe('VisuallyHidden', function visuallyHiddenExample() {
-    it('renders the default example', function rendersDefault() {
-      const { container } = render(<DefaultExample />);
+    it('renders the default example', async function rendersDefault() {
+      const { container } = await render(<DefaultExample />);
       const result = container.innerHTML;
 
       assume(result).includes('Skip to main content');
@@ -17,7 +16,7 @@ describe('@bento/visually-hidden examples', function bento() {
     });
 
     it('renders the hidden content when focused on tabbing and proper data-hidden attribute', async function rendersDefault() {
-      const { container } = render(<DefaultExample />);
+      const { container } = await render(<DefaultExample />);
 
       container.focus();
       assume(container.innerHTML).includes('data-hidden="true"');
@@ -25,8 +24,8 @@ describe('@bento/visually-hidden examples', function bento() {
       assume(container.innerHTML).does.not.include('data-hidden="true"');
     });
 
-    it('renders the custom element example', function rendersCustomElement() {
-      const { container } = render(<CustomElementExample />);
+    it('renders the custom element example', async function rendersCustomElement() {
+      const { container } = await render(<CustomElementExample />);
       const result = container.innerHTML;
 
       assume(result).includes('This content is hidden visually but accessible to screen readers');

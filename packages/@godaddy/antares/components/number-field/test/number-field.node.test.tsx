@@ -8,7 +8,7 @@ import { NumberFieldHideStepperExample } from '../examples/hide-stepper';
 import { NumberFieldInvalidExample } from '../examples/invalid';
 import { NumberFieldValueScaleExample } from '../examples/value-scale';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
     describe('#examples', function examples() {
       it('renders basic example', function basic() {

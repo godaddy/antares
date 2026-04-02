@@ -7,7 +7,7 @@ import { AsExample } from '../examples/as.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { TypesExample } from '../examples/types.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
     it('renders boxes with padding variations', function rendersPadding() {
       const result = renderToString(<PaddingExample />);

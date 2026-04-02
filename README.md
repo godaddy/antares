@@ -1,10 +1,10 @@
 # 🍱 Bento
 
-[![CI](https://github.com/godaddy/uxcore/actions/workflows/ci.yaml/badge.svg)](https://github.com/godaddy/uxcore/actions/workflows/ci.yaml)
+[![CI](https://github.com/godaddy/antares/actions/workflows/ci.yaml/badge.svg)](https://github.com/godaddy/antares/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/node-%3E%3D23-brightgreen)](https://nodejs.org/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/godaddy/uxcore)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/godaddy/antares)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 [![Changesets](https://img.shields.io/badge/maintained%20with-changesets-blue)](https://github.com/changesets/changesets)
 
@@ -87,7 +87,7 @@ date and working as expected.
 
 ```sh
 # Clone the repository
-git clone https://github.com/godaddy/uxcore.git
+git clone https://github.com/godaddy/antares.git
 cd bento
 
 # Install dependencies

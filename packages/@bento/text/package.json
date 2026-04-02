@@ -32,9 +32,9 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/godaddy/uxcore/issues"
+    "url": "https://github.com/godaddy/antares/issues"
   },
-  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "homepage": "https://github.com/godaddy/antares#readme",
   "files": [
     "dist",
     "src",
@@ -54,7 +54,8 @@
     "@types/react-dom": "^19.2.3",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "vitest-browser-react": "^2.1.0"
   },
   "exports": {
     ".": {

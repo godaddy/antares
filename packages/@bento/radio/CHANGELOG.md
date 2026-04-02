@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- Adds @bento/input to the repo and to the @bento/checkbox and @bento/radio primitives. ([#54](https://github.com/godaddy/uxcore/pull/54) by @amarques-godaddy)
+- Adds @bento/input to the repo and to the @bento/checkbox and @bento/radio primitives. ([#54](https://github.com/godaddy/antares/pull/54) by @amarques-godaddy)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -21,7 +21,7 @@
 
 ### Minor Changes
 
-- Radio and Checkbox redesign with improved architecture to better support the composition pattern we expect with Bento ([#33](https://github.com/godaddy/uxcore/pull/33) by @egaitan-godaddy)
+- Radio and Checkbox redesign with improved architecture to better support the composition pattern we expect with Bento ([#33](https://github.com/godaddy/antares/pull/33) by @egaitan-godaddy)
 
 ### Patch Changes
 
@@ -39,7 +39,7 @@
 
 ### Patch Changes
 
-- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/uxcore/pull/23) by @kawikabader)
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/antares/pull/23) by @kawikabader)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -55,7 +55,7 @@
 
 ### Patch Changes
 
-- fix: slot namespaces now resolved relative to the slotted component, also updated slot tests across multiple components ([b9ddb93](https://github.com/godaddy/uxcore/commit/b9ddb932628bf84b5b3c969aa7f08dcf6b58ade6))
+- fix: slot namespaces now resolved relative to the slotted component, also updated slot tests across multiple components ([b9ddb93](https://github.com/godaddy/antares/commit/b9ddb932628bf84b5b3c969aa7f08dcf6b58ade6))
 
 <details>
 <summary>Updated dependencies</summary>
@@ -79,7 +79,7 @@
 
 ### Minor Changes
 
-- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/uxcore/pull/168) by @kbader-godaddy)
+- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/antares/pull/168) by @kbader-godaddy)
 
 ### Patch Changes
 

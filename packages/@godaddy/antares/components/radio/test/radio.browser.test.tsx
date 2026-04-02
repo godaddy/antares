@@ -13,17 +13,17 @@ import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#RadioGroup', function radioGroupTests() {
     it('renders RadioBasicExample', async function basicRender() {
-      render(<RadioBasicExample />);
+      await render(<RadioBasicExample />);
 
       assume(page.getByRole('radiogroup')).exists();
       assume(page.getByRole('radio', { name: 'Basic' })).exists();
     });
 
     it('renders RadioControlledExample with interaction', async function controlledRender() {
-      render(<RadioControlledExample />);
+      await render(<RadioControlledExample />);
 
       await page.getByRole('radio', { name: 'Premium' }).click({ force: true });
       await vi.waitFor(function checkSelection() {
@@ -32,50 +32,50 @@ describe('@godaddy/uxcore', function uxcore() {
     });
 
     it('renders RadioHorizontalExample', async function horizontalRender() {
-      render(<RadioHorizontalExample />);
+      await render(<RadioHorizontalExample />);
 
       assume(page.getByRole('radiogroup')).exists();
     });
 
     it('renders RadioDisabledExample with disabled states', async function disabledRender() {
-      render(<RadioDisabledExample />);
+      await render(<RadioDisabledExample />);
 
       assume(page.getByRole('radiogroup', { name: 'Disabled group' })).exists();
       assume(page.getByRole('radiogroup', { name: 'Individual disabled options' })).exists();
     });
 
     it('renders RadioAriaLabelExample', async function ariaLabelRender() {
-      render(<RadioAriaLabelExample />);
+      await render(<RadioAriaLabelExample />);
 
       assume(page.getByRole('radiogroup', { name: 'Sort order' })).exists();
     });
 
     it('renders RadioDescriptionExample', async function descriptionRender() {
-      render(<RadioDescriptionExample />);
+      await render(<RadioDescriptionExample />);
 
       assume(page.getByText("Choose how you'd like to receive updates")).exists();
     });
 
     it('renders RadioErrorExample', async function errorRender() {
-      render(<RadioErrorExample />);
+      await render(<RadioErrorExample />);
 
       assume(page.getByText('Please select a shipping method')).exists();
     });
 
     it('renders RadioRequiredExample', async function requiredRender() {
-      render(<RadioRequiredExample />);
+      await render(<RadioRequiredExample />);
 
       assume(page.getByRole('radiogroup', { name: 'Payment method' })).exists();
     });
 
     it('renders PlaygroundExample with default props', async function playgroundRender() {
-      render(<PlaygroundExample />);
+      await render(<PlaygroundExample />);
 
       assume(page.getByRole('radiogroup')).exists();
     });
 
     it('renders RadioFormExample', async function formRender() {
-      render(<RadioFormExample />);
+      await render(<RadioFormExample />);
 
       assume(page.getByRole('radiogroup')).exists();
     });

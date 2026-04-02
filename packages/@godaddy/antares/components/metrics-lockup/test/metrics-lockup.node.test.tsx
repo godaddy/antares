@@ -5,7 +5,7 @@ import { CompactExample } from '../examples/compact.tsx';
 import { PlaygroundExample } from '../examples/metrics-lockup-playground.tsx';
 import { renderToString } from 'react-dom/server';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#MetricsLockup', function metricsLockupTests() {
     it('renders DefaultExample', function defaultExample() {
       expect(renderToString(<DefaultExample />)).toMatchSnapshot();

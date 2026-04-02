@@ -3,7 +3,6 @@ import { Environment } from '@bento/environment';
 import { describe, it } from 'vitest';
 import { Box } from '@bento/box';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/environment', function bento() {
   describe('#components', function componentsSuite() {

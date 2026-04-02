@@ -15,7 +15,7 @@
 
 ### Minor Changes
 
-- Initial release ([#50](https://github.com/godaddy/uxcore/pull/50) by @egaitan-godaddy)
+- Initial release ([#50](https://github.com/godaddy/antares/pull/50) by @egaitan-godaddy)
 
 ### Patch Changes
 

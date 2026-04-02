@@ -10,7 +10,7 @@ import { RTLExample } from '../examples/rtl.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#SegmentedController', function segmentedControllerTests() {
     it('renders BasicExample', function basicExample() {
       expect(renderToString(<BasicExample />)).toMatchSnapshot();

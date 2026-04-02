@@ -8,7 +8,7 @@ import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';
 import { TextFieldMultilineExample } from '../examples/multiline';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
     describe('#basic', function basic() {
       it('renders label and textbox with placeholder', async function renders() {

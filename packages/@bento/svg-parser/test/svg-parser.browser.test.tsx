@@ -129,5 +129,68 @@ describe('@bento/svg-parser browser', function bento() {
       const div = result.props.children[0];
       assume(div.type).equals(Custom);
     });
+
+    it('preserves a key when the node transformer provides one', function preserveKey() {
+      const result = parser('<svg xmlns="http://www.w3.org/2000/svg"><g><path d="M3 22v-20l18 10-18 10z"></g></svg>', {
+        nodes: {
+          g: function modify() {
+            return ['div', { key: 'custom-key' }];
+          }
+        }
+      });
+
+      assume(result).is.a('object');
+      assume(result.type).equals('svg');
+
+      const div = result.props.children[0];
+      assume(div.type).equals('div');
+      assume(div.key).equals('custom-key');
+    });
+
+    it('handles multiple node types with mixed transformations', function multipleNodes() {
+      const result = parser(
+        '<svg xmlns="http://www.w3.org/2000/svg"><g><rect width="10" height="10"></rect></g><circle cx="5" cy="5" r="5"></circle></svg>',
+        {
+          nodes: {
+            g: function modify() {
+              return ['div', { key: 'group-key' }];
+            }
+          }
+        }
+      );
+
+      assume(result).is.a('object');
+      assume(result.type).equals('svg');
+
+      const children = result.props.children;
+      assume(children).is.a('array');
+      assume(children).is.length(2);
+
+      assume(children[0].type).equals('div');
+      assume(children[0].key).equals('group-key');
+
+      assume(children[1].type).equals('circle');
+      assume(children[1].key).equals('circle-1');
+    });
+  });
+
+  describe('#props edge cases', function propsEdgeCases() {
+    it('skips attributes when a prop transformer returns an empty name', function emptyName() {
+      const result = parser(
+        '<svg xmlns="http://www.w3.org/2000/svg"><path data-remove="yes" d="M3 22v-20l18 10-18 10z"></svg>',
+        {
+          props: {
+            'data-remove': function modify() {
+              return ['', 'ignored'];
+            }
+          }
+        }
+      );
+
+      const path = result.props.children[0];
+
+      assume(path.props['']).equals(undefined);
+      assume(path.props.d).equals('M3 22v-20l18 10-18 10z');
+    });
   });
 });

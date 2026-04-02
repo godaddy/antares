@@ -7,9 +7,9 @@ import React from 'react';
 
 describe('@bento/dismiss', function bento() {
   describe('Dismiss', function dismissTests() {
-    it('should render a dismiss button', function test() {
+    it('should render a dismiss button', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const { container } = await render(<Dismiss onDismiss={onDismiss} />);
       const button = container.querySelector('button');
 
       expect(button).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe('@bento/dismiss', function bento() {
 
     it('should call onDismiss when clicked', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const { container } = await render(<Dismiss onDismiss={onDismiss} />);
       const button = container.querySelector('button');
 
       await userEvent.click(button);
@@ -28,17 +28,17 @@ describe('@bento/dismiss', function bento() {
       expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    it('should use custom aria-label when provided', function test() {
+    it('should use custom aria-label when provided', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(<Dismiss onDismiss={onDismiss} ariaLabel="Close dialog" />);
+      const { container } = await render(<Dismiss onDismiss={onDismiss} ariaLabel="Close dialog" />);
       const button = container.querySelector('button');
 
       expect(button).toHaveAttribute('aria-label', 'Close dialog');
     });
 
-    it('should be visually hidden but accessible', function test() {
+    it('should be visually hidden but accessible', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const { container } = await render(<Dismiss onDismiss={onDismiss} />);
       const button = container.querySelector('button');
 
       // Button should be in the DOM and accessible
@@ -51,7 +51,7 @@ describe('@bento/dismiss', function bento() {
 
     it('should be keyboard accessible', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(<Dismiss onDismiss={onDismiss} />);
+      const { container } = await render(<Dismiss onDismiss={onDismiss} />);
       const button = container.querySelector('button');
 
       // Focus the button
@@ -63,9 +63,9 @@ describe('@bento/dismiss', function bento() {
       expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    it('should apply slot customization', function test() {
+    it('should apply slot customization', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(
+      const { container } = await render(
         <Dismiss
           onDismiss={onDismiss}
           slots={{
@@ -80,24 +80,24 @@ describe('@bento/dismiss', function bento() {
       assume(visuallyHidden).is.not.null();
     });
 
-    it('should render without onDismiss callback', function test() {
-      const { container } = render(<Dismiss />);
+    it('should render without onDismiss callback', async function test() {
+      const { container } = await render(<Dismiss />);
       const button = container.querySelector('button');
 
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute('aria-label', 'Dismiss');
     });
 
-    it('should render with children', function test() {
+    it('should render with children', async function test() {
       const onDismiss = vi.fn();
-      const { container } = render(<Dismiss onDismiss={onDismiss}>Close</Dismiss>);
+      const { container } = await render(<Dismiss onDismiss={onDismiss}>Close</Dismiss>);
       const button = container.querySelector('button');
 
       expect(button).toHaveTextContent('Close');
     });
 
     it('should not throw when clicked without onDismiss', async function test() {
-      const { container } = render(<Dismiss />);
+      const { container } = await render(<Dismiss />);
       const button = container.querySelector('button');
 
       // Should not throw when clicking without onDismiss

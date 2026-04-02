@@ -17,7 +17,7 @@
 
 ### Minor Changes
 
-- Initial release of the Dismiss Primitive ([#40](https://github.com/godaddy/uxcore/pull/40) by @akazemier-godaddy)
+- Initial release of the Dismiss Primitive ([#40](https://github.com/godaddy/antares/pull/40) by @akazemier-godaddy)
 
 ### Patch Changes
 

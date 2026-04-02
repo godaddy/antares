@@ -44,7 +44,7 @@ async function renderExampleAndWait(children: React.ReactNode, width = 800, heig
   return result;
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#LineChart', function lineChartTests() {
     describe('#basic', function basic() {
       it('single-series screenshot', async function singleSeries() {

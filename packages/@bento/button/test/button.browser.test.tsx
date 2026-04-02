@@ -6,16 +6,16 @@ import assume from 'assume';
 
 describe('@bento/button', function bento() {
   describe('Button', function buttonTests() {
-    it('should render a button', function test() {
-      const { container } = render(<Button>Click me</Button>);
+    it('should render a button', async function test() {
+      const { container } = await render(<Button>Click me</Button>);
       const result = container.innerHTML;
 
       assume(result).includes('type="button"');
       assume(result).match(/^<button[^>]*>Click me<\/button>$/);
     });
 
-    it('should have all button aria attributes', function test() {
-      const { container } = render(<Button>Click me</Button>);
+    it('should have all button aria attributes', async function test() {
+      const { container } = await render(<Button>Click me</Button>);
       const button = container.querySelector('button');
       expect(button).toHaveAttribute('type', 'button');
       expect(button).toHaveAttribute('tabindex', '0');
@@ -27,7 +27,7 @@ describe('@bento/button', function bento() {
       const onPressStart = vi.fn();
       const onPressEnd = vi.fn();
       const onPressUp = vi.fn();
-      const { container } = render(
+      const { container } = await render(
         <Button onPress={onPress} onPressStart={onPressStart} onPressEnd={onPressEnd} onPressUp={onPressUp}>
           Click me
         </Button>
@@ -42,8 +42,8 @@ describe('@bento/button', function bento() {
       expect(onPressUp).toHaveBeenCalledTimes(1);
     });
 
-    it('should pass down props to the button', function test() {
-      const { container } = render(
+    it('should pass down props to the button', async function test() {
+      const { container } = await render(
         <Button className="my-class" style={{ color: 'red' }} type="submit" disabled>
           Click me
         </Button>
@@ -56,7 +56,7 @@ describe('@bento/button', function bento() {
       assume(result).includes('disabled');
     });
 
-    it('should allow to use ref', function test() {
+    it('should allow to use ref', async function test() {
       const onPress = vi.fn();
 
       function PressableWithRef() {
@@ -69,7 +69,7 @@ describe('@bento/button', function bento() {
         );
       }
 
-      const { container } = render(<PressableWithRef />);
+      const { container } = await render(<PressableWithRef />);
 
       const button = container.querySelector('button');
       button?.click();

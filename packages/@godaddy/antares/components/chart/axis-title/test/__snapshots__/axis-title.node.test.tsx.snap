@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/uxcore > #AxisTitle > #rtl-direction > renders rtl direction example 1`] = `"<div role="group" aria-label="y axis title" dir="rtl" class="box yAxis" style="display:flex;flex-direction:row;justify-content:center;align-items:center">Temperature (°F)</div>"`;
+exports[`@godaddy/antares > #AxisTitle > #rtl-direction > renders rtl direction example 1`] = `"<div role="group" aria-label="y axis title" dir="rtl" class="box yAxis" style="display:flex;flex-direction:row;justify-content:center;align-items:center">Temperature (°F)</div>"`;
 
-exports[`@godaddy/uxcore > #AxisTitle > #x-axis > renders x-axis example 1`] = `"<div role="group" aria-label="x axis title" dir="ltr" class="box xAxis" style="display:flex;flex-direction:row;justify-content:center;align-items:center">Month</div>"`;
+exports[`@godaddy/antares > #AxisTitle > #x-axis > renders x-axis example 1`] = `"<div role="group" aria-label="x axis title" dir="ltr" class="box xAxis" style="display:flex;flex-direction:row;justify-content:center;align-items:center">Month</div>"`;
 
-exports[`@godaddy/uxcore > #AxisTitle > #y-axis > renders y-axis example 1`] = `"<div role="group" aria-label="y axis title" dir="ltr" class="box yAxis" style="display:flex;flex-direction:row;justify-content:center;align-items:center">Temperature (°F)</div>"`;
+exports[`@godaddy/antares > #AxisTitle > #y-axis > renders y-axis example 1`] = `"<div role="group" aria-label="y axis title" dir="ltr" class="box yAxis" style="display:flex;flex-direction:row;justify-content:center;align-items:center">Temperature (°F)</div>"`;

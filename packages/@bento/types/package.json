@@ -28,9 +28,9 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/godaddy/uxcore/issues"
+    "url": "https://github.com/godaddy/antares/issues"
   },
-  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "homepage": "https://github.com/godaddy/antares#readme",
   "files": [
     "dist",
     "package.json"

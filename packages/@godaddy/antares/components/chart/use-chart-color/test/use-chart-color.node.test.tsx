@@ -12,7 +12,7 @@ function extractDataColorValues(html: string): string[] {
   return [...html.matchAll(re)].map((m) => m[1] ?? '');
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#useChartColor', function useChartColorTests() {
     describe('#single-series', function singleSeriesTests() {
       it('renders single-series example with one CSS variable', function singleSeries() {

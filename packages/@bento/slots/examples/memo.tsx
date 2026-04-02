@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React, { useId, useMemo, useRef } from 'react';
+import { useId, useMemo, useRef } from 'react';
 import { Nested } from './nested.tsx';
 
 /**

@@ -4,12 +4,11 @@ import { ComplexExample } from '../examples/complex';
 import { BasicExample } from '../examples/basic';
 import { render } from 'vitest-browser-react';
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 
 describe('@bento/svg-parser examples', function bento() {
   describe('ParserSVG', function parserSVG() {
-    it('should render the basic example', function basic() {
-      const { container } = render(<BasicExample />);
+    it('should render the basic example', async function basic() {
+      const { container } = await render(<BasicExample />);
 
       expect(container).to.exist;
       expect(container.innerHTML).to.equal(
@@ -17,14 +16,14 @@ describe('@bento/svg-parser examples', function bento() {
       );
     });
 
-    it('should render the complex example', function complex() {
-      const { container } = render(<ComplexExample />);
+    it('should render the complex example', async function complex() {
+      const { container } = await render(<ComplexExample />);
       expect(container).to.exist;
       expect(container.querySelectorAll('rect')).toHaveLength(2);
     });
 
-    it('should render the custom nodes example', function nodes() {
-      const { container } = render(<CustomNodesExample />);
+    it('should render the custom nodes example', async function nodes() {
+      const { container } = await render(<CustomNodesExample />);
 
       expect(container).to.exist;
       expect(container.querySelectorAll('rect')).toHaveLength(1);
@@ -33,8 +32,8 @@ describe('@bento/svg-parser examples', function bento() {
       expect(container.querySelector('circle')).toHaveAttribute('fill', 'orange');
     });
 
-    it('should render the custom props example', function props() {
-      const { container } = render(<CustomPropsExample />);
+    it('should render the custom props example', async function props() {
+      const { container } = await render(<CustomPropsExample />);
 
       expect(container).to.exist;
       expect(container.querySelector('circle')).toHaveAttribute('stroke-width', '2');

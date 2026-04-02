@@ -8,7 +8,7 @@ function getStrip(container: HTMLElement) {
   return container.querySelector('[data-tooltip-dismiss-strip]') as HTMLDivElement;
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#TooltipDismissStrip', function tooltipDismissStripTests() {
     describe('#basic', function basicTests() {
       it('omits strip in DOM when width is zero', async function zeroWidth() {

@@ -4,7 +4,7 @@ import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
 import { XAxisExample } from '../examples/x-axis.tsx';
 import { YAxisExample } from '../examples/y-axis.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#AxisTitle', function axisTitleTests() {
     describe('#x-axis', function xAxisTests() {
       it('renders x-axis example', function xAxisSnapshot() {

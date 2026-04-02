@@ -4,7 +4,7 @@ import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Tooltip', function tooltipTests() {
     it('shows tooltip on focus', async function focusShow() {
       const { getByRole } = await render(<DefaultExample />);

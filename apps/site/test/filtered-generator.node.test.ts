@@ -116,7 +116,7 @@ describe('site', function siteTests() {
     it('passes through @bento/* and local source props', async function passesThroughBentoAndLocal() {
       const base = makeBaseGenerator([
         { name: 'icon', filePath: '/project/node_modules/@bento/icon/dist/index.d.ts' },
-        { name: 'size', filePath: '/project/packages/uxcore/components/icon/src/index.tsx' }
+        { name: 'size', filePath: '/project/packages/@godaddy/antares//components/icon/src/index.tsx' }
       ]);
 
       const filtered = createFilteredGenerator(base);
@@ -142,7 +142,9 @@ describe('site', function siteTests() {
     });
 
     it('excludes DOM event handler props by type string even on cache hit (excluded set empty)', async function excludesDomEventHandlerByTypeString() {
-      const base = makeBaseGenerator([{ name: 'onMouseDown', filePath: '/project/packages/uxcore/src/index.tsx' }]);
+      const base = makeBaseGenerator([
+        { name: 'onMouseDown', filePath: '/project/packages/@godaddy/antares/src/index.tsx' }
+      ]);
       vi.mocked(base.generateTypeTable).mockResolvedValueOnce([
         {
           id: 'btn',
@@ -219,7 +221,7 @@ describe('site', function siteTests() {
     });
 
     it('excludes aria-* props from generateTypeTable', async function excludesAriaProps() {
-      const base = makeBaseGenerator([{ name: 'size', filePath: '/project/packages/uxcore/src/index.tsx' }]);
+      const base = makeBaseGenerator([{ name: 'size', filePath: '/project/packages/@godaddy/antares/src/index.tsx' }]);
       vi.mocked(base.generateTypeTable).mockResolvedValueOnce([
         {
           id: 'icon',
@@ -256,7 +258,7 @@ describe('site', function siteTests() {
     });
 
     it('excludes props without a description', async function excludesUndescribed() {
-      const base = makeBaseGenerator([{ name: 'size', filePath: '/project/packages/uxcore/src/index.tsx' }]);
+      const base = makeBaseGenerator([{ name: 'size', filePath: '/project/packages/@godaddy/antares/src/index.tsx' }]);
       vi.mocked(base.generateTypeTable).mockResolvedValueOnce([
         {
           id: 'icon',
@@ -367,7 +369,7 @@ describe('site', function siteTests() {
 
     it('preserves existing doc fields (id, name, description) on filtered results', async function preservesDocFields() {
       const base = makeBaseGenerator([
-        { name: 'size', filePath: '/project/packages/uxcore/components/icon/src/index.tsx' }
+        { name: 'size', filePath: '/project/packages/@godaddy/antares/components/icon/src/index.tsx' }
       ]);
       vi.mocked(base.generateTypeTable).mockResolvedValueOnce([
         {
@@ -438,7 +440,7 @@ describe('site', function siteTests() {
       const base = makeBaseGenerator([
         {
           name: 'label',
-          filePath: '/project/packages/uxcore/components/button/src/index.tsx'
+          filePath: '/project/packages/@godaddy/antares/components/button/src/index.tsx'
         }
       ]);
 
@@ -611,7 +613,7 @@ describe('site', function siteTests() {
     });
 
     it('excludes aria-* props from generateCategorizedTypeTable', async function excludesAriaPropsCategorized() {
-      const base = makeBaseGenerator([{ name: 'label', filePath: '/project/packages/uxcore/src/index.tsx' }]);
+      const base = makeBaseGenerator([{ name: 'label', filePath: '/project/packages/@godaddy/antares/src/index.tsx' }]);
       vi.mocked(base.generateTypeTable).mockResolvedValueOnce([
         {
           id: 'btn',
@@ -648,7 +650,7 @@ describe('site', function siteTests() {
     });
 
     it('excludes props without a description in generateCategorizedTypeTable', async function excludesUndescribedCategorized() {
-      const base = makeBaseGenerator([{ name: 'label', filePath: '/project/packages/uxcore/src/index.tsx' }]);
+      const base = makeBaseGenerator([{ name: 'label', filePath: '/project/packages/@godaddy/antares/src/index.tsx' }]);
       vi.mocked(base.generateTypeTable).mockResolvedValueOnce([
         {
           id: 'btn',
@@ -688,7 +690,7 @@ describe('site', function siteTests() {
       const base = makeBaseGenerator([
         {
           name: 'customProp',
-          filePath: '/project/packages/uxcore/components/button/src/index.tsx',
+          filePath: '/project/packages/@godaddy/antares/components/button/src/index.tsx',
           interfaceName: 'SomeUnknownInterface'
         }
       ]);
@@ -789,7 +791,7 @@ describe('site', function siteTests() {
               {
                 getDeclarations: () => [
                   {
-                    getSourceFile: () => ({ getFilePath: () => '/project/packages/uxcore/src/index.tsx' }),
+                    getSourceFile: () => ({ getFilePath: () => '/project/packages/@godaddy/antares/src/index.tsx' }),
                     getFirstAncestorByKind: () => undefined
                   }
                 ]

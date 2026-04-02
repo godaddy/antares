@@ -10,7 +10,7 @@ import { SelectRenderPropsExample } from '../examples/select-render-props.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#examples', function examplesTests() {
     it('renders SelectStaticExample', function staticExample() {
       const result = renderToString(<SelectStaticExample />);

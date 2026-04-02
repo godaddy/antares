@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#SegmentedController', function segmentedControllerTests() {
     it('renders BasicExample as a radiogroup with radio items', async function basicRenders() {
       await render(<BasicExample />);

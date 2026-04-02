@@ -1,10 +1,10 @@
-# UXCore Component Conventions
+# Antares Component Conventions
 
-Scoped conventions for component work in `packages/uxcore/`.
+Scoped conventions for component work in `packages/@godaddy/antares/`.
 
 ## Build/Test
 
-- Run tests: `nx run @godaddy/uxcore:test`
+- Run tests: `nx run @godaddy/antares:test`
 - Three Vitest projects:
   - `*.node.test.tsx` - SSR snapshots via `renderToString`
   - `*.browser.test.tsx` - interactions via `vitest-browser-react`
@@ -14,8 +14,8 @@ Scoped conventions for component work in `packages/uxcore/`.
 ## Imports
 
 - RAC prefix for react-aria-components: `import { Button as RACButton } from 'react-aria-components'`
-- Path alias in packages/uxcore: `import { Icon } from '#components/icon'`
-- Public import in examples: `import { Icon } from '@godaddy/uxcore'`
+- Path alias in packages/@godaddy/antares: `import { Icon } from '#components/icon'`
+- Public import in examples: `import { Icon } from '@godaddy/antares'`
 
 ## Component Recipe
 
@@ -27,7 +27,7 @@ Directory structure checklist:
 4. Create `components/<name>/test/<name>.browser.test.tsx` (interactions)
 5. Create `components/<name>/<name>.stories.tsx` (Storybook)
 6. Create `components/<name>/README.mdx` (docs)
-7. Add public export to `packages/uxcore/index.tsx`
+7. Add public export to `packages/@godaddy/antares/index.tsx`
 
 Grouping optional: `components/<group>/<name>/` (e.g. `layout/box/`)
 
@@ -100,7 +100,7 @@ import { expect, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 
-describe('@godaddy/uxcore', function packageTests() {
+describe('@godaddy/antares', function packageTests() {
   describe('#Button', function buttonTests() {
     it('renders default', function render() {
       const html = renderToString(<DefaultExample />);
@@ -120,7 +120,7 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
 
-describe('@godaddy/uxcore', function packageTests() {
+describe('@godaddy/antares', function packageTests() {
   describe('#Button', function buttonTests() {
     it('handles click', async function click() {
       const { getByRole } = await render(<DefaultExample />);
@@ -131,11 +131,11 @@ describe('@godaddy/uxcore', function packageTests() {
 });
 ```
 
-Describe hierarchy: `'@godaddy/uxcore'` > `'#ComponentName'`. Use named functions (not arrow).
+Describe hierarchy: `'@godaddy/antares'` > `'#ComponentName'`. Use named functions (not arrow).
 
 ## Examples
 
-Import from `@godaddy/uxcore`. Named export. File names are kebab-case (`default.tsx`, `<name>-playground.tsx`).
+Import from `@godaddy/antares`. Named export. File names are kebab-case (`default.tsx`, `<name>-playground.tsx`).
 
 ```typescript
 // examples/default.tsx
@@ -222,7 +222,7 @@ title: Button
 ## Installation
 
 \`\`\`bash
-npm install @godaddy/uxcore
+npm install @godaddy/antares
 \`\`\`
 
 ## Examples
@@ -236,7 +236,7 @@ import DefaultCode from './examples/default?raw';
 
 Use `Flex`, `Box`, `Grid` with spacing tokens (`gap="sm"`, `gap="md"`). In CSS, use `var(--sp-sm)` directly.
 
-Spacing tokens defined in `packages/uxcore/components/layout/tokens.ts`. Use t-shirt sizes (`sm`, `md`, `lg`).
+Spacing tokens defined in `packages/@godaddy/antares/components/layout/tokens.ts`. Use t-shirt sizes (`sm`, `md`, `lg`).
 
 ```tsx
 <Flex gap="md" direction="column">

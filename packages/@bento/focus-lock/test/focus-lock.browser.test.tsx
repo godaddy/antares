@@ -13,7 +13,7 @@ import assume from 'assume';
 describe('@bento/focus-lock', function bento() {
   describe('FocusLock', function focusLockTests() {
     it('applies data-focus-contained attribute when contain is true', async function test() {
-      const { container } = render(<BasicExample />);
+      const { container } = await render(<BasicExample />);
 
       const openButton = container.querySelector('[data-testid="open-button"]');
       await userEvent.click(openButton!);
@@ -25,7 +25,7 @@ describe('@bento/focus-lock', function bento() {
     });
 
     it('restores focus to previously focused element when unmounted', async function test() {
-      const { container } = render(<BasicExample />);
+      const { container } = await render(<BasicExample />);
 
       const openButton = container.querySelector('[data-testid="open-button"]');
       await userEvent.click(openButton!);
@@ -38,7 +38,7 @@ describe('@bento/focus-lock', function bento() {
     });
 
     it('contains focus within nested scopes', async function test() {
-      const { container } = render(<NestedExample />);
+      const { container } = await render(<NestedExample />);
 
       const outerButton = container.querySelector('[data-testid="open-outer-button"]');
       await userEvent.click(outerButton!);
@@ -57,7 +57,7 @@ describe('@bento/focus-lock', function bento() {
     });
 
     it('works with single child elements', async function test() {
-      const { container } = render(<SelectExample />);
+      const { container } = await render(<SelectExample />);
 
       const button = container.querySelector('button');
       await userEvent.click(button!);
@@ -68,7 +68,7 @@ describe('@bento/focus-lock', function bento() {
     });
 
     it('works with multiple children', async function test() {
-      const { container } = render(<OverlayExample />);
+      const { container } = await render(<OverlayExample />);
 
       const openButton = container.querySelector('[data-testid="open-overlay-button"]');
       await userEvent.click(openButton!);
@@ -78,23 +78,23 @@ describe('@bento/focus-lock', function bento() {
       assume(content?.getAttribute('data-focus-contained')).equals('true');
     });
 
-    it('returns null when children is not provided', function test() {
-      const { container } = render(<FocusLock />);
+    it('returns null when children is not provided', async function test() {
+      const { container } = await render(<FocusLock />);
       assume(container.innerHTML).equals('');
     });
 
-    it('returns null when children is null', function test() {
-      const { container } = render(<FocusLock>{null}</FocusLock>);
+    it('returns null when children is null', async function test() {
+      const { container } = await render(<FocusLock>{null}</FocusLock>);
       assume(container.innerHTML).equals('');
     });
 
-    it('returns null when children is undefined', function test() {
-      const { container } = render(<FocusLock>{undefined}</FocusLock>);
+    it('returns null when children is undefined', async function test() {
+      const { container } = await render(<FocusLock>{undefined}</FocusLock>);
       assume(container.innerHTML).equals('');
     });
 
-    it('handles text and non-element children gracefully', function test() {
-      const { container } = render(
+    it('handles text and non-element children gracefully', async function test() {
+      const { container } = await render(
         <FocusLock contain>
           <Container data-testid="wrapper">Content</Container>
           Plain text node

@@ -7,7 +7,6 @@ import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';
 import assume from 'assume';
-import React from 'react';
 
 /**
  * Renders the `Illustration` component to a string with the provided props.
@@ -107,8 +106,8 @@ describe('@bento/illustration', function bento() {
       const markup = renderToStringWithIllustration({ title: 'A test illustration' });
 
       assume(markup).includes('role="img"');
-      assume(markup).includes('aria-labelledby=":R0:"');
-      assume(markup).includes('<title id=":R0:">A test illustration</title>');
+      assume(markup).includes('aria-labelledby="_R_0_"');
+      assume(markup).includes('<title id="_R_0_">A test illustration</title>');
     });
 
     it('renders an illustration with aria-hidden if requested', function ariaHiddenTest() {

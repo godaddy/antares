@@ -7,7 +7,6 @@ import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
 import { type AnyObject } from '@bento/types';
-import React from 'react';
 
 /**
  * Renders the `Text` component to a string with the provided props.
@@ -48,7 +47,7 @@ describe('@bento/text', function bento() {
       children: 'Handgloves'
     });
 
-    assume(result).includes('class="_text_');
+    assume(result).includes('class="text');
   });
 
   it('renders with align prop', function alignProp() {

@@ -167,6 +167,8 @@
         "**/*.test.tsx",
         "**/*.test.ts",
         "**/tsdown.config.ts",
+        "**/tsup.config.ts",
+        "**/vitest.config.ts",
         "**/examples/**",
         "apps/site/**",
         "knip.config.ts",
@@ -175,7 +177,8 @@
       "linter": {
         "rules": {
           "correctness": {
-            "noUnresolvedImports": "off"
+            "noUnresolvedImports": "off",
+            "noUndeclaredDependencies": "off"
           }
         }
       }

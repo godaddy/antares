@@ -1,7 +1,6 @@
 import { Illustration } from '@bento/illustration';
 import { type UnknownObject } from '@bento/types';
 /* v8 ignore next */
-import React from 'react';
 
 /**
  * Example component demonstrating SVG rendering with Illustration.

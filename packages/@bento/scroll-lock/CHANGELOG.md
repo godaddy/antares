@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- Fixed TypeScript inference error in setAttribute call ([#80](https://github.com/godaddy/uxcore/pull/80) by @kbader-godaddy)
+- Fixed TypeScript inference error in setAttribute call ([#80](https://github.com/godaddy/antares/pull/80) by @kbader-godaddy)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -27,7 +27,7 @@
 
 ### Minor Changes
 
-- Initial release of the ScrollLock component and hook ([#46](https://github.com/godaddy/uxcore/pull/46) by @akazemier-godaddy)
+- Initial release of the ScrollLock component and hook ([#46](https://github.com/godaddy/antares/pull/46) by @akazemier-godaddy)
 
 ### Patch Changes
 

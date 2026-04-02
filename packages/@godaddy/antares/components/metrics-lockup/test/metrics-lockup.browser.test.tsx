@@ -5,7 +5,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { WithTrendExample } from '../examples/with-trend.tsx';
 import { CompactExample } from '../examples/compact.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#MetricsLockup', function metricsLockupTests() {
     it('renders title, data, and description', async function rendersBasic() {
       const { getByText } = await render(<DefaultExample />);

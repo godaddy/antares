@@ -15,7 +15,7 @@
 
 ### Minor Changes
 
-- Initial release of our Portal Primitive ([#35](https://github.com/godaddy/uxcore/pull/35) by @akazemier-godaddy)
+- Initial release of our Portal Primitive ([#35](https://github.com/godaddy/antares/pull/35) by @akazemier-godaddy)
 
 ### Patch Changes
 

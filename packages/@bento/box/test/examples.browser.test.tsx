@@ -3,12 +3,11 @@ import { SlotExample } from '../examples/slot.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/box examples', function bento() {
   describe('Namespaced', function namespace() {
-    it('should render a namespaced component', function nstest() {
-      const { container } = render(<ContextExample />);
+    it('should render a namespaced component', async function nstest() {
+      const { container } = await render(<ContextExample />);
       const result = container.innerHTML;
 
       assume(result).equals(
@@ -18,8 +17,8 @@ describe('@bento/box examples', function bento() {
   });
 
   describe('Slot', function slotDesc() {
-    it('should render slot context with assigned slots', function slotTest() {
-      const { container } = render(<SlotExample />);
+    it('should render slot context with assigned slots', async function slotTest() {
+      const { container } = await render(<SlotExample />);
       const result = container.innerHTML;
 
       // Verify the component renders with the expected structure
