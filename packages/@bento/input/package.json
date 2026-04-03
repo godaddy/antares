@@ -8,8 +8,6 @@
   "scripts": {
     "build": "tsup-node",
     "lint": "biome lint && tsc",
-    "posttest": "npm run lint",
-    "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },

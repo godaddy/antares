@@ -9,8 +9,6 @@
   "scripts": {
     "build": "tsdown",
     "lint": "biome lint && tsc",
-    "posttest": "npm run lint",
-    "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -41,7 +39,6 @@
     "react": "^19.2.4",
     "tsdown": "^0.20.3",
     "vite": "^7.3.1",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18"
   },
   "peerDependencies": {

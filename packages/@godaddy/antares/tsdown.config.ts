@@ -29,7 +29,7 @@ const versionParts = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
 const cdnUrl = generateCdnUrl({
   cdn: 'https://img6.wsimg.com/ux-assets',
   version: '5.0.0',
-  packageName: '@ux/icon',
+  packageName: '@ux/icon'
 });
 
 const mergedConfig = mergeConfig(config, {
@@ -50,7 +50,5 @@ const mergedConfig = mergeConfig(config, {
   clean: true,
   treeshake: true
 });
-
-console.log('Merged tsdown config:', { mergedConfig });
 
 export default mergedConfig;

@@ -9,9 +9,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "lint": "biome lint && tsc --noEmit",
-    "posttest": "npm run lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
-    "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
