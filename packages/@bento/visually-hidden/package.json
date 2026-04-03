@@ -43,10 +43,6 @@
     "@bento/use-props": "^0.2.1",
     "react-aria": "^3.45.0"
   },
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
-  },
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -54,6 +50,10 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.18",
     "vitest-browser-react": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

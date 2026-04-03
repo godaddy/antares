@@ -2,7 +2,6 @@
   "name": "@godaddy/antares",
   "version": "0.0.1",
   "description": "The GoDaddy design component library",
-  "homepage": "https://github.com/godaddy/antares",
   "type": "module",
   "scripts": {
     "build": "tsdown",
@@ -34,6 +33,7 @@
   ],
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
+  "homepage": "https://github.com/godaddy/antares",
   "dependencies": {
     "@bento/icon": "^0.1.4",
     "@bento/svg-parser": "^0.1.1",

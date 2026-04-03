@@ -41,7 +41,7 @@ export const visual: UserProjectConfigExport = {
   test: {
     ...browser.test,
     name: 'Visual',
-    include: ['./components/**/*.visual.test.{ts,tsx}']
+    include: ['./**/**/*.visual.test.{ts,tsx}']
   }
 };
 
