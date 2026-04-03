@@ -2184,53 +2184,6 @@ Best Practices [#best-practices]
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
-# AxisTitle
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `AxisTitle` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-X-Axis Title [#x-axis-title]
-
-X-axis title with default orientation.
-
-<Story of="Stories.XAxis" />
-
-<Source language="tsx" code="SourceXAxis" />
-
-Y-Axis Title [#y-axis-title]
-
-Y-axis title with default orientation.
-
-<Story of="Stories.YAxis" />
-
-<Source language="tsx" code="SourceYAxis" />
-
-RTL (Right-to-Left) [#rtl-right-to-left]
-
-Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Bar Chart
 
 
@@ -2631,6 +2584,53 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Right-to-left layout &#x2A;(in development)*
 
 
+# AxisTitle
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `AxisTitle` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+X-Axis Title [#x-axis-title]
+
+X-axis title with default orientation.
+
+<Story of="Stories.XAxis" />
+
+<Source language="tsx" code="SourceXAxis" />
+
+Y-Axis Title [#y-axis-title]
+
+Y-axis title with default orientation.
+
+<Story of="Stories.YAxis" />
+
+<Source language="tsx" code="SourceYAxis" />
+
+RTL (Right-to-Left) [#rtl-right-to-left]
+
+Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
 # Legend
 
 
@@ -3022,37 +3022,6 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Story of="Stories.Arrow" />
 
 
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-
 # useChartColor
 
 
@@ -3088,6 +3057,37 @@ Multiple series each receiving the next color in sequence.
 <Source language="tsx" code="SourceMultiSeries" />
 
 <Story of="Stories.MultiSeries" />
+
+
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
 
 
 # useNormalizedSeries
