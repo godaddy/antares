@@ -2,12 +2,11 @@ import { Example } from '../examples/override-classname.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/internal-props examples', function bento() {
   describe('ClassName Override Example', function classNameOverride() {
-    it('should render buttons with correct classNames', function test() {
-      const { container } = render(<Example />);
+    it('should render buttons with correct classNames', async function test() {
+      const { container } = await render(<Example />);
       const buttons = container.querySelectorAll('button');
 
       // Check default button

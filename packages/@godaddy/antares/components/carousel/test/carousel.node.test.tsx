@@ -9,7 +9,7 @@ import { VariableWidthsExample } from '../examples/variable-widths.tsx';
 import { EventsExample } from '../examples/events.tsx';
 import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Carousel', function carouselTests() {
     it('renders the default example', function rendersDefault() {
       const result = renderToString(<DefaultExample />);

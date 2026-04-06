@@ -38,7 +38,7 @@ async function wait(container: HTMLElement, selector: string) {
   });
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#FieldFrame', function fieldFrameTests() {
     describe('#css-class', function cssClass() {
       it('applies frame CSS class', async function appliesClass() {

@@ -6,7 +6,7 @@ import { WithLimitExample } from '../examples/with-limit.tsx';
 import { OnChangeExample } from '../examples/on-change.tsx';
 import { DefaultActiveExample } from '../examples/default-active.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Pagination', function paginationTests() {
     it('renders prev/next buttons and dots for 5 pages', async function rendersDefault() {
       const { getByRole } = await render(<DefaultExample />);

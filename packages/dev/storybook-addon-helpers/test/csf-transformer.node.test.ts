@@ -20,19 +20,19 @@ function formatTypeScript(code: string): string {
 describe('csf-transformer', function csfTransformerTests() {
   const fixturesPath = path.join(__dirname, 'fixtures');
 
-  it('should generate correct csf', function generateCSFFile1() {
-    const actual = formatTypeScript(csfTransformer({ filePath: path.join(fixturesPath, 'comp-stories.tsx') }));
+  it('should generate correct csf', async function generateCSFFile1() {
+    const actual = formatTypeScript(await csfTransformer({ filePath: path.join(fixturesPath, 'comp-stories.tsx') }));
     const expected = formatTypeScript(fs.readFileSync(path.join(fixturesPath, 'comp-stories-expected.tsx'), 'utf8'));
 
     assume(actual).deep.equals(expected);
   }, 20_000);
 
-  it('should support code as a string', function generateCSFCodeAsString() {
+  it('should support code as a string', async function generateCSFCodeAsString() {
     const code = `
       import { getMeta } from '@bento/storybook-addon-helpers';
       const meta = getMeta({ title: 'meta1' });
     `;
-    const actual = formatTypeScript(csfTransformer({ code }));
+    const actual = formatTypeScript(await csfTransformer({ code }));
     const expected = formatTypeScript(`
       import { getMeta } from '@bento/storybook-addon-helpers';
       const meta = { title: 'meta1' };
@@ -41,18 +41,18 @@ describe('csf-transformer', function csfTransformerTests() {
     assume(actual).deep.equals(expected);
   });
 
-  it('should support default export getMeta', function generateCSFDefaultExportGetMeta() {
-    const actual = formatTypeScript(csfTransformer({ code: `export default getMeta({ title: 'meta1' })` }));
+  it('should support default export getMeta', async function generateCSFDefaultExportGetMeta() {
+    const actual = formatTypeScript(await csfTransformer({ code: `export default getMeta({ title: 'meta1' })` }));
     const expected = formatTypeScript(`export default { title: 'meta1' }`);
 
     assume(actual).deep.equals(expected);
   });
 
-  it('should handle no filePath and no code', function generateCSFNoFilePathAndNoCode() {
-    assume(csfTransformer({})).to.equals('');
+  it('should handle no filePath and no code', async function generateCSFNoFilePathAndNoCode() {
+    assume(await csfTransformer({})).to.equals('');
   });
 
-  it('should skip non-property-assignment in variants', function nonPropertyAssignment() {
+  it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
 
@@ -62,7 +62,7 @@ describe('csf-transformer', function csfTransformerTests() {
       });
     `;
 
-    const actual = formatTypeScript(csfTransformer({ code }));
+    const actual = formatTypeScript(await csfTransformer({ code }));
     const expected = formatTypeScript(`
       import { getVariants } from '@bento/storybook-addon-helpers';
 

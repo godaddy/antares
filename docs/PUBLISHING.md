@@ -27,7 +27,7 @@ When ready to release:
 - Packages are published to npm
 - GitHub releases are created automatically
 
-You can also manually trigger publish: [Actions → Publish](https://github.com/godaddy/uxcore/actions/workflows/publish.yaml)
+You can also manually trigger publish: [Actions → Publish](https://github.com/godaddy/antares/actions/workflows/publish.yaml)
 
 ## Authentication
 

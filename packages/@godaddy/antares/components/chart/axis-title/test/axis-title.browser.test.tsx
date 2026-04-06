@@ -5,7 +5,7 @@ import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#AxisTitle', function axisTitleTests() {
     describe('#x-axis', function xAxisTests() {
       it('renders x-axis title', async function requiredProps() {

@@ -40,23 +40,22 @@ describe('@bento/forward', function bento() {
       assume(wrapped).equals(Component);
     });
 
-    it('wraps the component with forwardRef if it accepts a ref parameter in React 18', function needsWrapping() {
+    it('returns component unchanged in React 19 for 2-param components', function needsWrapping() {
       const Component = function Component(props: any, ref: React.ForwardedRef<HTMLDivElement>) {
         return <div ref={ref}>{props.children}</div>;
       };
 
       const wrapped = withForwardRef(Component);
 
-      // In React 18, should wrap the component (forwardRef returns an object)
-      assume(wrapped).is.not.equals(Component);
-      assume(typeof wrapped).equals('object');
+      // In React 19, no wrapping needed — refs are passed as props
+      assume(wrapped).equals(Component);
+      assume(typeof wrapped).equals('function');
     });
 
-    it('returns component unchanged in React 19 even if it accepts a ref parameter', function react19() {
-      // Mock React.version for this test
+    it('wraps component with forwardRef when React version is mocked to 18', function react18Mock() {
       const originalVersion = React.version;
       Object.defineProperty(React, 'version', {
-        value: '19.0.0',
+        value: '18.2.0',
         writable: true,
         configurable: true
       });
@@ -68,10 +67,9 @@ describe('@bento/forward', function bento() {
 
         const wrapped = withForwardRef(Component);
 
-        // In React 19, should NOT wrap the component
-        assume(wrapped).equals(Component);
+        assume(wrapped).is.not.equals(Component);
+        assume(typeof wrapped).equals('object');
       } finally {
-        // Restore original version
         Object.defineProperty(React, 'version', {
           value: originalVersion,
           writable: true,
@@ -93,7 +91,7 @@ describe('@bento/forward', function bento() {
       assume(wrapped).equals(Component);
     });
 
-    it('wraps components with 0 parameters (no-arg functions)', function zeroParams() {
+    it('returns component unchanged in React 19 for 0-param components', function zeroParams() {
       const Component = function Component() {
         return <div>No props</div>;
       };
@@ -102,10 +100,8 @@ describe('@bento/forward', function bento() {
 
       const wrapped = withForwardRef(Component);
 
-      // Should wrap since length === 0 (might be using rest parameters or no params)
-      // Better to be safe and wrap than miss a component that needs ref forwarding
-      assume(wrapped).is.not.equals(Component);
-      assume(typeof wrapped).equals('object');
+      assume(wrapped).equals(Component);
+      assume(typeof wrapped).equals('function');
     });
 
     it('handles class components', function classComponent() {
@@ -131,8 +127,7 @@ describe('@bento/forward', function bento() {
       assume(wrapped).equals(Component);
     });
 
-    it('wraps components using rest parameters for future useProps(...args) API', function restParams() {
-      // Rest parameters don't count toward function.length, so length === 0
+    it('returns component unchanged in React 19 for rest parameter components', function restParams() {
       const Component = function Component(...args: any[]) {
         return <div>{args[0]?.children}</div>;
       };
@@ -141,17 +136,15 @@ describe('@bento/forward', function bento() {
 
       const wrapped = withForwardRef(Component);
 
-      // Should wrap since length === 0 (rest parameters)
-      // This supports future API: useProps(rest, state) where rest = [props, ref]
-      assume(wrapped).is.not.equals(Component);
-      assume(typeof wrapped).equals('object');
+      assume(wrapped).equals(Component);
+      assume(typeof wrapped).equals('function');
     });
   });
 
   describe('examples', function examples() {
     it('BasicExample is created with withForwardRef', function basic() {
-      assume(BasicExample).is.not.null();
-      assume(typeof BasicExample).equals('object'); // In React 18, it's wrapped
+      assume(BasicExample).is.not.a('undefined');
+      assume(typeof BasicExample).equals('function'); // In React 19, not wrapped
     });
 
     it('AlreadyWrapped is created with withForwardRef', function wrapped() {
@@ -163,8 +156,8 @@ describe('@bento/forward', function bento() {
     });
 
     it('RestParams is created with withForwardRef', function restparams() {
-      assume(RestParams).is.not.null();
-      assume(typeof RestParams).equals('object'); // In React 18, it's wrapped
+      assume(RestParams).is.not.a('undefined');
+      assume(typeof RestParams).equals('function'); // In React 19, not wrapped
     });
 
     it('BasicExample renders to string', function rendersBasic() {
@@ -190,6 +183,11 @@ describe('@bento/forward', function bento() {
 
   describe('Public API', function packageSuite() {
     const __dirname = dirname(fileURLToPath(import.meta.url));
+
+    it('supports CommonJS import', async function cjsImport() {
+      const mod = await import('../dist/index.cjs');
+      assume(mod.withForwardRef).is.a('function');
+    });
 
     describe('#exports', function exportsSuite() {
       Object.keys(pkg.exports).forEach(function each(subpaths) {

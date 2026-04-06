@@ -8,7 +8,7 @@ import { WrapExample } from '../examples/wrap.tsx';
 import { NavbarExample } from '../examples/navbar.tsx';
 import { SidebarExample } from '../examples/sidebar.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Flex', function flexTests() {
     it('renders the default flex', function rendersDefault() {
       const result = renderToString(<DefaultExample />);

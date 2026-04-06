@@ -5,7 +5,6 @@ import { SectionsDynamicExample } from '../examples/sections-dynamic';
 import { SlotsDynamicSectionsExample } from '../examples/slots-dynamic-sections';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
-import React from 'react';
 import assume from 'assume';
 
 describe('@bento/listbox examples', function bento() {
@@ -35,8 +34,8 @@ describe('@bento/listbox examples', function bento() {
   ];
 
   describe('Basic ListBox', function basicListBoxExample() {
-    it('renders the basic listbox with configuration props', function configurationProps() {
-      const { container } = render(
+    it('renders the basic listbox with configuration props', async function configurationProps() {
+      const { container } = await render(
         <BasicListBoxExample
           aria-label="Basic listbox"
           disallowEmptySelection={true}
@@ -54,8 +53,8 @@ describe('@bento/listbox examples', function bento() {
       assume(result).includes('data-focus-wrap="true"');
     });
 
-    it('supports single selection with vertical orientation', function singleVertical() {
-      const { container } = render(
+    it('supports single selection with vertical orientation', async function singleVertical() {
+      const { container } = await render(
         <BasicListBoxExample aria-label="single selection test" selectionMode="single" orientation="vertical" />
       );
       const result = container.innerHTML;
@@ -65,8 +64,8 @@ describe('@bento/listbox examples', function bento() {
       assume(result).includes('Chicken Teriyaki');
     });
 
-    it('supports multiple selection with horizontal orientation', function multipleHorizontal() {
-      const { container } = render(
+    it('supports multiple selection with horizontal orientation', async function multipleHorizontal() {
+      const { container } = await render(
         <BasicListBoxExample aria-label="multiple selection test" selectionMode="multiple" orientation="horizontal" />
       );
       const result = container.innerHTML;
@@ -78,8 +77,8 @@ describe('@bento/listbox examples', function bento() {
   });
 
   describe('Static Sections', function staticSections() {
-    it('renders static sections with headers', function sectionsWithHeaders() {
-      const { container } = render(<SectionsExample aria-label="Static sections" />);
+    it('renders static sections with headers', async function sectionsWithHeaders() {
+      const { container } = await render(<SectionsExample aria-label="Static sections" />);
       const result = container.innerHTML;
 
       assume(result).includes('role="listbox"');
@@ -91,8 +90,8 @@ describe('@bento/listbox examples', function bento() {
   });
 
   describe('Dynamic Collections', function dynamicCollections() {
-    it('renders dynamic collections', function dynamicCollection() {
-      const { container } = render(
+    it('renders dynamic collections', async function dynamicCollection() {
+      const { container } = await render(
         <DynamicCollectionExample items={testItems} aria-label="Dynamic collection" selectionMode="single" />
       );
       const result = container.innerHTML;
@@ -103,8 +102,8 @@ describe('@bento/listbox examples', function bento() {
       assume(result).includes('Beef Bowl');
     });
 
-    it('renders dynamic sections', function dynamicSections() {
-      const { container } = render(
+    it('renders dynamic sections', async function dynamicSections() {
+      const { container } = await render(
         <SectionsDynamicExample categories={testCategories} aria-label="Dynamic sections" />
       );
       const result = container.innerHTML;
@@ -118,8 +117,8 @@ describe('@bento/listbox examples', function bento() {
   });
 
   describe('Empty Collections', function emptyCollections() {
-    it('handles empty collections correctly', function emptyCollections() {
-      const { container } = render(
+    it('handles empty collections correctly', async function emptyCollections() {
+      const { container } = await render(
         <DynamicCollectionExample
           items={[]}
           aria-label="Empty collection"
@@ -132,8 +131,8 @@ describe('@bento/listbox examples', function bento() {
       assume(result).includes('No items');
     });
 
-    it('handles empty categories correctly', function emptyCategories() {
-      const { container } = render(<SectionsDynamicExample categories={[]} aria-label="Empty categories" />);
+    it('handles empty categories correctly', async function emptyCategories() {
+      const { container } = await render(<SectionsDynamicExample categories={[]} aria-label="Empty categories" />);
       const result = container.innerHTML;
 
       assume(result).includes('role="listbox"');
@@ -141,12 +140,12 @@ describe('@bento/listbox examples', function bento() {
   });
 
   describe('Slots and Items Override', function slotsAndItemsOverride() {
-    it('handles slots prop destructuring correctly', function slotsDestructuring() {
+    it('handles slots prop destructuring correctly', async function slotsDestructuring() {
       const customSlots = {
         'bento-list.test-slot': () => <div data-testid="custom-slot">Custom slot content</div>
       };
 
-      const { container } = render(
+      const { container } = await render(
         <SlotsDynamicSectionsExample
           categories={testCategories}
           aria-label="Custom slots test"
@@ -165,8 +164,8 @@ describe('@bento/listbox examples', function bento() {
       assume(result).includes('Traditional');
     });
 
-    it('handles default slots correctly', function defaultSlots() {
-      const { container } = render(
+    it('handles default slots correctly', async function defaultSlots() {
+      const { container } = await render(
         <SlotsDynamicSectionsExample
           categories={testCategories}
           aria-label="Default slots test"
@@ -183,7 +182,7 @@ describe('@bento/listbox examples', function bento() {
       assume(result).includes('Pickled Vegetables');
     });
 
-    it('handles items override correctly', function itemsOverride() {
+    it('handles items override correctly', async function itemsOverride() {
       const overrideItems = [
         {
           id: 'override-section',
@@ -192,7 +191,7 @@ describe('@bento/listbox examples', function bento() {
         }
       ];
 
-      const { container } = render(
+      const { container } = await render(
         <SlotsDynamicSectionsExample
           categories={testCategories}
           items={overrideItems}

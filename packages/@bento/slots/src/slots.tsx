@@ -1,6 +1,5 @@
 /// <reference types="vite/client" />
-import type React from 'react';
-import { useContext, memo } from 'react';
+import { type ComponentType, useContext, memo } from 'react';
 import { mergeProps } from 'react-aria';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useDeepCompareMemo } from 'use-deep-compare';
@@ -54,7 +53,7 @@ export const library = new Set<string>();
  */
 export function withSlots<Props extends object>(
   name: string,
-  Component: React.ComponentType<Props>,
+  Component: ComponentType<Props>,
   modifiers = [replace, override]
 ) {
   //
@@ -67,7 +66,7 @@ export function withSlots<Props extends object>(
     const { slot = '', slots = {}, ...restProps } = propsAndSlots;
     const dataAttrs = useDataAttributes({ slot });
     let props = { ...restProps } as Props;
-    let Element: React.ComponentType<any> = ComponentWithRef;
+    let Element: ComponentType<any> = ComponentWithRef;
 
     //
     // We need to create a new context object to prevent introducing properties
@@ -144,7 +143,7 @@ export function withSlots<Props extends object>(
     //
     modifiers.forEach(function forEach(modifier) {
       const mods: {
-        Component?: React.ComponentType<Props>;
+        Component?: ComponentType<Props>;
         context?: Partial<BoxContext<Props>> | Record<string, any>;
         props?: object;
       } =
@@ -162,7 +161,7 @@ export function withSlots<Props extends object>(
         };
 
       if (typeof mods.props === 'object') props = { ...props, ...mods.props };
-      if (mods.Component) Element = mods.Component as React.ComponentType<any>;
+      if (mods.Component) Element = mods.Component as ComponentType<any>;
     });
 
     const baseProps = { ...(props as object) } as Props;

@@ -12,7 +12,7 @@ import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
     it('renders CheckboxBasic', async function basicRender() {
       await render(<CheckboxBasic />);

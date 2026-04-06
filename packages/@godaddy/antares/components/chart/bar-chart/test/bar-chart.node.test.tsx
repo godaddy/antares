@@ -26,7 +26,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['single-series', BarChartExample]
 ];
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#BarChart', function barChartTests() {
     it('does not render SVG on SSR (dimensions from parent ResizeObserver)', function noSvgOnSsr() {
       const result = renderToString(<BarChartExample />);

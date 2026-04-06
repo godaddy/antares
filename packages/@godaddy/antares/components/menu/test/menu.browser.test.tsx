@@ -23,10 +23,10 @@ async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeou
   return locator.element();
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('Examples', function examples() {
     it('renders BasicExample', async function basic() {
-      render(<BasicExample />);
+      await render(<BasicExample />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       assume(button).is.not.equal(null);
@@ -34,7 +34,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders BasicExample and closes on Escape', async function closeOnEscape() {
       const user = userEvent.setup();
-      render(<BasicExample />);
+      await render(<BasicExample />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       await user.click(button);
@@ -51,7 +51,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders BasicExample with keyboard navigation', async function keyboard() {
       const user = userEvent.setup();
-      render(<BasicExample />);
+      await render(<BasicExample />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       await user.click(button);
@@ -70,7 +70,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders DisabledExample with disabled state', async function disabled() {
       const user = userEvent.setup();
-      render(<DisabledExample />);
+      await render(<DisabledExample />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       await user.click(button);
@@ -82,7 +82,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders SectionsExample with headers and separators', async function sections() {
       const user = userEvent.setup();
-      render(<SectionsExample />);
+      await render(<SectionsExample />);
 
       const button = page.getByRole('button', { name: 'View' });
       await user.click(button);
@@ -105,7 +105,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders SelectionExample with single selection', async function single() {
       const user = userEvent.setup();
-      render(<SelectionExample />);
+      await render(<SelectionExample />);
 
       const button = page.getByRole('button', { name: /Align/ });
       await user.click(button);
@@ -121,7 +121,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders SelectionExample with multiple selection', async function multiple() {
       const user = userEvent.setup();
-      render(<SelectionExample />);
+      await render(<SelectionExample />);
 
       const button = page.getByRole('button', { name: /Format/ });
       await user.click(button);
@@ -141,7 +141,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders SelectionExample and toggles selection', async function toggle() {
       const user = userEvent.setup();
-      render(<SelectionExample />);
+      await render(<SelectionExample />);
 
       const button = page.getByRole('button', { name: /Format/ });
       await user.click(button);
@@ -158,7 +158,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders SubmenuExample and opens on hover', async function submenu() {
       const user = userEvent.setup();
-      render(<SubmenuExample />);
+      await render(<SubmenuExample />);
 
       const button = page.getByRole('button', { name: 'Edit' });
       await user.click(button);
@@ -180,7 +180,7 @@ describe('@godaddy/uxcore', function uxcore() {
     });
 
     it('renders PlaygroundExample', async function playground() {
-      render(<PlaygroundExample />);
+      await render(<PlaygroundExample />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       assume(button).is.not.equal(null);
@@ -188,7 +188,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders PlaygroundExample with size sm', async function sizeSm() {
       const user = userEvent.setup();
-      render(<PlaygroundExample size="sm" />);
+      await render(<PlaygroundExample size="sm" />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       await user.click(button);
@@ -201,7 +201,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders PlaygroundExample with matchWidth', async function matchWidth() {
       const user = userEvent.setup();
-      render(<PlaygroundExample matchWidth />);
+      await render(<PlaygroundExample matchWidth />);
 
       const button = page.getByRole('button', { name: 'Actions' });
       await user.click(button);
@@ -215,7 +215,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders LinksExample with href attributes', async function links() {
       const user = userEvent.setup();
-      render(<LinksExample />);
+      await render(<LinksExample />);
 
       const button = page.getByRole('button', { name: 'Navigation' });
       await user.click(button);
@@ -237,7 +237,7 @@ describe('@godaddy/uxcore', function uxcore() {
 
     it('renders CustomIconsExample with custom icon slots', async function customIcons() {
       const user = userEvent.setup();
-      render(<CustomIconsExample />);
+      await render(<CustomIconsExample />);
 
       const checkButton = page.getByRole('button', { name: 'Custom Check Icon' });
       await user.click(checkButton);

@@ -1,6 +1,5 @@
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import React from 'react';
 import { BasicExample } from '../examples/basic.tsx';
 import { AsExample } from '../examples/as.tsx';
 import { BuildingBlockExample } from '../examples/building-block.tsx';
@@ -9,37 +8,37 @@ import { EmptyExample } from '../examples/empty.tsx';
 import assume from 'assume';
 
 describe('@bento/container examples', function examples() {
-  it('renders BasicExample', function rendersBasicExample() {
-    const { container } = render(<BasicExample />);
+  it('renders BasicExample', async function rendersBasicExample() {
+    const { container } = await render(<BasicExample />);
     assume(container.innerHTML).does.include('Hello from Container');
   });
 
-  it('renders AsExample', function rendersAsExample() {
-    const { container } = render(<AsExample />);
+  it('renders AsExample', async function rendersAsExample() {
+    const { container } = await render(<AsExample />);
     const article = container.querySelector('article');
     assume(article).does.exist();
     assume(article?.textContent).equals('This is an article element');
   });
 
-  it('renders BuildingBlockExample', function rendersBuildingBlockExample() {
-    const { container } = render(<BuildingBlockExample />);
+  it('renders BuildingBlockExample', async function rendersBuildingBlockExample() {
+    const { container } = await render(<BuildingBlockExample />);
     const box = container.firstChild as HTMLElement;
     assume(box?.className).does.include('box');
     assume(box?.textContent).equals('This is a custom Box component built on Container');
   });
 
-  it('covers all elevation branches in building-block', function coversElevationBranches() {
-    const { container: lowContainer } = render(<BuildingBlockExample elevation="low" />);
+  it('covers all elevation branches in building-block', async function coversElevationBranches() {
+    const { container: lowContainer } = await render(<BuildingBlockExample elevation="low" />);
     const lowBox = lowContainer.firstChild as HTMLElement;
     assume(lowBox?.style.boxShadow).includes('0px 1px 3px');
 
-    const { container: highContainer } = render(<BuildingBlockExample elevation="high" />);
+    const { container: highContainer } = await render(<BuildingBlockExample elevation="high" />);
     const highBox = highContainer.firstChild as HTMLElement;
     assume(highBox?.style.boxShadow).includes('0px 10px 20px');
   });
 
-  it('renders NestedExample', function rendersNestedExample() {
-    const { container } = render(<NestedExample />);
+  it('renders NestedExample', async function rendersNestedExample() {
+    const { container } = await render(<NestedExample />);
     const main = container.querySelector('main');
     const header = container.querySelector('header');
     const section = container.querySelector('section');
@@ -54,8 +53,8 @@ describe('@bento/container examples', function examples() {
     assume(footer?.textContent).equals('Footer');
   });
 
-  it('renders EmptyExample with backdrop', function rendersEmptyExampleBackdrop() {
-    const { container } = render(<EmptyExample />);
+  it('renders EmptyExample with backdrop', async function rendersEmptyExampleBackdrop() {
+    const { container } = await render(<EmptyExample />);
     const backdrop = container.querySelector('[data-testid="backdrop"]') as HTMLElement;
 
     assume(backdrop).does.exist();
@@ -66,8 +65,8 @@ describe('@bento/container examples', function examples() {
     assume(backdrop?.style.backgroundColor).equals('rgba(0, 0, 0, 0.5)');
   });
 
-  it('renders EmptyExample with spacer', function rendersEmptyExampleSpacer() {
-    const { container } = render(<EmptyExample />);
+  it('renders EmptyExample with spacer', async function rendersEmptyExampleSpacer() {
+    const { container } = await render(<EmptyExample />);
     const spacer = container.querySelector('[data-testid="spacer"]') as HTMLElement;
 
     assume(spacer).does.exist();
@@ -76,8 +75,8 @@ describe('@bento/container examples', function examples() {
     assume(spacer?.style.height).equals('20px');
   });
 
-  it('renders EmptyExample with divider', function rendersEmptyExampleDivider() {
-    const { container } = render(<EmptyExample />);
+  it('renders EmptyExample with divider', async function rendersEmptyExampleDivider() {
+    const { container } = await render(<EmptyExample />);
     const divider = container.querySelector('[data-testid="divider"]') as HTMLElement;
 
     assume(divider).does.exist();

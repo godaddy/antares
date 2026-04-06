@@ -1,5 +1,5 @@
 /**
- * @godaddy/uxcore — UXCore component library public API.
+ * @godaddy/antares — Antares component library public API.
  *
  * Import this package to access all components, layout primitives, and design tokens.
  * CSS custom properties are automatically side-effect imported when this module loads.

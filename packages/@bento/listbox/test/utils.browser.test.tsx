@@ -1,6 +1,6 @@
 import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { render } from 'vitest-browser-react';
-import React, { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { useSafeObjectRef } from '../src/utils';
 import * as utilsModule from '../src/utils';
 import assume from 'assume';
@@ -23,11 +23,11 @@ describe('Browser Utils', function bento() {
     mockWithSlots.mockClear();
   });
 
-  afterEach(function afterEach() {
+  afterEach(async function afterEach() {
     consoleWarnSpy.mockRestore();
   });
 
-  it('handles all ref types with useSafeObjectRef hook', function test() {
+  it('handles all ref types with useSafeObjectRef hook', async function test() {
     const TestRefComponent = forwardRef<HTMLDivElement, { testProp?: string }>(function TestRefComponent(props, ref) {
       const safeRef = useSafeObjectRef(ref);
       const [count, setCount] = useState(0);
@@ -44,24 +44,24 @@ describe('Browser Utils', function bento() {
     });
 
     const functionRef = vi.fn();
-    const { container, rerender } = render(<TestRefComponent ref={functionRef} testProp="test" />);
+    const { container, rerender } = await render(<TestRefComponent ref={functionRef} testProp="test" />);
     const result = container.innerHTML;
 
     assume(result).includes('data-testid="ref-test"');
     assume(functionRef).is.a('function');
 
     const objectRef = { current: null as HTMLDivElement | null };
-    rerender(<TestRefComponent ref={objectRef} key="obj" />);
+    await rerender(<TestRefComponent ref={objectRef} key="obj" />);
     assume(objectRef.current).exists();
 
-    rerender(<TestRefComponent ref={null} key="null" />);
-    rerender(<TestRefComponent ref={undefined} key="undef" />);
+    await rerender(<TestRefComponent ref={null} key="null" />);
+    await rerender(<TestRefComponent ref={undefined} key="undef" />);
 
     const finalResult = container.innerHTML;
     assume(finalResult).includes('data-testid="ref-test"');
   });
 
-  it('imports and uses utility functions correctly', function test() {
+  it('imports and uses utility functions correctly', async function test() {
     assume(utilsModule.useSafeObjectRef).exists();
 
     const TestImportComponent = forwardRef<HTMLDivElement, { testProp?: string }>(
@@ -83,7 +83,7 @@ describe('Browser Utils', function bento() {
     );
 
     const functionRef = vi.fn();
-    const { container } = render(<TestImportComponent ref={functionRef} testProp="import test" />);
+    const { container } = await render(<TestImportComponent ref={functionRef} testProp="import test" />);
     const result = container.innerHTML;
 
     assume(result).includes('data-testid="import-test"');

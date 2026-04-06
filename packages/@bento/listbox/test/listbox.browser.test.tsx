@@ -8,18 +8,18 @@ import { CollectionRendererContext, DefaultCollectionRenderer } from 'react-aria
 describe('@bento/listbox', function bento() {
   let mockConsoleError: any;
 
-  beforeEach(function beforeEach() {
-    mockConsoleError = vi.spyOn(console, 'error').mockImplementation(function mockConsoleErrorImplementation() {
+  beforeEach(async function beforeEach() {
+    mockConsoleError = vi.spyOn(console, 'error').mockImplementation(async function mockConsoleErrorImplementation() {
       /* intentional no-op */
     });
   });
 
-  afterEach(function afterEach() {
+  afterEach(async function afterEach() {
     mockConsoleError.mockRestore();
   });
 
   describe('Exports', function exports() {
-    it('exports all main components with correct types', function test() {
+    it('exports all main components with correct types', async function test() {
       assume(ListBox).exists();
       assume(ListBoxItem).exists();
       assume(ListBoxSection).exists();
@@ -29,8 +29,8 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Basic Rendering', function basicRendering() {
-    it('renders empty listbox', function test() {
-      const { container } = render(<ListBox aria-label="Empty listbox" />);
+    it('renders empty listbox', async function test() {
+      const { container } = await render(<ListBox aria-label="Empty listbox" />);
       const result = container.innerHTML;
 
       assume(result).includes('role="listbox"');
@@ -39,8 +39,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('data-orientation="vertical"');
     });
 
-    it('renders static listbox with items', function test() {
-      const { container } = render(
+    it('renders static listbox with items', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Test listbox">
           <ListBoxItem textValue="Apple">Apple</ListBoxItem>
           <ListBoxItem textValue="Banana">Banana</ListBoxItem>
@@ -52,8 +52,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Banana');
     });
 
-    it('renders with custom data attributes and test identifiers', function test() {
-      const { container } = render(
+    it('renders with custom data attributes and test identifiers', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Custom listbox" data-testid="custom-listbox">
           <ListBoxItem textValue="Item 1" data-testid="custom-item">
             Item 1
@@ -66,8 +66,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('data-testid="custom-item"');
     });
 
-    it('supports className prop on all ListBox primitives', function test() {
-      const { container } = render(
+    it('supports className prop on all ListBox primitives', async function test() {
+      const { container } = await render(
         <ListBox aria-label="ClassNames test" className="custom-listbox-class">
           <ListBoxSection title="Fruits" className="custom-section-class">
             <Header className="custom-header-class">Fruits Header</Header>
@@ -98,8 +98,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Fruits Header');
     });
 
-    it('supports className prop on core ListBox primitives', function test() {
-      const { container } = render(
+    it('supports className prop on core ListBox primitives', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Core className test" className="test-listbox">
           <ListBoxItem textValue="Standalone" className="standalone-class">
             Standalone Item
@@ -116,8 +116,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('standalone-class');
     });
 
-    it('supports all styling props and data attributes', function test() {
-      const { container } = render(
+    it('supports all styling props and data attributes', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Comprehensive props test">
           <ListBoxItem
             textValue="AllProps"
@@ -149,21 +149,21 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Section Item');
     });
 
-    it('handles edge cases and Map stress testing', function test() {
+    it('handles edge cases and Map stress testing', async function test() {
       // Stress test with rapid mount/unmount cycles
       for (let i = 0; i < 15; i++) {
-        const { unmount } = render(
+        const { unmount } = await render(
           <ListBox aria-label={`Stress ${i}`}>
             <ListBoxItem textValue="EdgeCase" className="stress">
               Stress {i}
             </ListBoxItem>
           </ListBox>
         );
-        unmount();
+        await unmount();
       }
 
       // Test complex children and key mismatches
-      const { container } = render(
+      const { container } = await render(
         <ListBox aria-label="Edge cases test">
           <ListBoxItem id="unique" className="edge-1">
             <span>Complex</span>
@@ -183,9 +183,9 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Final');
     });
 
-    it('handles ListBoxItem without preserved styling props', function test() {
+    it('handles ListBoxItem without preserved styling props', async function test() {
       // Test items within sections (different code path that doesn't use preservation system)
-      const { container } = render(
+      const { container } = await render(
         <ListBox aria-label="Section test">
           <ListBoxSection title="Test Section">
             <ListBoxItem textValue="Item1">Item 1</ListBoxItem>
@@ -201,8 +201,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Test Section');
     });
 
-    it('renders basic listbox with fruit selection and disabled items', function test() {
-      const { container } = render(
+    it('renders basic listbox with fruit selection and disabled items', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Fruit selection" selectionMode="multiple">
           <ListBoxItem id="apple" textValue="Apple">
             Apple
@@ -230,8 +230,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('data-selection-mode="multiple"');
     });
 
-    it('tests component function paths and rendering scenarios', function test() {
-      const { container: itemContainer } = render(
+    it('tests component function paths and rendering scenarios', async function test() {
+      const { container: itemContainer } = await render(
         <ListBox aria-label="Item component test">
           <ListBoxItem textValue="Test Item" id="test-item">
             Test Item Content
@@ -243,7 +243,7 @@ describe('@bento/listbox', function bento() {
       assume(itemResult).includes('role="option"');
       assume(itemResult).includes('Test Item Content');
 
-      const { container: linkContainer } = render(
+      const { container: linkContainer } = await render(
         <ListBox aria-label="Link item test">
           <ListBoxItem textValue="Link Item" href="/test" target="_blank">
             Link Item Content
@@ -254,7 +254,7 @@ describe('@bento/listbox', function bento() {
 
       assume(linkResult).includes('Link Item Content');
 
-      const { container: sectionContainer } = render(
+      const { container: sectionContainer } = await render(
         <ListBox aria-label="Section component test">
           <ListBoxSection title="Test Section" aria-label="Section Label">
             <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
@@ -267,30 +267,30 @@ describe('@bento/listbox', function bento() {
       assume(sectionResult).includes('Test Section');
     });
 
-    it('handles various ref types correctly', function test() {
+    it('handles various ref types correctly', async function test() {
       const objectRef = { current: null as HTMLDivElement | null };
-      const { unmount: unmount1 } = render(<div ref={objectRef}>Object ref</div>);
+      const { unmount: unmount1 } = await render(<div ref={objectRef}>Object ref</div>);
       assume(objectRef.current).exists();
-      unmount1();
+      await unmount1();
 
       const functionRef = vi.fn();
-      const { unmount: unmount2 } = render(<div ref={functionRef}>Function ref</div>);
+      const { unmount: unmount2 } = await render(<div ref={functionRef}>Function ref</div>);
       assume(functionRef).is.a('function');
-      unmount2();
+      await unmount2();
 
       function TestComponent() {
         const hookRef = useRef<HTMLDivElement>(null);
         return <div ref={hookRef}>Hook ref</div>;
       }
-      const { container } = render(<TestComponent />);
+      const { container } = await render(<TestComponent />);
       assume(container).exists();
     });
   });
 
   describe('Selection Modes', function selectionModes() {
-    it('supports all selection modes and related behaviors', function test() {
+    it('supports all selection modes and related behaviors', async function test() {
       // Single selection mode
-      const { container: singleContainer } = render(
+      const { container: singleContainer } = await render(
         <ListBox aria-label="Single selection" selectionMode="single">
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -301,7 +301,7 @@ describe('@bento/listbox', function bento() {
       assume(singleResult).includes('data-selection-mode="single"');
 
       // Multiple selection mode
-      const { container: multipleContainer } = render(
+      const { container: multipleContainer } = await render(
         <ListBox aria-label="Multiple selection" selectionMode="multiple">
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -312,7 +312,7 @@ describe('@bento/listbox', function bento() {
       assume(multipleResult).includes('data-selection-mode="multiple"');
 
       // No selection mode
-      const { container: noneContainer } = render(
+      const { container: noneContainer } = await render(
         <ListBox aria-label="No selection" selectionMode="none">
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -324,7 +324,7 @@ describe('@bento/listbox', function bento() {
 
       // No selection mode with actions
       const onAction = vi.fn();
-      const { container: actionsContainer } = render(
+      const { container: actionsContainer } = await render(
         <ListBox aria-label="No selection actions" selectionMode="none" onAction={onAction}>
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -337,9 +337,9 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Layout and Orientation', function layoutOrientation() {
-    it('supports layout and orientation configurations', function test() {
+    it('supports layout and orientation configurations', async function test() {
       // Horizontal orientation
-      const { container: horizontalContainer } = render(
+      const { container: horizontalContainer } = await render(
         <ListBox aria-label="Horizontal orientation" orientation="horizontal">
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -349,7 +349,7 @@ describe('@bento/listbox', function bento() {
       assume(horizontalResult).includes('data-orientation="horizontal"');
 
       // Default stack layout and vertical orientation
-      const { container: defaultContainer } = render(
+      const { container: defaultContainer } = await render(
         <ListBox aria-label="Default layout">
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -359,7 +359,7 @@ describe('@bento/listbox', function bento() {
       assume(defaultResult).includes('data-layout="stack"');
       assume(defaultResult).includes('data-orientation="vertical"');
 
-      const { container: complexContainer } = render(
+      const { container: complexContainer } = await render(
         <ListBox aria-label="Complex orientation" orientation="horizontal" selectionMode="multiple" shouldFocusOnHover>
           <ListBoxSection title="Section 1">
             <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
@@ -382,9 +382,9 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Enhanced Props', function enhancedProps() {
-    it('supports focus and selection behavior props', function test() {
+    it('supports focus and selection behavior props', async function test() {
       // Focus behavior props
-      const { container: focusContainer } = render(
+      const { container: focusContainer } = await render(
         <ListBox aria-label="Focus behavior" shouldFocusOnHover shouldFocusWrap>
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -394,7 +394,7 @@ describe('@bento/listbox', function bento() {
       assume(focusResult).includes('data-focus-wrap="true"');
 
       // Selection behavior props
-      const { container: selectionContainer } = render(
+      const { container: selectionContainer } = await render(
         <ListBox
           aria-label="Selection behavior"
           selectionMode="multiple"
@@ -412,7 +412,7 @@ describe('@bento/listbox', function bento() {
       assume(selectionResult).includes('data-selection-mode="multiple"');
     });
 
-    it('supports controlled selection and stateful interactions', function test() {
+    it('supports controlled selection and stateful interactions', async function test() {
       // Controlled selection state
       function ControlledListBox() {
         const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['item1']));
@@ -434,7 +434,7 @@ describe('@bento/listbox', function bento() {
         );
       }
 
-      const { container } = render(<ControlledListBox />);
+      const { container } = await render(<ControlledListBox />);
       const result = container.innerHTML;
 
       assume(result).includes('aria-selected="true"');
@@ -443,13 +443,13 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Dynamic Collections', function dynamicCollections() {
-    it('renders dynamic collection with items prop', function test() {
+    it('renders dynamic collection with items prop', async function test() {
       const items = [
         { id: 'red', name: 'Red' },
         { id: 'green', name: 'Green' }
       ];
 
-      const { container } = render(
+      const { container } = await render(
         <ListBox aria-label="Dynamic colors" items={items}>
           {(item: any) => (
             <ListBoxItem key={item.id} textValue={item.name}>
@@ -465,7 +465,7 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('role="option"');
     });
 
-    it('supports nested collections with sections', function test() {
+    it('supports nested collections with sections', async function test() {
       const categories = [
         {
           key: 'fruits',
@@ -474,7 +474,7 @@ describe('@bento/listbox', function bento() {
         }
       ];
 
-      const { container } = render(
+      const { container } = await render(
         <ListBox aria-label="Categories" items={categories}>
           {(category: any) => (
             <ListBoxSection key={category.key} title={category.title}>
@@ -495,8 +495,8 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('role="group"');
     });
 
-    it('renders static and dynamic sections with nested collections', function test() {
-      const { container: staticContainer } = render(
+    it('renders static and dynamic sections with nested collections', async function test() {
+      const { container: staticContainer } = await render(
         <ListBox aria-label="Static sections">
           <ListBoxSection title="Static Section">
             <ListBoxItem textValue="Static Item">Static Item</ListBoxItem>
@@ -527,7 +527,7 @@ describe('@bento/listbox', function bento() {
         }
       ];
 
-      const { container: dynamicContainer } = render(
+      const { container: dynamicContainer } = await render(
         <ListBox aria-label="Dynamic collections" items={nestedData}>
           {(section: any) => (
             <ListBoxSection key={section.id} title={section.name}>
@@ -548,7 +548,7 @@ describe('@bento/listbox', function bento() {
       assume(dynamicResult).includes('Vegetables');
     });
 
-    it('supports comprehensive dynamic collection features', function test() {
+    it('supports comprehensive dynamic collection features', async function test() {
       const items = [
         { id: 'item1', name: 'Item 1', disabled: false, href: '/link1' },
         { id: 'item2', name: 'Item 2', disabled: true, href: null }
@@ -581,7 +581,7 @@ describe('@bento/listbox', function bento() {
         );
       }
 
-      const { container } = render(<DynamicWithFeatures />);
+      const { container } = await render(<DynamicWithFeatures />);
       const result = container.innerHTML;
 
       assume(result).includes('Item 1');
@@ -593,10 +593,10 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('href="/link1"');
     });
 
-    it('supports empty dynamic collections', function test() {
+    it('supports empty dynamic collections', async function test() {
       const items: any[] = [];
 
-      const { container } = render(
+      const { container } = await render(
         <ListBox
           aria-label="Empty dynamic"
           items={items}
@@ -616,9 +616,9 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('data-empty="true"');
     });
 
-    it('handles Collection component edge cases and nested structures', function test() {
+    it('handles Collection component edge cases and nested structures', async function test() {
       const items = [{ id: 'item1', name: 'Item 1', key: 'item1' }];
-      const { container: basicContainer } = render(
+      const { container: basicContainer } = await render(
         <ListBox aria-label="Collection test" items={items}>
           {(item: any) => (
             <ListBoxItem key={item.key} textValue={item.name}>
@@ -638,7 +638,7 @@ describe('@bento/listbox', function bento() {
           items: [{ id: 'item1', name: 'Item 1', key: 'item1' }]
         }
       ];
-      const { container: nestedContainer } = render(
+      const { container: nestedContainer } = await render(
         <ListBox aria-label="Nested collection" items={sections}>
           {(section: any) => (
             <ListBoxSection key={section.key} title={section.title}>
@@ -661,8 +661,8 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Sections', function sections() {
-    it('renders sections with various title configurations and properties', function test() {
-      const { container: withTitle } = render(
+    it('renders sections with various title configurations and properties', async function test() {
+      const { container: withTitle } = await render(
         <ListBox aria-label="Section with title">
           <ListBoxSection title="Fruits">
             <ListBoxItem textValue="Apple">Apple</ListBoxItem>
@@ -675,7 +675,7 @@ describe('@bento/listbox', function bento() {
       assume(withTitleResult).includes('role="group"');
       assume(withTitleResult).includes('Fruits');
 
-      const { container: withAriaLabel } = render(
+      const { container: withAriaLabel } = await render(
         <ListBox aria-label="Section with aria-label">
           <ListBoxSection aria-label="Primary fruits">
             <ListBoxItem textValue="Apple">Apple</ListBoxItem>
@@ -688,7 +688,7 @@ describe('@bento/listbox', function bento() {
       assume(withAriaLabelResult).includes('role="group"');
       assume(withAriaLabelResult).includes('aria-label="Primary fruits"');
 
-      const { container: withoutTitle } = render(
+      const { container: withoutTitle } = await render(
         <ListBox aria-label="Section without title">
           <ListBoxSection>
             <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
@@ -700,7 +700,7 @@ describe('@bento/listbox', function bento() {
 
       assume(withoutTitleResult).includes('role="group"');
 
-      const { container: ariaLabelOnly } = render(
+      const { container: ariaLabelOnly } = await render(
         <ListBox aria-label="Section aria-label only">
           <ListBoxSection aria-label="Untitled Section">
             <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
@@ -712,7 +712,7 @@ describe('@bento/listbox', function bento() {
       assume(ariaLabelOnlyResult).includes('role="group"');
       assume(ariaLabelOnlyResult).includes('aria-label="Untitled Section"');
 
-      const { container: withCustomProps } = render(
+      const { container: withCustomProps } = await render(
         <ListBox aria-label="Section with custom props">
           <ListBoxSection title="Custom Section" data-testid="custom-section">
             <ListBoxItem textValue="Item">Item</ListBoxItem>
@@ -727,9 +727,9 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Item Features', function itemFeatures() {
-    it('supports item states, link attributes, and element properties', function test() {
+    it('supports item states, link attributes, and element properties', async function test() {
       // Disabled items
-      const { container: disabledContainer } = render(
+      const { container: disabledContainer } = await render(
         <ListBox aria-label="Disabled items">
           <ListBoxItem textValue="Enabled">Enabled</ListBoxItem>
           <ListBoxItem textValue="Disabled" isDisabled>
@@ -742,7 +742,7 @@ describe('@bento/listbox', function bento() {
       assume(disabledResult).includes('aria-disabled="true"');
       assume(disabledResult).includes('Disabled');
 
-      const { container: linkContainer } = render(
+      const { container: linkContainer } = await render(
         <ListBox aria-label="Link items">
           <ListBoxItem textValue="Link" href="https://example.com">
             Link Item
@@ -755,7 +755,7 @@ describe('@bento/listbox', function bento() {
       assume(linkResult).includes('Link Item');
 
       // Download attribute
-      const { container: downloadContainer } = render(
+      const { container: downloadContainer } = await render(
         <ListBox aria-label="Download items">
           <ListBoxItem textValue="Download" href="https://example.com/file.pdf" download="file.pdf">
             Download File
@@ -768,8 +768,8 @@ describe('@bento/listbox', function bento() {
       assume(downloadResult).includes('href="https://example.com/file.pdf"');
     });
 
-    it('supports all link attributes', function test() {
-      const { container } = render(
+    it('supports all link attributes', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Full link">
           <ListBoxItem
             textValue="Full Link"
@@ -793,9 +793,9 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('referrerpolicy="no-referrer"');
     });
 
-    it('supports items with onAction handlers, value prop, and advanced features', function test() {
+    it('supports items with onAction handlers, value prop, and advanced features', async function test() {
       const itemOnAction = vi.fn();
-      const { container: itemActionContainer } = render(
+      const { container: itemActionContainer } = await render(
         <ListBox aria-label="Item action test">
           <ListBoxItem textValue="Action Item" onAction={itemOnAction}>
             Action Item
@@ -807,7 +807,7 @@ describe('@bento/listbox', function bento() {
       assume(itemActionResult).includes('role="option"');
 
       const listBoxOnAction = vi.fn();
-      const { container: listBoxActionContainer } = render(
+      const { container: listBoxActionContainer } = await render(
         <ListBox aria-label="ListBox action test" onAction={listBoxOnAction}>
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -817,7 +817,7 @@ describe('@bento/listbox', function bento() {
       assume(listBoxActionResult).includes('Item 1');
 
       const itemValue = { id: 'test', data: 'value' };
-      const { container: valueContainer } = render(
+      const { container: valueContainer } = await render(
         <ListBox aria-label="Value test">
           <ListBoxItem textValue="Value Item" value={itemValue}>
             Value Item
@@ -828,7 +828,7 @@ describe('@bento/listbox', function bento() {
 
       assume(valueResult).includes('role="option"');
 
-      const { container: slotsContainer } = render(
+      const { container: slotsContainer } = await render(
         <ListBox aria-label="Slots" slot="listbox-slot">
           <ListBoxItem textValue="Item 1" slot="item-slot">
             Item 1
@@ -840,8 +840,8 @@ describe('@bento/listbox', function bento() {
       assume(slotsResult).includes('Item 1');
     });
 
-    it('renders correct element type based on href prop', function test() {
-      const { container: withHref } = render(
+    it('renders correct element type based on href prop', async function test() {
+      const { container: withHref } = await render(
         <ListBox aria-label="With href test">
           <ListBoxItem textValue="Link item" href="/test">
             Link content
@@ -854,7 +854,7 @@ describe('@bento/listbox', function bento() {
       assume(linkElement!.nodeName.toLowerCase()).equals('a');
       assume(linkElement!.getAttribute('href')).equals('/test');
 
-      const { container: withoutHref } = render(
+      const { container: withoutHref } = await render(
         <ListBox aria-label="Without href test">
           <ListBoxItem textValue="Regular item">Regular content</ListBoxItem>
         </ListBox>
@@ -868,9 +868,9 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Empty State', function emptyState() {
-    it('supports renderEmptyState prop with various formats and conditional rendering', function test() {
+    it('supports renderEmptyState prop with various formats and conditional rendering', async function test() {
       const functionSpy = vi.fn(() => <div data-testid="function-empty">Function Empty</div>);
-      const { container: functionContainer } = render(
+      const { container: functionContainer } = await render(
         <ListBox aria-label="Function empty state" items={[]} renderEmptyState={functionSpy} />
       );
       const functionResult = functionContainer.innerHTML;
@@ -880,7 +880,7 @@ describe('@bento/listbox', function bento() {
       assume(functionResult).includes('data-empty="true"');
 
       const emptyElement = <div data-testid="jsx-empty">JSX Empty State</div>;
-      const { container: jsxContainer } = render(
+      const { container: jsxContainer } = await render(
         <ListBox aria-label="JSX empty state" renderEmptyState={emptyElement as any} />
       );
       const jsxResult = jsxContainer.innerHTML;
@@ -891,7 +891,9 @@ describe('@bento/listbox', function bento() {
       const EmptyState = (props: any) => (
         <div data-testid="empty-state">No items (Empty: {props.isEmpty ? 'yes' : 'no'})</div>
       );
-      const { container: emptyContainer } = render(<ListBox aria-label="Empty state" renderEmptyState={EmptyState} />);
+      const { container: emptyContainer } = await render(
+        <ListBox aria-label="Empty state" renderEmptyState={EmptyState} />
+      );
       const emptyResult = emptyContainer.innerHTML;
 
       assume(emptyResult).includes('data-testid="empty-state"');
@@ -908,13 +910,13 @@ describe('@bento/listbox', function bento() {
           </div>
         );
       }
-      const { container: dynamicContainer } = render(<DynamicListBox />);
+      const { container: dynamicContainer } = await render(<DynamicListBox />);
       const dynamicResult = dynamicContainer.innerHTML;
 
       assume(dynamicResult).includes('data-testid="empty"');
       assume(dynamicResult).includes('data-empty="true"');
 
-      const { container: withItemsContainer } = render(
+      const { container: withItemsContainer } = await render(
         <ListBox aria-label="With items" renderEmptyState={() => <div data-testid="should-not-show">Empty</div>}>
           <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
         </ListBox>
@@ -928,7 +930,7 @@ describe('@bento/listbox', function bento() {
   });
 
   describe('Error Handling', function errorHandling() {
-    it('handles render function callbacks and edge cases', function test() {
+    it('handles render function callbacks and edge cases', async function test() {
       const renderFunction = vi.fn(function renderFunction(_renderValues: any) {
         return React.createElement(
           'div',
@@ -940,7 +942,7 @@ describe('@bento/listbox', function bento() {
         );
       });
 
-      render(
+      await render(
         React.createElement(ListBox, {
           'aria-label': 'Children render function test',
           children: renderFunction
@@ -957,11 +959,38 @@ describe('@bento/listbox', function bento() {
       // Verify the function was set up correctly for potential render prop usage
       assume(typeof renderFunction).equals('function');
     });
+
+    it('covers the hasRenderChildren branch in renderListBoxContent', async function test() {
+      // useProps invokes function-valued props, so returning a function from that first call
+      // ensures renderListBoxContent sees typeof children === 'function' && !items (hasRenderChildren).
+      const innerRenderFn = vi.fn(function innerRenderFn(renderProps: any) {
+        return React.createElement(
+          'div',
+          { 'data-testid': 'render-children-branch' },
+          renderProps.isEmpty ? 'render-branch-empty' : 'render-branch-has-items'
+        );
+      });
+
+      const outerRenderFn = function outerRenderFn() {
+        return innerRenderFn;
+      };
+
+      const { container } = await render(
+        React.createElement(ListBox, {
+          'aria-label': 'Render children branch test',
+          children: outerRenderFn
+        })
+      );
+      const result = container.innerHTML;
+
+      assume(innerRenderFn).is.a('function');
+      assume(result).includes('render-branch-');
+    });
   });
 
   // Type Safety Tests (consolidated from types.browser.test.tsx)
   describe('@bento/listbox types', function bentoTypes() {
-    it('validates component props, types, and React Aria integration', function test() {
+    it('validates component props, types, and React Aria integration', async function test() {
       // ListBox props validation
       const validListBoxProps: any = {
         'aria-label': 'Test ListBox',
@@ -971,7 +1000,7 @@ describe('@bento/listbox', function bento() {
         onAction: (key: any) => console.log(key),
         children: ({ isEmpty }: any) => (isEmpty ? 'Empty' : 'Has items')
       };
-      const { container: listBoxContainer } = render(<ListBox {...validListBoxProps} />);
+      const { container: listBoxContainer } = await render(<ListBox {...validListBoxProps} />);
       assume(listBoxContainer).exists();
 
       // ListBoxItem props validation with link and hover props
@@ -982,16 +1011,16 @@ describe('@bento/listbox', function bento() {
         target: '_blank',
         rel: 'noopener',
         download: true,
-        onHoverStart: function onHoverStart() {
+        onHoverStart: async function onHoverStart() {
           /* intentional no-op */
         },
-        onHoverEnd: function onHoverEnd() {
+        onHoverEnd: async function onHoverEnd() {
           /* intentional no-op */
         },
         onHoverChange: (isHovering: any) => console.log(isHovering),
         children: ({ isSelected }: any) => `Item (selected: ${isSelected})`
       };
-      const { container: itemContainer } = render(
+      const { container: itemContainer } = await render(
         <ListBox aria-label="Test">
           <ListBoxItem {...validItemProps}>Test Item</ListBoxItem>
         </ListBox>
@@ -1004,7 +1033,7 @@ describe('@bento/listbox', function bento() {
         title: 'Test Section',
         'aria-label': 'Section label'
       };
-      const { container: sectionContainer } = render(
+      const { container: sectionContainer } = await render(
         <ListBox aria-label="Test">
           <ListBoxSection {...validSectionProps}>
             <ListBoxItem textValue="Item 1">Item 1</ListBoxItem>
@@ -1034,7 +1063,7 @@ describe('@bento/listbox', function bento() {
         autoFocus: true,
         shouldFocusWrap: true
       };
-      const { container: ariaContainer } = render(
+      const { container: ariaContainer } = await render(
         <ListBox aria-label="React Aria integration" {...ariaProps}>
           <ListBoxItem id="item1" textValue="Item 1">
             Item 1
@@ -1044,7 +1073,7 @@ describe('@bento/listbox', function bento() {
       assume(ariaContainer).exists();
 
       // Render props with correct typing
-      const { container: renderPropsContainer } = render(
+      const { container: renderPropsContainer } = await render(
         <ListBox aria-label="Render props test">
           <ListBoxItem textValue="Test">
             {function renderItemProps(renderProps: any) {
@@ -1070,14 +1099,14 @@ describe('@bento/listbox', function bento() {
           </ListBox>
         </TestContext.Provider>
       );
-      const { container: contextContainer } = render(React.createElement(contextComponent));
+      const { container: contextContainer } = await render(React.createElement(contextComponent));
       assume(contextContainer).exists();
     });
   });
 
   describe('Utility Functions', function utilityFunctions() {
-    it('tests utility functions and rendering logic comprehensively', function test() {
-      const { container } = render(
+    it('tests utility functions and rendering logic comprehensively', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Utility test">
           <ListBoxItem textValue="Item 1" data-testid="utility-item">
             Item 1
@@ -1095,7 +1124,7 @@ describe('@bento/listbox', function bento() {
       assume(ListBoxSection).exists();
       assume(Collection).exists();
 
-      const { container: styleContainer } = render(
+      const { container: styleContainer } = await render(
         <ListBox aria-label="Style and className test">
           <ListBoxItem textValue="Styled Item" data-testid="styled-item">
             Styled Item
@@ -1108,7 +1137,7 @@ describe('@bento/listbox', function bento() {
       assume(styledItem?.getAttribute('data-testid')).equals('styled-item');
 
       const objectRef = { current: null as HTMLDivElement | null };
-      const { container: refContainer } = render(
+      const { container: refContainer } = await render(
         <div ref={objectRef}>
           <ListBox aria-label="Ref test">
             <ListBoxItem textValue="Ref Item">Ref Item</ListBoxItem>
@@ -1120,15 +1149,17 @@ describe('@bento/listbox', function bento() {
       assume(refContainer.innerHTML).includes('role="listbox"');
     });
 
-    it('tests Header component comprehensive functionality and contexts', function test() {
-      const { container: standalone } = render(<Header data-testid="standalone-header">Standalone Header</Header>);
+    it('tests Header component comprehensive functionality and contexts', async function test() {
+      const { container: standalone } = await render(
+        <Header data-testid="standalone-header">Standalone Header</Header>
+      );
       const standaloneResult = standalone.innerHTML;
 
       assume(standaloneResult).includes('<header');
       assume(standaloneResult).includes('data-testid="standalone-header"');
       assume(standaloneResult).includes('Standalone Header');
 
-      const { container: inSection } = render(
+      const { container: inSection } = await render(
         <ListBox aria-label="Header context test">
           <ListBoxSection>
             <Header data-testid="collection-header">Collection Header</Header>
@@ -1142,7 +1173,7 @@ describe('@bento/listbox', function bento() {
       assume(inSectionResult).includes('Collection Header');
 
       const headerRef = React.createRef<HTMLElement>();
-      const { container: withContext, unmount } = render(
+      const { container: withContext, unmount } = await render(
         <HeaderContext.Provider value={{ className: 'test-header', id: 'test-id' }}>
           <Header ref={headerRef} data-testid="context-header">
             Context Header Content
@@ -1153,14 +1184,14 @@ describe('@bento/listbox', function bento() {
 
       assume(withContextResult).includes('data-testid="context-header"');
       assume(withContextResult).includes('<header');
-      unmount();
+      await unmount();
 
       const forwardRefComponent = React.forwardRef<HTMLElement, any>((props, forwardedRef) => (
         <Header ref={forwardedRef} {...props}>
           forwardRef Test
         </Header>
       ));
-      const { container: forwardRefContainer } = render(
+      const { container: forwardRefContainer } = await render(
         React.createElement(forwardRefComponent, {}, 'forwardRef Execution Test')
       );
       const forwardRefResult = forwardRefContainer.innerHTML;
@@ -1169,8 +1200,8 @@ describe('@bento/listbox', function bento() {
       assume(forwardRefResult).includes('forwardRef Test');
     });
 
-    it('renders section with proper element hierarchy and props forwarding', function test() {
-      const { container } = render(
+    it('renders section with proper element hierarchy and props forwarding', async function test() {
+      const { container } = await render(
         <ListBox aria-label="Section rendering test">
           <ListBoxSection title="Test Section" aria-label="Section Label" data-testid="custom-section">
             <ListBoxItem textValue="Section Item 1">Section Item 1</ListBoxItem>
@@ -1188,7 +1219,7 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Section Item 2');
     });
 
-    it('renders sections within dynamic collections with nested items', function test() {
+    it('renders sections within dynamic collections with nested items', async function test() {
       const categories = [
         {
           key: 'category1',
@@ -1200,7 +1231,7 @@ describe('@bento/listbox', function bento() {
         }
       ];
 
-      const { container } = render(
+      const { container } = await render(
         <ListBox aria-label="Dynamic section test" items={categories}>
           {(category: any) => (
             <ListBoxSection key={category.key} title={category.title}>
@@ -1223,7 +1254,7 @@ describe('@bento/listbox', function bento() {
       assume(result).includes('Dynamic Item 2');
     });
 
-    it('renders custom CollectionBranch via context with ListBoxSectionInner', function test() {
+    it('renders custom CollectionBranch via context with ListBoxSectionInner', async function test() {
       const FakeBranch = ({ collection, parent }: any) => (
         <div data-testid="fake-branch" data-size={collection?.size} data-parent={parent?.key || ''} />
       );
@@ -1244,7 +1275,7 @@ describe('@bento/listbox', function bento() {
         }
       ];
 
-      const { container } = render(
+      const { container } = await render(
         <CollectionRendererContext.Provider value={rendererOverride}>
           <ListBox aria-label="branch test" items={data}>
             {(section: any) => (
@@ -1268,7 +1299,7 @@ describe('@bento/listbox', function bento() {
       assume(branchEl.getAttribute('data-parent')).equals('section1');
     });
 
-    it('renders ListBoxSectionInner when CollectionBranch is null', function test() {
+    it('renders ListBoxSectionInner when CollectionBranch is null', async function test() {
       const mockRenderer = {
         ...DefaultCollectionRenderer,
         CollectionBranch: null
@@ -1282,7 +1313,7 @@ describe('@bento/listbox', function bento() {
         }
       ];
 
-      const { container } = render(
+      const { container } = await render(
         <CollectionRendererContext.Provider value={mockRenderer}>
           <ListBox aria-label="null branch test" items={data}>
             {(section: any) => (
@@ -1306,18 +1337,22 @@ describe('@bento/listbox', function bento() {
     });
   });
 
-  it('throws when ListBoxSection is rendered without a collection context', function test() {
-    assume(function throwsTest() {
-      render(
+  it('throws when ListBoxSection is rendered without a collection context', async function test() {
+    let threw = false;
+    try {
+      await render(
         <ListBoxSection title="Invalid Section">
           <ListBoxItem>Item</ListBoxItem>
         </ListBoxSection>
       );
-    }).throws();
+    } catch {
+      threw = true;
+    }
+    assume(threw).equals(true);
   });
 
-  it('triggers React Aria component wrapper functions during collection building', function test() {
-    const { container } = render(
+  it('triggers React Aria component wrapper functions during collection building', async function test() {
+    const { container } = await render(
       <ListBox aria-label="component wrapper test">
         <ListBoxSection title="Section Title">
           <Header>Section Header</Header>
@@ -1332,8 +1367,8 @@ describe('@bento/listbox', function bento() {
     assume(result).includes('<header');
   });
 
-  it('tests section title branch variations and sectionContent logic', function test() {
-    const { container: container1 } = render(
+  it('tests section title branch variations and sectionContent logic', async function test() {
+    const { container: container1 } = await render(
       <ListBox aria-label="title prop test">
         <ListBoxSection title="Title From Prop">
           <ListBoxItem>Item</ListBoxItem>
@@ -1344,7 +1379,7 @@ describe('@bento/listbox', function bento() {
 
     assume(result1).includes('<section');
 
-    const { container: container2 } = render(
+    const { container: container2 } = await render(
       <ListBox
         aria-label="props title test"
         items={[{ key: 'section', title: 'Title From Node', children: [{ key: 'item', name: 'Item' }] }]}
@@ -1362,7 +1397,7 @@ describe('@bento/listbox', function bento() {
 
     assume(result2).includes('<section');
 
-    const { container: container3 } = render(
+    const { container: container3 } = await render(
       <ListBox aria-label="no title test">
         <ListBoxSection>
           <ListBoxItem>Item without section title</ListBoxItem>
@@ -1373,7 +1408,7 @@ describe('@bento/listbox', function bento() {
 
     assume(result3).includes('<section');
 
-    const { container: container4 } = render(
+    const { container: container4 } = await render(
       <ListBox aria-label="section content test">
         <ListBoxSection title="Content Test">
           <ListBoxItem>Direct Child</ListBoxItem>

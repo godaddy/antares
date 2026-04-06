@@ -31,7 +31,7 @@ async function renderExampleAndWait(Example: React.ComponentType, width = 800, h
   return result;
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#BarChart', function barChartTests() {
     describe('#basic', function basic() {
       it('single-series screenshot', async function singleSeries() {

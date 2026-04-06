@@ -30,7 +30,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<ControlledOverlay />);
+      const { container } = await render(<ControlledOverlay />);
       const externalTrigger = container.querySelector('[data-testid="external-trigger"]');
       const content = container.querySelector('[data-testid="content"]');
 
@@ -67,7 +67,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<ControlledOverlay />);
+      const { container } = await render(<ControlledOverlay />);
       const externalClose = container.querySelector('[data-testid="external-close"]');
 
       // Content should be visible initially
@@ -108,7 +108,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<ControlledOverlay />);
+      const { container } = await render(<ControlledOverlay />);
       const trigger = container.querySelector('[data-testid="trigger"]') as HTMLButtonElement;
 
       // Click trigger using proper button click
@@ -127,7 +127,7 @@ describe('@bento/overlay state management', function overlayState() {
   });
 
   describe('Uncontrolled state', function uncontrolled() {
-    it('starts closed by default', function defaultClosed() {
+    it('starts closed by default', async function defaultClosed() {
       function UncontrolledOverlay() {
         return (
           <Overlay>
@@ -139,14 +139,14 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<UncontrolledOverlay />);
+      const { container } = await render(<UncontrolledOverlay />);
       const content = container.querySelector('[data-testid="content"]');
 
       // Content should not be visible
       assume(content).to.not.exist;
     });
 
-    it('starts open when defaultOpen is true', function defaultOpenTrue() {
+    it('starts open when defaultOpen is true', async function defaultOpenTrue() {
       function UncontrolledOverlay() {
         return (
           <Overlay defaultOpen={true}>
@@ -158,7 +158,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<UncontrolledOverlay />);
+      const { container } = await render(<UncontrolledOverlay />);
       const content = container.querySelector('[data-testid="content"]');
 
       // Content should be visible
@@ -179,7 +179,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<UncontrolledOverlay />);
+      const { container } = await render(<UncontrolledOverlay />);
       const trigger = container.querySelector('[data-testid="trigger"]') as HTMLButtonElement;
 
       // Content should not be visible initially
@@ -230,7 +230,7 @@ describe('@bento/overlay state management', function overlayState() {
         return <Overlay defaultOpen={false}>{renderChildren}</Overlay>;
       }
 
-      const { container } = render(<StatefulOverlay />);
+      const { container } = await render(<StatefulOverlay />);
 
       // Initial render - should be closed
       assume(capturedStates.length).is.above(0);
@@ -255,7 +255,7 @@ describe('@bento/overlay state management', function overlayState() {
   });
 
   describe('Backdrop rendering', function backdropRendering() {
-    it('renders empty backdrop with slot props applied', function rendersEmptyBackdrop() {
+    it('renders empty backdrop with slot props applied', async function rendersEmptyBackdrop() {
       function OverlayWithBackdrop() {
         const [open, setOpen] = useState(true);
 
@@ -278,7 +278,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<OverlayWithBackdrop />);
+      const { container } = await render(<OverlayWithBackdrop />);
 
       // Backdrop should render even without children
       const backdrop = container.querySelector('[data-testid="backdrop"]') as HTMLElement;
@@ -293,15 +293,15 @@ describe('@bento/overlay state management', function overlayState() {
       assume(backdrop?.childNodes.length).equals(0);
     });
 
-    it('returns null when no children provided', function noChildren() {
+    it('returns null when no children provided', async function noChildren() {
       // @ts-expect-error - Testing edge case of no children
-      const { container } = render(<Overlay open={true} />);
+      const { container } = await render(<Overlay open={true} />);
 
       // Should render nothing when no children
       assume(container.innerHTML).equals('');
     });
 
-    it('respects type and isDismissable props', function typeAndDismissable() {
+    it('respects type and isDismissable props', async function typeAndDismissable() {
       function OverlayWithProps() {
         return (
           <Overlay open={true} type="menu" isDismissable={false}>
@@ -313,7 +313,7 @@ describe('@bento/overlay state management', function overlayState() {
         );
       }
 
-      const { container } = render(<OverlayWithProps />);
+      const { container } = await render(<OverlayWithProps />);
       const content = container.querySelector('[data-testid="content"]');
       assume(content).to.exist;
     });

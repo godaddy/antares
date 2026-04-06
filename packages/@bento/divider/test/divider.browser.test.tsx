@@ -6,8 +6,8 @@ import assume from 'assume';
 
 describe('@bento/divider', function bento() {
   describe('Divider', function dividerTests() {
-    it('should render a divider', function test() {
-      const { container } = render(<Divider />);
+    it('should render a divider', async function test() {
+      const { container } = await render(<Divider />);
       const result = container.innerHTML;
       const divider = container.querySelector('hr');
 
@@ -17,16 +17,16 @@ describe('@bento/divider', function bento() {
       expect(divider).toHaveAttribute('class');
     });
 
-    it('should have aria orientation be vertical when orientation prop is set', function test() {
-      const { container } = render(<Divider orientation="vertical" />);
+    it('should have aria orientation be vertical when orientation prop is set', async function test() {
+      const { container } = await render(<Divider orientation="vertical" />);
       const divider = container.querySelector('hr');
 
       expect(divider).toHaveAttribute('aria-orientation', 'vertical');
       expect(divider).toHaveAttribute('class');
     });
 
-    it('should pass down props to the divider', function test() {
-      const { container } = render(<Divider dir="ltr" />);
+    it('should pass down props to the divider', async function test() {
+      const { container } = await render(<Divider dir="ltr" />);
       const result = container.innerHTML;
 
       assume(result).includes('dir="ltr"');

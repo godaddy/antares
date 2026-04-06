@@ -1,8 +1,6 @@
 import { toInternalProps } from '@bento/internal-props';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
-/* v8 ignore next */
-import React from 'react';
 
 /**
  * Simple button component that accepts internal props.

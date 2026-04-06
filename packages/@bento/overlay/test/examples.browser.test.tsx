@@ -9,12 +9,11 @@ import { Container } from '@bento/container';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/overlay examples', function overlayExamples() {
   describe('Basic', function basicExample() {
     it('opens and closes the overlay with button interactions', async function testBasicInteractions() {
-      const { container } = render(<Basic />);
+      const { container } = await render(<Basic />);
       const getButton = (text: string) =>
         Array.from(container.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -44,7 +43,7 @@ describe('@bento/overlay examples', function overlayExamples() {
 
   describe('Modal', function modalExample() {
     it('opens and closes modal with full interaction', async function testModalInteractions() {
-      render(<Modal />);
+      await render(<Modal />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -69,7 +68,7 @@ describe('@bento/overlay examples', function overlayExamples() {
     });
 
     it('closes modal via dismiss buttons', async function testModalDismissButtons() {
-      render(<Modal />);
+      await render(<Modal />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -100,7 +99,7 @@ describe('@bento/overlay examples', function overlayExamples() {
     });
 
     it('confirms action and closes modal', async function testModalConfirm() {
-      render(<Modal />);
+      await render(<Modal />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -124,7 +123,7 @@ describe('@bento/overlay examples', function overlayExamples() {
 
   describe('Drawer', function drawerExample() {
     it('opens and closes drawer with menu items', async function testDrawerInteractions() {
-      render(<Drawer />);
+      await render(<Drawer />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -151,7 +150,7 @@ describe('@bento/overlay examples', function overlayExamples() {
     });
 
     it('closes drawer via dismiss buttons', async function testDrawerDismissButtons() {
-      render(<Drawer />);
+      await render(<Drawer />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -182,7 +181,7 @@ describe('@bento/overlay examples', function overlayExamples() {
     });
 
     it('closes drawer via backdrop click', async function testDrawerBackdropClick() {
-      render(<Drawer />);
+      await render(<Drawer />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -209,7 +208,7 @@ describe('@bento/overlay examples', function overlayExamples() {
 
   describe('Popover', function popoverExample() {
     it('opens and closes popover', async function testPopoverInteractions() {
-      render(<Popover />);
+      await render(<Popover />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -236,7 +235,7 @@ describe('@bento/overlay examples', function overlayExamples() {
 
   describe('Uncontrolled', function uncontrolledExample() {
     it('toggles uncontrolled overlay', async function testUncontrolledInteractions() {
-      render(<UncontrolledWithTrigger />);
+      await render(<UncontrolledWithTrigger />);
       const getButton = (text: string) =>
         Array.from(document.querySelectorAll('button')).find((btn) => btn.textContent === text);
 
@@ -260,37 +259,47 @@ describe('@bento/overlay examples', function overlayExamples() {
   });
 
   describe('Validation', function validationSuite() {
-    it('throws error when content slot is missing', function missingContent() {
+    it('throws error when content slot is missing', async function missingContent() {
       const InvalidOverlay = () => (
         <Overlay>
           <Container>No slots assigned</Container>
         </Overlay>
       );
 
-      assume(() => render(<InvalidOverlay />)).throws(
-        [
-          '@bento/overlay(Overlay): Missing required slot assignment. Overlay requires a child with slot="content".',
-          'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
-        ].join('\n')
-      );
+      const expectedMessage = [
+        '@bento/overlay(Overlay): Missing required slot assignment. Overlay requires a child with slot="content".',
+        'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
+      ].join('\n');
+
+      try {
+        await render(<InvalidOverlay />);
+        assume(false).true('Expected render to throw but it did not');
+      } catch (e: any) {
+        assume(e.message).includes(expectedMessage);
+      }
     });
 
-    it('throws error when no slots are assigned', function missingBoth() {
+    it('throws error when no slots are assigned', async function missingBoth() {
       const InvalidOverlay = () => (
         <Overlay>
           <div>No slots assigned</div>
         </Overlay>
       );
 
-      assume(() => render(<InvalidOverlay />)).throws(
-        [
-          '@bento/overlay(Overlay): Missing required slot assignment. Overlay requires a child with slot="content".',
-          'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
-        ].join('\n')
-      );
+      const expectedMessage = [
+        '@bento/overlay(Overlay): Missing required slot assignment. Overlay requires a child with slot="content".',
+        'Example: <Overlay><Container slot="content">...</Container></Overlay> or wrapped in Portal, FocusLock, and ScrollLock primitives.'
+      ].join('\n');
+
+      try {
+        await render(<InvalidOverlay />);
+        assume(false).true('Expected render to throw but it did not');
+      } catch (e: any) {
+        assume(e.message).includes(expectedMessage);
+      }
     });
 
-    it('does not throw when content slot is present', function validContent() {
+    it('does not throw when content slot is present', async function validContent() {
       const ValidOverlay = () => (
         <Overlay open={false}>
           <Container slot="content">Content</Container>
@@ -298,11 +307,11 @@ describe('@bento/overlay examples', function overlayExamples() {
       );
 
       // Should not throw
-      const { container } = render(<ValidOverlay />);
+      const { container } = await render(<ValidOverlay />);
       assume(container).exist();
     });
 
-    it('does not throw when both trigger and content slots are present', function validBoth() {
+    it('does not throw when both trigger and content slots are present', async function validBoth() {
       const ValidOverlay = () => (
         <Overlay open={false}>
           <Button slot="trigger">Open</Button>
@@ -311,7 +320,7 @@ describe('@bento/overlay examples', function overlayExamples() {
       );
 
       // Should not throw
-      const { container } = render(<ValidOverlay />);
+      const { container } = await render(<ValidOverlay />);
       assume(container).exist();
     });
   });

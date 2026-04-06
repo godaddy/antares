@@ -1,5 +1,3 @@
-/* v8 ignore next */
-import React from 'react';
 import { Slot, Box } from '@bento/box';
 
 /**

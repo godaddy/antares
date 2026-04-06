@@ -7,7 +7,7 @@ import { MaxLinesExample } from '../examples/max-lines.tsx';
 import { WrapExample } from '../examples/wrap.tsx';
 import { EmptyTextExample } from '../examples/empty.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Text', function textTests() {
     it('renders the text example', function rendersText() {
       const result = renderToString(<TextExample />);

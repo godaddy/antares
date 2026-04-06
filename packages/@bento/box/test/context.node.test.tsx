@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 import { describe, it } from 'vitest';
 import fs from 'fs/promises';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/box', function bento() {
   function assertDefaults(slots: any, env: any) {

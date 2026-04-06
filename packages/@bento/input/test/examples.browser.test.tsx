@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -11,7 +10,7 @@ import userEvent from '@testing-library/user-event';
 
 describe('@bento/input examples', function bento() {
   it('renders inputs that work in basic forms', async function test() {
-    const { container } = render(<BasicFormExample />);
+    const { container } = await render(<BasicFormExample />);
     const nameInput = container.querySelector<HTMLInputElement>('input[id="name"]')!;
     const emailInput = container.querySelector<HTMLInputElement>('input[id="email"]')!;
     const submitButton = container.querySelector<HTMLInputElement>('input[type="submit"]')!;
@@ -30,7 +29,7 @@ describe('@bento/input examples', function bento() {
   });
 
   it('renders a controlled input', async function test() {
-    const { container } = render(<ControlledInput />);
+    const { container } = await render(<ControlledInput />);
     const input = container.querySelectorAll<HTMLInputElement>('input[type="text"]')!;
 
     assume(input[0].value).to.equal('');
@@ -39,7 +38,7 @@ describe('@bento/input examples', function bento() {
   });
 
   it('renders an uncontrolled input', async function test() {
-    const { container } = render(<UncontrolledInput />);
+    const { container } = await render(<UncontrolledInput />);
     const input = container.querySelectorAll<HTMLInputElement>('input[type="text"]');
 
     assume(input[0].value).to.equal('');
@@ -48,7 +47,7 @@ describe('@bento/input examples', function bento() {
   });
 
   it('renders a full basic form with multiple types of inputs', async function test() {
-    const { container } = render(<FormExample />);
+    const { container } = await render(<FormExample />);
     const nameInput = container.querySelector<HTMLInputElement>('input[id="name"]')!;
     const emailInput = container.querySelector<HTMLInputElement>('input[id="email"]')!;
     const ageInput = container.querySelector<HTMLInputElement>('input[id="age"]')!;

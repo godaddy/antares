@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, isValidElement, type ReactNode, useState } from 'react';
+import React, { cloneElement, isValidElement, type ReactNode, useState } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useFocusWithin } from '@react-aria/interactions';
 import { withSlots, type Slots } from '@bento/slots';
@@ -169,7 +169,7 @@ export const FocusLock = withSlots('BentoFocusLock', function FocusLock(args: Fo
 
   return (
     <FocusScope {...spread}>
-      {Children.map(children, function applyDataAttributes(child) {
+      {React.Children.map(children, function applyDataAttributes(child) {
         return isValidElement(child) ? cloneElement(child as React.ReactElement, kids) : child;
       })}
     </FocusScope>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { expectTypeOf, it, describe } from 'vitest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { getMeta, getStory, getVariants, getComponentDocs, getInterfaceDocs } from '../src/getters.ts';

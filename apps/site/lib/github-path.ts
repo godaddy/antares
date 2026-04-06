@@ -1,7 +1,7 @@
 /**
  * Returns the path to the source MDX file in the repository for a given docs page.
  *
- * Component pages live in the uxcore package; all other pages live under the
+ * Component pages live in the antares package; all other pages live under the
  * site content directory.
  *
  * @param page - Docs page with slugs and path

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -10,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 
 describe('@bento/checkbox examples', function bento() {
   it('renders an uncontrolled checkbox', async function test() {
-    const { container } = render(<CheckboxExample />);
+    const { container } = await render(<CheckboxExample />);
     const checkbox = container.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
 
     assume(checkbox.checked).equals(false);
@@ -19,7 +18,7 @@ describe('@bento/checkbox examples', function bento() {
   });
 
   it('renders a controlled checkbox', async function test() {
-    const { container } = render(<CheckboxControlledExample />);
+    const { container } = await render(<CheckboxControlledExample />);
     const checkbox = container.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
 
     assume(checkbox.checked).equals(false);
@@ -28,7 +27,7 @@ describe('@bento/checkbox examples', function bento() {
   });
 
   it('renders an uncontrolled checkbox group', async function test() {
-    const { container } = render(<CheckboxGroupExample />);
+    const { container } = await render(<CheckboxGroupExample />);
     const checkboxes = container.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
 
     assume(checkboxes.length).equals(2);
@@ -41,7 +40,7 @@ describe('@bento/checkbox examples', function bento() {
   });
 
   it('renders a controlled checkbox group', async function test() {
-    const { container } = render(<CheckboxGroupControlledExample />);
+    const { container } = await render(<CheckboxGroupControlledExample />);
     const checkboxes = container.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
 
     assume(checkboxes.length).equals(3);

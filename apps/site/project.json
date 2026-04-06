@@ -4,7 +4,7 @@
     "build": {
       "dependsOn": [
         "^build",
-        { "target": "build", "projects": ["@godaddy/uxcore"] }
+        { "target": "build", "projects": ["@godaddy/antares"] }
       ],
       "executor": "nx:run-commands",
       "options": {
@@ -20,7 +20,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "cd packages/uxcore && npm run watch",
+          "cd packages/@godaddy/antares && npm run watch",
           "cd apps/site && next dev"
         ],
         "parallel": true

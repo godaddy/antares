@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- Adds @bento/input to the repo and to the @bento/checkbox and @bento/radio primitives. ([#54](https://github.com/godaddy/uxcore/pull/54) by @amarques-godaddy)
+- Adds @bento/input to the repo and to the @bento/checkbox and @bento/radio primitives. ([#54](https://github.com/godaddy/antares/pull/54) by @amarques-godaddy)
 
 ### Patch Changes
 

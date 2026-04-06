@@ -14,12 +14,12 @@ import {
 } from '../examples/namespace.tsx';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
+import { createRef } from 'react';
 
 describe('@bento/slots examples', function bento() {
   describe('Button', function button() {
-    it('should render a button', function test() {
-      const { container } = render(<Button id="foo">Click me</Button>);
+    it('should render a button', async function test() {
+      const { container } = await render(<Button id="foo">Click me</Button>);
       const result = container.innerHTML;
 
       assume(result).equals('<button id="foo">Click me</button>');
@@ -28,7 +28,7 @@ describe('@bento/slots examples', function bento() {
 
   describe('Memo', function memo() {
     it('should render a memoized component', async function test() {
-      const screen = render(<Memo />);
+      const screen = await render(<Memo />);
       const result = screen.container.innerHTML;
       const logger = console.log;
       let logs: any[] = [];
@@ -38,7 +38,7 @@ describe('@bento/slots examples', function bento() {
       };
 
       assume(result).equals(
-        '<div data-override="slot" data-slot="example-container" id=":r0:" class="example"><label for="example" data-slot="label">Hello World</label><button id=":r1:" data-override="slot" data-slot="button">Click Me</button></div>'
+        '<div data-override="slot" data-slot="example-container" id="_r_0_" class="example"><label for="example" data-slot="label">Hello World</label><button id="_r_1_" data-override="slot" data-slot="button">Click Me</button></div>'
       );
       await screen.getByRole('button', { name: 'Click me' }).click();
 
@@ -51,19 +51,19 @@ describe('@bento/slots examples', function bento() {
   });
 
   describe('SlotFunction', function slotfn() {
-    it('should render a slot function override', function slotted() {
-      const { container } = render(<SlotFunction />);
+    it('should render a slot function override', async function slotted() {
+      const { container } = await render(<SlotFunction />);
       const result = container.innerHTML;
 
       assume(result).equals(
-        '<div data-slot="example-container" class="example"><label for="example" data-slot="label"><strong>Hello World</strong></label><button id=":r2:" data-slot="button">Click Me</button></div>'
+        '<div data-slot="example-container" class="example"><label for="example" data-slot="label"><strong>Hello World</strong></label><button id="_r_2_" data-slot="button">Click Me</button></div>'
       );
     });
   });
 
   describe('SlotProps', function slotprops() {
     it('should render a component with slot props, creating a red button', async function props() {
-      const screen = render(<SlotProps />);
+      const screen = await render(<SlotProps />);
       const result = screen.container.innerHTML;
       const logger = console.log;
       let logs: any[] = [];
@@ -73,7 +73,7 @@ describe('@bento/slots examples', function bento() {
       };
 
       assume(result).equals(
-        '<div data-slot="example-container" class="example"><label for="example" data-slot="label">Hello World</label><button id=":r3:" data-override="style slot" data-slot="button" style="background: red; border: 2px solid black;">Click Me</button></div>'
+        '<div data-slot="example-container" class="example"><label for="example" data-slot="label">Hello World</label><button id="_r_3_" data-override="style slot" data-slot="button" style="background: red; border: 2px solid black;">Click Me</button></div>'
       );
       await screen.getByRole('button', { name: 'Click me' }).click();
 
@@ -85,8 +85,8 @@ describe('@bento/slots examples', function bento() {
   });
 
   describe('Merged', function merged() {
-    it('should render a component with the correct merged slots', function test() {
-      const { container } = render(<Merged />);
+    it('should render a component with the correct merged slots', async function test() {
+      const { container } = await render(<Merged />);
       const result = container.innerHTML;
 
       assume(result).equals(
@@ -108,8 +108,8 @@ describe('@bento/slots examples', function bento() {
   });
 
   describe('MergedFunction', function mergedFunction() {
-    it('should render all enhancement levels in correct order', function allLevels() {
-      const { container } = render(<MergedFunction />);
+    it('should render all enhancement levels in correct order', async function allLevels() {
+      const { container } = await render(<MergedFunction />);
       const result = container.innerHTML;
 
       assume(result).equals(
@@ -123,8 +123,8 @@ describe('@bento/slots examples', function bento() {
   });
 
   describe('Namespace', function namespace() {
-    it('should render a component with slots', function test() {
-      const { container } = render(<Namespace />);
+    it('should render a component with slots', async function test() {
+      const { container } = await render(<Namespace />);
       const result = container.innerHTML;
 
       assume(result).equals(
@@ -133,8 +133,8 @@ describe('@bento/slots examples', function bento() {
       );
     });
 
-    it('should render a component with correct slot names', function test() {
-      const { container } = render(<NamespaceWithSlotNames />);
+    it('should render a component with correct slot names', async function test() {
+      const { container } = await render(<NamespaceWithSlotNames />);
       const result = container.innerHTML;
 
       assume(result).equals(
@@ -143,8 +143,8 @@ describe('@bento/slots examples', function bento() {
       );
     });
 
-    it('should render a component with correct replacements', function test() {
-      const { container } = render(<NamespaceWithReplacements />);
+    it('should render a component with correct replacements', async function test() {
+      const { container } = await render(<NamespaceWithReplacements />);
       const result = container.innerHTML;
 
       assume(result).equals(
@@ -153,8 +153,8 @@ describe('@bento/slots examples', function bento() {
       );
     });
 
-    it('should allow children to inherit root-level slots', function test() {
-      const { container } = render(<NamespaceRootLevelInheritance />);
+    it('should allow children to inherit root-level slots', async function test() {
+      const { container } = await render(<NamespaceRootLevelInheritance />);
       const result = container.innerHTML;
 
       console.log('bbbb', result);
@@ -167,10 +167,10 @@ describe('@bento/slots examples', function bento() {
   });
 
   describe('ForwardRefExample', function forwardRef() {
-    it('forwards refs to the rendered element', function forwardsRefs() {
-      const ref = React.createRef<HTMLDivElement>();
+    it('forwards refs to the rendered element', async function forwardsRefs() {
+      const ref = createRef<HTMLDivElement>();
 
-      render(
+      await render(
         <ForwardRefExample ref={ref} data-testid="panel">
           Forwarded
         </ForwardRefExample>
@@ -182,14 +182,14 @@ describe('@bento/slots examples', function bento() {
     });
 
     it('merges slot-provided refs with forwarded refs', async function mergesRefs() {
-      const forwardedRef = React.createRef<HTMLDivElement>();
-      const slotRef = React.createRef<HTMLDivElement>();
+      const forwardedRef = createRef<HTMLDivElement>();
+      const slotRef = createRef<HTMLDivElement>();
 
       const slots = {
         panel: { ref: slotRef }
       };
 
-      render(
+      await render(
         <ForwardRefExample slots={slots}>
           <ForwardRefExample slot="panel" ref={forwardedRef} data-testid="slot-target">
             Combined

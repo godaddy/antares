@@ -4,19 +4,19 @@
 
 ### Patch Changes
 
-- Fixed type resolution by moving @bento/types to dependencies ([#80](https://github.com/godaddy/uxcore/pull/80) by @kbader-godaddy)
+- Fixed type resolution by moving @bento/types to dependencies ([#80](https://github.com/godaddy/antares/pull/80) by @kbader-godaddy)
 
 ## 0.2.1
 
 ### Patch Changes
 
-- Adds data-slot data attribute to named slotted primitives. ([#63](https://github.com/godaddy/uxcore/pull/63) by @amarques-godaddy)
+- Adds data-slot data attribute to named slotted primitives. ([#63](https://github.com/godaddy/antares/pull/63) by @amarques-godaddy)
 
 ## 0.2.0
 
 ### Minor Changes
 
-- Forward ref support ([#59](https://github.com/godaddy/uxcore/pull/59) by @akazemier-godaddy)
+- Forward ref support ([#59](https://github.com/godaddy/antares/pull/59) by @akazemier-godaddy)
 
 ### Patch Changes
 
@@ -30,7 +30,7 @@
 
 ### Patch Changes
 
-- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/uxcore/pull/23) by @kawikabader)
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/antares/pull/23) by @kawikabader)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -43,7 +43,7 @@
 
 ### Minor Changes
 
-- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/uxcore/pull/168) by @kbader-godaddy)
+- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/antares/pull/168) by @kbader-godaddy)
 
 ### Patch Changes
 

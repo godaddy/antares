@@ -4,16 +4,16 @@
 
 ### Minor Changes
 
-- Introduces a new Slot component that enables flexible composition of child components by allowing content to be injected into predefined slots. ([#47](https://github.com/godaddy/uxcore/pull/47) by @akazemier-godaddy)
+- Introduces a new Slot component that enables flexible composition of child components by allowing content to be injected into predefined slots. ([#47](https://github.com/godaddy/antares/pull/47) by @akazemier-godaddy)
 
 ## 0.1.1
 
 ### Patch Changes
 
-- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/uxcore/pull/23) by @kawikabader)
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/antares/pull/23) by @kawikabader)
 
 ## 0.1.0
 
 ### Minor Changes
 
-- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/uxcore/pull/168) by @kbader-godaddy)
+- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/antares/pull/168) by @kbader-godaddy)

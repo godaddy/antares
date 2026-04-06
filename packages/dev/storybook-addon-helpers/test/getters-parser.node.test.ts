@@ -7,8 +7,8 @@ import { toTsExpression } from '../src/ats-utils.ts';
 
 describe('parser', function parserTests() {
   describe('getExportedVariables', function getExportedVariablesTests() {
-    it('should extract exported variables from a file', function getExportedVariablesTest() {
-      const result = getExportedVariables({ filePath: path.join(__dirname, 'fixtures/comp-stories.tsx') });
+    it('should extract exported variables from a file', async function getExportedVariablesTest() {
+      const result = await getExportedVariables({ filePath: path.join(__dirname, 'fixtures/comp-stories.tsx') });
 
       assume(Object.fromEntries(result)).to.deep.equal({
         default: { title: 'meta1' },
@@ -25,13 +25,13 @@ describe('parser', function parserTests() {
       });
     });
 
-    it('should extract exported variables from code', function getExportedVariablesTest() {
+    it('should extract exported variables from code', async function getExportedVariablesTest() {
       const code = `
         export default { title: 'Test' };
         export const story = { args: { prop: 'value' }, values: ['1', '2'] };
         export const docs = getComponentDocs(Component);
       `;
-      const result = getExportedVariables({ code });
+      const result = await getExportedVariables({ code });
 
       assume(Object.fromEntries(result)).to.deep.equal({
         default: { title: 'Test' },
@@ -40,26 +40,26 @@ describe('parser', function parserTests() {
       });
     });
 
-    it('should handle no filePath and no code', function generateCSFNoFilePathAndNoCode() {
-      assume(Object.fromEntries(getExportedVariables({}))).to.deep.equal({});
+    it('should handle no filePath and no code', async function generateCSFNoFilePathAndNoCode() {
+      assume(Object.fromEntries(await getExportedVariables({}))).to.deep.equal({});
     });
 
-    it('should some edge cases', function getVariantsTest() {
-      const result = getExportedVariables({ code: `export const Button` });
+    it('should some edge cases', async function getVariantsTest() {
+      const result = await getExportedVariables({ code: `export const Button` });
       assume(Object.fromEntries(result)).to.deep.equal({ Button: {} });
 
-      const result2 = getExportedVariables({ code: `export default Button` });
+      const result2 = await getExportedVariables({ code: `export default Button` });
       assume(Object.fromEntries(result2)).to.deep.equal({});
     });
 
-    it('should handle type assertions and satisfies expressions', function testTypeExpressions() {
+    it('should handle type assertions and satisfies expressions', async function testTypeExpressions() {
       const code = `
         export const story1 = getMeta({ title: 'Test1' } as const);
         export const story2 = getMeta({ title: 'Test2' } satisfies object);
         const defaultMeta = getMeta({ title: 'Default' } as const);
         export default defaultMeta;
       `;
-      const result = getExportedVariables({ code });
+      const result = await getExportedVariables({ code });
 
       assume(Object.fromEntries(result)).to.deep.equal({
         story1: { title: 'Test1' },

@@ -97,7 +97,7 @@ describe('@bento/slots', function bento() {
       value.env.components = {
         SlotsButton: function Button(props) {
           assume(props['data-override']).equals('context');
-          assume(props.id).startsWith(':R');
+          assume(props.id).startsWith('_R');
           id = props.id;
 
           return <p {...props}>No more button, only text</p>;
@@ -382,6 +382,75 @@ describe('@bento/slots', function bento() {
 
       assume(contains(['content'], children)).is.true();
       assume(contains(['invalid'], children)).is.false(); // Raw div is ignored
+    });
+
+    it('recurses into slotted component children to find nested slots', function slottedWithChildren() {
+      const Parent = withSlots('ContainsRecurseParent', (props: any) => <div {...props} />);
+      const Child = withSlots('ContainsRecurseChild', (props: any) => <span {...props} />);
+
+      const children = React.createElement(Parent, { slot: 'parent' }, React.createElement(Child, { slot: 'child' }));
+
+      assume(contains(['parent'], children)).is.true();
+      assume(contains(['child'], children)).is.true();
+      assume(contains(['parent.child'], children)).is.true();
+    });
+
+    it('recurses into non-slotted component children with slot prop', function nonSlottedWithSlotAndChildren() {
+      function Wrapper() {
+        return null;
+      }
+
+      const Slotted = withSlots('ContainsNonSlottedChild', (props: any) => <div {...props} />);
+
+      const children = React.createElement(
+        Wrapper,
+        { slot: 'wrapper' },
+        React.createElement(Slotted, { slot: 'inner' })
+      );
+
+      assume(contains(['wrapper'], children)).is.false();
+      assume(contains(['inner'], children)).is.true();
+    });
+
+    it('recurses into children of components without slot props', function noSlotWithChildren() {
+      function Container() {
+        return null;
+      }
+
+      const Slotted = withSlots('ContainsNoSlotChild', (props: any) => <div {...props} />);
+
+      const children = React.createElement(Container, null, React.createElement(Slotted, { slot: 'deep' }));
+
+      assume(contains(['deep'], children)).is.true();
+    });
+
+    it('handles slotted components with slot prop but no children', function slottedNoChildren() {
+      const Leaf = withSlots('ContainsLeaf', (props: any) => <div {...props} />);
+
+      const children = React.createElement(Leaf, { slot: 'leaf' });
+
+      assume(contains(['leaf'], children)).is.true();
+      assume(contains(['leaf.nested'], children)).is.false();
+    });
+
+    it('handles non-slotted components with slot prop but no children', function nonSlottedNoChildren() {
+      function Plain() {
+        return null;
+      }
+
+      const children = React.createElement(Plain, { slot: 'plain' });
+
+      assume(contains(['plain'], children)).is.false();
+    });
+
+    it('handles components without slot prop and without children', function noSlotNoChildren() {
+      function Empty() {
+        return null;
+      }
+
+      const children = React.createElement(Empty, null);
+
+      assume(contains(['anything'], children)).is.false();
     });
   });
 

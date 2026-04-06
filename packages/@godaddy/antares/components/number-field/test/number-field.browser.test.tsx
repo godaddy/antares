@@ -10,7 +10,7 @@ import { NumberFieldInvalidExample } from '../examples/invalid';
 import { NumberFieldValueScaleExample } from '../examples/value-scale';
 import { waitForSelector } from '../../../utils/wait-for-selector';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
     describe('#basic', function basic() {
       it('renders label and input with placeholder', async function renders() {

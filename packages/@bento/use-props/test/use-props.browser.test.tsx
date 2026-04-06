@@ -10,23 +10,20 @@ describe('@bento/use-props', function suite() {
     it('receives the ref as ref, prop, and apply calls', async function refs() {
       const testRef = React.createRef<HTMLDivElement>();
 
-      const TestComponent = withSlots(
-        'RefForwardTest',
-        function Component(args: any, fwd: React.ForwardedRef<HTMLDivElement>) {
-          const { apply, ref, props } = useProps(args, {}, fwd);
+      const TestComponent = withSlots('RefForwardTest', function Component(...args: any[]) {
+        const { apply, ref, props } = useProps(args);
 
-          assume(ref).equals(testRef);
-          assume(props.ref).equals(testRef);
-          assume((apply() as any).ref).equals(testRef);
+        assume(ref).equals(testRef);
+        assume(props.ref).equals(testRef);
+        assume((apply() as any).ref).equals(testRef);
 
-          const merged = apply({}, ['ref']);
-          assume((merged as any).ref).is.a('undefined');
+        const merged = apply({}, ['ref']);
+        assume((merged as any).ref).is.a('undefined');
 
-          return <div {...apply()}>Test Content</div>;
-        }
-      );
+        return <div {...apply()}>Test Content</div>;
+      });
 
-      render(<TestComponent ref={testRef}>Test Content</TestComponent>);
+      await render(<TestComponent ref={testRef}>Test Content</TestComponent>);
       assume(testRef.current?.textContent).equals('Test Content');
     });
 
@@ -38,7 +35,7 @@ describe('@bento/use-props', function suite() {
         return <div {...apply()}>Test Content</div>;
       });
 
-      render(<TestComponent ref={testRef}>Test Content</TestComponent>);
+      await render(<TestComponent ref={testRef}>Test Content</TestComponent>);
       assume(testRef.current?.textContent).equals('Test Content');
     });
 
@@ -51,7 +48,7 @@ describe('@bento/use-props', function suite() {
         return <div {...apply()} />;
       });
 
-      render(
+      await render(
         <TestComponent slots={{ content: { ref: slotRef } }}>
           <TestComponent ref={testRef} slot="content">
             Test Content
@@ -71,7 +68,7 @@ describe('@bento/use-props', function suite() {
         return <div {...apply()} />;
       });
 
-      const { container } = render(
+      const { container } = await render(
         <TestComponent
           data-testid="outer-component"
           slots={{

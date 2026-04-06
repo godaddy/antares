@@ -1,5 +1,5 @@
 import { stringify } from '@bento/to-attribute-value';
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
 /**
  * Interface representing the properties for transforming an illustration.

@@ -1,5 +1,4 @@
 /* v8 ignore next */
-import React from 'react';
 import { ListBox, ListBoxItem } from '@bento/listbox';
 import style from './listbox.module.css';
 

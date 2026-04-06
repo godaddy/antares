@@ -10,7 +10,7 @@
  * - `@react-types/shared/src/dom` -- RAC re-declarations of id, role, tabIndex,
  *   style, className, dir, lang, hidden, inert, translate
  *
- * Everything else passes through: uxcore own props, Bento props, RAC interaction
+ * Everything else passes through: antares own props, Bento props, RAC interaction
  * and state props (isDisabled, onPress, etc.) from @react-types/shared/src/events
  * and @react-types/shared/src/collections.
  *

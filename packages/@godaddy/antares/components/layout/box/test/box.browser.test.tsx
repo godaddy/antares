@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-react';
 import { PaddingExample } from '../examples/padding.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
     it('renders boxes with padding in the browser', async function rendersPadding() {
       const { getByText } = await render(<PaddingExample />);

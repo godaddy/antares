@@ -15,11 +15,11 @@
 
 ### Minor Changes
 
-- The slot system now handles forwarding ([#59](https://github.com/godaddy/uxcore/pull/59) by @akazemier-godaddy)
+- The slot system now handles forwarding ([#59](https://github.com/godaddy/antares/pull/59) by @akazemier-godaddy)
 
 ### Patch Changes
 
-- Allow no children to be specified when creating presentational elements. Correctly inherits slot overrides. ([#45](https://github.com/godaddy/uxcore/pull/45) by @akazemier-godaddy)
+- Allow no children to be specified when creating presentational elements. Correctly inherits slot overrides. ([#45](https://github.com/godaddy/antares/pull/45) by @akazemier-godaddy)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -32,7 +32,7 @@
 
 ### Patch Changes
 
-- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/uxcore/pull/23) by @kawikabader)
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/antares/pull/23) by @kawikabader)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -45,7 +45,7 @@
 
 ### Minor Changes
 
-- feat: Add Container primitive for polymorphic rendering and composition ([#185](https://github.com/godaddy/uxcore/pull/185) by @kbader-godaddy)
+- feat: Add Container primitive for polymorphic rendering and composition ([#185](https://github.com/godaddy/antares/pull/185) by @kbader-godaddy)
 
 ### Patch Changes
 

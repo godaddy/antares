@@ -1,57 +1,46 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
+  ignoreBinaries: ['playwright', 'storybook'],
   workspaces: {
     '.': {
-      // Root workspace configuration
-      entry: [
-        'configs/*.mts' // Shared config files used by packages
-      ],
-      project: ['configs/**/*.{ts,mts}'],
-      // Dependencies used in shared configs and ambient types
+      entry: ['configs/*.mts'],
+      project: ['configs/**/*.{ts,mts}']
+    },
+    'apps/site': {
+      entry: ['source.config.ts'],
       ignore: [
-        '@types/css-modules', // Provides ambient types for CSS modules
-        '@types/mdx' // Provides ambient types for MDX files
+        'content/docs/index.mdx',
+        'lib/remark-arg-types.ts',
+        'lib/remark-mdx-utils.ts',
+        'lib/remark-raw-loader.ts',
+        'lib/storybook-addon-helpers-shim.ts',
+        'lib/storybook-bridge/**/*'
       ]
     },
     'apps/docs': {
-      // Ignore files and dependencies used by Storybook but not directly traceable
-      ignore: ['.storybook/addons/why-did-you-render/**/*'], // Storybook addon files
+      ignore: ['.storybook/addons/why-did-you-render/**/*', '.storybook/why-did-you-render.ts'],
       ignoreDependencies: [
-        '@bento/*', // Used via Storybook story discovery
-        'react-diff-viewer-continued' // Used in why-did-you-render addon
+        '@vitejs/plugin-react',
+        '@welldone-software/why-did-you-render',
+        '@bento/*',
+        'react-diff-viewer-continued'
       ]
     },
     'packages/@bento/*': {
-      // Ignore circular dependencies in examples and tests - these are for demo purposes
-      ignore: [
-        'examples/**/*', // Example files that may use circular dependencies for demos
-        'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
-      ]
+      ignore: ['*.stories.tsx', 'examples/**/*', 'test/**/*']
     },
     'packages/@godaddy/*': {
-      // Ignore circular dependencies in examples and tests - these are for demo purposes
-      ignore: [
-        'examples/**/*', // Example files that may use circular dependencies for demos
-        'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
-      ]
+      ignore: ['*.stories.tsx', 'examples/**/*', '**/examples/**/*', 'test/**/*']
     },
     'packages/dev/*': {
-      // Ignore circular dependencies in examples and tests - these are for demo purposes
-      ignore: [
-        'examples/**/*', // Example files that may use circular dependencies for demos
-        'test/**/*.test.tsx' // Test files that may need circular dependencies for testing
-      ]
+      ignore: ['*.stories.tsx', 'examples/**/*', 'test/**/*', '**/tsup.config.{ts,mts}']
     },
     'packages/dev/storybook-addon-helpers': {
-      ignore: ['test/fixtures/**/*'] // Test fixture files are intentionally unused
+      ignore: ['test/fixtures/**/*', 'test/**/*', 'tsup.config.ts']
     }
   },
-  // Global ignores for dependencies that provide ambient types or are used in scripts
-  ignoreDependencies: [
-    '@types/css-modules', // CSS module types used globally
-    '@types/mdx' // MDX types used globally
-  ]
+  ignoreDependencies: ['@types/css-modules', '@types/mdx']
 };
 
 export default config;

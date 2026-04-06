@@ -4,7 +4,7 @@ import { CustomAnchorExample } from '../examples/custom-anchor.tsx';
 import { PlaygroundExample } from '../examples/tooltip-playground.tsx';
 import { renderToString } from 'react-dom/server';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Tooltip', function tooltipTests() {
     it('renders DefaultExample', function defaultExample() {
       expect(renderToString(<DefaultExample />)).toMatchSnapshot();

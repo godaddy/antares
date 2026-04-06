@@ -8,7 +8,7 @@ import { ResponsiveExample } from '../examples/responsive.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { FormExample } from '../examples/form.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Grid', function gridTests() {
     it('renders the default grid', function rendersDefault() {
       const result = renderToString(<DefaultExample />);

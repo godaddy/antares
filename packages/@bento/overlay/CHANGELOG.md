@@ -15,8 +15,8 @@
 
 ### Minor Changes
 
-- Align @react-aria/overlays version. ([#67](https://github.com/godaddy/uxcore/pull/67) by @kawikabader)
-- Initial release of overlay ([#48](https://github.com/godaddy/uxcore/pull/48) by @akazemier-godaddy)
+- Align @react-aria/overlays version. ([#67](https://github.com/godaddy/antares/pull/67) by @kawikabader)
+- Initial release of overlay ([#48](https://github.com/godaddy/antares/pull/48) by @akazemier-godaddy)
 
 ### Patch Changes
 

@@ -9,9 +9,7 @@
     "build": "tsup-node",
     "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
-    "posttest": "npm run lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
-    "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -34,9 +32,9 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/godaddy/uxcore/issues"
+    "url": "https://github.com/godaddy/antares/issues"
   },
-  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "homepage": "https://github.com/godaddy/antares#readme",
   "files": [
     "dist",
     "src",
@@ -48,20 +46,22 @@
     "@bento/use-props": "^0.2.1",
     "@react-aria/collections": "^3.0.1",
     "@react-types/listbox": "^3.7.1",
+    "@react-types/shared": "^3.32.1",
     "react-aria": "^3.45.0",
     "react-aria-components": "^1.14.0",
     "react-stately": "^3.43.0"
-  },
-  "peerDependencies": {
-    "react": "18.x || 19.x",
-    "react-dom": "18.x || 19.x"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "vitest-browser-react": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": "18.x || 19.x",
+    "react-dom": "18.x || 19.x"
   },
   "exports": {
     ".": {

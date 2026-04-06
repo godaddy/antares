@@ -3,7 +3,7 @@ import { withSlots } from '@bento/slots';
 import { type UnknownObject } from '@bento/types';
 import { Button } from './button.tsx';
 /* v8 ignore next */
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 /**
  * Example component demonstrating container usage.

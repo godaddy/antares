@@ -10,9 +10,7 @@
     "build": "tsup-node",
     "dev": "tsup-node --watch",
     "lint": "biome lint && tsc --noEmit",
-    "posttest": "npm run lint",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
-    "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -32,9 +30,9 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/godaddy/uxcore/issues"
+    "url": "https://github.com/godaddy/antares/issues"
   },
-  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "homepage": "https://github.com/godaddy/antares#readme",
   "files": [
     "dist",
     "src",
@@ -45,6 +43,9 @@
     "@bento/slots": "^0.3.0",
     "ts-deepmerge": "^7.0.3",
     "use-deep-compare": "^1.3.0"
+  },
+  "devDependencies": {
+    "vitest-browser-react": "^2.1.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",

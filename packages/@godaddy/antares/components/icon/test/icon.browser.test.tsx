@@ -5,7 +5,7 @@ import React, { createRef } from 'react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   /**
    * Wait for icon loading completion using MutationObserver
    *

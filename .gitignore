@@ -53,7 +53,8 @@ debug-storybook.log
 
 # When you a test failure, vitest automatically generates a screenshot of the
 # failure. This is the folder where the screenshots are stored.
-packages/**/test/__screenshots__/
+packages/@bento/**/test/__screenshots__/
+packages/dev/**/test/__screenshots__/
 
 # When running testing with VITE_NODE_DEBUG_DUMP=true it generates a .vite-node
 # folder dump folder of all the compiled assets.

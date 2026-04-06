@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 /** Matches a CSS variable value */
 const CSS_VAR_PATTERN = /^var\(--[^)]+\)$/;
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#useChartColor', function useChartColorTests() {
     describe('#single-series', function singleSeriesTests() {
       it('renders single-series example with a CSS variable', async function singleSeries() {
