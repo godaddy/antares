@@ -1,0 +1,70 @@
+---
+title: DonutChart
+description: Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './donut-chart.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceSingleSlice from './examples/single-slice.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+import SourceLegendLayout from './examples/legend-layout.tsx?raw';
+import SourceSmallSlices from './examples/small-slices.tsx?raw';
+import SourceFormatValue from './examples/format-value.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
+
+### Single slice
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code={SourceSingleSlice} />
+<Story of={Stories.SingleSlice} inline />
+
+### Sizes
+
+`size` (`sm` through `xl`) changes how thick the ring looks and how big the center type reads. The example keeps the same width for each donut so you can compare the presets without reshaping the layout.
+
+<Source language="tsx" code={SourceSizes} />
+<Story of={Stories.Sizes} inline />
+
+### Legend placement
+
+Switch `legend` to `horizontal` to sit the legend beside the donut, or `vertical` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code={SourceLegendLayout} />
+<Story of={Stories.LegendLayout} inline />
+
+### Small slices
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code={SourceSmallSlices} />
+<Story of={Stories.SmallSlices} inline />
+
+### Format value
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code={SourceFormatValue} />
+<Story of={Stories.FormatValue} inline />

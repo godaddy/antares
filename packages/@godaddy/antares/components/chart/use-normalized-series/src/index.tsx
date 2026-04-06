@@ -1,5 +1,4 @@
 import { useId, useMemo } from 'react';
-import type { Optional, SeriesConfig } from '../../types.ts';
 
 /**
  * Normalizes a series array by ensuring each item has a stable unique id.
@@ -9,10 +8,10 @@ import type { Optional, SeriesConfig } from '../../types.ts';
  * @param series - Array of series configs (id is optional)
  * @returns Memoized array of series configs with ids guaranteed to be set
  */
-export function useNormalizedSeries<T extends object>(series: Optional<SeriesConfig<T>, 'id'>[]): SeriesConfig<T>[] {
+export function useNormalizedSeries<T extends object>(series: (T & { id?: string })[]): (T & { id: string })[] {
   const seriesIdPrefix = useId();
   return useMemo(
-    function normalizeSeries(): SeriesConfig<T>[] {
+    function normalizeSeries(): (T & { id: string })[] {
       return series.map(function addId(item, index) {
         return { ...item, id: item.id ?? `${seriesIdPrefix}-${index}` };
       });

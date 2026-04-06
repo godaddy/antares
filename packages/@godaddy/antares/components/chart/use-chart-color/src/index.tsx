@@ -16,7 +16,11 @@ const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
 const CHART_COLOR_COUNT = 9;
 const VARIABLE_PREFIX = '--viz';
 
-function chartColorForIndex(index: number): string {
+/**
+ * CSS `var(--vizN)` value for a 0-based palette index, cycling every nine colors.
+ * For mount-time allocation across siblings, use `useChartColor` inside `ChartColorProvider`.
+ */
+export function chartColorForIndex(index: number): string {
   return `var(${VARIABLE_PREFIX}${(index % CHART_COLOR_COUNT) + 1})`;
 }
 

@@ -23,7 +23,7 @@ export interface PopoverProps extends RACPopoverProps {
   showCloseButton?: boolean;
 
   /** Props to pass to the content container. */
-  contentProps?: Omit<FlexProps, 'as' | 'role'>;
+  contentProps?: Omit<FlexProps, 'role'>;
 
   /** The placement of the popover relative to the trigger. */
   placement?: RACPopoverProps['placement'];
@@ -57,8 +57,8 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
         elevation="overlay"
         direction="column"
         aria-label="Content"
-        {...contentProps}
         as={RACDialog}
+        {...contentProps}
       >
         {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
 
