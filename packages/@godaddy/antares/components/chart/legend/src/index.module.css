@@ -1,10 +1,37 @@
-.item {
-  font-size: var(--fs-sm);
+.root {
+  --_fs-base: 1rem;
+  --_legend-font-size: var(--fs-sm);
 }
 
-.swatch {
-  width: 1em;
-  height: 1em;
+.item {
+  font-size: var(--_legend-font-size);
+}
+
+.label {
+  font-size: var(--_legend-font-size);
+  font-weight: bold;
+  line-height: var(--lh-heading);
+}
+
+.root .swatch {
+  width: var(--_legend-font-size);
+  height: var(--_legend-font-size);
+}
+
+.root[data-size="sm"] {
+  --_legend-font-size: var(--fs-xs);
+}
+
+.root[data-size="md"] {
+  --_legend-font-size: var(--fs-sm);
+}
+
+.root[data-size="lg"] {
+  --_legend-font-size: var(--fs-md);
+}
+
+.root[data-size="xl"] {
+  --_legend-font-size: var(--fs-lg);
 }
 
 /* Data visualization colors for legend indicators (wrap every 9 items) */
