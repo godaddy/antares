@@ -1985,6 +1985,62 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 ```
 
 
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
+
+
 # TextField
 
 
@@ -2067,62 +2123,6 @@ Use `multiline` to render a textarea.
 <Story of="Stories.Multiline" />
 
 
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
-
-
 # Tooltip
 
 
@@ -2182,53 +2182,6 @@ Best Practices [#best-practices]
 * Keep tooltip content short and informative.
 * Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-
-# AxisTitle
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `AxisTitle` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-X-Axis Title [#x-axis-title]
-
-X-axis title with default orientation.
-
-<Story of="Stories.XAxis" />
-
-<Source language="tsx" code="SourceXAxis" />
-
-Y-Axis Title [#y-axis-title]
-
-Y-axis title with default orientation.
-
-<Story of="Stories.YAxis" />
-
-<Source language="tsx" code="SourceYAxis" />
-
-RTL (Right-to-Left) [#rtl-right-to-left]
-
-Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
 
 
 # Bar Chart
@@ -2631,6 +2584,53 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Right-to-left layout &#x2A;(in development)*
 
 
+# AxisTitle
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `AxisTitle` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+X-Axis Title [#x-axis-title]
+
+X-axis title with default orientation.
+
+<Story of="Stories.XAxis" />
+
+<Source language="tsx" code="SourceXAxis" />
+
+Y-Axis Title [#y-axis-title]
+
+Y-axis title with default orientation.
+
+<Story of="Stories.YAxis" />
+
+<Source language="tsx" code="SourceYAxis" />
+
+RTL (Right-to-Left) [#rtl-right-to-left]
+
+Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
 # Gauge Chart
 
 
@@ -2731,6 +2731,45 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
+
+
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
 
 
 # LineChart
@@ -3018,7 +3057,7 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# Legend
+# TooltipDismissStrip
 
 
 
@@ -3034,27 +3073,19 @@ This component is **internal-only** and not exported from the package. It is des
 
 Props [#props]
 
-The `Legend` component accepts the following props:
+The `TooltipDismissStrip` component accepts the following props:
 
 <PropTable />
 
 Examples [#examples]
 
-Single Series [#single-series]
+Basic [#basic]
 
-Basic legend with a single series showing the default styling and layout.
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
 
-<Source language="tsx" code="SourceSingleSeries" />
+<Story of="Stories.Basic" />
 
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
+<Source language="tsx" code="SourceBasic" />
 
 
 # Tooltip
@@ -3124,37 +3155,6 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Story of="Stories.Arrow" />
 
 
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-
 # useChartColor
 
 
@@ -3203,112 +3203,6 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
-
-
-# Flex
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Flex is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Recommended default**: Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Flex` component accepts the following props:
-
-<PropTable />
-
-Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-Examples [#examples]
-
-Default [#default]
-
-Basic horizontal flex layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Direction [#direction]
-
-The `direction` prop controls the main axis orientation.
-
-<Story of="Stories.Direction" />
-
-<Source language="tsx" code="SourceDirection" />
-
-Alignment [#alignment]
-
-Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-Gap [#gap]
-
-The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-Wrap [#wrap]
-
-The `wrap` prop controls whether items wrap to multiple lines.
-
-<Story of="Stories.Wrap" />
-
-<Source language="tsx" code="SourceWrap" />
-
-Navbar [#navbar]
-
-A common navigation bar pattern using space-between and nested Flex containers.
-
-<Story of="Stories.Navbar" />
-
-<Source language="tsx" code="SourceNavbar" />
-
-Sidebar [#sidebar]
-
-A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
-
-<Story of="Stories.Sidebar" />
-
-<Source language="tsx" code="SourceSidebar" />
-
-RTL Support [#rtl-support]
-
-Flex uses CSS logical properties which automatically adapt to RTL layouts. The `direction` prop values (`row`, `row-reverse`) respect the document direction.
-
-Design Tokens [#design-tokens]
-
-All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-Migration from @ux/box [#migration-from-uxbox]
-
-| Current `@ux/box`                    | New Pattern                      |
-| ------------------------------------ | -------------------------------- |
-| `<Box orientation="horizontal">`     | `<Flex direction="row" >`        |
-| `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
-| `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
-| `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
 
 
 # Box
@@ -3509,3 +3403,109 @@ Grid vs Flex [#grid-vs-flex]
 | Auto-wrapping cards        | Grid (auto-fill) |
 | Navigation bars            | Flex             |
 | Form layouts               | Grid             |
+
+
+# Flex
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Flex is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Recommended default**: Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Flex` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+Examples [#examples]
+
+Default [#default]
+
+Basic horizontal flex layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Direction [#direction]
+
+The `direction` prop controls the main axis orientation.
+
+<Story of="Stories.Direction" />
+
+<Source language="tsx" code="SourceDirection" />
+
+Alignment [#alignment]
+
+Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+Gap [#gap]
+
+The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+Wrap [#wrap]
+
+The `wrap` prop controls whether items wrap to multiple lines.
+
+<Story of="Stories.Wrap" />
+
+<Source language="tsx" code="SourceWrap" />
+
+Navbar [#navbar]
+
+A common navigation bar pattern using space-between and nested Flex containers.
+
+<Story of="Stories.Navbar" />
+
+<Source language="tsx" code="SourceNavbar" />
+
+Sidebar [#sidebar]
+
+A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
+
+<Story of="Stories.Sidebar" />
+
+<Source language="tsx" code="SourceSidebar" />
+
+RTL Support [#rtl-support]
+
+Flex uses CSS logical properties which automatically adapt to RTL layouts. The `direction` prop values (`row`, `row-reverse`) respect the document direction.
+
+Design Tokens [#design-tokens]
+
+All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+Migration from @ux/box [#migration-from-uxbox]
+
+| Current `@ux/box`                    | New Pattern                      |
+| ------------------------------------ | -------------------------------- |
+| `<Box orientation="horizontal">`     | `<Flex direction="row" >`        |
+| `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
+| `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
+| `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
