@@ -132,6 +132,25 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    describe('#segments-validation', function segmentsValidation() {
+      const segmentsError = /GaugeChart: `segments` must be a positive integer when provided/;
+
+      it('throws when segments is not an integer', async function nonIntegerSegments() {
+        await expect(render(<PlaygroundExample label="x" segments={3.5} value={1} />)).rejects.toThrow(segmentsError);
+      });
+
+      it('throws when segments is zero or negative', async function nonPositiveSegments() {
+        await expect(render(<PlaygroundExample label="x" segments={0} value={0} />)).rejects.toThrow(segmentsError);
+        await expect(render(<PlaygroundExample label="x" segments={-2} value={0} />)).rejects.toThrow(segmentsError);
+      });
+
+      it('throws when segments is not finite', async function nonFiniteSegments() {
+        await expect(render(<PlaygroundExample label="x" segments={Number.NaN} value={0} />)).rejects.toThrow(
+          segmentsError
+        );
+      });
+    });
+
     describe('#label-type', function labelType() {
       it('applies data-label-type text', async function textLabelType() {
         const { getByRole } = await render(<PlaygroundExample label="OK" labelType="text" value={1} />);
