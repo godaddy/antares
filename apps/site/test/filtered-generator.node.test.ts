@@ -116,7 +116,7 @@ describe('site', function siteTests() {
     it('passes through @bento/* and local source props', async function passesThroughBentoAndLocal() {
       const base = makeBaseGenerator([
         { name: 'icon', filePath: '/project/node_modules/@bento/icon/dist/index.d.ts' },
-        { name: 'size', filePath: '/project/packages/@godaddy/antares//components/icon/src/index.tsx' }
+        { name: 'size', filePath: '/project/packages/@godaddy/antares/components/icon/src/index.tsx' }
       ]);
 
       const filtered = createFilteredGenerator(base);
