@@ -57,7 +57,7 @@
     "react-frame-component": "^5.2.7",
     "rimraf": "^6.1.2",
     "rolldown": "^1.0.0-rc.3",
-    "syncpack": "^13.0.4",
+    "syncpack": "^14.3.0",
     "tsdown": "^0.20.3",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
