@@ -76,3 +76,14 @@ export {
 } from '#components/segmented-controller';
 
 export { MetricsLockup, type MetricsLockupProps } from '#components/metrics-lockup';
+
+export {
+  Modal,
+  ModalTrigger,
+  ModalHeading,
+  ModalFooter,
+  type ModalProps,
+  type ModalTriggerProps,
+  type ModalHeadingProps,
+  type ModalFooterProps
+} from '#components/modal';
