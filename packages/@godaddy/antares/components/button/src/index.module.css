@@ -101,7 +101,7 @@
 
   &:where(.tertiary, .minimal) {
     --button-bg: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, #ffffff));
-    --button-bg-hovered: var(--color-action-background-tertiary-hovered, var(--ux-1pygiiq, #f5f5f5));
+    --button-bg-hovered: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, #f5f5f5));
     --button-bg-pressed: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #dcdcdc));
     --button-border: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
     --button-border-hovered: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
@@ -130,9 +130,9 @@
     --button-border: transparent;
     --button-border-hovered: transparent;
     --button-border-pressed: transparent;
-    --button-text: var(--color-action-text-inline-default, var(--ux-czbybt, #4169e1));
-    --button-text-hovered: var(--color-action-text-inline-hovered, var(--ux-19kw6mm, #008080));
-    --button-text-pressed: var(--color-action-text-inline-pressed, var(--ux-13a2c9h, #191970));
+    --button-text: var(--color-action-text-inline-default, var(--ux-2rqapw, #4169e1));
+    --button-text-hovered: var(--color-action-text-inline-hovered, var(--ux-1j87vvn, #008080));
+    --button-text-pressed: var(--color-action-text-inline-pressed, var(--ux-1ymu8yg, #191970));
 
     text-decoration: underline;
   }
@@ -140,11 +140,11 @@
   /* sizes */
 
   &:where(.sm:not(.inline)) {
-    font-size: var(--font-body-size-sm);
+    font-size: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
     padding: var(--button-space-sm) var(--button-space-md);
 
     /* only-icon buttons */
-    &:has(:where([data-icon]):only-child) {
+    &:has(:where([data-icon]:only-child)) {
       padding: var(--button-space-xs);
 
       &.minimal {
@@ -155,11 +155,11 @@
   }
 
   &:where(.md:not(.inline)) {
-    font-size: var(--font-body-size-md, var(--ux-1hnbfne, 16px));
+    font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
     padding: var(--button-space-md) var(--button-space-lg);
 
     /* only-icon buttons */
-    &:where(&:has([data-icon]):only-child) {
+    &:has(:where([data-icon]:only-child)) {
       padding: var(--button-space-sm);
 
       &.minimal {
