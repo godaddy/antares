@@ -7,7 +7,7 @@
 import type { Preview } from '@storybook/react-vite';
 import React from 'react';
 import { MermaidDiagram } from './components/MermaidDiagram';
-import '../../../packages/@godaddy/antares/variables.css';
+import './legacy-tokens.css';
 
 function Pre(props: React.ComponentProps<'pre'>) {
   const child = props.children;
