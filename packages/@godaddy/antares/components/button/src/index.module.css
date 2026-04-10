@@ -1,12 +1,27 @@
 .button {
-  --ux-box-density: 0.25rem;
+  /* Scoped CSS variables - override per variant */
+  --button-bg: inherit;
+  --button-bg-hovered: inherit;
+  --button-bg-pressed: inherit;
+  --button-border: inherit;
+  --button-border-hovered: inherit;
+  --button-border-pressed: inherit;
+  --button-text: inherit;
+  --button-text-hovered: inherit;
+  --button-text-pressed: inherit;
+  --button-radius: var(--size-radius-md, var(--ux-1s5tndb, 4px));
+  --button-gap: var(--size-space-xs, 0.5em);
+  --button-space-xs: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+  --button-space-sm: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
+  --button-space-md: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --button-space-lg: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
 
   font-family: inherit;
   line-height: inherit;
   font-weight: inherit;
   font-size: inherit;
   display: inline-flex;
-  gap: var(--ux-box-density);
+  gap: var(--button-gap);
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -22,146 +37,135 @@
   border: none;
   padding: 0;
   margin: 0;
-}
+  background: var(--button-bg);
+  border-color: var(--button-border);
+  color: var(--button-text);
 
-/* non-inline buttons */
-.button:not(.inline) {
-  border-width: 1px;
-  border-radius: var(--br-sm);
-  border-style: solid;
-}
-
-/* variants */
-
-.primary {
-  background: var(--bg-primary);
-  border-color: var(--bd-primary);
-  color: var(--fg-primary);
-
-  &[data-hovered]:not([data-disabled]) {
-    background: color-mix(in oklch, var(--bg-primary), white 12%);
-    border-color: color-mix(in oklch, var(--bd-primary), white 12%);
-    color: var(--fg-primary);
+  /* non-inline buttons */
+  &:not(.inline) {
+    border-width: 1px;
+    border-radius: var(--button-radius);
+    border-style: solid;
   }
 
-  &[data-pressed]:not([data-disabled]) {
-    background: color-mix(in oklch, var(--bg-primary), black 12%);
-    border-color: color-mix(in oklch, var(--bd-primary), black 12%);
-    color: var(--fg-primary);
-  }
-}
-
-.secondary {
-  background: var(--bg-secondary);
-  border-color: var(--bd-secondary);
-  color: var(--fg-secondary);
-
-  &[data-hovered]:not([data-disabled]) {
-    background: color-mix(in oklch, var(--bd-secondary), white 92%);
-    border-color: var(--bd-secondary);
-    color: var(--fg-secondary);
+  /* state styles - applied via scoped variables */
+  &:where([data-hovered]:not([data-disabled])) {
+    background: var(--button-bg-hovered);
+    border-color: var(--button-border-hovered);
+    color: var(--button-text-hovered);
   }
 
-  &[data-pressed]:not([data-disabled]) {
-    background: var(--bg-primary);
-    border-color: var(--bd-primary);
-    color: var(--fg-primary);
-  }
-}
-
-.tertiary,
-.minimal {
-  background: var(--bg-tertiary);
-  border-color: var(--bd-tertiary);
-  color: var(--fg-tertiary);
-
-  &[data-hovered]:not([data-disabled]) {
-    background: color-mix(in oklch, var(--fg-base), transparent 88%);
-    border-color: var(--bd-tertiary);
-    color: var(--fg-tertiary);
+  &:where([data-pressed]:not([data-disabled])) {
+    background: var(--button-bg-pressed);
+    border-color: var(--button-border-pressed);
+    color: var(--button-text-pressed);
   }
 
-  &[data-pressed]:not([data-disabled]) {
-    background: var(--bg-primary);
-    border-color: var(--bd-primary);
-    color: var(--fg-primary);
-  }
-}
-
-.critical {
-  background: var(--bg-critical);
-  border-color: var(--bd-critical);
-  color: var(--fg-critical);
-
-  &[data-hovered]:not([data-disabled]) {
-    background: color-mix(in oklch, var(--bg-critical), white 12%);
-    border-color: color-mix(in oklch, var(--bd-critical), white 12%);
-    color: var(--fg-critical);
+  &:where([data-focus-visible]:not([data-disabled])) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    border-radius: var(--button-radius);
   }
 
-  &[data-pressed]:not([data-disabled]) {
-    background: color-mix(in oklch, var(--bg-critical), black 12%);
-    border-color: color-mix(in oklch, var(--bd-critical), black 12%);
-    color: var(--fg-critical);
-  }
-}
-
-.inline {
-  background: transparent;
-  color: var(--fg-secondary);
-  text-decoration: underline;
-
-  &[data-hovered]:not([data-disabled]) {
-    color: var(--fg-tertiary);
+  &:where([data-disabled]),
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
-  &[data-pressed]:not([data-disabled]) {
-    color: color-mix(in oklch, var(--fg-tertiary), black 12%);
+  /* variants */
+
+  &:where(.primary) {
+    --button-bg: var(--color-action-background-primary-default, var(--ux-c5mlr8, #4169e1));
+    --button-bg-hovered: var(--color-action-background-primary-hovered, var(--ux-ran6wz, #008080));
+    --button-bg-pressed: var(--color-action-background-primary-pressed, var(--ux-1ehwjjs, #191970));
+    --button-border: var(--color-action-border-primary-default, var(--ux-kdwujq, transparent));
+    --button-border-hovered: var(--color-action-border-primary-hovered, var(--ux-bgke81, transparent));
+    --button-border-pressed: var(--color-action-border-primary-pressed, var(--ux-1hnbfne, transparent));
+    --button-text: var(--color-action-text-primary-default, var(--ux-t04p4h, #ffffff));
+    --button-text-hovered: var(--color-action-text-primary-hovered, var(--ux-1ckzto6, #ffffff));
+    --button-text-pressed: var(--color-action-text-primary-pressed, var(--ux-1uyxcq5, #ffffff));
   }
-}
 
-/* common states */
+  &:where(.secondary) {
+    --button-bg: var(--color-action-background-secondary-default, var(--ux-1r87102, #e6e6fa));
+    --button-bg-hovered: var(--color-action-background-secondary-hovered, var(--ux-azkxzs, #d3d3d3));
+    --button-bg-pressed: var(--color-action-background-secondary-pressed, var(--ux-1c4iwhv, #c0c0c0));
+    --button-border: var(--color-action-border-secondary-default, var(--ux-15jttct, transparent));
+    --button-border-hovered: var(--color-action-border-secondary-hovered, var(--ux-1akzvve, transparent));
+    --button-border-pressed: var(--color-action-border-secondary-pressed, var(--ux-im7up, transparent));
+    --button-text: var(--color-action-text-secondary-default, var(--ux-h6sgq2, #000000));
+    --button-text-hovered: var(--color-action-text-secondary-hovered, var(--ux-a0o0wd, #000000));
+    --button-text-pressed: var(--color-action-text-secondary-pressed, var(--ux-1ly125y, #000000));
+  }
 
-.button[data-focus-visible]:not([data-disabled]) {
-  outline: 2px solid Highlight;
-  outline-offset: 2px;
-  border-radius: var(--br-sm);
-}
+  &:where(.tertiary, .minimal) {
+    --button-bg: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, #ffffff));
+    --button-bg-hovered: var(--color-action-background-tertiary-hovered, var(--ux-1pygiiq, #f5f5f5));
+    --button-bg-pressed: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #dcdcdc));
+    --button-border: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
+    --button-border-hovered: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
+    --button-border-pressed: var(--color-action-border-tertiary-pressed, var(--ux-1xliuhi, transparent));
+    --button-text: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #4169e1));
+    --button-text-hovered: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #008080));
+    --button-text-pressed: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #191970));
+  }
 
-.button[data-disabled],
-.button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+  &:where(.critical) {
+    --button-bg: var(--color-feedback-critical-strong, var(--ux-1marogz, #b22222));
+    --button-bg-hovered: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-1q4q36s, #b22222)), white 12%);
+    --button-bg-pressed: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-926l8f, #b22222)), black 12%);
+    --button-border: var(--color-feedback-critical-strong, var(--ux-ceou01, transparent));
+    --button-border-hovered: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-n0tova, transparent)), white 12%);
+    --button-border-pressed: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-w3lhdp, transparent)), black 12%);
+    --button-text: var(--color-feedback-critical-onstrong, var(--ux-17htz86, #ffffff));
+    --button-text-hovered: var(--color-feedback-critical-onstrong, var(--ux-9cq6k1, #ffffff));
+    --button-text-pressed: var(--color-feedback-critical-onstrong, var(--ux-17znn9m, #ffffff));
+  }
 
-/* sizes */
+  &:where(.inline) {
+    --button-bg: var(--color-action-background-inline-default, var(--ux-5sxt24, #ffffff));
+    --button-bg-hovered: var(--color-action-background-inline-hovered, var(--ux-sjtbcr, #f5f5f5));
+    --button-bg-pressed: var(--color-action-background-inline-pressed, var(--ux-k7opxc, #dcdcdc));
+    --button-border: transparent;
+    --button-border-hovered: transparent;
+    --button-border-pressed: transparent;
+    --button-text: var(--color-action-text-inline-default, var(--ux-czbybt, #4169e1));
+    --button-text-hovered: var(--color-action-text-inline-hovered, var(--ux-19kw6mm, #008080));
+    --button-text-pressed: var(--color-action-text-inline-pressed, var(--ux-13a2c9h, #191970));
 
-.sm:not(.inline) {
-  font-size: var(--fs-sm);
-  padding: calc(var(--ux-box-density) * 1.5) calc(var(--ux-box-density) * 2);
+    text-decoration: underline;
+  }
 
-  /* only-icon buttons */
-  &:has([data-icon]:only-child) {
-    padding: var(--ux-box-density);
+  /* sizes */
 
-    &.minimal {
-      padding: var(--ux-box-density);
-      margin: calc(var(--ux-box-density) * -1);
+  &:where(.sm:not(.inline)) {
+    font-size: var(--font-body-size-sm);
+    padding: var(--button-space-sm) var(--button-space-md);
+
+    /* only-icon buttons */
+    &:has(:where([data-icon]):only-child) {
+      padding: var(--button-space-xs);
+
+      &.minimal {
+        padding: var(--button-space-xs);
+        margin: calc(var(--button-space-xs) * -1);
+      }
     }
   }
-}
 
-.md:not(.inline) {
-  font-size: var(--fs-md);
-  padding: calc(var(--ux-box-density) * 2.5) calc(var(--ux-box-density) * 3);
+  &:where(.md:not(.inline)) {
+    font-size: var(--font-body-size-md, var(--ux-1hnbfne, 16px));
+    padding: var(--button-space-md) var(--button-space-lg);
 
-  /* only-icon buttons */
-  &:has([data-icon]:only-child) {
-    padding: calc(var(--ux-box-density) * 2);
+    /* only-icon buttons */
+    &:where(&:has([data-icon]):only-child) {
+      padding: var(--button-space-sm);
 
-    &.minimal {
-      padding: var(--ux-box-density);
-      margin: calc(var(--ux-box-density) * -1);
+      &.minimal {
+        padding: var(--button-space-xs);
+        margin: calc(var(--button-space-xs) * -1);
+      }
     }
   }
 }
