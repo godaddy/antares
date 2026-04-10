@@ -46,7 +46,7 @@ async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
   return result;
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#BarChart vertical', function barChartTests() {
     it('renders with required props', async function requiredProps() {
       const { container } = await renderBarChart();

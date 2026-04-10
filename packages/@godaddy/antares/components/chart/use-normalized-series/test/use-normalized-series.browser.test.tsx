@@ -17,7 +17,7 @@ function NormalizedSeriesIds({ series }: { series: { id?: string; name: string; 
   );
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#useNormalizedSeries', function useNormalizedSeriesTests() {
     describe('#generates-ids', function generatesIdsTests() {
       it('assigns generated ids when series items have no id', async function generatesIds() {

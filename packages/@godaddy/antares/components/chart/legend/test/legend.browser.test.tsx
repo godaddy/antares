@@ -4,7 +4,7 @@ import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Legend', function legendTests() {
     describe('#single-series', function singleSeriesTests() {
       it('renders single-series legend', async function singleSeries() {

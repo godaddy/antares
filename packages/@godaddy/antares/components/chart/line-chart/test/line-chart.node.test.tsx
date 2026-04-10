@@ -56,7 +56,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['zero-included', ZeroIncludedExample]
 ];
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#LineChart', function lineChartTests() {
     it('does not render SVG on SSR (dimensions from parent ResizeObserver)', function noSvgOnSsr() {
       const result = renderToString(<SingleSeriesExample />);

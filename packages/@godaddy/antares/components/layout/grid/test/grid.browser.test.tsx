@@ -4,7 +4,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { ColumnsExample } from '../examples/columns.tsx';
 import { AreasExample } from '../examples/areas.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Grid', function gridTests() {
     it('renders the default grid in the browser', async function rendersDefault() {
       const { getByText } = await render(<DefaultExample />);

@@ -2,12 +2,11 @@ import { Container } from '../examples/container.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/use-data-attributes examples', function bento() {
   describe('Container', function container() {
-    it('should render the Container component', function test() {
-      const { container } = render(
+    it('should render the Container component', async function test() {
+      const { container } = await render(
         <Container example={['1', 2, 'foo-bar']} focused={true} transform={{ rotate: '45deg' }} />
       );
       const result = container.innerHTML;

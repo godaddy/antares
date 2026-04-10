@@ -167,6 +167,7 @@ export function createStore<T extends InitialState>(initial = {} as T): Store {
         if (!data) continue;
         return set({ [key]: data });
       } catch (_) {
+        // Intentionally empty — try next loader in sequence
       }
     }
   }

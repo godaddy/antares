@@ -1,25 +1,38 @@
 /* v8 ignore next */
-import React, { type ReactNode, useContext } from 'react';
+import { type ReactNode, useContext } from 'react';
 import { Box, defaults } from '@bento/box';
 
 /**
  * Example component demonstrating slot namespace usage.
+ * Manually updates the Box context namespace to simulate what withSlots does,
+ * since withSlots lives in @bento/slots and may resolve to a separate React instance
+ * when used as a cross-package dependency in browser tests.
  *
  * @param {Object} props - The component props.
+ * @param {string} [props.slot] - The slot name to add to the namespace.
  * @param {ReactNode} [props.children] - Optional children elements.
  * @returns {JSX.Element} The rendered example component.
  * @public
  */
-function Example(props: { children?: ReactNode }) {
-  const { slots } = useContext(Box);
+function Example(props: { slot?: string; children?: ReactNode }) {
+  const ctx = useContext(Box);
+  const namespace = [...ctx.slots.namespace, props.slot].filter(Boolean) as string[];
+
+  const updatedContext = {
+    ...ctx,
+    slots: {
+      ...ctx.slots,
+      namespace
+    }
+  };
 
   return (
-    <>
-      <p>Slot namespace: {slots.namespace.join(' > ')}</p>
+    <Box.Provider value={updatedContext}>
+      <p>Slot namespace: {namespace.join(' > ')}</p>
       {props.children}
-    </>
+    </Box.Provider>
   );
-};
+}
 
 //
 // We are declaring our default context state outside of our component scope

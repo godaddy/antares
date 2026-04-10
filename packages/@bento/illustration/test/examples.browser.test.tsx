@@ -3,12 +3,11 @@ import { RenderingSvg } from '../examples/rendering-svg.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/illustration examples', function bento() {
   describe('RenderingSvg', function renderingSvg() {
-    it('renders the illustration', function test() {
-      const { container } = render(<RenderingSvg />);
+    it('renders the illustration', async function test() {
+      const { container } = await render(<RenderingSvg />);
       const svg = container.querySelector('svg');
 
       assume(svg).exists();
@@ -20,8 +19,8 @@ describe('@bento/illustration examples', function bento() {
   });
 
   describe('RotateSVG', function rotateSvg() {
-    it('renders the illustration', function test() {
-      const { container } = render(<RotateSVG rotate={90} />);
+    it('renders the illustration', async function test() {
+      const { container } = await render(<RotateSVG rotate={90} />);
       const svg = container.querySelector('svg');
 
       assume(svg).exists();

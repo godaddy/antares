@@ -31,7 +31,7 @@ async function renderExampleAndWait(node: React.ReactNode, width = 800, height =
   return result;
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#LineChart', function lineChartTests() {
     describe('#single-series', function singleSeries() {
       it('renders chart with one series and shows series label', async function renders() {

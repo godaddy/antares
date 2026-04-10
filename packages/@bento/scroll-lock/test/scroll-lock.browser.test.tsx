@@ -1,6 +1,7 @@
 import { ScrollLock, useScrollLock } from '@bento/scroll-lock';
 import { Container } from '@bento/container';
 import { Environment } from '@bento/environment';
+import { Box, defaults } from '@bento/box';
 import { render } from 'vitest-browser-react';
 import { describe, it, afterEach } from 'vitest';
 import React, { useState, useEffect } from 'react';
@@ -13,15 +14,15 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeAttribute('data-scroll-locked');
     });
 
-    it('applies data-scroll-locked attribute to body when mounted', function appliesDataAttribute() {
-      render(<ScrollLock />);
+    it('applies data-scroll-locked attribute to body when mounted', async function appliesDataAttribute() {
+      await render(<ScrollLock />);
 
       const attribute = document.body.getAttribute('data-scroll-locked');
       assume(attribute).equals('true');
     });
 
-    it('removes data-scroll-locked attribute from body when unmounted', function removesDataAttribute() {
-      const { unmount } = render(<ScrollLock />);
+    it('removes data-scroll-locked attribute from body when unmounted', async function removesDataAttribute() {
+      const { unmount } = await render(<ScrollLock />);
 
       // Verify attribute is present
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
@@ -32,16 +33,16 @@ describe('@bento/scroll-lock', function bento() {
       assume(document.body.getAttribute('data-scroll-locked')).equals(null);
     });
 
-    it('does not apply data-scroll-locked when isDisabled is true', function respectsIsDisabled() {
-      render(<ScrollLock isDisabled={true} />);
+    it('does not apply data-scroll-locked when isDisabled is true', async function respectsIsDisabled() {
+      await render(<ScrollLock isDisabled={true} />);
 
       const attribute = document.body.getAttribute('data-scroll-locked');
       // When isDisabled is true, the attribute should not be set (null)
       assume(attribute).equals(null);
     });
 
-    it('renders children if provided', function rendersChildren() {
-      render(
+    it('renders children if provided', async function rendersChildren() {
+      await render(
         <ScrollLock>
           <Container data-testid="scroll-lock-child">Child content</Container>
         </ScrollLock>
@@ -52,40 +53,40 @@ describe('@bento/scroll-lock', function bento() {
       assume(child?.textContent).equals('Child content');
     });
 
-    it('renders null when no children provided', function rendersNullWithoutChildren() {
-      const { container } = render(<ScrollLock />);
+    it('renders null when no children provided', async function rendersNullWithoutChildren() {
+      const { container } = await render(<ScrollLock />);
 
       // ScrollLock should not render any DOM elements
       assume(container.childNodes.length).equals(0);
     });
 
-    it('updates data attribute when isDisabled changes', function updatesOnDisabledChange() {
+    it('updates data attribute when isDisabled changes', async function updatesOnDisabledChange() {
       function TestComponent({ disabled }: { disabled: boolean }) {
         return <ScrollLock isDisabled={disabled} />;
       }
 
-      const { rerender } = render(<TestComponent disabled={false} />);
+      const { rerender } = await render(<TestComponent disabled={false} />);
 
       // Initially enabled
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
 
       // Re-render with disabled
-      rerender(<TestComponent disabled={true} />);
+      await rerender(<TestComponent disabled={true} />);
 
       // Should now not have the attribute (null)
       assume(document.body.getAttribute('data-scroll-locked')).equals(null);
     });
 
-    it('handles null children', function handlesNullChildren() {
-      const { container } = render(<ScrollLock>{null}</ScrollLock>);
+    it('handles null children', async function handlesNullChildren() {
+      const { container } = await render(<ScrollLock>{null}</ScrollLock>);
 
       assume(container.childNodes.length).equals(0);
       // Scroll lock should still be applied
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
     });
 
-    it('handles undefined children', function handlesUndefinedChildren() {
-      const { container } = render(<ScrollLock>{undefined}</ScrollLock>);
+    it('handles undefined children', async function handlesUndefinedChildren() {
+      const { container } = await render(<ScrollLock>{undefined}</ScrollLock>);
 
       assume(container.childNodes.length).equals(0);
       // Scroll lock should still be applied
@@ -98,36 +99,36 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeAttribute('data-scroll-locked');
     });
 
-    it('applies data-scroll-locked when called', function appliesDataAttribute() {
+    it('applies data-scroll-locked when called', async function appliesDataAttribute() {
       function TestComponent() {
         useScrollLock();
         return <div>Test</div>;
       }
 
-      render(<TestComponent />);
+      await render(<TestComponent />);
 
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
     });
 
-    it('respects isDisabled option', function respectsIsDisabled() {
+    it('respects isDisabled option', async function respectsIsDisabled() {
       function TestComponent() {
         useScrollLock({ isDisabled: true });
         return <div>Test</div>;
       }
 
-      render(<TestComponent />);
+      await render(<TestComponent />);
 
       // When disabled, attribute should not be set
       assume(document.body.getAttribute('data-scroll-locked')).equals(null);
     });
 
-    it('cleans up on unmount', function cleansUpOnUnmount() {
+    it('cleans up on unmount', async function cleansUpOnUnmount() {
       function TestComponent() {
         useScrollLock();
         return <div>Test</div>;
       }
 
-      const { unmount } = render(<TestComponent />);
+      const { unmount } = await render(<TestComponent />);
 
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
 
@@ -136,7 +137,7 @@ describe('@bento/scroll-lock', function bento() {
       assume(document.body.getAttribute('data-scroll-locked')).equals(null);
     });
 
-    it('handles multiple instances', function handlesMultipleInstances() {
+    it('handles multiple instances', async function handlesMultipleInstances() {
       function TestComponent() {
         useScrollLock();
         return <div>First</div>;
@@ -147,7 +148,7 @@ describe('@bento/scroll-lock', function bento() {
         return <div>Second</div>;
       }
 
-      render(
+      await render(
         <>
           <TestComponent />
           <AnotherComponent />
@@ -164,24 +165,24 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeAttribute('data-scroll-locked');
     });
 
-    it('works with conditional rendering', function testConditionalRendering() {
+    it('works with conditional rendering', async function testConditionalRendering() {
       function TestComponent({ show }: { show: boolean }) {
         return <>{show && <ScrollLock />}</>;
       }
 
-      const { rerender } = render(<TestComponent show={false} />);
+      const { rerender } = await render(<TestComponent show={false} />);
 
       // Initially no scroll lock
       assume(document.body.getAttribute('data-scroll-locked')).equals(null);
 
       // Show scroll lock
-      rerender(<TestComponent show={true} />);
+      await rerender(<TestComponent show={true} />);
 
       // Should now have scroll lock
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
     });
 
-    it('works with Portal integration', function testPortalIntegration() {
+    it('works with Portal integration', async function testPortalIntegration() {
       function ModalWithScrollLock() {
         const [mounted, setMounted] = useState(false);
 
@@ -197,7 +198,7 @@ describe('@bento/scroll-lock', function bento() {
         );
       }
 
-      render(<ModalWithScrollLock />);
+      await render(<ModalWithScrollLock />);
 
       // After mounting, scroll should be locked
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
@@ -212,7 +213,7 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeAttribute('data-scroll-locked');
     });
 
-    it('applies data attributes to custom environment document body', function appliesAttributesToCustomEnv() {
+    it('applies data attributes to custom environment document body', async function appliesAttributesToCustomEnv() {
       // Create a mock document body
       const mockBody = document.createElement('div');
       mockBody.setAttribute('data-testid', 'mock-body');
@@ -223,7 +224,7 @@ describe('@bento/scroll-lock', function bento() {
         nodeType: 9
       } as unknown as Document;
 
-      render(
+      await render(
         <Environment document={() => mockDoc}>
           <ScrollLock />
           <Container data-testid="content">Content with scroll lock</Container>
@@ -240,7 +241,7 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeChild(mockBody);
     });
 
-    it('removes attributes from custom environment on unmount', function removesAttributesOnUnmount() {
+    it('removes attributes from custom environment on unmount', async function removesAttributesOnUnmount() {
       const customBody = document.createElement('div');
       customBody.setAttribute('data-testid', 'custom-body');
       document.body.appendChild(customBody);
@@ -259,13 +260,13 @@ describe('@bento/scroll-lock', function bento() {
         );
       }
 
-      const { rerender } = render(<TestComponent show={true} />);
+      const { rerender } = await render(<TestComponent show={true} />);
 
       // Should have attribute
       assume(customBody.getAttribute('data-scroll-locked')).equals('true');
 
       // Unmount
-      rerender(<TestComponent show={false} />);
+      await rerender(<TestComponent show={false} />);
 
       // Should remove attribute
       assume(customBody.getAttribute('data-scroll-locked')).equals(null);
@@ -274,7 +275,7 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeChild(customBody);
     });
 
-    it('useScrollLock hook works with custom environment', function hookWorksWithCustomEnv() {
+    it('useScrollLock hook works with custom environment', async function hookWorksWithCustomEnv() {
       const customBody = document.createElement('div');
       customBody.setAttribute('data-testid', 'hook-custom-body');
       document.body.appendChild(customBody);
@@ -289,7 +290,7 @@ describe('@bento/scroll-lock', function bento() {
         return <Container data-testid="hook-content">Hook test</Container>;
       }
 
-      render(
+      await render(
         <Environment document={() => customDoc}>
           <TestComponent />
         </Environment>
@@ -305,7 +306,34 @@ describe('@bento/scroll-lock', function bento() {
       document.body.removeChild(customBody);
     });
 
-    it('handles multiple environments independently', function handlesMultipleEnvironments() {
+    it('does not crash when env.document() returns null (SSR/no-document)', async function handlesNullDocument() {
+      const ctx = defaults();
+      const nullDocCtx = {
+        ...ctx,
+        env: {
+          ...ctx.env,
+          document: () => null as unknown as Document
+        }
+      };
+
+      function TestComponent() {
+        useScrollLock({ isDisabled: false });
+        return <div data-testid="null-doc-child">Still renders</div>;
+      }
+
+      const { container } = await render(
+        <Box.Provider value={nullDocCtx}>
+          <TestComponent />
+        </Box.Provider>
+      );
+
+      const child = container.querySelector('[data-testid="null-doc-child"]');
+      assume(child).is.not.equal(null);
+      assume(child?.textContent).equals('Still renders');
+      assume(document.body.getAttribute('data-scroll-locked')).equals(null);
+    });
+
+    it('handles multiple environments independently', async function handlesMultipleEnvironments() {
       const body1 = document.createElement('div');
       body1.setAttribute('data-testid', 'body-1');
       const body2 = document.createElement('div');
@@ -317,7 +345,7 @@ describe('@bento/scroll-lock', function bento() {
       const doc1 = { body: body1, nodeType: 9 } as unknown as Document;
       const doc2 = { body: body2, nodeType: 9 } as unknown as Document;
 
-      render(
+      await render(
         <>
           <Environment document={() => doc1}>
             <ScrollLock />

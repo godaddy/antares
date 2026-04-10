@@ -7,8 +7,6 @@
   "scripts": {
     "build": "tsup-node",
     "lint": "biome lint && tsc --noEmit",
-    "posttest": "npm run lint",
-    "pretest": "npm run build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
@@ -28,9 +26,9 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/godaddy/uxcore/issues"
+    "url": "https://github.com/godaddy/antares/issues"
   },
-  "homepage": "https://github.com/godaddy/uxcore#readme",
+  "homepage": "https://github.com/godaddy/antares#readme",
   "files": [
     "dist",
     "package.json"

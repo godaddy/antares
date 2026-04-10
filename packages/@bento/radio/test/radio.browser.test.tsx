@@ -38,8 +38,8 @@ function RadioGroupExampleWithState(props: Partial<ComponentProps<typeof RadioGr
 }
 
 describe('@bento/radio', function bento() {
-  it('should render a RadioGroup and Radios and no radio should be selected', function renderUnselectedRadios() {
-    const { container } = render(<RadioGroupExample />);
+  it('should render a RadioGroup and Radios and no radio should be selected', async function renderUnselectedRadios() {
+    const { container } = await render(<RadioGroupExample />);
     const result = container.innerHTML;
     const radios = container.querySelectorAll<HTMLInputElement>('input[type="radio"][name="fruit"]');
 
@@ -50,8 +50,8 @@ describe('@bento/radio', function bento() {
     assume(result).includes('value="cherry"');
   });
 
-  it('should select no radio when no value/defaultValue is provided', function noSelectionByDefault() {
-    const { container } = render(<RadioGroupExample />);
+  it('should select no radio when no value/defaultValue is provided', async function noSelectionByDefault() {
+    const { container } = await render(<RadioGroupExample />);
     const radios = container.querySelectorAll<HTMLInputElement>('input[type="radio"]');
 
     assume(radios.length).equals(3);
@@ -59,14 +59,14 @@ describe('@bento/radio', function bento() {
   });
 
   describe('Uncontrolled', function uncontrolled() {
-    it('should select the correct radio when a defaultValue is provided', function selectDefaultValue() {
-      const { container } = render(<RadioGroupExample groupProps={{ defaultValue: 'banana' }} />);
+    it('should select the correct radio when a defaultValue is provided', async function selectDefaultValue() {
+      const { container } = await render(<RadioGroupExample groupProps={{ defaultValue: 'banana' }} />);
       const radio = container.querySelector<HTMLInputElement>('input[value="banana"]');
       assume(radio?.checked).equals(true);
     });
 
     it('should select the correct radio when it is selected', async function selectRadioOnClick() {
-      const { container } = render(<RadioGroupExample />);
+      const { container } = await render(<RadioGroupExample />);
       const bananaRadio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
 
       assume(bananaRadio?.checked).equals(false);
@@ -75,7 +75,7 @@ describe('@bento/radio', function bento() {
     });
 
     it('should change the selected radio when a defaultValue is provided and another radio is selected', async function changeSelectionFromDefault() {
-      const { container } = render(<RadioGroupExample groupProps={{ defaultValue: 'banana' }} />);
+      const { container } = await render(<RadioGroupExample groupProps={{ defaultValue: 'banana' }} />);
       const bananaRadio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
       const appleRadio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
@@ -101,7 +101,7 @@ describe('@bento/radio', function bento() {
       );
     }
 
-    const { container } = render(<RadioGroupWithRef />);
+    const { container } = await render(<RadioGroupWithRef />);
 
     const radio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
     assume(radio?.checked).equals(false);
@@ -112,7 +112,7 @@ describe('@bento/radio', function bento() {
   });
 
   it('should focus the first radio when its autoFocus is true', async function focusRadioOnAutoFocus() {
-    const { container } = render(
+    const { container } = await render(
       <RadioGroup label="Favorite fruit" name="fruit">
         <Radio value="apple" autoFocus>
           Apple
@@ -129,14 +129,14 @@ describe('@bento/radio', function bento() {
   });
 
   describe('Controlled', function controlled() {
-    it('should select the correct radio when a value is provided', function selectControlledValue() {
-      const { container } = render(<RadioGroupExample groupProps={{ value: 'banana' }} />);
+    it('should select the correct radio when a value is provided', async function selectControlledValue() {
+      const { container } = await render(<RadioGroupExample groupProps={{ value: 'banana' }} />);
       const radio = container.querySelector<HTMLInputElement>('input[value="banana"]');
       assume(radio?.checked).equals(true);
     });
 
     it('should not change the selected radio when a value is provided and another radio is selected', async function notChangeControlledValue() {
-      const { container } = render(<RadioGroupExample groupProps={{ value: 'banana' }} />);
+      const { container } = await render(<RadioGroupExample groupProps={{ value: 'banana' }} />);
       const bananaRadio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
       const appleRadio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
@@ -147,7 +147,7 @@ describe('@bento/radio', function bento() {
     });
 
     it('should change the selected radio when a value is provided and another radio is selected with onChange', async function changeControlledValueWithStateOnChange() {
-      const { container } = render(<RadioGroupExampleWithState />);
+      const { container } = await render(<RadioGroupExampleWithState />);
       const bananaRadio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
       const appleRadio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
       assume(bananaRadio?.checked).equals(true);
@@ -159,14 +159,14 @@ describe('@bento/radio', function bento() {
 
   describe('Disabled', function disabled() {
     it('should ensure all radios are disabled when the RadioGroup is disabled', async function allRadiosDisabled() {
-      const { container } = render(<RadioGroupExample groupProps={{ isDisabled: true }} />);
+      const { container } = await render(<RadioGroupExample groupProps={{ isDisabled: true }} />);
       const radios = container.querySelectorAll<HTMLInputElement>('input[type="radio"]');
 
       radios.forEach((radio) => assume(radio.disabled).equals(true));
     });
 
     it('should ensure individual radio is disabled when radio is disabled', async function individualRadioDisabled() {
-      const { container } = render(<RadioGroupExample radioProps={{ isDisabled: true }} />);
+      const { container } = await render(<RadioGroupExample radioProps={{ isDisabled: true }} />);
       const radio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
       assume(radio.disabled).equals(true);
@@ -176,7 +176,7 @@ describe('@bento/radio', function bento() {
 
   describe('ReadOnly', function readOnly() {
     it('should not change the selected radio when a value is provided and another radio is selected with onChange', async function notChangeReadOnlyValue() {
-      const { container } = render(<RadioGroupExample groupProps={{ value: 'banana', isReadOnly: true }} />);
+      const { container } = await render(<RadioGroupExample groupProps={{ value: 'banana', isReadOnly: true }} />);
       const bananaRadio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
       const appleRadio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
@@ -193,7 +193,7 @@ describe('@bento/radio', function bento() {
         e.target.setAttribute('fruit-value', formData.get('fruit'));
       });
 
-      const { container } = render(
+      const { container } = await render(
         <form onSubmit={onSubmit}>
           <RadioGroupExample />
           <button type="submit">Submit</button>
@@ -212,7 +212,7 @@ describe('@bento/radio', function bento() {
     });
 
     it('should display error message when the radio is required', async function displayErrorMessage() {
-      const { container } = render(
+      const { container } = await render(
         <form>
           <RadioGroupExample
             groupProps={{
@@ -238,7 +238,7 @@ describe('@bento/radio', function bento() {
 
   describe('Keyboard', function keyboard() {
     it('should select the correct radio when a keyboard is used', async function selectWithKeyboard() {
-      const { container } = render(<RadioGroupExample />);
+      const { container } = await render(<RadioGroupExample />);
 
       await userEvent.tab();
 
@@ -272,15 +272,15 @@ describe('@bento/radio', function bento() {
   });
 
   describe('Accessibility', function accessibility() {
-    it('should add the correct role and aria-orientation to the radiogroup', function checkRadiogroupRoleAndOrientation() {
-      const { container } = render(<RadioGroupExample />);
+    it('should add the correct role and aria-orientation to the radiogroup', async function checkRadiogroupRoleAndOrientation() {
+      const { container } = await render(<RadioGroupExample />);
       const radioGroup = container.querySelector('[role="radiogroup"]')!;
       assume(radioGroup.getAttribute('role')).equals('radiogroup');
       assume(radioGroup.getAttribute('aria-orientation')).equals('vertical');
     });
 
-    it('should associate the visible label with the radiogroup via aria-labelledby', function radiogroupLabelledBy() {
-      const { container } = render(<RadioGroupExample />);
+    it('should associate the visible label with the radiogroup via aria-labelledby', async function radiogroupLabelledBy() {
+      const { container } = await render(<RadioGroupExample />);
       const radioGroup = container.querySelector('[role="radiogroup"]');
       const labelId = radioGroup?.getAttribute('aria-labelledby');
       const labelEl = container.querySelector(`[id="${labelId}"]`);

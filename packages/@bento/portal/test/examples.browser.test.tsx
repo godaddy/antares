@@ -1,6 +1,5 @@
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
-import React from 'react';
 import assume from 'assume';
 import { BasicExample } from '../examples/basic.tsx';
 import { CustomContainerExample } from '../examples/custom-container.tsx';
@@ -8,8 +7,8 @@ import { PortalProviderExample } from '../examples/portal-provider.tsx';
 
 describe('@bento/portal examples', function bento() {
   describe('BasicExample', function basicExampleTests() {
-    it('renders basic portal example', function rendersBasic() {
-      render(<BasicExample />);
+    it('renders basic portal example', async function rendersBasic() {
+      await render(<BasicExample />);
 
       const portalContent = document.body.querySelector('[data-testid="basic-portal"]');
       assume(portalContent).is.not.equal(null);
@@ -27,8 +26,8 @@ describe('@bento/portal examples', function bento() {
   });
 
   describe('CustomContainerExample', function customContainerExampleTests() {
-    it('renders custom container example', function rendersCustomContainer() {
-      render(<CustomContainerExample />);
+    it('renders custom container example', async function rendersCustomContainer() {
+      await render(<CustomContainerExample />);
 
       const customContainer = document.querySelector('#custom-portal-container');
       assume(customContainer).is.not.equal(null);
@@ -48,8 +47,8 @@ describe('@bento/portal examples', function bento() {
   });
 
   describe('PortalProviderExample', function portalProviderExampleTests() {
-    it('renders portal provider example', function rendersPortalProvider() {
-      render(<PortalProviderExample />);
+    it('renders portal provider example', async function rendersPortalProvider() {
+      await render(<PortalProviderExample />);
 
       const portalContent = document.querySelector('[data-testid="portal-provider-portal"]');
       assume(portalContent).is.not.equal(null);

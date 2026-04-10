@@ -15,7 +15,7 @@ function renderIconToString(args = {}) {
   return renderToString(<Icon {...args} />);
 }
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   beforeEach(function setup() {
     set({
       star: (

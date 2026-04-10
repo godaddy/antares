@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - 'apps/site/**'
-      - 'packages/uxcore/components/**/README.mdx'
+      - 'packages/@godaddy/antares/components/**/README.mdx'
       - 'package*.json'
 
 permissions:

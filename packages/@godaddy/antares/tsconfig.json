@@ -4,7 +4,7 @@
     "baseUrl": "./",
     "noEmit": true,
     "paths": {
-      "@godaddy/uxcore": ["./index.tsx"],
+      "@godaddy/antares": ["./index.tsx"],
       "#components/*": [
         "./components/*/src/index.tsx",
         "./components/chart/types.ts"

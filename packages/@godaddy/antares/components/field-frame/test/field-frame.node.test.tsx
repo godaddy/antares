@@ -4,7 +4,7 @@ import { FieldFrameTrailingControl } from '../examples/trailing-control';
 import { FieldFrameLeadingControl } from '../examples/leading-control';
 import { FieldFrameIconAccessories } from '../examples/icon-accessories';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#FieldFrame', function fieldFrame() {
     describe('#LeadingControl', function leadingControl() {
       it('renders', function renders() {

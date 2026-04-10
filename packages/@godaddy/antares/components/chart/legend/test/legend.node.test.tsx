@@ -3,7 +3,7 @@ import { MultiSeriesLegendExample } from '../examples/multi-series.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Legend', function legendTests() {
     describe('#single-series', function singleSeriesTests() {
       it('renders single-series example', function singleSeriesSnapshot() {

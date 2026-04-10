@@ -30,7 +30,7 @@ import React, { type ForwardedRef, useEffect, useRef } from 'react';
  * @returns {React.RefObject<T>} A safe ref object that works in all environments including frozen test contexts
  * @public
  */
-export function useSafeObjectRef<T>(ref: ForwardedRef<T>): React.RefObject<T> {
+export function useSafeObjectRef<T>(ref: ForwardedRef<T>): React.RefObject<T | null> {
   const internalRef = useRef<T>(null);
 
   useEffect(function updateForwardedRef() {

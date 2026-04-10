@@ -1,12 +1,11 @@
-import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { BasicUsage } from '../examples/basic';
 import { MultipleIcons } from '../examples/multiple.js';
 
 describe('@bento/use-svg-sprite', function useSvgSprite() {
-  it('should render the standalone example', function standaloneExample() {
-    const { container } = render(<BasicUsage />);
+  it('should render the standalone example', async function standaloneExample() {
+    const { container } = await render(<BasicUsage />);
 
     expect(container.querySelector('svg')).toBeTruthy();
     expect(container.innerHTML).toContain('bento-svg-spritesheet-check');
@@ -18,8 +17,8 @@ describe('@bento/use-svg-sprite', function useSvgSprite() {
     expect(svgs[0]).toHaveAttribute('height', '24');
   });
 
-  it('should render the multiple icons example', function multipleIconsExample() {
-    const { container } = render(<MultipleIcons />);
+  it('should render the multiple icons example', async function multipleIconsExample() {
+    const { container } = await render(<MultipleIcons />);
 
     expect(container.querySelector('svg')).toBeTruthy();
     expect(container.innerHTML).toContain('bento-svg-spritesheet-check');

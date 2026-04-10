@@ -4,4 +4,4 @@
 
 ### Minor Changes
 
-- Forward ref support ([#59](https://github.com/godaddy/uxcore/pull/59) by @akazemier-godaddy)
+- Forward ref support ([#59](https://github.com/godaddy/antares/pull/59) by @akazemier-godaddy)

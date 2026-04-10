@@ -2,7 +2,7 @@ import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { Button } from './button.tsx';
 /* v8 ignore next */
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 /**
  * Example component for slots demonstration.

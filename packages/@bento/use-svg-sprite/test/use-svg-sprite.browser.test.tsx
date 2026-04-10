@@ -85,7 +85,7 @@ describe('@bento/use-svg-sprite browser', function bento() {
 
   it('uses the sprite option from environment in xlinkHref', async function spriteOption() {
     const customSprite = 'https://example.com/sprites.svg';
-    const { container } = render(
+    const { container } = await render(
       <Environment sprite={customSprite}>
         <Icon icon="play" mode="sprite" />
       </Environment>

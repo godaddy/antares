@@ -6,7 +6,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { renderToString } from 'react-dom/server';
 import { expect, describe, it } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Pagination', function paginationTests() {
     it('renders the default example', function rendersDefault() {
       const result = renderToString(<DefaultExample />);

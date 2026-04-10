@@ -117,6 +117,6 @@ guide with respect to patterns, naming, documentation and testing.
 - [General GitHub Documentation](https://help.github.com/)
 - [GitHub Pull Request documentation](https://help.github.com/send-pull-requests/)
 
-[issues]: https://github.com/godaddy/uxcore/issues
+[issues]: https://github.com/godaddy/antares/issues
 [coc]: ./CODE_OF_CONDUCT.md
 [fork]: https://help.github.com/en/articles/fork-a-repo

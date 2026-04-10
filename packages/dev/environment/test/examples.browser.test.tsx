@@ -6,12 +6,11 @@ import { Override } from '../examples/override.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import React from 'react';
 
 describe('@bento/environment examples', function bento() {
   describe('Override', function container() {
-    it('should render the Container component', function test() {
-      const { container } = render(<Override />);
+    it('should render the Container component', async function test() {
+      const { container } = await render(<Override />);
 
       const result = container.innerHTML;
 
@@ -22,8 +21,8 @@ describe('@bento/environment examples', function bento() {
   });
 
   describe('OverrideProps', function container() {
-    it('should render the Container component', function test() {
-      const { container } = render(<OverrideProps />);
+    it('should render the Container component', async function test() {
+      const { container } = await render(<OverrideProps />);
 
       const result = container.innerHTML;
 
@@ -69,8 +68,8 @@ describe('@bento/environment examples', function bento() {
   });
 
   describe('ComponentLevelExample', function container() {
-    it('should render the component with overridden props', function test() {
-      const { container } = render(<ComponentLevelExample />);
+    it('should render the component with overridden props', async function test() {
+      const { container } = await render(<ComponentLevelExample />);
       const svg = container.querySelector('svg');
       assume(svg).to.not.equal(null);
 
@@ -86,22 +85,22 @@ describe('@bento/environment examples', function bento() {
       assume(paragraph?.textContent).includes('This icon will be loaded as sprite');
     });
 
-    it('should render icon in sprite mode via environment configuration', function test() {
-      const { container } = render(<ComponentLevelExample />);
+    it('should render icon in sprite mode via environment configuration', async function test() {
+      const { container } = await render(<ComponentLevelExample />);
       const svg = container.querySelector('svg');
       assume(svg).to.not.equal(null);
       assume(svg?.getAttribute('data-mode')).equals('sprite');
     });
 
-    it('should have correct icon dimensions', function test() {
-      const { container } = render(<ComponentLevelExample />);
+    it('should have correct icon dimensions', async function test() {
+      const { container } = await render(<ComponentLevelExample />);
       const svg = container.querySelector('svg');
       assume(svg?.getAttribute('width')).equals('48');
       assume(svg?.getAttribute('height')).equals('48');
     });
 
-    it('should contain proper accessibility attributes', function test() {
-      const { container } = render(<ComponentLevelExample />);
+    it('should contain proper accessibility attributes', async function test() {
+      const { container } = await render(<ComponentLevelExample />);
       const svg = container.querySelector('svg');
       assume(svg?.getAttribute('role')).equals('img');
       assume(svg?.getAttribute('focusable')).equals('false');
@@ -111,7 +110,7 @@ describe('@bento/environment examples', function bento() {
 
   describe('IframeRenderingExample', function container() {
     it('should render iframe with correct content and handle interactions', async function test() {
-      const { container } = render(<IframeRenderingExample />);
+      const { container } = await render(<IframeRenderingExample />);
 
       // Find the iframe element
       const iframe = container.querySelector('iframe') as HTMLIFrameElement;

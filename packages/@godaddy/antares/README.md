@@ -1,4 +1,4 @@
-# UXCore
+# Antares
 
 A collection of accessible, composable React components built on React Aria.
 
@@ -9,13 +9,13 @@ A collection of accessible, composable React components built on React Aria.
 Install the package:
 
 ```bash
-npm install --save @godaddy/uxcore
+npm install --save @godaddy/antares
 ```
 
 Import and use a component:
 
 ```tsx
-import { Button } from '@godaddy/uxcore';
+import { Button } from '@godaddy/antares';
 
 export default function App() {
   return <Button variant="primary">Get Started</Button>;

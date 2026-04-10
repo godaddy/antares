@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -11,7 +10,7 @@ import userEvent from '@testing-library/user-event';
 describe('@bento/radio examples', function bento() {
   describe('Controlled', function controlledExample() {
     it('should select the correct radio when it is clicked', async function selectCorrectRadio() {
-      const { container } = render(<ControlledExample />);
+      const { container } = await render(<ControlledExample />);
 
       const radio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
@@ -23,7 +22,7 @@ describe('@bento/radio examples', function bento() {
 
   describe('Uncontrolled', function uncontrolledExample() {
     it('should select the correct radio when it is clicked', async function selectCorrectRadio() {
-      const { container } = render(<UncontrolledExample />);
+      const { container } = await render(<UncontrolledExample />);
       const radio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
       assume(radio.checked).equals(false);
@@ -34,7 +33,7 @@ describe('@bento/radio examples', function bento() {
 
   describe('SingleRadio', function singleRadioExample() {
     it('should select the correct radio when it is clicked', async function selectCorrectRadio() {
-      const { container } = render(<SingleRadioExample />);
+      const { container } = await render(<SingleRadioExample />);
       const radio = container.querySelector<HTMLInputElement>('input[value="apple"]')!;
 
       assume(radio.checked).equals(false);
@@ -45,7 +44,7 @@ describe('@bento/radio examples', function bento() {
 
   describe('ErrorHandling', function errorHandlingExample() {
     it('should display the correct error message when the radio is invalid', async function displayErrorMessage() {
-      const { container } = render(<ErrorHandlingExample />);
+      const { container } = await render(<ErrorHandlingExample />);
       const radio = container.querySelector<HTMLInputElement>('input[value="banana"]')!;
       await userEvent.click(radio);
       assume(container.innerHTML).includes('Error! banana selected');
@@ -53,7 +52,7 @@ describe('@bento/radio examples', function bento() {
   });
 
   it('should display the correct custom error message when the radio is invalid', async function displayErrorMessage() {
-    const { container } = render(<ErrorHandlingExampleWithState />);
+    const { container } = await render(<ErrorHandlingExampleWithState />);
     const radio = container.querySelector<HTMLInputElement>('input[value="orange"]')!;
     await userEvent.click(radio);
     assume(container.innerHTML).includes('Invalid fruit: orange');

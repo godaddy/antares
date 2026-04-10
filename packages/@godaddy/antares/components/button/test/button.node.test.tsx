@@ -11,7 +11,7 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { MinimalExample } from '../examples/minimal.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
     it('renders the default button', function rendersDefault() {
       const result = renderToString(<DefaultExample />);

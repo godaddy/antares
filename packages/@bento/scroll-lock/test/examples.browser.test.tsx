@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it, afterEach } from 'vitest';
 import assume from 'assume';
@@ -12,8 +11,8 @@ describe('@bento/scroll-lock examples', function bento() {
   });
 
   describe('BasicExample', function basicExample() {
-    it('applies scroll lock when rendered', function test() {
-      render(<BasicExample />);
+    it('applies scroll lock when rendered', async function test() {
+      await render(<BasicExample />);
 
       // Should apply scroll lock
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
@@ -21,8 +20,8 @@ describe('@bento/scroll-lock examples', function bento() {
   });
 
   describe('HookExample', function hookExample() {
-    it('applies scroll lock using the hook', function test() {
-      render(<HookExample />);
+    it('applies scroll lock using the hook', async function test() {
+      await render(<HookExample />);
 
       // Should apply scroll lock via hook
       assume(document.body.getAttribute('data-scroll-locked')).equals('true');
@@ -35,7 +34,7 @@ describe('@bento/scroll-lock examples', function bento() {
 
   describe('ModalExample', function modalExample() {
     it('opens and closes modal with scroll lock', async function test() {
-      const { container } = render(<ModalExample />);
+      const { container } = await render(<ModalExample />);
 
       // Modal starts closed, so no scroll lock initially
       assume(document.body.getAttribute('data-scroll-locked')).equals(null);
@@ -70,7 +69,7 @@ describe('@bento/scroll-lock examples', function bento() {
     });
 
     it('closes modal when clicking backdrop', async function test() {
-      const { container } = render(<ModalExample />);
+      const { container } = await render(<ModalExample />);
 
       // Open the modal
       const openButton = container.querySelector('button');

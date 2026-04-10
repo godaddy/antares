@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { beforeEach, afterEach, describe, it, vi, expect } from 'vitest';
 import assume from 'assume';
@@ -21,8 +20,8 @@ describe('@bento/pressable examples', function bento() {
   });
 
   describe('PressableDiv', function pressableDivExample() {
-    it('renders the pressable div', function test() {
-      const { container } = render(<PressableDivExample />);
+    it('renders the pressable div', async function test() {
+      const { container } = await render(<PressableDivExample />);
       const result = container.innerHTML;
 
       assume(result).includes('data-react-aria-pressable="true"');
@@ -37,8 +36,8 @@ describe('@bento/pressable examples', function bento() {
   });
 
   describe('PressableLink', function pressableLinkExample() {
-    it('renders the pressable link', function test() {
-      const { container } = render(<PressableLinkExample />);
+    it('renders the pressable link', async function test() {
+      const { container } = await render(<PressableLinkExample />);
       const result = container.innerHTML;
 
       assume(result).includes('data-react-aria-pressable="true"');
@@ -54,8 +53,8 @@ describe('@bento/pressable examples', function bento() {
   });
 
   describe('PressableCustom', function pressableCustomExample() {
-    it('renders the pressable custom', function test() {
-      const { container } = render(<PressableCustomExample />);
+    it('renders the pressable custom', async function test() {
+      const { container } = await render(<PressableCustomExample />);
       const result = container.innerHTML;
 
       assume(result).includes('data-react-aria-pressable="true"');

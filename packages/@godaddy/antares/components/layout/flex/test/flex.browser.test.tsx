@@ -4,7 +4,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { DirectionExample } from '../examples/direction.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Flex', function flexTests() {
     it('renders the default flex in the browser', async function rendersDefault() {
       const { getByText } = await render(<DefaultExample />);

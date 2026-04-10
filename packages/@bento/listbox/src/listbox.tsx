@@ -1,5 +1,5 @@
 import type React from 'react';
-import { createContext, useContext, useMemo, type ForwardedRef, type RefObject } from 'react'
+import { createContext, useContext, useMemo, type ForwardedRef, type RefObject } from 'react';
 import {
   FocusScope,
   mergeProps,
@@ -182,7 +182,7 @@ function useKeyboardDelegate({
 }: {
   readonly collection: ListState<unknown>['collection'];
   readonly collator: Intl.Collator;
-  readonly listBoxRef: React.RefObject<HTMLDivElement>;
+  readonly listBoxRef: React.RefObject<HTMLDivElement | null>;
   readonly selectionManager: ListState<unknown>['selectionManager'];
   readonly layout?: 'stack' | 'grid';
   readonly orientation?: Orientation;
@@ -293,7 +293,7 @@ function useComposedProps({
   readonly focusProps: Record<string, unknown>;
   readonly dataAttributes: Record<string, unknown>;
   readonly selectionManager: ListState<unknown>['selectionManager'];
-  readonly listBoxRef: React.RefObject<HTMLDivElement>;
+  readonly listBoxRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const { apply } = useProps(otherProps, renderValues);
 
@@ -465,7 +465,7 @@ const ListBoxInner: React.FC<{
     | ((item: unknown) => React.ReactNode)
     | ((props: ListBoxRenderProps) => React.ReactNode);
   readonly items?: Iterable<unknown>;
-  readonly listBoxRef: RefObject<HTMLDivElement>;
+  readonly listBoxRef: RefObject<HTMLDivElement | null>;
   readonly layout?: 'stack';
   readonly orientation?: Orientation;
   readonly shouldSelectOnPressUp?: boolean;

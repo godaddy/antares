@@ -25,8 +25,8 @@ describe('@bento/portal', function bento() {
       // Note: Portal content is automatically cleaned up by React
     });
 
-    it('renders children to document.body when mounted is true', function rendersToBody() {
-      render(
+    it('renders children to document.body when mounted is true', async function rendersToBody() {
+      await render(
         <Portal mounted={true}>
           <Container data-testid="portal-content">Portal content</Container>
         </Portal>
@@ -41,8 +41,8 @@ describe('@bento/portal', function bento() {
       assume(portalContent?.getAttribute('data-mounted')).equals('true');
     });
 
-    it('does not render when mounted is false', function doesNotRenderWhenNotMounted() {
-      render(
+    it('does not render when mounted is false', async function doesNotRenderWhenNotMounted() {
+      await render(
         <Portal mounted={false}>
           <Container>Should not render</Container>
         </Portal>
@@ -52,12 +52,12 @@ describe('@bento/portal', function bento() {
       assume(portalContent).equals(null);
     });
 
-    it('renders to custom container when provided', function rendersToCustomContainer() {
+    it('renders to custom container when provided', async function rendersToCustomContainer() {
       const customContainer = document.createElement('div');
       customContainer.id = 'custom-portal-container';
       document.body.appendChild(customContainer);
 
-      render(
+      await render(
         <Portal container={customContainer} mounted={true}>
           <Container data-testid="custom-content">Custom container content</Container>
         </Portal>
@@ -75,8 +75,8 @@ describe('@bento/portal', function bento() {
       document.body.removeChild(customContainer);
     });
 
-    it('applies data-portal attribute to portal content', function appliesDataPortal() {
-      render(
+    it('applies data-portal attribute to portal content', async function appliesDataPortal() {
+      await render(
         <Portal mounted={true}>
           <Container data-testid="portal-content">Content</Container>
         </Portal>
@@ -87,22 +87,22 @@ describe('@bento/portal', function bento() {
       assume(portalContent?.getAttribute('data-mounted')).equals('true');
     });
 
-    it('handles null children', function handlesNullChildren() {
-      render(<Portal mounted={true}>{null}</Portal>);
+    it('handles null children', async function handlesNullChildren() {
+      await render(<Portal mounted={true}>{null}</Portal>);
 
       const portalContent = document.body.querySelector('[data-portal="true"]');
       assume(portalContent).equals(null);
     });
 
-    it('handles undefined children', function handlesUndefinedChildren() {
-      render(<Portal mounted={true}>{undefined}</Portal>);
+    it('handles undefined children', async function handlesUndefinedChildren() {
+      await render(<Portal mounted={true}>{undefined}</Portal>);
 
       const portalContent = document.body.querySelector('[data-portal="true"]');
       assume(portalContent).equals(null);
     });
 
-    it('renders multiple children', function rendersMultipleChildren() {
-      render(
+    it('renders multiple children', async function rendersMultipleChildren() {
+      await render(
         <Portal mounted={true}>
           <Container data-testid="first">First</Container>
           <Container data-testid="second">Second</Container>
@@ -123,8 +123,8 @@ describe('@bento/portal', function bento() {
       assume(second?.getAttribute('data-mounted')).equals('true');
     });
 
-    it('supports render prop children', function supportsRenderProp() {
-      render(
+    it('supports render prop children', async function supportsRenderProp() {
+      await render(
         <Portal mounted={true}>
           {({ props }) => <Container data-testid="render-prop-content">Mounted: {String(props.mounted)}</Container>}
         </Portal>
@@ -139,7 +139,7 @@ describe('@bento/portal', function bento() {
       assume(content?.getAttribute('data-mounted')).equals('true');
     });
 
-    it('supports mounting after initial render', function supportsDelayedMount() {
+    it('supports mounting after initial render', async function supportsDelayedMount() {
       // Test that portal correctly handles mounted prop changing from false to true
       function TestComponent() {
         const [mounted, setMounted] = React.useState(false);
@@ -156,7 +156,7 @@ describe('@bento/portal', function bento() {
         );
       }
 
-      render(<TestComponent />);
+      await render(<TestComponent />);
 
       // After React processes the effect, content should be rendered
       const portalContent = document.body.querySelector('[data-testid="delayed-content"]');
@@ -168,8 +168,8 @@ describe('@bento/portal', function bento() {
       assume(portalContent?.getAttribute('data-mounted')).equals('true');
     });
 
-    it('handles text children', function handlesTextChildren() {
-      render(
+    it('handles text children', async function handlesTextChildren() {
+      await render(
         <Portal mounted={true}>
           <div data-testid="text-container">Hello world</div>
         </Portal>
@@ -184,8 +184,8 @@ describe('@bento/portal', function bento() {
       assume(content?.getAttribute('data-mounted')).equals('true');
     });
 
-    it('handles mixed element and text children', function handlesMixedChildren() {
-      render(
+    it('handles mixed element and text children', async function handlesMixedChildren() {
+      await render(
         <Portal mounted={true}>
           <Container data-testid="mixed-first">Element</Container>
           Raw text node
@@ -203,7 +203,7 @@ describe('@bento/portal', function bento() {
       assume(second?.getAttribute('data-portal')).equals('true');
     });
 
-    it('renders to custom environment document body', function rendersToCustomEnv() {
+    it('renders to custom environment document body', async function rendersToCustomEnv() {
       // Create a mock document body for custom environment
       const mockBody = document.createElement('div');
       mockBody.setAttribute('data-testid', 'mock-body');
@@ -230,7 +230,7 @@ describe('@bento/portal', function bento() {
         );
       }
 
-      render(<TestComponent />);
+      await render(<TestComponent />);
 
       // Content should be rendered to the mock body
       const portalContent = mockBody.querySelector('[data-testid="portal-in-custom-env"]');
@@ -245,7 +245,7 @@ describe('@bento/portal', function bento() {
       document.body.removeChild(mockBody);
     });
 
-    it('handles multiple custom environments independently', function handlesMultipleEnvironments() {
+    it('handles multiple custom environments independently', async function handlesMultipleEnvironments() {
       const body1 = document.createElement('div');
       body1.setAttribute('data-testid', 'body-1');
       const body2 = document.createElement('div');
@@ -280,7 +280,7 @@ describe('@bento/portal', function bento() {
         );
       }
 
-      render(<TestComponent />);
+      await render(<TestComponent />);
 
       // Each portal should render to its respective custom body
       const portal1 = body1.querySelector('[data-testid="portal-1"]');
@@ -296,14 +296,14 @@ describe('@bento/portal', function bento() {
       document.body.removeChild(body2);
     });
 
-    it('handles environment with null body', function handlesNullBody() {
+    it('handles environment with null body', async function handlesNullBody() {
       // Create an environment with a document that has no body
       const mockDoc = {
         nodeType: 9,
         body: null
       } as unknown as Document;
 
-      render(
+      await render(
         <Environment document={() => mockDoc}>
           <Portal mounted={true}>
             <Container data-testid="should-not-render">Should not render</Container>

@@ -7,8 +7,8 @@ import assume from 'assume';
 
 describe('@bento/pressable', function bento() {
   describe('Pressable', function pressableTests() {
-    it('should render a pressable', function test() {
-      const { container } = render(
+    it('should render a pressable', async function test() {
+      const { container } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
@@ -25,7 +25,7 @@ describe('@bento/pressable', function bento() {
       const onPressStart = vi.fn();
       const onPressEnd = vi.fn();
       const onPressUp = vi.fn();
-      const { container } = render(
+      const { container } = await render(
         <Pressable onPress={onPress} onPressStart={onPressStart} onPressEnd={onPressEnd} onPressUp={onPressUp}>
           <button>Click me</button>
         </Pressable>
@@ -40,8 +40,8 @@ describe('@bento/pressable', function bento() {
       expect(onPressUp).toHaveBeenCalledTimes(1);
     });
 
-    it('should pass down props to the pressable', function test() {
-      const { container } = render(
+    it('should pass down props to the pressable', async function test() {
+      const { container } = await render(
         <Pressable className="my-class" style={{ color: 'red' }}>
           <div>Click me</div>
         </Pressable>
@@ -52,8 +52,8 @@ describe('@bento/pressable', function bento() {
       assume(result).includes('style="color: red;"');
     });
 
-    it('should automatically make child focusable', function test() {
-      const { container } = render(
+    it('should automatically make child focusable', async function test() {
+      const { container } = await render(
         <Pressable>
           <span>Button</span>
         </Pressable>
@@ -64,7 +64,7 @@ describe('@bento/pressable', function bento() {
     });
 
     it('should add and remove correct data attributes on hover', async function test() {
-      const { container } = render(
+      const { container } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
@@ -84,7 +84,7 @@ describe('@bento/pressable', function bento() {
     });
 
     it('should add and remove correct data attributes on focus', async function test() {
-      const { container } = render(
+      const { container } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
@@ -100,7 +100,7 @@ describe('@bento/pressable', function bento() {
     });
 
     it('should add and remove correct data attributes on press', async function test() {
-      const { container } = render(
+      const { container } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
@@ -123,7 +123,7 @@ describe('@bento/pressable', function bento() {
     });
 
     it('should not show focus ring when focused with mouse', async function test() {
-      const { container } = render(
+      const { container } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
@@ -140,7 +140,7 @@ describe('@bento/pressable', function bento() {
     });
 
     it('should show focus ring when focused with keyboard', async function test() {
-      const { container } = render(
+      const { container } = await render(
         <Pressable>
           <div>Click me</div>
         </Pressable>
@@ -156,7 +156,7 @@ describe('@bento/pressable', function bento() {
       assume(divEl.getAttribute('data-focus-visible')).equals('true');
     });
 
-    it('should allow to use ref in child element', function test() {
+    it('should allow to use ref in child element', async function test() {
       const onPress = vi.fn();
 
       function PressableWithRef() {
@@ -169,7 +169,7 @@ describe('@bento/pressable', function bento() {
         );
       }
 
-      const { container } = render(<PressableWithRef />);
+      const { container } = await render(<PressableWithRef />);
 
       const button = container.querySelector('button');
       button?.click();

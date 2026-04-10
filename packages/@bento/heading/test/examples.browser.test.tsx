@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -9,22 +8,22 @@ import { HeadingOverrideExample } from '../examples/override.tsx';
 
 describe('@bento/heading examples', function bento() {
   describe('Heading', function headingExample() {
-    it('renders the heading', function rendersHeading() {
-      const { container } = render(<HeadingExample />);
+    it('renders the heading', async function rendersHeading() {
+      const { container } = await render(<HeadingExample />);
       const result = container.innerHTML;
 
       assume(result).match(/^<span[^>]*>Hello, world!<\/span>$/);
     });
 
-    it('renders the level', function rendersLevel() {
-      const { container } = render(<LevelExample />);
+    it('renders the level', async function rendersLevel() {
+      const { container } = await render(<LevelExample />);
       const result = container.innerHTML;
 
       assume(result).match(/^<h1[^>]*>Hello, world!<\/h1>$/);
     });
 
-    it('renders using the provider', function rendersProvider() {
-      const { container } = render(<HeadingProviderExample />);
+    it('renders using the provider', async function rendersProvider() {
+      const { container } = await render(<HeadingProviderExample />);
       const result = container.innerHTML;
 
       assume(result).match(/<h1[^>]*>Level 1<\/h1>/);
@@ -32,8 +31,8 @@ describe('@bento/heading examples', function bento() {
       assume(result).match(/<h3[^>]*>Level 3<\/h3>/);
     });
 
-    it('renders using provider and overrides', function rendersOverride() {
-      const { container } = render(<HeadingOverrideExample />);
+    it('renders using provider and overrides', async function rendersOverride() {
+      const { container } = await render(<HeadingOverrideExample />);
       const result = container.innerHTML;
 
       assume(result).match(/<h1[^>]*>Level 1<\/h1>/);

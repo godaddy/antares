@@ -8,17 +8,17 @@ import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('Examples', function examples() {
     it('renders SelectStaticExample', async function staticRender() {
-      render(<SelectStaticExample />);
+      await render(<SelectStaticExample />);
 
       const button = page.getByRole('button');
       assume(button).is.not.equal(null);
     });
 
     it('renders SelectControlledExample with interaction', async function controlledRender() {
-      render(<SelectControlledExample />);
+      await render(<SelectControlledExample />);
 
       const button = page.getByRole('button', { name: 'Latte' });
       await userEvent.setup().click(button);
@@ -33,14 +33,14 @@ describe('@godaddy/uxcore', function uxcore() {
     });
 
     it('renders SelectDynamicExample with items prop', async function dynamicRender() {
-      render(<SelectDynamicExample />);
+      await render(<SelectDynamicExample />);
 
       const button = page.getByRole('button');
       assume(button).is.not.equal(null);
     });
 
     it('renders SelectMultipleExample with multiple selection', async function multipleRender() {
-      render(<SelectMultipleExample />);
+      await render(<SelectMultipleExample />);
 
       const button = page.getByRole('button', { name: 'Coffee drinks' });
       await userEvent.setup().click(button);
@@ -56,7 +56,7 @@ describe('@godaddy/uxcore', function uxcore() {
     });
 
     it('renders SelectRenderPropsExample with render function children', async function renderPropsRender() {
-      render(<SelectRenderPropsExample />);
+      await render(<SelectRenderPropsExample />);
 
       const button = page.getByRole('button', { name: 'Render props select' });
       await userEvent.setup().click(button);

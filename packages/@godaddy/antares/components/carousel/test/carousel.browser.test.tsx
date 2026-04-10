@@ -8,7 +8,7 @@ import { HideControlsExample } from '../examples/hide-controls.tsx';
 import { EventsExample } from '../examples/events.tsx';
 import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Carousel', function carouselTests() {
     it('renders the default carousel', async function rendersDefault() {
       const { getByRole, getByText } = await render(<DefaultExample />);

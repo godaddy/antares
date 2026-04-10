@@ -8,7 +8,7 @@ echo "🔍 Checking dependencies..."
 npm run deps:check
 
 echo "🔍 Checking package.json formatting..."
-npm run format:packageJson
+npm run format:package
 
 echo "🔍 Typechecking..."
 npm run typecheck

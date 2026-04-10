@@ -1,4 +1,3 @@
-import React from 'react';
 import { BasicExample } from '../examples/basic';
 import { FormExample } from '../examples/form';
 import { SelectExample } from '../examples/select';
@@ -11,8 +10,8 @@ import assume from 'assume';
 
 describe('@bento/focus-lock examples', function bento() {
   describe('Basic', function basicExample() {
-    it('renders the open button initially', function test() {
-      const { container } = render(<BasicExample />);
+    it('renders the open button initially', async function test() {
+      const { container } = await render(<BasicExample />);
       const result = container.innerHTML;
 
       assume(result).includes('data-testid="open-button"');
@@ -21,7 +20,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('opens modal when button is clicked', async function test() {
-      const { container } = render(<BasicExample />);
+      const { container } = await render(<BasicExample />);
       const openButton = container.querySelector('[data-testid="open-button"]');
 
       await userEvent.click(openButton!);
@@ -34,7 +33,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('closes modal when close button is clicked', async function test() {
-      const { container } = render(<BasicExample />);
+      const { container } = await render(<BasicExample />);
       const openButton = container.querySelector('[data-testid="open-button"]');
 
       await userEvent.click(openButton!);
@@ -47,7 +46,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('restores focus to open button when modal closes', async function test() {
-      const { container } = render(<BasicExample />);
+      const { container } = await render(<BasicExample />);
       const openButton = container.querySelector('[data-testid="open-button"]');
 
       await userEvent.click(openButton!);
@@ -60,7 +59,7 @@ describe('@bento/focus-lock examples', function bento() {
 
   describe('Form', function formExample() {
     it('renders form wizard with all steps and navigation', async function test() {
-      const { container } = render(<FormExample />);
+      const { container } = await render(<FormExample />);
       const result = container.innerHTML;
 
       assume(result).includes('Account Type');
@@ -102,7 +101,7 @@ describe('@bento/focus-lock examples', function bento() {
 
   describe('Select', function selectExample() {
     it('renders select button and opens popover', async function test() {
-      const { container } = render(<SelectExample />);
+      const { container } = await render(<SelectExample />);
       const result = container.innerHTML;
 
       assume(result).includes('Select an option...');
@@ -119,7 +118,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('selects an item and closes popover', async function test() {
-      const { container } = render(<SelectExample />);
+      const { container } = await render(<SelectExample />);
       const button = container.querySelector('button');
 
       await userEvent.click(button!);
@@ -142,7 +141,7 @@ describe('@bento/focus-lock examples', function bento() {
 
   describe('Nested', function nestedExample() {
     it('renders and opens outer modal', async function test() {
-      const { container } = render(<NestedExample />);
+      const { container } = await render(<NestedExample />);
       const result = container.innerHTML;
 
       assume(result).includes('data-testid="open-outer-button"');
@@ -157,7 +156,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('opens inner modal from outer modal', async function test() {
-      const { container } = render(<NestedExample />);
+      const { container } = await render(<NestedExample />);
 
       const outerButton = container.querySelector('[data-testid="open-outer-button"]');
       await userEvent.click(outerButton!);
@@ -172,7 +171,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('closes inner modal and restores focus to outer modal', async function test() {
-      const { container } = render(<NestedExample />);
+      const { container } = await render(<NestedExample />);
 
       const outerButton = container.querySelector('[data-testid="open-outer-button"]');
       await userEvent.click(outerButton!);
@@ -191,7 +190,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('closes outer modal', async function test() {
-      const { container } = render(<NestedExample />);
+      const { container } = await render(<NestedExample />);
 
       const outerButton = container.querySelector('[data-testid="open-outer-button"]');
       await userEvent.click(outerButton!);
@@ -206,7 +205,7 @@ describe('@bento/focus-lock examples', function bento() {
 
   describe('Overlay', function overlayExample() {
     it('renders and opens overlay with focus contained', async function test() {
-      const { container } = render(<OverlayExample />);
+      const { container } = await render(<OverlayExample />);
       const result = container.innerHTML;
 
       assume(result).includes('data-testid="open-overlay-button"');
@@ -223,7 +222,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('closes overlay with close button', async function test() {
-      const { container } = render(<OverlayExample />);
+      const { container } = await render(<OverlayExample />);
 
       const openButton = container.querySelector('[data-testid="open-overlay-button"]');
       await userEvent.click(openButton!);
@@ -236,7 +235,7 @@ describe('@bento/focus-lock examples', function bento() {
     });
 
     it('closes overlay when clicking backdrop', async function test() {
-      const { container } = render(<OverlayExample />);
+      const { container } = await render(<OverlayExample />);
 
       const openButton = container.querySelector('[data-testid="open-overlay-button"]');
       await userEvent.click(openButton!);

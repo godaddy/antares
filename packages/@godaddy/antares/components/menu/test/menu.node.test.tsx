@@ -9,7 +9,7 @@ import { BasicExample } from '../examples/menu.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#examples', function examplesTests() {
     it('renders BasicExample', function basicExample() {
       const result = renderToString(<BasicExample />);

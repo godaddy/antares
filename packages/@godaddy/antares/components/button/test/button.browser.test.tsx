@@ -4,7 +4,7 @@ import { page, userEvent } from 'vitest/browser';
 import { set } from '#components/icon';
 import { PrimaryExample } from '../examples/primary.tsx';
 
-describe('@godaddy/uxcore', function uxcore() {
+describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
     beforeAll(async function setupIcons() {
       // Synchronously load icons for the examples

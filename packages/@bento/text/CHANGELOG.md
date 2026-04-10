@@ -28,8 +28,8 @@
 
 ### Patch Changes
 
-- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/uxcore/pull/23) by @kawikabader)
-- Refactor Text primitive to use Container as base component, eliminating duplicate polymorphic rendering infrastructure. ([#19](https://github.com/godaddy/uxcore/pull/19) by @kbader-godaddy)
+- Adds documentation to all packages; no API or functionality changes. ([#23](https://github.com/godaddy/antares/pull/23) by @kawikabader)
+- Refactor Text primitive to use Container as base component, eliminating duplicate polymorphic rendering infrastructure. ([#19](https://github.com/godaddy/antares/pull/19) by @kbader-godaddy)
 
 <details>
 <summary>Updated dependencies</summary>
@@ -53,7 +53,7 @@
 
 ### Minor Changes
 
-- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/uxcore/pull/168) by @kbader-godaddy)
+- chore: configure automated release workflow with changesets and GitHub Actions ([#168](https://github.com/godaddy/antares/pull/168) by @kbader-godaddy)
 
 ### Patch Changes
 
