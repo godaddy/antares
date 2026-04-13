@@ -6,7 +6,7 @@ description: A visual indicator for representing a single quantitative value wit
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './gauge-chart.stories.tsx';
 
-import SourceDefault from './examples/default.tsx?raw';
+import SourceBasic from './examples/basic.tsx?raw';
 import SourceContinuous from './examples/continuous.tsx?raw';
 import SourceSegmented from './examples/segmented.tsx?raw';
 import SourceWithRangeLabels from './examples/with-range-labels.tsx?raw';
@@ -27,12 +27,12 @@ npm install --save @godaddy/antares
 
 ## Examples
 
-### Default
+### Basic
 
 A continuous gauge with a single label.
 
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceBasic} />
 
 ### Continuous Values
 

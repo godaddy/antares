@@ -1,6 +1,6 @@
 .root {
-  --_thickness: round(nearest, max(2cqi, 1px), 2px);
-  --_label-widths: 5ch;
+  --_thickness: round(nearest, 4.2cqi, 2px);
+  --_label-widths: 25cqi;
   --_gap-angle: atan2(3px, 100px);
 
   container-type: inline-size;
@@ -222,11 +222,12 @@
 .subLabel {
   grid-column: 2;
   grid-row: 2;
-  justify-self: stretch;
   margin-top: var(--sp-sm);
   min-width: 0;
   max-width: 100%;
   font-size: var(--fs-2xs);
+  align-self: center;
+  justify-self: center;
 }
 
 .rangeLabel {

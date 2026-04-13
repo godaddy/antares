@@ -1,7 +1,7 @@
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { ContinuousExample } from '../examples/continuous.tsx';
-import { DefaultExample } from '../examples/default.tsx';
+import { BasicExample } from '../examples/basic.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
@@ -9,11 +9,11 @@ import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#GaugeChart', function gaugeChartTests() {
-    describe('#default-and-continuous', function defaultAndContinuous() {
-      it('renders default meter with range and continuous scale', async function defaultMeter() {
-        const { getByRole, getByText } = await render(<DefaultExample />);
+    describe('#basic-and-continuous', function basicAndContinuous() {
+      it('renders basic continuous meter at half scale', async function basicMeter() {
+        const { getByRole, getByText } = await render(<BasicExample />);
 
-        const meter = getByRole('meter', { name: 'Default gauge' });
+        const meter = getByRole('meter', { name: 'Basic gauge' });
         await expect.element(meter).toBeVisible();
         await expect.element(getByText('50%')).toBeVisible();
 

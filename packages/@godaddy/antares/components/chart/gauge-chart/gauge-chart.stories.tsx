@@ -2,7 +2,7 @@
 import { GaugeChart } from '#components/chart/gauge-chart';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { ContinuousExample } from './examples/continuous.tsx';
-import { DefaultExample } from './examples/default.tsx';
+import { BasicExample } from './examples/basic.tsx';
 import { LabelTypeExample } from './examples/label-type.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/gauge-chart-playground.tsx';
 import { SegmentedExample } from './examples/segmented.tsx';
@@ -15,7 +15,7 @@ export default getMeta({
 
 export const Props = getComponentDocs(GaugeChart);
 
-export const Default = getStory(DefaultExample);
+export const Basic = getStory(BasicExample);
 
 export const Continuous = getStory(ContinuousExample);
 
