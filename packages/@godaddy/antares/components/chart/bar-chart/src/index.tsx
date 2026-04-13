@@ -441,7 +441,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
       >
         {yAxisTitle && <AxisTitle axis="y" title={yAxisTitle} dir={rtl ? 'rtl' : 'ltr'} />}
         <Flex direction="column" flex={1} style={{ overflow: 'hidden' }}>
-          {effectiveLegendPosition === 'top' && <Legend series={series} />}
+          {effectiveLegendPosition === 'top' && <Legend series={series} alignSelf="center" />}
           <Box ref={parentRef} dir={rtl ? 'rtl' : 'ltr'} className={styles.area}>
             {series && chartWidth > 0 && chartHeight > 0 && (
               <svg
@@ -616,7 +616,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
             )}
           </Box>
           {xAxisTitle && <AxisTitle axis="x" title={xAxisTitle} />}
-          {effectiveLegendPosition === 'bottom' && <Legend series={series} />}
+          {effectiveLegendPosition === 'bottom' && <Legend series={series} alignSelf="center" />}
         </Flex>
 
         {tooltip &&

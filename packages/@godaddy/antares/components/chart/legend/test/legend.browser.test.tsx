@@ -1,5 +1,7 @@
 import { SingleSeriesLegendExample } from '../examples/single-series.tsx';
 import { MultiSeriesLegendExample } from '../examples/multi-series.tsx';
+import { LegendWithLabelExample } from '../examples/with-label.tsx';
+import { LegendVerticalExample } from '../examples/vertical.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -31,6 +33,28 @@ describe('@godaddy/antares', function antares() {
 
         assume(root).exists();
         assume(root?.className).includes('custom-legend');
+      });
+    });
+
+    describe('#label', function labelTests() {
+      it('uses label as accessible name and renders it visibly', async function labelledLegend() {
+        const { locator } = await render(<LegendWithLabelExample />);
+        const list = locator.getByRole('list', { name: 'Sales by product' });
+        const label = locator.getByText('Sales by product');
+
+        assume(list).exists();
+        assume(label).exists();
+      });
+    });
+
+    describe('#orientation', function orientationTests() {
+      it('stacks items vertically when orientation is vertical', async function verticalOrientation() {
+        const { locator } = await render(<LegendVerticalExample />);
+        const list = locator.getByRole('list', { name: 'City temperatures' });
+        const items = await list.getByRole('listitem').all();
+
+        assume(list).exists();
+        assume(items.length).equals(3);
       });
     });
   });

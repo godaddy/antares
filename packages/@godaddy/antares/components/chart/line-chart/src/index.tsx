@@ -488,7 +488,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
             )}
           </Box>
           {xTitle && <AxisTitle title={xTitle} axis="x" />}
-          {effectiveLegendPosition && <Legend series={series} className={styles.legend} />}
+          {effectiveLegendPosition && <Legend series={series} className={styles.legend} alignSelf="center" />}
         </Flex>
       </Flex>
     </ChartColorProvider>
