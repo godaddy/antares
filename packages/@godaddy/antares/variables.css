@@ -17,7 +17,7 @@
 }
 
 @property --_fs-base {
-  syntax: "<length>";
+  syntax: "*";
   inherits: false;
   initial-value: 1rem;
 }
