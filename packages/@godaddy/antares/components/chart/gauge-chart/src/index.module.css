@@ -1,41 +1,41 @@
 .root {
-  --_thickness: round(nearest, 4.2cqi, 2px);
-  --_label-widths: 25cqi;
-  --_gap-angle: atan2(3px, 100px);
+  --gauge-thickness: round(nearest, 4.2cqi, 2px);
+  --gauge-label-widths: 25cqi;
+  --gauge-gap-angle: atan2(3px, 100px);
 
   container-type: inline-size;
   width: 100%;
 
   &[data-label-type="value"] {
-    --_label-font-size: max(19.3cqi, 1px);
+    --gauge-label-font-size: max(19.3cqi, 1px);
   }
 
   &[data-label-type="text"] {
-    --_label-font-size: max(13.56cqi, 1px);
+    --gauge-label-font-size: max(13.56cqi, 1px);
   }
 
   &[data-variant="default"] {
-    --_gauge-color: var(--bg-primary);
+    --gauge-color: var(--bg-primary);
   }
 
   &[data-variant="success"] {
-    --_gauge-color: green;
+    --gauge-color: green;
   }
 
   &[data-variant="warning"] {
-    --_gauge-color: orange;
+    --gauge-color: orange;
   }
 
   &[data-variant="critical"] {
-    --_gauge-color: var(--critical);
+    --gauge-color: var(--critical);
   }
 
   &[data-filled] .content::before {
-    background: var(--_gauge-color);
+    background: var(--gauge-color);
   }
 
   &[data-full] .content::after {
-    background: var(--_gauge-color);
+    background: var(--gauge-color);
   }
 }
 
@@ -45,7 +45,7 @@
   grid-area: 1 / 1 / -1 / -1;
   margin-bottom: 0;
   position: relative;
-  font-size: var(--_label-font-size, 22.78px);
+  font-size: var(--gauge-label-font-size, 22.78px);
   line-height: 0.75;
 
   &::after,
@@ -54,8 +54,8 @@
     position: absolute;
     pointer-events: none;
     background: var(--bd-base);
-    height: var(--_thickness);
-    width: var(--_thickness);
+    height: var(--gauge-thickness);
+    width: var(--gauge-thickness);
     bottom: 0;
     border-radius: 9999px;
     transform: translateY(50%);
@@ -71,13 +71,13 @@
   }
 }
 
-/* Arc: ::before = fill, ::after = track (--_gap-angle from inline style after layout) */
+/* Arc: ::before = fill, ::after = track (--gauge-gap-angle from inline style after layout) */
 .gauge {
   position: relative;
   grid-area: 1 / 1 / 2 / -1;
   aspect-ratio: 2;
-  width: calc(100% - (var(--_label-widths) - var(--_thickness)));
-  margin-bottom: calc(var(--_thickness) / 2);
+  width: calc(100% - (var(--gauge-label-widths) - var(--gauge-thickness)));
+  margin-bottom: calc(var(--gauge-thickness) / 2);
 
   &::before,
   &::after {
@@ -92,24 +92,24 @@
   }
 
   &::before {
-    border: var(--_thickness) solid var(--_gauge-color);
+    border: var(--gauge-thickness) solid var(--gauge-color);
     border-bottom: 0;
     z-index: 1;
     mask: conic-gradient(
       from 270deg at 50% 100%,
-      #000 calc(var(--_value) * 180deg - var(--_gap-angle) / 2),
-      transparent calc(var(--_value) * 180deg - var(--_gap-angle) / 2)
+      #000 calc(var(--gauge-value) * 180deg - var(--gauge-gap-angle) / 2),
+      transparent calc(var(--gauge-value) * 180deg - var(--gauge-gap-angle) / 2)
     );
   }
 
   &::after {
-    border: var(--_thickness) solid var(--bd-base);
+    border: var(--gauge-thickness) solid var(--bd-base);
     border-bottom: 0;
     z-index: 0;
     mask: conic-gradient(
       from 270deg at 50% 100%,
-      transparent calc(var(--_value) * 180deg + var(--_gap-angle) / 2),
-      #000 calc(var(--_value) * 180deg + var(--_gap-angle) / 2)
+      transparent calc(var(--gauge-value) * 180deg + var(--gauge-gap-angle) / 2),
+      #000 calc(var(--gauge-value) * 180deg + var(--gauge-gap-angle) / 2)
     );
   }
 }
@@ -142,20 +142,20 @@
 /* Segmented: slice grid + fill/track masks; full and partial track tweaks */
 .root[data-segmented] {
   & .gauge {
-    --_slice: calc(180deg / var(--_segments));
+    --gauge-slice: calc(180deg / var(--gauge-segments));
   }
 
   & .gauge::before {
     mask:
       conic-gradient(
         from 270deg at 50% 100%,
-        #000 calc(var(--_value) * 180deg),
-        transparent calc(var(--_value) * 180deg)
+        #000 calc(var(--gauge-value) * 180deg),
+        transparent calc(var(--gauge-value) * 180deg)
       ),
       repeating-conic-gradient(
         from 270deg at 50% 100%,
-        #000 0deg calc(var(--_slice) - var(--_gap-angle)),
-        transparent calc(var(--_slice) - var(--_gap-angle)) var(--_slice)
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
       );
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
@@ -166,13 +166,13 @@
       conic-gradient(from 270deg at 50% 100%, #000 180deg, transparent 180deg),
       repeating-conic-gradient(
         from 270deg at 50% 100%,
-        #000 0deg calc(var(--_slice) - var(--_gap-angle)),
-        transparent calc(var(--_slice) - var(--_gap-angle)) var(--_slice)
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
       ),
       conic-gradient(
         from 270deg at 50% 100%,
-        transparent calc(180deg - var(--_gap-angle)),
-        #000 calc(180deg - var(--_gap-angle)),
+        transparent calc(180deg - var(--gauge-gap-angle)),
+        #000 calc(180deg - var(--gauge-gap-angle)),
         #000 180deg
       );
     -webkit-mask-composite: source-in, source-over;
@@ -183,13 +183,13 @@
     mask:
       conic-gradient(
         from 270deg at 50% 100%,
-        transparent calc(var(--_value) * 180deg),
-        #000 calc(var(--_value) * 180deg)
+        transparent calc(var(--gauge-value) * 180deg),
+        #000 calc(var(--gauge-value) * 180deg)
       ),
       repeating-conic-gradient(
         from 270deg at 50% 100%,
-        #000 0deg calc(var(--_slice) - var(--_gap-angle)),
-        transparent calc(var(--_slice) - var(--_gap-angle)) var(--_slice)
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
       );
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
@@ -199,18 +199,18 @@
     mask:
       conic-gradient(
         from 270deg at 50% 100%,
-        transparent calc(var(--_value) * 180deg),
-        #000 calc(var(--_value) * 180deg)
+        transparent calc(var(--gauge-value) * 180deg),
+        #000 calc(var(--gauge-value) * 180deg)
       ),
       repeating-conic-gradient(
         from 270deg at 50% 100%,
-        #000 0deg calc(var(--_slice) - var(--_gap-angle)),
-        transparent calc(var(--_slice) - var(--_gap-angle)) var(--_slice)
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
       ),
       conic-gradient(
         from 270deg at 50% 100%,
-        transparent calc(180deg - var(--_gap-angle)),
-        #000 calc(180deg - var(--_gap-angle)),
+        transparent calc(180deg - var(--gauge-gap-angle)),
+        #000 calc(180deg - var(--gauge-gap-angle)),
         #000 180deg
       );
     -webkit-mask-composite: source-in, source-over;
@@ -233,7 +233,7 @@
 .rangeLabel {
   display: inline-flex;
   justify-content: center;
-  width: var(--_label-widths);
+  width: var(--gauge-label-widths);
   margin-top: var(--sp-xs);
   font-size: var(--fs-2xs);
 

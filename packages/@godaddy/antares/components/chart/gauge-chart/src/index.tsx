@@ -120,9 +120,9 @@ export function GaugeChart(props: GaugeChartProps) {
 
   const rootStyle = {
     ...style,
-    '--_value': normalizedValue,
-    ...(segmentCount !== undefined && { '--_segments': segmentCount }),
-    ...(gapAngleDeg != null && { '--_gap-angle': `${gapAngleDeg}deg` })
+    '--gauge-value': normalizedValue,
+    ...(segmentCount !== undefined && { '--gauge-segments': segmentCount }),
+    ...(gapAngleDeg != null && { '--gauge-gap-angle': `${gapAngleDeg}deg` })
   } as CSSProperties;
 
   return (
