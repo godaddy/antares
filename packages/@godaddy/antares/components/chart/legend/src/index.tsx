@@ -12,11 +12,9 @@ import styles from './index.module.css';
  * Accepts the same series shape used by chart components (subset of {@link SeriesConfig}:
  * id, name). Use with the same series config as the chart so labels stay in sync.
  * Colors are handled by the theme.
- *
- * Inherits {@link FlexProps} for the root container (e.g. `alignSelf`, `justifyContent`, `gap`)
- * so the legend can be aligned within chart layouts.
  */
-export interface LegendProps extends Omit<FlexProps<'div'>, 'children'> {
+export interface LegendProps
+  extends Omit<FlexProps<'div'>, 'children' | 'direction' | 'display' | 'alignItems' | 'gap'> {
   /** Series to display in the legend (id, name) */
   series: Pick<SeriesConfig, 'id' | 'name'>[];
   /** Optional visible and accessible label for the legend. */
@@ -74,12 +72,12 @@ export function Legend(props: LegendProps) {
 
   return (
     <Flex
+      {...rootFlexProps}
       direction="column"
       alignItems="flex-start"
       display="inline-flex"
       gap="sm"
       className={cx(styles.root, className)}
-      {...rootFlexProps}
       data-size={size}
     >
       {label ? <Text className={styles.label}>{label}</Text> : null}
