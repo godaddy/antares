@@ -1,4 +1,14 @@
 :where(.box) {
+  --bg-base: var(--ux-cao06b, #fff);
+  --sp-base: var(--ux-1sbfig8, 0.25rem);
+  --sp-scale: 2;
+  --sp-xs: calc(var(--sp-base) * pow(var(--sp-scale), 0));
+  --sp-sm: calc(var(--sp-base) * pow(var(--sp-scale), 1));
+  --sp-md: calc(var(--sp-base) * pow(var(--sp-scale), 2));
+  --sp-lg: calc(var(--sp-base) * pow(var(--sp-scale), 3));
+  --sp-xl: calc(var(--sp-base) * pow(var(--sp-scale), 4));
+  --sp-2xl: calc(var(--sp-base) * pow(var(--sp-scale), 5));
+
   background: var(--bg-base);
   color: var(--fg-base);
 }
