@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
+import { RtlI18nProvider } from '../../../../utils/rtl-locale-provider.tsx';
 import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
 import { XAxisExample } from '../examples/x-axis.tsx';
 import { YAxisExample } from '../examples/y-axis.tsx';
@@ -22,12 +23,20 @@ describe('@godaddy/antares', function antares() {
 
     describe('#rtl-direction', function rtlDirectionTests() {
       it('renders rtl direction example', function rtlSnapshot() {
-        const result = renderToString(<RTLDirectionExample />);
+        const result = renderToString(
+          <RtlI18nProvider>
+            <RTLDirectionExample />
+          </RtlI18nProvider>
+        );
         expect(result).toMatchSnapshot();
       });
 
       it('sets dir="rtl" on axis title elements', function rtlDirAttr() {
-        const result = renderToString(<RTLDirectionExample />);
+        const result = renderToString(
+          <RtlI18nProvider>
+            <RTLDirectionExample />
+          </RtlI18nProvider>
+        );
         expect(result).toContain('dir="rtl"');
       });
     });

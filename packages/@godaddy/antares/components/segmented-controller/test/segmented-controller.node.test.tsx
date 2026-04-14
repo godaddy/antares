@@ -7,6 +7,7 @@ import { BasicExample } from '../examples/basic.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { RtlI18nProvider } from '../../../utils/rtl-locale-provider.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
@@ -45,7 +46,13 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders RTLExample with scroll buttons', function rtlExample() {
-      expect(renderToString(<RTLExample />)).toMatchSnapshot();
+      expect(
+        renderToString(
+          <RtlI18nProvider>
+            <RTLExample />
+          </RtlI18nProvider>
+        )
+      ).toMatchSnapshot();
     });
   });
 });

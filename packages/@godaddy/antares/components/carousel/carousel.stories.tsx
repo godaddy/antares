@@ -3,6 +3,7 @@ import { ExternalControlsUncontrolledExample } from './examples/external-control
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/carousel-playground.tsx';
 import { ExternalControlsControlledExample } from './examples/external-controls-controlled.tsx';
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { RtlI18nProvider } from '../../utils/rtl-locale-provider.tsx';
 import { VariableWidthsExample } from './examples/variable-widths.tsx';
 import { HideControlsExample } from './examples/hide-controls.tsx';
 import { RTLDirectionExample } from './examples/rtl-direction.tsx';
@@ -45,4 +46,12 @@ export const VariableWidths = getStory(VariableWidthsExample);
 
 export const Events = getStory(EventsExample);
 
-export const RTLDirection = getStory(RTLDirectionExample);
+function CarouselRTLDirectionStory() {
+  return (
+    <RtlI18nProvider>
+      <RTLDirectionExample />
+    </RtlI18nProvider>
+  );
+}
+
+export const RTLDirection = getStory(CarouselRTLDirectionStory);

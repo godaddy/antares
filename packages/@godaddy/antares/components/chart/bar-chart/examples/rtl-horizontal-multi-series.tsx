@@ -25,7 +25,6 @@ export function BarChartRTLHorizontalMultiSeriesExample(props: any) {
     <BarChart
       series={series}
       orientation="horizontal"
-      rtl={true}
       xAccessor={(d: ExoplanetSurveyPoint) => d.value}
       yAccessor={(d: ExoplanetSurveyPoint) => d.name}
       xAxisTitle="Radius (Rj)"

@@ -4,6 +4,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { RtlI18nProvider } from '../../../utils/rtl-locale-provider.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
@@ -243,14 +244,22 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('applies dir="rtl" attribute to the container in RTLExample', async function rtlDirAttribute() {
-      await render(<RTLExample />);
+      await render(
+        <RtlI18nProvider>
+          <RTLExample />
+        </RtlI18nProvider>
+      );
 
       const radiogroup = page.getByRole('radiogroup').element();
       assume(radiogroup.getAttribute('dir')).equals('rtl');
     });
 
     it('disables Scroll previous at start in RTLExample', async function rtlScrollButtonInitialStates() {
-      await render(<RTLExample />);
+      await render(
+        <RtlI18nProvider>
+          <RTLExample />
+        </RtlI18nProvider>
+      );
 
       const prev = page.getByLabelText('Scroll previous');
       const next = page.getByLabelText('Scroll next');
@@ -261,7 +270,11 @@ describe('@godaddy/antares', function antares() {
 
     it('scrolls in the RTL direction when clicking Scroll next in RTLExample', async function rtlScrollDirection() {
       const user = userEvent.setup();
-      await render(<RTLExample />);
+      await render(
+        <RtlI18nProvider>
+          <RTLExample />
+        </RtlI18nProvider>
+      );
 
       const scrollArea = page.getByRole('radiogroup').element().firstElementChild;
       if (!scrollArea) throw new Error('Scroll area not found');
@@ -276,7 +289,11 @@ describe('@godaddy/antares', function antares() {
 
     it('navigates with ArrowRight and ArrowLeft in RTLExample', async function rtlKeyboardNavigation() {
       const user = userEvent.setup();
-      await render(<RTLExample />);
+      await render(
+        <RtlI18nProvider>
+          <RTLExample />
+        </RtlI18nProvider>
+      );
 
       // first item is Electronics, second item is Clothing
       const electronics = page.getByRole('radio', { name: 'Electronics' });
@@ -285,15 +302,19 @@ describe('@godaddy/antares', function antares() {
       await user.click(electronics);
       assume(document.activeElement).equals(electronics.element());
 
-      await user.keyboard('{ArrowRight}');
+      await user.keyboard('{ArrowLeft}');
       assume(document.activeElement).equals(clothing.element());
 
-      await user.keyboard('{ArrowLeft}');
+      await user.keyboard('{ArrowRight}');
       assume(document.activeElement).equals(electronics.element());
     });
 
     it('flips scroll button icons via CSS transform in RTLExample', async function rtlIconTransform() {
-      await render(<RTLExample />);
+      await render(
+        <RtlI18nProvider>
+          <RTLExample />
+        </RtlI18nProvider>
+      );
 
       const prevBtn = page.getByLabelText('Scroll previous').element();
       const nextBtn = page.getByLabelText('Scroll next').element();

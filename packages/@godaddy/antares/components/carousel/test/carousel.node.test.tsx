@@ -8,6 +8,7 @@ import { HideControlsExample } from '../examples/hide-controls.tsx';
 import { VariableWidthsExample } from '../examples/variable-widths.tsx';
 import { EventsExample } from '../examples/events.tsx';
 import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
+import { RtlI18nProvider } from '../../../utils/rtl-locale-provider.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Carousel', function carouselTests() {
@@ -47,7 +48,11 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders the rtl direction example', function rendersRTLDirection() {
-      const result = renderToString(<RTLDirectionExample />);
+      const result = renderToString(
+        <RtlI18nProvider>
+          <RTLDirectionExample />
+        </RtlI18nProvider>
+      );
       expect(result).toMatchSnapshot();
     });
   });
