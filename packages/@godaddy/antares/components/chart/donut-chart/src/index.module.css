@@ -31,9 +31,8 @@
 
 .tooltip {
   box-shadow:
-    0 0 0.684px 0 rgba(0, 0, 0, 0.2),
-    0 2.736px 12.312px 0 rgba(0, 0, 0, 0.1),
-    0 4.104px 5.472px 0 rgba(0, 0, 0, 0.07);
+    0 0 1px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .item {
@@ -55,8 +54,4 @@
   top: 0;
   width: 1px;
   visibility: hidden;
-}
-
-.slice {
-  cursor: pointer;
 }

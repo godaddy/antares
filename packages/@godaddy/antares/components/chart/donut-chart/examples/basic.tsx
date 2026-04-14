@@ -9,5 +9,5 @@ const data = [
 ];
 
 export function BasicExample(props: Partial<DonutChartProps>) {
-  return <DonutChart data={data} label="100%" size="lg" aria-label="Donut chart with five categories" {...props} />;
+  return <DonutChart data={data} label="100%" aria-label="Donut chart with five categories" {...props} />;
 }

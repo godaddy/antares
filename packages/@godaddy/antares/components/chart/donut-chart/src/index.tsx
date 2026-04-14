@@ -38,19 +38,16 @@ const slicePercentFormatter = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 0
 });
 
+/** Formats `value / total` as a localized percent string for tooltip slice rows. */
 function formatSlicePercent(value: number, total: number): string {
   return slicePercentFormatter.format(value / total);
 }
 
-/** Radial thickness of the donut ring for `size="md"` (outer - inner). Other sizes are factors of this. */
-const DONUT_RING_THICKNESS_MD_PX = 16;
-
-const DONUT_RING_THICKNESS_PX_BY_SIZE = {
-  sm: 0.75 * DONUT_RING_THICKNESS_MD_PX,
-  md: DONUT_RING_THICKNESS_MD_PX,
-  lg: 1.5 * DONUT_RING_THICKNESS_MD_PX,
-  xl: 1.75 * DONUT_RING_THICKNESS_MD_PX
-} as const;
+/**
+ * Radial thickness of the donut ring as a share of the container inline size — same as `6.9cqi` on `.chartWrap`
+ * (`container-type: inline-size`; measured width matches `cqi` for the square chart).
+ */
+const DONUT_RING_THICKNESS_CQI_PERCENT = 6.9;
 
 /**
  * Donut chart component props.
@@ -65,19 +62,8 @@ export interface DonutChartProps extends FlexProps<'div'> {
   /** Secondary label below the primary label. */
   subLabel?: string;
 
-  /**
-   * Ring thickness and center-label typography. Chart diameter follows the parent width
-   * (square `aspect-ratio`); use a sized wrapper if you need a fixed pixel size.
-   * @default 'md'
-   */
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-
-  /**
-   * `undefined` = no legend.
-   * `horizontal` = legend to the right of the donut (Legend items stacked vertically).
-   * `vertical` = legend below the donut (Legend items in a row).
-   */
-  legend?: 'horizontal' | 'vertical';
+  /** Where to render the legend relative to the chart. Leave unset for no legend. */
+  legend?: 'bottom' | 'right';
 
   /** Passed to Legend as `label` when legend is shown. */
   legendLabel?: string;
@@ -103,7 +89,6 @@ export function DonutChart(props: DonutChartProps) {
     data,
     label,
     subLabel,
-    size = 'md',
     legend: legendPlacement,
     legendLabel,
     smallSliceThreshold = 0.05,
@@ -252,15 +237,6 @@ export function DonutChart(props: DonutChartProps) {
     });
   }, []);
 
-  const handleTooltipOpenChange = useCallback(
-    function handleTooltipOpenChange(open: boolean) {
-      if (!open) {
-        clearTooltipSlices();
-      }
-    },
-    [clearTooltipSlices]
-  );
-
   const handleSlicePointerEnter = useCallback(
     function handleSlicePointerEnter(e: PointerEvent, datum: DonutSliceDatum) {
       updateTooltipSlicesForHoveredDatum(datum);
@@ -279,19 +255,19 @@ export function DonutChart(props: DonutChartProps) {
     : 0;
   const center = chartSizePx / 2;
   const outerRadius = chartSizePx > 0 ? chartSizePx / 2 : 0;
-  const ringWidthPx = DONUT_RING_THICKNESS_PX_BY_SIZE[size];
-  const innerRadius = Math.max(0, outerRadius - ringWidthPx);
+  const ringThicknessPx = (chartSizePx * DONUT_RING_THICKNESS_CQI_PERCENT) / 100;
+  const innerRadius = Math.max(0, outerRadius - ringThicknessPx);
   const padAngle = chartSegmentGapPadAngle(outerRadius);
 
   return (
     <Flex
-      alignItems={legendPlacement === 'horizontal' ? 'center' : 'stretch'}
-      direction={legendPlacement === 'horizontal' ? 'row' : 'column'}
-      gap={legendPlacement != null ? 'xl' : undefined}
+      alignItems={legendPlacement === 'right' ? 'center' : 'stretch'}
+      direction={legendPlacement === 'right' ? 'row' : 'column'}
+      gap={legendPlacement != null ? 'lg' : undefined}
       {...flexProps}
     >
-      <TooltipTrigger isOpen={tooltipOpen} onOpenChange={handleTooltipOpenChange}>
-        <Box ref={chartWrapRef} className={styles.chartWrap} data-size={size}>
+      <TooltipTrigger isOpen={tooltipOpen}>
+        <Box ref={chartWrapRef} className={styles.chartWrap}>
           <Box
             ref={tooltipAnchorRef}
             aria-hidden
@@ -329,7 +305,6 @@ export function DonutChart(props: DonutChartProps) {
                           <path
                             key={arc.data.id}
                             d={d}
-                            className={styles.slice}
                             fill={chartColorForIndex(sliceIndex)}
                             vectorEffect="non-scaling-stroke"
                             onPointerEnter={function handleSlicePointerEnterOnArc(e) {
@@ -395,7 +370,7 @@ export function DonutChart(props: DonutChartProps) {
           series={normalizedData}
           label={legendLabel}
           orientation="vertical"
-          flexShrink={legendPlacement === 'horizontal' ? 0 : undefined}
+          flexShrink={legendPlacement === 'right' ? 0 : undefined}
         />
       )}
     </Flex>

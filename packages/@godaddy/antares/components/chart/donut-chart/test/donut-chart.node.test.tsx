@@ -10,7 +10,6 @@ import { BasicExample } from '../examples/basic';
 import { FormatValueExample } from '../examples/format-value';
 import { LegendLayoutExample } from '../examples/legend-layout';
 import { SingleSliceExample } from '../examples/single-slice';
-import { SizesExample } from '../examples/sizes';
 import { SmallSlicesExample } from '../examples/small-slices';
 
 const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
@@ -18,7 +17,6 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['format-value', FormatValueExample],
   ['legend-layout', LegendLayoutExample],
   ['single-slice', SingleSliceExample],
-  ['sizes', SizesExample],
   ['small-slices', SmallSlicesExample]
 ];
 

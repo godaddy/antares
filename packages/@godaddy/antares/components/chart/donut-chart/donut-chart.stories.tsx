@@ -6,7 +6,6 @@ import { BasicExample } from './examples/basic.tsx';
 import { FormatValueExample } from './examples/format-value.tsx';
 import { LegendLayoutExample } from './examples/legend-layout.tsx';
 import { SingleSliceExample } from './examples/single-slice.tsx';
-import { SizesExample } from './examples/sizes.tsx';
 import { SmallSlicesExample } from './examples/small-slices.tsx';
 
 export default getMeta({
@@ -18,8 +17,6 @@ export const Props = getComponentDocs(DonutChart);
 export const Basic = getStory(BasicExample);
 
 export const SingleSlice = getStory(SingleSliceExample);
-
-export const Sizes = getStory(SizesExample);
 
 export const LegendLayout = getStory(LegendLayoutExample);
 
@@ -33,7 +30,6 @@ export const Playground = {
     dataPreset: 'four',
     label: '100%',
     subLabel: '',
-    size: 'md',
     legendPlacement: 'none',
     legendLabel: 'Legend',
     smallSliceThreshold: 0.05,
@@ -54,14 +50,9 @@ export const Playground = {
       control: 'text',
       description: 'Secondary label below the primary label (leave empty to hide)'
     },
-    size: {
-      control: 'radio',
-      options: ['sm', 'md', 'lg', 'xl'],
-      description: 'Ring thickness and center-label typography'
-    },
     legendPlacement: {
       control: 'radio',
-      options: ['none', 'horizontal', 'vertical'],
+      options: ['none', 'bottom', 'right'],
       description: 'Legend position, or none to hide the legend'
     },
     legendLabel: {

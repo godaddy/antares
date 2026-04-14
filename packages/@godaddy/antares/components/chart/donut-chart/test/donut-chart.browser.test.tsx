@@ -9,7 +9,6 @@ import { FormatValueExample } from '../examples/format-value.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
 import { SingleSliceExample } from '../examples/single-slice.tsx';
 import { SmallSlicesExample } from '../examples/small-slices.tsx';
-import { SizesExample } from '../examples/sizes.tsx';
 /**
  * Renders a donut example in a fixed box and waits for SVG arcs (ResizeObserver + layout).
  *
@@ -158,22 +157,6 @@ describe('@godaddy/antares', function antares() {
         items.forEach(function assertRowShowsSliceName(item, i) {
           assume((item.element().textContent ?? '').includes(`Slice ${i}`)).is.true();
         });
-      });
-    });
-
-    describe('#sizes', function sizesTests() {
-      it('sets data-size sm, md, lg, xl on chart wraps', async function dataSizes() {
-        await page.viewport(800, 400);
-        const { container } = await render(
-          <div style={{ width: '800px', height: '400px' }}>
-            <SizesExample />
-          </div>
-        );
-
-        assume(container.querySelector('[data-size="sm"]')).exists();
-        assume(container.querySelector('[data-size="md"]')).exists();
-        assume(container.querySelector('[data-size="lg"]')).exists();
-        assume(container.querySelector('[data-size="xl"]')).exists();
       });
     });
   });

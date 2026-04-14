@@ -8,7 +8,6 @@ import * as Stories from './donut-chart.stories.tsx';
 
 import SourceBasic from './examples/basic.tsx?raw';
 import SourceSingleSlice from './examples/single-slice.tsx?raw';
-import SourceSizes from './examples/sizes.tsx?raw';
 import SourceLegendLayout from './examples/legend-layout.tsx?raw';
 import SourceSmallSlices from './examples/small-slices.tsx?raw';
 import SourceFormatValue from './examples/format-value.tsx?raw';
@@ -41,16 +40,9 @@ When there is only one slice, the ring is full. Add `subLabel` if you want a sma
 <Source language="tsx" code={SourceSingleSlice} />
 <Story of={Stories.SingleSlice} inline />
 
-### Sizes
-
-`size` (`sm` through `xl`) changes how thick the ring looks and how big the center type reads. The example keeps the same width for each donut so you can compare the presets without reshaping the layout.
-
-<Source language="tsx" code={SourceSizes} />
-<Story of={Stories.Sizes} inline />
-
 ### Legend placement
 
-Switch `legend` to `horizontal` to sit the legend beside the donut, or `vertical` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
 <Source language="tsx" code={SourceLegendLayout} />
 <Story of={Stories.LegendLayout} inline />

@@ -1,4 +1,4 @@
-import { Box, DonutChart, type DonutChartProps } from '@godaddy/antares';
+import { Box, DonutChart } from '@godaddy/antares';
 
 const DATA_BY_PRESET = {
   three: [
@@ -36,8 +36,7 @@ export interface PlaygroundExampleProps {
   dataPreset: DonutChartDataPreset;
   label: string;
   subLabel: string;
-  size: NonNullable<DonutChartProps['size']>;
-  legendPlacement: 'none' | 'horizontal' | 'vertical';
+  legendPlacement: 'none' | 'bottom' | 'right';
   legendLabel: string;
   smallSliceThreshold: number;
   useCurrencyFormat: boolean;
@@ -51,7 +50,6 @@ export function PlaygroundExample({
   dataPreset,
   label,
   subLabel,
-  size = 'md',
   legendPlacement,
   legendLabel,
   smallSliceThreshold,
@@ -77,7 +75,6 @@ export function PlaygroundExample({
         data={data}
         label={label}
         subLabel={subLabel.trim() ? subLabel : undefined}
-        size={size}
         legend={legend}
         legendLabel={legend ? legendLabel : undefined}
         smallSliceThreshold={smallSliceThreshold}

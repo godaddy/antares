@@ -13,14 +13,14 @@ export function LegendLayoutExample() {
       <DonutChart
         data={data}
         label="100%"
-        legend="horizontal"
+        legend="right"
         legendLabel="Legend title"
         aria-label="Donut with legend to the right"
       />
       <DonutChart
         data={data}
         label="100%"
-        legend="vertical"
+        legend="bottom"
         legendLabel="Legend title"
         aria-label="Donut with legend below"
       />
