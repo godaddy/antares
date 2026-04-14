@@ -27,96 +27,6 @@ Components [#components]
 <ComponentCards />
 
 
-# Carousel
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="Stories.ExternalControlsUncontrolled" />
-
-<Source language="tsx" code="SourceExternalControlsUncontrolled" />
-
-External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="Stories.ExternalControlsControlled" />
-
-<Source language="tsx" code="SourceExternalControlsControlled" />
-
-Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="Stories.HideControls" />
-
-<Source language="tsx" code="SourceHideControls" />
-
-Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="Stories.VariableWidths" />
-
-<Source language="tsx" code="SourceVariableWidths" />
-
-Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="Stories.Events" />
-
-<Source language="tsx" code="SourceEvents" />
-
-RTL Direction [#rtl-direction]
-
-By default, the carousel is rendered in the direction of the document, which is left to right in most cases.
-You can set the `dir` prop to `rtl` to render the carousel from right to left.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Button
 
 
@@ -212,6 +122,96 @@ Disabled [#disabled]
 <Story of="Stories.Disabled" />
 
 <Source language="tsx" code="SourceDisabled" />
+
+
+# Carousel
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="Stories.ExternalControlsUncontrolled" />
+
+<Source language="tsx" code="SourceExternalControlsUncontrolled" />
+
+External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="Stories.ExternalControlsControlled" />
+
+<Source language="tsx" code="SourceExternalControlsControlled" />
+
+Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="Stories.HideControls" />
+
+<Source language="tsx" code="SourceHideControls" />
+
+Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="Stories.VariableWidths" />
+
+<Source language="tsx" code="SourceVariableWidths" />
+
+Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="Stories.Events" />
+
+<Source language="tsx" code="SourceEvents" />
+
+RTL Direction [#rtl-direction]
+
+By default, the carousel is rendered in the direction of the document, which is left to right in most cases.
+You can set the `dir` prop to `rtl` to render the carousel from right to left.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
 
 
 # Checkbox
@@ -2231,406 +2231,6 @@ Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
 <Source language="tsx" code="SourceRTLDirection" />
 
 
-# Bar Chart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* **Single and multi-series support**: Display one or multiple data series with grouped bars
-* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
-* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
-* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
-* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
-* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
-* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
-* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
-* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
-* **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `BarChart` component accepts the following props:
-
-<PropTable />
-
-Core Props [#core-props]
-
-`series` (required) [#series-required]
-
-An array of data series to display. Each series must include:
-
-* `id`: Unique identifier for the series
-* `name`: Display name for the legend
-* `data`: Array of data points
-* `color`: Hex color for the bars
-
-```tsx
-const series = [
-  {
-    id: 'new-york',
-    name: 'New York',
-    color: '#145FA9',
-    data: [{ date: '2024-01-01', temp: 45 }, ...]
-  }
-];
-```
-
-`xAccessor` (required) [#xaccessor-required]
-
-Function that extracts the x-axis value from a data point. Returns a string representing the category or label.
-
-```tsx
-xAccessor={(d) => d.date}
-```
-
-`yAccessor` (required) [#yaccessor-required]
-
-Function that extracts the y-axis value from a data point. Returns a number representing the value to display.
-
-```tsx
-yAccessor={(d) => d.temperature}
-```
-
-Layout Props [#layout-props]
-
-`orientation` [#orientation]
-
-Controls whether bars are vertical (default) or horizontal.
-
-* **Default**: `'vertical'`
-* **Options**: `'vertical'` | `'horizontal'`
-
-Vertical charts are best for time series or categorical data. Horizontal charts work well for rankings or when category labels are long.
-
-`width` [#width]
-
-Width of the chart in pixels. The chart uses responsive sizing via `useParentSize`, so this serves as a default when the container size is not yet known.
-
-* **Default**: `500`
-
-`height` [#height]
-
-Height of the chart in pixels.
-
-* **Default**: `700`
-
-`legendPosition` [#legendposition]
-
-Position of the legend relative to the chart.
-
-* **Default**: `'bottom'`
-* **Options**: `'top'` | `'bottom'`
-
-Axis Props [#axis-props]
-
-`xAxisTitle` [#xaxistitle]
-
-Title displayed below the x-axis.
-
-* **Type**: `string`
-
-`yAxisTitle` [#yaxistitle]
-
-Title displayed to the left of the y-axis.
-
-* **Type**: `string`
-
-`xBaseline` [#xbaseline]
-
-Whether to show the x-axis baseline and labels.
-
-* **Default**: `true`
-
-`yBaseline` [#ybaseline]
-
-Whether to show the y-axis baseline and labels.
-
-* **Default**: `true`
-
-`xTickMarks` [#xtickmarks]
-
-Whether to show tick marks on the x-axis.
-
-* **Default**: `true`
-
-`yTickMarks` [#ytickmarks]
-
-Whether to show tick marks on the y-axis.
-
-* **Default**: `true`
-
-`xGridlines` [#xgridlines]
-
-Whether to show vertical gridlines from the x-axis.
-
-* **Default**: `true`
-
-`yGridlines` [#ygridlines]
-
-Whether to show horizontal gridlines from the y-axis.
-
-* **Default**: `true`
-
-`xTickFormat` [#xtickformat]
-
-Function to format x-axis tick labels. The value type depends on orientation:
-
-* Vertical: categories (string | Date) from xAccessor
-
-* Horizontal: numeric values (number) from xAccessor
-
-* **Type**: `(value: string | number | Date) => string`
-
-`yTickFormat` [#ytickformat]
-
-Function to format y-axis tick labels. The value type depends on orientation:
-
-* Vertical: numeric values (number) from yAccessor
-
-* Horizontal: categories (string | Date) from yAccessor
-
-* **Type**: `(value: string | number | Date) => string`
-
-`xNumTicks` [#xnumticks]
-
-Suggested number of ticks for the x-axis.
-
-* **Type**: `number`
-
-`yNumTicks` [#ynumticks]
-
-Suggested number of ticks for the y-axis.
-
-* **Type**: `number`
-
-Domain Props [#domain-props]
-
-`xDomain` [#xdomain]
-
-Explicit x-axis domain. The type depends on orientation:
-
-* Vertical: Use `string[]` or `Date[]` to explicitly set categories
-* Horizontal: Use `[number, number]` to set value range \[min, max]
-
-Useful for ensuring consistent domains across multiple charts or showing empty slots for missing data.
-
-* **Type**: `string[] | [number, number]`
-
-```tsx
-// Vertical: Show slots for categories A-F even if some are missing from data
-xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
-
-// Horizontal: Set value range
-xDomain={[0, 100]}
-```
-
-`yDomain` [#ydomain]
-
-Explicit y-axis domain. The type depends on orientation:
-
-* Vertical: Use `[number, number]` to set value range \[min, max]
-* Horizontal: Use `string[]` or `Date[]` to explicitly set categories
-
-Useful for consistent scales across multiple charts or emphasizing specific value ranges.
-
-* **Type**: `[number, number] | string[]`
-
-```tsx
-// Vertical: Always show 0-100 range regardless of data
-yDomain={[0, 100]}
-
-// Horizontal: Show slots for categories A-F
-yDomain={['A', 'B', 'C', 'D', 'E', 'F']}
-```
-
-Interaction Props [#interaction-props]
-
-`tooltip` [#tooltip]
-
-Whether to show tooltips on hover.
-
-* **Default**: `true`
-
-`rtl` [#rtl]
-
-Enable right-to-left layout for international audiences. When enabled, the y-axis moves to the right and bars/scales are mirrored.
-
-* **Default**: `false`
-* **Status**: *In active development*
-
-Basic Usage [#basic-usage]
-
-Single Series [#single-series]
-
-Display a single data series as vertical bars:
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multi-Series [#multi-series]
-
-Display multiple data series as grouped bars with a legend:
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultiSeries" />
-
-Orientation [#orientation-1]
-
-Horizontal Single Series [#horizontal-single-series]
-
-Horizontal bars are ideal for ranking, comparison, or when you have long category labels:
-
-<Source language="tsx" code="SourceHorizontalSingleSeries" />
-
-<Story of="Stories.HorizontalSingleSeries" />
-
-Horizontal Multi-Series [#horizontal-multi-series]
-
-Grouped bars work in horizontal orientation as well:
-
-<Source language="tsx" code="SourceHorizontalMultiSeries" />
-
-<Story of="Stories.HorizontalMultiSeries" />
-
-Custom Domains [#custom-domains]
-
-Control the exact categories and value ranges displayed:
-
-<Source language="tsx" code="SourceCustomDomain" />
-
-<Story of="Stories.CustomDomain" />
-
-In this example:
-
-* `xDomain` includes category 'F' which doesn't exist in the data, showing an empty slot
-* `yDomain` is set to `[0, 40]` to maintain a consistent scale even though the max value is 30
-
-RTL Support [#rtl-support]
-
-Full right-to-left support for international audiences:
-
-<Source language="tsx" code="SourceRTL" />
-
-<Story of="Stories.RTLMultiSeries" />
-
-**Note**: RTL support is currently in active development. Axis rendering and tick mark spacing are being refined.
-
-Design System Alignment [#design-system-alignment]
-
-The BarChart component is built to align with UXCore design principles:
-
-Spacing and Sizing [#spacing-and-sizing]
-
-* **Bar width**: 12px (1.5 grid units)
-* **Bar padding** (multi-series): 4px between bars within a group
-* **Group gap**: Minimum 24px between bar groups
-* **Border radius**: 8px on all bars
-* **Margins**: 20px top/right, 60px bottom/left for axes and labels
-
-Responsive Behavior [#responsive-behavior]
-
-* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
-* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
-* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
-* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
-
-Accessibility [#accessibility]
-
-* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
-* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
-* **Tooltips**: Show on both hover and focus for keyboard users
-
-Performance Considerations [#performance-considerations]
-
-Rendering Strategy [#rendering-strategy]
-
-The component uses VisX primitives for optimal SVG rendering:
-
-* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
-* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
-* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
-
-Scrolling Strategy [#scrolling-strategy]
-
-* **Vertical charts**: Horizontal scrolling when many data points exceed container width
-* **Horizontal charts**: Vertical scrolling when many categories exceed container height
-* **Sticky axes**: Positioned absolutely to remain visible during scroll
-
-Recommendations [#recommendations]
-
-* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
-* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
-* Use **custom domains** to maintain consistent scales across multiple charts
-* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
-
-Development Status [#development-status]
-
-The BarChart component is in active development. Current focus areas:
-
-* ✅ Single and multi-series support
-* ✅ Vertical and horizontal orientations
-* ✅ Responsive behavior with sticky axes
-* ✅ Interactive tooltips
-* ✅ Custom domains
-* ✅ Design system alignment
-* 🚧 RTL compatibility (axis rendering and spacing refinement)
-* 🚧 Tick mark positioning improvements
-* 🚧 Additional customization options (tick formatting, axis configuration)
-
-Troubleshooting [#troubleshooting]
-
-Bars Not Showing [#bars-not-showing]
-
-If bars are not visible:
-
-1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
-2. **Check domains**: Verify `yDomain` (if set) includes your data values
-3. **Check dimensions**: Ensure container has non-zero width and height
-
-Tooltip Positioning Issues [#tooltip-positioning-issues]
-
-If tooltips appear in the wrong location:
-
-1. **Check scroll position**: The component accounts for horizontal scroll automatically
-2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
-3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
-
-Performance Issues [#performance-issues]
-
-For better performance:
-
-1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
-2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
-3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
-
-Examples [#examples]
-
-All examples can be found in the Storybook interface:
-
-* **Single Series**: Basic vertical bar chart
-* **Multi-Series**: Grouped bars with legend
-* **Horizontal Single Series**: Horizontal orientation
-* **Horizontal Multi-Series**: Grouped horizontal bars
-* **Custom Domain**: Controlled x and y ranges
-* **RTL Multi-Series*&#x2A;: Right-to-left layout &#x2A;(in development)*
-
-
 # DonutChart
 
 
@@ -2669,17 +2269,9 @@ When there is only one slice, the ring is full. Add `subLabel` if you want a sma
 
 <Story of="Stories.SingleSlice" />
 
-Sizes [#sizes]
-
-`size` (`sm` through `xl`) changes how thick the ring looks and how big the center type reads. The example keeps the same width for each donut so you can compare the presets without reshaping the layout.
-
-<Source language="tsx" code="SourceSizes" />
-
-<Story of="Stories.Sizes" />
-
 Legend placement [#legend-placement]
 
-Switch `legend` to `horizontal` to sit the legend beside the donut, or `vertical` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
 <Source language="tsx" code="SourceLegendLayout" />
 
@@ -2700,6 +2292,108 @@ Use `formatValue` when the raw numbers in the tooltip should read like money, co
 <Source language="tsx" code="SourceFormatValue" />
 
 <Story of="Stories.FormatValue" />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+Troubleshooting [#troubleshooting]
+
+Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 
 # Legend
@@ -3148,6 +2842,406 @@ Tooltip provider, relative container, optional controls to open the visx tooltip
 <Source language="tsx" code="SourceBasic" />
 
 
+# Bar Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Single and multi-series support**: Display one or multiple data series with grouped bars
+* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
+* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `BarChart` component accepts the following props:
+
+<PropTable />
+
+Core Props [#core-props]
+
+`series` (required) [#series-required]
+
+An array of data series to display. Each series must include:
+
+* `id`: Unique identifier for the series
+* `name`: Display name for the legend
+* `data`: Array of data points
+* `color`: Hex color for the bars
+
+```tsx
+const series = [
+  {
+    id: 'new-york',
+    name: 'New York',
+    color: '#145FA9',
+    data: [{ date: '2024-01-01', temp: 45 }, ...]
+  }
+];
+```
+
+`xAccessor` (required) [#xaccessor-required]
+
+Function that extracts the x-axis value from a data point. Returns a string representing the category or label.
+
+```tsx
+xAccessor={(d) => d.date}
+```
+
+`yAccessor` (required) [#yaccessor-required]
+
+Function that extracts the y-axis value from a data point. Returns a number representing the value to display.
+
+```tsx
+yAccessor={(d) => d.temperature}
+```
+
+Layout Props [#layout-props]
+
+`orientation` [#orientation]
+
+Controls whether bars are vertical (default) or horizontal.
+
+* **Default**: `'vertical'`
+* **Options**: `'vertical'` | `'horizontal'`
+
+Vertical charts are best for time series or categorical data. Horizontal charts work well for rankings or when category labels are long.
+
+`width` [#width]
+
+Width of the chart in pixels. The chart uses responsive sizing via `useParentSize`, so this serves as a default when the container size is not yet known.
+
+* **Default**: `500`
+
+`height` [#height]
+
+Height of the chart in pixels.
+
+* **Default**: `700`
+
+`legendPosition` [#legendposition]
+
+Position of the legend relative to the chart.
+
+* **Default**: `'bottom'`
+* **Options**: `'top'` | `'bottom'`
+
+Axis Props [#axis-props]
+
+`xAxisTitle` [#xaxistitle]
+
+Title displayed below the x-axis.
+
+* **Type**: `string`
+
+`yAxisTitle` [#yaxistitle]
+
+Title displayed to the left of the y-axis.
+
+* **Type**: `string`
+
+`xBaseline` [#xbaseline]
+
+Whether to show the x-axis baseline and labels.
+
+* **Default**: `true`
+
+`yBaseline` [#ybaseline]
+
+Whether to show the y-axis baseline and labels.
+
+* **Default**: `true`
+
+`xTickMarks` [#xtickmarks]
+
+Whether to show tick marks on the x-axis.
+
+* **Default**: `true`
+
+`yTickMarks` [#ytickmarks]
+
+Whether to show tick marks on the y-axis.
+
+* **Default**: `true`
+
+`xGridlines` [#xgridlines]
+
+Whether to show vertical gridlines from the x-axis.
+
+* **Default**: `true`
+
+`yGridlines` [#ygridlines]
+
+Whether to show horizontal gridlines from the y-axis.
+
+* **Default**: `true`
+
+`xTickFormat` [#xtickformat]
+
+Function to format x-axis tick labels. The value type depends on orientation:
+
+* Vertical: categories (string | Date) from xAccessor
+
+* Horizontal: numeric values (number) from xAccessor
+
+* **Type**: `(value: string | number | Date) => string`
+
+`yTickFormat` [#ytickformat]
+
+Function to format y-axis tick labels. The value type depends on orientation:
+
+* Vertical: numeric values (number) from yAccessor
+
+* Horizontal: categories (string | Date) from yAccessor
+
+* **Type**: `(value: string | number | Date) => string`
+
+`xNumTicks` [#xnumticks]
+
+Suggested number of ticks for the x-axis.
+
+* **Type**: `number`
+
+`yNumTicks` [#ynumticks]
+
+Suggested number of ticks for the y-axis.
+
+* **Type**: `number`
+
+Domain Props [#domain-props]
+
+`xDomain` [#xdomain]
+
+Explicit x-axis domain. The type depends on orientation:
+
+* Vertical: Use `string[]` or `Date[]` to explicitly set categories
+* Horizontal: Use `[number, number]` to set value range \[min, max]
+
+Useful for ensuring consistent domains across multiple charts or showing empty slots for missing data.
+
+* **Type**: `string[] | [number, number]`
+
+```tsx
+// Vertical: Show slots for categories A-F even if some are missing from data
+xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+
+// Horizontal: Set value range
+xDomain={[0, 100]}
+```
+
+`yDomain` [#ydomain]
+
+Explicit y-axis domain. The type depends on orientation:
+
+* Vertical: Use `[number, number]` to set value range \[min, max]
+* Horizontal: Use `string[]` or `Date[]` to explicitly set categories
+
+Useful for consistent scales across multiple charts or emphasizing specific value ranges.
+
+* **Type**: `[number, number] | string[]`
+
+```tsx
+// Vertical: Always show 0-100 range regardless of data
+yDomain={[0, 100]}
+
+// Horizontal: Show slots for categories A-F
+yDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+```
+
+Interaction Props [#interaction-props]
+
+`tooltip` [#tooltip]
+
+Whether to show tooltips on hover.
+
+* **Default**: `true`
+
+`rtl` [#rtl]
+
+Enable right-to-left layout for international audiences. When enabled, the y-axis moves to the right and bars/scales are mirrored.
+
+* **Default**: `false`
+* **Status**: *In active development*
+
+Basic Usage [#basic-usage]
+
+Single Series [#single-series]
+
+Display a single data series as vertical bars:
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multi-Series [#multi-series]
+
+Display multiple data series as grouped bars with a legend:
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultiSeries" />
+
+Orientation [#orientation-1]
+
+Horizontal Single Series [#horizontal-single-series]
+
+Horizontal bars are ideal for ranking, comparison, or when you have long category labels:
+
+<Source language="tsx" code="SourceHorizontalSingleSeries" />
+
+<Story of="Stories.HorizontalSingleSeries" />
+
+Horizontal Multi-Series [#horizontal-multi-series]
+
+Grouped bars work in horizontal orientation as well:
+
+<Source language="tsx" code="SourceHorizontalMultiSeries" />
+
+<Story of="Stories.HorizontalMultiSeries" />
+
+Custom Domains [#custom-domains]
+
+Control the exact categories and value ranges displayed:
+
+<Source language="tsx" code="SourceCustomDomain" />
+
+<Story of="Stories.CustomDomain" />
+
+In this example:
+
+* `xDomain` includes category 'F' which doesn't exist in the data, showing an empty slot
+* `yDomain` is set to `[0, 40]` to maintain a consistent scale even though the max value is 30
+
+RTL Support [#rtl-support]
+
+Full right-to-left support for international audiences:
+
+<Source language="tsx" code="SourceRTL" />
+
+<Story of="Stories.RTLMultiSeries" />
+
+**Note**: RTL support is currently in active development. Axis rendering and tick mark spacing are being refined.
+
+Design System Alignment [#design-system-alignment]
+
+The BarChart component is built to align with UXCore design principles:
+
+Spacing and Sizing [#spacing-and-sizing]
+
+* **Bar width**: 12px (1.5 grid units)
+* **Bar padding** (multi-series): 4px between bars within a group
+* **Group gap**: Minimum 24px between bar groups
+* **Border radius**: 8px on all bars
+* **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+Responsive Behavior [#responsive-behavior]
+
+* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+Accessibility [#accessibility]
+
+* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+* **Tooltips**: Show on both hover and focus for keyboard users
+
+Performance Considerations [#performance-considerations]
+
+Rendering Strategy [#rendering-strategy]
+
+The component uses VisX primitives for optimal SVG rendering:
+
+* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+Scrolling Strategy [#scrolling-strategy]
+
+* **Vertical charts**: Horizontal scrolling when many data points exceed container width
+* **Horizontal charts**: Vertical scrolling when many categories exceed container height
+* **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+Recommendations [#recommendations]
+
+* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+* Use **custom domains** to maintain consistent scales across multiple charts
+* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+Development Status [#development-status]
+
+The BarChart component is in active development. Current focus areas:
+
+* ✅ Single and multi-series support
+* ✅ Vertical and horizontal orientations
+* ✅ Responsive behavior with sticky axes
+* ✅ Interactive tooltips
+* ✅ Custom domains
+* ✅ Design system alignment
+* 🚧 RTL compatibility (axis rendering and spacing refinement)
+* 🚧 Tick mark positioning improvements
+* 🚧 Additional customization options (tick formatting, axis configuration)
+
+Troubleshooting [#troubleshooting]
+
+Bars Not Showing [#bars-not-showing]
+
+If bars are not visible:
+
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+Tooltip Positioning Issues [#tooltip-positioning-issues]
+
+If tooltips appear in the wrong location:
+
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+Performance Issues [#performance-issues]
+
+For better performance:
+
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+Examples [#examples]
+
+All examples can be found in the Storybook interface:
+
+* **Single Series**: Basic vertical bar chart
+* **Multi-Series**: Grouped bars with legend
+* **Horizontal Single Series**: Horizontal orientation
+* **Horizontal Multi-Series**: Grouped horizontal bars
+* **Custom Domain**: Controlled x and y ranges
+* **RTL Multi-Series*&#x2A;: Right-to-left layout &#x2A;(in development)*
+
+
 # useChartColor
 
 
@@ -3196,102 +3290,6 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
-
-
-# Box
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-Examples [#examples]
-
-Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="Stories.Padding" />
-
-<Source language="tsx" code="SourcePadding" />
-
-Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="Stories.Elevation" />
-
-<Source language="tsx" code="SourceElevation" />
-
-Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="Stories.Rounding" />
-
-<Source language="tsx" code="SourceRounding" />
-
-Polymorphic `as` Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-<Story of="Stories.As" />
-
-<Source language="tsx" code="SourceAs" />
-
-Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
 # Flex
@@ -3398,6 +3396,102 @@ Migration from @ux/box [#migration-from-uxbox]
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+Examples [#examples]
+
+Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
 # Grid
