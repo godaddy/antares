@@ -1,0 +1,1 @@
+function r(t,n){if(t!==null)return t??(n>1?"bottom":void 0)}function a(t){return t.y}function c(t){return t.x}function e(t){const n=Math.max(t,1);return Math.atan2(3,n)*180/Math.PI}function o(t){return 3/Math.max(t,1)}export{e as a,o as c,r,c as x,a as y};
