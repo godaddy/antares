@@ -1,0 +1,243 @@
+.root {
+  --gauge-thickness: round(nearest, 4.2cqi, 2px);
+  --gauge-label-widths: 25cqi;
+  --gauge-gap-angle: atan2(3px, 100px);
+
+  container-type: inline-size;
+  width: 100%;
+
+  &[data-label-type="value"] {
+    --gauge-label-font-size: max(19.3cqi, 1px);
+  }
+
+  &[data-label-type="text"] {
+    --gauge-label-font-size: max(13.56cqi, 1px);
+  }
+
+  &[data-variant="default"] {
+    --gauge-color: var(--bg-primary);
+  }
+
+  &[data-variant="success"] {
+    --gauge-color: green;
+  }
+
+  &[data-variant="warning"] {
+    --gauge-color: orange;
+  }
+
+  &[data-variant="critical"] {
+    --gauge-color: var(--critical);
+  }
+
+  &[data-filled] .content::before {
+    background: var(--gauge-color);
+  }
+
+  &[data-full] .content::after {
+    background: var(--gauge-color);
+  }
+}
+
+/* Primary label; ::before/::after = rounded caps at arc ends */
+.content {
+  aspect-ratio: 2;
+  grid-area: 1 / 1 / -1 / -1;
+  margin-bottom: 0;
+  position: relative;
+  font-size: var(--gauge-label-font-size, 22.78px);
+  line-height: 0.75;
+
+  &::after,
+  &::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    background: var(--bd-base);
+    height: var(--gauge-thickness);
+    width: var(--gauge-thickness);
+    bottom: 0;
+    border-radius: 9999px;
+    transform: translateY(50%);
+    clip-path: inset(50% 0 0 0);
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+}
+
+/* Arc: ::before = fill, ::after = track (--gauge-gap-angle from inline style after layout) */
+.gauge {
+  position: relative;
+  grid-area: 1 / 1 / 2 / -1;
+  aspect-ratio: 2;
+  width: calc(100% - (var(--gauge-label-widths) - var(--gauge-thickness)));
+  margin-bottom: calc(var(--gauge-thickness) / 2);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    display: block;
+    box-sizing: border-box;
+    border-top-left-radius: calc(infinity * 1px);
+    border-top-right-radius: calc(infinity * 1px);
+    pointer-events: none;
+  }
+
+  &::before {
+    border: var(--gauge-thickness) solid var(--gauge-color);
+    border-bottom: 0;
+    z-index: 1;
+    mask: conic-gradient(
+      from 270deg at 50% 100%,
+      #000 calc(var(--gauge-value) * 180deg - var(--gauge-gap-angle) / 2),
+      transparent calc(var(--gauge-value) * 180deg - var(--gauge-gap-angle) / 2)
+    );
+  }
+
+  &::after {
+    border: var(--gauge-thickness) solid var(--bd-base);
+    border-bottom: 0;
+    z-index: 0;
+    mask: conic-gradient(
+      from 270deg at 50% 100%,
+      transparent calc(var(--gauge-value) * 180deg + var(--gauge-gap-angle) / 2),
+      #000 calc(var(--gauge-value) * 180deg + var(--gauge-gap-angle) / 2)
+    );
+  }
+}
+
+/* Firefox-only tweak: aligns the stroke cap with the arc baseline.
+ * Without this, Firefox renders the border slightly higher than Chrome/Safari. */
+@supports (-moz-appearance: none) {
+  .gauge::before {
+    bottom: -1px;
+    background-clip: padding-box;
+  }
+}
+
+/* Continuous, value 0 */
+.root:not([data-segmented]):not([data-filled]) .gauge {
+  &::before {
+    mask: conic-gradient(from 270deg at 50% 100%, transparent 0deg, transparent 1turn);
+  }
+
+  &::after {
+    mask: conic-gradient(from 270deg at 50% 100%, #000 180deg, transparent 180deg);
+  }
+}
+
+/* Continuous, value 100% */
+.root[data-full]:not([data-segmented]) .gauge::before {
+  mask: conic-gradient(from 270deg at 50% 100%, #000 180deg, transparent 180deg);
+}
+
+/* Segmented: slice grid + fill/track masks; full and partial track tweaks */
+.root[data-segmented] {
+  & .gauge {
+    --gauge-slice: calc(180deg / var(--gauge-segments));
+  }
+
+  & .gauge::before {
+    mask:
+      conic-gradient(
+        from 270deg at 50% 100%,
+        #000 calc(var(--gauge-value) * 180deg),
+        transparent calc(var(--gauge-value) * 180deg)
+      ),
+      repeating-conic-gradient(
+        from 270deg at 50% 100%,
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
+      );
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  &[data-full] .gauge::before {
+    mask:
+      conic-gradient(from 270deg at 50% 100%, #000 180deg, transparent 180deg),
+      repeating-conic-gradient(
+        from 270deg at 50% 100%,
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
+      ),
+      conic-gradient(
+        from 270deg at 50% 100%,
+        transparent calc(180deg - var(--gauge-gap-angle)),
+        #000 calc(180deg - var(--gauge-gap-angle)),
+        #000 180deg
+      );
+    -webkit-mask-composite: source-in, source-over;
+    mask-composite: intersect, add;
+  }
+
+  & .gauge::after {
+    mask:
+      conic-gradient(
+        from 270deg at 50% 100%,
+        transparent calc(var(--gauge-value) * 180deg),
+        #000 calc(var(--gauge-value) * 180deg)
+      ),
+      repeating-conic-gradient(
+        from 270deg at 50% 100%,
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
+      );
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  &:not([data-full]) .gauge::after {
+    mask:
+      conic-gradient(
+        from 270deg at 50% 100%,
+        transparent calc(var(--gauge-value) * 180deg),
+        #000 calc(var(--gauge-value) * 180deg)
+      ),
+      repeating-conic-gradient(
+        from 270deg at 50% 100%,
+        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
+      ),
+      conic-gradient(
+        from 270deg at 50% 100%,
+        transparent calc(180deg - var(--gauge-gap-angle)),
+        #000 calc(180deg - var(--gauge-gap-angle)),
+        #000 180deg
+      );
+    -webkit-mask-composite: source-in, source-over;
+    mask-composite: intersect, add;
+  }
+}
+
+/* Second row: sublabel + optional min/max */
+.subLabel {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: var(--sp-sm);
+  min-width: 0;
+  max-width: 100%;
+  font-size: var(--fs-2xs);
+  align-self: center;
+  justify-self: center;
+}
+
+.rangeLabel {
+  display: inline-flex;
+  justify-content: center;
+  width: var(--gauge-label-widths);
+  margin-top: var(--sp-xs);
+  font-size: var(--fs-2xs);
+
+  &[data-range-label="max"] {
+    grid-column: 3;
+  }
+}
