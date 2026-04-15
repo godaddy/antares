@@ -1,7 +1,6 @@
 'use client';
 import { BarChart } from '#components/chart/bar-chart';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { RtlI18nProvider } from '../../../utils/rtl-locale-provider.tsx';
 import { BarChartCustomDomainExample } from './examples/custom-domain.tsx';
 import { BarChartFormattedTickMarksExample } from './examples/formatted-tick-marks.tsx';
 import { BarChartHorizontalMultiSeriesExample } from './examples/horizontal-multi-series.tsx';
@@ -37,25 +36,9 @@ export const HorizontalSingleSeries = getStory(BarChartHorizontalSingleSeriesExa
 
 export const HorizontalMultiSeries = getStory(BarChartHorizontalMultiSeriesExample);
 
-function BarChartRTLHorizontalMultiSeriesStory() {
-  return (
-    <RtlI18nProvider>
-      <BarChartRTLHorizontalMultiSeriesExample />
-    </RtlI18nProvider>
-  );
-}
+export const RTLHorizontalMultiSeries = getStory(BarChartRTLHorizontalMultiSeriesExample);
 
-function BarChartRTLMultiSeriesStory() {
-  return (
-    <RtlI18nProvider>
-      <BarChartRTLMultiSeriesExample />
-    </RtlI18nProvider>
-  );
-}
-
-export const RTLHorizontalMultiSeries = getStory(BarChartRTLHorizontalMultiSeriesStory);
-
-export const RTLMultiSeries = getStory(BarChartRTLMultiSeriesStory);
+export const RTLMultiSeries = getStory(BarChartRTLMultiSeriesExample);
 
 export const CustomDomain = getStory(BarChartCustomDomainExample);
 

@@ -3,7 +3,6 @@ import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
-import { RtlI18nProvider } from '../../../../utils/rtl-locale-provider.tsx';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
 import { BarChartCustomDomainExample } from '../examples/custom-domain';
 import { BarChartFormattedTickMarksExample } from '../examples/formatted-tick-marks';
@@ -18,22 +17,15 @@ import { BarChartExample } from '../examples/single-series';
  * Renders an example in a sized container and waits for chart SVG
  *
  * @param Example - Example component to render
- * @param options.useRtlI18n - Wrap in {@link RtlI18nProvider} for RTL chart examples
  * @returns Render result after SVG is present
  */
-async function renderExampleAndWait(
-  Example: React.ComponentType,
-  width = 800,
-  height = 800,
-  options?: { useRtlI18n?: boolean }
-) {
+async function renderExampleAndWait(Example: React.ComponentType, width = 800, height = 800) {
   await page.viewport(width, height);
-  const inner = (
+  const result = await render(
     <div style={{ width: `${width}px`, height: `${height}px` }}>
       <Example />
     </div>
   );
-  const result = await render(options?.useRtlI18n ? <RtlI18nProvider>{inner}</RtlI18nProvider> : inner);
   await waitForSelector(result.container, 'svg');
 
   return result;
@@ -73,18 +65,14 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('rtl-multi-series screenshot', async function rtlMultiSeries() {
-        const { container } = await renderExampleAndWait(BarChartRTLMultiSeriesExample, 800, 800, {
-          useRtlI18n: true
-        });
+        const { container } = await renderExampleAndWait(BarChartRTLMultiSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('rtl-multi-series');
       });
 
       it('rtl-horizontal-multi-series screenshot', async function rtlHorizontalMultiSeries() {
-        const { container } = await renderExampleAndWait(BarChartRTLHorizontalMultiSeriesExample, 800, 800, {
-          useRtlI18n: true
-        });
+        const { container } = await renderExampleAndWait(BarChartRTLHorizontalMultiSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('rtl-horizontal-multi-series');

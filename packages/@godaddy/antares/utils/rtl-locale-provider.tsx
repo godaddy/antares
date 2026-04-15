@@ -5,6 +5,6 @@ import { I18nProvider } from 'react-aria-components';
 const RTL_TEST_LOCALE = 'ar-EG' as const;
 
 /** Wraps children with React Aria `I18nProvider` so `useLocale()` resolves to RTL. */
-export function RtlI18nProvider({ children }: { children: ReactNode }) {
+export function RTLProvider({ children }: { children: ReactNode }) {
   return <I18nProvider locale={RTL_TEST_LOCALE}>{children}</I18nProvider>;
 }

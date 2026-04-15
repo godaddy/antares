@@ -5,7 +5,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import { RtlI18nProvider } from '../../../../utils/rtl-locale-provider.tsx';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
 
 async function renderAndWait(component: React.ReactElement) {
@@ -18,7 +18,7 @@ async function renderAndWait(component: React.ReactElement) {
  * Renders the BarChart component in browser environment with provided props for testing
  *
  * @param args - Partial props to pass to the BarChart component (series has default)
- * @param options.useRtlI18n - When true, wraps the chart in {@link RtlI18nProvider} so `useLocale()` is RTL
+ * @param options.useRtlI18n - When true, wraps the chart in {@link RTLProvider} so `useLocale()` is RTL
  * @returns Render result with container and other utilities
  */
 async function renderBarChart(args: Partial<BarChartProps<any>> = {}, options?: { useRtlI18n?: boolean }) {
@@ -45,7 +45,7 @@ async function renderBarChart(args: Partial<BarChartProps<any>> = {}, options?: 
     </div>
   );
 
-  const result = await renderAndWait(options?.useRtlI18n ? <RtlI18nProvider>{chart}</RtlI18nProvider> : chart);
+  const result = await renderAndWait(options?.useRtlI18n ? <RTLProvider>{chart}</RTLProvider> : chart);
 
   return result;
 }
@@ -274,7 +274,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#rtl', function rtlLocale() {
-      it('renders in RTL mode when wrapped in RtlI18nProvider', async function rtlMode() {
+      it('renders in RTL mode when wrapped in RTLProvider', async function rtlMode() {
         const { container } = await renderBarChart({}, { useRtlI18n: true });
 
         const svg = container.querySelector('svg');

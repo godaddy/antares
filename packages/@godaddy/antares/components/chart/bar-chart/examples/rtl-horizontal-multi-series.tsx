@@ -1,5 +1,6 @@
 import { BarChart } from '@godaddy/antares';
 import { exoplanets as allExoplanets } from '@visx/mock-data';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 
 interface ExoplanetSurveyPoint {
   name: string;
@@ -22,14 +23,16 @@ const series = [
 
 export function BarChartRTLHorizontalMultiSeriesExample(props: any) {
   return (
-    <BarChart
-      series={series}
-      orientation="horizontal"
-      xAccessor={(d: ExoplanetSurveyPoint) => d.value}
-      yAccessor={(d: ExoplanetSurveyPoint) => d.name}
-      xAxisTitle="Radius (Rj)"
-      yAxisTitle="Exoplanet"
-      {...props}
-    />
+    <RTLProvider>
+      <BarChart
+        series={series}
+        orientation="horizontal"
+        xAccessor={(d: ExoplanetSurveyPoint) => d.value}
+        yAccessor={(d: ExoplanetSurveyPoint) => d.name}
+        xAxisTitle="Radius (Rj)"
+        yAxisTitle="Exoplanet"
+        {...props}
+      />
+    </RTLProvider>
   );
 }

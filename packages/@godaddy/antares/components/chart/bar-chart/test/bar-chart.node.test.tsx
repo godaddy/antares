@@ -14,7 +14,6 @@ import { BarChartMultiSeriesExample } from '../examples/multi-series';
 import { BarChartRTLHorizontalMultiSeriesExample } from '../examples/rtl-horizontal-multi-series';
 import { BarChartRTLMultiSeriesExample } from '../examples/rtl-multi-series';
 import { BarChartExample } from '../examples/single-series';
-import { RtlI18nProvider } from '../../../../utils/rtl-locale-provider.tsx';
 
 const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['custom-domain', BarChartCustomDomainExample],
@@ -27,8 +26,6 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['single-series', BarChartExample]
 ];
 
-const SSR_RTL_EXAMPLE_NAMES = new Set(['rtl-horizontal-multi-series', 'rtl-multi-series']);
-
 describe('@godaddy/antares', function antares() {
   describe('#BarChart', function barChartTests() {
     it('does not render SVG on SSR (dimensions from parent ResizeObserver)', function noSvgOnSsr() {
@@ -36,16 +33,8 @@ describe('@godaddy/antares', function antares() {
       expect(result).not.toContain('<svg');
     });
 
-    it.each(SSR_EXAMPLES)('renders %s example', function ssrSnapshot(name, Example) {
-      const result = renderToString(
-        SSR_RTL_EXAMPLE_NAMES.has(name) ? (
-          <RtlI18nProvider>
-            <Example />
-          </RtlI18nProvider>
-        ) : (
-          <Example />
-        )
-      );
+    it.each(SSR_EXAMPLES)('renders %s example', function ssrSnapshot(_name, Example) {
+      const result = renderToString(<Example />);
       expect(result).toMatchSnapshot();
     });
   });

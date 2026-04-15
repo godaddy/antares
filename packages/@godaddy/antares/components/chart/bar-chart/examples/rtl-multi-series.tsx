@@ -1,5 +1,6 @@
 import { BarChart } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 
 export function BarChartRTLMultiSeriesExample(props: any) {
   const cities = ['New York', 'San Francisco', 'Austin'] as const;
@@ -18,13 +19,15 @@ export function BarChartRTLMultiSeriesExample(props: any) {
   });
 
   return (
-    <BarChart
-      series={series}
-      xAccessor={(d: any) => d.x}
-      yAccessor={(d: any) => d.y}
-      xAxisTitle="Date"
-      yAxisTitle="Temperature (°F)"
-      {...props}
-    />
+    <RTLProvider>
+      <BarChart
+        series={series}
+        xAccessor={(d: any) => d.x}
+        yAccessor={(d: any) => d.y}
+        xAxisTitle="Date"
+        yAxisTitle="Temperature (°F)"
+        {...props}
+      />
+    </RTLProvider>
   );
 }

@@ -1,4 +1,3 @@
-import { RtlI18nProvider } from '../../../../utils/rtl-locale-provider.tsx';
 import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
 import { XAxisExample } from '../examples/x-axis.tsx';
 import { YAxisExample } from '../examples/y-axis.tsx';
@@ -30,11 +29,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#rtl-direction', function rtlDirectionTests() {
       it('renders rtl direction example with dir="rtl" on y-axis title', async function rtlDirAttr() {
-        const { container } = await render(
-          <RtlI18nProvider>
-            <RTLDirectionExample />
-          </RtlI18nProvider>
-        );
+        const { container } = await render(<RTLDirectionExample />);
         const group = container.querySelector('[role="group"][aria-label="y axis title"]');
 
         assume(group).exists();

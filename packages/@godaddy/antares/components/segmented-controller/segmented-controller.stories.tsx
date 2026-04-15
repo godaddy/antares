@@ -1,6 +1,5 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { RtlI18nProvider } from '../../utils/rtl-locale-provider.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/segmented-controller-playground.tsx';
 import { ControlledExample } from './examples/controlled.tsx';
 import { IconOnlyExample } from './examples/icon-only.tsx';
@@ -32,15 +31,7 @@ export const Disabled = getStory(DisabledExample);
 
 export const Overflow = getStory(OverflowExample);
 
-function SegmentedControllerRTLStory() {
-  return (
-    <RtlI18nProvider>
-      <RTLExample />
-    </RtlI18nProvider>
-  );
-}
-
-export const RTL = getStory(SegmentedControllerRTLStory);
+export const RTL = getStory(RTLExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,

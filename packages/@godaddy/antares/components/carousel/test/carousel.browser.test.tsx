@@ -7,7 +7,6 @@ import { ExternalControlsUncontrolledExample } from '../examples/external-contro
 import { HideControlsExample } from '../examples/hide-controls.tsx';
 import { EventsExample } from '../examples/events.tsx';
 import { RTLDirectionExample } from '../examples/rtl-direction.tsx';
-import { RtlI18nProvider } from '../../../utils/rtl-locale-provider.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Carousel', function carouselTests() {
@@ -153,11 +152,7 @@ describe('@godaddy/antares', function antares() {
   });
 
   it('renders the rtl direction example', async function rendersRtlDirection() {
-    const { getByRole } = await render(
-      <RtlI18nProvider>
-        <RTLDirectionExample />
-      </RtlI18nProvider>
-    );
+    const { getByRole } = await render(<RTLDirectionExample />);
     const prev = getByRole('button', { name: 'Go to previous page', includeHidden: true });
     const next = getByRole('button', { name: 'Go to next page', includeHidden: true });
 
