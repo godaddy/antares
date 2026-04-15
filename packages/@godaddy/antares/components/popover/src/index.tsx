@@ -57,8 +57,8 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
         elevation="overlay"
         direction="column"
         aria-label="Content"
-        as={RACDialog}
         {...contentProps}
+        as={RACDialog}
       >
         {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
 

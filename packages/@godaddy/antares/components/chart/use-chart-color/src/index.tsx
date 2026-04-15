@@ -17,8 +17,7 @@ const CHART_COLOR_COUNT = 9;
 const VARIABLE_PREFIX = '--viz';
 
 /**
- * CSS `var(--vizN)` value for a 0-based palette index, cycling every nine colors.
- * For mount-time allocation across siblings, use `useChartColor` inside `ChartColorProvider`.
+ * Maps a chart position (series, slice, legend row) to the shared nine-color viz palette so strokes, fills, and swatches resolve through `--viz*` tokens.
  */
 export function chartColorForIndex(index: number): string {
   return `var(${VARIABLE_PREFIX}${(index % CHART_COLOR_COUNT) + 1})`;

@@ -1,4 +1,4 @@
-import { DonutChart, DonutChartProps } from '@godaddy/antares';
+import { DonutChart, type DonutChartProps } from '@godaddy/antares';
 
 const data = [
   { id: '1', name: 'Category A', value: 35 },

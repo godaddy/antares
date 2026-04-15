@@ -44,7 +44,7 @@ export interface PlaygroundExampleProps {
   'aria-label': string;
 }
 
-const PLAYGROUND_WIDTH_PX = '320pxs';
+const PLAYGROUND_WIDTH_PX = '320px';
 
 export function PlaygroundExample({
   dataPreset,

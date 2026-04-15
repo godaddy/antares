@@ -20,6 +20,9 @@ async function renderDonutExample(node: React.ReactNode, width = 400, height = 4
   await page.viewport(width, height);
   const result = await render(<div style={{ width: `${width}px`, height: `${height}px` }}>{node}</div>);
 
+  await waitForSelector(result.container, 'svg');
+  await waitForSelector(result.container, 'svg path');
+
   return result;
 }
 
@@ -121,7 +124,7 @@ describe('@godaddy/antares', function antares() {
         assume(text).includes('Slice B');
         assume(text).includes('Slice C');
 
-        const items = page.getByRole('listitem');
+        const items = page.getByRole('listitem').all();
         assume(items.length).equals(3);
       });
 
@@ -138,7 +141,7 @@ describe('@godaddy/antares', function antares() {
         assume(text).includes('Slice F');
         assume(text).includes('Slice G');
 
-        const items = page.getByRole('listitem');
+        const items = page.getByRole('listitem').all();
         assume(items.length).equals(3);
       });
 

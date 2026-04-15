@@ -12,9 +12,6 @@ import styles from './index.module.css';
  * Accepts the same series shape used by chart components (subset of {@link SeriesConfig}:
  * id, name). Use with the same series config as the chart so labels stay in sync.
  * Colors are handled by the theme.
- *
- * Inherits {@link FlexProps} for the root container (e.g. `alignSelf`, `justifyContent`, `gap`)
- * so the legend can be aligned within chart layouts.
  */
 export interface LegendProps
   extends Omit<FlexProps<'div'>, 'children' | 'direction' | 'display' | 'alignItems' | 'gap'> {

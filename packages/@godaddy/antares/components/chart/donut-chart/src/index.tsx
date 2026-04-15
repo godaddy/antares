@@ -5,14 +5,16 @@ import { useNormalizedSeries } from '#components/chart/use-normalized-series';
 import { Legend } from '#components/chart/legend';
 import { Flex, FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
-import { Tooltip, TooltipTrigger, OverlayArrow } from 'react-aria-components';
+import {
+  Tooltip as RACTooltip,
+  TooltipTrigger as RACTooltipTrigger,
+  OverlayArrow as RACOverlayArrow
+} from 'react-aria-components';
 import { Text } from '#components/text';
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
-import { cx } from 'cva';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import styles from './index.module.css';
-import tooltipStyles from '../../../tooltip/src/index.module.css';
 
 /**
  * One slice of donut chart data after normalization (stable `id`, `name`, numeric `value`).
@@ -266,7 +268,7 @@ export function DonutChart(props: DonutChartProps) {
       gap={legendPlacement != null ? 'lg' : undefined}
       {...flexProps}
     >
-      <TooltipTrigger isOpen={tooltipOpen}>
+      <RACTooltipTrigger isOpen={tooltipOpen}>
         <Box ref={chartWrapRef} className={styles.chartWrap}>
           <Box
             ref={tooltipAnchorRef}
@@ -327,11 +329,11 @@ export function DonutChart(props: DonutChartProps) {
           </Flex>
         </Box>
         <Flex
-          as={Tooltip}
+          as={RACTooltip}
           triggerRef={tooltipAnchorRef}
           placement="top"
           offset={tooltipPlacementEpsilon}
-          className={cx(tooltipStyles.tooltip, styles.tooltip)}
+          className={styles.tooltip}
           padding="md"
           rounding="md"
         >
@@ -362,9 +364,9 @@ export function DonutChart(props: DonutChartProps) {
               );
             })}
           </Flex>
-          <OverlayArrow aria-hidden="true" className={tooltipStyles.arrow} />
+          <RACOverlayArrow aria-hidden="true" className={styles.arrow} />
         </Flex>
-      </TooltipTrigger>
+      </RACTooltipTrigger>
       {legendPlacement && (
         <Legend
           series={normalizedData}
