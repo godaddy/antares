@@ -1,5 +1,10 @@
+import { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';
 import { OverflowExample } from './overflow.tsx';
 
 export function RTLExample() {
-  return <OverflowExample dir="rtl" />;
+  return (
+    <RTLProvider>
+      <OverflowExample />
+    </RTLProvider>
+  );
 }

@@ -43,9 +43,6 @@ export interface CarouselProps extends Omit<FlexProps<'div'>, 'onChange'> {
   /** All options available for the embla accessibility. */
   emblaAccessibilityOptions?: AccessibilityOptionsType;
 
-  /** The direction of the carousel. Defaults to system direction. */
-  dir?: 'ltr' | 'rtl';
-
   /** The callback function to be called when the previous slide is pressed. */
   onPrev?: UseNavigationControlsProps['onPrev'];
 
@@ -80,7 +77,6 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
     emblaOptions,
     emblaAccessibilityOptions,
     hideNavigationControls,
-    dir,
     onChange,
     onPrev,
     onNext,
@@ -95,8 +91,7 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
   const children = Array.isArray(props.children) ? props.children : [props.children];
   const controlledMode = activeIndex !== undefined;
   const [startSnap] = useState(controlledMode ? activeIndex : (defaultActiveIndex ?? 0));
-  const locale = useLocale();
-  const direction = dir ?? locale.direction;
+  const { direction } = useLocale();
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: false, align: 'center', startSnap, direction, ...emblaOptions },

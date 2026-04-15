@@ -23,6 +23,7 @@ import { Group } from '@visx/group';
 import type { TooltipData } from '@visx/xychart';
 import { Bar } from '@visx/shape';
 import { cx } from 'cva';
+import { useLocale } from 'react-aria-components';
 import { useBarChart } from './use-bar-chart.ts';
 
 /**
@@ -152,14 +153,6 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
    * If omitted, defaults to 700px.
    */
   height?: number;
-
-  /**
-   * Whether to display the chart in right-to-left mode.
-   * When true, the chart layout is mirrored for RTL languages.
-   * Only applies to vertical orientation.
-   * Default: false
-   */
-  rtl?: boolean;
 
   /**
    * Accessibility label for the chart.
@@ -329,7 +322,6 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     yBaseline = true,
     yAxisTitle = '',
     xAxisTitle = '',
-    rtl = false,
     desc,
     legendPosition,
     xTickFormat,
@@ -342,6 +334,9 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     'aria-label': ariaLabel,
     className
   } = props;
+
+  const { direction } = useLocale();
+  const rtl = direction === 'rtl';
 
   const tickLength = 8;
 
@@ -431,7 +426,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     <ChartColorProvider>
       <Flex
         direction="row"
-        dir={rtl ? 'rtl' : undefined}
+        dir={direction}
         className={cx(styles.chart, className)}
         data-x-labels-vertical={xLabelsVertical ? 'true' : undefined}
         style={{
@@ -439,10 +434,10 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
           height: `${height}px`
         }}
       >
-        {yAxisTitle && <AxisTitle axis="y" title={yAxisTitle} dir={rtl ? 'rtl' : 'ltr'} />}
+        {yAxisTitle && <AxisTitle axis="y" title={yAxisTitle} />}
         <Flex direction="column" flex={1} style={{ overflow: 'hidden' }}>
           {effectiveLegendPosition === 'top' && <Legend series={series} alignSelf="center" />}
-          <Box ref={parentRef} dir={rtl ? 'rtl' : 'ltr'} className={styles.area}>
+          <Box ref={parentRef} dir={direction} className={styles.area}>
             {series && chartWidth > 0 && chartHeight > 0 && (
               <svg
                 ref={svgRef}
