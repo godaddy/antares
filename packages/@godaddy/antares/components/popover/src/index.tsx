@@ -23,7 +23,7 @@ export interface PopoverProps extends RACPopoverProps {
   showCloseButton?: boolean;
 
   /** Props to pass to the content container. */
-  contentProps?: Omit<FlexProps, 'role'>;
+  contentProps?: Omit<FlexProps, 'as' | 'role'>;
 
   /** The placement of the popover relative to the trigger. */
   placement?: RACPopoverProps['placement'];
