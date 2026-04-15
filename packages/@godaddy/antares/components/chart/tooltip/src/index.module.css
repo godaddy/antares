@@ -1,9 +1,26 @@
 .tooltip {
+  --chart-tooltip-item-font-size: var(--fs-sm, var(--ux-1s0t9v0, 0.875rem));
+  --chart-tooltip-arrow-fill: var(--bg-raised, var(--ux-1mh0ktr, #ffffff));
+  --chart-tooltip-arrow-shadow: var(--sh-raised, drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1)));
+  --chart-tooltip-arrow-offset: -8px;
+  --chart-tooltip-arrow-border-x: 8px;
+  --chart-tooltip-arrow-border-top: 8px;
+
+  --viz1: var(--viz1, var(--ux-wikx71, #1976d2));
+  --viz2: var(--viz2, var(--ux-k4t5bc, #15a4ab));
+  --viz3: var(--viz3, var(--ux-3seoiy, #ef6c0f));
+  --viz4: var(--viz4, var(--ux-1c4rju4, #744bc4));
+  --viz5: var(--viz5, var(--ux-1b06mhh, #dd4a68));
+  --viz6: var(--viz6, var(--ux-99lo9, #0c8a8f));
+  --viz7: var(--viz7, var(--ux-iievdt, #565656));
+  --viz8: var(--viz8, var(--ux-3uv4tc, #462a72));
+  --viz9: var(--viz9, var(--ux-yscvvt, #145fa9));
+
   position: relative;
 }
 
 .item {
-  font-size: var(--fs-sm);
+  font-size: var(--chart-tooltip-item-font-size);
 }
 
 .swatch {
@@ -15,15 +32,15 @@
 
 .tooltipArrow {
   position: absolute;
-  bottom: -15px;
+  bottom: var(--chart-tooltip-arrow-offset);
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  /* Arrow shape: 28px wide, 15px tall based on the Popover specification */
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-top: 15px solid var(--elevation-raised-bg, #fff);
+  border-left: var(--chart-tooltip-arrow-border-x) solid transparent;
+  border-right: var(--chart-tooltip-arrow-border-x) solid transparent;
+  border-top: var(--chart-tooltip-arrow-border-top) solid var(--chart-tooltip-arrow-fill);
+  filter: var(--chart-tooltip-arrow-shadow);
 }
 
 /* Data visualization colors for tooltip indicators */
@@ -63,20 +80,6 @@
   background-color: var(--viz9);
 }
 
-.tooltipArrow {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid white;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
-}
-
-/* Data visualization colors for tooltip indicators */
 .viz1 {
   background-color: var(--viz1);
 }

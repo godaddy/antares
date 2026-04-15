@@ -455,9 +455,21 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                 {desc && <desc id="barchart-desc">{desc}</desc>}
 
                 <Group top={effectiveMargin.top} left={effectiveMargin.left}>
-                  {yGridlines && <GridRows scale={yScale} width={innerWidth} stroke="#e0e0e0" strokeOpacity={0.3} />}
+                  {yGridlines && (
+                    <GridRows
+                      scale={yScale}
+                      width={innerWidth}
+                      stroke="var(--chart-border-subtle)"
+                      strokeOpacity={0.3}
+                    />
+                  )}
                   {xGridlines && (
-                    <GridColumns scale={xScale} height={innerHeight} stroke="#e0e0e0" strokeOpacity={0.3} />
+                    <GridColumns
+                      scale={xScale}
+                      height={innerHeight}
+                      stroke="var(--chart-border-subtle)"
+                      strokeOpacity={0.3}
+                    />
                   )}
 
                   {isVertical && xBaseline && (
@@ -498,7 +510,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                           fontSize: 10,
                           fontFamily: 'Helvetica',
                           textAnchor: 'end' as const,
-                          fill: '#000',
+                          fill: 'var(--chart-canvas-text)',
                           dx: '0.5em',
                           dy: '0.32em'
                         };
@@ -537,7 +549,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                       y={0}
                       width={effectiveMargin.left}
                       height={svgHeight}
-                      fill="#fff"
+                      fill="var(--chart-canvas-background)"
                       className={styles.axisBackground}
                     />
                     <g transform={`translate(${effectiveMargin.left + scrollLeft}, ${effectiveMargin.top})`}>
@@ -560,7 +572,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                       y={0}
                       width={effectiveMargin.right}
                       height={svgHeight}
-                      fill="#fff"
+                      fill="var(--chart-canvas-background)"
                       className={styles.axisBackground}
                     />
                     <g
@@ -578,7 +590,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                             fontSize: 10,
                             fontFamily: 'Helvetica',
                             textAnchor: 'end' as const,
-                            fill: '#000',
+                            fill: 'var(--chart-canvas-text)',
                             dy: '.32em'
                           };
                         }}
@@ -594,7 +606,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                       y={scrollTop + chartHeight - effectiveMargin.bottom}
                       width={svgWidth}
                       height={effectiveMargin.bottom}
-                      fill="#fff"
+                      fill="var(--chart-canvas-background)"
                       className={styles.axisBackground}
                     />
                     <g

@@ -1,3 +1,10 @@
+.chart {
+  --chart-canvas-text: var(--fg-base, var(--ux-1leynsm, #000000));
+  --chart-border-subtle: var(--bd-base, var(--ux-97h3vl, #e0e0e0));
+  --chart-canvas-background: var(--bg-base, var(--ux-cao06b, #ffffff));
+  --chart-gridline-stroke-width: 1px;
+}
+
 .chart[data-x-labels-vertical="true"] .area .axisX text {
   writing-mode: sideways-lr;
   text-anchor: end;

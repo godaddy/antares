@@ -2,6 +2,12 @@
   --gauge-thickness: round(nearest, 4.2cqi, 2px);
   --gauge-label-widths: 25cqi;
   --gauge-gap-angle: atan2(3px, 100px);
+  --gauge-cap-fill: var(--bd-base, var(--ux-97h3vl, #d4dbe0));
+  --gauge-track-border-color: var(--bd-base, var(--ux-97h3vl, #d4dbe0));
+  --gauge-sublabel-font-size: var(--fs-2xs, var(--ux-16aixzc, 0.875rem));
+  --gauge-range-label-font-size: var(--fs-2xs, var(--ux-16aixzc, 0.875rem));
+  --gauge-sublabel-margin-top: var(--sp-sm, var(--ux-2jubes, 8px));
+  --gauge-range-label-margin-top: var(--sp-xs, var(--ux-19hwfny, 4px));
 
   container-type: inline-size;
   width: 100%;
@@ -15,19 +21,19 @@
   }
 
   &[data-variant="default"] {
-    --gauge-color: var(--bg-primary);
+    --gauge-color: var(--bg-primary, var(--ux-wikx71, #1976d2));
   }
 
   &[data-variant="success"] {
-    --gauge-color: green;
+    --gauge-color: var(--ux-sji811, #00a63f);
   }
 
   &[data-variant="warning"] {
-    --gauge-color: orange;
+    --gauge-color: var(--ux-3seoiy, #ef6c0f);
   }
 
   &[data-variant="critical"] {
-    --gauge-color: var(--critical);
+    --gauge-color: var(--critical, var(--ux-1b06mhh, #db1802));
   }
 
   &[data-filled] .content::before {
@@ -53,7 +59,7 @@
     content: "";
     position: absolute;
     pointer-events: none;
-    background: var(--bd-base);
+    background: var(--gauge-cap-fill);
     height: var(--gauge-thickness);
     width: var(--gauge-thickness);
     bottom: 0;
@@ -103,7 +109,7 @@
   }
 
   &::after {
-    border: var(--gauge-thickness) solid var(--bd-base);
+    border: var(--gauge-thickness) solid var(--gauge-track-border-color);
     border-bottom: 0;
     z-index: 0;
     mask: conic-gradient(
@@ -222,10 +228,10 @@
 .subLabel {
   grid-column: 2;
   grid-row: 2;
-  margin-top: var(--sp-sm);
+  margin-top: var(--gauge-sublabel-margin-top);
   min-width: 0;
   max-width: 100%;
-  font-size: var(--fs-2xs);
+  font-size: var(--gauge-sublabel-font-size);
   align-self: center;
   justify-self: center;
 }
@@ -234,8 +240,8 @@
   display: inline-flex;
   justify-content: center;
   width: var(--gauge-label-widths);
-  margin-top: var(--sp-xs);
-  font-size: var(--fs-2xs);
+  margin-top: var(--gauge-range-label-margin-top);
+  font-size: var(--gauge-range-label-font-size);
 
   &[data-range-label="max"] {
     grid-column: 3;

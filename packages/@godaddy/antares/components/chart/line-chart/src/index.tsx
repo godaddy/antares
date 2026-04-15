@@ -31,7 +31,10 @@ import { buildScaleConfig } from './scale-config.ts';
 import { useChartContainer } from './use-chart-container.ts';
 import styles from './index.module.css';
 
-const GRIDLINE_STYLE = { stroke: 'var(--bd-base)', strokeWidth: '2px' };
+const GRIDLINE_STYLE = {
+  stroke: 'var(--chart-border-subtle)',
+  strokeWidth: 'var(--chart-gridline-stroke-width)'
+};
 
 /** Scale types supported by LineChart (subset of @visx/scale ScaleType). */
 type LineChartScaleType = 'linear' | 'time' | 'band' | 'log' | 'sqrt' | 'pow';
@@ -383,8 +386,8 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
   );
 
   const chartStyle = {
-    ['--_chart-width' as string]: width !== undefined ? `${width}px` : undefined,
-    ['--_chart-height' as string]: height !== undefined ? `${height}px` : undefined
+    ['--chart-width' as string]: width !== undefined ? `${width}px` : undefined,
+    ['--chart-height' as string]: height !== undefined ? `${height}px` : undefined
   };
 
   return (

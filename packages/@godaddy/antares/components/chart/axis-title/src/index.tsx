@@ -52,7 +52,7 @@ export function AxisTitle(props: AxisTitleProps) {
       aria-label={`${axis} axis title`}
       justifyContent="center"
       alignItems="center"
-      className={cx(axisTitleVariants({ axis }), className)}
+      className={cx(styles.axis, axisTitleVariants({ axis }), className)}
       dir={direction}
     >
       {title}

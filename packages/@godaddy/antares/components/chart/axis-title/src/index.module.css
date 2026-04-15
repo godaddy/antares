@@ -1,3 +1,13 @@
+.axis {
+  --axis-title-color: inherit;
+  --axis-title-font-size: var(--fs-heading-md, var(--ux-18ime9a, 1.375rem));
+  --axis-title-font-weight: var(--ux-1nr6ynb, bolder);
+
+  color: var(--axis-title-color);
+  font-size: var(--axis-title-font-size);
+  font-weight: var(--axis-title-font-weight);
+}
+
 .xAxis {
   width: 100%;
 }

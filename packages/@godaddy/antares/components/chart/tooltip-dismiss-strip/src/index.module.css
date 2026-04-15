@@ -1,8 +1,10 @@
 .strip {
+  --tooltip-dismiss-strip-bg: transparent;
+
   position: absolute;
   left: 0;
   top: 0;
   z-index: 2;
   pointer-events: auto;
-  background-color: transparent;
+  background-color: var(--tooltip-dismiss-strip-bg);
 }

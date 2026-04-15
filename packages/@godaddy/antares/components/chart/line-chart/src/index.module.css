@@ -1,12 +1,17 @@
 .chart {
-  width: var(--_chart-width, 100%);
-  height: var(--_chart-height, 100%);
+  --chart-canvas-text: var(--fg-base, var(--ux-1leynsm, #000000));
+  --chart-border-subtle: var(--bd-base, var(--ux-97h3vl, #d4dbe0));
+  --chart-canvas-background: var(--bg-base, var(--ux-cao06b, #ffffff));
+  --chart-gridline-stroke-width: 2px;
+
+  width: var(--chart-width, 100%);
+  height: var(--chart-height, 100%);
 }
 
 /* Baseline enabled */
 .chart[data-x-baseline="true"] .axisX .baseline,
 .chart[data-y-baseline="true"] .axisY .baseline {
-  stroke: var(--fg-base);
+  stroke: var(--chart-canvas-text);
   stroke-width: 1px;
 }
 
@@ -19,7 +24,7 @@
 /* Labels enabled */
 .chart[data-x-labels="true"] .area .axisX text,
 .chart[data-y-labels="true"] .area .axisY text {
-  fill: var(--fg-base);
+  fill: var(--chart-canvas-text);
   display: block;
 }
 
@@ -38,8 +43,8 @@
 /* Tick lines */
 .chart[data-x-tick-marks="true"] .axisX .tickMark line,
 .chart[data-y-tick-marks="true"] .axisY .tickMark line {
-  stroke: var(--bd-base);
-  stroke-width: 2px;
+  stroke: var(--chart-border-subtle);
+  stroke-width: var(--chart-gridline-stroke-width);
 }
 
 .wrapper {
@@ -78,5 +83,5 @@
 }
 
 .yAxisBackground {
-  fill: var(--bg-base);
+  fill: var(--chart-canvas-background);
 }

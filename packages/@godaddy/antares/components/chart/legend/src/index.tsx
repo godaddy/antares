@@ -58,7 +58,7 @@ export function Legend(props: LegendProps) {
             role="listitem"
             direction="row"
             alignItems="center"
-            gap="sm"
+            gap="var(--legend-gap-item-inline)"
             className={styles.item}
           >
             <Box rounding="full" className={styles.swatch} />
@@ -76,7 +76,7 @@ export function Legend(props: LegendProps) {
       direction="column"
       alignItems="flex-start"
       display="inline-flex"
-      gap="sm"
+      gap="var(--legend-gap-root)"
       className={cx(styles.root, className)}
       data-size={size}
     >
@@ -86,7 +86,7 @@ export function Legend(props: LegendProps) {
         aria-label={label ?? 'Chart legend'}
         alignItems="flex-start"
         direction={isHorizontal ? 'row' : 'column'}
-        gap={isHorizontal ? 'lg' : 'sm'}
+        gap={isHorizontal ? 'var(--legend-gap-items)' : 'var(--legend-gap-items-stack)'}
       >
         {items}
       </Flex>
