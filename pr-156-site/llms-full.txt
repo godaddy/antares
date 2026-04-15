@@ -2184,53 +2184,6 @@ Best Practices [#best-practices]
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
-# AxisTitle
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `AxisTitle` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-X-Axis Title [#x-axis-title]
-
-X-axis title with default orientation.
-
-<Story of="Stories.XAxis" />
-
-<Source language="tsx" code="SourceXAxis" />
-
-Y-Axis Title [#y-axis-title]
-
-Y-axis title with default orientation.
-
-<Story of="Stories.YAxis" />
-
-<Source language="tsx" code="SourceYAxis" />
-
-RTL (Right-to-Left) [#rtl-right-to-left]
-
-Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Bar Chart
 
 
@@ -2631,6 +2584,116 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Right-to-left layout &#x2A;(in development)*
 
 
+# AxisTitle
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `AxisTitle` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+X-Axis Title [#x-axis-title]
+
+X-axis title with default orientation.
+
+<Story of="Stories.XAxis" />
+
+<Source language="tsx" code="SourceXAxis" />
+
+Y-Axis Title [#y-axis-title]
+
+Y-axis title with default orientation.
+
+<Story of="Stories.YAxis" />
+
+<Source language="tsx" code="SourceYAxis" />
+
+RTL (Right-to-Left) [#rtl-right-to-left]
+
+Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
+
+
 # Gauge Chart
 
 
@@ -2731,69 +2794,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# Legend
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `Legend` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic legend with a single series showing the default styling and layout.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-With label [#with-label]
-
-Legend with a visible label that is also used as the accessible label.
-
-<Source language="tsx" code="SourceWithLabel" />
-
-<Story of="Stories.WithLabel" />
-
-Vertical orientation [#vertical-orientation]
-
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
-
-<Source language="tsx" code="SourceVertical" />
-
-<Story of="Stories.Vertical" />
-
-Legend size chart example [#legend-size-chart-example]
-
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
-
-<Source language="tsx" code="SourceLegendSizeChart" />
-
-<Story of="Stories.LegendSizeChart" />
 
 
 # LineChart
@@ -3081,6 +3081,37 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # Tooltip
 
 
@@ -3146,37 +3177,6 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Source language="tsx" code="SourceArrow" />
 
 <Story of="Stories.Arrow" />
-
-
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
 
 
 # useChartColor
