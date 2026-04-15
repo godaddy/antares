@@ -18,15 +18,15 @@
 - [TextField](/docs/components/text-field): TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
 - [Tooltip](/docs/components/tooltip): The Tooltip component displays a description of an element on hover or focus.
 - [AxisTitle](/docs/components/chart/axis-title): The AxisTitle is an internal component used for displaying axis titles in chart components
+- [Bar Chart](/docs/components/chart/bar-chart): A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.
 - [DonutChart](/docs/components/chart/donut-chart): Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
-- [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [Legend](/docs/components/chart/legend): The Legend component is an internal component used for displaying series information in chart components.
+- [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
 - [Tooltip](/docs/components/chart/tooltip): An internal component used for displaying tooltip information in chart components.
 - [TooltipDismissStrip](/docs/components/chart/tooltip-dismiss-strip): Internal visx XYChart helper that closes the tooltip when the pointer enters a leading-edge strip over scroll-synced axis chrome
-- [Bar Chart](/docs/components/chart/bar-chart): A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.
 - [useChartColor](/docs/components/chart/use-chart-color): A hook for assigning deterministic, index-based colors to chart series using design token CSS variables. Safe under React concurrent rendering.
 - [useNormalizedSeries](/docs/components/chart/use-normalized-series): A hook that ensures every series config has a stable unique id, generating one from useId when omitted.
-- [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
 - [Box](/docs/components/layout/box): Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
+- [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
 - [Grid](/docs/components/layout/grid): Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns
