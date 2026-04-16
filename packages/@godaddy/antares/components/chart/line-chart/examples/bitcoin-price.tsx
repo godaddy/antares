@@ -40,7 +40,7 @@ export function BitcoinPriceExample(props: Partial<LineChartProps>) {
       yGridlines={true}
       yNice={true}
       tooltipValueFormatter={formatTooltipCurrency}
-      height={500}
+      height={600}
       aria-label="Bitcoin price chart"
       desc="Line chart showing Bitcoin price over time with complete configuration including large number currency formatting, date formatting, gridlines, tick marks, baselines, and nice rounded values"
       {...props}

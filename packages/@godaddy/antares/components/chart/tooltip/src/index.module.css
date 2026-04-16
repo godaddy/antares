@@ -1,26 +1,18 @@
 .tooltip {
-  --chart-tooltip-item-font-size: var(--fs-sm, var(--ux-1s0t9v0, 0.875rem));
-  --chart-tooltip-arrow-fill: var(--bg-raised, var(--ux-1mh0ktr, #ffffff));
-  --chart-tooltip-arrow-shadow: var(--sh-raised, drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1)));
+  --chart-tooltip-color: var(--ux-1leynsm);
+  --chart-tooltip-font-size: var(--ux-2lqd62);
+  --chart-tooltip-line-height: 1.5;
+  --chart-tooltip-value-font-size: var(--ux-1s0t9v0);
+  --chart-tooltip-arrow-fill: var(--ux-1mh0ktr);
+  --chart-tooltip-arrow-shadow: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
   --chart-tooltip-arrow-offset: -8px;
   --chart-tooltip-arrow-border-x: 8px;
   --chart-tooltip-arrow-border-top: 8px;
 
-  --viz1: var(--viz1, var(--ux-wikx71, #1976d2));
-  --viz2: var(--viz2, var(--ux-k4t5bc, #15a4ab));
-  --viz3: var(--viz3, var(--ux-3seoiy, #ef6c0f));
-  --viz4: var(--viz4, var(--ux-1c4rju4, #744bc4));
-  --viz5: var(--viz5, var(--ux-1b06mhh, #dd4a68));
-  --viz6: var(--viz6, var(--ux-99lo9, #0c8a8f));
-  --viz7: var(--viz7, var(--ux-iievdt, #565656));
-  --viz8: var(--viz8, var(--ux-3uv4tc, #462a72));
-  --viz9: var(--viz9, var(--ux-yscvvt, #145fa9));
-
+  color: var(--chart-tooltip-color);
+  font-size: var(--chart-tooltip-font-size);
+  line-height: var(--chart-tooltip-line-height);
   position: relative;
-}
-
-.item {
-  font-size: var(--chart-tooltip-item-font-size);
 }
 
 .swatch {
@@ -43,75 +35,43 @@
   filter: var(--chart-tooltip-arrow-shadow);
 }
 
-/* Data visualization colors for tooltip indicators */
+.value {
+  font-size: var(--chart-tooltip-value-font-size);
+}
+
+/* Data visualization colors for tooltip indicators — same order as CHART_LEGACY_SERIES_COLORS */
 .item:nth-child(9n + 1) .swatch {
-  background-color: var(--viz1);
+  background-color: var(--ux-k4t5bc);
 }
 
 .item:nth-child(9n + 2) .swatch {
-  background-color: var(--viz2);
+  background-color: var(--ux-yscvvt);
 }
 
 .item:nth-child(9n + 3) .swatch {
-  background-color: var(--viz3);
+  background-color: var(--ux-3seoiy);
 }
 
 .item:nth-child(9n + 4) .swatch {
-  background-color: var(--viz4);
+  background-color: var(--ux-ifyf3f);
 }
 
 .item:nth-child(9n + 5) .swatch {
-  background-color: var(--viz5);
+  background-color: var(--ux-1c4rju4);
 }
 
 .item:nth-child(9n + 6) .swatch {
-  background-color: var(--viz6);
+  background-color: var(--ux-1qsbael);
 }
 
 .item:nth-child(9n + 7) .swatch {
-  background-color: var(--viz7);
+  background-color: var(--ux-vsd31q);
 }
 
 .item:nth-child(9n + 8) .swatch {
-  background-color: var(--viz8);
+  background-color: var(--ux-1afwtm7);
 }
 
 .item:nth-child(9n + 9) .swatch {
-  background-color: var(--viz9);
-}
-
-.viz1 {
-  background-color: var(--viz1);
-}
-
-.viz2 {
-  background-color: var(--viz2);
-}
-
-.viz3 {
-  background-color: var(--viz3);
-}
-
-.viz4 {
-  background-color: var(--viz4);
-}
-
-.viz5 {
-  background-color: var(--viz5);
-}
-
-.viz6 {
-  background-color: var(--viz6);
-}
-
-.viz7 {
-  background-color: var(--viz7);
-}
-
-.viz8 {
-  background-color: var(--viz8);
-}
-
-.viz9 {
-  background-color: var(--viz9);
+  background-color: var(--ux-3uv4tc);
 }

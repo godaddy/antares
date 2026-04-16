@@ -18,7 +18,7 @@ export function ZeroIncludedExample(props: Partial<LineChartProps>) {
       yLabels={true}
       xZero={true}
       yZero={true}
-      height={400}
+      height={500}
       aria-label="Zero included example chart"
       desc="Line chart demonstrating zero included in domain"
       {...props}

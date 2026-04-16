@@ -2,12 +2,12 @@
   --gauge-thickness: round(nearest, 4.2cqi, 2px);
   --gauge-label-widths: 25cqi;
   --gauge-gap-angle: atan2(3px, 100px);
-  --gauge-cap-fill: var(--bd-base, var(--ux-97h3vl, #d4dbe0));
-  --gauge-track-border-color: var(--bd-base, var(--ux-97h3vl, #d4dbe0));
-  --gauge-sublabel-font-size: var(--fs-2xs, var(--ux-16aixzc, 0.875rem));
-  --gauge-range-label-font-size: var(--fs-2xs, var(--ux-16aixzc, 0.875rem));
-  --gauge-sublabel-margin-top: var(--sp-sm, var(--ux-2jubes, 8px));
-  --gauge-range-label-margin-top: var(--sp-xs, var(--ux-19hwfny, 4px));
+  --gauge-cap-fill: var(--ux-97h3vl);
+  --gauge-track-border-color: var(--ux-97h3vl);
+  --gauge-sublabel-font-size: var(--ux-16aixzc);
+  --gauge-range-label-font-size: var(--ux-16aixzc);
+  --gauge-sublabel-margin-top: var(--ux-2jubes);
+  --gauge-range-label-margin-top: var(--ux-19hwfny);
 
   container-type: inline-size;
   width: 100%;
@@ -21,19 +21,19 @@
   }
 
   &[data-variant="default"] {
-    --gauge-color: var(--bg-primary, var(--ux-wikx71, #1976d2));
+    --gauge-color: var(--ux-wikx71);
   }
 
   &[data-variant="success"] {
-    --gauge-color: var(--ux-sji811, #00a63f);
+    --gauge-color: var(--ux-sji811);
   }
 
   &[data-variant="warning"] {
-    --gauge-color: var(--ux-3seoiy, #ef6c0f);
+    --gauge-color: var(--ux-3seoiy);
   }
 
   &[data-variant="critical"] {
-    --gauge-color: var(--critical, var(--ux-1b06mhh, #db1802));
+    --gauge-color: var(--ux-1novelo);
   }
 
   &[data-filled] .content::before {

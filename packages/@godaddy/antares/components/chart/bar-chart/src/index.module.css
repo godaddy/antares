@@ -1,8 +1,16 @@
 .chart {
-  --chart-canvas-text: var(--fg-base, var(--ux-1leynsm, #000000));
-  --chart-border-subtle: var(--bd-base, var(--ux-97h3vl, #e0e0e0));
-  --chart-canvas-background: var(--bg-base, var(--ux-cao06b, #ffffff));
+  --chart-canvas-text: var(--ux-1leynsm);
+  --chart-border-subtle: var(--ux-97h3vl);
+  --chart-canvas-background: var(--ux-cao06b);
   --chart-gridline-stroke-width: 1px;
+  --chart-content-gap: var(--ux-a2dzk8);
+
+  gap: var(--chart-content-gap);
+}
+
+.wrapper {
+  gap: var(--chart-content-gap);
+  overflow: hidden;
 }
 
 .chart[data-x-labels-vertical="true"] .area .axisX text {

@@ -9,10 +9,6 @@ const MIN_Y_LABEL_GAP_PX = 16;
 const MIN_X_LABEL_GAP_PX = 8;
 /** Default chart margin (px) when axis dimensions are unknown. */
 const DEFAULT_MARGIN_PX = 50;
-/** Padding added to axis bbox for margin calculation (px). */
-const AXIS_PADDING_PX = 8;
-/** Multiplier for bottom axis padding (axis height + padding on both sides). */
-const BOTTOM_PADDING_MULTIPLIER = 2;
 /** Debounce time for parent size observer (ms). */
 const RESIZE_DEBOUNCE_MS = 150;
 
@@ -27,8 +23,8 @@ function getChartMinHeight(yAxisElement: Element): number {
   let totalLabelHeight = 0;
   let labelsCount = 0;
 
-  Array.from(yAxisElement.querySelectorAll('g.visx-group')).forEach(function getDimensions(g) {
-    totalLabelHeight += g.getBoundingClientRect().height;
+  Array.from(yAxisElement.querySelectorAll<SVGGraphicsElement>('g.visx-group')).forEach(function getDimensions(g) {
+    totalLabelHeight += g.getBBox().height;
     labelsCount++;
   });
 
@@ -52,9 +48,9 @@ function getXAxisLabelMetrics(xAxisElement: Element): {
   let labelsCount = 0;
   let maxLabelHeight = 0;
 
-  Array.from(xAxisElement.querySelectorAll('g.visx-group')).forEach(function getDimensions(g) {
-    const width = g.getBoundingClientRect().width;
-    const height = g.getBoundingClientRect().height;
+  Array.from(xAxisElement.querySelectorAll<SVGGraphicsElement>('g.visx-group')).forEach(function getDimensions(g) {
+    const width = g.getBBox().width;
+    const height = g.getBBox().height;
 
     if (height > maxLabelHeight) {
       maxLabelHeight = height;
@@ -93,7 +89,7 @@ function getChartMinWidth(xAxisElement: Element) {
  * @returns Left margin in px
  */
 function getLeftMargin(yAxisElement: SVGGraphicsElement | null): number {
-  return Math.max((yAxisElement?.getBBox().width ?? 0) + AXIS_PADDING_PX, DEFAULT_MARGIN_PX);
+  return yAxisElement?.getBBox().width ?? 0;
 }
 
 /**
@@ -103,10 +99,7 @@ function getLeftMargin(yAxisElement: SVGGraphicsElement | null): number {
  * @returns Bottom margin in px
  */
 function getBottomMargin(xAxisElement: SVGGraphicsElement | null): number {
-  return Math.max(
-    (xAxisElement?.getBBox().height ?? 0) + AXIS_PADDING_PX * BOTTOM_PADDING_MULTIPLIER,
-    DEFAULT_MARGIN_PX
-  );
+  return xAxisElement?.getBBox().height ?? 0;
 }
 
 /** Axis-derived layout state updated by MutationObserver and ResizeObserver per axis. */
@@ -122,8 +115,8 @@ const INITIAL_AXIS_STATE: AxisState = {
   margin: {
     top: DEFAULT_MARGIN_PX,
     right: DEFAULT_MARGIN_PX,
-    bottom: DEFAULT_MARGIN_PX,
-    left: DEFAULT_MARGIN_PX
+    bottom: 0,
+    left: 0
   },
   minHeight: 0,
   minXAxisWidthHorizontal: 0,

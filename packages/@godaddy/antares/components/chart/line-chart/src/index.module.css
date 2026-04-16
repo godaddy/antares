@@ -1,9 +1,16 @@
 .chart {
-  --chart-canvas-text: var(--fg-base, var(--ux-1leynsm, #000000));
-  --chart-border-subtle: var(--bd-base, var(--ux-97h3vl, #d4dbe0));
-  --chart-canvas-background: var(--bg-base, var(--ux-cao06b, #ffffff));
-  --chart-gridline-stroke-width: 2px;
+  --chart-font-family: var(--ux-1067ph9);
+  --chart-canvas-text: var(--ux-1leynsm);
+  --chart-canvas-background: var(--ux-cao06b);
+  --chart-gridline-stroke-width: 1;
+  --chart-grid-color: var(--ux-97h3vl);
+  --chart-content-gap: var(--ux-a2dzk8);
+  --chart-label-fill: var(--ux-145pjib);
+  --chart-label-font-size: var(--ux-1s0t9v0);
+  --chart-baseline-color: var(--ux-by6mab);
+  --chart-baseline-stroke-width: 2;
 
+  gap: var(--chart-content-gap);
   width: var(--chart-width, 100%);
   height: var(--chart-height, 100%);
 }
@@ -11,8 +18,8 @@
 /* Baseline enabled */
 .chart[data-x-baseline="true"] .axisX .baseline,
 .chart[data-y-baseline="true"] .axisY .baseline {
-  stroke: var(--chart-canvas-text);
-  stroke-width: 1px;
+  stroke: var(--chart-baseline-color);
+  stroke-width: var(--chart-baseline-stroke-width);
 }
 
 /* Labels: default (hidden) */
@@ -28,12 +35,6 @@
   display: block;
 }
 
-/* Labels vertical (X-axis) */
-.chart[data-x-labels-vertical="true"] .area .axisX text {
-  writing-mode: sideways-lr;
-  text-anchor: end;
-}
-
 /* First gridline overlapping axis: hide when baseline shown */
 .chart[data-x-baseline="true"] .area .rows line:first-of-type,
 .chart[data-y-baseline="true"] .area .columns line:first-of-type {
@@ -41,13 +42,25 @@
 }
 
 /* Tick lines */
+.chart .axisX .tickMark line,
+.chart .axisY .tickMark line {
+  stroke: transparent;
+}
 .chart[data-x-tick-marks="true"] .axisX .tickMark line,
 .chart[data-y-tick-marks="true"] .axisY .tickMark line {
-  stroke: var(--chart-border-subtle);
+  stroke: var(--chart-grid-color);
+  stroke-width: var(--chart-gridline-stroke-width);
+}
+
+/* Gridlines */
+.chart[data-x-gridlines="true"] .area .rows line,
+.chart[data-y-gridlines="true"] .area .columns line {
+  stroke: var(--chart-grid-color);
   stroke-width: var(--chart-gridline-stroke-width);
 }
 
 .wrapper {
+  gap: var(--chart-content-gap);
   overflow: hidden;
 }
 

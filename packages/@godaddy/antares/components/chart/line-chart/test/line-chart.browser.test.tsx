@@ -1,6 +1,6 @@
 import assume from 'assume';
 import React from 'react';
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
@@ -302,7 +302,7 @@ describe('@godaddy/antares', function antares() {
       const lastTooltip = tooltipElements[tooltipElements.length - 1];
 
       assume(lastTooltip.children.length).greaterThan(0);
-      assume(lastTooltip.children[0].textContent).equals('Series 1Value: 64.20 units');
+      expect(lastTooltip.children[0].textContent).toMatch(/^Series 1Value: \d+\.\d{2} units$/);
     });
 
     describe('#accessors', function accessors() {

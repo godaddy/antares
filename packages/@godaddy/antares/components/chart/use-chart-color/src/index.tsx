@@ -13,11 +13,23 @@ import {
 const canUseDOM = typeof window !== 'undefined';
 const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
 
-const CHART_COLOR_COUNT = 9;
-const VARIABLE_PREFIX = '--viz';
+/** Legacy palette ids — figureColor0–8 (data visualization) order in legacy-tokens.css */
+export const CHART_LEGACY_SERIES_COLORS = [
+  'var(--ux-k4t5bc)',
+  'var(--ux-yscvvt)',
+  'var(--ux-3seoiy)',
+  'var(--ux-ifyf3f)',
+  'var(--ux-1c4rju4)',
+  'var(--ux-1qsbael)',
+  'var(--ux-vsd31q)',
+  'var(--ux-1afwtm7)',
+  'var(--ux-3uv4tc)'
+] as const;
+
+const CHART_COLOR_COUNT = CHART_LEGACY_SERIES_COLORS.length;
 
 function chartColorForIndex(index: number): string {
-  return `var(${VARIABLE_PREFIX}${(index % CHART_COLOR_COUNT) + 1})`;
+  return CHART_LEGACY_SERIES_COLORS[index % CHART_COLOR_COUNT] as string;
 }
 
 interface ChartColorContextValue {
@@ -65,7 +77,8 @@ export function ChartColorProvider(props: ChartColorProviderProps) {
 }
 
 /**
- * Returns the chart color CSS variable for this component. The index is
+ * Returns `var(--ux-<id>)` for this component (legacy palette; no `variables.css` `--viz*`, no literal fallback).
+ * The index is
  * assigned when the component mounts (in an effect), so allocation is safe
  * under React concurrent rendering and StrictMode. Same component instance
  * always receives the same color. Wrap the tree with ChartColorProvider.

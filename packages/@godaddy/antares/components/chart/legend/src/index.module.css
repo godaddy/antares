@@ -1,83 +1,40 @@
 .root {
-  --legend-font-size: var(--fs-sm, var(--ux-1s0t9v0, 0.875rem));
-  --legend-label-line-height: var(--lh-heading, var(--ux-1w31hux, 1.25));
-  --legend-gap-root: var(--sp-sm, var(--ux-2jubes, 8px));
-  --legend-gap-items: var(--sp-lg, var(--ux-1pfsknb, 24px));
-  --legend-gap-items-stack: var(--sp-sm, var(--ux-2jubes, 8px));
-  --legend-gap-item-inline: var(--sp-sm, var(--ux-2jubes, 8px));
-
-  --legend-viz1: var(--viz1, var(--ux-wikx71, #1976d2));
-  --legend-viz2: var(--viz2, var(--ux-k4t5bc, #15a4ab));
-  --legend-viz3: var(--viz3, var(--ux-3seoiy, #ef6c0f));
-  --legend-viz4: var(--viz4, var(--ux-1c4rju4, #744bc4));
-  --legend-viz5: var(--viz5, var(--ux-1b06mhh, #dd4a68));
-  --legend-viz6: var(--viz6, var(--ux-99lo9, #0c8a8f));
-  --legend-viz7: var(--viz7, var(--ux-iievdt, #565656));
-  --legend-viz8: var(--viz8, var(--ux-3uv4tc, #462a72));
-  --legend-viz9: var(--viz9, var(--ux-yscvvt, #145fa9));
+  --legend-item-font-size: var(--ux-1s0t9v0);
+  --legend-item-line-height: var(--ux-1w31hux);
+  --legend-label-font-size: calc(var(--ux-a2dzk8) - 0.25px);
+  --legend-label-line-height: var(--ux-hm1ty7);
+  --legend-gap-root: var(--ux-2jubes);
+  --legend-gap-items: var(--ux-1pfsknb);
+  --legend-gap-items-stack: var(--ux-2jubes);
+  --legend-gap-item-inline: var(--ux-2jubes);
 
   &[data-size="sm"] {
-    --legend-font-size: var(--fs-xs, var(--ux-16aixzc, 0.875rem));
-  }
-
-  &[data-size="md"] {
-    --legend-font-size: var(--fs-sm, var(--ux-1s0t9v0, 0.875rem));
+    --legend-item-font-size: calc(var(--ux-2lqd62) + 0.44px);
+    --legend-label-font-size: var(--ux-1s0t9v0);
   }
 
   &[data-size="lg"] {
-    --legend-font-size: var(--fs-md, var(--ux-vvspv2, 1rem));
+    --legend-item-font-size: calc(var(--ux-a2dzk8) - 0.25px);
   }
 
   &[data-size="xl"] {
-    --legend-font-size: var(--fs-lg, var(--ux-xwz0yz, 1.125rem));
+    --legend-item-font-size: var(--ux-xwz0yz);
+    --legend-label-font-size: var(--ux-xwz0yz);
   }
+}
 
-  font-size: var(--legend-font-size);
+.item {
+  font-size: var(--legend-item-font-size);
+  line-height: var(--legend-item-line-height);
 }
 
 .label {
   font-weight: bold;
+  font-size: var(--legend-label-font-size);
   line-height: var(--legend-label-line-height);
 }
 
 .root .swatch {
   width: 1em;
   height: 1em;
-}
-
-/* Data visualization colors for legend indicators (wrap every 9 items) */
-.item:nth-child(9n + 1) .swatch {
-  background-color: var(--legend-viz1);
-}
-
-.item:nth-child(9n + 2) .swatch {
-  background-color: var(--legend-viz2);
-}
-
-.item:nth-child(9n + 3) .swatch {
-  background-color: var(--legend-viz3);
-}
-
-.item:nth-child(9n + 4) .swatch {
-  background-color: var(--legend-viz4);
-}
-
-.item:nth-child(9n + 5) .swatch {
-  background-color: var(--legend-viz5);
-}
-
-.item:nth-child(9n + 6) .swatch {
-  background-color: var(--legend-viz6);
-}
-
-.item:nth-child(9n + 7) .swatch {
-  background-color: var(--legend-viz7);
-}
-
-.item:nth-child(9n + 8) .swatch {
-  background-color: var(--legend-viz8);
-}
-
-.item:nth-child(9n + 9) .swatch {
-  background-color: var(--legend-viz9);
 }

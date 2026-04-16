@@ -137,7 +137,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('zero-included screenshot', async function zeroIncluded() {
-        const { container } = await renderExampleAndWait(<ZeroIncludedExample />);
+        const { container } = await renderExampleAndWait(<ZeroIncludedExample />, 800, 500);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('zero-included');
@@ -231,7 +231,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('browser-usage screenshot', async function browserUsage() {
-        const { container, locator } = await renderExampleAndWait(<BrowserUsageExample />);
+        const { container, locator } = await renderExampleAndWait(<BrowserUsageExample />, 800, 600);
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 120, y: 50 } });

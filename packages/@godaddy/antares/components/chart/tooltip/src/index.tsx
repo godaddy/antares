@@ -91,15 +91,22 @@ export function Tooltip<T extends object = DataPoint>(
 
   return (
     <Box padding="md" rounding="2xl" elevation="raised" className={cx(styles.tooltip, className)}>
-      <Flex role="list" aria-label="Tooltip data" direction="column" gap="md">
+      <Flex role="list" aria-label="Tooltip data" direction="column" gap="sm">
         {seriesData.map(function renderSeriesItem(item) {
           return (
-            <Flex key={item.id} role="listitem" justifyContent="space-between" gap="xl" className={styles.item}>
-              <Flex alignItems="center" gap="md">
+            <Flex
+              key={item.id}
+              role="listitem"
+              justifyContent="space-between"
+              gap="md"
+              className={styles.item}
+              display="inline-flex"
+            >
+              <Flex alignItems="center" gap="sm">
                 <Box className={styles.swatch} rounding="full" />
                 <Text>{item.name}</Text>
               </Flex>
-              <Text>{item.value}</Text>
+              <Text className={styles.value}>{item.value}</Text>
             </Flex>
           );
         })}

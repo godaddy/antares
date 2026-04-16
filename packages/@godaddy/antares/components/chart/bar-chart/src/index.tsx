@@ -440,7 +440,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
         }}
       >
         {yAxisTitle && <AxisTitle axis="y" title={yAxisTitle} dir={rtl ? 'rtl' : 'ltr'} />}
-        <Flex direction="column" flex={1} style={{ overflow: 'hidden' }}>
+        <Flex direction="column" flex={1} className={styles.wrapper}>
           {effectiveLegendPosition === 'top' && <Legend series={series} alignSelf="center" />}
           <Box ref={parentRef} dir={rtl ? 'rtl' : 'ltr'} className={styles.area}>
             {series && chartWidth > 0 && chartHeight > 0 && (
