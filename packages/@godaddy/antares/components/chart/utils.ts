@@ -1,5 +1,8 @@
 import type { DataPoint, LegendPosition } from './types.ts';
 
+/** Target arc seam gap in CSS pixels (gauge segmented arc, donut pad angle). */
+const CHART_ARC_GAP_PX = 3;
+
 /**
  * Resolves effective legend position from prop and series count.
  * When the prop is omitted, shows legend at bottom when there is more than one series; otherwise hidden.
@@ -44,4 +47,13 @@ export function yAccessor(d: DataPoint): number | string | Date | null {
  */
 export function xAccessor(d: DataPoint): number | string | Date {
   return d.x;
+}
+
+/**
+ * Angular gap in degrees between segmented gauge slices at the given outer radius.
+ * Matches `atan2(CHART_ARC_GAP_PX, radius)` in CSS variable form for the gauge chart.
+ */
+export function chartArcGapAngleDeg(outerRadiusPx: number): number {
+  const r = Math.max(outerRadiusPx, 1);
+  return (Math.atan2(CHART_ARC_GAP_PX, r) * 180) / Math.PI;
 }

@@ -88,8 +88,7 @@ You can listen to events like `onChange`, `onPrev`, or `onNext`.
 
 ### RTL Direction
 
-By default, the carousel is rendered in the direction of the document, which is left to right in most cases.
-You can set the `dir` prop to `rtl` to render the carousel from right to left.
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
 
 <Story of={Stories.RTLDirection} inline />
 <Source language="tsx" code={SourceRTLDirection} />

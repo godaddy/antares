@@ -1,8 +1,29 @@
-.item {
+.root {
   font-size: var(--fs-sm);
+
+  &[data-size="sm"] {
+    font-size: var(--fs-xs);
+  }
+
+  &[data-size="md"] {
+    font-size: var(--fs-sm);
+  }
+
+  &[data-size="lg"] {
+    font-size: var(--fs-md);
+  }
+
+  &[data-size="xl"] {
+    font-size: var(--fs-lg);
+  }
 }
 
-.swatch {
+.label {
+  font-weight: bold;
+  line-height: var(--lh-heading);
+}
+
+.root .swatch {
   width: 1em;
   height: 1em;
 }
