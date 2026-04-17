@@ -75,11 +75,10 @@ export function SegmentedController(props: SegmentedControllerProps) {
       selectionMode="single"
       isDisabled={isDisabled}
       selectedKeys={value ? [value] : undefined}
-      rounding="full"
       data-size={size}
       className={cx(styles.container, className)}
     >
-      <Flex ref={containerRef} gap="xs" padding="xs" rounding="full" className={styles.content}>
+      <Flex ref={containerRef} gap="xs" padding="xs" className={styles.content}>
         {children}
       </Flex>
 
@@ -141,13 +140,12 @@ export function SegmentedControllerItem(props: SegmentedControllerItemProps) {
       as={RACToggleButton}
       {...rest}
       id={value}
-      rounding="full"
       alignItems="center"
       gap="xs"
       onFocus={handleFocus}
       className={cx(styles.item, className)}
     >
-      <Flex as={RACSelectionIndicator} rounding="full" className={styles.indicator} />
+      <Flex as={RACSelectionIndicator} className={styles.indicator} />
       {children}
     </Flex>
   );

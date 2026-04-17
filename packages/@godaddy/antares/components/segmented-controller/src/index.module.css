@@ -1,83 +1,105 @@
 .container {
-  background: color-mix(in oklch, var(--fg-base), transparent 95%);
-}
+  --controller-surface-bg: var(--color-surface-background-passive, var(--ux-l7zq7p, #ffffff));
+  --controller-item-bg-selected: var(--color-action-background-selected, var(--ux-gdy377, #e0e0e0));
+  --controller-item-fg-selected: var(--color-action-foreground-selected, var(--ux-k4fkva, #000));
+  --controller-item-border-selected: var(--color-action-border-selected, var(--ux-187j9dd, transparent));
+  --controller-font-size-sm: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
+  --controller-font-size-md: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
+  --controller-font-size-lg: var(--font-body-size-lg, calc(var(--ux-cxbe8g, 16px) * 1.125));
+  --controller-space-005: var(--space-005, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+  --controller-space-010: var(--space-010, calc(var(--ux-1sbfig8, 0.25rem) * 1));
+  --controller-space-015: var(--space-015, calc(var(--ux-1sbfig8, 0.25rem) * 1.5));
+  --controller-space-020: var(--space-020, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+  --controller-space-025: var(--space-025, calc(var(--ux-1sbfig8, 0.25rem) * 2.5));
+  --controller-space-030: var(--space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+  --controller-space-040: var(--space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));
 
-.container:dir(rtl) {
-  --icon-direction: scaleX(-1);
-}
+  background: var(--controller-surface-bg);
 
-.container[data-size='sm'] .item {
-  font-size: var(--fs-sm);
-  padding-inline: var(--sp-md);
-  padding-block: var(--sp-xs);
-}
-
-.container[data-size='md'] .item {
-  font-size: var(--fs-md);
-  padding-inline: var(--sp-lg);
-  padding-block: var(--sp-sm);
-}
-
-.container[data-size='lg'] .item {
-  font-size: var(--fs-md);
-  padding-inline: var(--sp-lg);
-  padding-block: var(--sp-md);
-}
-
-.content {
-  background: transparent;
-  overflow-x: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
+  &:where([data-size="sm"]) {
+    --inner-radius: calc(var(--controller-space-015) * 2);
+    border-radius: calc(var(--inner-radius) + var(--controller-space-015));
   }
-}
+  &:where([data-size="md"]) {
+    --inner-radius: calc(var(--controller-space-030) * 2);
+    border-radius: calc(var(--inner-radius) + var(--controller-space-030));
+  }
+  &:where([data-size="lg"]) {
+    --inner-radius: calc(var(--controller-space-040) * 2);
+    border-radius: calc(var(--inner-radius) + var(--controller-space-040));
+  }
 
-.item {
-  position: relative;
-  z-index: 1;
-  background: transparent;
-  border: 1px solid transparent;
-  scroll-margin-inline: var(--sp-xs);
-  transform: translateZ(0);
-}
+  :where(:dir(rtl)) {
+    --icon-direction: scaleX(-1);
+  }
 
-.item[data-selected] {
-  z-index: 0;
-}
+  :where(.item) {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--inner-radius);
+    scroll-margin-inline: var(--controller-space-005);
+    transform: translateZ(0);
 
-.item[data-hovered]:not([data-disabled]) {
-  border-color: color-mix(in oklch, var(--bd-selected), white 12%);
-}
+    &:where([data-selected]) {
+      z-index: 0;
+    }
+    &:where([data-disabled]) {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+  :where([data-size="sm"] .item) {
+    font-size: var(--controller-font-size-sm);
+    padding-inline: var(--controller-space-015);
+    padding-block: var(--controller-space-005);
+  }
+  :where([data-size="md"] .item) {
+    font-size: var(--controller-font-size-md);
+    padding-inline: var(--controller-space-030);
+    padding-block: var(--controller-space-015);
+  }
+  :where([data-size="lg"] .item) {
+    font-size: var(--controller-font-size-lg);
+    padding-inline: var(--controller-space-040);
+    padding-block: var(--controller-space-025);
+  }
 
-.item[data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+  :where(.content) {
+    background: transparent;
+    overflow-x: auto;
+    scrollbar-width: none;
 
-.scrollButtons {
-  background: transparent;
-}
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 
-.scrollBtn {
-  background: transparent;
-  transform: var(--icon-direction);
-}
+  :where(.scrollButtons) {
+    background: transparent;
+  }
 
-.indicator {
-  background: var(--bg-base);
-  outline: 1px solid var(--bd-selected);
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition-property: translate, width;
-  transition-duration: 200ms;
+  :where(.scrollBtn) {
+    background: transparent;
+    transform: var(--icon-direction);
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
+  :where(.indicator) {
+    background: var(--controller-item-bg-selected);
+    border: 1px solid var(--controller-item-border-selected);
+    border-radius: var(--inner-radius);
+    position: absolute;
+    z-index: -1;
+    top: -1px;
+    left: -1px;
+    width: 100%;
+    height: 100%;
+    transition-property: translate, width;
+    transition-duration: 200ms;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 }
