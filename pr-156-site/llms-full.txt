@@ -213,6 +213,98 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <Source language="tsx" code="SourceRTLDirection" />
 
 
+# FieldFrame
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
+
+Features [#features]
+
+* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
+* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
+* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
+* **Required indicator**: Shows asterisk next to label when the field is required
+* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
+* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
+
+Usage [#usage]
+
+Props [#props]
+
+FieldFrame accepts the following props:
+
+<PropTable />
+
+Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
+
+Component composition [#component-composition]
+
+Internal structure [#internal-structure]
+
+FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
+
+```text
+Provider
+├── Label                     ← when label prop
+├── Group.frame               ← border, focus/invalid/disabled styling
+│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
+├── FieldError                ← when errorMessage prop
+└── Text[slot=description]    ← when description prop
+```
+
+The following list describes the internal React Aria components used to compose FieldFrame:
+
+* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
+* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
+* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
+* **Text** (optional) — Description block rendered when `description` is provided.
+
+Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
+
+States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
+
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
+| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
+
+Examples [#examples]
+
+Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
+
+
 # Checkbox
 
 
@@ -513,98 +605,6 @@ Group Organization [#group-organization]
 * Use logical ordering (alphabetical, frequency of use, or importance)
 * Consider using CheckboxGroup for related options, even if there are only 2-3
 * Provide a group label that clearly describes the choice being made
-
-
-# FieldFrame
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
-
-Features [#features]
-
-* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
-* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
-* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
-* **Required indicator**: Shows asterisk next to label when the field is required
-* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
-* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
-
-Usage [#usage]
-
-Props [#props]
-
-FieldFrame accepts the following props:
-
-<PropTable />
-
-Basic example [#basic-example]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
-
-Component composition [#component-composition]
-
-Internal structure [#internal-structure]
-
-FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
-
-```text
-Provider
-├── Label                     ← when label prop
-├── Group.frame               ← border, focus/invalid/disabled styling
-│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
-├── FieldError                ← when errorMessage prop
-└── Text[slot=description]    ← when description prop
-```
-
-The following list describes the internal React Aria components used to compose FieldFrame:
-
-* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
-* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
-* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
-* **Text** (optional) — Description block rendered when `description` is provided.
-
-Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
-
-States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
-
-| State                                                                                    | CSS Selector           |
-| ---------------------------------------------------------------------------------------- | ---------------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
-| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
-| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
-| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
-
-Examples [#examples]
-
-Leading control [#leading-control]
-
-<Story of="Stories.LeadingControl" />
-
-Trailing control [#trailing-control]
-
-<Story of="Stories.TrailingControl" />
-
-<Source language="tsx" code="SourceTrailingControl" />
-
-Icon accessories [#icon-accessories]
-
-<Story of="Stories.IconAccessories" />
-
-<Source language="tsx" code="SourceIconAccessories" />
 
 
 # Icon
@@ -1362,125 +1362,6 @@ Best practices [#best-practices]
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
-# Pagination
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Default Active Index [#default-active-index]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="Stories.DefaultActive" />
-
-<Source language="tsx" code="SourceDefaultActive" />
-
-With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="Stories.WithLimit" />
-
-<Source language="tsx" code="SourceWithLimit" />
-
-onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="Stories.OnChange" />
-
-<Source language="tsx" code="SourceOnChange" />
-
-
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
 # Radio
 
 
@@ -1705,6 +1586,186 @@ Always provide clear error messages:
 ```
 
 
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+
+# SegmentedController
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+Best Practices [#best-practices]
+
+When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
+
+
 # Select
 
 
@@ -1859,130 +1920,6 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 ```
 
 
-# SegmentedController
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="Stories.IconOnly" />
-
-<Source language="tsx" code="SourceIconOnly" />
-
-Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="Stories.Overflow" />
-
-<Source language="tsx" code="SourceOverflow" />
-
-RTL Direction [#rtl-direction]
-
-The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-Best Practices [#best-practices]
-
-When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
-
-
 # Text
 
 
@@ -2037,6 +1974,69 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 * `stable` is commonly used for editable text, such as textareas.
 
 <Source language="tsx" code="WrapExample" />
+
+
+# Pagination
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Default Active Index [#default-active-index]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="Stories.DefaultActive" />
+
+<Source language="tsx" code="SourceDefaultActive" />
+
+With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="Stories.WithLimit" />
+
+<Source language="tsx" code="SourceWithLimit" />
+
+onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="Stories.OnChange" />
+
+<Source language="tsx" code="SourceOnChange" />
 
 
 # TextField
@@ -3072,6 +3072,37 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # Tooltip
 
 
@@ -3137,37 +3168,6 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Source language="tsx" code="SourceArrow" />
 
 <Story of="Stories.Arrow" />
-
-
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
 
 
 # useChartColor
