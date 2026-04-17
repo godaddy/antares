@@ -1,19 +1,16 @@
-import type { Optional, SeriesConfig } from '../../types.ts';
-import { chartSegmentGapPadAngle } from '../../utils.ts';
-import { chartColorForIndex } from '#components/chart/use-chart-color';
-import { useNormalizedSeries } from '#components/chart/use-normalized-series';
-import { Legend } from '#components/chart/legend';
-import { Flex, FlexProps } from '#components/layout/flex';
-import { Box } from '#components/layout/box';
-import {
-  Tooltip as RACTooltip,
-  TooltipTrigger as RACTooltipTrigger,
-  OverlayArrow as RACOverlayArrow
-} from 'react-aria-components';
-import { Text } from '#components/text';
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
-import { useCallback, useLayoutEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
+import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
+import { Legend } from '#components/chart/legend';
+import { chartColorForIndex } from '#components/chart/use-chart-color';
+import { useNormalizedSeries } from '#components/chart/use-normalized-series';
+import { Box } from '#components/layout/box';
+import { Flex, FlexProps } from '#components/layout/flex';
+import { Text } from '#components/text';
+import { Tooltip } from '#components/tooltip';
+import type { Optional, SeriesConfig } from '../../types.ts';
+import { chartSegmentGapPadAngle } from '../../utils.ts';
 import styles from './index.module.css';
 
 /**
@@ -107,7 +104,7 @@ export function DonutChart(props: DonutChartProps) {
   const [tooltipAnchorOffset, setTooltipAnchorOffset] = useState({ left: 0, top: 0 });
 
   /** Measure the chart wrapper so the square SVG uses the correct side length. */
-  useLayoutEffect(function measureChartWrap() {
+  useEffect(function measureChartWrap() {
     const node = chartWrapRef.current;
     if (!node) {
       return undefined;
@@ -328,15 +325,7 @@ export function DonutChart(props: DonutChartProps) {
             {subLabel && <Text className={styles.subLabel}>{subLabel}</Text>}
           </Flex>
         </Box>
-        <Flex
-          as={RACTooltip}
-          triggerRef={tooltipAnchorRef}
-          placement="top"
-          offset={tooltipPlacementEpsilon}
-          className={styles.tooltip}
-          padding="md"
-          rounding="md"
-        >
+        <Tooltip triggerRef={tooltipAnchorRef} offset={tooltipPlacementEpsilon} className={styles.tooltip}>
           <Flex role="list" aria-label="Tooltip data" direction="column" gap="md">
             {tooltipSlices.map(function renderTooltipSlice(slice) {
               return (
@@ -348,7 +337,7 @@ export function DonutChart(props: DonutChartProps) {
                   gap="xl"
                   className={styles.item}
                 >
-                  <Flex alignItems="center" gap="md" style={{ minWidth: 0 }}>
+                  <Flex alignItems="center" gap="md">
                     <Box
                       className={styles.swatch}
                       rounding="full"
@@ -364,8 +353,7 @@ export function DonutChart(props: DonutChartProps) {
               );
             })}
           </Flex>
-          <RACOverlayArrow aria-hidden="true" className={styles.arrow} />
-        </Flex>
+        </Tooltip>
       </RACTooltipTrigger>
       {legendPlacement && (
         <Legend
