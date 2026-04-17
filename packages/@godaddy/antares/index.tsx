@@ -67,6 +67,8 @@ export { Pagination, type PaginationProps } from '#components/pagination';
 
 export { LineChart, type LineChartProps } from '#components/chart/line-chart';
 
+export { GaugeChart, type GaugeChartProps } from '#components/chart/gauge-chart';
+
 export {
   SegmentedController,
   SegmentedControllerItem,

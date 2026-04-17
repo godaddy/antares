@@ -285,10 +285,10 @@ describe('@godaddy/antares', function antares() {
       await user.click(electronics);
       assume(document.activeElement).equals(electronics.element());
 
-      await user.keyboard('{ArrowRight}');
+      await user.keyboard('{ArrowLeft}');
       assume(document.activeElement).equals(clothing.element());
 
-      await user.keyboard('{ArrowLeft}');
+      await user.keyboard('{ArrowRight}');
       assume(document.activeElement).equals(electronics.element());
     });
 

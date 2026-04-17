@@ -7,6 +7,9 @@ import * as Stories from './legend.stories.tsx';
 
 import SourceSingleSeries from './examples/single-series.tsx?raw';
 import SourceMultiSeries from './examples/multi-series.tsx?raw';
+import SourceWithLabel from './examples/with-label.tsx?raw';
+import SourceVertical from './examples/vertical.tsx?raw';
+import SourceLegendSizeChart from './examples/legend-size-chart-example.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -35,3 +38,24 @@ Legend with multiple series showing theme colors and automatic spacing. Each ser
 
 <Source language='tsx' code={SourceMultiSeries} />
 <Story of={Stories.MultipleSeries} inline />
+
+### With label
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language='tsx' code={SourceWithLabel} />
+<Story of={Stories.WithLabel} inline />
+
+### Vertical orientation
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language='tsx' code={SourceVertical} />
+<Story of={Stories.Vertical} inline />
+
+### Legend size chart example
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language='tsx' code={SourceLegendSizeChart} />
+<Story of={Stories.LegendSizeChart} inline />

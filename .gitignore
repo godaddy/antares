@@ -60,6 +60,8 @@ packages/dev/**/test/__screenshots__/
 # folder dump folder of all the compiled assets.
 .vite-node
 
+.vitest-attachments/
+
 # Claude
 .claude
 

@@ -72,8 +72,7 @@ When the number of options exceeds the width of the container, the component aut
 
 ### RTL Direction
 
-By default, the segmented controller is rendered in the direction of the document, which is left to right in most cases.
-You can set the `dir` prop to `rtl` to render the segmented controller from right to left.
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
 
 <Story of={Stories.RTL} inline />
 <Source language="tsx" code={SourceRTL} />
