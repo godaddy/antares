@@ -34,7 +34,7 @@ export const browser = {
       provider: playwright(),
       headless: true,
       enabled: true,
-      screenshotFailures: true
+      screenshotFailures: false
     }
   }
 } satisfies UserProjectConfigExport;
