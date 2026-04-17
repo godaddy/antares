@@ -206,8 +206,7 @@ You can listen to events like `onChange`, `onPrev`, or `onNext`.
 
 RTL Direction [#rtl-direction]
 
-By default, the carousel is rendered in the direction of the document, which is left to right in most cases.
-You can set the `dir` prop to `rtl` to render the carousel from right to left.
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
 
 <Story of="Stories.RTLDirection" />
 
@@ -1426,6 +1425,62 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Source language="tsx" code="SourceOnChange" />
 
 
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+
 # Radio
 
 
@@ -1650,62 +1705,6 @@ Always provide clear error messages:
 ```
 
 
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
 # SegmentedController
 
 
@@ -1776,8 +1775,7 @@ When the number of options exceeds the width of the container, the component aut
 
 RTL Direction [#rtl-direction]
 
-By default, the segmented controller is rendered in the direction of the document, which is left to right in most cases.
-You can set the `dir` prop to `rtl` to render the segmented controller from right to left.
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
 
 <Story of="Stories.RTL" />
 
@@ -2222,52 +2220,13 @@ Y-axis title with default orientation.
 
 <Source language="tsx" code="SourceYAxis" />
 
-RTL (Right-to-Left) [#rtl-right-to-left]
+RTL [#rtl]
 
-Optional `dir` prop, defaults to locale. RTL only affects the y-axis.
+The axis title follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings, so the title stays aligned with the page.
 
 <Story of="Stories.RTLDirection" />
 
 <Source language="tsx" code="SourceRTLDirection" />
-
-
-# Legend
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `Legend` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic legend with a single series showing the default styling and layout.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
 
 
 # Bar Chart
@@ -2504,13 +2463,6 @@ Whether to show tooltips on hover.
 
 * **Default**: `true`
 
-`rtl` [#rtl]
-
-Enable right-to-left layout for international audiences. When enabled, the y-axis moves to the right and bars/scales are mirrored.
-
-* **Default**: `false`
-* **Status**: *In active development*
-
 Basic Usage [#basic-usage]
 
 Single Series [#single-series]
@@ -2562,7 +2514,7 @@ In this example:
 
 RTL Support [#rtl-support]
 
-Full right-to-left support for international audiences:
+The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes, bars, and labels accordingly.
 
 <Source language="tsx" code="SourceRTL" />
 
@@ -2667,7 +2619,172 @@ All examples can be found in the Storybook interface:
 * **Horizontal Single Series**: Horizontal orientation
 * **Horizontal Multi-Series**: Grouped horizontal bars
 * **Custom Domain**: Controlled x and y ranges
-* **RTL Multi-Series*&#x2A;: Right-to-left layout &#x2A;(in development)*
+* **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+Troubleshooting [#troubleshooting]
+
+Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
+
+
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
 
 
 # LineChart
@@ -2955,6 +3072,37 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # Tooltip
 
 
@@ -3022,35 +3170,17 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Story of="Stories.Arrow" />
 
 
-# TooltipDismissStrip
+# useNormalizedSeries
 
 
 
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
 
+Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
 
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
+```tsx
+const series = useNormalizedSeries(seriesProp);
+```
 
 
 # useChartColor
@@ -3088,19 +3218,6 @@ Multiple series each receiving the next color in sequence.
 <Source language="tsx" code="SourceMultiSeries" />
 
 <Story of="Stories.MultiSeries" />
-
-
-# useNormalizedSeries
-
-
-
-For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
-
-Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
-
-```tsx
-const series = useNormalizedSeries(seriesProp);
-```
 
 
 # Box
