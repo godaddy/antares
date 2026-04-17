@@ -5,6 +5,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { describe, it } from 'vitest';
 import assume from 'assume';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
 
 async function renderAndWait(component: React.ReactElement) {
@@ -17,9 +18,10 @@ async function renderAndWait(component: React.ReactElement) {
  * Renders the BarChart component in browser environment with provided props for testing
  *
  * @param args - Partial props to pass to the BarChart component (series has default)
+ * @param options.useRtlI18n - When true, wraps the chart in {@link RTLProvider} so `useLocale()` is RTL
  * @returns Render result with container and other utilities
  */
-async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
+async function renderBarChart(args: Partial<BarChartProps<any>> = {}, options?: { useRtlI18n?: boolean }) {
   const defaultSeries: SeriesConfig[] = [
     {
       id: 'series-1',
@@ -32,7 +34,7 @@ async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
     }
   ];
 
-  const result = await renderAndWait(
+  const chart = (
     <div style={{ width: '800px', height: '400px' }}>
       <BarChart
         xAccessor={(d: any) => d.x}
@@ -42,6 +44,8 @@ async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
       />
     </div>
   );
+
+  const result = await renderAndWait(options?.useRtlI18n ? <RTLProvider>{chart}</RTLProvider> : chart);
 
   return result;
 }
@@ -269,9 +273,9 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    describe('#rtl', function rtlProp() {
-      it('renders in RTL mode when rtl is true', async function rtlMode() {
-        const { container } = await renderBarChart({ rtl: true });
+    describe('#rtl', function rtlLocale() {
+      it('renders in RTL mode when wrapped in RTLProvider', async function rtlMode() {
+        const { container } = await renderBarChart({}, { useRtlI18n: true });
 
         const svg = container.querySelector('svg');
         assume(svg).exists();
@@ -620,7 +624,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#tabOrder', function tabOrderTests() {
       it('tabs from left to right in LTR mode', async function ltrTabOrder() {
-        const { container } = await renderBarChart({ rtl: false });
+        const { container } = await renderBarChart();
 
         const barGroups = container.querySelectorAll('g[role="group"][tabindex="0"]');
         assume(barGroups.length).equals(3);
@@ -637,7 +641,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('tabs from right to left in RTL mode', async function rtlTabOrder() {
-        const { container } = await renderBarChart({ rtl: true });
+        const { container } = await renderBarChart({}, { useRtlI18n: true });
 
         const barGroups = container.querySelectorAll('g[role="group"][tabindex="0"]');
         assume(barGroups.length).equals(3);
