@@ -213,6 +213,98 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <Source language="tsx" code="SourceRTLDirection" />
 
 
+# FieldFrame
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
+
+Features [#features]
+
+* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
+* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
+* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
+* **Required indicator**: Shows asterisk next to label when the field is required
+* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
+* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
+
+Usage [#usage]
+
+Props [#props]
+
+FieldFrame accepts the following props:
+
+<PropTable />
+
+Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
+
+Component composition [#component-composition]
+
+Internal structure [#internal-structure]
+
+FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
+
+```text
+Provider
+├── Label                     ← when label prop
+├── Group.frame               ← border, focus/invalid/disabled styling
+│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
+├── FieldError                ← when errorMessage prop
+└── Text[slot=description]    ← when description prop
+```
+
+The following list describes the internal React Aria components used to compose FieldFrame:
+
+* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
+* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
+* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
+* **Text** (optional) — Description block rendered when `description` is provided.
+
+Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
+
+States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
+
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
+| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
+
+Examples [#examples]
+
+Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
+
+
 # Checkbox
 
 
@@ -513,98 +605,6 @@ Group Organization [#group-organization]
 * Use logical ordering (alphabetical, frequency of use, or importance)
 * Consider using CheckboxGroup for related options, even if there are only 2-3
 * Provide a group label that clearly describes the choice being made
-
-
-# FieldFrame
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
-
-Features [#features]
-
-* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
-* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
-* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
-* **Required indicator**: Shows asterisk next to label when the field is required
-* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
-* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
-
-Usage [#usage]
-
-Props [#props]
-
-FieldFrame accepts the following props:
-
-<PropTable />
-
-Basic example [#basic-example]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
-
-Component composition [#component-composition]
-
-Internal structure [#internal-structure]
-
-FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
-
-```text
-Provider
-├── Label                     ← when label prop
-├── Group.frame               ← border, focus/invalid/disabled styling
-│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
-├── FieldError                ← when errorMessage prop
-└── Text[slot=description]    ← when description prop
-```
-
-The following list describes the internal React Aria components used to compose FieldFrame:
-
-* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
-* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
-* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
-* **Text** (optional) — Description block rendered when `description` is provided.
-
-Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
-
-States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
-
-| State                                                                                    | CSS Selector           |
-| ---------------------------------------------------------------------------------------- | ---------------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
-| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
-| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
-| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
-
-Examples [#examples]
-
-Leading control [#leading-control]
-
-<Story of="Stories.LeadingControl" />
-
-Trailing control [#trailing-control]
-
-<Story of="Stories.TrailingControl" />
-
-<Source language="tsx" code="SourceTrailingControl" />
-
-Icon accessories [#icon-accessories]
-
-<Story of="Stories.IconAccessories" />
-
-<Source language="tsx" code="SourceIconAccessories" />
 
 
 # Icon
@@ -2622,69 +2622,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Gauge Chart
 
 
@@ -2785,6 +2722,69 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
 
 
 # Legend
@@ -3202,6 +3202,37 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Story of="Stories.Arrow" />
 
 
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # useChartColor
 
 
@@ -3237,37 +3268,6 @@ Multiple series each receiving the next color in sequence.
 <Source language="tsx" code="SourceMultiSeries" />
 
 <Story of="Stories.MultiSeries" />
-
-
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
 
 
 # useNormalizedSeries
