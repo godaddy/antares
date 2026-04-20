@@ -141,17 +141,9 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
    */
   tooltip?: boolean;
 
-  /**
-   * Width of the chart in pixels.
-   * If omitted, the chart will automatically size to fill its container width.
-   * If provided, this value sets the container width and the chart will be responsive within it.
-   */
+  /** Outer container width (omitted = 100%) */
   width?: number;
-
-  /**
-   * Height of the chart in pixels.
-   * If omitted, defaults to 700px.
-   */
+  /** Outer container height (omitted = 100%) */
   height?: number;
 
   /**
@@ -308,18 +300,20 @@ function BarSeries<T extends object>(props: BarSeriesProps<T>) {
 export function BarChart<T extends object>(props: BarChartProps<T>) {
   const {
     orientation = 'vertical',
-    height = 700,
+    height,
     width,
-    xTickMarks = true,
-    yTickMarks = true,
+    xTickMarks,
+    yTickMarks,
     xLabelsOrientation = 'auto',
     xAccessor = defaultXAccessor,
     yAccessor = defaultYAccessor,
     series: seriesProp,
-    xGridlines = true,
-    yGridlines = true,
-    xBaseline = true,
-    yBaseline = true,
+    xGridlines,
+    yGridlines,
+    xBaseline,
+    yBaseline,
+    xLabels = true,
+    yLabels = true,
     yAxisTitle = '',
     xAxisTitle = '',
     desc,
@@ -334,6 +328,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     'aria-label': ariaLabel,
     className
   } = props;
+  console.log('props', props);
 
   const { direction } = useLocale();
   const rtl = direction === 'rtl';
@@ -428,15 +423,24 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
         direction="row"
         dir={direction}
         className={cx(styles.chart, className)}
+        data-legend-position={effectiveLegendPosition ? effectiveLegendPosition : undefined}
+        data-x-labels={xLabels ? 'true' : undefined}
+        data-y-labels={yLabels ? 'true' : undefined}
         data-x-labels-vertical={xLabelsVertical ? 'true' : undefined}
+        data-x-baseline={xBaseline ? 'true' : undefined}
+        data-y-baseline={yBaseline ? 'true' : undefined}
+        data-x-tick-marks={xTickMarks ? 'true' : undefined}
+        data-y-tick-marks={yTickMarks ? 'true' : undefined}
+        data-x-gridlines={xGridlines ? 'true' : undefined}
+        data-y-gridlines={yGridlines ? 'true' : undefined}
         style={{
-          width: width ? `${width}px` : '100%',
-          height: `${height}px`
+          ['--chart-width' as string]: width !== undefined ? `${width}px` : undefined,
+          ['--chart-height' as string]: height !== undefined ? `${height}px` : undefined
         }}
       >
         {yAxisTitle && <AxisTitle axis="y" title={yAxisTitle} />}
         <Flex direction="column" flex={1} className={styles.wrapper}>
-          {effectiveLegendPosition === 'top' && <Legend series={series} alignSelf="center" />}
+          {effectiveLegendPosition === 'top' && <Legend series={series} className={styles.legend} alignSelf="center" />}
           <Box ref={parentRef} dir={direction} className={styles.area}>
             {series && chartWidth > 0 && chartHeight > 0 && (
               <svg
@@ -450,66 +454,50 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                 {desc && <desc id="barchart-desc">{desc}</desc>}
 
                 <Group top={effectiveMargin.top} left={effectiveMargin.left}>
-                  {yGridlines && (
-                    <GridRows
-                      scale={yScale}
-                      width={innerWidth}
-                      stroke="var(--chart-border-subtle)"
-                      strokeOpacity={0.3}
-                    />
-                  )}
-                  {xGridlines && (
-                    <GridColumns
-                      scale={xScale}
-                      height={innerHeight}
-                      stroke="var(--chart-border-subtle)"
-                      strokeOpacity={0.3}
-                    />
-                  )}
+                  {yGridlines && <GridRows scale={yScale} width={innerWidth} className={styles.rows} />}
+                  {xGridlines && <GridColumns scale={xScale} height={innerHeight} className={styles.columns} />}
 
-                  {isVertical && xBaseline && (
+                  {isVertical && (xBaseline || xTickMarks || xLabels) && (
                     <AxisBottom
                       axisClassName={styles.axisX}
+                      axisLineClassName={styles.baseline}
+                      tickClassName={styles.tickMark}
                       innerRef={xAxisRef}
                       top={innerHeight}
                       scale={xScale}
-                      hideTicks={!xTickMarks}
                       numTicks={xNumTicks}
                       tickLength={tickLength}
+                      hideAxisLine={!xBaseline}
                       tickFormat={formatXTick}
                     />
                   )}
 
-                  {!isVertical && yBaseline && !rtl && (
+                  {!isVertical && (yBaseline || yTickMarks || yLabels) && !rtl && (
                     <AxisLeft
+                      axisClassName={styles.axisY}
+                      axisLineClassName={styles.baseline}
+                      tickClassName={styles.tickMark}
                       innerRef={yAxisRef}
                       scale={yScale}
                       tickLength={tickLength}
-                      hideTicks={!yTickMarks}
                       numTicks={yNumTicks}
+                      hideAxisLine={!yBaseline}
                       tickFormat={formatYTick}
                     />
                   )}
 
-                  {!isVertical && yBaseline && rtl && (
+                  {!isVertical && (yBaseline || yTickMarks || yLabels) && rtl && (
                     <AxisRight
+                      axisClassName={styles.axisY}
+                      axisLineClassName={styles.baseline}
+                      tickClassName={styles.tickMark}
                       innerRef={yAxisRef}
                       left={innerWidth}
                       scale={yScale}
                       tickLength={tickLength}
-                      hideTicks={!yTickMarks}
                       numTicks={yNumTicks}
+                      hideAxisLine={!yBaseline}
                       tickFormat={formatYTick}
-                      tickLabelProps={function getProps() {
-                        return {
-                          fontSize: 10,
-                          fontFamily: 'Helvetica',
-                          textAnchor: 'end' as const,
-                          fill: 'var(--chart-canvas-text)',
-                          dx: '0.5em',
-                          dy: '0.32em'
-                        };
-                      }}
                     />
                   )}
 
@@ -537,55 +525,55 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                   {(rtl ? [...categoryValues].reverse() : categoryValues).map(renderBarHitbox)}
                 </Group>
 
-                {isVertical && yBaseline && !rtl && (
+                {isVertical && (yBaseline || yTickMarks || yLabels) && !rtl && (
                   <>
                     <rect
                       x={scrollLeft}
                       y={0}
                       width={effectiveMargin.left}
                       height={svgHeight}
-                      fill="var(--chart-canvas-background)"
                       className={styles.axisBackground}
                     />
                     <g transform={`translate(${effectiveMargin.left + scrollLeft}, ${effectiveMargin.top})`}>
                       <AxisLeft
+                        axisClassName={styles.axisY}
+                        axisLineClassName={styles.baseline}
+                        tickClassName={styles.tickMark}
                         innerRef={yAxisRef}
                         scale={yScale}
                         tickLength={tickLength}
-                        hideTicks={!yTickMarks}
                         numTicks={yNumTicks}
+                        hideAxisLine={!yBaseline}
                         tickFormat={formatYTick}
                       />
                     </g>
                   </>
                 )}
 
-                {isVertical && yBaseline && rtl && (
+                {isVertical && (yBaseline || yTickMarks || yLabels) && rtl && (
                   <>
                     <rect
                       x={svgWidth - effectiveMargin.right + scrollLeft}
                       y={0}
                       width={effectiveMargin.right}
                       height={svgHeight}
-                      fill="var(--chart-canvas-background)"
                       className={styles.axisBackground}
                     />
                     <g
                       transform={`translate(${svgWidth - effectiveMargin.right + scrollLeft}, ${effectiveMargin.top})`}
                     >
                       <AxisRight
+                        axisClassName={styles.axisY}
+                        axisLineClassName={styles.baseline}
+                        tickClassName={styles.tickMark}
                         innerRef={yAxisRef}
                         scale={yScale}
                         tickLength={tickLength}
-                        hideTicks={!yTickMarks}
                         numTicks={yNumTicks}
                         tickFormat={formatYTick}
                         tickLabelProps={function getProps() {
                           return {
-                            fontSize: 10,
-                            fontFamily: 'Helvetica',
                             textAnchor: 'end' as const,
-                            fill: 'var(--chart-canvas-text)',
                             dy: '.32em'
                           };
                         }}
@@ -594,14 +582,13 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                   </>
                 )}
 
-                {!isVertical && xBaseline && (
+                {!isVertical && (xBaseline || xTickMarks || xLabels) && (
                   <>
                     <rect
                       x={0}
                       y={scrollTop + chartHeight - effectiveMargin.bottom}
                       width={svgWidth}
                       height={effectiveMargin.bottom}
-                      fill="var(--chart-canvas-background)"
                       className={styles.axisBackground}
                     />
                     <g
@@ -609,9 +596,10 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                     >
                       <AxisBottom
                         axisClassName={styles.axisX}
+                        axisLineClassName={styles.baseline}
+                        tickClassName={styles.tickMark}
                         innerRef={xAxisRef}
                         scale={xScale}
-                        hideTicks={!xTickMarks}
                         numTicks={xNumTicks}
                         tickLength={tickLength}
                         tickFormat={formatXTick}
@@ -623,7 +611,9 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
             )}
           </Box>
           {xAxisTitle && <AxisTitle axis="x" title={xAxisTitle} />}
-          {effectiveLegendPosition === 'bottom' && <Legend series={series} alignSelf="center" />}
+          {effectiveLegendPosition === 'bottom' && (
+            <Legend series={series} className={styles.legend} alignSelf="center" />
+          )}
         </Flex>
 
         {tooltip &&

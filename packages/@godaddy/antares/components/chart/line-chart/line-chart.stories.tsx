@@ -24,6 +24,7 @@ import { TicksExample } from './examples/ticks.tsx';
 import { TitlesExample } from './examples/titles.tsx';
 import { TooltipDisabledExample } from './examples/tooltip-disabled.tsx';
 import { ZeroIncludedExample } from './examples/zero-included.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/line-chart-playground.tsx';
 
 export default getMeta({
   title: 'Antares/Components/chart/LineChart'
@@ -83,3 +84,74 @@ export const BitcoinPrice = getStory(BitcoinPriceExample);
 export const CityTemperature = getStory(CityTemperatureExample);
 
 export const BrowserUsage = getStory(BrowserUsageExample);
+
+export const Playground = {
+  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+  args: {
+    numSeries: 2,
+    xTitle: 'Date',
+    yTitle: 'Temperature (°F)',
+    xType: 'time',
+    xLabels: true,
+    yLabels: true,
+    xLabelsOrientation: 'auto',
+    xTickMarks: true,
+    yTickMarks: true,
+    xBaseline: true,
+    yBaseline: true,
+    xGridlines: true,
+    yGridlines: true,
+    xNice: true,
+    yNice: true,
+    xZero: false,
+    yZero: false,
+    legendPosition: undefined,
+    tooltip: true,
+    showCrosshair: true,
+    showDataPoints: true,
+    height: 500
+  },
+  argTypes: {
+    numSeries: {
+      control: 'radio',
+      options: [1, 2, 3],
+      description: 'Number of series to render'
+    },
+    xTitle: { control: 'text', description: 'X-axis title' },
+    yTitle: { control: 'text', description: 'Y-axis title' },
+    xType: {
+      control: 'select',
+      options: ['linear', 'time', 'band', 'log', 'sqrt', 'pow'],
+      description: 'X-axis scale type'
+    },
+    xLabels: { control: 'boolean', description: 'Show X-axis labels' },
+    yLabels: { control: 'boolean', description: 'Show Y-axis labels' },
+    xLabelsOrientation: {
+      control: 'radio',
+      options: ['auto', 'horizontal', 'vertical'],
+      description: 'X-axis label orientation'
+    },
+    xTickMarks: { control: 'boolean', description: 'Show X-axis tick marks' },
+    yTickMarks: { control: 'boolean', description: 'Show Y-axis tick marks' },
+    xBaseline: { control: 'boolean', description: 'Show the X-axis baseline' },
+    yBaseline: { control: 'boolean', description: 'Show the Y-axis baseline' },
+    xGridlines: { control: 'boolean', description: 'Show vertical gridlines' },
+    yGridlines: { control: 'boolean', description: 'Show horizontal gridlines' },
+    xNice: { control: 'boolean', description: 'Round the X domain to nice values' },
+    yNice: { control: 'boolean', description: 'Round the Y domain to nice values' },
+    xZero: { control: 'boolean', description: 'Include zero in the X domain' },
+    yZero: { control: 'boolean', description: 'Include zero in the Y domain' },
+    legendPosition: {
+      control: 'select',
+      options: [undefined, 'top', 'bottom', null],
+      description: 'Legend position (null to hide)'
+    },
+    tooltip: { control: 'boolean', description: 'Show the tooltip popover on hover' },
+    showCrosshair: { control: 'boolean', description: 'Show crosshair on hover' },
+    showDataPoints: { control: 'boolean', description: 'Show data point glyphs on hover' },
+    height: {
+      control: { type: 'range', min: 200, max: 900, step: 50 },
+      description: 'Height of the chart in pixels'
+    }
+  }
+};

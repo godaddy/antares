@@ -1,14 +1,13 @@
 .chart {
   --chart-font-family: var(--ux-1067ph9);
-  --chart-canvas-text: var(--ux-1leynsm);
-  --chart-canvas-background: var(--ux-cao06b);
+  --chart-font-size: 0.794rem;
+  --chart-font-color: var(--ux-145pjib);
   --chart-gridline-stroke-width: 1;
-  --chart-grid-color: var(--ux-97h3vl);
-  --chart-content-gap: var(--ux-a2dzk8);
-  --chart-label-fill: var(--ux-145pjib);
-  --chart-label-font-size: var(--ux-1s0t9v0);
+  --chart-gridline-color: var(--ux-97h3vl);
   --chart-baseline-color: var(--ux-by6mab);
   --chart-baseline-stroke-width: 2;
+  --chart-canvas-background: var(--ux-cao06b);
+  --chart-content-gap: var(--ux-a2dzk8);
 
   gap: var(--chart-content-gap);
   width: var(--chart-width, 100%);
@@ -31,7 +30,7 @@
 /* Labels enabled */
 .chart[data-x-labels="true"] .area .axisX text,
 .chart[data-y-labels="true"] .area .axisY text {
-  fill: var(--chart-canvas-text);
+  fill: var(--chart-font-color);
   display: block;
 }
 
@@ -48,14 +47,14 @@
 }
 .chart[data-x-tick-marks="true"] .axisX .tickMark line,
 .chart[data-y-tick-marks="true"] .axisY .tickMark line {
-  stroke: var(--chart-grid-color);
+  stroke: var(--chart-gridline-color);
   stroke-width: var(--chart-gridline-stroke-width);
 }
 
 /* Gridlines */
 .chart[data-x-gridlines="true"] .area .rows line,
 .chart[data-y-gridlines="true"] .area .columns line {
-  stroke: var(--chart-grid-color);
+  stroke: var(--chart-gridline-color);
   stroke-width: var(--chart-gridline-stroke-width);
 }
 

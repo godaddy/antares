@@ -369,22 +369,11 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
   const xyChartTheme = useMemo(function buildXyChartTheme() {
     return buildChartTheme({
-      backgroundColor: '#fff',
+      backgroundColor: '',
       colors: [...CHART_LEGACY_SERIES_COLORS],
       tickLength: 8,
-      svgLabelSmall: {
-        fill: 'var(--chart-label-fill)',
-        fontSize: 'var(--chart-label-font-size)',
-        fontFamily: 'var(--chart-font-family)'
-      },
-      svgLabelBig: {
-        fill: 'var(--chart-label-fill)'
-      },
-      gridColor: 'var(--chart-grid-color)',
-      gridColorDark: 'var(--chart-grid-color)',
-      gridStyles: {
-        strokeWidth: 'var(--chart-gridline-stroke-width)'
-      }
+      gridColor: '',
+      gridColorDark: ''
     });
   }, []);
 

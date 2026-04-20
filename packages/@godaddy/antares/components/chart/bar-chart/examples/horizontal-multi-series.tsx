@@ -32,6 +32,12 @@ export function BarChartHorizontalMultiSeriesExample(props: any) {
       yAccessor={(d: ExoplanetSurveyPoint) => d.name}
       xAxisTitle="Radius (Rj)"
       yAxisTitle="Exoplanet"
+      xBaseline={true}
+      yBaseline={true}
+      xTickMarks={true}
+      yTickMarks={true}
+      yGridlines={true}
+      xGridlines={true}
       {...props}
     />
   );
