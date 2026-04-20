@@ -51,6 +51,8 @@ export type { DataPoint, SeriesConfig } from '#components/chart/types';
 
 export { BarChart, type BarChartProps } from '#components/chart/bar-chart';
 
+export { DonutChart, type DonutChartProps } from '#components/chart/donut-chart';
+
 export { Checkbox, CheckboxGroup, type CheckboxProps, type CheckboxGroupProps } from '#components/checkbox';
 
 export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from '#components/radio';

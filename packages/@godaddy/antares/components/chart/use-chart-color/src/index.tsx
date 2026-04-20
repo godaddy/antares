@@ -27,7 +27,9 @@ export const CHART_LEGACY_SERIES_COLORS = [
 ] as const;
 
 const CHART_COLOR_COUNT = CHART_LEGACY_SERIES_COLORS.length;
-
+/**
+ * Maps a chart position (series, slice, legend row) to the shared nine-color viz palette so strokes, fills, and swatches resolve through `--viz*` tokens.
+ */
 function chartColorForIndex(index: number): string {
   return CHART_LEGACY_SERIES_COLORS[index % CHART_COLOR_COUNT] as string;
 }
