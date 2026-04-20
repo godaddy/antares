@@ -328,7 +328,6 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     'aria-label': ariaLabel,
     className
   } = props;
-  console.log('props', props);
 
   const { direction } = useLocale();
   const rtl = direction === 'rtl';
