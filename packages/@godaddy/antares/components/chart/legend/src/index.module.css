@@ -3,10 +3,7 @@
   --legend-item-line-height: var(--ux-1w31hux);
   --legend-label-font-size: calc(var(--ux-a2dzk8) - 0.25px);
   --legend-label-line-height: var(--ux-hm1ty7);
-  --legend-gap-root: var(--ux-2jubes);
   --legend-gap-items: var(--ux-1pfsknb);
-  --legend-gap-items-stack: var(--ux-2jubes);
-  --legend-gap-item-inline: var(--ux-2jubes);
 
   &[data-size="sm"] {
     --legend-item-font-size: calc(var(--ux-2lqd62) + 0.44px);

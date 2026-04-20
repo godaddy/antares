@@ -1,7 +1,11 @@
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
 
-export interface PlaygroundExampleProps extends Omit<LineChartProps, 'series' | 'xAccessor' | 'yAccessor'> {
+export interface PlaygroundExampleProps
+  extends Omit<
+    LineChartProps,
+    'series' | 'xAccessor' | 'yAccessor' | 'xTickFormat' | 'yTickFormat' | 'tooltipValueFormatter'
+  > {
   /** Number of series to render (1 hides the legend by default). */
   numSeries?: 1 | 2 | 3;
 }
@@ -31,15 +35,5 @@ export function PlaygroundExample({
     };
   });
 
-  return (
-    <LineChart
-      series={series}
-      xTitle={xTitle}
-      yTitle={yTitle}
-      xType={xType}
-      height={height}
-      aria-label="Playground line chart"
-      {...rest}
-    />
-  );
+  return <LineChart series={series} xTitle={xTitle} yTitle={yTitle} xType={xType} height={height} {...rest} />;
 }

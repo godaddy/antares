@@ -27,6 +27,7 @@ export const CHART_LEGACY_SERIES_COLORS = [
 ] as const;
 
 const CHART_COLOR_COUNT = CHART_LEGACY_SERIES_COLORS.length;
+
 /**
  * Maps a chart position (series, slice, legend row) to the shared nine-color viz palette so strokes, fills, and swatches resolve through `--viz*` tokens.
  */
@@ -79,8 +80,7 @@ export function ChartColorProvider(props: ChartColorProviderProps) {
 }
 
 /**
- * Returns `var(--ux-<id>)` for this component (legacy palette; no `variables.css` `--viz*`, no literal fallback).
- * The index is
+ * Returns the chart color CSS variable for this component. The index is
  * assigned when the component mounts (in an effect), so allocation is safe
  * under React concurrent rendering and StrictMode. Same component instance
  * always receives the same color. Wrap the tree with ChartColorProvider.

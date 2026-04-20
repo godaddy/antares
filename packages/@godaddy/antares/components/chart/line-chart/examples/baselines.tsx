@@ -17,6 +17,8 @@ export function BaselinesExample(props: Partial<LineChartProps>) {
     <LineChart
       series={series}
       xType="time"
+      xLabels={false}
+      yLabels={false}
       xBaseline={true}
       yBaseline={true}
       height={400}

@@ -55,7 +55,7 @@ export interface ButtonProps extends Omit<RACButtonProps, 'className'> {
 - Variants and sizes: use `cva`-generated classes, not data-attributes
 - Data-attribute selectors for RAC state only: `[data-hovered]`, `[data-pressed]`, `[data-disabled]`, etc.
 - Design token vars: `--sp-*` (spacing), `--bg-*` (background), `--fg-*` (foreground), `--bd-*` (border), `--fs-*` (font-size), `--br-*` (border-radius)
-- Component-local CSS vars: use a namespaced prefix (for example `--gauge-*` on GaugeChart). Names with `--_` are reserved for internal derivation inside `variables.css` only.
+- Private vars: `--_` prefix for internal use
 - Focus: `&[data-focus-visible] { outline: 2px solid Highlight; outline-offset: 2px; }`
 - Disabled: `&[data-disabled] { opacity: 0.4; cursor: not-allowed; }` (use `&:disabled` only for native HTML elements like `<button>`)
 
@@ -208,7 +208,6 @@ export const Playground = {
 - **Omit manual `# Heading`**: `remarkFrontmatterHeading` auto-generates from frontmatter `title:`
 - Canonical sections: Features, Installation, Props, Examples, Customization, Accessibility (keyboard table + ARIA list), Best Practices, Troubleshooting
 - Source imports: `?raw` for showing code in docs
-- **Examples blurbs** (tone, accuracy, props): repo rule `.cursor/rules/antares-readme-examples.mdc`; optional skill `.cursor/skills/antares-readme-example-blurbs/SKILL.md`
 
 ```mdx
 ---
@@ -258,4 +257,4 @@ Spacing tokens defined in `packages/@godaddy/antares/components/layout/tokens.ts
 
 - **Examples drive test coverage**: tests import examples, NEVER `src/` directly. To close coverage gaps, add/update examples.
 - **README.mdx powers both**: used in Storybook AND docs site. `remarkFrontmatterHeading` auto-generates H1 from frontmatter `title:`, so omit manual `# Heading`.
-- **Component-local CSS vars**: prefer a component prefix (for example `--gauge-value`). Do not introduce new `--_*` names outside `variables.css`; that file uses `--_*` only to build public tokens.
+- **Private CSS vars**: use `--_` prefix (Lea Verou pattern). Expose public `--var`, internally use `--_var: var(--var, fallback)`.

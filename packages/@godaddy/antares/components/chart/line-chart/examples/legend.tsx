@@ -34,6 +34,8 @@ export function LegendExample(props: Partial<LineChartProps>) {
       series={series}
       xType="time"
       yZero={false}
+      xLabels={false}
+      yLabels={false}
       legendPosition="bottom"
       height={400}
       aria-label="Legend example chart"

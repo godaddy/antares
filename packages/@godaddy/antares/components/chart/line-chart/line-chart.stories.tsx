@@ -92,6 +92,7 @@ export const Playground = {
     xTitle: 'Date',
     yTitle: 'Temperature (°F)',
     xType: 'time',
+    yType: 'linear',
     xLabels: true,
     yLabels: true,
     xLabelsOrientation: 'auto',
@@ -105,11 +106,19 @@ export const Playground = {
     yNice: true,
     xZero: false,
     yZero: false,
+    xNumTicks: undefined,
+    yNumTicks: undefined,
+    xPaddingOuter: undefined,
+    yPaddingOuter: undefined,
     legendPosition: undefined,
     tooltip: true,
     showCrosshair: true,
     showDataPoints: true,
-    height: 500
+    height: 500,
+    width: undefined,
+    'aria-label': 'Playground line chart',
+    desc: '',
+    className: ''
   },
   argTypes: {
     numSeries: {
@@ -123,6 +132,11 @@ export const Playground = {
       control: 'select',
       options: ['linear', 'time', 'band', 'log', 'sqrt', 'pow'],
       description: 'X-axis scale type'
+    },
+    yType: {
+      control: 'select',
+      options: ['linear', 'time', 'band', 'log', 'sqrt', 'pow'],
+      description: 'Y-axis scale type'
     },
     xLabels: { control: 'boolean', description: 'Show X-axis labels' },
     yLabels: { control: 'boolean', description: 'Show Y-axis labels' },
@@ -141,6 +155,26 @@ export const Playground = {
     yNice: { control: 'boolean', description: 'Round the Y domain to nice values' },
     xZero: { control: 'boolean', description: 'Include zero in the X domain' },
     yZero: { control: 'boolean', description: 'Include zero in the Y domain' },
+    xNumTicks: {
+      control: { type: 'number', min: 0, max: 20, step: 1 },
+      description: 'Approximate number of X-axis ticks'
+    },
+    yNumTicks: {
+      control: { type: 'number', min: 0, max: 20, step: 1 },
+      description: 'Approximate number of Y-axis ticks'
+    },
+    xTickValues: { control: 'object', description: 'Explicit X-axis tick values (overrides xNumTicks)' },
+    yTickValues: { control: 'object', description: 'Explicit Y-axis tick values (overrides yNumTicks)' },
+    xDomain: { control: 'object', description: 'Custom X-axis domain' },
+    yDomain: { control: 'object', description: 'Custom Y-axis domain' },
+    xPaddingOuter: {
+      control: { type: 'number', min: 0, max: 1, step: 0.05 },
+      description: 'Outer padding for band/point X scales (0–1)'
+    },
+    yPaddingOuter: {
+      control: { type: 'number', min: 0, max: 1, step: 0.05 },
+      description: 'Outer padding for band/point Y scales (0–1)'
+    },
     legendPosition: {
       control: 'select',
       options: [undefined, 'top', 'bottom', null],
@@ -152,6 +186,13 @@ export const Playground = {
     height: {
       control: { type: 'range', min: 200, max: 900, step: 50 },
       description: 'Height of the chart in pixels'
-    }
+    },
+    width: {
+      control: { type: 'number', min: 100, max: 2000, step: 50 },
+      description: 'Width of the chart in pixels (omit for 100%)'
+    },
+    'aria-label': { control: 'text', description: 'Accessibility label for the chart' },
+    desc: { control: 'text', description: 'Detailed description for screen readers' },
+    className: { control: 'text', description: 'Additional CSS class name' }
   }
 };

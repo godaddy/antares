@@ -17,6 +17,8 @@ export function TicksExample(props: Partial<LineChartProps>) {
     <LineChart
       series={series}
       xType="time"
+      xLabels={false}
+      yLabels={false}
       xTickMarks={true}
       yTickMarks={true}
       height={400}

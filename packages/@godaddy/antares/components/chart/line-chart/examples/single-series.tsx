@@ -18,6 +18,8 @@ export function SingleSeriesExample(props: Partial<LineChartProps>) {
       series={series}
       xType="time"
       yZero={false}
+      xLabels={false}
+      yLabels={false}
       height={400}
       aria-label="Single series example chart"
       desc="Line chart demonstrating single series with minimal configuration"

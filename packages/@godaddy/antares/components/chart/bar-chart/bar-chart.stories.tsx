@@ -61,9 +61,15 @@ export const Playground = {
     yBaseline: true,
     xGridlines: true,
     yGridlines: true,
+    xNumTicks: undefined,
+    yNumTicks: undefined,
     legendPosition: undefined,
     tooltip: true,
-    height: 500
+    height: 500,
+    width: undefined,
+    'aria-label': 'Playground bar chart',
+    desc: '',
+    className: ''
   },
   argTypes: {
     orientation: {
@@ -91,6 +97,16 @@ export const Playground = {
     yBaseline: { control: 'boolean', description: 'Show the Y-axis baseline' },
     xGridlines: { control: 'boolean', description: 'Show vertical gridlines' },
     yGridlines: { control: 'boolean', description: 'Show horizontal gridlines' },
+    xNumTicks: {
+      control: { type: 'number', min: 0, max: 20, step: 1 },
+      description: 'Approximate number of X-axis ticks'
+    },
+    yNumTicks: {
+      control: { type: 'number', min: 0, max: 20, step: 1 },
+      description: 'Approximate number of Y-axis ticks'
+    },
+    xDomain: { control: 'object', description: 'Custom X-axis domain (categories or [min, max])' },
+    yDomain: { control: 'object', description: 'Custom Y-axis domain ([min, max] or categories)' },
     legendPosition: {
       control: 'radio',
       options: [undefined, 'top', 'bottom', null],
@@ -100,6 +116,13 @@ export const Playground = {
     height: {
       control: { type: 'range', min: 200, max: 900, step: 50 },
       description: 'Height of the chart in pixels'
-    }
+    },
+    width: {
+      control: { type: 'number', min: 100, max: 2000, step: 50 },
+      description: 'Width of the chart in pixels (omit for 100%)'
+    },
+    'aria-label': { control: 'text', description: 'Accessibility label for the chart' },
+    desc: { control: 'text', description: 'Detailed description for screen readers' },
+    className: { control: 'text', description: 'Additional CSS class name' }
   }
 };

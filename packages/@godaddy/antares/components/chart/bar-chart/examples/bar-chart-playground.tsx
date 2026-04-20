@@ -1,7 +1,8 @@
 import { BarChart, type BarChartProps } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
 
-export interface PlaygroundExampleProps extends Omit<BarChartProps, 'series' | 'xAccessor' | 'yAccessor'> {
+export interface PlaygroundExampleProps
+  extends Omit<BarChartProps, 'series' | 'xAccessor' | 'yAccessor' | 'xTickFormat' | 'yTickFormat'> {
   /** Number of series to render (1 hides the legend by default). */
   numSeries?: 1 | 2 | 3;
 }

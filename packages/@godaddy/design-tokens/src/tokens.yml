@@ -214,10 +214,6 @@ color-chart-008:
   $type: color
   $value: "darkslategray"
   $description: "Eighth series color; completes the default categorical set."
-color-chart-009:
-  $type: color
-  $value: "steelblue"
-  $description: "Ninth series color for dense multi-series charts and legends."
 
 # --
 # Color — feedback (critical)

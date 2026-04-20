@@ -19,6 +19,8 @@ export function CustomAccessorsExample(props: Partial<LineChartProps<DateValue>>
       xType="time"
       xAccessor={(d) => d.date}
       yAccessor={(d) => d.value}
+      xLabels={false}
+      yLabels={false}
       height={400}
       aria-label="Custom accessors example chart"
       desc="Line chart demonstrating custom data types with accessors"

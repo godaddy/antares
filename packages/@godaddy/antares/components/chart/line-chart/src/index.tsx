@@ -40,7 +40,7 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 
   /** X-axis title */
   xTitle?: string;
-  /** Show X-axis labels */
+  /** Show X-axis labels. @default true */
   xLabels?: boolean;
   /**
    * X-axis label orientation. 'auto' rotates labels to vertical when the container is too narrow;
@@ -107,7 +107,7 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 
   /** Y-axis title */
   yTitle?: string;
-  /** Show Y-axis labels */
+  /** Show Y-axis labels. @default true */
   yLabels?: boolean;
   /** Show Y-axis tick marks */
   yTickMarks?: boolean;
@@ -246,7 +246,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
     // X-axis
     xTitle,
-    xLabels,
+    xLabels = true,
     xLabelsOrientation = 'auto',
     xTickMarks,
     xBaseline,
@@ -262,7 +262,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
     // Y-axis
     yTitle,
-    yLabels,
+    yLabels = true,
     yTickMarks,
     yBaseline,
     yGridlines,
