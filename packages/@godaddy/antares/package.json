@@ -11,6 +11,7 @@
     "test:node:update": "vitest run --project=SSR --update",
     "test:browser": "vitest run --project=Browser",
     "test:browser:update": "vitest run --project=Browser --update",
+    "test:browser:ui": "vitest --project=Browser --browser.headless=false",
     "test:visual": "vitest run --project=Visual --passWithNoTests --coverage.enabled=false",
     "test:visual:update": "vitest run --project=Visual --update",
     "test:watch": "vitest",
