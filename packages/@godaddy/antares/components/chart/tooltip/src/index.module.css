@@ -1,9 +1,18 @@
 .tooltip {
-  position: relative;
-}
+  --chart-tooltip-color: var(--ux-1leynsm);
+  --chart-tooltip-font-size: var(--ux-2lqd62);
+  --chart-tooltip-line-height: 1.5;
+  --chart-tooltip-value-font-size: var(--ux-1s0t9v0);
+  --chart-tooltip-arrow-fill: var(--ux-1mh0ktr);
+  --chart-tooltip-arrow-shadow: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+  --chart-tooltip-arrow-offset: -8px;
+  --chart-tooltip-arrow-border-x: 8px;
+  --chart-tooltip-arrow-border-top: 8px;
 
-.item {
-  font-size: var(--fs-sm);
+  color: var(--chart-tooltip-color);
+  font-size: var(--chart-tooltip-font-size);
+  line-height: var(--chart-tooltip-line-height);
+  position: relative;
 }
 
 .swatch {
@@ -15,100 +24,54 @@
 
 .tooltipArrow {
   position: absolute;
-  bottom: -15px;
+  bottom: var(--chart-tooltip-arrow-offset);
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  /* Arrow shape: 28px wide, 15px tall based on the Popover specification */
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-top: 15px solid var(--elevation-raised-bg, #fff);
+  border-left: var(--chart-tooltip-arrow-border-x) solid transparent;
+  border-right: var(--chart-tooltip-arrow-border-x) solid transparent;
+  border-top: var(--chart-tooltip-arrow-border-top) solid var(--chart-tooltip-arrow-fill);
+  filter: var(--chart-tooltip-arrow-shadow);
 }
 
-/* Data visualization colors for tooltip indicators */
+.value {
+  font-size: var(--chart-tooltip-value-font-size);
+}
+
+/* Data visualization colors for tooltip indicators — same order as CHART_LEGACY_SERIES_COLORS */
 .item:nth-child(9n + 1) .swatch {
-  background-color: var(--viz1);
+  background-color: var(--ux-k4t5bc);
 }
 
 .item:nth-child(9n + 2) .swatch {
-  background-color: var(--viz2);
+  background-color: var(--ux-yscvvt);
 }
 
 .item:nth-child(9n + 3) .swatch {
-  background-color: var(--viz3);
+  background-color: var(--ux-3seoiy);
 }
 
 .item:nth-child(9n + 4) .swatch {
-  background-color: var(--viz4);
+  background-color: var(--ux-ifyf3f);
 }
 
 .item:nth-child(9n + 5) .swatch {
-  background-color: var(--viz5);
+  background-color: var(--ux-1c4rju4);
 }
 
 .item:nth-child(9n + 6) .swatch {
-  background-color: var(--viz6);
+  background-color: var(--ux-1qsbael);
 }
 
 .item:nth-child(9n + 7) .swatch {
-  background-color: var(--viz7);
+  background-color: var(--ux-vsd31q);
 }
 
 .item:nth-child(9n + 8) .swatch {
-  background-color: var(--viz8);
+  background-color: var(--ux-1afwtm7);
 }
 
 .item:nth-child(9n + 9) .swatch {
-  background-color: var(--viz9);
-}
-
-.tooltipArrow {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid white;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
-}
-
-/* Data visualization colors for tooltip indicators */
-.viz1 {
-  background-color: var(--viz1);
-}
-
-.viz2 {
-  background-color: var(--viz2);
-}
-
-.viz3 {
-  background-color: var(--viz3);
-}
-
-.viz4 {
-  background-color: var(--viz4);
-}
-
-.viz5 {
-  background-color: var(--viz5);
-}
-
-.viz6 {
-  background-color: var(--viz6);
-}
-
-.viz7 {
-  background-color: var(--viz7);
-}
-
-.viz8 {
-  background-color: var(--viz8);
-}
-
-.viz9 {
-  background-color: var(--viz9);
+  background-color: var(--ux-3uv4tc);
 }

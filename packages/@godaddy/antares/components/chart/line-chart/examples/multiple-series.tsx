@@ -42,6 +42,8 @@ export function MultipleSeriesExample(props: Partial<LineChartProps>) {
       series={series}
       xType="time"
       yZero={false}
+      xLabels={false}
+      yLabels={false}
       height={400}
       aria-label="Multiple series example chart"
       desc="Line chart demonstrating multiple series comparison"

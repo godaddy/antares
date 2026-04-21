@@ -59,7 +59,7 @@ describe('@godaddy/antares', function antares() {
           </StrictMode>
         );
         const colorEl = container.querySelector('[data-color]');
-        expect(colorEl?.getAttribute('data-color')).toBe('var(--viz1)');
+        expect(colorEl?.getAttribute('data-color')).toBe('var(--ux-k4t5bc)');
       });
     });
   });

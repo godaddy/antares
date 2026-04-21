@@ -17,6 +17,8 @@ export function FixedSizeExample(props: Partial<LineChartProps>) {
     <LineChart
       series={series}
       xType="time"
+      xLabels={false}
+      yLabels={false}
       width={800}
       height={400}
       aria-label="Fixed size example chart"

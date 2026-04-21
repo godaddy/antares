@@ -334,7 +334,7 @@ export function DonutChart(props: DonutChartProps) {
                   role="listitem"
                   alignItems="center"
                   justifyContent="space-between"
-                  gap="xl"
+                  gap="md"
                   className={styles.item}
                 >
                   <Flex alignItems="center" gap="md">

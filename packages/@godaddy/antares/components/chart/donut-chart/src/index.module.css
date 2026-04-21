@@ -1,4 +1,10 @@
 .chartWrap {
+  --donut-label-line-height: var(--ux-hm1ty7);
+  --donut-label-font-size: 15.73cqi;
+  --donut-sub-label-font-size: 6.81cqi;
+  --donut-tooltip-item-font-size: var(--ux-vvspv2);
+  --donut-tooltip-item-line-height: var(--ux-1dje42v);
+
   aspect-ratio: 1;
   max-width: 100%;
   position: relative;
@@ -20,24 +26,25 @@
 }
 
 .label {
-  font-size: 15.7cqi;
+  font-size: var(--donut-label-font-size);
   font-weight: bolder;
-  line-height: var(--lh-heading);
+  line-height: var(--donut-label-line-height);
 }
 
 .subLabel {
-  font-size: 6.78cqi;
+  font-size: var(--donut-sub-label-font-size);
 }
 
 .tooltip {
+  --donut-tooltip-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.12);
+
   filter: none;
-  box-shadow:
-    0 0 1px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--donut-tooltip-shadow);
 }
 
 .item {
-  font-size: var(--fs-sm);
+  font-size: var(--donut-tooltip-item-font-size);
+  line-height: var(--donut-tooltip-item-line-height);
 }
 
 .swatch {

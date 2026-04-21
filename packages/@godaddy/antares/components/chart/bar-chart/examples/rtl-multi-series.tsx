@@ -26,6 +26,11 @@ export function BarChartRTLMultiSeriesExample(props: any) {
         yAccessor={(d: any) => d.y}
         xAxisTitle="Date"
         yAxisTitle="Temperature (°F)"
+        xBaseline={true}
+        yBaseline={true}
+        xTickMarks={true}
+        yTickMarks={true}
+        yGridlines={true}
         {...props}
       />
     </RTLProvider>

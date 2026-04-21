@@ -17,6 +17,8 @@ export function CrosshairOnlyExample(props: Partial<LineChartProps>) {
     <LineChart
       series={series}
       xType="time"
+      xLabels={false}
+      yLabels={false}
       tooltip={false}
       showCrosshair={true}
       showDataPoints={true}

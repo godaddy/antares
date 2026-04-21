@@ -19,7 +19,7 @@ import { BarChartExample } from '../examples/single-series';
  * @param Example - Example component to render
  * @returns Render result after SVG is present
  */
-async function renderExampleAndWait(Example: React.ComponentType, width = 800, height = 800) {
+async function renderExampleAndWait(Example: React.ComponentType, width = 900, height = 800) {
   await page.viewport(width, height);
   const result = await render(
     <div style={{ width: `${width}px`, height: `${height}px` }}>

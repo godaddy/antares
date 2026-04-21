@@ -2,6 +2,25 @@
   --gauge-thickness: round(nearest, 4.2cqi, 2px);
   --gauge-label-widths: 25cqi;
   --gauge-gap-angle: atan2(3px, 100px);
+  --gauge-fg-empty: var(--ux-bs151i);
+  --gauge-fg-default: var(--ux-f7kpiw);
+  --gauge-fg-success: var(--ux-sji811);
+  --gauge-fg-warning: var(--ux-1g47djv);
+  --gauge-fg-critical: var(--ux-1ap6ofp);
+  --gauge-fg-color: var(--gauge-fg-default);
+
+  --gauge-fg-label: var(--ux-1le7uoa);
+  --gauge-font-family: var(--ux-1067ph9);
+  --gauge-label-line-height: var(--ux-h93mi7);
+
+  --gauge-range-label-font-size: var(--ux-16aixzc);
+  --gauge-range-label-margin-top: var(--ux-19hwfny);
+
+  --gauge-sublabel-fg: var(--ux-by6mab);
+  --gauge-sublabel-font-size: var(--ux-16aixzc);
+  --gauge-sublabel-margin-top: var(--ux-2jubes);
+  --gauge-sublabel-font-weight: var(--ux-sm2he3);
+  --gauge-sublabel-line-height: var(--ux-1pw8hzd);
 
   container-type: inline-size;
   width: 100%;
@@ -14,28 +33,24 @@
     --gauge-label-font-size: max(13.56cqi, 1px);
   }
 
-  &[data-variant="default"] {
-    --gauge-color: var(--bg-primary);
-  }
-
   &[data-variant="success"] {
-    --gauge-color: green;
+    --gauge-fg-color: var(--gauge-fg-success);
   }
 
   &[data-variant="warning"] {
-    --gauge-color: orange;
+    --gauge-fg-color: var(--gauge-fg-warning);
   }
 
   &[data-variant="critical"] {
-    --gauge-color: var(--critical);
+    --gauge-fg-color: var(--gauge-fg-critical);
   }
 
   &[data-filled] .content::before {
-    background: var(--gauge-color);
+    background: var(--gauge-fg-color);
   }
 
   &[data-full] .content::after {
-    background: var(--gauge-color);
+    background: var(--gauge-fg-color);
   }
 }
 
@@ -45,15 +60,18 @@
   grid-area: 1 / 1 / -1 / -1;
   margin-bottom: 0;
   position: relative;
-  font-size: var(--gauge-label-font-size, 22.78px);
-  line-height: 0.75;
+  color: var(--gauge-fg-label);
+  font-family: var(--gauge-font-family);
+  font-size: var(--gauge-label-font-size);
+  font-weight: 400;
+  line-height: var(--gauge-label-line-height);
 
   &::after,
   &::before {
     content: "";
     position: absolute;
     pointer-events: none;
-    background: var(--bd-base);
+    background: var(--gauge-fg-empty);
     height: var(--gauge-thickness);
     width: var(--gauge-thickness);
     bottom: 0;
@@ -92,7 +110,7 @@
   }
 
   &::before {
-    border: var(--gauge-thickness) solid var(--gauge-color);
+    border: var(--gauge-thickness) solid var(--gauge-fg-color);
     border-bottom: 0;
     z-index: 1;
     mask: conic-gradient(
@@ -103,7 +121,7 @@
   }
 
   &::after {
-    border: var(--gauge-thickness) solid var(--bd-base);
+    border: var(--gauge-thickness) solid var(--gauge-fg-empty);
     border-bottom: 0;
     z-index: 0;
     mask: conic-gradient(
@@ -222,10 +240,14 @@
 .subLabel {
   grid-column: 2;
   grid-row: 2;
-  margin-top: var(--sp-sm);
+  margin-top: var(--gauge-sublabel-margin-top);
   min-width: 0;
   max-width: 100%;
-  font-size: var(--fs-2xs);
+  color: var(--gauge-sublabel-fg);
+  font-family: var(--gauge-font-family);
+  font-size: var(--gauge-sublabel-font-size);
+  font-weight: var(--gauge-sublabel-font-weight);
+  line-height: var(--gauge-sublabel-line-height);
   align-self: center;
   justify-self: center;
 }
@@ -234,8 +256,12 @@
   display: inline-flex;
   justify-content: center;
   width: var(--gauge-label-widths);
-  margin-top: var(--sp-xs);
-  font-size: var(--fs-2xs);
+  margin-top: var(--gauge-range-label-margin-top);
+  color: var(--gauge-sublabel-fg);
+  font-family: var(--gauge-font-family);
+  font-size: var(--gauge-range-label-font-size);
+  font-weight: var(--gauge-sublabel-font-weight);
+  line-height: var(--gauge-sublabel-line-height);
 
   &[data-range-label="max"] {
     grid-column: 3;

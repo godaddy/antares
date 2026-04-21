@@ -18,6 +18,8 @@ export function GridlinesExample(props: Partial<LineChartProps>) {
       series={series}
       xType="time"
       yZero={false}
+      xLabels={false}
+      yLabels={false}
       xGridlines={true}
       yGridlines={true}
       height={400}

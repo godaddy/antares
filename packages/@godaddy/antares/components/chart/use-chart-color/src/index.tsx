@@ -13,14 +13,26 @@ import {
 const canUseDOM = typeof window !== 'undefined';
 const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
 
-const CHART_COLOR_COUNT = 9;
-const VARIABLE_PREFIX = '--viz';
+/** Legacy palette ids — figureColor0–8 (data visualization) order in legacy-tokens.css */
+export const CHART_LEGACY_SERIES_COLORS = [
+  'var(--ux-k4t5bc)',
+  'var(--ux-yscvvt)',
+  'var(--ux-3seoiy)',
+  'var(--ux-ifyf3f)',
+  'var(--ux-1c4rju4)',
+  'var(--ux-1qsbael)',
+  'var(--ux-vsd31q)',
+  'var(--ux-1afwtm7)',
+  'var(--ux-3uv4tc)'
+] as const;
+
+const CHART_COLOR_COUNT = CHART_LEGACY_SERIES_COLORS.length;
 
 /**
  * Maps a chart position (series, slice, legend row) to the shared nine-color viz palette so strokes, fills, and swatches resolve through `--viz*` tokens.
  */
 export function chartColorForIndex(index: number): string {
-  return `var(${VARIABLE_PREFIX}${(index % CHART_COLOR_COUNT) + 1})`;
+  return CHART_LEGACY_SERIES_COLORS[index % CHART_COLOR_COUNT] as string;
 }
 
 interface ChartColorContextValue {

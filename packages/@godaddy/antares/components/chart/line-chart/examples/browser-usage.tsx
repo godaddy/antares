@@ -39,7 +39,7 @@ export function BrowserUsageExample(props: Partial<LineChartProps>) {
       yTickFormat={formatPercentage}
       tooltipValueFormatter={formatTooltipPercentage}
       legendPosition="bottom"
-      height={400}
+      height={600}
       aria-label="Browser usage market share chart"
       desc="Line chart showing browser market share percentages over time with multiple series, complete axis configuration including gridlines, tick marks, baselines, date formatting, and percentage formatting"
       {...props}

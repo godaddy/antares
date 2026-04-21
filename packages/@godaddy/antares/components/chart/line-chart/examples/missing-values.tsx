@@ -24,6 +24,8 @@ export function MissingValuesExample(props: Partial<LineChartProps>) {
     <LineChart
       series={series}
       xType="time"
+      xLabels={false}
+      yLabels={false}
       height={400}
       aria-label="Missing values example chart"
       desc="Line chart demonstrating null values handling with visual breaks"

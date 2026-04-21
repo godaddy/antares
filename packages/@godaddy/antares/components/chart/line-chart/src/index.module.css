@@ -1,13 +1,24 @@
 .chart {
-  width: var(--_chart-width, 100%);
-  height: var(--_chart-height, 100%);
+  --chart-font-family: var(--ux-1067ph9);
+  --chart-font-size: 0.794rem;
+  --chart-font-color: var(--ux-145pjib);
+  --chart-gridline-stroke-width: 1;
+  --chart-gridline-color: var(--ux-97h3vl);
+  --chart-baseline-color: var(--ux-by6mab);
+  --chart-baseline-stroke-width: 2;
+  --chart-canvas-background: var(--ux-cao06b);
+  --chart-content-gap: var(--ux-a2dzk8);
+
+  gap: var(--chart-content-gap);
+  width: var(--chart-width, 100%);
+  height: var(--chart-height, 100%);
 }
 
 /* Baseline enabled */
 .chart[data-x-baseline="true"] .axisX .baseline,
 .chart[data-y-baseline="true"] .axisY .baseline {
-  stroke: var(--fg-base);
-  stroke-width: 1px;
+  stroke: var(--chart-baseline-color);
+  stroke-width: var(--chart-baseline-stroke-width);
 }
 
 /* Labels: default (hidden) */
@@ -19,14 +30,8 @@
 /* Labels enabled */
 .chart[data-x-labels="true"] .area .axisX text,
 .chart[data-y-labels="true"] .area .axisY text {
-  fill: var(--fg-base);
+  fill: var(--chart-font-color);
   display: block;
-}
-
-/* Labels vertical (X-axis) */
-.chart[data-x-labels-vertical="true"] .area .axisX text {
-  writing-mode: sideways-lr;
-  text-anchor: end;
 }
 
 /* First gridline overlapping axis: hide when baseline shown */
@@ -36,13 +41,25 @@
 }
 
 /* Tick lines */
+.chart .axisX .tickMark line,
+.chart .axisY .tickMark line {
+  stroke: transparent;
+}
 .chart[data-x-tick-marks="true"] .axisX .tickMark line,
 .chart[data-y-tick-marks="true"] .axisY .tickMark line {
-  stroke: var(--bd-base);
-  stroke-width: 2px;
+  stroke: var(--chart-gridline-color);
+  stroke-width: var(--chart-gridline-stroke-width);
+}
+
+/* Gridlines */
+.chart[data-x-gridlines="true"] .area .rows line,
+.chart[data-y-gridlines="true"] .area .columns line {
+  stroke: var(--chart-gridline-color);
+  stroke-width: var(--chart-gridline-stroke-width);
 }
 
 .wrapper {
+  gap: var(--chart-content-gap);
   overflow: hidden;
 }
 
@@ -78,5 +95,5 @@
 }
 
 .yAxisBackground {
-  fill: var(--bg-base);
+  fill: var(--chart-canvas-background);
 }
