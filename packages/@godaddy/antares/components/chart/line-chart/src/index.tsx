@@ -49,11 +49,11 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
    * @default 'auto'
    */
   xLabelsOrientation?: XLabelsOrientation;
-  /** Show X-axis tick marks */
+  /** Show X-axis tick marks. */
   xTickMarks?: boolean;
-  /** Show X-axis baseline */
+  /** Show X-axis baseline. */
   xBaseline?: boolean;
-  /** Show vertical gridlines */
+  /** Show vertical gridlines. @default true */
   xGridlines?: boolean;
   /** Format X-axis tick labels */
   xTickFormat?: (value: number | string | Date) => string;
@@ -109,11 +109,11 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
   yTitle?: string;
   /** Show Y-axis labels. @default true */
   yLabels?: boolean;
-  /** Show Y-axis tick marks */
+  /** Show Y-axis tick marks. */
   yTickMarks?: boolean;
-  /** Show Y-axis baseline */
+  /** Show Y-axis baseline. */
   yBaseline?: boolean;
-  /** Show horizontal gridlines */
+  /** Show horizontal gridlines. */
   yGridlines?: boolean;
   /** Format Y-axis tick labels */
   yTickFormat?: (value: number) => string;
@@ -250,7 +250,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     xLabelsOrientation = 'auto',
     xTickMarks,
     xBaseline,
-    xGridlines,
+    xGridlines = true,
     xTickFormat,
     xType = 'linear',
     xDomain,

@@ -29,8 +29,6 @@ export function BarChartMultiSeriesExample(props: any) {
       yBaseline={true}
       xTickMarks={true}
       yTickMarks={true}
-      yGridlines={true}
-      xGridlines={true}
       {...props}
     />
   );

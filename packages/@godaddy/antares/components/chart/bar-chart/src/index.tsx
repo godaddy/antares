@@ -45,15 +45,16 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
 
   /**
    * Orientation of the bars.
-   * - 'vertical': Bars extend upward from the X-axis (default)
+   * - 'vertical': Bars extend upward from the X-axis
    * - 'horizontal': Bars extend rightward from the Y-axis
-   * Default: 'vertical'
+   *
+   * @default 'vertical'
    */
   orientation?: 'vertical' | 'horizontal';
 
   /** Title displayed on the X-axis */
   xAxisTitle?: string;
-  /** Whether to show X-axis labels. Default: true */
+  /** Whether to show X-axis labels. @default true */
   xLabels?: boolean;
   /**
    * X-axis label orientation. 'auto' rotates labels to vertical when the container is too narrow;
@@ -62,11 +63,11 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
    * @default 'auto'
    */
   xLabelsOrientation?: XLabelsOrientation;
-  /** Whether to show X-axis tick marks. Default: true */
+  /** Whether to show X-axis tick marks. */
   xTickMarks?: boolean;
-  /** Whether to show the X-axis baseline (axis line). Default: true */
+  /** Whether to show the X-axis baseline (axis line). */
   xBaseline?: boolean;
-  /** Whether to show vertical gridlines for the X-axis. Default: true */
+  /** Whether to show vertical gridlines for the X-axis. */
   xGridlines?: boolean;
   /**
    * Custom formatting function for X-axis tick labels.
@@ -94,13 +95,13 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
 
   /** Title displayed on the Y-axis */
   yAxisTitle?: string;
-  /** Whether to show Y-axis labels. Default: true */
+  /** Whether to show Y-axis labels. @default true */
   yLabels?: boolean;
-  /** Whether to show Y-axis tick marks. Default: true */
+  /** Whether to show Y-axis tick marks. */
   yTickMarks?: boolean;
-  /** Whether to show the Y-axis baseline (axis line). Default: true */
+  /** Whether to show the Y-axis baseline (axis line). */
   yBaseline?: boolean;
-  /** Whether to show horizontal gridlines for the Y-axis. Default: true */
+  /** Whether to show horizontal gridlines for the Y-axis. @default true */
   yGridlines?: boolean;
   /**
    * Custom formatting function for Y-axis tick labels.
@@ -134,11 +135,7 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
    */
   legendPosition?: LegendPosition | null;
 
-  /**
-   * Whether to show the tooltip popover on hover.
-   * When false, the tooltip is hidden.
-   * Default: true
-   */
+  /** Whether to show the tooltip popover on hover. When false, the tooltip is hidden. @default true */
   tooltip?: boolean;
 
   /** Outer container width (omitted = 100%) */
@@ -309,7 +306,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     yAccessor = defaultYAccessor,
     series: seriesProp,
     xGridlines,
-    yGridlines,
+    yGridlines = true,
     xBaseline,
     yBaseline,
     xLabels = true,
