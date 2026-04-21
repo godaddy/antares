@@ -27,95 +27,6 @@ Components [#components]
 <ComponentCards />
 
 
-# Carousel
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="Stories.ExternalControlsUncontrolled" />
-
-<Source language="tsx" code="SourceExternalControlsUncontrolled" />
-
-External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="Stories.ExternalControlsControlled" />
-
-<Source language="tsx" code="SourceExternalControlsControlled" />
-
-Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="Stories.HideControls" />
-
-<Source language="tsx" code="SourceHideControls" />
-
-Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="Stories.VariableWidths" />
-
-<Source language="tsx" code="SourceVariableWidths" />
-
-Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="Stories.Events" />
-
-<Source language="tsx" code="SourceEvents" />
-
-RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Button
 
 
@@ -211,6 +122,95 @@ Disabled [#disabled]
 <Story of="Stories.Disabled" />
 
 <Source language="tsx" code="SourceDisabled" />
+
+
+# Carousel
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="Stories.ExternalControlsUncontrolled" />
+
+<Source language="tsx" code="SourceExternalControlsUncontrolled" />
+
+External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="Stories.ExternalControlsControlled" />
+
+<Source language="tsx" code="SourceExternalControlsControlled" />
+
+Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="Stories.HideControls" />
+
+<Source language="tsx" code="SourceHideControls" />
+
+Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="Stories.VariableWidths" />
+
+<Source language="tsx" code="SourceVariableWidths" />
+
+Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="Stories.Events" />
+
+<Source language="tsx" code="SourceEvents" />
+
+RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
 
 
 # Checkbox
@@ -1362,62 +1362,6 @@ Best practices [#best-practices]
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
 # Pagination
 
 
@@ -1479,6 +1423,62 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Story of="Stories.OnChange" />
 
 <Source language="tsx" code="SourceOnChange" />
+
+
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # Radio
@@ -2039,6 +2039,67 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 <Source language="tsx" code="WrapExample" />
 
 
+# Tooltip
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
+element (for example, a `Button`). The tooltip appears on hover and focus.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the
+`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key    | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| Tab    | Moves focus to the focusable element and shows the tooltip |
+| Escape | Closes the tooltip                                         |
+
+ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+
+Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+
 # TextField
 
 
@@ -2119,67 +2180,6 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
-
-
-# Tooltip
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
-element (for example, a `Button`). The tooltip appears on hover and focus.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the
-`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-| Key    | Description                                                |
-| ------ | ---------------------------------------------------------- |
-| Tab    | Moves focus to the focusable element and shows the tooltip |
-| Escape | Closes the tooltip                                         |
-
-ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
-
-Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
 # AxisTitle
@@ -2622,7 +2622,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
+# Legend
 
 
 
@@ -2632,57 +2632,57 @@ All examples can be found in the Storybook interface:
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+Internal Component [#internal-component]
 
-```bash
-npm install @godaddy/antares
-```
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
 
 Props [#props]
+
+The `Legend` component accepts the following props:
 
 <PropTable />
 
 Examples [#examples]
 
-Basic [#basic]
+Single Series [#single-series]
 
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+Basic legend with a single series showing the default styling and layout.
 
-<Source language="tsx" code="SourceBasic" />
+<Source language="tsx" code="SourceSingleSeries" />
 
-<Story of="Stories.Basic" />
+<Story of="Stories.SingleSeries" />
 
-Single slice [#single-slice]
+Multiple Series [#multiple-series]
 
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
 
-<Source language="tsx" code="SourceSingleSlice" />
+<Source language="tsx" code="SourceMultiSeries" />
 
-<Story of="Stories.SingleSlice" />
+<Story of="Stories.MultipleSeries" />
 
-Legend placement [#legend-placement]
+With label [#with-label]
 
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+Legend with a visible label that is also used as the accessible label.
 
-<Source language="tsx" code="SourceLegendLayout" />
+<Source language="tsx" code="SourceWithLabel" />
 
-<Story of="Stories.LegendLayout" />
+<Story of="Stories.WithLabel" />
 
-Small slices [#small-slices]
+Vertical orientation [#vertical-orientation]
 
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
 
-<Source language="tsx" code="SourceSmallSlices" />
+<Source language="tsx" code="SourceVertical" />
 
-<Story of="Stories.SmallSlices" />
+<Story of="Stories.Vertical" />
 
-Format value [#format-value]
+Legend size chart example [#legend-size-chart-example]
 
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
 
-<Source language="tsx" code="SourceFormatValue" />
+<Source language="tsx" code="SourceLegendSizeChart" />
 
-<Story of="Stories.FormatValue" />
+<Story of="Stories.LegendSizeChart" />
 
 
 # Gauge Chart
@@ -2785,69 +2785,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# Legend
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `Legend` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic legend with a single series showing the default styling and layout.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-With label [#with-label]
-
-Legend with a visible label that is also used as the accessible label.
-
-<Source language="tsx" code="SourceWithLabel" />
-
-<Story of="Stories.WithLabel" />
-
-Vertical orientation [#vertical-orientation]
-
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
-
-<Source language="tsx" code="SourceVertical" />
-
-<Story of="Stories.Vertical" />
-
-Legend size chart example [#legend-size-chart-example]
-
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
-
-<Source language="tsx" code="SourceLegendSizeChart" />
-
-<Story of="Stories.LegendSizeChart" />
 
 
 # LineChart
@@ -3133,6 +3070,69 @@ When to Use LineChart [#when-to-use-linechart]
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
 
 
 # Tooltip
