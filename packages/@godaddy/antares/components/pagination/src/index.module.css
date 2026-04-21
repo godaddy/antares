@@ -1,10 +1,14 @@
 .dot {
-  width: var(--sp-sm, 0.5rem);
-  height: var(--sp-sm, 0.5rem);
-  background: var(--bg-selected);
+  --pagination-dot-bg: var(--ux-1u2jy43, #d6d6d6);
+  --pagination-dot-bg-selected: var(--ux-e5ryhe, #111);
+  --pagination-dot-size: calc(var(--ux-1sbfig8, 0.25rem) * 2);
+
+  width: var(--pagination-dot-size);
+  height: var(--pagination-dot-size);
+  background: var(--pagination-dot-bg);
   border-radius: 50%;
 }
 
 .dot.selected {
-  background: var(--fg-selected);
+  background: var(--pagination-dot-bg-selected);
 }
