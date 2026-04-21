@@ -98,7 +98,7 @@ describe('@godaddy/antares', function antares() {
 
         const chart = locator.getByRole('img');
         const slice = chart.element().querySelectorAll('path')[0];
-        await page.elementLocator(slice).hover({ position: { x: 1, y: 1 } });
+        await page.elementLocator(slice).hover({ position: { x: 5, y: 5 } });
 
         const tooltip = page.getByRole('tooltip');
         assume(tooltip).exists();

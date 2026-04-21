@@ -8,11 +8,15 @@
   --chart-tooltip-arrow-offset: -8px;
   --chart-tooltip-arrow-border-x: 8px;
   --chart-tooltip-arrow-border-top: 8px;
+  --chart-tooltip-background: var(--ux-cao06b);
+  --chart-tooltip-padding: var(--ux-a2dzk8);
 
   color: var(--chart-tooltip-color);
   font-size: var(--chart-tooltip-font-size);
   line-height: var(--chart-tooltip-line-height);
   position: relative;
+  background-color: var(--chart-tooltip-background);
+  border-color: var(--chart-tooltip-background);
 }
 
 .swatch {
