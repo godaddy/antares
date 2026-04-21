@@ -1,0 +1,1 @@
+import{w as s}from"./slots-CxH4QBkg.js";import{R as a}from"./iframe-DsdbgEAN.js";import{u as i}from"./index-LF6fHeKE.js";const l=s("BentoContainer",function(...o){const{props:t,apply:r}=i(o),{children:n,as:e="div"}=t;return a.createElement(e,{...r({},["as"])},n)});export{l as C};
