@@ -4,8 +4,6 @@
  * Import this package to access all components, layout primitives, and design tokens.
  * CSS custom properties are automatically side-effect imported when this module loads.
  */
-import './variables.css';
-import '../../../apps/docs/.storybook/legacy-tokens.css';
 
 export { Icon, set, ondemand, parser, type IconProps } from '#components/icon';
 

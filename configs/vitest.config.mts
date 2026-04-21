@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { defineConfig, defaultExclude, type UserProjectConfigExport } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
@@ -27,6 +28,7 @@ export const browser = {
     globals: true,
     name: 'Browser',
     include: ['./**/**/*.browser.test.{ts,tsx}'],
+    setupFiles: resolve(__dirname, './vitest.setup.mts'),
     browser: {
       instances: [{ browser: 'chromium' }],
       provider: playwright(),
@@ -53,7 +55,7 @@ export default defineConfig({
       provider: 'v8',
       enabled: true,
       include: ['dist/**/*', 'src/**/*'],
-      exclude: ['dist/**.d.{ts,cts,mts}', 'dist/**.map', 'dist/**.css', 'examples/**/!(*.ts|*.tsx)', "**/*.module.css"],
+      exclude: ['dist/**.d.{ts,cts,mts}', 'dist/**.map', 'dist/**.css', 'examples/**/!(*.ts|*.tsx)', '**/*.module.css'],
       reporter: ['text', 'json', 'html'],
       thresholds: {
         autoUpdate: false,
