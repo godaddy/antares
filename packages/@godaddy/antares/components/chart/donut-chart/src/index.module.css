@@ -37,23 +37,9 @@
 
 .tooltip {
   --donut-tooltip-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.12);
-  --donut-tooltip-background: var(--ux-cao06b);
-  --donut-tooltip-padding: var(--ux-cxaebb);
 
   filter: none;
   box-shadow: var(--donut-tooltip-shadow);
-  padding: var(--donut-tooltip-padding);
-  background-color: var(--donut-tooltip-background);
-}
-
-.tooltip[data-placement="top"] {
-  --donut-tooltip-offset: var(--ux-a2dzk8);
-  margin-bottom: var(--donut-tooltip-offset);
-}
-
-.tooltip[data-placement="bottom"] {
-  --donut-tooltip-offset: var(--ux-a2dzk8);
-  margin-top: var(--donut-tooltip-offset);
 }
 
 .item {

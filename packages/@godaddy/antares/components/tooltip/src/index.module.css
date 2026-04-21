@@ -2,7 +2,7 @@
   --_arrow-width: 10px;
   --_arrow-rotated-width: calc(var(--_arrow-width) / pow(2, 1 / 2));
   --_arrow-height: calc(var(--_arrow-rotated-width) / 2);
-  --_content-offset: calc(var(--_arrow-height) + var(--sp-sm, 8px));
+  --_content-offset: calc(var(--_arrow-height) + var(--sp-sm));
   --_arrow-offset: calc(var(--_arrow-height) * -1 + 1px);
 
   transition:
