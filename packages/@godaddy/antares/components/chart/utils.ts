@@ -57,3 +57,11 @@ export function chartArcGapAngleDeg(outerRadiusPx: number): number {
   const r = Math.max(outerRadiusPx, 1);
   return (Math.atan2(CHART_ARC_GAP_PX, r) * 180) / Math.PI;
 }
+
+/**
+ * Angular padding between donut pie slices (radians), from a fixed seam gap in CSS pixels at the outer radius.
+ */
+export function chartSegmentGapPadAngle(outerRadiusPx: number): number {
+  const r = Math.max(outerRadiusPx, 1);
+  return CHART_ARC_GAP_PX / r;
+}

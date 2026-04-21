@@ -16,7 +16,10 @@ const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
 const CHART_COLOR_COUNT = 9;
 const VARIABLE_PREFIX = '--viz';
 
-function chartColorForIndex(index: number): string {
+/**
+ * Maps a chart position (series, slice, legend row) to the shared nine-color viz palette so strokes, fills, and swatches resolve through `--viz*` tokens.
+ */
+export function chartColorForIndex(index: number): string {
   return `var(${VARIABLE_PREFIX}${(index % CHART_COLOR_COUNT) + 1})`;
 }
 
