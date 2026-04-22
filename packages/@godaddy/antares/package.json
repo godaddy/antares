@@ -21,6 +21,10 @@
     "storybook": "storybook dev -p 6006  --no-open",
     "build-storybook": "storybook build"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git@gdcorp.github.com:godaddy/antares.git",
@@ -89,6 +93,10 @@
     "#components/*": "./components/*/src/index.tsx"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  }
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
 }
