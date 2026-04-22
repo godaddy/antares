@@ -21,10 +21,6 @@
     "storybook": "storybook dev -p 6006  --no-open",
     "build-storybook": "storybook build"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
   "repository": {
     "type": "git",
     "url": "git@gdcorp.github.com:godaddy/antares.git",
@@ -39,6 +35,10 @@
   "author": "GoDaddy Operating Company, LLC",
   "license": "UNLICENSED",
   "homepage": "https://github.com/godaddy/antares",
+  "files": [
+    "dist",
+    "src"
+  ],
   "dependencies": {
     "@bento/icon": "^0.1.4",
     "@bento/svg-parser": "^0.1.1",
