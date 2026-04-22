@@ -7,10 +7,16 @@ import { type XLabelsOrientation } from '../../types.ts';
 const MIN_Y_LABEL_GAP_PX = 16;
 /** Minimum horizontal gap between X-axis labels (px). Implementation detail for min-width calculation. */
 const MIN_X_LABEL_GAP_PX = 8;
-/** Default chart margin (px) when axis dimensions are unknown. */
-const DEFAULT_MARGIN_PX = 50;
 /** Debounce time for parent size observer (ms). */
 const RESIZE_DEBOUNCE_MS = 150;
+
+/** Whether the element uses a non-`none` display. Uses getComputedStyle (Firefox-safe); Typed OM `computedStyleMap` is not available in Firefox. */
+function isElementDisplayed(element: Element | null | undefined): boolean {
+  if (!element) {
+    return false;
+  }
+  return getComputedStyle(element).display !== 'none';
+}
 
 /**
  * Computes minimum chart height from Y-axis label dimensions so all labels fit.
@@ -82,13 +88,40 @@ function getChartMinWidth(xAxisElement: Element) {
 }
 
 /**
- * Left margin width from Y-axis bbox plus padding, or default if axis not measured.
+ * Half the first X-axis tick label width (px) for left inset when the bottom-left label extends past the plot; 0 if no axis, no ticks, or label hidden.
+ *
+ * @param xAxisElement - X-axis SVG group element, or null
+ */
+function getHalfFirstXAxisTickLabelWidth(xAxisElement: SVGGraphicsElement | null): number {
+  if (!xAxisElement) {
+    return 0;
+  }
+
+  const tickNodes = xAxisElement.querySelectorAll<SVGGraphicsElement>('.visx-axis-tick');
+  const firstTick = tickNodes.length > 0 ? tickNodes[0] : null;
+  const firstTickText = firstTick?.querySelector('text');
+
+  if (!firstTickText || !isElementDisplayed(firstTickText)) {
+    return 0;
+  }
+
+  return Math.ceil(firstTickText.getBBox().width / 2);
+}
+
+/**
+ * Left margin: greater of Y-axis group width and half the first X-axis tick label width (corner clearance).
  *
  * @param yAxisElement - Y-axis SVG group element, or null
+ * @param xAxisElement - X-axis SVG group element, or null
  * @returns Left margin in px
  */
-function getLeftMargin(yAxisElement: SVGGraphicsElement | null): number {
-  return yAxisElement?.getBBox().width ?? 0;
+function getLeftMargin(
+  yAxisElement: SVGGraphicsElement | null,
+  xAxisElement: SVGGraphicsElement | null = null
+): number {
+  const yAxisWidth = yAxisElement?.getBBox().width ?? 0;
+
+  return Math.max(yAxisWidth, getHalfFirstXAxisTickLabelWidth(xAxisElement));
 }
 
 /**
@@ -99,6 +132,60 @@ function getLeftMargin(yAxisElement: SVGGraphicsElement | null): number {
  */
 function getBottomMargin(xAxisElement: SVGGraphicsElement | null): number {
   return xAxisElement?.getBBox().height ?? 0;
+}
+
+/**
+ * Right margin when the last X-axis tick label overflows the SVG (half label width), zero when labels are hidden,
+ * or the previous right margin when labels fit inside the chart.
+ *
+ * @param xAxisElement - X-axis SVG group element
+ * @param prevRightMargin - Previous right margin when the axis fits inside the SVG
+ * @returns Right margin in px
+ */
+function getRightMargin(xAxisElement: SVGGraphicsElement, prevRightMargin: number): number {
+  const tickNodes = xAxisElement.querySelectorAll<SVGGraphicsElement>('.visx-axis-tick');
+  const lastTick = tickNodes.length > 0 ? tickNodes[tickNodes.length - 1] : null;
+  const lastTickText = lastTick?.querySelector('text');
+
+  const chartWidth = xAxisElement.closest('svg')?.getBoundingClientRect().right ?? 0;
+  const xAxisWidth = lastTick?.getBoundingClientRect().right ?? 0;
+
+  if (!isElementDisplayed(lastTickText)) {
+    return 0;
+  }
+
+  if (xAxisWidth > chartWidth) {
+    return Math.ceil((lastTickText?.getBBox().width ?? 0) / 2);
+  }
+
+  return prevRightMargin;
+}
+
+/**
+ * Top margin when the topmost Y-axis tick label overflows above the SVG (half label height), zero when labels are hidden,
+ * or the previous top margin when labels fit inside the chart.
+ *
+ * @param yAxisElement - Y-axis SVG group element
+ * @param prevTopMargin - Previous top margin when the axis fits inside the SVG
+ * @returns Top margin in px
+ */
+function getTopMargin(yAxisElement: SVGGraphicsElement, prevTopMargin: number): number {
+  const tickNodes = yAxisElement.querySelectorAll<SVGGraphicsElement>('.visx-axis-tick');
+  const lastTick = tickNodes.length > 0 ? tickNodes[tickNodes.length - 1] : null;
+  const lastTickText = lastTick?.querySelector('text');
+
+  const svgTop = yAxisElement.closest('svg')?.getBoundingClientRect().top ?? 0;
+  const yAxisTop = lastTick?.getBoundingClientRect().top ?? 0;
+
+  if (!isElementDisplayed(lastTickText)) {
+    return 0;
+  }
+
+  if (yAxisTop < svgTop) {
+    return Math.ceil((lastTickText?.getBBox().height ?? 0) / 2);
+  }
+
+  return prevTopMargin;
 }
 
 /** Axis-derived layout state updated by MutationObserver and ResizeObserver per axis. */
@@ -112,8 +199,8 @@ interface AxisState {
 
 const INITIAL_AXIS_STATE: AxisState = {
   margin: {
-    top: DEFAULT_MARGIN_PX,
-    right: DEFAULT_MARGIN_PX,
+    top: 0,
+    right: 0,
     bottom: 0,
     left: 0
   },
@@ -236,7 +323,11 @@ export function useChartContainer(options?: UseChartContainerOptions) {
         setAxisState(function updateYAxis(prev) {
           return {
             ...prev,
-            margin: { ...prev.margin, left: getLeftMargin(yAxisElement) },
+            margin: {
+              ...prev.margin,
+              left: getLeftMargin(yAxisElement, xAxisRef.current),
+              top: getTopMargin(yAxisElement, prev.margin.top)
+            },
             minHeight: getChartMinHeight(yAxisElement)
           };
         });
@@ -264,7 +355,11 @@ export function useChartContainer(options?: UseChartContainerOptions) {
           return {
             ...prev,
             minXAxisWidthHorizontal: minWidthHorizontal,
-            minXAxisWidthVertical: minWidthVertical
+            minXAxisWidthVertical: minWidthVertical,
+            margin: {
+              ...prev.margin,
+              left: getLeftMargin(yAxisRef.current as SVGGraphicsElement | null, xAxisElement)
+            }
           };
         });
       }
@@ -294,7 +389,12 @@ export function useChartContainer(options?: UseChartContainerOptions) {
         setAxisState(function updateXAxisResize(prev) {
           return {
             ...prev,
-            margin: { ...prev.margin, bottom: getBottomMargin(xAxisElement) }
+            margin: {
+              ...prev.margin,
+              bottom: getBottomMargin(xAxisElement),
+              right: getRightMargin(xAxisElement, prev.margin.right),
+              left: getLeftMargin(yAxisRef.current, xAxisElement)
+            }
           };
         });
       });
@@ -321,7 +421,11 @@ export function useChartContainer(options?: UseChartContainerOptions) {
           return {
             ...prev,
             yAxisRect: yAxisElement.getBBox(),
-            margin: { ...prev.margin, left: getLeftMargin(yAxisElement) }
+            margin: {
+              ...prev.margin,
+              left: getLeftMargin(yAxisElement, xAxisRef.current),
+              top: getTopMargin(yAxisElement, prev.margin.top)
+            }
           };
         });
       });
