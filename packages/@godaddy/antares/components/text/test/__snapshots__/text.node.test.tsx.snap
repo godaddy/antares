@@ -1,13 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Text > renders empty Text with span element 1`] = `"<span class="text"></span>"`;
+exports[`@godaddy/antares > #Text > renders empty Text with span element 1`] = `"<span class="gda_YA-Z0q_text"></span>"`;
 
-exports[`@godaddy/antares > #Text > renders the align example 1`] = `"<p class="text" style="--align:center">Text is aligned to the center</p>"`;
+exports[`@godaddy/antares > #Text > renders the align example 1`] = `"<p class="gda_YA-Z0q_text" style="--align:center">Text is aligned to the center</p>"`;
 
-exports[`@godaddy/antares > #Text > renders the as example 1`] = `"<marquee class="text">A scrolling marquee</marquee>"`;
+exports[`@godaddy/antares > #Text > renders the as example 1`] = `"<marquee class="gda_YA-Z0q_text">A scrolling marquee</marquee>"`;
 
-exports[`@godaddy/antares > #Text > renders the maxLines example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text" style="--max-lines:2">This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"`;
+exports[`@godaddy/antares > #Text > renders the maxLines example 1`] = `"<div style="width:300px;border:1px solid red"><p class="gda_YA-Z0q_text" style="--max-lines:2">This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"`;
 
-exports[`@godaddy/antares > #Text > renders the text example 1`] = `"<span class="text">Hello, world!</span>"`;
+exports[`@godaddy/antares > #Text > renders the text example 1`] = `"<span class="gda_YA-Z0q_text">Hello, world!</span>"`;
 
-exports[`@godaddy/antares > #Text > renders the wrap example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text" style="--wrap:pretty">Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and legibility. Because counting characters and balancing them across multiple lines is computationally expensive, this value is only supported for blocks of text spanning a limited number of lines</p></div>"`;
+exports[`@godaddy/antares > #Text > renders the wrap example 1`] = `"<div style="width:300px;border:1px solid red"><p class="gda_YA-Z0q_text" style="--wrap:pretty">Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and legibility. Because counting characters and balancing them across multiple lines is computationally expensive, this value is only supported for blocks of text spanning a limited number of lines</p></div>"`;

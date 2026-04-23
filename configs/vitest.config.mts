@@ -55,7 +55,13 @@ export default defineConfig({
       provider: 'v8',
       enabled: true,
       include: ['dist/**/*', 'src/**/*'],
-      exclude: ['dist/**.d.{ts,cts,mts}', 'dist/**.map', 'dist/**.css', 'examples/**/!(*.ts|*.tsx)', '**/*.module.css'],
+      exclude: [
+        'dist/**/**.d.{ts,cts,mts}',
+        'dist/**/**.map',
+        'dist/**/**.css',
+        'examples/**/!(*.ts|*.tsx)',
+        '**/**/*.module.css'
+      ],
       reporter: ['text', 'json', 'html'],
       thresholds: {
         autoUpdate: false,

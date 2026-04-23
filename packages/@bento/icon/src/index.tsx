@@ -7,7 +7,6 @@ import { useSVGSprite } from '@bento/use-svg-sprite';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { BentoError } from '@bento/error';
-import style from './icon.module.css';
 
 export interface IconProps extends Omit<IllustrationProps, 'children'> {
   /**
@@ -115,7 +114,7 @@ export const Icon = withSlots('BentoIcon', function Iconic(args: IconProps) {
   const drawing = graphic || children;
   if (!drawing) return null;
 
-  const applied = apply({ className: style.icon }, ['icon', 'mode']);
+  const applied = apply({}, ['icon', 'mode']);
 
   return (
     <Illustration {...applied} {...data} slot="content">
