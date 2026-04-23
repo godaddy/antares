@@ -74,8 +74,8 @@ function getXAxisLabelMetrics(xAxisElement: Element): {
 function getChartMinWidth(xAxisElement: Element) {
   const { longestLabel, labelsCount, maxLabelHeight } = getXAxisLabelMetrics(xAxisElement);
   const spaceBetweenLabels = labelsCount * MIN_X_LABEL_GAP_PX;
-  const minWidthHorizontal = longestLabel * labelsCount + spaceBetweenLabels;
-  const minWidthVertical = maxLabelHeight * labelsCount + spaceBetweenLabels;
+  const minWidthHorizontal = Math.max(longestLabel, maxLabelHeight) * labelsCount + spaceBetweenLabels;
+  const minWidthVertical = Math.min(longestLabel, maxLabelHeight) * labelsCount + spaceBetweenLabels;
 
   return { minWidthVertical, minWidthHorizontal };
 }
