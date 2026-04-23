@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { defineConfig, defaultExclude, type TestProjectConfiguration } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
@@ -30,7 +31,18 @@ export const browser: TestProjectConfiguration = {
   test: {
     globals: true,
     name: 'Browser',
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped'
+      }
+    },
+    server: {
+      deps: {
+        inline: [/@bento\/.*/]
+      }
+    },
     include: ['./**/**/*.browser.test.{ts,tsx}'],
+    setupFiles: resolve(__dirname, './vitest.setup.mts'),
     browser: {
       instances: [{ browser: 'chromium' }],
       provider: playwright(),
