@@ -76,12 +76,14 @@ describe('@godaddy/antares', function antares() {
       it('returns null when there are no tick nodes', function noTicks() {
         const g = document.createElementNS(SVG_NS, 'g') as SVGGElement;
         document.body.append(g);
+
         expect(getAxisTickAt(g, 'first')).toBe(null);
         g.remove();
       });
 
       it('returns first and last tick groups', function firstLast() {
         const { xAxis, firstTick, lastTick, detach } = createAxisWithTwoTicks();
+
         expect(getAxisTickAt(xAxis, 'first')).toBe(firstTick);
         expect(getAxisTickAt(xAxis, 'last')).toBe(lastTick);
         detach();
@@ -95,6 +97,7 @@ describe('@godaddy/antares', function antares() {
 
       it('returns SVGTextElement child when present', function textChild() {
         const { firstTick, firstText, detach } = createAxisWithTwoTicks();
+
         expect(getTickLabelText(firstTick)).toBe(firstText);
         detach();
       });
@@ -109,6 +112,7 @@ describe('@godaddy/antares', function antares() {
         const el = document.createElement('div');
         el.style.display = 'none';
         document.body.append(el);
+
         expect(isElementDisplayed(el)).toBe(false);
         el.remove();
       });
@@ -117,6 +121,7 @@ describe('@godaddy/antares', function antares() {
         const el = document.createElement('div');
         el.style.display = 'block';
         document.body.append(el);
+
         expect(isElementDisplayed(el)).toBe(true);
         el.remove();
       });
@@ -126,6 +131,7 @@ describe('@godaddy/antares', function antares() {
       it('returns 0 when label is display none', function hiddenLabel() {
         const { xAxis, firstText, detach } = createAxisWithTwoTicks();
         firstText.style.display = 'none';
+
         expect(getHalfFirstXAxisTickLabelWidth(xAxis)).toBe(0);
         detach();
       });
@@ -138,6 +144,7 @@ describe('@godaddy/antares', function antares() {
           width: 47,
           height: 12
         } as DOMRect);
+
         expect(getHalfFirstXAxisTickLabelWidth(xAxis)).toBe(24);
         bboxSpy.mockRestore();
         detach();
@@ -157,6 +164,7 @@ describe('@godaddy/antares', function antares() {
           }
           return { x: 0, y: 0, width: 30, height: 10 } as DOMRect;
         });
+
         expect(getLeftMargin(yAxis, xAxis)).toBe(15);
         yBBoxSpy.mockRestore();
         yAxis.remove();
@@ -177,6 +185,7 @@ describe('@godaddy/antares', function antares() {
           width: 1,
           height: 33
         } as DOMRect);
+
         expect(getBottomMargin(g)).toBe(33);
         spy.mockRestore();
       });
@@ -186,6 +195,7 @@ describe('@godaddy/antares', function antares() {
       it('returns 0 when last tick label is hidden', function hidden() {
         const { xAxis, lastText, detach } = createAxisWithTwoTicks();
         lastText.style.display = 'none';
+
         expect(getRightMargin(xAxis, 12)).toBe(0);
         detach();
       });
@@ -224,6 +234,7 @@ describe('@godaddy/antares', function antares() {
           width: 50,
           height: 10
         } as DOMRect);
+
         expect(getRightMargin(xAxis, 7)).toBe(25);
         bboxSpy.mockRestore();
         detach();
@@ -263,6 +274,7 @@ describe('@godaddy/antares', function antares() {
           width: 99,
           height: 10
         } as DOMRect);
+
         expect(getRightMargin(xAxis, 42)).toBe(42);
         detach();
       });
@@ -279,6 +291,7 @@ describe('@godaddy/antares', function antares() {
         yTick.appendChild(yText);
         yAxis.appendChild(yTick);
         svg.insertBefore(yAxis, xAxis);
+
         expect(getTopMargin(yAxis, 5)).toBe(0);
         detach();
       });
@@ -325,6 +338,7 @@ describe('@godaddy/antares', function antares() {
           width: 10,
           height: 31
         } as DOMRect);
+
         expect(getTopMargin(yAxis, 9)).toBe(16);
         bboxSpy.mockRestore();
         detach();
@@ -372,6 +386,7 @@ describe('@godaddy/antares', function antares() {
           width: 10,
           height: 20
         } as DOMRect);
+
         expect(getTopMargin(yAxis, 3)).toBe(3);
         detach();
       });
