@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParentSize } from '@visx/responsive';
 import { Margin } from '@visx/xychart';
 import { type XLabelsOrientation } from '../../types.ts';
+import { getBottomMargin, getLeftMargin, getRightMargin, getTopMargin } from './chart-container-margins.ts';
 
 /** Minimum vertical gap between Y-axis labels (px). Implementation detail for min-height calculation. */
 const MIN_Y_LABEL_GAP_PX = 16;
@@ -9,14 +10,6 @@ const MIN_Y_LABEL_GAP_PX = 16;
 const MIN_X_LABEL_GAP_PX = 8;
 /** Debounce time for parent size observer (ms). */
 const RESIZE_DEBOUNCE_MS = 150;
-
-/** Whether the element uses a non-`none` display. Uses getComputedStyle (Firefox-safe); Typed OM `computedStyleMap` is not available in Firefox. */
-function isElementDisplayed(element: Element | null | undefined): boolean {
-  if (!element) {
-    return false;
-  }
-  return getComputedStyle(element).display !== 'none';
-}
 
 /**
  * Computes minimum chart height from Y-axis label dimensions so all labels fit.
@@ -87,107 +80,6 @@ function getChartMinWidth(xAxisElement: Element) {
   return { minWidthVertical, minWidthHorizontal };
 }
 
-/**
- * Half the first X-axis tick label width (px) for left inset when the bottom-left label extends past the plot; 0 if no axis, no ticks, or label hidden.
- *
- * @param xAxisElement - X-axis SVG group element, or null
- */
-function getHalfFirstXAxisTickLabelWidth(xAxisElement: SVGGraphicsElement | null): number {
-  if (!xAxisElement) {
-    return 0;
-  }
-
-  const tickNodes = xAxisElement.querySelectorAll<SVGGraphicsElement>('.visx-axis-tick');
-  const firstTick = tickNodes.length > 0 ? tickNodes[0] : null;
-  const firstTickText = firstTick?.querySelector('text');
-
-  if (!firstTickText || !isElementDisplayed(firstTickText)) {
-    return 0;
-  }
-
-  return Math.ceil(firstTickText.getBBox().width / 2);
-}
-
-/**
- * Left margin: greater of Y-axis group width and half the first X-axis tick label width (corner clearance).
- *
- * @param yAxisElement - Y-axis SVG group element, or null
- * @param xAxisElement - X-axis SVG group element, or null
- * @returns Left margin in px
- */
-function getLeftMargin(
-  yAxisElement: SVGGraphicsElement | null,
-  xAxisElement: SVGGraphicsElement | null = null
-): number {
-  const yAxisWidth = yAxisElement?.getBBox().width ?? 0;
-
-  return Math.max(yAxisWidth, getHalfFirstXAxisTickLabelWidth(xAxisElement));
-}
-
-/**
- * Bottom margin height from X-axis bbox plus padding, or default if axis not measured.
- *
- * @param xAxisElement - X-axis SVG group element, or null
- * @returns Bottom margin in px
- */
-function getBottomMargin(xAxisElement: SVGGraphicsElement | null): number {
-  return xAxisElement?.getBBox().height ?? 0;
-}
-
-/**
- * Right margin when the last X-axis tick label overflows the SVG (half label width), zero when labels are hidden,
- * or the previous right margin when labels fit inside the chart.
- *
- * @param xAxisElement - X-axis SVG group element
- * @param prevRightMargin - Previous right margin when the axis fits inside the SVG
- * @returns Right margin in px
- */
-function getRightMargin(xAxisElement: SVGGraphicsElement, prevRightMargin: number): number {
-  const tickNodes = xAxisElement.querySelectorAll<SVGGraphicsElement>('.visx-axis-tick');
-  const lastTick = tickNodes.length > 0 ? tickNodes[tickNodes.length - 1] : null;
-  const lastTickText = lastTick?.querySelector('text');
-
-  const chartWidth = xAxisElement.closest('svg')?.getBoundingClientRect().right ?? 0;
-  const xAxisWidth = lastTick?.getBoundingClientRect().right ?? 0;
-
-  if (!isElementDisplayed(lastTickText)) {
-    return 0;
-  }
-
-  if (xAxisWidth > chartWidth) {
-    return Math.ceil((lastTickText?.getBBox().width ?? 0) / 2);
-  }
-
-  return prevRightMargin;
-}
-
-/**
- * Top margin when the topmost Y-axis tick label overflows above the SVG (half label height), zero when labels are hidden,
- * or the previous top margin when labels fit inside the chart.
- *
- * @param yAxisElement - Y-axis SVG group element
- * @param prevTopMargin - Previous top margin when the axis fits inside the SVG
- * @returns Top margin in px
- */
-function getTopMargin(yAxisElement: SVGGraphicsElement, prevTopMargin: number): number {
-  const tickNodes = yAxisElement.querySelectorAll<SVGGraphicsElement>('.visx-axis-tick');
-  const lastTick = tickNodes.length > 0 ? tickNodes[tickNodes.length - 1] : null;
-  const lastTickText = lastTick?.querySelector('text');
-
-  const svgTop = yAxisElement.closest('svg')?.getBoundingClientRect().top ?? 0;
-  const yAxisTop = lastTick?.getBoundingClientRect().top ?? 0;
-
-  if (!isElementDisplayed(lastTickText)) {
-    return 0;
-  }
-
-  if (yAxisTop < svgTop) {
-    return Math.ceil((lastTickText?.getBBox().height ?? 0) / 2);
-  }
-
-  return prevTopMargin;
-}
-
 /** Axis-derived layout state updated by MutationObserver and ResizeObserver per axis. */
 interface AxisState {
   margin: Margin;
@@ -210,17 +102,17 @@ const INITIAL_AXIS_STATE: AxisState = {
   yAxisRect: null
 };
 
-interface UseChartContainerOptions {
+/** Options passed to {@link useScrollableXYChart}. */
+export interface UseScrollableXYChartOptions {
   /** When 'auto', labels rotate vertical when container is narrow; 'horizontal' or 'vertical' force that orientation. */
   xLabelsOrientation?: XLabelsOrientation;
 }
 
 /**
- * Provides container dimensions, margins, and axis refs for a scrollable line chart.
- * Depends on xAxisRef and yAxisRef being attached to the chart axis DOM nodes so it can measure them.
+ * Hook that returns refs and layout state for a parent that renders a scrollable visx `XYChart`.
+ * Depends on `xAxisRef` and `yAxisRef` being attached to the chart axis DOM nodes (`Axis` `innerRef`) so it can measure them.
  * Uses MutationObserver and ResizeObserver on both axes; layout or DOM changes can trigger several
- * state updates in one frame and cause multiple re-renders. The hook is sensitive to layout
- * thrashing when many things resize at once.
+ * state updates in one frame and cause multiple re-renders. Sensitive to layout thrashing when many things resize at once.
  *
  * @param options - Optional config (e.g. xLabelsOrientation)
  * @returns parentRef - Ref for the scrollable chart container
@@ -235,7 +127,7 @@ interface UseChartContainerOptions {
  * @returns xLabelsVertical - True when X labels are rotated vertical (narrow container or vertical orientation)
  * @returns yAxisRect - Bounding box of the Y-axis (for background/positioning)
  */
-export function useChartContainer(options?: UseChartContainerOptions) {
+export function useScrollableXYChart(options?: UseScrollableXYChartOptions) {
   const { xLabelsOrientation = 'auto' } = options ?? {};
   const {
     parentRef,

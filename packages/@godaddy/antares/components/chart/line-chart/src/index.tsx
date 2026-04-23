@@ -28,7 +28,7 @@ import type {
 import { resolveLegendPosition, xAccessor as defaultXAccessor, yAccessor as defaultYAccessor } from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/use-normalized-series';
 import { buildScaleConfig } from './scale-config.ts';
-import { useChartContainer } from './use-chart-container.ts';
+import { useScrollableXYChart } from '../../use-scrollable-xy-chart/src/index.tsx';
 import styles from './index.module.css';
 
 /** Scale types supported by LineChart (subset of @visx/scale ScaleType). */
@@ -290,7 +290,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     className
   } = props;
   const { parentRef, chartWidth, chartHeight, margin, scrollLeft, xAxisRef, yAxisRef, xLabelsVertical, yAxisRect } =
-    useChartContainer({ xLabelsOrientation });
+    useScrollableXYChart({ xLabelsOrientation });
   const series = useNormalizedSeries(seriesProp);
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);

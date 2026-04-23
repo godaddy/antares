@@ -8,7 +8,7 @@ import type {
 } from '../../types.ts';
 import { resolveLegendPosition, xAccessor as defaultXAccessor, yAccessor as defaultYAccessor } from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/use-normalized-series';
-import { useChartContainer } from '../../line-chart/src/use-chart-container.ts';
+import { useScrollableXYChart } from '../../use-scrollable-xy-chart/src/index.tsx';
 import { ChartColorProvider, useChartColor } from '#components/chart/use-chart-color';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { AxisTitle } from '#components/chart/axis-title';
@@ -332,7 +332,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
   const tickLength = 8;
 
   const { parentRef, chartWidth, chartHeight, margin, scrollLeft, scrollTop, xAxisRef, yAxisRef, xLabelsVertical } =
-    useChartContainer({ xLabelsOrientation });
+    useScrollableXYChart({ xLabelsOrientation });
 
   const series = useNormalizedSeries(seriesProp);
 

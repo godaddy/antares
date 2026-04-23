@@ -1,0 +1,84 @@
+---
+title: useScrollableXYChart
+description: Layout hook for scrollable two-dimensional charts with X and Y axes—measures axis DOM and supplies margins, content-sized width and height, scroll offsets, and when category-axis ticks should read vertically.
+---
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './use-scrollable-xy-chart.stories.tsx';
+
+import SourceExample from './examples/auto-layout.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## For use with chart components (not exported)
+
+### Purpose
+
+Built for **2D charts** with an **X axis** and a **Y axis** when the data plane can **overflow** inside a scroll container. Hard-coded `margin`, `width`, and `height` mis-size the SVG: ticks and labels need real space, and the value axis often stays visually fixed while the category axis scrolls. This hook **measures the axis DOM** you already render and returns **layout numbers** so the chart body, scales, and any frozen axis chrome stay consistent with what is on screen.
+
+### How it works
+
+1. **`useParentSize`** is bound to the scroll container (`parentRef`) to read the **visible** width and height of the plot slot.
+2. **`xAxisRef`** and **`yAxisRef`** point at the axis root groups. **`MutationObserver`** and **`ResizeObserver`** on those subtrees recompute **margins** (including overflow from tick labels), **minimum height** from stacked Y labels, and **minimum category-axis width** for horizontal vs vertical tick layouts.
+3. **`chartWidth`** and **`chartHeight`** combine the visible slot with those minima so the drawable area can grow past the viewport when labels require it. **`xLabelsVertical`** is derived from **`xLabelsOrientation`** (see Props) and whether horizontal ticks would fit at the current width.
+4. Scroll and pointer handling on the scroll container are described below (**Listeners and observers**); they keep **`scrollLeft`** / **`scrollTop`** accurate and resync pointer-driven overlays after scroll.
+
+### Listeners and observers
+
+**Scroll container** (the element that receives `parentRef`):
+
+- **`ResizeObserver`** (via **`useParentSize`**, debounced) — tracks the container’s **client width and height** when the plot slot is resized.
+- **`scroll`** (passive listener) — updates **`scrollLeft`** / **`scrollTop`** and may dispatch a **synthetic `pointermove`** on the last pointer target so hit-testing stays aligned with the new scroll position.
+- **`pointermove`** (passive listener) — records **`clientX` / `clientY`** and **`event.target`** for that resync path.
+- **`pointerleave`** (passive listener) — clears the stored target when the pointer leaves the container so a stale element is not targeted after scroll.
+
+**Y-axis root** (`yAxisRef`):
+
+- **`MutationObserver`** (`childList`, `subtree`) — recomputes Y-driven **margin** and **`minHeight`** when tick/label DOM changes.
+- **`ResizeObserver`** — picks up layout/size changes on the axis group (e.g. font or tick density) and refreshes **`yAxisRect`**, **margins**, and related layout.
+
+**X-axis root** (`xAxisRef`):
+
+- **`MutationObserver`** (`childList`, `subtree`) — recomputes category-axis **min widths** (horizontal vs vertical tick modes) and related **margin** when tick/label DOM changes.
+- **`ResizeObserver`** — updates **bottom/right/left** margins from measured overflow on the X-axis subtree.
+
+### How to implement
+
+1. Call **`useScrollableXYChart({ xLabelsOrientation })`** at the top of your chart component (options are in Props below).
+2. Put **`parentRef`** on the DOM node that scrolls (the one with `overflow: auto` / `scroll` and the chart body inside it).
+3. Pass **`xAxisRef`** and **`yAxisRef`** to your X and Y axis components via whatever ref prop they expose (commonly **`innerRef`** on axis primitives).
+4. After mount, when **`chartWidth`** and **`chartHeight`** are positive, render the SVG (or chart wrapper) using those dimensions and **`margin`**.
+5. Use **`xLabelsVertical`** to style category-axis labels (rotation, anchors, data attributes).
+6. Use **`scrollLeft`** / **`scrollTop`** (and optionally **`yAxisRect`**) to position frozen axis backgrounds and translated axis groups so they move with scroll while the plot content moves underneath.
+
+### Return value — what each field is for
+
+- **`parentRef`** — Attach to the **scroll container**. Intention: anchor **`useParentSize`**, the **scroll** / **pointer** listeners, and **`ResizeObserver`** from that hook on the same node users scroll (see **Listeners and observers**).
+
+- **`xAxisRef` / `yAxisRef`** — Attach to the **axis root groups** (via `innerRef` or equivalent). Intention: give observers a stable subtree that matches rendered ticks and labels so margins and min sizes stay accurate.
+
+- **`margin`** — `{ top, right, bottom, left }` in pixels, updated from measured axis geometry. Intention: pass straight into your chart’s margin model so the plot area clears tick overflow and axis thickness without hand tuning.
+
+- **`chartWidth`** — Width in pixels, at least the visible container width and at least the width implied by category-axis labels (for the current vertical vs horizontal tick mode) plus Y-axis width. Intention: size the chart body so horizontal overflow scrolls instead of clipping ticks.
+
+- **`minHeight`** — Minimum height implied by **Y-axis label stacking** (computed from label boxes and gaps). Intention: expose the **content-driven floor** separately when your layout or tests need it; **`chartHeight`** already applies this floor.
+
+- **`chartHeight`** — Height in pixels, `max(visible height, minHeight)`. Intention: size the chart body so stacked Y labels always fit.
+
+- **`xLabelsVertical`** — Boolean: category-axis ticks should read **vertically**. Intention: drive `tickLabelProps`, CSS, or `data-*` flags so narrow slots rotate labels without a separate breakpoint in the chart.
+
+- **`scrollLeft` / `scrollTop`** — Current scroll offsets of the container. Intention: offset **sticky** axis layers (background rects, `transform`s) and any UI that must stay phase-locked with the scrolled data plane; also drives the hook’s post-scroll pointer resync.
+
+- **`yAxisRect`** — `getBBox()` of the Y-axis group when available, else `null`. Intention: size or place **frozen Y-axis chrome** (e.g. a background band) aligned to the measured axis, independent of arbitrary margin guesses.
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Auto layout
+
+Minimal scroll parent plus stub axis groups: same ref wiring and `data-*` surface the browser tests assert on.
+
+<Source language="tsx" code={SourceExample} />
+<Story of={Stories.AutoLayout} inline />
