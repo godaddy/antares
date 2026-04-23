@@ -1256,69 +1256,6 @@ Best Practices [#best-practices]
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
-# Pagination
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Default Active Index [#default-active-index]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="Stories.DefaultActive" />
-
-<Source language="tsx" code="SourceDefaultActive" />
-
-With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="Stories.WithLimit" />
-
-<Source language="tsx" code="SourceWithLimit" />
-
-onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="Stories.OnChange" />
-
-<Source language="tsx" code="SourceOnChange" />
-
-
 # NumberField
 
 
@@ -1425,6 +1362,69 @@ Best practices [#best-practices]
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
+# Pagination
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Default Active Index [#default-active-index]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="Stories.DefaultActive" />
+
+<Source language="tsx" code="SourceDefaultActive" />
+
+With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="Stories.WithLimit" />
+
+<Source language="tsx" code="SourceWithLimit" />
+
+onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="Stories.OnChange" />
+
+<Source language="tsx" code="SourceOnChange" />
+
+
 # Popover
 
 
@@ -1479,130 +1479,6 @@ the close button.
 Best Practices [#best-practices]
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
-# SegmentedController
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="Stories.IconOnly" />
-
-<Source language="tsx" code="SourceIconOnly" />
-
-Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="Stories.Overflow" />
-
-<Source language="tsx" code="SourceOverflow" />
-
-RTL Direction [#rtl-direction]
-
-The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-Best Practices [#best-practices]
-
-When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
 
 
 # Radio
@@ -1827,6 +1703,130 @@ Always provide clear error messages:
   <Radio value="express">Express</Radio>
 </RadioGroup>
 ```
+
+
+# SegmentedController
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+Best Practices [#best-practices]
+
+When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
 
 
 # Select
@@ -2229,6 +2229,69 @@ The axis title follows the current **layout direction** (LTR or RTL). By default
 <Source language="tsx" code="SourceRTLDirection" />
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Bar Chart
 
 
@@ -2622,69 +2685,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Gauge Chart
 
 
@@ -2785,69 +2785,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# Legend
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `Legend` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic legend with a single series showing the default styling and layout.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-With label [#with-label]
-
-Legend with a visible label that is also used as the accessible label.
-
-<Source language="tsx" code="SourceWithLabel" />
-
-<Story of="Stories.WithLabel" />
-
-Vertical orientation [#vertical-orientation]
-
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
-
-<Source language="tsx" code="SourceVertical" />
-
-<Story of="Stories.Vertical" />
-
-Legend size chart example [#legend-size-chart-example]
-
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
-
-<Source language="tsx" code="SourceLegendSizeChart" />
-
-<Story of="Stories.LegendSizeChart" />
 
 
 # LineChart
@@ -3135,6 +3072,69 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
+
+
 # Tooltip
 
 
@@ -3281,6 +3281,94 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
+
+
+# useScrollableXYChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+Purpose [#purpose]
+
+Built for **2D charts** with an **X axis** and a **Y axis** when the data plane can **overflow** inside a scroll container. Hard-coded `margin`, `width`, and `height` mis-size the SVG: ticks and labels need real space, and the value axis often stays visually fixed while the category axis scrolls. This hook **measures the axis DOM** you already render and returns **layout numbers** so the chart body, scales, and any frozen axis chrome stay consistent with what is on screen.
+
+How it works [#how-it-works]
+
+1. **`useParentSize`** is bound to the scroll container (`parentRef`) to read the **visible** width and height of the plot slot.
+2. **`xAxisRef`*&#x2A; and &#x2A;*`yAxisRef`*&#x2A; point at the axis root groups. &#x2A;*`MutationObserver`*&#x2A; and &#x2A;*`ResizeObserver`** on those subtrees recompute **margins** (including overflow from tick labels), **minimum height** from stacked Y labels, and **minimum category-axis width** for horizontal vs vertical tick layouts.
+3. **`chartWidth`*&#x2A; and &#x2A;*`chartHeight`*&#x2A; combine the visible slot with those minima so the drawable area can grow past the viewport when labels require it. &#x2A;*`xLabelsVertical`*&#x2A; follows from &#x2A;*`xLabelsOrientation`** (see **Props**) and whether horizontal ticks would fit at the current width.
+4. Scroll and pointer handling on the scroll container are described below (**Listeners and observers*&#x2A;); they keep &#x2A;*`scrollLeft`*&#x2A; / &#x2A;*`scrollTop`** accurate and resync pointer-driven overlays after scroll.
+
+Listeners and observers [#listeners-and-observers]
+
+**Scroll container** (the element that receives `parentRef`):
+
+* **`ResizeObserver`*&#x2A; (via &#x2A;*`useParentSize`**, debounced) — tracks the container’s **client width and height** when the plot slot is resized.
+* **`scroll`*&#x2A; (passive listener) — updates &#x2A;*`scrollLeft`*&#x2A; / &#x2A;*`scrollTop`** and may dispatch a &#x2A;*synthetic `pointermove`** on the last pointer target so hit-testing stays aligned with the new scroll position.
+* **`pointermove`*&#x2A; (passive listener) — records &#x2A;*`clientX` / `clientY`*&#x2A; and &#x2A;*`event.target`** for that resync path.
+* **`pointerleave`** (passive listener) — clears the stored target when the pointer leaves the container so a stale element is not targeted after scroll.
+
+**Y-axis root** (`yAxisRef`):
+
+* **`MutationObserver`** (`childList`, `subtree`) — recomputes Y-driven **margin*&#x2A; and &#x2A;*`minHeight`** when tick/label DOM changes.
+* **`ResizeObserver`*&#x2A; — picks up layout/size changes on the axis group (e.g. font or tick density) and refreshes &#x2A;*`yAxisRect`**, **margins**, and related layout.
+
+**X-axis root** (`xAxisRef`):
+
+* **`MutationObserver`** (`childList`, `subtree`) — recomputes category-axis **min widths** (horizontal vs vertical tick modes) and related **margin** when tick/label DOM changes.
+* **`ResizeObserver`** — updates **bottom/right/left** margins from measured overflow on the X-axis subtree.
+
+How to implement [#how-to-implement]
+
+1. Call &#x2A;*`useScrollableXYChart()`*&#x2A; at the top of your chart component, or &#x2A;*`useScrollableXYChart({ xLabelsOrientation })`** when you need to override category-axis layout (see **Props**).
+2. Put &#x2A;*`parentRef`** on the DOM node that scrolls (the one with `overflow: auto` / `scroll` and the chart body inside it).
+3. Pass &#x2A;*`xAxisRef`*&#x2A; and &#x2A;*`yAxisRef`*&#x2A; to your X and Y axis components via whatever ref prop they expose (commonly &#x2A;*`innerRef`** on axis primitives).
+4. After mount, when &#x2A;*`chartWidth`*&#x2A; and &#x2A;*`chartHeight`*&#x2A; are positive, render the SVG (or chart wrapper) using those dimensions and &#x2A;*`margin`**.
+5. Use &#x2A;*`xLabelsVertical`** to style category-axis labels (rotation, anchors, data attributes).
+6. Use &#x2A;*`scrollLeft`*&#x2A; / &#x2A;*`scrollTop`*&#x2A; (and optionally &#x2A;*`yAxisRect`**) to position frozen axis backgrounds and translated axis groups so they move with scroll while the plot content moves underneath.
+
+Props [#props]
+
+The hook accepts an optional **props** object as its first argument (`UseScrollableXYChartProps` in source). It is separate from the **return value** below.
+
+* **`xLabelsOrientation`*&#x2A; — Category-axis label layout vs. container width. Values are the chart-level type &#x2A;*`XLabelsOrientation`*&#x2A;: &#x2A;*`'auto'`*&#x2A; (default), &#x2A;*`'horizontal'`*&#x2A;, or &#x2A;*`'vertical'`*&#x2A;. With &#x2A;*`'auto'`*&#x2A;, the hook chooses vertical labels when the visible width is too small for the measured horizontal-tick footprint (including Y-axis width). &#x2A;*`'horizontal'`*&#x2A; and &#x2A;*`'vertical'`*&#x2A; skip that width check and force the corresponding layout, which also feeds &#x2A;*`chartWidth`** minima via the horizontal vs vertical min-width paths.
+
+Return value — what each field is for [#return-value--what-each-field-is-for]
+
+* **`parentRef`** — Attach to the **scroll container*&#x2A;. Intention: anchor &#x2A;*`useParentSize`**, the **scroll** / **pointer*&#x2A; listeners, and &#x2A;*`ResizeObserver`** from that hook on the same node users scroll (see **Listeners and observers**).
+
+* **`xAxisRef` / `yAxisRef`** — Attach to the **axis root groups** (via `innerRef` or equivalent). Intention: give observers a stable subtree that matches rendered ticks and labels so margins and min sizes stay accurate.
+
+* **`margin`** — `{ top, right, bottom, left }` in pixels, updated from measured axis geometry. Intention: pass straight into your chart’s margin model so the plot area clears tick overflow and axis thickness without hand tuning.
+
+* **`chartWidth`** — Width in pixels, at least the visible container width and at least the width implied by category-axis labels (for the current vertical vs horizontal tick mode) plus Y-axis width. Intention: size the chart body so horizontal overflow scrolls instead of clipping ticks.
+
+* **`minHeight`** — Minimum height implied by **Y-axis label stacking** (computed from label boxes and gaps). Intention: expose the **content-driven floor*&#x2A; separately when your layout or tests need it; &#x2A;*`chartHeight`** already applies this floor.
+
+* **`chartHeight`** — Height in pixels, `max(visible height, minHeight)`. Intention: size the chart body so stacked Y labels always fit.
+
+* **`xLabelsVertical`** — Boolean: category-axis ticks should read **vertically**. Intention: drive `tickLabelProps`, CSS, or `data-*` flags so narrow slots rotate labels without a separate breakpoint in the chart.
+
+* **`scrollLeft` / `scrollTop`** — Current scroll offsets of the container. Intention: offset **sticky** axis layers (background rects, `transform`s) and any UI that must stay phase-locked with the scrolled data plane; also drives the hook’s post-scroll pointer resync.
+
+* **`yAxisRect`** — `getBBox()` of the Y-axis group when available, else `null`. Intention: size or place **frozen Y-axis chrome** (e.g. a background band) aligned to the measured axis, independent of arbitrary margin guesses.
+
+Examples [#examples]
+
+Auto layout [#auto-layout]
+
+Minimal scroll parent plus stub axis groups: same ref wiring and `data-*` surface the browser tests assert on.
+
+<Source language="tsx" code="SourceExample" />
+
+<Story of="Stories.AutoLayout" />
 
 
 # Box
