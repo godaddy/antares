@@ -103,7 +103,7 @@ const INITIAL_AXIS_STATE: AxisState = {
 };
 
 /** Options passed to {@link useScrollableXYChart}. */
-export interface UseScrollableXYChartOptions {
+export interface UseScrollableXYChartProps {
   /** When 'auto', labels rotate vertical when container is narrow; 'horizontal' or 'vertical' force that orientation. */
   xLabelsOrientation?: XLabelsOrientation;
 }
@@ -114,7 +114,7 @@ export interface UseScrollableXYChartOptions {
  * Uses MutationObserver and ResizeObserver on both axes; layout or DOM changes can trigger several
  * state updates in one frame and cause multiple re-renders. Sensitive to layout thrashing when many things resize at once.
  *
- * @param options - Optional config (e.g. xLabelsOrientation)
+ * @param props - Optional config (e.g. xLabelsOrientation)
  * @returns parentRef - Ref for the scrollable chart container
  * @returns chartWidth - Chart width in px (visible width or min from axis labels)
  * @returns minHeight - Minimum height from Y-axis labels
@@ -127,8 +127,8 @@ export interface UseScrollableXYChartOptions {
  * @returns xLabelsVertical - True when X labels are rotated vertical (narrow container or vertical orientation)
  * @returns yAxisRect - Bounding box of the Y-axis (for background/positioning)
  */
-export function useScrollableXYChart(options?: UseScrollableXYChartOptions) {
-  const { xLabelsOrientation = 'auto' } = options ?? {};
+export function useScrollableXYChart(props?: UseScrollableXYChartProps) {
+  const { xLabelsOrientation = 'auto' } = props ?? {};
   const {
     parentRef,
     width: visibleChartWidth,
