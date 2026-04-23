@@ -576,6 +576,266 @@ Group Organization [#group-organization]
 * Provide a group label that clearly describes the choice being made
 
 
+# FieldFrame
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
+
+Features [#features]
+
+* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
+* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
+* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
+* **Required indicator**: Shows asterisk next to label when the field is required
+* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
+* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
+
+Usage [#usage]
+
+Props [#props]
+
+FieldFrame accepts the following props:
+
+<PropTable />
+
+Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
+
+Component composition [#component-composition]
+
+Internal structure [#internal-structure]
+
+FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
+
+```text
+Provider
+├── Label                     ← when label prop
+├── Group.frame               ← border, focus/invalid/disabled styling
+│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
+├── FieldError                ← when errorMessage prop
+└── Text[slot=description]    ← when description prop
+```
+
+The following list describes the internal React Aria components used to compose FieldFrame:
+
+* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
+* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
+* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
+* **Text** (optional) — Description block rendered when `description` is provided.
+
+Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
+
+States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
+
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
+| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
+
+Examples [#examples]
+
+Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
+
+
+# Menu
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceMenu" />
+
+With Submenus [#with-submenus]
+
+<Story of="Stories.WithSubmenus" />
+
+<Source language="tsx" code="SourceMenuSubmenu" />
+
+With Selection [#with-selection]
+
+<Story of="Stories.WithSelection" />
+
+<Source language="tsx" code="SourceMenuSelection" />
+
+With Sections [#with-sections]
+
+<Story of="Stories.WithSections" />
+
+<Source language="tsx" code="SourceMenuSections" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+React Aria Components automatically adds data attributes for styling different states:
+
+**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
+
+**Popover:** `data-entering`, `data-exiting`
+
+```css
+[data-selected] {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-entering] {
+  animation: slideIn 0.2s ease-out;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual child components can be styled by passing `className` props:
+
+```jsx
+<Menu>
+  <MenuItem id="special" className="premium-item">
+    Premium Feature
+  </MenuItem>
+  <MenuSection className="featured-section">
+    <MenuHeader>Featured</MenuHeader>
+    <MenuItem id="new">What's New</MenuItem>
+  </MenuSection>
+</Menu>
+```
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Space/Enter**: Opens menu and activates items
+* **Arrow Down/Up**: Navigate through items
+* **Arrow Right**: Opens submenu
+* **Arrow Left**: Closes submenu
+* **Home/End**: Jump to first/last item
+* **Escape**: Closes menu
+* **Tab**: Closes menu and moves to next element
+* **Type to select**: Type to jump to matching items
+
+Troubleshooting [#troubleshooting]
+
+Submenu Not Opening [#submenu-not-opening]
+
+```jsx
+// ❌ Wrong: MenuItem used directly
+<MenuItem id="share">
+  Share
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</MenuItem>
+
+// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
+<SubmenuTrigger>
+  <MenuItem id="share">Share</MenuItem>
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</SubmenuTrigger>
+```
+
+Selection Not Working [#selection-not-working]
+
+```jsx
+// ❌ Wrong: Using both controlled and uncontrolled props
+<Menu
+  selectedKeys={selected}
+  defaultSelectedKeys={['option1']}
+  selectionMode="single"
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Controlled mode
+<Menu
+  selectionMode="single"
+  selectedKeys={selected}
+  onSelectionChange={setSelected}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Uncontrolled mode
+<Menu
+  selectionMode="single"
+  defaultSelectedKeys={['option1']}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+```
+
+Styling Not Applying [#styling-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes for higher specificity */
+.my-menu [data-selected] {
+  background-color: red;
+}
+```
+
+
 # Icon
 
 
@@ -986,266 +1246,6 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
-
-
-# FieldFrame
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
-
-Features [#features]
-
-* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
-* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
-* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
-* **Required indicator**: Shows asterisk next to label when the field is required
-* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
-* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
-
-Usage [#usage]
-
-Props [#props]
-
-FieldFrame accepts the following props:
-
-<PropTable />
-
-Basic example [#basic-example]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
-
-Component composition [#component-composition]
-
-Internal structure [#internal-structure]
-
-FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
-
-```text
-Provider
-├── Label                     ← when label prop
-├── Group.frame               ← border, focus/invalid/disabled styling
-│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
-├── FieldError                ← when errorMessage prop
-└── Text[slot=description]    ← when description prop
-```
-
-The following list describes the internal React Aria components used to compose FieldFrame:
-
-* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
-* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
-* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
-* **Text** (optional) — Description block rendered when `description` is provided.
-
-Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
-
-States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
-
-| State                                                                                    | CSS Selector           |
-| ---------------------------------------------------------------------------------------- | ---------------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
-| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
-| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
-| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
-
-Examples [#examples]
-
-Leading control [#leading-control]
-
-<Story of="Stories.LeadingControl" />
-
-Trailing control [#trailing-control]
-
-<Story of="Stories.TrailingControl" />
-
-<Source language="tsx" code="SourceTrailingControl" />
-
-Icon accessories [#icon-accessories]
-
-<Story of="Stories.IconAccessories" />
-
-<Source language="tsx" code="SourceIconAccessories" />
-
-
-# Menu
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceMenu" />
-
-With Submenus [#with-submenus]
-
-<Story of="Stories.WithSubmenus" />
-
-<Source language="tsx" code="SourceMenuSubmenu" />
-
-With Selection [#with-selection]
-
-<Story of="Stories.WithSelection" />
-
-<Source language="tsx" code="SourceMenuSelection" />
-
-With Sections [#with-sections]
-
-<Story of="Stories.WithSections" />
-
-<Source language="tsx" code="SourceMenuSections" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-React Aria Components automatically adds data attributes for styling different states:
-
-**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
-
-**Popover:** `data-entering`, `data-exiting`
-
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  color: #1e40af;
-}
-
-[data-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-[data-entering] {
-  animation: slideIn 0.2s ease-out;
-}
-```
-
-Component Customization [#component-customization]
-
-Individual child components can be styled by passing `className` props:
-
-```jsx
-<Menu>
-  <MenuItem id="special" className="premium-item">
-    Premium Feature
-  </MenuItem>
-  <MenuSection className="featured-section">
-    <MenuHeader>Featured</MenuHeader>
-    <MenuItem id="new">What's New</MenuItem>
-  </MenuSection>
-</Menu>
-```
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Space/Enter**: Opens menu and activates items
-* **Arrow Down/Up**: Navigate through items
-* **Arrow Right**: Opens submenu
-* **Arrow Left**: Closes submenu
-* **Home/End**: Jump to first/last item
-* **Escape**: Closes menu
-* **Tab**: Closes menu and moves to next element
-* **Type to select**: Type to jump to matching items
-
-Troubleshooting [#troubleshooting]
-
-Submenu Not Opening [#submenu-not-opening]
-
-```jsx
-// ❌ Wrong: MenuItem used directly
-<MenuItem id="share">
-  Share
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
-</MenuItem>
-
-// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
-<SubmenuTrigger>
-  <MenuItem id="share">Share</MenuItem>
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
-</SubmenuTrigger>
-```
-
-Selection Not Working [#selection-not-working]
-
-```jsx
-// ❌ Wrong: Using both controlled and uncontrolled props
-<Menu
-  selectedKeys={selected}
-  defaultSelectedKeys={['option1']}
-  selectionMode="single"
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-
-// ✅ Controlled mode
-<Menu
-  selectionMode="single"
-  selectedKeys={selected}
-  onSelectionChange={setSelected}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-
-// ✅ Uncontrolled mode
-<Menu
-  selectionMode="single"
-  defaultSelectedKeys={['option1']}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-```
-
-Styling Not Applying [#styling-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
-
-/* ✅ Use data attributes for higher specificity */
-.my-menu [data-selected] {
-  background-color: red;
-}
-```
 
 
 # MetricsLockup
@@ -2978,37 +2978,6 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Story of="Stories.Arrow" />
 
 
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-
 # LineChart
 
 
@@ -3292,6 +3261,37 @@ When to Use LineChart [#when-to-use-linechart]
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
 
 
 # useChartColor
