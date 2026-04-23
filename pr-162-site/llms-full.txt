@@ -1317,6 +1317,112 @@ Best Practices [#best-practices]
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
+# NumberField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The NumberField component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Minimal usage with label, placeholder, and min/max.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+Hide stepper [#hide-stepper]
+
+Use `hideStepper` to show only the input without +/- buttons.
+
+<Source language="tsx" code="SourceHideStepper" />
+
+<Story of="Stories.HideStepper" />
+
+Value scale [#value-scale]
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Source language="tsx" code="SourceValueScale" />
+
+<Story of="Stories.ValueScale" />
+
+Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
+
+<Source language="tsx" code="SourceFormatOptions" />
+
+<Story of="Stories.FormatOptions" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
+
+* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
+* **Page Up** / **Page Down**: larger increase or decrease when supported
+* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
+
+Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
+
+ARIA and labeling [#aria-and-labeling]
+
+* The input is associated with the visible label and optional description and error content for assistive technologies.
+* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
+* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
+
+Best practices [#best-practices]
+
+* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
+* Remember valid steps start from &#x2A;*`minValue`**.
+* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
+* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
+
+
 # Pagination
 
 
@@ -1660,112 +1766,6 @@ Always provide clear error messages:
 ```
 
 
-# NumberField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The NumberField component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Minimal usage with label, placeholder, and min/max.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-Hide stepper [#hide-stepper]
-
-Use `hideStepper` to show only the input without +/- buttons.
-
-<Source language="tsx" code="SourceHideStepper" />
-
-<Story of="Stories.HideStepper" />
-
-Value scale [#value-scale]
-
-Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
-
-<Source language="tsx" code="SourceValueScale" />
-
-<Story of="Stories.ValueScale" />
-
-Format options (numbering system) [#format-options-numbering-system]
-
-By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
-
-<Source language="tsx" code="SourceFormatOptions" />
-
-<Story of="Stories.FormatOptions" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
-
-* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
-* **Page Up** / **Page Down**: larger increase or decrease when supported
-* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
-
-Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
-
-ARIA and labeling [#aria-and-labeling]
-
-* The input is associated with the visible label and optional description and error content for assistive technologies.
-* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
-* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
-
-Best practices [#best-practices]
-
-* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
-* Remember valid steps start from &#x2A;*`minValue`**.
-* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
-* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-
 # SegmentedController
 
 
@@ -1888,62 +1888,6 @@ When Not to Use [#when-not-to-use]
 
 * For more than 5 options (use Tabs or Select instead)
 * For form input (use RadioGroup instead)
-
-
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
 
 
 # Select
@@ -2098,6 +2042,62 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
   outline-offset: 2px;
 }
 ```
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
 
 
 # TextField
@@ -2911,6 +2911,104 @@ Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
 <Story of="Stories.LegendSizeChart" />
 
 
+# Tooltip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
+* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
+* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+
+Props [#props]
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+Value formatting [#value-formatting]
+
+**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
+
+**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
+
+```tsx
+<Tooltip
+  tooltipData={tooltipData}
+  series={series}
+  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
+/>
+```
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic tooltip with a single series and default formatting.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Tooltip with multiple series; all series at the same X position are shown together.
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+Arrow [#arrow]
+
+Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+
+<Source language="tsx" code="SourceArrow" />
+
+<Story of="Stories.Arrow" />
+
+
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # LineChart
 
 
@@ -3194,104 +3292,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
-
-
-# Tooltip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
-* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
-* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
-
-Props [#props]
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-Value formatting [#value-formatting]
-
-**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
-
-**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
-
-```tsx
-<Tooltip
-  tooltipData={tooltipData}
-  series={series}
-  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
-/>
-```
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic tooltip with a single series and default formatting.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Tooltip with multiple series; all series at the same X position are shown together.
-
-<Source language="tsx" code="SourceMultipleSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-Arrow [#arrow]
-
-Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
-
-<Source language="tsx" code="SourceArrow" />
-
-<Story of="Stories.Arrow" />
-
-
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
 
 
 # useChartColor
