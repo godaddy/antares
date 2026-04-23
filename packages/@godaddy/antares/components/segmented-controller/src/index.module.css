@@ -29,7 +29,7 @@
     border-radius: calc(var(--inner-radius) + var(--controller-space-040));
   }
 
-  :where(:dir(rtl)) {
+  :where(&:dir(rtl)) {
     --icon-direction: scaleX(-1);
   }
 

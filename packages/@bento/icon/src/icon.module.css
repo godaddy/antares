@@ -1,8 +1,0 @@
-.icon {
-  display: inline-flex; /* use the flexbox alignment model so it isn't affected by line-height */
-  flex-shrink: 0; /* ensures the icon doesn't shrink when placed within a flexbox */
-  align-items: center; /* center vertically */
-  justify-content: center; /* center horizontally */
-  height: 1lh; /* Use height as the relationship instead of character width (em) */
-  width: 1lh; /* Assume a square */
-}

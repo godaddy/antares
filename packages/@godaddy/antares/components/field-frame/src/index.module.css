@@ -41,21 +41,21 @@
   min-height: 40.5px;
   box-sizing: border-box;
 
-  > :first-child {
+  & > :first-child {
     border-start-start-radius: var(--br-sm);
     border-start-end-radius: 0;
     border-end-start-radius: var(--br-sm);
     border-end-end-radius: 0;
   }
 
-  > :last-child {
+  & > :last-child {
     border-start-end-radius: var(--br-sm);
     border-end-start-radius: 0;
     border-end-end-radius: var(--br-sm);
     border-start-start-radius: 0;
   }
 
-  > :only-child {
+  & > :only-child {
     border-radius: var(--br-sm);
   }
 

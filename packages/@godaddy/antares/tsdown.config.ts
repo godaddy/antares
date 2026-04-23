@@ -34,7 +34,6 @@ const cdnUrl = generateCdnUrl({
 
 const mergedConfig = mergeConfig(config, {
   plugins: [
-    config.plugins,
     replacePlugin({
       major: versionParts[0],
       minor: versionParts[1],
@@ -42,13 +41,15 @@ const mergedConfig = mergeConfig(config, {
       __CDN_URL__: cdnUrl
     })
   ],
-  entry: ['./index.tsx'],
-  dts: {
-    sourcemap: true
-  },
-  sourcemap: true,
-  clean: true,
-  treeshake: true
+  entry: ['./index.ts', './exports/*.ts'],
+  css: {
+    inject: true,
+    modules: {
+      generateScopedName: 'gda_[hash]_[local]'
+    },
+    splitting: true,
+    minify: true
+  }
 });
 
 export default mergedConfig;

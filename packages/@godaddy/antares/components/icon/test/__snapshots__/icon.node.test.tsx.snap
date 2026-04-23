@@ -1,5 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Icon > renders a default svg element if icon is loading or not found 1`] = `"<svg data-placeholder="true" role="presentation" viewBox="0 0 24 24" focusable="false" class="icon" fill="currentColor" aria-label="Star icon" data-override="className" data-loading="true" data-icon="unknown" data-slot="content"></svg>"`;
+exports[`@godaddy/antares > #Icon > renders a default svg element if icon is loading or not found 1`] = `"<svg data-placeholder="true" role="presentation" viewBox="0 0 24 24" focusable="false" fill="currentColor" aria-label="Star icon" data-override="className" data-loading="true" data-icon="unknown" data-slot="content"></svg>"`;
 
-exports[`@godaddy/antares > #Icon > renders the default Example 1`] = `"<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" class="icon" fill="currentColor" aria-label="Star icon" data-override="className" data-icon="star" data-slot="content"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>"`;
+exports[`@godaddy/antares > #Icon > renders the default Example 1`] = `"<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" fill="currentColor" aria-label="Star icon" data-override="className" data-icon="star" data-slot="content"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>"`;
