@@ -1,7 +1,7 @@
 {
   "name": "@bento/storybook-addon-helpers",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Storybook preset addon helpers for the Antares design system",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -37,7 +37,7 @@
     "@types/react": "^19.2.14",
     "assume": "^2.3.0",
     "react": "^19.2.4",
-    "tsdown": "^0.20.3",
+    "tsdown": "^0.21.10",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },

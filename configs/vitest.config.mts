@@ -1,10 +1,13 @@
-import { resolve } from 'path';
-import { defineConfig, defaultExclude, type UserProjectConfigExport } from 'vitest/config';
+import { resolve } from 'node:path';
+import { defineConfig, defaultExclude, type TestProjectConfiguration } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
+import replace from '@rollup/plugin-replace';
+import { generateCdnUrl } from '../packages/@godaddy/generate-cdn-url/src/index.ts';
 
-export const ssr = {
+export const ssr: TestProjectConfiguration = {
+  extends: true,
   test: {
     globals: true,
     name: 'SSR',
@@ -21,12 +24,23 @@ export const ssr = {
       }
     }
   }
-} satisfies UserProjectConfigExport;
+};
 
-export const browser = {
+export const browser: TestProjectConfiguration = {
+  extends: true,
   test: {
     globals: true,
     name: 'Browser',
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped'
+      }
+    },
+    server: {
+      deps: {
+        inline: [/@bento\/.*/]
+      }
+    },
     include: ['./**/**/*.browser.test.{ts,tsx}'],
     setupFiles: resolve(__dirname, './vitest.setup.mts'),
     browser: {
@@ -37,9 +51,10 @@ export const browser = {
       screenshotFailures: false
     }
   }
-} satisfies UserProjectConfigExport;
+};
 
-export const visual: UserProjectConfigExport = {
+export const visual: TestProjectConfiguration = {
+  extends: true,
   test: {
     ...browser.test,
     name: 'Visual',
@@ -48,14 +63,31 @@ export const visual: UserProjectConfigExport = {
 };
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    replace({
+      preventAssignment: true,
+      __CDN_URL__: generateCdnUrl({
+        cdn: 'https://img6.wsimg.com/ux-assets',
+        version: '5.0.0',
+        packageName: '@ux/icon'
+      })
+    })
+  ],
   test: {
     exclude: [...defaultExclude],
     coverage: {
       provider: 'v8',
       enabled: true,
       include: ['dist/**/*', 'src/**/*'],
-      exclude: ['dist/**.d.{ts,cts,mts}', 'dist/**.map', 'dist/**.css', 'examples/**/!(*.ts|*.tsx)', '**/*.module.css'],
+      exclude: [
+        'dist/**/**.d.{ts,cts,mts}',
+        'dist/**/**.map',
+        'dist/**/**.css',
+        'examples/**/!(*.ts|*.tsx)',
+        '**/**/*.module.css'
+      ],
       reporter: ['text', 'json', 'html'],
       thresholds: {
         autoUpdate: false,

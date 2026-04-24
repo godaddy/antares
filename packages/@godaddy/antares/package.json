@@ -1,6 +1,6 @@
 {
   "name": "@godaddy/antares",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The GoDaddy design component library",
   "type": "module",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gdcorp.github.com:godaddy/antares.git",
+    "url": "git+https://@github.com:godaddy/antares.git",
     "directory": "packages/@godaddy/antares"
   },
   "keywords": [
@@ -40,7 +40,7 @@
     "src"
   ],
   "dependencies": {
-    "@bento/icon": "^0.1.4",
+    "@bento/icon": "^0.2.0",
     "@bento/svg-parser": "^0.1.1",
     "@bento/use-data-attributes": "^0.1.1",
     "@visx/axis": "^4.0.1-alpha.0",
@@ -66,8 +66,9 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "rolldown": "^1.0.0-rc.3",
-    "@bento/storybook-addon-helpers": "^0.1.0",
-    "tsdown": "^0.20.3",
+    "@bento/storybook-addon-helpers": "^0.1.1",
+    "@tsdown/css": "^0.21.10",
+    "tsdown": "^0.21.10",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18",
     "vitest-browser-react": "^2.1.0"
@@ -86,6 +87,16 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
+      }
+    },
+    "./*": {
+      "import": {
+        "types": "./dist/exports/*.d.mts",
+        "default": "./dist/exports/*.mjs"
+      },
+      "require": {
+        "types": "./dist/exports/*.d.cts",
+        "default": "./dist/exports/*.cjs"
       }
     }
   },

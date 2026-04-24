@@ -84,7 +84,7 @@ const config: RcFile = {
     {
       label: 'Build tools consistency',
       packages: ['**'],
-      dependencies: ['tsup', 'typescript'],
+      dependencies: ['tsdown', 'typescript'],
       dependencyTypes: ['dev', 'prod'],
       policy: 'sameRange'
     }
