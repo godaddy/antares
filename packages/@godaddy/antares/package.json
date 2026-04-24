@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gdcorp.github.com:godaddy/antares.git",
+    "url": "git+https://@github.com:godaddy/antares.git",
     "directory": "packages/@godaddy/antares"
   },
   "keywords": [
