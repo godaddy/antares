@@ -22,6 +22,67 @@ export default function App() {
 }
 ```
 
+Per-Component Imports [#per-component-imports]
+
+Each component is available as a standalone entry point. This lets your bundler load only the JavaScript and CSS for the components you use:
+
+```tsx
+import { Button } from '@godaddy/antares/Button';
+import { Flex } from '@godaddy/antares/Layout';
+import { BarChart } from '@godaddy/antares/Chart';
+```
+
+This also works with autocomplete in IDEs and LLMs, so you can import from the root package and let your editor/agent suggest the available components.
+
+Framework Setup [#framework-setup]
+
+Antares ships CSS alongside its JavaScript modules. Each component chunk imports a corresponding `.css` file (e.g., `import './src-BZhWcxqJ.css'`). Most bundlers handle this automatically, but some frameworks need extra configuration to process CSS imports from `node_modules`.
+
+Next.js [#nextjs]
+
+Add `@godaddy/antares` to [`transpilePackages`](https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages) so Next.js processes the package through its own CSS pipeline instead of treating it as a pre-built external:
+
+```js
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@godaddy/antares'],
+};
+
+module.exports = nextConfig;
+```
+
+Without this, Next.js will throw:
+
+```text
+Global CSS cannot be imported from within node_modules.
+```
+
+Remix [#remix]
+
+Remix with Vite handles CSS imports from `node_modules` in the client bundle automatically. However, during SSR, Vite treats `node_modules` as externals by default, which bypasses CSS processing. Add `@godaddy/antares` to [`ssr.noExternal`](https://vite.dev/config/ssr-options#ssr-noexternal) to fix this:
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  ssr: {
+    noExternal: ['@godaddy/antares'],
+  },
+});
+```
+
+Vite [#vite]
+
+Vite processes CSS imports from `node_modules` out of the box. No additional configuration is needed for client-side SPAs.
+
+If you are using Vite with SSR (e.g., custom SSR setup, not Remix), add `@godaddy/antares` to `ssr.noExternal` as shown in the [Remix section](#remix).
+
+Other Bundlers [#other-bundlers]
+
+Any bundler that supports CSS imports will work with Antares. If your bundler does not process CSS imports from `node_modules` by default, ensure it is configured to do so. For example, with raw webpack you may need [`css-loader`](https://webpack.js.org/loaders/css-loader/) configured to handle `.css` files from `node_modules`.
+
 Components [#components]
 
 <ComponentCards />
@@ -1362,62 +1423,6 @@ Best practices [#best-practices]
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
 # Pagination
 
 
@@ -1479,6 +1484,62 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Story of="Stories.OnChange" />
 
 <Source language="tsx" code="SourceOnChange" />
+
+
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # Radio
@@ -3135,37 +3196,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-
 # Tooltip
 
 
@@ -3231,6 +3261,37 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Source language="tsx" code="SourceArrow" />
 
 <Story of="Stories.Arrow" />
+
+
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
 
 
 # useChartColor
