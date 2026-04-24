@@ -12,7 +12,7 @@ npm run storybook
 
 The application is configured to not open a browser window every time you start
 the documentation application. The message in your console will tell you the
-what port number the application is hosted on. Defaults to http://localhost:6006/
+what port number the application is hosted on. Defaults to <http://localhost:6006/>
 
 ## Adding new components
 
