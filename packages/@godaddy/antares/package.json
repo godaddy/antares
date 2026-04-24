@@ -1,6 +1,6 @@
 {
   "name": "@godaddy/antares",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The GoDaddy design component library",
   "type": "module",
   "scripts": {
@@ -40,7 +40,7 @@
     "src"
   ],
   "dependencies": {
-    "@bento/icon": "^0.1.4",
+    "@bento/icon": "^0.2.0",
     "@bento/svg-parser": "^0.1.1",
     "@bento/use-data-attributes": "^0.1.1",
     "@visx/axis": "^4.0.1-alpha.0",
@@ -66,7 +66,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "rolldown": "^1.0.0-rc.3",
-    "@bento/storybook-addon-helpers": "^0.1.0",
+    "@bento/storybook-addon-helpers": "^0.1.1",
     "@tsdown/css": "^0.21.10",
     "tsdown": "^0.21.10",
     "typescript": "^5.9.3",
