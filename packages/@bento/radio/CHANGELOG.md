@@ -1,5 +1,15 @@
 # @bento/radio
 
+## 0.2.2
+
+### Patch Changes
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/icon@0.2.0
+</details>
+
 ## 0.2.1
 
 ### Patch Changes
