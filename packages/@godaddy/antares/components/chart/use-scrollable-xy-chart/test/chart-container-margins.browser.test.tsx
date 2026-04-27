@@ -201,7 +201,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('returns half label width when last tick overflows svg right edge', function overflow() {
-        const { svg, xAxis, lastTick, detach } = createAxisWithTwoTicks();
+        const { svg, xAxis, lastText, detach } = createAxisWithTwoTicks();
         vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
           top: 0,
           left: 0,
@@ -215,7 +215,7 @@ describe('@godaddy/antares', function antares() {
             return '';
           }
         });
-        vi.spyOn(lastTick, 'getBoundingClientRect').mockReturnValue({
+        vi.spyOn(lastText, 'getBoundingClientRect').mockReturnValue({
           top: 0,
           left: 0,
           bottom: 10,
@@ -241,7 +241,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('returns previous margin when there is no horizontal overflow', function noOverflow() {
-        const { svg, xAxis, lastTick, detach } = createAxisWithTwoTicks();
+        const { svg, xAxis, lastText, detach } = createAxisWithTwoTicks();
         vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
           top: 0,
           left: 0,
@@ -255,7 +255,7 @@ describe('@godaddy/antares', function antares() {
             return '';
           }
         });
-        vi.spyOn(lastTick, 'getBoundingClientRect').mockReturnValue({
+        vi.spyOn(lastText, 'getBoundingClientRect').mockReturnValue({
           top: 0,
           left: 0,
           bottom: 10,
@@ -319,7 +319,7 @@ describe('@godaddy/antares', function antares() {
             return '';
           }
         });
-        vi.spyOn(yTick, 'getBoundingClientRect').mockReturnValue({
+        vi.spyOn(yText, 'getBoundingClientRect').mockReturnValue({
           top: 20,
           left: 0,
           bottom: 30,
@@ -367,7 +367,7 @@ describe('@godaddy/antares', function antares() {
             return '';
           }
         });
-        vi.spyOn(yTick, 'getBoundingClientRect').mockReturnValue({
+        vi.spyOn(yText, 'getBoundingClientRect').mockReturnValue({
           top: 50,
           left: 0,
           bottom: 60,

@@ -76,21 +76,25 @@ export function getBottomMargin(xAxisElement: SVGGraphicsElement | null): number
  * Right margin when the last X-axis tick label overflows the SVG (half label width), zero when labels are hidden,
  * or the previous right margin when labels fit inside the chart.
  *
+ * Measures the `<text>` rect rather than the parent `.visx-axis-tick` `<g>` because visx wraps each
+ * label in a nested `<svg>` with no width/height; Firefox sizes that inner SVG to the outer viewport,
+ * which inflates the tick group's `getBoundingClientRect()` and falsely triggers the overflow branch.
+ *
  * @param xAxisElement - X-axis SVG group element
  * @param prevRightMargin - Previous right margin when the axis fits inside the SVG
  * @returns Right margin in px
  */
 export function getRightMargin(xAxisElement: SVGGraphicsElement, prevRightMargin: number): number {
-  const lastTick = getAxisTickAt(xAxisElement, 'last');
-  const lastTickText = getTickLabelText(lastTick);
-  const svgRight = xAxisElement.closest('svg')?.getBoundingClientRect().right ?? 0;
-  const lastTickRight = lastTick?.getBoundingClientRect().right ?? 0;
+  const lastTickText = getTickLabelText(getAxisTickAt(xAxisElement, 'last'));
 
   if (!lastTickText || !isElementDisplayed(lastTickText)) {
     return 0;
   }
 
-  if (lastTickRight > svgRight) {
+  const svgRight = xAxisElement.closest('svg')?.getBoundingClientRect().right ?? 0;
+  const lastTickTextRight = lastTickText.getBoundingClientRect().right;
+
+  if (lastTickTextRight > svgRight) {
     return Math.ceil(lastTickText.getBBox().width / 2);
   }
 
@@ -101,21 +105,25 @@ export function getRightMargin(xAxisElement: SVGGraphicsElement, prevRightMargin
  * Top margin when the topmost Y-axis tick label overflows above the SVG (half label height), zero when labels are hidden,
  * or the previous top margin when labels fit inside the chart.
  *
+ * Measures the `<text>` rect rather than the parent `.visx-axis-tick` `<g>` because visx wraps each
+ * label in a nested `<svg>` with no width/height; Firefox sizes that inner SVG to the outer viewport,
+ * which inflates the tick group's `getBoundingClientRect()` and falsely triggers the overflow branch.
+ *
  * @param yAxisElement - Y-axis SVG group element
  * @param prevTopMargin - Previous top margin when the axis fits inside the SVG
  * @returns Top margin in px
  */
 export function getTopMargin(yAxisElement: SVGGraphicsElement, prevTopMargin: number): number {
-  const lastTick = getAxisTickAt(yAxisElement, 'last');
-  const lastTickText = getTickLabelText(lastTick);
-  const svgTop = yAxisElement.closest('svg')?.getBoundingClientRect().top ?? 0;
-  const lastTickTop = lastTick?.getBoundingClientRect().top ?? 0;
+  const lastTickText = getTickLabelText(getAxisTickAt(yAxisElement, 'last'));
 
   if (!lastTickText || !isElementDisplayed(lastTickText)) {
     return 0;
   }
 
-  if (lastTickTop < svgTop) {
+  const svgTop = yAxisElement.closest('svg')?.getBoundingClientRect().top ?? 0;
+  const lastTickTextTop = lastTickText.getBoundingClientRect().top;
+
+  if (lastTickTextTop < svgTop) {
     return Math.ceil(lastTickText.getBBox().height / 2);
   }
 
