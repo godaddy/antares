@@ -2243,53 +2243,6 @@ Best Practices [#best-practices]
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
-# AxisTitle
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `AxisTitle` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-X-Axis Title [#x-axis-title]
-
-X-axis title with default orientation.
-
-<Story of="Stories.XAxis" />
-
-<Source language="tsx" code="SourceXAxis" />
-
-Y-Axis Title [#y-axis-title]
-
-Y-axis title with default orientation.
-
-<Story of="Stories.YAxis" />
-
-<Source language="tsx" code="SourceYAxis" />
-
-RTL [#rtl]
-
-The axis title follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings, so the title stays aligned with the page.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Bar Chart
 
 
@@ -2683,108 +2636,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# Gauge Chart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-A continuous gauge with a single label.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="Stories.Continuous" />
-
-<Source language="tsx" code="SourceContinuous" />
-
-Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="Stories.Segmented" />
-
-<Source language="tsx" code="SourceSegmented" />
-
-With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="Stories.WithRangeLabels" />
-
-<Source language="tsx" code="SourceWithRangeLabels" />
-
-Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="Stories.Variants" />
-
-<Source language="tsx" code="SourceVariants" />
-
-Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="Stories.LabelType" />
-
-<Source language="tsx" code="SourceLabelType" />
-
-Troubleshooting [#troubleshooting]
-
-Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-
 # DonutChart
 
 
@@ -2909,6 +2760,108 @@ Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
 <Source language="tsx" code="SourceLegendSizeChart" />
 
 <Story of="Stories.LegendSizeChart" />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+Troubleshooting [#troubleshooting]
+
+Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 
 # LineChart
@@ -3294,6 +3247,53 @@ Tooltip provider, relative container, optional controls to open the visx tooltip
 <Source language="tsx" code="SourceBasic" />
 
 
+# AxisTitle
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `AxisTitle` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+X-Axis Title [#x-axis-title]
+
+X-axis title with default orientation.
+
+<Story of="Stories.XAxis" />
+
+<Source language="tsx" code="SourceXAxis" />
+
+Y-Axis Title [#y-axis-title]
+
+Y-axis title with default orientation.
+
+<Story of="Stories.YAxis" />
+
+<Source language="tsx" code="SourceYAxis" />
+
+RTL [#rtl]
+
+The axis title follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings, so the title stays aligned with the page.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
 # useChartColor
 
 
@@ -3331,6 +3331,19 @@ Multiple series each receiving the next color in sequence.
 <Story of="Stories.MultiSeries" />
 
 
+# useNormalizedSeries
+
+
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
+
+```tsx
+const series = useNormalizedSeries(seriesProp);
+```
+
+
 # useScrollableXYChart
 
 
@@ -3343,93 +3356,29 @@ Multiple series each receiving the next color in sequence.
 
 For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
 
-Purpose [#purpose]
+**Inputs.** Wire `parentRef` to the scroll container and `xAxisRef` / `yAxisRef` to the axis groups. Optionally pass `xLabelsOrientation` (`'auto'` | `'horizontal'` | `'vertical'`, default `'auto'`) to force the category-label layout; `'auto'` rotates labels vertical when the visible width can't fit the horizontal-tick footprint plus the Y-axis width.
 
-Built for **2D charts** with an **X axis** and a **Y axis** when the data plane can **overflow** inside a scroll container. Hard-coded `margin`, `width`, and `height` mis-size the SVG: ticks and labels need real space, and the value axis often stays visually fixed while the category axis scrolls. This hook **measures the axis DOM** you already render and returns **layout numbers** so the chart body, scales, and any frozen axis chrome stay consistent with what is on screen.
+**Outputs.** The hook returns `margin`, `chartWidth`, `chartHeight`, `xLabelsVertical`, `scrollLeft` / `scrollTop`, and `yAxisRect` for the chart to consume. Width and height are sized to whichever is larger — the visible slot or the room the rendered labels need — so the chart grows past the viewport and the parent scrolls when labels demand more space.
 
-How it works [#how-it-works]
+**Behavior.** Measurement runs through `useParentSize`, a `MutationObserver`, and a `ResizeObserver` on the wired nodes. All axis measurements are batched in one `requestAnimationFrame` and bail out when the result hasn't changed, so a burst of observer fires costs at most one reflow and one render per frame.
 
-1. **`useParentSize`** is bound to the scroll container (`parentRef`) to read the **visible** width and height of the plot slot.
-2. **`xAxisRef`*&#x2A; and &#x2A;*`yAxisRef`*&#x2A; point at the axis root groups. &#x2A;*`MutationObserver`*&#x2A; and &#x2A;*`ResizeObserver`** on those subtrees recompute **margins** (including overflow from tick labels), **minimum height** from stacked Y labels, and **minimum category-axis width** for horizontal vs vertical tick layouts.
-3. **`chartWidth`*&#x2A; and &#x2A;*`chartHeight`*&#x2A; combine the visible slot with those minima so the drawable area can grow past the viewport when labels require it. &#x2A;*`xLabelsVertical`*&#x2A; follows from &#x2A;*`xLabelsOrientation`** (see **Props**) and whether horizontal ticks would fit at the current width.
-4. Scroll and pointer handling on the scroll container are described below (**Listeners and observers*&#x2A;); they keep &#x2A;*`scrollLeft`*&#x2A; / &#x2A;*`scrollTop`** accurate and resync pointer-driven overlays after scroll.
-
-Listeners and observers [#listeners-and-observers]
-
-**Scroll container** (the element that receives `parentRef`):
-
-* **`ResizeObserver`*&#x2A; (via &#x2A;*`useParentSize`**, debounced) — tracks the container’s **client width and height** when the plot slot is resized.
-* **`scroll`*&#x2A; (passive listener) — updates &#x2A;*`scrollLeft`*&#x2A; / &#x2A;*`scrollTop`** and may dispatch a &#x2A;*synthetic `pointermove`** on the last pointer target so hit-testing stays aligned with the new scroll position.
-* **`pointermove`*&#x2A; (passive listener) — records &#x2A;*`clientX` / `clientY`*&#x2A; and &#x2A;*`event.target`** for that resync path.
-* **`pointerleave`** (passive listener) — clears the stored target when the pointer leaves the container so a stale element is not targeted after scroll.
-
-**Y-axis root** (`yAxisRef`):
-
-* **`MutationObserver`** (`childList`, `subtree`) — recomputes Y-driven **margin*&#x2A; and &#x2A;*`minHeight`** when tick/label DOM changes.
-* **`ResizeObserver`*&#x2A; — picks up layout/size changes on the axis group (e.g. font or tick density) and refreshes &#x2A;*`yAxisRect`**, **margins**, and related layout.
-
-**X-axis root** (`xAxisRef`):
-
-* **`MutationObserver`** (`childList`, `subtree`) — recomputes category-axis **min widths** (horizontal vs vertical tick modes) and related **margin** when tick/label DOM changes.
-* **`ResizeObserver`** — updates **bottom/right/left** margins from measured overflow on the X-axis subtree.
-
-How to implement [#how-to-implement]
-
-1. Call &#x2A;*`useScrollableXYChart()`*&#x2A; at the top of your chart component, or &#x2A;*`useScrollableXYChart({ xLabelsOrientation })`** when you need to override category-axis layout (see **Props**).
-2. Put &#x2A;*`parentRef`** on the DOM node that scrolls (the one with `overflow: auto` / `scroll` and the chart body inside it).
-3. Pass &#x2A;*`xAxisRef`*&#x2A; and &#x2A;*`yAxisRef`*&#x2A; to your X and Y axis components via whatever ref prop they expose (commonly &#x2A;*`innerRef`** on axis primitives).
-4. After mount, when &#x2A;*`chartWidth`*&#x2A; and &#x2A;*`chartHeight`*&#x2A; are positive, render the SVG (or chart wrapper) using those dimensions and &#x2A;*`margin`**.
-5. Use &#x2A;*`xLabelsVertical`** to style category-axis labels (rotation, anchors, data attributes).
-6. Use &#x2A;*`scrollLeft`*&#x2A; / &#x2A;*`scrollTop`*&#x2A; (and optionally &#x2A;*`yAxisRect`**) to position frozen axis backgrounds and translated axis groups so they move with scroll while the plot content moves underneath.
-
-Props [#props]
-
-The hook accepts an optional **props** object as its first argument (`UseScrollableXYChartProps` in source). It is separate from the **return value** below.
-
-* **`xLabelsOrientation`*&#x2A; — Category-axis label layout vs. container width. Values are the chart-level type &#x2A;*`XLabelsOrientation`*&#x2A;: &#x2A;*`'auto'`*&#x2A; (default), &#x2A;*`'horizontal'`*&#x2A;, or &#x2A;*`'vertical'`*&#x2A;. With &#x2A;*`'auto'`*&#x2A;, the hook chooses vertical labels when the visible width is too small for the measured horizontal-tick footprint (including Y-axis width). &#x2A;*`'horizontal'`*&#x2A; and &#x2A;*`'vertical'`*&#x2A; skip that width check and force the corresponding layout, which also feeds &#x2A;*`chartWidth`** minima via the horizontal vs vertical min-width paths.
-
-Return value — what each field is for [#return-value--what-each-field-is-for]
-
-* **`parentRef`** — Attach to the **scroll container*&#x2A;. Intention: anchor &#x2A;*`useParentSize`**, the **scroll** / **pointer*&#x2A; listeners, and &#x2A;*`ResizeObserver`** from that hook on the same node users scroll (see **Listeners and observers**).
-
-* **`xAxisRef` / `yAxisRef`** — Attach to the **axis root groups** (via `innerRef` or equivalent). Intention: give observers a stable subtree that matches rendered ticks and labels so margins and min sizes stay accurate.
-
-* **`margin`** — `{ top, right, bottom, left }` in pixels, updated from measured axis geometry. Intention: pass straight into your chart’s margin model so the plot area clears tick overflow and axis thickness without hand tuning.
-
-* **`chartWidth`** — Width in pixels, at least the visible container width and at least the width implied by category-axis labels (for the current vertical vs horizontal tick mode) plus Y-axis width. Intention: size the chart body so horizontal overflow scrolls instead of clipping ticks.
-
-* **`minHeight`** — Minimum height implied by **Y-axis label stacking** (computed from label boxes and gaps). Intention: expose the **content-driven floor*&#x2A; separately when your layout or tests need it; &#x2A;*`chartHeight`** already applies this floor.
-
-* **`chartHeight`** — Height in pixels, `max(visible height, minHeight)`. Intention: size the chart body so stacked Y labels always fit.
-
-* **`xLabelsVertical`** — Boolean: category-axis ticks should read **vertically**. Intention: drive `tickLabelProps`, CSS, or `data-*` flags so narrow slots rotate labels without a separate breakpoint in the chart.
-
-* **`scrollLeft` / `scrollTop`** — Current scroll offsets of the container. Intention: offset **sticky** axis layers (background rects, `transform`s) and any UI that must stay phase-locked with the scrolled data plane; also drives the hook’s post-scroll pointer resync.
-
-* **`yAxisRect`** — `getBBox()` of the Y-axis group when available, else `null`. Intention: size or place **frozen Y-axis chrome** (e.g. a background band) aligned to the measured axis, independent of arbitrary margin guesses.
+```tsx
+const {
+  parentRef, xAxisRef, yAxisRef,
+  margin, chartWidth, chartHeight,
+  xLabelsVertical, scrollLeft, scrollTop, yAxisRect,
+} = useScrollableXYChart();
+```
 
 Examples [#examples]
 
 Auto layout [#auto-layout]
 
-Minimal scroll parent plus stub axis groups: same ref wiring and `data-*` surface the browser tests assert on.
+Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
 
 <Source language="tsx" code="SourceExample" />
 
 <Story of="Stories.AutoLayout" />
-
-
-# useNormalizedSeries
-
-
-
-For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
-
-Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
-
-```tsx
-const series = useNormalizedSeries(seriesProp);
-```
 
 
 # Box
