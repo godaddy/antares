@@ -22,8 +22,8 @@
 - [DonutChart](/docs/components/chart/donut-chart): Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
 - [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [Legend](/docs/components/chart/legend): The Legend component is an internal component used for displaying series information in chart components.
-- [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
 - [Tooltip](/docs/components/chart/tooltip): An internal component used for displaying tooltip information in chart components.
+- [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
 - [TooltipDismissStrip](/docs/components/chart/tooltip-dismiss-strip): Internal visx XYChart helper that closes the tooltip when the pointer enters a leading-edge strip over scroll-synced axis chrome
 - [useChartColor](/docs/components/chart/use-chart-color): A hook for assigning deterministic, index-based colors to chart series using design token CSS variables. Safe under React concurrent rendering.
 - [useNormalizedSeries](/docs/components/chart/use-normalized-series): A hook that ensures every series config has a stable unique id, generating one from useId when omitted.
