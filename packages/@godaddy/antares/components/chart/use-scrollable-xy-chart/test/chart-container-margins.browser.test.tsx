@@ -8,6 +8,7 @@ import {
   getAxisTickAt,
   getBottomMargin,
   getHalfFirstXAxisTickLabelWidth,
+  getHalfFirstYAxisTickLabelHeight,
   getLeftMargin,
   getRightMargin,
   getTickLabelText,
@@ -17,6 +18,35 @@ import {
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
+// Tests stub element measurements rather than relying on real layout: real layout depends on font
+// rendering, DPR, and Chromium version, which would make assertions like `expect(...).toBe(25)` flaky.
+// Stubbing keeps the math exact while leaving the DOM traversal in `chart-container-margins.ts` honest.
+
+function mockRect(element: Element, rect: Partial<DOMRect>): void {
+  vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: 0,
+    height: 0,
+    x: 0,
+    y: 0,
+    toJSON: () => '',
+    ...rect
+  } as DOMRect);
+}
+
+function mockBBox(element: SVGGraphicsElement, bbox: Partial<DOMRect>): void {
+  vi.spyOn(element, 'getBBox').mockReturnValue({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    ...bbox
+  } as DOMRect);
+}
+
 function createAxisWithTwoTicks(): {
   svg: SVGSVGElement;
   xAxis: SVGGElement;
@@ -24,7 +54,6 @@ function createAxisWithTwoTicks(): {
   firstText: SVGTextElement;
   lastTick: SVGGElement;
   lastText: SVGTextElement;
-  detach: () => void;
 } {
   const svg = document.createElementNS(SVG_NS, 'svg') as SVGSVGElement;
   svg.setAttribute('width', '400');
@@ -45,17 +74,29 @@ function createAxisWithTwoTicks(): {
   svg.appendChild(xAxis);
   document.body.append(svg);
 
-  return {
-    svg,
-    xAxis,
-    firstTick,
-    firstText,
-    lastTick,
-    lastText,
-    detach() {
-      svg.remove();
-    }
-  };
+  return { svg, xAxis, firstTick, firstText, lastTick, lastText };
+}
+
+function appendYAxisWithTick(
+  svg: SVGSVGElement,
+  before?: Node
+): {
+  yAxis: SVGGElement;
+  yTick: SVGGElement;
+  yText: SVGTextElement;
+} {
+  const yAxis = document.createElementNS(SVG_NS, 'g') as SVGGElement;
+  const yTick = document.createElementNS(SVG_NS, 'g') as SVGGElement;
+  yTick.setAttribute('class', 'visx-axis-tick');
+  const yText = document.createElementNS(SVG_NS, 'text') as SVGTextElement;
+  yTick.appendChild(yText);
+  yAxis.appendChild(yTick);
+  if (before) {
+    svg.insertBefore(yAxis, before);
+  } else {
+    svg.appendChild(yAxis);
+  }
+  return { yAxis, yTick, yText };
 }
 
 describe('@godaddy/antares', function antares() {
@@ -74,19 +115,18 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('returns null when there are no tick nodes', function noTicks() {
-        const g = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        document.body.append(g);
+        const { xAxis } = createAxisWithTwoTicks();
+        // Strip the ticks added by the fixture to simulate an axis that has not rendered any.
+        xAxis.replaceChildren();
 
-        expect(getAxisTickAt(g, 'first')).toBe(null);
-        g.remove();
+        expect(getAxisTickAt(xAxis, 'first')).toBe(null);
       });
 
       it('returns first and last tick groups', function firstLast() {
-        const { xAxis, firstTick, lastTick, detach } = createAxisWithTwoTicks();
+        const { xAxis, firstTick, lastTick } = createAxisWithTwoTicks();
 
         expect(getAxisTickAt(xAxis, 'first')).toBe(firstTick);
         expect(getAxisTickAt(xAxis, 'last')).toBe(lastTick);
-        detach();
       });
     });
 
@@ -96,10 +136,16 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('returns SVGTextElement child when present', function textChild() {
-        const { firstTick, firstText, detach } = createAxisWithTwoTicks();
+        const { firstTick, firstText } = createAxisWithTwoTicks();
 
         expect(getTickLabelText(firstTick)).toBe(firstText);
-        detach();
+      });
+
+      it('returns null when tick has no text child', function noTextChild() {
+        const { firstTick, firstText } = createAxisWithTwoTicks();
+        firstText.remove();
+
+        expect(getTickLabelText(firstTick)).toBe(null);
       });
     });
 
@@ -128,267 +174,209 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#getHalfFirstXAxisTickLabelWidth', function halfFirstTests() {
+      it('returns 0 when axis is null', function nullAxis() {
+        expect(getHalfFirstXAxisTickLabelWidth(null)).toBe(0);
+      });
+
       it('returns 0 when label is display none', function hiddenLabel() {
-        const { xAxis, firstText, detach } = createAxisWithTwoTicks();
+        const { xAxis, firstText } = createAxisWithTwoTicks();
         firstText.style.display = 'none';
 
         expect(getHalfFirstXAxisTickLabelWidth(xAxis)).toBe(0);
-        detach();
       });
 
       it('returns ceil(half width) when first label is visible', function visibleLabel() {
-        const { xAxis, detach } = createAxisWithTwoTicks();
-        const bboxSpy = vi.spyOn(SVGTextElement.prototype, 'getBBox').mockReturnValue({
-          x: 0,
-          y: 0,
-          width: 47,
-          height: 12
-        } as DOMRect);
+        const { xAxis, firstText } = createAxisWithTwoTicks();
+        mockRect(firstText, { width: 47, height: 12 });
 
         expect(getHalfFirstXAxisTickLabelWidth(xAxis)).toBe(24);
-        bboxSpy.mockRestore();
-        detach();
+      });
+
+      it('uses the post-transform rect width so vertical labels report their rotated footprint', function rotated() {
+        const { xAxis, firstText } = createAxisWithTwoTicks();
+        firstText.setAttribute('transform', 'rotate(-90)');
+        // Real browser-reported rect for a 50x10 text rotated -90° would be 10x50.
+        mockRect(firstText, { width: 10, height: 50 });
+
+        expect(getHalfFirstXAxisTickLabelWidth(xAxis)).toBe(5);
       });
     });
 
     describe('#getLeftMargin', function getLeftMarginTests() {
-      it('uses max of y-axis width and half first x tick label width', function maxOfBoth() {
-        const { xAxis, detach } = createAxisWithTwoTicks();
-        const yAxis = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        document.body.append(yAxis);
-        const yBBoxSpy = vi.spyOn(SVGGraphicsElement.prototype, 'getBBox').mockImplementation(function yImpl(
-          this: SVGGraphicsElement
-        ) {
-          if (this === yAxis) {
-            return { x: 0, y: 0, width: 10, height: 40 } as DOMRect;
-          }
-          return { x: 0, y: 0, width: 30, height: 10 } as DOMRect;
-        });
+      it('returns 0 when y-axis is null and x-axis defaults to null', function bothMissing() {
+        expect(getLeftMargin(null)).toBe(0);
+      });
+
+      it('returns y-axis width when no x-axis is provided', function yAxisOnly() {
+        const { yAxis } = appendYAxisWithTick(document.createElementNS(SVG_NS, 'svg') as SVGSVGElement);
+        mockBBox(yAxis, { width: 22, height: 40 });
+
+        expect(getLeftMargin(yAxis)).toBe(22);
+      });
+
+      it('uses half first x tick label width when greater than y-axis width', function xLabelWins() {
+        const { svg, xAxis, firstText } = createAxisWithTwoTicks();
+        const { yAxis } = appendYAxisWithTick(svg, xAxis);
+        mockBBox(yAxis, { width: 5, height: 40 });
+        mockRect(firstText, { width: 30, height: 10 });
 
         expect(getLeftMargin(yAxis, xAxis)).toBe(15);
-        yBBoxSpy.mockRestore();
-        yAxis.remove();
-        detach();
+      });
+
+      it('uses y-axis width when greater than half first x tick label width', function yAxisWins() {
+        const { svg, xAxis, firstText } = createAxisWithTwoTicks();
+        const { yAxis } = appendYAxisWithTick(svg, xAxis);
+        mockBBox(yAxis, { width: 40, height: 40 });
+        mockRect(firstText, { width: 10, height: 10 });
+
+        expect(getLeftMargin(yAxis, xAxis)).toBe(40);
+      });
+    });
+
+    describe('#getHalfFirstYAxisTickLabelHeight', function halfFirstYTests() {
+      it('returns 0 when axis is null', function nullAxis() {
+        expect(getHalfFirstYAxisTickLabelHeight(null)).toBe(0);
+      });
+
+      it('returns 0 when label is display none', function hiddenLabel() {
+        const { xAxis, firstText } = createAxisWithTwoTicks();
+        firstText.style.display = 'none';
+
+        expect(getHalfFirstYAxisTickLabelHeight(xAxis)).toBe(0);
+      });
+
+      it('returns ceil(half height) when first label is visible', function visibleLabel() {
+        const { xAxis, firstText } = createAxisWithTwoTicks();
+        mockRect(firstText, { width: 12, height: 13 });
+
+        expect(getHalfFirstYAxisTickLabelHeight(xAxis)).toBe(7);
       });
     });
 
     describe('#getBottomMargin', function getBottomMarginTests() {
-      it('returns 0 when axis is null', function nullAxis() {
+      it('returns 0 when both axes are null', function nullAxes() {
         expect(getBottomMargin(null)).toBe(0);
       });
 
-      it('returns axis group bbox height', function bboxHeight() {
-        const g = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        const spy = vi.spyOn(SVGGraphicsElement.prototype, 'getBBox').mockReturnValue({
-          x: 0,
-          y: 0,
-          width: 1,
-          height: 33
-        } as DOMRect);
+      it('returns x-axis bbox height when greater than half first y-tick label height', function xAxisWins() {
+        const { xAxis } = createAxisWithTwoTicks();
+        mockBBox(xAxis, { height: 33 });
 
-        expect(getBottomMargin(g)).toBe(33);
-        spy.mockRestore();
+        expect(getBottomMargin(xAxis)).toBe(33);
+      });
+
+      it('uses half first y-tick label height when greater than x-axis height', function yAxisWins() {
+        const { svg, xAxis } = createAxisWithTwoTicks();
+        const { yAxis, yText } = appendYAxisWithTick(svg, xAxis);
+        mockBBox(xAxis, { height: 0 });
+        mockRect(yText, { height: 31 });
+
+        expect(getBottomMargin(xAxis, yAxis)).toBe(16);
       });
     });
 
     describe('#getRightMargin', function getRightMarginTests() {
       it('returns 0 when last tick label is hidden', function hidden() {
-        const { xAxis, lastText, detach } = createAxisWithTwoTicks();
+        const { xAxis, lastText } = createAxisWithTwoTicks();
         lastText.style.display = 'none';
 
-        expect(getRightMargin(xAxis, 12)).toBe(0);
-        detach();
+        expect(getRightMargin(xAxis)).toBe(0);
       });
 
       it('returns half label width when last tick overflows svg right edge', function overflow() {
-        const { svg, xAxis, lastText, detach } = createAxisWithTwoTicks();
-        vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
-          top: 0,
-          left: 0,
-          bottom: 200,
-          right: 100,
-          width: 100,
-          height: 200,
-          x: 0,
-          y: 0,
-          toJSON() {
-            return '';
-          }
-        });
-        vi.spyOn(lastText, 'getBoundingClientRect').mockReturnValue({
-          top: 0,
-          left: 0,
-          bottom: 10,
-          right: 120,
-          width: 120,
-          height: 10,
-          x: 0,
-          y: 0,
-          toJSON() {
-            return '';
-          }
-        });
-        const bboxSpy = vi.spyOn(SVGTextElement.prototype, 'getBBox').mockReturnValue({
-          x: 0,
-          y: 0,
-          width: 50,
-          height: 10
-        } as DOMRect);
+        const { svg, xAxis, lastText } = createAxisWithTwoTicks();
+        mockRect(svg, { right: 100, width: 100 });
+        mockRect(lastText, { left: 70, right: 120, width: 50 });
 
-        expect(getRightMargin(xAxis, 7)).toBe(25);
-        bboxSpy.mockRestore();
-        detach();
+        expect(getRightMargin(xAxis)).toBe(25);
       });
 
-      it('returns previous margin when there is no horizontal overflow', function noOverflow() {
-        const { svg, xAxis, lastText, detach } = createAxisWithTwoTicks();
-        vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
-          top: 0,
-          left: 0,
-          bottom: 200,
-          right: 400,
-          width: 400,
-          height: 200,
-          x: 0,
-          y: 0,
-          toJSON() {
-            return '';
-          }
-        });
-        vi.spyOn(lastText, 'getBoundingClientRect').mockReturnValue({
-          top: 0,
-          left: 0,
-          bottom: 10,
-          right: 200,
-          width: 200,
-          height: 10,
-          x: 0,
-          y: 0,
-          toJSON() {
-            return '';
-          }
-        });
-        vi.spyOn(SVGTextElement.prototype, 'getBBox').mockReturnValue({
-          x: 0,
-          y: 0,
-          width: 99,
-          height: 10
-        } as DOMRect);
+      it('uses the post-transform rect width when the last tick has a rotate transform', function rotated() {
+        const { svg, xAxis, lastText } = createAxisWithTwoTicks();
+        lastText.setAttribute('transform', 'rotate(-90)');
+        // Real browser-reported rect for a 50x10 text rotated -90° would be 10x50.
+        mockRect(svg, { right: 100, width: 100 });
+        mockRect(lastText, { left: 100, right: 110, width: 10, height: 50 });
 
-        expect(getRightMargin(xAxis, 42)).toBe(42);
-        detach();
+        expect(getRightMargin(xAxis)).toBe(5);
+      });
+
+      it('returns 0 when there is no horizontal overflow', function noOverflow() {
+        const { svg, xAxis, lastText } = createAxisWithTwoTicks();
+        mockRect(svg, { right: 400, width: 400 });
+        mockRect(lastText, { right: 200, width: 200 });
+
+        expect(getRightMargin(xAxis)).toBe(0);
+      });
+
+      it('keeps the previous margin when the label fits only because of it', function sticky() {
+        const { svg, xAxis, lastText } = createAxisWithTwoTicks();
+        // SVG right edge at 400. Last label sits with its right edge exactly at 400 thanks
+        // to the existing 25px right margin. Removing the margin would shift it to 425 (overflow).
+        mockRect(svg, { right: 400, width: 400 });
+        mockRect(lastText, { left: 350, right: 400, width: 50 });
+
+        expect(getRightMargin(xAxis, 25)).toBe(25);
+      });
+
+      it('returns 0 when the label fits with comfortable slack regardless of prev', function slack() {
+        const { svg, xAxis, lastText } = createAxisWithTwoTicks();
+        // Label right edge at 200, far inside the SVG (right=400). Even removing the prev
+        // margin (25) would leave it at 225, still well inside.
+        mockRect(svg, { right: 400, width: 400 });
+        mockRect(lastText, { left: 150, right: 200, width: 50 });
+
+        expect(getRightMargin(xAxis, 25)).toBe(0);
       });
     });
 
     describe('#getTopMargin', function getTopMarginTests() {
       it('returns 0 when last tick label is hidden', function hidden() {
-        const { svg, xAxis, detach } = createAxisWithTwoTicks();
-        const yAxis = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        const yTick = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        yTick.setAttribute('class', 'visx-axis-tick');
-        const yText = document.createElementNS(SVG_NS, 'text') as SVGTextElement;
+        const { svg, xAxis } = createAxisWithTwoTicks();
+        const { yAxis, yText } = appendYAxisWithTick(svg, xAxis);
         yText.style.display = 'none';
-        yTick.appendChild(yText);
-        yAxis.appendChild(yTick);
-        svg.insertBefore(yAxis, xAxis);
 
-        expect(getTopMargin(yAxis, 5)).toBe(0);
-        detach();
+        expect(getTopMargin(yAxis)).toBe(0);
       });
 
       it('returns half label height when last tick is above svg top', function overflowUp() {
-        const { svg, xAxis, detach } = createAxisWithTwoTicks();
-        const yAxis = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        const yTick = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        yTick.setAttribute('class', 'visx-axis-tick');
-        const yText = document.createElementNS(SVG_NS, 'text') as SVGTextElement;
-        yTick.appendChild(yText);
-        yAxis.appendChild(yTick);
-        svg.insertBefore(yAxis, xAxis);
+        const { svg, xAxis } = createAxisWithTwoTicks();
+        const { yAxis, yText } = appendYAxisWithTick(svg, xAxis);
+        mockRect(svg, { top: 40, right: 400, bottom: 200, width: 400, height: 160 });
+        mockRect(yText, { top: 20, right: 10, bottom: 51, width: 10, height: 31 });
 
-        vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
-          top: 40,
-          left: 0,
-          bottom: 200,
-          right: 400,
-          width: 400,
-          height: 160,
-          x: 0,
-          y: 40,
-          toJSON() {
-            return '';
-          }
-        });
-        vi.spyOn(yText, 'getBoundingClientRect').mockReturnValue({
-          top: 20,
-          left: 0,
-          bottom: 30,
-          right: 10,
-          width: 10,
-          height: 10,
-          x: 0,
-          y: 20,
-          toJSON() {
-            return '';
-          }
-        });
-        const bboxSpy = vi.spyOn(SVGTextElement.prototype, 'getBBox').mockReturnValue({
-          x: 0,
-          y: 0,
-          width: 10,
-          height: 31
-        } as DOMRect);
-
-        expect(getTopMargin(yAxis, 9)).toBe(16);
-        bboxSpy.mockRestore();
-        detach();
+        expect(getTopMargin(yAxis)).toBe(16);
       });
 
-      it('returns previous margin when last tick is not above svg top', function noOverflow() {
-        const { svg, xAxis, detach } = createAxisWithTwoTicks();
-        const yAxis = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        const yTick = document.createElementNS(SVG_NS, 'g') as SVGGElement;
-        yTick.setAttribute('class', 'visx-axis-tick');
-        const yText = document.createElementNS(SVG_NS, 'text') as SVGTextElement;
-        yTick.appendChild(yText);
-        yAxis.appendChild(yTick);
-        svg.insertBefore(yAxis, xAxis);
+      it('returns 0 when last tick is not above svg top', function noOverflow() {
+        const { svg, xAxis } = createAxisWithTwoTicks();
+        const { yAxis, yText } = appendYAxisWithTick(svg, xAxis);
+        mockRect(svg, { right: 400, bottom: 200, width: 400, height: 200 });
+        mockRect(yText, { top: 50, right: 10, bottom: 60, width: 10, height: 10 });
 
-        vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
-          top: 0,
-          left: 0,
-          bottom: 200,
-          right: 400,
-          width: 400,
-          height: 200,
-          x: 0,
-          y: 0,
-          toJSON() {
-            return '';
-          }
-        });
-        vi.spyOn(yText, 'getBoundingClientRect').mockReturnValue({
-          top: 50,
-          left: 0,
-          bottom: 60,
-          right: 10,
-          width: 10,
-          height: 10,
-          x: 0,
-          y: 50,
-          toJSON() {
-            return '';
-          }
-        });
-        vi.spyOn(SVGTextElement.prototype, 'getBBox').mockReturnValue({
-          x: 0,
-          y: 0,
-          width: 10,
-          height: 20
-        } as DOMRect);
+        expect(getTopMargin(yAxis)).toBe(0);
+      });
 
-        expect(getTopMargin(yAxis, 3)).toBe(3);
-        detach();
+      it('keeps the previous margin when the label fits only because of it', function sticky() {
+        const { svg, xAxis } = createAxisWithTwoTicks();
+        const { yAxis, yText } = appendYAxisWithTick(svg, xAxis);
+        // SVG top at 0. Topmost label is at top=8 thanks to the existing 16px margin.
+        // Removing the margin would shift it to top=-8 (overflow).
+        mockRect(svg, { right: 400, bottom: 200, width: 400, height: 200 });
+        mockRect(yText, { top: 8, right: 10, bottom: 18, width: 10, height: 10 });
+
+        expect(getTopMargin(yAxis, 16)).toBe(16);
+      });
+
+      it('returns 0 when the label fits with comfortable slack regardless of prev', function slack() {
+        const { svg, xAxis } = createAxisWithTwoTicks();
+        const { yAxis, yText } = appendYAxisWithTick(svg, xAxis);
+        // Topmost label far inside the SVG (top=80). Even removing the 16px prev margin
+        // would leave it at 64, still well inside.
+        mockRect(svg, { right: 400, bottom: 200, width: 400, height: 200 });
+        mockRect(yText, { top: 80, right: 10, bottom: 90, width: 10, height: 10 });
+
+        expect(getTopMargin(yAxis, 16)).toBe(0);
       });
     });
   });

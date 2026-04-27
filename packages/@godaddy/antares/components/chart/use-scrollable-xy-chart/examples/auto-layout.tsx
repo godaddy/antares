@@ -5,9 +5,6 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 
 export type AutoLayoutExampleOrientation = 'auto' | 'horizontal' | 'vertical';
 
-/**
- * Scroll parent + minimal visx-like axis stubs; `data-*` attributes mirror hook state for browser tests.
- */
 export function AutoLayoutExample({ xLabelsOrientation }: UseScrollableXYChartProps) {
   const {
     parentRef,

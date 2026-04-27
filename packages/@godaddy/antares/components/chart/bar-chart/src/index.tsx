@@ -6,7 +6,12 @@ import type {
   SeriesConfig,
   XLabelsOrientation
 } from '../../types.ts';
-import { resolveLegendPosition, xAccessor as defaultXAccessor, yAccessor as defaultYAccessor } from '../../utils.ts';
+import {
+  getXLabelVerticalProps,
+  resolveLegendPosition,
+  xAccessor as defaultXAccessor,
+  yAccessor as defaultYAccessor
+} from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/use-normalized-series';
 import { useScrollableXYChart } from '../../use-scrollable-xy-chart/src/index.tsx';
 import { ChartColorProvider, useChartColor } from '#components/chart/use-chart-color';
@@ -465,6 +470,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                       tickLength={tickLength}
                       hideAxisLine={!xBaseline}
                       tickFormat={formatXTick}
+                      tickLabelProps={xLabelsVertical ? getXLabelVerticalProps(rtl) : undefined}
                     />
                   )}
 
@@ -599,6 +605,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                         numTicks={xNumTicks}
                         tickLength={tickLength}
                         tickFormat={formatXTick}
+                        tickLabelProps={xLabelsVertical ? getXLabelVerticalProps(rtl) : undefined}
                       />
                     </g>
                   </>

@@ -1,28 +1,27 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { useParentSize } from '@visx/responsive';
 import { Margin } from '@visx/xychart';
 import { type XLabelsOrientation } from '../../types.ts';
 import { getBottomMargin, getLeftMargin, getRightMargin, getTopMargin } from './chart-container-margins.ts';
 
-/** Minimum vertical gap between Y-axis labels (px). Implementation detail for min-height calculation. */
+/** Minimum vertical gap between Y-axis labels (px). */
 const MIN_Y_LABEL_GAP_PX = 16;
-/** Minimum horizontal gap between X-axis labels (px). Implementation detail for min-width calculation. */
+/** Minimum horizontal gap between X-axis labels (px). */
 const MIN_X_LABEL_GAP_PX = 8;
-/** Debounce time for parent size observer (ms). */
+/** Debounce time for the parent size observer (ms). */
 const RESIZE_DEBOUNCE_MS = 150;
 
 /**
- * Computes minimum chart height from Y-axis label dimensions so all labels fit.
- * Uses the sum of actual label heights plus gaps so the result is accurate when labels vary in height.
+ * Returns the minimum chart height needed to render every Y-axis label without overlap.
  *
- * @param yAxisElement - Y-axis DOM element (visx group) containing label nodes
- * @returns Minimum height in px (sum of label heights + gaps between labels)
+ * @param yAxisElement - Y-axis SVG group element
+ * @returns Minimum chart height in pixels
  */
 function getChartMinHeight(yAxisElement: Element): number {
   let totalLabelHeight = 0;
   let labelsCount = 0;
 
-  Array.from(yAxisElement.querySelectorAll<SVGGraphicsElement>('g.visx-group')).forEach(function getDimensions(g) {
+  yAxisElement.querySelectorAll<SVGGraphicsElement>('g.visx-group').forEach(function getDimensions(g) {
     totalLabelHeight += g.getBBox().height;
     labelsCount++;
   });
@@ -33,23 +32,18 @@ function getChartMinHeight(yAxisElement: Element): number {
 }
 
 /**
- * Measures X-axis label dimensions for min-width calculation (horizontal vs vertical layout).
+ * Returns the minimum X-axis width for both horizontal and vertical label layouts.
  *
- * @param xAxisElement - X-axis DOM element (visx group) containing label nodes
- * @returns longestLabel (px), labelsCount, maxLabelHeight (px)
+ * @param xAxisElement - X-axis SVG group element
+ * @returns `minWidthHorizontal` (px) for upright labels and `minWidthVertical` (px) for rotated labels
  */
-function getXAxisLabelMetrics(xAxisElement: Element): {
-  longestLabel: number;
-  labelsCount: number;
-  maxLabelHeight: number;
-} {
+function getChartMinWidth(xAxisElement: Element): { minWidthHorizontal: number; minWidthVertical: number } {
   let longestLabel = 0;
   let labelsCount = 0;
   let maxLabelHeight = 0;
 
-  Array.from(xAxisElement.querySelectorAll<SVGGraphicsElement>('g.visx-group')).forEach(function getDimensions(g) {
-    const width = g.getBBox().width;
-    const height = g.getBBox().height;
+  xAxisElement.querySelectorAll<SVGGraphicsElement>('g.visx-group text').forEach(function getDimensions(g) {
+    const { width, height } = g.getBBox();
 
     if (height > maxLabelHeight) {
       maxLabelHeight = height;
@@ -62,25 +56,31 @@ function getXAxisLabelMetrics(xAxisElement: Element): {
     labelsCount++;
   });
 
-  return { longestLabel, labelsCount, maxLabelHeight };
-}
-
-/**
- * Computes minimum X-axis width for horizontal and vertical label layouts.
- *
- * @param xAxisElement - X-axis DOM element (visx group) containing label nodes
- * @returns minWidthVertical (px) and minWidthHorizontal (px)
- */
-function getChartMinWidth(xAxisElement: Element) {
-  const { longestLabel, labelsCount, maxLabelHeight } = getXAxisLabelMetrics(xAxisElement);
   const spaceBetweenLabels = labelsCount * MIN_X_LABEL_GAP_PX;
   const minWidthHorizontal = Math.max(longestLabel, maxLabelHeight) * labelsCount + spaceBetweenLabels;
   const minWidthVertical = Math.min(longestLabel, maxLabelHeight) * labelsCount + spaceBetweenLabels;
 
-  return { minWidthVertical, minWidthHorizontal };
+  return { minWidthHorizontal, minWidthVertical };
 }
 
-/** Axis-derived layout state updated by MutationObserver and ResizeObserver per axis. */
+/**
+ * Returns whether two `SVGRect`s describe the same rectangle (two nulls are equal).
+ *
+ * @param a - First rect, or null
+ * @param b - Second rect, or null
+ * @returns True when both are null or all four coordinates match
+ */
+function rectsEqual(a: SVGRect | null, b: SVGRect | null): boolean {
+  if (a === b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+}
+
+/** Axis-derived layout state recomputed when either axis mutates or resizes. */
 interface AxisState {
   margin: Margin;
   minHeight: number;
@@ -104,30 +104,43 @@ const INITIAL_AXIS_STATE: AxisState = {
 
 /** Options passed to {@link useScrollableXYChart}. */
 export interface UseScrollableXYChartProps {
-  /** When 'auto', labels rotate vertical when container is narrow; 'horizontal' or 'vertical' force that orientation. */
+  /** X-axis label orientation. `'auto'` rotates labels vertical when the container is too narrow. @default 'auto' */
   xLabelsOrientation?: XLabelsOrientation;
 }
 
+/** Result returned by {@link useScrollableXYChart}. */
+interface UseScrollableXYChartResult {
+  /** Ref for the scrollable chart container. */
+  parentRef: RefObject<HTMLDivElement | null>;
+  /** Chart width in pixels (visible width or minimum from axis labels). */
+  chartWidth: number;
+  /** Minimum chart height (px) derived from Y-axis label dimensions. */
+  minHeight: number;
+  /** Chart height in pixels (visible height or `minHeight`). */
+  chartHeight: number;
+  /** Chart margin (`top`, `right`, `bottom`, `left`) in pixels. */
+  margin: Margin;
+  /** Current horizontal scroll offset of the parent container. */
+  scrollLeft: number;
+  /** Current vertical scroll offset of the parent container. */
+  scrollTop: number;
+  /** Ref to attach to the X-axis SVG group via visx `Axis` `innerRef`. */
+  xAxisRef: RefObject<SVGGElement | null>;
+  /** Ref to attach to the Y-axis SVG group via visx `Axis` `innerRef`. */
+  yAxisRef: RefObject<SVGGElement | null>;
+  /** True when X-axis labels are rendered rotated to vertical. */
+  xLabelsVertical: boolean;
+  /** Bounding box of the Y-axis SVG group. */
+  yAxisRect: SVGRect | null;
+}
+
 /**
- * Hook that returns refs and layout state for a parent that renders a scrollable visx `XYChart`.
- * Depends on `xAxisRef` and `yAxisRef` being attached to the chart axis DOM nodes (`Axis` `innerRef`) so it can measure them.
- * Uses MutationObserver and ResizeObserver on both axes; layout or DOM changes can trigger several
- * state updates in one frame and cause multiple re-renders. Sensitive to layout thrashing when many things resize at once.
+ * Hook that returns refs and layout state for a scrollable visx `XYChart` parent.
  *
- * @param props - Optional config (e.g. xLabelsOrientation)
- * @returns parentRef - Ref for the scrollable chart container
- * @returns chartWidth - Chart width in px (visible width or min from axis labels)
- * @returns minHeight - Minimum height from Y-axis labels
- * @returns chartHeight - Chart height in px (visible or minHeight)
- * @returns margin - Chart margin (top, right, bottom, left) in px
- * @returns scrollLeft - Current horizontal scroll offset of the container
- * @returns scrollTop - Current vertical scroll offset of the container
- * @returns xAxisRef - Ref to attach to the X-axis DOM node
- * @returns yAxisRef - Ref to attach to the Y-axis DOM node
- * @returns xLabelsVertical - True when X labels are rotated vertical (narrow container or vertical orientation)
- * @returns yAxisRect - Bounding box of the Y-axis (for background/positioning)
+ * @param props - {@link UseScrollableXYChartProps}
+ * @returns {@link UseScrollableXYChartResult}
  */
-export function useScrollableXYChart(props?: UseScrollableXYChartProps) {
+export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScrollableXYChartResult {
   const { xLabelsOrientation = 'auto' } = props ?? {};
   const {
     parentRef,
@@ -151,6 +164,8 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps) {
   const minXAxisWidth = xLabelsVertical ? minXAxisWidthVertical : minXAxisWidthHorizontal;
   const chartWidth = Math.max(visibleChartWidth, minXAxisWidth + yAxisWidth);
 
+  // Track scroll offsets and re-dispatch the last pointermove on scroll so visx tooltips,
+  // crosshairs, and glyphs follow the cursor while the chart scrolls under it.
   useEffect(function onParentScroll() {
     const el = parentRef.current;
     if (!el) return;
@@ -171,15 +186,16 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps) {
       lastTarget = null;
     }
 
+    /**
+     * Mirrors the container's scroll offsets into state and re-dispatches the last pointermove
+     * on the cached target. visx's `localPoint()` re-derives the SVG point from `clientX/clientY`
+     * via `SVGSVGElement.getScreenCTM()`, which already reflects the new scroll position, so the
+     * same screen coordinates now resolve to the correct datum after scrolling.
+     */
     function onScroll() {
       setScrollLeft(el?.scrollLeft ?? 0);
       setScrollTop(el?.scrollTop ?? 0);
 
-      // Re-dispatch a pointermove on the stored target so visx recomputes the nearest
-      // datum and updates the tooltip data, crosshair, and glyph positions.
-      // localPoint() inside visx re-derives svgPoint from clientX/clientY via
-      // SVGSVGElement.getScreenCTM(), which already reflects the new scroll position,
-      // so the same screen coordinates now resolve to the correct datum after scrolling.
       if (lastTarget) {
         lastTarget.dispatchEvent(
           new PointerEvent('pointermove', {
@@ -203,128 +219,89 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps) {
     };
   }, []);
 
+  // Observe both axes and recompute axis-derived layout state when their DOM mutates or they
+  // resize. Measurements are batched into a single rAF so concurrent observer callbacks
+  // produce at most one re-render.
   useEffect(
-    function syncYAxis() {
-      if (!isVisibleChart || !yAxisRef.current) {
+    function syncAxes() {
+      if (!isVisibleChart) {
         return;
       }
 
-      const observer = new MutationObserver(function onMutation() {
-        const yAxisElement = yAxisRef.current as SVGGraphicsElement;
+      const xAxis = xAxisRef.current;
+      const yAxis = yAxisRef.current;
 
-        setAxisState(function updateYAxis(prev) {
-          return {
-            ...prev,
-            margin: {
-              ...prev.margin,
-              left: getLeftMargin(yAxisElement, xAxisRef.current),
-              top: getTopMargin(yAxisElement, prev.margin.top)
-            },
-            minHeight: getChartMinHeight(yAxisElement)
-          };
-        });
-      });
-      observer.observe(yAxisRef.current, { childList: true, subtree: true });
-
-      return function cleanup() {
-        observer.disconnect();
-      };
-    },
-    [isVisibleChart]
-  );
-
-  useEffect(
-    function syncXAxis() {
-      if (!isVisibleChart || !xAxisRef.current) {
+      if (!xAxis && !yAxis) {
         return;
       }
 
-      const xAxisElement = xAxisRef.current as SVGGraphicsElement;
+      let rafId = 0;
 
-      function measure() {
-        const { minWidthHorizontal, minWidthVertical } = getChartMinWidth(xAxisElement);
-        setAxisState(function updateXAxis(prev) {
-          return {
-            ...prev,
-            minXAxisWidthHorizontal: minWidthHorizontal,
-            minXAxisWidthVertical: minWidthVertical,
-            margin: {
-              ...prev.margin,
-              left: getLeftMargin(yAxisRef.current as SVGGraphicsElement | null, xAxisElement)
-            }
-          };
+      function measureAll(prev: AxisState): AxisState {
+        // Cluster all DOM reads in one pass so the browser pays a single forced reflow per
+        // batch instead of one per observer callback.
+        const left = getLeftMargin(yAxis, xAxis);
+        const bottom = getBottomMargin(xAxis, yAxis);
+        const top = yAxis ? getTopMargin(yAxis, prev.margin.top) : prev.margin.top;
+        const right = xAxis ? getRightMargin(xAxis, prev.margin.right) : prev.margin.right;
+        const minHeight = yAxis ? getChartMinHeight(yAxis) : prev.minHeight;
+        const xWidths = xAxis
+          ? getChartMinWidth(xAxis)
+          : { minWidthHorizontal: prev.minXAxisWidthHorizontal, minWidthVertical: prev.minXAxisWidthVertical };
+        const yAxisRect = yAxis ? yAxis.getBBox() : prev.yAxisRect;
+
+        // Bail out on no-op so React skips the re-render.
+        if (
+          prev.margin.top === top &&
+          prev.margin.right === right &&
+          prev.margin.bottom === bottom &&
+          prev.margin.left === left &&
+          prev.minHeight === minHeight &&
+          prev.minXAxisWidthHorizontal === xWidths.minWidthHorizontal &&
+          prev.minXAxisWidthVertical === xWidths.minWidthVertical &&
+          rectsEqual(prev.yAxisRect, yAxisRect)
+        ) {
+          return prev;
+        }
+
+        return {
+          margin: { top, right, bottom, left },
+          minHeight,
+          minXAxisWidthHorizontal: xWidths.minWidthHorizontal,
+          minXAxisWidthVertical: xWidths.minWidthVertical,
+          yAxisRect
+        };
+      }
+
+      function schedule() {
+        if (rafId) {
+          return;
+        }
+        rafId = requestAnimationFrame(function flush() {
+          rafId = 0;
+          setAxisState(measureAll);
         });
       }
 
-      measure();
+      schedule();
 
-      const observer = new MutationObserver(measure);
+      const mutationObserver = new MutationObserver(schedule);
+      const resizeObserver = new ResizeObserver(schedule);
 
-      observer.observe(xAxisRef.current, { childList: true, subtree: true });
-
-      return function cleanup() {
-        observer.disconnect();
-      };
-    },
-    [isVisibleChart]
-  );
-
-  useEffect(
-    function observeXAxisResize() {
-      if (!isVisibleChart || !xAxisRef.current) {
-        return;
+      if (xAxis) {
+        mutationObserver.observe(xAxis, { childList: true, subtree: true });
+        resizeObserver.observe(xAxis);
+      }
+      if (yAxis) {
+        mutationObserver.observe(yAxis, { childList: true, subtree: true });
+        resizeObserver.observe(yAxis);
       }
 
-      const xAxisElement = xAxisRef.current;
-
-      const resizeObserver = new ResizeObserver(function onResize() {
-        setAxisState(function updateXAxisResize(prev) {
-          return {
-            ...prev,
-            margin: {
-              ...prev.margin,
-              bottom: getBottomMargin(xAxisElement),
-              right: getRightMargin(xAxisElement, prev.margin.right),
-              left: getLeftMargin(yAxisRef.current, xAxisElement)
-            }
-          };
-        });
-      });
-
-      resizeObserver.observe(xAxisElement);
-
       return function cleanup() {
-        resizeObserver.disconnect();
-      };
-    },
-    [isVisibleChart]
-  );
-
-  useEffect(
-    function observeYAxisResize() {
-      if (!isVisibleChart || !yAxisRef.current) {
-        return;
-      }
-
-      const yAxisElement = yAxisRef.current;
-
-      const resizeObserver = new ResizeObserver(function onResize() {
-        setAxisState(function updateYAxisResize(prev) {
-          return {
-            ...prev,
-            yAxisRect: yAxisElement.getBBox(),
-            margin: {
-              ...prev.margin,
-              left: getLeftMargin(yAxisElement, xAxisRef.current),
-              top: getTopMargin(yAxisElement, prev.margin.top)
-            }
-          };
-        });
-      });
-
-      resizeObserver.observe(yAxisElement);
-
-      return function cleanup() {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        mutationObserver.disconnect();
         resizeObserver.disconnect();
       };
     },
