@@ -85,14 +85,16 @@ export function getHalfFirstYAxisTickLabelHeight(yAxisElement: SVGGraphicsElemen
 }
 
 /**
- * Computes the chart's left margin: the greater of the Y-axis width and half the first
+ * Computes the chart's inline-start margin: the greater of the Y-axis width and half the first
  * X-axis tick label width.
+ *
+ * "Inline start" is the side where the Y-axis lives — visual left in LTR, visual right in RTL.
  *
  * @param yAxisElement - Y-axis SVG group element, or null
  * @param xAxisElement - X-axis SVG group element, or null
- * @returns Left margin in pixels
+ * @returns Inline-start margin in pixels
  */
-export function getLeftMargin(
+export function getInlineStartMargin(
   yAxisElement: SVGGraphicsElement | null,
   xAxisElement: SVGGraphicsElement | null = null
 ): number {
@@ -102,14 +104,16 @@ export function getLeftMargin(
 }
 
 /**
- * Computes the chart's bottom margin: the greater of the X-axis height and half the first
+ * Computes the chart's block-end margin: the greater of the X-axis height and half the first
  * (bottom-most) Y-axis tick label height.
+ *
+ * "Block end" is the bottom of the chart in horizontal writing modes (the X-axis side).
  *
  * @param xAxisElement - X-axis SVG group element, or null
  * @param yAxisElement - Y-axis SVG group element, or null
- * @returns Bottom margin in pixels
+ * @returns Block-end margin in pixels
  */
-export function getBottomMargin(
+export function getBlockEndMargin(
   xAxisElement: SVGGraphicsElement | null,
   yAxisElement: SVGGraphicsElement | null = null
 ): number {
@@ -119,47 +123,73 @@ export function getBottomMargin(
 }
 
 /**
- * Computes the chart's right margin so the last X-axis tick label is not clipped.
- * Returns half the label's visual width when it overflows the SVG, 0 otherwise.
+ * Computes the chart's inline-end margin so the last X-axis tick label is not clipped.
+ *
+ * "Inline end" is the side opposite the Y-axis — visual right in LTR, visual left in RTL.
+ * In RTL the last (largest-domain) tick is positioned on the visual left of the chart, so the
+ * label can overflow the SVG's left edge instead of its right; pass `isRtl: true` so the
+ * overflow check uses the correct edge.
  *
  * @param xAxisElement - X-axis SVG group element
- * @param prevRightMargin - Right margin currently applied (px); kept when removing it would re-introduce overflow
- * @returns Right margin in pixels
+ * @param prevInlineEndMargin - Inline-end margin currently applied (px); kept when removing it would re-introduce overflow
+ * @param isRtl - Whether the chart is in RTL writing direction
+ * @returns Inline-end margin in pixels
  */
-export function getRightMargin(xAxisElement: SVGGraphicsElement, prevRightMargin = 0): number {
+export function getInlineEndMargin(xAxisElement: SVGGraphicsElement, prevInlineEndMargin = 0, isRtl = false): number {
   const lastTickText = getTickLabelText(getAxisTickAt(xAxisElement, 'last'));
 
   if (!lastTickText || !isElementDisplayed(lastTickText)) {
     return 0;
   }
 
-  const svgRight = xAxisElement.closest('svg')?.getBoundingClientRect().right ?? 0;
+  const svgRect = xAxisElement.closest('svg')?.getBoundingClientRect();
   const lastTickTextRect = lastTickText.getBoundingClientRect();
+
+  if (isRtl) {
+    const svgLeft = svgRect?.left ?? 0;
+
+    if (lastTickTextRect.left < svgLeft) {
+      return Math.ceil(lastTickTextRect.width / 2);
+    }
+
+    // The label fits, but the existing margin may be exactly what's keeping it inside the SVG.
+    // Removing it would shift the last tick leftward by `prevInlineEndMargin` (mapped onto
+    // `margin.left` in RTL); if that shift would push the label past the edge, keep the
+    // current margin so the layout does not oscillate.
+    if (prevInlineEndMargin > 0 && lastTickTextRect.left - prevInlineEndMargin < svgLeft) {
+      return prevInlineEndMargin;
+    }
+
+    return 0;
+  }
+
+  const svgRight = svgRect?.right ?? 0;
 
   if (lastTickTextRect.right > svgRight) {
     return Math.ceil(lastTickTextRect.width / 2);
   }
 
   // The label fits, but the existing margin may be exactly what's keeping it inside the SVG.
-  // Removing it would shift the last tick rightward by `prevRightMargin` (visx anchors the
-  // last tick at `chartWidth - margin.right`); if that shift would push the label past the
-  // edge, keep the current margin so the layout does not oscillate.
-  if (prevRightMargin > 0 && lastTickTextRect.right + prevRightMargin > svgRight) {
-    return prevRightMargin;
+  // Removing it would shift the last tick rightward by `prevInlineEndMargin` (visx anchors the
+  // last tick at `chartWidth - margin.right` in LTR); if that shift would push the label past
+  // the edge, keep the current margin so the layout does not oscillate.
+  if (prevInlineEndMargin > 0 && lastTickTextRect.right + prevInlineEndMargin > svgRight) {
+    return prevInlineEndMargin;
   }
 
   return 0;
 }
 
 /**
- * Computes the chart's top margin so the topmost Y-axis tick label is not clipped.
- * Returns half the label's visual height when it overflows the SVG, 0 otherwise.
+ * Computes the chart's block-start margin so the topmost Y-axis tick label is not clipped.
+ *
+ * "Block start" is the top of the chart in horizontal writing modes.
  *
  * @param yAxisElement - Y-axis SVG group element
- * @param prevTopMargin - Top margin currently applied (px); kept when removing it would re-introduce overflow
- * @returns Top margin in pixels
+ * @param prevBlockStartMargin - Block-start margin currently applied (px); kept when removing it would re-introduce overflow
+ * @returns Block-start margin in pixels
  */
-export function getTopMargin(yAxisElement: SVGGraphicsElement, prevTopMargin = 0): number {
+export function getBlockStartMargin(yAxisElement: SVGGraphicsElement, prevBlockStartMargin = 0): number {
   const lastTickText = getTickLabelText(getAxisTickAt(yAxisElement, 'last'));
 
   if (!lastTickText || !isElementDisplayed(lastTickText)) {
@@ -174,11 +204,11 @@ export function getTopMargin(yAxisElement: SVGGraphicsElement, prevTopMargin = 0
   }
 
   // The label fits, but the existing margin may be exactly what's keeping it inside the SVG.
-  // Removing it would shift the topmost tick upward by `prevTopMargin` (visx anchors the
-  // topmost tick at `margin.top`); if that shift would push the label past the edge, keep
-  // the current margin so the layout does not oscillate.
-  if (prevTopMargin > 0 && lastTickTextRect.top - prevTopMargin < svgTop) {
-    return prevTopMargin;
+  // Removing it would shift the topmost tick upward by `prevBlockStartMargin` (visx anchors the
+  // topmost tick at `margin.top`); if that shift would push the label past the edge, keep the
+  // current margin so the layout does not oscillate.
+  if (prevBlockStartMargin > 0 && lastTickTextRect.top - prevBlockStartMargin < svgTop) {
+    return prevBlockStartMargin;
   }
 
   return 0;

@@ -346,7 +346,6 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
     isVertical,
     barWidth,
     barPadding,
-    effectiveMargin,
     categoryValues,
     numSeries,
     totalBarWidth,
@@ -454,7 +453,7 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
               >
                 {desc && <desc id="barchart-desc">{desc}</desc>}
 
-                <Group top={effectiveMargin.top} left={effectiveMargin.left}>
+                <Group top={margin.top} left={margin.left}>
                   {yGridlines && <GridRows scale={yScale} width={innerWidth} className={styles.rows} />}
                   {xGridlines && <GridColumns scale={xScale} height={innerHeight} className={styles.columns} />}
 
@@ -532,11 +531,11 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                     <rect
                       x={scrollLeft}
                       y={0}
-                      width={effectiveMargin.left}
+                      width={margin.left}
                       height={svgHeight}
                       className={styles.axisBackground}
                     />
-                    <g transform={`translate(${effectiveMargin.left + scrollLeft}, ${effectiveMargin.top})`}>
+                    <g transform={`translate(${margin.left + scrollLeft}, ${margin.top})`}>
                       <AxisLeft
                         axisClassName={styles.axisY}
                         axisLineClassName={styles.baseline}
@@ -555,15 +554,13 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                 {isVertical && (yBaseline || yTickMarks || yLabels) && rtl && (
                   <>
                     <rect
-                      x={svgWidth - effectiveMargin.right + scrollLeft}
+                      x={svgWidth - margin.right + scrollLeft}
                       y={0}
-                      width={effectiveMargin.right}
+                      width={margin.right}
                       height={svgHeight}
                       className={styles.axisBackground}
                     />
-                    <g
-                      transform={`translate(${svgWidth - effectiveMargin.right + scrollLeft}, ${effectiveMargin.top})`}
-                    >
+                    <g transform={`translate(${svgWidth - margin.right + scrollLeft}, ${margin.top})`}>
                       <AxisRight
                         axisClassName={styles.axisY}
                         axisLineClassName={styles.baseline}
@@ -588,14 +585,12 @@ export function BarChart<T extends object>(props: BarChartProps<T>) {
                   <>
                     <rect
                       x={0}
-                      y={scrollTop + chartHeight - effectiveMargin.bottom}
+                      y={scrollTop + chartHeight - margin.bottom}
                       width={svgWidth}
-                      height={effectiveMargin.bottom}
+                      height={margin.bottom}
                       className={styles.axisBackground}
                     />
-                    <g
-                      transform={`translate(${effectiveMargin.left}, ${scrollTop + chartHeight - effectiveMargin.bottom})`}
-                    >
+                    <g transform={`translate(${margin.left}, ${scrollTop + chartHeight - margin.bottom})`}>
                       <AxisBottom
                         axisClassName={styles.axisX}
                         axisLineClassName={styles.baseline}

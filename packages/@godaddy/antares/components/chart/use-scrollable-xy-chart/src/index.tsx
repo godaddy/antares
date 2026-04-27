@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { useParentSize } from '@visx/responsive';
 import { Margin } from '@visx/xychart';
+import { useLocale } from 'react-aria-components';
 import { type XLabelsOrientation } from '../../types.ts';
-import { getBottomMargin, getLeftMargin, getRightMargin, getTopMargin } from './chart-container-margins.ts';
+import {
+  getBlockEndMargin,
+  getBlockStartMargin,
+  getInlineEndMargin,
+  getInlineStartMargin
+} from './chart-container-margins.ts';
 
 /** Minimum vertical gap between Y-axis labels (px). */
 const MIN_Y_LABEL_GAP_PX = 16;
@@ -80,9 +86,17 @@ function rectsEqual(a: SVGRect | null, b: SVGRect | null): boolean {
   return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
 }
 
-/** Axis-derived layout state recomputed when either axis mutates or resizes. */
+/**
+ * Axis-derived layout state recomputed when either axis mutates or resizes. Margins are stored
+ * in CSS-logical terms (`inline-start` is the Y-axis side, `inline-end` is the opposite side,
+ * `block-start`/`block-end` are top/bottom in horizontal writing modes) and mapped to physical
+ * `Margin` keys at the hook boundary so consumers can pass the result straight to visx.
+ */
 interface AxisState {
-  margin: Margin;
+  inlineStart: number;
+  inlineEnd: number;
+  blockStart: number;
+  blockEnd: number;
   minHeight: number;
   minXAxisWidthHorizontal: number;
   minXAxisWidthVertical: number;
@@ -90,12 +104,10 @@ interface AxisState {
 }
 
 const INITIAL_AXIS_STATE: AxisState = {
-  margin: {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  },
+  inlineStart: 0,
+  inlineEnd: 0,
+  blockStart: 0,
+  blockEnd: 0,
   minHeight: 0,
   minXAxisWidthHorizontal: 0,
   minXAxisWidthVertical: 0,
@@ -149,13 +161,24 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
   } = useParentSize({
     debounceTime: RESIZE_DEBOUNCE_MS
   });
+  const { direction } = useLocale();
+  const isRtl = direction === 'rtl';
   const xAxisRef = useRef<SVGGElement>(null);
   const yAxisRef = useRef<SVGGElement>(null);
   const [axisState, setAxisState] = useState<AxisState>(INITIAL_AXIS_STATE);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
   const isVisibleChart = visibleChartWidth > 0 && visibleChartHeight > 0;
-  const { margin, minHeight, minXAxisWidthHorizontal, minXAxisWidthVertical, yAxisRect } = axisState;
+  const {
+    inlineStart,
+    inlineEnd,
+    blockStart,
+    blockEnd,
+    minHeight,
+    minXAxisWidthHorizontal,
+    minXAxisWidthVertical,
+    yAxisRect
+  } = axisState;
   const yAxisWidth = yAxisRect?.width ?? 0;
   const chartHeight = Math.max(visibleChartHeight, minHeight);
   const autoVertical = visibleChartWidth <= minXAxisWidthHorizontal + yAxisWidth;
@@ -163,6 +186,11 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
     xLabelsOrientation === 'vertical' ? true : xLabelsOrientation === 'horizontal' ? false : autoVertical;
   const minXAxisWidth = xLabelsVertical ? minXAxisWidthVertical : minXAxisWidthHorizontal;
   const chartWidth = Math.max(visibleChartWidth, minXAxisWidth + yAxisWidth);
+  // Logical → physical: inline-start lives on the visual right in RTL (where the Y-axis renders
+  // via `AxisRight`), and inline-end lives on the visual left.
+  const margin: Margin = isRtl
+    ? { top: blockStart, right: inlineStart, bottom: blockEnd, left: inlineEnd }
+    : { top: blockStart, right: inlineEnd, bottom: blockEnd, left: inlineStart };
 
   // Track scroll offsets and re-dispatch the last pointermove on scroll so visx tooltips,
   // crosshairs, and glyphs follow the cursor while the chart scrolls under it.
@@ -240,10 +268,10 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
       function measureAll(prev: AxisState): AxisState {
         // Cluster all DOM reads in one pass so the browser pays a single forced reflow per
         // batch instead of one per observer callback.
-        const left = getLeftMargin(yAxis, xAxis);
-        const bottom = getBottomMargin(xAxis, yAxis);
-        const top = yAxis ? getTopMargin(yAxis, prev.margin.top) : prev.margin.top;
-        const right = xAxis ? getRightMargin(xAxis, prev.margin.right) : prev.margin.right;
+        const inlineStart = getInlineStartMargin(yAxis, xAxis);
+        const blockEnd = getBlockEndMargin(xAxis, yAxis);
+        const blockStart = yAxis ? getBlockStartMargin(yAxis, prev.blockStart) : prev.blockStart;
+        const inlineEnd = xAxis ? getInlineEndMargin(xAxis, prev.inlineEnd, isRtl) : prev.inlineEnd;
         const minHeight = yAxis ? getChartMinHeight(yAxis) : prev.minHeight;
         const xWidths = xAxis
           ? getChartMinWidth(xAxis)
@@ -252,10 +280,10 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
 
         // Bail out on no-op so React skips the re-render.
         if (
-          prev.margin.top === top &&
-          prev.margin.right === right &&
-          prev.margin.bottom === bottom &&
-          prev.margin.left === left &&
+          prev.blockStart === blockStart &&
+          prev.inlineEnd === inlineEnd &&
+          prev.blockEnd === blockEnd &&
+          prev.inlineStart === inlineStart &&
           prev.minHeight === minHeight &&
           prev.minXAxisWidthHorizontal === xWidths.minWidthHorizontal &&
           prev.minXAxisWidthVertical === xWidths.minWidthVertical &&
@@ -265,7 +293,10 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
         }
 
         return {
-          margin: { top, right, bottom, left },
+          inlineStart,
+          inlineEnd,
+          blockStart,
+          blockEnd,
           minHeight,
           minXAxisWidthHorizontal: xWidths.minWidthHorizontal,
           minXAxisWidthVertical: xWidths.minWidthVertical,
@@ -305,7 +336,7 @@ export function useScrollableXYChart(props?: UseScrollableXYChartProps): UseScro
         resizeObserver.disconnect();
       };
     },
-    [isVisibleChart]
+    [isVisibleChart, isRtl]
   );
 
   return {
