@@ -36,5 +36,5 @@
     "source.organizeImports": "never"
   },
   "vitest.rootConfig": "packages/@godaddy/antares/vitest.config.ts",
-  "vitest.cliArguments": "--project=SSR --project=Browser --update"
+  "vitest.cliArguments": "--project=SSR --project=Browser"
 }
