@@ -1248,6 +1248,75 @@ Styling Not Applying [#styling-not-applying]
 ```
 
 
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
 # NumberField
 
 
@@ -1354,75 +1423,6 @@ Best practices [#best-practices]
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
-# MetricsLockup
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="Stories.WithTrend" />
-
-<Source language="tsx" code="WithTrendExample" />
-
-Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="Stories.Compact" />
-
-<Source language="tsx" code="CompactExample" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
-
-
 # Pagination
 
 
@@ -1484,6 +1484,62 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Story of="Stories.OnChange" />
 
 <Source language="tsx" code="SourceOnChange" />
+
+
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # Radio
@@ -1708,62 +1764,6 @@ Always provide clear error messages:
   <Radio value="express">Express</Radio>
 </RadioGroup>
 ```
-
-
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # SegmentedController
@@ -2683,6 +2683,69 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Gauge Chart
 
 
@@ -2783,69 +2846,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
 
 
 # Legend
@@ -3196,73 +3196,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# Tooltip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
-* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
-* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
-
-Props [#props]
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-Value formatting [#value-formatting]
-
-**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
-
-**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
-
-```tsx
-<Tooltip
-  tooltipData={tooltipData}
-  series={series}
-  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
-/>
-```
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic tooltip with a single series and default formatting.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Tooltip with multiple series; all series at the same X position are shown together.
-
-<Source language="tsx" code="SourceMultipleSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-Arrow [#arrow]
-
-Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
-
-<Source language="tsx" code="SourceArrow" />
-
-<Story of="Stories.Arrow" />
-
-
 # TooltipDismissStrip
 
 
@@ -3329,6 +3262,73 @@ Multiple series each receiving the next color in sequence.
 <Source language="tsx" code="SourceMultiSeries" />
 
 <Story of="Stories.MultiSeries" />
+
+
+# Tooltip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
+* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
+* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+
+Props [#props]
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+Value formatting [#value-formatting]
+
+**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
+
+**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
+
+```tsx
+<Tooltip
+  tooltipData={tooltipData}
+  series={series}
+  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
+/>
+```
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic tooltip with a single series and default formatting.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Tooltip with multiple series; all series at the same X position are shown together.
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+Arrow [#arrow]
+
+Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+
+<Source language="tsx" code="SourceArrow" />
+
+<Story of="Stories.Arrow" />
 
 
 # useNormalizedSeries
