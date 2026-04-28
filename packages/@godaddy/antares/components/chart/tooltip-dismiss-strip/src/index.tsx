@@ -7,8 +7,8 @@ import styles from './index.module.css';
 /** Props for the {@link TooltipDismissStrip} component. */
 export interface TooltipDismissStripProps extends Omit<BoxProps<'div'>, 'style'> {
   /**
-   * Width in px on the leading viewport edge (LTR: left); match sticky axis chrome that overlaps the plot after
-   * horizontal scroll.
+   * Width in px pinned to the inline-start viewport edge (visual left in LTR, visual right in RTL); match sticky axis
+   * chrome that overlaps the plot after horizontal scroll.
    */
   width: number;
   /** Height in px; align with the visible plot band that receives pointer hover for the tooltip. */

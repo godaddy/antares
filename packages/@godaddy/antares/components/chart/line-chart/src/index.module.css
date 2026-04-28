@@ -71,6 +71,10 @@
   order: 1;
 }
 
+.chart:dir(rtl) .axisY text {
+  text-anchor: end;
+}
+
 .area {
   position: relative;
   flex: 1;

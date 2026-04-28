@@ -19,6 +19,7 @@ import { LegendExample } from './examples/legend.tsx';
 import { MissingValuesExample } from './examples/missing-values.tsx';
 import { MultipleSeriesExample } from './examples/multiple-series.tsx';
 import { NiceValuesExample } from './examples/nice-values.tsx';
+import { RTLExample } from './examples/rtl.tsx';
 import { SingleSeriesExample } from './examples/single-series.tsx';
 import { TicksExample } from './examples/ticks.tsx';
 import { TitlesExample } from './examples/titles.tsx';
@@ -85,6 +86,9 @@ export const CityTemperature = getStory(CityTemperatureExample);
 
 export const BrowserUsage = getStory(BrowserUsageExample);
 
+// RTL
+export const RTL = getStory(RTLExample);
+
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
@@ -118,7 +122,8 @@ export const Playground = {
     width: undefined,
     'aria-label': 'Playground line chart',
     desc: '',
-    className: ''
+    className: '',
+    rtl: false
   },
   argTypes: {
     numSeries: {
@@ -126,6 +131,7 @@ export const Playground = {
       options: [1, 2, 3],
       description: 'Number of series to render'
     },
+    rtl: { control: 'boolean', description: 'Render in right-to-left layout' },
     xTitle: { control: 'text', description: 'X-axis title' },
     yTitle: { control: 'text', description: 'Y-axis title' },
     xType: {

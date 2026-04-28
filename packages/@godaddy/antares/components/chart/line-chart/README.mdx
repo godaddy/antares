@@ -26,6 +26,7 @@ import SourceLabels from './examples/labels.tsx?raw';
 import SourceLegend from './examples/legend.tsx?raw';
 import SourceTitles from './examples/titles.tsx?raw';
 import SourceTicks from './examples/ticks.tsx?raw';
+import SourceRTL from './examples/rtl.tsx?raw';
 import * as Stories from './line-chart.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -218,6 +219,13 @@ Categorical X-axis (band scale) with multiple series and percentage formatting.
 
 <Story of={Stories.BrowserUsage} inline />
 <Source language="tsx" code={SourceBrowserUsage} />
+
+### Right-to-Left
+
+The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes and labels accordingly.
+
+<Story of={Stories.RTL} inline />
+<Source language="tsx" code={SourceRTL} />
 
 ## Customization
 
