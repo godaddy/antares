@@ -13,7 +13,7 @@ import {
   yAccessor as defaultYAccessor
 } from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/use-normalized-series';
-import { useScrollableXYChart } from '../../use-scrollable-xy-chart/src/index.tsx';
+import { useScrollableXYChart } from '#components/chart/use-scrollable-xy-chart';
 import { ChartColorProvider, useChartColor } from '#components/chart/use-chart-color';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
 import { AxisTitle } from '#components/chart/axis-title';
