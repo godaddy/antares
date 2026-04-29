@@ -19,12 +19,17 @@ const config: KnipConfig = {
       ]
     },
     'apps/docs': {
-      ignore: ['.storybook/addons/why-did-you-render/**/*', '.storybook/why-did-you-render.ts'],
+      ignore: [
+        '.storybook/addons/why-did-you-render/**/*',
+        '.storybook/addons/theme-token-switcher/**/*',
+        '.storybook/why-did-you-render.ts'
+      ],
       ignoreDependencies: [
         '@vitejs/plugin-react',
         '@welldone-software/why-did-you-render',
         '@bento/*',
-        'react-diff-viewer-continued'
+        'react-diff-viewer-continued',
+        'camelcase'
       ]
     },
     'packages/@bento/*': {
