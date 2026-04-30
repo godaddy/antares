@@ -1,1 +1,0 @@
-import{j as s}from"./iframe-Cf4veHW5.js";import{w as t}from"./slots-CFYHZr56.js";import{T as i}from"./index-DSqK7YLv.js";import{u as e}from"./index-DFe4wYDr.js";const u=t("BentoFieldError",function(o){const{props:r}=e(o);return r.isInvalid?s.jsx(i,{...r}):null});export{u as F};
