@@ -274,98 +274,6 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <Source language="tsx" code="SourceRTLDirection" />
 
 
-# FieldFrame
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
-
-Features [#features]
-
-* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
-* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
-* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
-* **Required indicator**: Shows asterisk next to label when the field is required
-* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
-* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
-
-Usage [#usage]
-
-Props [#props]
-
-FieldFrame accepts the following props:
-
-<PropTable />
-
-Basic example [#basic-example]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
-
-Component composition [#component-composition]
-
-Internal structure [#internal-structure]
-
-FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
-
-```text
-Provider
-├── Label                     ← when label prop
-├── Group.frame               ← border, focus/invalid/disabled styling
-│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
-├── FieldError                ← when errorMessage prop
-└── Text[slot=description]    ← when description prop
-```
-
-The following list describes the internal React Aria components used to compose FieldFrame:
-
-* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
-* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
-* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
-* **Text** (optional) — Description block rendered when `description` is provided.
-
-Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
-
-States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
-
-| State                                                                                    | CSS Selector           |
-| ---------------------------------------------------------------------------------------- | ---------------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
-| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
-| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
-| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
-
-Examples [#examples]
-
-Leading control [#leading-control]
-
-<Story of="Stories.LeadingControl" />
-
-Trailing control [#trailing-control]
-
-<Story of="Stories.TrailingControl" />
-
-<Source language="tsx" code="SourceTrailingControl" />
-
-Icon accessories [#icon-accessories]
-
-<Story of="Stories.IconAccessories" />
-
-<Source language="tsx" code="SourceIconAccessories" />
-
-
 # Checkbox
 
 
@@ -666,6 +574,98 @@ Group Organization [#group-organization]
 * Use logical ordering (alphabetical, frequency of use, or importance)
 * Consider using CheckboxGroup for related options, even if there are only 2-3
 * Provide a group label that clearly describes the choice being made
+
+
+# FieldFrame
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
+
+Features [#features]
+
+* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
+* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
+* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
+* **Required indicator**: Shows asterisk next to label when the field is required
+* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
+* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
+
+Usage [#usage]
+
+Props [#props]
+
+FieldFrame accepts the following props:
+
+<PropTable />
+
+Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
+
+Component composition [#component-composition]
+
+Internal structure [#internal-structure]
+
+FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
+
+```text
+Provider
+├── Label                     ← when label prop
+├── Group.frame               ← border, focus/invalid/disabled styling
+│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
+├── FieldError                ← when errorMessage prop
+└── Text[slot=description]    ← when description prop
+```
+
+The following list describes the internal React Aria components used to compose FieldFrame:
+
+* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
+* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
+* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
+* **Text** (optional) — Description block rendered when `description` is provided.
+
+Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
+
+States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
+
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
+| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
+
+Examples [#examples]
+
+Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
 
 
 # Icon
@@ -3196,6 +3196,73 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# Tooltip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
+* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
+* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+
+Props [#props]
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+Value formatting [#value-formatting]
+
+**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
+
+**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
+
+```tsx
+<Tooltip
+  tooltipData={tooltipData}
+  series={series}
+  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
+/>
+```
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic tooltip with a single series and default formatting.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Tooltip with multiple series; all series at the same X position are shown together.
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+Arrow [#arrow]
+
+Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+
+<Source language="tsx" code="SourceArrow" />
+
+<Story of="Stories.Arrow" />
+
+
 # TooltipDismissStrip
 
 
@@ -3264,73 +3331,6 @@ Multiple series each receiving the next color in sequence.
 <Story of="Stories.MultiSeries" />
 
 
-# Tooltip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
-* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
-* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
-
-Props [#props]
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-Value formatting [#value-formatting]
-
-**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
-
-**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
-
-```tsx
-<Tooltip
-  tooltipData={tooltipData}
-  series={series}
-  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
-/>
-```
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic tooltip with a single series and default formatting.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Tooltip with multiple series; all series at the same X position are shown together.
-
-<Source language="tsx" code="SourceMultipleSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-Arrow [#arrow]
-
-Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
-
-<Source language="tsx" code="SourceArrow" />
-
-<Story of="Stories.Arrow" />
-
-
 # useNormalizedSeries
 
 
@@ -3342,6 +3342,43 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
+
+
+# useScrollableXYChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+**Inputs.** Wire `parentRef` to the scroll container and `xAxisRef` / `yAxisRef` to the axis groups. Optionally pass `xLabelsOrientation` (`'auto'` | `'horizontal'` | `'vertical'`, default `'auto'`) to force the category-label layout; `'auto'` rotates labels vertical when the visible width can't fit the horizontal-tick footprint plus the Y-axis width.
+
+**Outputs.** The hook returns `margin`, `chartWidth`, `chartHeight`, `xLabelsVertical`, `scrollLeft` / `scrollTop`, and `yAxisRect` for the chart to consume. Width and height are sized to whichever is larger — the visible slot or the room the rendered labels need — so the chart grows past the viewport and the parent scrolls when labels demand more space.
+
+**Behavior.** Measurement runs through `useParentSize`, a `MutationObserver`, and a `ResizeObserver` on the wired nodes. All axis measurements are batched in one `requestAnimationFrame` and bail out when the result hasn't changed, so a burst of observer fires costs at most one reflow and one render per frame.
+
+```tsx
+const {
+  parentRef, xAxisRef, yAxisRef,
+  margin, chartWidth, chartHeight,
+  xLabelsVertical, scrollLeft, scrollTop, yAxisRect,
+} = useScrollableXYChart();
+```
+
+Examples [#examples]
+
+Auto layout [#auto-layout]
+
+Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
+
+<Source language="tsx" code="SourceExample" />
+
+<Story of="Stories.AutoLayout" />
 
 
 # Box
