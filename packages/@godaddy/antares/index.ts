@@ -4,7 +4,6 @@
  * Import this package to access all components, layout primitives, and design tokens.
  * CSS custom properties are automatically side-effect imported when this module loads.
  */
-import './variables.css';
 
 export { Icon, set, ondemand, parser, type IconProps } from '#components/icon';
 
@@ -49,6 +48,8 @@ export { FieldFrame, type FieldFrameProps } from '#components/field-frame';
 export type { DataPoint, SeriesConfig } from '#components/chart/types';
 
 export { BarChart, type BarChartProps } from '#components/chart/bar-chart';
+
+export { DonutChart, type DonutChartProps } from '#components/chart/donut-chart';
 
 export { Checkbox, CheckboxGroup, type CheckboxProps, type CheckboxGroupProps } from '#components/checkbox';
 

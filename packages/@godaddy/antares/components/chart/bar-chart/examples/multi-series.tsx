@@ -25,6 +25,10 @@ export function BarChartMultiSeriesExample(props: any) {
       xAxisTitle="Date"
       yAxisTitle="Temperature (°F)"
       yDomain={[0, 100]}
+      xBaseline={true}
+      yBaseline={true}
+      xTickMarks={true}
+      yTickMarks={true}
       {...props}
     />
   );

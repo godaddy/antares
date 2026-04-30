@@ -30,9 +30,6 @@ export interface SegmentedControllerProps
   /** The selected value. (controlled) */
   value?: string;
 
-  /** The direction of the segmented controller. Defaults to system direction. */
-  dir?: 'ltr' | 'rtl';
-
   /** Handler that is called when the selection changes. */
   onSelectionChange?: (value: string) => void;
 
@@ -51,8 +48,7 @@ export interface SegmentedControllerProps
  */
 export function SegmentedController(props: SegmentedControllerProps) {
   const { size = 'md', className, children, defaultValue, value, onSelectionChange, isDisabled, ...rest } = props;
-  const locale = useLocale();
-  const direction = props.dir ?? locale.direction;
+  const { direction } = useLocale();
   const { containerRef, scrollButtonsRef, hasOverflow, canScrollPrev, canScrollNext, scrollPrev, scrollNext } =
     useHorizontalScroll({ isRTL: direction === 'rtl' });
 
@@ -75,11 +71,11 @@ export function SegmentedController(props: SegmentedControllerProps) {
       selectionMode="single"
       isDisabled={isDisabled}
       selectedKeys={value ? [value] : undefined}
-      rounding="full"
       data-size={size}
+      dir={direction}
       className={cx(styles.container, className)}
     >
-      <Flex ref={containerRef} gap="xs" padding="xs" rounding="full" className={styles.content}>
+      <Flex ref={containerRef} gap="xs" padding="xs" className={styles.content}>
         {children}
       </Flex>
 
@@ -141,13 +137,12 @@ export function SegmentedControllerItem(props: SegmentedControllerItemProps) {
       as={RACToggleButton}
       {...rest}
       id={value}
-      rounding="full"
       alignItems="center"
       gap="xs"
       onFocus={handleFocus}
       className={cx(styles.item, className)}
     >
-      <Flex as={RACSelectionIndicator} rounding="full" className={styles.indicator} />
+      <Flex as={RACSelectionIndicator} className={styles.indicator} />
       {children}
     </Flex>
   );

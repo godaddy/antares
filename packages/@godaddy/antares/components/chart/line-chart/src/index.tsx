@@ -2,7 +2,7 @@ import { AxisTitle } from '#components/chart/axis-title';
 import { TooltipDismissStrip } from '#components/chart/tooltip-dismiss-strip';
 import { Legend } from '#components/chart/legend';
 import { Tooltip as ChartTooltip } from '#components/chart/tooltip';
-import { ChartColorProvider, useChartColor } from '#components/chart/use-chart-color';
+import { CHART_LEGACY_SERIES_COLORS } from '#components/chart/use-chart-color';
 import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
 import {
@@ -12,12 +12,13 @@ import {
   Tooltip,
   TooltipProvider,
   XYChart,
-  type TooltipData
+  type TooltipData,
+  buildChartTheme
 } from '@visx/xychart';
 import { cx } from 'cva';
 import { useCallback, useMemo } from 'react';
+import { useLocale } from 'react-aria-components';
 import type {
-  Accessors,
   AccessorRequirement,
   DataPoint,
   LegendPosition,
@@ -25,13 +26,16 @@ import type {
   SeriesConfig,
   XLabelsOrientation
 } from '../../types.ts';
-import { resolveLegendPosition, xAccessor as defaultXAccessor, yAccessor as defaultYAccessor } from '../../utils.ts';
+import {
+  resolveLegendPosition,
+  xAccessor as defaultXAccessor,
+  yAccessor as defaultYAccessor,
+  getXLabelVerticalProps
+} from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/use-normalized-series';
 import { buildScaleConfig } from './scale-config.ts';
-import { useChartContainer } from './use-chart-container.ts';
+import { useScrollableXYChart } from '#components/chart/use-scrollable-xy-chart';
 import styles from './index.module.css';
-
-const GRIDLINE_STYLE = { stroke: 'var(--bd-base)', strokeWidth: '2px' };
 
 /** Scale types supported by LineChart (subset of @visx/scale ScaleType). */
 type LineChartScaleType = 'linear' | 'time' | 'band' | 'log' | 'sqrt' | 'pow';
@@ -42,7 +46,7 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 
   /** X-axis title */
   xTitle?: string;
-  /** Show X-axis labels */
+  /** Show X-axis labels. @default true */
   xLabels?: boolean;
   /**
    * X-axis label orientation. 'auto' rotates labels to vertical when the container is too narrow;
@@ -51,11 +55,11 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
    * @default 'auto'
    */
   xLabelsOrientation?: XLabelsOrientation;
-  /** Show X-axis tick marks */
+  /** Show X-axis tick marks. */
   xTickMarks?: boolean;
-  /** Show X-axis baseline */
+  /** Show X-axis baseline. */
   xBaseline?: boolean;
-  /** Show vertical gridlines */
+  /** Show vertical gridlines. @default true */
   xGridlines?: boolean;
   /** Format X-axis tick labels */
   xTickFormat?: (value: number | string | Date) => string;
@@ -109,13 +113,13 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 
   /** Y-axis title */
   yTitle?: string;
-  /** Show Y-axis labels */
+  /** Show Y-axis labels. @default true */
   yLabels?: boolean;
-  /** Show Y-axis tick marks */
+  /** Show Y-axis tick marks. */
   yTickMarks?: boolean;
-  /** Show Y-axis baseline */
+  /** Show Y-axis baseline. */
   yBaseline?: boolean;
-  /** Show horizontal gridlines */
+  /** Show horizontal gridlines. */
   yGridlines?: boolean;
   /** Format Y-axis tick labels */
   yTickFormat?: (value: number) => string;
@@ -214,34 +218,6 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 /** LineChart props. Custom T requires xAccessor and yAccessor. */
 export type LineChartProps<T extends object = DataPoint> = LineChartPropsBase<T> & AccessorRequirement<T>;
 
-/** Props for a single line series. */
-type LineSeriesProps<T extends object = DataPoint> = Accessors<T> & { series: SeriesConfig<T> };
-
-/** Renders one line series. */
-function LineSeries<T extends object = DataPoint>(props: LineSeriesProps<T>) {
-  const { series, xAccessor, yAccessor } = props;
-  const color = useChartColor();
-
-  const colorAccessor = useCallback(
-    function colorAccessorForSeries(): string {
-      return color;
-    },
-    [color]
-  );
-
-  return (
-    <VisxLineSeries
-      className={styles.line}
-      colorAccessor={colorAccessor}
-      data={series.data}
-      dataKey={series.id}
-      id={`line-series-${series.id}`}
-      xAccessor={xAccessor}
-      yAccessor={yAccessor}
-    />
-  );
-}
-
 /**
  * Line chart for time-series or categorical data with optional responsive horizontal scroll.
  *
@@ -276,11 +252,11 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
     // X-axis
     xTitle,
-    xLabels,
+    xLabels = true,
     xLabelsOrientation = 'auto',
     xTickMarks,
     xBaseline,
-    xGridlines,
+    xGridlines = true,
     xTickFormat,
     xType = 'linear',
     xDomain,
@@ -292,7 +268,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
     // Y-axis
     yTitle,
-    yLabels,
+    yLabels = true,
     yTickMarks,
     yBaseline,
     yGridlines,
@@ -320,7 +296,9 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     className
   } = props;
   const { parentRef, chartWidth, chartHeight, margin, scrollLeft, xAxisRef, yAxisRef, xLabelsVertical, yAxisRect } =
-    useChartContainer({ xLabelsOrientation });
+    useScrollableXYChart({ xLabelsOrientation });
+  const { direction } = useLocale();
+  const isRtl = direction === 'rtl';
   const series = useNormalizedSeries(seriesProp);
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);
@@ -349,15 +327,20 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
   const xScaleConfig = useMemo(
     function getXScaleConfig() {
+      // Reverse the X-axis pixel range in RTL so the largest domain value renders on the visual left
+      // and the smallest on the visual right (XYChart computes a non-reversed range from margins).
+      const range: [number, number] | undefined =
+        isRtl && chartWidth > 0 ? [chartWidth - margin.right, margin.left] : undefined;
       return buildScaleConfig({
         type: xType,
         domain: xDomain,
         paddingOuter: xPaddingOuter,
         nice: xNice,
-        zero: xZero
+        zero: xZero,
+        range
       });
     },
-    [xType, xDomain, xPaddingOuter, xNice, xZero]
+    [xType, xDomain, xPaddingOuter, xNice, xZero, isRtl, chartWidth, margin.left, margin.right]
   );
 
   const yScaleConfig = useMemo(
@@ -375,122 +358,150 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
   const seriesElements = useMemo(
     function getSeriesElements() {
-      return series.map(function addSeries(series: SeriesConfig<T>) {
-        return <LineSeries<T> key={series.id} series={series} xAccessor={typedXAccessor} yAccessor={typedYAccessor} />;
+      return series.map(function addSeries(oneSeries: SeriesConfig<T>) {
+        return (
+          <VisxLineSeries
+            key={oneSeries.id}
+            className={styles.line}
+            data={oneSeries.data}
+            dataKey={oneSeries.id}
+            id={`line-series-${oneSeries.id}`}
+            xAccessor={typedXAccessor}
+            yAccessor={typedYAccessor}
+          />
+        );
       });
     },
     [series, typedXAccessor, typedYAccessor]
   );
 
   const chartStyle = {
-    ['--_chart-width' as string]: width !== undefined ? `${width}px` : undefined,
-    ['--_chart-height' as string]: height !== undefined ? `${height}px` : undefined
+    ['--chart-width' as string]: width !== undefined ? `${width}px` : undefined,
+    ['--chart-height' as string]: height !== undefined ? `${height}px` : undefined
   };
 
+  const xyChartTheme = useMemo(function buildXyChartTheme() {
+    return buildChartTheme({
+      backgroundColor: '',
+      colors: [...CHART_LEGACY_SERIES_COLORS],
+      tickLength: 8,
+      gridColor: '',
+      gridColorDark: ''
+    });
+  }, []);
+
+  // Pin Y-axis chrome to the inline-start edge (visual left in LTR, visual right in RTL) and shift
+  // it by `scrollLeft` so it stays in view as the chart scrolls horizontally.
+  const yAxisLeft = isRtl ? chartWidth - margin.right + scrollLeft : margin.left + scrollLeft;
+  const yAxisBackgroundX = isRtl ? chartWidth - margin.right + scrollLeft : scrollLeft;
+  const yAxisBackgroundWidth = isRtl ? margin.right : margin.left;
+  const dismissStripWidth = isRtl ? margin.right + Math.abs(scrollLeft) : margin.left + scrollLeft;
+
   return (
-    <ChartColorProvider>
-      <Flex
-        direction="row"
-        className={cx(styles.chart, className)}
-        style={chartStyle}
-        data-legend-position={effectiveLegendPosition ? effectiveLegendPosition : undefined}
-        data-x-labels={xLabels ? 'true' : undefined}
-        data-y-labels={yLabels ? 'true' : undefined}
-        data-x-labels-vertical={xLabelsVertical ? 'true' : undefined}
-        data-x-baseline={xBaseline ? 'true' : undefined}
-        data-y-baseline={yBaseline ? 'true' : undefined}
-        data-x-tick-marks={xTickMarks ? 'true' : undefined}
-        data-y-tick-marks={yTickMarks ? 'true' : undefined}
-      >
-        {yTitle && <AxisTitle title={yTitle} axis="y" />}
-        <Flex direction="column" flex={1} className={styles.wrapper}>
-          <Box ref={parentRef} className={styles.area}>
-            {chartWidth > 0 && chartHeight > 0 && (
-              <TooltipProvider hideTooltipDebounceMs={0}>
-                <XYChart
-                  xScale={xScaleConfig}
-                  yScale={yScaleConfig}
-                  width={chartWidth}
-                  height={chartHeight}
-                  margin={margin}
-                  accessibilityLabel={ariaLabel}
-                >
-                  {desc && <desc>{desc}</desc>}
+    <Flex
+      direction="row"
+      dir={direction}
+      className={cx(styles.chart, className)}
+      style={chartStyle}
+      data-legend-position={effectiveLegendPosition ? effectiveLegendPosition : undefined}
+      data-x-labels={xLabels ? 'true' : undefined}
+      data-y-labels={yLabels ? 'true' : undefined}
+      data-x-labels-vertical={xLabelsVertical ? 'true' : undefined}
+      data-x-baseline={xBaseline ? 'true' : undefined}
+      data-y-baseline={yBaseline ? 'true' : undefined}
+      data-x-tick-marks={xTickMarks ? 'true' : undefined}
+      data-y-tick-marks={yTickMarks ? 'true' : undefined}
+      data-x-gridlines={xGridlines ? 'true' : undefined}
+      data-y-gridlines={yGridlines ? 'true' : undefined}
+    >
+      {yTitle && <AxisTitle title={yTitle} axis="y" />}
+      <Flex direction="column" flex={1} className={styles.wrapper}>
+        <Box ref={parentRef} dir={direction} className={styles.area}>
+          {chartWidth > 0 && chartHeight > 0 && (
+            <TooltipProvider hideTooltipDebounceMs={0}>
+              <XYChart
+                theme={xyChartTheme}
+                xScale={xScaleConfig}
+                yScale={yScaleConfig}
+                width={chartWidth}
+                height={chartHeight}
+                margin={margin}
+                accessibilityLabel={ariaLabel}
+              >
+                {desc && <desc>{desc}</desc>}
 
-                  {/* Gridlines */}
-                  {yGridlines && <Grid columns={false} className={styles.rows} lineStyle={GRIDLINE_STYLE} />}
-                  {xGridlines && <Grid rows={false} className={styles.columns} lineStyle={GRIDLINE_STYLE} />}
+                {/* Gridlines */}
+                {yGridlines && <Grid columns={false} className={styles.rows} />}
+                {xGridlines && <Grid rows={false} className={styles.columns} />}
 
-                  {/* Series */}
-                  {seriesElements}
+                {/* Series */}
+                {seriesElements}
 
-                  {/* Interactive features - render if any are enabled */}
-                  {showInteractiveFeatures && (
-                    <Tooltip
-                      snapTooltipToDatumX
-                      snapTooltipToDatumY
-                      showVerticalCrosshair={showCrosshair}
-                      showSeriesGlyphs={showDataPoints}
-                      renderTooltip={renderTooltip}
-                      className={styles.tooltip}
-                    />
-                  )}
+                {/* Interactive features - render if any are enabled */}
+                {showInteractiveFeatures && (
+                  <Tooltip
+                    snapTooltipToDatumX
+                    snapTooltipToDatumY
+                    showVerticalCrosshair={showCrosshair}
+                    showSeriesGlyphs={showDataPoints}
+                    renderTooltip={renderTooltip}
+                    className={styles.tooltip}
+                    glyphStyle={{ strokeWidth: 0 }}
+                    verticalCrosshairStyle={{ stroke: 'var(--ux-by6mab)' }}
+                  />
+                )}
 
-                  {/* X-axis */}
-                  {(xBaseline || xTickMarks || xLabels) && (
+                {/* X-axis */}
+                {(xBaseline || xTickMarks || xLabels) && (
+                  <Axis
+                    axisClassName={styles.axisX}
+                    innerRef={xAxisRef}
+                    orientation="bottom"
+                    hideAxisLine={!xBaseline}
+                    axisLineClassName={styles.baseline}
+                    numTicks={xNumTicks}
+                    tickValues={xTickValues}
+                    tickFormat={xTickFormat}
+                    tickClassName={styles.tickMark}
+                    tickLabelProps={xLabelsVertical ? getXLabelVerticalProps(isRtl) : undefined}
+                  />
+                )}
+
+                {/* Y-axis */}
+                {(yBaseline || yTickMarks || yLabels) && (
+                  <>
+                    {/* yAxisRect is used to position the y-axis background */}
+                    {yAxisRect && (
+                      <rect
+                        x={yAxisBackgroundX}
+                        y={yAxisRect.y}
+                        width={yAxisBackgroundWidth}
+                        height={yAxisRect.height}
+                        className={styles.yAxisBackground}
+                      />
+                    )}
                     <Axis
-                      axisClassName={styles.axisX}
-                      innerRef={xAxisRef}
-                      orientation="bottom"
-                      hideAxisLine={!xBaseline}
+                      axisClassName={styles.axisY}
+                      innerRef={yAxisRef}
+                      orientation={isRtl ? 'right' : 'left'}
+                      left={yAxisLeft}
+                      hideAxisLine={!yBaseline}
                       axisLineClassName={styles.baseline}
-                      hideTicks={!xTickMarks}
-                      numTicks={xNumTicks}
-                      tickValues={xTickValues}
-                      tickFormat={xTickFormat}
+                      numTicks={yNumTicks}
+                      tickValues={yTickValues}
+                      tickFormat={yTickFormat}
                       tickClassName={styles.tickMark}
                     />
-                  )}
-
-                  {/* Y-axis */}
-                  {(yBaseline || yTickMarks || yLabels) && (
-                    <>
-                      {/* yAxisRect is used to position the y-axis background */}
-                      {yAxisRect && (
-                        <rect
-                          x={scrollLeft}
-                          y={yAxisRect.y}
-                          width={margin.left}
-                          height={yAxisRect.height}
-                          className={styles.yAxisBackground}
-                        />
-                      )}
-                      <Axis
-                        axisClassName={styles.axisY}
-                        innerRef={yAxisRef}
-                        orientation="left"
-                        left={margin.left + scrollLeft}
-                        hideAxisLine={!yBaseline}
-                        axisLineClassName={styles.baseline}
-                        hideTicks={!yTickMarks}
-                        numTicks={yNumTicks}
-                        tickValues={yTickValues}
-                        tickFormat={yTickFormat}
-                        tickClassName={styles.tickMark}
-                      />
-                    </>
-                  )}
-                </XYChart>
-                {showInteractiveFeatures && (
-                  <TooltipDismissStrip width={margin.left + scrollLeft} height={chartHeight} />
+                  </>
                 )}
-              </TooltipProvider>
-            )}
-          </Box>
-          {xTitle && <AxisTitle title={xTitle} axis="x" />}
-          {effectiveLegendPosition && <Legend series={series} className={styles.legend} alignSelf="center" />}
-        </Flex>
+              </XYChart>
+              {showInteractiveFeatures && <TooltipDismissStrip width={dismissStripWidth} height={chartHeight} />}
+            </TooltipProvider>
+          )}
+        </Box>
+        {xTitle && <AxisTitle title={xTitle} axis="x" />}
+        {effectiveLegendPosition && <Legend series={series} className={styles.legend} alignSelf="center" />}
       </Flex>
-    </ChartColorProvider>
+    </Flex>
   );
 }

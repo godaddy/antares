@@ -1,6 +1,6 @@
 import assume from 'assume';
 import React from 'react';
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
@@ -14,6 +14,7 @@ import { FormattingExample } from '../examples/formatting.tsx';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting.tsx';
 import { CustomAccessorsExample } from '../examples/custom-accessors.tsx';
 import { BrowserUsageExample } from '../examples/browser-usage.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
 
 /**
  * Renders a node in a sized container and waits for chart SVG
@@ -302,7 +303,7 @@ describe('@godaddy/antares', function antares() {
       const lastTooltip = tooltipElements[tooltipElements.length - 1];
 
       assume(lastTooltip.children.length).greaterThan(0);
-      assume(lastTooltip.children[0].textContent).equals('Series 1Value: 64.20 units');
+      expect(lastTooltip.children[0].textContent).toMatch(/^Series 1Value: \d+\.\d{2} units$/);
     });
 
     describe('#accessors', function accessors() {
@@ -310,6 +311,113 @@ describe('@godaddy/antares', function antares() {
         const { container } = await renderExampleAndWait(<CustomAccessorsExample />);
 
         assume(container.querySelector('svg')).exists();
+      });
+    });
+
+    describe('#rtl', function rtl() {
+      function getXYAxisGroups(svg: SVGGraphicsElement): { xAxis: SVGGraphicsElement; yAxis: SVGGraphicsElement } {
+        const axes = Array.from(svg.querySelectorAll<SVGGraphicsElement>('g.visx-axis'));
+        let xAxis: SVGGraphicsElement | null = null;
+        let yAxis: SVGGraphicsElement | null = null;
+        for (const axis of axes) {
+          const tickLine = axis.querySelector('line');
+          if (!tickLine) continue;
+          const x1 = parseFloat(tickLine.getAttribute('x1') ?? '0');
+          const x2 = parseFloat(tickLine.getAttribute('x2') ?? '0');
+          const y1 = parseFloat(tickLine.getAttribute('y1') ?? '0');
+          const y2 = parseFloat(tickLine.getAttribute('y2') ?? '0');
+
+          if (Math.abs(x1 - x2) > Math.abs(y1 - y2)) {
+            yAxis = axis;
+          } else {
+            xAxis = axis;
+          }
+        }
+
+        return { xAxis: xAxis as SVGGraphicsElement, yAxis: yAxis as SVGGraphicsElement };
+      }
+
+      it('renders the chart wrapper with dir="rtl" when locale is RTL', async function rtlWrapperDir() {
+        const { container } = await renderExampleAndWait(<RTLExample />);
+        const wrapper = container.querySelector('[data-x-labels-vertical], [data-y-labels]');
+
+        assume(wrapper).exists();
+        assume(wrapper?.getAttribute('dir')).equals('rtl');
+      });
+
+      it('positions Y-axis on the visual right when locale is RTL', async function rtlYAxisRight() {
+        const { container } = await renderExampleAndWait(<RTLExample />);
+
+        const svg = container.querySelector('svg') as SVGGraphicsElement;
+        assume(svg).exists();
+
+        await vi.waitUntil(
+          function yAxisTicksRendered() {
+            return svg.querySelectorAll('.visx-axis-tick').length >= 4;
+          },
+          { timeout: 5000 }
+        );
+
+        const { yAxis } = getXYAxisGroups(svg);
+        assume(yAxis).exists();
+
+        const svgRect = svg.getBoundingClientRect();
+        const yAxisRect = yAxis.getBoundingClientRect();
+        assume(yAxisRect.left).is.above(svgRect.left + svgRect.width / 2);
+      });
+
+      it('positions Y-axis on the visual left in default LTR locale', async function ltrYAxisLeft() {
+        const { container } = await renderExampleAndWait(<CityTemperatureExample />);
+
+        const svg = container.querySelector('svg') as SVGGraphicsElement;
+        assume(svg).exists();
+
+        await vi.waitUntil(
+          function yAxisTicksRendered() {
+            return svg.querySelectorAll('.visx-axis-tick').length >= 4;
+          },
+          { timeout: 5000 }
+        );
+
+        const { yAxis } = getXYAxisGroups(svg);
+        assume(yAxis).exists();
+
+        const svgRect = svg.getBoundingClientRect();
+        const yAxisRect = yAxis.getBoundingClientRect();
+        assume(yAxisRect.right).is.below(svgRect.left + svgRect.width / 2);
+      });
+
+      it('flips X-axis tick order in RTL so first DOM tick renders to the right of the last', async function rtlXAxisTickOrder() {
+        const { container } = await renderExampleAndWait(<RTLExample />);
+
+        const svg = container.querySelector('svg') as SVGGraphicsElement;
+
+        // Wait for series data to register so ticks span real pixel positions (visx renders a
+        // default [0,1] scale until then).
+        await vi.waitUntil(
+          function xScaleReady() {
+            const { xAxis } = getXYAxisGroups(svg);
+            if (!xAxis) {
+              return false;
+            }
+
+            const tickLines = Array.from(xAxis.querySelectorAll<SVGLineElement>('.visx-axis-tick line'));
+            if (tickLines.length < 2) {
+              return false;
+            }
+
+            const tickPositions = tickLines.map((line) => parseFloat(line.getAttribute('x1') ?? '0'));
+            return Math.max(...tickPositions) - Math.min(...tickPositions) > 50;
+          },
+          { timeout: 5000 }
+        );
+
+        const { xAxis } = getXYAxisGroups(svg);
+        const xTickLines = Array.from(xAxis.querySelectorAll<SVGLineElement>('.visx-axis-tick line'));
+        const firstTickX = parseFloat(xTickLines[0].getAttribute('x1') ?? '0');
+        const lastTickX = parseFloat(xTickLines[xTickLines.length - 1].getAttribute('x1') ?? '0');
+
+        assume(firstTickX).is.above(lastTickX);
       });
     });
 

@@ -17,6 +17,12 @@ export function BarChartExample(props: any) {
       yAccessor={(d: any) => d['New York']}
       xAxisTitle="Date"
       yAxisTitle="Temperature (°F)"
+      xBaseline={true}
+      yBaseline={true}
+      xTickMarks={true}
+      yTickMarks={true}
+      yGridlines={true}
+      xGridlines={true}
       {...props}
     />
   );

@@ -22,6 +22,8 @@ export function CustomTooltipFormattingExample(props: Partial<LineChartProps>) {
       series={series}
       xType="time"
       yZero={false}
+      xLabels={false}
+      yLabels={false}
       tooltipValueFormatter={formatTooltipValue}
       height={400}
       aria-label="Custom tooltip formatting example chart"

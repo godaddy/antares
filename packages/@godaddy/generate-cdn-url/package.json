@@ -1,6 +1,6 @@
 {
   "name": "@godaddy/generate-cdn-url",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generates CDN URLs for GoDaddy assets hosted at https://img6.wsimg.com/",
   "type": "module",
   "main": "./dist/index.cjs",

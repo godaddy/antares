@@ -1,31 +1,71 @@
-:where(.box) {
-  background: var(--bg-base);
-  color: var(--fg-base);
-}
+.box {
+  --sp-base: var(--ux-1sbfig8, 0.25rem);
+  --sp-scale: 2;
+  --sp-xs: calc(var(--sp-base) * pow(var(--sp-scale), 0));
+  --sp-sm: calc(var(--sp-base) * pow(var(--sp-scale), 1));
+  --sp-md: calc(var(--sp-base) * pow(var(--sp-scale), 2));
+  --sp-lg: calc(var(--sp-base) * pow(var(--sp-scale), 3));
+  --sp-xl: calc(var(--sp-base) * pow(var(--sp-scale), 4));
+  --sp-2xl: calc(var(--sp-base) * pow(var(--sp-scale), 5));
 
-:where(.box[data-elevation="card"]) {
-  border-width: 1px;
-  border-style: solid;
-  background: var(--bg-card);
-  border-color: var(--bd-card);
-  color: var(--fg-card);
-  filter: var(--sh-card);
-}
+  --bg-base: var(--ux-cao06b, Canvas);
+  --bg-card: color-mix(in oklch, var(--bg-base), white 8%);
+  --bg-raised: color-mix(in oklch, var(--bg-card), white 8%);
+  --bg-overlay: color-mix(in oklch, var(--bg-raised), white 8%);
+  --fg-base: color(
+    from var(--bg-base) xyz clamp(0, (0.36 / y - 1) * infinity, 1)
+      clamp(0, (0.36 / y - 1) * infinity, 1)
+      clamp(0, (0.36 / y - 1) * infinity, 1) / 1
+  );
+  --fg-card: var(--fg-base);
+  --fg-raised: var(--fg-base);
+  --fg-overlay: var(--fg-base);
+  --bd-base: transparent;
+  --bd-card: color-mix(in oklch, transparent, var(--fg-card) 15%);
+  --bd-raised: transparent;
+  --bd-overlay: transparent;
+  --sh-base: none;
+  --sh-card: none;
+  --sh-raised: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
+    drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
+  --sh-overlay: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15))
+    drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1))
+    drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
 
-:where(.box[data-elevation="raised"]) {
-  border-width: 1px;
-  border-style: solid;
-  background: var(--bg-raised);
-  border-color: var(--bd-raised);
-  color: var(--fg-raised);
-  filter: var(--sh-raised);
-}
+  &:where([data-elevation='base']) {
+    border-width: 1px;
+    border-style: solid;
+    background: var(--bg-base);
+    border-color: var(--bd-base);
+    color: var(--fg-base);
+    filter: var(--sh-base);
+  }
 
-:where(.box[data-elevation="overlay"]) {
-  border-width: 1px;
-  border-style: solid;
-  background: var(--bg-overlay);
-  border-color: var(--bd-overlay);
-  color: var(--fg-overlay);
-  filter: var(--sh-overlay);
+  &:where([data-elevation='card']) {
+    border-width: 1px;
+    border-style: solid;
+    background: var(--bg-card);
+    border-color: var(--bd-card);
+    color: var(--fg-card);
+    filter: var(--sh-card);
+  }
+
+  &:where([data-elevation='raised']) {
+    border-width: 1px;
+    border-style: solid;
+    background: var(--bg-raised);
+    border-color: var(--bd-raised);
+    color: var(--fg-raised);
+    filter: var(--sh-raised);
+  }
+
+  &:where([data-elevation='overlay']) {
+    border-width: 1px;
+    border-style: solid;
+    background: var(--bg-overlay);
+    border-color: var(--bd-overlay);
+    color: var(--fg-overlay);
+    filter: var(--sh-overlay);
+  }
 }

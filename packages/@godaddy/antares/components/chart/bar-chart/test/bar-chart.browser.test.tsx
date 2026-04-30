@@ -5,6 +5,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { describe, it } from 'vitest';
 import assume from 'assume';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
 
 async function renderAndWait(component: React.ReactElement) {
@@ -17,9 +18,10 @@ async function renderAndWait(component: React.ReactElement) {
  * Renders the BarChart component in browser environment with provided props for testing
  *
  * @param args - Partial props to pass to the BarChart component (series has default)
+ * @param options.useRtlI18n - When true, wraps the chart in {@link RTLProvider} so `useLocale()` is RTL
  * @returns Render result with container and other utilities
  */
-async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
+async function renderBarChart(args: Partial<BarChartProps<any>> = {}, options?: { useRtlI18n?: boolean }) {
   const defaultSeries: SeriesConfig[] = [
     {
       id: 'series-1',
@@ -32,7 +34,7 @@ async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
     }
   ];
 
-  const result = await renderAndWait(
+  const chart = (
     <div style={{ width: '800px', height: '400px' }}>
       <BarChart
         xAccessor={(d: any) => d.x}
@@ -42,6 +44,8 @@ async function renderBarChart(args: Partial<BarChartProps<any>> = {}) {
       />
     </div>
   );
+
+  const result = await renderAndWait(options?.useRtlI18n ? <RTLProvider>{chart}</RTLProvider> : chart);
 
   return result;
 }
@@ -203,8 +207,8 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#gridlines', function gridlinesProp() {
-      it('renders with gridlines by default', async function defaultGridlines() {
-        const { container } = await renderBarChart();
+      it('renders with gridlines when xGridlines and yGridlines are true', async function defaultGridlines() {
+        const { container } = await renderBarChart({ xGridlines: true, yGridlines: true });
 
         const svg = container.querySelector('svg');
         assume(svg).exists();
@@ -215,7 +219,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('hides x-gridlines when xGridlines is false', async function noXGridlines() {
-        const { container } = await renderBarChart({ xGridlines: false });
+        const { container } = await renderBarChart({ xGridlines: false, yGridlines: true });
 
         const svg = container.querySelector('svg');
         assume(svg).exists();
@@ -227,7 +231,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('hides y-gridlines when yGridlines is false', async function noYGridlines() {
-        const { container } = await renderBarChart({ yGridlines: false });
+        const { container } = await renderBarChart({ yGridlines: false, xGridlines: true });
 
         const svg = container.querySelector('svg');
         assume(svg).exists();
@@ -242,7 +246,8 @@ describe('@godaddy/antares', function antares() {
     describe('#customDomain', function customDomainProp() {
       it('accepts custom xDomain and renders all domain categories', async function xDomain() {
         const { container } = await renderBarChart({
-          xDomain: ['A', 'B', 'C', 'D']
+          xDomain: ['A', 'B', 'C', 'D'],
+          xLabels: true
         });
 
         const svg = container.querySelector('svg');
@@ -269,9 +274,9 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    describe('#rtl', function rtlProp() {
-      it('renders in RTL mode when rtl is true', async function rtlMode() {
-        const { container } = await renderBarChart({ rtl: true });
+    describe('#rtl', function rtlLocale() {
+      it('renders in RTL mode when wrapped in RTLProvider', async function rtlMode() {
+        const { container } = await renderBarChart({}, { useRtlI18n: true });
 
         const svg = container.querySelector('svg');
         assume(svg).exists();
@@ -428,8 +433,8 @@ describe('@godaddy/antares', function antares() {
         assume(svg).exists();
       });
 
-      it('hides y-axis when yBaseline is false', async function noYBaseline() {
-        const { container } = await renderBarChart({ yBaseline: false });
+      it('hides y-axis when yBaseline, yTickMarks, and yLabels are false', async function noYBaseline() {
+        const { container } = await renderBarChart({ yBaseline: false, yTickMarks: false, yLabels: false });
 
         const svg = container.querySelector('svg');
         assume(svg).exists();
@@ -458,23 +463,24 @@ describe('@godaddy/antares', function antares() {
       it('hides x-axis tick marks when xTickMarks is false', async function xTickMarks() {
         const { container } = await renderBarChart({ xTickMarks: false });
 
-        const svg = container.querySelector('svg');
-        assume(svg).exists();
-
-        // With hideTicks=true visx does not render tick line elements
-        const xTickLines = svg?.querySelectorAll('.visx-axis-bottom .visx-axis-tick line');
-        assume(xTickLines!.length).equals(0);
+        // Tick visibility is driven by the data-x-tick-marks attribute on the
+        // chart root; when false the attribute is absent and CSS paints the
+        // tick line with a transparent stroke.
+        const chart = container
+          .querySelector('svg')
+          ?.closest('[data-x-labels-vertical], [class*="chart"]') as HTMLElement | null;
+        assume(chart).exists();
+        assume(chart!.hasAttribute('data-x-tick-marks')).is.false();
       });
 
       it('hides y-axis tick marks when yTickMarks is false', async function yTickMarks() {
         const { container } = await renderBarChart({ yTickMarks: false });
 
-        const svg = container.querySelector('svg');
-        assume(svg).exists();
-
-        // With hideTicks=true visx does not render tick line elements
-        const yTickLines = svg?.querySelectorAll('.visx-axis-left .visx-axis-tick line');
-        assume(yTickLines!.length).equals(0);
+        const chart = container
+          .querySelector('svg')
+          ?.closest('[data-x-labels-vertical], [class*="chart"]') as HTMLElement | null;
+        assume(chart).exists();
+        assume(chart!.hasAttribute('data-y-tick-marks')).is.false();
       });
     });
 
@@ -620,7 +626,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#tabOrder', function tabOrderTests() {
       it('tabs from left to right in LTR mode', async function ltrTabOrder() {
-        const { container } = await renderBarChart({ rtl: false });
+        const { container } = await renderBarChart();
 
         const barGroups = container.querySelectorAll('g[role="group"][tabindex="0"]');
         assume(barGroups.length).equals(3);
@@ -637,7 +643,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('tabs from right to left in RTL mode', async function rtlTabOrder() {
-        const { container } = await renderBarChart({ rtl: true });
+        const { container } = await renderBarChart({}, { useRtlI18n: true });
 
         const barGroups = container.querySelectorAll('g[role="group"][tabindex="0"]');
         assume(barGroups.length).equals(3);

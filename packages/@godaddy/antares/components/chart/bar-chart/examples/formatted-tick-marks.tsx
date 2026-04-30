@@ -37,7 +37,7 @@ export function BarChartFormattedTickMarksExample() {
       ]}
       xAccessor={(d: { category: Date; value: number }) => d.category}
       yAccessor={(d: { category: Date; value: number }) => d.value}
-      height={400}
+      height={600}
       width={600}
       xAxisTitle="Date"
       yAxisTitle="Sales Amount"

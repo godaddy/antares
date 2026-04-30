@@ -80,7 +80,7 @@ const config: StorybookConfig = {
           __CDN_URL__: generateCdnUrl({
             cdn: 'https://img6.wsimg.com/ux-assets',
             version: '5.0.0',
-            packageName: '@ux/icon',
+            packageName: '@ux/icon'
           })
         })
       ],
@@ -105,7 +105,7 @@ const config: StorybookConfig = {
           },
           {
             find: /^@godaddy\/(.*)$/,
-            replacement: resolve(__dirname, '../../../packages/@godaddy/$1/index.tsx')
+            replacement: resolve(__dirname, '../../../packages/@godaddy/$1/index.ts')
           }
         ]
       }

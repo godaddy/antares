@@ -18,6 +18,8 @@ export function TitlesExample(props: Partial<LineChartProps>) {
       series={series}
       xType="time"
       yZero={false}
+      xLabels={false}
+      yLabels={false}
       xTitle="Date"
       yTitle="Value"
       height={400}

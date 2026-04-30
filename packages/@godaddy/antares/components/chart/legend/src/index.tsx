@@ -1,6 +1,6 @@
 import type { SeriesConfig } from '../../types.ts';
-import { useMemo } from 'react';
 import { cx } from 'cva';
+import { ChartColorProvider, useChartColor } from '#components/chart/use-chart-color';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import { Text } from '#components/text';
@@ -45,51 +45,56 @@ export interface LegendProps
  * />
  * ```
  */
+function LegendSwatch() {
+  const color = useChartColor();
+  return <Box rounding="full" className={styles.swatch} style={{ backgroundColor: color }} />;
+}
+
+interface LegendItemProps {
+  seriesItem: Pick<SeriesConfig, 'id' | 'name'>;
+}
+
+function LegendItem(props: LegendItemProps) {
+  const { seriesItem } = props;
+  return (
+    <Flex role="listitem" direction="row" alignItems="center" gap="sm" className={styles.item}>
+      <LegendSwatch />
+      <Text>{seriesItem.name}</Text>
+    </Flex>
+  );
+}
+
 export function Legend(props: LegendProps) {
   const { series, label, size = 'md', orientation = 'horizontal', className, ...rootFlexProps } = props;
   const isHorizontal = orientation === 'horizontal';
 
-  const items = useMemo(
-    function getLegendItems() {
-      return series.map(function renderLegendItem(seriesItem) {
-        return (
-          <Flex
-            key={seriesItem.id}
-            role="listitem"
-            direction="row"
-            alignItems="center"
-            gap="sm"
-            className={styles.item}
-          >
-            <Box rounding="full" className={styles.swatch} />
-            <Text>{seriesItem.name}</Text>
-          </Flex>
-        );
-      });
-    },
-    [series]
-  );
-
   return (
-    <Flex
-      {...rootFlexProps}
-      direction="column"
-      alignItems="flex-start"
-      display="inline-flex"
-      gap="sm"
-      className={cx(styles.root, className)}
-      data-size={size}
-    >
-      {label ? <Text className={styles.label}>{label}</Text> : null}
+    <ChartColorProvider>
       <Flex
-        role="list"
-        aria-label={label ?? 'Chart legend'}
+        {...rootFlexProps}
+        direction="column"
         alignItems="flex-start"
-        direction={isHorizontal ? 'row' : 'column'}
-        gap={isHorizontal ? 'lg' : 'sm'}
+        display="inline-flex"
+        gap="sm"
+        className={cx(styles.root, className)}
+        data-size={size}
       >
-        {items}
+        {label ? <Text className={styles.label}>{label}</Text> : null}
+        <Flex
+          role="list"
+          aria-label={label ?? 'Chart legend'}
+          alignItems="flex-start"
+          direction={isHorizontal ? 'row' : 'column'}
+          gap={isHorizontal ? 'md' : 'sm'}
+          flexShrink={0}
+          wrap="wrap"
+          justifyContent="center"
+        >
+          {series.map(function renderLegendItem(seriesItem) {
+            return <LegendItem key={seriesItem.id} seriesItem={seriesItem} />;
+          })}
+        </Flex>
       </Flex>
-    </Flex>
+    </ChartColorProvider>
   );
 }

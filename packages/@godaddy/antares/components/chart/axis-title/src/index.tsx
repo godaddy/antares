@@ -19,9 +19,6 @@ export interface AxisTitleProps {
   /** Which axis the title belongs to: 'x' or 'y'. */
   axis: 'x' | 'y';
 
-  /** Text direction; defaults to locale when omitted. */
-  dir?: 'ltr' | 'rtl';
-
   /** Additional class name */
   className?: string;
 }
@@ -38,13 +35,11 @@ export interface AxisTitleProps {
  * ```tsx
  * <AxisTitle title="Month" axis="x" />
  * <AxisTitle title="Temperature (°F)" axis="y" />
- * <AxisTitle title="Month" axis="x" dir="rtl" />
  * ```
  */
 export function AxisTitle(props: AxisTitleProps) {
-  const { title, axis, dir, className } = props;
-  const locale = useLocale();
-  const direction = dir ?? locale.direction;
+  const { title, axis, className } = props;
+  const { direction } = useLocale();
 
   return (
     <Flex
@@ -52,7 +47,7 @@ export function AxisTitle(props: AxisTitleProps) {
       aria-label={`${axis} axis title`}
       justifyContent="center"
       alignItems="center"
-      className={cx(axisTitleVariants({ axis }), className)}
+      className={cx(styles.axis, axisTitleVariants({ axis }), className)}
       dir={direction}
     >
       {title}

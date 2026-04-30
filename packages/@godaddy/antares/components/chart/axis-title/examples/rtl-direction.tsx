@@ -1,5 +1,10 @@
 import { AxisTitle } from '../src/index.tsx';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 
 export function RTLDirectionExample() {
-  return <AxisTitle title="Temperature (°F)" axis="y" dir="rtl" />;
+  return (
+    <RTLProvider>
+      <AxisTitle title="Temperature (°F)" axis="y" />
+    </RTLProvider>
+  );
 }

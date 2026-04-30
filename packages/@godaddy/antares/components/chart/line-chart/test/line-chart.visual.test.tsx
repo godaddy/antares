@@ -22,6 +22,7 @@ import { LegendExample } from '../examples/legend';
 import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
 import { NiceValuesExample } from '../examples/nice-values';
+import { RTLExample } from '../examples/rtl';
 import { SingleSeriesExample } from '../examples/single-series';
 import { TicksExample } from '../examples/ticks';
 import { TitlesExample } from '../examples/titles';
@@ -137,7 +138,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('zero-included screenshot', async function zeroIncluded() {
-        const { container } = await renderExampleAndWait(<ZeroIncludedExample />);
+        const { container } = await renderExampleAndWait(<ZeroIncludedExample />, 800, 500);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('zero-included');
@@ -231,11 +232,20 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('browser-usage screenshot', async function browserUsage() {
-        const { container, locator } = await renderExampleAndWait(<BrowserUsageExample />);
+        const { container, locator } = await renderExampleAndWait(<BrowserUsageExample />, 800, 600);
 
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 120, y: 50 } });
         await expect(container).toMatchScreenshot('browser-usage');
+      });
+    });
+
+    describe('#rtl', function rtl() {
+      it('rtl screenshot', async function rtlScreenshot() {
+        const { container } = await renderExampleAndWait(<RTLExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('rtl');
       });
     });
   });

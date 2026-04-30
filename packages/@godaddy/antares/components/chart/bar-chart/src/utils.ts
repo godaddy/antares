@@ -9,17 +9,6 @@ export interface Margin {
 }
 
 /**
- * Swaps left and right margins when the chart is in RTL mode.
- *
- * @param margin - The original margin values
- * @param rtl - Whether the chart is in right-to-left mode
- * @returns The margin with left/right swapped when rtl is true
- */
-export function getEffectiveMargin(margin: Margin, rtl: boolean): Margin {
-  return rtl ? { top: margin.top, right: margin.left, bottom: margin.bottom, left: margin.right } : margin;
-}
-
-/**
  * Extracts the ordered list of unique category values across all series.
  * In vertical orientation, categories come from xAccessor; in horizontal, from yAccessor.
  * Deduplication uses string key comparison so that Dates with the same timestamp are treated as equal.
@@ -62,7 +51,7 @@ export function getCategoryValues<T extends object>(
  *
  * @param chartWidth - Available container width in pixels
  * @param chartHeight - Available container height in pixels
- * @param effectiveMargin - Margin after applying RTL adjustments
+ * @param margin - Physical chart margin (already RTL-mapped by `useScrollableXYChart`)
  * @param numGroups - Number of category groups (sets of bars)
  * @param totalBarWidth - Combined pixel width of all bars in one group
  * @param minGapBetweenGroups - Minimum pixel gap required between groups
@@ -72,7 +61,7 @@ export function getCategoryValues<T extends object>(
 export function computeChartDimensions({
   chartWidth,
   chartHeight,
-  effectiveMargin,
+  margin,
   numGroups,
   totalBarWidth,
   minGapBetweenGroups,
@@ -80,19 +69,19 @@ export function computeChartDimensions({
 }: {
   chartWidth: number;
   chartHeight: number;
-  effectiveMargin: Margin;
+  margin: Margin;
   numGroups: number;
   totalBarWidth: number;
   minGapBetweenGroups: number;
   isVertical: boolean;
 }) {
-  const baseInnerWidth = Math.max(chartWidth - effectiveMargin.left - effectiveMargin.right, 0);
-  const baseInnerHeight = Math.max(chartHeight - effectiveMargin.top - effectiveMargin.bottom, 0);
+  const baseInnerWidth = Math.max(chartWidth - margin.left - margin.right, 0);
+  const baseInnerHeight = Math.max(chartHeight - margin.top - margin.bottom, 0);
   const minSpacePerGroup = totalBarWidth + minGapBetweenGroups;
   const innerWidth = isVertical ? Math.max(baseInnerWidth, numGroups * minSpacePerGroup) : baseInnerWidth;
   const innerHeight = !isVertical ? Math.max(baseInnerHeight, numGroups * minSpacePerGroup) : baseInnerHeight;
-  const svgWidth = innerWidth + effectiveMargin.left + effectiveMargin.right;
-  const svgHeight = innerHeight + effectiveMargin.top + effectiveMargin.bottom;
+  const svgWidth = innerWidth + margin.left + margin.right;
+  const svgHeight = innerHeight + margin.top + margin.bottom;
   return { innerWidth, innerHeight, svgWidth, svgHeight };
 }
 
@@ -160,7 +149,7 @@ interface TooltipPositionOptions {
   innerHeight: number;
   innerWidth: number;
   totalBarWidth: number;
-  effectiveMargin: Margin;
+  margin: Margin;
   svgWidth: number;
   svgRect: DOMRect;
   tooltipArrowHeight: number;
@@ -190,7 +179,7 @@ export function computeTooltipPosition({
   innerHeight,
   innerWidth,
   totalBarWidth,
-  effectiveMargin,
+  margin,
   svgWidth,
   svgRect,
   tooltipArrowHeight,
@@ -214,11 +203,11 @@ export function computeTooltipPosition({
     const groupOffset = (categoryScale.bandwidth() - totalBarWidth) / 2;
     const barGroupCenter = groupCenter + groupOffset + totalBarWidth / 2;
     const tooltipLeft = rtl
-      ? svgRect.left + window.scrollX + svgWidth - effectiveMargin.right - barGroupCenter
-      : svgRect.left + window.scrollX + effectiveMargin.left + barGroupCenter;
+      ? svgRect.left + window.scrollX + svgWidth - margin.right - barGroupCenter
+      : svgRect.left + window.scrollX + margin.left + barGroupCenter;
     return {
       tooltipLeft,
-      tooltipTop: svgRect.top + window.scrollY + effectiveMargin.top + minY - tooltipArrowHeight,
+      tooltipTop: svgRect.top + window.scrollY + margin.top + minY - tooltipArrowHeight,
       tooltipData: { x: groupCenter, y: minY, datumByKey }
     };
   }
@@ -237,8 +226,8 @@ export function computeTooltipPosition({
   const barGroupTop = yPos + groupOffset;
   const tooltipXOffset = rtl ? (extremeX + innerWidth) / 2 : extremeX / 2;
   return {
-    tooltipLeft: svgRect.left + window.scrollX + effectiveMargin.left + tooltipXOffset,
-    tooltipTop: svgRect.top + window.scrollY + effectiveMargin.top + barGroupTop - tooltipArrowHeight,
+    tooltipLeft: svgRect.left + window.scrollX + margin.left + tooltipXOffset,
+    tooltipTop: svgRect.top + window.scrollY + margin.top + barGroupTop - tooltipArrowHeight,
     tooltipData: { x: catValue, datumByKey }
   };
 }

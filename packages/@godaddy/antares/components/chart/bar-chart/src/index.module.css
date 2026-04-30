@@ -1,10 +1,82 @@
-.chart[data-x-labels-vertical="true"] .area .axisX text {
-  writing-mode: sideways-lr;
+.chart {
+  --chart-font-family: var(--ux-1067ph9);
+  --chart-font-size: 0.794rem;
+  --chart-font-color: var(--ux-145pjib);
+  --chart-gridline-stroke-width: 1;
+  --chart-gridline-color: var(--ux-97h3vl);
+  --chart-baseline-color: var(--ux-by6mab);
+  --chart-baseline-stroke-width: 2;
+  --chart-canvas-background: var(--ux-cao06b);
+  --chart-content-gap: var(--ux-a2dzk8);
+
+  gap: var(--chart-content-gap);
+  width: var(--chart-width, 100%);
+  height: var(--chart-height, 100%);
+}
+
+/* Baseline enabled */
+.chart[data-x-baseline="true"] .axisX .baseline,
+.chart[data-y-baseline="true"] .axisY .baseline {
+  stroke: var(--chart-baseline-color);
+  stroke-width: var(--chart-baseline-stroke-width);
+}
+
+/* Labels: default (hidden) */
+.chart .axisX text,
+.chart .axisY text {
+  display: none;
+}
+
+/* Labels enabled */
+.chart[data-x-labels="true"] .area .axisX text,
+.chart[data-y-labels="true"] .area .axisY text {
+  font-family: var(--chart-font-family);
+  font-size: var(--chart-font-size);
+  fill: var(--chart-font-color);
+  display: block;
+}
+
+/* First gridline overlapping axis: hide when baseline shown */
+.chart[data-x-baseline="true"] .area .columns line:first-of-type,
+.chart[data-y-baseline="true"] .area .rows line:first-of-type {
+  display: none;
+}
+
+/* Tick lines: default (hidden via transparent stroke) */
+.chart .axisX .tickMark line,
+.chart .axisY .tickMark line {
+  stroke: transparent;
+}
+
+/* Tick marks enabled */
+.chart[data-x-tick-marks="true"] .axisX .tickMark line,
+.chart[data-y-tick-marks="true"] .axisY .tickMark line {
+  stroke: var(--chart-gridline-color);
+  stroke-width: var(--chart-gridline-stroke-width);
+}
+
+/* Gridlines */
+.chart[data-x-gridlines="true"] .area .columns line,
+.chart[data-y-gridlines="true"] .area .rows line {
+  stroke: var(--chart-gridline-color);
+  stroke-width: var(--chart-gridline-stroke-width);
+}
+
+.chart[data-legend-position="top"] .legend {
+  order: -1;
+}
+
+.chart[data-legend-position="bottom"] .legend {
+  order: 1;
+}
+
+.chart:dir(rtl) .axisY text {
   text-anchor: end;
 }
 
-.chart[data-x-labels-vertical="true"] .area .axisX text:dir(rtl) {
-  writing-mode: sideways-rl;
+.wrapper {
+  gap: var(--chart-content-gap);
+  overflow: hidden;
 }
 
 .area {
@@ -28,4 +100,5 @@
 
 .axisBackground {
   pointer-events: none;
+  fill: var(--chart-canvas-background);
 }

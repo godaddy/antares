@@ -1,0 +1,65 @@
+.chartWrap {
+  --donut-label-line-height: var(--ux-hm1ty7);
+  --donut-label-font-size: 15.73cqi;
+  --donut-sub-label-font-size: 6.81cqi;
+  --donut-tooltip-item-font-size: var(--ux-vvspv2);
+  --donut-tooltip-item-line-height: var(--ux-1dje42v);
+
+  aspect-ratio: 1;
+  max-width: 100%;
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+}
+
+.chart {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  background: transparent;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.label {
+  font-size: var(--donut-label-font-size);
+  font-weight: bolder;
+  line-height: var(--donut-label-line-height);
+}
+
+.subLabel {
+  font-size: var(--donut-sub-label-font-size);
+}
+
+.tooltip {
+  --donut-tooltip-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  filter: none;
+  box-shadow: var(--donut-tooltip-shadow);
+}
+
+.item {
+  font-size: var(--donut-tooltip-item-font-size);
+  line-height: var(--donut-tooltip-item-line-height);
+}
+
+.swatch {
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  height: 1em;
+  width: 1em;
+}
+
+.anchor {
+  height: 1px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 1px;
+  visibility: hidden;
+}

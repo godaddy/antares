@@ -17,6 +17,8 @@ export function TooltipDisabledExample(props: Partial<LineChartProps>) {
     <LineChart
       series={series}
       xType="time"
+      xLabels={false}
+      yLabels={false}
       tooltip={false}
       showCrosshair={false}
       showDataPoints={false}

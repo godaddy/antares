@@ -1,5 +1,11 @@
 # @bento/box
 
+## 0.2.1
+
+### Patch Changes
+
+- feat: remove styles from @bento/icon and fix build issues in antares ([#162](https://github.com/godaddy/bento/pull/162) by @rmarkins-godaddy)
+
 ## 0.2.0
 
 ### Minor Changes
