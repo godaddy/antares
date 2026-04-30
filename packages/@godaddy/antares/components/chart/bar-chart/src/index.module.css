@@ -36,16 +36,6 @@
   display: block;
 }
 
-/* Vertical X labels */
-.chart[data-x-labels-vertical="true"] .axisX text {
-  writing-mode: sideways-lr;
-  text-anchor: end;
-}
-
-.chart[data-x-labels-vertical="true"] .axisX text:dir(rtl) {
-  writing-mode: sideways-rl;
-}
-
 /* First gridline overlapping axis: hide when baseline shown */
 .chart[data-x-baseline="true"] .area .columns line:first-of-type,
 .chart[data-y-baseline="true"] .area .rows line:first-of-type {

@@ -25,10 +25,15 @@ import type {
   SeriesConfig,
   XLabelsOrientation
 } from '../../types.ts';
-import { resolveLegendPosition, xAccessor as defaultXAccessor, yAccessor as defaultYAccessor } from '../../utils.ts';
+import {
+  resolveLegendPosition,
+  xAccessor as defaultXAccessor,
+  yAccessor as defaultYAccessor,
+  getXLabelVerticalProps
+} from '../../utils.ts';
 import { useNormalizedSeries } from '#components/chart/use-normalized-series';
 import { buildScaleConfig } from './scale-config.ts';
-import { useChartContainer } from './use-chart-container.ts';
+import { useScrollableXYChart } from '#components/chart/use-scrollable-xy-chart';
 import styles from './index.module.css';
 
 /** Scale types supported by LineChart (subset of @visx/scale ScaleType). */
@@ -290,7 +295,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     className
   } = props;
   const { parentRef, chartWidth, chartHeight, margin, scrollLeft, xAxisRef, yAxisRef, xLabelsVertical, yAxisRect } =
-    useChartContainer({ xLabelsOrientation });
+    useScrollableXYChart({ xLabelsOrientation });
   const series = useNormalizedSeries(seriesProp);
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);
@@ -442,14 +447,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
                     tickValues={xTickValues}
                     tickFormat={xTickFormat}
                     tickClassName={styles.tickMark}
-                    tickLabelProps={
-                      xLabelsVertical
-                        ? {
-                            angle: -90,
-                            textAnchor: 'end'
-                          }
-                        : undefined
-                    }
+                    tickLabelProps={xLabelsVertical ? getXLabelVerticalProps(false) : undefined}
                   />
                 )}
 
