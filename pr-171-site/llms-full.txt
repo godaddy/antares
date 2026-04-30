@@ -1248,6 +1248,75 @@ Styling Not Applying [#styling-not-applying]
 ```
 
 
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
 # NumberField
 
 
@@ -1352,75 +1421,6 @@ Best practices [#best-practices]
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-
-# MetricsLockup
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="Stories.WithTrend" />
-
-<Source language="tsx" code="WithTrendExample" />
-
-Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="Stories.Compact" />
-
-<Source language="tsx" code="CompactExample" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
 # Pagination
@@ -2683,7 +2683,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
+# Legend
 
 
 
@@ -2693,57 +2693,57 @@ All examples can be found in the Storybook interface:
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+Internal Component [#internal-component]
 
-```bash
-npm install @godaddy/antares
-```
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
 
 Props [#props]
+
+The `Legend` component accepts the following props:
 
 <PropTable />
 
 Examples [#examples]
 
-Basic [#basic]
+Single Series [#single-series]
 
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+Basic legend with a single series showing the default styling and layout.
 
-<Source language="tsx" code="SourceBasic" />
+<Source language="tsx" code="SourceSingleSeries" />
 
-<Story of="Stories.Basic" />
+<Story of="Stories.SingleSeries" />
 
-Single slice [#single-slice]
+Multiple Series [#multiple-series]
 
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
 
-<Source language="tsx" code="SourceSingleSlice" />
+<Source language="tsx" code="SourceMultiSeries" />
 
-<Story of="Stories.SingleSlice" />
+<Story of="Stories.MultipleSeries" />
 
-Legend placement [#legend-placement]
+With label [#with-label]
 
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+Legend with a visible label that is also used as the accessible label.
 
-<Source language="tsx" code="SourceLegendLayout" />
+<Source language="tsx" code="SourceWithLabel" />
 
-<Story of="Stories.LegendLayout" />
+<Story of="Stories.WithLabel" />
 
-Small slices [#small-slices]
+Vertical orientation [#vertical-orientation]
 
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
 
-<Source language="tsx" code="SourceSmallSlices" />
+<Source language="tsx" code="SourceVertical" />
 
-<Story of="Stories.SmallSlices" />
+<Story of="Stories.Vertical" />
 
-Format value [#format-value]
+Legend size chart example [#legend-size-chart-example]
 
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
 
-<Source language="tsx" code="SourceFormatValue" />
+<Source language="tsx" code="SourceLegendSizeChart" />
 
-<Story of="Stories.FormatValue" />
+<Story of="Stories.LegendSizeChart" />
 
 
 # Gauge Chart
@@ -2848,7 +2848,7 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 ```
 
 
-# Legend
+# DonutChart
 
 
 
@@ -2858,57 +2858,57 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 
 <Meta of="Stories" name="Overview" />
 
-Internal Component [#internal-component]
+Installation [#installation]
 
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+```bash
+npm install @godaddy/antares
+```
 
 Props [#props]
-
-The `Legend` component accepts the following props:
 
 <PropTable />
 
 Examples [#examples]
 
-Single Series [#single-series]
+Basic [#basic]
 
-Basic legend with a single series showing the default styling and layout.
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
-<Source language="tsx" code="SourceSingleSeries" />
+<Source language="tsx" code="SourceBasic" />
 
-<Story of="Stories.SingleSeries" />
+<Story of="Stories.Basic" />
 
-Multiple Series [#multiple-series]
+Single slice [#single-slice]
 
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Source language="tsx" code="SourceMultiSeries" />
+<Source language="tsx" code="SourceSingleSlice" />
 
-<Story of="Stories.MultipleSeries" />
+<Story of="Stories.SingleSlice" />
 
-With label [#with-label]
+Legend placement [#legend-placement]
 
-Legend with a visible label that is also used as the accessible label.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-<Source language="tsx" code="SourceWithLabel" />
+<Source language="tsx" code="SourceLegendLayout" />
 
-<Story of="Stories.WithLabel" />
+<Story of="Stories.LegendLayout" />
 
-Vertical orientation [#vertical-orientation]
+Small slices [#small-slices]
 
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
-<Source language="tsx" code="SourceVertical" />
+<Source language="tsx" code="SourceSmallSlices" />
 
-<Story of="Stories.Vertical" />
+<Story of="Stories.SmallSlices" />
 
-Legend size chart example [#legend-size-chart-example]
+Format value [#format-value]
 
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
 
-<Source language="tsx" code="SourceLegendSizeChart" />
+<Source language="tsx" code="SourceFormatValue" />
 
-<Story of="Stories.LegendSizeChart" />
+<Story of="Stories.FormatValue" />
 
 
 # LineChart
@@ -3196,6 +3196,37 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # Tooltip
 
 
@@ -3263,37 +3294,6 @@ Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
 <Story of="Stories.Arrow" />
 
 
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-
 # useChartColor
 
 
@@ -3342,6 +3342,43 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
+
+
+# useScrollableXYChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+**Inputs.** Wire `parentRef` to the scroll container and `xAxisRef` / `yAxisRef` to the axis groups. Optionally pass `xLabelsOrientation` (`'auto'` | `'horizontal'` | `'vertical'`, default `'auto'`) to force the category-label layout; `'auto'` rotates labels vertical when the visible width can't fit the horizontal-tick footprint plus the Y-axis width.
+
+**Outputs.** The hook returns `margin`, `chartWidth`, `chartHeight`, `xLabelsVertical`, `scrollLeft` / `scrollTop`, and `yAxisRect` for the chart to consume. Width and height are sized to whichever is larger — the visible slot or the room the rendered labels need — so the chart grows past the viewport and the parent scrolls when labels demand more space.
+
+**Behavior.** Measurement runs through `useParentSize`, a `MutationObserver`, and a `ResizeObserver` on the wired nodes. All axis measurements are batched in one `requestAnimationFrame` and bail out when the result hasn't changed, so a burst of observer fires costs at most one reflow and one render per frame.
+
+```tsx
+const {
+  parentRef, xAxisRef, yAxisRef,
+  margin, chartWidth, chartHeight,
+  xLabelsVertical, scrollLeft, scrollTop, yAxisRect,
+} = useScrollableXYChart();
+```
+
+Examples [#examples]
+
+Auto layout [#auto-layout]
+
+Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
+
+<Source language="tsx" code="SourceExample" />
+
+<Story of="Stories.AutoLayout" />
 
 
 # Box
