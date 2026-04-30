@@ -1,5 +1,3 @@
-import camelCase from 'camelcase';
-
 const STYLE_ID_PREFIX = 'theme-token-switcher';
 
 /**
@@ -16,7 +14,7 @@ const STYLE_ID_PREFIX = 'theme-token-switcher';
 function createMeta<N extends string>(config: { name: N; defaultEnabled?: boolean; description?: string }) {
   return {
     name: config.name,
-    globalKey: camelCase(config.name),
+    globalKey: config.name,
     styleId: `${STYLE_ID_PREFIX}-${config.name.toLowerCase()}`,
     defaultEnabled: config.defaultEnabled ?? false,
     description: config.description ?? `Toggle ${config.name} tokens`

@@ -66,7 +66,7 @@ Two edits, in this order:
 
 1. Append a `createMeta` call in `toggles-meta.ts`. Pass a single
    identifier-safe word for `name` — no spaces, no punctuation. That
-   one string drives the dropdown label, the camelCased globals key,
+   one string drives the dropdown label, the globals key,
    and the lowercased `<style>` tag id; no id is specified by hand.
 
    ```ts
