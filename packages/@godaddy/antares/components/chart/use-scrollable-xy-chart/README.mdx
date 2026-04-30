@@ -1,0 +1,35 @@
+---
+title: useScrollableXYChart
+description: A hook for scrollable visx XY charts that measures the rendered axes and returns margins, content-sized width and height, scroll offsets, and a vertical-labels flag, so the chart sizes itself to whatever it actually contains.
+---
+import { Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './use-scrollable-xy-chart.stories.tsx';
+
+import SourceExample from './examples/auto-layout.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## For use with chart components (not exported)
+
+**Inputs.** Wire `parentRef` to the scroll container and `xAxisRef` / `yAxisRef` to the axis groups. Optionally pass `xLabelsOrientation` (`'auto'` | `'horizontal'` | `'vertical'`, default `'auto'`) to force the category-label layout; `'auto'` rotates labels vertical when the visible width can't fit the horizontal-tick footprint plus the Y-axis width.
+
+**Outputs.** The hook returns `margin`, `chartWidth`, `chartHeight`, `xLabelsVertical`, `scrollLeft` / `scrollTop`, and `yAxisRect` for the chart to consume. Width and height are sized to whichever is larger — the visible slot or the room the rendered labels need — so the chart grows past the viewport and the parent scrolls when labels demand more space.
+
+**Behavior.** Measurement runs through `useParentSize`, a `MutationObserver`, and a `ResizeObserver` on the wired nodes. All axis measurements are batched in one `requestAnimationFrame` and bail out when the result hasn't changed, so a burst of observer fires costs at most one reflow and one render per frame.
+
+```tsx
+const {
+  parentRef, xAxisRef, yAxisRef,
+  margin, chartWidth, chartHeight,
+  xLabelsVertical, scrollLeft, scrollTop, yAxisRect,
+} = useScrollableXYChart();
+```
+
+## Examples
+
+### Auto layout
+
+Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
+
+<Source language="tsx" code={SourceExample} />
+<Story of={Stories.AutoLayout} inline />
