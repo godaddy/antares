@@ -22,6 +22,7 @@ import { LegendExample } from '../examples/legend';
 import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
 import { NiceValuesExample } from '../examples/nice-values';
+import { RTLExample } from '../examples/rtl';
 import { SingleSeriesExample } from '../examples/single-series';
 import { TicksExample } from '../examples/ticks';
 import { TitlesExample } from '../examples/titles';
@@ -236,6 +237,15 @@ describe('@godaddy/antares', function antares() {
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 120, y: 50 } });
         await expect(container).toMatchScreenshot('browser-usage');
+      });
+    });
+
+    describe('#rtl', function rtl() {
+      it('rtl screenshot', async function rtlScreenshot() {
+        const { container } = await renderExampleAndWait(<RTLExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('rtl');
       });
     });
   });

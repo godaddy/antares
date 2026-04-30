@@ -1,5 +1,6 @@
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 
 export interface PlaygroundExampleProps
   extends Omit<
@@ -8,6 +9,8 @@ export interface PlaygroundExampleProps
   > {
   /** Number of series to render (1 hides the legend by default). */
   numSeries?: 1 | 2 | 3;
+  /** Render in right-to-left layout by wrapping the chart in {@link RTLProvider}. */
+  rtl?: boolean;
 }
 
 const CITIES = ['New York', 'San Francisco', 'Austin'] as const;
@@ -18,6 +21,7 @@ export function PlaygroundExample({
   yTitle = 'Temperature (°F)',
   xType = 'time',
   height = 600,
+  rtl = false,
   ...rest
 }: PlaygroundExampleProps) {
   const series = CITIES.slice(0, numSeries).map(function mapCity(city) {
@@ -35,5 +39,7 @@ export function PlaygroundExample({
     };
   });
 
-  return <LineChart series={series} xTitle={xTitle} yTitle={yTitle} xType={xType} height={height} {...rest} />;
+  const chart = <LineChart series={series} xTitle={xTitle} yTitle={yTitle} xType={xType} height={height} {...rest} />;
+
+  return rtl ? <RTLProvider>{chart}</RTLProvider> : chart;
 }

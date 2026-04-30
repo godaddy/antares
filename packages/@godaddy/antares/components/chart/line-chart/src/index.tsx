@@ -17,6 +17,7 @@ import {
 } from '@visx/xychart';
 import { cx } from 'cva';
 import { useCallback, useMemo } from 'react';
+import { useLocale } from 'react-aria-components';
 import type {
   AccessorRequirement,
   DataPoint,
@@ -296,6 +297,8 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
   } = props;
   const { parentRef, chartWidth, chartHeight, margin, scrollLeft, xAxisRef, yAxisRef, xLabelsVertical, yAxisRect } =
     useScrollableXYChart({ xLabelsOrientation });
+  const { direction } = useLocale();
+  const isRtl = direction === 'rtl';
   const series = useNormalizedSeries(seriesProp);
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);
@@ -324,15 +327,20 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
   const xScaleConfig = useMemo(
     function getXScaleConfig() {
+      // Reverse the X-axis pixel range in RTL so the largest domain value renders on the visual left
+      // and the smallest on the visual right (XYChart computes a non-reversed range from margins).
+      const range: [number, number] | undefined =
+        isRtl && chartWidth > 0 ? [chartWidth - margin.right, margin.left] : undefined;
       return buildScaleConfig({
         type: xType,
         domain: xDomain,
         paddingOuter: xPaddingOuter,
         nice: xNice,
-        zero: xZero
+        zero: xZero,
+        range
       });
     },
-    [xType, xDomain, xPaddingOuter, xNice, xZero]
+    [xType, xDomain, xPaddingOuter, xNice, xZero, isRtl, chartWidth, margin.left, margin.right]
   );
 
   const yScaleConfig = useMemo(
@@ -382,9 +390,17 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     });
   }, []);
 
+  // Pin Y-axis chrome to the inline-start edge (visual left in LTR, visual right in RTL) and shift
+  // it by `scrollLeft` so it stays in view as the chart scrolls horizontally.
+  const yAxisLeft = isRtl ? chartWidth - margin.right + scrollLeft : margin.left + scrollLeft;
+  const yAxisBackgroundX = isRtl ? chartWidth - margin.right + scrollLeft : scrollLeft;
+  const yAxisBackgroundWidth = isRtl ? margin.right : margin.left;
+  const dismissStripWidth = isRtl ? margin.right + Math.abs(scrollLeft) : margin.left + scrollLeft;
+
   return (
     <Flex
       direction="row"
+      dir={direction}
       className={cx(styles.chart, className)}
       style={chartStyle}
       data-legend-position={effectiveLegendPosition ? effectiveLegendPosition : undefined}
@@ -400,7 +416,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     >
       {yTitle && <AxisTitle title={yTitle} axis="y" />}
       <Flex direction="column" flex={1} className={styles.wrapper}>
-        <Box ref={parentRef} className={styles.area}>
+        <Box ref={parentRef} dir={direction} className={styles.area}>
           {chartWidth > 0 && chartHeight > 0 && (
             <TooltipProvider hideTooltipDebounceMs={0}>
               <XYChart
@@ -447,7 +463,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
                     tickValues={xTickValues}
                     tickFormat={xTickFormat}
                     tickClassName={styles.tickMark}
-                    tickLabelProps={xLabelsVertical ? getXLabelVerticalProps(false) : undefined}
+                    tickLabelProps={xLabelsVertical ? getXLabelVerticalProps(isRtl) : undefined}
                   />
                 )}
 
@@ -457,9 +473,9 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
                     {/* yAxisRect is used to position the y-axis background */}
                     {yAxisRect && (
                       <rect
-                        x={scrollLeft}
+                        x={yAxisBackgroundX}
                         y={yAxisRect.y}
-                        width={margin.left}
+                        width={yAxisBackgroundWidth}
                         height={yAxisRect.height}
                         className={styles.yAxisBackground}
                       />
@@ -467,8 +483,8 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
                     <Axis
                       axisClassName={styles.axisY}
                       innerRef={yAxisRef}
-                      orientation="left"
-                      left={margin.left + scrollLeft}
+                      orientation={isRtl ? 'right' : 'left'}
+                      left={yAxisLeft}
                       hideAxisLine={!yBaseline}
                       axisLineClassName={styles.baseline}
                       numTicks={yNumTicks}
@@ -479,7 +495,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
                   </>
                 )}
               </XYChart>
-              {showInteractiveFeatures && <TooltipDismissStrip width={margin.left + scrollLeft} height={chartHeight} />}
+              {showInteractiveFeatures && <TooltipDismissStrip width={dismissStripWidth} height={chartHeight} />}
             </TooltipProvider>
           )}
         </Box>
