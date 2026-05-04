@@ -12,12 +12,12 @@ const nextgen = makeSheet(nextgenCss);
  *
  * `Both` puts Nextgen last to mirror production layering.
  */
-export const RECIPES: Record<string, readonly CSSStyleSheet[]> = {
+export const RECIPES = {
   Legacy: [legacy],
   Nextgen: [nextgen],
   Both: [legacy, nextgen],
   None: []
-};
+} as const satisfies Record<string, readonly CSSStyleSheet[]>;
 
 /** Constructs a `CSSStyleSheet` synchronously from a raw CSS string. */
 function makeSheet(css: string): CSSStyleSheet {
