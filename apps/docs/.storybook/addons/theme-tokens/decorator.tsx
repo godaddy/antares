@@ -39,9 +39,14 @@ export function withThemeTokens<T extends Record<string, readonly CSSStyleSheet[
     const themeName = themeNames.includes(candidate) ? candidate : config.defaultTheme;
 
     useLayoutEffect(function applyThemeSheets() {
-      const others = document.adoptedStyleSheets.filter((sheet) => !owned.has(sheet));
+      const previousSheets = document.adoptedStyleSheets;
+      const others = previousSheets.filter((sheet) => !owned.has(sheet));
       document.adoptedStyleSheets = [...others, ...config.themes[themeName]];
-    });
+
+      return function restoreThemeSheets() {
+        document.adoptedStyleSheets = previousSheets;
+      };
+    }, [themeName]);
 
     return <Story />;
   };
