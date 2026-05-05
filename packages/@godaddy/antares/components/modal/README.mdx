@@ -1,79 +1,97 @@
 ---
 title: Modal
-description: The Modal component provides a contextual dialog window that appears after explicit action and temporarily interrupts the user to demand input or present additional information.
+description: The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 ---
 
-## Features
+import {
+  Meta,
+  ArgTypes,
+  Controls,
+  Source,
+  Story,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './modal.stories.tsx';
 
-- Three sizes: default (788px), large (1064px), and fullscreen
-- Dismissable via close button, overlay click, or Escape key
-- Optional media slot with inset or full-bleed display
-- Horizontal layout with configurable media position (start/end)
-- Fixed footer actions for scrollable content
-- Accessible dialog with focus trapping and ARIA attributes
-- Responsive: collapses to fullscreen on mobile
-- Entry/exit animations
+import SourceDefault from './examples/default.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceWithActions from './examples/with-actions.tsx?raw';
+import SourceAlignment from './examples/alignment.tsx?raw';
+import SourceWithMedia from './examples/with-media.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
 
 ## Installation
 
 ```bash
-npm install @godaddy/antares
+npm install --save @godaddy/antares
 ```
+
+## Props
+
+The `Modal` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
 
 ## Examples
 
-### Basic modal
+### Basic usage
 
-import DefaultCode from './examples/default?raw';
+The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
 
-<CodeBlock code={DefaultCode} />
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
 
-### Modal with actions
+### Controlled
 
-import WithActionsCode from './examples/with-actions?raw';
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
 
-<CodeBlock code={WithActionsCode} />
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
 
-### Modal with media
+### With actions
 
-import WithMediaCode from './examples/with-media?raw';
+Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
 
-<CodeBlock code={WithMediaCode} />
+<Story of={Stories.WithActions} inline />
+<Source language="tsx" code={SourceWithActions} />
 
-### Horizontal media layout
+### Alignment
 
-import HorizontalMediaCode from './examples/horizontal-media?raw';
+Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
 
-<CodeBlock code={HorizontalMediaCode} />
+<Story of={Stories.Alignment} inline />
+<Source language="tsx" code={SourceAlignment} />
 
-### Fullscreen
+### With media
 
-import FullscreenCode from './examples/fullscreen?raw';
+Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
 
-<CodeBlock code={FullscreenCode} />
+<Story of={Stories.WithMedia} inline />
+<Source language="tsx" code={SourceWithMedia} />
 
 ## Accessibility
 
 ### Keyboard interaction
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Moves focus to the next focusable element inside the modal |
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
 | `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape` | Closes the modal (when dismissable) |
+| `Escape`      | Closes the modal (when dismissable)                            |
 
 ### ARIA
 
-- `role="dialog"` is applied by default
-- Use `role="alertdialog"` for confirmation dialogs that require user acknowledgment
-- `ModalHeading` is linked via `aria-labelledby` automatically
-- Focus is trapped within the modal while open
-- Focus returns to the trigger element when the modal closes
+- `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+- The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+- The close button is rendered with `aria-label="Close"`
+- Focus is trapped within the modal while open and returned to the trigger on close
 
 ## Best Practices
 
-- Always include a `ModalHeading` for accessible labeling
-- Use `isDismissable` for informational dialogs; omit for required actions
-- Prefer `role="alertdialog"` when the user must acknowledge the content
-- Use `fixedActions` on `ModalFooter` when modal content may scroll
-- In horizontal layouts, ensure media has meaningful alt text or is decorative (`alt=""`)
+- Always provide a `title` so the dialog has an accessible name
+- Pair every footer action with `slot="close"` when it should dismiss the modal
+- Set `isDismissable={false}` for required confirmations the user must explicitly answer
+- Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+- Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment

@@ -1,21 +1,21 @@
-import { ModalTrigger, Modal, ModalHeading, ModalFooter, Button } from '@godaddy/antares';
+import { ModalTrigger, Modal, Button } from '@godaddy/antares';
 
 export function WithActionsExample() {
   return (
     <ModalTrigger>
-      <Button variant="primary">Confirm action</Button>
-      <Modal isDismissable>
-        {({ close }) => (
-          <>
-            <ModalHeading>Confirm changes</ModalHeading>
-            <p>Are you sure you want to save these changes? This action cannot be undone.</p>
-            <ModalFooter>
-              <Button variant="secondary" onPress={close}>Cancel</Button>
-              <Button variant="primary" onPress={close}>Save changes</Button>
-            </ModalFooter>
-          </>
-        )}
-      </Modal>
+      <Button variant="primary">Open modal</Button>
+      <Modal
+        title="Modal title"
+        description="She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther."
+        actions={[
+          <Button key="cancel" slot="close" variant="secondary">
+            Cancel
+          </Button>,
+          <Button key="confirm" slot="close" variant="primary">
+            Confirm
+          </Button>
+        ]}
+      />
     </ModalTrigger>
   );
 }

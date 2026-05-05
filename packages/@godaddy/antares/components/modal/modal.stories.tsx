@@ -2,10 +2,10 @@
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
 import { Modal } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
+import { ControlledExample } from './examples/controlled.tsx';
 import { WithActionsExample } from './examples/with-actions.tsx';
+import { AlignmentExample } from './examples/alignment.tsx';
 import { WithMediaExample } from './examples/with-media.tsx';
-import { HorizontalMediaExample } from './examples/horizontal-media.tsx';
-import { FullscreenExample } from './examples/fullscreen.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/modal-playground.tsx';
 
 export default getMeta({
@@ -16,35 +16,35 @@ export const Props = getComponentDocs(Modal);
 
 export const Default = getStory(DefaultExample);
 
+export const Controlled = getStory(ControlledExample);
+
 export const WithActions = getStory(WithActionsExample);
 
+export const Alignment = getStory(AlignmentExample);
+
 export const WithMedia = getStory(WithMediaExample);
-
-export const HorizontalMedia = getStory(HorizontalMediaExample);
-
-export const Fullscreen = getStory(FullscreenExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
-    size: 'default',
     isDismissable: true,
+    centered: false,
     showMedia: false,
-    mediaVariant: 'inset',
-    alignment: 'default',
+    mediaVariant: 'full',
+    mediaDirection: 'column',
     mediaPosition: 'start',
-    textAlign: 'start',
-    fixedActions: false
+    showActions: true,
+    actionsJustifyContent: 'end',
+    actionsDirection: 'row'
   },
   argTypes: {
-    size: {
-      control: 'radio',
-      options: ['default', 'large', 'fullscreen'],
-      description: 'Size of the modal'
-    },
     isDismissable: {
       control: 'boolean',
-      description: 'Whether the modal can be dismissed'
+      description: 'Whether the modal can be dismissed via overlay click or Escape key'
+    },
+    centered: {
+      control: 'boolean',
+      description: 'Whether the title and description are centered'
     },
     showMedia: {
       control: 'boolean',
@@ -52,27 +52,32 @@ export const Playground = {
     },
     mediaVariant: {
       control: 'radio',
-      options: ['inset', 'full-bleed'],
-      description: 'How the media is displayed'
+      options: ['full', 'inset'],
+      description: 'How the media is displayed within the modal'
     },
-    alignment: {
+    mediaDirection: {
       control: 'radio',
-      options: ['default', 'horizontal'],
-      description: 'Layout direction when media is present'
+      options: ['column', 'row'],
+      description: 'Layout direction of the media relative to the content'
     },
     mediaPosition: {
       control: 'radio',
       options: ['start', 'end'],
-      description: 'Which side the media appears on in horizontal layout'
+      description: 'Which side the media appears on'
     },
-    textAlign: {
-      control: 'radio',
-      options: ['start', 'center'],
-      description: 'Text alignment within the content area'
-    },
-    fixedActions: {
+    showActions: {
       control: 'boolean',
-      description: 'Whether footer actions are sticky at the bottom'
+      description: 'Show footer action buttons'
+    },
+    actionsJustifyContent: {
+      control: 'radio',
+      options: ['start', 'center', 'end'],
+      description: 'Horizontal alignment of footer action buttons'
+    },
+    actionsDirection: {
+      control: 'radio',
+      options: ['row', 'column'],
+      description: 'Layout direction of footer action buttons'
     }
   }
 };

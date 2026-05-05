@@ -1,10 +1,10 @@
 import { expect, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { AlignmentExample } from '../examples/alignment.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
 import { WithMediaExample } from '../examples/with-media.tsx';
-import { HorizontalMediaExample } from '../examples/horizontal-media.tsx';
-import { FullscreenExample } from '../examples/fullscreen.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Modal', function modalTests() {
@@ -13,23 +13,23 @@ describe('@godaddy/antares', function packageTests() {
       expect(html).toMatchSnapshot();
     });
 
+    it('renders ControlledExample', function controlledExample() {
+      const html = renderToString(<ControlledExample />);
+      expect(html).toMatchSnapshot();
+    });
+
     it('renders WithActionsExample', function withActionsExample() {
       const html = renderToString(<WithActionsExample />);
       expect(html).toMatchSnapshot();
     });
 
+    it('renders AlignmentExample', function alignmentExample() {
+      const html = renderToString(<AlignmentExample />);
+      expect(html).toMatchSnapshot();
+    });
+
     it('renders WithMediaExample', function withMediaExample() {
       const html = renderToString(<WithMediaExample />);
-      expect(html).toMatchSnapshot();
-    });
-
-    it('renders HorizontalMediaExample', function horizontalMediaExample() {
-      const html = renderToString(<HorizontalMediaExample />);
-      expect(html).toMatchSnapshot();
-    });
-
-    it('renders FullscreenExample', function fullscreenExample() {
-      const html = renderToString(<FullscreenExample />);
       expect(html).toMatchSnapshot();
     });
   });

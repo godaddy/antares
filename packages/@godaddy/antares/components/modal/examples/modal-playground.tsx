@@ -1,49 +1,65 @@
-import { ModalTrigger, Modal, ModalHeading, ModalFooter, Button } from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';
 import type { ModalProps } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
-  size?: ModalProps['size'];
   isDismissable?: boolean;
-  mediaVariant?: ModalProps['mediaVariant'];
-  alignment?: ModalProps['alignment'];
-  mediaPosition?: ModalProps['mediaPosition'];
-  textAlign?: ModalProps['textAlign'];
+  centered?: boolean;
   showMedia?: boolean;
-  fixedActions?: boolean;
+  mediaVariant?: ModalProps['mediaVariant'];
+  mediaDirection?: ModalProps['mediaDirection'];
+  mediaPosition?: ModalProps['mediaPosition'];
+  showActions?: boolean;
+  actionsJustifyContent?: 'start' | 'center' | 'end';
+  actionsDirection?: 'row' | 'column';
 }
 
 export function PlaygroundExample({
-  size,
   isDismissable = true,
+  centered = false,
+  showMedia = false,
   mediaVariant,
-  alignment,
+  mediaDirection,
   mediaPosition,
-  textAlign,
-  showMedia,
-  fixedActions
+  showActions = false,
+  actionsJustifyContent,
+  actionsDirection
 }: PlaygroundExampleProps) {
   return (
     <ModalTrigger>
       <Button variant="primary">Open modal</Button>
       <Modal
-        size={size}
+        title="Modal title"
+        description="She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther."
         isDismissable={isDismissable}
-        media={showMedia ? <img src="https://picsum.photos/800/400" alt="Placeholder" /> : undefined}
-        mediaVariant={showMedia ? mediaVariant : undefined}
-        alignment={showMedia ? alignment : undefined}
-        mediaPosition={showMedia ? mediaPosition : undefined}
-        textAlign={textAlign}
+        centered={centered}
+        media={
+          showMedia ? (
+            <Flex style={{ width: '100%', height: '100%', minWidth: 350, minHeight: 200, backgroundColor: 'teal' }} />
+          ) : undefined
+        }
+        mediaVariant={mediaVariant}
+        mediaDirection={mediaDirection}
+        mediaPosition={mediaPosition}
+        actionProps={{
+          justifyContent: actionsJustifyContent,
+          direction: actionsDirection
+        }}
+        actions={
+          showActions
+            ? [
+                <Button key="cancel" slot="close" variant="secondary">
+                  Cancel
+                </Button>,
+                <Button key="confirm" slot="close" variant="primary">
+                  Confirm
+                </Button>
+              ]
+            : undefined
+        }
       >
-        {({ close }) => (
-          <>
-            <ModalHeading>Modal title</ModalHeading>
-            <p>This is the modal content. Adjust the controls to explore different configurations.</p>
-            <ModalFooter fixedActions={fixedActions}>
-              <Button variant="secondary" onPress={close}>Cancel</Button>
-              <Button variant="primary" onPress={close}>Confirm</Button>
-            </ModalFooter>
-          </>
-        )}
+        <Flex padding="md" elevation="card" justifyContent="center">
+          This is the children content
+        </Flex>
       </Modal>
     </ModalTrigger>
   );
