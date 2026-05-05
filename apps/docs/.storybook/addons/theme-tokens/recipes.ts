@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import legacyCss from '../../legacy-tokens.css?inline';
-import nextgenCss from '../../../../../packages/@godaddy/antares/variables.css?inline';
+import nextgenCss from '../../variables.css?inline';
 
 const legacy = makeSheet(legacyCss);
 const nextgen = makeSheet(nextgenCss);
