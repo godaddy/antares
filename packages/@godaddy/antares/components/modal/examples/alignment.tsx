@@ -16,8 +16,8 @@ export function AlignmentExample() {
           description="She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther."
           centered={alignment === 'center'}
           actionProps={{
-            [actionsAlignment ? 'justifyContent' : '']: actionsAlignment,
-            [actionsDirection ? 'direction' : '']: actionsDirection
+            ...(actionsAlignment ? { justifyContent: actionsAlignment } : {}),
+            ...(actionsDirection ? { direction: actionsDirection as 'row' | 'column' } : {})
           }}
           actions={[
             <Button key="cancel" slot="close" variant="secondary">
@@ -52,7 +52,7 @@ export function AlignmentExample() {
         value={actionsDirection}
         onChange={setActionsDirection}
       >
-        <Radio value="">Row (Default)</Radio>
+        <Radio value="row">Row (Default)</Radio>
         <Radio value="column">Column</Radio>
       </RadioGroup>
     </Flex>

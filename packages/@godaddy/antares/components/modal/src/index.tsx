@@ -15,17 +15,6 @@ import { Button, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
 import styles from './index.module.css';
 
-export interface ModalTriggerProps extends RACDialogTriggerProps {}
-
-/**
- * Modal trigger component. Manages open/close state for its child Modal.
- *
- * @param props - {@link ModalTriggerProps}
- */
-export function ModalTrigger(props: ModalTriggerProps) {
-  return <RACDialogTrigger {...props} />;
-}
-
 export interface ModalProps extends RACDialogProps {
   /** Title of the modal. */
   title?: ReactNode;
@@ -37,7 +26,7 @@ export interface ModalProps extends RACDialogProps {
   overlayProps?: RACModalOverlayProps;
 
   /** Additional props to pass to the modal container. */
-  containerProps?: FlexProps;
+  containerProps?: Omit<FlexProps, 'as'>;
 
   /** Additional class name for the modal. */
   className?: string;
@@ -112,9 +101,9 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
   return (
     <Flex
       as={RACModalOverlay}
+      {...overlayProps}
       isDismissable={isDismissable}
       padding="md"
-      {...overlayProps}
       className={cx(styles.overlay, overlayProps?.className)}
     >
       <Flex as={RACModal} {...containerProps} className={cx(styles.modalContainer, containerProps?.className)}>
@@ -136,7 +125,6 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
               inlinePaddingEnd={mediaDirection === 'row' && mediaPosition === 'start' ? '0' : undefined}
               blockPaddingStart={mediaDirection === 'column' && mediaPosition === 'end' ? '0' : undefined}
               inlinePaddingStart={mediaDirection === 'row' && mediaPosition === 'end' ? '0' : undefined}
-              className={cx(styles.mediaContainer, mediaProps?.className)}
             >
               <Flex className={styles.media} flexGrow={1} rounding={mediaVariant === 'inset' ? 'md' : undefined}>
                 {media}
@@ -176,3 +164,14 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
     </Flex>
   );
 });
+
+export interface ModalTriggerProps extends RACDialogTriggerProps {}
+
+/**
+ * Modal trigger component. Manages open/close state for its child Modal.
+ *
+ * @param props - {@link ModalTriggerProps}
+ */
+export const ModalTrigger = function ModalTrigger(props: ModalTriggerProps) {
+  return <RACDialogTrigger {...props} />;
+};
