@@ -1,5 +1,4 @@
-import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';
-import type { ModalProps } from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, Flex, type ModalProps } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   isDismissable?: boolean;
