@@ -65,3 +65,13 @@ export function chartSegmentGapPadAngle(outerRadiusPx: number): number {
   const r = Math.max(outerRadiusPx, 1);
   return CHART_ARC_GAP_PX / r;
 }
+
+/**
+ * Returns `tickLabelProps` for vertical X-axis labels, rotated 90° counterclockwise in LTR and
+ * clockwise in RTL so the rotation mirrors the layout direction.
+ *
+ * @param rtl - Whether the chart is in right-to-left mode
+ */
+export function getXLabelVerticalProps(rtl: boolean) {
+  return { angle: rtl ? 90 : -90, textAnchor: 'end', dominantBaseline: 'central' } as const;
+}

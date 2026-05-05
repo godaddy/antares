@@ -8,23 +8,25 @@ interface ScaleConfigInput {
   paddingOuter?: number;
   nice?: boolean | number;
   zero?: boolean;
+  range?: [number, number];
 }
 
 /**
  * Builds a visx ScaleConfig from LineChart axis props.
  * Omits optional fields when undefined so the scale uses its defaults.
  *
- * @param input - Axis scale options (type required; domain, paddingOuter, nice, zero optional)
+ * @param input - Axis scale options (type required; domain, paddingOuter, nice, zero, range optional)
  * @returns ScaleConfig suitable for XYChart xScale/yScale
  */
 export function buildScaleConfig(input: ScaleConfigInput): ScaleConfig<AxisScaleOutput> {
-  const { type, domain, paddingOuter, nice, zero } = input;
+  const { type, domain, paddingOuter, nice, zero, range } = input;
 
   return {
     type,
     ...(domain && { domain }),
     ...(paddingOuter !== undefined && { paddingOuter }),
     ...(nice !== undefined && { nice }),
-    ...(zero !== undefined && { zero })
+    ...(zero !== undefined && { zero }),
+    ...(range && { range })
   } as ScaleConfig<AxisScaleOutput>;
 }

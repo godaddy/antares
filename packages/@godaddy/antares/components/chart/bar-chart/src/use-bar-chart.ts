@@ -3,7 +3,6 @@ import { scaleBand, scaleLinear } from '@visx/scale';
 import { useTooltip } from '@visx/tooltip';
 import type { Accessors, SeriesConfig } from '../../types.ts';
 import {
-  getEffectiveMargin,
   getCategoryValues,
   computeChartDimensions,
   computeBarGroupSpacing,
@@ -53,13 +52,6 @@ export function useBarChart<T extends object>({
   const numSeries = series?.length || 0;
   const totalBarWidth = numSeries * BAR_WIDTH + (numSeries - 1) * BAR_PADDING;
 
-  const effectiveMargin = useMemo(
-    function getMargin() {
-      return getEffectiveMargin(margin, rtl);
-    },
-    [margin, rtl]
-  );
-
   const categoryValues = useMemo(
     function getCategories() {
       return getCategoryValues(series, isVertical, xAccessor, yAccessor as any);
@@ -75,14 +67,14 @@ export function useBarChart<T extends object>({
       return computeChartDimensions({
         chartWidth,
         chartHeight,
-        effectiveMargin,
+        margin,
         numGroups,
         totalBarWidth,
         minGapBetweenGroups: MIN_GAP_BETWEEN_GROUPS,
         isVertical
       });
     },
-    [chartWidth, chartHeight, effectiveMargin, numGroups, totalBarWidth, isVertical]
+    [chartWidth, chartHeight, margin, numGroups, totalBarWidth, isVertical]
   );
 
   const { innerWidth, innerHeight } = dimensions;
@@ -176,7 +168,7 @@ export function useBarChart<T extends object>({
         innerHeight,
         innerWidth: dimensions.innerWidth,
         totalBarWidth,
-        effectiveMargin,
+        margin,
         svgWidth: dimensions.svgWidth,
         svgRect,
         tooltipArrowHeight: TOOLTIP_ARROW_HEIGHT,
@@ -198,7 +190,7 @@ export function useBarChart<T extends object>({
       isVertical,
       totalBarWidth,
       valueScale,
-      effectiveMargin,
+      margin,
       rtl,
       dimensions
     ]
@@ -216,7 +208,7 @@ export function useBarChart<T extends object>({
     isVertical,
     barWidth: BAR_WIDTH,
     barPadding: BAR_PADDING,
-    effectiveMargin,
+    margin,
     categoryValues,
     categoryDomain,
     numSeries,

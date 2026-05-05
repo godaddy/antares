@@ -13,6 +13,7 @@ import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
 import { CustomAccessorsExample } from '../examples/custom-accessors';
 import { CrosshairOnlyExample } from '../examples/crosshair-only';
+import { RTLExample } from '../examples/rtl';
 import { SingleSeriesExample } from '../examples/single-series';
 import { ZeroIncludedExample } from '../examples/zero-included';
 import { BitcoinPriceExample } from '../examples/bitcoin-price';
@@ -49,6 +50,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['missing-values', MissingValuesExample],
   ['multiple-series', MultipleSeriesExample],
   ['nice-values', NiceValuesExample],
+  ['rtl', RTLExample],
   ['single-series', SingleSeriesExample],
   ['ticks', TicksExample],
   ['titles', TitlesExample],
