@@ -69,7 +69,8 @@ export const Playground = {
     width: undefined,
     'aria-label': 'Playground bar chart',
     desc: '',
-    className: ''
+    className: '',
+    rtl: false
   },
   argTypes: {
     orientation: {
@@ -77,6 +78,7 @@ export const Playground = {
       options: ['vertical', 'horizontal'],
       description: 'Orientation of the bars'
     },
+    rtl: { control: 'boolean', description: 'Render in right-to-left layout' },
     numSeries: {
       control: 'radio',
       options: [1, 2, 3],

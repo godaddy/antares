@@ -1,10 +1,13 @@
 import { BarChart, type BarChartProps } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
+import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';
 
 export interface PlaygroundExampleProps
   extends Omit<BarChartProps, 'series' | 'xAccessor' | 'yAccessor' | 'xTickFormat' | 'yTickFormat'> {
   /** Number of series to render (1 hides the legend by default). */
   numSeries?: 1 | 2 | 3;
+  /** Render in right-to-left layout by wrapping the chart in {@link RTLProvider}. */
+  rtl?: boolean;
 }
 
 const CITIES = ['New York', 'San Francisco', 'Austin'] as const;
@@ -15,6 +18,7 @@ export function PlaygroundExample({
   xAxisTitle = 'Date',
   yAxisTitle = 'Temperature (°F)',
   height = 500,
+  rtl = false,
   ...rest
 }: PlaygroundExampleProps) {
   const rows = cityTemperature.slice(0, 10);
@@ -29,7 +33,7 @@ export function PlaygroundExample({
     };
   });
 
-  return (
+  const chart = (
     <BarChart
       series={series}
       orientation={orientation}
@@ -40,4 +44,6 @@ export function PlaygroundExample({
       {...rest}
     />
   );
+
+  return rtl ? <RTLProvider>{chart}</RTLProvider> : chart;
 }
