@@ -58,7 +58,11 @@ export const visual: TestProjectConfiguration = {
   test: {
     ...browser.test,
     name: 'Visual',
-    include: ['./**/**/*.visual.test.{ts,tsx}']
+    include: ['./**/**/*.visual.test.{ts,tsx}'],
+    browser: {
+      ...browser.test?.browser,
+      instances: [{ browser: 'chromium', name: 'Visual (Chromium)' }]
+    }
   }
 };
 
