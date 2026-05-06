@@ -1,8 +1,8 @@
 # Documentation
 
 - [Antares](/docs): A collection of accessible, composable React components built on React Aria.
-- [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
+- [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 - [FieldFrame](/docs/components/field-frame): Field frame component with integrated Label, description Text, and FieldError for form fields
 - [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
@@ -12,8 +12,8 @@
 - [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
-- [Select](/docs/components/select): Accessible dropdown component supporting single and multiple selection with keyboard navigation and validation
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
+- [Select](/docs/components/select): Accessible dropdown component supporting single and multiple selection with keyboard navigation and validation
 - [Text](/docs/components/text): Text component for displaying and formatting text content with alignment and truncation options
 - [TextField](/docs/components/text-field): TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
 - [Tooltip](/docs/components/tooltip): The Tooltip component displays a description of an element on hover or focus.
