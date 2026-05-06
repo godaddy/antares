@@ -125,6 +125,10 @@ npm run build
 npm run test
 ```
 
+### Vitest in VS Code or Cursor
+
+Run and debug component tests right from your editor with the [Vitest extension](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) (`vitest.explorer`). The workspace [`.vscode/settings.json`](./.vscode/settings.json) already points the extension at `@godaddy/antares` and keeps it focused on the `SSR` and `Browser` projects, so your test runs stay quick — just install the recommended extension and reload the window.
+
 ### Conventional Commits
 
 The repo is configured only to accept conventional commits as commit syntax.
