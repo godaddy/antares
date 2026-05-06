@@ -4,7 +4,7 @@ import { BasicExample } from './examples/basic.tsx';
 import { TooltipDismissStrip } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Chart/TooltipDismissStrip'
+  title: 'components/chart/TooltipDismissStrip'
 });
 
 export const Props = getComponentDocs(TooltipDismissStrip);

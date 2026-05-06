@@ -12,7 +12,7 @@ import { OverflowExample } from './examples/overflow.tsx';
 import { RTLExample } from './examples/rtl.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/SegmentedController'
+  title: 'components/SegmentedController'
 });
 
 export const Props = getComponentDocs(SegmentedController);

@@ -11,7 +11,7 @@ import { FormExample } from './examples/form.tsx';
 import { Grid } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Layout/Grid'
+  title: 'components/layout/Grid'
 });
 
 export const Props = getComponentDocs(Grid);

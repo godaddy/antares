@@ -8,7 +8,7 @@ import { PlaygroundExample } from './examples/menu-playground.tsx';
 import { Menu } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Menu'
+  title: 'components/Menu'
 });
 
 export const Props = getComponentDocs(Menu);

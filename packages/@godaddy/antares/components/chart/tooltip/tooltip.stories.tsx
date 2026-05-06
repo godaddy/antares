@@ -6,7 +6,7 @@ import { SingleSeriesExample } from './examples/single-series.tsx';
 import { Tooltip } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Chart/Tooltip'
+  title: 'components/chart/Tooltip'
 });
 
 export const Props: object = getComponentDocs(Tooltip);

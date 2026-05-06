@@ -3,7 +3,7 @@ import { Throws } from './examples/throws.tsx';
 import { type BentoErrorArgs } from './src/index.ts';
 
 export default getMeta({
-  title: 'utility/error'
+  title: 'Bento/utility/error'
 });
 
 export const Required = getInterfaceDocs<Pick<BentoErrorArgs, 'name' | 'method' | 'message'>>();

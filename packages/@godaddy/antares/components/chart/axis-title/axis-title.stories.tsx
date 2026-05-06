@@ -6,7 +6,7 @@ import { YAxisExample } from './examples/y-axis.tsx';
 import { AxisTitle } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Chart/AxisTitle'
+  title: 'components/chart/AxisTitle'
 });
 
 export const Props = getComponentDocs(AxisTitle);

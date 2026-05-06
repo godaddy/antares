@@ -12,7 +12,7 @@ import { BarChartExample } from './examples/single-series.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/bar-chart-playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/chart/BarChart',
+  title: 'components/chart/BarChart',
   decorators: [
     (Story: React.FC) => (
       <div

@@ -29,19 +29,22 @@ function Pre(props: React.ComponentProps<'pre'>) {
 }
 
 const preview: Preview = {
-  decorators: [withThemeTokens({ themes: RECIPES, defaultTheme: 'Legacy' })],
   parameters: {
     options: {
       storySort: {
         order: [
-          'Bento',
-          'Architecture',
-          ['Guides', ['Primitives', 'Composition', 'Customization', 'Styling'], 'PDRs'],
           'components',
-          'hooks',
-          'higher-order components',
-          'utility',
-          'internal',
+          'Bento',
+          [
+            'Welcome',
+            'Architecture',
+            ['Guides', ['Primitives', 'Composition', 'Customization', 'Styling'], 'PDRs'],
+            'components',
+            'hooks',
+            'higher-order components',
+            'utility',
+            'internal'
+          ],
           '*'
         ]
       }
