@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import {
   FieldError as RACFieldError,
+  type FieldErrorProps as RACFieldErrorProps,
   Label as RACLabel,
   Checkbox as RACCheckbox,
   type CheckboxProps as RACCheckboxProps,
@@ -10,7 +11,7 @@ import {
 import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
 import { Icon } from '#components/icon';
-import { Text } from '#components/text';
+import { Text, type TextProps } from '#components/text';
 import { cx } from 'cva';
 import styles from './index.module.css';
 
@@ -24,22 +25,28 @@ export interface CheckboxProps extends RACCheckboxProps {
 
 export interface CheckboxGroupProps extends RACCheckboxGroupProps {
   /** The checkboxes within the group. */
-  children?: React.ReactNode;
+  children?: ReactNode;
 
   /** Additional class names to apply to the checkbox group container. */
   className?: string;
 
   /** An error message to display below the group. */
-  errorMessage?: string;
+  errorMessage?: ReactNode;
+
+  /** Props for the error message text */
+  errorMessageProps?: RACFieldErrorProps;
 
   /** The directionality of the checkbox group. @default 'column' */
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
 
   /** The label for the checkbox group. */
-  label?: string;
+  label?: ReactNode;
 
   /** A description for the checkbox group. */
-  description?: string;
+  description?: ReactNode;
+
+  /** Props for the description text */
+  descriptionProps?: TextProps;
 }
 
 /**
@@ -78,28 +85,45 @@ export function Checkbox(props: CheckboxProps) {
  *
  * @param props - {@link CheckboxGroupProps}
  */
-export function CheckboxGroup(props: CheckboxGroupProps) {
-  const { children, className, errorMessage, label, direction = 'column', description, ...rest } = props;
-
+export function CheckboxGroup({
+  children,
+  className,
+  errorMessage,
+  label,
+  direction = 'column',
+  description,
+  descriptionProps,
+  errorMessageProps,
+  ...rest
+}: CheckboxGroupProps) {
   return (
-    <Flex as={RACCheckboxGroup} {...rest} className={cx(styles.checkboxGroup, className)} direction="column" gap="sm">
+    <Flex as={RACCheckboxGroup} direction="column" gap="sm" {...rest} className={cx(styles.checkboxGroup, className)}>
       {label && (
-        <RACLabel className={cx(styles.label, props.isRequired && styles['label--required'])}>{label}</RACLabel>
+        <Flex as={RACLabel} className={cx(rest.isRequired && styles['label--required'])}>
+          {label}
+        </Flex>
       )}
+
       <Flex direction={direction} gap={direction === 'row' || direction === 'row-reverse' ? 'lg' : 'md'}>
         {children}
       </Flex>
+
       {description && (
-        <Text slot="description" className={styles.description}>
+        <Text slot="description" {...descriptionProps}>
           {description}
         </Text>
       )}
+
       {errorMessage && (
-        <Flex as={RACFieldError} className={styles.error}>
-          <Flex alignItems="center" gap="sm">
-            <Icon icon="alert" width={24} height={24} className={styles.errorIcon} aria-hidden="true" />
-            <span>{errorMessage}</span>
-          </Flex>
+        <Flex
+          as={RACFieldError}
+          alignItems="center"
+          gap="sm"
+          {...errorMessageProps}
+          className={cx(styles.error, errorMessageProps?.className)}
+        >
+          <Icon icon="alert" width={24} height={24} className={styles.errorIcon} aria-hidden="true" />
+          <span>{errorMessage}</span>
         </Flex>
       )}
     </Flex>

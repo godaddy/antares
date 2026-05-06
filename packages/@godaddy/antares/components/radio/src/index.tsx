@@ -1,5 +1,6 @@
 import {
   FieldError as RACFieldError,
+  type FieldErrorProps as RACFieldErrorProps,
   Label as RACLabel,
   Radio as RACRadio,
   RadioGroup as RACRadioGroup,
@@ -9,7 +10,7 @@ import {
 import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 import { Icon } from '#components/icon';
-import { Text } from '#components/text';
+import { Text, type TextProps } from '#components/text';
 import { type ReactNode } from 'react';
 import { cx } from 'cva';
 
@@ -27,10 +28,16 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children' | '
   className?: string;
 
   /** Help text below the radio group */
-  description?: string;
+  description?: ReactNode;
+
+  /** Props for the description text */
+  descriptionProps?: TextProps;
 
   /** Error message shown when invalid */
-  errorMessage?: string;
+  errorMessage?: ReactNode;
+
+  /** Props for the error message text */
+  errorMessageProps?: RACFieldErrorProps;
 }
 
 /**
@@ -46,35 +53,51 @@ export function RadioGroup({
   children,
   className,
   orientation = 'vertical',
+  descriptionProps,
+  errorMessageProps,
   ...props
 }: RadioGroupProps) {
   return (
-    <RACRadioGroup {...props} orientation={orientation} className={cx(styles.radioGroup, className)}>
-      <Flex direction="column" gap="sm">
-        {label && (
-          <RACLabel className={cx(styles.label, props.isRequired && styles['label--required'])}>{label}</RACLabel>
-        )}
-        <Flex
-          direction={orientation === 'horizontal' ? 'row' : 'column'}
-          gap={orientation === 'horizontal' ? 'lg' : 'md'}
-        >
-          {children}
+    <Flex
+      as={RACRadioGroup}
+      direction="column"
+      gap="sm"
+      orientation={orientation}
+      {...props}
+      className={cx(styles.radioGroup, className)}
+    >
+      {label && (
+        <Flex as={RACLabel} className={cx(props.isRequired && styles['label--required'])}>
+          {label}
         </Flex>
-        {description && (
-          <Text slot="description" className={styles.description}>
-            {description}
-          </Text>
-        )}
-        {errorMessage && (
-          <Flex as={RACFieldError} className={styles.error}>
-            <Flex alignItems="center" gap="sm">
-              <Icon icon="alert" width={24} height={24} className={styles.errorIcon} aria-hidden="true" />
-              <span>{errorMessage}</span>
-            </Flex>
-          </Flex>
-        )}
+      )}
+
+      <Flex
+        direction={orientation === 'horizontal' ? 'row' : 'column'}
+        gap={orientation === 'horizontal' ? 'lg' : 'md'}
+      >
+        {children}
       </Flex>
-    </RACRadioGroup>
+
+      {description && (
+        <Text slot="description" {...descriptionProps}>
+          {description}
+        </Text>
+      )}
+
+      {errorMessage && (
+        <Flex
+          as={RACFieldError}
+          gap="sm"
+          alignItems="center"
+          {...errorMessageProps}
+          className={cx(styles.error, errorMessageProps?.className)}
+        >
+          <Icon icon="alert" width={24} height={24} className={styles.errorIcon} aria-hidden="true" />
+          <span>{errorMessage}</span>
+        </Flex>
+      )}
+    </Flex>
   );
 }
 
@@ -97,9 +120,9 @@ export interface RadioProps extends Omit<RACRadioProps, 'children'> {
  */
 export function Radio({ className, children, ...props }: RadioProps) {
   return (
-    <RACRadio {...props} className={cx(styles.radio, className)}>
+    <Flex as={RACRadio} alignItems="center" gap="sm" {...props} className={cx(styles.radio, className)}>
       <div className={styles.indicator} />
       <span className={styles.radioLabel}>{children}</span>
-    </RACRadio>
+    </Flex>
   );
 }

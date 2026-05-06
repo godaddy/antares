@@ -1,27 +1,22 @@
+.checkboxGroup,
 .checkbox {
-  font-family: var(--ff-base);
-  font-size: var(--fs-detail-lg);
-  line-height: var(--lh-detail);
-  color: var(--fg-base);
+  --checkbox-critical-color: var(--color-feedback-critical-strong, #ae1302);
+}
+
+.checkbox {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-.checkboxGroup {
-  width: 100%;
-}
-
-.label {
-  display: block;
-  font-family: var(--ff-detail);
-  font-size: var(--fs-detail-lg);
-  line-height: var(--lh-detail);
-  color: var(--fg-base);
+.checkbox[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .label--required::after {
   content: " *";
-  color: var(--critical);
+  padding-inline-start: 0.2em;
+  color: var(--checkbox-critical-color);
 }
 
 .checkbox[data-disabled] {
@@ -34,9 +29,9 @@
   aspect-ratio: 1;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--bd-base);
-  border-radius: var(--br-xs);
-  background-color: var(--bg-base);
+  background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
+  border-color: var(--color-input-border-default, var(--ux-by6mab, #767676));
+  border-radius: 2px;
   box-sizing: border-box;
   transition: all 0.15s ease-in-out;
   pointer-events: none;
@@ -48,97 +43,48 @@
   height: 100%;
 }
 
+.checkbox[data-focused] .indicator {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.checkbox[data-pressed]:not([data-disabled]) .indicator {
+  transform: scale(0.95);
+}
+
 .checkbox:not([data-disabled]):hover .indicator {
   border-color: var(--bd-primary);
 }
 
-.checkbox[data-focused] .indicator {
-  outline: 2px solid Highlight;
-  outline-offset: 2px;
-  border-color: var(--bd-primary);
+.checkbox:hover:not([data-disabled]) .indicator,
+.checkbox[data-focused] .indicator,
+.checkbox[data-selected]:hover:not([data-disabled]) .indicator,
+.checkbox[data-indeterminate]:hover:not([data-disabled]) .indicator {
+  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
 }
 
-.checkbox[data-pressed]:not([data-disabled]) .indicator {
-  border-color: var(--bd-selected);
-  transform: scale(0.95);
-}
-
-.checkbox[data-selected] .indicator {
-  border-color: var(--bd-selected);
-  background-color: var(--bg-selected);
-}
-
-.checkbox[data-selected]:not([data-disabled]):hover .indicator {
-  border-color: var(--bd-selected);
-  background-color: var(--bg-selected);
-}
-
-.checkbox[data-disabled][data-selected] .indicator {
-  opacity: 0.4;
-}
-
-.checkbox .indeterminate.indicator {
-  background-color: var(--bg-selected);
-  border-color: var(--bd-selected);
-}
-
-.checkboxGroup[data-invalid] .indicator {
-  border-color: var(--bd-critical);
-  color: var(--fg-critical);
-}
-
-.checkboxGroup[data-invalid] .checkbox:not([data-disabled]):hover .indicator {
-  border-color: var(--bd-critical);
+.checkbox[data-selected] .indicator,
+.checkbox[data-indeterminate] .indicator {
+  background: var(--color-input-background-selected, var(--ux-sywk25, #1bdbdb));
+  border-color: var(--color-input-border-selected, var(--ux-77zzwv, #1bdbdb));
 }
 
 .checkboxGroup[data-invalid] .checkbox[data-selected] .indicator {
-  border-color: var(--bd-critical);
-  background-color: var(--bg-critical);
+  background-color: var(--checkbox-critical-color);
 }
 
-.checkboxGroup[data-invalid] .checkbox[data-selected]:not([data-disabled]):hover .indicator {
-  background-color: var(--bg-critical);
-}
-
-/* Indeterminate always shows checked colors, never error colors */
-.checkboxGroup[data-invalid] .checkbox .indeterminate.indicator {
-  background-color: var(--bg-selected);
-  border-color: var(--bd-selected);
-}
-
-.checkboxGroup[data-invalid] .checkbox:not([data-disabled]):hover .indeterminate.indicator {
-  border-color: var(--bd-selected);
-  background-color: var(--bg-selected);
-}
-
-/* Indeterminate hover styles always apply, regardless of other states */
-.checkbox:not([data-disabled]):hover .indeterminate.indicator {
-  border-color: var(--bd-selected);
-  background-color: var(--bg-selected);
+.checkboxGroup[data-invalid] .indicator,
+.checkboxGroup[data-invalid] .checkbox:hover:not([data-disabled]) .indicator,
+.checkboxGroup[data-invalid] .checkbox[data-selected] .indicator {
+  border-color: var(--checkbox-critical-color);
 }
 
 .checkboxLabel {
   user-select: none;
 }
 
-.description {
-  font-family: var(--ff-detail);
-  font-size: var(--fs-detail-md);
-  line-height: var(--lh-detail);
-  color: var(--fg-base);
-}
-
 .error {
-  font-family: var(--ff-detail);
-  font-size: var(--fs-detail-md);
-  line-height: var(--lh-detail);
-  color: var(--critical);
-}
-
-.selectedIcon,
-.indeterminateIcon,
-.errorIcon {
-  flex-shrink: 0;
+  color: var(--checkbox-critical-color);
 }
 
 .errorIcon {

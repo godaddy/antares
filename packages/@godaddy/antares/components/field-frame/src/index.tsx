@@ -123,7 +123,7 @@ export const FieldFrame = forwardRef<HTMLDivElement, FieldFrameProps>(function F
         [TextContext, textContext]
       ]}
     >
-      <Flex direction="column" gap="sm">
+      <Flex direction="column" gap="sm" className={styles.fieldFrame}>
         {label && (
           <RACLabel className={cx(styles.label)}>
             {label}
@@ -135,7 +135,9 @@ export const FieldFrame = forwardRef<HTMLDivElement, FieldFrameProps>(function F
           isDisabled={isDisabled || false}
           direction="row"
           wrap="nowrap"
+          alignSelf="stretch"
           alignItems="stretch"
+          elevation="card"
           gap={gap}
           className={cx(styles.frame, className)}
         >
