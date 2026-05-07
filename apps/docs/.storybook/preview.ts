@@ -7,7 +7,8 @@
 import type { Preview } from '@storybook/react-vite';
 import React from 'react';
 import { MermaidDiagram } from './components/MermaidDiagram';
-import './legacy-tokens.css';
+import { withThemeTokens } from './addons/theme-tokens/decorator.tsx';
+import { RECIPES } from './addons/theme-tokens/recipes.ts';
 
 function Pre(props: React.ComponentProps<'pre'>) {
   const child = props.children;
@@ -28,6 +29,7 @@ function Pre(props: React.ComponentProps<'pre'>) {
 }
 
 const preview: Preview = {
+  decorators: [withThemeTokens({ themes: RECIPES, defaultTheme: 'Legacy' })],
   parameters: {
     options: {
       storySort: {
