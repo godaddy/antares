@@ -1,0 +1,3695 @@
+# Antares
+
+
+
+[Documentation](https://scaling-adventure-4379gjj.pages.github.io/site/) | [Storybook](https://scaling-adventure-4379gjj.pages.github.io/)
+
+Quick Start [#quick-start]
+
+Install the package:
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Import and use a component:
+
+```tsx
+import { Button } from '@godaddy/antares';
+
+export default function App() {
+  return <Button variant="primary">Get Started</Button>;
+}
+```
+
+Per-Component Imports [#per-component-imports]
+
+Each component is available as a standalone entry point. This lets your bundler load only the JavaScript and CSS for the components you use:
+
+```tsx
+import { Button } from '@godaddy/antares/Button';
+import { Flex } from '@godaddy/antares/Layout';
+import { BarChart } from '@godaddy/antares/Chart';
+```
+
+This also works with autocomplete in IDEs and LLMs, so you can import from the root package and let your editor/agent suggest the available components.
+
+Framework Setup [#framework-setup]
+
+Antares ships CSS alongside its JavaScript modules. Each component chunk imports a corresponding `.css` file (e.g., `import './src-BZhWcxqJ.css'`). Most bundlers handle this automatically, but some frameworks need extra configuration to process CSS imports from `node_modules`.
+
+Next.js [#nextjs]
+
+Add `@godaddy/antares` to [`transpilePackages`](https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages) so Next.js processes the package through its own CSS pipeline instead of treating it as a pre-built external:
+
+```js
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@godaddy/antares'],
+};
+
+module.exports = nextConfig;
+```
+
+Without this, Next.js will throw:
+
+```text
+Global CSS cannot be imported from within node_modules.
+```
+
+Remix [#remix]
+
+Remix with Vite handles CSS imports from `node_modules` in the client bundle automatically. However, during SSR, Vite treats `node_modules` as externals by default, which bypasses CSS processing. Add `@godaddy/antares` to [`ssr.noExternal`](https://vite.dev/config/ssr-options#ssr-noexternal) to fix this:
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  ssr: {
+    noExternal: ['@godaddy/antares'],
+  },
+});
+```
+
+Vite [#vite]
+
+Vite processes CSS imports from `node_modules` out of the box. No additional configuration is needed for client-side SPAs.
+
+If you are using Vite with SSR (e.g., custom SSR setup, not Remix), add `@godaddy/antares` to `ssr.noExternal` as shown in the [Remix section](#remix).
+
+Other Bundlers [#other-bundlers]
+
+Any bundler that supports CSS imports will work with Antares. If your bundler does not process CSS imports from `node_modules` by default, ensure it is configured to do so. For example, with raw webpack you may need [`css-loader`](https://webpack.js.org/loaders/css-loader/) configured to handle `.css` files from `node_modules`.
+
+Components [#components]
+
+<ComponentCards />
+
+
+# Button
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Button` component accepts the following props:
+
+<PropTable />
+
+The `LinkButton` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Primary [#primary]
+
+The primary button should be used to indicate the most important action for the user to take in their current experience.
+
+<Story of="Stories.Primary" />
+
+<Source language="tsx" code="SourcePrimary" />
+
+Secondary [#secondary]
+
+The secondary button indicates an action of secondary importance.
+
+<Story of="Stories.Secondary" />
+
+<Source language="tsx" code="SourceSecondary" />
+
+Critical [#critical]
+
+The critical button signifies to the user a destructive action will take place.
+
+<Story of="Stories.Critical" />
+
+<Source language="tsx" code="SourceCritical" />
+
+Inline [#inline]
+
+<Story of="Stories.Inline" />
+
+<Source language="tsx" code="SourceInline" />
+
+Minimal [#minimal]
+
+The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
+
+<Story of="Stories.Minimal" />
+
+<Source language="tsx" code="SourceMinimal" />
+
+Icon [#icon]
+
+You may provide an optional [`Icon`](../icon) element to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Sizes [#sizes]
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+Disabled [#disabled]
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+
+# Carousel
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="Stories.ExternalControlsUncontrolled" />
+
+<Source language="tsx" code="SourceExternalControlsUncontrolled" />
+
+External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="Stories.ExternalControlsControlled" />
+
+<Source language="tsx" code="SourceExternalControlsControlled" />
+
+Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="Stories.HideControls" />
+
+<Source language="tsx" code="SourceHideControls" />
+
+Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="Stories.VariableWidths" />
+
+<Source language="tsx" code="SourceVariableWidths" />
+
+Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="Stories.Events" />
+
+<Source language="tsx" code="SourceEvents" />
+
+RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
+# Checkbox
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+A single checkbox with a label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceCheckboxBasic" />
+
+Indeterminate [#indeterminate]
+
+Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
+
+<Story of="Stories.Indeterminate" />
+
+<Source language="tsx" code="SourceCheckboxIndeterminate" />
+
+Checkbox Group [#checkbox-group]
+
+Group multiple checkboxes together with a shared label and description.
+
+<Story of="Stories.Group" />
+
+<Source language="tsx" code="SourceCheckboxGroup" />
+
+Controlled [#controlled]
+
+Manage checkbox group state programmatically with controlled component pattern.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceCheckboxControlled" />
+
+Horizontal Layout [#horizontal-layout]
+
+Display checkboxes in a horizontal row instead of vertical stack.
+
+<Story of="Stories.Horizontal" />
+
+<Source language="tsx" code="SourceCheckboxHorizontal" />
+
+Disabled States [#disabled-states]
+
+Individual checkboxes within a group can be disabled while others remain interactive.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceCheckboxDisabled" />
+
+Required Indicator [#required-indicator]
+
+Mark a checkbox group as required with visual indicator and validation.
+
+<Story of="Stories.Required" />
+
+<Source language="tsx" code="SourceCheckboxRequired" />
+
+Invalid State [#invalid-state]
+
+Display error state and error message for validation feedback.
+
+<Story of="Stories.Invalid" />
+
+<Source language="tsx" code="SourceCheckboxInvalid" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-checkbox-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-checkbox-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-checkbox-group [data-indeterminate] {
+  background-color: #1976d2;
+}
+
+.my-checkbox-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<CheckboxGroup label="Select options" className="custom-checkbox-group">
+  <Checkbox value="option1" className="custom-checkbox">
+    Option 1
+  </Checkbox>
+  <Checkbox value="option2" className="highlighted-checkbox">
+    Option 2
+  </Checkbox>
+</CheckboxGroup>
+```
+
+Key Features [#key-features]
+
+Indeterminate State [#indeterminate-state]
+
+The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
+
+```jsx
+<Checkbox isIndeterminate onChange={handleSelectAll}>
+  Select All
+</Checkbox>
+```
+
+Group Validation [#group-validation]
+
+CheckboxGroup supports validation states and error messages:
+
+* **isRequired**: Marks the group as required with visual indicator
+* **isInvalid**: Shows error state styling
+* **errorMessage**: Displays validation error text below the group
+
+```jsx
+<CheckboxGroup
+  label="Required selection"
+  isRequired
+  isInvalid={!hasSelection}
+  errorMessage="At least one option must be selected"
+>
+  <Checkbox value="a">Option A</Checkbox>
+  <Checkbox value="b">Option B</Checkbox>
+</CheckboxGroup>
+```
+
+Direction [#direction]
+
+Control the layout direction with the `direction` prop:
+
+* `column` (default): Stacks checkboxes vertically
+* `row`: Arranges checkboxes in a horizontal row
+* `column-reverse`: Stacks checkboxes vertically in reverse order
+* `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to the next/previous checkbox
+* **Space**: Toggles the focused checkbox
+* **Shift + Tab**: Moves focus to the previous checkbox
+
+ARIA Support [#aria-support]
+
+* `aria-disabled` for disabled checkboxes
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+* Proper labeling with `aria-labelledby` and `aria-describedby`
+
+Troubleshooting [#troubleshooting]
+
+Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<CheckboxGroup value={value} defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Controlled mode
+<CheckboxGroup value={value} onChange={setValue}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Uncontrolled mode
+<CheckboxGroup defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+```
+
+Indeterminate State Not Updating [#indeterminate-state-not-updating]
+
+The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
+
+```jsx
+// ✅ Correct: Manually manage indeterminate state
+const [childSelections, setChildSelections] = React.useState([]);
+const allSelected = childSelections.length === totalChildren;
+const someSelected = childSelections.length > 0 && !allSelected;
+
+<Checkbox
+  isSelected={allSelected}
+  isIndeterminate={someSelected}
+  onChange={handleSelectAll}
+>
+  Select All
+</Checkbox>
+```
+
+Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-checkbox {
+  color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-checkbox-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+Best Practices [#best-practices]
+
+When to Use Checkboxes [#when-to-use-checkboxes]
+
+* ✅ For selecting multiple independent options
+* ✅ When users can select zero, one, or many items
+* ✅ For toggling settings or features on/off
+* ✅ When all available options should be visible
+* ❌ For mutually exclusive options (use Radio instead)
+* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
+
+Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels that describe what selecting the option means
+* Keep labels short (1-5 words when possible)
+* Ensure labels are descriptive without being verbose
+* Place the most commonly selected options first in groups
+
+Validation [#validation]
+
+Always provide clear error messages and use appropriate validation states:
+
+```jsx
+<CheckboxGroup
+  label="Terms and conditions"
+  isRequired
+  isInvalid={!agreedToTerms}
+  errorMessage="You must agree to the terms to continue"
+>
+  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+</CheckboxGroup>
+```
+
+Group Organization [#group-organization]
+
+* Limit checkbox groups to 7-10 options for better usability
+* Use logical ordering (alphabetical, frequency of use, or importance)
+* Consider using CheckboxGroup for related options, even if there are only 2-3
+* Provide a group label that clearly describes the choice being made
+
+
+# FieldFrame
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Internal component.** FieldFrame is intended for internal use only. Use the public field components (TextField, NumberField, DateField, Select) instead; they compose FieldFrame internally.
+
+Features [#features]
+
+* **Visual frame**: Shared border, focus, disabled, and invalid styling around field content
+* **Focus delegation**: Tracks focus from any focusable child (input, button) via `data-focus-within` and `data-focus-visible`
+* **Label, description, error**: Optional Label, helper Text, and FieldError with proper accessibility association
+* **Required indicator**: Shows asterisk next to label when the field is required
+* **React Aria integration**: Uses Provider pattern so nested elements stay in sync with the frame
+* **Field wrapper composition**: Designed to sit inside TextField, NumberField, DateField, or Select as the main field UI
+
+Usage [#usage]
+
+Props [#props]
+
+FieldFrame accepts the following props:
+
+<PropTable />
+
+Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Examples for leading control, trailing control, and icon accessories are in [Examples](#examples) at the end.
+
+Component composition [#component-composition]
+
+Internal structure [#internal-structure]
+
+FieldFrame renders a single React Aria `Provider` that supplies the necessary context to its children. Structure tree:
+
+```text
+Provider
+├── Label                     ← when label prop
+├── Group.frame               ← border, focus/invalid/disabled styling
+│   └── {children}            ← Input, Button, DateInput, SelectValue, etc.
+├── FieldError                ← when errorMessage prop
+└── Text[slot=description]    ← when description prop
+```
+
+The following list describes the internal React Aria components used to compose FieldFrame:
+
+* **Label** (optional) — Rendered when `label` is provided. Shows a required indicator (asterisk).
+* **Group** — The visual frame. Exposes `data-focus-within`, `data-focus-visible`, `data-disabled`, and `data-invalid`. All focusable children (input, button, etc.) live inside this Group.
+* **FieldError** (optional) — Rendered when `errorMessage` is provided. Rendered below the Group, above the description. Associated with the field for accessibility.
+* **Text** (optional) — Description block rendered when `description` is provided.
+
+Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectValue`) are rendered inside the Group. The provider ensures nested Input and Button read the same disabled/required state as the frame.
+
+States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
+
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
+| focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
+
+Examples [#examples]
+
+Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
+
+
+# Icon
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the UXCore design system.
+
+Features [#features]
+
+* **On-demand loading**: Icons are loaded asynchronously from CDN only when needed
+* **Automatic caching**: Once loaded, icons are cached for optimal performance
+* **Flexible sizing**: Support for `width` and `height` props
+* **Color inheritance**: Uses `currentColor` by default for seamless theme integration
+* **Accessibility ready**: Built-in support for screen readers and keyboard navigation
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **Bento integration**: Extends Bento Icon with additional UXCore-specific features
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Icon` component accepts the following props:
+
+<PropTable />
+
+Prop Inheritance [#prop-inheritance]
+
+The component extends `BentoIconProps` and passes through all standard HTML attributes and accessibility props to the underlying Bento Icon component. This includes:
+
+* **Accessibility**: `aria-label`, `aria-describedby`, `role`, `title`
+* **Events**: `onClick`, `onMouseOver`, `onFocus`, etc.
+* **Styling**: `className`, `style`, `data-*` attributes
+* **Transform**: `rotate`, `flip` for icon transformations
+
+Basic Usage [#basic-usage]
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Size Variants [#size-variants]
+
+Specify explicit width and height values:
+
+```jsx
+<Icon icon="star" width={24} height={24} />
+```
+
+You can use different values for width and height:
+
+```jsx
+<Icon icon="star" width={32} height={16} />
+```
+
+Customization [#customization]
+
+Slots [#slots]
+
+The Icon component uses Bento's slot system with the following component hierarchy and available slot override points:
+
+Component Hierarchy [#component-hierarchy]
+
+```text
+Icon (registered as "Icon")
+└── BentoIcon (registered as "BentoIcon", slot="icon")
+    └── BentoIllustration (registered as "BentoIllustration", slot="content")
+```
+
+Available Slot Overrides [#available-slot-overrides]
+
+* **`icon`**: Overrides the entire BentoIcon component - affects icon loading, caching, sprite/SVG mode switching, data attributes, and the overall icon wrapper
+* **`icon.content`**: Overrides the BentoIllustration component - affects SVG transformations (rotate, flip), accessibility attributes (`role`, `focusable`, `aria-labelledby`), viewBox calculations, and final SVG element rendering
+
+For complete slot override patterns and examples, see the `@bento/slots` package documentation.
+
+Custom Icons [#custom-icons]
+
+While the Icon component loads design system approved icons from the CDN by default, teams can introduce custom icons using the underlying Bento Icon system.
+
+Adding Icons Synchronously [#adding-icons-synchronously]
+
+Use the `set` method to add custom icons that are available immediately:
+
+```jsx
+import { Icon, set, parser } from '@godaddy/antares';
+
+// Add a custom icon from an SVG string
+const customIconSvg = '<svg viewBox="0 0 24 24"><path d="..."/></svg>';
+
+set({
+  'custom-logo': parser(customIconSvg),
+  'team-icon': (
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  )
+});
+
+// Now use your custom icon
+<Icon icon="custom-logo" />
+<Icon icon="team-icon" />
+```
+
+Adding Icons Asynchronously [#adding-icons-asynchronously]
+
+Use the `ondemand` method to load custom icons from your own sources:
+
+```jsx
+import { Icon, ondemand, parser } from '@godaddy/antares';
+
+// Add a custom loader for team-specific icons
+const unregister = ondemand(async function loadTeamIcons(iconName) {
+  if (iconName.startsWith('team-')) {
+    const response = await fetch(`/api/team-icons/${iconName}.svg`);
+    const svgContent = await response.text();
+    return parser(svgContent);
+  }
+  // Return undefined to let other loaders handle this icon
+});
+
+// Icons prefixed with 'team-' will load from your custom endpoint
+<Icon icon="team-dashboard" />
+<Icon icon="team-settings" />
+
+// Later, if needed, unregister the loader
+unregister();
+```
+
+Custom Icon APIs [#custom-icon-apis]
+
+The following methods are exported from `@godaddy/antares` for custom icon management:
+
+* **`set(icons)`**: Synchronously add icons to the store
+* **`ondemand(loader)`**: Register an asynchronous icon loader (returns unregister function)
+* **`parser(svgString)`**: Parse SVG strings into React elements
+
+These are re-exports of the underlying Bento Icon system methods. For complete API documentation, advanced usage patterns, and implementation details, see the `@bento/icon` and `@bento/svg-parser` package documentation.
+
+Notes [#notes]
+
+* Custom icons integrate seamlessly with all Icon component features (transformations, accessibility, sprite mode, etc.)
+* Multiple `ondemand` loaders can be registered and will be called in order until one returns content
+* Use the `parser` function to convert SVG strings to React elements
+* Custom icons are cached automatically just like CDN icons
+
+Styling [#styling]
+
+CSS Classes [#css-classes]
+
+The component accepts standard `className` and `style` props:
+
+```jsx
+<Icon icon="star" className="my-icon" style={{ margin: '10px' }} />
+```
+
+**Important**: When you supply a `className`, you make a commitment to take over all styling of the component as it will remove the standard class names. Use data attributes for targeted styling instead.
+
+Data Attributes [#data-attributes]
+
+The component automatically adds data attributes for styling hooks:
+
+* `data-icon`: The icon name (always present)
+* `data-color`: Applied when color prop is set
+* `data-loading`: Applied during icon loading from CDN
+* `data-mode`: Applied when mode prop is set (e.g., "sprite")
+* `data-flip`: Applied when flip prop is set ("horizontal" or "vertical")
+* `data-rotate`: Applied when rotate prop is set (90, 180, or 270)
+
+The component also includes accessibility attributes:
+
+* `role="presentation"`: For decorative icons
+* `role="img"`: When title prop is provided
+* `focusable="false"`: Prevents keyboard focus
+
+```css
+/* Style by icon name */
+[data-icon="star"] {
+  color: gold;
+}
+
+/* Style by color */
+[data-color="red"] {
+  border: 1px solid currentColor;
+}
+
+/* Style loading state */
+[data-loading="true"] {
+  opacity: 0.5;
+}
+
+/* Style sprite mode */
+[data-mode="sprite"] {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Style flipped icons */
+[data-flip="horizontal"] {
+  transform-origin: center;
+}
+
+/* Style rotated icons */
+[data-rotate="90"] {
+  transition: transform 0.2s ease;
+}
+```
+
+Color Customization [#color-customization]
+
+Inherit from Parent (Default) [#inherit-from-parent-default]
+
+By default, icons inherit the color from their parent element via `currentColor`:
+
+```jsx
+<div style={{ color: 'blue' }}>
+  <Icon icon="star" /> {/* Will be blue */}
+</div>
+```
+
+Explicit Colors [#explicit-colors]
+
+Override the color with specific values:
+
+```jsx
+<Icon icon="star" color="#ff6b35" />          // Hex color
+<Icon icon="star" color="rgb(255, 107, 53)" /> // RGB color
+<Icon icon="star" color="var(--primary-color)" /> // CSS variable
+<Icon icon="star" color="currentColor" />     // Explicit inheritance
+```
+
+Icon Transformations [#icon-transformations]
+
+Transform capabilities are inherited from the Bento Illustration component. For complete transformation options and implementation details, see the `@bento/illustration` package documentation.
+
+Rotation [#rotation]
+
+Rotate icons by 90-degree increments:
+
+```jsx
+<Icon icon="arrow" rotate={90} />   // 90 degrees
+<Icon icon="arrow" rotate={180} />  // 180 degrees
+<Icon icon="arrow" rotate={270} />  // 270 degrees
+```
+
+Flipping [#flipping]
+
+Flip icons horizontally or vertically:
+
+```jsx
+<Icon icon="arrow" flip="horizontal" />
+<Icon icon="arrow" flip="vertical" />
+```
+
+Loading States [#loading-states]
+
+Placeholder Content [#placeholder-content]
+
+Provide fallback SVG content while icons load from the CDN:
+
+```jsx
+<Icon icon="star">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+</Icon>
+```
+
+Accessibility [#accessibility]
+
+Decorative Icons [#decorative-icons]
+
+For purely decorative icons, no additional attributes are needed. The icon will have `role="presentation"` and be ignored by screen readers:
+
+```jsx
+<Icon icon="star" /> {/* Decorative, screen readers will ignore */}
+```
+
+Semantic Icons [#semantic-icons]
+
+For icons that convey meaning, use the `title` prop. This automatically adds `role="img"` and provides screen reader accessible text:
+
+```jsx
+{/* Semantic icon - use title prop */}
+<Icon icon="star" title="Favorite item" />
+
+{/* Warning icon with semantic meaning */}
+<Icon icon="alert" title="Warning: Your session will expire soon" />
+
+{/* Status indicator with meaning */}
+<Icon icon="check-circle" title="Task completed successfully" />
+```
+
+Interactive Icons [#interactive-icons]
+
+For interactive icons within buttons or links, use the `title` prop on the icon and `aria-label` on the interactive element:
+
+```jsx
+{/* Button with icon - label the button, not the icon */}
+<button aria-label="Close dialog">
+  <Icon icon="close" />
+</button>
+
+{/* Icon button where icon has semantic meaning */}
+<button aria-label="Mark as favorite">
+  <Icon icon="star" title="Favorite" />
+</button>
+
+{/* Link with icon */}
+<a href="/settings" aria-label="Go to settings">
+  <Icon icon="settings" />
+</a>
+```
+
+Performance Considerations [#performance-considerations]
+
+Default Icon Loading [#default-icon-loading]
+
+Icons are loaded on-demand from a CDN using the following process:
+
+1. **First Request**: When an icon is first encountered, it triggers an asynchronous fetch from the CDN
+2. **SVG Parsing**: The fetched SVG string is parsed into a React element using `@bento/svg-parser`
+3. **Automatic Caching**: Once loaded, the icon is cached in memory to avoid subsequent network requests
+4. **Full SVG Rendering**: Each icon instance renders as a complete SVG element with all path data
+
+```jsx
+// Each icon renders as a full SVG element
+<Icon icon="star" />  // <svg><path d="M3 22v-20l18 10-18 10z" /></svg>
+<Icon icon="star" />  // <svg><path d="M3 22v-20l18 10-18 10z" /></svg>
+<Icon icon="star" />  // <svg><path d="M3 22v-20l18 10-18 10z" /></svg>
+```
+
+This approach works well for SSR and small numbers of icons, but can lead to DOM bloat when the same icon appears many times.
+
+Sprite Mode Optimization [#sprite-mode-optimization]
+
+When `mode="sprite"` is enabled, the component switches to a more efficient rendering strategy:
+
+```jsx
+<Icon icon="star" mode="sprite" />
+<Icon icon="star" mode="sprite" />
+<Icon icon="star" mode="sprite" />
+```
+
+**What happens with sprite mode:**
+
+1. **Sprite Sheet Creation**: A hidden SVG sprite sheet is automatically injected into the DOM containing symbol definitions
+2. **Reference Rendering**: Each icon renders as a lightweight `<use>` element that references the sprite
+3. **Deduplication**: Icon path data only exists once in the sprite sheet, regardless of how many times it's used
+4. **Client-Side Hydration**: The sprite sheet is generated and injected after hydration, causing a brief paint event
+
+**DOM Output:**
+
+```html
+<!-- Hidden sprite sheet (created automatically) -->
+<svg id="bento-svg-sprite" style="display: none;">
+  <symbol id="bento-svg-spritesheet-star" viewBox="0 0 24 24">
+    <path d="M3 22v-20l18 10-18 10z" />
+  </symbol>
+</svg>
+
+<!-- Lightweight icon references -->
+<svg><use xlink:href="#bento-svg-spritesheet-star" /></svg>
+<svg><use xlink:href="#bento-svg-spritesheet-star" /></svg>
+<svg><use xlink:href="#bento-svg-spritesheet-star" /></svg>
+```
+
+**Performance Benefits:**
+
+* **Reduced DOM Size**: Path data stored once instead of duplicated
+* **Lower Memory Usage**: Especially beneficial with many repeated icons
+* **Faster Rendering**: Browser optimizations for `<use>` elements
+
+**Trade-offs:**
+
+* **SSR Limitation**: Sprite references render empty until client-side hydration
+* **Initial Flash**: Brief moment where icons appear/disappear during sprite injection
+
+Recommendations [#recommendations]
+
+* **Use default mode** for SSR applications or when icons appear infrequently
+* **Use sprite mode** when the same icons appear many times (navigation, lists, tables)
+* **Consider preloading** frequently used icons to reduce loading delays
+* **Provide fallback content** for critical icons to handle loading states
+
+Troubleshooting [#troubleshooting]
+
+Icon Not Loading [#icon-not-loading]
+
+If an icon fails to load:
+
+1. **Check icon name**: Ensure the icon exists in the CDN
+2. **Network connectivity**: Verify CDN is accessible
+3. **Check browser console**: Look for network errors
+4. **Fallback content**: Provide placeholder content for loading states
+
+Performance Issues [#performance-issues]
+
+For performance optimization:
+
+1. **Preload common icons**: Consider preloading frequently used icons
+2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
+3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# Menu
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceMenu" />
+
+With Submenus [#with-submenus]
+
+<Story of="Stories.WithSubmenus" />
+
+<Source language="tsx" code="SourceMenuSubmenu" />
+
+With Selection [#with-selection]
+
+<Story of="Stories.WithSelection" />
+
+<Source language="tsx" code="SourceMenuSelection" />
+
+With Sections [#with-sections]
+
+<Story of="Stories.WithSections" />
+
+<Source language="tsx" code="SourceMenuSections" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+React Aria Components automatically adds data attributes for styling different states:
+
+**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
+
+**Popover:** `data-entering`, `data-exiting`
+
+```css
+[data-selected] {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-entering] {
+  animation: slideIn 0.2s ease-out;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual child components can be styled by passing `className` props:
+
+```jsx
+<Menu>
+  <MenuItem id="special" className="premium-item">
+    Premium Feature
+  </MenuItem>
+  <MenuSection className="featured-section">
+    <MenuHeader>Featured</MenuHeader>
+    <MenuItem id="new">What's New</MenuItem>
+  </MenuSection>
+</Menu>
+```
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Space/Enter**: Opens menu and activates items
+* **Arrow Down/Up**: Navigate through items
+* **Arrow Right**: Opens submenu
+* **Arrow Left**: Closes submenu
+* **Home/End**: Jump to first/last item
+* **Escape**: Closes menu
+* **Tab**: Closes menu and moves to next element
+* **Type to select**: Type to jump to matching items
+
+Troubleshooting [#troubleshooting]
+
+Submenu Not Opening [#submenu-not-opening]
+
+```jsx
+// ❌ Wrong: MenuItem used directly
+<MenuItem id="share">
+  Share
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</MenuItem>
+
+// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
+<SubmenuTrigger>
+  <MenuItem id="share">Share</MenuItem>
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</SubmenuTrigger>
+```
+
+Selection Not Working [#selection-not-working]
+
+```jsx
+// ❌ Wrong: Using both controlled and uncontrolled props
+<Menu
+  selectedKeys={selected}
+  defaultSelectedKeys={['option1']}
+  selectionMode="single"
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Controlled mode
+<Menu
+  selectionMode="single"
+  selectedKeys={selected}
+  onSelectionChange={setSelected}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Uncontrolled mode
+<Menu
+  selectionMode="single"
+  defaultSelectedKeys={['option1']}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+```
+
+Styling Not Applying [#styling-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes for higher specificity */
+.my-menu [data-selected] {
+  background-color: red;
+}
+```
+
+
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
+# NumberField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The NumberField component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Minimal usage with label, placeholder, and min/max.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+Hide stepper [#hide-stepper]
+
+Use `hideStepper` to show only the input without +/- buttons.
+
+<Source language="tsx" code="SourceHideStepper" />
+
+<Story of="Stories.HideStepper" />
+
+Value scale [#value-scale]
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Source language="tsx" code="SourceValueScale" />
+
+<Story of="Stories.ValueScale" />
+
+Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
+
+<Source language="tsx" code="SourceFormatOptions" />
+
+<Story of="Stories.FormatOptions" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
+
+* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
+* **Page Up** / **Page Down**: larger increase or decrease when supported
+* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
+
+Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
+
+ARIA and labeling [#aria-and-labeling]
+
+* The input is associated with the visible label and optional description and error content for assistive technologies.
+* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
+* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
+
+Best practices [#best-practices]
+
+* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
+* Remember valid steps start from &#x2A;*`minValue`**.
+* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
+* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
+
+
+# Pagination
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Default Active Index [#default-active-index]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="Stories.DefaultActive" />
+
+<Source language="tsx" code="SourceDefaultActive" />
+
+With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="Stories.WithLimit" />
+
+<Source language="tsx" code="SourceWithLimit" />
+
+onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="Stories.OnChange" />
+
+<Source language="tsx" code="SourceOnChange" />
+
+
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+
+# Radio
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceRadioBasic" />
+
+Controlled [#controlled]
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceRadioControlled" />
+
+Horizontal Layout [#horizontal-layout]
+
+<Story of="Stories.Horizontal" />
+
+<Source language="tsx" code="SourceRadioHorizontal" />
+
+Disabled States [#disabled-states]
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceRadioDisabled" />
+
+Required Indicator [#required-indicator]
+
+<Story of="Stories.Required" />
+
+<Source language="tsx" code="SourceRadioRequired" />
+
+Description Text [#description-text]
+
+<Story of="Stories.Description" />
+
+<Source language="tsx" code="SourceRadioDescription" />
+
+Error State [#error-state]
+
+<Story of="Stories.ValidationError" />
+
+<Source language="tsx" code="SourceRadioError" />
+
+Aria Label [#aria-label]
+
+<Story of="Stories.AriaLabel" />
+
+<Source language="tsx" code="SourceRadioAriaLabel" />
+
+Form Submission [#form-submission]
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceRadioForm" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-radio-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-radio-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-radio-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<RadioGroup label="Select plan" className="custom-radio-group">
+  <Radio value="basic" className="custom-radio">
+    Basic
+  </Radio>
+  <Radio value="premium" className="premium-radio">
+    Premium
+  </Radio>
+</RadioGroup>
+```
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the radio group
+* **Arrow Down/Right**: Move to next radio button
+* **Arrow Up/Left**: Move to previous radio button
+* **Space**: Select the focused radio button
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each option
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled options
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+
+Troubleshooting [#troubleshooting]
+
+Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<RadioGroup value={value} defaultValue="basic">
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Controlled mode
+<RadioGroup value={value} onChange={setValue}>
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Uncontrolled mode
+<RadioGroup defaultValue="basic">
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+```
+
+Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-radio {
+  color: red;
+}
+
+/* ✅ Use data attributes and className for higher specificity */
+.my-radio-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+Best Practices [#best-practices]
+
+When to Use Radio Buttons [#when-to-use-radio-buttons]
+
+* ✅ When there are 2-7 mutually exclusive options
+* ✅ When all options should be visible at once
+* ✅ When the decision is important and deserves space
+* ❌ For more than 7 options (use Select instead)
+* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
+* ❌ When space is limited (use Select dropdown)
+
+Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels
+* Keep labels short (1-3 words when possible)
+* Place the most common option first
+* Ensure labels are descriptive without being verbose
+
+Validation [#validation]
+
+Always provide clear error messages:
+
+```jsx
+<RadioGroup
+  label="Select shipping method"
+  isRequired
+  isInvalid={!selectedShipping}
+  errorMessage="Please select a shipping method"
+>
+  <Radio value="standard">Standard</Radio>
+  <Radio value="express">Express</Radio>
+</RadioGroup>
+```
+
+
+# SegmentedController
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+Best Practices [#best-practices]
+
+When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
+
+
+# Select
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Static [#static]
+
+<Story of="Stories.Static" />
+
+<Source language="tsx" code="SourceSelectStatic" />
+
+Controlled [#controlled]
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceSelectControlled" />
+
+Dynamic Items [#dynamic-items]
+
+<Story of="Stories.DynamicItems" />
+
+<Source language="tsx" code="SourceSelectDynamic" />
+
+Multiple Selection [#multiple-selection]
+
+<Story of="Stories.Multiple" />
+
+<Source language="tsx" code="SourceSelectMultiple" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+React Aria Components automatically adds data attributes for styling different states:
+
+**Select Container:** `data-invalid`, `data-disabled`, `data-required`, `data-focused`
+
+**Trigger Button:** `data-pressed`, `data-disabled`, `data-focused`, `aria-expanded`
+
+**Select Value:** `data-placeholder`
+
+**Popover:** `data-entering`, `data-exiting`
+
+**List Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`, `data-selection-mode`
+
+```css
+[data-selected] {
+  background-color: #eff6ff;
+  font-weight: 600;
+}
+
+[data-invalid] .button {
+  border-color: #dc2626;
+}
+
+[aria-expanded="true"] {
+  border-color: #3b82f6;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual child components can be styled by passing `className` props:
+
+```jsx
+<Select label="Coffee">
+  <SelectItem id="espresso" className="premium-option">
+    Espresso
+  </SelectItem>
+  <SelectSection className="featured-section">
+    <SelectHeader>Featured</SelectHeader>
+    <SelectItem id="special">Special Blend</SelectItem>
+  </SelectSection>
+</Select>
+```
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Space/Enter**: Opens the popover and focuses the selected item
+* **Arrow Down/Up**: Navigate through options
+* **Home/End**: Jump to first/last option
+* **Escape**: Closes the popover
+* **Tab**: Moves focus to the next focusable element
+* **Type to select**: Type characters to jump to matching options
+* **Space** (in multi-select): Toggle selection of focused item
+
+Troubleshooting [#troubleshooting]
+
+Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<Select value={value} defaultValue="espresso">
+  <SelectItem id="espresso">Espresso</SelectItem>
+</Select>
+
+// ✅ Controlled mode
+<Select value={value} onChange={setValue}>
+  <SelectItem id="espresso">Espresso</SelectItem>
+</Select>
+
+// ✅ Uncontrolled mode
+<Select defaultValue="espresso">
+  <SelectItem id="espresso">Espresso</SelectItem>
+</Select>
+```
+
+Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes for higher specificity */
+.my-select [data-selected] {
+  background-color: red;
+}
+```
+
+Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+.button:focus {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+```
+
+
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The TextField component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
+
+
+# Tooltip
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
+element (for example, a `Button`). The tooltip appears on hover and focus.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the
+`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key    | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| Tab    | Moves focus to the focusable element and shows the tooltip |
+| Escape | Closes the tooltip                                         |
+
+ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+
+Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+
+# AxisTitle
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `AxisTitle` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+X-Axis Title [#x-axis-title]
+
+X-axis title with default orientation.
+
+<Story of="Stories.XAxis" />
+
+<Source language="tsx" code="SourceXAxis" />
+
+Y-Axis Title [#y-axis-title]
+
+Y-axis title with default orientation.
+
+<Story of="Stories.YAxis" />
+
+<Source language="tsx" code="SourceYAxis" />
+
+RTL [#rtl]
+
+The axis title follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings, so the title stays aligned with the page.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
+# Bar Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Single and multi-series support**: Display one or multiple data series with grouped bars
+* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
+* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `BarChart` component accepts the following props:
+
+<PropTable />
+
+Core Props [#core-props]
+
+`series` (required) [#series-required]
+
+An array of data series to display. Each series must include:
+
+* `id`: Unique identifier for the series
+* `name`: Display name for the legend
+* `data`: Array of data points
+* `color`: Hex color for the bars
+
+```tsx
+const series = [
+  {
+    id: 'new-york',
+    name: 'New York',
+    color: '#145FA9',
+    data: [{ date: '2024-01-01', temp: 45 }, ...]
+  }
+];
+```
+
+`xAccessor` (required) [#xaccessor-required]
+
+Function that extracts the x-axis value from a data point. Returns a string representing the category or label.
+
+```tsx
+xAccessor={(d) => d.date}
+```
+
+`yAccessor` (required) [#yaccessor-required]
+
+Function that extracts the y-axis value from a data point. Returns a number representing the value to display.
+
+```tsx
+yAccessor={(d) => d.temperature}
+```
+
+Layout Props [#layout-props]
+
+`orientation` [#orientation]
+
+Controls whether bars are vertical (default) or horizontal.
+
+* **Default**: `'vertical'`
+* **Options**: `'vertical'` | `'horizontal'`
+
+Vertical charts are best for time series or categorical data. Horizontal charts work well for rankings or when category labels are long.
+
+`width` [#width]
+
+Width of the chart in pixels. The chart uses responsive sizing via `useParentSize`, so this serves as a default when the container size is not yet known.
+
+* **Default**: `500`
+
+`height` [#height]
+
+Height of the chart in pixels.
+
+* **Default**: `700`
+
+`legendPosition` [#legendposition]
+
+Position of the legend relative to the chart.
+
+* **Default**: `'bottom'`
+* **Options**: `'top'` | `'bottom'`
+
+Axis Props [#axis-props]
+
+`xAxisTitle` [#xaxistitle]
+
+Title displayed below the x-axis.
+
+* **Type**: `string`
+
+`yAxisTitle` [#yaxistitle]
+
+Title displayed to the left of the y-axis.
+
+* **Type**: `string`
+
+`xBaseline` [#xbaseline]
+
+Whether to show the x-axis baseline and labels.
+
+* **Default**: `true`
+
+`yBaseline` [#ybaseline]
+
+Whether to show the y-axis baseline and labels.
+
+* **Default**: `true`
+
+`xTickMarks` [#xtickmarks]
+
+Whether to show tick marks on the x-axis.
+
+* **Default**: `true`
+
+`yTickMarks` [#ytickmarks]
+
+Whether to show tick marks on the y-axis.
+
+* **Default**: `true`
+
+`xGridlines` [#xgridlines]
+
+Whether to show vertical gridlines from the x-axis.
+
+* **Default**: `true`
+
+`yGridlines` [#ygridlines]
+
+Whether to show horizontal gridlines from the y-axis.
+
+* **Default**: `true`
+
+`xTickFormat` [#xtickformat]
+
+Function to format x-axis tick labels. The value type depends on orientation:
+
+* Vertical: categories (string | Date) from xAccessor
+
+* Horizontal: numeric values (number) from xAccessor
+
+* **Type**: `(value: string | number | Date) => string`
+
+`yTickFormat` [#ytickformat]
+
+Function to format y-axis tick labels. The value type depends on orientation:
+
+* Vertical: numeric values (number) from yAccessor
+
+* Horizontal: categories (string | Date) from yAccessor
+
+* **Type**: `(value: string | number | Date) => string`
+
+`xNumTicks` [#xnumticks]
+
+Suggested number of ticks for the x-axis.
+
+* **Type**: `number`
+
+`yNumTicks` [#ynumticks]
+
+Suggested number of ticks for the y-axis.
+
+* **Type**: `number`
+
+Domain Props [#domain-props]
+
+`xDomain` [#xdomain]
+
+Explicit x-axis domain. The type depends on orientation:
+
+* Vertical: Use `string[]` or `Date[]` to explicitly set categories
+* Horizontal: Use `[number, number]` to set value range \[min, max]
+
+Useful for ensuring consistent domains across multiple charts or showing empty slots for missing data.
+
+* **Type**: `string[] | [number, number]`
+
+```tsx
+// Vertical: Show slots for categories A-F even if some are missing from data
+xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+
+// Horizontal: Set value range
+xDomain={[0, 100]}
+```
+
+`yDomain` [#ydomain]
+
+Explicit y-axis domain. The type depends on orientation:
+
+* Vertical: Use `[number, number]` to set value range \[min, max]
+* Horizontal: Use `string[]` or `Date[]` to explicitly set categories
+
+Useful for consistent scales across multiple charts or emphasizing specific value ranges.
+
+* **Type**: `[number, number] | string[]`
+
+```tsx
+// Vertical: Always show 0-100 range regardless of data
+yDomain={[0, 100]}
+
+// Horizontal: Show slots for categories A-F
+yDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+```
+
+Interaction Props [#interaction-props]
+
+`tooltip` [#tooltip]
+
+Whether to show tooltips on hover.
+
+* **Default**: `true`
+
+Basic Usage [#basic-usage]
+
+Single Series [#single-series]
+
+Display a single data series as vertical bars:
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multi-Series [#multi-series]
+
+Display multiple data series as grouped bars with a legend:
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultiSeries" />
+
+Orientation [#orientation-1]
+
+Horizontal Single Series [#horizontal-single-series]
+
+Horizontal bars are ideal for ranking, comparison, or when you have long category labels:
+
+<Source language="tsx" code="SourceHorizontalSingleSeries" />
+
+<Story of="Stories.HorizontalSingleSeries" />
+
+Horizontal Multi-Series [#horizontal-multi-series]
+
+Grouped bars work in horizontal orientation as well:
+
+<Source language="tsx" code="SourceHorizontalMultiSeries" />
+
+<Story of="Stories.HorizontalMultiSeries" />
+
+Custom Domains [#custom-domains]
+
+Control the exact categories and value ranges displayed:
+
+<Source language="tsx" code="SourceCustomDomain" />
+
+<Story of="Stories.CustomDomain" />
+
+In this example:
+
+* `xDomain` includes category 'F' which doesn't exist in the data, showing an empty slot
+* `yDomain` is set to `[0, 40]` to maintain a consistent scale even though the max value is 30
+
+RTL Support [#rtl-support]
+
+The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes, bars, and labels accordingly.
+
+<Source language="tsx" code="SourceRTL" />
+
+<Story of="Stories.RTLMultiSeries" />
+
+**Note**: RTL support is currently in active development. Axis rendering and tick mark spacing are being refined.
+
+Design System Alignment [#design-system-alignment]
+
+The BarChart component is built to align with UXCore design principles:
+
+Spacing and Sizing [#spacing-and-sizing]
+
+* **Bar width**: 12px (1.5 grid units)
+* **Bar padding** (multi-series): 4px between bars within a group
+* **Group gap**: Minimum 24px between bar groups
+* **Border radius**: 8px on all bars
+* **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+Responsive Behavior [#responsive-behavior]
+
+* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+Accessibility [#accessibility]
+
+* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+* **Tooltips**: Show on both hover and focus for keyboard users
+
+Performance Considerations [#performance-considerations]
+
+Rendering Strategy [#rendering-strategy]
+
+The component uses VisX primitives for optimal SVG rendering:
+
+* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+Scrolling Strategy [#scrolling-strategy]
+
+* **Vertical charts**: Horizontal scrolling when many data points exceed container width
+* **Horizontal charts**: Vertical scrolling when many categories exceed container height
+* **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+Recommendations [#recommendations]
+
+* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+* Use **custom domains** to maintain consistent scales across multiple charts
+* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+Development Status [#development-status]
+
+The BarChart component is in active development. Current focus areas:
+
+* ✅ Single and multi-series support
+* ✅ Vertical and horizontal orientations
+* ✅ Responsive behavior with sticky axes
+* ✅ Interactive tooltips
+* ✅ Custom domains
+* ✅ Design system alignment
+* 🚧 RTL compatibility (axis rendering and spacing refinement)
+* 🚧 Tick mark positioning improvements
+* 🚧 Additional customization options (tick formatting, axis configuration)
+
+Troubleshooting [#troubleshooting]
+
+Bars Not Showing [#bars-not-showing]
+
+If bars are not visible:
+
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+Tooltip Positioning Issues [#tooltip-positioning-issues]
+
+If tooltips appear in the wrong location:
+
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+Performance Issues [#performance-issues]
+
+For better performance:
+
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+Examples [#examples]
+
+All examples can be found in the Storybook interface:
+
+* **Single Series**: Basic vertical bar chart
+* **Multi-Series**: Grouped bars with legend
+* **Horizontal Single Series**: Horizontal orientation
+* **Horizontal Multi-Series**: Grouped horizontal bars
+* **Custom Domain**: Controlled x and y ranges
+* **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
+
+
+# LineChart
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Single Series [#single-series]
+
+One line with time-scale X-axis and minimal configuration.
+
+<Story of="Stories.SingleSeries" />
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Several lines with a bottom legend and shared X-axis.
+
+<Story of="Stories.MultipleSeries" />
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+Axis [#axis]
+
+Gridlines [#gridlines]
+
+Vertical and horizontal gridlines via `xGridlines` and `yGridlines`.
+
+<Story of="Stories.Gridlines" />
+
+<Source language="tsx" code="SourceGridlines" />
+
+Titles [#titles]
+
+X- and Y-axis titles to label what each axis represents (e.g. "Month", "Temperature (°F)").
+
+<Story of="Stories.Titles" />
+
+<Source language="tsx" code="SourceTitles" />
+
+Labels [#labels]
+
+Tick labels on both axes with `xLabels` and `yLabels`.
+
+<Story of="Stories.Labels" />
+
+<Source language="tsx" code="SourceLabels" />
+
+Ticks [#ticks]
+
+Tick marks (short lines) at each tick value. Controlled by `xTickMarks` and `yTickMarks`.
+
+<Story of="Stories.Ticks" />
+
+<Source language="tsx" code="SourceTicks" />
+
+Baselines [#baselines]
+
+Axis baseline (the main axis line). Controlled by `xBaseline` and `yBaseline`.
+
+<Story of="Stories.Baselines" />
+
+<Source language="tsx" code="SourceBaselines" />
+
+Legend [#legend]
+
+Legend showing series names and colors, positioned above or below the chart via `legendPosition`.
+
+<Story of="Stories.Legend" />
+
+<Source language="tsx" code="SourceLegend" />
+
+Formatting [#formatting]
+
+Axis and Tooltip Formatting [#axis-and-tooltip-formatting]
+
+Custom formatters for axis ticks and tooltip values (e.g. currency, dates). Controlled by `xTickFormat` and `yTickFormat`.
+
+<Story of="Stories.Formatting" />
+
+<Source language="tsx" code="SourceFormatting" />
+
+Scale [#scale]
+
+Fixed Domain [#fixed-domain]
+
+Explicit X and Y domain for a fixed range or consistent scale across charts.
+
+<Story of="Stories.FixedDomain" />
+
+<Source language="tsx" code="SourceFixedDomain" />
+
+Nice Values [#nice-values]
+
+Domain extended to nice round values (e.g. 0.2–1.0).
+
+<Story of="Stories.NiceValues" />
+
+<Source language="tsx" code="SourceNiceValues" />
+
+Zero Included [#zero-included]
+
+X and Y domains include zero via `xZero` and `yZero`.
+
+<Story of="Stories.ZeroIncluded" />
+
+<Source language="tsx" code="SourceZeroIncluded" />
+
+Custom Ticks [#custom-ticks]
+
+Explicit tick values or count with `xTickValues` / `yTickValues` or `xNumTicks` / `yNumTicks`.
+
+<Story of="Stories.CustomTicks" />
+
+<Source language="tsx" code="SourceCustomTicks" />
+
+Band Padding [#band-padding]
+
+Outer padding on a band-scale axis with `xPaddingOuter` / `yPaddingOuter`.
+
+<Story of="Stories.BandPadding" />
+
+<Source language="tsx" code="SourceBandPadding" />
+
+Interactive [#interactive]
+
+Tooltip Disabled [#tooltip-disabled]
+
+Tooltip, crosshair, and data point glyphs all disabled (`tooltip={false}`, `showCrosshair={false}`, `showDataPoints={false}`).
+
+<Story of="Stories.TooltipDisabled" />
+
+<Source language="tsx" code="SourceTooltipDisabled" />
+
+Crosshair Only [#crosshair-only]
+
+Only the vertical crosshair on hover; tooltip and data point glyphs disabled.
+
+<Story of="Stories.CrosshairOnly" />
+
+<Source language="tsx" code="SourceCrosshairOnly" />
+
+Custom Tooltip Formatting [#custom-tooltip-formatting]
+
+Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
+
+<Story of="Stories.CustomTooltipFormatting" />
+
+<Source language="tsx" code="SourceCustomTooltipFormatting" />
+
+Data [#data]
+
+Custom Accessors [#custom-accessors]
+
+Custom data shape (e.g. `date`/`value`) with `xAccessor` and `yAccessor`.
+
+<Story of="Stories.CustomAccessors" />
+
+<Source language="tsx" code="SourceCustomAccessors" />
+
+Missing Values [#missing-values]
+
+Null Y values create breaks in the line.
+
+<Story of="Stories.MissingValues" />
+
+<Source language="tsx" code="SourceMissingValues" />
+
+Layout [#layout]
+
+Fixed Size [#fixed-size]
+
+Explicit chart size via `width` and `height` props (e.g. 800×400).
+
+<Story of="Stories.FixedSize" />
+
+<Source language="tsx" code="SourceFixedSize" />
+
+Featured [#featured]
+
+Bitcoin Price [#bitcoin-price]
+
+Time-series with date and currency formatting, gridlines, and nice Y-axis.
+
+<Story of="Stories.BitcoinPrice" />
+
+<Source language="tsx" code="SourceBitcoinPrice" />
+
+City Temperature [#city-temperature]
+
+Multiple series over time with legend, shared time axis, and temperature (°F) formatting.
+
+<Story of="Stories.CityTemperature" />
+
+<Source language="tsx" code="SourceCityTemperature" />
+
+Browser Usage [#browser-usage]
+
+Categorical X-axis (band scale) with multiple series and percentage formatting.
+
+<Story of="Stories.BrowserUsage" />
+
+<Source language="tsx" code="SourceBrowserUsage" />
+
+Right-to-Left [#right-to-left]
+
+The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes and labels accordingly.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+The chart root exposes data attributes that reflect prop state for styling:
+
+**Chart container:** `data-width`, `data-height`, `data-x-labels`, `data-y-labels`, `data-x-labels-vertical`, `data-x-baseline`, `data-y-baseline`, `data-x-tick-marks`, `data-y-tick-marks`
+
+Component Customization [#component-customization]
+
+Use the `className` prop on the chart container to add or override styles:
+
+```tsx
+<LineChart series={series} className="my-custom-chart" />
+```
+
+Accessibility [#accessibility]
+
+ARIA Support [#aria-support]
+
+* Provide &#x2A;*`aria-label`** to describe the chart (e.g. "Monthly sales revenue from January to May 2024").
+* Use &#x2A;*`desc`** for a longer description rendered in the SVG `<desc>` for screen readers.
+* The component sets ARIA attributes on interactive and structural elements as needed.
+
+Troubleshooting [#troubleshooting]
+
+Chart Not Sizing or Empty [#chart-not-sizing-or-empty]
+
+Ensure the chart has a non-zero size. Place it in a container with explicit dimensions or use `width` and `height`:
+
+```tsx
+// ✅ Container with size
+<div style={{ width: '100%', height: 400 }}>
+  <LineChart series={series} />
+</div>
+
+// ✅ Or fixed dimensions on the component
+<LineChart series={series} width={600} height={400} />
+```
+
+Dates Not Displaying Correctly [#dates-not-displaying-correctly]
+
+Use `xType="time"` when the X-axis values are Date objects:
+
+```tsx
+// ❌ Without xType="time", Date objects may not scale correctly
+<LineChart series={seriesWithDates} />
+
+// ✅ Use time scale for Date X values
+<LineChart series={seriesWithDates} xType="time" />
+```
+
+Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
+
+Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
+
+Best Practices [#best-practices]
+
+When to Use LineChart [#when-to-use-linechart]
+
+* Use for trends over time or along a continuous scale.
+* Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
+* Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# Tooltip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
+* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
+* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+
+Props [#props]
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+Value formatting [#value-formatting]
+
+**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
+
+**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
+
+```tsx
+<Tooltip
+  tooltipData={tooltipData}
+  series={series}
+  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
+/>
+```
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic tooltip with a single series and default formatting.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Tooltip with multiple series; all series at the same X position are shown together.
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+Arrow [#arrow]
+
+Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+
+<Source language="tsx" code="SourceArrow" />
+
+<Story of="Stories.Arrow" />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+Troubleshooting [#troubleshooting]
+
+Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
+
+
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
+# useChartColor
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+Wrap your chart (or list) with `ChartColorProvider`; each component that calls `useChartColor()` receives a CSS variable reference. Indices are assigned in an effect at mount, so allocation is safe under React concurrent rendering and StrictMode. Same component instance keeps the same color; colors cycle after the ninth consumer. No need to pass an index—order in the tree determines assignment.
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Single series [#single-series]
+
+One series using the first chart color.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple series [#multiple-series]
+
+Multiple series each receiving the next color in sequence.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultiSeries" />
+
+
+# useNormalizedSeries
+
+
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
+
+```tsx
+const series = useNormalizedSeries(seriesProp);
+```
+
+
+# useScrollableXYChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+**Inputs.** Wire `parentRef` to the scroll container and `xAxisRef` / `yAxisRef` to the axis groups. Optionally pass `xLabelsOrientation` (`'auto'` | `'horizontal'` | `'vertical'`, default `'auto'`) to force the category-label layout; `'auto'` rotates labels vertical when the visible width can't fit the horizontal-tick footprint plus the Y-axis width.
+
+**Outputs.** The hook returns `margin`, `chartWidth`, `chartHeight`, `xLabelsVertical`, `scrollLeft` / `scrollTop`, and `yAxisRect` for the chart to consume. Width and height are sized to whichever is larger — the visible slot or the room the rendered labels need — so the chart grows past the viewport and the parent scrolls when labels demand more space.
+
+**Behavior.** Measurement runs through `useParentSize`, a `MutationObserver`, and a `ResizeObserver` on the wired nodes. All axis measurements are batched in one `requestAnimationFrame` and bail out when the result hasn't changed, so a burst of observer fires costs at most one reflow and one render per frame.
+
+```tsx
+const {
+  parentRef, xAxisRef, yAxisRef,
+  margin, chartWidth, chartHeight,
+  xLabelsVertical, scrollLeft, scrollTop, yAxisRect,
+} = useScrollableXYChart();
+```
+
+Examples [#examples]
+
+Auto layout [#auto-layout]
+
+Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
+
+<Source language="tsx" code="SourceExample" />
+
+<Story of="Stories.AutoLayout" />
+
+
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+Examples [#examples]
+
+Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+
+# Flex
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Flex is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Recommended default**: Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Flex` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+Examples [#examples]
+
+Default [#default]
+
+Basic horizontal flex layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Direction [#direction]
+
+The `direction` prop controls the main axis orientation.
+
+<Story of="Stories.Direction" />
+
+<Source language="tsx" code="SourceDirection" />
+
+Alignment [#alignment]
+
+Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+Gap [#gap]
+
+The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+Wrap [#wrap]
+
+The `wrap` prop controls whether items wrap to multiple lines.
+
+<Story of="Stories.Wrap" />
+
+<Source language="tsx" code="SourceWrap" />
+
+Navbar [#navbar]
+
+A common navigation bar pattern using space-between and nested Flex containers.
+
+<Story of="Stories.Navbar" />
+
+<Source language="tsx" code="SourceNavbar" />
+
+Sidebar [#sidebar]
+
+A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
+
+<Story of="Stories.Sidebar" />
+
+<Source language="tsx" code="SourceSidebar" />
+
+RTL Support [#rtl-support]
+
+Flex uses CSS logical properties which automatically adapt to RTL layouts. The `direction` prop values (`row`, `row-reverse`) respect the document direction.
+
+Design Tokens [#design-tokens]
+
+All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+Migration from @ux/box [#migration-from-uxbox]
+
+| Current `@ux/box`                    | New Pattern                      |
+| ------------------------------------ | -------------------------------- |
+| `<Box orientation="horizontal">`     | `<Flex direction="row" >`        |
+| `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
+| `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
+| `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+Examples [#examples]
+
+Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
