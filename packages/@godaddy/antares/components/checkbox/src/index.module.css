@@ -52,10 +52,6 @@
   transform: scale(0.95);
 }
 
-.checkbox:not([data-disabled]):hover .indicator {
-  border-color: var(--bd-primary);
-}
-
 .checkbox:hover:not([data-disabled]) .indicator,
 .checkbox[data-focused] .indicator,
 .checkbox[data-selected]:hover:not([data-disabled]) .indicator,

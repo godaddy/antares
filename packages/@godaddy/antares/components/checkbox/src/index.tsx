@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import {
   FieldError as RACFieldError,
   type FieldErrorProps as RACFieldErrorProps,
@@ -17,7 +17,7 @@ import styles from './index.module.css';
 
 export interface CheckboxProps extends RACCheckboxProps {
   /** The content of the checkbox label. */
-  children?: React.ReactNode;
+  children?: ReactNode;
 
   /** Additional class names to apply to the checkbox component. */
   className?: string;
