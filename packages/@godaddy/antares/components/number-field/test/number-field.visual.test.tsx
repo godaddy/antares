@@ -32,17 +32,17 @@ describe('@godaddy/antares', function antares() {
 
     it('hideStepper example', async function hideStepperRender() {
       const { container } = await render(<NumberFieldHideStepperExample />);
-      await expect(container).toMatchScreenshot('hideStepper');
+      await expect(container).toMatchScreenshot('hide-stepper');
     });
 
     it('valueScale example', async function valueScaleRender() {
       const { container } = await render(<NumberFieldValueScaleExample />);
-      await expect(container).toMatchScreenshot('valueScale');
+      await expect(container).toMatchScreenshot('value-scale');
     });
 
     it('formatOptions example', async function formatOptionsRender() {
       const { container } = await render(<NumberFieldFormatOptionsExample />);
-      await expect(container).toMatchScreenshot('formatOptions');
+      await expect(container).toMatchScreenshot('format-options');
     });
   });
 });

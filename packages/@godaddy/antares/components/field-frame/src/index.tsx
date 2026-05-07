@@ -145,7 +145,7 @@ export const FieldFrame = forwardRef<HTMLDivElement, FieldFrameProps>(function F
         </Flex>
         {errorMessage && <RACFieldError className={styles.error}>{errorMessage}</RACFieldError>}
         {description && (
-          <Text as="div" slot="description" className={styles.description}>
+          <Text as="div" slot="description">
             {description}
           </Text>
         )}

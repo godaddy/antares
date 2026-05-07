@@ -19,11 +19,6 @@
   color: var(--checkbox-critical-color);
 }
 
-.checkbox[data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
 .indicator {
   width: 1.25em;
   aspect-ratio: 1;
@@ -50,10 +45,6 @@
 
 .checkbox[data-pressed]:not([data-disabled]) .indicator {
   transform: scale(0.95);
-}
-
-.checkbox:not([data-disabled]):hover .indicator {
-  border-color: var(--bd-primary);
 }
 
 .checkbox:hover:not([data-disabled]) .indicator,
