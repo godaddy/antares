@@ -53,11 +53,11 @@
   "devDependencies": {
     "@godaddy/generate-cdn-url": "*",
     "@rollup/plugin-replace": "^6.0.3",
-    "@storybook/addon-a11y": "^10.1.10",
-    "@storybook/addon-docs": "^10.1.10",
-    "@storybook/addon-onboarding": "^10.1.10",
-    "@storybook/addon-themes": "^10.1.10",
-    "@storybook/react-vite": "^10.1.10",
+    "@storybook/addon-a11y": "^10.3.6",
+    "@storybook/addon-docs": "^10.3.6",
+    "@storybook/addon-onboarding": "^10.3.6",
+    "@storybook/addon-themes": "^10.3.6",
+    "@storybook/react-vite": "^10.3.6",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.3",
@@ -68,6 +68,6 @@
     "typescript": "^5.9.3",
     "unified": "^11.0.5",
     "vite": "^7.3.1",
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.4"
   }
 }
