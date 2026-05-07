@@ -1,0 +1,1 @@
+import{R as a,r as n}from"./iframe-CtknBCJw.js";const r=n.createContext({});function i(e){let{getContainer:t}=e,{getContainer:o}=c();return a.createElement(r.Provider,{value:{getContainer:t===null?void 0:t??o}},e.children)}function c(){var e;return(e=n.useContext(r))!==null&&e!==void 0?e:{}}export{c as $,i as a};
