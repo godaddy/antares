@@ -34,10 +34,13 @@ jobs:
 
       - name: Build Storybook
         run: npx nx build:storybook docs
+        env:
+          STORYBOOK_BASE_PATH: '/antares/storybook/'
 
-      - name: Deploy to GitHub Pages (Root)
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: ./apps/docs/storybook-static
-          clean: false
+          target-folder: storybook
+          clean: true
