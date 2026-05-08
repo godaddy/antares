@@ -1,0 +1,1 @@
+import{R as a,r as o}from"./iframe-CZ2Upcg5.js";function p(r){const t=typeof r=="function",e=t&&(r.prototype?.isReactComponent||r.prototype?.render),s=t&&!e&&r.length!==1;return Number.parseInt(a.version.split(".")[0],10)<19&&s?o.forwardRef(r):r}export{p as w};
