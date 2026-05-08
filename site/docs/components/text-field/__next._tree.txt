@@ -1,4 +1,0 @@
-:HL["/site/_next/static/chunks/08f0_3bwdhew8.css","style"]
-:HL["/site/_next/static/chunks/0c8w0egzo5xz2.css","style"]
-:HL["/site/_next/static/media/83afe278b6a6bb3c-s.p.0q-301v4kxxnr.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"docs","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"oc","key":"components/text-field","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"fZhYnGT_A8kvhdpl1xeIl"}
