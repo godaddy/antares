@@ -32,7 +32,7 @@ jobs:
         run: npx nx build site
         env:
           GITHUB_PAGES: 'true'
-          NEXT_PUBLIC_BASE_PATH: '/pr-${{ github.event.pull_request.number }}-site'
+          NEXT_PUBLIC_BASE_PATH: '/${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}-site'
 
       - name: Prepare for GitHub Pages
         working-directory: apps/site/out

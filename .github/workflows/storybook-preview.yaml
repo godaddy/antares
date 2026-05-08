@@ -28,13 +28,15 @@ jobs:
 
       - name: Build Storybook
         run: npx nx build:storybook docs
+        env:
+          STORYBOOK_BASE_PATH: '/${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}-storybook/'
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: ./apps/docs/storybook-static
-          target-folder: pr-${{ github.event.pull_request.number }}
+          target-folder: pr-${{ github.event.pull_request.number }}-storybook
           clean: false
 
       - name: Post Preview URL Comment
@@ -43,15 +45,12 @@ jobs:
           script: |
             const prNumber = context.payload.pull_request.number;
             const repo = context.repo;
-            const previewUrl = `https://${repo.owner}.github.io/${repo.repo}/pr-${prNumber}/`;
+            const pagesResponse = await github.rest.repos.getPages({ owner: repo.owner, repo: repo.repo });
+            const pagesBaseUrl = pagesResponse.data.html_url.replace(/\/$/, '');
+            const previewUrl = `${pagesBaseUrl}/pr-${prNumber}-storybook/`;
 
-            const commentBody = `## 📚 Storybook Preview
+            const commentBody = `## 📚 Storybook Preview\n\nPreview URL: ${previewUrl}\n\nPreview will be automatically deleted when this PR is closed.`;
 
-            Preview URL: ${previewUrl}
-
-            Preview will be automatically deleted when this PR is closed.`;
-
-            // Find existing comment
             const comments = await github.rest.issues.listComments({
               owner: repo.owner,
               repo: repo.repo,
@@ -64,7 +63,6 @@ jobs:
             );
 
             if (botComment) {
-              // Update existing comment
               await github.rest.issues.updateComment({
                 owner: repo.owner,
                 repo: repo.repo,
@@ -72,7 +70,6 @@ jobs:
                 body: commentBody,
               });
             } else {
-              // Create new comment
               await github.rest.issues.createComment({
                 owner: repo.owner,
                 repo: repo.repo,
@@ -92,7 +89,7 @@ jobs:
 
       - name: Remove PR Directory
         run: |
-          PR_DIR="pr-${{ github.event.pull_request.number }}"
+          PR_DIR="pr-${{ github.event.pull_request.number }}-storybook"
           if [ -d "$PR_DIR" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
