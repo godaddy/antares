@@ -9,6 +9,7 @@ import { IconOnlyExample } from './examples/icon-only.tsx';
 import { IconAndTextExample } from './examples/icon-and-text.tsx';
 import { DisabledExample } from './examples/disabled.tsx';
 import { RTLExample } from './examples/rtl.tsx';
+import { WithDropdownExample } from './examples/with-dropdown.tsx';
 import { ButtonGroup } from './src/index.tsx';
 
 export default getMeta({
@@ -32,6 +33,8 @@ export const IconAndText = getStory(IconAndTextExample);
 export const Disabled = getStory(DisabledExample);
 
 export const RTL = getStory(RTLExample);
+
+export const WithDropdown = getStory(WithDropdownExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
