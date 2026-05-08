@@ -37,6 +37,7 @@ describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
     it('basic example', async function basicRender() {
       const { container } = await render(<CheckboxBasic />);
+      await page.getByRole('document').hover({ position: { x: 100, y: 100 } });
       await expect(container).toMatchScreenshot('basic');
     });
 
