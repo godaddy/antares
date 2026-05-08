@@ -35,7 +35,7 @@ jobs:
       - name: Build Storybook
         run: npx nx build:storybook docs
         env:
-          STORYBOOK_BASE_PATH: '/antares/storybook/'
+          STORYBOOK_BASE_PATH: '/${{ github.event.repository.name }}/storybook/'
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
