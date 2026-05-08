@@ -15,13 +15,16 @@ describe('@godaddy/antares', function antares() {
     // Preload the icons used by the checkbox component in case they are not already loaded
     set({
       minus: (
-        <svg viewBox="0 0 24 24">
-          <path d="M20 12.75H4a.75.75 0 1 1 0-1.5h16a.75.75 0 1 1 0 1.5z" />
+        <svg fill="none" height="24" width="24">
+          <path d="M20 12.75H4a.75.75 0 1 1 0-1.5h16a.75.75 0 1 1 0 1.5z" fill="#111" />
         </svg>
       ),
       checkmark: (
-        <svg viewBox="0 0 24 24">
-          <path d="M9 18.25a.748.748 0 0 1-.53-.22l-5-5a.75.75 0 0 1 1.06-1.06L9 16.44 19.47 5.97a.75.75 0 0 1 1.06 1.06l-11 11a.748.748 0 0 1-.53.22z" />
+        <svg fill="none" height="24" width="24">
+          <path
+            d="M9 18.25a.748.748 0 0 1-.53-.22l-5-5a.75.75 0 0 1 1.06-1.06L9 16.44 19.47 5.97a.75.75 0 0 1 1.06 1.06l-11 11a.748.748 0 0 1-.53.22z"
+            fill="#111"
+          />
         </svg>
       )
     });
