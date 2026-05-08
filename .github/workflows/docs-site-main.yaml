@@ -39,7 +39,7 @@ jobs:
         run: npx nx build site
         env:
           GITHUB_PAGES: 'true'
-          NEXT_PUBLIC_BASE_PATH: '/site'
+          NEXT_PUBLIC_BASE_PATH: '/antares/site'
 
       - name: Prepare for GitHub Pages
         working-directory: apps/site/out
