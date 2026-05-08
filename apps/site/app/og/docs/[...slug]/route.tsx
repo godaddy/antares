@@ -9,10 +9,13 @@ export async function GET(_req: Request, { params }: RouteContext<'/og/docs/[...
   const page = source.getPage((await params).slug.slice(0, -1));
   if (!page) notFound();
 
-  return new ImageResponse(<DefaultImage title={page.data.title} description={page.data.description} site="UXCore" />, {
-    width: 1200,
-    height: 630
-  });
+  return new ImageResponse(
+    <DefaultImage title={page.data.title} description={page.data.description} site="Antares" />,
+    {
+      width: 1200,
+      height: 630
+    }
+  );
 }
 
 export function generateStaticParams() {

@@ -19,7 +19,7 @@ export interface NumberFieldProps
 }
 
 /**
- * UXCore NumberField component. Renders a numeric input with label, description, error message, and optional stepper buttons.
+ * Antares NumberField component. Renders a numeric input with label, description, error message, and optional stepper buttons.
  *
  * @param props - {@link NumberFieldProps}
  * @param ref - Ref for the input element.

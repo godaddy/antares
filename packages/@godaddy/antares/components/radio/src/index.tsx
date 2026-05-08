@@ -41,7 +41,7 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children' | '
 }
 
 /**
- * UXCore RadioGroup component
+ * Antares RadioGroup component
  *
  * @param props - {@link RadioGroupProps}
  * @returns RadioGroup component with label, radios, description, and error message
@@ -113,7 +113,7 @@ export interface RadioProps extends Omit<RACRadioProps, 'children'> {
 }
 
 /**
- * UXCore Radio component
+ * Antares Radio component
  *
  * @param props - {@link RadioProps}
  * @returns Radio button with indicator and label
