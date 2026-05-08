@@ -668,174 +668,6 @@ Icon accessories [#icon-accessories]
 <Source language="tsx" code="SourceIconAccessories" />
 
 
-# Menu
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceMenu" />
-
-With Submenus [#with-submenus]
-
-<Story of="Stories.WithSubmenus" />
-
-<Source language="tsx" code="SourceMenuSubmenu" />
-
-With Selection [#with-selection]
-
-<Story of="Stories.WithSelection" />
-
-<Source language="tsx" code="SourceMenuSelection" />
-
-With Sections [#with-sections]
-
-<Story of="Stories.WithSections" />
-
-<Source language="tsx" code="SourceMenuSections" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-React Aria Components automatically adds data attributes for styling different states:
-
-**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
-
-**Popover:** `data-entering`, `data-exiting`
-
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  color: #1e40af;
-}
-
-[data-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-[data-entering] {
-  animation: slideIn 0.2s ease-out;
-}
-```
-
-Component Customization [#component-customization]
-
-Individual child components can be styled by passing `className` props:
-
-```jsx
-<Menu>
-  <MenuItem id="special" className="premium-item">
-    Premium Feature
-  </MenuItem>
-  <MenuSection className="featured-section">
-    <MenuHeader>Featured</MenuHeader>
-    <MenuItem id="new">What's New</MenuItem>
-  </MenuSection>
-</Menu>
-```
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Space/Enter**: Opens menu and activates items
-* **Arrow Down/Up**: Navigate through items
-* **Arrow Right**: Opens submenu
-* **Arrow Left**: Closes submenu
-* **Home/End**: Jump to first/last item
-* **Escape**: Closes menu
-* **Tab**: Closes menu and moves to next element
-* **Type to select**: Type to jump to matching items
-
-Troubleshooting [#troubleshooting]
-
-Submenu Not Opening [#submenu-not-opening]
-
-```jsx
-// ❌ Wrong: MenuItem used directly
-<MenuItem id="share">
-  Share
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
-</MenuItem>
-
-// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
-<SubmenuTrigger>
-  <MenuItem id="share">Share</MenuItem>
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
-</SubmenuTrigger>
-```
-
-Selection Not Working [#selection-not-working]
-
-```jsx
-// ❌ Wrong: Using both controlled and uncontrolled props
-<Menu
-  selectedKeys={selected}
-  defaultSelectedKeys={['option1']}
-  selectionMode="single"
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-
-// ✅ Controlled mode
-<Menu
-  selectionMode="single"
-  selectedKeys={selected}
-  onSelectionChange={setSelected}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-
-// ✅ Uncontrolled mode
-<Menu
-  selectionMode="single"
-  defaultSelectedKeys={['option1']}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-```
-
-Styling Not Applying [#styling-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
-
-/* ✅ Use data attributes for higher specificity */
-.my-menu [data-selected] {
-  background-color: red;
-}
-```
-
-
 # Icon
 
 
@@ -1246,6 +1078,174 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# Menu
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceMenu" />
+
+With Submenus [#with-submenus]
+
+<Story of="Stories.WithSubmenus" />
+
+<Source language="tsx" code="SourceMenuSubmenu" />
+
+With Selection [#with-selection]
+
+<Story of="Stories.WithSelection" />
+
+<Source language="tsx" code="SourceMenuSelection" />
+
+With Sections [#with-sections]
+
+<Story of="Stories.WithSections" />
+
+<Source language="tsx" code="SourceMenuSections" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+React Aria Components automatically adds data attributes for styling different states:
+
+**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
+
+**Popover:** `data-entering`, `data-exiting`
+
+```css
+[data-selected] {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-entering] {
+  animation: slideIn 0.2s ease-out;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual child components can be styled by passing `className` props:
+
+```jsx
+<Menu>
+  <MenuItem id="special" className="premium-item">
+    Premium Feature
+  </MenuItem>
+  <MenuSection className="featured-section">
+    <MenuHeader>Featured</MenuHeader>
+    <MenuItem id="new">What's New</MenuItem>
+  </MenuSection>
+</Menu>
+```
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Space/Enter**: Opens menu and activates items
+* **Arrow Down/Up**: Navigate through items
+* **Arrow Right**: Opens submenu
+* **Arrow Left**: Closes submenu
+* **Home/End**: Jump to first/last item
+* **Escape**: Closes menu
+* **Tab**: Closes menu and moves to next element
+* **Type to select**: Type to jump to matching items
+
+Troubleshooting [#troubleshooting]
+
+Submenu Not Opening [#submenu-not-opening]
+
+```jsx
+// ❌ Wrong: MenuItem used directly
+<MenuItem id="share">
+  Share
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</MenuItem>
+
+// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
+<SubmenuTrigger>
+  <MenuItem id="share">Share</MenuItem>
+  <Menu>
+    <MenuItem id="email">Email</MenuItem>
+  </Menu>
+</SubmenuTrigger>
+```
+
+Selection Not Working [#selection-not-working]
+
+```jsx
+// ❌ Wrong: Using both controlled and uncontrolled props
+<Menu
+  selectedKeys={selected}
+  defaultSelectedKeys={['option1']}
+  selectionMode="single"
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Controlled mode
+<Menu
+  selectionMode="single"
+  selectedKeys={selected}
+  onSelectionChange={setSelected}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+
+// ✅ Uncontrolled mode
+<Menu
+  selectionMode="single"
+  defaultSelectedKeys={['option1']}
+>
+  <MenuItem id="option1">Option 1</MenuItem>
+</Menu>
+```
+
+Styling Not Applying [#styling-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes for higher specificity */
+.my-menu [data-selected] {
+  background-color: red;
+}
+```
 
 
 # NumberField
@@ -2683,6 +2683,69 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Gauge Chart
 
 
@@ -3141,69 +3204,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Tooltip
 
 
@@ -3485,6 +3485,110 @@ Design Tokens [#design-tokens]
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+Examples [#examples]
+
+Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+
 # Flex
 
 
@@ -3589,107 +3693,3 @@ Migration from @ux/box [#migration-from-uxbox]
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
-
-
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-Examples [#examples]
-
-Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
