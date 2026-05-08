@@ -1,6 +1,0 @@
-import{j as e}from"./iframe-BrDvb0KO.js";import{useMDXComponents as o}from"./index-Dl1B0LWp.js";import"./preload-helper-PPVm8Dsz.js";function r(s){const n={code:"code",h1:"h1",h2:"h2",p:"p",pre:"pre",...o(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{id:"usenormalizedseries",children:"useNormalizedSeries"}),`
-`,e.jsx(n.p,{children:"A hook that ensures every series config has a stable unique id, generating one from useId when omitted."}),`
-`,e.jsx(n.h2,{id:"for-use-with-chart-components-not-exported",children:"For use with chart components (not exported)"}),`
-`,e.jsxs(n.p,{children:["Accepts a ",e.jsx(n.code,{children:"SeriesConfig[]"})," array and returns a memoized copy where each item is guaranteed to have an ",e.jsx(n.code,{children:"id"}),". When an item has no ",e.jsx(n.code,{children:"id"}),", one is generated using a component-scoped prefix from React's ",e.jsx(n.code,{children:"useId"}),", ensuring IDs are unique across multiple chart instances on the same page. Existing ",e.jsx(n.code,{children:"id"})," values are preserved as-is."]}),`
-`,e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-tsx",children:`const series = useNormalizedSeries(seriesProp);
-`})})]})}function a(s={}){const{wrapper:n}={...o(),...s.components};return n?e.jsx(n,{...s,children:e.jsx(r,{...s})}):r(s)}export{a as default};
