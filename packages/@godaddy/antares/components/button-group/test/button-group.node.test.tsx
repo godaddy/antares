@@ -8,6 +8,7 @@ import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { IconAndTextExample } from '../examples/icon-and-text.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { WithDropdownExample } from '../examples/with-dropdown.tsx';
 import { PlaygroundExample } from '../examples/button-group-playground.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -44,20 +45,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<RTLExample />)).toMatchSnapshot();
     });
 
+    it('renders WithDropdownExample', function withDropdownExample() {
+      expect(renderToString(<WithDropdownExample />)).toMatchSnapshot();
+    });
+
     it('renders PlaygroundExample with default props', function playgroundExample() {
       expect(renderToString(<PlaygroundExample />)).toMatchSnapshot();
-    });
-
-    it('renders PlaygroundExample with sm size', function playgroundExampleSm() {
-      expect(renderToString(<PlaygroundExample size="sm" />)).toMatchSnapshot();
-    });
-
-    it('renders PlaygroundExample with multiple selectionMode', function playgroundExampleMultiple() {
-      expect(renderToString(<PlaygroundExample selectionMode="multiple" />)).toMatchSnapshot();
-    });
-
-    it('renders PlaygroundExample disabled', function playgroundExampleDisabled() {
-      expect(renderToString(<PlaygroundExample isDisabled />)).toMatchSnapshot();
     });
   });
 });

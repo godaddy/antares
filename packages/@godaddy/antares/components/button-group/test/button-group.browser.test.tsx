@@ -8,6 +8,7 @@ import { ControlledExample } from '../examples/controlled.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { WithDropdownExample } from '../examples/with-dropdown.tsx';
 import { ButtonGroup, ButtonGroupItem } from '@godaddy/antares';
 import type { Key } from 'react-aria-components';
 
@@ -241,6 +242,37 @@ describe('@godaddy/antares', function antares() {
       // Re-clicking should keep it selected
       await user.click(day);
       assume(day.element().getAttribute('aria-checked')).equals('true');
+    });
+
+    it('opens the alignment dropdown and shows all three options', async function withDropdownOpensMenu() {
+      const user = userEvent.setup();
+      await render(<WithDropdownExample />);
+
+      await user.click(page.getByRole('button', { name: 'Align Left' }));
+
+      assume(page.getByRole('menuitemradio', { name: 'Align Left' }).query()).is.not.equal(null);
+      assume(page.getByRole('menuitemradio', { name: 'Align Center' }).query()).is.not.equal(null);
+      assume(page.getByRole('menuitemradio', { name: 'Align Right' }).query()).is.not.equal(null);
+    });
+
+    it('clicking an alignment option updates the trigger label', async function withDropdownClickSelection() {
+      const user = userEvent.setup();
+      await render(<WithDropdownExample />);
+
+      await user.click(page.getByRole('button', { name: 'Align Left' }));
+      await user.click(page.getByRole('menuitemradio', { name: 'Align Right' }));
+
+      assume(page.getByRole('button', { name: 'Align Right' }).query()).is.not.equal(null);
+    });
+
+    it('selects an alignment option with keyboard navigation', async function withDropdownKeyboardSelection() {
+      const user = userEvent.setup();
+      await render(<WithDropdownExample />);
+
+      await user.click(page.getByRole('button', { name: 'Align Left' }));
+      await user.keyboard('{ArrowDown}{Enter}');
+
+      assume(page.getByRole('button', { name: 'Align Center' }).query()).is.not.equal(null);
     });
   });
 });

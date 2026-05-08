@@ -27,12 +27,14 @@
   --button-group-item-font-size: calc(var(--button-group-font-size) / 1.125);
   --button-group-item-padding-inline: calc(var(--button-group-density) * 2);
   --button-group-item-padding-block: var(--button-group-density);
+  --button-group-item-icon-size: calc(var(--button-group-item-font-size) * var(--button-group-line-height));
 }
 
 .container[data-size="md"] .item {
   --button-group-item-font-size: var(--button-group-font-size);
   --button-group-item-padding-inline: calc(var(--button-group-density) * 3);
   --button-group-item-padding-block: calc(var(--button-group-density) * 2);
+  --button-group-item-icon-size: calc(var(--button-group-item-font-size) * var(--button-group-line-height));
 }
 
 /*
@@ -54,6 +56,13 @@
   font-size: var(--button-group-item-font-size);
   padding-inline: var(--button-group-item-padding-inline);
   padding-block: var(--button-group-item-padding-block);
+
+  & > svg {
+    width: var(--button-group-item-icon-size);
+    height: var(--button-group-item-icon-size);
+    flex-shrink: 0;
+    fill: currentColor;
+  }
 
   /* Layout */
   display: inline-flex;
@@ -88,6 +97,7 @@
   }
 
   /* Inset outline so overflow: clip on the container doesn't clip the ring */
+  &:where(:focus-visible),
   &:where([data-focus-visible]) {
     outline: 2px solid Highlight;
     outline-offset: -3px;

@@ -12,6 +12,7 @@ import SourceIconOnly from './examples/icon-only.tsx?raw';
 import SourceIconAndText from './examples/icon-and-text.tsx?raw';
 import SourceDisabled from './examples/disabled.tsx?raw';
 import SourceRTL from './examples/rtl.tsx?raw';
+import SourceWithDropdown from './examples/with-dropdown.tsx?raw';
 import * as Stories from './button-group.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -70,6 +71,13 @@ For compact layouts, items can contain only icons. Padding adjusts automatically
 
 <Story of={Stories.IconOnly} inline />
 <Source language="tsx" code={SourceIconOnly} />
+
+### With Dropdown
+
+Use a `MenuTrigger` inside a `ButtonGroup` when one of the actions has sub-options.
+
+<Story of={Stories.WithDropdown} inline />
+<Source language="tsx" code={SourceWithDropdown} />
 
 ### RTL Direction
 
