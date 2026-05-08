@@ -102,3 +102,10 @@ export {
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
 
 export { Modal, ModalTrigger, type ModalProps, type ModalTriggerProps } from '#components/modal';
+
+export {
+  ButtonGroup,
+  ButtonGroupItem,
+  type ButtonGroupProps,
+  type ButtonGroupItemProps
+} from '#components/button-group';
