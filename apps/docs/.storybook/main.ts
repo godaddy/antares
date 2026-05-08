@@ -37,6 +37,7 @@ const config: StorybookConfig = {
     // join(__dirname, './addons/why-did-you-render/index.ts'),
     '@storybook/addon-a11y',
     '@storybook/addon-onboarding',
+    '@storybook/addon-themes',
     '@bento/storybook-addon-helpers'
   ],
 
