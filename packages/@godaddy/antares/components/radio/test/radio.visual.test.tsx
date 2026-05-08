@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { set } from '#components/icon';
@@ -23,6 +23,10 @@ describe('@godaddy/antares', function antares() {
         </svg>
       )
     });
+  });
+
+  beforeEach(async function removeHover() {
+    await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
   });
 
   describe('#RadioGroup', function radioGroupTests() {
