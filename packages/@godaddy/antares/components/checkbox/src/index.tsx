@@ -43,7 +43,7 @@ export interface CheckboxGroupProps extends RACCheckboxGroupProps {
 }
 
 /**
- * UXCore Checkbox component. Renders a checkbox input with an associated label.
+ * Antares Checkbox component. Renders a checkbox input with an associated label.
  *
  * @param props - {@link CheckboxProps}
  */
@@ -74,7 +74,7 @@ export function Checkbox(props: CheckboxProps) {
 }
 
 /**
- * UXCore CheckboxGroup component. Renders a group meant to hold checkboxes with shared state.
+ * Antares CheckboxGroup component. Renders a group meant to hold checkboxes with shared state.
  *
  * @param props - {@link CheckboxGroupProps}
  */
