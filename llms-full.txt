@@ -2,7 +2,7 @@
 
 
 
-[Documentation](https://scaling-adventure-4379gjj.pages.github.io/site/) | [Storybook](https://scaling-adventure-4379gjj.pages.github.io/)
+[Documentation](https://godaddy.github.io/antares) | [Storybook](https://godaddy.github.io/antares/storybook)
 
 Quick Start [#quick-start]
 
@@ -678,7 +678,7 @@ Icon accessories [#icon-accessories]
 
 <Meta of="Stories" name="Overview" />
 
-The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the UXCore design system.
+The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the Antares design system.
 
 Features [#features]
 
@@ -688,7 +688,7 @@ Features [#features]
 * **Color inheritance**: Uses `currentColor` by default for seamless theme integration
 * **Accessibility ready**: Built-in support for screen readers and keyboard navigation
 * **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **Bento integration**: Extends Bento Icon with additional UXCore-specific features
+* **Bento integration**: Extends Bento Icon with additional Antares-specific features
 
 Installation [#installation]
 
@@ -1766,130 +1766,6 @@ Always provide clear error messages:
 ```
 
 
-# SegmentedController
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="Stories.IconOnly" />
-
-<Source language="tsx" code="SourceIconOnly" />
-
-Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="Stories.Overflow" />
-
-<Source language="tsx" code="SourceOverflow" />
-
-RTL Direction [#rtl-direction]
-
-The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-Best Practices [#best-practices]
-
-When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
-
-
 # Select
 
 
@@ -2044,15 +1920,13 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 ```
 
 
-# Text
+# SegmentedController
 
 
 
 
 
 <Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
 
 Installation [#installation]
 
@@ -2062,42 +1936,112 @@ npm install --save @godaddy/antares
 
 Props [#props]
 
-The `Text` component accepts the following props:
-
 <PropTable />
 
 Examples [#examples]
 
-As [#as]
+Basic [#basic]
 
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
 
-<Source language="tsx" code="AsExample" />
+<Story of="Stories.Basic" />
 
-Align [#align]
+<Source language="tsx" code="SourceBasic" />
 
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+Controlled [#controlled]
 
-<Source language="tsx" code="AlignExample" />
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
 
-Max Lines [#max-lines]
+<Story of="Stories.Controlled" />
 
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+<Source language="tsx" code="SourceControlled" />
 
-<Source language="tsx" code="MaxLinesExample" />
+Sizes [#sizes]
 
-Wrap [#wrap]
+Three sizes are available: `sm`, `md` (default), and `lg`.
 
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+<Story of="Stories.Sizes" />
 
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
+<Source language="tsx" code="SourceSizes" />
 
-<Source language="tsx" code="WrapExample" />
+Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+Best Practices [#best-practices]
+
+When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
 
 
 # TextField
@@ -2180,6 +2124,62 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
 
 
 # Tooltip
@@ -2585,7 +2585,7 @@ The chart follows the current **layout direction** (LTR or RTL). By default, tha
 
 Design System Alignment [#design-system-alignment]
 
-The BarChart component is built to align with UXCore design principles:
+The BarChart component is built to align with Antares design principles:
 
 Spacing and Sizing [#spacing-and-sizing]
 
@@ -2683,7 +2683,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# Legend
+# DonutChart
 
 
 
@@ -2693,57 +2693,57 @@ All examples can be found in the Storybook interface:
 
 <Meta of="Stories" name="Overview" />
 
-Internal Component [#internal-component]
+Installation [#installation]
 
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+```bash
+npm install @godaddy/antares
+```
 
 Props [#props]
-
-The `Legend` component accepts the following props:
 
 <PropTable />
 
 Examples [#examples]
 
-Single Series [#single-series]
+Basic [#basic]
 
-Basic legend with a single series showing the default styling and layout.
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
-<Source language="tsx" code="SourceSingleSeries" />
+<Source language="tsx" code="SourceBasic" />
 
-<Story of="Stories.SingleSeries" />
+<Story of="Stories.Basic" />
 
-Multiple Series [#multiple-series]
+Single slice [#single-slice]
 
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Source language="tsx" code="SourceMultiSeries" />
+<Source language="tsx" code="SourceSingleSlice" />
 
-<Story of="Stories.MultipleSeries" />
+<Story of="Stories.SingleSlice" />
 
-With label [#with-label]
+Legend placement [#legend-placement]
 
-Legend with a visible label that is also used as the accessible label.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-<Source language="tsx" code="SourceWithLabel" />
+<Source language="tsx" code="SourceLegendLayout" />
 
-<Story of="Stories.WithLabel" />
+<Story of="Stories.LegendLayout" />
 
-Vertical orientation [#vertical-orientation]
+Small slices [#small-slices]
 
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
-<Source language="tsx" code="SourceVertical" />
+<Source language="tsx" code="SourceSmallSlices" />
 
-<Story of="Stories.Vertical" />
+<Story of="Stories.SmallSlices" />
 
-Legend size chart example [#legend-size-chart-example]
+Format value [#format-value]
 
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
 
-<Source language="tsx" code="SourceLegendSizeChart" />
+<Source language="tsx" code="SourceFormatValue" />
 
-<Story of="Stories.LegendSizeChart" />
+<Story of="Stories.FormatValue" />
 
 
 # Gauge Chart
@@ -2846,69 +2846,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
 
 
 # LineChart
@@ -3350,6 +3287,69 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
+
+
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
 
 
 # useScrollableXYChart
