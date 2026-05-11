@@ -1484,6 +1484,69 @@ Best Practices [#best-practices]
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
+# Pagination
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Default Active Index [#default-active-index]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="Stories.DefaultActive" />
+
+<Source language="tsx" code="SourceDefaultActive" />
+
+With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="Stories.WithLimit" />
+
+<Source language="tsx" code="SourceWithLimit" />
+
+onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="Stories.OnChange" />
+
+<Source language="tsx" code="SourceOnChange" />
+
+
 # NumberField
 
 
@@ -1588,69 +1651,6 @@ Best practices [#best-practices]
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-
-# Pagination
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Default Active Index [#default-active-index]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="Stories.DefaultActive" />
-
-<Source language="tsx" code="SourceDefaultActive" />
-
-With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="Stories.WithLimit" />
-
-<Source language="tsx" code="SourceWithLimit" />
-
-onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="Stories.OnChange" />
-
-<Source language="tsx" code="SourceOnChange" />
 
 
 # Popover
@@ -2410,6 +2410,116 @@ Best Practices [#best-practices]
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
+# AxisTitle
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `AxisTitle` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+X-Axis Title [#x-axis-title]
+
+X-axis title with default orientation.
+
+<Story of="Stories.XAxis" />
+
+<Source language="tsx" code="SourceXAxis" />
+
+Y-Axis Title [#y-axis-title]
+
+Y-axis title with default orientation.
+
+<Story of="Stories.YAxis" />
+
+<Source language="tsx" code="SourceYAxis" />
+
+RTL [#rtl]
+
+The axis title follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings, so the title stays aligned with the page.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Bar Chart
 
 
@@ -2803,53 +2913,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# AxisTitle
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `AxisTitle` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-X-Axis Title [#x-axis-title]
-
-X-axis title with default orientation.
-
-<Story of="Stories.XAxis" />
-
-<Source language="tsx" code="SourceXAxis" />
-
-Y-Axis Title [#y-axis-title]
-
-Y-axis title with default orientation.
-
-<Story of="Stories.YAxis" />
-
-<Source language="tsx" code="SourceYAxis" />
-
-RTL [#rtl]
-
-The axis title follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings, so the title stays aligned with the page.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Gauge Chart
 
 
@@ -2952,69 +3015,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 ```
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Legend
 
 
@@ -3076,104 +3076,6 @@ Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
 <Source language="tsx" code="SourceLegendSizeChart" />
 
 <Story of="Stories.LegendSizeChart" />
-
-
-# Tooltip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
-* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
-* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
-
-Props [#props]
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-Value formatting [#value-formatting]
-
-**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
-
-**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
-
-```tsx
-<Tooltip
-  tooltipData={tooltipData}
-  series={series}
-  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
-/>
-```
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic tooltip with a single series and default formatting.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Tooltip with multiple series; all series at the same X position are shown together.
-
-<Source language="tsx" code="SourceMultipleSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-Arrow [#arrow]
-
-Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
-
-<Source language="tsx" code="SourceArrow" />
-
-<Story of="Stories.Arrow" />
-
-
-# TooltipDismissStrip
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `TooltipDismissStrip` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
 
 
 # LineChart
@@ -3469,6 +3371,37 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# TooltipDismissStrip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `TooltipDismissStrip` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+
 # useChartColor
 
 
@@ -3517,6 +3450,73 @@ Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
+
+
+# Tooltip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
+* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
+* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+
+Props [#props]
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+Value formatting [#value-formatting]
+
+**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
+
+**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
+
+```tsx
+<Tooltip
+  tooltipData={tooltipData}
+  series={series}
+  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
+/>
+```
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic tooltip with a single series and default formatting.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Tooltip with multiple series; all series at the same X position are shown together.
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+Arrow [#arrow]
+
+Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+
+<Source language="tsx" code="SourceArrow" />
+
+<Story of="Stories.Arrow" />
 
 
 # useScrollableXYChart
