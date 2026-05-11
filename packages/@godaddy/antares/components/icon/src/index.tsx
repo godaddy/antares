@@ -38,9 +38,9 @@ ondemand(async function loader(icon: string) {
 });
 
 /**
- * Props interface for the UXCore Icon component
+ * Props interface for the Antares Icon component
  *
- * Extends BentoIconProps with additional color option specific to the UXCore
+ * Extends BentoIconProps with additional color option specific to the Antares
  * design system. Use the inherited width and height props for sizing.
  */
 export interface IconProps extends BentoIconProps {
@@ -56,7 +56,7 @@ export interface IconProps extends BentoIconProps {
 }
 
 /**
- * UXCore Icon component with color support
+ * Antares Icon component with color support
  *
  * Renders icons from the configured CDN with enhanced prop interface for
  * convenient styling. Use width and height props for sizing. Icons are loaded
@@ -86,7 +86,7 @@ export interface IconProps extends BentoIconProps {
  *
  * @throws {Error} If the icon name is invalid or cannot be loaded
  */
-export const Icon = forwardRef<SVGSVGElement, IconProps>(function UXCoreIcon(
+export const Icon = forwardRef<SVGSVGElement, IconProps>(function AntaresIcon(
   { color, className, children = <svg data-placeholder="true" />, ...rest },
   ref
 ) {

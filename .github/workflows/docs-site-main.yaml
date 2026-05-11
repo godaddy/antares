@@ -39,7 +39,7 @@ jobs:
         run: npx nx build site
         env:
           GITHUB_PAGES: 'true'
-          NEXT_PUBLIC_BASE_PATH: '/site'
+          NEXT_PUBLIC_BASE_PATH: '/${{ github.event.repository.name }}'
 
       - name: Prepare for GitHub Pages
         working-directory: apps/site/out
@@ -52,5 +52,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: ./apps/site/out
-          target-folder: site
           clean: true
+          clean-exclude: |
+            storybook
+            pr-*

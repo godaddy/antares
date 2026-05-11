@@ -2,7 +2,7 @@
 
 A collection of accessible, composable React components built on React Aria.
 
-[Documentation](https://scaling-adventure-4379gjj.pages.github.io/site/) | [Storybook](https://scaling-adventure-4379gjj.pages.github.io/)
+[Documentation](https://godaddy.github.io/antares) | [Storybook](https://godaddy.github.io/antares/storybook)
 
 ## Quick Start
 

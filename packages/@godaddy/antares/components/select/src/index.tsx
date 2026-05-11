@@ -124,7 +124,7 @@ export interface SelectProps<T extends object> extends SelectBaseProps<T> {
 }
 
 /**
- * UXCore Select component
+ * Antares Select component
  *
  * @param props - {@link SelectProps}
  */

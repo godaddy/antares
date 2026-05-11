@@ -68,6 +68,9 @@ const config: StorybookConfig = {
     const devPackages = ['storybook-addon-helpers', 'environment'];
 
     return mergeConfig(config, {
+      // Set base path for GitHub Pages subpath deployment
+      ...(process.env.STORYBOOK_BASE_PATH ? { base: process.env.STORYBOOK_BASE_PATH } : {}),
+
       // Set envDir to workspace root for proper monorepo support
       envDir: resolve(__dirname, '../../../'),
 
