@@ -2,7 +2,7 @@
 
 
 
-[Documentation](https://scaling-adventure-4379gjj.pages.github.io/site/) | [Storybook](https://scaling-adventure-4379gjj.pages.github.io/)
+[Documentation](https://godaddy.github.io/antares) | [Storybook](https://godaddy.github.io/antares/storybook)
 
 Quick Start [#quick-start]
 
@@ -86,95 +86,6 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 Components [#components]
 
 <ComponentCards />
-
-
-# Carousel
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="Stories.ExternalControlsUncontrolled" />
-
-<Source language="tsx" code="SourceExternalControlsUncontrolled" />
-
-External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="Stories.ExternalControlsControlled" />
-
-<Source language="tsx" code="SourceExternalControlsControlled" />
-
-Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="Stories.HideControls" />
-
-<Source language="tsx" code="SourceHideControls" />
-
-Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="Stories.VariableWidths" />
-
-<Source language="tsx" code="SourceVariableWidths" />
-
-Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="Stories.Events" />
-
-<Source language="tsx" code="SourceEvents" />
-
-RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
 
 
 # Button
@@ -272,6 +183,95 @@ Disabled [#disabled]
 <Story of="Stories.Disabled" />
 
 <Source language="tsx" code="SourceDisabled" />
+
+
+# Carousel
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="Stories.ExternalControlsUncontrolled" />
+
+<Source language="tsx" code="SourceExternalControlsUncontrolled" />
+
+External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="Stories.ExternalControlsControlled" />
+
+<Source language="tsx" code="SourceExternalControlsControlled" />
+
+Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="Stories.HideControls" />
+
+<Source language="tsx" code="SourceHideControls" />
+
+Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="Stories.VariableWidths" />
+
+<Source language="tsx" code="SourceVariableWidths" />
+
+Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="Stories.Events" />
+
+<Source language="tsx" code="SourceEvents" />
+
+RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
 
 
 # Checkbox
@@ -678,7 +678,7 @@ Icon accessories [#icon-accessories]
 
 <Meta of="Stories" name="Overview" />
 
-The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the UXCore design system.
+The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the Antares design system.
 
 Features [#features]
 
@@ -688,7 +688,7 @@ Features [#features]
 * **Color inheritance**: Uses `currentColor` by default for seamless theme integration
 * **Accessibility ready**: Built-in support for screen readers and keyboard navigation
 * **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **Bento integration**: Extends Bento Icon with additional UXCore-specific features
+* **Bento integration**: Extends Bento Icon with additional Antares-specific features
 
 Installation [#installation]
 
@@ -2842,7 +2842,7 @@ The chart follows the current **layout direction** (LTR or RTL). By default, tha
 
 Design System Alignment [#design-system-alignment]
 
-The BarChart component is built to align with UXCore design principles:
+The BarChart component is built to align with Antares design principles:
 
 Spacing and Sizing [#spacing-and-sizing]
 
@@ -2938,6 +2938,69 @@ All examples can be found in the Storybook interface:
 * **Horizontal Multi-Series**: Grouped horizontal bars
 * **Custom Domain**: Controlled x and y ranges
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
+
+
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
 
 
 # LineChart
@@ -3231,69 +3294,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
-
-
-# Legend
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `Legend` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic legend with a single series showing the default styling and layout.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-With label [#with-label]
-
-Legend with a visible label that is also used as the accessible label.
-
-<Source language="tsx" code="SourceWithLabel" />
-
-<Story of="Stories.WithLabel" />
-
-Vertical orientation [#vertical-orientation]
-
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
-
-<Source language="tsx" code="SourceVertical" />
-
-<Story of="Stories.Vertical" />
-
-Legend size chart example [#legend-size-chart-example]
-
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
-
-<Source language="tsx" code="SourceLegendSizeChart" />
-
-<Story of="Stories.LegendSizeChart" />
 
 
 # Tooltip
