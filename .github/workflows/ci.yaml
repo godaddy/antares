@@ -53,7 +53,8 @@ jobs:
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: visual-test-diffs-pr-${{ github.event.pull_request.number }}
+          name: visual-test-diffs-${{ github.event.pull_request.number || github.run_id }}
           path: packages/@godaddy/antares/.vitest-attachments/
+          include-hidden-files: true
           retention-days: 2
           if-no-files-found: ignore
