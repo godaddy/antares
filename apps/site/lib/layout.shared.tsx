@@ -8,7 +8,7 @@ export const gitConfig = {
 
 export const baseOptions: BaseLayoutProps = {
   nav: {
-    title: 'UXCore'
+    title: 'Antares'
   },
   links: [
     {

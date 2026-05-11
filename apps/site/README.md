@@ -1,6 +1,6 @@
 # site
 
-The UXCore documentation site — a Next.js app built with [Fumadocs](https://fumadocs.dev).
+The Antares design library documentation site — a Next.js app built with [Fumadocs](https://fumadocs.dev).
 
 Run the development server:
 
