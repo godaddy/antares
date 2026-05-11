@@ -8,7 +8,7 @@ import { LegendSizeChartExample } from './examples/legend-size-chart-example.tsx
 import { Legend } from './src/index.tsx';
 
 export default getMeta({
-  title: 'components/chart/Legend'
+  title: 'components/Chart/Legend'
 });
 
 export const Props = getComponentDocs(Legend);

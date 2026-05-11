@@ -9,7 +9,7 @@ import { AsExample } from './examples/as.tsx';
 import { Box } from './src/index.tsx';
 
 export default getMeta({
-  title: 'components/layout/Box'
+  title: 'components/Layout/Box'
 });
 
 export const Props = getComponentDocs(Box);

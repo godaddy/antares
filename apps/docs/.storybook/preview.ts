@@ -29,6 +29,7 @@ function Pre(props: React.ComponentProps<'pre'>) {
 }
 
 const preview: Preview = {
+  decorators: [withThemeTokens({ themes: RECIPES, defaultTheme: 'Legacy' })],
   parameters: {
     options: {
       storySort: {

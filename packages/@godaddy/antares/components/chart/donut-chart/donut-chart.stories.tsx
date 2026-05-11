@@ -9,7 +9,7 @@ import { SingleSliceExample } from './examples/single-slice.tsx';
 import { SmallSlicesExample } from './examples/small-slices.tsx';
 
 export default getMeta({
-  title: 'components/chart/DonutChart'
+  title: 'components/Chart/DonutChart'
 });
 
 export const Props = getComponentDocs(DonutChart);

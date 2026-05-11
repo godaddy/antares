@@ -11,7 +11,7 @@ import { GapExample } from './examples/gap.tsx';
 import { Flex } from './src/index.tsx';
 
 export default getMeta({
-  title: 'components/layout/Flex'
+  title: 'components/Layout/Flex'
 });
 
 export const Props = getComponentDocs(Flex);
