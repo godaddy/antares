@@ -5,7 +5,7 @@ import { NoRef } from './examples/no-ref.tsx';
 import { RestParams } from './examples/rest-params.tsx';
 
 export default getMeta({
-  title: 'higher-order components/forward'
+  title: 'Bento/higher-order components/forward'
 });
 
 export const Basic = getStory(BasicExample, {

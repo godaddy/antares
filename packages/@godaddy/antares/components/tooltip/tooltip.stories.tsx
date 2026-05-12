@@ -6,7 +6,7 @@ import { CustomAnchorExample } from './examples/custom-anchor.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/tooltip-playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Tooltip'
+  title: 'components/Tooltip'
 });
 
 export const Props = getComponentDocs(Tooltip);

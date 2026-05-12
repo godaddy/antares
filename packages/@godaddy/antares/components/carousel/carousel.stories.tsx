@@ -12,7 +12,7 @@ import { EventsExample } from './examples/events.tsx';
 import { Carousel } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Carousel'
+  title: 'components/Carousel'
 });
 
 export const Props = getComponentDocs(Carousel);

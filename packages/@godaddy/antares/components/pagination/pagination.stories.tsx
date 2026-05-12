@@ -9,7 +9,7 @@ import { DefaultExample } from './examples/default.tsx';
 import { Pagination } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Pagination'
+  title: 'components/Pagination'
 });
 
 export const Props = getComponentDocs(Pagination);
