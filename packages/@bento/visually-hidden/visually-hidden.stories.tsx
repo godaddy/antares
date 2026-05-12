@@ -4,7 +4,7 @@ import { DefaultExample } from './examples/default.tsx';
 import { CustomElementExample } from './examples/custom-element.tsx';
 
 export default getMeta({
-  title: 'components/VisuallyHidden'
+  title: 'Bento/components/VisuallyHidden'
 });
 
 export const Props = getComponentDocs(VisuallyHidden);

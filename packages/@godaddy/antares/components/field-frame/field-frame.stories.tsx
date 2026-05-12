@@ -8,7 +8,7 @@ import { FieldFrameBasic } from './examples/basic.tsx';
 import { FieldFrame } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/FieldFrame'
+  title: 'components/FieldFrame'
 });
 
 export const Props = getComponentDocs(FieldFrame);
