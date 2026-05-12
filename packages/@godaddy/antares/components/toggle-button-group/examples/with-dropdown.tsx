@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { ToggleButtonGroup, ToggleButton, Icon, Menu, MenuItem, MenuTrigger } from '@godaddy/antares';
 
-const ALIGNMENT_ICONS: Record<string, string> = {
+type Alignment = 'left' | 'center' | 'right';
+
+const ALIGNMENT_ICONS: Record<Alignment, string> = {
   left: 'align-left',
   center: 'align-center',
   right: 'align-right'
 };
 
-const ALIGNMENT_LABELS: Record<string, string> = {
+const ALIGNMENT_LABELS: Record<Alignment, string> = {
   left: 'Align Left',
   center: 'Align Center',
   right: 'Align Right'
@@ -15,7 +17,7 @@ const ALIGNMENT_LABELS: Record<string, string> = {
 
 export function WithDropdownExample() {
   const [formatting, setFormatting] = useState<Set<string>>(new Set());
-  const [alignment, setAlignment] = useState('left');
+  const [[alignment], setAlignment] = useState<Set<Alignment>>(new Set(['left']));
 
   return (
     <ToggleButtonGroup
@@ -38,13 +40,8 @@ export function WithDropdownExample() {
         </ToggleButton>
         <Menu
           selectionMode="single"
-          selectedKeys={new Set([alignment])}
-          onSelectionChange={function handleAlignmentChange(keys) {
-            const next = [...(keys as Set<string>)][0];
-            if (next) {
-              setAlignment(next);
-            }
-          }}
+          selectedKeys={[alignment]}
+          onSelectionChange={(keys) => setAlignment(new Set([...(keys as Set<Alignment>)]))}
         >
           <MenuItem id="left">{ALIGNMENT_LABELS.left}</MenuItem>
           <MenuItem id="center">{ALIGNMENT_LABELS.center}</MenuItem>
