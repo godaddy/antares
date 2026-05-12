@@ -9,7 +9,8 @@ import {
 } from 'react-aria-components';
 import styles from './index.module.css';
 
-export interface ButtonGroupProps extends Omit<RACToggleButtonGroupProps, 'className' | 'children' | 'orientation'> {
+export interface ToggleButtonGroupProps
+  extends Omit<RACToggleButtonGroupProps, 'className' | 'children' | 'orientation'> {
   /**
    * Size of the buttons within the group.
    * @default 'md'
@@ -19,7 +20,7 @@ export interface ButtonGroupProps extends Omit<RACToggleButtonGroupProps, 'class
   /** Additional class names applied to the root element. */
   className?: string;
 
-  /** `ButtonGroupItem` children. */
+  /** `ToggleButton` children. */
   children?: ReactNode;
 }
 
@@ -30,15 +31,15 @@ export interface ButtonGroupProps extends Omit<RACToggleButtonGroupProps, 'class
  * Selection props (`selectionMode`, `selectedKeys`, `defaultSelectedKeys`, `onSelectionChange`)
  * are passed directly from RAC `ToggleButtonGroup` for full API compatibility.
  *
- * @param props - The properties {@link ButtonGroupProps} passed to the component.
+ * @param props - The properties {@link ToggleButtonGroupProps} passed to the component.
  *
  * @example
- * <ButtonGroup aria-label="View" defaultSelectedKeys={['day']} selectionMode="single">
- *   <ButtonGroupItem id="day">Day</ButtonGroupItem>
- *   <ButtonGroupItem id="week">Week</ButtonGroupItem>
- * </ButtonGroup>
+ * <ToggleButtonGroup aria-label="View" defaultSelectedKeys={['day']} selectionMode="single">
+ *   <ToggleButton id="day">Day</ToggleButton>
+ *   <ToggleButton id="week">Week</ToggleButton>
+ * </ToggleButtonGroup>
  */
-export function ButtonGroup(props: ButtonGroupProps) {
+export function ToggleButtonGroup(props: ToggleButtonGroupProps) {
   const { size = 'md', className, children, ...rest } = props;
   const { direction } = useLocale();
 
@@ -49,7 +50,7 @@ export function ButtonGroup(props: ButtonGroupProps) {
   );
 }
 
-export interface ButtonGroupItemProps extends Omit<RACToggleButtonProps, 'className'> {
+export interface ToggleButtonProps extends Omit<RACToggleButtonProps, 'className'> {
   /**
    * The content of the item. Supports text, icon, or icon + text.
    * For icon-only items, provide an `aria-label` for screen readers.
@@ -61,14 +62,14 @@ export interface ButtonGroupItemProps extends Omit<RACToggleButtonProps, 'classN
 }
 
 /**
- * An individual toggle button within a `ButtonGroup`.
+ * An individual toggle button within a `ToggleButtonGroup`.
  *
  * The `id` prop is used as the selection key (matches `selectedKeys` / `defaultSelectedKeys`).
  * For icon-only items, always provide an `aria-label`.
  *
- * @param props - The properties {@link ButtonGroupItemProps} passed to the component.
+ * @param props - The properties {@link ToggleButtonProps} passed to the component.
  */
-export function ButtonGroupItem(props: ButtonGroupItemProps) {
+export function ToggleButton(props: ToggleButtonProps) {
   const { className, children, ...rest } = props;
 
   return (

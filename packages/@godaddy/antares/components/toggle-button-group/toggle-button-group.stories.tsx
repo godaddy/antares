@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/button-group-playground.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/toggle-button-group-playground.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { MultipleSelectionExample } from './examples/multiple-selection.tsx';
 import { ControlledExample } from './examples/controlled.tsx';
@@ -10,13 +10,13 @@ import { IconAndTextExample } from './examples/icon-and-text.tsx';
 import { DisabledExample } from './examples/disabled.tsx';
 import { RTLExample } from './examples/rtl.tsx';
 import { WithDropdownExample } from './examples/with-dropdown.tsx';
-import { ButtonGroup } from './src/index.tsx';
+import { ToggleButtonGroup } from './src/index.tsx';
 
 export default getMeta({
-  title: 'components/ButtonGroup'
+  title: 'components/ToggleButtonGroup'
 });
 
-export const Props = getComponentDocs(ButtonGroup);
+export const Props = getComponentDocs(ToggleButtonGroup);
 
 export const Default = getStory(DefaultExample);
 

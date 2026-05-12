@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ButtonGroup, ButtonGroupItem, Icon, Menu, MenuItem, MenuTrigger } from '@godaddy/antares';
+import { ToggleButtonGroup, ToggleButton, Icon, Menu, MenuItem, MenuTrigger } from '@godaddy/antares';
 
 const ALIGNMENT_ICONS: Record<string, string> = {
   left: 'align-left',
@@ -18,24 +18,24 @@ export function WithDropdownExample() {
   const [alignment, setAlignment] = useState('left');
 
   return (
-    <ButtonGroup
+    <ToggleButtonGroup
       aria-label="Text formatting"
       selectionMode="multiple"
       selectedKeys={formatting}
       onSelectionChange={(keys) => setFormatting(new Set([...(keys as Set<string>)].filter((k) => k !== 'align')))}
     >
-      <ButtonGroupItem id="bold" aria-label="Bold">
+      <ToggleButton id="bold" aria-label="Bold">
         <Icon icon="bold" />
-      </ButtonGroupItem>
-      <ButtonGroupItem id="italic" aria-label="Italic">
+      </ToggleButton>
+      <ToggleButton id="italic" aria-label="Italic">
         <Icon icon="italic" />
-      </ButtonGroupItem>
+      </ToggleButton>
 
       <MenuTrigger>
-        <ButtonGroupItem id="align" aria-label={ALIGNMENT_LABELS[alignment]}>
+        <ToggleButton id="align" aria-label={ALIGNMENT_LABELS[alignment]}>
           <Icon icon={ALIGNMENT_ICONS[alignment]} />
           <Icon icon="chevron-down" />
-        </ButtonGroupItem>
+        </ToggleButton>
         <Menu
           selectionMode="single"
           selectedKeys={new Set([alignment])}
@@ -51,6 +51,6 @@ export function WithDropdownExample() {
           <MenuItem id="right">{ALIGNMENT_LABELS.right}</MenuItem>
         </Menu>
       </MenuTrigger>
-    </ButtonGroup>
+    </ToggleButtonGroup>
   );
 }
