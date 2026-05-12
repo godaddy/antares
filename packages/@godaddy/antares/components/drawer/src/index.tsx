@@ -1,4 +1,15 @@
-import { createContext, forwardRef, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
+import type React from 'react';
+import {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type CSSProperties
+} from 'react';
 import { useLayoutEffect } from '@react-aria/utils';
 import {
   Dialog as RACDialog,
@@ -226,12 +237,12 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     latestRef.current.onOpenChange?.(false);
   }, []);
 
-  const drawerStyle: React.CSSProperties = {
+  const drawerStyle: CSSProperties = {
     ...(maxSize !== undefined && { '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize }),
     ...(hasSnapPoints && {
       [snap.axis === 'y' ? 'minBlockSize' : 'minInlineSize']: `${snap.maxSnap}px`
     })
-  } as React.CSSProperties;
+  } as CSSProperties;
 
   const contextValue = useMemo<DrawerContextValue>(
     function buildDrawerContext() {

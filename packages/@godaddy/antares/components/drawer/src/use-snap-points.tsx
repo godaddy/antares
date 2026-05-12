@@ -1,3 +1,4 @@
+import type React from 'react';
 import { useCallback, useMemo, useRef, useState, type RefObject } from 'react';
 import { useDragControls, type DragControls, type PanInfo } from 'motion/react';
 import { useResizeObserver } from '@react-aria/utils';

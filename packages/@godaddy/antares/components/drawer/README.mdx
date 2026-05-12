@@ -41,7 +41,7 @@ Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` 
 
 ### DrawerHandle
 
-Visual drag handle for touch gestures. Must be inside a `<Drawer>` with `snapPoints`. Renders a grab bar with a 44px touch target (24px for pointer:fine). Drag behavior activates automatically when snap points are present.
+Visual drag handle for touch gestures. Renders a grab bar with a 44px touch target (24px for pointer:fine). When inside a `<Drawer>` with `snapPoints`, the handle becomes interactive and drag-to-snap activates automatically. Without `snapPoints`, the handle renders as a decorative affordance only.
 
 | Prop | Type | Description |
 | --- | --- | --- |
