@@ -1,7 +1,7 @@
 .radioGroup {
   --radio-size: 1.25rem;
   --radio-dot-size: 0.5rem;
-  --radio-critical-color: var(--color-feedback-critical-strong, #ae1302);
+  --radio-critical-color: var(--color-feedback-critical-strong, var(--ux-1marogz, #ae1302));
 }
 
 .label--required::after {

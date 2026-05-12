@@ -1,6 +1,6 @@
 .checkboxGroup,
 .checkbox {
-  --checkbox-critical-color: var(--color-feedback-critical-strong, #ae1302);
+  --checkbox-critical-color: var(--color-feedback-critical-strong, var(--ux-1marogz, #ae1302));
 }
 
 .checkbox {
