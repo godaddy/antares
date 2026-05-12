@@ -9,11 +9,11 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
 import { WithDropdownExample } from '../examples/with-dropdown.tsx';
-import { ButtonGroup, ButtonGroupItem } from '@godaddy/antares';
+import { ToggleButtonGroup, ToggleButton } from '@godaddy/antares';
 import type { Key } from 'react-aria-components';
 
 describe('@godaddy/antares', function antares() {
-  describe('#ButtonGroup', function buttonGroupTests() {
+  describe('#ToggleButtonGroup', function buttonGroupTests() {
     it('renders as a radiogroup with radio items in single mode', async function singleModeRoles() {
       await render(<DefaultExample />);
 
@@ -119,15 +119,15 @@ describe('@godaddy/antares', function antares() {
       const user = userEvent.setup();
 
       await render(
-        <ButtonGroup
+        <ToggleButtonGroup
           aria-label="View"
           selectionMode="single"
           defaultSelectedKeys={['day']}
           onSelectionChange={onSelectionChange}
         >
-          <ButtonGroupItem id="day">Day</ButtonGroupItem>
-          <ButtonGroupItem id="week">Week</ButtonGroupItem>
-        </ButtonGroup>
+          <ToggleButton id="day">Day</ToggleButton>
+          <ToggleButton id="week">Week</ToggleButton>
+        </ToggleButtonGroup>
       );
 
       await user.click(page.getByRole('radio', { name: 'Week' }));
@@ -230,10 +230,15 @@ describe('@godaddy/antares', function antares() {
       const user = userEvent.setup();
 
       await render(
-        <ButtonGroup aria-label="View" selectionMode="single" defaultSelectedKeys={['day']} disallowEmptySelection>
-          <ButtonGroupItem id="day">Day</ButtonGroupItem>
-          <ButtonGroupItem id="week">Week</ButtonGroupItem>
-        </ButtonGroup>
+        <ToggleButtonGroup
+          aria-label="View"
+          selectionMode="single"
+          defaultSelectedKeys={['day']}
+          disallowEmptySelection
+        >
+          <ToggleButton id="day">Day</ToggleButton>
+          <ToggleButton id="week">Week</ToggleButton>
+        </ToggleButtonGroup>
       );
 
       const day = page.getByRole('radio', { name: 'Day' });

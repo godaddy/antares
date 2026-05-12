@@ -1,4 +1,4 @@
-import { ButtonGroup, ButtonGroupItem } from '@godaddy/antares';
+import { ToggleButtonGroup, ToggleButton } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   size?: 'sm' | 'md';
@@ -14,7 +14,7 @@ export function PlaygroundExample({
   disallowEmptySelection = false
 }: PlaygroundExampleProps) {
   return (
-    <ButtonGroup
+    <ToggleButtonGroup
       aria-label="View"
       size={size}
       selectionMode={selectionMode}
@@ -22,10 +22,10 @@ export function PlaygroundExample({
       disallowEmptySelection={disallowEmptySelection}
       defaultSelectedKeys={['day']}
     >
-      <ButtonGroupItem id="day">Day</ButtonGroupItem>
-      <ButtonGroupItem id="week">Week</ButtonGroupItem>
-      <ButtonGroupItem id="month">Month</ButtonGroupItem>
-      <ButtonGroupItem id="year">Year</ButtonGroupItem>
-    </ButtonGroup>
+      <ToggleButton id="day">Day</ToggleButton>
+      <ToggleButton id="week">Week</ToggleButton>
+      <ToggleButton id="month">Month</ToggleButton>
+      <ToggleButton id="year">Year</ToggleButton>
+    </ToggleButtonGroup>
   );
 }

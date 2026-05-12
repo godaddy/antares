@@ -1,5 +1,5 @@
 ---
-title: ButtonGroup
+title: ToggleButtonGroup
 description: Organizes multiple related buttons into a single, cohesive unit with consistent spacing, alignment, and interaction behavior. Supports single or multiple selection.
 ---
 
@@ -13,7 +13,7 @@ import SourceIconAndText from './examples/icon-and-text.tsx?raw';
 import SourceDisabled from './examples/disabled.tsx?raw';
 import SourceRTL from './examples/rtl.tsx?raw';
 import SourceWithDropdown from './examples/with-dropdown.tsx?raw';
-import * as Stories from './button-group.stories.tsx';
+import * as Stories from './toggle-button-group.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
@@ -31,7 +31,7 @@ npm install --save @godaddy/antares
 
 ### Default (Single Selection)
 
-An uncontrolled button group with a default selection. The component manages its own state via `defaultSelectedKeys`.
+An uncontrolled toggle button group with a default selection. The component manages its own state via `defaultSelectedKeys`.
 
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={SourceDefault} />
@@ -74,7 +74,7 @@ For compact layouts, items can contain only icons. Padding adjusts automatically
 
 ### With Dropdown
 
-Use a `MenuTrigger` inside a `ButtonGroup` when one of the actions has sub-options.
+Use a `MenuTrigger` inside a `ToggleButtonGroup` when one of the actions has sub-options.
 
 <Story of={Stories.WithDropdown} inline />
 <Source language="tsx" code={SourceWithDropdown} />
@@ -88,7 +88,7 @@ The button group follows the current layout direction (LTR or RTL). Direction is
 
 ### Disabled States
 
-Disable the entire group with `isDisabled` on the container, or disable individual items with `isDisabled` on specific `ButtonGroupItem` elements.
+Disable the entire group with `isDisabled` on the container, or disable individual items with `isDisabled` on specific `ToggleButton` elements.
 
 <Story of={Stories.Disabled} inline />
 <Source language="tsx" code={SourceDisabled} />
@@ -110,7 +110,7 @@ Disable the entire group with `isDisabled` on the container, or disable individu
 - `selectionMode="single"` → `role="radiogroup"` on container, `role="radio"` + `aria-checked` per item
 - `selectionMode="multiple"` → `role="toolbar"` on container, `role="button"` + `aria-pressed` per item
 - `aria-label` (or `aria-labelledby`) is required on the group container
-- Icon-only items require `aria-label` on each `ButtonGroupItem`
+- Icon-only items require `aria-label` on each `ToggleButton`
 
 ## Best Practices
 
@@ -126,7 +126,7 @@ Disable the entire group with `isDisabled` on the container, or disable individu
 - **Too many options** — more than 5 choices creates cognitive overload; consider a **Select** instead.
 - **Primary vs. destructive actions** — when actions require strong visual distinction (e.g. Save vs. Delete).
 - **Full navigation changes** — when selecting an option leads to a different page or workflow.
-- **View switching** — use **SegmentedController** when selecting between mutually exclusive content views (e.g. Monthly / Yearly, Overview / Details). Quick rule: if it triggers an action → ButtonGroup; if it switches between views → SegmentedController.
+- **View switching** — use **SegmentedController** when selecting between mutually exclusive content views (e.g. Monthly / Yearly, Overview / Details). Quick rule: if it triggers an action → ToggleButtonGroup; if it switches between views → SegmentedController.
 
 ### Keep Variants Consistent
 
@@ -152,16 +152,10 @@ Align the group to reflect its relationship to surrounding content:
 
 ### Icon-Only Items
 
-Use icon-only items only when the icon's meaning is universally recognized. Always provide an `aria-label` on each icon-only `ButtonGroupItem`:
+Use icon-only items only when the icon's meaning is universally recognized. Always provide an `aria-label` on each icon-only `ToggleButton`:
 
 ```tsx
-<ButtonGroupItem id="list" aria-label="List view">
+<ToggleButton id="list" aria-label="List view">
   <Icon icon="bulleted-list" />
-</ButtonGroupItem>
+</ToggleButton>
 ```
-
-## Open Questions
-
-The following items need design or stakeholder input before v1 ships:
-
-1. **Focus indicator**: Figma specifies a fixed blue (`#1976d2`) 1 px border + 2 px inset shadow. The current implementation uses `outline: 2px solid Highlight` for cross-component consistency and OS-preference respect. Confirm whether Figma's brand-blue should override this.

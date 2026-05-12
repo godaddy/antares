@@ -1,4 +1,4 @@
-import { ButtonGroup, ButtonGroupItem } from '@godaddy/antares';
+import { ToggleButtonGroup, ToggleButton } from '@godaddy/antares';
 import { useState } from 'react';
 
 export function ControlledExample() {
@@ -6,16 +6,16 @@ export function ControlledExample() {
 
   return (
     <>
-      <ButtonGroup
+      <ToggleButtonGroup
         aria-label="View"
         selectionMode="single"
         selectedKeys={selected}
         onSelectionChange={(keys) => setSelected(keys as Set<string>)}
       >
-        <ButtonGroupItem id="day">Day</ButtonGroupItem>
-        <ButtonGroupItem id="week">Week</ButtonGroupItem>
-        <ButtonGroupItem id="month">Month</ButtonGroupItem>
-      </ButtonGroup>
+        <ToggleButton id="day">Day</ToggleButton>
+        <ToggleButton id="week">Week</ToggleButton>
+        <ToggleButton id="month">Month</ToggleButton>
+      </ToggleButtonGroup>
       <p>Current selection: {Array.from(selected).join(', ')}</p>
     </>
   );

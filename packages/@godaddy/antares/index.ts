@@ -81,8 +81,8 @@ export {
 export { MetricsLockup, type MetricsLockupProps } from '#components/metrics-lockup';
 
 export {
-  ButtonGroup,
-  ButtonGroupItem,
-  type ButtonGroupProps,
-  type ButtonGroupItemProps
-} from '#components/button-group';
+  ToggleButtonGroup,
+  ToggleButton,
+  type ToggleButtonGroupProps,
+  type ToggleButtonProps
+} from '#components/toggle-button-group';
