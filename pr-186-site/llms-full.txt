@@ -1543,6 +1543,69 @@ Best Practices [#best-practices]
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
+# Pagination
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Default Active Index [#default-active-index]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="Stories.DefaultActive" />
+
+<Source language="tsx" code="SourceDefaultActive" />
+
+With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="Stories.WithLimit" />
+
+<Source language="tsx" code="SourceWithLimit" />
+
+onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="Stories.OnChange" />
+
+<Source language="tsx" code="SourceOnChange" />
+
+
 # NumberField
 
 
@@ -1647,69 +1710,6 @@ Best practices [#best-practices]
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-
-# Pagination
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Default Active Index [#default-active-index]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="Stories.DefaultActive" />
-
-<Source language="tsx" code="SourceDefaultActive" />
-
-With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="Stories.WithLimit" />
-
-<Source language="tsx" code="SourceWithLimit" />
-
-onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="Stories.OnChange" />
-
-<Source language="tsx" code="SourceOnChange" />
 
 
 # Popover
@@ -2270,6 +2270,62 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 ```
 
 
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
+
+
 # TextField
 
 
@@ -2350,62 +2406,6 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
-
-
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
 
 
 # Tooltip
@@ -3074,6 +3074,69 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 ```
 
 
+# Legend
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is designed for use within chart components.
+
+Props [#props]
+
+The `Legend` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic legend with a single series showing the default styling and layout.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+With label [#with-label]
+
+Legend with a visible label that is also used as the accessible label.
+
+<Source language="tsx" code="SourceWithLabel" />
+
+<Story of="Stories.WithLabel" />
+
+Vertical orientation [#vertical-orientation]
+
+Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+
+<Source language="tsx" code="SourceVertical" />
+
+<Story of="Stories.Vertical" />
+
+Legend size chart example [#legend-size-chart-example]
+
+Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+
+<Source language="tsx" code="SourceLegendSizeChart" />
+
+<Story of="Stories.LegendSizeChart" />
+
+
 # LineChart
 
 
@@ -3367,69 +3430,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# Legend
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is designed for use within chart components.
-
-Props [#props]
-
-The `Legend` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Single Series [#single-series]
-
-Basic legend with a single series showing the default styling and layout.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple Series [#multiple-series]
-
-Legend with multiple series showing theme colors and automatic spacing. Each series has its own colored indicator and name.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultipleSeries" />
-
-With label [#with-label]
-
-Legend with a visible label that is also used as the accessible label.
-
-<Source language="tsx" code="SourceWithLabel" />
-
-<Story of="Stories.WithLabel" />
-
-Vertical orientation [#vertical-orientation]
-
-Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
-
-<Source language="tsx" code="SourceVertical" />
-
-<Story of="Stories.Vertical" />
-
-Legend size chart example [#legend-size-chart-example]
-
-Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
-
-<Source language="tsx" code="SourceLegendSizeChart" />
-
-<Story of="Stories.LegendSizeChart" />
-
-
 # Tooltip
 
 
@@ -3565,6 +3565,35 @@ Multiple series each receiving the next color in sequence.
 <Story of="Stories.MultiSeries" />
 
 
+# useNormalizedSeries
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+Returns your series list with an `id` guaranteed on every item. Ids you provided are kept as-is; missing ones are filled in for you, stay stable across renders, and won't collide when multiple charts share the page.
+
+```tsx
+const series = useNormalizedSeries(seriesProp);
+```
+
+Examples [#examples]
+
+Mixed ids [#mixed-ids]
+
+The first item provides an explicit `id` and is preserved as-is; the remaining two have no `id` and are filled with stable generated ones (`<prefix>-1`, `<prefix>-2`).
+
+<Source language="tsx" code="SourceMixedIds" />
+
+<Story of="Stories.MixedIds" />
+
+
 # useScrollableXYChart
 
 
@@ -3600,35 +3629,6 @@ Hook wired to a scrolling parent; scroll or resize to watch the returned values 
 <Source language="tsx" code="SourceExample" />
 
 <Story of="Stories.AutoLayout" />
-
-
-# useNormalizedSeries
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
-
-Returns your series list with an `id` guaranteed on every item. Ids you provided are kept as-is; missing ones are filled in for you, stay stable across renders, and won't collide when multiple charts share the page.
-
-```tsx
-const series = useNormalizedSeries(seriesProp);
-```
-
-Examples [#examples]
-
-Mixed ids [#mixed-ids]
-
-The first item provides an explicit `id` and is preserved as-is; the remaining two have no `id` and are filled with stable generated ones (`<prefix>-1`, `<prefix>-2`).
-
-<Source language="tsx" code="SourceMixedIds" />
-
-<Story of="Stories.MixedIds" />
 
 
 # Box
