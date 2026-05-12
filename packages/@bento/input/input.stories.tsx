@@ -6,7 +6,7 @@ import { UncontrolledInput } from './examples/uncontrolled.tsx';
 import { FormExample } from './examples/form.tsx';
 
 export default getMeta({
-  title: 'components/Input'
+  title: 'Bento/components/Input'
 });
 
 export const Props = getComponentDocs(Input);

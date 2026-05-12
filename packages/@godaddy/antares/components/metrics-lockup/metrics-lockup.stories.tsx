@@ -7,7 +7,7 @@ import { CompactExample } from './examples/compact.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/metrics-lockup-playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/MetricsLockup'
+  title: 'components/MetricsLockup'
 });
 
 export const Props = getComponentDocs(MetricsLockup);

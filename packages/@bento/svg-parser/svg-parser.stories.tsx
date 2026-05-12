@@ -5,7 +5,7 @@ import { CustomNodesExample } from './examples/custom-nodes';
 import { CustomPropsExample } from './examples/custom-props';
 
 export default getMeta({
-  title: 'utility/svg-parser'
+  title: 'Bento/utility/svg-parser'
 });
 
 export const Basic = getStory(BasicExample);

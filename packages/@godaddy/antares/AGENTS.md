@@ -173,7 +173,7 @@ export function PlaygroundExample({ variant, size }: PlaygroundExampleProps) {
 ```typescript
 'use client';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/button-playground.tsx';
-import { getMeta, getComponentDocs } from 'storybook-addon-helpers';
+import { getMeta, getComponentDocs } from '@bento/storybook-addon-helpers';
 import { Button } from './src/index.tsx';
 
 export default getMeta({

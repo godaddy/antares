@@ -8,7 +8,7 @@ import { SelectStaticExample } from './examples/select-static.tsx';
 import { Select } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Select'
+  title: 'components/Select'
 });
 
 export const Props = getComponentDocs(Select);

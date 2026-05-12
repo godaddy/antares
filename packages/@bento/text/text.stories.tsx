@@ -7,7 +7,7 @@ import { MaxLinesExample } from './examples/max-lines.tsx';
 import { WrapExample } from './examples/wrap.tsx';
 
 export default getMeta({
-  title: 'components/Text'
+  title: 'Bento/components/Text'
 });
 
 export const Props = getComponentDocs(TextComponent);

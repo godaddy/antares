@@ -34,14 +34,19 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'Bento',
-          'Architecture',
-          ['Guides', ['Primitives', 'Composition', 'Customization', 'Styling'], 'PDRs'],
+          'Welcome',
           'components',
-          'hooks',
-          'higher-order components',
-          'utility',
-          'internal',
+          'Bento',
+          [
+            'Welcome',
+            'Architecture',
+            ['Guides', ['Primitives', 'Composition', 'Customization', 'Styling'], 'PDRs'],
+            'components',
+            'hooks',
+            'higher-order components',
+            'utility',
+            'internal'
+          ],
           '*'
         ]
       }
