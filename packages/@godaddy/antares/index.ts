@@ -79,3 +79,10 @@ export {
 } from '#components/segmented-controller';
 
 export { MetricsLockup, type MetricsLockupProps } from '#components/metrics-lockup';
+
+export {
+  ToggleButtonGroup,
+  ToggleButton,
+  type ToggleButtonGroupProps,
+  type ToggleButtonProps
+} from '#components/toggle-button-group';
