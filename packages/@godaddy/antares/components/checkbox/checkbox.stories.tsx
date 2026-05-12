@@ -11,7 +11,7 @@ import { CheckboxGroupInvalid } from './examples/invalid.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Checkbox',
+  title: 'components/Checkbox',
   component: CheckboxBasic
 });
 

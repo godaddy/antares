@@ -1,12 +1,28 @@
 ---
 title: useNormalizedSeries
-description: A hook that ensures every series config has a stable unique id, generating one from useId when omitted.
+description: A hook that guarantees every series config has a stable, unique id by filling in missing ones with a component-scoped prefix from useId.
 ---
+
+import { Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './use-normalized-series.stories.tsx';
+
+import SourceMixedIds from './examples/mixed-ids.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
 
 ## For use with chart components (not exported)
 
-Accepts a `SeriesConfig[]` array and returns a memoized copy where each item is guaranteed to have an `id`. When an item has no `id`, one is generated using a component-scoped prefix from React's `useId`, ensuring IDs are unique across multiple chart instances on the same page. Existing `id` values are preserved as-is.
+Returns your series list with an `id` guaranteed on every item. Ids you provided are kept as-is; missing ones are filled in for you, stay stable across renders, and won't collide when multiple charts share the page.
 
 ```tsx
 const series = useNormalizedSeries(seriesProp);
 ```
+
+## Examples
+
+### Mixed ids
+
+The first item provides an explicit `id` and is preserved as-is; the remaining two have no `id` and are filled with stable generated ones (`<prefix>-1`, `<prefix>-2`).
+
+<Source language="tsx" code={SourceMixedIds} />
+<Story of={Stories.MixedIds} inline />

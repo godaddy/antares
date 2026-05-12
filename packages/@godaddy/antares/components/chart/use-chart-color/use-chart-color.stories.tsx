@@ -5,7 +5,7 @@ import { MultiSeriesExample } from './examples/multi-series.tsx';
 import { ChartColorProvider } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Chart/useChartColor'
+  title: 'components/Chart/useChartColor'
 });
 
 export const ChartColorProviderProps = getComponentDocs(ChartColorProvider);

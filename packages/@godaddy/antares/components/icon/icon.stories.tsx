@@ -4,7 +4,7 @@ import { getMeta, getStory, getComponentDocs } from '@bento/storybook-addon-help
 import { IconExample } from './examples/icon.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Icon',
+  title: 'components/Icon',
   component: IconExample,
   args: {
     icon: 'star'

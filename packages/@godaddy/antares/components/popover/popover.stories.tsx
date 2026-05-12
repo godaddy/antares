@@ -7,7 +7,7 @@ import { WithCloseButtonExample } from './examples/with-close-button.tsx';
 import { PlaygroundExample } from './examples/popover-playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Popover'
+  title: 'components/Popover'
 });
 
 export const Props = getComponentDocs(Popover);

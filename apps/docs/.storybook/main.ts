@@ -16,6 +16,7 @@ const config: StorybookConfig = {
     // Package stories and documentation
     '../../../packages/@bento/*/*.mdx',
     '../../../packages/@bento/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/@godaddy/antares/README.mdx',
     '../../../packages/@godaddy/antares/components/**/*.mdx',
     '../../../packages/@godaddy/antares/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 

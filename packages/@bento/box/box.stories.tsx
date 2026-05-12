@@ -3,7 +3,7 @@ import { ContextExample } from './examples/namespace.tsx';
 import type { EnvContext, SlotsContext } from './src/index.tsx';
 
 export default getMeta({
-  title: 'internal/box'
+  title: 'Bento/internal/box'
 });
 
 export const slots = getInterfaceDocs<SlotsContext>();
