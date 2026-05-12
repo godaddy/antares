@@ -1,27 +1,18 @@
+.fieldFrame {
+  --field-frame-critical-color: var(--color-feedback-critical-strong, #ae1302);
+  --field-frame-br: 0.125rem;
+}
+
 .label {
-  font-size: var(--fs-sm);
   font-weight: bolder;
-  line-height: var(--lh-heading);
-  color: var(--fg-base);
 }
 
 .label-required {
-  color: var(--critical);
-}
-
-.description,
-.error {
-  font-size: var(--fs-sm);
-  font-weight: normal;
-  line-height: var(--lh-base);
-}
-
-.description {
-  color: var(--passive);
+  color: var(--field-frame-critical-color);
 }
 
 .error {
-  color: var(--critical);
+  color: var(--field-frame-critical-color);
 }
 
 .button {
@@ -34,29 +25,26 @@
 }
 
 .frame {
-  align-self: stretch;
-  border-radius: var(--br-sm);
-  border: 1px solid var(--bd-base);
-  background: var(--bg-base);
+  border-radius: var(--field-frame-br);
   min-height: 40.5px;
   box-sizing: border-box;
 
   & > :first-child {
-    border-start-start-radius: var(--br-sm);
+    border-start-start-radius: var(--field-frame-br);
     border-start-end-radius: 0;
-    border-end-start-radius: var(--br-sm);
+    border-end-start-radius: var(--field-frame-br);
     border-end-end-radius: 0;
   }
 
   & > :last-child {
-    border-start-end-radius: var(--br-sm);
+    border-start-end-radius: var(--field-frame-br);
     border-end-start-radius: 0;
-    border-end-end-radius: var(--br-sm);
+    border-end-end-radius: var(--field-frame-br);
     border-start-start-radius: 0;
   }
 
   & > :only-child {
-    border-radius: var(--br-sm);
+    border-radius: var(--field-frame-br);
   }
 
   &[data-disabled] {
@@ -64,16 +52,16 @@
   }
 
   &[data-invalid] {
-    border-color: var(--critical);
+    border-color: var(--field-frame-critical-color);
   }
 
-  &[data-invalid]:has(input[data-focused="true"]),
-  &[data-invalid]:has(textarea[data-focused="true"]) {
-    outline: 2px solid var(--critical);
+  &[data-invalid]:has(input[data-focused='true']),
+  &[data-invalid]:has(textarea[data-focused='true']) {
+    outline: 2px solid var(--field-frame-critical-color);
   }
 
-  &:has(input[data-focused="true"]),
-  &:has(textarea[data-focused="true"]) {
+  &:has(input[data-focused='true']),
+  &:has(textarea[data-focused='true']) {
     outline: 2px solid Highlight;
     outline: 2px auto -webkit-focus-ring-color;
     outline-offset: -1px;
@@ -86,21 +74,12 @@
 }
 
 .input {
-  font-size: var(--fs-md);
-  font-weight: normal;
-  line-height: var(--lh-heading);
-  color: var(--fg-base);
   background: transparent;
   border: none;
   outline: none;
   flex: 1;
   padding-inline: var(--sp-md);
   min-width: 0;
-
-  &::placeholder {
-    color: var(--fg-placeholder);
-    line-height: var(--lh-base);
-  }
 
   &[data-disabled] {
     cursor: not-allowed;

@@ -2,6 +2,7 @@
 title: FieldFrame
 description: Field frame component with integrated Label, description Text, and FieldError for form fields
 ---
+
 import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './field-frame.stories.tsx';
 
@@ -12,11 +13,7 @@ import SourceBasic from './examples/basic.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-# FieldFrame
-
 **Internal component.** FieldFrame is intended for internal use only. Use the public field components (TextField, NumberField, DateField, Select) instead; they compose FieldFrame internally.
-
-Field frame component using [React Aria Components](https://react-spectrum.adobe.com/react-aria/) Provider pattern with integrated Label, description Text, and FieldError. Renders the shared frame (label, border, description, error) around field content and manages accessibility.
 
 ## Features
 
@@ -70,13 +67,13 @@ Children you pass to FieldFrame (e.g. `Input`, `Button`, `DateInput`, `SelectVal
 
 The states **disabled**, **readonly**, and **invalid** are applied when the field wrapper (e.g. TextField, NumberField, Select) is marked as disabled, readonly, or invalid respectively. The frame reflects these and other states via data attributes on the group.
 
-| State | CSS Selector |
-| --- | --- |
-| disabled — Applied when the field wrapper is disabled. | `[data-disabled]` |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed). | `[data-invalid]` |
-| readonly — Applied when the field wrapper is read only. | `[data-readonly]` |
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| readonly — Applied when the field wrapper is read only.                                  | `[data-readonly]`      |
 | focus — Whether an element within the frame has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
-| focus-within — Whether an element within the frame is focused, via mouse or keyboard. | `[data-focus-within]` |
+| focus-within — Whether an element within the frame is focused, via mouse or keyboard.    | `[data-focus-within]`  |
 
 ## Examples
 
