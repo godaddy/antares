@@ -1,0 +1,101 @@
+---
+title: InlineDrawer
+description: An in-flow collapsible panel that expands and collapses along one axis, supporting sidebar navigation and persistent collapsed content.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './inline-drawer.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import ControlledExample from './examples/controlled.tsx?raw';
+import SidebarNavExample from './examples/sidebar-nav.tsx?raw';
+import DismissOnBlurExample from './examples/dismiss-on-blur.tsx?raw';
+import FocusScopeExample from './examples/focus-scope.tsx?raw';
+import VerticalExample from './examples/vertical.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- In-flow collapsible panel with CSS transitions
+- `minSize` keeps collapsed content visible (sidebar nav pattern)
+- `shouldDismissOnBlur` with portal-aware focus detection
+- Controlled and uncontrolled modes
+- `hidden="until-found"` for browser find-in-page support
+- `prefers-reduced-motion` support
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Controlled
+
+Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={ControlledExample} />
+
+### Sidebar Navigation
+
+Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
+
+<Story of={Stories.SidebarNav} inline />
+<Source language="tsx" code={SidebarNavExample} />
+
+### Vertical Placement
+
+Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
+
+<Story of={Stories.Vertical} inline />
+<Source language="tsx" code={VerticalExample} />
+
+### Dismiss on Blur
+
+Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
+
+<Story of={Stories.DismissOnBlur} inline />
+<Source language="tsx" code={DismissOnBlurExample} />
+
+### Focus Scope
+
+Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
+
+<Story of={Stories.FocusScope} inline />
+<Source language="tsx" code={FocusScopeExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key | Action |
+| --- | --- |
+| `Enter` / `Space` | Toggle the drawer via the trigger button |
+| `Tab` | Move focus into/out of the panel (or trapped when using `FocusScope`) |
+
+### ARIA
+
+- `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
+- `aria-controls` links the trigger to the panel
+- `hidden="until-found"` on collapsed panels (browser find-in-page support)
+- Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
+
+## Best Practices
+
+- Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
+- `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
+- Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
+- Don't nest InlineDrawers.

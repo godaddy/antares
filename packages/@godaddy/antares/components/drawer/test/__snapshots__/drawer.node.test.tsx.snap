@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Drawer > renders BottomSheetExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open bottom sheet</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders ControlledSnapExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open controlled snap</span></button><span class="text">Active snap: <!-- -->355<!-- -->px</span>"`;
+
+exports[`@godaddy/antares > #Drawer > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders DefaultOpenExample 1`] = `""`;
+
+exports[`@godaddy/antares > #Drawer > renders FilteredDismissExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders HandleNoSnapsExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders NestedPopoverExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open drawer</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders NoEscapeDismissExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders PercentSnapPointsExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open percent snap</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders PlaygroundExample 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
+
+exports[`@godaddy/antares > #Drawer > renders RTLPlacementExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
+
+exports[`@godaddy/antares > #Drawer > renders SnapPointsExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open snap sheet</span></button>"`;
