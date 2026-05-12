@@ -41,7 +41,7 @@
     "@bento/text": "^0.1.4",
     "@bento/use-data-attributes": "^0.1.1",
     "@bento/use-props": "^0.2.1",
-    "@react-aria/utils": "^3.30.0",
+    "@react-aria/utils": "^3.34.0",
     "react-aria": "^3.45.0"
   },
   "devDependencies": {

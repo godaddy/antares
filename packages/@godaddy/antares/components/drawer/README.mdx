@@ -1,0 +1,121 @@
+---
+title: Drawer
+description: An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './drawer.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import BottomSheetExample from './examples/bottom-sheet.tsx?raw';
+import SnapPointsExample from './examples/snap-points.tsx?raw';
+import ControlledSnapExample from './examples/controlled-snap.tsx?raw';
+import PercentSnapPointsExample from './examples/percent-snap-points.tsx?raw';
+import NestedPopoverExample from './examples/nested-popover.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Slides in from any screen edge (top, bottom, left, right) with spring animation
+- Snap points with drag gestures and keyboard control
+- Numeric and string snap points (`120`, `'50%'`, `'200px'`) resolved against drawer size
+- Automatic RTL flipping for left/right placement
+- Focus trapping, backdrop dismiss, scroll lock via RAC Modal
+- `prefers-reduced-motion` support
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Sub-components
+
+### DrawerTrigger
+
+Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+
+### DrawerHandle
+
+Visual drag handle for touch gestures. Must be inside a `<Drawer>` with `snapPoints`. Renders a grab bar with a 44px touch target (24px for pointer:fine). Drag behavior activates automatically when snap points are present.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `className` | `string` | Additional CSS class |
+
+## Examples
+
+### Basic Usage
+
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Bottom Sheet
+
+Use `placement="bottom"` with controlled state for a bottom sheet pattern.
+
+<Story of={Stories.BottomSheet} inline />
+<Source language="tsx" code={BottomSheetExample} />
+
+### Snap Points
+
+Use `snapPoints` with `<DrawerHandle />` for a resizable bottom sheet with touch gesture support.
+
+<Story of={Stories.SnapPoints} inline />
+<Source language="tsx" code={SnapPointsExample} />
+
+### Percentage Snap Points
+
+Use string snap points like `'30%'` and `'60%'` for sizes relative to the drawer's rendered dimensions.
+
+<Story of={Stories.PercentSnapPoints} inline />
+<Source language="tsx" code={PercentSnapPointsExample} />
+
+### Controlled Snap Points
+
+Use `activeSnapPoint` and `onSnapPointChange` for full control over the active snap point.
+
+<Story of={Stories.ControlledSnap} inline />
+<Source language="tsx" code={ControlledSnapExample} />
+
+### Nested Popover
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of={Stories.NestedPopover} inline />
+<Source language="tsx" code={NestedPopoverExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key | Action |
+| --- | --- |
+| `Escape` | Close the drawer (when `isDismissable` or not `isKeyboardDismissDisabled`) |
+| `Tab` | Move focus within the drawer (focus is trapped) |
+| `Arrow Up / Right` | Move to next snap point (when snap slider is focused) |
+| `Arrow Down / Left` | Move to previous snap point |
+| `Home` | Jump to first snap point |
+| `End` | Jump to last snap point |
+
+In RTL, horizontal arrow key direction is reversed for the snap slider.
+
+### ARIA
+
+- `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+- Dialog accessible name via `title` (renders a heading) or `aria-label` (for titleless drawers)
+- `aria-label="Close"` on the built-in close button
+- `role="slider"` on the snap point keyboard control with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext`
+- `aria-hidden="true"` on the visual drag handle (decorative)
+
+## Best Practices
+
+- Always provide a `title` or `aria-label` prop so the dialog has an accessible name.
+- Use `isDismissable` to allow closing via backdrop click.
+- Don't nest drawers.
