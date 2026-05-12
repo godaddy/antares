@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
 3:I[897367,["/antares/pr-145-site/_next/static/chunks/0eo947uber30n.js","/antares/pr-145-site/_next/static/chunks/0i.l9589uvx0j.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":["$L2",null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"AYfdOpBk40W4aC4YT1zG_"}
+0:{"rsc":["$","$1","c",{"children":["$L2",null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"B8PKgWxCBbPLQekaiEmBb"}
 5:null
 2:E{"digest":"NEXT_REDIRECT;replace;/docs;307;"}
