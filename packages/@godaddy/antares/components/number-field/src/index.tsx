@@ -4,7 +4,7 @@ import {
   NumberField as RACNumberField,
   type NumberFieldProps as RACNumberFieldProps
 } from 'react-aria-components';
-import { FieldFrame, FieldFrameProps } from '#components/field-frame';
+import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 

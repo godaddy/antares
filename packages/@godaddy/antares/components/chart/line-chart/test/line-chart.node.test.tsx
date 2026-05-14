@@ -3,7 +3,7 @@
  * (ResizeObserver). On SSR there is no DOM, so width/height stay 0 and XYChart is not rendered —
  * no SVG in the output. The chart renders SVG only after mount when the parent has size.
  */
-import React from 'react';
+import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';

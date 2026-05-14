@@ -1,5 +1,5 @@
 import assume from 'assume';
-import React from 'react';
+import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
@@ -37,7 +37,7 @@ import { ZeroIncludedExample } from '../examples/zero-included';
  * @param height - Viewport and container height in px (default: 400)
  * @returns Render result after SVG is present
  */
-async function renderExampleAndWait(children: React.ReactNode, width = 800, height = 400) {
+async function renderExampleAndWait(children: ReactNode, width = 800, height = 400) {
   await page.viewport(width, height);
   const result = await render(<div style={{ width: `${width}px`, height: `${height}px` }}>{children}</div>);
   await waitForSelector(result.container, 'svg');

@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } 
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
 import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components';
-import { Legend } from '#components/chart/legend';
-import { chartColorForIndex } from '#components/chart/use-chart-color';
-import { useNormalizedSeries } from '#components/chart/use-normalized-series';
+import { Legend } from '#components/chart/_internal/legend';
+import { chartColorForIndex } from '#components/chart/_internal/use-chart-color';
+import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { Box } from '#components/layout/box';
-import { Flex, FlexProps } from '#components/layout/flex';
+import { Flex, type FlexProps } from '#components/layout/flex';
 import { Text } from '#components/text';
 import { Tooltip } from '#components/tooltip';
 import type { Optional, SeriesConfig } from '../../types.ts';

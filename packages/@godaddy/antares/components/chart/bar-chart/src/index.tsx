@@ -12,14 +12,14 @@ import {
   xAccessor as defaultXAccessor,
   yAccessor as defaultYAccessor
 } from '../../utils.ts';
-import { useNormalizedSeries } from '#components/chart/use-normalized-series';
-import { useScrollableXYChart } from '#components/chart/use-scrollable-xy-chart';
-import { ChartColorProvider, useChartColor } from '#components/chart/use-chart-color';
+import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
+import { useScrollableXYChart } from '#components/chart/_internal/use-scrollable-xy-chart';
+import { ChartColorProvider, useChartColor } from '#components/chart/_internal/use-chart-color';
 import { AxisBottom, AxisLeft, AxisRight } from '@visx/axis';
-import { AxisTitle } from '#components/chart/axis-title';
+import { AxisTitle } from '#components/chart/_internal/axis-title';
 import { GridColumns, GridRows } from '@visx/grid';
-import { Legend } from '#components/chart/legend';
-import { Tooltip } from '#components/chart/tooltip';
+import { Legend } from '#components/chart/_internal/legend';
+import { Tooltip } from '#components/chart/_internal/tooltip';
 import { Flex } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import { createPortal } from 'react-dom';

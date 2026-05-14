@@ -39,8 +39,15 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-onboarding',
     '@storybook/addon-themes',
-    '@bento/storybook-addon-helpers'
+    '@bento/storybook-addon-helpers',
+    join(__dirname, './addons/internal-stories/preset.ts')
   ],
+
+  tags: {
+    internal: {
+      defaultFilterSelection: 'exclude'
+    }
+  },
 
   framework: {
     name: '@storybook/react-vite',

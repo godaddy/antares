@@ -14,7 +14,7 @@ import {
   type ListBoxItemProps as RACListBoxItemProps,
   type ListBoxSectionProps as RACListBoxSectionProps
 } from 'react-aria-components';
-import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { Flex } from '#components/layout/flex';
 import { Text } from '#components/text';
 import { Icon } from '#components/icon';

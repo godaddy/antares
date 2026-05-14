@@ -1,4 +1,4 @@
-import { type Spacing } from './tokens.ts';
+import type { Spacing } from './tokens.ts';
 
 export interface SharedFlexGridProps {
   /** The distribution of space around children along the main axis in flex or inline axis in grid */

@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, type ComponentPropsWithRef, type ElementType, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ElementType, ReactNode } from 'react';
 
 /**
  * Creates polymorphic props by combining own props with element-specific props.

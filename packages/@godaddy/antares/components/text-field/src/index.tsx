@@ -4,7 +4,7 @@ import {
   TextField as RACTextField,
   type TextFieldProps as RACTextFieldProps
 } from 'react-aria-components';
-import { FieldFrame, FieldFrameProps } from '#components/field-frame';
+import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
 import { Flex } from '#components/layout/flex';
 import { Text } from '#components/text';
 import styles from './index.module.css';

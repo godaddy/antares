@@ -10,7 +10,7 @@ import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { cx } from 'cva';
 
 /**
