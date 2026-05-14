@@ -36,12 +36,12 @@
     "dist"
   ],
   "devDependencies": {
-    "shx": "^0.3.4",
+    "shx": "^0.4.0",
     "style-dictionary": "^5.3.2",
-    "tsx": "^4.19.2",
+    "tsx": "^4.22.0",
     "vitest": "^4.0.18",
-    "yaml": "^2.8.3",
-    "ajv": "^8.17.1",
+    "yaml": "^2.9.0",
+    "ajv": "^8.20.0",
     "@upft/schemas": "^0.0.6"
   },
   "exports": {
