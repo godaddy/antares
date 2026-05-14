@@ -41,6 +41,12 @@
     border-radius: var(--inner-radius);
     scroll-margin-inline: var(--controller-space-005);
     transform: translateZ(0);
+    /*
+     * Set gap via CSS (rather than inline) so collapse mode can drive it to 0
+     * when the label is hidden. Mirror items keep their inline gap.
+     */
+    gap: var(--sp-xs, 2px);
+    transition: gap 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
     &:where([data-selected]) {
       z-index: 0;
@@ -48,6 +54,10 @@
     &:where([data-disabled]) {
       opacity: 0.4;
       cursor: not-allowed;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
     }
   }
   :where([data-size="sm"] .item) {
@@ -83,6 +93,59 @@
   :where(.scrollBtn) {
     background: transparent;
     transform: var(--icon-direction);
+  }
+
+  /*
+   * Distribute reserved space automatically: first segment anchors to the leading
+   * edge, last segment anchors to the trailing edge, and any middle segments are
+   * evenly spaced. The `gap` declared on `.content` becomes the minimum spacing.
+   */
+  &:where([data-collapse-inactive]) :where(.content) {
+    justify-content: space-between;
+  }
+
+  /* When a segment is collapsed (no visible label), close the gap between icon and the zero-width label. */
+  &:where([data-collapse-inactive]) :where(.content .item:not([data-selected])) {
+    gap: 0;
+  }
+
+  /*
+   * Labels animate width 0 ↔ auto so the button shrinks/grows on the same
+   * 200ms timeline as the selection indicator. `interpolate-size` (Baseline 2024)
+   * unlocks the auto-keyword side of the transition; older browsers fall back
+   * to an abrupt swap (still functional, just not smooth).
+   */
+  interpolate-size: allow-keywords;
+
+  :where(.label) {
+    overflow: hidden;
+    white-space: nowrap;
+    width: auto;
+    opacity: 1;
+    transition-property: width, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  :where(.labelHidden) {
+    width: 0;
+    opacity: 0;
+  }
+
+  :where(.mirror) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    visibility: hidden;
+    pointer-events: none;
+    white-space: nowrap;
   }
 
   :where(.indicator) {
