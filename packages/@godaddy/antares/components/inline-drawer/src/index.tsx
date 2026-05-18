@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useContext, useEffect, useRef, type ReactNode } from 'react';
+import { type CSSProperties, createContext, forwardRef, useContext, useEffect, useRef, type ReactNode } from 'react';
 import {
   Disclosure as RACDisclosure,
   type DisclosureProps as RACDisclosureProps,
@@ -141,7 +141,7 @@ export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(functi
   const style = {
     ...(sizeVar !== undefined && { '--_size': sizeVar }),
     ...animateStyle
-  } as React.CSSProperties;
+  } as CSSProperties;
 
   return (
     <RACDisclosure
