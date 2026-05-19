@@ -102,3 +102,5 @@ export {
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
 
 export { Modal, ModalTrigger, type ModalProps, type ModalTriggerProps } from '#components/modal';
+
+export { ProgressBar, type ProgressBarProps } from '#components/progress-bar';
