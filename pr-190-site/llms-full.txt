@@ -1956,6 +1956,123 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 ```
 
 
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
+
+
+# Tooltip
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
+element (for example, a `Button`). The tooltip appears on hover and focus.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the
+`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key    | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| Tab    | Moves focus to the focusable element and shows the tooltip |
+| Escape | Closes the tooltip                                         |
+
+ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+
+Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+
 # TextField
 
 
@@ -2036,123 +2153,6 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
-
-
-# Tooltip
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
-element (for example, a `Button`). The tooltip appears on hover and focus.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the
-`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-| Key    | Description                                                |
-| ------ | ---------------------------------------------------------- |
-| Tab    | Moves focus to the focusable element and shows the tooltip |
-| Escape | Closes the tooltip                                         |
-
-ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
-
-Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
 
 
 # Bar Chart
