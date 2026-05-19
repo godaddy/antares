@@ -66,7 +66,7 @@
         "noMisusedPromises": "error",
         "noFloatingPromises": "warn"
       },
-      "style": { "useBlockStatements": "off", "useImportType": "error" },
+      "style": { "useBlockStatements": "off" },
       "suspicious": {
         "noAsyncPromiseExecutor": "error",
         "noCatchAssign": "error",
@@ -177,6 +177,7 @@
       "linter": {
         "rules": {
           "correctness": {
+            "noUnresolvedImports": "off",
             "noUndeclaredDependencies": "off"
           }
         }
