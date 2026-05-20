@@ -278,6 +278,308 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <Source language="tsx" code="SourceRTLDirection" />
 
 
+# Checkbox
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+A single checkbox with a label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceCheckboxBasic" />
+
+Indeterminate [#indeterminate]
+
+Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
+
+<Story of="Stories.Indeterminate" />
+
+<Source language="tsx" code="SourceCheckboxIndeterminate" />
+
+Checkbox Group [#checkbox-group]
+
+Group multiple checkboxes together with a shared label and description.
+
+<Story of="Stories.Group" />
+
+<Source language="tsx" code="SourceCheckboxGroup" />
+
+Controlled [#controlled]
+
+Manage checkbox group state programmatically with controlled component pattern.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceCheckboxControlled" />
+
+Horizontal Layout [#horizontal-layout]
+
+Display checkboxes in a horizontal row instead of vertical stack.
+
+<Story of="Stories.Horizontal" />
+
+<Source language="tsx" code="SourceCheckboxHorizontal" />
+
+Disabled States [#disabled-states]
+
+Individual checkboxes within a group can be disabled while others remain interactive.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceCheckboxDisabled" />
+
+Required Indicator [#required-indicator]
+
+Mark a checkbox group as required with visual indicator and validation.
+
+<Story of="Stories.Required" />
+
+<Source language="tsx" code="SourceCheckboxRequired" />
+
+Invalid State [#invalid-state]
+
+Display error state and error message for validation feedback.
+
+<Story of="Stories.Invalid" />
+
+<Source language="tsx" code="SourceCheckboxInvalid" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-checkbox-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-checkbox-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-checkbox-group [data-indeterminate] {
+  background-color: #1976d2;
+}
+
+.my-checkbox-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+Component Customization [#component-customization]
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<CheckboxGroup label="Select options" className="custom-checkbox-group">
+  <Checkbox value="option1" className="custom-checkbox">
+    Option 1
+  </Checkbox>
+  <Checkbox value="option2" className="highlighted-checkbox">
+    Option 2
+  </Checkbox>
+</CheckboxGroup>
+```
+
+Key Features [#key-features]
+
+Indeterminate State [#indeterminate-state]
+
+The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
+
+```jsx
+<Checkbox isIndeterminate onChange={handleSelectAll}>
+  Select All
+</Checkbox>
+```
+
+Group Validation [#group-validation]
+
+CheckboxGroup supports validation states and error messages:
+
+* **isRequired**: Marks the group as required with visual indicator
+* **isInvalid**: Shows error state styling
+* **errorMessage**: Displays validation error text below the group
+
+```jsx
+<CheckboxGroup
+  label="Required selection"
+  isRequired
+  isInvalid={!hasSelection}
+  errorMessage="At least one option must be selected"
+>
+  <Checkbox value="a">Option A</Checkbox>
+  <Checkbox value="b">Option B</Checkbox>
+</CheckboxGroup>
+```
+
+Direction [#direction]
+
+Control the layout direction with the `direction` prop:
+
+* `column` (default): Stacks checkboxes vertically
+* `row`: Arranges checkboxes in a horizontal row
+* `column-reverse`: Stacks checkboxes vertically in reverse order
+* `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to the next/previous checkbox
+* **Space**: Toggles the focused checkbox
+* **Shift + Tab**: Moves focus to the previous checkbox
+
+ARIA Support [#aria-support]
+
+* `aria-disabled` for disabled checkboxes
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+* Proper labeling with `aria-labelledby` and `aria-describedby`
+
+Troubleshooting [#troubleshooting]
+
+Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<CheckboxGroup value={value} defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Controlled mode
+<CheckboxGroup value={value} onChange={setValue}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Uncontrolled mode
+<CheckboxGroup defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+```
+
+Indeterminate State Not Updating [#indeterminate-state-not-updating]
+
+The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
+
+```jsx
+// ✅ Correct: Manually manage indeterminate state
+const [childSelections, setChildSelections] = React.useState([]);
+const allSelected = childSelections.length === totalChildren;
+const someSelected = childSelections.length > 0 && !allSelected;
+
+<Checkbox
+  isSelected={allSelected}
+  isIndeterminate={someSelected}
+  onChange={handleSelectAll}
+>
+  Select All
+</Checkbox>
+```
+
+Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-checkbox {
+  color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-checkbox-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+Best Practices [#best-practices]
+
+When to Use Checkboxes [#when-to-use-checkboxes]
+
+* ✅ For selecting multiple independent options
+* ✅ When users can select zero, one, or many items
+* ✅ For toggling settings or features on/off
+* ✅ When all available options should be visible
+* ❌ For mutually exclusive options (use Radio instead)
+* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
+
+Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels that describe what selecting the option means
+* Keep labels short (1-5 words when possible)
+* Ensure labels are descriptive without being verbose
+* Place the most commonly selected options first in groups
+
+Validation [#validation]
+
+Always provide clear error messages and use appropriate validation states:
+
+```jsx
+<CheckboxGroup
+  label="Terms and conditions"
+  isRequired
+  isInvalid={!agreedToTerms}
+  errorMessage="You must agree to the terms to continue"
+>
+  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+</CheckboxGroup>
+```
+
+Group Organization [#group-organization]
+
+* Limit checkbox groups to 7-10 options for better usability
+* Use logical ordering (alphabetical, frequency of use, or importance)
+* Consider using CheckboxGroup for related options, even if there are only 2-3
+* Provide a group label that clearly describes the choice being made
+
+
 # FieldFrame
 
 
@@ -782,308 +1084,6 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
-# Checkbox
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-A single checkbox with a label.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceCheckboxBasic" />
-
-Indeterminate [#indeterminate]
-
-Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
-
-<Story of="Stories.Indeterminate" />
-
-<Source language="tsx" code="SourceCheckboxIndeterminate" />
-
-Checkbox Group [#checkbox-group]
-
-Group multiple checkboxes together with a shared label and description.
-
-<Story of="Stories.Group" />
-
-<Source language="tsx" code="SourceCheckboxGroup" />
-
-Controlled [#controlled]
-
-Manage checkbox group state programmatically with controlled component pattern.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceCheckboxControlled" />
-
-Horizontal Layout [#horizontal-layout]
-
-Display checkboxes in a horizontal row instead of vertical stack.
-
-<Story of="Stories.Horizontal" />
-
-<Source language="tsx" code="SourceCheckboxHorizontal" />
-
-Disabled States [#disabled-states]
-
-Individual checkboxes within a group can be disabled while others remain interactive.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceCheckboxDisabled" />
-
-Required Indicator [#required-indicator]
-
-Mark a checkbox group as required with visual indicator and validation.
-
-<Story of="Stories.Required" />
-
-<Source language="tsx" code="SourceCheckboxRequired" />
-
-Invalid State [#invalid-state]
-
-Display error state and error message for validation feedback.
-
-<Story of="Stories.Invalid" />
-
-<Source language="tsx" code="SourceCheckboxInvalid" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-checkbox-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-checkbox-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-checkbox-group [data-indeterminate] {
-  background-color: #1976d2;
-}
-
-.my-checkbox-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-Component Customization [#component-customization]
-
-Individual components can be styled by passing `className` props:
-
-```jsx
-<CheckboxGroup label="Select options" className="custom-checkbox-group">
-  <Checkbox value="option1" className="custom-checkbox">
-    Option 1
-  </Checkbox>
-  <Checkbox value="option2" className="highlighted-checkbox">
-    Option 2
-  </Checkbox>
-</CheckboxGroup>
-```
-
-Key Features [#key-features]
-
-Indeterminate State [#indeterminate-state]
-
-The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
-
-```jsx
-<Checkbox isIndeterminate onChange={handleSelectAll}>
-  Select All
-</Checkbox>
-```
-
-Group Validation [#group-validation]
-
-CheckboxGroup supports validation states and error messages:
-
-* **isRequired**: Marks the group as required with visual indicator
-* **isInvalid**: Shows error state styling
-* **errorMessage**: Displays validation error text below the group
-
-```jsx
-<CheckboxGroup
-  label="Required selection"
-  isRequired
-  isInvalid={!hasSelection}
-  errorMessage="At least one option must be selected"
->
-  <Checkbox value="a">Option A</Checkbox>
-  <Checkbox value="b">Option B</Checkbox>
-</CheckboxGroup>
-```
-
-Direction [#direction]
-
-Control the layout direction with the `direction` prop:
-
-* `column` (default): Stacks checkboxes vertically
-* `row`: Arranges checkboxes in a horizontal row
-* `column-reverse`: Stacks checkboxes vertically in reverse order
-* `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to the next/previous checkbox
-* **Space**: Toggles the focused checkbox
-* **Shift + Tab**: Moves focus to the previous checkbox
-
-ARIA Support [#aria-support]
-
-* `aria-disabled` for disabled checkboxes
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-* Proper labeling with `aria-labelledby` and `aria-describedby`
-
-Troubleshooting [#troubleshooting]
-
-Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<CheckboxGroup value={value} defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Controlled mode
-<CheckboxGroup value={value} onChange={setValue}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Uncontrolled mode
-<CheckboxGroup defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-```
-
-Indeterminate State Not Updating [#indeterminate-state-not-updating]
-
-The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
-
-```jsx
-// ✅ Correct: Manually manage indeterminate state
-const [childSelections, setChildSelections] = React.useState([]);
-const allSelected = childSelections.length === totalChildren;
-const someSelected = childSelections.length > 0 && !allSelected;
-
-<Checkbox
-  isSelected={allSelected}
-  isIndeterminate={someSelected}
-  onChange={handleSelectAll}
->
-  Select All
-</Checkbox>
-```
-
-Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-checkbox {
-  color: red;
-}
-
-/* ✅ Use data attributes with className for higher specificity */
-.my-checkbox-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-Best Practices [#best-practices]
-
-When to Use Checkboxes [#when-to-use-checkboxes]
-
-* ✅ For selecting multiple independent options
-* ✅ When users can select zero, one, or many items
-* ✅ For toggling settings or features on/off
-* ✅ When all available options should be visible
-* ❌ For mutually exclusive options (use Radio instead)
-* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
-
-Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels that describe what selecting the option means
-* Keep labels short (1-5 words when possible)
-* Ensure labels are descriptive without being verbose
-* Place the most commonly selected options first in groups
-
-Validation [#validation]
-
-Always provide clear error messages and use appropriate validation states:
-
-```jsx
-<CheckboxGroup
-  label="Terms and conditions"
-  isRequired
-  isInvalid={!agreedToTerms}
-  errorMessage="You must agree to the terms to continue"
->
-  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
-  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
-</CheckboxGroup>
-```
-
-Group Organization [#group-organization]
-
-* Limit checkbox groups to 7-10 options for better usability
-* Use logical ordering (alphabetical, frequency of use, or importance)
-* Consider using CheckboxGroup for related options, even if there are only 2-3
-* Provide a group label that clearly describes the choice being made
-
-
 # Menu
 
 
@@ -1490,62 +1490,6 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Source language="tsx" code="SourceOnChange" />
 
 
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
 # ProgressBar
 
 
@@ -1601,7 +1545,7 @@ ARIA Support [#aria-support]
 * `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
-# SegmentedController
+# Popover
 
 
 
@@ -1621,108 +1565,40 @@ Props [#props]
 
 Examples [#examples]
 
-Basic [#basic]
+Basic Usage [#basic-usage]
 
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
 
-<Story of="Stories.Basic" />
+<Story of="Stories.Default" />
 
-<Source language="tsx" code="SourceBasic" />
+<Source language="tsx" code="DefaultExample" />
 
-Controlled [#controlled]
+Custom Anchor [#custom-anchor]
 
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
 
-<Story of="Stories.Controlled" />
+<Story of="Stories.CustomAnchor" />
 
-<Source language="tsx" code="SourceControlled" />
+<Source language="tsx" code="CustomAnchorExample" />
 
-Sizes [#sizes]
+Close Button and Header [#close-button-and-header]
 
-Three sizes are available: `sm`, `md` (default), and `lg`.
+To show a close button in the popover header, use the `showCloseButton` prop.
 
-<Story of="Stories.Sizes" />
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
 
-<Source language="tsx" code="SourceSizes" />
+<Story of="Stories.WithCloseButton" />
 
-Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="Stories.IconOnly" />
-
-<Source language="tsx" code="SourceIconOnly" />
-
-Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="Stories.Overflow" />
-
-<Source language="tsx" code="SourceOverflow" />
-
-RTL Direction [#rtl-direction]
-
-The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
+<Source language="tsx" code="WithCloseButtonExample" />
 
 Best Practices [#best-practices]
 
-When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # Radio
@@ -1947,6 +1823,130 @@ Always provide clear error messages:
   <Radio value="express">Express</Radio>
 </RadioGroup>
 ```
+
+
+# SegmentedController
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+Best Practices [#best-practices]
+
+When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
 
 
 # Select
@@ -2742,69 +2742,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Gauge Chart
 
 
@@ -2968,6 +2905,73 @@ Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
 <Source language="tsx" code="SourceLegendSizeChart" />
 
 <Story of="Stories.LegendSizeChart" />
+
+
+# Tooltip
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
+* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
+* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
+
+Internal Component [#internal-component]
+
+This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+
+Props [#props]
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+Value formatting [#value-formatting]
+
+**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
+
+**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
+
+```tsx
+<Tooltip
+  tooltipData={tooltipData}
+  series={series}
+  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
+/>
+```
+
+Examples [#examples]
+
+Single Series [#single-series]
+
+Basic tooltip with a single series and default formatting.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple Series [#multiple-series]
+
+Tooltip with multiple series; all series at the same X position are shown together.
+
+<Source language="tsx" code="SourceMultipleSeries" />
+
+<Story of="Stories.MultipleSeries" />
+
+Arrow [#arrow]
+
+Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+
+<Source language="tsx" code="SourceArrow" />
+
+<Story of="Stories.Arrow" />
 
 
 # LineChart
@@ -3263,7 +3267,7 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# Tooltip
+# DonutChart
 
 
 
@@ -3273,61 +3277,57 @@ When to Use LineChart [#when-to-use-linechart]
 
 <Meta of="Stories" name="Overview" />
 
-Features [#features]
+Installation [#installation]
 
-* **Multiple series**: Shows all series that have a datum at the hovered X position in a single tooltip.
-* **Series matching**: Rows are built from `series` by matching `series[].id` to keys in `tooltipData.datumByKey` (from visx at the hovered X).
-* **Value formatting**: You can supply a function to format each value; if you don't, the tooltip shows the point's `y` (or nothing when null). Use the formatter for custom data shapes.
-
-Internal Component [#internal-component]
-
-This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
+```bash
+npm install @godaddy/antares
+```
 
 Props [#props]
 
-The `Tooltip` component accepts the following props:
-
 <PropTable />
-
-Value formatting [#value-formatting]
-
-**Default:** When `formatValue` is not provided, the tooltip uses a formatter that reads the data point’s `y` property (same as the chart's default Y accessor), converts it to a string, and returns an empty string for null. This is correct for the default `DataPoint` shape (`{ x, y }`).
-
-**Custom:** Pass `formatValue` to control display. The function receives the datum and returns a string. Use it to both extract and format (e.g. currency, percentage, custom units). For custom data point shapes (generic `TooltipProps<YourDatum>`), you must pass `formatValue` because the default only reads `y`.
-
-```tsx
-<Tooltip
-  tooltipData={tooltipData}
-  series={series}
-  formatValue={(d) => `$${d.y?.toLocaleString() ?? ''}`}
-/>
-```
 
 Examples [#examples]
 
-Single Series [#single-series]
+Basic [#basic]
 
-Basic tooltip with a single series and default formatting.
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
-<Source language="tsx" code="SourceSingleSeries" />
+<Source language="tsx" code="SourceBasic" />
 
-<Story of="Stories.SingleSeries" />
+<Story of="Stories.Basic" />
 
-Multiple Series [#multiple-series]
+Single slice [#single-slice]
 
-Tooltip with multiple series; all series at the same X position are shown together.
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Source language="tsx" code="SourceMultipleSeries" />
+<Source language="tsx" code="SourceSingleSlice" />
 
-<Story of="Stories.MultipleSeries" />
+<Story of="Stories.SingleSlice" />
 
-Arrow [#arrow]
+Legend placement [#legend-placement]
 
-Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-<Source language="tsx" code="SourceArrow" />
+<Source language="tsx" code="SourceLegendLayout" />
 
-<Story of="Stories.Arrow" />
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
 
 
 # TooltipDismissStrip
@@ -3359,6 +3359,43 @@ Tooltip provider, relative container, optional controls to open the visx tooltip
 <Story of="Stories.Basic" />
 
 <Source language="tsx" code="SourceBasic" />
+
+
+# useChartColor
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
+
+Wrap your chart (or list) with `ChartColorProvider`; each component that calls `useChartColor()` receives a CSS variable reference. Indices are assigned in an effect at mount, so allocation is safe under React concurrent rendering and StrictMode. Same component instance keeps the same color; colors cycle after the ninth consumer. No need to pass an index—order in the tree determines assignment.
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Single series [#single-series]
+
+One series using the first chart color.
+
+<Source language="tsx" code="SourceSingleSeries" />
+
+<Story of="Stories.SingleSeries" />
+
+Multiple series [#multiple-series]
+
+Multiple series each receiving the next color in sequence.
+
+<Source language="tsx" code="SourceMultiSeries" />
+
+<Story of="Stories.MultiSeries" />
 
 
 # useNormalizedSeries
@@ -3425,43 +3462,6 @@ Hook wired to a scrolling parent; scroll or resize to watch the returned values 
 <Source language="tsx" code="SourceExample" />
 
 <Story of="Stories.AutoLayout" />
-
-
-# useChartColor
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-For use with chart components (not exported) [#for-use-with-chart-components-not-exported]
-
-Wrap your chart (or list) with `ChartColorProvider`; each component that calls `useChartColor()` receives a CSS variable reference. Indices are assigned in an effect at mount, so allocation is safe under React concurrent rendering and StrictMode. Same component instance keeps the same color; colors cycle after the ninth consumer. No need to pass an index—order in the tree determines assignment.
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Single series [#single-series]
-
-One series using the first chart color.
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-<Story of="Stories.SingleSeries" />
-
-Multiple series [#multiple-series]
-
-Multiple series each receiving the next color in sequence.
-
-<Source language="tsx" code="SourceMultiSeries" />
-
-<Story of="Stories.MultiSeries" />
 
 
 # Box
