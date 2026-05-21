@@ -117,27 +117,13 @@ export interface FieldFrameProps {
 
 Both mechanisms can coexist. The folder is the coarse signal (visible in file trees, glob-friendly for tooling). The tag is the fine signal (visible in source, supported by TypeScript and doc generators).
 
-### Docs Site: URL Param Toggle
+### Docs Site
 
-For the docs site, it may be ideal to hide internal components from navigation by default. Maintainers could append `?internal=true` to see them inline within existing groups.
+For the docs site, the internal components will always be hidden.
 
-**How it would work:**
+### Storybook Site
 
-- Default (no param): only public components appear in nav and search
-- `?internal=true`: internal components appear within their parent group (e.g. Charts > Legend, Charts > Tooltip) with a visual badge
-- Toggle state persists via localStorage so we don't re-enter it each page load
-
-**Why this may be the right approach:**
-
-- Public consumers see a clean API surface
-- We keep grouping context as maintainers (Legend stays under Charts, not in a separate "Internal" section)
-- Simple to build: filter nav items based on component metadata + query param
-- URL param is discoverable but that's fine, internal docs aren't secret
-
-**Other approaches considered:**
-
-- **Separate /internal route**: internal components would live under their own nav section instead of appearing alongside their parent (e.g. Legend would be under "Internal" instead of under "Charts")
-- **Storybook-only for internals**: two documentation systems to maintain, likely to diverge
+For the Storybook site, the stories with the tag `internal` will be hidden by default and can be shown using the Search filters.
 
 ## Scope
 
@@ -208,9 +194,6 @@ When creating a new component, the choice is binary: if consumers need it, expor
 
 **Should `_internal/` folders get their own barrel file?**
 Probably not. Only 3-4 internal chart components today. Direct imports (`#components/chart/_internal/legend`) are explicit and grep-friendly. We can revisit if the count grows.
-
-**Does `?internal=true` need a toggle switch in the nav?**
-Probably not yet. URL param + localStorage persistence should be sufficient for our team. We can add a UI toggle later if onboarding friction becomes real.
 
 **Should Storybook also filter internal components by default?**
 Yes. Storybook is consumer-facing, so internal components should be hidden by default. Storybook's [`tags` config](https://storybook.js.org/docs/api/main-config/main-config-tags) with `defaultFilterSelection: 'exclude'` on a custom `internal` tag handles this natively. Stories in `_internal/` folders set `tags: ['internal']` at the meta level; Storybook hides them from the sidebar while keeping them accessible via the filter menu.

@@ -2,6 +2,12 @@ import path from 'node:path';
 import { type StorybookConfig } from '@storybook/react-vite';
 import type { Indexer, IndexerOptions } from 'storybook/internal/types';
 
+/**
+ * Adds an `internal` tag to all stories inside `_internal` folders.
+ *
+ * @param existingIndexers - The existing indexers to modify.
+ * @returns The modified indexers with the `internal` tag added to all stories inside `_internal` folders.
+ */
 export const experimental_indexers: StorybookConfig['experimental_indexers'] = async function experimentalIndexers(
   existingIndexers?: Indexer[]
 ) {
