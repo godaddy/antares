@@ -55,13 +55,13 @@
     border-color: var(--field-frame-critical-color);
   }
 
-  &[data-invalid]:has(input[data-focused='true']),
-  &[data-invalid]:has(textarea[data-focused='true']) {
+  &[data-invalid]:has(input[data-focused="true"]),
+  &[data-invalid]:has(textarea[data-focused="true"]) {
     outline: 2px solid var(--field-frame-critical-color);
   }
 
-  &:has(input[data-focused='true']),
-  &:has(textarea[data-focused='true']) {
+  &:has(input[data-focused="true"]),
+  &:has(textarea[data-focused="true"]) {
     outline: 2px solid Highlight;
     outline: 2px auto -webkit-focus-ring-color;
     outline-offset: -1px;
