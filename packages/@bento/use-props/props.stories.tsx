@@ -5,7 +5,7 @@ import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
 
 export default getMeta({
-  title: 'hooks/use-props'
+  title: 'Bento/hooks/use-props'
 });
 
 export const RenderProps = {

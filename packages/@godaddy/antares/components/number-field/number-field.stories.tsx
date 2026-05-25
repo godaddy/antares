@@ -14,7 +14,7 @@ import { NumberFieldValueScaleExample } from './examples/value-scale.tsx';
 import { NumberField } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/NumberField'
+  title: 'components/NumberField'
 });
 
 export const Props = getComponentDocs(NumberField);

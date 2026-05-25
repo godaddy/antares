@@ -10,7 +10,7 @@ import { SectionsDynamicExample } from './examples/sections-dynamic';
 import { SlotsDynamicSectionsExample } from './examples/slots-dynamic-sections';
 
 const meta: Meta<typeof ListBox> = {
-  title: 'components/ListBox',
+  title: 'Bento/components/ListBox',
   component: () => null,
   parameters: {
     layout: 'centered',

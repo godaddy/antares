@@ -7,7 +7,7 @@ import { UncontrolledWithTrigger as UncontrolledExample } from './examples/uncon
 import { Popover as PopoverExample } from './examples/popover.tsx';
 
 export default getMeta({
-  title: 'components/Overlay'
+  title: 'Bento/components/Overlay'
 });
 
 export const Props = getComponentDocs(OverlayComponent);

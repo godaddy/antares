@@ -4,7 +4,7 @@ import { Icon } from './examples/icon.tsx';
 import { type Store as StoreType } from './src/create-external-store.ts';
 
 export default getMeta({
-  title: 'utility/create-external-store'
+  title: 'Bento/utility/create-external-store'
 });
 
 export const api = getInterfaceDocs<StoreType>();

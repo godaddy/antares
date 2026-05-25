@@ -5,7 +5,7 @@ import { Loader } from './examples/loading.tsx';
 import { Example } from './examples/icon.tsx';
 
 export default getMeta({
-  title: 'components/Icon',
+  title: 'Bento/components/Icon',
   component: Icon,
   argTypes: {
     flip: {

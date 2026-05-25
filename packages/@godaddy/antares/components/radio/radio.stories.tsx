@@ -13,7 +13,7 @@ import { RadioFormExample } from './examples/radio-form.tsx';
 import { RadioGroup } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Radio'
+  title: 'components/Radio'
 });
 
 export const Props = getComponentDocs(RadioGroup);

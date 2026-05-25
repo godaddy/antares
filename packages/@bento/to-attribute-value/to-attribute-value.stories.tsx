@@ -2,7 +2,7 @@ import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Container } from './examples/container.tsx';
 
 export default getMeta({
-  title: 'utility/to-attribute-value'
+  title: 'Bento/utility/to-attribute-value'
 });
 
 export const stringify = {

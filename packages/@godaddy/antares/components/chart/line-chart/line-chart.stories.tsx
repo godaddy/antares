@@ -28,7 +28,7 @@ import { ZeroIncludedExample } from './examples/zero-included.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/line-chart-playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/chart/LineChart'
+  title: 'components/Chart/LineChart'
 });
 
 export const Props = getComponentDocs(LineChart);
