@@ -3,7 +3,7 @@ import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
 import { toSpacingVar } from '../../tokens.ts';
-import { type SharedFlexGridProps } from '../../types.ts';
+import type { SharedFlexGridProps } from '../../types.ts';
 
 export interface GridOwnProps extends BoxOwnProps, SharedFlexGridProps {
   /** The display property for the grid container. @default 'grid' */

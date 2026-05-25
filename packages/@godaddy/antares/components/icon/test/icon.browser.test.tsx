@@ -1,7 +1,7 @@
 import { IconExample } from '../examples/icon.tsx';
 import { render } from 'vitest-browser-react';
 import { Icon } from '@godaddy/antares';
-import React, { createRef } from 'react';
+import { type ReactElement, createRef } from 'react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
 
@@ -61,7 +61,7 @@ describe('@godaddy/antares', function antares() {
    *
    * @throws {Error} If icon loading times out after 5 seconds
    */
-  async function renderAndWait(component: React.ReactElement) {
+  async function renderAndWait(component: ReactElement) {
     const result = await render(component);
     await wait(result.container);
     return result;

@@ -33,7 +33,7 @@ export const docs = defineDocs({
 export const components = defineDocs({
   dir: '../../packages/@godaddy/antares/components',
   docs: {
-    files: ['**/README.mdx'],
+    files: ['**/README.mdx', '!**/_internal/**'],
     schema: pageSchema,
     postprocess: {
       includeProcessedMarkdown: true

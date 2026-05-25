@@ -33,6 +33,14 @@ Grouping optional: `components/<group>/<name>/` (e.g. `layout/box/`)
 
 Kebab-case names: component folders and files use dash-case (e.g. `text-field`, `date-picker`). Docs files (README.mdx) exempt.
 
+### Internal-only (`_internal`)
+
+Use `components/_internal/<name>/` for shared internal components or `components/<group>/_internal/<name>/` for group-scoped ones.
+
+Follow the same structure and steps as public components when applicable, but skip step 7 since internal components are not exported from `packages/@godaddy/antares/index.tsx`.
+
+For internal imports within the package, use `#components/...`.
+
 ## Props Pattern
 
 Prefer `interface` for props. Use `type` when required (e.g. polymorphic props with `PolymorphicProps<C, OwnProps>`). Extend RAC with `Omit`. JSDoc each prop.
