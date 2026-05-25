@@ -17,7 +17,7 @@ import {
   type SubmenuTriggerProps as RACSubmenuTriggerProps
 } from 'react-aria-components';
 import styles from './index.module.css';
-import React, { ComponentPropsWithoutRef } from 'react';
+import React, { type ComponentPropsWithoutRef } from 'react';
 import { cx } from 'cva';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
