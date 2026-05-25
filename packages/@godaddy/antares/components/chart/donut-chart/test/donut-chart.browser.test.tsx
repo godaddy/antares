@@ -1,5 +1,5 @@
 import assume from 'assume';
-import React from 'react';
+import type { ReactNode } from 'react';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
@@ -16,7 +16,7 @@ import { SmallSlicesExample } from '../examples/small-slices.tsx';
  * @param width - Container width in px
  * @param height - Container height in px
  */
-async function renderDonutExample(node: React.ReactNode, width = 400, height = 400) {
+async function renderDonutExample(node: ReactNode, width = 400, height = 400) {
   await page.viewport(width, height);
   const result = await render(<div style={{ width: `${width}px`, height: `${height}px` }}>{node}</div>);
 

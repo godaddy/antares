@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ContinuousExample } from '../examples/continuous.tsx';
@@ -8,7 +8,7 @@ import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
 import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
 
-const SSR_EXAMPLES: Array<[string, React.ReactElement]> = [
+const SSR_EXAMPLES: Array<[string, ReactElement]> = [
   ['continuous', <ContinuousExample key="continuous" />],
   ['basic', <BasicExample key="basic" />],
   [
