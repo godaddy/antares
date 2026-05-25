@@ -1,8 +1,8 @@
 # Documentation
 
 - [Antares](/docs): A collection of accessible, composable React components built on React Aria.
-- [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
+- [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 - [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [Menu](/docs/components/menu): Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
