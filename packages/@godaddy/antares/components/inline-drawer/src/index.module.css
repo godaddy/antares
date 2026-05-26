@@ -1,0 +1,61 @@
+/* Outer disclosure wrapper */
+.inlineDrawer {
+  overflow: hidden;
+}
+
+/* Horizontal placement: constrain inline-size */
+.inlineDrawer[data-placement="left"],
+.inlineDrawer[data-placement="right"] {
+  inline-size: var(--_size, auto);
+  transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Vertical placement: constrain block-size */
+.inlineDrawer[data-placement="top"],
+.inlineDrawer[data-placement="bottom"] {
+  block-size: var(--_size, auto);
+  transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* When minSize is set, keep panel visible at collapsed size.
+   UA stylesheet applies content-visibility: hidden to [hidden=until-found].
+   Override both display and content-visibility so children are actually visible. */
+.inlineDrawer[data-persist-content] > .panel[hidden] {
+  display: block !important;
+  content-visibility: visible !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inlineDrawer {
+    transition: none !important;
+  }
+}
+
+/* Trigger heading */
+.trigger {
+  margin: 0;
+}
+
+.triggerButton {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  inline-size: 100%;
+  background: none;
+  border: none;
+  padding: var(--sp-sm) var(--sp-md);
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+}
+
+.triggerButton[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Panel */
+.panel {
+  overflow: hidden;
+}
