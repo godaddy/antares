@@ -42,7 +42,7 @@
     "@bento/box": "^0.2.0",
     "@bento/internal-props": "^0.1.1",
     "@bento/types": "^0.1.0",
-    "@react-aria/utils": "^3.30.0"
+    "@react-aria/utils": "^3.34.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",

@@ -78,4 +78,27 @@ export {
 
 export { MetricsLockup, type MetricsLockupProps } from '#components/metrics-lockup';
 
+export {
+  Drawer,
+  DrawerTrigger,
+  DrawerHandle,
+  type DrawerProps,
+  type DrawerTriggerProps,
+  type DrawerHandleProps,
+  type DrawerPlacement,
+  type DrawerSnapPoint
+} from '#components/drawer';
+
+export {
+  InlineDrawer,
+  InlineDrawerTrigger,
+  InlineDrawerPanel,
+  type InlineDrawerProps,
+  type InlineDrawerTriggerProps,
+  type InlineDrawerPanelProps,
+  type InlineDrawerPlacement
+} from '#components/inline-drawer';
+
+export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
+
 export { Modal, ModalTrigger, type ModalProps, type ModalTriggerProps } from '#components/modal';
