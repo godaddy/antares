@@ -43,8 +43,6 @@ export {
   type SubmenuTriggerProps
 } from '#components/menu';
 
-export { FieldFrame, type FieldFrameProps } from '#components/field-frame';
-
 export type { DataPoint, SeriesConfig } from '#components/chart/types';
 
 export { BarChart, type BarChartProps } from '#components/chart/bar-chart';
@@ -102,3 +100,5 @@ export {
 } from '#components/inline-drawer';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
+
+export { Modal, ModalTrigger, type ModalProps, type ModalTriggerProps } from '#components/modal';

@@ -5,7 +5,7 @@ import { PressableLinkExample } from './examples/pressable-link-example.tsx';
 import { PressableCustomExample } from './examples/pressable-custom.tsx';
 
 export default getMeta({
-  title: 'components/Pressable',
+  title: 'Bento/components/Pressable',
   component: Pressable
 });
 

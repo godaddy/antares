@@ -8,7 +8,7 @@ import { Merged } from './examples/merged.tsx';
 import { type Slots } from './src/slots.tsx';
 
 export default getMeta({
-  title: 'higher-order components/slots'
+  title: 'Bento/higher-order components/slots'
 });
 
 export const SlotsAPI = getInterfaceDocs<Slots>();

@@ -7,7 +7,7 @@ import { CheckboxGroupIndeterminateExample } from './examples/checkbox-group-ind
 import { CheckboxGroupExample } from './examples/checkbox-group.tsx';
 
 export default getMeta({
-  title: 'components/Checkbox'
+  title: 'Bento/components/Checkbox'
 });
 
 export const CheckboxGroupProps = getComponentDocs(CheckboxGroup);

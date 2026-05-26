@@ -14,7 +14,7 @@ import { SizesExample } from './examples/sizes.tsx';
 import { IconExample } from './examples/icon.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Button',
+  title: 'components/Button'
 });
 
 export const Props = getComponentDocs(Button);

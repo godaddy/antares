@@ -3,7 +3,7 @@ import { BasicUsage } from './examples/basic';
 import { MultipleIcons } from './examples/multiple';
 
 export default getMeta({
-  title: 'hooks/use-svg-sprite'
+  title: 'Bento/hooks/use-svg-sprite'
 });
 
 export const useSVGSpriteMeta = {

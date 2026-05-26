@@ -4,7 +4,7 @@ import { RenderingSvg } from './examples/rendering-svg.tsx';
 import { Illustration } from './src/index.tsx';
 
 export default getMeta({
-  title: 'components/Illustration',
+  title: 'Bento/components/Illustration',
   component: Illustration,
   argTypes: {
     flip: {

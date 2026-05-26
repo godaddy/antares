@@ -10,7 +10,7 @@ import { TextFieldBasic } from './examples/basic';
 import { TextField } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/TextField'
+  title: 'components/TextField'
 });
 
 export const Props = getComponentDocs(TextField);

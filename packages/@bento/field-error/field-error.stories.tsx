@@ -3,7 +3,7 @@ import { FieldError } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 
 export default getMeta({
-  title: 'components/FieldError'
+  title: 'Bento/components/FieldError'
 });
 
 export const Props = getComponentDocs(FieldError);

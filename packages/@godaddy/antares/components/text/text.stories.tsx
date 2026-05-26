@@ -9,7 +9,7 @@ import { AsExample } from './examples/as.tsx';
 import { Text } from './src/index.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Text'
+  title: 'components/Text'
 });
 
 export const Props = getComponentDocs(Text);

@@ -5,7 +5,7 @@ import { HookExample } from './examples/hook.tsx';
 import { ModalExample } from './examples/modal.tsx';
 
 export default getMeta({
-  title: 'components/ScrollLock'
+  title: 'Bento/components/ScrollLock'
 });
 
 export const Props = getComponentDocs(ScrollLockComponent);

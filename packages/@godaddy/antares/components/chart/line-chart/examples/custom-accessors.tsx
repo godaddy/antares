@@ -1,4 +1,4 @@
-import { DateValue, cityTemperature } from '@visx/mock-data';
+import { type DateValue, cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
 export function CustomAccessorsExample(props: Partial<LineChartProps<DateValue>>) {

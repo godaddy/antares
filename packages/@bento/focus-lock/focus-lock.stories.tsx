@@ -7,7 +7,7 @@ import { SelectExample } from './examples/select.tsx';
 import { FormExample } from './examples/form.tsx';
 
 export default getMeta({
-  title: 'components/FocusLock'
+  title: 'Bento/components/FocusLock'
 });
 
 export const Props = getComponentDocs(FocusLock);

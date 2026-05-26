@@ -7,7 +7,7 @@ import { OverrideProps } from './examples/override-props.tsx';
 import { Override } from './examples/override.tsx';
 
 export default getMeta({
-  title: 'components/Environment'
+  title: 'Bento/components/Environment'
 });
 
 export const API = getComponentDocs(Environment);

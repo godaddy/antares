@@ -1,0 +1,97 @@
+---
+title: Modal
+description: The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
+---
+
+import {
+  Meta,
+  ArgTypes,
+  Controls,
+  Source,
+  Story,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './modal.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceWithActions from './examples/with-actions.tsx?raw';
+import SourceAlignment from './examples/alignment.tsx?raw';
+import SourceWithMedia from './examples/with-media.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+The `Modal` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic usage
+
+The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Controlled
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
+
+### With actions
+
+Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+
+<Story of={Stories.WithActions} inline />
+<Source language="tsx" code={SourceWithActions} />
+
+### Alignment
+
+Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+
+<Story of={Stories.Alignment} inline />
+<Source language="tsx" code={SourceAlignment} />
+
+### With media
+
+Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
+
+<Story of={Stories.WithMedia} inline />
+<Source language="tsx" code={SourceWithMedia} />
+
+## Accessibility
+
+### Keyboard interaction
+
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| `Escape`      | Closes the modal (when dismissable)                            |
+
+### ARIA
+
+- `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+- The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+- The close button is rendered with `aria-label="Close"`
+- Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices
+
+- Always provide a `title` so the dialog has an accessible name
+- Pair every footer action with `slot="close"` when it should dismiss the modal
+- Set `isDismissable={false}` for required confirmations the user must explicitly answer
+- Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+- Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment

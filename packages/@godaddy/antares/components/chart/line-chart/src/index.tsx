@@ -1,8 +1,8 @@
-import { AxisTitle } from '#components/chart/axis-title';
-import { TooltipDismissStrip } from '#components/chart/tooltip-dismiss-strip';
-import { Legend } from '#components/chart/legend';
-import { Tooltip as ChartTooltip } from '#components/chart/tooltip';
-import { CHART_LEGACY_SERIES_COLORS } from '#components/chart/use-chart-color';
+import { AxisTitle } from '#components/chart/_internal/axis-title';
+import { TooltipDismissStrip } from '#components/chart/_internal/tooltip-dismiss-strip';
+import { Legend } from '#components/chart/_internal/legend';
+import { Tooltip as ChartTooltip } from '#components/chart/_internal/tooltip';
+import { CHART_LEGACY_SERIES_COLORS } from '#components/chart/_internal/use-chart-color';
 import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
 import {
@@ -25,16 +25,16 @@ import type {
   Optional,
   SeriesConfig,
   XLabelsOrientation
-} from '../../types.ts';
+} from '#components/chart/types.ts';
 import {
   resolveLegendPosition,
   xAccessor as defaultXAccessor,
   yAccessor as defaultYAccessor,
   getXLabelVerticalProps
 } from '../../utils.ts';
-import { useNormalizedSeries } from '#components/chart/use-normalized-series';
+import { useNormalizedSeries } from '#components/chart/_internal/use-normalized-series';
 import { buildScaleConfig } from './scale-config.ts';
-import { useScrollableXYChart } from '#components/chart/use-scrollable-xy-chart';
+import { useScrollableXYChart } from '#components/chart/_internal/use-scrollable-xy-chart';
 import styles from './index.module.css';
 
 /** Scale types supported by LineChart (subset of @visx/scale ScaleType). */

@@ -1,0 +1,63 @@
+.overlay {
+  --modal-overlay-bg: rgba(0, 0, 0, 0.6);
+
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.2s;
+}
+
+.overlay[data-entering],
+.overlay[data-exiting] {
+  opacity: 0;
+}
+
+.modalContainer {
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
+}
+
+.modalContainer[data-entering],
+.modalContainer[data-exiting] {
+  transform: translateY(8px);
+  opacity: 0;
+}
+
+.modal {
+  position: relative;
+  border: 0;
+  max-height: calc(100dvh - var(--sp-md) * 2);
+  width: calc(100dvw - var(--sp-md) * 2);
+  max-width: 80ch;
+  overflow: auto;
+}
+
+.title {
+  flex-grow: 1;
+  padding-inline-end: 2rem;
+}
+
+.title,
+.description {
+  margin: 0;
+}
+
+.centered {
+  text-align: center;
+}
+
+.media {
+  overflow: hidden;
+  width: 100%;
+}
+
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}

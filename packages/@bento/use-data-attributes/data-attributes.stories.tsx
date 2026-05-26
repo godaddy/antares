@@ -2,7 +2,7 @@ import { getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Container } from './examples/container.tsx';
 
 export default getMeta({
-  title: 'hooks/use-data-attributes'
+  title: 'Bento/hooks/use-data-attributes'
 });
 
 export const useDataAttributesProps = {

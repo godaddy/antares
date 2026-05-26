@@ -10,7 +10,7 @@ import { VariantsExample } from './examples/variants.tsx';
 import { WithRangeLabelsExample } from './examples/with-range-labels.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/chart/GaugeChart'
+  title: 'components/Chart/GaugeChart'
 });
 
 export const Props = getComponentDocs(GaugeChart);
