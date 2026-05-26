@@ -1,0 +1,1 @@
+import{$ as n}from"./isScrollable-BoZfJepV.js";function m(l,t){let e=l;for(n(e,t)&&(e=e.parentElement);e&&!n(e,t);)e=e.parentElement;return e||document.scrollingElement||document.documentElement}export{m as $};
