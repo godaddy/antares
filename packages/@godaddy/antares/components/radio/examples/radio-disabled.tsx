@@ -1,8 +1,8 @@
-import { Radio, RadioGroup } from '@godaddy/antares';
+import { Radio, RadioGroup, Flex } from '@godaddy/antares';
 
 export function RadioDisabledExample() {
   return (
-    <>
+    <Flex direction="column" gap="md">
       <RadioGroup label="Disabled group" defaultValue="basic" isDisabled>
         <Radio value="basic">Basic</Radio>
         <Radio value="standard">Standard</Radio>
@@ -16,6 +16,6 @@ export function RadioDisabledExample() {
         <Radio value="standard">Standard</Radio>
         <Radio value="premium">Premium</Radio>
       </RadioGroup>
-    </>
+    </Flex>
   );
 }
