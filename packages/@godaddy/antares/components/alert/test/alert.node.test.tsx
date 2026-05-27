@@ -17,8 +17,8 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<PlaygroundExample />)).toMatchSnapshot();
     });
 
-    it('renders the alert with no body (title only via empty children)', function noBody() {
-      expect(renderToString(<PlaygroundExample children="" />)).toMatchSnapshot();
+    it('renders the alert with no body (title only)', function noBody() {
+      expect(renderToString(<PlaygroundExample children={''} />)).toMatchSnapshot();
     });
 
     it('renders all emphasis variants', function emphasesExample() {

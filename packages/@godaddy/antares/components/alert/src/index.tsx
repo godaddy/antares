@@ -36,8 +36,8 @@ export interface AlertProps extends Omit<ComponentProps<'div'>, 'title'> {
   /** Sets title text for the alert. */
   title?: string;
 
-  /** Sets body text. */
-  children: React.ReactNode;
+  /** Optional body text. */
+  children?: React.ReactNode;
 
   /** Adds action button(s). */
   actions?: React.ReactNode;
@@ -85,26 +85,6 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
 
   const float = <div className={styles.float} />;
 
-  const titleElem =
-    onClose && title ? (
-      <div>
-        {float}
-        {title}
-      </div>
-    ) : (
-      title
-    );
-
-  const bodyContent =
-    onClose && !title ? (
-      <div>
-        {float}
-        {children}
-      </div>
-    ) : (
-      children
-    );
-
   return (
     <Flex
       ref={ref}
@@ -121,8 +101,18 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
         </Flex>
         <Flex className={styles.textAndActionWrapper} alignItems="center" wrap="wrap">
           <Flex direction="column" className={styles.text}>
-            {titleElem ? <Text className={styles.title}>{titleElem}</Text> : null}
-            {bodyContent ? <span>{bodyContent}</span> : null}
+            {title && (
+              <Text as="div" className={styles.title}>
+                {onClose ? float : null}
+                {title}
+              </Text>
+            )}
+            {children && (
+              <div>
+                {onClose && !title ? float : null}
+                {children}
+              </div>
+            )}
           </Flex>
           {actions ? (
             <Flex className={styles.actions} alignItems="center" gap="sm" wrap="wrap">

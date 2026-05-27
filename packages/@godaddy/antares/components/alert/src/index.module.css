@@ -62,7 +62,7 @@
 
 .iconWrapper {
   flex-shrink: 0;
-  height: 1.375rem;
+  height: var(--alert-icon-size);
   width: var(--alert-icon-size);
   overflow: hidden;
 
