@@ -83,7 +83,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props
     ...rest
   } = props;
 
-  const float = <div className={styles.float} />;
+  const float = <span aria-hidden="true" className={styles.float} />;
 
   return (
     <Flex
