@@ -3,4 +3,4 @@ export {
   type ToggleButtonGroupProps,
   ToggleButton,
   type ToggleButtonProps
-} from '#components/toggle-button-group';
+} from '#components/toggle-button';

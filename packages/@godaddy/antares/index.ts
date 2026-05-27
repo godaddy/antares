@@ -108,4 +108,4 @@ export {
   ToggleButton,
   type ToggleButtonGroupProps,
   type ToggleButtonProps
-} from '#components/toggle-button-group';
+} from '#components/toggle-button';

@@ -9,7 +9,7 @@ import { IconAndTextExample } from '../examples/icon-and-text.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
 import { WithDropdownExample } from '../examples/with-dropdown.tsx';
-import { PlaygroundExample } from '../examples/toggle-button-group-playground.tsx';
+import { PlaygroundExample } from '../examples/toggle-button-playground.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#ToggleButtonGroup', function toggleButtonGroupTests() {

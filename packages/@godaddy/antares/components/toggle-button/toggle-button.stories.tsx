@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/toggle-button-group-playground.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/toggle-button-playground.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { MultipleSelectionExample } from './examples/multiple-selection.tsx';
 import { ControlledExample } from './examples/controlled.tsx';
@@ -13,7 +13,7 @@ import { WithDropdownExample } from './examples/with-dropdown.tsx';
 import { ToggleButtonGroup } from './src/index.tsx';
 
 export default getMeta({
-  title: 'components/ToggleButtonGroup'
+  title: 'components/ToggleButton'
 });
 
 export const Props = getComponentDocs(ToggleButtonGroup);
@@ -24,17 +24,17 @@ export const MultipleSelection = getStory(MultipleSelectionExample);
 
 export const Controlled = getStory(ControlledExample);
 
-export const Sizes = getStory(SizesExample);
+export const Disabled = getStory(DisabledExample);
 
-export const IconOnly = getStory(IconOnlyExample);
+export const Sizes = getStory(SizesExample);
 
 export const IconAndText = getStory(IconAndTextExample);
 
-export const Disabled = getStory(DisabledExample);
-
-export const RTL = getStory(RTLExample);
+export const IconOnly = getStory(IconOnlyExample);
 
 export const WithDropdown = getStory(WithDropdownExample);
+
+export const RTL = getStory(RTLExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
