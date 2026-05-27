@@ -1,0 +1,1 @@
+import{$}from"./useSyncRef-CA1_W7fa.js";import{r as l}from"./iframe-6GUG5WB0.js";function i(e,r,f,t){let a=$(f),c=f==null;l.useEffect(()=>{if(c||!e.current)return;let n=e.current;return n.addEventListener(r,a,t),()=>{n.removeEventListener(r,a,t)}},[e,r,t,c])}export{i as $};
