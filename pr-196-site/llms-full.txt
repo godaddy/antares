@@ -148,11 +148,10 @@ Accessibility [#accessibility]
 
 Keyboard [#keyboard]
 
-| Key     | Description                                        |
-| ------- | -------------------------------------------------- |
-| `Tab`   | Moves focus to the dismiss button or action button |
-| `Space` | Activates the focused button                       |
-| `Enter` | Activates the focused button                       |
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
 
 Screen readers [#screen-readers]
 
@@ -2195,144 +2194,6 @@ When Not to Use [#when-not-to-use]
 * For form input (use RadioGroup instead)
 
 
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
-
-
-# TextField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The TextField component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-Minimal usage with label and placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-Adornments [#adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
-
-<Source language="tsx" code="SourceAdornments" />
-
-<Story of="Stories.Adornments" />
-
-Multiline [#multiline]
-
-Use `multiline` to render a textarea.
-
-<Source language="tsx" code="SourceMultiline" />
-
-<Story of="Stories.Multiline" />
-
-
 # Select
 
 
@@ -2485,6 +2346,144 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
   outline-offset: 2px;
 }
 ```
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
+
+
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The TextField component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
 
 
 # Tooltip
@@ -2941,6 +2940,69 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Gauge Chart
 
 
@@ -3334,69 +3396,6 @@ When to Use LineChart [#when-to-use-linechart]
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
-
-
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
 
 
 # Box
