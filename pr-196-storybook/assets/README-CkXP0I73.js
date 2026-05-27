@@ -1,0 +1,66 @@
+import{j as o}from"./iframe-BipHecsa.js";import{u as s,M as p,A as l,a as i,S as r}from"./blocks-BpaAODfY.js";import{S as a,P as c,D as d,C as h}from"./tooltip.stories-nMRQm5Ih.js";import"./preload-helper-PPVm8Dsz.js";import"./index-B0u55k7n.js";import"./index-SLLkWFQx.js";import"./index-CHIkQ4Ax.js";import"./index-AlJF_K6N.js";import"./index-BtlUOAdW.js";import"./clsx-B-dksMZM.js";import"./Button-Bnw1Bj29.js";import"./Text-BraK1FW1.js";import"./mergeProps-DB8RTHkp.js";import"./SSRProvider-BTsV7JKa.js";import"./useObjectRef-u-tGh12i.js";import"./useButton-CkEXDgdw.js";import"./filterDOMProps-SeKkUh_q.js";import"./useFocusable-BbAXfnoQ.js";import"./useSyncRef-JcQkHO2R.js";import"./useGlobalListeners-DPw_UEd0.js";import"./DOMFunctions-1-yhhTt0.js";import"./useHover-CFJJur9S.js";import"./platform-DTNzKOdA.js";import"./usePress-DlwmkORq.js";import"./Hidden-ZFvCwzYE.js";import"./useFocusRing-C3GfOd7w.js";import"./useFocusWithin-BVjQAR2Q.js";import"./index-B-53hLb3.js";import"./index-iuo5V5vj.js";import"./index-B1Xg8qXC.js";import"./slots-CeDAtiCB.js";import"./index-DQVG4xCR.js";import"./index-CLj43KZG.js";import"./index-CXJBjsnX.js";import"./index-BpMdXB9i.js";import"./create-external-store-TtP3UJpK.js";import"./index-BNbsrJxS.js";import"./client-DoQCOMx0.js";import"./index-CX6oRoZ0.js";import"./index-BXgtPElL.js";import"./animation-COcyhtn-.js";import"./number-P4c4HRxZ.js";import"./I18nProvider-CPXuPy2Y.js";import"./useControlledState-Cs3bl_W8.js";import"./index-BrS_oZqW.js";import"./index-CI-mtv50.js";import"./index-B1PlzYmd.js";const m=`import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';
+
+export function DefaultExample(props: {
+  tooltipTriggerProps?: Partial<TooltipTriggerProps>;
+  tooltipProps?: Partial<TooltipProps>;
+}) {
+  return (
+    <TooltipTrigger {...props.tooltipTriggerProps}>
+      <Button variant="primary">Hover me</Button>
+      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>
+    </TooltipTrigger>
+  );
+}
+`,x=`import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';
+import { useRef } from 'react';
+
+export function CustomAnchorExample() {
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <Flex gap="sm" alignItems="center">
+      <TooltipTrigger>
+        <Button variant="primary">Hover me</Button>
+        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>
+      </TooltipTrigger>
+
+      <Box elevation="card" padding="sm" ref={triggerRef}>
+        Tooltip appears here
+      </Box>
+    </Flex>
+  );
+}
+`;function n(e){const t={code:"code",h1:"h1",h2:"h2",h3:"h3",li:"li",p:"p",pre:"pre",table:"table",tbody:"tbody",td:"td",th:"th",thead:"thead",tr:"tr",ul:"ul",...s(),...e.components};return o.jsxs(o.Fragment,{children:[o.jsx(p,{of:a,name:"Overview"}),`
+`,o.jsx(t.h1,{id:"tooltip",children:"Tooltip"}),`
+`,o.jsx(t.p,{children:"The Tooltip component displays a description of an element on hover or focus."}),`
+`,o.jsx(t.p,{children:`Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.`}),`
+`,o.jsx(t.h2,{id:"installation",children:"Installation"}),`
+`,o.jsx(t.pre,{children:o.jsx(t.code,{className:"language-bash",children:`npm install --save @godaddy/antares
+`})}),`
+`,o.jsx(t.h2,{id:"props",children:"Props"}),`
+`,o.jsx(l,{of:c}),`
+`,o.jsx(t.h2,{id:"examples",children:"Examples"}),`
+`,o.jsx(t.h3,{id:"basic-usage",children:"Basic Usage"}),`
+`,o.jsxs(t.p,{children:["Use it with ",o.jsx(t.code,{children:"<TooltipTrigger>"}),`, which wraps both the tooltip content and a focusable
+element (for example, a `,o.jsx(t.code,{children:"Button"}),"). The tooltip appears on hover and focus."]}),`
+`,o.jsx(i,{of:d,inline:!0}),`
+`,o.jsx(r,{language:"tsx",code:m}),`
+`,o.jsx(t.h3,{id:"custom-anchor",children:"Custom Anchor"}),`
+`,o.jsxs(t.p,{children:[`To position a tooltip relative to a different focusable element, use the
+`,o.jsx(t.code,{children:"triggerRef"})," prop. The ",o.jsx(t.code,{children:"TooltipTrigger"})," still handles showing/hiding on hover/focus."]}),`
+`,o.jsx(i,{of:h,inline:!0}),`
+`,o.jsx(r,{language:"tsx",code:x}),`
+`,o.jsx(t.h2,{id:"accessibility",children:"Accessibility"}),`
+`,o.jsx(t.h3,{id:"keyboard",children:"Keyboard"}),`
+`,o.jsxs(t.table,{children:[o.jsx(t.thead,{children:o.jsxs(t.tr,{children:[o.jsx(t.th,{children:"Key"}),o.jsx(t.th,{children:"Description"})]})}),o.jsxs(t.tbody,{children:[o.jsxs(t.tr,{children:[o.jsx(t.td,{children:"Tab"}),o.jsx(t.td,{children:"Moves focus to the focusable element and shows the tooltip"})]}),o.jsxs(t.tr,{children:[o.jsx(t.td,{children:"Escape"}),o.jsx(t.td,{children:"Closes the tooltip"})]})]})]}),`
+`,o.jsx(t.h3,{id:"aria",children:"ARIA"}),`
+`,o.jsxs(t.ul,{children:[`
+`,o.jsxs(t.li,{children:["The tooltip uses ",o.jsx(t.code,{children:'role="tooltip"'})," and is associated with its focusable element via ",o.jsx(t.code,{children:"aria-describedby"}),"."]}),`
+`]}),`
+`,o.jsx(t.h2,{id:"best-practices",children:"Best Practices"}),`
+`,o.jsxs(t.ul,{children:[`
+`,o.jsx(t.li,{children:"Keep tooltip content short and informative."}),`
+`,o.jsx(t.li,{children:"Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips."}),`
+`,o.jsxs(t.li,{children:["Do not place interactive content inside tooltips. Use a ",o.jsx(t.code,{children:"Popover"})," instead."]}),`
+`]})]})}function lo(e={}){const{wrapper:t}={...s(),...e.components};return t?o.jsx(t,{...e,children:o.jsx(n,{...e})}):n(e)}export{lo as default};
