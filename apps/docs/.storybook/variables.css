@@ -1,204 +1,197 @@
-/*
-  Remember to import this file to use the variables.
-  DO NOT USE variables with an underscore inside (--_)
-  Variables with an underscore are reserved for use IN THIS FILE ONLY, meant to derive other variables.
-*/
-
-@property --_sp-base {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 16px;
-}
-
-@property --_sp-scale {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 2;
-}
-
-@property --_fs-base {
-  syntax: "*";
-  inherits: false;
-  initial-value: 1rem;
-}
-
-@property --_fs-scale {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 1.125;
-}
-
-@property --_accent {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: LinkText;
-}
-
-@property --_selected {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: SelectedItem;
-}
-
 :root {
-  /*
-    Items NOT covered by variables:
-
-    Border-width: Use 1px for everything.
-    Font-weight: Use bolder if text needs bold and isn't provided by the element.
-
-    These may be given variables through design tokens at a later time.
-  */
-
-  /* ===================== SPACING =========================== */
-
-  /* Use these (sp) for spacing of large regions (cards, modals, etc). 16 x 2^-2 = 4 */
-  --sp-xs: calc(var(--_sp-base) * pow(var(--_sp-scale), -2));
-  --sp-sm: calc(var(--_sp-base) * pow(var(--_sp-scale), -1));
-  --sp-md: calc(var(--_sp-base) * pow(var(--_sp-scale), 0));
-  --sp-lg: calc(var(--_sp-base) * pow(var(--_sp-scale), 1));
-  --sp-xl: calc(var(--_sp-base) * pow(var(--_sp-scale), 2));
-  --sp-2xl: calc(var(--_sp-base) * pow(var(--_sp-scale), 3));
-
-  /* ===================== ROUNDING =========================== */
-
-  /* Matches the spacing values above. */
-  --br-xs: var(--sp-xs);
-  --br-sm: var(--sp-sm);
-  --br-md: var(--sp-md);
-  --br-lg: var(--sp-lg);
-  --br-xl: var(--sp-xl);
-  --br-2xl: var(--sp-2xl);
-
-  /* ===================== FONT SIZE =========================== */
-
-  /* Let font-size cascade and avoid using these unless absolutely necessary. 16 x 1.125^2 = 20.25 */
-  --fs-2xs: calc(var(--_fs-base) * pow(var(--_fs-scale), -3));
-  --fs-xs: calc(var(--_fs-base) * pow(var(--_fs-scale), -2));
-  --fs-sm: calc(var(--_fs-base) * pow(var(--_fs-scale), -1));
-  --fs-md: calc(var(--_fs-base) * pow(var(--_fs-scale), 0));
-  --fs-lg: calc(var(--_fs-base) * pow(var(--_fs-scale), 1));
-  --fs-xl: calc(var(--_fs-base) * pow(var(--_fs-scale), 2));
-  --fs-2xl: calc(var(--_fs-base) * pow(var(--_fs-scale), 3));
-  --fs-3xl: calc(var(--_fs-base) * pow(var(--_fs-scale), 4));
-  --fs-4xl: calc(var(--_fs-base) * pow(var(--_fs-scale), 5));
-  --fs-5xl: calc(var(--_fs-base) * pow(var(--_fs-scale), 6));
-  --fs-6xl: calc(var(--_fs-base) * pow(var(--_fs-scale), 7));
-
-  /* Heading text uses the above scale, offset to xl */
-  --fs-heading-md: var(--fs-2xl);
-  --fs-heading-lg: var(--fs-3xl);
-  --fs-heading-xl: var(--fs-4xl);
-  --fs-heading-2xl: var(--fs-5xl);
-  --fs-heading-3xl: var(--fs-6xl);
-
-  /* Detail text uses the above scale, offset to sm */
-  --fs-detail-md: var(--fs-xs);
-  --fs-detail-lg: var(--fs-sm);
-
-  /* ===================== FONT FAMILY =========================== */
-
-  --ff-base: sans-serif;
-  --ff-heading: sans-serif;
-  --ff-detail: sans-serif;
-
-  /* ===================== LINE HEIGHT =========================== */
-
-  --lh-base: 1.5;
-  --lh-heading: 1.25;
-  --lh-detail: 1.5;
-  /* ===================== COLORS =========================== */
-
-  /*
-    - `:disabled`, use `opacity: 0.4`
-    - `:hover`, use `background: color-mix(in oklch, [BACKGROUNDCOLOR], white 12%)`
-    - `:active` (pressed), use `background: color-mix(in oklch, [BACKGROUNDCOLOR], black 12%)`
-
-    This is to keep the number of variables low.
-    Otherwise there's an additional variable for each hover state,
-    including data visualization colors.
-    Hover is not as common as the other uses.
-  */
-
-  /* Used for containers and surfaces, 8% white from previous color */
-  --bg-base: Canvas;
-  --bg-card: color-mix(in oklch, var(--bg-base), white 8%);
-  --bg-raised: color-mix(in oklch, var(--bg-card), white 8%);
-  --bg-overlay: color-mix(in oklch, var(--bg-raised), white 8%);
-
-  /* Accessible contrast color derived from bg color (produces either black or white) */
-  --fg-base: color(
-    from var(--bg-base) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1) /
-    1
-  );
-  --fg-card: var(--fg-base);
-  --fg-raised: var(--fg-base);
-  --fg-overlay: var(--fg-base);
-
-  /* Used for passive text */
-  --passive: color-mix(in oklch, transparent, var(--fg-base) 60%);
-
-  /* 15% of fg color */
-  --bd-base: color-mix(in oklch, transparent, var(--fg-base) 15%);
-  --bd-card: color-mix(in oklch, transparent, var(--fg-card) 15%);
-  --bd-raised: transparent;
-  --bd-overlay: transparent;
-
-  /* Use in filter property NOT box-shadow */
-  --sh-base: none;
-  --sh-card: none;
-  --sh-raised: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
-    drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
-  --sh-overlay: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1))
-    drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
-
-  /* Used for buttons, links */
-  --bg-primary: var(--_accent);
-  --fg-primary: color(
-    from var(--bg-primary) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1) /
-    1
-  );
-  --bd-primary: var(--_accent);
-
-  --bg-secondary: transparent;
-  --fg-secondary: var(--fg-base);
-  --bd-secondary: var(--_accent);
-
-  --bg-tertiary: transparent;
-  --fg-tertiary: var(--_accent);
-  --bd-tertiary: transparent;
-
-  /* Used for selected items, checkbox, radio, etc */
-  --bg-selected: var(--_selected);
-  --fg-selected: color(
-    from var(--bg-selected) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1) /
-    1
-  );
-  --bd-selected: var(--_selected);
-
-  /* Used for critical text */
-  --critical: red;
-
-  /* Used for critical interactive elements (bg is critical color, fg is contrasting text color) */
-  --bg-critical: var(--critical);
-  --fg-critical: color(
-    from var(--bg-critical) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1) /
-    1
-  );
-  --bd-critical: var(--critical);
-
-  /* Data visualization colors (pie, line, bar, etc) */
-  --viz1: color-mix(in oklch, var(--_accent), var(--bg-base) 8%);
-  --viz2: color-mix(in oklch, var(--_accent), var(--bg-base) 16%);
-  --viz3: color-mix(in oklch, var(--_accent), var(--bg-base) 24%);
-  --viz4: color-mix(in oklch, var(--_accent), var(--bg-base) 32%);
-  --viz5: color-mix(in oklch, var(--_accent), var(--bg-base) 40%);
-  --viz6: color-mix(in oklch, var(--_accent), var(--bg-base) 48%);
-  --viz7: color-mix(in oklch, var(--_accent), var(--bg-base) 56%);
-  --viz8: color-mix(in oklch, var(--_accent), var(--bg-base) 64%);
-  --viz9: color-mix(in oklch, var(--_accent), var(--bg-base) 72%);
+  --color-action-background-primary-default: #4169e1; /** Fill color for the default state of a primary button or other high-emphasis interactive control. */
+  --color-action-background-primary-hovered: #008080; /** Fill color for a primary control when the pointer is over it or it has keyboard focus (hover). */
+  --color-action-background-primary-pressed: #191970; /** Fill color for a primary control while it is being pressed or activated (active/pressed). */
+  --color-action-border-primary-default: #4169e1; /** Border color outlining a primary control in its default resting state. */
+  --color-action-border-primary-hovered: #008080; /** Border color for a primary control in the hover or focused state. */
+  --color-action-border-primary-pressed: #191970; /** Border color for a primary control in the pressed or active state. */
+  --color-action-text-primary-default: #ffffff; /** Label and icon color on top of a filled primary control in the default state. */
+  --color-action-text-primary-hovered: #ffffff; /** Label and icon color on a filled primary control when hovered or focused. */
+  --color-action-text-primary-pressed: #ffffff; /** Label and icon color on a filled primary control when pressed or active. */
+  --color-action-background-secondary-default: #e6e6fa; /** Fill for a secondary (medium-emphasis) control such as a secondary button in its default state. */
+  --color-action-background-secondary-hovered: #d3d3d3; /** Fill for a secondary control when hovered or keyboard-focused. */
+  --color-action-background-secondary-pressed: #c0c0c0; /** Fill for a secondary control while pressed or active. */
+  --color-action-border-secondary-default: #c0c0c0; /** Border for a secondary control in the default state. */
+  --color-action-border-secondary-hovered: #a9a9a9; /** Border for a secondary control when hovered or focused. */
+  --color-action-border-secondary-pressed: #808080; /** Border for a secondary control when pressed or active. */
+  --color-action-text-secondary-default: #000000; /** Label and icon color on a secondary control in the default state. */
+  --color-action-text-secondary-hovered: #000000; /** Label and icon color on a secondary control when hovered or focused. */
+  --color-action-text-secondary-pressed: #000000; /** Label and icon color on a secondary control when pressed or active. */
+  --color-action-background-tertiary-default: #ffffff; /** Fill for a low-emphasis control (text-style or ghost button) in the default state. */
+  --color-action-background-tertiary-hovered: #f5f5f5; /** Fill for a tertiary control when hovered or focused. */
+  --color-action-background-tertiary-pressed: #dcdcdc; /** Fill for a tertiary control while pressed or active. */
+  --color-action-border-tertiary-default: #d3d3d3; /** Border for a tertiary control in the default state. */
+  --color-action-border-tertiary-hovered: #c0c0c0; /** Border for a tertiary control when hovered or focused. */
+  --color-action-border-tertiary-pressed: #a9a9a9; /** Border for a tertiary control when pressed or active. */
+  --color-action-text-tertiary-default: #4169e1; /** Label and icon color for a tertiary control in the default state (often the only strong color). */
+  --color-action-text-tertiary-hovered: #008080; /** Label and icon color for a tertiary control when hovered or focused. */
+  --color-action-text-tertiary-pressed: #191970; /** Label and icon color for a tertiary control when pressed or active. */
+  --color-action-background-inline-default: #ffffff; /** Fill behind an inline text or icon action (e.g. link-style control in a sentence) at rest. */
+  --color-action-background-inline-hovered: #f5f5f5; /** Fill behind an inline action when hovered or focused. */
+  --color-action-background-inline-pressed: #dcdcdc; /** Fill behind an inline action while pressed or active. */
+  --color-action-border-inline-default: #4169e1; /** Optional border or focus ring color for an inline action in the default state. */
+  --color-action-border-inline-hovered: #008080; /** Border or focus treatment for an inline action when hovered or focused. */
+  --color-action-border-inline-pressed: #191970; /** Border or focus treatment for an inline action when pressed or active. */
+  --color-action-text-inline-default: #4169e1; /** Text or icon color for an inline action in body copy or compact UI. */
+  --color-action-text-inline-hovered: #008080; /** Text or icon color for an inline action when hovered or focused. */
+  --color-action-text-inline-pressed: #191970; /** Text or icon color for an inline action when pressed or active. */
+  --color-canvas-background: #ffffff; /** Root page or application background behind primary layout regions. */
+  --color-canvas-text: #000000; /** Default body text color on the canvas when no surface-specific token applies. */
+  --color-chart-001: #4169e1; /** First series color for data visualization (bars, lines, slices). */
+  --color-chart-002: #008b8b; /** Second series color; pair with the first series for simple two-series charts. */
+  --color-chart-003: #ffa500; /** Third series color for multi-series charts and legends. */
+  --color-chart-004: #ba55d3; /** Fourth series color for extended palettes. */
+  --color-chart-005: #fa8072; /** Fifth series color for extended palettes. */
+  --color-chart-006: #48d1cc; /** Sixth series color for extended palettes. */
+  --color-chart-007: #a9a9a9; /** Seventh series color; useful for neutral or secondary data. */
+  --color-chart-008: #2f4f4f; /** Eighth series color; completes the default categorical set. */
+  --color-feedback-critical-strong: #b22222; /** High-attention error surface: banners, inline alerts, or invalid field highlights. */
+  --color-feedback-critical-onstrong: #ffffff; /** Foreground (icons, text) placed on a solid critical/error background for sufficient contrast. */
+  --color-feedback-critical-subtle: #fff0f5; /** Soft error tint for backgrounds that should read as “problem” without dominating the layout. */
+  --color-feedback-critical-onsubtle: #8b0000; /** Foreground for critical messaging on a light or tinted error background. */
+  --color-feedback-critical-text: #8b0000; /** Standalone error text, helper copy, and inline validation messages. */
+  --color-feedback-passive-strong: #808080; /** Strong neutral surface for non-semantic notices and low-priority system messages. */
+  --color-feedback-passive-onstrong: #ffffff; /** Foreground on a solid neutral feedback background (muted banners, disabled-adjacent states). */
+  --color-feedback-passive-subtle: #f5f5f5; /** Light neutral wash behind passive content without implying error or success. */
+  --color-feedback-passive-onsubtle: #2f4f4f; /** Foreground for neutral messaging on a light gray or subtle neutral tint. */
+  --color-feedback-passive-text: #2f4f4f; /** Body-style copy for passive or informational text that is not the primary info color. */
+  --color-feedback-success-strong: #228b22; /** Prominent success surface: completed steps, positive alerts, valid states. */
+  --color-feedback-success-onstrong: #ffffff; /** Foreground on a solid success background (checkmarks, confirmation banners). */
+  --color-feedback-success-subtle: #f0fff0; /** Soft success tint for backgrounds that signal completion without heavy contrast. */
+  --color-feedback-success-onsubtle: #006400; /** Foreground for success messaging on a light green or tinted success background. */
+  --color-feedback-success-text: #006400; /** Standalone success copy, toast text, and inline “saved” or confirmation messages. */
+  --color-feedback-warning-strong: #ff8c00; /** Attention-getting warning surface: irreversible actions, degraded service, caution banners. */
+  --color-feedback-warning-onstrong: #000000; /** Foreground on a saturated warning background; use when the warning fill is dark or intense. */
+  --color-feedback-warning-subtle: #fff8dc; /** Light warning tint for callouts that need notice without full alert severity. */
+  --color-feedback-warning-onsubtle: #ff4500; /** Foreground for warning copy on pale or yellow-tinted warning backgrounds. */
+  --color-feedback-warning-text: #ff4500; /** Warning body text, inline cautions, and labels that accompany warning icons. */
+  --color-feedback-info-strong: #1e90ff; /** Primary informational surface: education blocks, informational banners, neutral alerts. */
+  --color-feedback-info-onstrong: #ffffff; /** Foreground on a bold informational background (tips, feature announcements). */
+  --color-feedback-info-subtle: #e0ffff; /** Soft info wash for inline hints and secondary explanatory regions. */
+  --color-feedback-info-onsubtle: #008080; /** Foreground for info copy on a light blue or cyan informational tint. */
+  --color-feedback-info-text: #008080; /** Standalone informational text and helper lines that are not links. */
+  --color-feedback-highlight-strong: #ffd700; /** Strong highlight surface for marketing callouts, badges, and “new” emphasis. */
+  --color-feedback-highlight-onstrong: #000000; /** Foreground on a vivid highlight or accent fill (promos, featured rows). */
+  --color-feedback-highlight-subtle: #ffffe0; /** Gentle highlight tint to draw the eye without using semantic warning or success colors. */
+  --color-feedback-highlight-onsubtle: #8b4513; /** Foreground for highlight messaging on a soft yellow or cream background. */
+  --color-feedback-highlight-text: #8b4513; /** Text and labels paired with highlight surfaces in dashboards and merchandising zones. */
+  --color-input-background-default: #ffffff; /** Field fill for text inputs, selects, and text areas in the resting state. */
+  --color-input-background-hovered: #fffafa; /** Field fill when the pointer is over the control or it is hovered. */
+  --color-input-background-selected: #e6e6fa; /** Field fill when the control has focus, or when an option is actively selected (e.g. a checked checkbox). */
+  --color-input-background-selected-hovered: #b0e0e6; /** Field fill when focused or selected—such as a checked checkbox—and the user is still hovering the control. */
+  --color-input-background-selected-pressed: #87cefa; /** Field fill while the user is pressing or dragging within a focused or selected control (e.g. clicking a checked checkbox). */
+  --color-input-border-default: #d3d3d3; /** Default outline for inputs and other editable fields. */
+  --color-input-border-hovered: #a9a9a9; /** Input outline when hovered to show the control is interactive. */
+  --color-input-border-selected: #4169e1; /** Focus or selection ring for active inputs and pickers, including a checked checkbox. */
+  --color-input-border-selected-hovered: #008080; /** Border when the control remains focused or selected (e.g. checked checkbox) and is hovered. */
+  --color-input-border-selected-pressed: #191970; /** Border while activating a focused or selected control, such as a checkbox. */
+  --color-input-text-default: #000000; /** Typed value and placeholder-adjacent label color in the default state. */
+  --color-input-text-hovered: #000000; /** Typed value color when the input is hovered. */
+  --color-input-text-selected: #000000; /** Text color when the field or its value is focused or selected (e.g. label next to a checked checkbox). */
+  --color-input-text-selected-hovered: #000000; /** Text color when focused or selected and hovered simultaneously (e.g. checkbox label while hovered). */
+  --color-input-text-selected-pressed: #000000; /** Text color during press on a focused or selected control (e.g. checkbox or its label). */
+  --color-surface-background-base: #ffffff; /** Primary content region background inside the page shell (main column, default panels). */
+  --color-surface-background-card: #ffffff; /** Background for card and tile components that sit on the base surface. */
+  --color-surface-background-overlay: #ffffff; /** Background for modal panels, popovers, and drawers above the page. */
+  --color-surface-background-raised: #fffafa; /** Slightly elevated panels, sticky footers, or chips that sit above the base layer. */
+  --color-surface-background-scrim: rgba(
+    0,
+    0,
+    0,
+    0.4
+  ); /** Semi-transparent veil behind modals and overlays to dim the content underneath. */
+  --color-surface-border-base: #e6e6fa; /** Dividers and outlines for the main content surface and structural sections. */
+  --color-surface-border-card: #e6e6fa; /** Border or hairline around cards and contained modules. */
+  --color-surface-border-overlay: #d3d3d3; /** Outer edge or separator for floating overlays and dialogs. */
+  --color-surface-border-raised: #e6e6fa; /** Edge treatment for raised or stacked surfaces to separate them from neighbors. */
+  --color-surface-text-base: #000000; /** Default readable text color on the base surface. */
+  --color-surface-text-card: #000000; /** Primary text color on card backgrounds. */
+  --color-surface-text-overlay: #000000; /** Primary text color inside modals and overlay panels. */
+  --color-surface-text-raised: #000000; /** Text on raised or secondary stacked surfaces. */
+  --color-surface-text-scrim: #ffffff; /** Text or icons placed directly on the scrim (rare); prefer content inside the overlay instead. */
+  --color-text-link: #4169e1; /** Default color for inline links and link-styled actions in body content. */
+  --color-text-link-hovered: #008080; /** Link color when hovered or keyboard-focused. */
+  --color-text-link-pressed: #191970; /** Link color at the moment of activation. */
+  --color-text-link-visited: #4b0082; /** Link color after the user has visited the destination. */
+  --font-body-family:
+    system-ui, sans-serif; /** Typeface stack for long-form body copy, descriptions, and default UI labels. */
+  --font-body-line-height: 1.5; /** Line height for comfortable reading in running body text and default paragraphs. */
+  --font-body-size-xs: 0.75rem; /** Smallest body size for dense UI, footnotes, and secondary inline text. */
+  --font-body-size-sm: 0.875rem; /** Compact body size for tables, forms, and tight layouts. */
+  --font-body-size-md: 1rem; /** Default body font size for standard paragraphs and most interface text. */
+  --font-body-size-lg: 1.125rem; /** Slightly enlarged body for emphasis or comfortable reading on large screens. */
+  --font-body-size-xl: 1.25rem; /** Prominent body scale for intros, hero subcopy, or relaxed reading. */
+  --font-body-size-2xl: 1.5rem; /** Largest body size before switching to heading styles. */
+  --font-body-variation: normal; /** Variable-font axis settings for the body typeface when using a variable font. */
+  --font-body-weight: normal; /** Regular weight for default body text and most UI strings. */
+  --font-detail-family: system-ui, sans-serif; /** Typeface for captions, metadata, timestamps, and fine print. */
+  --font-detail-line-height: 1.4; /** Tighter line height for small caption lines and stacked metadata. */
+  --font-detail-size-xs: 0.6875rem; /** Minimum legible caption size for badges and legal microcopy. */
+  --font-detail-size-sm: 0.75rem; /** Small supporting text under headings or in list subtitles. */
+  --font-detail-size-md: 0.8125rem; /** Default detail tier for form hints and secondary labels. */
+  --font-detail-size-lg: 0.875rem; /** Slightly larger detail text that should still read below default body copy. */
+  --font-detail-size-xl: 1rem; /** Detail scale approaching body size for emphasized captions. */
+  --font-detail-size-2xl: 1.125rem; /** Largest detail size before promoting copy to body styles. */
+  --font-detail-variation: normal; /** Variable-font axis settings for detail and caption styles when using a variable font. */
+  --font-detail-weight: normal; /** Regular weight for captions; pair with semantic strong tokens for emphasis inside detail text. */
+  --font-heading-family:
+    system-ui, sans-serif; /** Typeface for titles, section headers, and display-style UI headings. */
+  --font-heading-line-height: 1.25; /** Tight line height for multi-line headings without excess vertical rhythm. */
+  --font-heading-size-xs: 1rem; /** Smallest heading size for labels that must read as headings (e.g. card titles). */
+  --font-heading-size-sm: 1.125rem; /** Subsection titles and compact module headers. */
+  --font-heading-size-md: 1.25rem; /** Default heading size for in-page sections. */
+  --font-heading-size-lg: 1.5rem; /** Prominent headings for primary page sections. */
+  --font-heading-size-xl: 1.875rem; /** Large marketing or landing headings. */
+  --font-heading-size-2xl: 2.25rem; /** Display-scale heading for hero titles and major campaign headers. */
+  --font-heading-variation: normal; /** Variable-font axis settings for headings and display type when using a variable font. */
+  --font-heading-weight: bold; /** Default heading weight for clear hierarchy above body and detail text. */
+  --font-size-005: 0.625rem; /** Micro copy, superscript labels, and the smallest UI text on the global type scale. */
+  --font-size-010: 0.6875rem; /** Fine print and legal microcopy just above the minimum legible tier. */
+  --font-size-020: 0.75rem; /** Compact captions and dense secondary labels. */
+  --font-size-030: 0.8125rem; /** Secondary labels between caption-sized text and default UI copy. */
+  --font-size-040: 0.875rem; /** Standard small UI text in tables, forms, and dense interfaces. */
+  --font-size-050: 1rem; /** Default body copy and baseline accessible reading size. */
+  --font-size-060: 1.125rem; /** Subheadings and emphasized paragraphs that stay below display type. */
+  --font-size-070: 1.25rem; /** Section intros and large in-app titles below hero display type. */
+  --font-size-080: 1.5rem; /** Prominent headings and marketing subheads. */
+  --font-size-090: 1.875rem; /** Hero subheadlines and large type next to display headings. */
+  --font-size-100: 2.25rem; /** Primary display headings on standard marketing and landing layouts. */
+  --font-size-200: 3rem; /** Oversized headlines for landing pages and campaign layouts. */
+  --font-size-300: 3.75rem; /** High-impact hero typography and sparse above-the-fold titles. */
+  --font-size-400: 4.5rem; /** Billboard-style display type on wide breakpoints and minimal layouts. */
+  --font-size-500: 6rem; /** Largest display tier for rare, high-attention headlines with controlled line length. */
+  --font-style-em: italic; /** Italic emphasis for inline quotes and stressed phrases. */
+  --font-weight-strong: bolder; /** Strong emphasis for semantic <strong> styling and stressed phrases inside running text. */
+  --size-space-005: 2px; /** Minimal gap for icon-to-text alignment and optical tweaks between tightly paired elements. */
+  --size-space-010: 4px; /** Tight stacks, dense toolbars, and compact inline spacing. */
+  --size-space-020: 8px; /** Default tight padding inside chips and small clusters of related controls. */
+  --size-space-030: 12px; /** Comfortable rhythm between labels, fields, and short horizontal groups. */
+  --size-space-040: 16px; /** Standard card padding and default gap between sibling blocks in a layout. */
+  --size-space-050: 20px; /** Roomier padding inside modules that need more air than the default compact tier. */
+  --size-space-060: 24px; /** Spacing between sections within a page and between form fieldsets. */
+  --size-space-070: 32px; /** Separation between major regions on a single screen or viewport. */
+  --size-space-080: 40px; /** Vertical breathing room between stacked page sections. */
+  --size-space-090: 48px; /** Large gutters for marketing layouts and spacious dashboards. */
+  --size-space-100: 64px; /** Hero sections, page mastheads, and major vertical breaks in long pages. */
+  --size-space-200: 80px; /** Extra-large vertical margin on sparse editorial or campaign pages. */
+  --size-space-300: 96px; /** Full-bleed section transitions and very open marketing compositions. */
+  --size-space-400: 128px; /** Outermost layout gutters on very wide breakpoints. */
+  --size-space-500: 160px; /** Campaign art direction, empty states, and other layouts that need maximum outer whitespace. */
+  --size-space-xs: 4px; /** Tightest named spacing tier for dense UI, inline clusters, and compact padding. */
+  --size-space-sm: 8px; /** Compact padding and gaps inside dense components and small control groups. */
+  --size-space-md: 16px; /** Default comfortable spacing for most layouts, cards, and block gaps. */
+  --size-space-lg: 24px; /** Section-level padding and separation between stacked blocks. */
+  --size-space-xl: 32px; /** Roomy whitespace between major UI groups on a single view. */
+  --size-space-2xl: 48px; /** Largest named spacing shortcut before the oversized numeric tiers; use for open marketing and dashboard layouts. */
+  --size-radius-xs: 2px; /** Subtle corner rounding for inputs, tables, and data-dense UI where curves should be barely visible. */
+  --size-radius-sm: 4px; /** Small components: tags, compact buttons, and nested controls inside cards. */
+  --size-radius-md: 6px; /** Default interactive control radius balancing softness with a technical look. */
+  --size-radius-lg: 8px; /** Cards, tiles, and medium panels that should read as distinct surfaces. */
+  --size-radius-xl: 12px; /** Large modals, marketing cards, and prominent floating elements. */
+  --size-radius-2xl: 16px; /** Maximum standard radius for pill-adjacent containers before fully circular caps. */
+  --shadow-surface-base: 0px 1px 2px 0px silver; /** Lowest elevation: barely lifts the base surface from the canvas (toolbars, sticky headers). */
+  --shadow-surface-card: 0px 2px 4px 0px darkgray; /** Standard card depth for default modules sitting on the page background. */
+  --shadow-surface-overlay: 0px 8px 16px 0px dimgray; /** Deep shadow for dialogs, popovers, and menus that must clearly float above other layers. */
+  --shadow-surface-raised: 0px 4px 8px 0px gray; /** Mid elevation for toasts, dropdown panels, and secondary floating surfaces between card and overlay. */
+  --blur-surface-scrim: 8px; /** Backdrop blur applied with the scrim to soften content behind modals while keeping focus on the overlay. */
 }
