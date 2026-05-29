@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[339756,["/antares/pr-199-site/_next/static/chunks/08~k-q_6e8a-i.js","/antares/pr-199-site/_next/static/chunks/0i.l9589uvx0j.js"],"default"]
+3:I[837457,["/antares/pr-199-site/_next/static/chunks/08~k-q_6e8a-i.js","/antares/pr-199-site/_next/static/chunks/0i.l9589uvx0j.js"],"default"]
+4:[]
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"_c98SUNcn3krZMtKS7TBH"}
