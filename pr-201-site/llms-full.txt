@@ -832,107 +832,6 @@ Best Practices [#best-practices]
 * Don't nest drawers.
 
 
-# InlineDrawer
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* In-flow collapsible panel with CSS transitions
-* `minSize` keeps collapsed content visible (sidebar nav pattern)
-* `shouldDismissOnBlur` with portal-aware focus detection
-* Controlled and uncontrolled modes
-* `hidden="until-found"` for browser find-in-page support
-* `prefers-reduced-motion` support
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Controlled [#controlled]
-
-Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="ControlledExample" />
-
-Sidebar Navigation [#sidebar-navigation]
-
-Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
-
-<Story of="Stories.SidebarNav" />
-
-<Source language="tsx" code="SidebarNavExample" />
-
-Vertical Placement [#vertical-placement]
-
-Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
-
-<Story of="Stories.Vertical" />
-
-<Source language="tsx" code="VerticalExample" />
-
-Dismiss on Blur [#dismiss-on-blur]
-
-Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
-
-<Story of="Stories.DismissOnBlur" />
-
-<Source language="tsx" code="DismissOnBlurExample" />
-
-Focus Scope [#focus-scope]
-
-Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
-
-<Story of="Stories.FocusScope" />
-
-<Source language="tsx" code="FocusScopeExample" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-| Key               | Action                                                                |
-| ----------------- | --------------------------------------------------------------------- |
-| `Enter` / `Space` | Toggle the drawer via the trigger button                              |
-| `Tab`             | Move focus into/out of the panel (or trapped when using `FocusScope`) |
-
-ARIA [#aria]
-
-* `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
-* `aria-controls` links the trigger to the panel
-* `hidden="until-found"` on collapsed panels (browser find-in-page support)
-* Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
-
-Best Practices [#best-practices]
-
-* Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
-* `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
-* Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
-* Don't nest InlineDrawers.
-
-
 # Icon
 
 
@@ -1345,6 +1244,107 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# InlineDrawer
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* In-flow collapsible panel with CSS transitions
+* `minSize` keeps collapsed content visible (sidebar nav pattern)
+* `shouldDismissOnBlur` with portal-aware focus detection
+* Controlled and uncontrolled modes
+* `hidden="until-found"` for browser find-in-page support
+* `prefers-reduced-motion` support
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Controlled [#controlled]
+
+Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="ControlledExample" />
+
+Sidebar Navigation [#sidebar-navigation]
+
+Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
+
+<Story of="Stories.SidebarNav" />
+
+<Source language="tsx" code="SidebarNavExample" />
+
+Vertical Placement [#vertical-placement]
+
+Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
+
+<Story of="Stories.Vertical" />
+
+<Source language="tsx" code="VerticalExample" />
+
+Dismiss on Blur [#dismiss-on-blur]
+
+Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
+
+<Story of="Stories.DismissOnBlur" />
+
+<Source language="tsx" code="DismissOnBlurExample" />
+
+Focus Scope [#focus-scope]
+
+Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
+
+<Story of="Stories.FocusScope" />
+
+<Source language="tsx" code="FocusScopeExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key               | Action                                                                |
+| ----------------- | --------------------------------------------------------------------- |
+| `Enter` / `Space` | Toggle the drawer via the trigger button                              |
+| `Tab`             | Move focus into/out of the panel (or trapped when using `FocusScope`) |
+
+ARIA [#aria]
+
+* `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
+* `aria-controls` links the trigger to the panel
+* `hidden="until-found"` on collapsed panels (browser find-in-page support)
+* Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
+
+Best Practices [#best-practices]
+
+* Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
+* `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
+* Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
+* Don't nest InlineDrawers.
+
+
 # Menu
 
 
@@ -1582,98 +1582,6 @@ Best Practices [#best-practices]
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
-# Modal
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic usage [#basic-usage]
-
-The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-With actions [#with-actions]
-
-Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
-
-<Story of="Stories.WithActions" />
-
-<Source language="tsx" code="SourceWithActions" />
-
-Alignment [#alignment]
-
-Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-With media [#with-media]
-
-Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
-
-<Story of="Stories.WithMedia" />
-
-<Source language="tsx" code="SourceWithMedia" />
-
-Accessibility [#accessibility]
-
-Keyboard interaction [#keyboard-interaction]
-
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
-
-ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
-* The close button is rendered with `aria-label="Close"`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-Best Practices [#best-practices]
-
-* Always provide a `title` so the dialog has an accessible name
-* Pair every footer action with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` for required confirmations the user must explicitly answer
-* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
-* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
-
-
 # NumberField
 
 
@@ -1778,6 +1686,98 @@ Best practices [#best-practices]
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
+
+
+# Modal
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic usage [#basic-usage]
+
+The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+With actions [#with-actions]
+
+Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+
+<Story of="Stories.WithActions" />
+
+<Source language="tsx" code="SourceWithActions" />
+
+Alignment [#alignment]
+
+Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+With media [#with-media]
+
+Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
+
+<Story of="Stories.WithMedia" />
+
+<Source language="tsx" code="SourceWithMedia" />
+
+Accessibility [#accessibility]
+
+Keyboard interaction [#keyboard-interaction]
+
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| `Escape`      | Closes the modal (when dismissable)                            |
+
+ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+* The close button is rendered with `aria-label="Close"`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+Best Practices [#best-practices]
+
+* Always provide a `title` so the dialog has an accessible name
+* Pair every footer action with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` for required confirmations the user must explicitly answer
+* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
 
 
 # Pagination
