@@ -1,5 +1,6 @@
 import type { CalendarDate } from '@internationalized/date';
 import { CalendarCell as RACCalendarCell } from 'react-aria-components';
+import { Flex } from '#components/layout/flex';
 import { type DayIndicator, type GetDayIndicators, MAX_INDICATORS } from './types';
 import styles from './index.module.css';
 
@@ -33,10 +34,10 @@ export function DayCell({ date, hideOutsideMonth = false, getDayIndicators }: Da
         }
 
         return (
-          <div className={styles.cellInner}>
+          <Flex direction="column" alignItems="center" justifyContent="center" className={styles.cellInner}>
             <span className={styles.cellDate}>{renderProps.formattedDate}</span>
             {indicators.length > 0 && (
-              <span aria-hidden="true" className={styles.indicators}>
+              <Flex as="span" alignItems="center" aria-hidden="true" className={styles.indicators}>
                 {indicators.map(function renderIndicator(indicator, index) {
                   return (
                     <span
@@ -46,10 +47,10 @@ export function DayCell({ date, hideOutsideMonth = false, getDayIndicators }: Da
                     />
                   );
                 })}
-              </span>
+              </Flex>
             )}
             {indicatorLabel && <span className={styles.srOnly}>{indicatorLabel}</span>}
-          </div>
+          </Flex>
         );
       }}
     </RACCalendarCell>

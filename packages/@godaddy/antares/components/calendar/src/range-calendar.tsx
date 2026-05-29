@@ -118,14 +118,16 @@ export function RangeCalendar(props: RangeCalendarProps) {
       isDateUnavailable={wrappedIsDateUnavailable as (date: DateValue) => boolean}
       className={styles.calendar}
     >
-      <CalendarHeader minValue={minValue ?? null} maxValue={maxValue ?? null} />
-      <Flex direction="row" gap="lg" className={styles.rangeGrids}>
-        <RACCalendarGrid className={styles.grid}>
-          {(date) => <DayCell date={date} hideOutsideMonth getDayIndicators={getDayIndicators} />}
-        </RACCalendarGrid>
-        <RACCalendarGrid offset={{ months: 1 }} className={styles.grid}>
-          {(date) => <DayCell date={date} hideOutsideMonth getDayIndicators={getDayIndicators} />}
-        </RACCalendarGrid>
+      <Flex direction="column" gap="md" padding="md">
+        <CalendarHeader minValue={minValue ?? null} maxValue={maxValue ?? null} />
+        <Flex direction="row" gap="lg" wrap="nowrap">
+          <RACCalendarGrid className={styles.grid}>
+            {(date) => <DayCell date={date} hideOutsideMonth getDayIndicators={getDayIndicators} />}
+          </RACCalendarGrid>
+          <RACCalendarGrid offset={{ months: 1 }} className={styles.grid}>
+            {(date) => <DayCell date={date} hideOutsideMonth getDayIndicators={getDayIndicators} />}
+          </RACCalendarGrid>
+        </Flex>
       </Flex>
     </RACRangeCalendar>
   );

@@ -4,6 +4,7 @@ import {
   CalendarGrid as RACCalendarGrid,
   type CalendarProps as RACCalendarProps
 } from 'react-aria-components';
+import { Flex } from '#components/layout/flex';
 import { CalendarHeader } from './calendar-header';
 import { DayCell } from './day-cell';
 import type { GetDayIndicators } from './types';
@@ -55,10 +56,12 @@ export function Calendar(props: CalendarProps) {
       visibleDuration={{ months: 1 }}
       className={styles.calendar}
     >
-      <CalendarHeader minValue={minValue} maxValue={maxValue} />
-      <RACCalendarGrid className={styles.grid}>
-        {(date) => <DayCell date={date} getDayIndicators={getDayIndicators} />}
-      </RACCalendarGrid>
+      <Flex direction="column" gap="md" padding="md">
+        <CalendarHeader minValue={minValue} maxValue={maxValue} />
+        <RACCalendarGrid className={styles.grid}>
+          {(date) => <DayCell date={date} getDayIndicators={getDayIndicators} />}
+        </RACCalendarGrid>
+      </Flex>
     </RACCalendar>
   );
 }
