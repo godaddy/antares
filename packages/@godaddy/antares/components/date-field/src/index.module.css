@@ -1,0 +1,41 @@
+.dateInput {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-inline: var(--sp-md);
+  padding-block: var(--sp-md);
+  min-width: 0;
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.segment {
+  padding-inline: 1px;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  outline: none;
+  border-radius: 2px;
+
+  &[data-type="literal"] {
+    padding-inline: 0;
+  }
+
+  &[data-placeholder] {
+    color: var(--fg-secondary, color-mix(in oklch, currentColor, transparent 40%));
+  }
+
+  &[data-focused] {
+    background: color-mix(in oklch, Highlight, transparent 80%);
+    color: inherit;
+  }
+
+  &[data-invalid] {
+    color: var(--color-feedback-critical-strong, #ae1302);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+}

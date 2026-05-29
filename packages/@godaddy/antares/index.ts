@@ -61,6 +61,8 @@ export { TextField, type TextFieldProps } from '#components/text-field';
 
 export { NumberField, type NumberFieldProps } from '#components/number-field';
 
+export { DateField, type DateFieldProps } from '#components/date-field';
+
 export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';
 
 export { Pagination, type PaginationProps } from '#components/pagination';
