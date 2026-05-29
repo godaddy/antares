@@ -33,9 +33,28 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install Dependencies
+        run: npm ci
+
+      - name: Check resources
         run: |
-          npm ci
-          npx playwright install --with-deps
+          df -h
+          free -h
+          nproc
+
+      - name: Test manual extraction
+        run: |
+          curl -o /tmp/chrome.zip https://cdn.playwright.dev/builds/cft/145.0.7632.6/linux64/chrome-linux64.zip
+          echo "Download done, extracting..."
+          time unzip -q /tmp/chrome.zip -d /tmp/chrome-test
+          echo "Extract done"
+          rm -rf /tmp/chrome.zip /tmp/chrome-test
+
+      - name: Install Playwright browsers
+        timeout-minutes: 5
+        run: npx playwright install chromium
+
+      - name: Install Playwright system deps
+        run: npx playwright install-deps chromium
 
       - name: Run Type Check
         run: npm run typecheck
