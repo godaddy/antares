@@ -1,8 +1,8 @@
 # Documentation
 
 - [Antares](/docs): A collection of accessible, composable React components built on React Aria.
-- [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
 - [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
+- [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
 - [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 - [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
@@ -10,8 +10,8 @@
 - [Menu](/docs/components/menu): Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
 - [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
 - [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
-- [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [NumberField](/docs/components/number-field): NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
+- [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
