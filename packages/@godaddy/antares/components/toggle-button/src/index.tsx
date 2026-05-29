@@ -7,6 +7,7 @@ import {
   type ToggleButtonProps as RACToggleButtonProps,
   useLocale
 } from 'react-aria-components';
+import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 
 export interface ToggleButtonGroupProps
@@ -44,9 +45,16 @@ export function ToggleButtonGroup(props: ToggleButtonGroupProps) {
   const { direction } = useLocale();
 
   return (
-    <RACToggleButtonGroup {...rest} dir={direction} data-size={size} className={cx(styles.container, className)}>
+    <Flex
+      as={RACToggleButtonGroup}
+      {...rest}
+      display="inline-flex"
+      dir={direction}
+      data-size={size}
+      className={cx(styles.container, className)}
+    >
       {children}
-    </RACToggleButtonGroup>
+    </Flex>
   );
 }
 
@@ -73,8 +81,14 @@ export function ToggleButton(props: ToggleButtonProps) {
   const { className, children, ...rest } = props;
 
   return (
-    <RACToggleButton {...rest} className={cx(styles.item, className)}>
+    <Flex
+      as={RACToggleButton}
+      {...rest}
+      display="inline-flex"
+      alignItems="center"
+      className={cx(styles.item, className)}
+    >
       {children}
-    </RACToggleButton>
+    </Flex>
   );
 }

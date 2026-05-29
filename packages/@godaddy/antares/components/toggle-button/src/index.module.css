@@ -13,7 +13,6 @@
   --button-group-font-size: var(--ux-cxbe8g, 1rem);
   --button-group-line-height: var(--ux-jw5s9j, 1.375);
 
-  display: inline-flex;
   gap: 1px;
   overflow: clip;
   border: 1px solid var(--button-group-border-color);
@@ -65,8 +64,6 @@
   }
 
   /* Layout */
-  display: inline-flex;
-  align-items: center;
   gap: var(--button-group-density);
   white-space: nowrap;
   flex-shrink: 0;
