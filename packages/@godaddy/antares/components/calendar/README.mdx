@@ -1,0 +1,121 @@
+---
+title: Calendar
+description: Calendar and RangeCalendar are stand-alone date grids for picking a single date or a contiguous range. Use them when you need an always-visible calendar; use DatePicker / DateRangePicker when the calendar should appear in a popover.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './calendar.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceDefaultRange from './examples/default-range.tsx?raw';
+import SourceWithMinMax from './examples/with-min-max.tsx?raw';
+import SourceWithUnavailableDates from './examples/with-unavailable-dates.tsx?raw';
+import SourceWithIndicators from './examples/with-indicators.tsx?raw';
+import SourceTodayDistinct from './examples/today-distinct.tsx?raw';
+import SourceOutOfMonthDays from './examples/out-of-month-days.tsx?raw';
+import SourceWithDuration from './examples/with-duration.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Single and range**: `Calendar` for a single date, `RangeCalendar` for a contiguous range
+- **Month + Year header**: replaces RAC's default heading with two `Select` dropdowns
+- **Indicator dots**: optional `getDayIndicators` renders up to 3 colored dots per day cell, mapped to design-system feedback colors
+- **Bounds**: `minValue` and `maxValue` constrain selectable dates and drive the year `Select`'s range
+- **Duration constraints (range only)**: `minDuration` and `maxDuration` disable end-date candidates that violate during an in-progress pick
+- **React Aria integration**: built on React Aria Calendar / RangeCalendar for accessibility, keyboard, and locale handling
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Working with dates
+
+Both components are typed for `CalendarDate` from [`@internationalized/date`][int-date]. See the
+canonical "Working with dates" section in the `DatePicker` README for the full setup. Quick
+patterns:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { Calendar, RangeCalendar } from '@godaddy/antares';
+
+<Calendar defaultValue={parseDate('2024-03-15')} />
+<RangeCalendar
+  defaultValue={{ start: parseDate('2024-03-05'), end: parseDate('2024-03-12') }}
+/>
+```
+
+## Props
+
+### Calendar
+
+<ArgTypes of={Stories.Props} />
+
+### RangeCalendar
+
+<ArgTypes of={Stories.RangeProps} />
+
+## Examples
+
+### Default
+
+A single calendar with one month visible.
+
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
+
+### Default range
+
+`RangeCalendar` shows two months side-by-side.
+
+<Source language="tsx" code={SourceDefaultRange} />
+<Story of={Stories.DefaultRange} inline />
+
+### Min and max
+
+`minValue` and `maxValue` disable out-of-range days and constrain the year `Select`.
+
+<Source language="tsx" code={SourceWithMinMax} />
+<Story of={Stories.WithMinMax} inline />
+
+### Unavailable dates
+
+Use `isDateUnavailable` to disable specific dates such as weekends or holidays.
+
+<Source language="tsx" code={SourceWithUnavailableDates} />
+<Story of={Stories.WithUnavailableDates} inline />
+
+### Indicators
+
+`getDayIndicators` renders up to 3 colored dots beneath the day number. Returning more
+than 3 silently slices to 3 and emits a `console.warn` in development.
+
+<Source language="tsx" code={SourceWithIndicators} />
+<Story of={Stories.WithIndicators} inline />
+
+### Today inside a range
+
+The "today" visual state coexists with `selected` and `in-range`.
+
+<Source language="tsx" code={SourceTodayDistinct} />
+<Story of={Stories.TodayDistinct} inline />
+
+### Out-of-month days
+
+Single calendars dim out-of-month days at 40% opacity. `RangeCalendar` hides them entirely.
+
+<Source language="tsx" code={SourceOutOfMonthDays} />
+<Story of={Stories.OutOfMonthDays} inline />
+
+### Min and max duration
+
+`minDuration` and `maxDuration` constrain the length of the selected range during an
+in-progress pick.
+
+<Source language="tsx" code={SourceWithDuration} />
+<Story of={Stories.WithDuration} inline />
+
+[int-date]: https://react-spectrum.adobe.com/internationalized/date/index.html
