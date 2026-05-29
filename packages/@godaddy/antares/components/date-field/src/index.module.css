@@ -1,9 +1,4 @@
 .dateInput {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  padding-inline: var(--sp-md);
-  padding-block: var(--sp-md);
   min-width: 0;
 
   &[data-disabled] {

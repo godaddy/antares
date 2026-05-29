@@ -1,5 +1,4 @@
 import type { CalendarDate } from '@internationalized/date';
-import { cx } from 'cva';
 import {
   DateField as RACDateField,
   DateInput as RACDateInput,
@@ -7,6 +6,7 @@ import {
   type DateFieldProps as RACDateFieldProps
 } from 'react-aria-components';
 import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
+import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 
 /**
@@ -140,9 +140,16 @@ export function DateField(props: DateFieldProps) {
         label={label}
         gap="sm"
       >
-        <RACDateInput className={styles.dateInput}>
-          {(segment) => <RACDateSegment segment={segment} className={cx(styles.segment)} />}
-        </RACDateInput>
+        <Flex
+          as={RACDateInput}
+          alignItems="center"
+          inlinePadding="md"
+          blockPadding="md"
+          flex={1}
+          className={styles.dateInput}
+        >
+          {(segment) => <RACDateSegment segment={segment} className={styles.segment} />}
+        </Flex>
       </FieldFrame>
     </RACDateField>
   );
