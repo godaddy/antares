@@ -9,20 +9,12 @@ import { Flex } from '#components/layout/flex';
 import { CalendarHeader } from './calendar-header';
 import styles from './index.module.css';
 
-/**
- * Props for the {@link RangeCalendar} component.
- *
- * @public
- */
-export interface RangeCalendarProps
-  extends Omit<RACRangeCalendarProps<CalendarDate>, 'children' | 'visibleDuration'> {}
+export interface RangeCalendarProps extends Omit<RACRangeCalendarProps<CalendarDate>, 'children' | 'visibleDuration'> {}
 
 /**
- * RangeCalendar is a two-month side-by-side date grid for picking a contiguous range.
- * Mirrors React Aria RangeCalendar typed for `CalendarDate`. Each visible month has its
- * own header — left has prev arrow + Month + Year dropdowns; right has Month + Year
- * dropdowns + next arrow. Selecting a month/year on either side scrolls both grids
- * together; the prev/next arrows page by one month thanks to `pageBehavior="single"`.
+ * Two-month side-by-side date grid for picking a contiguous range, typed for `CalendarDate`.
+ * Each grid has its own header; selecting a month/year on either side scrolls both together,
+ * and `pageBehavior="single"` makes the arrows page one month at a time.
  *
  * @param props - {@link RangeCalendarProps}
  *
@@ -34,8 +26,6 @@ export interface RangeCalendarProps
  *   defaultValue={{ start: parseDate('2024-03-01'), end: parseDate('2024-03-07') }}
  * />
  * ```
- *
- * @see https://react-spectrum.adobe.com/react-aria/RangeCalendar.html
  */
 export function RangeCalendar(props: RangeCalendarProps) {
   return (

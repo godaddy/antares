@@ -8,33 +8,6 @@
   flex: 1;
 }
 
-.navButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--calendar-cell-size);
-  height: var(--calendar-cell-size);
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: var(--calendar-cell-radius);
-
-  &[data-hovered] {
-    background: color-mix(in oklch, currentColor, transparent 92%);
-  }
-
-  &[data-disabled] {
-    cursor: not-allowed;
-    opacity: 0.4;
-  }
-
-  &[data-focus-visible] {
-    outline: 2px solid Highlight;
-    outline-offset: 1px;
-  }
-}
-
 .grid {
   border-collapse: separate;
   border-spacing: 0.125rem;

@@ -1,12 +1,12 @@
 import type { CalendarDate } from '@internationalized/date';
 import { useContext } from 'react';
 import {
-  Button as RACButton,
   CalendarMonthPicker as RACCalendarMonthPicker,
   CalendarStateContext,
   CalendarYearPicker as RACCalendarYearPicker,
   RangeCalendarStateContext
 } from 'react-aria-components';
+import { Button } from '#components/button';
 import { Flex } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { Select, SelectItem } from '#components/select';
@@ -20,13 +20,13 @@ interface CalendarHeaderProps {
 }
 
 /**
- * Calendar header: prev/next nav + Month + Year `Select` dropdowns powered by RAC's
- * `<CalendarMonthPicker>` / `<CalendarYearPicker>` rendered into the antares `Select`.
+ * Header with prev/next + Month/Year selects, powered by RAC's `<CalendarMonthPicker>` /
+ * `<CalendarYearPicker>` rendered through the antares `Select`.
  *
- * Pickers read state via context. We feed them a shallow copy of the RAC state with
- * `focusedDate` pinned to `state.visibleRange.start` (plus a one-month offset for
- * `position='right'`) so the dropdowns track the grid month, not the focus.
- * `setFocusedDate` is translated back so picking a value scrolls both grids together.
+ * RAC's pickers read state from context and key off `focusedDate`. We pin `focusedDate`
+ * to `visibleRange.start` (plus a one-month offset for `position='right'`) and translate
+ * `setFocusedDate` back, so the dropdowns track the visible month and selecting on
+ * either side scrolls both grids together.
  */
 export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const calendarState = useContext(CalendarStateContext);
@@ -50,9 +50,9 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const headerContent = (
     <Flex gap="sm" alignItems="center" className={styles.header}>
       {showPrev && (
-        <RACButton slot="previous" className={styles.navButton} aria-label="Previous">
+        <Button slot="previous" variant="minimal" size="sm" aria-label="Previous">
           <Icon icon="chevron-left" />
-        </RACButton>
+        </Button>
       )}
       <RACCalendarMonthPicker format="long">
         {function renderMonthPicker(picker) {
@@ -95,9 +95,9 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
         }}
       </RACCalendarYearPicker>
       {showNext && (
-        <RACButton slot="next" className={styles.navButton} aria-label="Next">
+        <Button slot="next" variant="minimal" size="sm" aria-label="Next">
           <Icon icon="chevron-right" />
-        </RACButton>
+        </Button>
       )}
     </Flex>
   );
