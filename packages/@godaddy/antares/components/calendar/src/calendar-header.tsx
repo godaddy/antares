@@ -34,10 +34,14 @@ interface CalendarHeaderProps {
  * those into our `Select` so styling stays in the antares design system while RAC
  * owns locale-aware month formatting and year-range derivation.
  *
- * For `position='right'` the picker components read a state proxy that shifts
- * `focusedDate` forward by one month and translates `setFocusedDate` back, so the
- * right-side dropdowns reflect the second visible month and selecting a value
- * scrolls both grids together.
+ * RAC's pickers read `state.focusedDate.month` for their displayed value, but in a
+ * 2-month `RangeCalendar` the focused date jumps around — including when the user
+ * hovers a cell during an in-progress range pick (RAC's `highlightDate` calls
+ * `setFocusedDate` to drive the highlight preview). To keep the dropdown labels
+ * tied to the GRID month rather than the focus, we wrap the pickers in a state
+ * Proxy that pins `focusedDate` to `state.visibleRange.start` (plus a one-month
+ * offset for `position='right'`). `setFocusedDate` is translated back so picking
+ * a value still scrolls the grids together.
  */
 export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const calendarState = useContext(CalendarStateContext);
@@ -45,12 +49,12 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const baseState = calendarState ?? rangeState;
   const monthOffset = position === 'right' ? 1 : 0;
 
-  const shiftedState = useMemo(
-    function buildShiftedState() {
-      if (!baseState || monthOffset === 0) return baseState;
+  const pickerState = useMemo(
+    function buildPickerState() {
+      if (!baseState) return baseState;
       return new Proxy(baseState, {
         get(target, prop, receiver) {
-          if (prop === 'focusedDate') return target.focusedDate.add({ months: monthOffset });
+          if (prop === 'focusedDate') return target.visibleRange.start.add({ months: monthOffset });
           if (prop === 'setFocusedDate') {
             return function shiftedSetFocusedDate(date: CalendarDate) {
               target.setFocusedDate(date.subtract({ months: monthOffset }));
@@ -123,17 +127,15 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
     </Flex>
   );
 
-  if (monthOffset === 0) return headerContent;
-
   if (calendarState) {
     return (
-      <CalendarStateContext.Provider value={shiftedState as typeof calendarState}>
+      <CalendarStateContext.Provider value={pickerState as typeof calendarState}>
         {headerContent}
       </CalendarStateContext.Provider>
     );
   }
   return (
-    <RangeCalendarStateContext.Provider value={shiftedState as typeof rangeState}>
+    <RangeCalendarStateContext.Provider value={pickerState as typeof rangeState}>
       {headerContent}
     </RangeCalendarStateContext.Provider>
   );

@@ -141,6 +141,34 @@ describe('@godaddy/antares', function antares() {
         });
         assume(someHaveContent).equals(true);
       });
+
+      it('keeps grids and header dropdowns stable when hovering across months during in-progress range pick', async function hoverStable() {
+        // Regression: RAC's pickers read state.focusedDate, which highlightDate moves on hover.
+        // Our header pins display to state.visibleRange.start so dropdowns track the GRID, not focus.
+        const { container } = await render(<CalendarDefaultRangeExample />);
+
+        const day14 = page.getByRole('button', { name: /Thursday, March 14/ });
+        await userEvent.click(day14);
+        await new Promise(function wait(resolve) {
+          setTimeout(resolve, 100);
+        });
+
+        const day20 = page.getByRole('button', { name: /Saturday, April 20/ });
+        await userEvent.hover(day20);
+        await new Promise(function wait(resolve) {
+          setTimeout(resolve, 100);
+        });
+
+        const grids = container.querySelectorAll('[role="grid"]');
+        const leftGrid = grids[0];
+        const rightGrid = grids[1];
+        assume(!!leftGrid?.querySelector('[aria-label*="Friday, March 15"]')).equals(true);
+        assume(!!rightGrid?.querySelector('[aria-label*="Monday, April 15"]')).equals(true);
+
+        const monthButtons = Array.from(container.querySelectorAll('button[aria-haspopup="listbox"]'));
+        assume(monthButtons[0]?.textContent ?? '').contains('March');
+        assume(monthButtons[2]?.textContent ?? '').contains('April');
+      });
     });
 
     describe('#todayDistinct', function todayDistinct() {
