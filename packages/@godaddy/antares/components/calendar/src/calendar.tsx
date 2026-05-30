@@ -28,7 +28,7 @@ export function Calendar(props: CalendarProps) {
   return (
     <RACCalendar<CalendarDate> {...props} visibleDuration={{ months: 1 }} className={styles.calendar}>
       <Flex direction="column" gap="md" padding="md">
-        <CalendarHeader position="single" />
+        <CalendarHeader />
         <RACCalendarGrid className={styles.grid}>
           {function renderCell(date) {
             return <RACCalendarCell date={date} className={styles.cell} />;

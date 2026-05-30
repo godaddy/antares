@@ -4,7 +4,8 @@ import {
   CalendarMonthPicker as RACCalendarMonthPicker,
   CalendarStateContext,
   CalendarYearPicker as RACCalendarYearPicker,
-  RangeCalendarStateContext
+  RangeCalendarStateContext,
+  useLocale
 } from 'react-aria-components';
 import { Button } from '#components/button';
 import { Flex } from '#components/layout/flex';
@@ -12,11 +13,13 @@ import { Icon } from '#components/icon';
 import { Select, SelectItem } from '#components/select';
 import styles from './index.module.css';
 
-type CalendarHeaderPosition = 'single' | 'left' | 'right';
-
 interface CalendarHeaderProps {
-  /** `'left'` / `'right'` for the two grids of `RangeCalendar`; `'single'` for `Calendar`. */
-  position?: CalendarHeaderPosition;
+  /**
+   * `'start'` / `'end'` for the two grids of `RangeCalendar`. Omit for the single
+   * grid of `Calendar`. Names match the range value (`{ start, end }`) and are
+   * locale-direction-agnostic — in RTL the start grid renders on the right.
+   */
+  range?: 'start' | 'end';
 }
 
 /**
@@ -24,15 +27,18 @@ interface CalendarHeaderProps {
  * `<CalendarYearPicker>` rendered through the antares `Select`.
  *
  * RAC's pickers read state from context and key off `focusedDate`. We pin `focusedDate`
- * to `visibleRange.start` (plus a one-month offset for `position='right'`) and translate
+ * to `visibleRange.start` (plus a one-month offset for `range='end'`) and translate
  * `setFocusedDate` back, so the dropdowns track the visible month and selecting on
  * either side scrolls both grids together.
+ *
+ * Chevron icons flip in RTL so "previous" always points opposite the reading direction.
  */
-export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
+export function CalendarHeader({ range }: CalendarHeaderProps) {
   const calendarState = useContext(CalendarStateContext);
   const rangeState = useContext(RangeCalendarStateContext);
   const baseState = calendarState ?? rangeState;
-  const monthOffset = position === 'right' ? 1 : 0;
+  const { direction } = useLocale();
+  const monthOffset = range === 'end' ? 1 : 0;
 
   if (!baseState) return null;
 
@@ -44,14 +50,15 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
     }
   };
 
-  const showPrev = position !== 'right';
-  const showNext = position !== 'left';
+  const showPrev = range !== 'end';
+  const showNext = range !== 'start';
+  const isRtl = direction === 'rtl';
 
   const headerContent = (
     <Flex gap="sm" alignItems="center" className={styles.header}>
       {showPrev && (
         <Button slot="previous" variant="minimal" size="sm" aria-label="Previous">
-          <Icon icon="chevron-left" />
+          <Icon icon={isRtl ? 'chevron-right' : 'chevron-left'} />
         </Button>
       )}
       <RACCalendarMonthPicker format="long">
@@ -96,7 +103,7 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
       </RACCalendarYearPicker>
       {showNext && (
         <Button slot="next" variant="minimal" size="sm" aria-label="Next">
-          <Icon icon="chevron-right" />
+          <Icon icon={isRtl ? 'chevron-left' : 'chevron-right'} />
         </Button>
       )}
     </Flex>

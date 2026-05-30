@@ -37,17 +37,17 @@ export function RangeCalendar(props: RangeCalendarProps) {
     >
       <Flex direction="row" gap="lg" wrap="nowrap" padding="md">
         <Flex direction="column" gap="md">
-          <CalendarHeader position="left" />
+          <CalendarHeader range="start" />
           <RACCalendarGrid className={styles.grid}>
-            {function renderLeftCell(date) {
+            {function renderStartCell(date) {
               return <RACCalendarCell date={date} className={styles.cell} />;
             }}
           </RACCalendarGrid>
         </Flex>
         <Flex direction="column" gap="md">
-          <CalendarHeader position="right" />
+          <CalendarHeader range="end" />
           <RACCalendarGrid offset={{ months: 1 }} className={styles.grid}>
-            {function renderRightCell(date) {
+            {function renderEndCell(date) {
               return <RACCalendarCell date={date} className={styles.cell} />;
             }}
           </RACCalendarGrid>
