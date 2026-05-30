@@ -1,16 +1,11 @@
-import { parseDate } from '@internationalized/date';
 import assume from 'assume';
-import { beforeAll, describe, it, vi } from 'vitest';
+import { beforeAll, describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { set } from '#components/icon';
-import { Calendar, type DayIndicator } from '@godaddy/antares';
 import { CalendarDefaultExample } from '../examples/default.tsx';
 import { CalendarDefaultRangeExample } from '../examples/default-range.tsx';
-import { CalendarOutOfMonthDaysExample } from '../examples/out-of-month-days.tsx';
 import { CalendarTodayDistinctExample } from '../examples/today-distinct.tsx';
-import { CalendarWithDurationExample } from '../examples/with-duration.tsx';
-import { CalendarWithIndicatorsExample } from '../examples/with-indicators.tsx';
 import { CalendarWithMinMaxExample } from '../examples/with-min-max.tsx';
 import { CalendarWithUnavailableDatesExample } from '../examples/with-unavailable-dates.tsx';
 
@@ -20,6 +15,16 @@ describe('@godaddy/antares', function antares() {
       'chevron-down': (
         <svg fill="none" height="24" width="24" viewBox="0 0 24 24">
           <path d="M6 9l6 6 6-6" stroke="#111" strokeWidth="2" fill="none" />
+        </svg>
+      ),
+      'chevron-left': (
+        <svg fill="none" height="24" width="24" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6" stroke="#111" strokeWidth="2" fill="none" />
+        </svg>
+      ),
+      'chevron-right': (
+        <svg fill="none" height="24" width="24" viewBox="0 0 24 24">
+          <path d="M9 18l6-6-6-6" stroke="#111" strokeWidth="2" fill="none" />
         </svg>
       ),
       alert: (
@@ -117,51 +122,6 @@ describe('@godaddy/antares', function antares() {
         assume(disabled.length).is.at.least(1);
       });
     });
-
-    describe('#indicators', function indicators() {
-      it('renders 1, 2, and 3 dots for the example days', async function variousDots() {
-        const { container } = await render(<CalendarWithIndicatorsExample />);
-        const successDots = container.querySelectorAll('[style*="color-feedback-success-strong"]');
-        const warningDots = container.querySelectorAll('[style*="color-feedback-warning-strong"]');
-        const criticalDots = container.querySelectorAll('[style*="color-feedback-critical-strong"]');
-
-        // March-only: day 5 -> success x1; day 12 -> warning + info; day 18 -> critical + highlight + passive;
-        // day 22 has 4 returned, sliced to first 3 (critical, highlight, info) — success is dropped.
-        assume(successDots.length).equals(1); // day 5 only
-        assume(warningDots.length).equals(1); // day 12
-        assume(criticalDots.length).equals(2); // day 18 + day 22
-      });
-
-      it('slices to 3 indicators and warns in dev when the consumer returns more', async function slices() {
-        const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(function noop() {
-          // ignore
-        });
-
-        const { container } = await render(<OverflowIndicatorsExample />);
-        const cellsWithDots = Array.from(container.querySelectorAll('[role="gridcell"]')).filter(
-          function hasDots(cell) {
-            return cell.querySelectorAll('[class*="indicator_"]').length > 0;
-          }
-        );
-        const maxDotsInCell = cellsWithDots.length
-          ? Math.max(
-              ...cellsWithDots.map(function count(cell) {
-                return cell.querySelectorAll('[class*="indicator_"]').length;
-              })
-            )
-          : 0;
-        assume(maxDotsInCell).is.at.most(3);
-        assume(consoleWarn.mock.calls.length).is.above(0);
-
-        consoleWarn.mockRestore();
-      });
-
-      it('exposes the indicator label to assistive tech via a hidden span', async function indicatorLabel() {
-        const { container } = await render(<CalendarWithIndicatorsExample />);
-        assume(container.textContent ?? '').contains('Available');
-        assume(container.textContent ?? '').contains('Limited');
-      });
-    });
   });
 
   describe('#RangeCalendar', function rangeCalendar() {
@@ -172,31 +132,14 @@ describe('@godaddy/antares', function antares() {
         assume(grids.length).equals(2);
       });
 
-      it('hides out-of-month days entirely (no day number rendered)', async function hidesOutOfMonth() {
+      it('renders out-of-month days with day numbers in both grids', async function rendersOutsideMonth() {
         const { container } = await render(<CalendarDefaultRangeExample />);
         const outsideMonth = container.querySelectorAll('[data-outside-month]');
         assume(outsideMonth.length).is.at.least(1);
-        for (const cell of Array.from(outsideMonth)) {
-          assume((cell.textContent ?? '').trim()).equals('');
-        }
-      });
-    });
-
-    describe('#duration', function duration() {
-      it('disables end candidates within minDuration and beyond maxDuration after a start click', async function constrains() {
-        const { container } = await render(<CalendarWithDurationExample />);
-
-        const day15 = container.querySelector<HTMLElement>('[role="gridcell"][data-today]')
-          ?? container.querySelectorAll<HTMLElement>('[role="gridcell"]:not([data-outside-month])')[14];
-        assume(day15).exists();
-        await userEvent.click(day15 as HTMLElement);
-
-        await new Promise(function wait(resolve) {
-          setTimeout(resolve, 100);
+        const someHaveContent = Array.from(outsideMonth).some(function hasContent(cell) {
+          return (cell.textContent ?? '').trim().length > 0;
         });
-
-        const unavailable = container.querySelectorAll('[data-unavailable]');
-        assume(unavailable.length).is.at.least(2);
+        assume(someHaveContent).equals(true);
       });
     });
 
@@ -211,36 +154,4 @@ describe('@godaddy/antares', function antares() {
       });
     });
   });
-
-  describe('#OutOfMonthRendering', function outOfMonthRendering() {
-    it('renders out-of-month cells in single Calendar (with content) and hides them in Range', async function rendering() {
-      const { container } = await render(<CalendarOutOfMonthDaysExample />);
-      const grids = container.querySelectorAll('[role="grid"]');
-      // grids[0] = single, grids[1] and grids[2] = first/second month of range.
-      const singleOutside = grids[0].querySelectorAll('[data-outside-month]');
-      const rangeOutside = Array.from(grids[1].querySelectorAll('[data-outside-month]')).concat(
-        Array.from(grids[2].querySelectorAll('[data-outside-month]'))
-      );
-
-      assume(singleOutside.length).is.at.least(1);
-      const singleHasContent = Array.from(singleOutside).some(function hasContent(cell) {
-        return (cell.textContent ?? '').trim().length > 0;
-      });
-      assume(singleHasContent).equals(true);
-
-      assume(rangeOutside.length).is.at.least(1);
-      const rangeAllEmpty = rangeOutside.every(function isEmpty(cell) {
-        return (cell.textContent ?? '').trim().length === 0;
-      });
-      assume(rangeAllEmpty).equals(true);
-    });
-  });
 });
-
-function OverflowIndicatorsExample() {
-  function getDayIndicators(): DayIndicator[] {
-    return [{ color: 'critical' }, { color: 'highlight' }, { color: 'info' }, { color: 'success' }];
-  }
-
-  return <Calendar aria-label="overflow" defaultValue={parseDate('2024-03-15')} getDayIndicators={getDayIndicators} />;
-}

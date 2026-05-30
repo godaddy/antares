@@ -10,20 +10,15 @@ import SourceDefault from './examples/default.tsx?raw';
 import SourceDefaultRange from './examples/default-range.tsx?raw';
 import SourceWithMinMax from './examples/with-min-max.tsx?raw';
 import SourceWithUnavailableDates from './examples/with-unavailable-dates.tsx?raw';
-import SourceWithIndicators from './examples/with-indicators.tsx?raw';
 import SourceTodayDistinct from './examples/today-distinct.tsx?raw';
-import SourceOutOfMonthDays from './examples/out-of-month-days.tsx?raw';
-import SourceWithDuration from './examples/with-duration.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
 ## Features
 
 - **Single and range**: `Calendar` for a single date, `RangeCalendar` for a contiguous range
-- **Month + Year header**: replaces RAC's default heading with two `Select` dropdowns
-- **Indicator dots**: optional `getDayIndicators` renders up to 3 colored dots per day cell, mapped to design-system feedback colors
-- **Bounds**: `minValue` and `maxValue` constrain selectable dates and drive the year `Select`'s range
-- **Duration constraints (range only)**: `minDuration` and `maxDuration` disable end-date candidates that violate during an in-progress pick
+- **Built-in Month + Year pickers**: prev/next arrows alongside React Aria's `<CalendarMonthPicker>` / `<CalendarYearPicker>` rendered into the antares `Select`
+- **Bounds**: `minValue` and `maxValue` constrain selectable dates and clamp the year `Select`'s range automatically
 - **React Aria integration**: built on React Aria Calendar / RangeCalendar for accessibility, keyboard, and locale handling
 
 ## Installation
@@ -69,14 +64,17 @@ A single calendar with one month visible.
 
 ### Default range
 
-`RangeCalendar` shows two months side-by-side.
+`RangeCalendar` shows two months side-by-side. Each visible month has its own header
+(prev arrow + dropdowns on the left, dropdowns + next arrow on the right). Picking a
+month or year on either side scrolls both grids together; the prev/next arrows page by
+one month.
 
 <Source language="tsx" code={SourceDefaultRange} />
 <Story of={Stories.DefaultRange} inline />
 
 ### Min and max
 
-`minValue` and `maxValue` disable out-of-range days and constrain the year `Select`.
+`minValue` and `maxValue` disable out-of-range days and clamp the year `Select`.
 
 <Source language="tsx" code={SourceWithMinMax} />
 <Story of={Stories.WithMinMax} inline />
@@ -88,34 +86,11 @@ Use `isDateUnavailable` to disable specific dates such as weekends or holidays.
 <Source language="tsx" code={SourceWithUnavailableDates} />
 <Story of={Stories.WithUnavailableDates} inline />
 
-### Indicators
-
-`getDayIndicators` renders up to 3 colored dots beneath the day number. Returning more
-than 3 silently slices to 3 and emits a `console.warn` in development.
-
-<Source language="tsx" code={SourceWithIndicators} />
-<Story of={Stories.WithIndicators} inline />
-
 ### Today inside a range
 
 The "today" visual state coexists with `selected` and `in-range`.
 
 <Source language="tsx" code={SourceTodayDistinct} />
 <Story of={Stories.TodayDistinct} inline />
-
-### Out-of-month days
-
-Single calendars dim out-of-month days at 40% opacity. `RangeCalendar` hides them entirely.
-
-<Source language="tsx" code={SourceOutOfMonthDays} />
-<Story of={Stories.OutOfMonthDays} inline />
-
-### Min and max duration
-
-`minDuration` and `maxDuration` constrain the length of the selected range during an
-in-progress pick.
-
-<Source language="tsx" code={SourceWithDuration} />
-<Story of={Stories.WithDuration} inline />
 
 [int-date]: https://react-spectrum.adobe.com/internationalized/date/index.html

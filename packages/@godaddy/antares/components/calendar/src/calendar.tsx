@@ -1,13 +1,12 @@
 import type { CalendarDate } from '@internationalized/date';
 import {
   Calendar as RACCalendar,
+  CalendarCell as RACCalendarCell,
   CalendarGrid as RACCalendarGrid,
   type CalendarProps as RACCalendarProps
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import { CalendarHeader } from './calendar-header';
-import { DayCell } from './day-cell';
-import type { GetDayIndicators } from './types';
 import styles from './index.module.css';
 
 /**
@@ -18,21 +17,12 @@ import styles from './index.module.css';
  *
  * @public
  */
-export interface CalendarProps extends Omit<RACCalendarProps<CalendarDate>, 'children' | 'visibleDuration'> {
-  /**
-   * Per-day indicator function. Returns up to 3 colored dots rendered beneath the
-   * day number. Called once per visible day cell.
-   *
-   * @example
-   *   <Calendar getDayIndicators={(date) => date.day === 15 ? [{ color: 'success' }] : []} />
-   */
-  getDayIndicators?: GetDayIndicators;
-}
+export interface CalendarProps extends Omit<RACCalendarProps<CalendarDate>, 'children' | 'visibleDuration'> {}
 
 /**
  * Calendar is a single-month date grid for picking one date. It mirrors React Aria
- * Calendar typed for `CalendarDate` (date-only, no time, no timezone) and adds a
- * Month + Year `Select` header in place of RAC's default heading.
+ * Calendar typed for `CalendarDate` (date-only, no time, no timezone) and replaces
+ * RAC's default heading with prev/next arrows + Month + Year `Select` dropdowns.
  *
  * @param props - {@link CalendarProps}
  *
@@ -46,20 +36,14 @@ export interface CalendarProps extends Omit<RACCalendarProps<CalendarDate>, 'chi
  * @see https://react-spectrum.adobe.com/react-aria/Calendar.html
  */
 export function Calendar(props: CalendarProps) {
-  const { getDayIndicators, minValue, maxValue, ...racProps } = props;
-
   return (
-    <RACCalendar<CalendarDate>
-      {...racProps}
-      minValue={minValue}
-      maxValue={maxValue}
-      visibleDuration={{ months: 1 }}
-      className={styles.calendar}
-    >
+    <RACCalendar<CalendarDate> {...props} visibleDuration={{ months: 1 }} className={styles.calendar}>
       <Flex direction="column" gap="md" padding="md">
-        <CalendarHeader minValue={minValue} maxValue={maxValue} />
+        <CalendarHeader position="single" />
         <RACCalendarGrid className={styles.grid}>
-          {(date) => <DayCell date={date} getDayIndicators={getDayIndicators} />}
+          {function renderCell(date) {
+            return <RACCalendarCell date={date} className={styles.cell} />;
+          }}
         </RACCalendarGrid>
       </Flex>
     </RACCalendar>

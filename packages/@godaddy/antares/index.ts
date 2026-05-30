@@ -61,14 +61,7 @@ export { TextField, type TextFieldProps } from '#components/text-field';
 
 export { NumberField, type NumberFieldProps } from '#components/number-field';
 
-export {
-  Calendar,
-  RangeCalendar,
-  type CalendarProps,
-  type RangeCalendarProps,
-  type DayIndicator,
-  type GetDayIndicators
-} from '#components/calendar';
+export { Calendar, RangeCalendar, type CalendarProps, type RangeCalendarProps } from '#components/calendar';
 
 export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';
 

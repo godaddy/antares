@@ -1,93 +1,140 @@
-import { type CalendarDate, type DateValue, today as todayFn, getLocalTimeZone } from '@internationalized/date';
-import { useContext } from 'react';
+import type { CalendarDate } from '@internationalized/date';
+import { useContext, useMemo } from 'react';
 import {
+  Button as RACButton,
+  CalendarMonthPicker as RACCalendarMonthPicker,
   CalendarStateContext,
-  RangeCalendarStateContext,
-  useLocale,
-  type Key as RACKey
+  CalendarYearPicker as RACCalendarYearPicker,
+  RangeCalendarStateContext
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
+import { Icon } from '#components/icon';
 import { Select, SelectItem } from '#components/select';
-import { getYearRange } from './get-year-range';
 import styles from './index.module.css';
 
+/**
+ * Position of this header within its parent calendar.
+ *
+ * - `'single'` — both prev/next arrows. Used by single-month `Calendar`.
+ * - `'left'` — prev arrow only. Used by the left grid of `RangeCalendar`.
+ * - `'right'` — next arrow only, dropdowns reflect the second visible month.
+ *   Used by the right grid of `RangeCalendar`.
+ */
+type CalendarHeaderPosition = 'single' | 'left' | 'right';
+
 interface CalendarHeaderProps {
-  /** Lower bound passed to the parent calendar. Used to derive the year `Select` range. */
-  minValue?: DateValue | null;
-  /** Upper bound passed to the parent calendar. Used to derive the year `Select` range. */
-  maxValue?: DateValue | null;
+  position?: CalendarHeaderPosition;
 }
 
 /**
- * Replaces RAC's default calendar heading with two `Select` dropdowns: Month and Year.
- * Reads the active calendar state from `CalendarStateContext` (single) or
- * `RangeCalendarStateContext` (range), whichever is non-null.
+ * Renders a calendar header with prev/next nav and Month + Year `Select` dropdowns.
  *
- * Consumes locale via `useLocale` so the month names match the locale supplied by
- * the host-app's `<I18nProvider>`.
+ * The pickers are powered by RAC's `<CalendarMonthPicker>` / `<CalendarYearPicker>`,
+ * which expose `{ aria-label, value, onChange, items }` via render props. We spread
+ * those into our `Select` so styling stays in the antares design system while RAC
+ * owns locale-aware month formatting and year-range derivation.
+ *
+ * For `position='right'` the picker components read a state proxy that shifts
+ * `focusedDate` forward by one month and translates `setFocusedDate` back, so the
+ * right-side dropdowns reflect the second visible month and selecting a value
+ * scrolls both grids together.
  */
-export function CalendarHeader({ minValue, maxValue }: CalendarHeaderProps) {
+export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const calendarState = useContext(CalendarStateContext);
   const rangeState = useContext(RangeCalendarStateContext);
-  const state = calendarState ?? rangeState;
-  const { locale } = useLocale();
+  const baseState = calendarState ?? rangeState;
+  const monthOffset = position === 'right' ? 1 : 0;
 
-  if (!state) {
-    return null;
-  }
+  const shiftedState = useMemo(
+    function buildShiftedState() {
+      if (!baseState || monthOffset === 0) return baseState;
+      return new Proxy(baseState, {
+        get(target, prop, receiver) {
+          if (prop === 'focusedDate') return target.focusedDate.add({ months: monthOffset });
+          if (prop === 'setFocusedDate') {
+            return function shiftedSetFocusedDate(date: CalendarDate) {
+              target.setFocusedDate(date.subtract({ months: monthOffset }));
+            };
+          }
+          return Reflect.get(target, prop, receiver);
+        }
+      });
+    },
+    [baseState, monthOffset]
+  );
 
-  const focusedDate = state.focusedDate as CalendarDate;
-  const today = todayFn(getLocalTimeZone());
+  if (!baseState) return null;
 
-  const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'long' });
-  const months = Array.from({ length: 12 }, function buildMonth(_, index) {
-    const referenceDate = focusedDate.set({ month: index + 1, day: 1 });
-    return {
-      value: index + 1,
-      label: monthFormatter.format(referenceDate.toDate(state.timeZone))
-    };
-  });
+  const showPrev = position !== 'right';
+  const showNext = position !== 'left';
 
-  const years = getYearRange(minValue ?? null, maxValue ?? null, today);
-
-  function handleMonthChange(key: RACKey | null) {
-    if (key == null) return;
-    const month = Number(key);
-    state?.setFocusedDate(focusedDate.set({ month }));
-  }
-
-  function handleYearChange(key: RACKey | null) {
-    if (key == null) return;
-    const year = Number(key);
-    state?.setFocusedDate(focusedDate.set({ year }));
-  }
-
-  return (
+  const headerContent = (
     <Flex gap="sm" alignItems="center" className={styles.header}>
-      <Select
-        aria-label="Month"
-        selectedKey={focusedDate.month}
-        onSelectionChange={handleMonthChange}
-        className={styles.headerSelect}
-      >
-        {months.map((month) => (
-          <SelectItem key={month.value} id={month.value} textValue={month.label}>
-            {month.label}
-          </SelectItem>
-        ))}
-      </Select>
-      <Select
-        aria-label="Year"
-        selectedKey={focusedDate.year}
-        onSelectionChange={handleYearChange}
-        className={styles.headerSelect}
-      >
-        {years.map((year) => (
-          <SelectItem key={year} id={year} textValue={String(year)}>
-            {String(year)}
-          </SelectItem>
-        ))}
-      </Select>
+      {showPrev && (
+        <RACButton slot="previous" className={styles.navButton} aria-label="Previous">
+          <Icon icon="chevron-left" />
+        </RACButton>
+      )}
+      <RACCalendarMonthPicker format="long">
+        {function renderMonthPicker(picker) {
+          return (
+            <Select
+              aria-label={picker['aria-label']}
+              selectedKey={picker.value}
+              onSelectionChange={picker.onChange}
+              className={styles.headerSelect}
+            >
+              {picker.items.map(function renderMonthItem(item) {
+                return (
+                  <SelectItem key={item.id} id={item.id} textValue={item.formatted}>
+                    {item.formatted}
+                  </SelectItem>
+                );
+              })}
+            </Select>
+          );
+        }}
+      </RACCalendarMonthPicker>
+      <RACCalendarYearPicker>
+        {function renderYearPicker(picker) {
+          return (
+            <Select
+              aria-label={picker['aria-label']}
+              selectedKey={picker.value}
+              onSelectionChange={picker.onChange}
+              className={styles.headerSelect}
+            >
+              {picker.items.map(function renderYearItem(item) {
+                return (
+                  <SelectItem key={item.id} id={item.id} textValue={item.formatted}>
+                    {item.formatted}
+                  </SelectItem>
+                );
+              })}
+            </Select>
+          );
+        }}
+      </RACCalendarYearPicker>
+      {showNext && (
+        <RACButton slot="next" className={styles.navButton} aria-label="Next">
+          <Icon icon="chevron-right" />
+        </RACButton>
+      )}
     </Flex>
+  );
+
+  if (monthOffset === 0) return headerContent;
+
+  if (calendarState) {
+    return (
+      <CalendarStateContext.Provider value={shiftedState as typeof calendarState}>
+        {headerContent}
+      </CalendarStateContext.Provider>
+    );
+  }
+  return (
+    <RangeCalendarStateContext.Provider value={shiftedState as typeof rangeState}>
+      {headerContent}
+    </RangeCalendarStateContext.Provider>
   );
 }

@@ -8,6 +8,33 @@
   flex: 1;
 }
 
+.navButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--calendar-cell-size);
+  height: var(--calendar-cell-size);
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--calendar-cell-radius);
+
+  &[data-hovered] {
+    background: color-mix(in oklch, currentColor, transparent 92%);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &[data-focus-visible] {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
+}
+
 .grid {
   border-collapse: separate;
   border-spacing: 0.125rem;
@@ -29,6 +56,7 @@
   text-align: center;
   vertical-align: middle;
   user-select: none;
+  font-variant-numeric: tabular-nums;
 
   &[data-outside-month] {
     opacity: 0.4;
@@ -77,44 +105,4 @@
   &[data-today] {
     box-shadow: inset 0 0 0 1px var(--color-feedback-info-strong, currentColor);
   }
-}
-
-.cellHidden {
-  display: inline-block;
-  width: var(--calendar-cell-size);
-  height: var(--calendar-cell-size);
-}
-
-.cellInner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  gap: 2px;
-}
-
-.cellDate {
-  font-variant-numeric: tabular-nums;
-}
-
-.indicators {
-  gap: 2px;
-}
-
-.indicator {
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-}
-
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
