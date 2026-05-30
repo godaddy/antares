@@ -9,73 +9,22 @@ import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-fr
 import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 
-/**
- * Props for the DateField component.
- *
- * Wraps React Aria {@link RACDateFieldProps} typed for `CalendarDate` (date-only,
- * no time, no timezone). Adds Antares' label/description/error surface via
- * {@link FieldFrame} and narrows `errorMessage` to `string` to match `TextField`
- * and `NumberField`.
- *
- * @public
- */
 export interface DateFieldProps
   extends Omit<RACDateFieldProps<CalendarDate>, 'children' | 'errorMessage'>,
     Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
-  /**
-   * Selected date value (controlled). Pass a `CalendarDate` from `@internationalized/date`.
-   *
-   * @example
-   *   import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
-   *   <DateField value={parseDate('2024-03-15')} />
-   *   <DateField value={today(getLocalTimeZone())} />
-   *
-   * @see https://react-spectrum.adobe.com/react-aria/DateField.html#value
-   */
+  /** Selected date value (controlled). */
   value?: CalendarDate | null;
 
-  /**
-   * Default date value (uncontrolled). Pass a `CalendarDate` from `@internationalized/date`.
-   *
-   * @example
-   *   import { parseDate } from '@internationalized/date';
-   *   <DateField defaultValue={parseDate('2024-03-15')} />
-   *
-   * @see https://react-spectrum.adobe.com/react-aria/DateField.html#value
-   */
+  /** Default date value (uncontrolled). */
   defaultValue?: CalendarDate | null;
 
-  /**
-   * Absolute lower bound. Disables out-of-range typed entry.
-   *
-   * @example
-   *   import { parseDate } from '@internationalized/date';
-   *   <DateField minValue={parseDate('2024-01-01')} />
-   *
-   * @see https://react-spectrum.adobe.com/react-aria/DateField.html#minimum-and-maximum-values
-   */
+  /** Absolute lower bound. Disables out-of-range typed entry. */
   minValue?: CalendarDate;
 
-  /**
-   * Absolute upper bound. Disables out-of-range typed entry.
-   *
-   * @example
-   *   import { parseDate } from '@internationalized/date';
-   *   <DateField maxValue={parseDate('2025-12-31')} />
-   *
-   * @see https://react-spectrum.adobe.com/react-aria/DateField.html#minimum-and-maximum-values
-   */
+  /** Absolute upper bound. Disables out-of-range typed entry. */
   maxValue?: CalendarDate;
 
-  /**
-   * Placeholder date used to hint the segments before a value is entered.
-   *
-   * @example
-   *   import { parseDate } from '@internationalized/date';
-   *   <DateField placeholderValue={parseDate('2024-01-01')} />
-   *
-   * @see https://react-spectrum.adobe.com/react-aria/DateField.html#placeholder-value
-   */
+  /** Placeholder date used to hint the segments before a value is entered. */
   placeholderValue?: CalendarDate;
 
   /** Helper text shown below the frame. */
@@ -99,7 +48,7 @@ export interface DateFieldProps
   /** Whether the input is read-only. */
   isReadOnly?: boolean;
 
-  /** Name of the underlying form element, used when submitting a form. */
+  /** Name of the underlying form element. */
   name?: string;
 
   /** Handler called when the value changes. */
@@ -107,12 +56,8 @@ export interface DateFieldProps
 }
 
 /**
- * DateField is a segmented date input with editable Year, Month, and Day segments.
- * It composes React Aria `DateField<CalendarDate>` with Antares' `FieldFrame` for
- * label, description, and error message.
- *
- * Values are typed as `CalendarDate` from `@internationalized/date` — there is no
- * time and no timezone. See the `Working with dates` README section for patterns.
+ * Segmented date input with editable Year/Month/Day segments, typed for `CalendarDate`
+ * (date-only, no time, no timezone). Wraps RAC `DateField` in antares `FieldFrame`.
  *
  * @param props - {@link DateFieldProps}
  *
@@ -122,8 +67,6 @@ export interface DateFieldProps
  *
  * <DateField label="Start date" defaultValue={parseDate('2024-03-15')} />
  * ```
- *
- * @see https://react-spectrum.adobe.com/react-aria/DateField.html
  */
 export function DateField(props: DateFieldProps) {
   const { description, errorMessage, label, ...racProps } = props;
