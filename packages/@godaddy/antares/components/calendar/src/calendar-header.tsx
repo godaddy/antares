@@ -1,5 +1,5 @@
 import type { CalendarDate } from '@internationalized/date';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import {
   Button as RACButton,
   CalendarMonthPicker as RACCalendarMonthPicker,
@@ -12,36 +12,21 @@ import { Icon } from '#components/icon';
 import { Select, SelectItem } from '#components/select';
 import styles from './index.module.css';
 
-/**
- * Position of this header within its parent calendar.
- *
- * - `'single'` — both prev/next arrows. Used by single-month `Calendar`.
- * - `'left'` — prev arrow only. Used by the left grid of `RangeCalendar`.
- * - `'right'` — next arrow only, dropdowns reflect the second visible month.
- *   Used by the right grid of `RangeCalendar`.
- */
 type CalendarHeaderPosition = 'single' | 'left' | 'right';
 
 interface CalendarHeaderProps {
+  /** `'left'` / `'right'` for the two grids of `RangeCalendar`; `'single'` for `Calendar`. */
   position?: CalendarHeaderPosition;
 }
 
 /**
- * Renders a calendar header with prev/next nav and Month + Year `Select` dropdowns.
+ * Calendar header: prev/next nav + Month + Year `Select` dropdowns powered by RAC's
+ * `<CalendarMonthPicker>` / `<CalendarYearPicker>` rendered into the antares `Select`.
  *
- * The pickers are powered by RAC's `<CalendarMonthPicker>` / `<CalendarYearPicker>`,
- * which expose `{ aria-label, value, onChange, items }` via render props. We spread
- * those into our `Select` so styling stays in the antares design system while RAC
- * owns locale-aware month formatting and year-range derivation.
- *
- * RAC's pickers read `state.focusedDate.month` for their displayed value, but in a
- * 2-month `RangeCalendar` the focused date jumps around — including when the user
- * hovers a cell during an in-progress range pick (RAC's `highlightDate` calls
- * `setFocusedDate` to drive the highlight preview). To keep the dropdown labels
- * tied to the GRID month rather than the focus, we wrap the pickers in a state
- * Proxy that pins `focusedDate` to `state.visibleRange.start` (plus a one-month
- * offset for `position='right'`). `setFocusedDate` is translated back so picking
- * a value still scrolls the grids together.
+ * Pickers read state via context. We feed them a shallow copy of the RAC state with
+ * `focusedDate` pinned to `state.visibleRange.start` (plus a one-month offset for
+ * `position='right'`) so the dropdowns track the grid month, not the focus.
+ * `setFocusedDate` is translated back so picking a value scrolls both grids together.
  */
 export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const calendarState = useContext(CalendarStateContext);
@@ -49,25 +34,15 @@ export function CalendarHeader({ position = 'single' }: CalendarHeaderProps) {
   const baseState = calendarState ?? rangeState;
   const monthOffset = position === 'right' ? 1 : 0;
 
-  const pickerState = useMemo(
-    function buildPickerState() {
-      if (!baseState) return baseState;
-      return new Proxy(baseState, {
-        get(target, prop, receiver) {
-          if (prop === 'focusedDate') return target.visibleRange.start.add({ months: monthOffset });
-          if (prop === 'setFocusedDate') {
-            return function shiftedSetFocusedDate(date: CalendarDate) {
-              target.setFocusedDate(date.subtract({ months: monthOffset }));
-            };
-          }
-          return Reflect.get(target, prop, receiver);
-        }
-      });
-    },
-    [baseState, monthOffset]
-  );
-
   if (!baseState) return null;
+
+  const pickerState = {
+    ...baseState,
+    focusedDate: baseState.visibleRange.start.add({ months: monthOffset }),
+    setFocusedDate(date: CalendarDate) {
+      baseState.setFocusedDate(date.subtract({ months: monthOffset }));
+    }
+  };
 
   const showPrev = position !== 'right';
   const showNext = position !== 'left';
