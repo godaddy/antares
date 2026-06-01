@@ -1,0 +1,1 @@
+import{$ as a}from"./slots-gxdXh3-A.js";import{r as f,R as o}from"./iframe-BQo81cX5.js";const s=o.useInsertionEffect??a;function u(r){const e=f.useRef(null);return s(()=>{e.current=r},[r]),f.useCallback((...t)=>{const c=e.current;return c?.(...t)},[])}export{u as $};
