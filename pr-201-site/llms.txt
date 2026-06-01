@@ -3,8 +3,8 @@
 - [Antares](/docs): A collection of accessible, composable React components built on React Aria.
 - [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
-- [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 - [DateField](/docs/components/date-field): DateField is a segmented date input with editable Year, Month, and Day segments. Use it in forms when the user needs to type a calendar date directly. Pair it with `DatePicker` when a popover calendar is also needed.
+- [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 - [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible panel that expands and collapses along one axis, supporting sidebar navigation and persistent collapsed content.
