@@ -15,8 +15,8 @@
 - [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [ProgressBar](/docs/components/progress-bar): A progress bar shows determinate progress of an operation over time
-- [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
+- [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
 - [Select](/docs/components/select): Accessible dropdown component supporting single and multiple selection with keyboard navigation and validation
 - [Text](/docs/components/text): Text component for displaying and formatting text content with alignment and truncation options
 - [TextField](/docs/components/text-field): TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
