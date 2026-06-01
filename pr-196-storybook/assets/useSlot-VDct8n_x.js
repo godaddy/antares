@@ -1,1 +1,0 @@
-import{a as s,b as u}from"./Text-BjVX-qli.js";import{r as f}from"./iframe-B8gzfUST.js";function $(r=!0){let[a,e]=f.useState(r),t=f.useRef(!1),c=f.useCallback(o=>{t.current=!0,e(!!o)},[]);return u(()=>{t.current||e(!1)},[]),[c,a]}function d(r=!0){let a=s(),[e,t]=$(r);return{id:t?a:void 0,ref:e}}export{d as $};

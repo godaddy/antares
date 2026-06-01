@@ -1,1 +1,0 @@
-import{a as t}from"./mergeProps-DB8RTHkp.js";function s(r,l){let{id:i,"aria-label":a,"aria-labelledby":e}=r;return i=t(i),e&&a?e=[...new Set([i,...e.trim().split(/\s+/)])].join(" "):e&&(e=e.trim().split(/\s+/).join(" ")),!a&&!e&&l&&(a=l),{id:i,"aria-label":a,"aria-labelledby":e}}export{s as $};

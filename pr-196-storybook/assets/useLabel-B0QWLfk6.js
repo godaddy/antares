@@ -1,1 +1,0 @@
-import{a as r}from"./mergeProps-BHT_JJ7I.js";import{$ as d}from"./useLabels-BL4Oa8mB.js";function m(i){let{id:a,label:t,"aria-labelledby":e,"aria-label":o,labelElementType:$="label"}=i;a=r(a);let l=r(),b={};t&&(e=e?`${l} ${e}`:l,b={id:l,htmlFor:$==="label"?a:void 0});let f=d({id:a,"aria-label":o,"aria-labelledby":e});return{labelProps:b,fieldProps:f}}export{m as $};
