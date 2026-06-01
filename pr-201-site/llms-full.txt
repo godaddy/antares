@@ -607,12 +607,18 @@ npm install --save @godaddy/antares
 
 Working with dates [#working-with-dates]
 
-DateField values are typed as `CalendarDate` from [`@internationalized/date`][int-date] — a date-only
-type with no time and no timezone. `@internationalized/date` ships transitively with
-`react-aria-components`, so most consumers do not need to add it to their `package.json`.
+DateField values are typed as `CalendarDate` from [`@internationalized/date`][int-date] — a
+date-only type with no time and no timezone. Install it alongside `@godaddy/antares`:
 
-> **Strict pnpm note:** if your repo disables hoisting (`node-linker=hoisted` off), add
-> `@internationalized/date` to your own `package.json` so the import resolves.
+```bash
+npm install @internationalized/date
+```
+
+We do not re-export anything from this package. Import directly:
+
+```ts
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+```
 
 Three common patterns:
 
@@ -631,8 +637,7 @@ const [value, setValue] = useState(parseDate('2024-03-15'));
 <DateField label="Date" value={value} onChange={setValue} />
 ```
 
-A canonical `Working with dates` section will live in the `DatePicker` README in a follow-up
-PR — this section will then link there. Locale comes from a host-app `<I18nProvider>`.
+Locale comes from a host-app `<I18nProvider>`.
 
 Props [#props]
 
@@ -1244,6 +1249,107 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# InlineDrawer
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Features [#features]
+
+* In-flow collapsible panel with CSS transitions
+* `minSize` keeps collapsed content visible (sidebar nav pattern)
+* `shouldDismissOnBlur` with portal-aware focus detection
+* Controlled and uncontrolled modes
+* `hidden="until-found"` for browser find-in-page support
+* `prefers-reduced-motion` support
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Controlled [#controlled]
+
+Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="ControlledExample" />
+
+Sidebar Navigation [#sidebar-navigation]
+
+Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
+
+<Story of="Stories.SidebarNav" />
+
+<Source language="tsx" code="SidebarNavExample" />
+
+Vertical Placement [#vertical-placement]
+
+Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
+
+<Story of="Stories.Vertical" />
+
+<Source language="tsx" code="VerticalExample" />
+
+Dismiss on Blur [#dismiss-on-blur]
+
+Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
+
+<Story of="Stories.DismissOnBlur" />
+
+<Source language="tsx" code="DismissOnBlurExample" />
+
+Focus Scope [#focus-scope]
+
+Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
+
+<Story of="Stories.FocusScope" />
+
+<Source language="tsx" code="FocusScopeExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key               | Action                                                                |
+| ----------------- | --------------------------------------------------------------------- |
+| `Enter` / `Space` | Toggle the drawer via the trigger button                              |
+| `Tab`             | Move focus into/out of the panel (or trapped when using `FocusScope`) |
+
+ARIA [#aria]
+
+* `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
+* `aria-controls` links the trigger to the panel
+* `hidden="until-found"` on collapsed panels (browser find-in-page support)
+* Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
+
+Best Practices [#best-practices]
+
+* Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
+* `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
+* Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
+* Don't nest InlineDrawers.
+
+
 # Menu
 
 
@@ -1412,107 +1518,6 @@ Styling Not Applying [#styling-not-applying]
 ```
 
 
-# InlineDrawer
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Features [#features]
-
-* In-flow collapsible panel with CSS transitions
-* `minSize` keeps collapsed content visible (sidebar nav pattern)
-* `shouldDismissOnBlur` with portal-aware focus detection
-* Controlled and uncontrolled modes
-* `hidden="until-found"` for browser find-in-page support
-* `prefers-reduced-motion` support
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-Controlled [#controlled]
-
-Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="ControlledExample" />
-
-Sidebar Navigation [#sidebar-navigation]
-
-Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
-
-<Story of="Stories.SidebarNav" />
-
-<Source language="tsx" code="SidebarNavExample" />
-
-Vertical Placement [#vertical-placement]
-
-Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
-
-<Story of="Stories.Vertical" />
-
-<Source language="tsx" code="VerticalExample" />
-
-Dismiss on Blur [#dismiss-on-blur]
-
-Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
-
-<Story of="Stories.DismissOnBlur" />
-
-<Source language="tsx" code="DismissOnBlurExample" />
-
-Focus Scope [#focus-scope]
-
-Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
-
-<Story of="Stories.FocusScope" />
-
-<Source language="tsx" code="FocusScopeExample" />
-
-Accessibility [#accessibility]
-
-Keyboard [#keyboard]
-
-| Key               | Action                                                                |
-| ----------------- | --------------------------------------------------------------------- |
-| `Enter` / `Space` | Toggle the drawer via the trigger button                              |
-| `Tab`             | Move focus into/out of the panel (or trapped when using `FocusScope`) |
-
-ARIA [#aria]
-
-* `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
-* `aria-controls` links the trigger to the panel
-* `hidden="until-found"` on collapsed panels (browser find-in-page support)
-* Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
-
-Best Practices [#best-practices]
-
-* Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
-* `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
-* Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
-* Don't nest InlineDrawers.
-
-
 # MetricsLockup
 
 
@@ -1580,6 +1585,98 @@ Best Practices [#best-practices]
 * The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
 * `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
+# Modal
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic usage [#basic-usage]
+
+The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+With actions [#with-actions]
+
+Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+
+<Story of="Stories.WithActions" />
+
+<Source language="tsx" code="SourceWithActions" />
+
+Alignment [#alignment]
+
+Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+With media [#with-media]
+
+Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
+
+<Story of="Stories.WithMedia" />
+
+<Source language="tsx" code="SourceWithMedia" />
+
+Accessibility [#accessibility]
+
+Keyboard interaction [#keyboard-interaction]
+
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| `Escape`      | Closes the modal (when dismissable)                            |
+
+ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+* The close button is rendered with `aria-label="Close"`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+Best Practices [#best-practices]
+
+* Always provide a `title` so the dialog has an accessible name
+* Pair every footer action with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` for required confirmations the user must explicitly answer
+* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
 
 
 # NumberField
@@ -1751,98 +1848,6 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Source language="tsx" code="SourceOnChange" />
 
 
-# Modal
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic usage [#basic-usage]
-
-The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-With actions [#with-actions]
-
-Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
-
-<Story of="Stories.WithActions" />
-
-<Source language="tsx" code="SourceWithActions" />
-
-Alignment [#alignment]
-
-Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-With media [#with-media]
-
-Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
-
-<Story of="Stories.WithMedia" />
-
-<Source language="tsx" code="SourceWithMedia" />
-
-Accessibility [#accessibility]
-
-Keyboard interaction [#keyboard-interaction]
-
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
-
-ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
-* The close button is rendered with `aria-label="Close"`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-Best Practices [#best-practices]
-
-* Always provide a `title` so the dialog has an accessible name
-* Pair every footer action with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` for required confirmations the user must explicitly answer
-* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
-* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
-
-
 # Popover
 
 
@@ -1952,130 +1957,6 @@ ARIA Support [#aria-support]
 * `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
 * `aria-valuetext` provides a formatted string (e.g. `"60%"`)
 * `aria-labelledby` associates the visible label when the `label` prop is provided
-
-
-# SegmentedController
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic [#basic]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="Stories.IconOnly" />
-
-<Source language="tsx" code="SourceIconOnly" />
-
-Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="Stories.Overflow" />
-
-<Source language="tsx" code="SourceOverflow" />
-
-RTL Direction [#rtl-direction]
-
-The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
-
-Customization [#customization]
-
-Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-Accessibility [#accessibility]
-
-Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-Best Practices [#best-practices]
-
-When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
 
 
 # Radio
@@ -2300,6 +2181,130 @@ Always provide clear error messages:
   <Radio value="express">Express</Radio>
 </RadioGroup>
 ```
+
+
+# SegmentedController
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic [#basic]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+Customization [#customization]
+
+Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+Accessibility [#accessibility]
+
+Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+Best Practices [#best-practices]
+
+When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
 
 
 # Select
@@ -3751,6 +3756,102 @@ When to Use LineChart [#when-to-use-linechart]
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+Examples [#examples]
+
+Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+
 # Flex
 
 
@@ -3855,102 +3956,6 @@ Migration from @ux/box [#migration-from-uxbox]
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
-
-
-# Box
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-Examples [#examples]
-
-Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="Stories.Padding" />
-
-<Source language="tsx" code="SourcePadding" />
-
-Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="Stories.Elevation" />
-
-<Source language="tsx" code="SourceElevation" />
-
-Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="Stories.Rounding" />
-
-<Source language="tsx" code="SourceRounding" />
-
-Polymorphic `as` Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-<Story of="Stories.As" />
-
-<Source language="tsx" code="SourceAs" />
-
-Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
 # Grid
