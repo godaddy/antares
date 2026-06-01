@@ -9,6 +9,8 @@ import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-fr
 import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 
+export { I18nProvider, type I18nProviderProps } from 'react-aria-components';
+
 export interface DateFieldProps
   extends Omit<RACDateFieldProps<CalendarDate>, 'children' | 'errorMessage'>,
     Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {

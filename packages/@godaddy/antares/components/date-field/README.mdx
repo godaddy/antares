@@ -24,7 +24,7 @@ import SourceForm from './examples/form.tsx?raw';
 - **Controlled or uncontrolled**: Use `value` and `onChange`, or `defaultValue`
 - **Range bounds**: `minValue` and `maxValue` reject out-of-range entry
 - **Form integration**: Submits an ISO date string when given a `name` prop
-- **React Aria integration**: Built on React Aria DateField for accessibility, keyboard, and locale handling
+- **Accessible by default**: Full keyboard support, ARIA semantics, and locale-aware segment handling
 
 ## Installation
 
@@ -34,16 +34,16 @@ npm install --save @godaddy/antares
 
 ## Working with dates
 
-Date components in Antares are typed for `CalendarDate` from
-[`@internationalized/date`][int-date] — a date-only type with no time and no timezone.
+Date components in Antares are typed for `CalendarDate` from `@internationalized/date` — a
+date-only type with no time and no timezone.
 
 ### Why `@internationalized/date`?
 
 JavaScript's built-in `Date` is a single timestamp that conflates calendar date, time of day,
 and timezone. That's the wrong shape for "a calendar date" (e.g. a birthday or a booking date),
 and round-tripping it through string parsers and `toISOString()` is the source of countless
-off-by-one timezone bugs. `@internationalized/date` separates these concepts cleanly. Antares
-date components only deal with `CalendarDate`.
+off-by-one timezone bugs. [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html)
+separates these concepts cleanly. Antares date components only deal with `CalendarDate`.
 
 ### Installation
 
@@ -59,33 +59,11 @@ We do not re-export anything from this package. Import directly:
 import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
 ```
 
-### Three patterns
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
-import { DateField } from '@godaddy/antares';
-
-// Fixed date
-<DateField label="Start" defaultValue={parseDate('2024-03-15')} />
-
-// Today
-<DateField label="Date" defaultValue={today(getLocalTimeZone())} />
-
-// Controlled
-const [value, setValue] = useState(parseDate('2024-03-15'));
-<DateField label="Date" value={value} onChange={setValue} />
-```
-
 ### Locale and i18n
 
-Locale comes from the host app's `<I18nProvider>` (a React Aria component). There is no
-per-component `locale` prop. Segment formatting follows the active locale.
-
-### Further reading
-
-- [React Aria `DateField`](https://react-spectrum.adobe.com/react-aria/DateField.html)
-- [`@internationalized/date` reference][int-date]
-- [`CalendarDate`](https://react-spectrum.adobe.com/internationalized/date/CalendarDate.html)
+Locale comes from the host app's `<I18nProvider>`, which Antares re-exports from
+`@godaddy/antares`. There is no per-component `locale` prop. Segment formatting follows the
+active locale.
 
 ## Props
 
@@ -152,5 +130,3 @@ string (`YYYY-MM-DD`).
 
 <Source language="tsx" code={SourceForm} />
 <Story of={Stories.Form} inline />
-
-[int-date]: https://react-spectrum.adobe.com/internationalized/date/index.html
