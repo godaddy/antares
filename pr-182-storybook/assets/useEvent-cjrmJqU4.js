@@ -1,1 +1,0 @@
-import{$}from"./useSyncRef-UOnEDASh.js";import{r as l}from"./iframe-DIAwzCO3.js";function i(e,r,f,t){let a=$(f),c=f==null;l.useEffect(()=>{if(c||!e.current)return;let n=e.current;return n.addEventListener(r,a,t),()=>{n.removeEventListener(r,a,t)}},[e,r,t,c])}export{i as $};
