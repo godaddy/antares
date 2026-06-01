@@ -1,6 +1,6 @@
 ---
 title: DateField
-description: DateField is a segmented date input with editable Year, Month, and Day segments. Use it in forms when the user needs to type a calendar date directly. Pair it with `DatePicker` when a popover calendar is also needed.
+description: DateField is a segmented date input with editable Year, Month, and Day segments. Use it when users only need to type a date. If you also want a calendar popover, use `DatePicker` (or `DateRangePicker` for ranges) instead.
 ---
 
 import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
@@ -34,12 +34,18 @@ npm install --save @godaddy/antares
 
 ## Working with dates
 
-DateField values are typed as `CalendarDate` from [`@internationalized/date`][int-date] — a date-only
-type with no time and no timezone. `@internationalized/date` ships transitively with
-`react-aria-components`, so most consumers do not need to add it to their `package.json`.
+DateField values are typed as `CalendarDate` from [`@internationalized/date`][int-date] — a
+date-only type with no time and no timezone. Install it alongside `@godaddy/antares`:
 
-> **Strict pnpm note:** if your repo disables hoisting (`node-linker=hoisted` off), add
-> `@internationalized/date` to your own `package.json` so the import resolves.
+```bash
+npm install @internationalized/date
+```
+
+We do not re-export anything from this package. Import directly:
+
+```ts
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+```
 
 Three common patterns:
 
@@ -58,8 +64,7 @@ const [value, setValue] = useState(parseDate('2024-03-15'));
 <DateField label="Date" value={value} onChange={setValue} />
 ```
 
-A canonical `Working with dates` section will live in the `DatePicker` README in a follow-up
-PR — this section will then link there. Locale comes from a host-app `<I18nProvider>`.
+Locale comes from a host-app `<I18nProvider>`.
 
 ## Props
 
