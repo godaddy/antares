@@ -26,8 +26,10 @@
 
 .frame {
   border-radius: var(--field-frame-br);
-  min-height: 40.5px;
   box-sizing: border-box;
+  font-family: inherit;
+  font-size: var(--font-body-size-md, var(--ux-cxbe8g, 1rem));
+  line-height: var(--ux-jw5s9j, 1.375);
 
   & > :first-child {
     border-start-start-radius: var(--field-frame-br);
@@ -74,6 +76,7 @@
 }
 
 .input {
+  font: inherit;
   background: transparent;
   border: none;
   outline: none;
