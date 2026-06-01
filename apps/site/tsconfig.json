@@ -1,14 +1,13 @@
 {
   "extends": "../../configs/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "noEmit": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "isolatedModules": true,
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "fumadocs-mdx:collections/*": [".source/*"]
+      "fumadocs-mdx:collections/*": ["./.source/*"]
     },
     "plugins": [{ "name": "next" }]
   },

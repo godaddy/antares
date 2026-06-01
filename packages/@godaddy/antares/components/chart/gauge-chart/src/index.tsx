@@ -29,7 +29,7 @@ function resolveSegmentCount(segments: number | undefined): number | undefined {
 /**
  * Range labels to contextualize the gauge min and max values.
  */
-export interface GaugeChartRangeLabel {
+interface GaugeChartRangeLabel {
   /** Minimum value label. */
   min: number | string;
 

@@ -1,6 +1,15 @@
-import type { Root } from 'mdast';
+import type { Node, Root } from 'mdast';
 import type { Plugin } from 'unified';
 import { parse } from 'yaml';
+
+interface MdxJsxFlowElement extends Node {
+  type: 'mdxJsxFlowElement';
+  name: string | null;
+}
+
+function isMdxJsxFlowElementNamed(node: Node, name: string): node is MdxJsxFlowElement {
+  return (node as { type: string }).type === 'mdxJsxFlowElement' && (node as { name?: string }).name === name;
+}
 
 /**
  * Remark plugin that injects an h1 heading and description paragraph from
@@ -25,7 +34,7 @@ export const remarkFrontmatterHeading: Plugin<[], Root> = function remarkFrontma
         : [])
     ];
 
-    const metaIdx = tree.children.findIndex((n) => n.type === 'mdxJsxFlowElement' && 'name' in n && n.name === 'Meta');
+    const metaIdx = tree.children.findIndex((n) => isMdxJsxFlowElementNamed(n, 'Meta'));
     const insertAt = metaIdx !== -1 ? metaIdx + 1 : tree.children.indexOf(yamlNode) + 1;
 
     tree.children.splice(insertAt, 0, ...nodes);

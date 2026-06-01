@@ -82,7 +82,7 @@ const config: StorybookConfig = {
       // Set envDir to workspace root for proper monorepo support
       envDir: resolve(__dirname, '../../../'),
 
-      esbuild: {
+      transform: {
         define
       },
 

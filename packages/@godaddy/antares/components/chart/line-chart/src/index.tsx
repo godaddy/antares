@@ -40,6 +40,16 @@ import styles from './index.module.css';
 /** Scale types supported by LineChart (subset of @visx/scale ScaleType). */
 type LineChartScaleType = 'linear' | 'time' | 'band' | 'log' | 'sqrt' | 'pow';
 
+/**
+ * Base props for the LineChart component (without accessors).
+ *
+ * Exported so the public `LineChartProps` alias can reference it by name in
+ * emitted declaration files (TS4023). Not intended for direct consumer use —
+ * import `LineChartProps` instead.
+ *
+ * @template T - The data point type. Defaults to DataPoint.
+ * @public
+ */
 export interface LineChartPropsBase<T extends object = DataPoint> {
   /** Data series (id optional; stable id generated when omitted) */
   series: Optional<SeriesConfig<T>, 'id'>[];
