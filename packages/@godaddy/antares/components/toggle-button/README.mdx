@@ -1,0 +1,244 @@
+---
+title: ToggleButton
+description: Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.
+---
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceDefault from './examples/default.tsx?raw';
+import SourceMultiple from './examples/multiple-selection.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+import SourceIconAndText from './examples/icon-and-text.tsx?raw';
+import SourceIconOnly from './examples/icon-only.tsx?raw';
+import SourceWithDropdown from './examples/with-dropdown.tsx?raw';
+import SourceRTL from './examples/rtl.tsx?raw';
+import * as Stories from './toggle-button.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Default (Single Selection)
+
+A `ToggleButton` toggles between selected and unselected. Wrap multiple inside a `ToggleButtonGroup` to link them with shared selection and keyboard navigation — `defaultSelectedKeys` sets the initial selection.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Multiple Selection
+
+Use `selectionMode="multiple"` to allow more than one item to be active at a time.
+
+<Story of={Stories.MultipleSelection} inline />
+<Source language="tsx" code={SourceMultiple} />
+
+### Controlled
+
+Use `selectedKeys` and `onSelectionChange` to control selection from parent state — `onSelectionChange` receives a `Set<string>` of the selected item `id` values.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
+
+### Disabled States
+
+Disable the entire group with `isDisabled` on the container, or disable individual items with `isDisabled` on specific `ToggleButton` elements.
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={SourceDisabled} />
+
+### Sizes
+
+Two sizes are available: `sm` and `md` (default).
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SourceSizes} />
+
+### Icon + Text
+
+Items can include an `Icon` alongside text for added visual context.
+
+<Story of={Stories.IconAndText} inline />
+<Source language="tsx" code={SourceIconAndText} />
+
+### Icon Only
+
+For compact layouts, items can contain only icons. Padding adjusts automatically to keep the button square — no extra prop required. Always provide an `aria-label` on each icon-only item so screen readers can identify the action.
+
+<Story of={Stories.IconOnly} inline />
+<Source language="tsx" code={SourceIconOnly} />
+
+### With Dropdown
+
+Wrap a `ToggleButton` in a `MenuTrigger` to add sub-options to a group item.
+
+<Story of={Stories.WithDropdown} inline />
+<Source language="tsx" code={SourceWithDropdown} />
+
+### RTL Direction
+
+The group follows the document's layout direction, detected automatically from the browser locale.
+
+<Story of={Stories.RTL} inline />
+<Source language="tsx" code={SourceRTL} />
+
+## Customization
+
+### Data Attributes
+
+Components automatically add data attributes for styling different states:
+
+**ToggleButtonGroup Container:** `data-size`
+
+**ToggleButton Item:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+```css
+.my-toggle-group [data-selected] {
+  background-color: #09757a;
+  color: #fff;
+}
+
+.my-toggle-group [data-focus-visible] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-toggle-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<ToggleButtonGroup aria-label="View" className="custom-toggle-group">
+  <ToggleButton id="list" className="custom-item">List</ToggleButton>
+  <ToggleButton id="grid" className="custom-item">Grid</ToggleButton>
+</ToggleButtonGroup>
+```
+
+## Accessibility
+
+### Keyboard Navigation
+
+| Key | Action |
+| --- | --- |
+| **Tab** | Moves focus to/from the button group (single tab stop) |
+| **Arrow Left / Right** | Move focus between items (RAC automatically reverses in RTL) |
+| **Space / Enter** | Toggle the focused item |
+| **Home** | Move focus to the first item |
+| **End** | Move focus to the last item |
+
+### ARIA Support
+
+- `selectionMode="single"` → `role="radiogroup"` on container, `role="radio"` + `aria-checked` per item
+- `selectionMode="multiple"` → `role="toolbar"` on container, `role="button"` + `aria-pressed` per item
+- `aria-label` (or `aria-labelledby`) is required on the group container
+- Icon-only items require `aria-label` on each `ToggleButton`
+
+## Troubleshooting
+
+### Selection Not Updating
+
+```jsx
+// ❌ Wrong: Using both selectedKeys and defaultSelectedKeys
+<ToggleButtonGroup selectedKeys={keys} defaultSelectedKeys={['day']}>
+  <ToggleButton id="day">Day</ToggleButton>
+</ToggleButtonGroup>
+
+// ✅ Controlled mode
+<ToggleButtonGroup selectedKeys={keys} onSelectionChange={setKeys}>
+  <ToggleButton id="day">Day</ToggleButton>
+</ToggleButtonGroup>
+
+// ✅ Uncontrolled mode
+<ToggleButtonGroup defaultSelectedKeys={['day']}>
+  <ToggleButton id="day">Day</ToggleButton>
+</ToggleButtonGroup>
+```
+
+### Styling Overrides Not Applying
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-item {
+  background-color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-toggle-group [data-selected] {
+  background-color: red;
+}
+```
+
+### Keyboard Navigation Not Working
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focus-visible] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-toggle-group [data-focus-visible] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices
+
+### When to Use
+
+- ✅ For grouped contextual actions — two or more closely related actions that belong together (e.g. Bold / Italic / Underline, Align Left / Center / Right)
+- ✅ For compact action grouping — related actions in space-constrained layouts (e.g. Undo / Redo, Zoom In / Out / Reset)
+- ✅ For multi-select scenarios — when users need to select multiple options simultaneously
+- ❌ For unrelated actions that perform disconnected tasks without shared context
+- ❌ For more than 5 choices — cognitive overload; consider a **Select** instead
+- ❌ When actions require strong visual distinction (e.g. Save vs. Delete)
+- ❌ When selecting an option leads to a different page or workflow — use navigation instead
+- ❌ For mutually exclusive content views (e.g. Monthly / Yearly) — use **SegmentedController** instead
+
+### Keep Variants Consistent
+
+Avoid mixing different content types (text-only, icon-only, icon+text) within the same group. Mixing styles creates visual noise and makes the set feel fragmented rather than unified.
+
+### Balance Label Lengths
+
+Keep button labels of similar length. Large differences in text length cause irregular button widths and make the group appear uneven. Prefer short, concise wording.
+
+### Alignment
+
+Align the group to reflect its relationship to surrounding content:
+
+- **Left** — when the group controls content directly below or within the same column (dashboards, tables).
+- **Center** — when the group acts as a prominent toggle affecting an entire section or page.
+- **Right** — when the group represents utility or contextual controls (e.g. grid/list view toggle).
+
+### Label Guidelines
+
+- Use **title case**: capitalize the first letter of each word, except short prepositions.
+- Keep labels to one or two words. Omit articles (a, an, the) and filler words.
+- Prefer action-focused or descriptive language that communicates the option instantly.
+
+### Icon-Only Items
+
+Use icon-only items only when the icon's meaning is universally recognized. Always provide an `aria-label` on each icon-only `ToggleButton`:
+
+```tsx
+<ToggleButton id="list" aria-label="List view">
+  <Icon icon="bulleted-list" />
+</ToggleButton>
+```
