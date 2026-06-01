@@ -29,19 +29,9 @@ npm install --save @godaddy/antares
 
 ## Working with dates
 
-Both components are typed for `CalendarDate` from [`@internationalized/date`][int-date]. See the
-canonical "Working with dates" section in the `DatePicker` README for the full setup. Quick
-patterns:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
-import { Calendar, RangeCalendar } from '@godaddy/antares';
-
-<Calendar defaultValue={parseDate('2024-03-15')} />
-<RangeCalendar
-  defaultValue={{ start: parseDate('2024-03-05'), end: parseDate('2024-03-12') }}
-/>
-```
+Both components are typed for `CalendarDate` from `@internationalized/date`. See the
+canonical [Working with dates](?path=/docs/components-datefield--overview#working-with-dates)
+section in the `DateField` docs for installation, locale handling, and common patterns.
 
 ## Props
 
@@ -92,5 +82,3 @@ The "today" visual state coexists with `selected` and `in-range`.
 
 <Source language="tsx" code={SourceTodayDistinct} />
 <Story of={Stories.TodayDistinct} inline />
-
-[int-date]: https://react-spectrum.adobe.com/internationalized/date/index.html
