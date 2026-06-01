@@ -102,3 +102,10 @@ export {
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
 
 export { Modal, ModalTrigger, type ModalProps, type ModalTriggerProps } from '#components/modal';
+
+export {
+  ToggleButtonGroup,
+  ToggleButton,
+  type ToggleButtonGroupProps,
+  type ToggleButtonProps
+} from '#components/toggle-button';
