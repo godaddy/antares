@@ -1,9 +1,5 @@
 .dateInput {
   min-width: 0;
-
-  &[data-disabled] {
-    cursor: not-allowed;
-  }
 }
 
 .segment {
@@ -18,7 +14,7 @@
   }
 
   &[data-placeholder] {
-    color: var(--fg-secondary, color-mix(in oklch, currentColor, transparent 40%));
+    color: color-mix(in oklch, currentColor, transparent 40%);
   }
 
   &[data-focused] {
@@ -28,9 +24,5 @@
 
   &[data-invalid] {
     color: var(--color-feedback-critical-strong, #ae1302);
-  }
-
-  &[data-disabled] {
-    cursor: not-allowed;
   }
 }
