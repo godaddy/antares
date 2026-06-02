@@ -1,1 +1,1 @@
-export { DateField, I18nProvider, type DateFieldProps, type I18nProviderProps } from '#components/date-field';
+export { DateField, type DateFieldProps } from '#components/date-field';
