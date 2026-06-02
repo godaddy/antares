@@ -12,6 +12,7 @@ import {
 import { DateFieldWithDefaultValueExample } from './examples/with-default-value.tsx';
 import { DateFieldWithDescriptionExample } from './examples/with-description.tsx';
 import { DateFieldWithErrorExample } from './examples/with-error.tsx';
+import { DateFieldWithI18nExample } from './examples/with-i18n.tsx';
 import { DateField } from './src/index.tsx';
 
 export default getMeta({
@@ -35,6 +36,8 @@ export const MinMax = getStory(DateFieldMinMaxExample);
 export const DisabledRequiredReadOnly = getStory(DateFieldDisabledRequiredReadOnlyExample);
 
 export const Form = getStory(DateFieldFormExample);
+
+export const WithI18n = getStory(DateFieldWithI18nExample);
 
 export const Playground = {
   render: (args: DateFieldPlaygroundExampleProps) => <DateFieldPlaygroundExample {...args} />,

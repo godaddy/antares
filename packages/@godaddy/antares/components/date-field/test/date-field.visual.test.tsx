@@ -8,6 +8,7 @@ import { DateFieldMinMaxExample } from '../examples/min-max.tsx';
 import { DateFieldWithDefaultValueExample } from '../examples/with-default-value.tsx';
 import { DateFieldWithDescriptionExample } from '../examples/with-description.tsx';
 import { DateFieldWithErrorExample } from '../examples/with-error.tsx';
+import { DateFieldWithI18nExample } from '../examples/with-i18n.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DateField', function dateFieldTests() {
@@ -49,6 +50,11 @@ describe('@godaddy/antares', function antares() {
     it('form example', async function formRender() {
       const { container } = await render(<DateFieldFormExample />);
       await expect(container).toMatchScreenshot('form');
+    });
+
+    it('with-i18n example', async function withI18nRender() {
+      const { container } = await render(<DateFieldWithI18nExample />);
+      await expect(container).toMatchScreenshot('with-i18n');
     });
   });
 });

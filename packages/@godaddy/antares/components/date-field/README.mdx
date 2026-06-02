@@ -14,6 +14,7 @@ import SourceWithError from './examples/with-error.tsx?raw';
 import SourceMinMax from './examples/min-max.tsx?raw';
 import SourceDisabledRequiredReadOnly from './examples/disabled-required-readonly.tsx?raw';
 import SourceForm from './examples/form.tsx?raw';
+import SourceWithI18n from './examples/with-i18n.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -50,20 +51,13 @@ separates these concepts cleanly. Antares date components only deal with `Calend
 Install `@internationalized/date` alongside `@godaddy/antares`:
 
 ```bash
-npm install @internationalized/date
-```
-
-We do not re-export anything from this package. Import directly:
-
-```ts
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+npm install --save @internationalized/date
 ```
 
 ### Locale and i18n
 
-Locale comes from the host app's `<I18nProvider>`, which Antares re-exports from
-`@godaddy/antares`. There is no per-component `locale` prop. Segment formatting follows the
-active locale.
+Locale comes from the host app's `<I18nProvider>`, which Antares exports from
+`@godaddy/antares`. If no `<I18nProvider>` is found, the date will be formatted in the default locale.
 
 ## Props
 
@@ -129,3 +123,10 @@ Pass `name` to integrate with native `<form>` submission. The submitted value is
 
 <Source language="tsx" code={SourceForm} />
 <Story of={Stories.Form} inline />
+
+### With I18nProvider
+
+Wrap the `DateField` in an `<I18nProvider locale="…">` to override the locale used for segment ordering, formatting, and writing direction. Compare an English locale to an RTL Arabic locale below.
+
+<Source language="tsx" code={SourceWithI18n} />
+<Story of={Stories.WithI18n} inline />
