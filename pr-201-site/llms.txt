@@ -25,8 +25,8 @@
 - [Tooltip](/docs/components/tooltip): The Tooltip component displays a description of an element on hover or focus.
 - [Bar Chart](/docs/components/chart/bar-chart): A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.
 - [DonutChart](/docs/components/chart/donut-chart): Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
-- [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
+- [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [Box](/docs/components/layout/box): Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
-- [Grid](/docs/components/layout/grid): Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns
 - [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
+- [Grid](/docs/components/layout/grid): Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns
