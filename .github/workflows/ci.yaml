@@ -40,14 +40,14 @@ jobs:
       - name: Run Type Check
         run: npm run typecheck
 
+      - name: Lint
+        run: npm run lint
+
       - name: Test
         run: npm test
 
       - name: Run Visual Tests
         run: npm run test:visual
-
-      - name: Lint
-        run: npm run lint
 
       - name: Upload Visual Test Artifacts
         uses: actions/upload-artifact@v7

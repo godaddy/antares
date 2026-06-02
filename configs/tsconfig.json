@@ -15,6 +15,7 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
+    "noEmit": true,
     "allowImportingTsExtensions": true,
     "allowJs": true,
     "esModuleInterop": true,

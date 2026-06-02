@@ -48,6 +48,9 @@
         "command": "vitest run"
       },
       "cache": true
+    },
+    "typecheck": {
+      "dependsOn": [{ "target": "typecheck", "projects": "*" }]
     }
   }
 }

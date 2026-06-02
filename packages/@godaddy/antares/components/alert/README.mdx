@@ -1,0 +1,78 @@
+---
+title: Alert
+description: In-page alerts are non-intrusive notifications within a webpage, providing users with timely information or feedback without disrupting their experience.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './alert.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import DismissibleExample from './examples/dismissible.tsx?raw';
+import WithActionExample from './examples/with-action.tsx?raw';
+import EmphasesExample from './examples/emphases.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+A minimal alert with a title and body text.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Emphasis Variants
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of={Stories.Emphases} inline />
+<Source language="tsx" code={EmphasesExample} />
+
+### Dismissible
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of={Stories.Dismissible} inline />
+<Source language="tsx" code={DismissibleExample} />
+
+### With Action
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of={Stories.WithAction} inline />
+<Source language="tsx" code={WithActionExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button |
+
+### Screen readers
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+### Dismiss button label
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+## Best Practices
+
+- Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+- Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+- Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+- When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+- Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.

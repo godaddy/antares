@@ -6,9 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "types:check": "fumadocs-mdx && next typegen && tsgo --noEmit",
-    "typecheck": "fumadocs-mdx && next typegen && tsgo --noEmit",
-    "postinstall": "fumadocs-mdx",
+    "types:check": "next typegen && fumadocs-mdx && tsgo --noEmit",
+    "typecheck": "next typegen && fumadocs-mdx && tsgo --noEmit",
     "lint": "biome check",
     "format": "biome format --write"
   },

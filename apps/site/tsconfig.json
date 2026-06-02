@@ -4,7 +4,6 @@
     "noEmit": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "isolatedModules": true,
-    "incremental": true,
     "paths": {
       "@/*": ["./*"],
       "fumadocs-mdx:collections/*": ["./.source/*"]
