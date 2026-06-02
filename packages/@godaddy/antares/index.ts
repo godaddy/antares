@@ -113,3 +113,5 @@ export {
   type ToggleButtonGroupProps,
   type ToggleButtonProps
 } from '#components/toggle-button';
+
+export { Alert, type AlertProps, type AlertEmphasis } from '#components/alert';
