@@ -11,6 +11,11 @@ import styles from './index.module.css';
 
 export { I18nProvider, type I18nProviderProps } from 'react-aria-components';
 
+/**
+ * Extended props for the DateField component.
+ * Typed for `CalendarDate` (date-only, no time, no timezone).
+ * Extends RAC DateFieldProps.
+ */
 export interface DateFieldProps
   extends Omit<RACDateFieldProps<CalendarDate>, 'children' | 'errorMessage'>,
     Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
