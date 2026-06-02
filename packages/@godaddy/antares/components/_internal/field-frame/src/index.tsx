@@ -117,7 +117,7 @@ export const FieldFrame = forwardRef<HTMLDivElement, FieldFrameProps>(function F
     <Provider
       values={[
         [RACButtonContext, buttonContext],
-        [GroupContext, { ...groupProps, ref: groupRef }],
+        [GroupContext, null],
         [InputContext, { ...inputProps, ref: inputRef }],
         [TextAreaContext, { ...textAreaProps, ref: textAreaRef }],
         [TextContext, textContext]
@@ -132,6 +132,8 @@ export const FieldFrame = forwardRef<HTMLDivElement, FieldFrameProps>(function F
         )}
         <Flex
           as={RACGroup}
+          {...groupProps}
+          ref={groupRef}
           isDisabled={isDisabled || false}
           direction="row"
           wrap="nowrap"
