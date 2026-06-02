@@ -92,6 +92,84 @@ Components [#components]
 <ComponentCards />
 
 
+# Alert
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+<PropTable />
+
+Examples [#examples]
+
+Basic Usage [#basic-usage]
+
+A minimal alert with a title and body text.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+Emphasis Variants [#emphasis-variants]
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of="Stories.Emphases" />
+
+<Source language="tsx" code="EmphasesExample" />
+
+Dismissible [#dismissible]
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of="Stories.Dismissible" />
+
+<Source language="tsx" code="DismissibleExample" />
+
+With Action [#with-action]
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of="Stories.WithAction" />
+
+<Source language="tsx" code="WithActionExample" />
+
+Accessibility [#accessibility]
+
+Keyboard [#keyboard]
+
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
+
+Screen readers [#screen-readers]
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+Dismiss button label [#dismiss-button-label]
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+Best Practices [#best-practices]
+
+* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+
+
 # Button
 
 
@@ -1451,6 +1529,98 @@ Best Practices [#best-practices]
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
+# Modal
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+
+Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+Props [#props]
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+Examples [#examples]
+
+Basic usage [#basic-usage]
+
+The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+With actions [#with-actions]
+
+Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+
+<Story of="Stories.WithActions" />
+
+<Source language="tsx" code="SourceWithActions" />
+
+Alignment [#alignment]
+
+Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+With media [#with-media]
+
+Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
+
+<Story of="Stories.WithMedia" />
+
+<Source language="tsx" code="SourceWithMedia" />
+
+Accessibility [#accessibility]
+
+Keyboard interaction [#keyboard-interaction]
+
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| `Escape`      | Closes the modal (when dismissable)                            |
+
+ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+* The close button is rendered with `aria-label="Close"`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+Best Practices [#best-practices]
+
+* Always provide a `title` so the dialog has an accessible name
+* Pair every footer action with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` for required confirmations the user must explicitly answer
+* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
+
+
 # NumberField
 
 
@@ -1555,98 +1725,6 @@ Best practices [#best-practices]
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-
-# Modal
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-Examples [#examples]
-
-Basic usage [#basic-usage]
-
-The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-With actions [#with-actions]
-
-Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
-
-<Story of="Stories.WithActions" />
-
-<Source language="tsx" code="SourceWithActions" />
-
-Alignment [#alignment]
-
-Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-With media [#with-media]
-
-Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
-
-<Story of="Stories.WithMedia" />
-
-<Source language="tsx" code="SourceWithMedia" />
-
-Accessibility [#accessibility]
-
-Keyboard interaction [#keyboard-interaction]
-
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
-
-ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
-* The close button is rendered with `aria-label="Close"`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-Best Practices [#best-practices]
-
-* Always provide a `title` so the dialog has an accessible name
-* Pair every footer action with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` for required confirmations the user must explicitly answer
-* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
-* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
 
 
 # Pagination
