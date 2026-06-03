@@ -10,5 +10,6 @@
       ]
     }
   },
+  "include": ["index.ts", "exports", "components", "utils", "types"],
   "exclude": ["node_modules", "dist"]
 }
