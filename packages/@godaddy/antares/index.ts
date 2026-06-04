@@ -65,6 +65,8 @@ export { I18nProvider, type I18nProviderProps } from 'react-aria-components';
 
 export { DateField, type DateFieldProps } from '#components/date-field';
 
+export { DateRangeField, type DateRangeFieldProps } from '#components/date-range-field';
+
 export { Calendar, RangeCalendar, type CalendarProps, type RangeCalendarProps } from '#components/calendar';
 
 export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';
