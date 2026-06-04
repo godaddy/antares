@@ -2,8 +2,10 @@ import type { CalendarDate } from '@internationalized/date';
 import { useContext } from 'react';
 import {
   Button as RACButton,
+  DateInput as RACDateInput,
   DatePicker as RACDatePicker,
   DatePickerStateContext,
+  DateSegment as RACDateSegment,
   Dialog as RACDialog,
   Popover as RACPopover,
   type DatePickerProps as RACDatePickerProps
@@ -136,20 +138,39 @@ export function DateField(props: DateFieldProps) {
         label={label}
         gap="sm"
       >
-        <Flex
-          as={RACButton}
-          display="inline-flex"
-          alignItems="center"
-          gap="sm"
-          inlinePadding="md"
-          blockPadding="md"
-          flex={1}
-          aria-label={label}
-          className={styles.proseTrigger}
-        >
-          <Icon icon="calendar" />
-          <ProseValue formatOptions={formatOptions} placeholder={placeholder} />
-        </Flex>
+        {allowsKeyboardInput ? (
+          <Flex alignItems="center" gap="sm" flex={1}>
+            <Flex as={RACButton} alignItems="center" aria-label="Open calendar" className={styles.iconTrigger}>
+              <Icon icon="calendar" />
+            </Flex>
+            <Flex
+              as={RACDateInput}
+              display="inline-flex"
+              alignItems="center"
+              inlinePadding="md"
+              blockPadding="md"
+              flex={1}
+              className={styles.dateInput}
+            >
+              {(segment) => <RACDateSegment segment={segment} className={styles.segment} />}
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex
+            as={RACButton}
+            display="inline-flex"
+            alignItems="center"
+            gap="sm"
+            inlinePadding="md"
+            blockPadding="md"
+            flex={1}
+            aria-label={label}
+            className={styles.proseTrigger}
+          >
+            <Icon icon="calendar" />
+            <ProseValue formatOptions={formatOptions} placeholder={placeholder} />
+          </Flex>
+        )}
       </FieldFrame>
       <RACPopover className={styles.popover} placement="bottom start">
         <RACDialog className={styles.dialog}>
