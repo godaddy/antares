@@ -1,0 +1,95 @@
+.proseTrigger {
+  min-width: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  color: inherit;
+  font: inherit;
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  &[data-focus-visible] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+    border-radius: 2px;
+  }
+}
+
+.value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeholder {
+  color: var(--fg-secondary, color-mix(in oklch, currentColor, transparent 40%));
+}
+
+.dateInput {
+  min-width: 0;
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.segment {
+  padding-inline: 1px;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  border-radius: 2px;
+
+  &[data-type="literal"] {
+    padding-inline: 0;
+  }
+
+  &[data-placeholder] {
+    color: var(--fg-secondary, color-mix(in oklch, currentColor, transparent 40%));
+  }
+
+  &[data-focused] {
+    background: color-mix(in oklch, Highlight, transparent 80%);
+    color: inherit;
+  }
+
+  &[data-invalid] {
+    color: var(--color-feedback-critical-strong, #ae1302);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.iconTrigger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  &[data-focus-visible] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+    border-radius: 2px;
+  }
+}
+
+.popover {
+  background: var(--bg-base, #fff);
+  border: 1px solid var(--bd-base, color-mix(in oklch, currentColor, transparent 80%));
+  border-radius: var(--br-md, 0.25rem);
+  box-shadow: 0 4px 16px color-mix(in oklch, currentColor, transparent 80%);
+}
+
+.dialog {
+  outline: none;
+  padding: var(--sp-sm);
+}
