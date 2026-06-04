@@ -109,6 +109,19 @@ function ProseValue({
 }
 
 /**
+ * Submits the selected value as an ISO date string under `name` in prose mode. RAC's own hidden
+ * input is detached from the form (`form=""`), and prose mode renders no `DateInput`, so without
+ * this the value would not be submitted. Reads `DatePickerStateContext`, so renders under
+ * `<RACDatePicker>`.
+ */
+function HiddenDateValue({ name }: { name?: string }) {
+  const state = useContext(DatePickerStateContext);
+  const value = (state?.value ?? null) as CalendarDate | null;
+  if (!name) return null;
+  return <input type="hidden" name={name} value={value ? value.toString() : ''} readOnly />;
+}
+
+/**
  * Date input that shows a localized value (e.g. `12 Aug 2022`) and opens a `Calendar` popover on
  * click. Typed for `CalendarDate` (date-only). Set `allowsKeyboardInput` for editable segments.
  * Wraps RAC `DatePicker` in antares `FieldFrame`.
@@ -156,20 +169,23 @@ export function DateField(props: DateFieldProps) {
             </Flex>
           </Flex>
         ) : (
-          <Flex
-            as={RACButton}
-            display="inline-flex"
-            alignItems="center"
-            gap="sm"
-            inlinePadding="md"
-            blockPadding="md"
-            flex={1}
-            aria-label={label}
-            className={styles.proseTrigger}
-          >
-            <Icon icon="calendar" />
-            <ProseValue formatOptions={formatOptions} placeholder={placeholder} />
-          </Flex>
+          <>
+            <Flex
+              as={RACButton}
+              display="inline-flex"
+              alignItems="center"
+              gap="sm"
+              inlinePadding="md"
+              blockPadding="md"
+              flex={1}
+              aria-label={label}
+              className={styles.proseTrigger}
+            >
+              <Icon icon="calendar" />
+              <ProseValue formatOptions={formatOptions} placeholder={placeholder} />
+            </Flex>
+            <HiddenDateValue name={racProps.name} />
+          </>
         )}
       </FieldFrame>
       <RACPopover className={styles.popover} placement="bottom start">

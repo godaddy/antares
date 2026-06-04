@@ -2,13 +2,19 @@ import assume from 'assume';
 import { beforeAll, describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { parseDate } from '@internationalized/date';
+import { type DateValue, parseDate } from '@internationalized/date';
 import { I18nProvider } from 'react-aria-components';
 import { set } from '#components/icon';
 import { DateField } from '../src/index.tsx';
+import { DateFieldFormExample } from '../examples/form.tsx';
 
 function Wrap({ children }: { children: React.ReactNode }) {
   return <I18nProvider locale="en-US">{children}</I18nProvider>;
+}
+
+function isWeekend(date: DateValue) {
+  const dayOfWeek = date.toDate('UTC').getUTCDay();
+  return dayOfWeek === 0 || dayOfWeek === 6;
 }
 
 describe('@godaddy/antares', function antares() {
@@ -79,6 +85,64 @@ describe('@godaddy/antares', function antares() {
         await userEvent.click(page.getByRole('button', { name: /open calendar/i }));
         const dialog = page.getByRole('dialog');
         assume(dialog.elements().length).is.at.least(1);
+      });
+    });
+
+    describe('#integration', function integration() {
+      it('renders the error message when invalid', async function error() {
+        const { container } = await render(
+          <Wrap>
+            <DateField label="Start" errorMessage="Please select a valid date." isInvalid />
+          </Wrap>
+        );
+        assume(container.textContent ?? '').contains('Please select a valid date.');
+      });
+
+      it('disables the trigger when isDisabled', async function disabled() {
+        const { container } = await render(
+          <Wrap>
+            <DateField label="Start" isDisabled defaultValue={parseDate('2024-03-15')} />
+          </Wrap>
+        );
+        const trigger = container.querySelector('button');
+        assume(trigger?.hasAttribute('disabled') || trigger?.getAttribute('data-disabled') !== null).is.true();
+      });
+
+      it('disables out-of-range days in the calendar', async function minMax() {
+        await render(
+          <Wrap>
+            <DateField
+              label="Q1"
+              defaultValue={parseDate('2024-02-15')}
+              minValue={parseDate('2024-02-10')}
+              maxValue={parseDate('2024-02-20')}
+            />
+          </Wrap>
+        );
+        await userEvent.click(page.getByRole('button', { name: /q1/i }));
+        const disabledCell = page.getByRole('button', { name: /february 5, 2024/i });
+        assume(disabledCell.element().getAttribute('data-disabled')).equals('true');
+      });
+
+      it('marks unavailable days in the calendar', async function unavailable() {
+        await render(
+          <Wrap>
+            <DateField label="Weekday" defaultValue={parseDate('2024-03-13')} isDateUnavailable={isWeekend} />
+          </Wrap>
+        );
+        await userEvent.click(page.getByRole('button', { name: /weekday/i }));
+        // The popover renders in a portal, so query the document, not the render container.
+        assume(document.querySelectorAll('[data-unavailable]').length).is.at.least(1);
+      });
+
+      it('submits the value as an ISO string under the field name', async function form() {
+        const { container } = await render(
+          <Wrap>
+            <DateFieldFormExample />
+          </Wrap>
+        );
+        await userEvent.click(page.getByRole('button', { name: /submit/i }));
+        assume(container.textContent ?? '').contains('2024-03-15');
       });
     });
   });
