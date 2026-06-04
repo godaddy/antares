@@ -1,0 +1,104 @@
+---
+title: DateRangeField
+description: DateRangeField is a date-range input that shows a localized range (e.g. 12 – 20 Aug 2022) and opens a RangeCalendar popover on click. By default the value is non-editable and selected from the calendar; set allowsKeyboardInput for editable segments. Use DateField for a single date.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './date-range-field.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceKeyboardInput from './examples/keyboard-input.tsx?raw';
+import SourceWithMinMax from './examples/with-min-max.tsx?raw';
+import SourceWithUnavailableDates from './examples/with-unavailable-dates.tsx?raw';
+import SourceWithError from './examples/with-error.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceForm from './examples/form.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Calendar-first**: clicking the field opens a `RangeCalendar` popover; the selected range is shown as a localized value (e.g. `12 – 20 Aug 2022`)
+- **Optional keyboard entry**: set `allowsKeyboardInput` for editable start/end segments with an icon-only calendar trigger
+- **Localized display**: the range is formatted with `useDateFormatter`'s `formatRange`, which collapses shared month/year per locale; override with `formatOptions`
+- **Bounds and availability**: `minValue` / `maxValue` and `isDateUnavailable` pass straight through to the inputs and calendar
+- **React Aria integration**: built on React Aria `DateRangePicker` for accessibility, forms, and locale handling
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Working with dates
+
+`DateRangeField` is typed for `CalendarDate` from `@internationalized/date`. See the
+[`DateField`](/docs/components-datefield--overview) docs for the canonical "Working with dates"
+guide — installation, `<I18nProvider>`, locale handling, and common patterns all apply here. A
+range value is `{ start, end }` of `CalendarDate`:
+
+```tsx
+import { parseDate } from '@internationalized/date';
+import { DateRangeField } from '@godaddy/antares';
+
+<DateRangeField
+  label="Trip dates"
+  defaultValue={{ start: parseDate('2024-03-15'), end: parseDate('2024-03-20') }}
+/>;
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+By default the field shows a placeholder and opens the calendar on click. The selected range is
+displayed as a localized, non-editable value.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
+
+### Keyboard input
+
+Set `allowsKeyboardInput` for editable start/end segments. The calendar stays available from the icon.
+
+<Source language="tsx" code={SourceKeyboardInput} />
+<Story of={Stories.KeyboardInput} inline />
+
+### Min and max
+
+`minValue` and `maxValue` disable out-of-range days in the calendar.
+
+<Source language="tsx" code={SourceWithMinMax} />
+<Story of={Stories.WithMinMax} inline />
+
+### Unavailable dates
+
+Use `isDateUnavailable` to disable specific dates such as weekends or holidays.
+
+<Source language="tsx" code={SourceWithUnavailableDates} />
+<Story of={Stories.WithUnavailableDates} inline />
+
+### Error
+
+Pass `errorMessage` with `isInvalid` to surface a validation message.
+
+<Source language="tsx" code={SourceWithError} />
+<Story of={Stories.WithError} inline />
+
+### Controlled
+
+Drive the value with `value` and `onChange`.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Form
+
+`startName` and `endName` submit the range endpoints as ISO date strings.
+
+<Source language="tsx" code={SourceForm} />
+<Story of={Stories.Form} inline />
