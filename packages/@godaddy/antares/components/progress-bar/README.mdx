@@ -1,0 +1,58 @@
+---
+title: ProgressBar
+description: A progress bar shows determinate progress of an operation over time
+---
+import {
+  Meta,
+  ArgTypes,
+  Source,
+  Story,
+} from '@storybook/addon-docs/blocks';
+import * as Stories from './progress-bar.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+import SourceStatuses from './examples/statuses.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Sizes
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SourceSizes} />
+
+### Statuses
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of={Stories.Statuses} inline />
+<Source language="tsx" code={SourceStatuses} />
+
+## Accessibility
+
+### ARIA Support
+
+- `role="progressbar"` on the container
+- `aria-valuenow` reflects the current value
+- `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+- `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+- `aria-labelledby` associates the visible label when the `label` prop is provided
