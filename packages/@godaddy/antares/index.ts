@@ -61,6 +61,8 @@ export { TextField, type TextFieldProps } from '#components/text-field';
 
 export { NumberField, type NumberFieldProps } from '#components/number-field';
 
+export { I18nProvider, type I18nProviderProps } from 'react-aria-components';
+
 export { Calendar, RangeCalendar, type CalendarProps, type RangeCalendarProps } from '#components/calendar';
 
 export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';

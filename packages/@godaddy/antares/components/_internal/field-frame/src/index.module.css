@@ -26,8 +26,10 @@
 
 .frame {
   border-radius: var(--field-frame-br);
-  min-height: 40.5px;
   box-sizing: border-box;
+  font-family: inherit;
+  font-size: var(--font-body-size-md, var(--ux-cxbe8g, 1rem));
+  line-height: var(--ux-jw5s9j, 1.375);
 
   & > :first-child {
     border-start-start-radius: var(--field-frame-br);
@@ -56,12 +58,14 @@
   }
 
   &[data-invalid]:has(input[data-focused="true"]),
-  &[data-invalid]:has(textarea[data-focused="true"]) {
+  &[data-invalid]:has(textarea[data-focused="true"]),
+  &[data-invalid]:has([role="spinbutton"][data-focused="true"]) {
     outline: 2px solid var(--field-frame-critical-color);
   }
 
   &:has(input[data-focused="true"]),
-  &:has(textarea[data-focused="true"]) {
+  &:has(textarea[data-focused="true"]),
+  &:has([role="spinbutton"][data-focused="true"]) {
     outline: 2px solid Highlight;
     outline: 2px auto -webkit-focus-ring-color;
     outline-offset: -1px;
@@ -74,22 +78,16 @@
 }
 
 .input {
+  font: inherit;
   background: transparent;
   border: none;
   outline: none;
   flex: 1;
   padding-inline: var(--sp-md);
+  padding-block: var(--sp-md);
   min-width: 0;
 
   &[data-disabled] {
     cursor: not-allowed;
   }
-}
-
-input.input {
-  padding-block: var(--sp-md);
-}
-
-textarea.input {
-  padding-block: var(--sp-sm);
 }
