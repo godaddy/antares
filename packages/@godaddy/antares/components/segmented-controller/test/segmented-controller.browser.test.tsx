@@ -4,6 +4,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { CollapseInactiveExample } from '../examples/collapse-inactive.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
@@ -304,6 +305,132 @@ describe('@godaddy/antares', function antares() {
       // scaleX(-1) is represented as matrix(-1, 0, 0, 1, 0, 0) in computed styles
       assume(prevTransform).includes('-1');
       assume(nextTransform).includes('-1');
+    });
+
+    it('keeps unselected labels accessible in CollapseInactiveExample', async function collapseLabelsAccessible() {
+      await render(<CollapseInactiveExample />);
+
+      // Each segment is still discoverable by its accessible name (label is in DOM, just clipped).
+      assume(page.getByRole('radio', { name: 'Inbox' }).query()).is.not.equal(null);
+      assume(page.getByRole('radio', { name: 'Messages' }).query()).is.not.equal(null);
+      assume(page.getByRole('radio', { name: 'Notifications' }).query()).is.not.equal(null);
+    });
+
+    it('visually hides unselected labels in CollapseInactiveExample', async function collapseLabelsHidden() {
+      await render(<CollapseInactiveExample />);
+
+      const messages = page.getByRole('radio', { name: 'Messages' }).element();
+      const inbox = page.getByRole('radio', { name: 'Inbox' }).element();
+
+      const messagesLabel = messages.querySelector('span');
+      const inboxLabel = inbox.querySelector('span');
+
+      // Selected segment's label takes layout width; collapsed segment's label is clipped to ~0.
+      assume((messagesLabel?.getBoundingClientRect().width ?? 0) > 5).equals(true);
+      assume((inboxLabel?.getBoundingClientRect().width ?? 0) <= 1).equals(true);
+    });
+
+    it('shows a tooltip on focus for unselected items in CollapseInactiveExample', async function collapseTooltipOnFocus() {
+      const { unmount } = await render(<CollapseInactiveExample />);
+
+      // Programmatic focus — arrow keys would change selection in a radio group, which
+      // would in turn disable the just-focused item's tooltip.
+      const inbox = page.getByRole('radio', { name: 'Inbox' }).element() as HTMLButtonElement;
+      inbox.focus();
+
+      await expect.element(page.getByRole('tooltip')).toBeVisible();
+      assume(page.getByRole('tooltip').element().textContent).includes('Inbox');
+
+      // Unmount before the next test so the portaled tooltip doesn't leak across cases.
+      unmount();
+    });
+
+    it('does not open a tooltip on the selected item in CollapseInactiveExample', async function collapseNoTooltipForSelected() {
+      const { unmount } = await render(<CollapseInactiveExample />);
+
+      assume(page.getByRole('tooltip').query()).equals(null);
+
+      const messages = page.getByRole('radio', { name: 'Messages' }).element() as HTMLButtonElement;
+      messages.focus();
+
+      // Give RAC time to surface a tooltip if it were going to (it shouldn't).
+      await new Promise(function wait(resolve) {
+        setTimeout(resolve, 300);
+      });
+
+      assume(page.getByRole('tooltip').query()).equals(null);
+      unmount();
+    });
+
+    it('moves the visible label when selection changes in CollapseInactiveExample', async function collapseSelectionSwapsLabel() {
+      const user = userEvent.setup();
+      await render(<CollapseInactiveExample />);
+
+      const inbox = page.getByRole('radio', { name: 'Inbox' });
+      const messages = page.getByRole('radio', { name: 'Messages' });
+
+      const messagesLabelBefore = messages.element().querySelector('span');
+      assume((messagesLabelBefore?.getBoundingClientRect().width ?? 0) > 5).equals(true);
+
+      await user.click(inbox);
+
+      // Labels animate width over 200ms; poll until the transition has settled.
+      await expect
+        .poll(function pollInboxWidth() {
+          return inbox.element().querySelector('span')?.getBoundingClientRect().width ?? 0;
+        })
+        .toBeGreaterThan(5);
+
+      await expect
+        .poll(function pollMessagesWidth() {
+          return messages.element().querySelector('span')?.getBoundingClientRect().width ?? 0;
+        })
+        .toBeLessThanOrEqual(1);
+    });
+
+    it('reserves a min-width on the inner content in CollapseInactiveExample', async function collapseReservesMinWidth() {
+      await render(<CollapseInactiveExample />);
+
+      const radiogroup = page.getByRole('radiogroup').element();
+      const content = radiogroup.firstElementChild as HTMLElement | null;
+      if (!content) throw new Error('Inner content not found');
+
+      // Wait for the measurement effect to apply min-width.
+      await expect
+        .poll(function pollMinWidth() {
+          return parseFloat(content.style.minWidth || '0');
+        })
+        .toBeGreaterThan(0);
+    });
+
+    it('keeps the outer footprint stable across selections in CollapseInactiveExample', async function collapseStableFootprint() {
+      const user = userEvent.setup();
+      await render(<CollapseInactiveExample />);
+
+      const radiogroup = page.getByRole('radiogroup').element();
+      const content = radiogroup.firstElementChild as HTMLElement | null;
+      if (!content) throw new Error('Inner content not found');
+
+      // Wait for measurement to settle.
+      await expect
+        .poll(function pollMinWidth() {
+          return parseFloat(content.style.minWidth || '0');
+        })
+        .toBeGreaterThan(0);
+
+      const initialWidth = radiogroup.getBoundingClientRect().width;
+
+      // "Inbox" is the shortest label — selecting it would shrink an unreserved controller.
+      await user.click(page.getByRole('radio', { name: 'Inbox' }));
+      const inboxWidth = radiogroup.getBoundingClientRect().width;
+
+      // "Notifications" is the longest label — selecting it sets the upper bound.
+      await user.click(page.getByRole('radio', { name: 'Notifications' }));
+      const notifWidth = radiogroup.getBoundingClientRect().width;
+
+      // All three widths should agree within sub-pixel rounding.
+      assume(Math.abs(inboxWidth - initialWidth)).is.below(1.5);
+      assume(Math.abs(notifWidth - initialWidth)).is.below(1.5);
     });
   });
 });

@@ -7,6 +7,7 @@ import { BasicExample } from '../examples/basic.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { CollapseInactiveExample } from '../examples/collapse-inactive.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
@@ -46,6 +47,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders RTLExample with scroll buttons', function rtlExample() {
       expect(renderToString(<RTLExample />)).toMatchSnapshot();
+    });
+
+    it('renders CollapseInactiveExample', function collapseInactiveExample() {
+      expect(renderToString(<CollapseInactiveExample />)).toMatchSnapshot();
     });
   });
 });

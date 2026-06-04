@@ -12,6 +12,7 @@ import SourceBasic from './examples/basic.tsx?raw';
 import SourceIcon from './examples/icon.tsx?raw';
 import SourceOverflow from './examples/overflow.tsx?raw';
 import SourceRTL from './examples/rtl.tsx?raw';
+import SourceCollapseInactive from './examples/collapse-inactive.tsx?raw';
 import * as Stories from './segmented-controller.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -76,6 +77,17 @@ The segmented controller follows the current **layout direction** (LTR or RTL). 
 
 <Story of={Stories.RTL} inline />
 <Source language="tsx" code={SourceRTL} />
+
+### Collapse Inactive
+
+Set `collapseInactive` on the controller and pass an `icon` prop to every `SegmentedControllerItem` to render a compact, icon-first variant: only the selected segment shows its label, while the rest collapse to icon-only and surface their label via tooltip on hover or keyboard focus.
+
+The label remains in the accessibility tree (visually hidden) so screen readers still announce each segment's name.
+
+To keep the controller's outer footprint stable across selections — so the surrounding layout doesn't shift when a longer label becomes selected and a shorter one collapses — the controller measures every segment's expanded and collapsed widths at render time and reserves a `min-width` sized for the worst case (longest label selected, every other segment collapsed). Buttons center inside the reserved space.
+
+<Story of={Stories.CollapseInactive} inline />
+<Source language="tsx" code={SourceCollapseInactive} />
 
 ### Disabled States
 

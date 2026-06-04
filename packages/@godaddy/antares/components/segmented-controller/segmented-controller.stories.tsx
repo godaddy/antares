@@ -10,6 +10,7 @@ import { IconExample } from './examples/icon.tsx';
 import { SegmentedController } from './src/index.tsx';
 import { OverflowExample } from './examples/overflow.tsx';
 import { RTLExample } from './examples/rtl.tsx';
+import { CollapseInactiveExample } from './examples/collapse-inactive.tsx';
 
 export default getMeta({
   title: 'components/SegmentedController'
@@ -33,12 +34,15 @@ export const Overflow = getStory(OverflowExample);
 
 export const RTL = getStory(RTLExample);
 
+export const CollapseInactive = getStory(CollapseInactiveExample);
+
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
     size: 'md',
     isDisabled: false,
-    value: 'day'
+    value: 'day',
+    collapseInactive: false
   },
   argTypes: {
     size: {
@@ -54,6 +58,11 @@ export const Playground = {
       control: 'select',
       options: ['day', 'week', 'month', 'year'],
       description: 'Value'
+    },
+    collapseInactive: {
+      control: 'boolean',
+      description:
+        'Show only the selected segment’s label; collapse others to icon-only with tooltip on hover/focus. The container reserves a min-width sized to the worst-case state so its footprint is stable across selections.'
     }
   }
 };
