@@ -8,7 +8,7 @@
 
 [Documentation](https://godaddy.github.io/antares) | [Storybook](https://godaddy.github.io/antares/storybook)
 
-Quick Start [#quick-start]
+## Quick Start [#quick-start]
 
 Install the package:
 
@@ -26,7 +26,7 @@ export default function App() {
 }
 ```
 
-Per-Component Imports [#per-component-imports]
+### Per-Component Imports [#per-component-imports]
 
 Each component is available as a standalone entry point. This lets your bundler load only the JavaScript and CSS for the components you use:
 
@@ -38,11 +38,11 @@ import { BarChart } from '@godaddy/antares/Chart';
 
 This also works with autocomplete in IDEs and LLMs, so you can import from the root package and let your editor/agent suggest the available components.
 
-Framework Setup [#framework-setup]
+## Framework Setup [#framework-setup]
 
 Antares ships CSS alongside its JavaScript modules. Each component chunk imports a corresponding `.css` file (e.g., `import './src-BZhWcxqJ.css'`). Most bundlers handle this automatically, but some frameworks need extra configuration to process CSS imports from `node_modules`.
 
-Next.js [#nextjs]
+### Next.js [#nextjs]
 
 Add `@godaddy/antares` to [`transpilePackages`](https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages) so Next.js processes the package through its own CSS pipeline instead of treating it as a pre-built external:
 
@@ -62,7 +62,7 @@ Without this, Next.js will throw:
 Global CSS cannot be imported from within node_modules.
 ```
 
-Remix [#remix]
+### Remix [#remix]
 
 Remix with Vite handles CSS imports from `node_modules` in the client bundle automatically. However, during SSR, Vite treats `node_modules` as externals by default, which bypasses CSS processing. Add `@godaddy/antares` to [`ssr.noExternal`](https://vite.dev/config/ssr-options#ssr-noexternal) to fix this:
 
@@ -77,17 +77,17 @@ export default defineConfig({
 });
 ```
 
-Vite [#vite]
+### Vite [#vite]
 
 Vite processes CSS imports from `node_modules` out of the box. No additional configuration is needed for client-side SPAs.
 
 If you are using Vite with SSR (e.g., custom SSR setup, not Remix), add `@godaddy/antares` to `ssr.noExternal` as shown in the [Remix section](#remix).
 
-Other Bundlers [#other-bundlers]
+### Other Bundlers [#other-bundlers]
 
 Any bundler that supports CSS imports will work with Antares. If your bundler does not process CSS imports from `node_modules` by default, ensure it is configured to do so. For example, with raw webpack you may need [`css-loader`](https://webpack.js.org/loaders/css-loader/) configured to handle `.css` files from `node_modules`.
 
-Components [#components]
+## Components [#components]
 
 <ComponentCards />
 
@@ -100,19 +100,19 @@ Components [#components]
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 A minimal alert with a title and body text.
 
@@ -120,7 +120,7 @@ A minimal alert with a title and body text.
 
 <Source language="tsx" code="DefaultExample" />
 
-Emphasis Variants [#emphasis-variants]
+### Emphasis Variants [#emphasis-variants]
 
 All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
 
@@ -128,7 +128,7 @@ All 7 emphasis categories. Each variant carries a distinct visual accent and sem
 
 <Source language="tsx" code="EmphasesExample" />
 
-Dismissible [#dismissible]
+### Dismissible [#dismissible]
 
 When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
 
@@ -136,7 +136,7 @@ When an `onClose` callback is provided, a dismiss button is rendered. The compon
 
 <Source language="tsx" code="DismissibleExample" />
 
-With Action [#with-action]
+### With Action [#with-action]
 
 Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
 
@@ -144,24 +144,24 @@ Pass a `Button` to the `actions` slot to give the user a clear path to resolve t
 
 <Source language="tsx" code="WithActionExample" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard [#keyboard]
+### Keyboard [#keyboard]
 
 | Key               | Description                                        |
 | ----------------- | -------------------------------------------------- |
 | `Tab`             | Moves focus to the dismiss button or action button |
 | `Space` / `Enter` | Activates the focused button                       |
 
-Screen readers [#screen-readers]
+### Screen readers [#screen-readers]
 
 The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
 
-Dismiss button label [#dismiss-button-label]
+### Dismiss button label [#dismiss-button-label]
 
 The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 * Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
 * Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
@@ -182,13 +182,13 @@ Best Practices [#best-practices]
 
 Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Button` component accepts the following props:
 
@@ -198,9 +198,9 @@ The `LinkButton` component accepts the following props:
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
 
@@ -208,7 +208,7 @@ The default/tertiary button is the base for all other buttons in the system. It 
 
 <Source language="tsx" code="SourceDefault" />
 
-Primary [#primary]
+### Primary [#primary]
 
 The primary button should be used to indicate the most important action for the user to take in their current experience.
 
@@ -216,7 +216,7 @@ The primary button should be used to indicate the most important action for the 
 
 <Source language="tsx" code="SourcePrimary" />
 
-Secondary [#secondary]
+### Secondary [#secondary]
 
 The secondary button indicates an action of secondary importance.
 
@@ -224,7 +224,7 @@ The secondary button indicates an action of secondary importance.
 
 <Source language="tsx" code="SourceSecondary" />
 
-Critical [#critical]
+### Critical [#critical]
 
 The critical button signifies to the user a destructive action will take place.
 
@@ -232,13 +232,13 @@ The critical button signifies to the user a destructive action will take place.
 
 <Source language="tsx" code="SourceCritical" />
 
-Inline [#inline]
+### Inline [#inline]
 
 <Story of="Stories.Inline" />
 
 <Source language="tsx" code="SourceInline" />
 
-Minimal [#minimal]
+### Minimal [#minimal]
 
 The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
 
@@ -246,7 +246,7 @@ The minimal button is an icon-only button that's used when space is limited and/
 
 <Source language="tsx" code="SourceMinimal" />
 
-Icon [#icon]
+### Icon [#icon]
 
 You may provide an optional [`Icon`](../icon) element to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
 
@@ -254,13 +254,13 @@ You may provide an optional [`Icon`](../icon) element to the button. If you do n
 
 <Source language="tsx" code="SourceIcon" />
 
-Sizes [#sizes]
+### Sizes [#sizes]
 
 <Story of="Stories.Sizes" />
 
 <Source language="tsx" code="SourceSizes" />
 
-Disabled [#disabled]
+### Disabled [#disabled]
 
 <Story of="Stories.Disabled" />
 
@@ -277,21 +277,21 @@ Disabled [#disabled]
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Carousel` component accepts the following props:
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
 
@@ -299,7 +299,7 @@ The default carousel is a carousel that is uncontrolled, it shows the first slid
 
 <Source language="tsx" code="SourceDefault" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
 
@@ -307,7 +307,7 @@ The controlled carousel is a carousel that is controlled by the `activeIndex` pr
 
 <Source language="tsx" code="SourceControlled" />
 
-External Controls (Uncontrolled) [#external-controls-uncontrolled]
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
 
 You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
 
@@ -315,7 +315,7 @@ You can control the carousel externally by passing the `ref` prop to the `Carous
 
 <Source language="tsx" code="SourceExternalControlsUncontrolled" />
 
-External Controls (Controlled) [#external-controls-controlled]
+### External Controls (Controlled) [#external-controls-controlled]
 
 You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
 
@@ -323,7 +323,7 @@ You can control the carousel externally by using the `activeIndex` prop to contr
 
 <Source language="tsx" code="SourceExternalControlsControlled" />
 
-Hide Controls [#hide-controls]
+### Hide Controls [#hide-controls]
 
 The hide controls carousel is a carousel that hides the navigation controls.
 
@@ -331,7 +331,7 @@ The hide controls carousel is a carousel that hides the navigation controls.
 
 <Source language="tsx" code="SourceHideControls" />
 
-Variable Widths [#variable-widths]
+### Variable Widths [#variable-widths]
 
 It supports multiple slides with different widths.
 
@@ -339,7 +339,7 @@ It supports multiple slides with different widths.
 
 <Source language="tsx" code="SourceVariableWidths" />
 
-Events [#events]
+### Events [#events]
 
 You can listen to events like `onChange`, `onPrev`, or `onNext`.
 
@@ -347,7 +347,7 @@ You can listen to events like `onChange`, `onPrev`, or `onNext`.
 
 <Source language="tsx" code="SourceEvents" />
 
-RTL Direction [#rtl-direction]
+### RTL Direction [#rtl-direction]
 
 The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
 
@@ -364,19 +364,19 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 A single checkbox with a label.
 
@@ -384,7 +384,7 @@ A single checkbox with a label.
 
 <Source language="tsx" code="SourceCheckboxBasic" />
 
-Indeterminate [#indeterminate]
+### Indeterminate [#indeterminate]
 
 Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
 
@@ -392,7 +392,7 @@ Checkboxes can display an indeterminate state (neither checked nor unchecked), w
 
 <Source language="tsx" code="SourceCheckboxIndeterminate" />
 
-Checkbox Group [#checkbox-group]
+### Checkbox Group [#checkbox-group]
 
 Group multiple checkboxes together with a shared label and description.
 
@@ -400,7 +400,7 @@ Group multiple checkboxes together with a shared label and description.
 
 <Source language="tsx" code="SourceCheckboxGroup" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Manage checkbox group state programmatically with controlled component pattern.
 
@@ -408,7 +408,7 @@ Manage checkbox group state programmatically with controlled component pattern.
 
 <Source language="tsx" code="SourceCheckboxControlled" />
 
-Horizontal Layout [#horizontal-layout]
+### Horizontal Layout [#horizontal-layout]
 
 Display checkboxes in a horizontal row instead of vertical stack.
 
@@ -416,7 +416,7 @@ Display checkboxes in a horizontal row instead of vertical stack.
 
 <Source language="tsx" code="SourceCheckboxHorizontal" />
 
-Disabled States [#disabled-states]
+### Disabled States [#disabled-states]
 
 Individual checkboxes within a group can be disabled while others remain interactive.
 
@@ -424,7 +424,7 @@ Individual checkboxes within a group can be disabled while others remain interac
 
 <Source language="tsx" code="SourceCheckboxDisabled" />
 
-Required Indicator [#required-indicator]
+### Required Indicator [#required-indicator]
 
 Mark a checkbox group as required with visual indicator and validation.
 
@@ -432,7 +432,7 @@ Mark a checkbox group as required with visual indicator and validation.
 
 <Source language="tsx" code="SourceCheckboxRequired" />
 
-Invalid State [#invalid-state]
+### Invalid State [#invalid-state]
 
 Display error state and error message for validation feedback.
 
@@ -440,9 +440,9 @@ Display error state and error message for validation feedback.
 
 <Source language="tsx" code="SourceCheckboxInvalid" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 Components automatically add data attributes for styling different states:
 
@@ -475,7 +475,7 @@ Components automatically add data attributes for styling different states:
 }
 ```
 
-Component Customization [#component-customization]
+### Component Customization [#component-customization]
 
 Individual components can be styled by passing `className` props:
 
@@ -490,9 +490,9 @@ Individual components can be styled by passing `className` props:
 </CheckboxGroup>
 ```
 
-Key Features [#key-features]
+## Key Features [#key-features]
 
-Indeterminate State [#indeterminate-state]
+### Indeterminate State [#indeterminate-state]
 
 The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
 
@@ -502,7 +502,7 @@ The `isIndeterminate` prop displays a minus icon to represent a partial selectio
 </Checkbox>
 ```
 
-Group Validation [#group-validation]
+### Group Validation [#group-validation]
 
 CheckboxGroup supports validation states and error messages:
 
@@ -522,7 +522,7 @@ CheckboxGroup supports validation states and error messages:
 </CheckboxGroup>
 ```
 
-Direction [#direction]
+### Direction [#direction]
 
 Control the layout direction with the `direction` prop:
 
@@ -531,24 +531,24 @@ Control the layout direction with the `direction` prop:
 * `column-reverse`: Stacks checkboxes vertically in reverse order
 * `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard Navigation [#keyboard-navigation]
+### Keyboard Navigation [#keyboard-navigation]
 
 * **Tab**: Moves focus to the next/previous checkbox
 * **Space**: Toggles the focused checkbox
 * **Shift + Tab**: Moves focus to the previous checkbox
 
-ARIA Support [#aria-support]
+### ARIA Support [#aria-support]
 
 * `aria-disabled` for disabled checkboxes
 * `aria-required` when selection is required
 * `aria-invalid` for validation errors
 * Proper labeling with `aria-labelledby` and `aria-describedby`
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Selection Not Updating [#selection-not-updating]
+### Selection Not Updating [#selection-not-updating]
 
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
@@ -567,7 +567,7 @@ Selection Not Updating [#selection-not-updating]
 </CheckboxGroup>
 ```
 
-Indeterminate State Not Updating [#indeterminate-state-not-updating]
+### Indeterminate State Not Updating [#indeterminate-state-not-updating]
 
 The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
 
@@ -586,7 +586,7 @@ const someSelected = childSelections.length > 0 && !allSelected;
 </Checkbox>
 ```
 
-Styling Overrides Not Applying [#styling-overrides-not-applying]
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
 
 ```css
 /* ❌ May not have enough specificity */
@@ -601,7 +601,7 @@ Styling Overrides Not Applying [#styling-overrides-not-applying]
 }
 ```
 
-Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 
 ```css
 /* ❌ Don't remove focus outlines without replacement */
@@ -616,9 +616,9 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 }
 ```
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
-When to Use Checkboxes [#when-to-use-checkboxes]
+### When to Use Checkboxes [#when-to-use-checkboxes]
 
 * ✅ For selecting multiple independent options
 * ✅ When users can select zero, one, or many items
@@ -627,14 +627,14 @@ When to Use Checkboxes [#when-to-use-checkboxes]
 * ❌ For mutually exclusive options (use Radio instead)
 * ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
 
-Label Guidelines [#label-guidelines]
+### Label Guidelines [#label-guidelines]
 
 * Use clear, concise labels that describe what selecting the option means
 * Keep labels short (1-5 words when possible)
 * Ensure labels are descriptive without being verbose
 * Place the most commonly selected options first in groups
 
-Validation [#validation]
+### Validation [#validation]
 
 Always provide clear error messages and use appropriate validation states:
 
@@ -650,7 +650,7 @@ Always provide clear error messages and use appropriate validation states:
 </CheckboxGroup>
 ```
 
-Group Organization [#group-organization]
+### Group Organization [#group-organization]
 
 * Limit checkbox groups to 7-10 options for better usability
 * Use logical ordering (alphabetical, frequency of use, or importance)
@@ -666,7 +666,7 @@ Group Organization [#group-organization]
 
 <Meta of="Stories" name="Overview" />
 
-Features [#features]
+## Features [#features]
 
 * Slides in from any screen edge (top, bottom, left, right) with spring animation
 * Snap points with drag gestures and keyboard control
@@ -675,23 +675,23 @@ Features [#features]
 * Focus trapping, backdrop dismiss, scroll lock via RAC Modal
 * `prefers-reduced-motion` support
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Sub-components [#sub-components]
+## Sub-components [#sub-components]
 
-DrawerTrigger [#drawertrigger]
+### DrawerTrigger [#drawertrigger]
 
 Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
 
-DrawerHandle [#drawerhandle]
+### DrawerHandle [#drawerhandle]
 
 Visual drag handle for touch gestures. Renders a grab bar with a 44px touch target (24px for pointer:fine). When inside a `<Drawer>` with `snapPoints`, the handle becomes interactive and drag-to-snap activates automatically. Without `snapPoints`, the handle renders as a decorative affordance only.
 
@@ -699,9 +699,9 @@ Visual drag handle for touch gestures. Renders a grab bar with a 44px touch targ
 | ----------- | -------- | -------------------- |
 | `className` | `string` | Additional CSS class |
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
 
@@ -709,7 +709,7 @@ Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer open
 
 <Source language="tsx" code="DefaultExample" />
 
-Bottom Sheet [#bottom-sheet]
+### Bottom Sheet [#bottom-sheet]
 
 Use `placement="bottom"` with controlled state for a bottom sheet pattern.
 
@@ -717,7 +717,7 @@ Use `placement="bottom"` with controlled state for a bottom sheet pattern.
 
 <Source language="tsx" code="BottomSheetExample" />
 
-Snap Points [#snap-points]
+### Snap Points [#snap-points]
 
 Use `snapPoints` with `<DrawerHandle />` for a resizable bottom sheet with touch gesture support.
 
@@ -725,7 +725,7 @@ Use `snapPoints` with `<DrawerHandle />` for a resizable bottom sheet with touch
 
 <Source language="tsx" code="SnapPointsExample" />
 
-Percentage Snap Points [#percentage-snap-points]
+### Percentage Snap Points [#percentage-snap-points]
 
 Use string snap points like `'30%'` and `'60%'` for sizes relative to the drawer's rendered dimensions.
 
@@ -733,7 +733,7 @@ Use string snap points like `'30%'` and `'60%'` for sizes relative to the drawer
 
 <Source language="tsx" code="PercentSnapPointsExample" />
 
-Controlled Snap Points [#controlled-snap-points]
+### Controlled Snap Points [#controlled-snap-points]
 
 Use `activeSnapPoint` and `onSnapPointChange` for full control over the active snap point.
 
@@ -741,7 +741,7 @@ Use `activeSnapPoint` and `onSnapPointChange` for full control over the active s
 
 <Source language="tsx" code="ControlledSnapExample" />
 
-Nested Popover [#nested-popover]
+### Nested Popover [#nested-popover]
 
 Popovers rendered inside a drawer stay open without dismissing the drawer.
 
@@ -749,9 +749,9 @@ Popovers rendered inside a drawer stay open without dismissing the drawer.
 
 <Source language="tsx" code="NestedPopoverExample" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard [#keyboard]
+### Keyboard [#keyboard]
 
 | Key                 | Action                                                                     |
 | ------------------- | -------------------------------------------------------------------------- |
@@ -764,7 +764,7 @@ Keyboard [#keyboard]
 
 In RTL, horizontal arrow key direction is reversed for the snap slider.
 
-ARIA [#aria]
+### ARIA [#aria]
 
 * `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
 * Dialog accessible name via `title` (renders a heading) or `aria-label` (for titleless drawers)
@@ -772,7 +772,7 @@ ARIA [#aria]
 * `role="slider"` on the snap point keyboard control with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext`
 * `aria-hidden="true"` on the visual drag handle (decorative)
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 * Always provide a `title` or `aria-label` prop so the dialog has an accessible name.
 * Use `isDismissable` to allow closing via backdrop click.
@@ -791,7 +791,7 @@ Best Practices [#best-practices]
 
 The `Icon` component provides a flexible and performant way to display SVG icons with extensive customization options. Built on top of the Bento Icon system, it features on-demand loading from a CDN, automatic caching, and enhanced props for the Antares design system.
 
-Features [#features]
+## Features [#features]
 
 * **On-demand loading**: Icons are loaded asynchronously from CDN only when needed
 * **Automatic caching**: Once loaded, icons are cached for optimal performance
@@ -801,19 +801,19 @@ Features [#features]
 * **TypeScript support**: Fully typed with comprehensive prop interfaces
 * **Bento integration**: Extends Bento Icon with additional Antares-specific features
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Icon` component accepts the following props:
 
 <PropTable />
 
-Prop Inheritance [#prop-inheritance]
+### Prop Inheritance [#prop-inheritance]
 
 The component extends `BentoIconProps` and passes through all standard HTML attributes and accessibility props to the underlying Bento Icon component. This includes:
 
@@ -822,13 +822,13 @@ The component extends `BentoIconProps` and passes through all standard HTML attr
 * **Styling**: `className`, `style`, `data-*` attributes
 * **Transform**: `rotate`, `flip` for icon transformations
 
-Basic Usage [#basic-usage]
+## Basic Usage [#basic-usage]
 
 <Story of="Stories.Icon" />
 
 <Source language="tsx" code="SourceIcon" />
 
-Size Variants [#size-variants]
+## Size Variants [#size-variants]
 
 Specify explicit width and height values:
 
@@ -842,13 +842,13 @@ You can use different values for width and height:
 <Icon icon="star" width={32} height={16} />
 ```
 
-Customization [#customization]
+## Customization [#customization]
 
-Slots [#slots]
+### Slots [#slots]
 
 The Icon component uses Bento's slot system with the following component hierarchy and available slot override points:
 
-Component Hierarchy [#component-hierarchy]
+#### Component Hierarchy [#component-hierarchy]
 
 ```text
 Icon (registered as "Icon")
@@ -856,18 +856,18 @@ Icon (registered as "Icon")
     └── BentoIllustration (registered as "BentoIllustration", slot="content")
 ```
 
-Available Slot Overrides [#available-slot-overrides]
+#### Available Slot Overrides [#available-slot-overrides]
 
 * **`icon`**: Overrides the entire BentoIcon component - affects icon loading, caching, sprite/SVG mode switching, data attributes, and the overall icon wrapper
 * **`icon.content`**: Overrides the BentoIllustration component - affects SVG transformations (rotate, flip), accessibility attributes (`role`, `focusable`, `aria-labelledby`), viewBox calculations, and final SVG element rendering
 
 For complete slot override patterns and examples, see the `@bento/slots` package documentation.
 
-Custom Icons [#custom-icons]
+### Custom Icons [#custom-icons]
 
 While the Icon component loads design system approved icons from the CDN by default, teams can introduce custom icons using the underlying Bento Icon system.
 
-Adding Icons Synchronously [#adding-icons-synchronously]
+#### Adding Icons Synchronously [#adding-icons-synchronously]
 
 Use the `set` method to add custom icons that are available immediately:
 
@@ -891,7 +891,7 @@ set({
 <Icon icon="team-icon" />
 ```
 
-Adding Icons Asynchronously [#adding-icons-asynchronously]
+#### Adding Icons Asynchronously [#adding-icons-asynchronously]
 
 Use the `ondemand` method to load custom icons from your own sources:
 
@@ -916,7 +916,7 @@ const unregister = ondemand(async function loadTeamIcons(iconName) {
 unregister();
 ```
 
-Custom Icon APIs [#custom-icon-apis]
+#### Custom Icon APIs [#custom-icon-apis]
 
 The following methods are exported from `@godaddy/antares` for custom icon management:
 
@@ -926,16 +926,16 @@ The following methods are exported from `@godaddy/antares` for custom icon manag
 
 These are re-exports of the underlying Bento Icon system methods. For complete API documentation, advanced usage patterns, and implementation details, see the `@bento/icon` and `@bento/svg-parser` package documentation.
 
-Notes [#notes]
+#### Notes [#notes]
 
 * Custom icons integrate seamlessly with all Icon component features (transformations, accessibility, sprite mode, etc.)
 * Multiple `ondemand` loaders can be registered and will be called in order until one returns content
 * Use the `parser` function to convert SVG strings to React elements
 * Custom icons are cached automatically just like CDN icons
 
-Styling [#styling]
+### Styling [#styling]
 
-CSS Classes [#css-classes]
+#### CSS Classes [#css-classes]
 
 The component accepts standard `className` and `style` props:
 
@@ -945,7 +945,7 @@ The component accepts standard `className` and `style` props:
 
 **Important**: When you supply a `className`, you make a commitment to take over all styling of the component as it will remove the standard class names. Use data attributes for targeted styling instead.
 
-Data Attributes [#data-attributes]
+#### Data Attributes [#data-attributes]
 
 The component automatically adds data attributes for styling hooks:
 
@@ -994,9 +994,9 @@ The component also includes accessibility attributes:
 }
 ```
 
-Color Customization [#color-customization]
+## Color Customization [#color-customization]
 
-Inherit from Parent (Default) [#inherit-from-parent-default]
+### Inherit from Parent (Default) [#inherit-from-parent-default]
 
 By default, icons inherit the color from their parent element via `currentColor`:
 
@@ -1006,7 +1006,7 @@ By default, icons inherit the color from their parent element via `currentColor`
 </div>
 ```
 
-Explicit Colors [#explicit-colors]
+### Explicit Colors [#explicit-colors]
 
 Override the color with specific values:
 
@@ -1017,11 +1017,11 @@ Override the color with specific values:
 <Icon icon="star" color="currentColor" />     // Explicit inheritance
 ```
 
-Icon Transformations [#icon-transformations]
+## Icon Transformations [#icon-transformations]
 
 Transform capabilities are inherited from the Bento Illustration component. For complete transformation options and implementation details, see the `@bento/illustration` package documentation.
 
-Rotation [#rotation]
+### Rotation [#rotation]
 
 Rotate icons by 90-degree increments:
 
@@ -1031,7 +1031,7 @@ Rotate icons by 90-degree increments:
 <Icon icon="arrow" rotate={270} />  // 270 degrees
 ```
 
-Flipping [#flipping]
+### Flipping [#flipping]
 
 Flip icons horizontally or vertically:
 
@@ -1040,9 +1040,9 @@ Flip icons horizontally or vertically:
 <Icon icon="arrow" flip="vertical" />
 ```
 
-Loading States [#loading-states]
+## Loading States [#loading-states]
 
-Placeholder Content [#placeholder-content]
+### Placeholder Content [#placeholder-content]
 
 Provide fallback SVG content while icons load from the CDN:
 
@@ -1054,9 +1054,9 @@ Provide fallback SVG content while icons load from the CDN:
 </Icon>
 ```
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Decorative Icons [#decorative-icons]
+### Decorative Icons [#decorative-icons]
 
 For purely decorative icons, no additional attributes are needed. The icon will have `role="presentation"` and be ignored by screen readers:
 
@@ -1064,7 +1064,7 @@ For purely decorative icons, no additional attributes are needed. The icon will 
 <Icon icon="star" /> {/* Decorative, screen readers will ignore */}
 ```
 
-Semantic Icons [#semantic-icons]
+### Semantic Icons [#semantic-icons]
 
 For icons that convey meaning, use the `title` prop. This automatically adds `role="img"` and provides screen reader accessible text:
 
@@ -1079,7 +1079,7 @@ For icons that convey meaning, use the `title` prop. This automatically adds `ro
 <Icon icon="check-circle" title="Task completed successfully" />
 ```
 
-Interactive Icons [#interactive-icons]
+### Interactive Icons [#interactive-icons]
 
 For interactive icons within buttons or links, use the `title` prop on the icon and `aria-label` on the interactive element:
 
@@ -1100,9 +1100,9 @@ For interactive icons within buttons or links, use the `title` prop on the icon 
 </a>
 ```
 
-Performance Considerations [#performance-considerations]
+## Performance Considerations [#performance-considerations]
 
-Default Icon Loading [#default-icon-loading]
+### Default Icon Loading [#default-icon-loading]
 
 Icons are loaded on-demand from a CDN using the following process:
 
@@ -1120,7 +1120,7 @@ Icons are loaded on-demand from a CDN using the following process:
 
 This approach works well for SSR and small numbers of icons, but can lead to DOM bloat when the same icon appears many times.
 
-Sprite Mode Optimization [#sprite-mode-optimization]
+### Sprite Mode Optimization [#sprite-mode-optimization]
 
 When `mode="sprite"` is enabled, the component switches to a more efficient rendering strategy:
 
@@ -1164,16 +1164,16 @@ When `mode="sprite"` is enabled, the component switches to a more efficient rend
 * **SSR Limitation**: Sprite references render empty until client-side hydration
 * **Initial Flash**: Brief moment where icons appear/disappear during sprite injection
 
-Recommendations [#recommendations]
+### Recommendations [#recommendations]
 
 * **Use default mode** for SSR applications or when icons appear infrequently
 * **Use sprite mode** when the same icons appear many times (navigation, lists, tables)
 * **Consider preloading** frequently used icons to reduce loading delays
 * **Provide fallback content** for critical icons to handle loading states
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Icon Not Loading [#icon-not-loading]
+### Icon Not Loading [#icon-not-loading]
 
 If an icon fails to load:
 
@@ -1182,7 +1182,7 @@ If an icon fails to load:
 3. **Check browser console**: Look for network errors
 4. **Fallback content**: Provide placeholder content for loading states
 
-Performance Issues [#performance-issues]
+### Performance Issues [#performance-issues]
 
 For performance optimization:
 
@@ -1199,7 +1199,7 @@ For performance optimization:
 
 <Meta of="Stories" name="Overview" />
 
-Features [#features]
+## Features [#features]
 
 * In-flow collapsible panel with CSS transitions
 * `minSize` keeps collapsed content visible (sidebar nav pattern)
@@ -1208,19 +1208,19 @@ Features [#features]
 * `hidden="until-found"` for browser find-in-page support
 * `prefers-reduced-motion` support
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
 
@@ -1228,7 +1228,7 @@ The panel toggles when the trigger is pressed, pushing adjacent content as it ex
 
 <Source language="tsx" code="DefaultExample" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
 
@@ -1236,7 +1236,7 @@ Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a b
 
 <Source language="tsx" code="ControlledExample" />
 
-Sidebar Navigation [#sidebar-navigation]
+### Sidebar Navigation [#sidebar-navigation]
 
 Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
 
@@ -1244,7 +1244,7 @@ Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon st
 
 <Source language="tsx" code="SidebarNavExample" />
 
-Vertical Placement [#vertical-placement]
+### Vertical Placement [#vertical-placement]
 
 Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
 
@@ -1252,7 +1252,7 @@ Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontal
 
 <Source language="tsx" code="VerticalExample" />
 
-Dismiss on Blur [#dismiss-on-blur]
+### Dismiss on Blur [#dismiss-on-blur]
 
 Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
 
@@ -1260,7 +1260,7 @@ Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab fro
 
 <Source language="tsx" code="DismissOnBlurExample" />
 
-Focus Scope [#focus-scope]
+### Focus Scope [#focus-scope]
 
 Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
 
@@ -1268,23 +1268,23 @@ Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles be
 
 <Source language="tsx" code="FocusScopeExample" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard [#keyboard]
+### Keyboard [#keyboard]
 
 | Key               | Action                                                                |
 | ----------------- | --------------------------------------------------------------------- |
 | `Enter` / `Space` | Toggle the drawer via the trigger button                              |
 | `Tab`             | Move focus into/out of the panel (or trapped when using `FocusScope`) |
 
-ARIA [#aria]
+### ARIA [#aria]
 
 * `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
 * `aria-controls` links the trigger to the panel
 * `hidden="until-found"` on collapsed panels (browser find-in-page support)
 * Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 * Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
 * `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
@@ -1302,45 +1302,45 @@ Best Practices [#best-practices]
 
 Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 <Story of="Stories.Basic" />
 
 <Source language="tsx" code="SourceMenu" />
 
-With Submenus [#with-submenus]
+### With Submenus [#with-submenus]
 
 <Story of="Stories.WithSubmenus" />
 
 <Source language="tsx" code="SourceMenuSubmenu" />
 
-With Selection [#with-selection]
+### With Selection [#with-selection]
 
 <Story of="Stories.WithSelection" />
 
 <Source language="tsx" code="SourceMenuSelection" />
 
-With Sections [#with-sections]
+### With Sections [#with-sections]
 
 <Story of="Stories.WithSections" />
 
 <Source language="tsx" code="SourceMenuSections" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 React Aria Components automatically adds data attributes for styling different states:
 
@@ -1364,7 +1364,7 @@ React Aria Components automatically adds data attributes for styling different s
 }
 ```
 
-Component Customization [#component-customization]
+### Component Customization [#component-customization]
 
 Individual child components can be styled by passing `className` props:
 
@@ -1380,9 +1380,9 @@ Individual child components can be styled by passing `className` props:
 </Menu>
 ```
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard Navigation [#keyboard-navigation]
+### Keyboard Navigation [#keyboard-navigation]
 
 * **Space/Enter**: Opens menu and activates items
 * **Arrow Down/Up**: Navigate through items
@@ -1393,9 +1393,9 @@ Keyboard Navigation [#keyboard-navigation]
 * **Tab**: Closes menu and moves to next element
 * **Type to select**: Type to jump to matching items
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Submenu Not Opening [#submenu-not-opening]
+### Submenu Not Opening [#submenu-not-opening]
 
 ```jsx
 // ❌ Wrong: MenuItem used directly
@@ -1415,7 +1415,7 @@ Submenu Not Opening [#submenu-not-opening]
 </SubmenuTrigger>
 ```
 
-Selection Not Working [#selection-not-working]
+### Selection Not Working [#selection-not-working]
 
 ```jsx
 // ❌ Wrong: Using both controlled and uncontrolled props
@@ -1445,7 +1445,7 @@ Selection Not Working [#selection-not-working]
 </Menu>
 ```
 
-Styling Not Applying [#styling-not-applying]
+### Styling Not Applying [#styling-not-applying]
 
 ```css
 /* ❌ May not have enough specificity */
@@ -1470,19 +1470,19 @@ Styling Not Applying [#styling-not-applying]
 
 MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 A metric with a title, info tooltip, value, and description.
 
@@ -1490,7 +1490,7 @@ A metric with a title, info tooltip, value, and description.
 
 <Source language="tsx" code="DefaultExample" />
 
-With Trend [#with-trend]
+### With Trend [#with-trend]
 
 Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
 
@@ -1498,7 +1498,7 @@ Use the `trend` prop to show a directional icon next to the description. Accepts
 
 <Source language="tsx" code="WithTrendExample" />
 
-Compact [#compact]
+### Compact [#compact]
 
 Use the `compact` prop to render the metric value and description inline rather than stacked.
 
@@ -1506,22 +1506,22 @@ Use the `compact` prop to render the metric value and description inline rather 
 
 <Source language="tsx" code="CompactExample" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard [#keyboard]
+### Keyboard [#keyboard]
 
 | Key    | Description                                                  |
 | ------ | ------------------------------------------------------------ |
 | Tab    | Moves focus to the info trigger button and shows the tooltip |
 | Escape | Closes the tooltip                                           |
 
-ARIA [#aria]
+### ARIA [#aria]
 
 * The info trigger button uses `aria-label="More information"` to describe its purpose.
 * The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
 * The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 * Keep tooltip content concise and informative.
 * The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
@@ -1541,21 +1541,21 @@ Best Practices [#best-practices]
 
 Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Modal` component accepts the following props:
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic usage [#basic-usage]
+### Basic usage [#basic-usage]
 
 The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
 
@@ -1563,7 +1563,7 @@ The default modal exposes a `title`, `description`, and `children` content area.
 
 <Source language="tsx" code="SourceDefault" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
 
@@ -1571,7 +1571,7 @@ Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state ext
 
 <Source language="tsx" code="SourceControlled" />
 
-With actions [#with-actions]
+### With actions [#with-actions]
 
 Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
 
@@ -1579,7 +1579,7 @@ Render footer buttons via the `actions` prop. Use `slot="close"` on a button to 
 
 <Source language="tsx" code="SourceWithActions" />
 
-Alignment [#alignment]
+### Alignment [#alignment]
 
 Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
 
@@ -1587,7 +1587,7 @@ Use `centered` to center the title and description, and `actionProps` to control
 
 <Source language="tsx" code="SourceAlignment" />
 
-With media [#with-media]
+### With media [#with-media]
 
 Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
 
@@ -1595,9 +1595,9 @@ Pass a `media` element to display imagery alongside the content. Configure its l
 
 <Source language="tsx" code="SourceWithMedia" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard interaction [#keyboard-interaction]
+### Keyboard interaction [#keyboard-interaction]
 
 | Key           | Action                                                         |
 | ------------- | -------------------------------------------------------------- |
@@ -1605,14 +1605,14 @@ Keyboard interaction [#keyboard-interaction]
 | `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
 | `Escape`      | Closes the modal (when dismissable)                            |
 
-ARIA [#aria]
+### ARIA [#aria]
 
 * `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
 * The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
 * The close button is rendered with `aria-label="Close"`
 * Focus is trapped within the modal while open and returned to the trigger on close
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 * Always provide a `title` so the dialog has an accessible name
 * Pair every footer action with `slot="close"` when it should dismiss the modal
@@ -1631,21 +1631,21 @@ Best Practices [#best-practices]
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The NumberField component accepts the following props:
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 Minimal usage with label, placeholder, and min/max.
 
@@ -1653,7 +1653,7 @@ Minimal usage with label, placeholder, and min/max.
 
 <Story of="Stories.Basic" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Use `value` and `onChange` for controlled state.
 
@@ -1661,7 +1661,7 @@ Use `value` and `onChange` for controlled state.
 
 <Story of="Stories.Controlled" />
 
-Invalid [#invalid]
+### Invalid [#invalid]
 
 Use `isInvalid` with `errorMessage` for validation feedback.
 
@@ -1669,7 +1669,7 @@ Use `isInvalid` with `errorMessage` for validation feedback.
 
 <Story of="Stories.Invalid" />
 
-Disabled [#disabled]
+### Disabled [#disabled]
 
 Use `isDisabled` to prevent input.
 
@@ -1677,7 +1677,7 @@ Use `isDisabled` to prevent input.
 
 <Story of="Stories.Disabled" />
 
-Hide stepper [#hide-stepper]
+### Hide stepper [#hide-stepper]
 
 Use `hideStepper` to show only the input without +/- buttons.
 
@@ -1685,7 +1685,7 @@ Use `hideStepper` to show only the input without +/- buttons.
 
 <Story of="Stories.HideStepper" />
 
-Value scale [#value-scale]
+### Value scale [#value-scale]
 
 Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
 
@@ -1693,7 +1693,7 @@ Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calc
 
 <Story of="Stories.ValueScale" />
 
-Format options (numbering system) [#format-options-numbering-system]
+### Format options (numbering system) [#format-options-numbering-system]
 
 By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
 
@@ -1701,9 +1701,9 @@ By default, NumberField displays the value using the numbering system for the us
 
 <Story of="Stories.FormatOptions" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard [#keyboard]
+### Keyboard [#keyboard]
 
 When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
 
@@ -1713,13 +1713,13 @@ When focus is in the input (and the field is not read-only), keyboard behavior f
 
 Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
 
-ARIA and labeling [#aria-and-labeling]
+### ARIA and labeling [#aria-and-labeling]
 
 * The input is associated with the visible label and optional description and error content for assistive technologies.
 * Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
 * Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
 
-Best practices [#best-practices]
+## Best practices [#best-practices]
 
 * Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
 * Remember valid steps start from &#x2A;*`minValue`**.
@@ -1737,19 +1737,19 @@ Best practices [#best-practices]
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
 
@@ -1757,7 +1757,7 @@ The default pagination is uncontrolled. It renders prev/next buttons and one dot
 
 <Source language="tsx" code="SourceDefault" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Pass `activeIndex` and `onChange` to control the active page externally.
 
@@ -1765,7 +1765,7 @@ Pass `activeIndex` and `onChange` to control the active page externally.
 
 <Source language="tsx" code="SourceControlled" />
 
-Default Active Index [#default-active-index]
+### Default Active Index [#default-active-index]
 
 Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
 
@@ -1773,7 +1773,7 @@ Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
 
 <Source language="tsx" code="SourceDefaultActive" />
 
-With Limit [#with-limit]
+### With Limit [#with-limit]
 
 Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
 
@@ -1781,7 +1781,7 @@ Limit the number of items shown per page. When `limit` is greater than 1, the nu
 
 <Source language="tsx" code="SourceWithLimit" />
 
-onChange Event [#onchange-event]
+### onChange Event [#onchange-event]
 
 The `onChange` callback fires with the new page index whenever the user navigates.
 
@@ -1798,19 +1798,19 @@ The `onChange` callback fires with the new page index whenever the user navigate
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
 trigger element (for example, a `Button`).
@@ -1819,7 +1819,7 @@ trigger element (for example, a `Button`).
 
 <Source language="tsx" code="DefaultExample" />
 
-Custom Anchor [#custom-anchor]
+### Custom Anchor [#custom-anchor]
 
 To position a popover relative to a different element than its trigger, use the
 `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
@@ -1829,7 +1829,7 @@ To position a popover relative to a different element than its trigger, use the
 
 <Source language="tsx" code="CustomAnchorExample" />
 
-Close Button and Header [#close-button-and-header]
+### Close Button and Header [#close-button-and-header]
 
 To show a close button in the popover header, use the `showCloseButton` prop.
 
@@ -1841,64 +1841,9 @@ the close button.
 
 <Source language="tsx" code="WithCloseButtonExample" />
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
-# ProgressBar
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-Props [#props]
-
-<PropTable />
-
-Examples [#examples]
-
-Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="Stories.Statuses" />
-
-<Source language="tsx" code="SourceStatuses" />
-
-Accessibility [#accessibility]
-
-ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
 # Radio
@@ -1909,75 +1854,75 @@ ARIA Support [#aria-support]
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 <Story of="Stories.Basic" />
 
 <Source language="tsx" code="SourceRadioBasic" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 <Story of="Stories.Controlled" />
 
 <Source language="tsx" code="SourceRadioControlled" />
 
-Horizontal Layout [#horizontal-layout]
+### Horizontal Layout [#horizontal-layout]
 
 <Story of="Stories.Horizontal" />
 
 <Source language="tsx" code="SourceRadioHorizontal" />
 
-Disabled States [#disabled-states]
+### Disabled States [#disabled-states]
 
 <Story of="Stories.Disabled" />
 
 <Source language="tsx" code="SourceRadioDisabled" />
 
-Required Indicator [#required-indicator]
+### Required Indicator [#required-indicator]
 
 <Story of="Stories.Required" />
 
 <Source language="tsx" code="SourceRadioRequired" />
 
-Description Text [#description-text]
+### Description Text [#description-text]
 
 <Story of="Stories.Description" />
 
 <Source language="tsx" code="SourceRadioDescription" />
 
-Error State [#error-state]
+### Error State [#error-state]
 
 <Story of="Stories.ValidationError" />
 
 <Source language="tsx" code="SourceRadioError" />
 
-Aria Label [#aria-label]
+### Aria Label [#aria-label]
 
 <Story of="Stories.AriaLabel" />
 
 <Source language="tsx" code="SourceRadioAriaLabel" />
 
-Form Submission [#form-submission]
+### Form Submission [#form-submission]
 
 <Story of="Stories.Form" />
 
 <Source language="tsx" code="SourceRadioForm" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 Components automatically add data attributes for styling different states:
 
@@ -2006,7 +1951,7 @@ Components automatically add data attributes for styling different states:
 }
 ```
 
-Component Customization [#component-customization]
+### Component Customization [#component-customization]
 
 Individual components can be styled by passing `className` props:
 
@@ -2021,16 +1966,16 @@ Individual components can be styled by passing `className` props:
 </RadioGroup>
 ```
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard Navigation [#keyboard-navigation]
+### Keyboard Navigation [#keyboard-navigation]
 
 * **Tab**: Moves focus to/from the radio group
 * **Arrow Down/Right**: Move to next radio button
 * **Arrow Up/Left**: Move to previous radio button
 * **Space**: Select the focused radio button
 
-ARIA Support [#aria-support]
+### ARIA Support [#aria-support]
 
 * `role="radiogroup"` on the container
 * `role="radio"` on each option
@@ -2039,9 +1984,9 @@ ARIA Support [#aria-support]
 * `aria-required` when selection is required
 * `aria-invalid` for validation errors
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Selection Not Updating [#selection-not-updating]
+### Selection Not Updating [#selection-not-updating]
 
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
@@ -2060,7 +2005,7 @@ Selection Not Updating [#selection-not-updating]
 </RadioGroup>
 ```
 
-Styling Overrides Not Applying [#styling-overrides-not-applying]
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
 
 ```css
 /* ❌ May not have enough specificity */
@@ -2075,7 +2020,7 @@ Styling Overrides Not Applying [#styling-overrides-not-applying]
 }
 ```
 
-Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 
 ```css
 /* ❌ Don't remove focus outlines without replacement */
@@ -2090,9 +2035,9 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 }
 ```
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
-When to Use Radio Buttons [#when-to-use-radio-buttons]
+### When to Use Radio Buttons [#when-to-use-radio-buttons]
 
 * ✅ When there are 2-7 mutually exclusive options
 * ✅ When all options should be visible at once
@@ -2101,14 +2046,14 @@ When to Use Radio Buttons [#when-to-use-radio-buttons]
 * ❌ For binary yes/no choices (use Checkbox or Toggle instead)
 * ❌ When space is limited (use Select dropdown)
 
-Label Guidelines [#label-guidelines]
+### Label Guidelines [#label-guidelines]
 
 * Use clear, concise labels
 * Keep labels short (1-3 words when possible)
 * Place the most common option first
 * Ensure labels are descriptive without being verbose
 
-Validation [#validation]
+### Validation [#validation]
 
 Always provide clear error messages:
 
@@ -2125,6 +2070,61 @@ Always provide clear error messages:
 ```
 
 
+# ProgressBar
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="Stories.Statuses" />
+
+<Source language="tsx" code="SourceStatuses" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+
 # SegmentedController
 
 
@@ -2133,19 +2133,19 @@ Always provide clear error messages:
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
 
@@ -2153,7 +2153,7 @@ An uncontrolled segmented controller with a default selection. The component man
 
 <Source language="tsx" code="SourceBasic" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
 
@@ -2161,7 +2161,7 @@ Use `value` and `onSelectionChange` to fully control the selected segment from p
 
 <Source language="tsx" code="SourceControlled" />
 
-Sizes [#sizes]
+### Sizes [#sizes]
 
 Three sizes are available: `sm`, `md` (default), and `lg`.
 
@@ -2169,7 +2169,7 @@ Three sizes are available: `sm`, `md` (default), and `lg`.
 
 <Source language="tsx" code="SourceSizes" />
 
-Icon + Text [#icon--text]
+### Icon + Text [#icon--text]
 
 Segments can include an `Icon` alongside text for added visual context.
 
@@ -2177,7 +2177,7 @@ Segments can include an `Icon` alongside text for added visual context.
 
 <Source language="tsx" code="SourceIcon" />
 
-Icon Only [#icon-only]
+### Icon Only [#icon-only]
 
 For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
 
@@ -2185,7 +2185,7 @@ For compact layouts, segments can contain only icons. Provide an `aria-label` on
 
 <Source language="tsx" code="SourceIconOnly" />
 
-Overflow [#overflow]
+### Overflow [#overflow]
 
 When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
 
@@ -2193,7 +2193,7 @@ When the number of options exceeds the width of the container, the component aut
 
 <Source language="tsx" code="SourceOverflow" />
 
-RTL Direction [#rtl-direction]
+### RTL Direction [#rtl-direction]
 
 The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
 
@@ -2201,7 +2201,7 @@ The segmented controller follows the current **layout direction** (LTR or RTL). 
 
 <Source language="tsx" code="SourceRTL" />
 
-Disabled States [#disabled-states]
+### Disabled States [#disabled-states]
 
 Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
 
@@ -2209,9 +2209,9 @@ Disable the entire group with `isDisabled` on the container, or disable individu
 
 <Source language="tsx" code="SourceDisabled" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 Components automatically add data attributes for styling different states:
 
@@ -2219,15 +2219,15 @@ Components automatically add data attributes for styling different states:
 
 **SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard Navigation [#keyboard-navigation]
+### Keyboard Navigation [#keyboard-navigation]
 
 * **Tab**: Moves focus to/from the segmented controller
 * **Arrow Left/Right**: Move to next/previous segment
 * **Space/Enter**: Select the focused segment
 
-ARIA Support [#aria-support]
+### ARIA Support [#aria-support]
 
 * `role="radiogroup"` on the container
 * `role="radio"` on each segment
@@ -2235,15 +2235,15 @@ ARIA Support [#aria-support]
 * `aria-disabled` for disabled segments
 * `aria-label` required on the container for screen readers
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
-When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
 
 * When switching between 2-5 related views within the same context
 * When all options should be visible at once
 * When the selection immediately changes the displayed content
 
-When Not to Use [#when-not-to-use]
+### When Not to Use [#when-not-to-use]
 
 * For more than 5 options (use Tabs or Select instead)
 * For form input (use RadioGroup instead)
@@ -2257,45 +2257,45 @@ When Not to Use [#when-not-to-use]
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Static [#static]
+### Static [#static]
 
 <Story of="Stories.Static" />
 
 <Source language="tsx" code="SourceSelectStatic" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 <Story of="Stories.Controlled" />
 
 <Source language="tsx" code="SourceSelectControlled" />
 
-Dynamic Items [#dynamic-items]
+### Dynamic Items [#dynamic-items]
 
 <Story of="Stories.DynamicItems" />
 
 <Source language="tsx" code="SourceSelectDynamic" />
 
-Multiple Selection [#multiple-selection]
+### Multiple Selection [#multiple-selection]
 
 <Story of="Stories.Multiple" />
 
 <Source language="tsx" code="SourceSelectMultiple" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 React Aria Components automatically adds data attributes for styling different states:
 
@@ -2324,7 +2324,7 @@ React Aria Components automatically adds data attributes for styling different s
 }
 ```
 
-Component Customization [#component-customization]
+### Component Customization [#component-customization]
 
 Individual child components can be styled by passing `className` props:
 
@@ -2340,9 +2340,9 @@ Individual child components can be styled by passing `className` props:
 </Select>
 ```
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard Navigation [#keyboard-navigation]
+### Keyboard Navigation [#keyboard-navigation]
 
 * **Space/Enter**: Opens the popover and focuses the selected item
 * **Arrow Down/Up**: Navigate through options
@@ -2352,9 +2352,9 @@ Keyboard Navigation [#keyboard-navigation]
 * **Type to select**: Type characters to jump to matching options
 * **Space** (in multi-select): Toggle selection of focused item
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Selection Not Updating [#selection-not-updating]
+### Selection Not Updating [#selection-not-updating]
 
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
@@ -2373,7 +2373,7 @@ Selection Not Updating [#selection-not-updating]
 </Select>
 ```
 
-Styling Overrides Not Applying [#styling-overrides-not-applying]
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
 
 ```css
 /* ❌ May not have enough specificity */
@@ -2387,7 +2387,7 @@ Styling Overrides Not Applying [#styling-overrides-not-applying]
 }
 ```
 
-Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 
 ```css
 /* ❌ Don't remove focus outlines without replacement */
@@ -2413,40 +2413,40 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 
 The `Text` component prepares content with a few properties.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Text` component accepts the following props:
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-As [#as]
+### As [#as]
 
 Setting the `as` prop allows you to change the HTML tag of the `Text` component.
 
 <Source language="tsx" code="AsExample" />
 
-Align [#align]
+### Align [#align]
 
 Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
 `start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
 
 <Source language="tsx" code="AlignExample" />
 
-Max Lines [#max-lines]
+### Max Lines [#max-lines]
 
 Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
 
 <Source language="tsx" code="MaxLinesExample" />
 
-Wrap [#wrap]
+### Wrap [#wrap]
 
 Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
 
@@ -2469,7 +2469,7 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 
 <Meta of="Stories" name="Overview" />
 
-Features [#features]
+## Features [#features]
 
 * **Label, description, error**: Optional label, helper text, and error message with proper accessibility
 * **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
@@ -2478,21 +2478,21 @@ Features [#features]
 * **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
 * **React Aria integration**: Built on React Aria TextField for accessibility and behavior
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The TextField component accepts the following props:
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 Minimal usage with label and placeholder.
 
@@ -2500,7 +2500,7 @@ Minimal usage with label and placeholder.
 
 <Story of="Stories.Basic" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Use `value` and `onChange` for controlled state.
 
@@ -2508,7 +2508,7 @@ Use `value` and `onChange` for controlled state.
 
 <Story of="Stories.Controlled" />
 
-Invalid [#invalid]
+### Invalid [#invalid]
 
 Use `isInvalid` with `errorMessage` for validation feedback.
 
@@ -2516,7 +2516,7 @@ Use `isInvalid` with `errorMessage` for validation feedback.
 
 <Story of="Stories.Invalid" />
 
-Disabled [#disabled]
+### Disabled [#disabled]
 
 Use `isDisabled` to prevent input.
 
@@ -2524,7 +2524,7 @@ Use `isDisabled` to prevent input.
 
 <Story of="Stories.Disabled" />
 
-Adornments [#adornments]
+### Adornments [#adornments]
 
 Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
 
@@ -2532,7 +2532,7 @@ Use `leadingText` and `trailingText` for fixed text before and after the input (
 
 <Story of="Stories.Adornments" />
 
-Multiline [#multiline]
+### Multiline [#multiline]
 
 Use `multiline` to render a textarea.
 
@@ -2549,19 +2549,19 @@ Use `multiline` to render a textarea.
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Default (Single Selection) [#default-single-selection]
+### Default (Single Selection) [#default-single-selection]
 
 A `ToggleButton` toggles between selected and unselected. Wrap multiple inside a `ToggleButtonGroup` to link them with shared selection and keyboard navigation — `defaultSelectedKeys` sets the initial selection.
 
@@ -2569,7 +2569,7 @@ A `ToggleButton` toggles between selected and unselected. Wrap multiple inside a
 
 <Source language="tsx" code="SourceDefault" />
 
-Multiple Selection [#multiple-selection]
+### Multiple Selection [#multiple-selection]
 
 Use `selectionMode="multiple"` to allow more than one item to be active at a time.
 
@@ -2577,7 +2577,7 @@ Use `selectionMode="multiple"` to allow more than one item to be active at a tim
 
 <Source language="tsx" code="SourceMultiple" />
 
-Controlled [#controlled]
+### Controlled [#controlled]
 
 Use `selectedKeys` and `onSelectionChange` to control selection from parent state — `onSelectionChange` receives a `Set<string>` of the selected item `id` values.
 
@@ -2585,7 +2585,7 @@ Use `selectedKeys` and `onSelectionChange` to control selection from parent stat
 
 <Source language="tsx" code="SourceControlled" />
 
-Disabled States [#disabled-states]
+### Disabled States [#disabled-states]
 
 Disable the entire group with `isDisabled` on the container, or disable individual items with `isDisabled` on specific `ToggleButton` elements.
 
@@ -2593,7 +2593,7 @@ Disable the entire group with `isDisabled` on the container, or disable individu
 
 <Source language="tsx" code="SourceDisabled" />
 
-Sizes [#sizes]
+### Sizes [#sizes]
 
 Two sizes are available: `sm` and `md` (default).
 
@@ -2601,7 +2601,7 @@ Two sizes are available: `sm` and `md` (default).
 
 <Source language="tsx" code="SourceSizes" />
 
-Icon + Text [#icon--text]
+### Icon + Text [#icon--text]
 
 Items can include an `Icon` alongside text for added visual context.
 
@@ -2609,7 +2609,7 @@ Items can include an `Icon` alongside text for added visual context.
 
 <Source language="tsx" code="SourceIconAndText" />
 
-Icon Only [#icon-only]
+### Icon Only [#icon-only]
 
 For compact layouts, items can contain only icons. Padding adjusts automatically to keep the button square — no extra prop required. Always provide an `aria-label` on each icon-only item so screen readers can identify the action.
 
@@ -2617,7 +2617,7 @@ For compact layouts, items can contain only icons. Padding adjusts automatically
 
 <Source language="tsx" code="SourceIconOnly" />
 
-With Dropdown [#with-dropdown]
+### With Dropdown [#with-dropdown]
 
 Wrap a `ToggleButton` in a `MenuTrigger` to add sub-options to a group item.
 
@@ -2625,7 +2625,7 @@ Wrap a `ToggleButton` in a `MenuTrigger` to add sub-options to a group item.
 
 <Source language="tsx" code="SourceWithDropdown" />
 
-RTL Direction [#rtl-direction]
+### RTL Direction [#rtl-direction]
 
 The group follows the document's layout direction, detected automatically from the browser locale.
 
@@ -2633,9 +2633,9 @@ The group follows the document's layout direction, detected automatically from t
 
 <Source language="tsx" code="SourceRTL" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 Components automatically add data attributes for styling different states:
 
@@ -2660,7 +2660,7 @@ Components automatically add data attributes for styling different states:
 }
 ```
 
-Component Customization [#component-customization]
+### Component Customization [#component-customization]
 
 Individual components can be styled by passing `className` props:
 
@@ -2671,9 +2671,9 @@ Individual components can be styled by passing `className` props:
 </ToggleButtonGroup>
 ```
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard Navigation [#keyboard-navigation]
+### Keyboard Navigation [#keyboard-navigation]
 
 | Key                    | Action                                                       |
 | ---------------------- | ------------------------------------------------------------ |
@@ -2683,16 +2683,16 @@ Keyboard Navigation [#keyboard-navigation]
 | **Home**               | Move focus to the first item                                 |
 | **End**                | Move focus to the last item                                  |
 
-ARIA Support [#aria-support]
+### ARIA Support [#aria-support]
 
 * `selectionMode="single"` → `role="radiogroup"` on container, `role="radio"` + `aria-checked` per item
 * `selectionMode="multiple"` → `role="toolbar"` on container, `role="button"` + `aria-pressed` per item
 * `aria-label` (or `aria-labelledby`) is required on the group container
 * Icon-only items require `aria-label` on each `ToggleButton`
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Selection Not Updating [#selection-not-updating]
+### Selection Not Updating [#selection-not-updating]
 
 ```jsx
 // ❌ Wrong: Using both selectedKeys and defaultSelectedKeys
@@ -2711,7 +2711,7 @@ Selection Not Updating [#selection-not-updating]
 </ToggleButtonGroup>
 ```
 
-Styling Overrides Not Applying [#styling-overrides-not-applying]
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
 
 ```css
 /* ❌ May not have enough specificity */
@@ -2725,7 +2725,7 @@ Styling Overrides Not Applying [#styling-overrides-not-applying]
 }
 ```
 
-Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 
 ```css
 /* ❌ Don't remove focus outlines without replacement */
@@ -2740,9 +2740,9 @@ Keyboard Navigation Not Working [#keyboard-navigation-not-working]
 }
 ```
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
-When to Use [#when-to-use]
+### When to Use [#when-to-use]
 
 * ✅ For grouped contextual actions — two or more closely related actions that belong together (e.g. Bold / Italic / Underline, Align Left / Center / Right)
 * ✅ For compact action grouping — related actions in space-constrained layouts (e.g. Undo / Redo, Zoom In / Out / Reset)
@@ -2753,15 +2753,15 @@ When to Use [#when-to-use]
 * ❌ When selecting an option leads to a different page or workflow — use navigation instead
 * ❌ For mutually exclusive content views (e.g. Monthly / Yearly) — use **SegmentedController** instead
 
-Keep Variants Consistent [#keep-variants-consistent]
+### Keep Variants Consistent [#keep-variants-consistent]
 
 Avoid mixing different content types (text-only, icon-only, icon+text) within the same group. Mixing styles creates visual noise and makes the set feel fragmented rather than unified.
 
-Balance Label Lengths [#balance-label-lengths]
+### Balance Label Lengths [#balance-label-lengths]
 
 Keep button labels of similar length. Large differences in text length cause irregular button widths and make the group appear uneven. Prefer short, concise wording.
 
-Alignment [#alignment]
+### Alignment [#alignment]
 
 Align the group to reflect its relationship to surrounding content:
 
@@ -2769,13 +2769,13 @@ Align the group to reflect its relationship to surrounding content:
 * **Center** — when the group acts as a prominent toggle affecting an entire section or page.
 * **Right** — when the group represents utility or contextual controls (e.g. grid/list view toggle).
 
-Label Guidelines [#label-guidelines]
+### Label Guidelines [#label-guidelines]
 
 * Use **title case**: capitalize the first letter of each word, except short prepositions.
 * Keep labels to one or two words. Omit articles (a, an, the) and filler words.
 * Prefer action-focused or descriptive language that communicates the option instantly.
 
-Icon-Only Items [#icon-only-items]
+### Icon-Only Items [#icon-only-items]
 
 Use icon-only items only when the icon's meaning is universally recognized. Always provide an `aria-label` on each icon-only `ToggleButton`:
 
@@ -2797,19 +2797,19 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
 Once a tooltip has been shown, subsequent tooltips appear without delay.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic Usage [#basic-usage]
+### Basic Usage [#basic-usage]
 
 Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
 element (for example, a `Button`). The tooltip appears on hover and focus.
@@ -2818,7 +2818,7 @@ element (for example, a `Button`). The tooltip appears on hover and focus.
 
 <Source language="tsx" code="DefaultExample" />
 
-Custom Anchor [#custom-anchor]
+### Custom Anchor [#custom-anchor]
 
 To position a tooltip relative to a different focusable element, use the
 `triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
@@ -2827,20 +2827,20 @@ To position a tooltip relative to a different focusable element, use the
 
 <Source language="tsx" code="CustomAnchorExample" />
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-Keyboard [#keyboard]
+### Keyboard [#keyboard]
 
 | Key    | Description                                                |
 | ------ | ---------------------------------------------------------- |
 | Tab    | Moves focus to the focusable element and shows the tooltip |
 | Escape | Closes the tooltip                                         |
 
-ARIA [#aria]
+### ARIA [#aria]
 
 * The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
 * Keep tooltip content short and informative.
 * Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
@@ -2857,7 +2857,7 @@ Best Practices [#best-practices]
 
 <Meta of="Stories" name="Overview" />
 
-Features [#features]
+## Features [#features]
 
 * **Single and multi-series support**: Display one or multiple data series with grouped bars
 * **Vertical and horizontal orientations**: Choose the best layout for your data and use case
@@ -2871,21 +2871,21 @@ Features [#features]
 * **TypeScript support**: Fully typed with comprehensive prop interfaces
 * **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `BarChart` component accepts the following props:
 
 <PropTable />
 
-Core Props [#core-props]
+### Core Props [#core-props]
 
-`series` (required) [#series-required]
+#### `series` (required) [#series-required]
 
 An array of data series to display. Each series must include:
 
@@ -2905,7 +2905,7 @@ const series = [
 ];
 ```
 
-`xAccessor` (required) [#xaccessor-required]
+#### `xAccessor` (required) [#xaccessor-required]
 
 Function that extracts the x-axis value from a data point. Returns a string representing the category or label.
 
@@ -2913,7 +2913,7 @@ Function that extracts the x-axis value from a data point. Returns a string repr
 xAccessor={(d) => d.date}
 ```
 
-`yAccessor` (required) [#yaccessor-required]
+#### `yAccessor` (required) [#yaccessor-required]
 
 Function that extracts the y-axis value from a data point. Returns a number representing the value to display.
 
@@ -2921,9 +2921,9 @@ Function that extracts the y-axis value from a data point. Returns a number repr
 yAccessor={(d) => d.temperature}
 ```
 
-Layout Props [#layout-props]
+### Layout Props [#layout-props]
 
-`orientation` [#orientation]
+#### `orientation` [#orientation]
 
 Controls whether bars are vertical (default) or horizontal.
 
@@ -2932,76 +2932,76 @@ Controls whether bars are vertical (default) or horizontal.
 
 Vertical charts are best for time series or categorical data. Horizontal charts work well for rankings or when category labels are long.
 
-`width` [#width]
+#### `width` [#width]
 
 Width of the chart in pixels. The chart uses responsive sizing via `useParentSize`, so this serves as a default when the container size is not yet known.
 
 * **Default**: `500`
 
-`height` [#height]
+#### `height` [#height]
 
 Height of the chart in pixels.
 
 * **Default**: `700`
 
-`legendPosition` [#legendposition]
+#### `legendPosition` [#legendposition]
 
 Position of the legend relative to the chart.
 
 * **Default**: `'bottom'`
 * **Options**: `'top'` | `'bottom'`
 
-Axis Props [#axis-props]
+### Axis Props [#axis-props]
 
-`xAxisTitle` [#xaxistitle]
+#### `xAxisTitle` [#xaxistitle]
 
 Title displayed below the x-axis.
 
 * **Type**: `string`
 
-`yAxisTitle` [#yaxistitle]
+#### `yAxisTitle` [#yaxistitle]
 
 Title displayed to the left of the y-axis.
 
 * **Type**: `string`
 
-`xBaseline` [#xbaseline]
+#### `xBaseline` [#xbaseline]
 
 Whether to show the x-axis baseline and labels.
 
 * **Default**: `true`
 
-`yBaseline` [#ybaseline]
+#### `yBaseline` [#ybaseline]
 
 Whether to show the y-axis baseline and labels.
 
 * **Default**: `true`
 
-`xTickMarks` [#xtickmarks]
+#### `xTickMarks` [#xtickmarks]
 
 Whether to show tick marks on the x-axis.
 
 * **Default**: `true`
 
-`yTickMarks` [#ytickmarks]
+#### `yTickMarks` [#ytickmarks]
 
 Whether to show tick marks on the y-axis.
 
 * **Default**: `true`
 
-`xGridlines` [#xgridlines]
+#### `xGridlines` [#xgridlines]
 
 Whether to show vertical gridlines from the x-axis.
 
 * **Default**: `true`
 
-`yGridlines` [#ygridlines]
+#### `yGridlines` [#ygridlines]
 
 Whether to show horizontal gridlines from the y-axis.
 
 * **Default**: `true`
 
-`xTickFormat` [#xtickformat]
+#### `xTickFormat` [#xtickformat]
 
 Function to format x-axis tick labels. The value type depends on orientation:
 
@@ -3011,7 +3011,7 @@ Function to format x-axis tick labels. The value type depends on orientation:
 
 * **Type**: `(value: string | number | Date) => string`
 
-`yTickFormat` [#ytickformat]
+#### `yTickFormat` [#ytickformat]
 
 Function to format y-axis tick labels. The value type depends on orientation:
 
@@ -3021,21 +3021,21 @@ Function to format y-axis tick labels. The value type depends on orientation:
 
 * **Type**: `(value: string | number | Date) => string`
 
-`xNumTicks` [#xnumticks]
+#### `xNumTicks` [#xnumticks]
 
 Suggested number of ticks for the x-axis.
 
 * **Type**: `number`
 
-`yNumTicks` [#ynumticks]
+#### `yNumTicks` [#ynumticks]
 
 Suggested number of ticks for the y-axis.
 
 * **Type**: `number`
 
-Domain Props [#domain-props]
+### Domain Props [#domain-props]
 
-`xDomain` [#xdomain]
+#### `xDomain` [#xdomain]
 
 Explicit x-axis domain. The type depends on orientation:
 
@@ -3054,7 +3054,7 @@ xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
 xDomain={[0, 100]}
 ```
 
-`yDomain` [#ydomain]
+#### `yDomain` [#ydomain]
 
 Explicit y-axis domain. The type depends on orientation:
 
@@ -3073,17 +3073,17 @@ yDomain={[0, 100]}
 yDomain={['A', 'B', 'C', 'D', 'E', 'F']}
 ```
 
-Interaction Props [#interaction-props]
+### Interaction Props [#interaction-props]
 
-`tooltip` [#tooltip]
+#### `tooltip` [#tooltip]
 
 Whether to show tooltips on hover.
 
 * **Default**: `true`
 
-Basic Usage [#basic-usage]
+## Basic Usage [#basic-usage]
 
-Single Series [#single-series]
+### Single Series [#single-series]
 
 Display a single data series as vertical bars:
 
@@ -3091,7 +3091,7 @@ Display a single data series as vertical bars:
 
 <Story of="Stories.SingleSeries" />
 
-Multi-Series [#multi-series]
+### Multi-Series [#multi-series]
 
 Display multiple data series as grouped bars with a legend:
 
@@ -3099,9 +3099,9 @@ Display multiple data series as grouped bars with a legend:
 
 <Story of="Stories.MultiSeries" />
 
-Orientation [#orientation-1]
+## Orientation [#orientation-1]
 
-Horizontal Single Series [#horizontal-single-series]
+### Horizontal Single Series [#horizontal-single-series]
 
 Horizontal bars are ideal for ranking, comparison, or when you have long category labels:
 
@@ -3109,7 +3109,7 @@ Horizontal bars are ideal for ranking, comparison, or when you have long categor
 
 <Story of="Stories.HorizontalSingleSeries" />
 
-Horizontal Multi-Series [#horizontal-multi-series]
+### Horizontal Multi-Series [#horizontal-multi-series]
 
 Grouped bars work in horizontal orientation as well:
 
@@ -3117,7 +3117,7 @@ Grouped bars work in horizontal orientation as well:
 
 <Story of="Stories.HorizontalMultiSeries" />
 
-Custom Domains [#custom-domains]
+## Custom Domains [#custom-domains]
 
 Control the exact categories and value ranges displayed:
 
@@ -3130,7 +3130,7 @@ In this example:
 * `xDomain` includes category 'F' which doesn't exist in the data, showing an empty slot
 * `yDomain` is set to `[0, 40]` to maintain a consistent scale even though the max value is 30
 
-RTL Support [#rtl-support]
+## RTL Support [#rtl-support]
 
 The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes, bars, and labels accordingly.
 
@@ -3140,11 +3140,11 @@ The chart follows the current **layout direction** (LTR or RTL). By default, tha
 
 **Note**: RTL support is currently in active development. Axis rendering and tick mark spacing are being refined.
 
-Design System Alignment [#design-system-alignment]
+## Design System Alignment [#design-system-alignment]
 
 The BarChart component is built to align with Antares design principles:
 
-Spacing and Sizing [#spacing-and-sizing]
+### Spacing and Sizing [#spacing-and-sizing]
 
 * **Bar width**: 12px (1.5 grid units)
 * **Bar padding** (multi-series): 4px between bars within a group
@@ -3152,22 +3152,22 @@ Spacing and Sizing [#spacing-and-sizing]
 * **Border radius**: 8px on all bars
 * **Margins**: 20px top/right, 60px bottom/left for axes and labels
 
-Responsive Behavior [#responsive-behavior]
+### Responsive Behavior [#responsive-behavior]
 
 * **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
 * **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
 * **Sticky y-axis**: The y-axis remains visible during horizontal scroll
 * **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
 
-Accessibility [#accessibility]
+### Accessibility [#accessibility]
 
 * **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
 * **Screen reader support**: Semantic HTML structure with proper ARIA attributes
 * **Tooltips**: Show on both hover and focus for keyboard users
 
-Performance Considerations [#performance-considerations]
+## Performance Considerations [#performance-considerations]
 
-Rendering Strategy [#rendering-strategy]
+### Rendering Strategy [#rendering-strategy]
 
 The component uses VisX primitives for optimal SVG rendering:
 
@@ -3175,20 +3175,20 @@ The component uses VisX primitives for optimal SVG rendering:
 * **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
 * **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
 
-Scrolling Strategy [#scrolling-strategy]
+### Scrolling Strategy [#scrolling-strategy]
 
 * **Vertical charts**: Horizontal scrolling when many data points exceed container width
 * **Horizontal charts**: Vertical scrolling when many categories exceed container height
 * **Sticky axes**: Positioned absolutely to remain visible during scroll
 
-Recommendations [#recommendations]
+### Recommendations [#recommendations]
 
 * For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
 * For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
 * Use **custom domains** to maintain consistent scales across multiple charts
 * **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
 
-Development Status [#development-status]
+## Development Status [#development-status]
 
 The BarChart component is in active development. Current focus areas:
 
@@ -3202,9 +3202,9 @@ The BarChart component is in active development. Current focus areas:
 * 🚧 Tick mark positioning improvements
 * 🚧 Additional customization options (tick formatting, axis configuration)
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Bars Not Showing [#bars-not-showing]
+### Bars Not Showing [#bars-not-showing]
 
 If bars are not visible:
 
@@ -3212,7 +3212,7 @@ If bars are not visible:
 2. **Check domains**: Verify `yDomain` (if set) includes your data values
 3. **Check dimensions**: Ensure container has non-zero width and height
 
-Tooltip Positioning Issues [#tooltip-positioning-issues]
+### Tooltip Positioning Issues [#tooltip-positioning-issues]
 
 If tooltips appear in the wrong location:
 
@@ -3220,7 +3220,7 @@ If tooltips appear in the wrong location:
 2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
 3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
 
-Performance Issues [#performance-issues]
+### Performance Issues [#performance-issues]
 
 For better performance:
 
@@ -3228,7 +3228,7 @@ For better performance:
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
 
-Examples [#examples]
+## Examples [#examples]
 
 All examples can be found in the Storybook interface:
 
@@ -3250,19 +3250,19 @@ All examples can be found in the Storybook interface:
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
@@ -3270,7 +3270,7 @@ You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the m
 
 <Story of="Stories.Basic" />
 
-Single slice [#single-slice]
+### Single slice [#single-slice]
 
 When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
@@ -3278,7 +3278,7 @@ When there is only one slice, the ring is full. Add `subLabel` if you want a sma
 
 <Story of="Stories.SingleSlice" />
 
-Legend placement [#legend-placement]
+### Legend placement [#legend-placement]
 
 Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
@@ -3286,7 +3286,7 @@ Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to st
 
 <Story of="Stories.LegendLayout" />
 
-Small slices [#small-slices]
+### Small slices [#small-slices]
 
 Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
@@ -3294,7 +3294,7 @@ Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshol
 
 <Story of="Stories.SmallSlices" />
 
-Format value [#format-value]
+### Format value [#format-value]
 
 Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
 
@@ -3313,19 +3313,19 @@ Use `formatValue` when the raw numbers in the tooltip should read like money, co
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
 A continuous gauge with a single label.
 
@@ -3333,7 +3333,7 @@ A continuous gauge with a single label.
 
 <Source language="tsx" code="SourceBasic" />
 
-Continuous Values [#continuous-values]
+### Continuous Values [#continuous-values]
 
 Multiple continuous gauges showing different fill percentages.
 
@@ -3341,7 +3341,7 @@ Multiple continuous gauges showing different fill percentages.
 
 <Source language="tsx" code="SourceContinuous" />
 
-Segmented [#segmented]
+### Segmented [#segmented]
 
 Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
 
@@ -3349,7 +3349,7 @@ Segmented gauges divide the arc into discrete sections (1–5). The `value` prop
 
 <Source language="tsx" code="SourceSegmented" />
 
-With Range Labels [#with-range-labels]
+### With Range Labels [#with-range-labels]
 
 Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
 
@@ -3357,7 +3357,7 @@ Min/max labels positioned below the gauge arc at the left and right edges. Both 
 
 <Source language="tsx" code="SourceWithRangeLabels" />
 
-Variants [#variants]
+### Variants [#variants]
 
 Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
 
@@ -3365,7 +3365,7 @@ Color variants convey meaning at a glance — use `success`, `warning`, or `crit
 
 <Source language="tsx" code="SourceVariants" />
 
-Label Type [#label-type]
+### Label Type [#label-type]
 
 Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
 
@@ -3373,9 +3373,9 @@ Control the font size of the primary label using `labelType`. Use `'value'` for 
 
 <Source language="tsx" code="SourceLabelType" />
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
 
 The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
 
@@ -3392,7 +3392,7 @@ The component uses `container-type: inline-size` and fills its parent width. Ens
 <GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
 ```
 
-Value Out of Range [#value-out-of-range]
+### Value Out of Range [#value-out-of-range]
 
 Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
 
@@ -3413,21 +3413,21 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 
 <Meta of="Stories" name="Overview" />
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 <PropTable />
 
-Examples [#examples]
+## Examples [#examples]
 
-Basic [#basic]
+### Basic [#basic]
 
-Single Series [#single-series]
+#### Single Series [#single-series]
 
 One line with time-scale X-axis and minimal configuration.
 
@@ -3435,7 +3435,7 @@ One line with time-scale X-axis and minimal configuration.
 
 <Source language="tsx" code="SourceSingleSeries" />
 
-Multiple Series [#multiple-series]
+#### Multiple Series [#multiple-series]
 
 Several lines with a bottom legend and shared X-axis.
 
@@ -3443,9 +3443,9 @@ Several lines with a bottom legend and shared X-axis.
 
 <Source language="tsx" code="SourceMultipleSeries" />
 
-Axis [#axis]
+### Axis [#axis]
 
-Gridlines [#gridlines]
+#### Gridlines [#gridlines]
 
 Vertical and horizontal gridlines via `xGridlines` and `yGridlines`.
 
@@ -3453,7 +3453,7 @@ Vertical and horizontal gridlines via `xGridlines` and `yGridlines`.
 
 <Source language="tsx" code="SourceGridlines" />
 
-Titles [#titles]
+#### Titles [#titles]
 
 X- and Y-axis titles to label what each axis represents (e.g. "Month", "Temperature (°F)").
 
@@ -3461,7 +3461,7 @@ X- and Y-axis titles to label what each axis represents (e.g. "Month", "Temperat
 
 <Source language="tsx" code="SourceTitles" />
 
-Labels [#labels]
+#### Labels [#labels]
 
 Tick labels on both axes with `xLabels` and `yLabels`.
 
@@ -3469,7 +3469,7 @@ Tick labels on both axes with `xLabels` and `yLabels`.
 
 <Source language="tsx" code="SourceLabels" />
 
-Ticks [#ticks]
+#### Ticks [#ticks]
 
 Tick marks (short lines) at each tick value. Controlled by `xTickMarks` and `yTickMarks`.
 
@@ -3477,7 +3477,7 @@ Tick marks (short lines) at each tick value. Controlled by `xTickMarks` and `yTi
 
 <Source language="tsx" code="SourceTicks" />
 
-Baselines [#baselines]
+#### Baselines [#baselines]
 
 Axis baseline (the main axis line). Controlled by `xBaseline` and `yBaseline`.
 
@@ -3485,7 +3485,7 @@ Axis baseline (the main axis line). Controlled by `xBaseline` and `yBaseline`.
 
 <Source language="tsx" code="SourceBaselines" />
 
-Legend [#legend]
+#### Legend [#legend]
 
 Legend showing series names and colors, positioned above or below the chart via `legendPosition`.
 
@@ -3493,9 +3493,9 @@ Legend showing series names and colors, positioned above or below the chart via 
 
 <Source language="tsx" code="SourceLegend" />
 
-Formatting [#formatting]
+### Formatting [#formatting]
 
-Axis and Tooltip Formatting [#axis-and-tooltip-formatting]
+#### Axis and Tooltip Formatting [#axis-and-tooltip-formatting]
 
 Custom formatters for axis ticks and tooltip values (e.g. currency, dates). Controlled by `xTickFormat` and `yTickFormat`.
 
@@ -3503,9 +3503,9 @@ Custom formatters for axis ticks and tooltip values (e.g. currency, dates). Cont
 
 <Source language="tsx" code="SourceFormatting" />
 
-Scale [#scale]
+### Scale [#scale]
 
-Fixed Domain [#fixed-domain]
+#### Fixed Domain [#fixed-domain]
 
 Explicit X and Y domain for a fixed range or consistent scale across charts.
 
@@ -3513,7 +3513,7 @@ Explicit X and Y domain for a fixed range or consistent scale across charts.
 
 <Source language="tsx" code="SourceFixedDomain" />
 
-Nice Values [#nice-values]
+#### Nice Values [#nice-values]
 
 Domain extended to nice round values (e.g. 0.2–1.0).
 
@@ -3521,7 +3521,7 @@ Domain extended to nice round values (e.g. 0.2–1.0).
 
 <Source language="tsx" code="SourceNiceValues" />
 
-Zero Included [#zero-included]
+#### Zero Included [#zero-included]
 
 X and Y domains include zero via `xZero` and `yZero`.
 
@@ -3529,7 +3529,7 @@ X and Y domains include zero via `xZero` and `yZero`.
 
 <Source language="tsx" code="SourceZeroIncluded" />
 
-Custom Ticks [#custom-ticks]
+#### Custom Ticks [#custom-ticks]
 
 Explicit tick values or count with `xTickValues` / `yTickValues` or `xNumTicks` / `yNumTicks`.
 
@@ -3537,7 +3537,7 @@ Explicit tick values or count with `xTickValues` / `yTickValues` or `xNumTicks` 
 
 <Source language="tsx" code="SourceCustomTicks" />
 
-Band Padding [#band-padding]
+#### Band Padding [#band-padding]
 
 Outer padding on a band-scale axis with `xPaddingOuter` / `yPaddingOuter`.
 
@@ -3545,9 +3545,9 @@ Outer padding on a band-scale axis with `xPaddingOuter` / `yPaddingOuter`.
 
 <Source language="tsx" code="SourceBandPadding" />
 
-Interactive [#interactive]
+### Interactive [#interactive]
 
-Tooltip Disabled [#tooltip-disabled]
+#### Tooltip Disabled [#tooltip-disabled]
 
 Tooltip, crosshair, and data point glyphs all disabled (`tooltip={false}`, `showCrosshair={false}`, `showDataPoints={false}`).
 
@@ -3555,7 +3555,7 @@ Tooltip, crosshair, and data point glyphs all disabled (`tooltip={false}`, `show
 
 <Source language="tsx" code="SourceTooltipDisabled" />
 
-Crosshair Only [#crosshair-only]
+#### Crosshair Only [#crosshair-only]
 
 Only the vertical crosshair on hover; tooltip and data point glyphs disabled.
 
@@ -3563,7 +3563,7 @@ Only the vertical crosshair on hover; tooltip and data point glyphs disabled.
 
 <Source language="tsx" code="SourceCrosshairOnly" />
 
-Custom Tooltip Formatting [#custom-tooltip-formatting]
+#### Custom Tooltip Formatting [#custom-tooltip-formatting]
 
 Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
 
@@ -3571,9 +3571,9 @@ Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
 
 <Source language="tsx" code="SourceCustomTooltipFormatting" />
 
-Data [#data]
+### Data [#data]
 
-Custom Accessors [#custom-accessors]
+#### Custom Accessors [#custom-accessors]
 
 Custom data shape (e.g. `date`/`value`) with `xAccessor` and `yAccessor`.
 
@@ -3581,7 +3581,7 @@ Custom data shape (e.g. `date`/`value`) with `xAccessor` and `yAccessor`.
 
 <Source language="tsx" code="SourceCustomAccessors" />
 
-Missing Values [#missing-values]
+#### Missing Values [#missing-values]
 
 Null Y values create breaks in the line.
 
@@ -3589,9 +3589,9 @@ Null Y values create breaks in the line.
 
 <Source language="tsx" code="SourceMissingValues" />
 
-Layout [#layout]
+### Layout [#layout]
 
-Fixed Size [#fixed-size]
+#### Fixed Size [#fixed-size]
 
 Explicit chart size via `width` and `height` props (e.g. 800×400).
 
@@ -3599,9 +3599,9 @@ Explicit chart size via `width` and `height` props (e.g. 800×400).
 
 <Source language="tsx" code="SourceFixedSize" />
 
-Featured [#featured]
+### Featured [#featured]
 
-Bitcoin Price [#bitcoin-price]
+#### Bitcoin Price [#bitcoin-price]
 
 Time-series with date and currency formatting, gridlines, and nice Y-axis.
 
@@ -3609,7 +3609,7 @@ Time-series with date and currency formatting, gridlines, and nice Y-axis.
 
 <Source language="tsx" code="SourceBitcoinPrice" />
 
-City Temperature [#city-temperature]
+#### City Temperature [#city-temperature]
 
 Multiple series over time with legend, shared time axis, and temperature (°F) formatting.
 
@@ -3617,7 +3617,7 @@ Multiple series over time with legend, shared time axis, and temperature (°F) f
 
 <Source language="tsx" code="SourceCityTemperature" />
 
-Browser Usage [#browser-usage]
+#### Browser Usage [#browser-usage]
 
 Categorical X-axis (band scale) with multiple series and percentage formatting.
 
@@ -3625,7 +3625,7 @@ Categorical X-axis (band scale) with multiple series and percentage formatting.
 
 <Source language="tsx" code="SourceBrowserUsage" />
 
-Right-to-Left [#right-to-left]
+### Right-to-Left [#right-to-left]
 
 The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes and labels accordingly.
 
@@ -3633,15 +3633,15 @@ The chart follows the current **layout direction** (LTR or RTL). By default, tha
 
 <Source language="tsx" code="SourceRTL" />
 
-Customization [#customization]
+## Customization [#customization]
 
-Data Attributes [#data-attributes]
+### Data Attributes [#data-attributes]
 
 The chart root exposes data attributes that reflect prop state for styling:
 
 **Chart container:** `data-width`, `data-height`, `data-x-labels`, `data-y-labels`, `data-x-labels-vertical`, `data-x-baseline`, `data-y-baseline`, `data-x-tick-marks`, `data-y-tick-marks`
 
-Component Customization [#component-customization]
+### Component Customization [#component-customization]
 
 Use the `className` prop on the chart container to add or override styles:
 
@@ -3649,17 +3649,17 @@ Use the `className` prop on the chart container to add or override styles:
 <LineChart series={series} className="my-custom-chart" />
 ```
 
-Accessibility [#accessibility]
+## Accessibility [#accessibility]
 
-ARIA Support [#aria-support]
+### ARIA Support [#aria-support]
 
 * Provide &#x2A;*`aria-label`** to describe the chart (e.g. "Monthly sales revenue from January to May 2024").
 * Use &#x2A;*`desc`** for a longer description rendered in the SVG `<desc>` for screen readers.
 * The component sets ARIA attributes on interactive and structural elements as needed.
 
-Troubleshooting [#troubleshooting]
+## Troubleshooting [#troubleshooting]
 
-Chart Not Sizing or Empty [#chart-not-sizing-or-empty]
+### Chart Not Sizing or Empty [#chart-not-sizing-or-empty]
 
 Ensure the chart has a non-zero size. Place it in a container with explicit dimensions or use `width` and `height`:
 
@@ -3673,7 +3673,7 @@ Ensure the chart has a non-zero size. Place it in a container with explicit dime
 <LineChart series={series} width={600} height={400} />
 ```
 
-Dates Not Displaying Correctly [#dates-not-displaying-correctly]
+### Dates Not Displaying Correctly [#dates-not-displaying-correctly]
 
 Use `xType="time"` when the X-axis values are Date objects:
 
@@ -3685,13 +3685,13 @@ Use `xType="time"` when the X-axis values are Date objects:
 <LineChart series={seriesWithDates} xType="time" />
 ```
 
-Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
+### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
 
 Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
 
-Best Practices [#best-practices]
+## Best Practices [#best-practices]
 
-When to Use LineChart [#when-to-use-linechart]
+### When to Use LineChart [#when-to-use-linechart]
 
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
@@ -3712,19 +3712,19 @@ Box is a polymorphic layout component that renders as any HTML element or custom
 
 **Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Box` component accepts the following props:
 
 <PropTable />
 
-Scale Sizes [#scale-sizes]
+## Scale Sizes [#scale-sizes]
 
 The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
 
@@ -3737,9 +3737,9 @@ The spacing props use semantic t-shirt sizes for padding, gap, and other spacing
 
 Custom CSS values are also supported for edge cases.
 
-Examples [#examples]
+## Examples [#examples]
 
-Padding [#padding]
+### Padding [#padding]
 
 The padding props support t-shirt sizes and CSS logical properties for RTL support.
 
@@ -3747,7 +3747,7 @@ The padding props support t-shirt sizes and CSS logical properties for RTL suppo
 
 <Source language="tsx" code="SourcePadding" />
 
-Elevation [#elevation]
+### Elevation [#elevation]
 
 The elevation prop adds visual depth using box-shadow.
 
@@ -3755,7 +3755,7 @@ The elevation prop adds visual depth using box-shadow.
 
 <Source language="tsx" code="SourceElevation" />
 
-Rounding [#rounding]
+### Rounding [#rounding]
 
 The rounding prop sets border-radius. Use `full` for fully rounded corners.
 
@@ -3763,7 +3763,7 @@ The rounding prop sets border-radius. Use `full` for fully rounded corners.
 
 <Source language="tsx" code="SourceRounding" />
 
-Polymorphic `as` Prop [#polymorphic-as-prop]
+### Polymorphic `as` Prop [#polymorphic-as-prop]
 
 Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
 
@@ -3777,7 +3777,7 @@ Box is fully polymorphic - the `as` prop allows rendering as any HTML element or
 
 <Source language="tsx" code="SourceAs" />
 
-Alignment [#alignment]
+### Alignment [#alignment]
 
 Self-alignment props allow Box to position itself within flex or grid containers.
 
@@ -3785,11 +3785,11 @@ Self-alignment props allow Box to position itself within flex or grid containers
 
 <Source language="tsx" code="SourceAlignment" />
 
-RTL Support [#rtl-support]
+## RTL Support [#rtl-support]
 
 Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
 
-Design Tokens [#design-tokens]
+## Design Tokens [#design-tokens]
 
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
@@ -3808,25 +3808,25 @@ Flex is a one-dimensional layout component for arranging children in rows or col
 
 **Recommended default**: Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Flex` component accepts the following props:
 
 <PropTable />
 
-Scale Sizes [#scale-sizes]
+## Scale Sizes [#scale-sizes]
 
 We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
 
-Examples [#examples]
+## Examples [#examples]
 
-Default [#default]
+### Default [#default]
 
 Basic horizontal flex layout with gap.
 
@@ -3834,7 +3834,7 @@ Basic horizontal flex layout with gap.
 
 <Source language="tsx" code="SourceDefault" />
 
-Direction [#direction]
+### Direction [#direction]
 
 The `direction` prop controls the main axis orientation.
 
@@ -3842,7 +3842,7 @@ The `direction` prop controls the main axis orientation.
 
 <Source language="tsx" code="SourceDirection" />
 
-Alignment [#alignment]
+### Alignment [#alignment]
 
 Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
 
@@ -3850,7 +3850,7 @@ Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis 
 
 <Source language="tsx" code="SourceAlignment" />
 
-Gap [#gap]
+### Gap [#gap]
 
 The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
 
@@ -3858,7 +3858,7 @@ The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` f
 
 <Source language="tsx" code="SourceGap" />
 
-Wrap [#wrap]
+### Wrap [#wrap]
 
 The `wrap` prop controls whether items wrap to multiple lines.
 
@@ -3866,7 +3866,7 @@ The `wrap` prop controls whether items wrap to multiple lines.
 
 <Source language="tsx" code="SourceWrap" />
 
-Navbar [#navbar]
+### Navbar [#navbar]
 
 A common navigation bar pattern using space-between and nested Flex containers.
 
@@ -3874,7 +3874,7 @@ A common navigation bar pattern using space-between and nested Flex containers.
 
 <Source language="tsx" code="SourceNavbar" />
 
-Sidebar [#sidebar]
+### Sidebar [#sidebar]
 
 A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
 
@@ -3882,15 +3882,15 @@ A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
 
 <Source language="tsx" code="SourceSidebar" />
 
-RTL Support [#rtl-support]
+## RTL Support [#rtl-support]
 
 Flex uses CSS logical properties which automatically adapt to RTL layouts. The `direction` prop values (`row`, `row-reverse`) respect the document direction.
 
-Design Tokens [#design-tokens]
+## Design Tokens [#design-tokens]
 
 All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
-Migration from @ux/box [#migration-from-uxbox]
+## Migration from @ux/box [#migration-from-uxbox]
 
 | Current `@ux/box`                    | New Pattern                      |
 | ------------------------------------ | -------------------------------- |
@@ -3914,25 +3914,25 @@ Grid is a two-dimensional CSS Grid layout component for complex grid-based layou
 
 **Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
 
-Installation [#installation]
+## Installation [#installation]
 
 ```bash
 npm install --save @godaddy/antares
 ```
 
-Props [#props]
+## Props [#props]
 
 The `Grid` component accepts the following props:
 
 <PropTable />
 
-Scale Sizes [#scale-sizes]
+## Scale Sizes [#scale-sizes]
 
 We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
 
-Examples [#examples]
+## Examples [#examples]
 
-Default [#default]
+### Default [#default]
 
 Basic 3-column grid layout with gap.
 
@@ -3940,7 +3940,7 @@ Basic 3-column grid layout with gap.
 
 <Source language="tsx" code="SourceDefault" />
 
-Columns [#columns]
+### Columns [#columns]
 
 The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
 
@@ -3948,7 +3948,7 @@ The `columns` prop defines grid column tracks using CSS grid-template-columns sy
 
 <Source language="tsx" code="SourceColumns" />
 
-Gap [#gap]
+### Gap [#gap]
 
 The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
 
@@ -3956,7 +3956,7 @@ The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap`
 
 <Source language="tsx" code="SourceGap" />
 
-Named Areas [#named-areas]
+### Named Areas [#named-areas]
 
 Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
 
@@ -3964,7 +3964,7 @@ Use `areas` to define named grid regions. Children use `gridArea` prop for place
 
 <Source language="tsx" code="SourceAreas" />
 
-Responsive Grid [#responsive-grid]
+### Responsive Grid [#responsive-grid]
 
 Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
 
@@ -3972,7 +3972,7 @@ Use CSS `auto-fill` and `minmax()` for responsive column counts without media qu
 
 <Source language="tsx" code="SourceResponsive" />
 
-Alignment [#alignment]
+### Alignment [#alignment]
 
 Use `justifyItems` and `alignItems` to control default alignment of all grid children.
 
@@ -3980,7 +3980,7 @@ Use `justifyItems` and `alignItems` to control default alignment of all grid chi
 
 <Source language="tsx" code="SourceAlignment" />
 
-Form Layout [#form-layout]
+### Form Layout [#form-layout]
 
 A common two-column form pattern with auto-sized label column.
 
@@ -3988,11 +3988,11 @@ A common two-column form pattern with auto-sized label column.
 
 <Source language="tsx" code="SourceForm" />
 
-RTL Support [#rtl-support]
+## RTL Support [#rtl-support]
 
 Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
 
-Grid vs Flex [#grid-vs-flex]
+## Grid vs Flex [#grid-vs-flex]
 
 | Use Case                   | Recommended      |
 | -------------------------- | ---------------- |
