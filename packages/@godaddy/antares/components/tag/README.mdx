@@ -90,11 +90,14 @@ A minimal style that uses a small colored dot instead of a full background. Usef
 
 ## Design Modes
 
-| Mode | What it looks like | Best for |
-| ---- | ------------------ | -------- |
+The `design` prop controls the visual treatment:
+
+| `design` | What it looks like | Best for |
+| -------- | ------------------ | -------- |
 | `filled` | Colored background with contrasting text | Most use cases |
 | `inline` | Text only, no background or border | Inside paragraphs or sentences |
-| `indicator` | White background with a colored dot | Tables, lists, data-heavy views |
+
+> **Indicator** is a separate boolean prop (`indicator={true}`), not a `design` value. It renders a colored dot on a plain background and forces high-contrast colors — useful in tables and data-heavy views. See the [Indicator](#indicator) example above.
 
 ## Accessibility
 
