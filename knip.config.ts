@@ -34,13 +34,13 @@ const config: KnipConfig = {
       ignore: ['*.stories.tsx', 'examples/**/*', '**/examples/**/*', 'test/**/*']
     },
     'packages/dev/*': {
-      ignore: ['*.stories.tsx', 'examples/**/*', 'test/**/*', '**/tsup.config.{ts,mts}']
+      ignore: ['*.stories.tsx', 'examples/**/*', 'test/**/*', '**/tsdown.config.{ts,mts}']
     },
     'packages/dev/storybook-addon-helpers': {
-      ignore: ['test/fixtures/**/*', 'test/**/*', 'tsup.config.ts']
+      ignore: ['test/fixtures/**/*', 'test/**/*', 'tsdown.config.ts']
     }
   },
-  ignoreDependencies: ['@types/css-modules', '@types/mdx']
+  ignoreDependencies: ['@types/css-modules', '@types/mdx', '@typescript/native-preview']
 };
 
 export default config;

@@ -32,7 +32,7 @@ const ROUNDING_MAP = {
 } as const satisfies Record<Rounding, string>;
 
 /** Elevation levels for visual depth. */
-export const ELEVATIONS = ['base', 'card', 'raised', 'overlay'] as const;
+const ELEVATIONS = ['base', 'card', 'raised', 'overlay'] as const;
 
 /** Elevation value. Supports predefined levels or custom CSS values. */
 export type Elevation = (typeof ELEVATIONS)[number];

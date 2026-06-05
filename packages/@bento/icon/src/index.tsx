@@ -58,7 +58,7 @@ export const { ondemand, set, pick, only } = createStore();
  * ```
  * @public
  */
-export const Icon = withSlots('BentoIcon', function Iconic(args: IconProps) {
+function Iconic(args: IconProps) {
   const [loading, setLoading] = useState(true);
   const { props, apply } = useProps(args, { loading });
   const { icon, mode, children } = props;
@@ -121,4 +121,6 @@ export const Icon = withSlots('BentoIcon', function Iconic(args: IconProps) {
       {drawing}
     </Illustration>
   );
-});
+}
+
+export const Icon = withSlots('BentoIcon', Iconic);

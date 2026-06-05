@@ -1,5 +1,5 @@
 import { Reason, type Event } from './reason.tsx';
-import React, { useMemo, type JSX } from 'react';
+import { useMemo, type JSX } from 'react';
 import { ListWrapper } from './list.tsx';
 
 /**

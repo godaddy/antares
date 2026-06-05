@@ -38,15 +38,18 @@ export function withThemeTokens<T extends Record<string, readonly CSSStyleSheet[
     const candidate = themesParams?.themeOverride ?? pluckThemeFromContext(context) ?? config.defaultTheme;
     const themeName = themeNames.includes(candidate) ? candidate : config.defaultTheme;
 
-    useLayoutEffect(function applyThemeSheets() {
-      const previousSheets = document.adoptedStyleSheets;
-      const others = previousSheets.filter((sheet) => !owned.has(sheet));
-      document.adoptedStyleSheets = [...others, ...config.themes[themeName]];
+    useLayoutEffect(
+      function applyThemeSheets() {
+        const previousSheets = document.adoptedStyleSheets;
+        const others = previousSheets.filter((sheet) => !owned.has(sheet));
+        document.adoptedStyleSheets = [...others, ...config.themes[themeName]];
 
-      return function restoreThemeSheets() {
-        document.adoptedStyleSheets = previousSheets;
-      };
-    }, [themeName]);
+        return function restoreThemeSheets() {
+          document.adoptedStyleSheets = previousSheets;
+        };
+      },
+      [themeName]
+    );
 
     return <Story />;
   };

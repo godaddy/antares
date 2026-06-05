@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "description": "Shared TypeScript types used across the Bento library.",
   "type": "module",
-  "types": "dist/index.d.ts",
+  "types": "dist/index.d.mts",
   "scripts": {
-    "build": "tsup-node",
-    "lint": "biome lint && tsc --noEmit",
+    "build": "tsdown",
+    "lint": "biome lint && tsgo --noEmit",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsgo --noEmit -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -34,15 +35,15 @@
     "package.json"
   ],
   "devDependencies": {
-    "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "tsdown": "^0.22.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
   },
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
       "require": {
         "types": "./dist/index.d.cts",

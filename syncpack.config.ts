@@ -1,15 +1,6 @@
 import type { RcFile } from 'syncpack';
+
 const config: RcFile = {
-  customTypes: {
-    dependencies: {
-      strategy: 'versionsByName',
-      path: 'dependencies'
-    },
-    devDependencies: {
-      strategy: 'versionsByName',
-      path: 'devDependencies'
-    }
-  },
   sortFirst: [
     'name',
     'private',
@@ -35,17 +26,16 @@ const config: RcFile = {
   sortAz: [],
   formatBugs: false,
   formatRepository: false,
-  dependencyTypes: ['dependencies', 'devDependencies'],
   semverGroups: [
     {
       range: '',
       packages: ['**'],
-      dependencyTypes: ['dependencies', 'devDependencies'],
+      dependencyTypes: ['prod', 'dev'],
       dependencies: ['nx']
     },
     {
       range: '^',
-      dependencyTypes: ['dependencies', 'devDependencies'],
+      dependencyTypes: ['prod', 'dev'],
       dependencies: ['**'],
       packages: ['**']
     }

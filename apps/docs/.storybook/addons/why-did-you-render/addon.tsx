@@ -1,6 +1,6 @@
 import { AddonPanel, Badge, Spaced } from 'storybook/internal/components';
 import { addons, types } from 'storybook/manager-api';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EmptyState } from './empty-state.tsx';
 import { Why } from './why.tsx';
 import type { Event } from './reason.tsx';
