@@ -1460,6 +1460,75 @@ Individual child components can be styled by passing `className` props:
 ```
 
 
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
 # Modal
 
 
@@ -1550,75 +1619,6 @@ Pass a `media` element to display imagery alongside the content. Configure its l
 * Set `isDismissable={false}` for required confirmations the user must explicitly answer
 * Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
 * Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
-
-
-# MetricsLockup
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="Stories.WithTrend" />
-
-<Source language="tsx" code="WithTrendExample" />
-
-### Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="Stories.Compact" />
-
-<Source language="tsx" code="CompactExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-### ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
 # NumberField
@@ -2459,6 +2459,88 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 <Source language="tsx" code="WrapExample" />
 
 
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The TextField component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+### Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
+
+
 # ToggleButton
 
 
@@ -2702,88 +2784,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
   <Icon icon="bulleted-list" />
 </ToggleButton>
 ```
-
-
-# TextField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The TextField component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with label and placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Adornments [#adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
-
-<Source language="tsx" code="SourceAdornments" />
-
-<Story of="Stories.Adornments" />
-
-### Multiline [#multiline]
-
-Use `multiline` to render a textarea.
-
-<Source language="tsx" code="SourceMultiline" />
-
-<Story of="Stories.Multiline" />
 
 
 # Tooltip
@@ -3240,69 +3240,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Gauge Chart
 
 
@@ -3403,6 +3340,69 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
 
 
 # LineChart
