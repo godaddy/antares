@@ -1,4 +1,4 @@
-import { type ComponentProps, forwardRef } from 'react';
+import { type ComponentProps, type ReactNode, forwardRef } from 'react';
 import { cx } from 'cva';
 import { Icon } from '#components/icon';
 import styles from './index.module.css';
@@ -53,6 +53,12 @@ export interface TagProps extends ComponentProps<'span'> {
 
   /** Additional CSS class names applied to the root element. */
   className?: string;
+
+  /**
+   * The visible text label for the tag. Required for accessibility — tags
+   * must never rely on color or an icon alone to convey meaning.
+   */
+  children: ReactNode;
 }
 
 /**
