@@ -66,10 +66,15 @@ const config: StorybookConfig = {
   async viteFinal(config: UserConfig) {
     const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/)?.slice(1) ?? ['0', '0', '0'];
 
+    // Values are injected as raw source via esbuild.define, so they must be
+    // stringified to become string literals. Without this, "0" would be
+    // inlined as the numeric literal 0, which is falsy and gets dropped by
+    // `.filter(Boolean)` in @bento/internal-props — changing the namespace for
+    // 0.x versions. Mirrors @bento/internal-props' own tsdown build.
     const define = {
-      major: versionMatch[0],
-      minor: versionMatch[1],
-      patch: versionMatch[2]
+      major: JSON.stringify(versionMatch[0]),
+      minor: JSON.stringify(versionMatch[1]),
+      patch: JSON.stringify(versionMatch[2])
     };
 
     // Packages that are in dev/ folder but still use @bento namespace
