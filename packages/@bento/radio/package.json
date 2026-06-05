@@ -1,6 +1,6 @@
 {
   "name": "@bento/radio",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Radio component",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -41,10 +41,10 @@
   "dependencies": {
     "@bento/container": "^0.2.1",
     "@bento/icon": "^0.2.0",
-    "@bento/input": "^0.1.0",
+    "@bento/input": "^0.1.1",
     "@bento/slots": "^0.3.0",
     "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.2.1",
+    "@bento/use-props": "^0.2.3",
     "@bento/visually-hidden": "^0.1.1",
     "@react-aria/utils": "^3.34.0",
     "react-aria": "^3.48.0",

@@ -1,5 +1,26 @@
 # @godaddy/antares
 
+## 0.2.0
+
+### Minor Changes
+
+- feat: Add ToggleButton component ([#182](https://github.com/godaddy/bento/pull/182) by @rmojica-godaddy)
+- feat: add alert component ([#196](https://github.com/godaddy/bento/pull/196) by @rmojica-godaddy)
+- feat(antares): add drawer, inline-drawer, also dep fixes for react-aria and react-aria-compoennts ([#186](https://github.com/godaddy/bento/pull/186) by @rmarkins-godaddy)
+- feat: modal component ([#145](https://github.com/godaddy/bento/pull/145) by @egaitan-godaddy)
+
+### Patch Changes
+
+- chore: using design tokens in radio, checkbox, text-field and number-field components ([#178](https://github.com/godaddy/bento/pull/178) by @egaitan-godaddy)
+- Add ProgressBar component with label, helper text, three sizes (xs, sm, md), and four status intents (default, success, warning, critical) ([#191](https://github.com/godaddy/bento/pull/191) by @rmojica-godaddy)
+- fix: correct tsdown migration issues and indeterminate checkbox group behavior
+
+  - `@bento/checkbox`: rewrite indeterminate-group example to drive selection through the group's `value`/`onChange` exclusively, eliminating the mixed-control pattern that prevented `data-value` from settling. Update browser test to click the underlying `input` element so react-aria's press handler fires correctly.
+  - `@bento/types`: point the `types` export entry to `dist/index.d.mts` to match the actual file emitted by tsdown for ESM-only packages.
+  - `@godaddy/antares`: add explicit `include` to `tsconfig.json` so tsgo does not walk `tsdown.config.ts` and emit stray declaration files into sibling package source directories. ([#205](https://github.com/godaddy/bento/pull/205) by @rmarkins-godaddy)
+
+- using react-aria-components 1.18.0 with new features for calendar and date picker components ([#199](https://github.com/godaddy/bento/pull/199) by @egaitan-godaddy)
+
 ## 0.1.1
 
 ### Patch Changes

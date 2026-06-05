@@ -1,6 +1,6 @@
 {
   "name": "@bento/listbox",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Listbox component",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -44,7 +44,7 @@
   "dependencies": {
     "@bento/slots": "^0.3.0",
     "@bento/use-data-attributes": "^0.1.1",
-    "@bento/use-props": "^0.2.1",
+    "@bento/use-props": "^0.2.3",
     "@react-aria/collections": "^3.1.0",
     "@react-types/listbox": "^3.8.0",
     "@react-types/shared": "^3.34.0",
