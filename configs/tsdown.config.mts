@@ -6,6 +6,7 @@ export const config = defineConfig({
   clean: true,
   treeshake: true,
   dts: {
-    sourcemap: true
+    sourcemap: true,
+    tsgo: true
   }
-})
+});

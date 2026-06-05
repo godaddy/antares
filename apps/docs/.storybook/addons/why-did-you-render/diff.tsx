@@ -6,7 +6,7 @@ import { ListItem } from './list.tsx';
 // The component doesn't correctly export the default export, so we need to
 // detect if we got the correct export or not.
 //
-const Diffy = diffy.default || diffy;
+const Diffy = (diffy as unknown as { default?: typeof diffy }).default ?? diffy;
 
 /**
  * Converts an object to a JSON string while handling circular references.

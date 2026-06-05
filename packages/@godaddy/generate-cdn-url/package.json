@@ -8,10 +8,11 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "biome lint && tsc --noEmit",
+    "lint": "biome lint && tsgo --noEmit",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsgo --noEmit -p tsconfig.json"
   },
   "repository": {
     "type": "git",

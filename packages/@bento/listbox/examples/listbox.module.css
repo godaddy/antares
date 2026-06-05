@@ -17,11 +17,7 @@
 
 /* Selected listbox items - more prominent styling */
 .listbox [role="option"][aria-selected="true"] {
-  background: linear-gradient(
-    135deg,
-    Highlight 0%,
-    color-mix(in srgb, Highlight 80%, black) 100%
-  );
+  background: linear-gradient(135deg, Highlight 0%, color-mix(in srgb, Highlight 80%, black) 100%);
   color: HighlightText;
   border-color: color-mix(in srgb, Highlight 70%, white);
   box-shadow: 0 2px 4px color-mix(in srgb, Highlight 30%, transparent);

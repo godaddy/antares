@@ -1,5 +1,18 @@
 # @bento/listbox
 
+## 0.2.2
+
+### Patch Changes
+
+- feat(antares): add drawer, inline-drawer, also dep fixes for react-aria and react-aria-compoennts ([#186](https://github.com/godaddy/bento/pull/186) by @rmarkins-godaddy)
+- using react-aria-components 1.18.0 with new features for calendar and date picker components ([#199](https://github.com/godaddy/bento/pull/199) by @egaitan-godaddy)
+
+<details>
+<summary>Updated dependencies</summary>
+
+- @bento/use-props@0.2.3
+</details>
+
 ## 0.2.1
 
 ### Patch Changes

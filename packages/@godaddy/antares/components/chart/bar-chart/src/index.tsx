@@ -39,7 +39,13 @@ export type BarChartProps<T extends object = DataPoint> = BarChartPropsBase<T> &
 
 /**
  * Base props for the BarChart component (without accessors).
+ *
+ * Exported so the public `BarChartProps` alias can reference it by name in
+ * emitted declaration files (TS4023). Not intended for direct consumer use —
+ * import `BarChartProps` instead.
+ *
  * @template T - The data point type. Defaults to DataPoint.
+ * @public
  */
 export interface BarChartPropsBase<T extends object = DataPoint> {
   /**

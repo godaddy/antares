@@ -4,13 +4,14 @@
   "description": "Button component built on top of the Pressable primitive",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "scripts": {
-    "build": "tsup-node",
-    "lint": "biome lint && tsc",
+    "build": "tsdown",
+    "lint": "biome lint && tsgo --noEmit",
     "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsgo --noEmit -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -42,15 +43,15 @@
     "@bento/pressable": "^0.1.4",
     "@bento/slots": "^0.3.0",
     "@bento/use-props": "^0.2.1",
-    "react-aria": "^3.45.0"
+    "react-aria": "^3.48.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
-    "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18",
-    "vitest-browser-react": "^2.1.0"
+    "tsdown": "^0.22.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7",
+    "vitest-browser-react": "^2.2.0"
   },
   "peerDependencies": {
     "react": "18.x || 19.x",
@@ -59,8 +60,8 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
       "require": {
         "types": "./dist/index.d.cts",

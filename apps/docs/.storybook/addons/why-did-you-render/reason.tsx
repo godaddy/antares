@@ -111,11 +111,19 @@ export function Reason({
   }
 
   if (reason.stateDifferences) {
-    reasons.push(<Diff who={displayName} summary={`Different state`} key="state" prev={prevState} next={nextState} />);
+    reasons.push(
+      <Diff who={displayName} summary={`Different state`} key="state" prev={prevState} next={nextState}>
+        {null}
+      </Diff>
+    );
   }
 
-  if (reasons.hookDifferences) {
-    reasons.push(<Diff who={hookName} summary={`Different hook values`} key="hooks" prev={prevHook} next={nextHook} />);
+  if (reason.hookDifferences) {
+    reasons.push(
+      <Diff who={hookName} summary={`Different hook values`} key="hooks" prev={prevHook} next={nextHook}>
+        {null}
+      </Diff>
+    );
   }
 
   return <>{reasons}</>;

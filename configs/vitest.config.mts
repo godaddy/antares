@@ -1,10 +1,61 @@
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig, defaultExclude, type TestProjectConfiguration } from 'vitest/config';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import replace from '@rollup/plugin-replace';
+import type { Plugin } from 'vite';
 import { generateCdnUrl } from '../packages/@godaddy/generate-cdn-url/src/index.ts';
+
+/**
+ * Resolve `@bento/<pkg>` package imports to the package's source entry
+ * (`packages/@bento/<pkg>/src/index.{tsx,ts}`) instead of the published
+ * `dist/` build output.
+ *
+ * Why: build tools that pre-bundle CSS Modules (e.g. tsdown) emit pre-hashed
+ * class names into `dist/` and may not re-import the `.module.css` file at
+ * runtime. That breaks tests that rely on Vitest's CSS Modules pipeline
+ * (`css.modules.classNameStrategy: 'non-scoped'`) for stable class names and
+ * runtime style injection. Routing imports to source restores that pipeline.
+ */
+function bentoSourceResolver(): Plugin {
+  const packagesRoot = resolve(__dirname, '..', 'packages', '@bento');
+  return {
+    name: 'bento-source-resolver',
+    enforce: 'pre',
+    resolveId(id) {
+      const match = /^@bento\/([^/]+)$/.exec(id);
+      if (!match) return null;
+
+      for (const ext of ['tsx', 'ts'] as const) {
+        const candidate = resolve(packagesRoot, match[1], 'src', `index.${ext}`);
+        if (existsSync(candidate)) return candidate;
+      }
+      return null;
+    }
+  };
+}
+
+/**
+ * Mirror the build-time `define` substitutions that
+ * `packages/@bento/internal-props/tsdown.config.ts` performs on `major`,
+ * `minor`, and `patch` identifiers in its `src/index.ts`. Vitest runs against
+ * the source file directly (via `bentoSourceResolver`), so we must apply the
+ * same substitution here or the source references undefined globals at
+ * runtime.
+ */
+function bentoInternalPropsVersionDefine(): Record<string, string> {
+  const internalPropsPkg = JSON.parse(
+    readFileSync(resolve(__dirname, '..', 'packages', '@bento', 'internal-props', 'package.json'), 'utf8')
+  ) as { version: string };
+  const versionMatch = internalPropsPkg.version.match(/^(\d+)\.(\d+)\.(\d+)/);
+  const [major, minor, patch] = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
+  return {
+    major: JSON.stringify(major),
+    minor: JSON.stringify(minor),
+    patch: JSON.stringify(patch)
+  };
+}
 
 export const ssr: TestProjectConfiguration = {
   extends: true,
@@ -68,8 +119,8 @@ export const visual: TestProjectConfiguration = {
 
 export default defineConfig({
   plugins: [
+    bentoSourceResolver(),
     react(),
-    tsconfigPaths(),
     replace({
       preventAssignment: true,
       __CDN_URL__: generateCdnUrl({
@@ -79,6 +130,10 @@ export default defineConfig({
       })
     })
   ],
+  resolve: {
+    tsconfigPaths: true
+  },
+  define: bentoInternalPropsVersionDefine(),
   test: {
     exclude: [...defaultExclude],
     coverage: {

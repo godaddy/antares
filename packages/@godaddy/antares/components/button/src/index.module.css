@@ -113,11 +113,27 @@
 
   &:where(.critical) {
     --button-bg: var(--color-feedback-critical-strong, var(--ux-1marogz, #b22222));
-    --button-bg-hovered: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-1q4q36s, #b22222)), white 12%);
-    --button-bg-pressed: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-926l8f, #b22222)), black 12%);
+    --button-bg-hovered: color-mix(
+      in oklch,
+      var(--color-feedback-critical-strong, var(--ux-1q4q36s, #b22222)),
+      white 12%
+    );
+    --button-bg-pressed: color-mix(
+      in oklch,
+      var(--color-feedback-critical-strong, var(--ux-926l8f, #b22222)),
+      black 12%
+    );
     --button-border: var(--color-feedback-critical-strong, var(--ux-ceou01, transparent));
-    --button-border-hovered: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-n0tova, transparent)), white 12%);
-    --button-border-pressed: color-mix(in oklch, var(--color-feedback-critical-strong, var(--ux-w3lhdp, transparent)), black 12%);
+    --button-border-hovered: color-mix(
+      in oklch,
+      var(--color-feedback-critical-strong, var(--ux-n0tova, transparent)),
+      white 12%
+    );
+    --button-border-pressed: color-mix(
+      in oklch,
+      var(--color-feedback-critical-strong, var(--ux-w3lhdp, transparent)),
+      black 12%
+    );
     --button-text: var(--color-feedback-critical-onstrong, var(--ux-17htz86, #ffffff));
     --button-text-hovered: var(--color-feedback-critical-onstrong, var(--ux-9cq6k1, #ffffff));
     --button-text-pressed: var(--color-feedback-critical-onstrong, var(--ux-17znn9m, #ffffff));

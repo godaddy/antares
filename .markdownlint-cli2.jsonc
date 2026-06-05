@@ -1,0 +1,17 @@
+{
+  // markdownlint-cli2 config: rules come from .markdownlint.json,
+  // ignores live here because markdownlint-cli2 only honors `ignores`
+  // when declared in a markdownlint-cli2 config (not in .markdownlint.json).
+  "config": {
+    "extends": ".markdownlint.json"
+  },
+  "ignores": [
+    ".agents/**",
+    ".opencode/**",
+    ".claude/**",
+    ".codex/**",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.nx/**"
+  ]
+}
