@@ -1,0 +1,115 @@
+---
+title: Tag
+description: Non-interactive labels that highlight statuses and categories.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './tag.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import EmphasesExample from './examples/emphases.tsx?raw';
+import SizesExample from './examples/sizes.tsx?raw';
+import HighContrastExample from './examples/high-contrast.tsx?raw';
+import IconsExample from './examples/icons.tsx?raw';
+import IndicatorExample from './examples/indicator.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Overview
+
+Tags are short, colored labels that help users quickly identify the status or category of an item. You'll find them on cards, tables, lists, and navigation menus.
+
+Tags are **read-only** — they display information but cannot be clicked or dismissed.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+```tsx
+import { Tag } from '@godaddy/antares';
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Emphasis
+
+Each emphasis communicates a different meaning through color:
+
+| Emphasis | Meaning |
+| -------- | ------- |
+| `passive` | General label, no urgency |
+| `critical` | Something went wrong or needs immediate attention |
+| `warning` | Heads up — may need action soon |
+| `success` | All good — active, complete, or verified |
+| `info` | Helpful context or additional detail |
+| `highlight` | Something new, featured, or on sale |
+| `premium` | Paid feature or upgrade available |
+| `internal` | Internal use only |
+| `neutral` | Subtle, low-emphasis label |
+
+<Story of={Stories.Emphases} inline />
+<Source language="tsx" code={EmphasesExample} />
+
+### Sizes
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SizesExample} />
+
+### High Contrast
+
+A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
+
+<Story of={Stories.HighContrast} inline />
+<Source language="tsx" code={HighContrastExample} />
+
+### With Icon
+
+Icons can reinforce the tag's meaning at a glance. Pass any icon name as a string.
+
+<Story of={Stories.Icons} inline />
+<Source language="tsx" code={IconsExample} />
+
+### Indicator
+
+A minimal style that uses a small colored dot instead of a full background. Useful in tables or dashboards where too many colors would be distracting.
+
+<Story of={Stories.Indicator} inline />
+<Source language="tsx" code={IndicatorExample} />
+
+## Design Modes
+
+| Mode | What it looks like | Best for |
+| ---- | ------------------ | -------- |
+| `filled` | Colored background with contrasting text | Most use cases |
+| `inline` | Text only, no background or border | Inside paragraphs or sentences |
+| `indicator` | White background with a colored dot | Tables, lists, data-heavy views |
+
+## Accessibility
+
+- Screen readers will announce the tag's text naturally as part of the page content.
+- Icons and dots are decorative — they are not read aloud.
+- Always include a text label. Color alone is not enough to communicate meaning.
+
+## When to Use
+
+- Showing status on a card or list item (e.g. "Active", "Expired")
+- Categorizing content (e.g. "New", "Sale", "Beta")
+- Displaying metadata labels (e.g. "Pro", "Free trial")
+
+## When Not to Use
+
+- If users need to click or dismiss it — use a **Chip** or **Button** instead.
+- If you need a number count — use a **Badge**.
+- If the label is part of a sentence with no visual distinction — just use text.
