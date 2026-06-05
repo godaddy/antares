@@ -36,7 +36,7 @@
     "@nx/vitest": "^22.7.5",
     "@rollup/plugin-replace": "^6.0.3",
     "@testing-library/user-event": "^14.6.1",
-    "@tsdown/css": "^0.22.1",
+    "@tsdown/css": "^0.22.2",
     "@types/css-modules": "^1.0.5",
     "@types/dashify": "^1.0.3",
     "@types/mdx": "^2.0.13",
