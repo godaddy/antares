@@ -2249,6 +2249,261 @@ Components automatically add data attributes for styling different states:
 * For form input (use RadioGroup instead)
 
 
+# Tag
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A minimal tag with the default emphasis and size.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Emphasis [#emphasis]
+
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+
+<Story of="Stories.Emphases" />
+
+<Source language="tsx" code="EmphasesExample" />
+
+### Sizes [#sizes]
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SizesExample" />
+
+### Inline [#inline]
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="Stories.Inline" />
+
+<Source language="tsx" code="InlineExample" />
+
+### High Contrast [#high-contrast]
+
+A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
+
+<Story of="Stories.HighContrast" />
+
+<Source language="tsx" code="HighContrastExample" />
+
+### With Icon [#with-icon]
+
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
+
+<Story of="Stories.Icons" />
+
+<Source language="tsx" code="IconsExample" />
+
+### Indicator [#indicator]
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="Stories.Indicator" />
+
+<Source language="tsx" code="IndicatorExample" />
+
+## Accessibility [#accessibility]
+
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices [#best-practices]
+
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use [#when-to-use]
+
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
+
+
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The TextField component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+### Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
+
+
 # Select
 
 
@@ -2401,293 +2656,6 @@ Individual child components can be styled by passing `className` props:
   outline-offset: 2px;
 }
 ```
-
-
-# Tag
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Overview [#overview]
-
-Tags are short, colored labels that help users quickly identify the status or category of an item. You'll find them on cards, tables, lists, and navigation menus.
-
-Tags are **read-only** — they display information but cannot be clicked or dismissed.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-```tsx
-import { Tag } from '@godaddy/antares';
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Emphasis [#emphasis]
-
-Each emphasis communicates a different meaning through color:
-
-| Emphasis    | Meaning                                           |
-| ----------- | ------------------------------------------------- |
-| `passive`   | General label, no urgency                         |
-| `critical`  | Something went wrong or needs immediate attention |
-| `warning`   | Heads up — may need action soon                   |
-| `success`   | All good — active, complete, or verified          |
-| `info`      | Helpful context or additional detail              |
-| `highlight` | Something new, featured, or on sale               |
-| `premium`   | Paid feature or upgrade available                 |
-| `internal`  | Internal use only                                 |
-| `neutral`   | Subtle, low-emphasis label                        |
-
-<Story of="Stories.Emphases" />
-
-<Source language="tsx" code="EmphasesExample" />
-
-### Sizes [#sizes]
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SizesExample" />
-
-### Inline [#inline]
-
-Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of="Stories.Inline" />
-
-<Source language="tsx" code="InlineExample" />
-
-### High Contrast [#high-contrast]
-
-A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
-
-<Story of="Stories.HighContrast" />
-
-<Source language="tsx" code="HighContrastExample" />
-
-### With Icon [#with-icon]
-
-Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
-
-<Story of="Stories.Icons" />
-
-<Source language="tsx" code="IconsExample" />
-
-### Indicator [#indicator]
-
-A minimal style that uses a small colored dot instead of a full background. Useful in tables or dashboards where too many colors would be distracting.
-
-<Story of="Stories.Indicator" />
-
-<Source language="tsx" code="IndicatorExample" />
-
-## Design Modes [#design-modes]
-
-The `design` prop controls the visual treatment:
-
-| `design` | What it looks like                       | Best for                       |
-| -------- | ---------------------------------------- | ------------------------------ |
-| `filled` | Colored background with contrasting text | Most use cases                 |
-| `inline` | Text only, no background or border       | Inside paragraphs or sentences |
-
-> **Indicator** is a separate boolean prop (`indicator={true}`), not a `design` value. It renders a colored dot on a plain background and forces high-contrast colors — useful in tables and data-heavy views. See the [Indicator](#indicator) example above.
-
-## Accessibility [#accessibility]
-
-### Screen readers [#screen-readers]
-
-Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
-
-### Decorative icons [#decorative-icons]
-
-Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
-
-```tsx
-<Tag emphasis="critical">
-  <Icon icon="alert" aria-hidden="true" />
-  Expired
-</Tag>
-```
-
-### Indicator dot [#indicator-dot]
-
-The colored dot is a CSS `::before` pseudo-element with no text content. It is invisible to screen readers by design. The text label must convey the status on its own.
-
-## Best Practices [#best-practices]
-
-* Use `indicator` for dense layouts (tables, dashboards) where a full colored background would be distracting. Reserve `filled` for prominent placements like cards or hero sections.
-* Always mark decorative icons with `aria-hidden="true"` — the text label carries the meaning, not the icon.
-* Default to `size="sm"` in tables and compact lists. Step up to `md` or `lg` only when the tag is a primary visual element.
-* Use `design="inline"` only within running text. Avoid it in standalone or grouped tag contexts where the background provides useful visual separation.
-* Do not combine multiple tags of different emphasis on the same item. Choose the most important one — stacking emphasis dilutes all of them.
-
-## When to Use [#when-to-use]
-
-* Showing status on a card or list item (e.g. "Active", "Expired")
-* Categorizing content (e.g. "New", "Sale", "Beta")
-* Displaying metadata labels (e.g. "Pro", "Free trial")
-
-## When Not to Use [#when-not-to-use]
-
-* If users need to click or dismiss it — use a **Chip** or **Button** instead.
-* If you need a number count — use a **Badge**.
-* If the label is part of a sentence with no visual distinction — just use text.
-
-
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
-
-
-# TextField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The TextField component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with label and placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Adornments [#adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
-
-<Source language="tsx" code="SourceAdornments" />
-
-<Story of="Stories.Adornments" />
-
-### Multiline [#multiline]
-
-Use `multiline` to render a textarea.
-
-<Source language="tsx" code="SourceMultiline" />
-
-<Story of="Stories.Multiline" />
 
 
 # ToggleButton
@@ -3452,108 +3420,6 @@ Use `formatValue` when the raw numbers in the tooltip should read like money, co
 <Story of="Stories.FormatValue" />
 
 
-# Gauge Chart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A continuous gauge with a single label.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="Stories.Continuous" />
-
-<Source language="tsx" code="SourceContinuous" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="Stories.Segmented" />
-
-<Source language="tsx" code="SourceSegmented" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="Stories.WithRangeLabels" />
-
-<Source language="tsx" code="SourceWithRangeLabels" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="Stories.Variants" />
-
-<Source language="tsx" code="SourceVariants" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="Stories.LabelType" />
-
-<Source language="tsx" code="SourceLabelType" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-
 # LineChart
 
 
@@ -3845,6 +3711,108 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 
 # Box
