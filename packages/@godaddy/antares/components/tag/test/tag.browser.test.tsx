@@ -2,7 +2,7 @@ import { describe, it, beforeAll } from 'vitest';
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import assume from 'assume';
-import { Tag } from '@godaddy/antares';
+import { Icon, Tag } from '@godaddy/antares';
 import { set } from '#components/icon';
 
 const placeholderSvg = (
@@ -14,10 +14,7 @@ const placeholderSvg = (
 describe('@godaddy/antares', function antares() {
   describe('#Tag', function tagTests() {
     beforeAll(function setupIcons() {
-      // Synchronously load the icons referenced by the examples and the
-      // indicator dot so they render during the assertions below.
       set({
-        'circle-filled': placeholderSvg,
         alert: placeholderSvg,
         checkmark: placeholderSvg,
         information: placeholderSvg,
@@ -58,9 +55,10 @@ describe('@godaddy/antares', function antares() {
       assume(tag.hasAttribute('data-indicator')).equals(false);
     });
 
-    it('renders a leading icon marked aria-hidden', async function leadingIcon() {
+    it('renders a leading icon passed as a child', async function leadingIcon() {
       const { container } = await render(
-        <Tag emphasis="info" icon="information">
+        <Tag emphasis="info">
+          <Icon icon="information" aria-hidden="true" />
           Info
         </Tag>
       );
@@ -70,19 +68,16 @@ describe('@godaddy/antares', function antares() {
       assume(icon.getAttribute('aria-hidden')).equals('true');
     });
 
-    it('renders an indicator dot and forces high contrast', async function indicator() {
+    it('renders an indicator and forces high contrast', async function indicator() {
       const { container } = await render(
         <Tag emphasis="success" indicator>
           3 new
         </Tag>
       );
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
-      const dot = container.querySelector('[data-icon="circle-filled"]') as HTMLElement;
 
       assume(tag.hasAttribute('data-indicator')).equals(true);
       assume(tag.hasAttribute('data-high-contrast')).equals(true);
-      assume(dot).is.not.equal(null);
-      assume(dot.getAttribute('aria-hidden')).equals('true');
     });
 
     it('enables high contrast explicitly', async function highContrast() {
@@ -100,21 +95,23 @@ describe('@godaddy/antares', function antares() {
       assume(tag.hasAttribute('data-high-contrast')).equals(true);
     });
 
-    it('renders no accessory when neither icon nor indicator is set', async function noAccessory() {
+    it('renders no icon when none is provided as a child', async function noIcon() {
       const { container } = await render(<Tag>Plain</Tag>);
 
       assume(container.querySelector('[data-icon]')).equals(null);
     });
 
-    it('prefers the indicator dot over a provided icon', async function indicatorOverIcon() {
+    it('renders children alongside the indicator', async function indicatorWithChild() {
       const { container } = await render(
-        <Tag indicator icon="information">
+        <Tag indicator>
+          <Icon icon="information" aria-hidden="true" />
           Both
         </Tag>
       );
+      const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
-      assume(container.querySelector('[data-icon="circle-filled"]')).is.not.equal(null);
-      assume(container.querySelector('[data-icon="information"]')).equals(null);
+      assume(tag.hasAttribute('data-indicator')).equals(true);
+      assume(container.querySelector('[data-icon="information"]')).is.not.equal(null);
     });
 
     it('forwards ref to the underlying span', async function forwardsRef() {

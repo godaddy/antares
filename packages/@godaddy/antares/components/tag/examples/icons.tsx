@@ -1,24 +1,30 @@
-import { Flex, Tag } from '@godaddy/antares';
+import { Flex, Icon, Tag } from '@godaddy/antares';
 
 export function IconsExample() {
   return (
     <Flex gap="xs" wrap="wrap" alignItems="center">
-      <Tag emphasis="critical" icon="alert">
+      <Tag emphasis="critical">
+        <Icon icon="alert" />
         Critical
       </Tag>
-      <Tag emphasis="success" icon="checkmark">
+      <Tag emphasis="success">
+        <Icon icon="checkmark" />
         Success
       </Tag>
-      <Tag emphasis="warning" icon="alert">
+      <Tag emphasis="warning">
+        <Icon icon="alert" />
         Warning
       </Tag>
-      <Tag emphasis="info" icon="information">
+      <Tag emphasis="info">
+        <Icon icon="information" />
         Info
       </Tag>
-      <Tag emphasis="highlight" icon="star">
+      <Tag emphasis="highlight">
+        <Icon icon="star" />
         Highlight
       </Tag>
-      <Tag emphasis="premium" icon="diamond">
+      <Tag emphasis="premium">
+        <Icon icon="diamond" />
         Premium
       </Tag>
     </Flex>

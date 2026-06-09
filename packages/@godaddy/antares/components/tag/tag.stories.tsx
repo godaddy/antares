@@ -34,7 +34,6 @@ export const Playground = {
     size: 'sm',
     design: 'filled',
     highContrast: false,
-    icon: undefined,
     indicator: false,
     children: 'Tag'
   },
@@ -57,10 +56,6 @@ export const Playground = {
     highContrast: {
       control: 'boolean',
       description: 'Enable high-contrast color variant'
-    },
-    icon: {
-      control: 'text',
-      description: 'Icon name to display (e.g. "alert", "checkmark", "star")'
     },
     indicator: {
       control: 'boolean',

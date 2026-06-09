@@ -1,6 +1,5 @@
 import { type ComponentProps, type ReactNode, forwardRef } from 'react';
 import { cx } from 'cva';
-import { Icon } from '#components/icon';
 import styles from './index.module.css';
 
 /**
@@ -39,12 +38,6 @@ export interface TagProps extends ComponentProps<'span'> {
   highContrast?: boolean;
 
   /**
-   * Icon name to render before the tag label.
-   * Accepts any valid icon name from the icon set (e.g. `"alert"`, `"checkmark"`, `"star"`).
-   */
-  icon?: string;
-
-  /**
    * Renders the tag as an indicator with a colored circle dot.
    * When enabled, forces high-contrast colors and indicator styling.
    * @default false
@@ -71,7 +64,7 @@ export interface TagProps extends ComponentProps<'span'> {
  * <Tag emphasis="success" size="sm">Active</Tag>
  *
  * @example
- * <Tag emphasis="critical" icon="alert">Expired</Tag>
+ * <Tag emphasis="critical"><Icon icon="alert" />Expired</Tag>
  *
  * @example
  * <Tag emphasis="info" indicator>3 new</Tag>
@@ -84,7 +77,6 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref
     size = 'md',
     design = 'filled',
     highContrast = false,
-    icon,
     indicator = false,
     className,
     children,
@@ -92,18 +84,6 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref
   } = props;
 
   const resolvedHighContrast = highContrast || indicator || design === 'inline';
-
-  const renderAccessory = function renderAccessory() {
-    if (indicator) {
-      return <Icon icon="circle-filled" className={styles.accessoryCircle} aria-hidden="true" />;
-    }
-
-    if (icon) {
-      return <Icon icon={icon} className={styles.accessoryIcon} aria-hidden="true" />;
-    }
-
-    return null;
-  };
 
   return (
     <span
@@ -116,7 +96,6 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref
       data-indicator={indicator ? '' : undefined}
       {...rest}
     >
-      {renderAccessory()}
       {children}
     </span>
   );
