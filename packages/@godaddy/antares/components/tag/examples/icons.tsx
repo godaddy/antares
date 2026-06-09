@@ -4,27 +4,27 @@ export function IconsExample() {
   return (
     <Flex gap="xs" wrap="wrap" alignItems="center">
       <Tag emphasis="critical">
-        <Icon icon="alert" />
+        <Icon icon="alert" aria-hidden="true" />
         Critical
       </Tag>
       <Tag emphasis="success">
-        <Icon icon="checkmark" />
+        <Icon icon="checkmark" aria-hidden="true" />
         Success
       </Tag>
       <Tag emphasis="warning">
-        <Icon icon="alert" />
+        <Icon icon="alert" aria-hidden="true" />
         Warning
       </Tag>
       <Tag emphasis="info">
-        <Icon icon="information" />
+        <Icon icon="information" aria-hidden="true" />
         Info
       </Tag>
       <Tag emphasis="highlight">
-        <Icon icon="star" />
+        <Icon icon="star" aria-hidden="true" />
         Highlight
       </Tag>
       <Tag emphasis="premium">
-        <Icon icon="diamond" />
+        <Icon icon="diamond" aria-hidden="true" />
         Premium
       </Tag>
     </Flex>

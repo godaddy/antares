@@ -102,13 +102,13 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref
   return (
     <span
       ref={ref}
+      {...rest}
       className={cx(styles.tag, className)}
       data-emphasis={emphasis}
       data-size={size}
       data-design={design}
       data-high-contrast={resolvedHighContrast ? '' : undefined}
       data-indicator={indicator ? '' : undefined}
-      {...rest}
     >
       {children}
     </span>

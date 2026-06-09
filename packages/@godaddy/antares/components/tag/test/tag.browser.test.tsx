@@ -2,8 +2,15 @@ import { describe, it, beforeAll } from 'vitest';
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import assume from 'assume';
-import { Icon, Tag, type TagEmphasis, type TagSize } from '@godaddy/antares';
+import { Icon, Tag } from '@godaddy/antares';
 import { set } from '#components/icon';
+import { DefaultExample } from '../examples/default.tsx';
+import { EmphasesExample } from '../examples/emphases.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
+import { HighContrastExample } from '../examples/high-contrast.tsx';
+import { IconsExample } from '../examples/icons.tsx';
+import { IndicatorExample } from '../examples/indicator.tsx';
+import { InlineExample } from '../examples/inline.tsx';
 
 const placeholderSvg = (
   <svg viewBox="0 0 24 24">
@@ -24,19 +31,15 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders the text label', async function rendersLabel() {
-      const { container } = await render(<Tag emphasis="success">Active</Tag>);
+      const { container } = await render(<DefaultExample />);
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
       assume(tag).is.not.equal(null);
-      assume(tag.textContent).contains('Active');
+      assume(tag.textContent).contains('Tag');
     });
 
     it('reflects emphasis, size, and design via data attributes', async function dataAttributes() {
-      const { container } = await render(
-        <Tag emphasis="critical" size="lg" design="filled">
-          Expired
-        </Tag>
-      );
+      const { container } = await render(<DefaultExample emphasis="critical" size="lg" design="filled" />);
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
       assume(tag.getAttribute('data-emphasis')).equals('critical');
@@ -45,7 +48,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('applies the default props when none are provided', async function defaults() {
-      const { container } = await render(<Tag>Label</Tag>);
+      const { container } = await render(<DefaultExample />);
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
       assume(tag.getAttribute('data-emphasis')).equals('passive');
@@ -56,24 +59,15 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders a leading icon passed as a child', async function leadingIcon() {
-      const { container } = await render(
-        <Tag emphasis="info">
-          <Icon icon="information" aria-hidden="true" />
-          Info
-        </Tag>
-      );
-      const icon = container.querySelector('[data-icon="information"]') as HTMLElement;
+      const { container } = await render(<IconsExample />);
+      const icon = container.querySelector('[data-icon]') as HTMLElement;
 
       assume(icon).is.not.equal(null);
       assume(icon.getAttribute('aria-hidden')).equals('true');
     });
 
     it('renders an indicator and forces high contrast', async function indicator() {
-      const { container } = await render(
-        <Tag emphasis="success" indicator>
-          3 new
-        </Tag>
-      );
+      const { container } = await render(<IndicatorExample />);
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
       assume(tag.hasAttribute('data-indicator')).equals(true);
@@ -81,22 +75,22 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('enables high contrast explicitly', async function highContrast() {
-      const { container } = await render(<Tag highContrast>HC</Tag>);
+      const { container } = await render(<HighContrastExample />);
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
       assume(tag.hasAttribute('data-high-contrast')).equals(true);
     });
 
     it('forces high contrast for the inline design', async function inlineHighContrast() {
-      const { container } = await render(<Tag design="inline">Inline</Tag>);
-      const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
+      const { container } = await render(<InlineExample />);
+      const tag = container.querySelector('span[data-design="inline"]') as HTMLElement;
 
-      assume(tag.getAttribute('data-design')).equals('inline');
+      assume(tag).is.not.equal(null);
       assume(tag.hasAttribute('data-high-contrast')).equals(true);
     });
 
     it('renders no icon when none is provided as a child', async function noIcon() {
-      const { container } = await render(<Tag>Plain</Tag>);
+      const { container } = await render(<DefaultExample />);
 
       assume(container.querySelector('[data-icon]')).equals(null);
     });
@@ -123,11 +117,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('merges className and forwards arbitrary props', async function passthrough() {
-      const { container } = await render(
-        <Tag className="custom" data-testid="tag-x">
-          X
-        </Tag>
-      );
+      const { container } = await render(<DefaultExample className="custom" data-testid="tag-x" />);
       const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
 
       assume(tag.classList.contains('custom')).equals(true);
@@ -135,7 +125,11 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders all 9 emphasis values via data attribute', async function allEmphases() {
-      const emphases: TagEmphasis[] = [
+      const { container } = await render(<EmphasesExample />);
+      const tags = container.querySelectorAll('span[data-emphasis]');
+
+      assume(tags.length).equals(9);
+      for (const emphasis of [
         'passive',
         'critical',
         'warning',
@@ -145,40 +139,35 @@ describe('@godaddy/antares', function antares() {
         'premium',
         'internal',
         'neutral'
-      ];
-      for (const emphasis of emphases) {
-        const { container } = await render(<Tag emphasis={emphasis}>{emphasis}</Tag>);
-        const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
-        assume(tag.getAttribute('data-emphasis')).equals(emphasis);
+      ]) {
+        assume(container.querySelector(`span[data-emphasis="${emphasis}"]`)).is.not.equal(null);
       }
     });
 
     it('renders all 3 sizes via data attribute', async function allSizes() {
-      const sizes: TagSize[] = ['sm', 'md', 'lg'];
-      for (const size of sizes) {
-        const { container } = await render(<Tag size={size}>{size}</Tag>);
-        const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
-        assume(tag.getAttribute('data-size')).equals(size);
+      const { container } = await render(<SizesExample />);
+      const tags = container.querySelectorAll('span[data-emphasis]');
+
+      assume(tags.length).equals(3);
+      for (const size of ['sm', 'md', 'lg']) {
+        assume(container.querySelector(`span[data-size="${size}"]`)).is.not.equal(null);
       }
     });
 
     it('sizes an SVG child to a non-zero height', async function svgChildSize() {
-      const { container } = await render(
-        <Tag emphasis="info">
-          <Icon icon="information" aria-hidden="true" />
-          Info
-        </Tag>
-      );
+      const { container } = await render(<IconsExample />);
       const svg = container.querySelector('svg') as SVGElement;
       const { height } = getComputedStyle(svg);
+
       assume(height).is.not.equal('');
       assume(height).is.not.equal('0px');
     });
 
     it('renders inline design with a transparent background', async function inlineNoBackground() {
-      const { container } = await render(<Tag design="inline">Inline</Tag>);
-      const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
+      const { container } = await render(<InlineExample />);
+      const tag = container.querySelector('span[data-design="inline"]') as HTMLElement;
       const bg = getComputedStyle(tag).backgroundColor;
+
       assume(bg).equals('rgba(0, 0, 0, 0)');
     });
   });
