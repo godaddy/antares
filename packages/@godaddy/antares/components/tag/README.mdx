@@ -15,20 +15,10 @@ import IndicatorExample from './examples/indicator.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-## Overview
-
-Tags are short, colored labels that help users quickly identify the status or category of an item. You'll find them on cards, tables, lists, and navigation menus.
-
-Tags are **read-only** — they display information but cannot be clicked or dismissed.
-
 ## Installation
 
 ```bash
 npm install --save @godaddy/antares
-```
-
-```tsx
-import { Tag } from '@godaddy/antares';
 ```
 
 ## Props
@@ -39,24 +29,14 @@ import { Tag } from '@godaddy/antares';
 
 ### Basic
 
+A minimal tag with the default emphasis and size.
+
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
 
 ### Emphasis
 
-Each emphasis communicates a different meaning through color:
-
-| Emphasis | Meaning |
-| -------- | ------- |
-| `passive` | General label, no urgency |
-| `critical` | Something went wrong or needs immediate attention |
-| `warning` | Heads up — may need action soon |
-| `success` | All good — active, complete, or verified |
-| `info` | Helpful context or additional detail |
-| `highlight` | Something new, featured, or on sale |
-| `premium` | Paid feature or upgrade available |
-| `internal` | Internal use only |
-| `neutral` | Subtle, low-emphasis label |
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
 
 <Story of={Stories.Emphases} inline />
 <Source language="tsx" code={EmphasesExample} />
@@ -91,21 +71,10 @@ Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it i
 
 ### Indicator
 
-A minimal style that uses a small colored dot instead of a full background. Useful in tables or dashboards where too many colors would be distracting.
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
 
 <Story of={Stories.Indicator} inline />
 <Source language="tsx" code={IndicatorExample} />
-
-## Design Modes
-
-The `design` prop controls the visual treatment:
-
-| `design` | What it looks like | Best for |
-| -------- | ------------------ | -------- |
-| `filled` | Colored background with contrasting text | Most use cases |
-| `inline` | Text only, no background or border | Inside paragraphs or sentences |
-
-> **Indicator** is a separate boolean prop (`indicator={true}`), not a `design` value. It renders a colored dot on a plain background and forces high-contrast colors — useful in tables and data-heavy views. See the [Indicator](#indicator) example above.
 
 ## Accessibility
 
@@ -126,24 +95,23 @@ Icons passed as children must include `aria-hidden="true"` so they are skipped b
 
 ### Indicator dot
 
-The colored dot is a CSS `::before` pseudo-element with no text content. It is invisible to screen readers by design. The text label must convey the status on its own.
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
 
 ## Best Practices
 
-- Use `indicator` for dense layouts (tables, dashboards) where a full colored background would be distracting. Reserve `filled` for prominent placements like cards or hero sections.
-- Always mark decorative icons with `aria-hidden="true"` — the text label carries the meaning, not the icon.
-- Default to `size="sm"` in tables and compact lists. Step up to `md` or `lg` only when the tag is a primary visual element.
-- Use `design="inline"` only within running text. Avoid it in standalone or grouped tag contexts where the background provides useful visual separation.
-- Do not combine multiple tags of different emphasis on the same item. Choose the most important one — stacking emphasis dilutes all of them.
+- Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+- Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+- Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+- Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
 
 ## When to Use
 
-- Showing status on a card or list item (e.g. "Active", "Expired")
-- Categorizing content (e.g. "New", "Sale", "Beta")
-- Displaying metadata labels (e.g. "Pro", "Free trial")
+- Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+- Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+- Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+- Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
 
 ## When Not to Use
 
-- If users need to click or dismiss it — use a **Chip** or **Button** instead.
-- If you need a number count — use a **Badge**.
+- If users need to click or dismiss it — use a **Button** instead.
 - If the label is part of a sentence with no visual distinction — just use text.
