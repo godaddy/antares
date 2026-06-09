@@ -2125,6 +2125,130 @@ Always provide clear error messages:
 ```
 
 
+# SegmentedController
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+### Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+### Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="Stories.IconOnly" />
+
+<Source language="tsx" code="SourceIconOnly" />
+
+### Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="Stories.Overflow" />
+
+<Source language="tsx" code="SourceOverflow" />
+
+### RTL Direction [#rtl-direction]
+
+The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+### Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+## Best Practices [#best-practices]
+
+### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+### When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
+
+
 # Select
 
 
@@ -2279,130 +2403,6 @@ Individual child components can be styled by passing `className` props:
 ```
 
 
-# SegmentedController
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-### Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-### Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="Stories.IconOnly" />
-
-<Source language="tsx" code="SourceIconOnly" />
-
-### Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="Stories.Overflow" />
-
-<Source language="tsx" code="SourceOverflow" />
-
-### RTL Direction [#rtl-direction]
-
-The segmented controller follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-### Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-## Best Practices [#best-practices]
-
-### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-### When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
-
-
 # Tag
 
 
@@ -2467,6 +2467,14 @@ Choose a size that fits the surrounding content. Smaller tags work well in compa
 
 <Source language="tsx" code="SizesExample" />
 
+### Inline [#inline]
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="Stories.Inline" />
+
+<Source language="tsx" code="InlineExample" />
+
 ### High Contrast [#high-contrast]
 
 A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
@@ -2504,9 +2512,32 @@ The `design` prop controls the visual treatment:
 
 ## Accessibility [#accessibility]
 
-* Screen readers will announce the tag's text naturally as part of the page content.
-* Icons and dots are decorative — they are not read aloud.
-* Always include a text label. Color alone is not enough to communicate meaning.
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is a CSS `::before` pseudo-element with no text content. It is invisible to screen readers by design. The text label must convey the status on its own.
+
+## Best Practices [#best-practices]
+
+* Use `indicator` for dense layouts (tables, dashboards) where a full colored background would be distracting. Reserve `filled` for prominent placements like cards or hero sections.
+* Always mark decorative icons with `aria-hidden="true"` — the text label carries the meaning, not the icon.
+* Default to `size="sm"` in tables and compact lists. Step up to `md` or `lg` only when the tag is a primary visual element.
+* Use `design="inline"` only within running text. Avoid it in standalone or grouped tag contexts where the background provides useful visual separation.
+* Do not combine multiple tags of different emphasis on the same item. Choose the most important one — stacking emphasis dilutes all of them.
 
 ## When to Use [#when-to-use]
 
@@ -2963,312 +2994,6 @@ To position a tooltip relative to a different focusable element, use the
 * Keep tooltip content short and informative.
 * Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-
-# Box
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="Stories.Padding" />
-
-<Source language="tsx" code="SourcePadding" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="Stories.Elevation" />
-
-<Source language="tsx" code="SourceElevation" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="Stories.Rounding" />
-
-<Source language="tsx" code="SourceRounding" />
-
-### Polymorphic `as` Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-<Story of="Stories.As" />
-
-<Source language="tsx" code="SourceAs" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-
-# Flex
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Flex is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Recommended default**: Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Flex` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic horizontal flex layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Direction [#direction]
-
-The `direction` prop controls the main axis orientation.
-
-<Story of="Stories.Direction" />
-
-<Source language="tsx" code="SourceDirection" />
-
-### Alignment [#alignment]
-
-Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Wrap [#wrap]
-
-The `wrap` prop controls whether items wrap to multiple lines.
-
-<Story of="Stories.Wrap" />
-
-<Source language="tsx" code="SourceWrap" />
-
-### Navbar [#navbar]
-
-A common navigation bar pattern using space-between and nested Flex containers.
-
-<Story of="Stories.Navbar" />
-
-<Source language="tsx" code="SourceNavbar" />
-
-### Sidebar [#sidebar]
-
-A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
-
-<Story of="Stories.Sidebar" />
-
-<Source language="tsx" code="SourceSidebar" />
-
-## RTL Support [#rtl-support]
-
-Flex uses CSS logical properties which automatically adapt to RTL layouts. The `direction` prop values (`row`, `row-reverse`) respect the document direction.
-
-## Design Tokens [#design-tokens]
-
-All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-## Migration from @ux/box [#migration-from-uxbox]
-
-| Current `@ux/box`                    | New Pattern                      |
-| ------------------------------------ | -------------------------------- |
-| `<Box orientation="horizontal">`     | `<Flex direction="row" >`        |
-| `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
-| `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
-| `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
-
-
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
 
 
 # Bar Chart
@@ -4120,3 +3845,309 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+### Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+
+# Flex
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Flex is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Recommended default**: Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Flex` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic horizontal flex layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Direction [#direction]
+
+The `direction` prop controls the main axis orientation.
+
+<Story of="Stories.Direction" />
+
+<Source language="tsx" code="SourceDirection" />
+
+### Alignment [#alignment]
+
+Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Wrap [#wrap]
+
+The `wrap` prop controls whether items wrap to multiple lines.
+
+<Story of="Stories.Wrap" />
+
+<Source language="tsx" code="SourceWrap" />
+
+### Navbar [#navbar]
+
+A common navigation bar pattern using space-between and nested Flex containers.
+
+<Story of="Stories.Navbar" />
+
+<Source language="tsx" code="SourceNavbar" />
+
+### Sidebar [#sidebar]
+
+A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
+
+<Story of="Stories.Sidebar" />
+
+<Source language="tsx" code="SourceSidebar" />
+
+## RTL Support [#rtl-support]
+
+Flex uses CSS logical properties which automatically adapt to RTL layouts. The `direction` prop values (`row`, `row-reverse`) respect the document direction.
+
+## Design Tokens [#design-tokens]
+
+All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+## Migration from @ux/box [#migration-from-uxbox]
+
+| Current `@ux/box`                    | New Pattern                      |
+| ------------------------------------ | -------------------------------- |
+| `<Box orientation="horizontal">`     | `<Flex direction="row" >`        |
+| `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
+| `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
+| `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
