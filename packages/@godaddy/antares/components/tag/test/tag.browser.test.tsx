@@ -2,7 +2,7 @@ import { describe, it, beforeAll } from 'vitest';
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import assume from 'assume';
-import { Icon, Tag } from '@godaddy/antares';
+import { Icon, Tag, type TagEmphasis, type TagSize } from '@godaddy/antares';
 import { set } from '#components/icon';
 
 const placeholderSvg = (
@@ -132,6 +132,54 @@ describe('@godaddy/antares', function antares() {
 
       assume(tag.classList.contains('custom')).equals(true);
       assume(tag.getAttribute('data-testid')).equals('tag-x');
+    });
+
+    it('renders all 9 emphasis values via data attribute', async function allEmphases() {
+      const emphases: TagEmphasis[] = [
+        'passive',
+        'critical',
+        'warning',
+        'success',
+        'info',
+        'highlight',
+        'premium',
+        'internal',
+        'neutral'
+      ];
+      for (const emphasis of emphases) {
+        const { container } = await render(<Tag emphasis={emphasis}>{emphasis}</Tag>);
+        const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
+        assume(tag.getAttribute('data-emphasis')).equals(emphasis);
+      }
+    });
+
+    it('renders all 3 sizes via data attribute', async function allSizes() {
+      const sizes: TagSize[] = ['sm', 'md', 'lg'];
+      for (const size of sizes) {
+        const { container } = await render(<Tag size={size}>{size}</Tag>);
+        const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
+        assume(tag.getAttribute('data-size')).equals(size);
+      }
+    });
+
+    it('sizes an SVG child to a non-zero height', async function svgChildSize() {
+      const { container } = await render(
+        <Tag emphasis="info">
+          <Icon icon="information" aria-hidden="true" />
+          Info
+        </Tag>
+      );
+      const svg = container.querySelector('svg') as SVGElement;
+      const { height } = getComputedStyle(svg);
+      assume(height).is.not.equal('');
+      assume(height).is.not.equal('0px');
+    });
+
+    it('renders inline design with a transparent background', async function inlineNoBackground() {
+      const { container } = await render(<Tag design="inline">Inline</Tag>);
+      const tag = container.querySelector('span[data-emphasis]') as HTMLElement;
+      const bg = getComputedStyle(tag).backgroundColor;
+      assume(bg).equals('rgba(0, 0, 0, 0)');
     });
   });
 });

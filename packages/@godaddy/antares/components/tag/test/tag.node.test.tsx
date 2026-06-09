@@ -4,6 +4,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { EmphasesExample } from '../examples/emphases.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { HighContrastExample } from '../examples/high-contrast.tsx';
+import { InlineExample } from '../examples/inline.tsx';
 import { IconsExample } from '../examples/icons.tsx';
 import { IndicatorExample } from '../examples/indicator.tsx';
 import { PlaygroundExample } from '../examples/tag-playground.tsx';
@@ -40,6 +41,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the inline design', function inlineDesign() {
       expect(renderToString(<DefaultExample design="inline" />)).toMatchSnapshot();
+    });
+
+    it('renders the inline example', function inlineExample() {
+      expect(renderToString(<InlineExample />)).toMatchSnapshot();
     });
   });
 });

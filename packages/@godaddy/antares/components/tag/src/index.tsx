@@ -22,6 +22,11 @@ export type TagEmphasis =
 export type TagDesign = 'filled' | 'inline';
 
 /**
+ * Controls the size of the tag.
+ */
+export type TagSize = 'sm' | 'md' | 'lg';
+
+/**
  * Props for the {@link Tag} component.
  */
 export interface TagProps extends ComponentProps<'span'> {
@@ -29,12 +34,21 @@ export interface TagProps extends ComponentProps<'span'> {
   emphasis?: TagEmphasis;
 
   /** Controls the size of the tag. @default 'md' */
-  size?: 'sm' | 'md' | 'lg';
+  size?: TagSize;
 
-  /** Controls the visual design mode. @default 'filled' */
+  /**
+   * Controls the visual design mode. @default 'filled'
+   *
+   * When `'inline'`, the background and border are removed and high-contrast
+   * colors are applied automatically — suitable for tags embedded in running text.
+   */
   design?: TagDesign;
 
-  /** Enables the high-contrast color variant. @default false */
+  /**
+   * Enables the high-contrast color variant. @default false
+   *
+   * Also activated automatically when `design="inline"` or `indicator={true}`.
+   */
   highContrast?: boolean;
 
   /**

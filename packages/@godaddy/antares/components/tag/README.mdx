@@ -8,6 +8,7 @@ import * as Stories from './tag.stories.tsx';
 import DefaultExample from './examples/default.tsx?raw';
 import EmphasesExample from './examples/emphases.tsx?raw';
 import SizesExample from './examples/sizes.tsx?raw';
+import InlineExample from './examples/inline.tsx?raw';
 import HighContrastExample from './examples/high-contrast.tsx?raw';
 import IconsExample from './examples/icons.tsx?raw';
 import IndicatorExample from './examples/indicator.tsx?raw';
@@ -67,6 +68,13 @@ Choose a size that fits the surrounding content. Smaller tags work well in compa
 <Story of={Stories.Sizes} inline />
 <Source language="tsx" code={SizesExample} />
 
+### Inline
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of={Stories.Inline} inline />
+<Source language="tsx" code={InlineExample} />
+
 ### High Contrast
 
 A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
@@ -101,9 +109,32 @@ The `design` prop controls the visual treatment:
 
 ## Accessibility
 
-- Screen readers will announce the tag's text naturally as part of the page content.
-- Icons and dots are decorative — they are not read aloud.
-- Always include a text label. Color alone is not enough to communicate meaning.
+### Screen readers
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot
+
+The colored dot is a CSS `::before` pseudo-element with no text content. It is invisible to screen readers by design. The text label must convey the status on its own.
+
+## Best Practices
+
+- Use `indicator` for dense layouts (tables, dashboards) where a full colored background would be distracting. Reserve `filled` for prominent placements like cards or hero sections.
+- Always mark decorative icons with `aria-hidden="true"` — the text label carries the meaning, not the icon.
+- Default to `size="sm"` in tables and compact lists. Step up to `md` or `lg` only when the tag is a primary visual element.
+- Use `design="inline"` only within running text. Avoid it in standalone or grouped tag contexts where the background provides useful visual separation.
+- Do not combine multiple tags of different emphasis on the same item. Choose the most important one — stacking emphasis dilutes all of them.
 
 ## When to Use
 

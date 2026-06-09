@@ -6,6 +6,7 @@ import { EmphasesExample } from './examples/emphases.tsx';
 import { SizesExample } from './examples/sizes.tsx';
 import { HighContrastExample } from './examples/high-contrast.tsx';
 import { IconsExample } from './examples/icons.tsx';
+import { InlineExample } from './examples/inline.tsx';
 import { IndicatorExample } from './examples/indicator.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/tag-playground.tsx';
 
@@ -20,6 +21,8 @@ export const Default = getStory(DefaultExample);
 export const Emphases = getStory(EmphasesExample);
 
 export const Sizes = getStory(SizesExample);
+
+export const Inline = getStory(InlineExample);
 
 export const HighContrast = getStory(HighContrastExample);
 
