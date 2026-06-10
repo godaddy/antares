@@ -1,0 +1,65 @@
+---
+title: DropZone
+description: A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './drop-zone.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import CustomContentExample from './examples/custom-content.tsx?raw';
+import DisabledExample from './examples/disabled.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+A minimal drop zone with the default instructional text. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Custom Content
+
+Pass any React node as `children` to replace the default instructional text — for example, to describe the accepted file types and size limits.
+
+<Story of={Stories.CustomContent} inline />
+<Source language="tsx" code={CustomContentExample} />
+
+### Disabled
+
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={DisabledExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Moves focus to the drop zone |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer. The button's accessible name defaults to "DropZone"; override it with `aria-label` on the `DropZone` component to provide more specific context (e.g. `aria-label="Upload profile photo"`).
+
+## Best Practices
+
+- Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+- Replace the default text with `children` to communicate the accepted file types and size limits up front.
+- Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+- Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
