@@ -1,0 +1,50 @@
+.dropZone {
+  --drop-zone-border-color: var(--ux-f7kpiw, #00a4a6);
+  --drop-zone-bg: rgba(216, 239, 239, 0.9);
+  --drop-zone-bg-active: rgba(216, 239, 239, 1);
+  --drop-zone-text-color: var(--ux-1leynsm, #111111);
+  --drop-zone-radius: var(--ux-2jubes, 16px);
+
+  box-sizing: border-box;
+  width: 100%;
+  border: 1.5px dashed var(--drop-zone-border-color);
+  border-radius: var(--drop-zone-radius);
+  background: var(--drop-zone-bg);
+
+  /* Hovered with a mouse. TODO: awaiting design spec */
+  &:where([data-hovered]) {
+  }
+
+  /* Focused via mouse or keyboard. TODO: awaiting design spec */
+  &:where([data-focused]) {
+  }
+
+  /* Keyboard focused. */
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* Active drop target. */
+  &:where([data-drop-target]) {
+    border-style: solid;
+    background: var(--drop-zone-bg-active);
+  }
+
+  /* Disabled. */
+  &:where([data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Invalid drop (consumer-controlled). TODO: awaiting design spec */
+  /* Processing drop (consumer-controlled). TODO: awaiting design spec */
+}
+
+.text {
+  font-size: var(--ux-18ime9a, 1.375rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--drop-zone-text-color);
+  text-align: center;
+}
