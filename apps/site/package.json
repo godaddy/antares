@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "estree-util-value-to-estree": "^3.5.0",
-    "fumadocs-core": "^16.9.2",
-    "fumadocs-mdx": "^15.0.9",
+    "fumadocs-core": "^16.10.2",
+    "fumadocs-mdx": "^15.0.12",
     "fumadocs-typescript": "^5.2.6",
-    "fumadocs-ui": "^16.9.2",
-    "lucide-react": "^1.17.0",
-    "next": "^16.2.6",
+    "fumadocs-ui": "^16.10.2",
+    "lucide-react": "^1.18.0",
+    "next": "^16.2.9",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwind-merge": "^3.6.0"
