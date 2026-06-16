@@ -113,3 +113,5 @@ export {
 } from '#components/toggle-button';
 
 export { Alert, type AlertProps, type AlertEmphasis } from '#components/alert';
+
+export { Tag, type TagProps, type TagEmphasis, type TagDesign, type TagSize } from '#components/tag';
