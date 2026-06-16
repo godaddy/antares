@@ -72,7 +72,7 @@
     height: var(--gauge-thickness);
     width: var(--gauge-thickness);
     bottom: 0;
-    border-radius: calc(infinity * 1px);
+    border-radius: 9999px;
     transform: translateY(50%);
     clip-path: inset(50% 0 0 0);
   }
@@ -109,8 +109,8 @@
     inset: 0;
     display: block;
     box-sizing: border-box;
-    border-top-left-radius: calc(infinity * 1px);
-    border-top-right-radius: calc(infinity * 1px);
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
     pointer-events: none;
   }
 
