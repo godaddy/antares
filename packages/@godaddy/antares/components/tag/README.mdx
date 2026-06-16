@@ -1,0 +1,117 @@
+---
+title: Tag
+description: Non-interactive labels that highlight statuses and categories.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './tag.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import EmphasesExample from './examples/emphases.tsx?raw';
+import SizesExample from './examples/sizes.tsx?raw';
+import InlineExample from './examples/inline.tsx?raw';
+import HighContrastExample from './examples/high-contrast.tsx?raw';
+import IconsExample from './examples/icons.tsx?raw';
+import IndicatorExample from './examples/indicator.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+A minimal tag with the default emphasis and size.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Emphasis
+
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+
+<Story of={Stories.Emphases} inline />
+<Source language="tsx" code={EmphasesExample} />
+
+### Sizes
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SizesExample} />
+
+### Inline
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of={Stories.Inline} inline />
+<Source language="tsx" code={InlineExample} />
+
+### High Contrast
+
+A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
+
+<Story of={Stories.HighContrast} inline />
+<Source language="tsx" code={HighContrastExample} />
+
+### With Icon
+
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
+
+<Story of={Stories.Icons} inline />
+<Source language="tsx" code={IconsExample} />
+
+### Indicator
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of={Stories.Indicator} inline />
+<Source language="tsx" code={IndicatorExample} />
+
+## Accessibility
+
+### Screen readers
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices
+
+- Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+- Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+- Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+- Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use
+
+- Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+- Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+- Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+- Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use
+
+- If users need to click or dismiss it — use a **Button** instead.
+- If the label is part of a sentence with no visual distinction — just use text.
