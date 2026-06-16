@@ -13,6 +13,8 @@
 
   --gauge-range-label-fg: var(--ux-by6mab);
   --gauge-range-label-font-size: max(9.37cqi, 1px);
+  --gauge-range-label-font-weight: 500;
+  --gauge-range-label-line-height: var(--ux-h93mi7);
   --gauge-range-label-margin-top: calc(var(--ux-1sbfig8) * 0.5);
 
   --gauge-sublabel-fg: var(--ux-1le7uoa);
@@ -253,14 +255,21 @@
   display: inline-flex;
   justify-content: center;
   width: 4ch;
+  overflow: hidden;
   margin-top: var(--gauge-range-label-margin-top);
   color: var(--gauge-range-label-fg);
   font-family: var(--gauge-font-family);
   font-size: var(--gauge-range-label-font-size);
-  font-weight: var(--gauge-sublabel-font-weight);
-  line-height: var(--gauge-sublabel-line-height);
+  font-weight: var(--gauge-range-label-font-weight);
+  line-height: var(--gauge-range-label-line-height);
+
+  &[data-range-label="min"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
 
   &[data-range-label="max"] {
     grid-column: 3;
+    grid-row: 2;
   }
 }
