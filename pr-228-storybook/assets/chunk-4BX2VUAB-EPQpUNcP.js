@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-Bhqo2ki1.js";import{h as t,m as n}from"./src-BKVX-D_D.js";function r(e,t){e.accDescr&&t.setAccDescription?.(e.accDescr),e.accTitle&&t.setAccTitle?.(e.accTitle),e.title&&t.setDiagramTitle?.(e.title)}var i=e((()=>{t(),n(r,`populateCommonDb`)}));export{r as n,i as t};
