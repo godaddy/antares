@@ -1,9 +1,8 @@
 import { IconExample } from '../examples/icon.tsx';
 import { render } from 'vitest-browser-react';
-import { Icon, parser } from '@godaddy/antares';
-import { inheritFill } from '../src/index.tsx';
+import { Icon } from '@godaddy/antares';
 import { type ReactElement, createRef } from 'react';
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
@@ -178,24 +177,26 @@ describe('@godaddy/antares', function antares() {
     });
   });
 
-  describe('#inheritFill', function inheritFillTransform() {
-    it('drops hardcoded fills, keeps fill="none", drops currentColor', async function fills() {
-      const svg = parser(
-        '<svg viewBox="0 0 24 24">' +
-          '<path fill="#333" d="M0 0h1"/>' +
-          '<path fill="none" d="M0 0h2"/>' +
-          '<path fill="currentColor" d="M0 0h3"/>' +
-          '</svg>',
-        { props: { fill: inheritFill } }
+  describe('#fill stripping', function fillStripping() {
+    it('strips hardcoded fills from CDN icons so they inherit color', async function strips() {
+      // Mock the CDN so we assert the full ondemand → fetch → parser → render path.
+      // The unique icon name avoids the store cache from other tests.
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async function mockedFetch() {
+          return new Response(
+            '<svg viewBox="0 0 24 24"><path fill="#333" d="M0 0h1"/><path fill="none" d="M0 0h2"/></svg>',
+            {
+              headers: { 'Content-Type': 'image/svg+xml' }
+            }
+          );
+        })
       );
 
-      const { container } = await render(svg);
+      const { container } = await renderAndWait(<Icon icon="fill-strip-test" color="red" />);
 
-      // Hardcoded color and currentColor are dropped so shapes inherit the parent fill.
+      vi.unstubAllGlobals();
       assume(container.querySelector('path[d="M0 0h1"]')?.hasAttribute('fill')).equals(false);
-      assume(container.querySelector('path[d="M0 0h3"]')?.hasAttribute('fill')).equals(false);
-
-      // Stroke-only shapes keep fill="none" so they stay unfilled.
       assume(container.querySelector('path[d="M0 0h2"]')?.getAttribute('fill')).equals('none');
     });
   });

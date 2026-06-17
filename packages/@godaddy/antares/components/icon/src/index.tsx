@@ -25,7 +25,7 @@ const cdn = '__CDN_URL__';
  * @param node - The SVG element being transformed.
  * @returns A `[propName, value]` pair; an empty name drops the attribute.
  */
-export function inheritFill(node: Element): [string, string] {
+function inheritFill(node: Element): [string, string] {
   return node.getAttribute('fill') === 'none' ? ['fill', 'none'] : ['', ''];
 }
 
