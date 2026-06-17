@@ -26,6 +26,7 @@
   border-style: solid;
   background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
   border-color: var(--color-input-border-default, var(--ux-by6mab, #767676));
+  color: var(--color-input-text-selected, var(--ux-1lw8azc, #111));
   border-radius: 2px;
   box-sizing: border-box;
   transition: all 0.15s ease-in-out;
