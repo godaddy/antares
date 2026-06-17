@@ -1,6 +1,7 @@
 import { IconExample } from '../examples/icon.tsx';
 import { render } from 'vitest-browser-react';
-import { Icon } from '@godaddy/antares';
+import { Icon, parser } from '@godaddy/antares';
+import { inheritFill } from '../src/index.tsx';
 import { type ReactElement, createRef } from 'react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
@@ -174,6 +175,28 @@ describe('@godaddy/antares', function antares() {
 
       assume(instance3.container.innerHTML).includes('data-icon="star"');
       assume(instance3.container.innerHTML).includes('fill="red"');
+    });
+  });
+
+  describe('#inheritFill', function inheritFillTransform() {
+    it('drops hardcoded fills, keeps fill="none", drops currentColor', async function fills() {
+      const svg = parser(
+        '<svg viewBox="0 0 24 24">' +
+          '<path fill="#333" d="M0 0h1"/>' +
+          '<path fill="none" d="M0 0h2"/>' +
+          '<path fill="currentColor" d="M0 0h3"/>' +
+          '</svg>',
+        { props: { fill: inheritFill } }
+      );
+
+      const { container } = await render(svg);
+
+      // Hardcoded color and currentColor are dropped so shapes inherit the parent fill.
+      assume(container.querySelector('path[d="M0 0h1"]')?.hasAttribute('fill')).equals(false);
+      assume(container.querySelector('path[d="M0 0h3"]')?.hasAttribute('fill')).equals(false);
+
+      // Stroke-only shapes keep fill="none" so they stay unfilled.
+      assume(container.querySelector('path[d="M0 0h2"]')?.getAttribute('fill')).equals('none');
     });
   });
 
