@@ -1,10 +1,1 @@
-export {
-  Select,
-  type SelectProps,
-  SelectItem,
-  type SelectItemProps,
-  SelectSection,
-  type SelectSectionProps,
-  SelectHeader,
-  type SelectHeaderProps
-} from '#components/select';
+export { Select, type SelectProps, SelectItem, type SelectItemProps, type Key } from '#components/select';

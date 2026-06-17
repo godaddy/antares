@@ -66,8 +66,8 @@ export function CalendarHeader({ range }: CalendarHeaderProps) {
           return (
             <Select
               aria-label={picker['aria-label']}
-              selectedKey={picker.value}
-              onSelectionChange={picker.onChange}
+              value={picker.value}
+              onChange={picker.onChange}
               className={styles.headerSelect}
             >
               {picker.items.map(function renderMonthItem(item) {
@@ -86,8 +86,8 @@ export function CalendarHeader({ range }: CalendarHeaderProps) {
           return (
             <Select
               aria-label={picker['aria-label']}
-              selectedKey={picker.value}
-              onSelectionChange={picker.onChange}
+              value={picker.value}
+              onChange={picker.onChange}
               className={styles.headerSelect}
             >
               {picker.items.map(function renderYearItem(item) {

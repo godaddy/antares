@@ -1,68 +1,44 @@
-import { SelectStaticExample } from '../examples/select-static.tsx';
-import { SelectControlledExample } from '../examples/select-controlled.tsx';
-import { SelectDynamicExample } from '../examples/select-dynamic.tsx';
-import { SelectMultipleExample } from '../examples/select-multiple.tsx';
-import { SelectRenderPropsExample } from '../examples/select-render-props.tsx';
-import { page, userEvent } from 'vitest/browser';
-import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
+import { SelectBasic } from '../examples/basic';
+import { SelectControlledExample } from '../examples/controlled';
+import { SelectMultipleExample } from '../examples/multiple';
 
 describe('@godaddy/antares', function antares() {
-  describe('Examples', function examples() {
-    it('renders SelectStaticExample', async function staticRender() {
-      await render(<SelectStaticExample />);
+  describe('#Select', function selectSuite() {
+    it('renders the basic example', async function basicRender() {
+      await render(<SelectBasic />);
 
-      const button = page.getByRole('button');
-      assume(button).is.not.equal(null);
+      const trigger = page.getByRole('button');
+      assume(trigger).is.not.equal(null);
     });
 
-    it('renders SelectControlledExample with interaction', async function controlledRender() {
+    it('updates the controlled selection on click', async function controlledInteraction() {
       await render(<SelectControlledExample />);
 
-      const button = page.getByRole('button', { name: 'Latte' });
-      await userEvent.setup().click(button);
+      const trigger = page.getByRole('button', { name: /Latte/ });
+      await userEvent.setup().click(trigger);
 
-      const espressoOption = page.getByRole('option', { name: 'Espresso' });
-      await userEvent.setup().click(espressoOption);
+      const espresso = page.getByRole('option', { name: 'Espresso' });
+      await userEvent.setup().click(espresso);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      const updatedButton = page.getByRole('button', { name: 'Espresso' });
-      assume(updatedButton).is.not.equal(null);
+      const updated = page.getByRole('button', { name: /Espresso/ });
+      assume(updated).is.not.equal(null);
     });
 
-    it('renders SelectDynamicExample with items prop', async function dynamicRender() {
-      await render(<SelectDynamicExample />);
-
-      const button = page.getByRole('button');
-      assume(button).is.not.equal(null);
-    });
-
-    it('renders SelectMultipleExample with multiple selection', async function multipleRender() {
+    it('toggles items in multiple selection', async function multipleInteraction() {
       await render(<SelectMultipleExample />);
 
-      const button = page.getByRole('button', { name: 'Coffee drinks' });
-      await userEvent.setup().click(button);
+      const trigger = page.getByRole('button');
+      await userEvent.setup().click(trigger);
 
-      const espressoOption = page.getByRole('option', { name: 'Espresso' });
-      await userEvent.setup().click(espressoOption);
+      const espresso = page.getByRole('option', { name: 'Espresso' });
+      await userEvent.setup().click(espresso);
 
-      const latteOption = page.getByRole('option', { name: 'Latte' });
-      await userEvent.setup().click(latteOption);
-
-      const checkboxes = document.querySelectorAll('[aria-hidden="true"]');
-      assume(checkboxes.length).greaterThan(0);
-    });
-
-    it('renders SelectRenderPropsExample with render function children', async function renderPropsRender() {
-      await render(<SelectRenderPropsExample />);
-
-      const button = page.getByRole('button', { name: 'Render props select' });
-      await userEvent.setup().click(button);
-
-      const option = page.getByRole('option').first();
-      assume(option).is.not.equal(null);
+      const selected = document.querySelectorAll('[role="option"][data-selected="true"]');
+      assume(selected.length).greaterThan(0);
     });
   });
 });

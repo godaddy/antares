@@ -1,6 +1,6 @@
 import { Select, SelectItem, type SelectProps } from '@godaddy/antares';
 
-/** Props for the select playground example. */
+/** Props for the Select playground example. */
 export interface PlaygroundExampleProps
   extends Pick<
     SelectProps<object>,
@@ -8,8 +8,6 @@ export interface PlaygroundExampleProps
     | 'placeholder'
     | 'description'
     | 'errorMessage'
-    | 'size'
-    | 'labelStyle'
     | 'selectionMode'
     | 'isDisabled'
     | 'isRequired'
@@ -17,12 +15,10 @@ export interface PlaygroundExampleProps
   > {}
 
 export function PlaygroundExample({
-  label = 'Pick a drink',
-  placeholder = 'Select an option',
+  label = 'Coffee',
+  placeholder = 'Pick a drink',
   description,
   errorMessage,
-  size = 'md',
-  labelStyle = 'default',
   selectionMode = 'single',
   isDisabled = false,
   isRequired = false,
@@ -34,8 +30,6 @@ export function PlaygroundExample({
       placeholder={placeholder}
       description={description}
       errorMessage={errorMessage}
-      size={size}
-      labelStyle={labelStyle}
       selectionMode={selectionMode}
       isDisabled={isDisabled}
       isRequired={isRequired}

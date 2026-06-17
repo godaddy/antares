@@ -6,6 +6,7 @@
   --_content-offset: calc(var(--_arrow-height) + var(--_arrow-rounded-tip));
   --_arrow-offset: calc(var(--_arrow-height) * -1);
 
+  overflow: auto;
   transition:
     transform 0.2s,
     opacity 0.2s;

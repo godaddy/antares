@@ -1,13 +1,11 @@
 import { Select, SelectItem } from '@godaddy/antares';
 
-export function SelectStaticExample() {
+export function SelectDisabledExample() {
   return (
-    <Select aria-label="Coffee drinks">
+    <Select label="Coffee" defaultValue="latte" isDisabled>
       <SelectItem id="espresso">Espresso</SelectItem>
       <SelectItem id="latte">Latte</SelectItem>
       <SelectItem id="cappuccino">Cappuccino</SelectItem>
-      <SelectItem id="americano">Americano</SelectItem>
-      <SelectItem id="mocha">Mocha</SelectItem>
     </Select>
   );
 }

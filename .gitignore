@@ -67,6 +67,7 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 
 # Claude
 .claude/settings.local.json
+.claude
 
 # Nx
 .nx/cache
