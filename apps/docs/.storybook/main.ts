@@ -66,10 +66,22 @@ const config: StorybookConfig = {
   async viteFinal(config: UserConfig) {
     const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/)?.slice(1) ?? ['0', '0', '0'];
 
+    // @bento/internal-props is aliased to source here, and its source relies on
+    // build-time globals `major`/`minor`/`patch` (see its own tsdown.config.ts).
+    // These must be supplied via Vite's top-level `define`, which is applied in
+    // BOTH dev and the rolldown production build. The `esbuild` option's define
+    // only takes effect in dev (per-module esbuild transform) and is silently
+    // dropped during the production build, leaving a bare, undefined `major`
+    // identifier in the bundle ("major is not defined").
+    //
+    // Values are injected as raw source, so they must be stringified to become
+    // string literals. Without this, "0" would be inlined as the numeric literal
+    // 0, which is falsy and gets dropped by `.filter(Boolean)` in
+    // @bento/internal-props — changing the namespace for 0.x versions.
     const define = {
-      major: versionMatch[0],
-      minor: versionMatch[1],
-      patch: versionMatch[2]
+      major: JSON.stringify(versionMatch[0]),
+      minor: JSON.stringify(versionMatch[1]),
+      patch: JSON.stringify(versionMatch[2])
     };
 
     // Packages that are in dev/ folder but still use @bento namespace
@@ -82,9 +94,7 @@ const config: StorybookConfig = {
       // Set envDir to workspace root for proper monorepo support
       envDir: resolve(__dirname, '../../../'),
 
-      esbuild: {
-        define
-      },
+      define,
 
       plugins: [
         replace({

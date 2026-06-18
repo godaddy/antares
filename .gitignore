@@ -27,6 +27,8 @@ coverage-html
 out/
 build
 dist
+configs/*.d.mts
+configs/*.d.mts.map
 
 # Compiled README files
 packages/@bento/**/README.md
@@ -64,7 +66,9 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 .vitest-attachments/
 
 # Claude
-.claude
+.claude/settings.local.json
+.claude/worktrees
+CLAUDE.local.md
 
 # Nx
 .nx/cache
@@ -72,3 +76,5 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 
 # Zed
 .zed
+
+.nx/polygraph

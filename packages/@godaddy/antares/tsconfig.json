@@ -1,15 +1,15 @@
 {
   "extends": "../../../configs/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "noEmit": true,
     "paths": {
-      "@godaddy/antares": ["index.ts"],
+      "@godaddy/antares": ["./index.ts"],
       "#components/*": [
         "./components/*/src/index.tsx",
         "./components/chart/types.ts"
       ]
     }
   },
+  "include": ["index.ts", "exports", "components", "utils", "types"],
   "exclude": ["node_modules", "dist"]
 }

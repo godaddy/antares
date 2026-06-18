@@ -85,27 +85,28 @@ describe('@bento/checkbox', function bento() {
     it('should render a group with complex controlled logic (indeterminate)', async function indeterminateCheckbox() {
       const { container } = await render(<CheckboxGroupIndeterminateExample />);
       const group = container.querySelector('[role="group"]');
-      const selectAllCheckbox = container.querySelector('[name="select-all"]')?.closest('label');
+      const selectAllLabel = container.querySelector('[name="select-all"]')?.closest('label');
+      const selectAllInput = container.querySelector('input[name="select-all"]');
       const firstCheckbox = container.querySelector('input[type="checkbox"][value="option1"]');
 
       expect(group).toHaveAttribute('data-value', '');
-      expect(selectAllCheckbox).not.toHaveAttribute('data-selected');
+      expect(selectAllLabel).not.toHaveAttribute('data-selected');
 
-      await userEvent.click(selectAllCheckbox!);
+      await userEvent.click(selectAllInput!);
       expect(group).toHaveAttribute('data-value', 'option1,option2,option3,select-all');
-      expect(selectAllCheckbox).toHaveAttribute('data-selected', 'true');
+      expect(selectAllLabel).toHaveAttribute('data-selected', 'true');
 
       await userEvent.click(firstCheckbox!);
       expect(group).toHaveAttribute('data-value', 'option2,option3');
-      expect(selectAllCheckbox).toHaveAttribute('aria-checked', 'mixed');
+      expect(selectAllLabel).toHaveAttribute('aria-checked', 'mixed');
 
       await userEvent.click(firstCheckbox!);
       expect(group).toHaveAttribute('data-value', 'option2,option3,option1,select-all');
-      expect(selectAllCheckbox).toHaveAttribute('data-selected', 'true');
+      expect(selectAllLabel).toHaveAttribute('data-selected', 'true');
 
-      await userEvent.click(selectAllCheckbox!);
+      await userEvent.click(selectAllInput!);
       expect(group).toHaveAttribute('data-value', '');
-      expect(selectAllCheckbox).not.toHaveAttribute('data-selected');
+      expect(selectAllLabel).not.toHaveAttribute('data-selected');
     });
 
     it('should not change the selected state when clicking on a read-only checkbox', async function readOnlyCheckbox() {

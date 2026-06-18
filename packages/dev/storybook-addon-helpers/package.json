@@ -8,9 +8,10 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
-    "lint": "biome lint && tsc",
+    "lint": "biome lint && tsgo --noEmit",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsgo --noEmit -p tsconfig.json"
   },
   "keywords": [
     "accessibility",
@@ -29,21 +30,21 @@
     "package.json"
   ],
   "dependencies": {
-    "camelcase": "^8.0.0",
+    "camelcase": "^9.0.0",
     "react-docgen-typescript": "^2.4.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.15",
     "assume": "^2.3.0",
-    "react": "^19.2.4",
-    "tsdown": "^0.21.10",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "react": "^19.2.6",
+    "tsdown": "^0.22.1",
+    "vite": "^8.0.14",
+    "vitest": "^4.1.7"
   },
   "peerDependencies": {
-    "@storybook/react-vite": ">= 10",
-    "storybook": ">= 10"
+    "@storybook/react-vite": "^10.4.1",
+    "storybook": "^10.4.1"
   },
   "exports": {
     ".": {

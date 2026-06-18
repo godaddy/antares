@@ -6,6 +6,15 @@
     "defaultBranch": "main",
     "useIgnoreFile": true
   },
+  "files": {
+    "includes": [
+      "**",
+      "!.agents/**",
+      "!.claude/**",
+      "!.codex/**",
+      "!.opencode/**"
+    ]
+  },
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
@@ -167,7 +176,6 @@
         "**/*.test.tsx",
         "**/*.test.ts",
         "**/tsdown.config.ts",
-        "**/tsup.config.ts",
         "**/vitest.config.ts",
         "**/examples/**",
         "apps/site/**",

@@ -1,6 +1,20 @@
-import whyDidYouRender from '@welldone-software/why-did-you-render';
+import whyDidYouRenderImport from '@welldone-software/why-did-you-render';
 import { addons } from 'storybook/preview-api';
 import React from 'react';
+
+//
+// `@welldone-software/why-did-you-render` exposes additional internals at runtime
+// (wdyrStore, storeOwnerData, getWDYRType) that aren't in its public types. We
+// access these here to forward state into the Storybook addon panel without
+// duplicating the import (which would re-patch React).
+//
+const whyDidYouRender = whyDidYouRenderImport as typeof whyDidYouRenderImport & {
+  wdyrStore: {
+    ownerDataMap: WeakMap<object, unknown>;
+  };
+  storeOwnerData: unknown;
+  getWDYRType: unknown;
+};
 
 /**
  * The event name that is emitted by the `why-did-you-render.ts` file that we

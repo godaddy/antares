@@ -13,9 +13,9 @@
   --bg-raised: color-mix(in oklch, var(--bg-card), white 8%);
   --bg-overlay: color-mix(in oklch, var(--bg-raised), white 8%);
   --fg-base: color(
-    from var(--bg-base) xyz clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1)
-      clamp(0, (0.36 / y - 1) * infinity, 1) / 1
+    from var(--bg-base) xyz clamp(0, (0.36 / y - 1) * infinity, 1) clamp(0, (0.36 / y - 1) * infinity, 1)
+      clamp(0, (0.36 / y - 1) * infinity, 1) /
+    1
   );
   --fg-card: var(--fg-base);
   --fg-raised: var(--fg-base);
@@ -26,14 +26,12 @@
   --bd-overlay: transparent;
   --sh-base: none;
   --sh-card: none;
-  --sh-raised: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1))
-    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
+  --sh-raised: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
     drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
-  --sh-overlay: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15))
-    drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1))
+  --sh-overlay: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1))
     drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.2));
 
-  &:where([data-elevation='base']) {
+  &:where([data-elevation="base"]) {
     border-width: 1px;
     border-style: solid;
     background: var(--bg-base);
@@ -42,7 +40,7 @@
     filter: var(--sh-base);
   }
 
-  &:where([data-elevation='card']) {
+  &:where([data-elevation="card"]) {
     border-width: 1px;
     border-style: solid;
     background: var(--bg-card);
@@ -51,7 +49,7 @@
     filter: var(--sh-card);
   }
 
-  &:where([data-elevation='raised']) {
+  &:where([data-elevation="raised"]) {
     border-width: 1px;
     border-style: solid;
     background: var(--bg-raised);
@@ -60,7 +58,7 @@
     filter: var(--sh-raised);
   }
 
-  &:where([data-elevation='overlay']) {
+  &:where([data-elevation="overlay"]) {
     border-width: 1px;
     border-style: solid;
     background: var(--bg-overlay);

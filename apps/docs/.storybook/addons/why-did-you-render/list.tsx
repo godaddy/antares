@@ -1,4 +1,4 @@
-import { convert, styled, themes } from 'storybook/internal/theming';
+import { convert, styled, themes } from 'storybook/theming';
 import React, { Fragment, useState, type ReactNode } from 'react';
 import { ChevronSmallDownIcon } from '@storybook/icons';
 
@@ -27,7 +27,7 @@ export const Wrapper = styled.div({
   }
 });
 
-export const Icon = styled(ChevronSmallDownIcon)({
+const Icon = styled(ChevronSmallDownIcon)({
   color: convert(themes.light).textMutedColor,
   marginRight: 10,
   transition: 'transform 0.1s ease-in-out',

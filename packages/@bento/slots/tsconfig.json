@@ -1,9 +1,8 @@
 {
   "extends": "../../../configs/tsconfig.json",
-  "include": ["./src", "./test", "./examples"],
-  "exclude": ["**/*.visual.test.tsx"],
+  "include": ["./src"],
   "compilerOptions": {
-    "rootDir": "./",
-    "declarationDir": "./dist"
-  }
+    "types": ["node"]
+  },
+  "exclude": ["test", "examples"]
 }

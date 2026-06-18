@@ -62,7 +62,8 @@ export function useSVGSprite(name: string, Graphic: ReactElement | undefined): R
       const sheet = sprite(root);
       const exists = sheet.querySelector(`symbol[data-symbol="${name}"]`);
 
-      if (exists || !Graphic) return;
+      if (exists) return;
+      if (!Graphic) return;
 
       const target = document.createElement('div');
       const container = createRoot(target);

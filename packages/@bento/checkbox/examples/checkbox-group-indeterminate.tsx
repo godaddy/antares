@@ -3,75 +3,69 @@ import React, { useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@bento/checkbox';
 import { Text } from '@bento/text';
 
-export function CheckboxGroupIndeterminateExample() {
-  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+const SELECT_ALL = 'select-all';
 
+export function CheckboxGroupIndeterminateExample() {
   const items = [
     { id: 'option1', label: 'Option 1' },
     { id: 'option2', label: 'Option 2' },
     { id: 'option3', label: 'Option 3' }
   ];
-
   const allItemIds = items.map(function getItemId(item) {
     return item.id;
   });
-  const isAllSelected = checkedItems.size === items.length;
-  const isIndeterminate = checkedItems.size > 0 && checkedItems.size < items.length;
 
-  function handleSelectAll(checked: boolean) {
-    if (checked) {
-      setCheckedItems(new Set([...allItemIds, 'select-all']));
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+
+  const itemsSelectedCount = checkedItems.filter(function isItem(value) {
+    return value !== SELECT_ALL;
+  }).length;
+  const isIndeterminate = itemsSelectedCount > 0 && itemsSelectedCount < allItemIds.length;
+
+  function handleGroupChange(nextValues: string[]) {
+    const prevHadSelectAll = checkedItems.includes(SELECT_ALL);
+    const nextHasSelectAll = nextValues.includes(SELECT_ALL);
+
+    // Select All was just toggled on → select every item, with select-all last.
+    if (!prevHadSelectAll && nextHasSelectAll) {
+      setCheckedItems([...allItemIds, SELECT_ALL]);
+      return;
+    }
+
+    // Select All was just toggled off → clear everything.
+    if (prevHadSelectAll && !nextHasSelectAll) {
+      setCheckedItems([]);
+      return;
+    }
+
+    // An individual item toggled. Strip select-all so its membership is purely derived.
+    const itemsOnly = nextValues.filter(function notSelectAll(value) {
+      return value !== SELECT_ALL;
+    });
+    const allItemsNowSelected = allItemIds.every(function isInItems(id) {
+      return itemsOnly.includes(id);
+    });
+    if (allItemsNowSelected) {
+      setCheckedItems([...itemsOnly, SELECT_ALL]);
     } else {
-      setCheckedItems(new Set());
+      setCheckedItems(itemsOnly);
     }
   }
 
-  function handleItemChange(itemId: string, checked: boolean) {
-    setCheckedItems(function updateCheckedItems(prev) {
-      const newSet = new Set(prev);
-      if (checked) {
-        newSet.add(itemId);
-        if (
-          allItemIds.every(function checkItemInSet(id) {
-            return newSet.has(id);
-          })
-        ) {
-          newSet.add('select-all');
-        }
-      } else {
-        newSet.delete(itemId);
-        newSet.delete('select-all');
-      }
-      return newSet;
-    });
-  }
-
   return (
-    <CheckboxGroup value={Array.from(checkedItems)} data-value={Array.from(checkedItems)}>
+    <CheckboxGroup value={checkedItems} onChange={handleGroupChange} data-value={checkedItems}>
       <Text slot="label">Select Items</Text>
-      <Checkbox
-        name="select-all"
-        value="select-all"
-        isSelected={isAllSelected}
-        isIndeterminate={isIndeterminate}
-        onChange={handleSelectAll}
-      >
+      <Checkbox name={SELECT_ALL} value={SELECT_ALL} isIndeterminate={isIndeterminate}>
         Select All
       </Checkbox>
 
-      {items.map((item) => (
-        <Checkbox
-          key={item.id}
-          name={item.id}
-          value={item.id}
-          isSelected={checkedItems.has(item.id)}
-          onChange={function handleItemChangeForItem(checked) {
-            return handleItemChange(item.id, checked);
-          }}
-        >
-          {item.label}
-        </Checkbox>
-      ))}
+      {items.map(function renderItem(item) {
+        return (
+          <Checkbox key={item.id} name={item.id} value={item.id}>
+            {item.label}
+          </Checkbox>
+        );
+      })}
     </CheckboxGroup>
   );
 }
