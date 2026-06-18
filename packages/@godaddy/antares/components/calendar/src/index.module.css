@@ -8,6 +8,10 @@
   flex: 1;
 }
 
+.headerYear {
+  flex: 0 0 6ch;
+}
+
 .grid {
   border-collapse: separate;
   border-spacing: 0.125rem;

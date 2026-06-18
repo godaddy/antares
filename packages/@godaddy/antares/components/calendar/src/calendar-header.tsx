@@ -3,13 +3,13 @@ import { useContext } from 'react';
 import {
   CalendarMonthPicker as RACCalendarMonthPicker,
   CalendarStateContext,
-  CalendarYearPicker as RACCalendarYearPicker,
   RangeCalendarStateContext,
   useLocale
 } from 'react-aria-components';
 import { Button } from '#components/button';
 import { Flex } from '#components/layout/flex';
 import { Icon } from '#components/icon';
+import { NumberField } from '#components/number-field';
 import { Select, SelectItem } from '#components/select';
 import styles from './index.module.css';
 
@@ -81,26 +81,19 @@ export function CalendarHeader({ range }: CalendarHeaderProps) {
           );
         }}
       </RACCalendarMonthPicker>
-      <RACCalendarYearPicker>
-        {function renderYearPicker(picker) {
-          return (
-            <Select
-              aria-label={picker['aria-label']}
-              value={picker.value}
-              onChange={picker.onChange}
-              className={styles.headerSelect}
-            >
-              {picker.items.map(function renderYearItem(item) {
-                return (
-                  <SelectItem key={item.id} id={item.id} textValue={item.formatted}>
-                    {item.formatted}
-                  </SelectItem>
-                );
-              })}
-            </Select>
-          );
+      <NumberField
+        aria-label="Year"
+        hideStepper
+        formatOptions={{ useGrouping: false }}
+        value={pickerState.focusedDate.year}
+        minValue={baseState.minValue?.year}
+        maxValue={baseState.maxValue?.year}
+        onChange={function handleYearChange(year) {
+          if (Number.isNaN(year)) return;
+          pickerState.setFocusedDate(pickerState.focusedDate.set({ year }));
         }}
-      </RACCalendarYearPicker>
+        className={styles.headerYear}
+      />
       {showNext && (
         <Button slot="next" variant="minimal" size="sm" aria-label="Next">
           <Icon icon={isRtl ? 'chevron-left' : 'chevron-right'} />

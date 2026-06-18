@@ -61,39 +61,36 @@ describe('@godaddy/antares', function antares() {
         assume(updated.element().textContent ?? '').contains('June');
       });
 
-      it('changes the visible year when the Year Select changes', async function changesYear() {
-        await render(<CalendarDefaultExample />);
-        const yearButton = page.getByRole('button', { name: /year/i });
+      it('changes the visible year when the Year input changes', async function changesYear() {
+        const { container } = await render(<CalendarDefaultExample />);
+        const yearInput = page.getByRole('textbox', { name: /year/i });
 
-        await userEvent.click(yearButton);
-        const yearOption = page.getByRole('option', { name: '2025' });
-        await userEvent.click(yearOption);
+        await userEvent.tripleClick(yearInput);
+        await userEvent.keyboard('2025');
+        await userEvent.keyboard('{Enter}');
 
         await new Promise(function wait(resolve) {
           setTimeout(resolve, 100);
         });
 
-        const updated = page.getByRole('button', { name: /year/i });
-        assume(updated.element().textContent ?? '').contains('2025');
+        const yearEl = container.querySelector('input[aria-label="Year"]') as HTMLInputElement | null;
+        assume(yearEl?.value ?? '').contains('2025');
       });
 
-      it('limits the Year Select options to the configured min/max range', async function limitedYears() {
-        await render(<CalendarWithMinMaxExample />);
-        const yearButton = page.getByRole('button', { name: /year/i });
+      it('clamps the Year input to the configured min/max range', async function limitedYears() {
+        const { container } = await render(<CalendarWithMinMaxExample />);
+        const yearInput = page.getByRole('textbox', { name: /year/i });
 
-        await userEvent.click(yearButton);
+        await userEvent.tripleClick(yearInput);
+        await userEvent.keyboard('2099');
+        await userEvent.keyboard('{Enter}');
 
         await new Promise(function wait(resolve) {
           setTimeout(resolve, 100);
         });
 
-        const options = document.querySelectorAll('[role="option"]');
-        const labels = Array.from(options).map(function getLabel(option) {
-          return (option.textContent ?? '').trim();
-        });
-
-        assume(labels.length).equals(1);
-        assume(labels[0]).equals('2024');
+        const yearEl = container.querySelector('input[aria-label="Year"]') as HTMLInputElement | null;
+        assume(yearEl?.value ?? '').equals('2024');
       });
     });
 
@@ -167,7 +164,7 @@ describe('@godaddy/antares', function antares() {
 
         const monthButtons = Array.from(container.querySelectorAll('button[aria-haspopup="listbox"]'));
         assume(monthButtons[0]?.textContent ?? '').contains('March');
-        assume(monthButtons[2]?.textContent ?? '').contains('April');
+        assume(monthButtons[1]?.textContent ?? '').contains('April');
       });
     });
 
