@@ -356,6 +356,63 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <Source language="tsx" code="SourceRTLDirection" />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="Stories.Emphasis" />
+
+<Source language="tsx" code="SourceEmphasis" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+
 # Checkbox
 
 
@@ -656,184 +713,6 @@ Always provide clear error messages and use appropriate validation states:
 * Use logical ordering (alphabetical, frequency of use, or importance)
 * Consider using CheckboxGroup for related options, even if there are only 2-3
 * Provide a group label that clearly describes the choice being made
-
-
-# CircularProgress
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="Stories.Emphasis" />
-
-<Source language="tsx" code="SourceEmphasis" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-
-# Drawer
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Slides in from any screen edge (top, bottom, left, right) with spring animation
-* Snap points with drag gestures and keyboard control
-* Numeric and string snap points (`120`, `'50%'`, `'200px'`) resolved against drawer size
-* Automatic RTL flipping for left/right placement
-* Focus trapping, backdrop dismiss, scroll lock via RAC Modal
-* `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Sub-components [#sub-components]
-
-### DrawerTrigger [#drawertrigger]
-
-Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
-
-### DrawerHandle [#drawerhandle]
-
-Visual drag handle for touch gestures. Renders a grab bar with a 44px touch target (24px for pointer:fine). When inside a `<Drawer>` with `snapPoints`, the handle becomes interactive and drag-to-snap activates automatically. Without `snapPoints`, the handle renders as a decorative affordance only.
-
-| Prop        | Type     | Description          |
-| ----------- | -------- | -------------------- |
-| `className` | `string` | Additional CSS class |
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Bottom Sheet [#bottom-sheet]
-
-Use `placement="bottom"` with controlled state for a bottom sheet pattern.
-
-<Story of="Stories.BottomSheet" />
-
-<Source language="tsx" code="BottomSheetExample" />
-
-### Snap Points [#snap-points]
-
-Use `snapPoints` with `<DrawerHandle />` for a resizable bottom sheet with touch gesture support.
-
-<Story of="Stories.SnapPoints" />
-
-<Source language="tsx" code="SnapPointsExample" />
-
-### Percentage Snap Points [#percentage-snap-points]
-
-Use string snap points like `'30%'` and `'60%'` for sizes relative to the drawer's rendered dimensions.
-
-<Story of="Stories.PercentSnapPoints" />
-
-<Source language="tsx" code="PercentSnapPointsExample" />
-
-### Controlled Snap Points [#controlled-snap-points]
-
-Use `activeSnapPoint` and `onSnapPointChange` for full control over the active snap point.
-
-<Story of="Stories.ControlledSnap" />
-
-<Source language="tsx" code="ControlledSnapExample" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="Stories.NestedPopover" />
-
-<Source language="tsx" code="NestedPopoverExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key                 | Action                                                                     |
-| ------------------- | -------------------------------------------------------------------------- |
-| `Escape`            | Close the drawer (when `isDismissable` or not `isKeyboardDismissDisabled`) |
-| `Tab`               | Move focus within the drawer (focus is trapped)                            |
-| `Arrow Up / Right`  | Move to next snap point (when snap slider is focused)                      |
-| `Arrow Down / Left` | Move to previous snap point                                                |
-| `Home`              | Jump to first snap point                                                   |
-| `End`               | Jump to last snap point                                                    |
-
-In RTL, horizontal arrow key direction is reversed for the snap slider.
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* Dialog accessible name via `title` (renders a heading) or `aria-label` (for titleless drawers)
-* `aria-label="Close"` on the built-in close button
-* `role="slider"` on the snap point keyboard control with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext`
-* `aria-hidden="true"` on the visual drag handle (decorative)
-
-## Best Practices [#best-practices]
-
-* Always provide a `title` or `aria-label` prop so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
 
 
 # Icon
@@ -1248,6 +1127,127 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# Drawer
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Slides in from any screen edge (top, bottom, left, right) with spring animation
+* Snap points with drag gestures and keyboard control
+* Numeric and string snap points (`120`, `'50%'`, `'200px'`) resolved against drawer size
+* Automatic RTL flipping for left/right placement
+* Focus trapping, backdrop dismiss, scroll lock via RAC Modal
+* `prefers-reduced-motion` support
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Sub-components [#sub-components]
+
+### DrawerTrigger [#drawertrigger]
+
+Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+
+### DrawerHandle [#drawerhandle]
+
+Visual drag handle for touch gestures. Renders a grab bar with a 44px touch target (24px for pointer:fine). When inside a `<Drawer>` with `snapPoints`, the handle becomes interactive and drag-to-snap activates automatically. Without `snapPoints`, the handle renders as a decorative affordance only.
+
+| Prop        | Type     | Description          |
+| ----------- | -------- | -------------------- |
+| `className` | `string` | Additional CSS class |
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Bottom Sheet [#bottom-sheet]
+
+Use `placement="bottom"` with controlled state for a bottom sheet pattern.
+
+<Story of="Stories.BottomSheet" />
+
+<Source language="tsx" code="BottomSheetExample" />
+
+### Snap Points [#snap-points]
+
+Use `snapPoints` with `<DrawerHandle />` for a resizable bottom sheet with touch gesture support.
+
+<Story of="Stories.SnapPoints" />
+
+<Source language="tsx" code="SnapPointsExample" />
+
+### Percentage Snap Points [#percentage-snap-points]
+
+Use string snap points like `'30%'` and `'60%'` for sizes relative to the drawer's rendered dimensions.
+
+<Story of="Stories.PercentSnapPoints" />
+
+<Source language="tsx" code="PercentSnapPointsExample" />
+
+### Controlled Snap Points [#controlled-snap-points]
+
+Use `activeSnapPoint` and `onSnapPointChange` for full control over the active snap point.
+
+<Story of="Stories.ControlledSnap" />
+
+<Source language="tsx" code="ControlledSnapExample" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="Stories.NestedPopover" />
+
+<Source language="tsx" code="NestedPopoverExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key                 | Action                                                                     |
+| ------------------- | -------------------------------------------------------------------------- |
+| `Escape`            | Close the drawer (when `isDismissable` or not `isKeyboardDismissDisabled`) |
+| `Tab`               | Move focus within the drawer (focus is trapped)                            |
+| `Arrow Up / Right`  | Move to next snap point (when snap slider is focused)                      |
+| `Arrow Down / Left` | Move to previous snap point                                                |
+| `Home`              | Jump to first snap point                                                   |
+| `End`               | Jump to last snap point                                                    |
+
+In RTL, horizontal arrow key direction is reversed for the snap slider.
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* Dialog accessible name via `title` (renders a heading) or `aria-label` (for titleless drawers)
+* `aria-label="Close"` on the built-in close button
+* `role="slider"` on the snap point keyboard control with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext`
+* `aria-hidden="true"` on the visual drag handle (decorative)
+
+## Best Practices [#best-practices]
+
+* Always provide a `title` or `aria-label` prop so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
+
+
 # InlineDrawer
 
 
@@ -1517,6 +1517,75 @@ Individual child components can be styled by passing `className` props:
 ```
 
 
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
 # Modal
 
 
@@ -1609,15 +1678,15 @@ Pass a `media` element to display imagery alongside the content. Configure its l
 * Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
 
 
-# MetricsLockup
+# NumberField
+
+
 
 
 
 
 
 <Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
 
 ## Installation [#installation]
 
@@ -1627,55 +1696,92 @@ npm install --save @godaddy/antares
 
 ## Props [#props]
 
+The NumberField component accepts the following props:
+
 <PropTable />
 
 ## Examples [#examples]
 
-### Basic Usage [#basic-usage]
+### Basic [#basic]
 
-A metric with a title, info tooltip, value, and description.
+Minimal usage with label, placeholder, and min/max.
 
-<Story of="Stories.Default" />
+<Source language="tsx" code="SourceBasic" />
 
-<Source language="tsx" code="DefaultExample" />
+<Story of="Stories.Basic" />
 
-### With Trend [#with-trend]
+### Controlled [#controlled]
 
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+Use `value` and `onChange` for controlled state.
 
-<Story of="Stories.WithTrend" />
+<Source language="tsx" code="SourceControlled" />
 
-<Source language="tsx" code="WithTrendExample" />
+<Story of="Stories.Controlled" />
 
-### Compact [#compact]
+### Invalid [#invalid]
 
-Use the `compact` prop to render the metric value and description inline rather than stacked.
+Use `isInvalid` with `errorMessage` for validation feedback.
 
-<Story of="Stories.Compact" />
+<Source language="tsx" code="SourceInvalid" />
 
-<Source language="tsx" code="CompactExample" />
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Hide stepper [#hide-stepper]
+
+Use `hideStepper` to show only the input without +/- buttons.
+
+<Source language="tsx" code="SourceHideStepper" />
+
+<Story of="Stories.HideStepper" />
+
+### Value scale [#value-scale]
+
+Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+
+<Source language="tsx" code="SourceValueScale" />
+
+<Story of="Stories.ValueScale" />
+
+### Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
+
+<Source language="tsx" code="SourceFormatOptions" />
+
+<Story of="Stories.FormatOptions" />
 
 ## Accessibility [#accessibility]
 
 ### Keyboard [#keyboard]
 
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
+When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
 
-### ARIA [#aria]
+* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
+* **Page Up** / **Page Down**: larger increase or decrease when supported
+* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
 
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
 
-## Best Practices [#best-practices]
+### ARIA and labeling [#aria-and-labeling]
 
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+* The input is associated with the visible label and optional description and error content for assistive technologies.
+* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
+* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
+
+## Best practices [#best-practices]
+
+* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
+* Remember valid steps start from &#x2A;*`minValue`**.
+* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
+* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
 # Pagination
@@ -1795,112 +1901,6 @@ the close button.
 ## Best Practices [#best-practices]
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
-# NumberField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The NumberField component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with label, placeholder, and min/max.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Hide stepper [#hide-stepper]
-
-Use `hideStepper` to show only the input without +/- buttons.
-
-<Source language="tsx" code="SourceHideStepper" />
-
-<Story of="Stories.HideStepper" />
-
-### Value scale [#value-scale]
-
-Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
-
-<Source language="tsx" code="SourceValueScale" />
-
-<Story of="Stories.ValueScale" />
-
-### Format options (numbering system) [#format-options-numbering-system]
-
-By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the [Unicode numbering system locale extension](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem#adding_a_numbering_system_via_the_locale_string).
-
-<Source language="tsx" code="SourceFormatOptions" />
-
-<Story of="Stories.FormatOptions" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
-
-* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
-* **Page Up** / **Page Down**: larger increase or decrease when supported
-* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
-
-Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
-
-### ARIA and labeling [#aria-and-labeling]
-
-* The input is associated with the visible label and optional description and error content for assistive technologies.
-* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
-* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
-
-## Best practices [#best-practices]
-
-* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
-* Remember valid steps start from &#x2A;*`minValue`**.
-* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
-* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
 # ProgressBar
@@ -3872,102 +3872,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# Box
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="Stories.Padding" />
-
-<Source language="tsx" code="SourcePadding" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="Stories.Elevation" />
-
-<Source language="tsx" code="SourceElevation" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="Stories.Rounding" />
-
-<Source language="tsx" code="SourceRounding" />
-
-### Polymorphic `as` Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-<Story of="Stories.As" />
-
-<Source language="tsx" code="SourceAs" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-
 # Flex
 
 
@@ -4072,6 +3976,102 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+### Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
 # Grid
