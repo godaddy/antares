@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-DFJIdKlZ.js";import{h as t,m as n}from"./src-wiefw0oE.js";function r(e,t){e.accDescr&&t.setAccDescription?.(e.accDescr),e.accTitle&&t.setAccTitle?.(e.accTitle),e.title&&t.setDiagramTitle?.(e.title)}var i=e((()=>{t(),n(r,`populateCommonDb`)}));export{r as n,i as t};
