@@ -3,6 +3,7 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { parser } from '@bento/svg-parser';
 import { forwardRef } from 'react';
 import { cx } from 'cva';
+import styles from './index.module.css';
 
 //
 // Our build process introduces the CDN URL as a build-time constant.
@@ -117,7 +118,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function AntaresIcon(
       fill={color ?? 'currentColor'}
       // Bento's className accepts a merge function to compose with its internal class,
       // but its TypeScript typings declare string — cast required.
-      className={(({ original }: { original: string }) => cx(original, className)) as unknown as string}
+      className={(({ original }: { original: string }) => cx(original, styles.icon, className)) as unknown as string}
       {...rest}
       {...dataAttributes}
     >

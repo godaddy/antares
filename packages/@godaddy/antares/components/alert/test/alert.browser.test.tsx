@@ -3,16 +3,10 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import assume from 'assume';
 import { Button, LinkButton } from '@godaddy/antares';
-import { set } from '#components/icon';
+import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DismissibleExample } from '../examples/dismissible.tsx';
 import { EmphasesExample } from '../examples/emphases.tsx';
-
-const placeholderSvg = (
-  <svg viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0z" />
-  </svg>
-);
 
 const emphasisIconMap: ReadonlyArray<readonly [string, string]> = [
   ['critical', 'alert'],
@@ -26,18 +20,7 @@ const emphasisIconMap: ReadonlyArray<readonly [string, string]> = [
 
 describe('@godaddy/antares', function antares() {
   describe('#Alert', function alertTests() {
-    beforeAll(async function setupIcons() {
-      // Synchronously load icons used by Alert (per-emphasis + close).
-      set({
-        alert: placeholderSvg,
-        checkmark: placeholderSvg,
-        information: placeholderSvg,
-        star: placeholderSvg,
-        diamond: placeholderSvg,
-        comment: placeholderSvg,
-        x: placeholderSvg
-      });
-    });
+    beforeAll(preloadTestIcons);
 
     it('renders with role="alert"', async function rendersRole() {
       const { getByRole } = await render(<DefaultExample />);

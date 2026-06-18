@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
-import { set } from '#components/icon';
+import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { CheckboxBasic } from '../examples/basic.tsx';
 import { CheckboxIndeterminate } from '../examples/indeterminate.tsx';
 import { CheckboxGroupBasic } from '../examples/group.tsx';
@@ -11,25 +11,9 @@ import { CheckboxGroupDisabled } from '../examples/disabled.tsx';
 import { CheckboxGroupInvalid } from '../examples/invalid.tsx';
 
 describe('@godaddy/antares', function antares() {
-  beforeAll(function setupIcons() {
-    // Preload the icons used by the checkbox component in case they are not already loaded
-    set({
-      minus: (
-        <svg height="24" width="24">
-          <path d="M20 12.75H4a.75.75 0 1 1 0-1.5h16a.75.75 0 1 1 0 1.5z" />
-        </svg>
-      ),
-      checkmark: (
-        <svg height="24" width="24">
-          <path d="M9 18.25a.748.748 0 0 1-.53-.22l-5-5a.75.75 0 0 1 1.06-1.06L9 16.44 19.47 5.97a.75.75 0 0 1 1.06 1.06l-11 11a.748.748 0 0 1-.53.22z" />
-        </svg>
-      )
-    });
-  });
+  beforeAll(preloadTestIcons);
 
-  beforeEach(async function removeHover() {
-    await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
-  });
+  beforeEach(resetHover);
 
   describe('#Checkbox', function checkboxTests() {
     it('basic example', async function basicRender() {

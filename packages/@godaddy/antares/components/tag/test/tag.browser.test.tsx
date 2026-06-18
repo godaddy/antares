@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import assume from 'assume';
 import { Icon, Tag } from '@godaddy/antares';
-import { set } from '#components/icon';
+import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { EmphasesExample } from '../examples/emphases.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
@@ -12,23 +12,9 @@ import { IconsExample } from '../examples/icons.tsx';
 import { IndicatorExample } from '../examples/indicator.tsx';
 import { InlineExample } from '../examples/inline.tsx';
 
-const placeholderSvg = (
-  <svg viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0z" />
-  </svg>
-);
-
 describe('@godaddy/antares', function antares() {
   describe('#Tag', function tagTests() {
-    beforeAll(function setupIcons() {
-      set({
-        alert: placeholderSvg,
-        checkmark: placeholderSvg,
-        information: placeholderSvg,
-        star: placeholderSvg,
-        diamond: placeholderSvg
-      });
-    });
+    beforeAll(preloadTestIcons);
 
     it('renders the text label', async function rendersLabel() {
       const { container } = await render(<DefaultExample />);

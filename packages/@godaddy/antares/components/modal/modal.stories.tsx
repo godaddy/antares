@@ -9,7 +9,7 @@ import { WithMediaExample } from './examples/with-media.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/modal-playground.tsx';
 
 export default getMeta({
-  title: 'Antares/Components/Modal'
+  title: 'components/Modal'
 });
 
 export const Props = getComponentDocs(Modal);
