@@ -1,19 +1,14 @@
 import { cx } from 'cva';
-import type { ReactNode } from 'react';
 import {
-  Button as RACButton,
-  ListBox as RACListBox,
-  ListBoxItem as RACListBoxItem,
-  // Popover as RACPopover,
   Select as RACSelect,
   SelectValue as RACSelectValue,
-  type Key,
-  type ListBoxItemProps as RACListBoxItemProps,
   type SelectProps as RACSelectProps
 } from 'react-aria-components';
+import { Button } from '#components/button';
 import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
+import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
 import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
@@ -27,21 +22,9 @@ type SelectionMode = 'single' | 'multiple';
  * @typeParam T - Item type rendered inside the listbox.
  * @typeParam M - Selection mode. Drives the type of `value`, `defaultValue`, and `onChange`.
  */
-export interface SelectProps<T extends object, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'children' | 'items'>,
-    Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
-  /** SelectItem children. */
-  children: ReactNode;
-
-  /** Helper text shown below the frame. */
-  description?: string;
-
-  /** Error message shown when invalid. Use with `isInvalid`. */
-  errorMessage?: string;
-
-  /** Visible label above the frame. Required if `aria-label` is not provided. */
-  label?: string;
-}
+export interface SelectProps<T, M extends SelectionMode = 'single'>
+  extends RACSelectProps<T, M>,
+    Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {}
 
 /**
  * Antares Select. Single or multiple selection dropdown built on React Aria's Select,
@@ -60,7 +43,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   const { isDisabled, isRequired } = racProps;
 
   return (
-    <RACSelect {...racProps} className={cx(styles.select, className)}>
+    <RACSelect {...racProps}>
       <FieldFrame
         description={description}
         errorMessage={errorMessage}
@@ -68,38 +51,24 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
         isRequired={isRequired}
         label={label}
       >
-        <RACButton data-trigger="" className={styles.trigger}>
+        <Button className={styles.button}>
           <RACSelectValue className={styles.value} />
           <Icon icon="chevron-down" className={styles.chevron} aria-hidden="true" />
-        </RACButton>
+        </Button>
       </FieldFrame>
-      <Popover hideArrow className={styles.popover} contentProps={{ inlinePadding: '0' }}>
-        <RACListBox className={styles.listbox}>{children}</RACListBox>
+      <Popover hideArrow contentProps={{ padding: '0' }} className={styles.popover}>
+        <ListBox>{children}</ListBox>
       </Popover>
     </RACSelect>
   );
 }
 
-/**
- * Props for SelectItem. Forwards every React Aria ListBoxItem prop.
- */
-export interface SelectItemProps extends RACListBoxItemProps {}
+export type SelectItemProps = ListBoxItemProps;
 
 /**
- * One option inside a Select. Auto-derives `textValue` from string children when not
- * provided, so typeahead and the trigger's selected-text display work without extra props.
+ * One option inside a Select. Thin wrapper over `ListBoxItem` so consumers can
+ * read `<Select><SelectItem ... /></Select>` cohesively.
  */
 export function SelectItem(props: SelectItemProps) {
-  const { textValue, children, className, ...rest } = props;
-  return (
-    <RACListBoxItem
-      {...rest}
-      textValue={textValue ?? (typeof children === 'string' ? children : undefined)}
-      className={cx(styles.item, className)}
-    >
-      {children}
-    </RACListBoxItem>
-  );
+  return <ListBoxItem {...props} />;
 }
-
-export type { Key };

@@ -1,0 +1,58 @@
+---
+title: ListBox
+description: ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './listbox.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceMultiple from './examples/multiple.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+- **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+- **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+- **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+- **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer [Select](/?path=/docs/components-select--overview).
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+The ListBox component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
+
+### Controlled
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Multiple
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Source language="tsx" code={SourceMultiple} />
+<Story of={Stories.Multiple} inline />

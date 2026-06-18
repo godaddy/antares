@@ -5,8 +5,7 @@ import { CalendarDefaultRangeExample } from './examples/default-range.tsx';
 import { CalendarTodayDistinctExample } from './examples/today-distinct.tsx';
 import { CalendarWithMinMaxExample } from './examples/with-min-max.tsx';
 import { CalendarWithUnavailableDatesExample } from './examples/with-unavailable-dates.tsx';
-import { Calendar } from './src/calendar.tsx';
-import { RangeCalendar } from './src/range-calendar.tsx';
+import { Calendar, RangeCalendar } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Calendar'
