@@ -4,8 +4,8 @@
 - [Alert](/docs/components/alert): In-page alerts are non-intrusive notifications within a webpage, providing users with timely information or feedback without disrupting their experience.
 - [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
-- [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
+- [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible panel that expands and collapses along one axis, supporting sidebar navigation and persistent collapsed content.
 - [Menu](/docs/components/menu): Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
@@ -27,6 +27,6 @@
 - [DonutChart](/docs/components/chart/donut-chart): Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
 - [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
-- [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
 - [Box](/docs/components/layout/box): Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
+- [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
 - [Grid](/docs/components/layout/grid): Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns
