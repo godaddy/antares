@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import assume from 'assume';
 import { Button, LinkButton } from '@godaddy/antares';
-import { preloadTestIcons } from '../../../utils/test-icons.tsx';
+import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DismissibleExample } from '../examples/dismissible.tsx';
 import { EmphasesExample } from '../examples/emphases.tsx';

@@ -1,7 +1,7 @@
 import { describe, it, beforeAll, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { page, userEvent } from 'vitest/browser';
-import { preloadTestIcons } from '../../../utils/test-icons.tsx';
+import { userEvent } from 'vitest/browser';
+import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -14,7 +14,7 @@ describe('@godaddy/antares', function antares() {
       expect(getByRole('button')).toHaveAttribute('data-hovered', 'true');
 
       // Move cursor away to prevent hover state leaking between tests
-      await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+      await resetHover();
     });
 
     it('renders the primary button focused', async function rendersPrimaryFocused() {

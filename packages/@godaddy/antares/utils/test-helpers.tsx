@@ -1,4 +1,20 @@
+import { page } from 'vitest/browser';
 import { set } from '#components/icon';
+
+/**
+ * Move the pointer to the top-left corner to clear any hover state before a
+ * screenshot. Use from a `beforeEach` hook so each test starts un-hovered.
+ *
+ * @example
+ * ```tsx
+ * import { resetHover } from '../../../utils/test-helpers.tsx';
+ *
+ * beforeEach(resetHover);
+ * ```
+ */
+export function resetHover() {
+  return page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+}
 
 /**
  * Register the icon glyphs used across the test suite.
@@ -13,7 +29,7 @@ import { set } from '#components/icon';
  *
  * @example
  * ```tsx
- * import { preloadTestIcons } from '../../../utils/test-icons.tsx';
+ * import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
  *
  * beforeAll(preloadTestIcons);
  * ```
