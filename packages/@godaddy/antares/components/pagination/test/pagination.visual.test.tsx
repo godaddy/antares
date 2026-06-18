@@ -1,5 +1,6 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { page } from 'vitest/browser';
 import { preloadTestIcons } from '../../../utils/test-icons.tsx';
 import { DefaultActiveExample } from '../examples/default-active.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -7,6 +8,10 @@ import { WithLimitExample } from '../examples/with-limit.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
+
+  beforeEach(async function removeHover() {
+    await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+  });
 
   describe('#Pagination', function paginationTests() {
     it('default example', async function defaultRender() {

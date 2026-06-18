@@ -78,8 +78,3 @@
 .error {
   color: var(--checkbox-critical-color);
 }
-
-.errorIcon {
-  width: 1em;
-  height: 1em;
-}

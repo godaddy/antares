@@ -1,4 +1,7 @@
-.icon {
-  height: 1lh;
+.icon:not([width]) {
   width: 1lh;
+}
+
+.icon:not([height]) {
+  height: 1lh;
 }
