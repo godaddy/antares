@@ -1,21 +1,12 @@
 import { describe, it, beforeAll, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { page, userEvent } from 'vitest/browser';
-import { set } from '#components/icon';
+import { userEvent } from 'vitest/browser';
+import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
-    beforeAll(async function setupIcons() {
-      // Synchronously load icons for the examples
-      set({
-        star: (
-          <svg viewBox="0 0 24 24">
-            <path d="M13.06 12l6.47-6.47a.75.75 0 00-1.06-1.06L12 10.94 5.53 4.47a.75.75 0 00-1.06 1.06L10.94 12l-6.47 6.47a.757.757 0 00-.222.53c0 .198.08.393.22.532.14.14.334.22.531.22a.757.757 0 00.531-.222L12 13.06l6.47 6.47a.75.75 0 001.06-1.06z" />
-          </svg>
-        )
-      });
-    });
+    beforeAll(preloadTestIcons);
 
     it('renders the primary button hovered', async function rendersPrimaryHovered() {
       const { getByRole } = await render(<PrimaryExample />);
@@ -23,7 +14,7 @@ describe('@godaddy/antares', function antares() {
       expect(getByRole('button')).toHaveAttribute('data-hovered', 'true');
 
       // Move cursor away to prevent hover state leaking between tests
-      await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+      await resetHover();
     });
 
     it('renders the primary button focused', async function rendersPrimaryFocused() {

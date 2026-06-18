@@ -3,12 +3,32 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { parser } from '@bento/svg-parser';
 import { forwardRef } from 'react';
 import { cx } from 'cva';
+import styles from './index.module.css';
 
 //
 // Our build process introduces the CDN URL as a build-time constant.
 // @see tsdown.config.ts
 //
 const cdn = '__CDN_URL__';
+
+/**
+ * Parser `fill` transformer that lets CDN icons inherit their color.
+ *
+ * Our CDN icons are monochrome glyphs that can hardcode a fill (e.g. `fill="#333"`)
+ * on their shapes, which overrides the parent `<svg>`'s fill and prevents the
+ * `color` prop from taking effect. We drop every fill except `none` so shapes
+ * inherit the parent `<svg>`'s fill — which Antares drives from the `color`
+ * prop. `currentColor` is dropped too: keeping it on a child would stop the
+ * child from inheriting and silently ignore `color` (Antares maps `color` to
+ * the parent's `fill`, not the CSS `color` property). `none` is preserved so
+ * stroke-only shapes stay unfilled.
+ *
+ * @param node - The SVG element being transformed.
+ * @returns A `[propName, value]` pair; an empty name drops the attribute.
+ */
+function inheritFill(node: Element): [string, string] {
+  return node.getAttribute('fill') === 'none' ? ['fill', 'none'] : ['', ''];
+}
 
 /**
  * Asynchronously load an icon from the CDN and parse it for rendering
@@ -33,7 +53,7 @@ ondemand(async function loader(icon: string) {
   const response = await fetch(`${cdn}/${icon}.svg`);
   /* v8 ignore start */
   const contents = await response.text();
-  return parser(contents);
+  return parser(contents, { props: { fill: inheritFill } });
   /* v8 ignore end */
 });
 
@@ -98,7 +118,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function AntaresIcon(
       fill={color ?? 'currentColor'}
       // Bento's className accepts a merge function to compose with its internal class,
       // but its TypeScript typings declare string — cast required.
-      className={(({ original }: { original: string }) => cx(original, className)) as unknown as string}
+      className={(({ original }: { original: string }) => cx(original, styles.icon, className)) as unknown as string}
       {...rest}
       {...dataAttributes}
     >

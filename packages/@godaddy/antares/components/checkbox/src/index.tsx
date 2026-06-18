@@ -3,6 +3,7 @@ import {
   FieldError as RACFieldError,
   type FieldErrorProps as RACFieldErrorProps,
   Label as RACLabel,
+  // biome-ignore lint/suspicious/noDeprecatedImports: got deprecated recently, we'll update this with field-frame update
   Checkbox as RACCheckbox,
   type CheckboxProps as RACCheckboxProps,
   CheckboxGroup as RACCheckboxGroup,
@@ -122,7 +123,7 @@ export function CheckboxGroup({
           {...errorMessageProps}
           className={cx(styles.error, errorMessageProps?.className)}
         >
-          <Icon icon="alert" width={24} height={24} className={styles.errorIcon} aria-hidden="true" />
+          <Icon icon="alert" />
           <span>{errorMessage}</span>
         </Flex>
       )}
