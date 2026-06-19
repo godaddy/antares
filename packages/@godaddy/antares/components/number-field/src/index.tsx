@@ -39,7 +39,7 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
  * ```
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
-  const { description, errorMessage, hideStepper, label, size, ...racProps } = props;
+  const { description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
   const { isDisabled, isRequired } = racProps;
 
   return (
@@ -53,6 +53,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
         )}
         <Input
           ref={ref}
+          placeholder={placeholder}
           data-field-group-start={hideStepper || undefined}
           data-field-group-end={hideStepper || undefined}
         />

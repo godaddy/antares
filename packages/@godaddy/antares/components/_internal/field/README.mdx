@@ -39,9 +39,9 @@ The field decoration is split into granular, composable pieces so the same struc
 
 ## Composition
 
-A boxed field composes the primitives inside its React Aria field wrapper. For
-non-generic wrappers (TextField, NumberField, DateField) use `Field as={...}` to merge
-the field wrapper and the layout column into a single element:
+A boxed field composes the primitives inside its React Aria field wrapper. Use
+`Field as={...}` to merge the field wrapper and the layout column into a single
+element:
 
 ```text
 Field as={RACTextField}                   ← field wrapper + layout column (one element)
@@ -51,9 +51,6 @@ Field as={RACTextField}                   ← field wrapper + layout column (one
 ├── FieldDescription                      ← when description provided
 └── FieldError                            ← renders validation messages when invalid
 ```
-
-`Select` is generic (`Select<T, M>`) — polymorphic `as` drops the type parameter, so it
-nests instead: `<RACSelect><Field>…</Field></RACSelect>`.
 
 A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
 

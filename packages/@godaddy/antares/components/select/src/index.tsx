@@ -41,7 +41,7 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
-  const { label, description, errorMessage, children, className, size, ...racProps } = props;
+  const { label, description, errorMessage, children, size, ...racProps } = props;
   const { isDisabled, isRequired } = racProps;
 
   return (
