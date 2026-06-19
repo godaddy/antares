@@ -13,26 +13,23 @@ import {
 import { Flex } from '#components/layout/flex';
 
 export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
-  /** Additional class names applied to the field root. */
-  className?: string;
-
   /** Default value (uncontrolled). */
   defaultValue?: string;
+
+  /** Current value (controlled). */
+  value?: string;
 
   /** Visual size of the input. @default 'md' */
   size?: FieldSize;
 
-  /** Whether the input is disabled. */
-  isDisabled?: boolean;
-
-  /** Whether the value is invalid. Use with errorMessage for validation. */
-  isInvalid?: boolean;
-
-  /** Whether user input is required before form submission. */
-  isRequired?: boolean;
+  /** Additional class names applied to the field root. */
+  className?: string;
 
   /** Text rendered before the input (leading adornment). */
   leadingText?: string;
+
+  /** Text rendered after the input (trailing adornment). */
+  trailingText?: string;
 
   /** When true, renders a textarea instead of a single-line input. */
   multiline?: boolean;
@@ -40,17 +37,11 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'cl
   /** Name of the input element, used when submitting a form. */
   name?: string;
 
-  /** Handler called when the value changes. */
-  onChange?: RACTextFieldProps['onChange'];
-
   /** Placeholder text when the input value is empty. */
   placeholder?: string;
 
-  /** Text rendered after the input (trailing adornment). */
-  trailingText?: string;
-
-  /** Current value (controlled). */
-  value?: string;
+  /** Handler called when the value changes. */
+  onChange?: RACTextFieldProps['onChange'];
 }
 
 /**
