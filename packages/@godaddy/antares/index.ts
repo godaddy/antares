@@ -17,7 +17,15 @@ export { Grid, type GridProps, type GridOwnProps } from '#components/layout/grid
 
 export { ListBox, ListBoxItem, type ListBoxProps, type ListBoxItemProps, type ListBoxKey } from '#components/listbox';
 
-export { Select, SelectItem, type SelectProps, type SelectItemProps, type SelectKey } from '#components/select';
+export {
+  Select,
+  SelectItem,
+  FieldSelect,
+  type SelectProps,
+  type SelectItemProps,
+  type SelectKey,
+  type FieldSelectProps
+} from '#components/select';
 
 export {
   Menu,
@@ -53,6 +61,28 @@ export { Tooltip, TooltipTrigger, type TooltipProps, type TooltipTriggerProps } 
 export { TextField, type TextFieldProps } from '#components/text-field';
 
 export { NumberField, type NumberFieldProps } from '#components/number-field';
+
+export {
+  Field,
+  FieldLabel,
+  FieldGroup,
+  FieldButton,
+  FieldDescription,
+  FieldError,
+  Input,
+  TextArea,
+  type FieldProps,
+  type FieldOwnProps,
+  type FieldLabelProps,
+  type FieldGroupProps,
+  type FieldButtonProps,
+  type FieldDescriptionProps,
+  type FieldErrorProps,
+  type InputProps,
+  type TextAreaProps,
+  type FieldSize,
+  type FieldEdge
+} from '#components/field';
 
 export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';
 
