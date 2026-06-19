@@ -72,7 +72,7 @@ export interface FieldSelectProps<T extends object, M extends SelectionMode = 's
  * ```tsx
  * <FieldGroup aria-labelledby={priceLabelId}>
  *   <Input edge="start" aria-label="Amount" />
- *   <FieldSelect edge="end" aria-label="Currency" defaultSelectedKey="usd">
+ *   <FieldSelect edge="end" aria-label="Currency" defaultValue="usd">
  *     <SelectItem id="usd">USD</SelectItem>
  *   </FieldSelect>
  * </FieldGroup>

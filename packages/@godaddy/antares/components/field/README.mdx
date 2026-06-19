@@ -56,17 +56,18 @@ A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabe
 
 `FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
 
-### Marking controls inside the group
+### Positioning controls inside the group
 
-`FieldGroup` makes **no assumptions** about its children — the field declares each child's position with a data attribute, and the group's CSS keys off them (rather than positional `:first-child` / tag selectors). Every marker strips the child's native border so the group reads as one control:
+`FieldGroup` makes **no assumptions** about its children — each control declares its position with the `edge` prop (on `Input`, `TextArea`, `FieldButton`, `FieldSelect`), which the group's CSS keys off to round the box's outer corners:
 
-| Attribute                 | Put it on…                        | Effect                                                                    |
-| ------------------------- | --------------------------------- | ------------------------------------------------------------------------- |
-| `data-field-group-start`  | the element at the **start** edge | strips the border, rounds the start corners to the group, squares the end |
-| `data-field-group-middle` | the fill control (e.g. the input) | strips the border                                                         |
-| `data-field-group-end`    | the element at the **end** edge   | strips the border, rounds the end corners to the group, squares the start |
+| `edge`            | Put it on…                       | Effect                                          |
+| ----------------- | -------------------------------- | ----------------------------------------------- |
+| `"start"`         | the control at the **start** edge | rounds the start corners to the group           |
+| `"middle"`        | a control between two others      | no rounding (interior)                          |
+| `"end"`           | the control at the **end** edge   | rounds the end corners to the group             |
+| _(omitted)_       | a **lone** control filling the box | rounds both edges                               |
 
-A lone control (TextField input, Select trigger) carries **both** `start` and `end`, so it rounds on both sides; a stepper row puts `start` on the leading button, `end` on the trailing one, and `middle` on the input. Squaring the inner corner matters because controls like `Button` are rounded by default, so an edge button would otherwise bulge past its neighbor.
+A lone control (TextField input, Select trigger) omits `edge` and rounds both sides; a stepper row puts `edge="start"` on the leading button, `edge="end"` on the trailing one, and `edge="middle"` on the input. Decorative, transparent adornments (an icon or unit text) need no `edge`. (`edge` maps to internal `data-field-edge` markers; the CSS keys off those rather than positional `:first-child` selectors, which break when a control wraps its frame in a provider element.)
 
 ### States
 
