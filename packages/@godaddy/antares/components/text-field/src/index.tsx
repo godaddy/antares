@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
 import {
   Field,
@@ -25,11 +26,11 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'cl
   /** Additional class names applied to the field root. */
   className?: string;
 
-  /** Text rendered before the input (leading adornment). */
-  leadingText?: string;
+  /** Content rendered before the input (leading adornment) — text or an icon. */
+  leadingText?: ReactNode;
 
-  /** Text rendered after the input (trailing adornment). */
-  trailingText?: string;
+  /** Content rendered after the input (trailing adornment) — text or an icon. */
+  trailingText?: ReactNode;
 
   /** When true, renders a textarea instead of a single-line input. */
   multiline?: boolean;
