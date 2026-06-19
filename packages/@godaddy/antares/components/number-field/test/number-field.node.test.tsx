@@ -6,6 +6,7 @@ import { NumberFieldDisabledExample } from '../examples/disabled';
 import { NumberFieldFormatOptionsExample } from '../examples/format-options';
 import { NumberFieldHideStepperExample } from '../examples/hide-stepper';
 import { NumberFieldInvalidExample } from '../examples/invalid';
+import { NumberFieldSizesExample } from '../examples/sizes';
 import { NumberFieldValueScaleExample } from '../examples/value-scale';
 
 describe('@godaddy/antares', function antares() {
@@ -45,6 +46,12 @@ describe('@godaddy/antares', function antares() {
 
       it('renders formatOptions example', function formatOptions() {
         const result = renderToString(<NumberFieldFormatOptionsExample />);
+        expect(result).toMatchSnapshot();
+      });
+
+      it('renders sizes example', function sizes() {
+        const result = renderToString(<NumberFieldSizesExample />);
+        expect(result).toContain('data-size="sm"');
         expect(result).toMatchSnapshot();
       });
     });

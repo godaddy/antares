@@ -7,6 +7,7 @@ import { SelectDisabledExample } from './examples/disabled';
 import { SelectFormExample } from './examples/form';
 import { SelectInvalidExample } from './examples/invalid';
 import { SelectMultipleExample } from './examples/multiple';
+import { SelectSizesExample } from './examples/sizes';
 import { Select } from './src/index.tsx';
 
 export default getMeta({
@@ -23,7 +24,8 @@ export const Playground = {
     selectionMode: 'single',
     isDisabled: false,
     isRequired: false,
-    isInvalid: false
+    isInvalid: false,
+    size: 'md'
   },
   argTypes: {
     label: { control: 'text' },
@@ -33,7 +35,8 @@ export const Playground = {
     selectionMode: { control: 'select', options: ['single', 'multiple'] },
     isDisabled: { control: 'boolean' },
     isRequired: { control: 'boolean' },
-    isInvalid: { control: 'boolean' }
+    isInvalid: { control: 'boolean' },
+    size: { control: 'select', options: ['sm', 'md'] }
   }
 };
 
@@ -48,3 +51,5 @@ export const Disabled = getStory(SelectDisabledExample);
 export const Multiple = getStory(SelectMultipleExample);
 
 export const Form = getStory(SelectFormExample);
+
+export const Sizes = getStory(SelectSizesExample);

@@ -1,8 +1,5 @@
 .field {
-  --field-critical-color: var(
-    --color-feedback-critical-strong,
-    var(--ux-1fhc073, #db1802)
-  );
+  --field-critical-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
   --field-br: var(--ux-1oqjeuu, 0.375rem);
 }
 
@@ -40,6 +37,7 @@
   line-height: var(--ux-hm1ty7, 1.375);
   font-size: var(--ux-oc0naw, 1rem);
   color: var(--ux-1glcx6s, #2b2b2b);
+  padding: var(--sp-md);
   min-width: 0;
 
   &:where([data-focused]) {
@@ -129,5 +127,19 @@
   & [data-field-group-end]:not([data-field-group-start]) {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
+  }
+
+  &:where([data-size="sm"]) {
+    & :where(.input, .textarea, .fieldButton) {
+      font-size: calc(1em / 1.125);
+    }
+
+    & :where(.input, .textarea) {
+      padding-block: var(--sp-sm);
+    }
+
+    & :where(.fieldButton) {
+      padding: var(--sp-sm);
+    }
   }
 }

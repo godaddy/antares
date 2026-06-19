@@ -12,6 +12,7 @@ export interface PlaygroundExampleProps
     | 'isDisabled'
     | 'isRequired'
     | 'isInvalid'
+    | 'size'
   > {}
 
 export function PlaygroundExample({
@@ -22,7 +23,8 @@ export function PlaygroundExample({
   selectionMode = 'single',
   isDisabled = false,
   isRequired = false,
-  isInvalid = false
+  isInvalid = false,
+  size = 'md'
 }: PlaygroundExampleProps) {
   return (
     <Select
@@ -34,6 +36,7 @@ export function PlaygroundExample({
       isDisabled={isDisabled}
       isRequired={isRequired}
       isInvalid={isInvalid}
+      size={size}
     >
       <SelectItem id="espresso">Espresso</SelectItem>
       <SelectItem id="latte">Latte</SelectItem>

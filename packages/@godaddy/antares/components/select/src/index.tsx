@@ -11,7 +11,8 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  type FieldOwnProps
+  type FieldOwnProps,
+  type FieldSize
 } from '#components/_internal/field';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
@@ -20,7 +21,12 @@ import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-export interface SelectProps<T, M extends SelectionMode = 'single'> extends RACSelectProps<T, M>, FieldOwnProps {}
+export interface SelectProps<T, M extends SelectionMode = 'single'>
+  extends Omit<RACSelectProps<T, M>, 'size'>,
+    FieldOwnProps {
+  /** Visual size of the trigger. @default 'md' */
+  size?: FieldSize;
+}
 
 /**
  * Antares Select. Single or multiple selection dropdown built on React Aria's Select,
@@ -35,13 +41,13 @@ export interface SelectProps<T, M extends SelectionMode = 'single'> extends RACS
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
-  const { label, description, errorMessage, children, className, ...racProps } = props;
+  const { label, description, errorMessage, children, className, size, ...racProps } = props;
   const { isDisabled, isRequired } = racProps;
 
   return (
     <Field as={RACSelect} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} alignItems="center">
+      <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
         <FieldButton
           flex={1}
           justifyContent="space-between"

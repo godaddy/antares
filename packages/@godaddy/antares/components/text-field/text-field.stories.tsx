@@ -6,6 +6,7 @@ import { TextFieldControlledExample } from './examples/controlled';
 import { TextFieldMultilineExample } from './examples/multiline';
 import { TextFieldDisabledExample } from './examples/disabled';
 import { TextFieldInvalidExample } from './examples/invalid';
+import { TextFieldSizesExample } from './examples/sizes';
 import { TextFieldBasic } from './examples/basic';
 import { TextField } from './src/index.tsx';
 
@@ -23,7 +24,8 @@ export const Playground = {
     isDisabled: false,
     isInvalid: false,
     isRequired: false,
-    multiline: false
+    multiline: false,
+    size: 'md'
   },
   argTypes: {
     label: { control: 'text' },
@@ -35,7 +37,8 @@ export const Playground = {
     isDisabled: { control: 'boolean' },
     isInvalid: { control: 'boolean' },
     isRequired: { control: 'boolean' },
-    multiline: { control: 'boolean' }
+    multiline: { control: 'boolean' },
+    size: { control: 'select', options: ['sm', 'md'] }
   }
 };
 
@@ -50,3 +53,5 @@ export const Disabled = getStory(TextFieldDisabledExample);
 export const Adornments = getStory(TextFieldAdornmentsExample);
 
 export const Multiline = getStory(TextFieldMultilineExample);
+
+export const Sizes = getStory(TextFieldSizesExample);

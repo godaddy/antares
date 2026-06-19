@@ -7,17 +7,21 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  type FieldSize,
   Input,
   type FieldOwnProps
 } from '#components/_internal/field';
 import { Icon } from '#components/icon';
 
-export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children'>, FieldOwnProps {
+export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
   /** When true, hides the increment/decrement stepper buttons. @default false */
   hideStepper?: boolean;
 
   /** Placeholder when the value is empty. */
   placeholder?: string;
+
+  /** Visual size of the input. @default 'md' */
+  size?: FieldSize;
 }
 
 /**
@@ -35,13 +39,13 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children'>,
  * ```
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
-  const { description, errorMessage, hideStepper, label, ...racProps } = props;
+  const { description, errorMessage, hideStepper, label, size, ...racProps } = props;
   const { isDisabled, isRequired } = racProps;
 
   return (
     <Field as={RACNumberField} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled}>
+      <FieldGroup isDisabled={isDisabled} size={size}>
         {!hideStepper && (
           <FieldButton slot="decrement" data-field-group-start>
             <Icon icon="minus" />

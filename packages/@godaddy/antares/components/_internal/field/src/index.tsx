@@ -114,7 +114,12 @@ export function FieldError(props: FieldErrorProps) {
   return <RACFieldError {...rest} className={cx(styles.error, className)} />;
 }
 
-export interface FieldGroupProps extends RACGroupProps, FlexOwnProps {}
+export type FieldSize = 'sm' | 'md';
+
+export interface FieldGroupProps extends RACGroupProps, FlexOwnProps {
+  /** Controls input/textarea/fieldButton font-size and padding inside the group. @default 'md' */
+  size?: FieldSize;
+}
 
 /**
  * Bordered, elevated control box for boxed fields (TextField, NumberField, Select,
@@ -125,7 +130,7 @@ export interface FieldGroupProps extends RACGroupProps, FlexOwnProps {}
  * @param ref - Ref for the root Group DOM node.
  */
 export const FieldGroup = forwardRef<HTMLDivElement, FieldGroupProps>(function FieldGroup(props, ref) {
-  const { className, gap, isInvalid, ...rest } = props;
+  const { className, gap, isInvalid, size, ...rest } = props;
 
   // RAC fields publish their runtime validation state (e.g. native validation on form
   // submit) through FieldErrorContext, not as a prop. Fall back to it so the box turns
@@ -142,6 +147,7 @@ export const FieldGroup = forwardRef<HTMLDivElement, FieldGroupProps>(function F
       elevation="card"
       gap={gap}
       isInvalid={isInvalidResolved}
+      data-size={size === 'sm' ? 'sm' : undefined}
       {...rest}
       as={RACGroup}
       ref={ref}
@@ -160,15 +166,14 @@ export interface InputProps extends RACInputProps, BoxOwnProps {}
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {
   const { className, ...rest } = props;
 
-  return <Box flex={1} padding="md" {...rest} as={RACInput} ref={ref} className={cx(styles.input, className)} />;
+  return <Box flex={1} {...rest} as={RACInput} ref={ref} className={cx(styles.input, className)} />;
 });
 
 export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {}
 
 /**
  * Click target for a control inside a {@link FieldGroup} (NumberField steppers,
- * Select trigger, search submit, etc.). Same `padding="md"` as {@link Input} so its
- * cross-size matches the input row, leaving icon-only steppers naturally square.
+ * Select trigger, search submit, etc.).
  *
  * @param props - {@link FieldButtonProps}
  */
@@ -178,7 +183,6 @@ export const FieldButton = forwardRef<HTMLButtonElement, FieldButtonProps>(funct
     <Flex
       alignItems="center"
       justifyContent="center"
-      padding="md"
       {...rest}
       as={RACButton}
       ref={ref}
@@ -197,14 +201,5 @@ export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {}
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {
   const { className, ...rest } = props;
 
-  return (
-    <Box
-      flex={1}
-      padding="md"
-      {...rest}
-      as={RACTextArea}
-      ref={ref}
-      className={cx(styles.input, styles.textarea, className)}
-    />
-  );
+  return <Box flex={1} {...rest} as={RACTextArea} ref={ref} className={cx(styles.input, styles.textarea, className)} />;
 });

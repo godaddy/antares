@@ -5,15 +5,19 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  type FieldSize,
   Input,
   TextArea,
   type FieldOwnProps
 } from '#components/_internal/field';
 import { Flex } from '#components/layout/flex';
 
-export interface TextFieldProps extends Omit<RACTextFieldProps, 'children'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'size'>, FieldOwnProps {
   /** Default value (uncontrolled). */
   defaultValue?: string;
+
+  /** Visual size of the input. @default 'md' */
+  size?: FieldSize;
 
   /** Whether the input is disabled. */
   isDisabled?: boolean;
@@ -62,13 +66,14 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children'>, Fie
  * ```
  */
 export function TextField(props: TextFieldProps) {
-  const { description, errorMessage, label, leadingText, multiline, placeholder, trailingText, ...racProps } = props;
+  const { description, errorMessage, label, leadingText, multiline, placeholder, size, trailingText, ...racProps } =
+    props;
   const { isDisabled, isRequired } = racProps;
 
   return (
     <Field as={RACTextField} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} gap="sm">
+      <FieldGroup isDisabled={isDisabled} size={size} gap="sm">
         {leadingText && (
           <Flex as="span" alignItems="center" inlinePaddingStart="md" data-field-group-start>
             {leadingText}

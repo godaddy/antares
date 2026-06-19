@@ -6,6 +6,7 @@ import { TextFieldInvalidExample } from '../examples/invalid.tsx';
 import { TextFieldDisabledExample } from '../examples/disabled.tsx';
 import { TextFieldAdornmentsExample } from '../examples/adornments.tsx';
 import { TextFieldMultilineExample } from '../examples/multiline.tsx';
+import { TextFieldSizesExample } from '../examples/sizes.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textFieldTests() {
@@ -37,6 +38,11 @@ describe('@godaddy/antares', function antares() {
     it('multiline example', async function multilineRender() {
       const { container } = await render(<TextFieldMultilineExample />);
       await expect(container).toMatchScreenshot('multiline');
+    });
+
+    it('sizes example', async function sizesRender() {
+      const { container } = await render(<TextFieldSizesExample />);
+      await expect(container).toMatchScreenshot('sizes');
     });
   });
 });
