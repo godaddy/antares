@@ -5,8 +5,8 @@ export function FieldGroupTrailingControl(props: FieldGroupProps) {
     <Field>
       <FieldLabel>Search</FieldLabel>
       <FieldGroup gap="sm" {...props}>
-        <Input placeholder="Type..." data-field-group-start />
-        <FieldButton aria-label="Search" data-field-group-end>
+        <Input placeholder="Type..." edge="start" />
+        <FieldButton aria-label="Search" edge="end">
           Search
         </FieldButton>
       </FieldGroup>

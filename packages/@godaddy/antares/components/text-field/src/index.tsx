@@ -64,30 +64,26 @@ export function TextField(props: TextFieldProps) {
     props;
   const { isDisabled, isRequired } = racProps;
 
+  // The fill control sits at whichever edge isn't taken by an adornment: middle when both
+  // are present, the opposite edge when one is, and a lone control (both edges) when neither.
+  const controlEdge = leadingText && trailingText ? 'middle' : leadingText ? 'end' : trailingText ? 'start' : undefined;
+
   return (
     <Field as={RACTextField} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size} gap="sm">
         {leadingText && (
-          <Flex as="span" alignItems="center" inlinePaddingStart="md" data-field-group-start>
+          <Flex as="span" alignItems="center" inlinePaddingStart="md">
             {leadingText}
           </Flex>
         )}
         {multiline ? (
-          <TextArea
-            placeholder={placeholder}
-            data-field-group-start={!leadingText || undefined}
-            data-field-group-end={!trailingText || undefined}
-          />
+          <TextArea placeholder={placeholder} edge={controlEdge} />
         ) : (
-          <Input
-            placeholder={placeholder}
-            data-field-group-start={!leadingText || undefined}
-            data-field-group-end={!trailingText || undefined}
-          />
+          <Input placeholder={placeholder} edge={controlEdge} />
         )}
         {trailingText && (
-          <Flex as="span" alignItems="center" inlinePaddingEnd="md" data-field-group-end>
+          <Flex as="span" alignItems="center" inlinePaddingEnd="md">
             {trailingText}
           </Flex>
         )}

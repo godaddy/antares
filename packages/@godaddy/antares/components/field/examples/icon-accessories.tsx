@@ -6,11 +6,11 @@ export function FieldGroupIconAccessories(props: FieldGroupProps) {
     <Field>
       <FieldLabel>Email</FieldLabel>
       <FieldGroup {...props}>
-        <Flex as="span" alignItems="center" inlinePaddingStart="sm" data-field-group-start>
+        <Flex as="span" alignItems="center" inlinePaddingStart="sm">
           <Icon icon="star" />
         </Flex>
-        <Input placeholder="Email" />
-        <FieldButton aria-label="Verify email address" data-field-group-end>
+        <Input placeholder="Email" edge="middle" />
+        <FieldButton aria-label="Verify email address" edge="end">
           Verify
         </FieldButton>
       </FieldGroup>

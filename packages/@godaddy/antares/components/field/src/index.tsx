@@ -123,8 +123,9 @@ export interface FieldGroupProps extends RACGroupProps, FlexOwnProps {
 
 /**
  * Bordered, elevated control box for boxed fields (TextField, NumberField, Select,
- * DateField). Children declare their position with `data-field-group-{start,middle,end}`
- * markers and are styled by descendant CSS in this module — no RAC context injection.
+ * DateField). Children declare their position with the `edge` prop (which maps to the
+ * `data-field-edge` marker) and are styled by descendant CSS in this module — no RAC
+ * context injection.
  *
  * @param props - {@link FieldGroupProps}
  * @param ref - Ref for the root Group DOM node.
@@ -156,7 +157,25 @@ export const FieldGroup = forwardRef<HTMLDivElement, FieldGroupProps>(function F
   );
 });
 
-export interface InputProps extends RACInputProps, BoxOwnProps {}
+/**
+ * Position of a control within a {@link FieldGroup}'s row. Omit for a lone control,
+ * which rounds both edges. The sole authoring API for positioning; it maps to the
+ * internal `data-field-edge` marker the group's CSS keys off.
+ */
+export type FieldEdge = 'start' | 'middle' | 'end';
+
+/**
+ * Maps a {@link FieldEdge} to the `data-field-edge` marker attribute the group's CSS
+ * keys off. An omitted `edge` becomes `"lone"`, which rounds both edges.
+ */
+function fieldEdgeAttrs(edge?: FieldEdge) {
+  return { 'data-field-edge': edge ?? 'lone' };
+}
+
+export interface InputProps extends RACInputProps, BoxOwnProps {
+  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
+  edge?: FieldEdge;
+}
 
 /**
  * Antares Input component using Box and RAC Input.
@@ -164,12 +183,17 @@ export interface InputProps extends RACInputProps, BoxOwnProps {}
  * @param props - {@link InputProps}
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {
-  const { className, ...rest } = props;
+  const { className, edge, ...rest } = props;
 
-  return <Box flex={1} {...rest} as={RACInput} ref={ref} className={cx(styles.input, className)} />;
+  return (
+    <Box flex={1} {...fieldEdgeAttrs(edge)} {...rest} as={RACInput} ref={ref} className={cx(styles.input, className)} />
+  );
 });
 
-export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {}
+export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {
+  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
+  edge?: FieldEdge;
+}
 
 /**
  * Click target for a control inside a {@link FieldGroup} (NumberField steppers,
@@ -178,11 +202,12 @@ export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {}
  * @param props - {@link FieldButtonProps}
  */
 export const FieldButton = forwardRef<HTMLButtonElement, FieldButtonProps>(function FieldButton(props, ref) {
-  const { className, ...rest } = props;
+  const { className, edge, ...rest } = props;
   return (
     <Flex
       alignItems="center"
       justifyContent="center"
+      {...fieldEdgeAttrs(edge)}
       {...rest}
       as={RACButton}
       ref={ref}
@@ -191,7 +216,10 @@ export const FieldButton = forwardRef<HTMLButtonElement, FieldButtonProps>(funct
   );
 });
 
-export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {}
+export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {
+  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
+  edge?: FieldEdge;
+}
 
 /**
  * Antares TextArea component using Box and RAC TextArea.
@@ -199,7 +227,16 @@ export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {}
  * @param props - {@link TextAreaProps}
  */
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {
-  const { className, ...rest } = props;
+  const { className, edge, ...rest } = props;
 
-  return <Box flex={1} {...rest} as={RACTextArea} ref={ref} className={cx(styles.input, styles.textarea, className)} />;
+  return (
+    <Box
+      flex={1}
+      {...fieldEdgeAttrs(edge)}
+      {...rest}
+      as={RACTextArea}
+      ref={ref}
+      className={cx(styles.input, styles.textarea, className)}
+    />
+  );
 });

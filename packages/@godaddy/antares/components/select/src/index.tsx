@@ -51,13 +51,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
     <Field as={RACSelect} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <FieldButton
-          flex={1}
-          justifyContent="space-between"
-          data-field-group-start
-          data-field-group-middle
-          data-field-group-end
-        >
+        <FieldButton flex={1} justifyContent="space-between">
           <RACSelectValue className={styles.selectValue} />
           <Icon icon="chevron-down" className={styles.selectIcon} />
         </FieldButton>

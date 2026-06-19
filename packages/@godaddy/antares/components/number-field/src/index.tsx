@@ -50,18 +50,13 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size}>
         {!hideStepper && (
-          <FieldButton slot="decrement" data-field-group-start>
+          <FieldButton slot="decrement" edge="start">
             <Icon icon="minus" />
           </FieldButton>
         )}
-        <Input
-          ref={ref}
-          placeholder={placeholder}
-          data-field-group-start={hideStepper || undefined}
-          data-field-group-end={hideStepper || undefined}
-        />
+        <Input ref={ref} placeholder={placeholder} edge={hideStepper ? undefined : 'middle'} />
         {!hideStepper && (
-          <FieldButton slot="increment" data-field-group-end>
+          <FieldButton slot="increment" edge="end">
             <Icon icon="plus" />
           </FieldButton>
         )}

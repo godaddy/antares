@@ -6,10 +6,10 @@ export function FieldGroupLeadingControl(props: FieldGroupProps) {
     <Field>
       <FieldLabel>Phone</FieldLabel>
       <FieldGroup gap="sm" {...props}>
-        <FieldButton aria-label="Country code" data-field-group-start>
+        <FieldButton aria-label="Country code" edge="start">
           Click Me
         </FieldButton>
-        <Flex as="span" alignItems="center" padding="md" data-field-group-middle data-field-group-end>
+        <Flex as="span" flex={1} alignItems="center" padding="md">
           Placeholder content
         </Flex>
       </FieldGroup>

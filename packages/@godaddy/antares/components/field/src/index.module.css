@@ -97,36 +97,22 @@
     border-color: var(--field-critical-color);
   }
 
-  /* Children opt into the seamless box via data-field-group-{start,middle,end}
-  markers; corner rounding below is RTL-safe. */
-  & [data-field-group-start],
-  & [data-field-group-middle],
-  & [data-field-group-end] {
+  /* Children opt into the seamless box via the data-field-edge marker (set by the
+  `edge` prop); corner rounding below is RTL-safe. "lone" rounds both edges. */
+  & [data-field-edge] {
     border: none;
   }
 
-  & [data-field-group-middle] {
-    flex-grow: 1;
-  }
-
-  & [data-field-group-start] {
+  & [data-field-edge="start"],
+  & [data-field-edge="lone"] {
     border-start-start-radius: var(--field-br);
     border-end-start-radius: var(--field-br);
   }
 
-  & [data-field-group-end] {
+  & [data-field-edge="end"],
+  & [data-field-edge="lone"] {
     border-start-end-radius: var(--field-br);
     border-end-end-radius: var(--field-br);
-  }
-
-  & [data-field-group-start]:not([data-field-group-end]) {
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-  }
-
-  & [data-field-group-end]:not([data-field-group-start]) {
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
   }
 
   &:where([data-size="sm"]) {
