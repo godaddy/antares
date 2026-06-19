@@ -9,7 +9,10 @@ import {
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
-export interface ListBoxProps<T> extends RACListBoxProps<T>, FlexOwnProps {}
+export interface ListBoxProps<T> extends Omit<RACListBoxProps<T>, 'className'>, FlexOwnProps {
+  /** Additional class names applied to the listbox root. */
+  className?: string;
+}
 
 /**
  * Antares ListBox. A selectable collection of items built on React Aria's ListBox,
@@ -35,7 +38,10 @@ export function ListBox<T>(props: ListBoxProps<T>) {
   );
 }
 
-export interface ListBoxItemProps extends RACListBoxItemProps, FlexOwnProps {}
+export interface ListBoxItemProps extends Omit<RACListBoxItemProps, 'className'>, FlexOwnProps {
+  /** Additional class names applied to the option. */
+  className?: string;
+}
 
 /**
  * One option inside a ListBox. Auto-derives `textValue` from string children when not

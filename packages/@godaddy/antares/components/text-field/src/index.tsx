@@ -12,7 +12,10 @@ import {
 } from '#components/_internal/field';
 import { Flex } from '#components/layout/flex';
 
-export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'size'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
+  /** Additional class names applied to the field root. */
+  className?: string;
+
   /** Default value (uncontrolled). */
   defaultValue?: string;
 

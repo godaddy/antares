@@ -25,9 +25,9 @@ Drops `Button`'s base `:not(.inline)` selector specificity by wrapping it in `:w
 
 Breaking:
 
-- `Select`: drops `labelStyle`, `SelectSection`, `SelectHeader`, `items`, and
-  render-function children; controlled API is `value` / `onChange`. (`size` is
-  reintroduced under the new field-primitives cascade)
+- `Select`: drops `labelStyle`, `SelectSection`, and `SelectHeader`; controlled API
+  is `value` / `onChange`. (`size` is reintroduced under the new field-primitives
+  cascade.)
 - `CheckboxGroup`: `direction` → `orientation: 'horizontal' | 'vertical'`.
 - `TextField` / `NumberField` / `Select`: `description` and `errorMessage` are
   `ReactNode`.

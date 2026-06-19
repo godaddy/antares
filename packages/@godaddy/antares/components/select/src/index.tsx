@@ -22,8 +22,11 @@ import styles from './index.module.css';
 type SelectionMode = 'single' | 'multiple';
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'size'>,
+  extends Omit<RACSelectProps<T, M>, 'className' | 'size'>,
     FieldOwnProps {
+  /** Additional class names applied to the field root. */
+  className?: string;
+
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 }
