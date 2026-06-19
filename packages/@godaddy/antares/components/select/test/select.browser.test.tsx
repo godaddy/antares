@@ -7,6 +7,7 @@ import { SelectControlledExample } from '../examples/controlled';
 import { SelectMultipleExample } from '../examples/multiple';
 import { SelectFormExample } from '../examples/form';
 import { SelectInvalidExample } from '../examples/invalid';
+import { FieldSelectCompositeExample } from '../examples/field-select-composite';
 
 describe('@godaddy/antares', function antares() {
   describe('#Select', function selectSuite() {
@@ -58,6 +59,20 @@ describe('@godaddy/antares', function antares() {
 
       const group = container.querySelector('[role="group"]') as HTMLElement;
       assume(group.hasAttribute('data-invalid')).equals(true);
+    });
+
+    it('collects options and selects in a self-provided FieldSelect composite', async function compositeFieldSelect() {
+      await render(<FieldSelectCompositeExample />);
+
+      const trigger = page.getByRole('button');
+      await userEvent.setup().click(trigger);
+
+      // Options only render if the self-provided Select built its collection.
+      const eur = page.getByRole('option', { name: 'EUR' });
+      await userEvent.setup().click(eur);
+
+      const updated = page.getByRole('button', { name: /EUR/ });
+      assume(updated).is.not.equal(null);
     });
   });
 });

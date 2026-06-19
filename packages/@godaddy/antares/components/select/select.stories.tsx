@@ -8,6 +8,7 @@ import { SelectFormExample } from './examples/form';
 import { SelectInvalidExample } from './examples/invalid';
 import { SelectMultipleExample } from './examples/multiple';
 import { SelectSizesExample } from './examples/sizes';
+import { FieldSelectCompositeExample } from './examples/field-select-composite';
 import { Select } from './src/index.tsx';
 
 export default getMeta({
@@ -53,3 +54,5 @@ export const Multiple = getStory(SelectMultipleExample);
 export const Form = getStory(SelectFormExample);
 
 export const Sizes = getStory(SelectSizesExample);
+
+export const FieldSelectComposite = getStory(FieldSelectCompositeExample);

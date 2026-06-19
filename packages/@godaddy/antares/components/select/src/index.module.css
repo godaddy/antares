@@ -1,3 +1,10 @@
+/* FieldSelect provider wrapper: vanish from layout so the trigger button is the
+   FieldGroup's direct flex child (the data-field-edge marker still resolves via the
+   group's descendant selectors). */
+.fieldSelect {
+  display: contents;
+}
+
 .selectValue {
   flex-grow: 1;
   white-space: nowrap;
