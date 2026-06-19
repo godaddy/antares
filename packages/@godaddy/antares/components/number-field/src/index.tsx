@@ -1,16 +1,18 @@
 import { forwardRef } from 'react';
+import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
 import {
-  Input as RACInput,
-  NumberField as RACNumberField,
-  type NumberFieldProps as RACNumberFieldProps
-} from 'react-aria-components';
-import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
-import { Button } from '#components/button';
+  Field,
+  FieldButton,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  Input,
+  type FieldOwnProps
+} from '#components/_internal/field';
 import { Icon } from '#components/icon';
 
-export interface NumberFieldProps
-  extends Omit<RACNumberFieldProps, 'children'>,
-    Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
+export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children'>, FieldOwnProps {
   /** When true, hides the increment/decrement stepper buttons. @default false */
   hideStepper?: boolean;
 
@@ -34,30 +36,30 @@ export interface NumberFieldProps
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
   const { description, errorMessage, hideStepper, label, ...racProps } = props;
-  const { isDisabled, isRequired, isReadOnly } = racProps;
+  const { isDisabled, isRequired } = racProps;
 
   return (
-    <RACNumberField {...racProps}>
-      <FieldFrame
-        description={description}
-        errorMessage={errorMessage}
-        isDisabled={isDisabled}
-        isRequired={isRequired}
-        isReadOnly={isReadOnly}
-        label={label}
-      >
+    <Field as={RACNumberField} {...racProps}>
+      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
+      <FieldGroup isDisabled={isDisabled}>
         {!hideStepper && (
-          <Button slot="decrement">
+          <FieldButton slot="decrement" data-field-group-start>
             <Icon icon="minus" />
-          </Button>
+          </FieldButton>
         )}
-        <RACInput ref={ref} />
+        <Input
+          ref={ref}
+          data-field-group-start={hideStepper || undefined}
+          data-field-group-end={hideStepper || undefined}
+        />
         {!hideStepper && (
-          <Button slot="increment">
+          <FieldButton slot="increment" data-field-group-end>
             <Icon icon="plus" />
-          </Button>
+          </FieldButton>
         )}
-      </FieldFrame>
-    </RACNumberField>
+      </FieldGroup>
+      <FieldDescription>{description}</FieldDescription>
+      <FieldError>{errorMessage}</FieldError>
+    </Field>
   );
 });

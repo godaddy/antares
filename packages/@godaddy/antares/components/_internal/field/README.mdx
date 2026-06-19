@@ -1,0 +1,100 @@
+---
+title: Field primitives
+description: Composable internal primitives (Field, FieldLabel, FieldGroup, FieldError) for building form fields
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './field.stories.tsx';
+
+import SourceTrailingControl from './examples/trailing-control.tsx?raw';
+import SourceLeadingControl from './examples/leading-control.tsx?raw';
+import SourceIconAccessories from './examples/icon-accessories.tsx?raw';
+import SourceBasic from './examples/basic.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+**Internal primitives.** These are intended for internal use only. Use the public field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) instead; they compose these primitives internally.
+
+The field decoration is split into granular, composable pieces so the same structure is shared across every field:
+
+- **`Field`** — pure layout. A `Flex` column with the standard field gap that stacks the label, control, description, and error.
+- **`FieldLabel`** — wraps React Aria `Label` and renders an optional required indicator (`*`).
+- **`FieldGroup`** — the presentational bordered/elevated control box (a React Aria `Group`). Used only by "boxed" fields (TextField, NumberField, Select, DateField).
+- **`Input`** / **`TextArea`** — the normalized fill controls (React Aria `Input`/`TextArea` given antares spacing via `Box`).
+- **`FieldDescription`** — wraps the antares `Text` with `slot="description"` for the helper text. Renders nothing when empty.
+- **`FieldError`** — a thin wrapper over React Aria `FieldError`. Renders the field's validation messages by default and nothing when valid.
+
+`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
+
+## Usage
+
+### FieldGroup props
+
+<ArgTypes of={Stories.Props} />
+
+### Basic example
+
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceBasic} />
+
+## Composition
+
+A boxed field composes the primitives inside its React Aria field wrapper. For
+non-generic wrappers (TextField, NumberField, DateField) use `Field as={...}` to merge
+the field wrapper and the layout column into a single element:
+
+```text
+Field as={RACTextField}                   ← field wrapper + layout column (one element)
+├── FieldLabel                            ← when label provided (+ required indicator)
+├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
+│   └── {children}                        ← Input, Button, DateInput, etc.
+├── FieldDescription                      ← when description provided
+└── FieldError                            ← renders validation messages when invalid
+```
+
+`Select` is generic (`Select<T, M>`) — polymorphic `as` drops the type parameter, so it
+nests instead: `<RACSelect><Field>…</Field></RACSelect>`.
+
+A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
+
+`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
+
+### Marking controls inside the group
+
+`FieldGroup` makes **no assumptions** about its children — the field declares each child's position with a data attribute, and the group's CSS keys off them (rather than positional `:first-child` / tag selectors). Every marker strips the child's native border so the group reads as one control:
+
+| Attribute                 | Put it on…                        | Effect                                                                    |
+| ------------------------- | --------------------------------- | ------------------------------------------------------------------------- |
+| `data-field-group-start`  | the element at the **start** edge | strips the border, rounds the start corners to the group, squares the end |
+| `data-field-group-middle` | the fill control (e.g. the input) | strips the border                                                         |
+| `data-field-group-end`    | the element at the **end** edge   | strips the border, rounds the end corners to the group, squares the start |
+
+A lone control (TextField input, Select trigger) carries **both** `start` and `end`, so it rounds on both sides; a stepper row puts `start` on the leading button, `end` on the trailing one, and `middle` on the input. Squaring the inner corner matters because controls like `Button` are rounded by default, so an edge button would otherwise bulge past its neighbor.
+
+### States
+
+The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
+
+| State                                                                                    | CSS Selector           |
+| ---------------------------------------------------------------------------------------- | ---------------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]`      |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`       |
+| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focus-visible]` |
+
+## Examples
+
+### Leading control
+
+<Story of={Stories.LeadingControl} inline />
+
+### Trailing control
+
+<Story of={Stories.TrailingControl} inline />
+
+<Source language="tsx" code={SourceTrailingControl} />
+
+### Icon accessories
+
+<Story of={Stories.IconAccessories} inline />
+
+<Source language="tsx" code={SourceIconAccessories} />

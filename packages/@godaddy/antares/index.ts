@@ -15,16 +15,9 @@ export { Box, type BoxProps, type BoxOwnProps } from '#components/layout/box';
 export { Flex, type FlexProps, type FlexOwnProps } from '#components/layout/flex';
 export { Grid, type GridProps, type GridOwnProps } from '#components/layout/grid';
 
-export {
-  Select,
-  SelectItem,
-  SelectSection,
-  SelectHeader,
-  type SelectProps,
-  type SelectItemProps,
-  type SelectSectionProps,
-  type SelectHeaderProps
-} from '#components/select';
+export { ListBox, ListBoxItem, type ListBoxProps, type ListBoxItemProps, type ListBoxKey } from '#components/listbox';
+
+export { Select, SelectItem, type SelectProps, type SelectItemProps, type SelectKey } from '#components/select';
 
 export {
   Menu,

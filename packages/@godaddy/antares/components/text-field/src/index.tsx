@@ -1,30 +1,19 @@
+import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
 import {
-  Input as RACInput,
-  TextArea as RACTextArea,
-  TextField as RACTextField,
-  type TextFieldProps as RACTextFieldProps
-} from 'react-aria-components';
-import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  Input,
+  TextArea,
+  type FieldOwnProps
+} from '#components/_internal/field';
 import { Flex } from '#components/layout/flex';
-import { Text } from '#components/text';
-import styles from './index.module.css';
 
-/**
- * Extended props for the TextField component.
- * Adds leading/trailing adornments and multiline support.
- * Extends RAC TextFieldProps.
- */
-export interface TextFieldProps
-  extends Omit<RACTextFieldProps, 'children'>,
-    Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
-  /** Helper text shown below the frame. */
-  description?: string;
-
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'children'>, FieldOwnProps {
   /** Default value (uncontrolled). */
   defaultValue?: string;
-
-  /** Error message shown when invalid. Use with isInvalid. */
-  errorMessage?: string;
 
   /** Whether the input is disabled. */
   isDisabled?: boolean;
@@ -34,9 +23,6 @@ export interface TextFieldProps
 
   /** Whether user input is required before form submission. */
   isRequired?: boolean;
-
-  /** Label text shown above the frame. */
-  label?: string;
 
   /** Text rendered before the input (leading adornment). */
   leadingText?: string;
@@ -61,9 +47,9 @@ export interface TextFieldProps
 }
 
 /**
- * TextField composes React Aria TextField with FieldFrame and optional leading/trailing
- * text adornments. Use for single-line or multiline text input with label, description,
- * and error message.
+ * TextField composes React Aria TextField with the field primitives (Field, FieldLabel,
+ * FieldGroup, FieldError) and optional leading/trailing text adornments. Use for
+ * single-line or multiline text input with label, description, and error message.
  *
  * @param props - {@link TextFieldProps}
  * @returns JSX element
@@ -77,35 +63,38 @@ export interface TextFieldProps
  */
 export function TextField(props: TextFieldProps) {
   const { description, errorMessage, label, leadingText, multiline, placeholder, trailingText, ...racProps } = props;
-  const { isDisabled, isRequired, isReadOnly } = racProps;
+  const { isDisabled, isRequired } = racProps;
 
   return (
-    <RACTextField {...racProps}>
-      <FieldFrame
-        description={description}
-        errorMessage={errorMessage}
-        isDisabled={isDisabled}
-        isRequired={isRequired}
-        isReadOnly={isReadOnly}
-        label={label}
-        gap="sm"
-      >
+    <Field as={RACTextField} {...racProps}>
+      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
+      <FieldGroup isDisabled={isDisabled} gap="sm">
         {leadingText && (
-          <Flex as={Text} alignItems="center" inlinePaddingStart="md">
+          <Flex as="span" alignItems="center" inlinePaddingStart="md" data-field-group-start>
             {leadingText}
           </Flex>
         )}
         {multiline ? (
-          <RACTextArea placeholder={placeholder} className={styles.multiline} />
+          <TextArea
+            placeholder={placeholder}
+            data-field-group-start={!leadingText || undefined}
+            data-field-group-end={!trailingText || undefined}
+          />
         ) : (
-          <RACInput placeholder={placeholder} />
+          <Input
+            placeholder={placeholder}
+            data-field-group-start={!leadingText || undefined}
+            data-field-group-end={!trailingText || undefined}
+          />
         )}
         {trailingText && (
-          <Flex as={Text} alignItems="center" inlinePaddingEnd="md">
+          <Flex as="span" alignItems="center" inlinePaddingEnd="md" data-field-group-end>
             {trailingText}
           </Flex>
         )}
-      </FieldFrame>
-    </RACTextField>
+      </FieldGroup>
+      <FieldDescription>{description}</FieldDescription>
+      <FieldError>{errorMessage}</FieldError>
+    </Field>
   );
 }

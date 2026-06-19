@@ -4,15 +4,10 @@
   --radio-critical-color: var(--color-feedback-critical-strong, var(--ux-1marogz, #ae1302));
 }
 
-.label--required::after {
-  content: " *";
-  padding-inline-start: 0.2em;
-  color: var(--radio-critical-color);
-}
-
 .radio {
   cursor: pointer;
   position: relative;
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -82,12 +77,4 @@
 .radioGroup[data-invalid] .radio:hover:not([data-disabled]) .indicator,
 .radioGroup[data-invalid] .radio[data-selected] .indicator {
   border-color: var(--radio-critical-color);
-}
-
-.radioLabel {
-  user-select: none;
-}
-
-.error {
-  color: var(--radio-critical-color);
 }

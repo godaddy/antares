@@ -1,0 +1,133 @@
+.field {
+  --field-critical-color: var(
+    --color-feedback-critical-strong,
+    var(--ux-1fhc073, #db1802)
+  );
+  --field-br: var(--ux-1oqjeuu, 0.375rem);
+}
+
+.label {
+  color: var(--ux-1glcx6s, #2b2b2b);
+  font-size: var(--ux-16aixzc, 0.875rem);
+  font-family: var(--ux-15ks663, sans-serif);
+  font-weight: var(--ux-aarlu5, 500);
+}
+
+.labelRequired {
+  color: var(--field-critical-color);
+}
+
+.description,
+.error {
+  font-size: var(--ux-p4h24g, 0.875rem);
+  font-weight: var(--ux-g9ierp, 400);
+}
+
+.description {
+  color: var(--ux-1m9ys0v, #767676);
+}
+
+.error {
+  color: var(--field-critical-color);
+}
+
+.input,
+.textarea,
+.fieldButton {
+  background: transparent;
+  border: none;
+  font-family: var(--ux-9wtaa3, sans-serif);
+  line-height: var(--ux-hm1ty7, 1.375);
+  font-size: var(--ux-oc0naw, 1rem);
+  color: var(--ux-1glcx6s, #2b2b2b);
+  min-width: 0;
+
+  &:where([data-focused]) {
+    outline: 2px solid Highlight;
+  }
+}
+
+.textarea {
+  field-sizing: content;
+  min-height: min-content;
+}
+
+.fieldButton {
+  border-width: 1px;
+  border-style: solid;
+  cursor: pointer;
+  background: var(--ux-1mh0ktr, #f5f5f5);
+  border-color: var(--ux-1qbn65p, #f5f5f5);
+  color: var(--ux-1utwv7e, #111);
+
+  &:where([data-hovered]) {
+    background: var(--ux-11rtwg8, #f5f5f5);
+    border-color: var(--ux-bg7olm, #d6d6d6);
+    color: var(--ux-1e4ese5, #111);
+  }
+
+  &:where([data-pressed]) {
+    background: var(--ux-gdy377, #fff);
+    border-color: var(--ux-187j9dd, #00a4a6);
+    color: var(--ux-k4fkva, #111);
+  }
+
+  &:where([data-focused]) {
+    outline: 2px solid Highlight;
+  }
+
+  &:where([data-disabled]),
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  & [data-icon] {
+    width: 1lh;
+    height: 1lh;
+  }
+}
+
+.group {
+  border-radius: var(--field-br);
+  box-sizing: border-box;
+
+  &:where([data-disabled]) {
+    opacity: 0.4;
+  }
+
+  &:where([data-invalid]) {
+    border-color: var(--field-critical-color);
+  }
+
+  /* Children opt into the seamless box via data-field-group-{start,middle,end}
+  markers; corner rounding below is RTL-safe. */
+  & [data-field-group-start],
+  & [data-field-group-middle],
+  & [data-field-group-end] {
+    border: none;
+  }
+
+  & [data-field-group-middle] {
+    flex-grow: 1;
+  }
+
+  & [data-field-group-start] {
+    border-start-start-radius: var(--field-br);
+    border-end-start-radius: var(--field-br);
+  }
+
+  & [data-field-group-end] {
+    border-start-end-radius: var(--field-br);
+    border-end-end-radius: var(--field-br);
+  }
+
+  & [data-field-group-start]:not([data-field-group-end]) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  & [data-field-group-end]:not([data-field-group-start]) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+}

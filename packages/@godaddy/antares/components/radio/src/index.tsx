@@ -1,111 +1,17 @@
 import {
-  FieldError as RACFieldError,
-  type FieldErrorProps as RACFieldErrorProps,
-  Label as RACLabel,
-  // biome-ignore lint/suspicious/noDeprecatedImports: got deprecated recently, we'll update this with field-frame update
-  Radio as RACRadio,
+  RadioButton as RACRadioButton,
+  RadioField as RACRadioField,
+  type RadioFieldProps as RACRadioFieldProps,
   RadioGroup as RACRadioGroup,
-  type RadioGroupProps as RACRadioGroupProps,
-  type RadioProps as RACRadioProps
+  type RadioGroupProps as RACRadioGroupProps
 } from 'react-aria-components';
-import { Flex } from '#components/layout/flex';
+import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/_internal/field';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
-import { Icon } from '#components/icon';
-import { Text, type TextProps } from '#components/text';
 import type { ReactNode } from 'react';
 import { cx } from 'cva';
 
-/**
- * Props for the RadioGroup component
- */
-export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children' | 'className'> {
-  /** The content to display as the label */
-  label?: ReactNode;
-
-  /** Radio elements */
-  children: ReactNode;
-
-  /** Additional class names applied to the root element. */
-  className?: string;
-
-  /** Help text below the radio group */
-  description?: ReactNode;
-
-  /** Props for the description text */
-  descriptionProps?: TextProps;
-
-  /** Error message shown when invalid */
-  errorMessage?: ReactNode;
-
-  /** Props for the error message text */
-  errorMessageProps?: RACFieldErrorProps;
-}
-
-/**
- * Antares RadioGroup component
- *
- * @param props - {@link RadioGroupProps}
- * @returns RadioGroup component with label, radios, description, and error message
- */
-export function RadioGroup({
-  label,
-  description,
-  errorMessage,
-  children,
-  className,
-  orientation = 'vertical',
-  descriptionProps,
-  errorMessageProps,
-  ...props
-}: RadioGroupProps) {
-  return (
-    <Flex
-      as={RACRadioGroup}
-      direction="column"
-      gap="sm"
-      orientation={orientation}
-      {...props}
-      className={cx(styles.radioGroup, className)}
-    >
-      {label && (
-        <Flex as={RACLabel} className={cx(props.isRequired && styles['label--required'])}>
-          {label}
-        </Flex>
-      )}
-
-      <Flex
-        direction={orientation === 'horizontal' ? 'row' : 'column'}
-        gap={orientation === 'horizontal' ? 'lg' : 'md'}
-      >
-        {children}
-      </Flex>
-
-      {description && (
-        <Text slot="description" {...descriptionProps}>
-          {description}
-        </Text>
-      )}
-
-      {errorMessage && (
-        <Flex
-          as={RACFieldError}
-          gap="sm"
-          alignItems="center"
-          {...errorMessageProps}
-          className={cx(styles.error, errorMessageProps?.className)}
-        >
-          <Icon icon="alert" />
-          <span>{errorMessage}</span>
-        </Flex>
-      )}
-    </Flex>
-  );
-}
-
-/**
- * Props for the Radio component
- */
-export interface RadioProps extends Omit<RACRadioProps, 'children'> {
+export interface RadioProps extends RACRadioFieldProps, FlexOwnProps {
   /** Label text for the radio button */
   children: ReactNode;
 
@@ -121,9 +27,46 @@ export interface RadioProps extends Omit<RACRadioProps, 'children'> {
  */
 export function Radio({ className, children, ...props }: RadioProps) {
   return (
-    <Flex as={RACRadio} alignItems="center" gap="sm" {...props} className={cx(styles.radio, className)}>
-      <div className={styles.indicator} />
-      <span className={styles.radioLabel}>{children}</span>
+    <Flex {...props} as={RACRadioField}>
+      <Flex as={RACRadioButton} alignItems="center" gap="sm" className={cx(styles.radio, className)}>
+        <div className={styles.indicator} />
+        {children}
+      </Flex>
     </Flex>
+  );
+}
+
+export interface RadioGroupProps extends RACRadioGroupProps, FieldOwnProps {
+  /** Radio elements */
+  children: ReactNode;
+}
+
+/**
+ * Antares RadioGroup component
+ *
+ * @param props - {@link RadioGroupProps}
+ * @returns RadioGroup component with label, radios, description, and error message
+ */
+export function RadioGroup({
+  label,
+  description,
+  errorMessage,
+  children,
+  className,
+  orientation = 'vertical',
+  ...props
+}: RadioGroupProps) {
+  return (
+    <Field as={RACRadioGroup} orientation={orientation} {...props} className={cx(styles.radioGroup, className)}>
+      <FieldLabel isRequired={props.isRequired}>{label}</FieldLabel>
+      <Flex
+        direction={orientation === 'horizontal' ? 'row' : 'column'}
+        gap={orientation === 'horizontal' ? 'lg' : 'md'}
+      >
+        {children}
+      </Flex>
+      <FieldDescription>{description}</FieldDescription>
+      <FieldError>{errorMessage}</FieldError>
+    </Field>
   );
 }
