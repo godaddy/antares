@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-BFVecrtB.js";import{y as t}from"./chunk-NNHCCRGN--UCeH83L.js";import{O as n,k as r}from"./mermaid-parser.core-BQL-AlGn.js";e((()=>{r(),t()}))();export{n as createEventModelingServices};
