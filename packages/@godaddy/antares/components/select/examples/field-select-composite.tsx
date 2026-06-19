@@ -1,5 +1,4 @@
-import { Field, FieldDescription, FieldGroup, FieldLabel, Input } from '#components/field';
-import { FieldSelect, SelectItem } from '../src';
+import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSelect, Input, SelectItem } from '@godaddy/antares';
 
 /**
  * Composite field: an amount input and a currency {@link FieldSelect} sharing one

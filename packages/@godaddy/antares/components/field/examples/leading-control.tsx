@@ -1,5 +1,12 @@
-import { Flex } from '@godaddy/antares';
-import { Field, FieldButton, FieldDescription, FieldGroup, FieldLabel, type FieldGroupProps } from '../src';
+import {
+  Field,
+  FieldButton,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  Flex,
+  type FieldGroupProps
+} from '@godaddy/antares';
 
 export function FieldGroupLeadingControl(props: FieldGroupProps) {
   return (

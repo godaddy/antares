@@ -1,5 +1,14 @@
-import { Flex, Icon } from '@godaddy/antares';
-import { Field, FieldButton, FieldDescription, FieldGroup, FieldLabel, Input, type FieldGroupProps } from '../src';
+import {
+  Field,
+  FieldButton,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  Flex,
+  Icon,
+  Input,
+  type FieldGroupProps
+} from '@godaddy/antares';
 
 export function FieldGroupIconAccessories(props: FieldGroupProps) {
   return (

@@ -1,4 +1,12 @@
-import { Field, FieldButton, FieldDescription, FieldGroup, FieldLabel, Input, type FieldGroupProps } from '../src';
+import {
+  Field,
+  FieldButton,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  Input,
+  type FieldGroupProps
+} from '@godaddy/antares';
 
 export function FieldGroupTrailingControl(props: FieldGroupProps) {
   return (

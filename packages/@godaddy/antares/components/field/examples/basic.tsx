@@ -1,5 +1,4 @@
-import { Flex } from '@godaddy/antares';
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '../src';
+import { Field, FieldDescription, FieldGroup, FieldLabel, Flex } from '@godaddy/antares';
 
 /** Props for the composed field-group examples. */
 export interface FieldGroupBasicProps {
