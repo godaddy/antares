@@ -1,6 +1,6 @@
 ---
 title: Field primitives
-description: Composable internal primitives (Field, FieldLabel, FieldGroup, FieldError) for building form fields
+description: Composable primitives (Field, FieldLabel, FieldGroup, FieldError) for building form fields
 ---
 
 import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
@@ -13,7 +13,7 @@ import SourceBasic from './examples/basic.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-**Internal primitives.** These are intended for internal use only. Use the public field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) instead; they compose these primitives internally.
+**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
 
 The field decoration is split into granular, composable pieces so the same structure is shared across every field:
 

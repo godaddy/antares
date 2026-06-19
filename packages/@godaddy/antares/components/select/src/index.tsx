@@ -13,7 +13,7 @@ import {
   FieldLabel,
   type FieldOwnProps,
   type FieldSize
-} from '#components/_internal/field';
+} from '#components/field';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';

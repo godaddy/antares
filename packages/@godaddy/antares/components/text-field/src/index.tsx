@@ -9,7 +9,7 @@ import {
   Input,
   TextArea,
   type FieldOwnProps
-} from '#components/_internal/field';
+} from '#components/field';
 import { Flex } from '#components/layout/flex';
 
 export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {

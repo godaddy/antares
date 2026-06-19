@@ -6,7 +6,7 @@ import {
   CheckboxGroup as RACCheckboxGroup,
   type CheckboxGroupProps as RACCheckboxGroupProps
 } from 'react-aria-components';
-import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/_internal/field';
+import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';

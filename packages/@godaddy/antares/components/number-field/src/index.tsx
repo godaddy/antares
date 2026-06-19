@@ -10,7 +10,7 @@ import {
   type FieldSize,
   Input,
   type FieldOwnProps
-} from '#components/_internal/field';
+} from '#components/field';
 import { Icon } from '#components/icon';
 
 export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
