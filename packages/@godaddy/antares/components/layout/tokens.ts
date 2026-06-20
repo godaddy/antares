@@ -10,7 +10,7 @@ const SPACING_MAP = {
   sm: 'var(--sp-sm, 4px)',
   md: 'var(--sp-md, 8px)',
   lg: 'var(--sp-lg, 12px)',
-  xl: 'var(--sp-xl, 16px)',
+  xl: 'var(--sp-xl, 20px)',
   '2xl': 'var(--sp-2xl, 32px)'
 } as const satisfies Record<Spacing, string>;
 
