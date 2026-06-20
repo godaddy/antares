@@ -3,11 +3,6 @@
  *
  * Import this package to access all components, layout primitives, and design tokens.
  * CSS custom properties are automatically side-effect imported when this module loads.
- *
- * Each line below re-exports a granular `exports/<Area>.ts` file, which is also the
- * package's public subpath (e.g. `@godaddy/antares/Button`). Edit only the
- * `exports/<Area>.ts` file when changing exports — this barrel re-exports it, so the
- * barrel and the subpath stay in sync automatically.
  */
 
 export * from './exports/Icon';
@@ -35,5 +30,4 @@ export * from './exports/ToggleButton';
 export * from './exports/Alert';
 export * from './exports/Tag';
 
-// One-off re-export of a low-level React Aria utility with no dedicated subpath.
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
