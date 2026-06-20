@@ -796,7 +796,6 @@ The field decoration is split into granular, composable pieces so the same struc
 * **`FieldGroup`** — the presentational bordered/elevated control box (a React Aria `Group`). Used only by "boxed" fields (TextField, NumberField, Select, DateField).
 * **`FieldInput`*&#x2A; / &#x2A;*`FieldTextArea`** — the normalized fill controls (React Aria `Input`/`TextArea` given antares spacing via `Box`).
 * **`FieldButton`** — a click target inside the group (NumberField steppers, search submit, etc.).
-* **`FieldSelectFragment`** — a Select trigger (current value + chevron) without its own provider or popover, for compositing a Select inside a shared box.
 * **`FieldDescription`** — wraps the antares `Text` with `slot="description"` for the helper text. Renders nothing when empty.
 * **`FieldError`** — a thin wrapper over React Aria `FieldError`. Renders the field's validation messages by default and nothing when valid.
 
