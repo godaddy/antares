@@ -1,14 +1,8 @@
-import { cx } from 'cva';
-import {
-  Select as RACSelect,
-  SelectValue as RACSelectValue,
-  type SelectProps as RACSelectProps,
-  type Key as RACKey
-} from 'react-aria-components';
+import { Select as RACSelect, type SelectProps as RACSelectProps, type Key as RACKey } from 'react-aria-components';
 import {
   Field,
-  FieldButton,
-  type FieldButtonProps,
+  FieldSelectFragment,
+  type FieldSelectFragmentProps,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -16,14 +10,12 @@ import {
   type FieldOwnProps,
   type FieldSize
 } from '#components/field';
-import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
-import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-type FieldSelectTriggerProps<T extends object, M extends SelectionMode> = Omit<FieldButtonProps, 'children'> & {
+type FieldSelectTriggerProps<T extends object, M extends SelectionMode> = Omit<FieldSelectFragmentProps, 'children'> & {
   children?: RACSelectProps<T, M>['children'];
 };
 
@@ -32,14 +24,11 @@ type FieldSelectTriggerProps<T extends object, M extends SelectionMode> = Omit<F
 // in a component is collection-safe: RAC builds the collection by rendering children.
 function FieldSelectTrigger<T extends object, M extends SelectionMode = 'single'>({
   children,
-  ...buttonProps
+  ...props
 }: FieldSelectTriggerProps<T, M>) {
   return (
     <>
-      <FieldButton justifyContent="space-between" {...buttonProps}>
-        <RACSelectValue className={styles.selectValue} />
-        <Icon icon="chevron-down" className={styles.selectIcon} />
-      </FieldButton>
+      <FieldSelectFragment {...props} />
       <Popover hideArrow contentProps={{ inlinePadding: '0', blockPadding: 'xs' }}>
         <ListBox>{children}</ListBox>
       </Popover>
@@ -48,22 +37,13 @@ function FieldSelectTrigger<T extends object, M extends SelectionMode = 'single'
 }
 
 export interface FieldSelectProps<T extends object, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'className' | 'children'> {
+  extends Omit<RACSelectProps<T, M>, 'className'> {
   /** Additional class names merged onto the Select wrapper. */
   className?: string;
-
-  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
-  edge?: FieldButtonProps['edge'];
-
-  /** Forwarded to the trigger. Pass `flex={1}` to fill the group (a lone select). */
-  flex?: FieldButtonProps['flex'];
-
-  /** The options, e.g. `<SelectItem>`. */
-  children?: RACSelectProps<T, M>['children'];
 }
 
 /**
- * Box-less select for a {@link FieldGroup} — the select-flavored analog of {@link FieldButton}.
+ * Box-less select for a {@link FieldGroup}.
  * Brings its own Select provider but no field/label/description/error wrapper, so it composes
  * inside a shared box (e.g. amount input + currency select). Give it an `aria-label`. For a
  * standalone, fully-decorated select use {@link Select}.
@@ -71,23 +51,19 @@ export interface FieldSelectProps<T extends object, M extends SelectionMode = 's
  * @example
  * ```tsx
  * <FieldGroup aria-labelledby={priceLabelId}>
- *   <Input edge="start" aria-label="Amount" />
- *   <FieldSelect edge="end" aria-label="Currency" defaultValue="usd">
+ *   <FieldInput aria-label="Amount" />
+ *   <FieldSelect aria-label="Currency" defaultValue="usd">
  *     <SelectItem id="usd">USD</SelectItem>
  *   </FieldSelect>
  * </FieldGroup>
  * ```
  */
 export function FieldSelect<T extends object, M extends SelectionMode = 'single'>(props: FieldSelectProps<T, M>) {
-  const { edge, flex, children, className, ...selectProps } = props;
+  const { children, ...selectProps } = props;
 
-  // RACSelect stays the outer element to keep its <T, M> generics (Flex as={RACSelect} drops
-  // them); display: contents keeps the trigger button as the FieldGroup's direct flex child.
   return (
-    <RACSelect {...selectProps} className={cx(styles.fieldSelect, className)}>
-      <FieldSelectTrigger<T, M> edge={edge} flex={flex}>
-        {children}
-      </FieldSelectTrigger>
+    <RACSelect {...selectProps}>
+      <FieldSelectTrigger<T, M>>{children}</FieldSelectTrigger>
     </RACSelect>
   );
 }
@@ -124,7 +100,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
     <Field as={RACSelect} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <FieldSelectTrigger<T, M> flex={1}>{children}</FieldSelectTrigger>
+        <FieldSelectTrigger<T, M> variant="select">{children}</FieldSelectTrigger>
       </FieldGroup>
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>

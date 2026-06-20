@@ -6,6 +6,7 @@ import {
   FieldError as RACFieldError,
   FieldErrorContext as RACFieldErrorContext,
   type FieldErrorProps as RACFieldErrorProps,
+  SelectValue as RACSelectValue,
   Group as RACGroup,
   Input as RACInput,
   type InputProps as RACInputProps,
@@ -18,6 +19,7 @@ import {
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../types/polymorphic-react.ts';
 import { Box, type BoxOwnProps } from '#components/layout/box';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Icon } from '#components/icon';
 import { Text, type TextProps } from '#components/text';
 import styles from './index.module.css';
 
@@ -35,15 +37,18 @@ export interface FieldOwnProps extends FlexOwnProps {
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldOwnProps>;
 
 /**
- * Vertical layout for a single field. Pass `as={RACTextField}` (or another RAC field
- * wrapper) to merge the field's RAC provider into this element instead of nesting.
+ * Presentational vertical stack for a single field. Pass `as={RACTextField}` (or another RAC field
+ * wrapper) to merge the field's RAC provider and context plumbing.
  *
  * @param props - {@link FieldProps}
  *
  * @example
  * <Field as={RACTextField} {...fieldProps}>
- *   <FieldLabel isRequired>Email</FieldLabel>
- *   <FieldGroup><Input /></FieldGroup>
+ *   <FieldLabel>Email</FieldLabel>
+ *   <FieldGroup>
+ *     <FieldInput />
+ *     <FieldButton>Verify</FieldButton>
+ *   </FieldGroup>
  *   <FieldDescription>We won't share it.</FieldDescription>
  *   <FieldError />
  * </Field>
@@ -59,8 +64,7 @@ export interface FieldLabelProps extends RACLabelProps {
 }
 
 /**
- * Field label with an optional required indicator. Renders nothing when empty, so
- * callers can forward an optional `label` prop without guarding.
+ * Field label with an optional required indicator.
  *
  * @param props - {@link FieldLabelProps}
  */
@@ -72,9 +76,9 @@ export function FieldLabel(props: FieldLabelProps) {
   }
 
   return (
-    <RACLabel {...rest} className={cx(styles.label, className)}>
+    <RACLabel {...rest} className={cx(styles.fieldLabel, className)}>
       {children}
-      {isRequired && <span className={styles.labelRequired}> *</span>}
+      {isRequired && <span className={styles.fieldLabelRequired}> *</span>}
     </RACLabel>
   );
 }
@@ -82,9 +86,7 @@ export function FieldLabel(props: FieldLabelProps) {
 export interface FieldDescriptionProps extends Omit<TextProps, 'as' | 'slot'> {}
 
 /**
- * Field helper text, associated with the field via `slot="description"`. Renders
- * nothing when empty, so callers can forward an optional `description` prop without
- * guarding.
+ * Field description text, associated with the field via `slot="description"`.
  *
  * @param props - {@link FieldDescriptionProps}
  */
@@ -96,7 +98,7 @@ export function FieldDescription(props: FieldDescriptionProps) {
   }
 
   return (
-    <Text {...rest} slot="description" className={cx(styles.description, className)}>
+    <Text {...rest} slot="description" className={cx(styles.fieldDescription, className)}>
       {children}
     </Text>
   );
@@ -111,21 +113,19 @@ export interface FieldErrorProps extends RACFieldErrorProps {}
  */
 export function FieldError(props: FieldErrorProps) {
   const { className, ...rest } = props;
-  return <RACFieldError {...rest} className={cx(styles.error, className)} />;
+  return <RACFieldError {...rest} className={cx(styles.fieldError, className)} />;
 }
 
 export type FieldSize = 'sm' | 'md';
 
 export interface FieldGroupProps extends RACGroupProps, FlexOwnProps {
-  /** Controls input/textarea/fieldButton font-size and padding inside the group. @default 'md' */
+  /** Size for the control fields inside the group. @default 'md' */
   size?: FieldSize;
 }
 
 /**
- * Bordered, elevated control box for boxed fields (TextField, NumberField, Select,
- * DateField). Children declare their position with the `edge` prop (which maps to the
- * `data-field-edge` marker) and are styled by descendant CSS in this module — no RAC
- * context injection.
+ * Presentational bordered, elevated control box for boxed fields (TextField, NumberField, Select,
+ * DateField, and composite fields).
  *
  * @param props - {@link FieldGroupProps}
  * @param ref - Ref for the root Group DOM node.
@@ -152,91 +152,81 @@ export const FieldGroup = forwardRef<HTMLDivElement, FieldGroupProps>(function F
       {...rest}
       as={RACGroup}
       ref={ref}
-      className={cx(styles.group, className)}
+      className={cx(styles.fieldGroup, className)}
     />
   );
 });
 
-/**
- * Position of a control within a {@link FieldGroup}'s row. Omit for a lone control,
- * which rounds both edges. The sole authoring API for positioning; it maps to the
- * internal `data-field-edge` marker the group's CSS keys off.
- */
-export type FieldEdge = 'start' | 'middle' | 'end';
+export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {}
 
 /**
- * Maps a {@link FieldEdge} to the `data-field-edge` marker attribute the group's CSS
- * keys off. An omitted `edge` becomes `"lone"`, which rounds both edges.
- */
-function fieldEdgeAttrs(edge?: FieldEdge) {
-  return { 'data-field-edge': edge ?? 'lone' };
-}
-
-export interface InputProps extends RACInputProps, BoxOwnProps {
-  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
-  edge?: FieldEdge;
-}
-
-/**
- * Antares Input component using Box and RAC Input.
- *
- * @param props - {@link InputProps}
- */
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {
-  const { className, edge, ...rest } = props;
-
-  return (
-    <Box flex={1} {...fieldEdgeAttrs(edge)} {...rest} as={RACInput} ref={ref} className={cx(styles.input, className)} />
-  );
-});
-
-export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {
-  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
-  edge?: FieldEdge;
-}
-
-/**
- * Click target for a control inside a {@link FieldGroup} (NumberField steppers,
+ * Control button inside a `FieldGroup` (NumberField steppers,
  * Select trigger, search submit, etc.).
  *
  * @param props - {@link FieldButtonProps}
  */
 export const FieldButton = forwardRef<HTMLButtonElement, FieldButtonProps>(function FieldButton(props, ref) {
-  const { className, edge, ...rest } = props;
-  return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      {...fieldEdgeAttrs(edge)}
-      {...rest}
-      as={RACButton}
-      ref={ref}
-      className={cx(styles.fieldButton, className)}
-    />
-  );
+  const { className, ...rest } = props;
+
+  return <Flex alignItems="center" {...rest} as={RACButton} ref={ref} className={cx(styles.fieldButton, className)} />;
 });
 
-export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {
-  /** Position within a {@link FieldGroup}. Omit for a lone control (both edges round). */
-  edge?: FieldEdge;
+export interface FieldSelectFragmentProps extends RACButtonProps, FlexOwnProps {
+  /**
+   * Variant of the fragment. `select` suited for compositing with a Select.
+   * `control` suited for standalone controls like NumberField steppers.
+   * @default 'control'
+   */
+  variant?: 'control' | 'select';
 }
 
 /**
- * Antares TextArea component using Box and RAC TextArea.
+ * Trigger button for a `Select`: shows the current value plus a chevron. Renders only the
+ * button — it brings no Select provider or popover, so a composer supplies those around it.
  *
- * @param props - {@link TextAreaProps}
+ * @param props - {@link FieldSelectFragmentProps}
  */
-export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {
-  const { className, edge, ...rest } = props;
-
+export function FieldSelectFragment(props: FieldSelectFragmentProps) {
+  const { className, variant = 'control', ...rest } = props;
   return (
-    <Box
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      gap="sm"
       flex={1}
-      {...fieldEdgeAttrs(edge)}
       {...rest}
-      as={RACTextArea}
-      ref={ref}
-      className={cx(styles.input, styles.textarea, className)}
-    />
+      as={RACButton}
+      data-variant={variant}
+      className={cx(styles.fieldSelectFragment, className)}
+    >
+      <Box as={RACSelectValue} className={styles.fieldSelectFragmentValue} flex={1} />
+      <Icon icon="chevron-down" />
+    </Flex>
   );
+}
+
+export interface FieldInputProps extends RACInputProps, BoxOwnProps {}
+
+/**
+ * Fill input inside a `FieldGroup`.
+ *
+ * @param props - {@link FieldInputProps}
+ */
+export const FieldInput = forwardRef<HTMLInputElement, FieldInputProps>(function FieldInput(props, ref) {
+  const { className, ...rest } = props;
+
+  return <Box flex={1} {...rest} as={RACInput} ref={ref} className={cx(styles.fieldInput, className)} />;
+});
+
+export interface FieldTextAreaProps extends RACTextAreaProps, BoxOwnProps {}
+
+/**
+ * Multiline fill control inside a `FieldGroup`.
+ *
+ * @param props - {@link FieldTextAreaProps}
+ */
+export const FieldTextArea = forwardRef<HTMLTextAreaElement, FieldTextAreaProps>(function FieldTextArea(props, ref) {
+  const { className, ...rest } = props;
+
+  return <Box flex={1} {...rest} as={RACTextArea} ref={ref} className={cx(styles.fieldTextarea, className)} />;
 });

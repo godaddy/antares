@@ -4,7 +4,7 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  Input,
+  FieldInput,
   type FieldGroupProps
 } from '@godaddy/antares';
 
@@ -13,10 +13,8 @@ export function FieldGroupTrailingControl(props: FieldGroupProps) {
     <Field>
       <FieldLabel>Search</FieldLabel>
       <FieldGroup gap="sm" {...props}>
-        <Input placeholder="Type..." edge="start" />
-        <FieldButton aria-label="Search" edge="end">
-          Search
-        </FieldButton>
+        <FieldInput placeholder="Type..." />
+        <FieldButton aria-label="Search">Search</FieldButton>
       </FieldGroup>
       <FieldDescription>Search by keyword</FieldDescription>
     </Field>

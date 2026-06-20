@@ -69,8 +69,10 @@ export {
   FieldButton,
   FieldDescription,
   FieldError,
-  Input,
-  TextArea,
+  FieldInput,
+  FieldTextArea,
+  FieldSelectFragment,
+  type FieldSelectFragmentProps,
   type FieldProps,
   type FieldOwnProps,
   type FieldLabelProps,
@@ -78,10 +80,9 @@ export {
   type FieldButtonProps,
   type FieldDescriptionProps,
   type FieldErrorProps,
-  type InputProps,
-  type TextAreaProps,
-  type FieldSize,
-  type FieldEdge
+  type FieldInputProps,
+  type FieldTextAreaProps,
+  type FieldSize
 } from '#components/field';
 
 export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';

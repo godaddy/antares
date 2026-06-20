@@ -8,7 +8,7 @@ import {
   FieldGroup,
   FieldLabel,
   type FieldSize,
-  Input,
+  FieldInput,
   type FieldOwnProps
 } from '#components/field';
 import { Icon } from '#components/icon';
@@ -50,13 +50,13 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size}>
         {!hideStepper && (
-          <FieldButton slot="decrement" edge="start">
+          <FieldButton slot="decrement">
             <Icon icon="minus" />
           </FieldButton>
         )}
-        <Input ref={ref} placeholder={placeholder} edge={hideStepper ? undefined : 'middle'} />
+        <FieldInput ref={ref} placeholder={placeholder} />
         {!hideStepper && (
-          <FieldButton slot="increment" edge="end">
+          <FieldButton slot="increment">
             <Icon icon="plus" />
           </FieldButton>
         )}

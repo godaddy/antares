@@ -20,7 +20,9 @@ The field decoration is split into granular, composable pieces so the same struc
 - **`Field`** — pure layout. A `Flex` column with the standard field gap that stacks the label, control, description, and error.
 - **`FieldLabel`** — wraps React Aria `Label` and renders an optional required indicator (`*`).
 - **`FieldGroup`** — the presentational bordered/elevated control box (a React Aria `Group`). Used only by "boxed" fields (TextField, NumberField, Select, DateField).
-- **`Input`** / **`TextArea`** — the normalized fill controls (React Aria `Input`/`TextArea` given antares spacing via `Box`).
+- **`FieldInput`** / **`FieldTextArea`** — the normalized fill controls (React Aria `Input`/`TextArea` given antares spacing via `Box`).
+- **`FieldButton`** — a click target inside the group (NumberField steppers, search submit, etc.).
+- **`FieldSelectFragment`** — a Select trigger (current value + chevron) without its own provider or popover, for compositing a Select inside a shared box.
 - **`FieldDescription`** — wraps the antares `Text` with `slot="description"` for the helper text. Renders nothing when empty.
 - **`FieldError`** — a thin wrapper over React Aria `FieldError`. Renders the field's validation messages by default and nothing when valid.
 
@@ -47,7 +49,7 @@ element:
 Field as={RACTextField}                   ← field wrapper + layout column (one element)
 ├── FieldLabel                            ← when label provided (+ required indicator)
 ├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
-│   └── {children}                        ← Input, Button, DateInput, etc.
+│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
 ├── FieldDescription                      ← when description provided
 └── FieldError                            ← renders validation messages when invalid
 ```
@@ -58,16 +60,7 @@ A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabe
 
 ### Positioning controls inside the group
 
-`FieldGroup` makes **no assumptions** about its children — each control declares its position with the `edge` prop (on `Input`, `TextArea`, `FieldButton`, `FieldSelect`), which the group's CSS keys off to round the box's outer corners:
-
-| `edge`            | Put it on…                       | Effect                                          |
-| ----------------- | -------------------------------- | ----------------------------------------------- |
-| `"start"`         | the control at the **start** edge | rounds the start corners to the group           |
-| `"middle"`        | a control between two others      | no rounding (interior)                          |
-| `"end"`           | the control at the **end** edge   | rounds the end corners to the group             |
-| _(omitted)_       | a **lone** control filling the box | rounds both edges                               |
-
-A lone control (TextField input, Select trigger) omits `edge` and rounds both sides; a stepper row puts `edge="start"` on the leading button, `edge="end"` on the trailing one, and `edge="middle"` on the input. Decorative, transparent adornments (an icon or unit text) need no `edge`. (`edge` maps to internal `data-field-edge` markers; the CSS keys off those rather than positional `:first-child` selectors, which break when a control wraps its frame in a provider element.)
+`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
 
 ### States
 

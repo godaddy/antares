@@ -7,8 +7,8 @@ import {
   FieldGroup,
   FieldLabel,
   type FieldSize,
-  Input,
-  TextArea,
+  FieldInput,
+  FieldTextArea,
   type FieldOwnProps
 } from '#components/field';
 import { Flex } from '#components/layout/flex';
@@ -65,13 +65,8 @@ export function TextField(props: TextFieldProps) {
     props;
   const { isDisabled, isRequired } = racProps;
 
-  // ReactNode includes Promise, so coerce to booleans before using as conditions.
   const hasLeading = Boolean(leadingText);
   const hasTrailing = Boolean(trailingText);
-
-  // The fill control sits at whichever edge isn't taken by an adornment: middle when both
-  // are present, the opposite edge when one is, and a lone control (both edges) when neither.
-  const controlEdge = hasLeading && hasTrailing ? 'middle' : hasLeading ? 'end' : hasTrailing ? 'start' : undefined;
 
   return (
     <Field as={RACTextField} {...racProps}>
@@ -82,11 +77,7 @@ export function TextField(props: TextFieldProps) {
             {leadingText}
           </Flex>
         )}
-        {multiline ? (
-          <TextArea placeholder={placeholder} edge={controlEdge} />
-        ) : (
-          <Input placeholder={placeholder} edge={controlEdge} />
-        )}
+        {multiline ? <FieldTextArea placeholder={placeholder} /> : <FieldInput placeholder={placeholder} />}
         {hasTrailing && (
           <Flex as="span" alignItems="center" inlinePaddingEnd="md">
             {trailingText}
