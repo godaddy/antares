@@ -3,115 +3,37 @@
  *
  * Import this package to access all components, layout primitives, and design tokens.
  * CSS custom properties are automatically side-effect imported when this module loads.
+ *
+ * Each line below re-exports a granular `exports/<Area>.ts` file, which is also the
+ * package's public subpath (e.g. `@godaddy/antares/Button`). Edit only the
+ * `exports/<Area>.ts` file when changing exports — this barrel re-exports it, so the
+ * barrel and the subpath stay in sync automatically.
  */
 
-export { Icon, set, ondemand, parser, type IconProps } from '#components/icon';
+export * from './exports/Icon';
+export * from './exports/Button';
+export * from './exports/Text';
+export * from './exports/Layout';
+export * from './exports/Select';
+export * from './exports/Menu';
+export * from './exports/Chart';
+export * from './exports/Checkbox';
+export * from './exports/Radio';
+export * from './exports/Popover';
+export * from './exports/Tooltip';
+export * from './exports/TextField';
+export * from './exports/NumberField';
+export * from './exports/Carousel';
+export * from './exports/Pagination';
+export * from './exports/SegmentedController';
+export * from './exports/MetricsLockup';
+export * from './exports/Drawer';
+export * from './exports/InlineDrawer';
+export * from './exports/Modal';
+export * from './exports/ProgressBar';
+export * from './exports/ToggleButton';
+export * from './exports/Alert';
+export * from './exports/Tag';
 
-export { Button, type ButtonProps, LinkButton, type LinkButtonProps } from '#components/button';
-
-export { Text, type TextProps } from '#components/text';
-
-export { Box, type BoxProps, type BoxOwnProps } from '#components/layout/box';
-export { Flex, type FlexProps, type FlexOwnProps } from '#components/layout/flex';
-export { Grid, type GridProps, type GridOwnProps } from '#components/layout/grid';
-
-export {
-  Select,
-  SelectItem,
-  SelectSection,
-  SelectHeader,
-  type SelectProps,
-  type SelectItemProps,
-  type SelectSectionProps,
-  type SelectHeaderProps
-} from '#components/select';
-
-export {
-  Menu,
-  MenuHeader,
-  MenuItem,
-  MenuSection,
-  MenuSeparator,
-  MenuTrigger,
-  SubmenuTrigger,
-  type MenuHeaderProps,
-  type MenuItemProps,
-  type MenuProps,
-  type MenuSectionProps,
-  type MenuSeparatorProps,
-  type MenuTriggerProps,
-  type SubmenuTriggerProps
-} from '#components/menu';
-
-export type { DataPoint, SeriesConfig } from '#components/chart/types';
-
-export { BarChart, type BarChartProps } from '#components/chart/bar-chart';
-
-export { DonutChart, type DonutChartProps } from '#components/chart/donut-chart';
-
-export { Checkbox, CheckboxGroup, type CheckboxProps, type CheckboxGroupProps } from '#components/checkbox';
-
-export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from '#components/radio';
-
-export { Popover, PopoverTrigger, type PopoverProps, type PopoverTriggerProps } from '#components/popover';
-
-export { Tooltip, TooltipTrigger, type TooltipProps, type TooltipTriggerProps } from '#components/tooltip';
-
-export { TextField, type TextFieldProps } from '#components/text-field';
-
-export { NumberField, type NumberFieldProps } from '#components/number-field';
-
-export { Carousel, type CarouselProps, type CarouselRef } from '#components/carousel';
-
-export { Pagination, type PaginationProps } from '#components/pagination';
-
-export { LineChart, type LineChartProps } from '#components/chart/line-chart';
-
-export { GaugeChart, type GaugeChartProps } from '#components/chart/gauge-chart';
-
-export {
-  SegmentedController,
-  SegmentedControllerItem,
-  type SegmentedControllerProps,
-  type SegmentedControllerItemProps
-} from '#components/segmented-controller';
-
-export { MetricsLockup, type MetricsLockupProps } from '#components/metrics-lockup';
-
-export {
-  Drawer,
-  DrawerTrigger,
-  DrawerHandle,
-  type DrawerProps,
-  type DrawerTriggerProps,
-  type DrawerHandleProps,
-  type DrawerPlacement,
-  type DrawerSnapPoint
-} from '#components/drawer';
-
-export {
-  InlineDrawer,
-  InlineDrawerTrigger,
-  InlineDrawerPanel,
-  type InlineDrawerProps,
-  type InlineDrawerTriggerProps,
-  type InlineDrawerPanelProps,
-  type InlineDrawerPlacement
-} from '#components/inline-drawer';
-
+// One-off re-export of a low-level React Aria utility with no dedicated subpath.
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
-
-export { Modal, ModalTrigger, type ModalProps, type ModalTriggerProps } from '#components/modal';
-
-export { ProgressBar, type ProgressBarProps } from '#components/progress-bar';
-
-export {
-  ToggleButtonGroup,
-  ToggleButton,
-  type ToggleButtonGroupProps,
-  type ToggleButtonProps
-} from '#components/toggle-button';
-
-export { Alert, type AlertProps, type AlertEmphasis } from '#components/alert';
-
-export { Tag, type TagProps, type TagEmphasis, type TagDesign, type TagSize } from '#components/tag';
