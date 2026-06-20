@@ -7,8 +7,6 @@ export {
   FieldError,
   FieldInput,
   FieldTextArea,
-  FieldSelectFragment,
-  type FieldSelectFragmentProps,
   type FieldProps,
   type FieldOwnProps,
   type FieldLabelProps,

@@ -5,10 +5,10 @@
 refactor(antares): public field primitives + FieldSelect, rebuild Select, align Radio/Checkbox
 
 Splits the field box into composable, **public** primitives — `Field`, `FieldLabel`,
-`FieldGroup`, `FieldDescription`, `FieldError`, `FieldInput`, `FieldTextArea`, `FieldButton`,
-and `FieldSelectFragment` — and rebuilds `TextField`, `NumberField`, and `Select` on top. The
-primitives are exported from the package root and the `@godaddy/antares/Field` subpath so
-consumers can compose their own fields.
+`FieldGroup`, `FieldDescription`, `FieldError`, `FieldInput`, `FieldTextArea`, and
+`FieldButton` — and rebuilds `TextField`, `NumberField`, and `Select` on top. The primitives
+are exported from the package root and the `@godaddy/antares/Field` subpath so consumers can
+compose their own fields.
 
 A `FieldGroup` rounds its outer corners by DOM order — its first and last children round the
 leading and trailing edges respectively (a lone control rounds both) — so controls need no
