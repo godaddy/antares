@@ -15,6 +15,31 @@ Keys are UXCore intent paths (e.g. `ux.action.backgroundColor`, `ux.box.density`
 | `dtcgDefault`   | DTCG default for `token`, when mapped                                           |
 | `tokens`        | Array of `{ token, dtcgDefault }` when multiple curated tokens share one intent |
 
+**Entry shape** — keys are intent paths; match the literal quoting when grepping:
+
+```json
+// single curated token
+"ux.action.backgroundColor": {
+  "hash": "1owc8nc",
+  "var": "--ux-1owc8nc",
+  "legacyDefault": "transparent",
+  "token": "color-action-background-tertiary-default",
+  "dtcgDefault": "white"
+}
+
+// multiple tokens share one intent → "tokens" array, no top-level "token"/"dtcgDefault"
+"ux.box.backgroundColor": {
+  "hash": "cao06b",
+  "var": "--ux-cao06b",
+  "legacyDefault": "#fff",
+  "tokens": [
+    { "token": "color-canvas-background", "dtcgDefault": "white" },
+    { "token": "color-surface-background-base", "dtcgDefault": "white" },
+    { "token": "color-surface-background-card", "dtcgDefault": "white" }
+  ]
+}
+```
+
 **Lookup examples:**
 
 ```bash

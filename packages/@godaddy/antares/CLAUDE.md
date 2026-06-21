@@ -1,3 +1,1 @@
-# CLAUDE.md
-
-See [AGENTS.md](./AGENTS.md) for codebase documentation.
+AGENTS.md
