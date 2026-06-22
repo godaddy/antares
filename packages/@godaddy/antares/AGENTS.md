@@ -17,6 +17,4 @@ npm exec nx run @godaddy/antares:build
 npm exec nx run @godaddy/antares:test
 ```
 
-- Three Vitest projects: `*.node.test.tsx` (SSR snapshots via `renderToString`), `*.browser.test.tsx` (interactions via `vitest-browser-react`), `*.visual.test.tsx` (visual regression). Coverage threshold: 100%.
-- Update node snapshots when they legitimately change: `npm exec nx run @godaddy/antares:test:node:update`.
-- Visual tests run in CI on the cloud — skip locally unless inspecting: `npm exec nx run @godaddy/antares:test:visual` (`:test:visual:update` to refresh baselines).
+See the `antares-components` skill for testing conventions, coverage, and the snapshot/visual update commands.
