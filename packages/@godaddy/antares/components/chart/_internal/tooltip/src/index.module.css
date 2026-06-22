@@ -13,6 +13,7 @@
   font-size: var(--chart-tooltip-font-size);
   line-height: var(--chart-tooltip-line-height);
   position: relative;
+  display: inline-block;
 }
 
 .swatch {
