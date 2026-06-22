@@ -67,6 +67,8 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 
 # Claude
 .claude/settings.local.json
+.claude/worktrees
+CLAUDE.local.md
 
 # Nx
 .nx/cache
@@ -76,5 +78,3 @@ packages/@godaddy/**/test/__screenshots__/**/*-darwin.png
 .zed
 
 .nx/polygraph
-
-.claude/worktrees

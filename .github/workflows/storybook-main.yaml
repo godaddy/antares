@@ -5,9 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'packages/*/components/**'
+      - 'packages/**'
       - 'apps/docs/**'
       - 'package*.json'
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -33,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build Storybook
-        run: npx nx build:storybook docs
+        run: npx nx build:storybook docs --skip-nx-cache
         env:
           STORYBOOK_BASE_PATH: '/${{ github.event.repository.name }}/storybook/'
 

@@ -1,7 +1,6 @@
 import { FreedIndexReuseExample } from '../examples/freed-index-reuse.tsx';
 import { MultiSeriesExample } from '../examples/multi-series.tsx';
 import { SingleSeriesExample } from '../examples/single-series.tsx';
-// biome-ignore lint/correctness/noUnresolvedImports: Incorrectly flagged
 import { StrictMode } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';

@@ -2,7 +2,7 @@ import { IconExample } from '../examples/icon.tsx';
 import { render } from 'vitest-browser-react';
 import { Icon } from '@godaddy/antares';
 import { type ReactElement, createRef } from 'react';
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
@@ -174,6 +174,30 @@ describe('@godaddy/antares', function antares() {
 
       assume(instance3.container.innerHTML).includes('data-icon="star"');
       assume(instance3.container.innerHTML).includes('fill="red"');
+    });
+  });
+
+  describe('#fill stripping', function fillStripping() {
+    it('strips hardcoded fills from CDN icons so they inherit color', async function strips() {
+      // Mock the CDN so we assert the full ondemand → fetch → parser → render path.
+      // The unique icon name avoids the store cache from other tests.
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async function mockedFetch() {
+          return new Response(
+            '<svg viewBox="0 0 24 24"><path fill="#333" d="M0 0h1"/><path fill="none" d="M0 0h2"/></svg>',
+            {
+              headers: { 'Content-Type': 'image/svg+xml' }
+            }
+          );
+        })
+      );
+
+      const { container } = await renderAndWait(<Icon icon="fill-strip-test" color="red" />);
+
+      vi.unstubAllGlobals();
+      assume(container.querySelector('path[d="M0 0h1"]')?.hasAttribute('fill')).equals(false);
+      assume(container.querySelector('path[d="M0 0h2"]')?.getAttribute('fill')).equals('none');
     });
   });
 

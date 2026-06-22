@@ -2,6 +2,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
+import { resetHover } from '../../../utils/test-helpers.tsx';
 import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
@@ -37,7 +38,7 @@ describe('@godaddy/antares', function antares() {
     it('shows tooltip on hover', async function hoverShow() {
       const { getByRole } = await render(<DefaultExample tooltipTriggerProps={{ delay: 0, closeDelay: 0 }} />);
 
-      await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+      await resetHover();
       await page.getByRole('button').hover();
 
       await vi.waitFor(async function open() {
@@ -50,14 +51,14 @@ describe('@godaddy/antares', function antares() {
     it('hides tooltip on unhover', async function hoverHide() {
       const { getByRole } = await render(<DefaultExample tooltipTriggerProps={{ delay: 0, closeDelay: 0 }} />);
 
-      await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+      await resetHover();
       await page.getByRole('button').hover();
 
       await vi.waitFor(async function open() {
         assume(getByRole('tooltip').query()).is.not.equal(null);
       });
 
-      await page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+      await resetHover();
 
       await vi.waitFor(async function close() {
         assume(getByRole('tooltip').query()).equals(null);

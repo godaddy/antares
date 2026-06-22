@@ -2,6 +2,7 @@ import {
   FieldError as RACFieldError,
   type FieldErrorProps as RACFieldErrorProps,
   Label as RACLabel,
+  // biome-ignore lint/suspicious/noDeprecatedImports: got deprecated recently, we'll update this with field-frame update
   Radio as RACRadio,
   RadioGroup as RACRadioGroup,
   type RadioGroupProps as RACRadioGroupProps,
@@ -93,7 +94,7 @@ export function RadioGroup({
           {...errorMessageProps}
           className={cx(styles.error, errorMessageProps?.className)}
         >
-          <Icon icon="alert" width={24} height={24} className={styles.errorIcon} aria-hidden="true" />
+          <Icon icon="alert" />
           <span>{errorMessage}</span>
         </Flex>
       )}
