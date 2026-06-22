@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-CNDr7-K1.js";import{h as t,m as n}from"./src-CYA42Ysm.js";var r,i=e((()=>{t(),r=class{constructor(e){this.init=e,this.records=this.init()}static{n(this,`ImperativeState`)}reset(){this.records=this.init()}}}));export{i as n,r as t};
