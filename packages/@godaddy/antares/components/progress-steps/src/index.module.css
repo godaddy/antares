@@ -1,0 +1,97 @@
+.nav {
+  --_border-future: var(--color-surface-border-base, var(--ux-97h3vl, #d4dbe0));
+  --_border-chosen: var(--ux-1pvg8dx, #1bdbdb);
+  --_border-error: var(--color-feedback-critical-subtle, var(--ux-1fhc073, #db1802));
+  --_fg-default: var(--ux-1xeg43i, #767676);
+  --_fg-current: var(--ux-9gvyua, #111);
+  --_fg-hovered: var(--ux-1qc8i9l, #111);
+
+  --_title-size: calc(var(--ux-18ime9a, 1.375rem) / (var(--ux-1fnjqac, 1.125) * var(--ux-1fnjqac, 1.125)));
+  --_title-line: var(--ux-18ime9a, 1.375rem);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  min-width: 0;
+}
+
+:where([data-orientation="horizontal"]) .step {
+  flex: 1 1 0;
+}
+
+:where([data-orientation="vertical"]) .step {
+  width: 100%;
+}
+
+.control {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--sp-md);
+  border: 0;
+  background: none;
+  color: var(--_fg-default);
+  font: inherit;
+  text-align: start;
+}
+
+:where([data-orientation="horizontal"]) .control {
+  border-block-start: 2px solid var(--_border-future);
+  padding-block-start: var(--sp-md);
+}
+
+:where([data-orientation="vertical"]) .control {
+  border-inline-start: 2px solid var(--_border-future);
+  padding-inline-start: var(--sp-md);
+}
+
+:where([data-timeline="past"], [data-timeline="current"], [data-status="complete"]) .control {
+  border-color: var(--_border-chosen);
+}
+
+:where([data-status="error"]) .control {
+  border-color: var(--_border-error);
+}
+
+:where([data-timeline="current"]) .control {
+  color: var(--_fg-current);
+}
+
+.control[data-rac] {
+  cursor: pointer;
+}
+
+.control[data-hovered] {
+  color: var(--_fg-hovered);
+}
+
+.control[data-focus-visible] {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.control[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.icon {
+  width: 1lh;
+  height: 1lh;
+  flex-shrink: 0;
+}
+
+.title {
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--_title-size);
+  font-weight: bolder;
+  line-height: var(--_title-line);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
