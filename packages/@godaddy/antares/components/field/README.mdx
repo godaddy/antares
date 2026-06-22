@@ -17,13 +17,13 @@ import SourceBasic from './examples/basic.tsx?raw';
 
 The field decoration is split into granular, composable pieces so the same structure is shared across every field:
 
-- **`Field`** — pure layout. A `Flex` column with the standard field gap that stacks the label, control, description, and error.
-- **`FieldLabel`** — wraps React Aria `Label` and renders an optional required indicator (`*`).
-- **`FieldGroup`** — the presentational bordered/elevated control box (a React Aria `Group`). Used only by "boxed" fields (TextField, NumberField, Select, DateField).
-- **`FieldInput`** / **`FieldTextArea`** — the normalized fill controls (React Aria `Input`/`TextArea` given antares spacing via `Box`).
-- **`FieldButton`** — a click target inside the group (NumberField steppers, search submit, etc.).
-- **`FieldDescription`** — wraps the antares `Text` with `slot="description"` for the helper text. Renders nothing when empty.
-- **`FieldError`** — a thin wrapper over React Aria `FieldError`. Renders the field's validation messages by default and nothing when valid.
+- **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
+- **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
+- **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
+- **`FieldInput`** / **`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
+- **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+- **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
+- **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
 
 `FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
 

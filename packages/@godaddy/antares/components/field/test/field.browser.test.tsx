@@ -45,8 +45,6 @@ describe('@godaddy/antares', function antares() {
         assume(document.activeElement).equals(button);
         assume(button.hasAttribute('data-focus-visible')).equals(true);
         assume(button.hasAttribute('data-focused')).equals(true);
-
-        await userEvent.tab();
       });
 
       it('marks the group disabled when isDisabled', async function groupDisabled() {
