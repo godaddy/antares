@@ -1,27 +1,27 @@
 .root {
   --gauge-thickness: round(nearest, 4.2cqi, 2px);
   --gauge-gap-angle: atan2(3px, 100px);
-  --gauge-fg-empty: var(--ux-bs151i);
-  --gauge-fg-default: var(--ux-f7kpiw);
-  --gauge-fg-success: var(--ux-sji811);
-  --gauge-fg-warning: var(--ux-1g47djv);
-  --gauge-fg-critical: var(--ux-1ap6ofp);
+  --gauge-fg-empty: var(--ux-bs151i, #d6d6d6);
+  --gauge-fg-default: var(--ux-f7kpiw, #00a4a6);
+  --gauge-fg-success: var(--ux-sji811, #00a63f);
+  --gauge-fg-warning: var(--ux-1g47djv, #de7c00);
+  --gauge-fg-critical: var(--ux-1ap6ofp, #db1802);
   --gauge-fg-color: var(--gauge-fg-default);
 
-  --gauge-fg-label: var(--ux-1le7uoa);
-  --gauge-font-family: var(--ux-1067ph9);
+  --gauge-fg-label: var(--ux-1le7uoa, #111);
+  --gauge-font-family: var(--ux-1067ph9, "gdsherpa", Helvetica, Arial, sans-serif);
 
-  --gauge-range-label-fg: var(--ux-by6mab);
-  --gauge-range-label-font-size: max(9.37cqi, 1px);
+  --gauge-range-label-fg: var(--ux-by6mab, #767676);
+  --gauge-range-label-font-size: 9.37cqi;
   --gauge-range-label-font-weight: 500;
-  --gauge-range-label-line-height: var(--ux-h93mi7);
-  --gauge-range-label-margin-top: calc(var(--ux-1sbfig8) * 0.5);
+  --gauge-range-label-line-height: var(--ux-h93mi7, 1.375);
+  --gauge-range-label-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
 
-  --gauge-sublabel-fg: var(--ux-1le7uoa);
-  --gauge-sublabel-font-size: max(9.37cqi, 1px);
-  --gauge-sublabel-margin-top: calc(var(--ux-1sbfig8) * 0.5);
+  --gauge-sublabel-fg: var(--ux-1le7uoa, #111);
+  --gauge-sublabel-font-size: 9.37cqi;
+  --gauge-sublabel-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
   --gauge-sublabel-font-weight: 500;
-  --gauge-sublabel-line-height: var(--ux-h93mi7);
+  --gauge-sublabel-line-height: var(--ux-h93mi7, 1.375);
 
   container-type: inline-size;
   width: 100%;
