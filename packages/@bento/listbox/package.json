@@ -48,8 +48,8 @@
     "@react-aria/collections": "^3.1.0",
     "@react-types/listbox": "^3.8.0",
     "@react-types/shared": "^3.34.0",
-    "react-aria": "^3.48.0",
-    "react-aria-components": "^1.18.0",
+    "react-aria": "^3.50.0",
+    "react-aria-components": "^1.19.0",
     "react-stately": "^3.46.0"
   },
   "devDependencies": {
