@@ -35,7 +35,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/react": "^19.2.15",
+    "@types/react": "^19.2.17",
     "assume": "^2.3.0",
     "react": "^19.2.6",
     "tsdown": "^0.22.1",
@@ -43,7 +43,7 @@
     "vitest": "^4.1.7"
   },
   "peerDependencies": {
-    "@storybook/react-vite": "^10.4.1",
+    "@storybook/react-vite": "^10.4.6",
     "storybook": "^10.4.1"
   },
   "exports": {
