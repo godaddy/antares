@@ -184,6 +184,9 @@ export interface FieldSelectFragmentProps extends RACButtonProps, FlexOwnProps {
  * Trigger button for a `Select`: shows the current value plus a chevron. Renders only the
  * button — it brings no Select provider or popover, so a composer supplies those around it.
  *
+ * **Must render inside a `RACSelect` (React Aria `Select`) ancestor.** The current value is read
+ * from Select context via React Aria's `SelectValue`; with no Select ancestor it renders empty.
+ *
  * @param props - {@link FieldSelectFragmentProps}
  */
 export function FieldSelectFragment(props: FieldSelectFragmentProps) {

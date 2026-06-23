@@ -65,8 +65,8 @@ export function TextField(props: TextFieldProps) {
     props;
   const { isDisabled, isRequired } = racProps;
 
-  const hasLeading = Boolean(leadingText);
-  const hasTrailing = Boolean(trailingText);
+  const hasLeading = leadingText != null && leadingText !== false;
+  const hasTrailing = trailingText != null && trailingText !== false;
 
   return (
     <Field as={RACTextField} {...racProps}>

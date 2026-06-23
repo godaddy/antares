@@ -1,7 +1,9 @@
 import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
+import { TextField as RACTextField } from 'react-aria-components';
+import { Field, FieldError, FieldGroup, FieldInput } from '@godaddy/antares';
 import { FieldGroupBasic } from '../examples/basic';
 import { FieldGroupLeadingControl } from '../examples/leading-control';
 import { FieldGroupTrailingControl } from '../examples/trailing-control';
@@ -65,6 +67,31 @@ describe('@godaddy/antares', function antares() {
         assume(document.activeElement).equals(button);
         assume(button.hasAttribute('data-focus-visible')).equals(true);
         assume(button.hasAttribute('data-focused')).equals(true);
+      });
+    });
+
+    describe('#validation', function validation() {
+      // FieldGroup has no isInvalid prop here: it must pick up the field's runtime validation
+      // state from RAC's FieldErrorContext.
+      it('marks the group invalid via FieldErrorContext when submit fails validation', async function submitInvalid() {
+        const { container } = await render(
+          <form>
+            <Field as={RACTextField} isRequired>
+              <FieldGroup data-testid="group">
+                <FieldInput aria-label="Email" />
+              </FieldGroup>
+              <FieldError />
+            </Field>
+            <button type="submit">Submit</button>
+          </form>
+        );
+
+        const group = container.querySelector('[data-testid="group"]') as HTMLElement;
+        assume(group.hasAttribute('data-invalid')).equals(false);
+
+        await userEvent.click(page.getByRole('button', { name: 'Submit' }));
+
+        assume(group.hasAttribute('data-invalid')).equals(true);
       });
     });
   });
