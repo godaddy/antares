@@ -54,7 +54,6 @@
 }
 
 .indicator {
-  container-type: inline-size;
   position: relative;
   width: var(--circular-progress-size);
   aspect-ratio: 1;

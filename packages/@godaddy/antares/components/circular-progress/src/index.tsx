@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
 import { cx } from 'cva';
 import {
@@ -61,7 +61,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
         data-size={size}
         data-emphasis={emphasis}
         aria-describedby={describedBy}
-        style={{ '--circular-progress-stroke-width': STROKE_WIDTH } as React.CSSProperties}
+        style={{ '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties}
       >
         {function renderContent({ percentage, valueText }) {
           const offset = CIRCUMFERENCE * (1 - (percentage ?? 0) / 100);
