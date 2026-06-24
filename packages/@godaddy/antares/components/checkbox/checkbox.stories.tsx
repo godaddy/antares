@@ -36,7 +36,7 @@ export const Invalid = getStory(CheckboxGroupInvalid);
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
-    direction: 'column',
+    orientation: 'vertical',
     label: 'Select your preferences',
     description: '',
     isRequired: false,
@@ -46,10 +46,10 @@ export const Playground = {
     defaultValue: ['option2']
   },
   argTypes: {
-    direction: {
+    orientation: {
       control: 'radio',
-      options: ['row', 'column', 'row-reverse', 'column-reverse'],
-      description: 'Layout direction of checkboxes'
+      options: ['horizontal', 'vertical'],
+      description: 'Layout orientation of the checkboxes'
     },
     label: {
       control: 'text',

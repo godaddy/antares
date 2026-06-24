@@ -1,21 +1,30 @@
 import { forwardRef } from 'react';
+import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
 import {
-  Input as RACInput,
-  NumberField as RACNumberField,
-  type NumberFieldProps as RACNumberFieldProps
-} from 'react-aria-components';
-import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
-import { Button } from '#components/button';
+  Field,
+  FieldButton,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  type FieldSize,
+  FieldInput,
+  type FieldOwnProps
+} from '#components/field';
 import { Icon } from '#components/icon';
 
-export interface NumberFieldProps
-  extends Omit<RACNumberFieldProps, 'children'>,
-    Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
+export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
+  /** Additional class names applied to the field root. */
+  className?: string;
+
   /** When true, hides the increment/decrement stepper buttons. @default false */
   hideStepper?: boolean;
 
   /** Placeholder when the value is empty. */
   placeholder?: string;
+
+  /** Visual size of the input. @default 'md' */
+  size?: FieldSize;
 }
 
 /**
@@ -33,31 +42,27 @@ export interface NumberFieldProps
  * ```
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
-  const { description, errorMessage, hideStepper, label, ...racProps } = props;
-  const { isDisabled, isRequired, isReadOnly } = racProps;
+  const { description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
+  const { isDisabled, isRequired } = racProps;
 
   return (
-    <RACNumberField {...racProps}>
-      <FieldFrame
-        description={description}
-        errorMessage={errorMessage}
-        isDisabled={isDisabled}
-        isRequired={isRequired}
-        isReadOnly={isReadOnly}
-        label={label}
-      >
+    <Field as={RACNumberField} {...racProps}>
+      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
+      <FieldGroup isDisabled={isDisabled} size={size}>
         {!hideStepper && (
-          <Button slot="decrement">
+          <FieldButton slot="decrement">
             <Icon icon="minus" />
-          </Button>
+          </FieldButton>
         )}
-        <RACInput ref={ref} />
+        <FieldInput ref={ref} placeholder={placeholder} />
         {!hideStepper && (
-          <Button slot="increment">
+          <FieldButton slot="increment">
             <Icon icon="plus" />
-          </Button>
+          </FieldButton>
         )}
-      </FieldFrame>
-    </RACNumberField>
+      </FieldGroup>
+      <FieldDescription>{description}</FieldDescription>
+      <FieldError>{errorMessage}</FieldError>
+    </Field>
   );
 });

@@ -10,6 +10,7 @@ import {
   NumberFieldPlaygroundExample,
   type NumberFieldPlaygroundExampleProps
 } from './examples/number-field-playground.tsx';
+import { NumberFieldSizesExample } from './examples/sizes.tsx';
 import { NumberFieldValueScaleExample } from './examples/value-scale.tsx';
 import { NumberField } from './src/index.tsx';
 
@@ -33,13 +34,16 @@ export const ValueScale = getStory(NumberFieldValueScaleExample);
 
 export const FormatOptions = getStory(NumberFieldFormatOptionsExample);
 
+export const Sizes = getStory(NumberFieldSizesExample);
+
 export const Playground = {
   render: (args: NumberFieldPlaygroundExampleProps) => <NumberFieldPlaygroundExample {...args} />,
   args: {
     label: 'Quantity',
     minValue: 0,
     maxValue: 100,
-    placeholder: '0'
+    placeholder: '0',
+    size: 'md'
   },
   argTypes: {
     label: { control: 'text', description: 'Label text shown above the frame' },
@@ -52,6 +56,7 @@ export const Playground = {
     hideStepper: { control: 'boolean', description: 'Hide +/- stepper buttons' },
     isDisabled: { control: 'boolean', description: 'Disable the input' },
     isInvalid: { control: 'boolean', description: 'Show invalid state' },
-    isRequired: { control: 'boolean', description: 'Mark as required' }
+    isRequired: { control: 'boolean', description: 'Mark as required' },
+    size: { control: 'select', options: ['sm', 'md'], description: 'Visual size' }
   }
 };

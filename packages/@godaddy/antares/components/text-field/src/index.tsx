@@ -1,45 +1,36 @@
+import type { ReactNode } from 'react';
+import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
 import {
-  Input as RACInput,
-  TextArea as RACTextArea,
-  TextField as RACTextField,
-  type TextFieldProps as RACTextFieldProps
-} from 'react-aria-components';
-import { FieldFrame, type FieldFrameProps } from '#components/_internal/field-frame';
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  type FieldSize,
+  FieldInput,
+  FieldTextArea,
+  type FieldOwnProps
+} from '#components/field';
 import { Flex } from '#components/layout/flex';
-import { Text } from '#components/text';
-import styles from './index.module.css';
 
-/**
- * Extended props for the TextField component.
- * Adds leading/trailing adornments and multiline support.
- * Extends RAC TextFieldProps.
- */
-export interface TextFieldProps
-  extends Omit<RACTextFieldProps, 'children'>,
-    Pick<FieldFrameProps, 'description' | 'errorMessage' | 'label'> {
-  /** Helper text shown below the frame. */
-  description?: string;
-
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
   /** Default value (uncontrolled). */
   defaultValue?: string;
 
-  /** Error message shown when invalid. Use with isInvalid. */
-  errorMessage?: string;
+  /** Current value (controlled). */
+  value?: string;
 
-  /** Whether the input is disabled. */
-  isDisabled?: boolean;
+  /** Visual size of the input. @default 'md' */
+  size?: FieldSize;
 
-  /** Whether the value is invalid. Use with errorMessage for validation. */
-  isInvalid?: boolean;
+  /** Additional class names applied to the field root. */
+  className?: string;
 
-  /** Whether user input is required before form submission. */
-  isRequired?: boolean;
+  /** Content rendered before the input (leading adornment) — text or an icon. */
+  leadingText?: ReactNode;
 
-  /** Label text shown above the frame. */
-  label?: string;
-
-  /** Text rendered before the input (leading adornment). */
-  leadingText?: string;
+  /** Content rendered after the input (trailing adornment) — text or an icon. */
+  trailingText?: ReactNode;
 
   /** When true, renders a textarea instead of a single-line input. */
   multiline?: boolean;
@@ -47,23 +38,17 @@ export interface TextFieldProps
   /** Name of the input element, used when submitting a form. */
   name?: string;
 
-  /** Handler called when the value changes. */
-  onChange?: RACTextFieldProps['onChange'];
-
   /** Placeholder text when the input value is empty. */
   placeholder?: string;
 
-  /** Text rendered after the input (trailing adornment). */
-  trailingText?: string;
-
-  /** Current value (controlled). */
-  value?: string;
+  /** Handler called when the value changes. */
+  onChange?: RACTextFieldProps['onChange'];
 }
 
 /**
- * TextField composes React Aria TextField with FieldFrame and optional leading/trailing
- * text adornments. Use for single-line or multiline text input with label, description,
- * and error message.
+ * TextField composes React Aria TextField with the field primitives (Field, FieldLabel,
+ * FieldGroup, FieldError) and optional leading/trailing text adornments. Use for
+ * single-line or multiline text input with label, description, and error message.
  *
  * @param props - {@link TextFieldProps}
  * @returns JSX element
@@ -76,36 +61,31 @@ export interface TextFieldProps
  * ```
  */
 export function TextField(props: TextFieldProps) {
-  const { description, errorMessage, label, leadingText, multiline, placeholder, trailingText, ...racProps } = props;
-  const { isDisabled, isRequired, isReadOnly } = racProps;
+  const { description, errorMessage, label, leadingText, multiline, placeholder, size, trailingText, ...racProps } =
+    props;
+  const { isDisabled, isRequired } = racProps;
+
+  const hasLeading = leadingText != null && leadingText !== false;
+  const hasTrailing = trailingText != null && trailingText !== false;
 
   return (
-    <RACTextField {...racProps}>
-      <FieldFrame
-        description={description}
-        errorMessage={errorMessage}
-        isDisabled={isDisabled}
-        isRequired={isRequired}
-        isReadOnly={isReadOnly}
-        label={label}
-        gap="sm"
-      >
-        {leadingText && (
-          <Flex as={Text} alignItems="center" inlinePaddingStart="md">
+    <Field as={RACTextField} {...racProps}>
+      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
+      <FieldGroup isDisabled={isDisabled} size={size} gap="sm">
+        {hasLeading && (
+          <Flex as="span" alignItems="center" inlinePaddingStart="md">
             {leadingText}
           </Flex>
         )}
-        {multiline ? (
-          <RACTextArea placeholder={placeholder} className={styles.multiline} />
-        ) : (
-          <RACInput placeholder={placeholder} />
-        )}
-        {trailingText && (
-          <Flex as={Text} alignItems="center" inlinePaddingEnd="md">
+        {multiline ? <FieldTextArea placeholder={placeholder} /> : <FieldInput placeholder={placeholder} />}
+        {hasTrailing && (
+          <Flex as="span" alignItems="center" inlinePaddingEnd="md">
             {trailingText}
           </Flex>
         )}
-      </FieldFrame>
-    </RACTextField>
+      </FieldGroup>
+      <FieldDescription>{description}</FieldDescription>
+      <FieldError>{errorMessage}</FieldError>
+    </Field>
   );
 }

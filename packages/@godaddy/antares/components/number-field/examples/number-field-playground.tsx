@@ -1,4 +1,4 @@
-import { NumberField } from '@godaddy/antares';
+import { NumberField, type NumberFieldProps } from '@godaddy/antares';
 
 export interface NumberFieldPlaygroundExampleProps {
   description?: string;
@@ -11,6 +11,7 @@ export interface NumberFieldPlaygroundExampleProps {
   maxValue?: number;
   minValue?: number;
   placeholder?: string;
+  size?: NumberFieldProps['size'];
   step?: number;
 }
 
@@ -25,6 +26,7 @@ export function NumberFieldPlaygroundExample({
   maxValue,
   minValue,
   placeholder,
+  size = 'md',
   step
 }: NumberFieldPlaygroundExampleProps) {
   return (
@@ -39,6 +41,7 @@ export function NumberFieldPlaygroundExample({
       maxValue={maxValue}
       minValue={minValue}
       placeholder={placeholder}
+      size={size}
       step={step}
     />
   );

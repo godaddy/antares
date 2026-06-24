@@ -5,6 +5,7 @@ import { TextFieldBasic } from '../examples/basic';
 import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';
 import { TextFieldMultilineExample } from '../examples/multiline';
+import { TextFieldSizesExample } from '../examples/sizes';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -34,6 +35,12 @@ describe('@godaddy/antares', function antares() {
       it('renders multiline example', function multiline() {
         const result = renderToString(<TextFieldMultilineExample />);
         expect(result).toContain('textarea');
+        expect(result).toMatchSnapshot();
+      });
+
+      it('renders sizes example', function sizes() {
+        const result = renderToString(<TextFieldSizesExample />);
+        expect(result).toContain('data-size="sm"');
         expect(result).toMatchSnapshot();
       });
     });

@@ -1,10 +1,14 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/select-playground.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/playground.tsx';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { SelectControlledExample } from './examples/select-controlled.tsx';
-import { SelectMultipleExample } from './examples/select-multiple.tsx';
-import { SelectDynamicExample } from './examples/select-dynamic.tsx';
-import { SelectStaticExample } from './examples/select-static.tsx';
+import { SelectBasic } from './examples/basic';
+import { SelectControlledExample } from './examples/controlled';
+import { SelectDisabledExample } from './examples/disabled';
+import { SelectFormExample } from './examples/form';
+import { SelectInvalidExample } from './examples/invalid';
+import { SelectMultipleExample } from './examples/multiple';
+import { SelectSizesExample } from './examples/sizes';
+import { FieldSelectCompositeExample } from './examples/field-select-composite';
 import { Select } from './src/index.tsx';
 
 export default getMeta({
@@ -16,33 +20,39 @@ export const Props = getComponentDocs(Select);
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
-    label: 'Pick a drink',
-    placeholder: 'Select an option',
-    size: 'md',
-    labelStyle: 'default',
+    label: 'Coffee',
+    placeholder: 'Pick a drink',
     selectionMode: 'single',
     isDisabled: false,
     isRequired: false,
-    isInvalid: false
+    isInvalid: false,
+    size: 'md'
   },
   argTypes: {
-    size: { control: 'select', options: ['sm', 'md'] },
-    labelStyle: { control: 'select', options: ['default', 'float'] },
+    label: { control: 'text' },
+    placeholder: { control: 'text' },
+    description: { control: 'text' },
+    errorMessage: { control: 'text' },
     selectionMode: { control: 'select', options: ['single', 'multiple'] },
     isDisabled: { control: 'boolean' },
     isRequired: { control: 'boolean' },
     isInvalid: { control: 'boolean' },
-    label: { control: 'text' },
-    placeholder: { control: 'text' },
-    description: { control: 'text' },
-    errorMessage: { control: 'text' }
+    size: { control: 'select', options: ['sm', 'md'] }
   }
 };
 
-export const Static = getStory(SelectStaticExample);
+export const Basic = getStory(SelectBasic);
 
 export const Controlled = getStory(SelectControlledExample);
 
-export const DynamicItems = getStory(SelectDynamicExample);
+export const Invalid = getStory(SelectInvalidExample);
+
+export const Disabled = getStory(SelectDisabledExample);
 
 export const Multiple = getStory(SelectMultipleExample);
+
+export const Form = getStory(SelectFormExample);
+
+export const Sizes = getStory(SelectSizesExample);
+
+export const FieldSelectComposite = getStory(FieldSelectCompositeExample);

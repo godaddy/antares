@@ -1,0 +1,26 @@
+.item {
+  background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, white));
+  color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, royalblue));
+  cursor: pointer;
+}
+
+.item[data-selected] {
+  background: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, gainsboro));
+  color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, midnightblue));
+}
+
+.item[data-hovered] {
+  background: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, whitesmoke));
+  color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, teal));
+}
+
+.item[data-focused] {
+  outline: 2px solid Highlight;
+  outline-offset: -2px;
+}
+
+.item[data-disabled],
+.item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
