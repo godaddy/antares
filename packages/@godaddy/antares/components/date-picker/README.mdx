@@ -1,0 +1,85 @@
+---
+title: DatePicker
+---
+
+## Features
+
+- `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+- Built on React Aria — native form integration, validation, focus management, and screen-reader support
+- Consumer-controlled label formatting via `formatOptions`
+- `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates
+
+Values are `CalendarDate` objects from `@internationalized/date` (ships transitively — import directly):
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { DatePicker } from '@godaddy/antares';
+
+<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
+<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry — selection is via the calendar.
+
+## Examples
+
+### Basic
+
+A single date picker.
+
+import BasicCode from './examples/basic?raw';
+
+<CodeBlock code={BasicCode} />
+
+### Range
+
+A start/end range picker.
+
+import RangeCode from './examples/range?raw';
+
+<CodeBlock code={RangeCode} />
+
+### Controlled
+
+Driving the value with `useState`.
+
+import ControlledCode from './examples/controlled?raw';
+
+<CodeBlock code={ControlledCode} />
+
+### Custom format
+
+Controlling the label with `formatOptions`.
+
+import FormatCode from './examples/format-options?raw';
+
+<CodeBlock code={FormatCode} />
+
+## Customization
+
+`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
+
+## Accessibility
+
+- The whole field is a single focusable button; Enter/Space opens the popover
+- Focus is trapped in the open popover and returns to the trigger on close
+- Esc and outside-click dismiss the popover
+- The calendar grid is fully keyboard navigable and screen-reader announced
+
+## Best Practices
+
+- Provide a `label` (or `aria-label`) on every picker.
+- For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
+
+## Troubleshooting
+
+- Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
+- Form value missing on submit? Pass a `name` — React Aria renders the hidden input.

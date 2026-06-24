@@ -1,0 +1,72 @@
+---
+title: Calendar
+---
+
+## Features
+
+- Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+- Month dropdown plus a typeable year input in the header for fast navigation
+- Keyboard navigable and screen-reader announced
+- `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+- Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates
+
+`Calendar` values are `CalendarDate` objects from `@internationalized/date`, which ships transitively with `@godaddy/antares` — import it directly:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`.
+
+## Examples
+
+### Basic
+
+A single-date calendar.
+
+import BasicCode from './examples/basic?raw';
+
+<CodeBlock code={BasicCode} />
+
+### Range
+
+Selecting a start and end date.
+
+import RangeCode from './examples/range?raw';
+
+<CodeBlock code={RangeCode} />
+
+### Min / Max
+
+Bounding selectable dates.
+
+import MinMaxCode from './examples/min-max?raw';
+
+<CodeBlock code={MinMaxCode} />
+
+## Accessibility
+
+- Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+- Focus-visible outline; disabled days are not focusable
+- Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices
+
+- Always provide an `aria-label` on standalone calendars.
+- Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting
+
+- Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
