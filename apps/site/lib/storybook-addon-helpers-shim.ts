@@ -23,3 +23,7 @@ export function getStory<T extends ComponentType>(component: T, _storyObj?: Reco
 export function getComponentDocs(_component: ComponentType) {
   return {};
 }
+
+export function getInterfaceDocs() {
+  return {};
+}

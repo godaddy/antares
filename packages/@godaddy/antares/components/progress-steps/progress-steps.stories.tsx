@@ -1,6 +1,6 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ProgressSteps } from './src/index.tsx';
+import { getComponentDocs, getInterfaceDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { ProgressSteps, type ProgressStepProps as ProgressStepPropsType } from './src/index.tsx';
 import {
   ProgressStepsPlaygroundExample,
   type ProgressStepsPlaygroundExampleProps
@@ -18,6 +18,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(ProgressSteps);
+
+export const ProgressStepProps = getInterfaceDocs<ProgressStepPropsType>();
 
 export const Default = getStory(DefaultExample);
 

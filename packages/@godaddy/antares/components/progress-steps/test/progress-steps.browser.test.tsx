@@ -59,18 +59,21 @@ describe('@godaddy/antares', function antares() {
       await render(<DisabledExample />);
 
       const payment = page.getByRole('button', { name: '3. Payment' });
+      const review = page.getByRole('button', { name: '4. Review' });
       assume(payment.element().hasAttribute('disabled')).equals(true);
+      assume(review.element().hasAttribute('disabled')).equals(true);
 
       const cart = page.getByRole('button', { name: '1. Cart' });
       const shipping = page.getByRole('button', { name: '2. Shipping' });
+      const nav = page.getByRole('navigation');
 
       await user.tab();
       assume(document.activeElement).equals(cart.element());
       await user.tab();
       assume(document.activeElement).equals(shipping.element());
-      // Next Tab skips the two disabled steps and leaves the group entirely.
+      // Tabbing past the last enabled step skips both disabled steps and exits the nav entirely.
       await user.tab();
-      assume(document.activeElement).does.not.equal(payment.element());
+      assume(nav.element().contains(document.activeElement)).equals(false);
     });
   });
 });

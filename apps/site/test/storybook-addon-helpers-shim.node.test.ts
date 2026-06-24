@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import { getMeta, getStory, getComponentDocs } from '../lib/storybook-addon-helpers-shim';
+import { getMeta, getStory, getComponentDocs, getInterfaceDocs } from '../lib/storybook-addon-helpers-shim';
 import type { ComponentType } from 'react';
 
 describe('site', function siteTests() {
@@ -21,6 +21,12 @@ describe('site', function siteTests() {
   describe('#getComponentDocs', function getComponentDocsTests() {
     it('returns an empty object', function returnsEmpty() {
       assume(getComponentDocs({} as ComponentType)).deep.equals({});
+    });
+  });
+
+  describe('#getInterfaceDocs', function getInterfaceDocsTests() {
+    it('returns an empty object', function returnsEmpty() {
+      assume(getInterfaceDocs()).deep.equals({});
     });
   });
 });
