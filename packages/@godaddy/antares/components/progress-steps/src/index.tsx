@@ -20,6 +20,7 @@ const statusIcon: Record<ProgressStepStatus, string> = {
   error: 'alert'
 };
 
+/** Props for the {@link ProgressSteps} component. */
 export interface ProgressStepsProps extends Omit<FlexOwnProps, 'as'> {
   /** Layout direction of the steps. @default 'horizontal' */
   orientation?: 'horizontal' | 'vertical';
@@ -92,6 +93,7 @@ export function ProgressSteps(props: ProgressStepsProps) {
   );
 }
 
+/** Props for the {@link ProgressStep} component. */
 export interface ProgressStepProps extends Omit<FlexOwnProps, 'as'> {
   /** Step completion status. Controls the status icon. @default 'none' */
   status?: ProgressStepStatus;
@@ -128,8 +130,17 @@ interface ProgressStepInternalProps extends ProgressStepProps {
  *
  * @param props - The properties {@link ProgressStepProps} passed to the component.
  */
-export function ProgressStep(props: ProgressStepInternalProps) {
-  const { status = 'none', isDisabled, onPress, children, className, timeline, stepNumber, ...rest } = props;
+export function ProgressStep(props: ProgressStepProps) {
+  const {
+    status = 'none',
+    isDisabled,
+    onPress,
+    children,
+    className,
+    timeline,
+    stepNumber,
+    ...rest
+  } = props as ProgressStepInternalProps;
   const isInteractive = Boolean(onPress);
   const ariaCurrent = timeline === 'current' ? 'step' : undefined;
 
