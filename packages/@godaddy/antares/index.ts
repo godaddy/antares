@@ -31,8 +31,6 @@ export * from './exports/ProgressBar';
 export * from './exports/ToggleButton';
 export * from './exports/Alert';
 export * from './exports/Tag';
-export * from './exports/Calendar';
-export * from './exports/DatePicker';
 export * from './exports/CircularProgress';
 export * from './exports/Calendar';
 export * from './exports/DatePicker';

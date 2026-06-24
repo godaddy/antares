@@ -1,6 +1,16 @@
 ---
 title: Calendar
+description: Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.
 ---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './calendar.stories.tsx';
+
+import BasicCode from './examples/basic.tsx?raw';
+import RangeCode from './examples/range.tsx?raw';
+import MinMaxCode from './examples/min-max.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
 
 ## Features
 
@@ -36,25 +46,22 @@ Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/d
 
 A single-date calendar.
 
-import BasicCode from './examples/basic?raw';
-
-<CodeBlock code={BasicCode} />
+<Source language="tsx" code={BasicCode} />
+<Story of={Stories.Basic} inline />
 
 ### Range
 
 Selecting a start and end date.
 
-import RangeCode from './examples/range?raw';
-
-<CodeBlock code={RangeCode} />
+<Source language="tsx" code={RangeCode} />
+<Story of={Stories.Range} inline />
 
 ### Min / Max
 
 Bounding selectable dates.
 
-import MinMaxCode from './examples/min-max?raw';
-
-<CodeBlock code={MinMaxCode} />
+<Source language="tsx" code={MinMaxCode} />
+<Story of={Stories.MinMax} inline />
 
 ## Accessibility
 
