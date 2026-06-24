@@ -180,16 +180,24 @@ export function DefaultExample() {
 
 ## README.mdx
 
-- Omit manual `# Heading` — `remarkFrontmatterHeading` auto-generates from frontmatter `title:`
-- Sections: Features, Installation, Props, Examples, Customization, Accessibility, Best Practices, Troubleshooting
-- Each example gets its own `###` subheading and a brief description of what it demonstrates, then its source
-- Source imports: `?raw` for showing code in docs
-- Powers both Storybook and docs site
+- Include a `title` and a brief `description` in the frontmatter
+- Use `<Meta />` to render the component's overview
+- Use `<ArgTypes />` to render the props table, as needed
+- Use `<Source />` for an example's code and `<Story />` for its live render
+- Each example gets its own `###` subheading and a brief description
 
 ```mdx
 ---
 title: Button
+description: The Button component is a clickable control for actions, with variants and sizes.
 ---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './button.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
 
 ## Features
 
@@ -202,15 +210,20 @@ title: Button
 npm install @godaddy/antares
 \`\`\`
 
+## Props
+
+The Button component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
 ## Examples
 
 ### Basic Usage
 
-A minimal button with a text label.
+A default button with a text label.
 
-import DefaultCode from './examples/default?raw';
-
-<CodeBlock code={DefaultCode} />
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
 ```
 
 ## Accessibility
