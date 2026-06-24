@@ -1,60 +1,53 @@
-import { SelectStaticExample } from '../examples/select-static.tsx';
-import { SelectDynamicExample } from '../examples/select-dynamic.tsx';
-import { SelectControlledExample } from '../examples/select-controlled.tsx';
-import { SelectMultipleExample } from '../examples/select-multiple.tsx';
-import { SelectSizesExample } from '../examples/select-sizes.tsx';
-import { SelectLabelStylesExample } from '../examples/select-label-styles.tsx';
-import { SelectValidationExample } from '../examples/select-validation.tsx';
-import { SelectSectionsExample } from '../examples/select-sections.tsx';
-import { SelectRenderPropsExample } from '../examples/select-render-props.tsx';
+import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { describe, it, expect } from 'vitest';
+import { SelectBasic } from '../examples/basic';
+import { SelectControlledExample } from '../examples/controlled';
+import { SelectDisabledExample } from '../examples/disabled';
+import { SelectFormExample } from '../examples/form';
+import { SelectInvalidExample } from '../examples/invalid';
+import { SelectMultipleExample } from '../examples/multiple';
+import { SelectSizesExample } from '../examples/sizes';
 
 describe('@godaddy/antares', function antares() {
-  describe('#examples', function examplesTests() {
-    it('renders SelectStaticExample', function staticExample() {
-      const result = renderToString(<SelectStaticExample />);
-      expect(result).toMatchSnapshot();
-    });
+  describe('#Select', function select() {
+    describe('#examples', function examples() {
+      it('renders basic example', function basic() {
+        const result = renderToString(<SelectBasic />);
+        expect(result).toMatchSnapshot();
+      });
 
-    it('renders SelectDynamicExample with items prop', function dynamicExample() {
-      const result = renderToString(<SelectDynamicExample />);
-      expect(result).toMatchSnapshot();
-    });
+      it('renders controlled example', function controlled() {
+        const result = renderToString(<SelectControlledExample />);
+        expect(result).toMatchSnapshot();
+      });
 
-    it('renders SelectControlledExample', function controlledExample() {
-      const result = renderToString(<SelectControlledExample />);
-      expect(result).toMatchSnapshot();
-    });
+      it('renders disabled example', function disabled() {
+        const result = renderToString(<SelectDisabledExample />);
+        expect(result).toContain('data-disabled');
+        expect(result).toMatchSnapshot();
+      });
 
-    it('renders SelectMultipleExample', function multipleExample() {
-      const result = renderToString(<SelectMultipleExample />);
-      expect(result).toMatchSnapshot();
-    });
+      it('renders invalid example', function invalid() {
+        const result = renderToString(<SelectInvalidExample />);
+        expect(result).toContain('data-invalid');
+        expect(result).toMatchSnapshot();
+      });
 
-    it('renders SelectSizesExample', function sizesExample() {
-      const result = renderToString(<SelectSizesExample />);
-      expect(result).toMatchSnapshot();
-    });
+      it('renders multiple example', function multiple() {
+        const result = renderToString(<SelectMultipleExample />);
+        expect(result).toMatchSnapshot();
+      });
 
-    it('renders SelectLabelStylesExample', function labelStylesExample() {
-      const result = renderToString(<SelectLabelStylesExample />);
-      expect(result).toMatchSnapshot();
-    });
+      it('renders form example', function form() {
+        const result = renderToString(<SelectFormExample />);
+        expect(result).toMatchSnapshot();
+      });
 
-    it('renders SelectValidationExample', function validationExample() {
-      const result = renderToString(<SelectValidationExample />);
-      expect(result).toMatchSnapshot();
-    });
-
-    it('renders SelectSectionsExample', function sectionsExample() {
-      const result = renderToString(<SelectSectionsExample />);
-      expect(result).toMatchSnapshot();
-    });
-
-    it('renders SelectRenderPropsExample', function renderPropsExample() {
-      const result = renderToString(<SelectRenderPropsExample />);
-      expect(result).toMatchSnapshot();
+      it('renders sizes example', function sizes() {
+        const result = renderToString(<SelectSizesExample />);
+        expect(result).toContain('data-size="sm"');
+        expect(result).toMatchSnapshot();
+      });
     });
   });
 });

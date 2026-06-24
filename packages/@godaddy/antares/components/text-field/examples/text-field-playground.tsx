@@ -14,6 +14,7 @@ export interface PlaygroundExampleProps
     | 'multiline'
     | 'leadingText'
     | 'trailingText'
+    | 'size'
   > {}
 
 export function PlaygroundExample({
@@ -26,7 +27,8 @@ export function PlaygroundExample({
   isRequired = false,
   multiline = false,
   leadingText,
-  trailingText
+  trailingText,
+  size = 'md'
 }: PlaygroundExampleProps) {
   return (
     <TextField
@@ -40,6 +42,7 @@ export function PlaygroundExample({
       multiline={multiline}
       leadingText={leadingText}
       trailingText={trailingText}
+      size={size}
     />
   );
 }

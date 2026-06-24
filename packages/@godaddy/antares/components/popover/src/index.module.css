@@ -78,3 +78,7 @@
   rotate: -45deg;
   margin-right: var(--_arrow-offset);
 }
+
+.content {
+  overflow: auto;
+}

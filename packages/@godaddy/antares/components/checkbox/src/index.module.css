@@ -5,18 +5,13 @@
 
 .checkbox {
   cursor: pointer;
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .checkbox[data-disabled] {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-.label--required::after {
-  content: " *";
-  padding-inline-start: 0.2em;
-  color: var(--checkbox-critical-color);
 }
 
 .indicator {
@@ -69,12 +64,4 @@
 .checkboxGroup[data-invalid] .checkbox:hover:not([data-disabled]) .indicator,
 .checkboxGroup[data-invalid] .checkbox[data-selected] .indicator {
   border-color: var(--checkbox-critical-color);
-}
-
-.checkboxLabel {
-  user-select: none;
-}
-
-.error {
-  color: var(--checkbox-critical-color);
 }
