@@ -21,7 +21,7 @@ const statusIcon: Record<ProgressStepStatus, string> = {
 };
 
 /** Props for the {@link ProgressSteps} component. */
-export interface ProgressStepsProps extends Omit<FlexOwnProps, 'as'> {
+export interface ProgressStepsProps extends Omit<FlexOwnProps, 'as' | 'direction'> {
   /** Layout direction of the steps. @default 'horizontal' */
   orientation?: 'horizontal' | 'vertical';
   /** 0-based index of the current step. Omit for a not-yet-started flow. */
@@ -83,7 +83,7 @@ export function ProgressSteps(props: ProgressStepsProps) {
       <Flex as="ol" role="list" direction={orientation === 'vertical' ? 'column' : 'row'} className={styles.list}>
         {steps.map((step, index) =>
           React.cloneElement(step, {
-            key: step.key,
+            key: step.key ?? index,
             timeline: resolveTimeline(index, currentStep),
             stepNumber: hideStepNumbers ? undefined : index + 1
           })
@@ -94,7 +94,7 @@ export function ProgressSteps(props: ProgressStepsProps) {
 }
 
 /** Props for the {@link ProgressStep} component. */
-export interface ProgressStepProps extends Omit<FlexOwnProps, 'as'> {
+export interface ProgressStepProps extends Omit<FlexOwnProps, 'as' | 'direction'> {
   /** Step completion status. Controls the status icon. @default 'none' */
   status?: ProgressStepStatus;
 

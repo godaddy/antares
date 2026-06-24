@@ -50,7 +50,7 @@ describe('@godaddy/antares', function antares() {
 
       const payment = page.getByRole('button', { name: '3. Payment' });
       await payment.element().focus();
-      await user.keyboard('{ }');
+      await user.keyboard(' ');
       assume(document.querySelector('[aria-current="step"]')?.textContent).includes('3. Payment');
     });
 
