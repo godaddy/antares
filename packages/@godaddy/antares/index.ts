@@ -33,5 +33,8 @@ export * from './exports/Alert';
 export * from './exports/Tag';
 export * from './exports/Calendar';
 export * from './exports/DatePicker';
+export * from './exports/CircularProgress';
+export * from './exports/Calendar';
+export * from './exports/DatePicker';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
