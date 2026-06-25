@@ -44,7 +44,16 @@ export interface CircularProgressProps extends Omit<RACProgressBarProps, 'classN
  */
 export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps>(
   function CircularProgress(props, ref) {
-    const { size = 'md', emphasis, label, helperText, className, 'aria-describedby': describedByProp, ...rest } = props;
+    const {
+      size = 'md',
+      emphasis,
+      label,
+      helperText,
+      className,
+      style,
+      'aria-describedby': describedByProp,
+      ...rest
+    } = props;
 
     const helperTextId = useId();
     const describedBy = helperText ? [describedByProp, helperTextId].filter(Boolean).join(' ') : describedByProp;
@@ -61,7 +70,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
         data-size={size}
         data-emphasis={emphasis}
         aria-describedby={describedBy}
-        style={{ '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties}
+        style={{ ...style, '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties}
       >
         {function renderContent({ percentage, valueText }) {
           const offset = CIRCUMFERENCE * (1 - (percentage ?? 0) / 100);
