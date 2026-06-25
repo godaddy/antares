@@ -2,20 +2,23 @@ import { forwardRef, type RefObject, type ReactNode } from 'react';
 import { cx } from 'cva';
 import {
   Dialog as RACDialog,
+  type DialogProps as RACDialogProps,
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
   OverlayArrow as RACOverlayArrow
 } from 'react-aria-components';
-import { Flex, type FlexProps } from '#components/layout/flex';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import styles from './index.module.css';
 
+interface ContentProps extends RACDialogProps, FlexOwnProps {}
+
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
 
-export interface PopoverProps extends RACPopoverProps {
+export interface PopoverProps extends RACPopoverProps, FlexOwnProps {
   /** The content to display inside the popover. */
   children?: ReactNode;
 
@@ -23,7 +26,7 @@ export interface PopoverProps extends RACPopoverProps {
   showCloseButton?: boolean;
 
   /** Props to pass to the content container. */
-  contentProps?: Omit<FlexProps, 'as' | 'role'>;
+  contentProps?: ContentProps;
 
   /** The placement of the popover relative to the trigger. */
   placement?: RACPopoverProps['placement'];
@@ -50,18 +53,24 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
   const { className, children, header, showCloseButton, hideArrow, contentProps, ...rest } = props;
 
   return (
-    <Flex as={RACPopover} ref={ref} data-noarrow={hideArrow} {...rest} className={cx(styles.popover, className)}>
+    <Flex
+      ref={ref}
+      elevation="overlay"
+      data-noarrow={hideArrow}
+      rounding="md"
+      {...rest}
+      as={RACPopover}
+      className={cx(styles.popover, className)}
+    >
+      {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       <Flex
-        padding="md"
-        rounding="md"
-        elevation="overlay"
         direction="column"
+        padding="md"
         aria-label="Content"
         {...contentProps}
         as={RACDialog}
+        className={cx(styles.content, contentProps?.className)}
       >
-        {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
-
         {showCloseButton ? (
           <Flex gap="sm">
             {header}

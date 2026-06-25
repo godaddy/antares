@@ -2,7 +2,7 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
 import { useState } from 'react';
 
 export interface PlaygroundExampleProps {
-  direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
+  orientation?: 'horizontal' | 'vertical';
   label?: string;
   description?: string;
   isRequired?: boolean;
@@ -14,7 +14,7 @@ export interface PlaygroundExampleProps {
 }
 
 export function PlaygroundExample({
-  direction = 'column',
+  orientation = 'vertical',
   label = 'Select your preferences',
   description,
   isRequired = false,
@@ -28,7 +28,7 @@ export function PlaygroundExample({
 
   return (
     <CheckboxGroup
-      direction={direction}
+      orientation={orientation}
       label={label}
       description={description}
       isRequired={isRequired}
