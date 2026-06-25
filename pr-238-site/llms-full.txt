@@ -522,14 +522,12 @@ CheckboxGroup supports validation states and error messages:
 </CheckboxGroup>
 ```
 
-### Direction [#direction]
+### Orientation [#orientation]
 
-Control the layout direction with the `direction` prop:
+Control the layout with the `orientation` prop (matching `RadioGroup`):
 
-* `column` (default): Stacks checkboxes vertically
-* `row`: Arranges checkboxes in a horizontal row
-* `column-reverse`: Stacks checkboxes vertically in reverse order
-* `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
+* `vertical` (default): Stacks checkboxes vertically
+* `horizontal`: Arranges checkboxes in a horizontal row
 
 ## Accessibility [#accessibility]
 
@@ -658,6 +656,63 @@ Always provide clear error messages and use appropriate validation states:
 * Provide a group label that clearly describes the choice being made
 
 
+# CircularProgress
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="Stories.Emphasis" />
+
+<Source language="tsx" code="SourceEmphasis" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+
 # Drawer
 
 
@@ -777,6 +832,94 @@ In RTL, horizontal arrow key direction is reversed for the snap slider.
 * Always provide a `title` or `aria-label` prop so the dialog has an accessible name.
 * Use `isDismissable` to allow closing via backdrop click.
 * Don't nest drawers.
+
+
+# Field primitives
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
+
+The field decoration is split into granular, composable pieces so the same structure is shared across every field:
+
+* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
+* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
+* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
+* **`FieldInput`*&#x2A; / &#x2A;*`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
+* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
+* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
+
+`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
+
+## Usage [#usage]
+
+### FieldGroup props [#fieldgroup-props]
+
+<PropTable />
+
+### Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+## Composition [#composition]
+
+A boxed field composes the primitives inside its React Aria field wrapper. Use
+`Field as={...}` to merge the field wrapper and the layout column into a single
+element:
+
+```text
+Field as={RACTextField}                   ← field wrapper + layout column (one element)
+├── FieldLabel                            ← when label provided (+ required indicator)
+├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
+│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
+├── FieldDescription                      ← when description provided
+└── FieldError                            ← renders validation messages when invalid
+```
+
+A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
+
+`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
+
+### Positioning controls inside the group [#positioning-controls-inside-the-group]
+
+`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
+
+### States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
+
+| State                                                                                    | CSS Selector      |
+| ---------------------------------------------------------------------------------------- | ----------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
+| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
+
+## Examples [#examples]
+
+### Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+### Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+### Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
 
 
 # Icon
@@ -1292,6 +1435,65 @@ Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles be
 * Don't nest InlineDrawers.
 
 
+# ListBox
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The ListBox component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Source language="tsx" code="SourceMultiple" />
+
+<Story of="Stories.Multiple" />
+
+
 # Menu
 
 
@@ -1552,6 +1754,75 @@ Pass a `media` element to display imagery alongside the content. Configure its l
 * Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
 
 
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
 # NumberField
 
 
@@ -1656,75 +1927,6 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-
-# MetricsLockup
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="Stories.WithTrend" />
-
-<Source language="tsx" code="WithTrendExample" />
-
-### Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="Stories.Compact" />
-
-<Source language="tsx" code="CompactExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-### ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
 # Pagination
@@ -2125,160 +2327,6 @@ Always provide clear error messages:
 ```
 
 
-# Select
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Static [#static]
-
-<Story of="Stories.Static" />
-
-<Source language="tsx" code="SourceSelectStatic" />
-
-### Controlled [#controlled]
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceSelectControlled" />
-
-### Dynamic Items [#dynamic-items]
-
-<Story of="Stories.DynamicItems" />
-
-<Source language="tsx" code="SourceSelectDynamic" />
-
-### Multiple Selection [#multiple-selection]
-
-<Story of="Stories.Multiple" />
-
-<Source language="tsx" code="SourceSelectMultiple" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-React Aria Components automatically adds data attributes for styling different states:
-
-**Select Container:** `data-invalid`, `data-disabled`, `data-required`, `data-focused`
-
-**Trigger Button:** `data-pressed`, `data-disabled`, `data-focused`, `aria-expanded`
-
-**Select Value:** `data-placeholder`
-
-**Popover:** `data-entering`, `data-exiting`
-
-**List Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`, `data-selection-mode`
-
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  font-weight: 600;
-}
-
-[data-invalid] .button {
-  border-color: #dc2626;
-}
-
-[aria-expanded="true"] {
-  border-color: #3b82f6;
-}
-```
-
-### Component Customization [#component-customization]
-
-Individual child components can be styled by passing `className` props:
-
-```jsx
-<Select label="Coffee">
-  <SelectItem id="espresso" className="premium-option">
-    Espresso
-  </SelectItem>
-  <SelectSection className="featured-section">
-    <SelectHeader>Featured</SelectHeader>
-    <SelectItem id="special">Special Blend</SelectItem>
-  </SelectSection>
-</Select>
-```
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Space/Enter**: Opens the popover and focuses the selected item
-* **Arrow Down/Up**: Navigate through options
-* **Home/End**: Jump to first/last option
-* **Escape**: Closes the popover
-* **Tab**: Moves focus to the next focusable element
-* **Type to select**: Type characters to jump to matching options
-* **Space** (in multi-select): Toggle selection of focused item
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<Select value={value} defaultValue="espresso">
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-
-// ✅ Controlled mode
-<Select value={value} onChange={setValue}>
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-
-// ✅ Uncontrolled mode
-<Select defaultValue="espresso">
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
-
-/* ✅ Use data attributes for higher specificity */
-.my-select [data-selected] {
-  background-color: red;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-.button:focus {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.button:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-```
-
-
 # SegmentedController
 
 
@@ -2401,6 +2449,88 @@ Components automatically add data attributes for styling different states:
 
 * For more than 5 options (use Tabs or Select instead)
 * For form input (use RadioGroup instead)
+
+
+# Select
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The Select component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with a label and a placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Source language="tsx" code="SourceMultiple" />
+
+<Story of="Stories.Multiple" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Source language="tsx" code="SourceForm" />
+
+<Story of="Stories.Form" />
 
 
 # Tag
@@ -3911,6 +4041,110 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+
 # Flex
 
 
@@ -4015,107 +4249,3 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
-
-
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
