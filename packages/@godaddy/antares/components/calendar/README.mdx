@@ -1,0 +1,79 @@
+---
+title: Calendar
+description: Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './calendar.stories.tsx';
+
+import BasicCode from './examples/basic.tsx?raw';
+import RangeCode from './examples/range.tsx?raw';
+import MinMaxCode from './examples/min-max.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+- Month dropdown plus a typeable year input in the header for fast navigation
+- Keyboard navigable and screen-reader announced
+- `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+- Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates
+
+`Calendar` values are `CalendarDate` objects from `@internationalized/date`, which ships transitively with `@godaddy/antares` — import it directly:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`.
+
+## Examples
+
+### Basic
+
+A single-date calendar.
+
+<Source language="tsx" code={BasicCode} />
+<Story of={Stories.Basic} inline />
+
+### Range
+
+Selecting a start and end date.
+
+<Source language="tsx" code={RangeCode} />
+<Story of={Stories.Range} inline />
+
+### Min / Max
+
+Bounding selectable dates.
+
+<Source language="tsx" code={MinMaxCode} />
+<Story of={Stories.MinMax} inline />
+
+## Accessibility
+
+- Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+- Focus-visible outline; disabled days are not focusable
+- Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices
+
+- Always provide an `aria-label` on standalone calendars.
+- Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting
+
+- Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.

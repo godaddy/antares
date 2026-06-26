@@ -1,0 +1,92 @@
+---
+title: DatePicker
+description: Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './date-picker.stories.tsx';
+
+import BasicCode from './examples/basic.tsx?raw';
+import RangeCode from './examples/range.tsx?raw';
+import ControlledCode from './examples/controlled.tsx?raw';
+import FormatCode from './examples/format-options.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+- Built on React Aria — native form integration, validation, focus management, and screen-reader support
+- Consumer-controlled label formatting via `formatOptions`
+- `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates
+
+Values are `CalendarDate` objects from `@internationalized/date` (ships transitively — import directly):
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { DatePicker } from '@godaddy/antares';
+
+<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
+<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry — selection is via the calendar.
+
+## Examples
+
+### Basic
+
+A single date picker.
+
+<Source language="tsx" code={BasicCode} />
+<Story of={Stories.Basic} inline />
+
+### Range
+
+A start/end range picker.
+
+<Source language="tsx" code={RangeCode} />
+<Story of={Stories.Range} inline />
+
+### Controlled
+
+Driving the value with `useState`.
+
+<Source language="tsx" code={ControlledCode} />
+<Story of={Stories.Controlled} inline />
+
+### Custom format
+
+Controlling the label with `formatOptions`.
+
+<Source language="tsx" code={FormatCode} />
+<Story of={Stories.FormatOptions} inline />
+
+## Customization
+
+`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
+
+## Accessibility
+
+- The whole field is a single focusable button; Enter/Space opens the popover
+- Focus is trapped in the open popover and returns to the trigger on close
+- Esc and outside-click dismiss the popover
+- The calendar grid is fully keyboard navigable and screen-reader announced
+
+## Best Practices
+
+- Provide a `label` (or `aria-label`) on every picker.
+- For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
+
+## Troubleshooting
+
+- Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
+- Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
