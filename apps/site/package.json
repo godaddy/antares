@@ -24,12 +24,12 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
-    "@tailwindcss/postcss": "^4.3.0",
+    "@biomejs/biome": "^2.5.1",
+    "@tailwindcss/postcss": "^4.3.1",
     "@types/estree": "^1.0.9",
-    "@types/mdx": "^2.0.13",
+    "@types/mdx": "^2.0.14",
     "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "assume": "^2.3.0",
     "mdast": "^3.0.0",
