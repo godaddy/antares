@@ -59,8 +59,8 @@
     "embla-carousel": "^9.0.0-rc02",
     "embla-carousel-accessibility": "^9.0.0-rc02",
     "embla-carousel-react": "^9.0.0-rc02",
-    "motion": "^12.40.0",
-    "react-aria-components": "^1.18.0"
+    "motion": "^12.42.0",
+    "react-aria-components": "^1.19.0"
   },
   "devDependencies": {
     "@bento/storybook-addon-helpers": "^0.1.1",
