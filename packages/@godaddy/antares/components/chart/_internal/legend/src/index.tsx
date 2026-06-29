@@ -85,7 +85,7 @@ export function Legend(props: LegendProps) {
           aria-label={label ?? 'Chart legend'}
           alignItems="flex-start"
           direction={isHorizontal ? 'row' : 'column'}
-          gap={isHorizontal ? 'md' : 'sm'}
+          gap={isHorizontal ? 'lg' : 'sm'}
           flexShrink={0}
           wrap="wrap"
           justifyContent="center"
