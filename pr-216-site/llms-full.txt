@@ -92,6 +92,84 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
+# Alert
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A minimal alert with a title and body text.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Emphasis Variants [#emphasis-variants]
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of="Stories.Emphases" />
+
+<Source language="tsx" code="EmphasesExample" />
+
+### Dismissible [#dismissible]
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of="Stories.Dismissible" />
+
+<Source language="tsx" code="DismissibleExample" />
+
+### With Action [#with-action]
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of="Stories.WithAction" />
+
+<Source language="tsx" code="WithActionExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
+
+### Screen readers [#screen-readers]
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+### Dismiss button label [#dismiss-button-label]
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+## Best Practices [#best-practices]
+
+* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+
+
 # Button
 
 
@@ -187,84 +265,6 @@ You may provide an optional [`Icon`](../icon) element to the button. If you do n
 <Story of="Stories.Disabled" />
 
 <Source language="tsx" code="SourceDisabled" />
-
-
-# Alert
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-A minimal alert with a title and body text.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Emphasis Variants [#emphasis-variants]
-
-All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
-
-<Story of="Stories.Emphases" />
-
-<Source language="tsx" code="EmphasesExample" />
-
-### Dismissible [#dismissible]
-
-When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
-
-<Story of="Stories.Dismissible" />
-
-<Source language="tsx" code="DismissibleExample" />
-
-### With Action [#with-action]
-
-Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
-
-<Story of="Stories.WithAction" />
-
-<Source language="tsx" code="WithActionExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| `Tab`             | Moves focus to the dismiss button or action button |
-| `Space` / `Enter` | Activates the focused button                       |
-
-### Screen readers [#screen-readers]
-
-The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
-
-### Dismiss button label [#dismiss-button-label]
-
-The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
-
-## Best Practices [#best-practices]
-
-* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
-* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
-* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
-* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
-* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
 
 
 # Carousel
@@ -522,14 +522,12 @@ CheckboxGroup supports validation states and error messages:
 </CheckboxGroup>
 ```
 
-### Direction [#direction]
+### Orientation [#orientation]
 
-Control the layout direction with the `direction` prop:
+Control the layout with the `orientation` prop (matching `RadioGroup`):
 
-* `column` (default): Stacks checkboxes vertically
-* `row`: Arranges checkboxes in a horizontal row
-* `column-reverse`: Stacks checkboxes vertically in reverse order
-* `row-reverse`: Arranges checkboxes in reverse order in a horizontal row
+* `vertical` (default): Stacks checkboxes vertically
+* `horizontal`: Arranges checkboxes in a horizontal row
 
 ## Accessibility [#accessibility]
 
@@ -656,6 +654,63 @@ Always provide clear error messages and use appropriate validation states:
 * Use logical ordering (alphabetical, frequency of use, or importance)
 * Consider using CheckboxGroup for related options, even if there are only 2-3
 * Provide a group label that clearly describes the choice being made
+
+
+# CircularProgress
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="Stories.Emphasis" />
+
+<Source language="tsx" code="SourceEmphasis" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
 
 
 # Drawer
@@ -842,6 +897,94 @@ The drop zone renders a visually hidden `<button>` inside the container. Assisti
 * Replace the default text with `children` to communicate the accepted file types and size limits up front.
 * Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
 * Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
+
+
+# Field primitives
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
+
+The field decoration is split into granular, composable pieces so the same structure is shared across every field:
+
+* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
+* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
+* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
+* **`FieldInput`*&#x2A; / &#x2A;*`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
+* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
+* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
+
+`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
+
+## Usage [#usage]
+
+### FieldGroup props [#fieldgroup-props]
+
+<PropTable />
+
+### Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+## Composition [#composition]
+
+A boxed field composes the primitives inside its React Aria field wrapper. Use
+`Field as={...}` to merge the field wrapper and the layout column into a single
+element:
+
+```text
+Field as={RACTextField}                   ← field wrapper + layout column (one element)
+├── FieldLabel                            ← when label provided (+ required indicator)
+├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
+│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
+├── FieldDescription                      ← when description provided
+└── FieldError                            ← renders validation messages when invalid
+```
+
+A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
+
+`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
+
+### Positioning controls inside the group [#positioning-controls-inside-the-group]
+
+`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
+
+### States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
+
+| State                                                                                    | CSS Selector      |
+| ---------------------------------------------------------------------------------------- | ----------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
+| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
+
+## Examples [#examples]
+
+### Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+### Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+### Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
 
 
 # Icon
@@ -1355,6 +1498,65 @@ Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles be
 * `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
 * Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
 * Don't nest InlineDrawers.
+
+
+# ListBox
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The ListBox component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Source language="tsx" code="SourceMultiple" />
+
+<Story of="Stories.Multiple" />
 
 
 # Menu
@@ -2320,6 +2522,88 @@ Components automatically add data attributes for styling different states:
 
 
 
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The Select component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with a label and a placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Source language="tsx" code="SourceMultiple" />
+
+<Story of="Stories.Multiple" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Source language="tsx" code="SourceForm" />
+
+<Story of="Stories.Form" />
+
+
+# Tag
+
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Installation [#installation]
@@ -2334,138 +2618,101 @@ npm install --save @godaddy/antares
 
 ## Examples [#examples]
 
-### Static [#static]
+### Basic [#basic]
 
-<Story of="Stories.Static" />
+A minimal tag with the default emphasis and size.
 
-<Source language="tsx" code="SourceSelectStatic" />
+<Story of="Stories.Default" />
 
-### Controlled [#controlled]
+<Source language="tsx" code="DefaultExample" />
 
-<Story of="Stories.Controlled" />
+### Emphasis [#emphasis]
 
-<Source language="tsx" code="SourceSelectControlled" />
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
 
-### Dynamic Items [#dynamic-items]
+<Story of="Stories.Emphases" />
 
-<Story of="Stories.DynamicItems" />
+<Source language="tsx" code="EmphasesExample" />
 
-<Source language="tsx" code="SourceSelectDynamic" />
+### Sizes [#sizes]
 
-### Multiple Selection [#multiple-selection]
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
 
-<Story of="Stories.Multiple" />
+<Story of="Stories.Sizes" />
 
-<Source language="tsx" code="SourceSelectMultiple" />
+<Source language="tsx" code="SizesExample" />
 
-## Customization [#customization]
+### Inline [#inline]
 
-### Data Attributes [#data-attributes]
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
 
-React Aria Components automatically adds data attributes for styling different states:
+<Story of="Stories.Inline" />
 
-**Select Container:** `data-invalid`, `data-disabled`, `data-required`, `data-focused`
+<Source language="tsx" code="InlineExample" />
 
-**Trigger Button:** `data-pressed`, `data-disabled`, `data-focused`, `aria-expanded`
+### High Contrast [#high-contrast]
 
-**Select Value:** `data-placeholder`
+A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
 
-**Popover:** `data-entering`, `data-exiting`
+<Story of="Stories.HighContrast" />
 
-**List Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`, `data-selection-mode`
+<Source language="tsx" code="HighContrastExample" />
 
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  font-weight: 600;
-}
+### With Icon [#with-icon]
 
-[data-invalid] .button {
-  border-color: #dc2626;
-}
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
 
-[aria-expanded="true"] {
-  border-color: #3b82f6;
-}
-```
+<Story of="Stories.Icons" />
 
-### Component Customization [#component-customization]
+<Source language="tsx" code="IconsExample" />
 
-Individual child components can be styled by passing `className` props:
+### Indicator [#indicator]
 
-```jsx
-<Select label="Coffee">
-  <SelectItem id="espresso" className="premium-option">
-    Espresso
-  </SelectItem>
-  <SelectSection className="featured-section">
-    <SelectHeader>Featured</SelectHeader>
-    <SelectItem id="special">Special Blend</SelectItem>
-  </SelectSection>
-</Select>
-```
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="Stories.Indicator" />
+
+<Source language="tsx" code="IndicatorExample" />
 
 ## Accessibility [#accessibility]
 
-### Keyboard Navigation [#keyboard-navigation]
+### Screen readers [#screen-readers]
 
-* **Space/Enter**: Opens the popover and focuses the selected item
-* **Arrow Down/Up**: Navigate through options
-* **Home/End**: Jump to first/last option
-* **Escape**: Closes the popover
-* **Tab**: Moves focus to the next focusable element
-* **Type to select**: Type characters to jump to matching options
-* **Space** (in multi-select): Toggle selection of focused item
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
 
-## Troubleshooting [#troubleshooting]
+### Decorative icons [#decorative-icons]
 
-### Selection Not Updating [#selection-not-updating]
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
 
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<Select value={value} defaultValue="espresso">
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-
-// ✅ Controlled mode
-<Select value={value} onChange={setValue}>
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-
-// ✅ Uncontrolled mode
-<Select defaultValue="espresso">
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
 ```
 
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
+### Indicator dot [#indicator-dot]
 
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
 
-/* ✅ Use data attributes for higher specificity */
-.my-select [data-selected] {
-  background-color: red;
-}
-```
+## Best Practices [#best-practices]
 
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
 
-```css
-/* ❌ Don't remove focus outlines without replacement */
-.button:focus {
-  outline: none;
-}
+## When to Use [#when-to-use]
 
-/* ✅ Provide visible focus indicator */
-.button:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-```
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
 
 
 # Text
@@ -2912,69 +3159,6 @@ To position a tooltip relative to a different focusable element, use the
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Bar Chart
 
 
@@ -3368,7 +3552,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# Gauge Chart
+# DonutChart
 
 
 
@@ -3381,7 +3565,7 @@ All examples can be found in the Storybook interface:
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Props [#props]
@@ -3392,82 +3576,43 @@ npm install --save @godaddy/antares
 
 ### Basic [#basic]
 
-A continuous gauge with a single label.
-
-<Story of="Stories.Basic" />
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
 <Source language="tsx" code="SourceBasic" />
 
-### Continuous Values [#continuous-values]
+<Story of="Stories.Basic" />
 
-Multiple continuous gauges showing different fill percentages.
+### Single slice [#single-slice]
 
-<Story of="Stories.Continuous" />
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Source language="tsx" code="SourceContinuous" />
+<Source language="tsx" code="SourceSingleSlice" />
 
-### Segmented [#segmented]
+<Story of="Stories.SingleSlice" />
 
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+### Legend placement [#legend-placement]
 
-<Story of="Stories.Segmented" />
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-<Source language="tsx" code="SourceSegmented" />
+<Source language="tsx" code="SourceLegendLayout" />
 
-### With Range Labels [#with-range-labels]
+<Story of="Stories.LegendLayout" />
 
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+### Small slices [#small-slices]
 
-<Story of="Stories.WithRangeLabels" />
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
-<Source language="tsx" code="SourceWithRangeLabels" />
+<Source language="tsx" code="SourceSmallSlices" />
 
-### Variants [#variants]
+<Story of="Stories.SmallSlices" />
 
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+### Format value [#format-value]
 
-<Story of="Stories.Variants" />
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
 
-<Source language="tsx" code="SourceVariants" />
+<Source language="tsx" code="SourceFormatValue" />
 
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="Stories.LabelType" />
-
-<Source language="tsx" code="SourceLabelType" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
+<Story of="Stories.FormatValue" />
 
 
 # LineChart
@@ -3761,6 +3906,108 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 
 # Box
