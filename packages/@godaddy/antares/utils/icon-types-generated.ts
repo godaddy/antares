@@ -7,7 +7,7 @@
 // (deploys the SVGs), and `DESIGN_ASSETS_MAJOR_VERSION`.
 //
 
-/** Version of `@ux/design-assets` this icon set was generated from. */
+/** Major-aligned version segment used in the CDN path for this icon set. */
 export const DESIGN_ASSETS_MAJOR_VERSION = '5.0.0';
 
 /** CDN host that serves the `@ux` design assets. */
