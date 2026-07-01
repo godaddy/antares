@@ -3,6 +3,7 @@ import { replacePlugin } from 'rolldown/plugins';
 import { generateCdnUrl } from '@godaddy/generate-cdn-url';
 import { mergeConfig } from 'tsdown';
 import { config } from '../../../configs/tsdown.config.mts';
+import { DESIGN_ASSETS_MAJOR_VERSION, CDN, ICON_PACKAGE } from './utils/icon-types-generated.ts';
 
 //
 // Package versions can include prerelease tags (e.g. 1.2.3-alpha) or build metadata
@@ -14,31 +15,19 @@ import { config } from '../../../configs/tsdown.config.mts';
 const versionMatch = packageJson.version.match(/^(\d+)\.(\d+)\.(\d+)/);
 const versionParts = versionMatch ? versionMatch.slice(1) : ['0', '0', '0'];
 
-//
-// The source of our icon files is deployed to a CDN, we need to introduce
-// the CDN URL as a build-time constant.
-//
-// NOTE: We use the major version of the design assets package version
-// as the version of the icons, this needs to be in-sync with the version
-// of `@ux/icons` as we share the same source files, and that package
-// deploys the assets to the CDN.
-//
-// TODO: Import the design assets package.json when the dependency is available.
-// For now, fall back to the current package version.
-//
-const cdnUrl = generateCdnUrl({
-  cdn: 'https://img6.wsimg.com/ux-assets',
-  version: '5.0.0',
-  packageName: '@ux/icon'
-});
-
 const mergedConfig = mergeConfig(config, {
   plugins: [
     replacePlugin({
       major: versionParts[0],
       minor: versionParts[1],
       patch: versionParts[2],
-      __CDN_URL__: cdnUrl
+
+      // The CDN URL our icons are deployed to, introduced as a build-time constant.
+      __ICON_CDN_URL__: generateCdnUrl({
+        cdn: CDN,
+        version: DESIGN_ASSETS_MAJOR_VERSION,
+        packageName: ICON_PACKAGE
+      })
     })
   ],
   entry: ['./index.ts', './exports/*.ts'],

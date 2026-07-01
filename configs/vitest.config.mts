@@ -3,9 +3,7 @@ import { resolve } from 'node:path';
 import { defineConfig, defaultExclude, type TestProjectConfiguration } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
-import replace from '@rollup/plugin-replace';
 import type { Plugin } from 'vite';
-import { generateCdnUrl } from '../packages/@godaddy/generate-cdn-url/src/index.ts';
 
 /**
  * Resolve `@bento/<pkg>` package imports to the package's source entry
@@ -118,18 +116,7 @@ export const visual: TestProjectConfiguration = {
 };
 
 export default defineConfig({
-  plugins: [
-    bentoSourceResolver(),
-    react(),
-    replace({
-      preventAssignment: true,
-      __CDN_URL__: generateCdnUrl({
-        cdn: 'https://img6.wsimg.com/ux-assets',
-        version: '5.0.0',
-        packageName: '@ux/icon'
-      })
-    })
-  ],
+  plugins: [bentoSourceResolver(), react()],
   resolve: {
     tsconfigPaths: true
   },
