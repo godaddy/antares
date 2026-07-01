@@ -31,6 +31,7 @@ export * from './exports/ProgressBar';
 export * from './exports/ToggleButton';
 export * from './exports/Alert';
 export * from './exports/Tag';
+export * from './exports/DropZone';
 export * from './exports/CircularProgress';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
