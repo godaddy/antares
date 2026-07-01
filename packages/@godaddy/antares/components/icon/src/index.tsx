@@ -3,7 +3,7 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { parser } from '@bento/svg-parser';
 import { forwardRef } from 'react';
 import { cx } from 'cva';
-import { type IconName, ICON_GALLERY_URL } from '../../../utils/icon-types-generated.ts';
+import { type IconName } from '../../../utils/icon-types-generated.ts';
 import styles from './index.module.css';
 
 //
@@ -67,7 +67,6 @@ ondemand(async function loader(icon: string) {
 export interface IconProps extends Omit<BentoIconProps, 'icon'> {
   /**
    * The name of the icon to render.
-   * @see {@link ICON_GALLERY_URL} for the full browsable list.
    */
   icon: IconName | (string & {});
 

@@ -16,9 +16,6 @@ export const CDN = 'https://img6.wsimg.com/ux-assets';
 /** The `@ux` package whose icon set Antares renders. */
 export const ICON_PACKAGE = '@ux/icon';
 
-/** Gallery of all available icons. */
-export const ICON_GALLERY_URL = 'https://uxcore.uxp.gdcorp.tools/main/?path=/docs/components-content-icon--docs';
-
 /** Every icon name available in `ICON_PACKAGE` at `DESIGN_ASSETS_MAJOR_VERSION`. */
 const ICON_NAMES = [
   'accessibility',
