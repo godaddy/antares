@@ -24,14 +24,19 @@ const statusIcon: Record<ProgressStepStatus, string> = {
 export interface ProgressStepsProps extends Omit<FlexOwnProps, 'as' | 'direction'> {
   /** Layout direction of the steps. @default 'horizontal' */
   orientation?: 'horizontal' | 'vertical';
+
   /** 0-based index of the current step. Omit for a not-yet-started flow. */
   currentStep?: number;
+
   /** Hide the auto-generated `"N. "` step-number prefix on every step. @default false */
   hideStepNumbers?: boolean;
+
   /** Accessible label for the navigation landmark. @default 'Progress' */
   'aria-label'?: string;
+
   /** `ProgressStep` children — must be direct children. */
   children: ReactNode;
+
   /** Additional class names applied to the root `<nav>`. */
   className?: string;
 }

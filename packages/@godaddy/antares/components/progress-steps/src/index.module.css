@@ -8,6 +8,28 @@
 
   --_title-size: calc(var(--ux-18ime9a, 1.375rem) / (var(--ux-1fnjqac, 1.125) * var(--ux-1fnjqac, 1.125)));
   --_title-line: var(--ux-18ime9a, 1.375rem);
+
+  &:where([data-orientation="horizontal"]) {
+    .step {
+      flex: 1 1 0;
+    }
+
+    .control {
+      border-block-start: 2px solid var(--_border-future);
+      padding-block-start: var(--sp-md);
+    }
+  }
+
+  &:where([data-orientation="vertical"]) {
+    .step {
+      width: 100%;
+    }
+
+    .control {
+      border-inline-start: 2px solid var(--_border-future);
+      padding-inline-start: var(--sp-md);
+    }
+  }
 }
 
 .list {
@@ -19,14 +41,18 @@
 .step {
   position: relative;
   min-width: 0;
-}
 
-:where([data-orientation="horizontal"]) .step {
-  flex: 1 1 0;
-}
+  &:where([data-timeline="past"], [data-timeline="current"], [data-status="complete"]) .control {
+    border-color: var(--_border-chosen);
+  }
 
-:where([data-orientation="vertical"]) .step {
-  width: 100%;
+  &:where([data-status="error"]) .control {
+    border-color: var(--_border-error);
+  }
+
+  &:where([data-timeline="current"]) .control {
+    color: var(--_fg-current);
+  }
 }
 
 .control {
@@ -38,46 +64,20 @@
   color: var(--_fg-default);
   font: inherit;
   text-align: start;
-}
 
-:where([data-orientation="horizontal"]) .control {
-  border-block-start: 2px solid var(--_border-future);
-  padding-block-start: var(--sp-md);
-}
+  &:where([data-hovered]) {
+    color: var(--_fg-hovered);
+  }
 
-:where([data-orientation="vertical"]) .control {
-  border-inline-start: 2px solid var(--_border-future);
-  padding-inline-start: var(--sp-md);
-}
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
 
-:where([data-timeline="past"], [data-timeline="current"], [data-status="complete"]) .control {
-  border-color: var(--_border-chosen);
-}
-
-:where([data-status="error"]) .control {
-  border-color: var(--_border-error);
-}
-
-:where([data-timeline="current"]) .control {
-  color: var(--_fg-current);
-}
-
-.control[data-rac] {
-  cursor: pointer;
-}
-
-.control[data-hovered] {
-  color: var(--_fg-hovered);
-}
-
-.control[data-focus-visible] {
-  outline: 2px solid Highlight;
-  outline-offset: 2px;
-}
-
-.control[data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
+  &:where([data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 }
 
 .icon {
