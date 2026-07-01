@@ -170,26 +170,70 @@ export function DefaultExample() {
 
 ## Stories
 
-- `'use client'` directive
-- `getMeta({ title: 'components/ComponentName' })`
-- `getComponentDocs(Component)` for auto-generated props table
-- `getStory(Component)` per example
-- Playground with `render`, `args`, `argTypes`
-- Control types: `'radio'` (2–4 options), `'select'` (5+), `'boolean'`, `'text'`, `'multi-select'`
-- `description` on every `argType`
+- Add the `'use client'` directive, then import helpers from `@bento/storybook-addon-helpers`
+- Export `getMeta({ title: 'components/ComponentName' })` as the default
+- Use `getComponentDocs(Component)` for each public component's auto-generated props table — export as `Props`, plus `<Name>Props` for any extra exported components
+- Use `getStory(Example)` for each example, with a PascalCase export name
+- Add a `Playground` story that renders the `<name>-playground` example, types `args` as its props, and gives every `argType` a `description`
+- Pick control types from `'boolean'`, `'text'`, `'number'`, `'object'`, `'radio'` (2–4 options), and `'select'` (5+)
+
+```tsx
+'use client';
+import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { Button } from './src/index.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/button-playground.tsx';
+import { DefaultExample } from './examples/default.tsx';
+import { SecondaryExample } from './examples/secondary.tsx';
+
+export default getMeta({ title: 'components/Button' });
+
+export const Props = getComponentDocs(Button);
+
+export const Default = getStory(DefaultExample);
+export const Secondary = getStory(SecondaryExample);
+
+export const Playground = {
+  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+  args: {
+    variant: 'primary',
+    size: 'md'
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary', 'tertiary', 'critical', 'inline', 'minimal'],
+      description: 'Visual variant of the button'
+    },
+    size: {
+      control: 'radio',
+      options: ['sm', 'md'],
+      description: 'Size of the button'
+    }
+  }
+};
+```
 
 ## README.mdx
 
-- Omit manual `# Heading` — `remarkFrontmatterHeading` auto-generates from frontmatter `title:`
-- Sections: Features, Installation, Props, Examples, Customization, Accessibility, Best Practices, Troubleshooting
-- Each example gets its own `###` subheading and a brief description of what it demonstrates, then its source
-- Source imports: `?raw` for showing code in docs
-- Powers both Storybook and docs site
+- Include a `title` and a brief `description` in the frontmatter
+- Use these `##` sections in order: Features, Installation, Props, Examples, Customization, Accessibility, Best Practices, Troubleshooting
+- Use `<Meta />` to render the component's overview
+- Use `<ArgTypes />` to render the props table, as needed
+- Use `<Source />` for an example's code and `<Story />` for its live render
+- Each example gets its own `###` subheading and a brief description
 
 ```mdx
 ---
 title: Button
+description: The Button component is a clickable control for actions, with variants and sizes.
 ---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './button.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
 
 ## Features
 
@@ -202,15 +246,20 @@ title: Button
 npm install @godaddy/antares
 \`\`\`
 
+## Props
+
+The Button component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
 ## Examples
 
 ### Basic Usage
 
-A minimal button with a text label.
+A default button with a text label.
 
-import DefaultCode from './examples/default?raw';
-
-<CodeBlock code={DefaultCode} />
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
 ```
 
 ## Accessibility
