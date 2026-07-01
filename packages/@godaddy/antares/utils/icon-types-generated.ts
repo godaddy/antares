@@ -1,22 +1,7 @@
-//
-// GENERATED from `@ux/design-assets@5.2.0` package.
-//
-// Icons are fetched at runtime from a CDN path bucketed by MAJOR version:
-// `${CDN}/${ICON_PACKAGE}/${DESIGN_ASSETS_MAJOR_VERSION}/<name>.svg`.
-// Keep the major aligned across `@ux/design-assets` (names), `@ux/icon`
-// (deploys the SVGs), and `DESIGN_ASSETS_MAJOR_VERSION`.
-//
+/** CDN host that serves the icons. */
+export const ICON_CDN_URL = 'https://img6.wsimg.com/ux-assets/@ux/icon/5.0.0';
 
-/** Major-aligned version segment used in the CDN path for this icon set. */
-export const DESIGN_ASSETS_MAJOR_VERSION = '5.0.0';
-
-/** CDN host that serves the `@ux` design assets. */
-export const CDN = 'https://img6.wsimg.com/ux-assets';
-
-/** The `@ux` package whose icon set Antares renders. */
-export const ICON_PACKAGE = '@ux/icon';
-
-/** Every icon name available in `ICON_PACKAGE` at `DESIGN_ASSETS_MAJOR_VERSION`. */
+/** Every icon name available in the icons' CDN. */
 const ICON_NAMES = [
   'accessibility',
   'add',
