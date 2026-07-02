@@ -1,4 +1,4 @@
-import { DropZone, type DropZoneProps, isFileDropItem } from '@godaddy/antares';
+import { DropZone, type DropZoneProps, isFileDropItem, Text } from '@godaddy/antares';
 
 export function DefaultExample(props?: Partial<DropZoneProps>) {
   return (
@@ -8,6 +8,8 @@ export function DefaultExample(props?: Partial<DropZoneProps>) {
         console.log('Dropped files:', files);
       }}
       {...props}
-    />
+    >
+      <Text slot="label">Drop files to upload.</Text>
+    </DropZone>
   );
 }

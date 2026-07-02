@@ -9,7 +9,7 @@ export function CustomContentExample() {
       }}
     >
       <Flex direction="column" alignItems="center" gap="xs">
-        <Text>Drag your images here</Text>
+        <Text slot="label">Drag your images here</Text>
         <Text>PNG, JPG, or GIF up to 10MB</Text>
       </Flex>
     </DropZone>

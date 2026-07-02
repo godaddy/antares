@@ -25,7 +25,7 @@ npm install --save @godaddy/antares
 
 ### Basic Usage
 
-A minimal drop zone with the default instructional text. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files.
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
 
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
@@ -55,7 +55,18 @@ Set `isDisabled` to prevent the drop zone from accepting interactions. The zone 
 
 ### Screen readers
 
-The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer. The button's accessible name defaults to "DropZone"; override it with `aria-label` on the `DropZone` component to provide more specific context (e.g. `aria-label="Upload profile photo"`).
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
 
 ## Best Practices
 

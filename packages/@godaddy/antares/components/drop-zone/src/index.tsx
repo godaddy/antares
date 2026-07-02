@@ -9,7 +9,6 @@ import {
   isDirectoryDropItem
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
-import { Text } from '#components/text';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
@@ -18,7 +17,18 @@ export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
  * Props for the {@link DropZone} component.
  */
 export interface DropZoneProps extends Omit<RACDropZoneProps, 'className' | 'children'> {
-  /** Content displayed inside the drop zone. @default "Drop files to upload." */
+  /**
+   * Content displayed inside the drop zone. Use `<Text slot="label">` for the primary
+   * label — it is linked via `aria-labelledby` to the visually hidden drop button,
+   * ensuring screen readers announce the correct label.
+   *
+   * @example
+   * ```tsx
+   * <DropZone onDrop={handleDrop}>
+   *   <Text slot="label">Drop files to upload.</Text>
+   * </DropZone>
+   * ```
+   */
   children?: React.ReactNode;
 
   /** Additional CSS class names applied to the root element. */
@@ -33,7 +43,9 @@ export interface DropZoneProps extends Omit<RACDropZoneProps, 'className' | 'chi
  * <DropZone onDrop={(e) => {
  *   const files = e.items.filter(isFileDropItem);
  *   // handle files
- * }} />
+ * }}>
+ *   <Text slot="label">Drop files to upload.</Text>
+ * </DropZone>
  * ```
  *
  * @param props - {@link DropZoneProps}
@@ -52,7 +64,7 @@ export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZ
       className={cx(styles.dropZone, className)}
       as={RACDropZone}
     >
-      {children ?? <Text className={styles.text}>Drop files to upload.</Text>}
+      {children}
     </Flex>
   );
 });
