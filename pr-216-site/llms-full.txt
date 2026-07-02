@@ -856,7 +856,7 @@ npm install --save @godaddy/antares
 
 ### Basic Usage [#basic-usage]
 
-A minimal drop zone with the default instructional text. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files.
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
 
 <Story of="Stories.Default" />
 
@@ -889,7 +889,18 @@ Set `isDisabled` to prevent the drop zone from accepting interactions. The zone 
 
 ### Screen readers [#screen-readers]
 
-The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer. The button's accessible name defaults to "DropZone"; override it with `aria-label` on the `DropZone` component to provide more specific context (e.g. `aria-label="Upload profile photo"`).
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
 
 ## Best Practices [#best-practices]
 
@@ -1994,6 +2005,62 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+### Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+## Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+
 # Pagination
 
 
@@ -2055,62 +2122,6 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Story of="Stories.OnChange" />
 
 <Source language="tsx" code="SourceOnChange" />
-
-
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-### Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-## Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # ProgressBar
@@ -3159,6 +3170,69 @@ To position a tooltip relative to a different focusable element, use the
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Bar Chart
 
 
@@ -3552,7 +3626,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
+# Gauge Chart
 
 
 
@@ -3565,7 +3639,7 @@ All examples can be found in the Storybook interface:
 ## Installation [#installation]
 
 ```bash
-npm install @godaddy/antares
+npm install --save @godaddy/antares
 ```
 
 ## Props [#props]
@@ -3576,43 +3650,82 @@ npm install @godaddy/antares
 
 ### Basic [#basic]
 
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
+A continuous gauge with a single label.
 
 <Story of="Stories.Basic" />
 
-### Single slice [#single-slice]
+<Source language="tsx" code="SourceBasic" />
 
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+### Continuous Values [#continuous-values]
 
-<Source language="tsx" code="SourceSingleSlice" />
+Multiple continuous gauges showing different fill percentages.
 
-<Story of="Stories.SingleSlice" />
+<Story of="Stories.Continuous" />
 
-### Legend placement [#legend-placement]
+<Source language="tsx" code="SourceContinuous" />
 
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+### Segmented [#segmented]
 
-<Source language="tsx" code="SourceLegendLayout" />
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
 
-<Story of="Stories.LegendLayout" />
+<Story of="Stories.Segmented" />
 
-### Small slices [#small-slices]
+<Source language="tsx" code="SourceSegmented" />
 
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+### With Range Labels [#with-range-labels]
 
-<Source language="tsx" code="SourceSmallSlices" />
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
 
-<Story of="Stories.SmallSlices" />
+<Story of="Stories.WithRangeLabels" />
 
-### Format value [#format-value]
+<Source language="tsx" code="SourceWithRangeLabels" />
 
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+### Variants [#variants]
 
-<Source language="tsx" code="SourceFormatValue" />
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
 
-<Story of="Stories.FormatValue" />
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 
 # LineChart
@@ -3908,108 +4021,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
-# Gauge Chart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A continuous gauge with a single label.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="Stories.Continuous" />
-
-<Source language="tsx" code="SourceContinuous" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="Stories.Segmented" />
-
-<Source language="tsx" code="SourceSegmented" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="Stories.WithRangeLabels" />
-
-<Source language="tsx" code="SourceWithRangeLabels" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="Stories.Variants" />
-
-<Source language="tsx" code="SourceVariants" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="Stories.LabelType" />
-
-<Source language="tsx" code="SourceLabelType" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-
 # Box
 
 
@@ -4104,6 +4115,110 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 ## Design Tokens [#design-tokens]
 
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
 
 
 # Flex
@@ -4210,107 +4325,3 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
-
-
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Grid is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends [`Box`](../box/README.mdx), inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use Grid when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
