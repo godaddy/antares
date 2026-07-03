@@ -15,10 +15,15 @@ export const Props = getComponentDocs(Calendar);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
-  args: { isDisabled: false, isReadOnly: false },
+  args: { isDisabled: false, isReadOnly: false, months: 1 },
   argTypes: {
     isDisabled: { control: 'boolean', description: 'Disables the calendar.' },
-    isReadOnly: { control: 'boolean', description: 'Makes the calendar read-only.' }
+    isReadOnly: { control: 'boolean', description: 'Makes the calendar read-only.' },
+    months: {
+      control: 'radio',
+      options: [1, 2, 3],
+      description: 'Number of month grids to display (maps to visibleDuration).'
+    }
   }
 };
 
