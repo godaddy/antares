@@ -4,11 +4,12 @@ import { NumberField } from '#components/number-field';
 import { Select, SelectItem } from '#components/select';
 import { Button } from '#components/button';
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date';
-import { type ReactElement, useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import {
   CalendarStateContext as RACCalendarStateContext,
   RangeCalendarStateContext as RACRangeCalendarStateContext,
-  useLocale
+  useLocale,
+  type Key as RACKey
 } from 'react-aria-components';
 import styles from './index.module.css';
 
@@ -17,7 +18,7 @@ import styles from './index.module.css';
  * state context is present (Calendar or RangeCalendar) and moves the visible month via
  * `setFocusedDate`. Year is a typeable numeric input; month is a dropdown.
  */
-export function CalendarHeader(): ReactElement {
+export function CalendarHeader() {
   const calendarState = useContext(RACCalendarStateContext);
   const rangeState = useContext(RACRangeCalendarStateContext);
   const state = calendarState ?? rangeState;
@@ -36,8 +37,30 @@ export function CalendarHeader(): ReactElement {
     [locale, focusedDate?.year]
   );
 
+  const handleMonthChange = useCallback(
+    function handleMonthChange(key: RACKey | null) {
+      if (!state || !focusedDate) {
+        return;
+      }
+
+      state.setFocusedDate(focusedDate.set({ month: Number(key) }));
+    },
+    [state, focusedDate]
+  );
+
+  const handleYearChange = useCallback(
+    function handleYearChange(year: number) {
+      if (!state || !focusedDate) {
+        return;
+      }
+
+      state.setFocusedDate(focusedDate.set({ year }));
+    },
+    [state, focusedDate]
+  );
+
   if (!state || !focusedDate) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -47,27 +70,21 @@ export function CalendarHeader(): ReactElement {
       </Button>
 
       <Flex direction="row" gap="sm">
-        <Select
-          aria-label="Month"
-          value={String(focusedDate.month)}
-          onChange={(key) => state.setFocusedDate(focusedDate.set({ month: Number(key) }))}
-        >
-          {monthNames.map((name, index) => (
-            <SelectItem key={index + 1} id={String(index + 1)}>
-              {name}
-            </SelectItem>
-          ))}
+        <Select aria-label="Month" value={String(focusedDate.month)} onChange={handleMonthChange}>
+          {monthNames.map(function mapMonthNames(name, index) {
+            return (
+              <SelectItem key={index + 1} id={String(index + 1)}>
+                {name}
+              </SelectItem>
+            );
+          })}
         </Select>
         <NumberField
           aria-label="Year"
           hideStepper
           formatOptions={{ useGrouping: false }}
           value={focusedDate.year}
-          onChange={function handleYearChange(year) {
-            if (!Number.isNaN(year)) {
-              state.setFocusedDate(focusedDate.set({ year }));
-            }
-          }}
+          onChange={handleYearChange}
           className={styles.yearField}
         />
       </Flex>

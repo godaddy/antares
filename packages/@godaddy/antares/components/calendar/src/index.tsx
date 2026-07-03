@@ -1,8 +1,6 @@
-import { CalendarDate } from '@internationalized/date';
+import { type CalendarDate } from '@internationalized/date';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
-// import { cx } from 'cva';
-import { type ReactElement } from 'react';
 import {
   CalendarCell as RACCalendarCell,
   CalendarGrid as RACCalendarGrid,
@@ -65,7 +63,15 @@ export interface CalendarProps extends FlexOwnProps, RACCalendarProps<CalendarDa
 export function Calendar(props: CalendarProps) {
   const { className, ...rest } = props;
   return (
-    <Flex as={RACCalendar} direction="column" gap="md" {...rest} className={cx(styles.calendar, className)}>
+    <Flex
+      direction="column"
+      gap="md"
+      {...rest}
+      as={RACCalendar<CalendarDate>}
+      className={cx(styles.calendar, className)}
+      // selectionMode="single"
+      // visibleDuration={{ months: 3 }}
+    >
       <CalendarHeader />
       <CalendarGrid type="single" />
     </Flex>
@@ -91,7 +97,13 @@ export interface RangeCalendarProps extends FlexOwnProps, RACRangeCalendarProps<
 export function RangeCalendar(props: RangeCalendarProps) {
   const { className, ...rest } = props;
   return (
-    <Flex as={RACRangeCalendar} direction="column" gap="md" {...rest} className={cx(styles.calendar, className)}>
+    <Flex
+      direction="column"
+      gap="md"
+      {...rest}
+      as={RACRangeCalendar<CalendarDate>}
+      className={cx(styles.calendar, className)}
+    >
       <CalendarHeader />
       <CalendarGrid type="range" />
     </Flex>
