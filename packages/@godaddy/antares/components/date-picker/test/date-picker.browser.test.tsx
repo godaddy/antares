@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
-import { DatePickerBasicExample } from '../examples/basic.tsx';
+import { DatePickerDefaultExample } from '../examples/default.tsx';
 import { DatePickerControlledExample } from '../examples/controlled.tsx';
 import { DatePickerWithErrorExample } from '../examples/with-error.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
     it('opens the calendar popover when the field is pressed', async function opens() {
-      const { getByRole } = await render(<DatePickerBasicExample />);
+      const { getByRole } = await render(<DatePickerDefaultExample />);
       await userEvent.click(getByRole('button'));
       await expect.element(getByRole('grid')).toBeVisible();
     });

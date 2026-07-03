@@ -2,7 +2,7 @@
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Calendar, RangeCalendar } from '@godaddy/antares';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/calendar-playground.tsx';
-import { CalendarBasicExample } from './examples/basic.tsx';
+import { CalendarDefaultExample } from './examples/default.tsx';
 import { CalendarWithValueExample } from './examples/with-value.tsx';
 import { RangeCalendarExample } from './examples/range.tsx';
 import { CalendarMinMaxExample } from './examples/min-max.tsx';
@@ -28,7 +28,7 @@ export const Playground = {
   }
 };
 
-export const Basic = getStory(CalendarBasicExample);
+export const Default = getStory(CalendarDefaultExample);
 export const WithValue = getStory(CalendarWithValueExample);
 export const Range = getStory(RangeCalendarExample);
 export const MinMax = getStory(CalendarMinMaxExample);

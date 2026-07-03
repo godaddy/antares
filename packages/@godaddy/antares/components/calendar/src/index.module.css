@@ -1,14 +1,20 @@
 .calendar {
-  --calendar-gu: var(--ux-1sbfig8, 0.5rem);
-  --calendar-line-height: var(--ux-jw5s9j, 1.375);
-  --calendar-font-size: var(--ux-cxbe8g, 1rem);
-  --calendar-cell-width: calc(var(--calendar-gu) * 4 + var(--calendar-line-height) * var(--calendar-font-size));
+  --_calendar-gu: var(--ux-1sbfig8, 0.5rem);
+  --_calendar-line-height: var(--ux-jw5s9j, 1.375);
+  --_calendar-font-size: var(--ux-cxbe8g, 1rem);
 
-  max-width: max-content;
+  --_calendar-cell-max: calc(var(--_calendar-gu) * 4 + var(--_calendar-line-height) * var(--_calendar-font-size));
+  /* Reserved from the viewport width: popover padding plus breathing room from screen edges. */
+  --_calendar-viewport-inset: 2rem;
+  /* Fluid, capped square: a fraction of the viewport (7 columns), floored and capped. */
+  --_calendar-cell-width: clamp(2rem, (100vw - var(--_calendar-viewport-inset)) / 7, var(--_calendar-cell-max));
+
+  width: max-content;
+  max-width: 100%;
 }
 
 .yearField {
-  max-width: calc(4ch + var(--calendar-gu) * 4 + 2px);
+  max-width: calc(4ch + var(--_calendar-gu) * 4 + 2px);
 }
 
 .navHidden {
@@ -30,8 +36,8 @@
   background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, transparent));
   border-color: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
   color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
-  width: var(--calendar-cell-width);
-  height: var(--calendar-cell-width);
+  width: var(--_calendar-cell-width);
+  aspect-ratio: 1;
   cursor: pointer;
 
   &:where([data-focus-visible]) {

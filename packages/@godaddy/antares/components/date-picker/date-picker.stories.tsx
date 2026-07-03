@@ -1,8 +1,8 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { DatePicker } from '@godaddy/antares';
+import { DatePicker, DateRangePicker } from '@godaddy/antares';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/date-picker-playground.tsx';
-import { DatePickerBasicExample } from './examples/basic.tsx';
+import { DatePickerDefaultExample } from './examples/default.tsx';
 import { DatePickerControlledExample } from './examples/controlled.tsx';
 import { DateRangePickerExample } from './examples/range.tsx';
 import { DatePickerMinMaxExample } from './examples/min-max.tsx';
@@ -13,6 +13,7 @@ import { DatePickerFormatOptionsExample } from './examples/format-options.tsx';
 export default getMeta({ title: 'components/DatePicker' });
 
 export const Props = getComponentDocs(DatePicker);
+export const DateRangePickerProps = getComponentDocs(DateRangePicker);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
@@ -34,7 +35,7 @@ export const Playground = {
   }
 };
 
-export const Basic = getStory(DatePickerBasicExample);
+export const Default = getStory(DatePickerDefaultExample);
 export const Controlled = getStory(DatePickerControlledExample);
 export const Range = getStory(DateRangePickerExample);
 export const MinMax = getStory(DatePickerMinMaxExample);

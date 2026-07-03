@@ -110,6 +110,11 @@ export function preloadTestIcons() {
         />
       </svg>
     ),
+    'chevron-down': (
+      <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.53 8.47c-.139-.14-.333-.22-.53-.22s-.391.08-.53.22L12 13.94 6.53 8.47a.75.75 0 0 0-1.06 1.06l6 6c.139.14.333.22.53.22s.391-.08.53-.22l6-6c.14-.139.22-.333.22-.53a.757.757 0 0 0-.22-.53z" />
+      </svg>
+    ),
     'bulleted-list': (
       <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <g fill="currentColor">

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { CalendarBasicExample } from '../examples/basic.tsx';
+import { CalendarDefaultExample } from '../examples/default.tsx';
 import { CalendarWithValueExample } from '../examples/with-value.tsx';
 import { RangeCalendarExample } from '../examples/range.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Calendar', function calendar() {
-    it('renders basic example', function basic() {
-      const html = renderToString(<CalendarBasicExample />);
+    it('renders default example', function defaultExample() {
+      const html = renderToString(<CalendarDefaultExample />);
       expect(html).toMatchSnapshot();
     });
 

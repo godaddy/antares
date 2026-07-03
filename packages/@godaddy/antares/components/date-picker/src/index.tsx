@@ -1,7 +1,6 @@
 import { useContext, useMemo } from 'react';
 import { DateFormatter, getLocalTimeZone, type CalendarDate } from '@internationalized/date';
 import {
-  Button as RACButton,
   DatePicker as RACDatePicker,
   type DatePickerProps as RACDatePickerProps,
   DatePickerStateContext,
@@ -16,10 +15,10 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldTrigger,
   type FieldOwnProps,
   type FieldSize
 } from '#components/field';
-import { Flex } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
 import { Calendar, RangeCalendar } from '#components/calendar';
@@ -72,17 +71,10 @@ export function DatePicker(props: DatePickerProps) {
     <Field as={RACDatePicker} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <Flex
-          as={RACButton}
-          flex={1}
-          alignItems="center"
-          justifyContent="space-between"
-          gap="sm"
-          className={styles.trigger}
-        >
-          <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
+        <FieldTrigger variant="select">
           <Icon icon="calendar" />
-        </Flex>
+          <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
+        </FieldTrigger>
       </FieldGroup>
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
@@ -136,17 +128,10 @@ export function DateRangePicker(props: DateRangePickerProps) {
     <Field as={RACDateRangePicker} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <Flex
-          as={RACButton}
-          flex={1}
-          alignItems="center"
-          justifyContent="space-between"
-          gap="sm"
-          className={styles.trigger}
-        >
-          <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
+        <FieldTrigger variant="select">
           <Icon icon="calendar" />
-        </Flex>
+          <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
+        </FieldTrigger>
       </FieldGroup>
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>

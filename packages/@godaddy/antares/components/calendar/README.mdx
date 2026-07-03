@@ -6,12 +6,12 @@ description: Accessible calendar grids for selecting a single date (Calendar) or
 import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './calendar.stories.tsx';
 
-import BasicCode from './examples/basic.tsx?raw';
-import WithValueCode from './examples/with-value.tsx?raw';
-import RangeCode from './examples/range.tsx?raw';
-import MinMaxCode from './examples/min-max.tsx?raw';
-import UnavailableCode from './examples/unavailable.tsx?raw';
-import DisabledCode from './examples/disabled.tsx?raw';
+import SourceDefault from './examples/default.tsx?raw';
+import SourceWithValue from './examples/with-value.tsx?raw';
+import SourceRange from './examples/range.tsx?raw';
+import SourceMinMax from './examples/min-max.tsx?raw';
+import SourceUnavailable from './examples/unavailable.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -57,42 +57,42 @@ The `RangeCalendar` component accepts the following props:
 
 A single-date calendar.
 
-<Source language="tsx" code={BasicCode} />
-<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
 
 ### With value
 
 A calendar with a pre-selected date.
 
-<Source language="tsx" code={WithValueCode} />
+<Source language="tsx" code={SourceWithValue} />
 <Story of={Stories.WithValue} inline />
 
 ### Range
 
 Selecting a start and end date.
 
-<Source language="tsx" code={RangeCode} />
+<Source language="tsx" code={SourceRange} />
 <Story of={Stories.Range} inline />
 
 ### Min / Max
 
 Bounding selectable dates.
 
-<Source language="tsx" code={MinMaxCode} />
+<Source language="tsx" code={SourceMinMax} />
 <Story of={Stories.MinMax} inline />
 
 ### Unavailable
 
 Disabling scattered individual dates with `isDateUnavailable`.
 
-<Source language="tsx" code={UnavailableCode} />
+<Source language="tsx" code={SourceUnavailable} />
 <Story of={Stories.Unavailable} inline />
 
 ### Disabled
 
 A fully disabled calendar.
 
-<Source language="tsx" code={DisabledCode} />
+<Source language="tsx" code={SourceDisabled} />
 <Story of={Stories.Disabled} inline />
 
 ## Accessibility

@@ -208,9 +208,9 @@ npm install @godaddy/antares
 
 A minimal button with a text label.
 
-import DefaultCode from './examples/default?raw';
+import SourceDefault from './examples/default?raw';
 
-<CodeBlock code={DefaultCode} />
+<CodeBlock code={SourceDefault} />
 ```
 
 ## Accessibility

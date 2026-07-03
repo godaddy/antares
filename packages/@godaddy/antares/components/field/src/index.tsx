@@ -193,7 +193,6 @@ export const FieldTrigger = forwardRef<HTMLButtonElement, FieldTriggerProps>(fun
   return (
     <Flex
       alignItems="center"
-      justifyContent="space-between"
       gap="sm"
       flex={1}
       {...rest}
