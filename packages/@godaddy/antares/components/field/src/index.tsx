@@ -171,14 +171,41 @@ export const FieldButton = forwardRef<HTMLButtonElement, FieldButtonProps>(funct
   return <Flex alignItems="center" {...rest} as={RACButton} ref={ref} className={cx(styles.fieldButton, className)} />;
 });
 
-export interface FieldSelectFragmentProps extends RACButtonProps, FlexOwnProps {
+export interface FieldTriggerProps extends RACButtonProps, FlexOwnProps {
   /**
-   * Variant of the fragment. `select` suited for compositing with a Select.
-   * `control` suited for standalone controls like NumberField steppers.
+   * Visual flavor. `select` is transparent and input-like (standalone Select, DatePicker);
+   * `control` is filled, for a control segment inside a shared group.
    * @default 'control'
    */
   variant?: 'control' | 'select';
 }
+
+/**
+ * Value-display trigger button inside a `FieldGroup`: arbitrary children (a value area plus a
+ * trailing icon) laid out full-width. Participates in `FieldGroup` sizing and corner rounding.
+ * Used by `FieldSelectFragment` (Select) and by DatePicker.
+ *
+ * @param props - {@link FieldTriggerProps}
+ */
+export const FieldTrigger = forwardRef<HTMLButtonElement, FieldTriggerProps>(function FieldTrigger(props, ref) {
+  const { className, variant = 'control', ...rest } = props;
+
+  return (
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      gap="sm"
+      flex={1}
+      {...rest}
+      as={RACButton}
+      data-variant={variant}
+      ref={ref}
+      className={cx(styles.fieldTrigger, className)}
+    />
+  );
+});
+
+export interface FieldSelectFragmentProps extends FieldTriggerProps {}
 
 /**
  * Trigger button for a `Select`: shows the current value plus a chevron. Renders only the
@@ -190,21 +217,13 @@ export interface FieldSelectFragmentProps extends RACButtonProps, FlexOwnProps {
  * @param props - {@link FieldSelectFragmentProps}
  */
 export function FieldSelectFragment(props: FieldSelectFragmentProps) {
-  const { className, variant = 'control', ...rest } = props;
+  const { className, ...rest } = props;
+
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      gap="sm"
-      flex={1}
-      {...rest}
-      as={RACButton}
-      data-variant={variant}
-      className={cx(styles.fieldSelectFragment, className)}
-    >
+    <FieldTrigger {...rest} className={cx(styles.fieldSelectFragment, className)}>
       <Box as={RACSelectValue} className={styles.fieldSelectFragmentValue} flex={1} />
       <Icon icon="chevron-down" />
-    </Flex>
+    </FieldTrigger>
   );
 }
 
