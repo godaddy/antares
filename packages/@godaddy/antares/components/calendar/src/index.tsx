@@ -1,5 +1,5 @@
-import { type CalendarDate, type DateDuration } from '@internationalized/date';
-import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { type CalendarDate } from '@internationalized/date';
+import { Flex, type FlexOwnProps, type FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import {
   CalendarCell as RACCalendarCell,
@@ -13,6 +13,80 @@ import {
 import { MonthHeading, NavButton } from './CalendarHeader.tsx';
 import styles from './index.module.css';
 import { cx } from 'cva';
+
+export interface CalendarProps extends FlexOwnProps, Omit<RACCalendarProps<CalendarDate>, 'className'> {
+  /** Additional class names merged onto the calendar root. */
+  className?: string;
+
+  /** The number of pages to render. */
+  pageCount?: number;
+}
+
+/**
+ * Standalone single-date calendar grid built on React Aria's Calendar. Date-only (`CalendarDate`).
+ * Renders one month by default; pass `pageCount={n}` to show more.
+ * Used on its own or inside `DatePicker`'s popover.
+ *
+ * @param props - {@link CalendarProps} The props for the calendar.
+ *
+ * @example
+ * ```tsx
+ * <Calendar aria-label="Event date" defaultValue={parseDate('2024-03-15')} />
+ * ```
+ */
+export function Calendar(props: CalendarProps) {
+  const { className, pageCount = 1, ...rest } = props;
+
+  return (
+    <Flex
+      direction="column"
+      gap="md"
+      {...rest}
+      visibleDuration={{ months: pageCount }}
+      as={RACCalendar<CalendarDate>}
+      className={cx(styles.calendar, className)}
+    >
+      <CalendarBody type="single" pageCount={pageCount} />
+    </Flex>
+  );
+}
+
+export interface RangeCalendarProps
+  extends FlexOwnProps,
+    Pick<CalendarProps, 'pageCount'>,
+    Omit<RACRangeCalendarProps<CalendarDate>, 'className'> {
+  /** Additional class names merged onto the calendar root. */
+  className?: string;
+}
+
+/**
+ * Standalone range calendar grid built on React Aria's RangeCalendar. Date-only (`CalendarDate`).
+ * Shows two months by default; pass `pageCount={n}` to override.
+ * Used on its own or inside `DateRangePicker`'s popover.
+ *
+ * @param props - {@link RangeCalendarProps} The props for the range calendar.
+ *
+ * @example
+ * ```tsx
+ * <RangeCalendar aria-label="Trip dates" />
+ * ```
+ */
+export function RangeCalendar(props: RangeCalendarProps) {
+  const { className, pageCount = 2, ...rest } = props;
+
+  return (
+    <Flex
+      direction="column"
+      gap="md"
+      {...rest}
+      visibleDuration={{ months: pageCount }}
+      as={RACRangeCalendar<CalendarDate>}
+      className={cx(styles.calendar, className)}
+    >
+      <CalendarBody type="range" pageCount={pageCount} />
+    </Flex>
+  );
+}
 
 interface CalendarGridProps extends RACCalendarGridProps {
   /** The type of the calendar grid. */
@@ -44,108 +118,37 @@ function CalendarGrid(props: CalendarGridProps) {
   );
 }
 
-/** Number of month grids to render for a given visible duration (at least one). */
-function getMonthCount(visibleDuration: DateDuration | undefined, fallback: number): number {
-  return Math.max(1, visibleDuration?.months ?? fallback);
-}
+interface CalendarBodyProps extends Pick<CalendarGridProps, 'type'>, Pick<CalendarProps, 'pageCount'>, FlexProps {}
 
 /**
- * Shared calendar body: a row of month columns — each an offset-aware {@link MonthHeading} stacked
- * over its {@link CalendarGrid} — flanked by a shared previous/next {@link NavButton} pair.
- * `alignItems="start"` keeps the arrows level with the headings; each month column stretches its
- * heading to the grid's width, so every heading sits directly above its own grid.
- *
- * @param props.type - Visual style forwarded to each grid's cells.
- * @param props.months - Number of month grids to render.
+ * Renders the calendar body. with previous/next arrows and the amount of months to render.
  */
-function CalendarBody(props: { type: 'single' | 'range'; months: number }) {
-  const { type, months } = props;
+function CalendarBody(props: CalendarBodyProps) {
+  const { type, pageCount = 1, ...rest } = props;
 
   return (
-    <Flex direction="row" gap="sm" alignItems="start">
-      <NavButton direction="previous" />
-      <Flex direction="row" gap="lg">
-        {Array.from({ length: months }, function renderMonth(_, offset) {
-          return (
-            <Flex key={offset} direction="column" gap="md">
+    <Flex direction="row" gap="md" alignItems="stretch" wrap="wrap" {...rest}>
+      {Array.from({ length: pageCount }).flatMap(function renderMonth(_, offset) {
+        const showPrevious = offset === 0;
+        const showNext = offset === pageCount - 1;
+        const monthCard = (
+          <Flex key={`month-${offset}`} direction="column" gap="md">
+            <Flex as="header" direction="row" justifyContent="space-between" alignItems="center" gap="sm">
+              <NavButton direction="previous" hidden={!showPrevious} />
               <MonthHeading offset={offset} />
-              <CalendarGrid type={type} offset={{ months: offset }} />
+              <NavButton direction="next" hidden={!showNext} />
             </Flex>
-          );
-        })}
-      </Flex>
-      <NavButton direction="next" />
-    </Flex>
-  );
-}
+            <CalendarGrid type={type} offset={{ months: offset }} />
+          </Flex>
+        );
 
-export interface CalendarProps extends FlexOwnProps, RACCalendarProps<CalendarDate> {
-  /** Additional class names merged onto the calendar root. */
-  className?: string;
-}
-
-/**
- * Standalone single-date calendar grid built on React Aria's Calendar. Date-only (`CalendarDate`).
- * Renders one month by default; pass `visibleDuration={{ months: n }}` to show more.
- * Used on its own or inside `DatePicker`'s popover.
- *
- * @param props - {@link CalendarProps} The props for the calendar.
- *
- * @example
- * ```tsx
- * <Calendar aria-label="Event date" defaultValue={parseDate('2024-03-15')} />
- * ```
- */
-export function Calendar(props: CalendarProps) {
-  const { className, visibleDuration, ...rest } = props;
-  const months = getMonthCount(visibleDuration, 1);
-
-  return (
-    <Flex
-      direction="column"
-      gap="md"
-      {...rest}
-      visibleDuration={visibleDuration}
-      as={RACCalendar<CalendarDate>}
-      className={cx(styles.calendar, className)}
-    >
-      <CalendarBody type="single" months={months} />
-    </Flex>
-  );
-}
-
-export interface RangeCalendarProps extends FlexOwnProps, RACRangeCalendarProps<CalendarDate> {
-  /** Additional class names merged onto the calendar root. */
-  className?: string;
-}
-
-/**
- * Standalone range calendar grid built on React Aria's RangeCalendar. Date-only (`CalendarDate`).
- * Shows two months by default; pass `visibleDuration={{ months: n }}` to override.
- * Used on its own or inside `DateRangePicker`'s popover.
- *
- * @param props - {@link RangeCalendarProps} The props for the range calendar.
- *
- * @example
- * ```tsx
- * <RangeCalendar aria-label="Trip dates" />
- * ```
- */
-export function RangeCalendar(props: RangeCalendarProps) {
-  const { className, visibleDuration, ...rest } = props;
-  const resolvedDuration = visibleDuration ?? { months: 2 };
-  const months = getMonthCount(resolvedDuration, 2);
-
-  return (
-    <Flex
-      direction="column"
-      gap="md"
-      {...rest}
-      visibleDuration={resolvedDuration}
-      as={RACRangeCalendar<CalendarDate>}
-      className={cx(styles.calendar, className)}
-    >
-      <CalendarBody type="range" months={months} />
+        return offset === 0
+          ? [monthCard]
+          : [
+              <Box key={`divider-${offset}`} aria-hidden="true" className={styles.monthDivider} flexShrink={0} />,
+              monthCard
+            ];
+      })}
     </Flex>
   );
 }

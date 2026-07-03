@@ -11,6 +11,15 @@
   max-width: calc(4ch + var(--calendar-gu) * 4 + 2px);
 }
 
+.navHidden {
+  visibility: hidden;
+}
+
+.monthDivider {
+  width: 1px;
+  background: currentColor;
+}
+
 .grid {
   border-collapse: collapse;
 }
@@ -44,8 +53,8 @@
   }
 
   &:where([data-selected]:not([data-type="range"])),
-  &:where([data-selection-start]),
-  &:where([data-selection-end]) {
+  &:where([data-selection-start]:not([data-disabled])),
+  &:where([data-selection-end]:not([data-disabled])) {
     background: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #00a4a6));
     border-color: var(--color-action-border-tertiary-pressed, var(--ux-1xliuhi, #00a4a6));
     color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #fff));

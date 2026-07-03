@@ -14,27 +14,26 @@ import {
 import styles from './index.module.css';
 
 /**
- * Previous/next navigation arrow. Uses RAC's `slot` so it drives the calendar through context
- * regardless of where it sits in the tree — a single pair can flank multiple month grids.
- *
- * @param props.direction - Which navigation slot this button fills.
+ * Previous/next navigation arrow (RAC `slot`). `hidden` renders an inert, space-retaining
+ * placeholder so inward-facing arrows in a multi-month layout keep the controls centered.
  */
-export function NavButton(props: { direction: 'previous' | 'next' }) {
-  const { direction } = props;
+export function NavButton(props: { direction: 'previous' | 'next'; hidden?: boolean }) {
+  const { direction, hidden = false } = props;
+  // Slot is always set (RAC requires it); navHidden's visibility:hidden makes the placeholder inert.
   return (
-    <Button slot={direction} aria-label={direction === 'previous' ? 'Previous' : 'Next'}>
+    <Button
+      slot={direction}
+      aria-label={direction === 'previous' ? 'Previous' : 'Next'}
+      className={hidden ? styles.navHidden : undefined}
+    >
       <Icon icon={direction === 'previous' ? 'chevron-left' : 'chevron-right'} />
     </Button>
   );
 }
 
 /**
- * Editable month/year controls for a single visible month. `offset` is the number of months after
- * the calendar's focused date, so a multi-month calendar renders one heading per grid. Reads
- * whichever calendar state context is present (Calendar or RangeCalendar) and keeps `focusedDate`
- * anchored to the first visible month by subtracting `offset` on every change.
- *
- * @param props.offset - Months after the focused date that this heading represents.
+ * Editable month/year controls for the month `offset` months after the focused date. Subtracting
+ * `offset` on change keeps `focusedDate` anchored to the first visible month.
  */
 export function MonthHeading(props: { offset: number }) {
   const { offset } = props;
@@ -83,7 +82,7 @@ export function MonthHeading(props: { offset: number }) {
   }
 
   return (
-    <Flex as="header" direction="row" gap="sm" justifyContent="center">
+    <Flex direction="row" gap="sm" alignItems="center">
       <Select aria-label="Month" value={String(displayDate.month)} onChange={handleMonthChange}>
         {monthNames.map(function mapMonthNames(name, index) {
           return (
