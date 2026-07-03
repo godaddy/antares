@@ -14,84 +14,93 @@ import {
 import styles from './index.module.css';
 
 /**
- * Month `Select` + year `NumberField` header flanked by prev/next arrows. Reads whichever calendar
- * state context is present (Calendar or RangeCalendar) and moves the visible month via
- * `setFocusedDate`. Year is a typeable numeric input; month is a dropdown.
+ * Previous/next navigation arrow. Uses RAC's `slot` so it drives the calendar through context
+ * regardless of where it sits in the tree — a single pair can flank multiple month grids.
+ *
+ * @param props.direction - Which navigation slot this button fills.
  */
-export function CalendarHeader() {
+export function NavButton(props: { direction: 'previous' | 'next' }) {
+  const { direction } = props;
+  return (
+    <Button slot={direction} aria-label={direction === 'previous' ? 'Previous' : 'Next'}>
+      <Icon icon={direction === 'previous' ? 'chevron-left' : 'chevron-right'} />
+    </Button>
+  );
+}
+
+/**
+ * Editable month/year controls for a single visible month. `offset` is the number of months after
+ * the calendar's focused date, so a multi-month calendar renders one heading per grid. Reads
+ * whichever calendar state context is present (Calendar or RangeCalendar) and keeps `focusedDate`
+ * anchored to the first visible month by subtracting `offset` on every change.
+ *
+ * @param props.offset - Months after the focused date that this heading represents.
+ */
+export function MonthHeading(props: { offset: number }) {
+  const { offset } = props;
   const calendarState = useContext(RACCalendarStateContext);
   const rangeState = useContext(RACRangeCalendarStateContext);
   const state = calendarState ?? rangeState;
   const { locale } = useLocale();
-  const focusedDate = state?.focusedDate ?? null;
+  const displayDate = state?.focusedDate?.add({ months: offset }) ?? null;
 
-  // Localized month names for the dropdown; recompute only when locale or visible year changes.
+  // Localized month names for the dropdown; recompute only when locale or the shown year changes.
   const monthNames = useMemo(
     function computeMonthNames() {
       const formatter = new DateFormatter(locale, { month: 'long' });
-      const year = focusedDate?.year ?? 2024;
+      const year = displayDate?.year ?? 2024;
       return Array.from({ length: 12 }, (_, index) =>
         formatter.format(new CalendarDate(year, index + 1, 1).toDate(getLocalTimeZone()))
       );
     },
-    [locale, focusedDate?.year]
+    [locale, displayDate?.year]
   );
 
   const handleMonthChange = useCallback(
     function handleMonthChange(key: RACKey | null) {
-      if (!state || !focusedDate) {
+      if (!state || !displayDate) {
         return;
       }
 
-      state.setFocusedDate(focusedDate.set({ month: Number(key) }));
+      state.setFocusedDate(displayDate.set({ month: Number(key) }).subtract({ months: offset }));
     },
-    [state, focusedDate]
+    [state, displayDate, offset]
   );
 
   const handleYearChange = useCallback(
     function handleYearChange(year: number) {
-      if (!state || !focusedDate) {
+      if (!state || !displayDate || Number.isNaN(year)) {
         return;
       }
 
-      state.setFocusedDate(focusedDate.set({ year }));
+      state.setFocusedDate(displayDate.set({ year }).subtract({ months: offset }));
     },
-    [state, focusedDate]
+    [state, displayDate, offset]
   );
 
-  if (!state || !focusedDate) {
+  if (!state || !displayDate) {
     return null;
   }
 
   return (
-    <Flex as="header" direction="row" justifyContent="space-between" gap="sm">
-      <Button slot="previous" aria-label="Previous">
-        <Icon icon="chevron-left" />
-      </Button>
-
-      <Flex direction="row" gap="sm">
-        <Select aria-label="Month" value={String(focusedDate.month)} onChange={handleMonthChange}>
-          {monthNames.map(function mapMonthNames(name, index) {
-            return (
-              <SelectItem key={index + 1} id={String(index + 1)}>
-                {name}
-              </SelectItem>
-            );
-          })}
-        </Select>
-        <NumberField
-          aria-label="Year"
-          hideStepper
-          formatOptions={{ useGrouping: false }}
-          value={focusedDate.year}
-          onChange={handleYearChange}
-          className={styles.yearField}
-        />
-      </Flex>
-
-      <Button slot="next" aria-label="Next">
-        <Icon icon="chevron-right" />
-      </Button>
+    <Flex as="header" direction="row" gap="sm" justifyContent="center">
+      <Select aria-label="Month" value={String(displayDate.month)} onChange={handleMonthChange}>
+        {monthNames.map(function mapMonthNames(name, index) {
+          return (
+            <SelectItem key={index + 1} id={String(index + 1)}>
+              {name}
+            </SelectItem>
+          );
+        })}
+      </Select>
+      <NumberField
+        aria-label="Year"
+        hideStepper
+        formatOptions={{ useGrouping: false }}
+        value={displayDate.year}
+        onChange={handleYearChange}
+        className={styles.yearField}
+      />
     </Flex>
   );
 }

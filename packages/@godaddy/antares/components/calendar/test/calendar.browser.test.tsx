@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { CalendarWithValueExample } from '../examples/with-value.tsx';
+import { RangeCalendarExample } from '../examples/range.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Calendar', function calendar() {
@@ -25,6 +26,34 @@ describe('@godaddy/antares', function antares() {
       await userEvent.fill(year, '2030');
       await userEvent.keyboard('{Enter}');
       await expect.element(year).toHaveValue('2030');
+    });
+
+    it('range calendar shows two months by default', async function twoMonths() {
+      const screen = await render(<RangeCalendarExample />);
+      const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
+      expect(monthSelects.length).toBe(2);
+      await expect.element(monthSelects[0]).toHaveTextContent('March');
+      await expect.element(monthSelects[1]).toHaveTextContent('April');
+    });
+
+    it('range calendar pages by the full visible range', async function navRange() {
+      const screen = await render(<RangeCalendarExample />);
+      // RAC also mounts a client-only hidden "Next" button; the real, focusable one is first.
+      const [nextButton] = screen.getByRole('button', { name: 'Next' }).all();
+      await userEvent.click(nextButton);
+      const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
+      await expect.element(monthSelects[0]).toHaveTextContent('May');
+      await expect.element(monthSelects[1]).toHaveTextContent('June');
+    });
+
+    it('editing the second month keeps the two months contiguous', async function anchor() {
+      const screen = await render(<RangeCalendarExample />);
+      const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
+      await userEvent.click(monthSelects[1]);
+      await userEvent.click(screen.getByRole('option', { name: 'December' }));
+      const updated = screen.getByRole('button', { name: 'Month' }).all();
+      await expect.element(updated[0]).toHaveTextContent('November');
+      await expect.element(updated[1]).toHaveTextContent('December');
     });
   });
 });
