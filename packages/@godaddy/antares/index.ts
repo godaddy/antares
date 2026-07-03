@@ -28,6 +28,7 @@ export * from './exports/Drawer';
 export * from './exports/InlineDrawer';
 export * from './exports/Modal';
 export * from './exports/ProgressBar';
+export * from './exports/ProgressSteps';
 export * from './exports/ToggleButton';
 export * from './exports/Alert';
 export * from './exports/Tag';
