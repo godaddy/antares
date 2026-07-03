@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Calendar } from '@godaddy/antares';
+import { Calendar, RangeCalendar } from '@godaddy/antares';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/calendar-playground.tsx';
 import { CalendarBasicExample } from './examples/basic.tsx';
 import { CalendarWithValueExample } from './examples/with-value.tsx';
@@ -12,6 +12,7 @@ import { CalendarDisabledExample } from './examples/disabled.tsx';
 export default getMeta({ title: 'components/Calendar' });
 
 export const Props = getComponentDocs(Calendar);
+export const RangeCalendarProps = getComponentDocs(RangeCalendar);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,

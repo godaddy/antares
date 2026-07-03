@@ -7,8 +7,11 @@ import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './calendar.stories.tsx';
 
 import BasicCode from './examples/basic.tsx?raw';
+import WithValueCode from './examples/with-value.tsx?raw';
 import RangeCode from './examples/range.tsx?raw';
 import MinMaxCode from './examples/min-max.tsx?raw';
+import UnavailableCode from './examples/unavailable.tsx?raw';
+import DisabledCode from './examples/disabled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -28,7 +31,7 @@ npm install @godaddy/antares
 
 ## Working with dates
 
-`Calendar` values are `CalendarDate` objects from `@internationalized/date`, which ships transitively with `@godaddy/antares` — import it directly:
+`Calendar` values are `CalendarDate` objects from `@internationalized/date`, which is included transitively with `@godaddy/antares`. Add `@internationalized/date` to your `package.json` and use it directly:
 
 ```tsx
 import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
@@ -38,7 +41,15 @@ import { Calendar } from '@godaddy/antares';
 <Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
 ```
 
-Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`.
+## Props
+
+The `Calendar` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `RangeCalendar` component accepts the following props:
+
+<ArgTypes of={Stories.RangeCalendarProps} />
 
 ## Examples
 
@@ -48,6 +59,13 @@ A single-date calendar.
 
 <Source language="tsx" code={BasicCode} />
 <Story of={Stories.Basic} inline />
+
+### With value
+
+A calendar with a pre-selected date.
+
+<Source language="tsx" code={WithValueCode} />
+<Story of={Stories.WithValue} inline />
 
 ### Range
 
@@ -62,6 +80,20 @@ Bounding selectable dates.
 
 <Source language="tsx" code={MinMaxCode} />
 <Story of={Stories.MinMax} inline />
+
+### Unavailable
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Source language="tsx" code={UnavailableCode} />
+<Story of={Stories.Unavailable} inline />
+
+### Disabled
+
+A fully disabled calendar.
+
+<Source language="tsx" code={DisabledCode} />
+<Story of={Stories.Disabled} inline />
 
 ## Accessibility
 

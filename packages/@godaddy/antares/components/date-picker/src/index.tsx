@@ -1,4 +1,4 @@
-import { type ReactElement, useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { DateFormatter, getLocalTimeZone, type CalendarDate } from '@internationalized/date';
 import {
   Button as RACButton,
@@ -25,26 +25,7 @@ import { Popover } from '#components/popover';
 import { Calendar, RangeCalendar } from '#components/calendar';
 import styles from './index.module.css';
 
-const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { dateStyle: 'long' };
-
-/** Reads the picker value from context and renders it as a formatted label, or the placeholder. */
-function DatePickerValueLabel({
-  formatOptions,
-  placeholder
-}: {
-  formatOptions: Intl.DateTimeFormatOptions;
-  placeholder: string;
-}): ReactElement {
-  const state = useContext(DatePickerStateContext);
-  const { locale } = useLocale();
-  const formatter = useMemo(() => new DateFormatter(locale, formatOptions), [locale, formatOptions]);
-  const value = state?.value;
-
-  if (!value) {
-    return <span className={styles.placeholder}>{placeholder}</span>;
-  }
-  return <span className={styles.value}>{formatter.format(value.toDate(getLocalTimeZone()))}</span>;
-}
+const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 
 export interface DatePickerProps
   extends Omit<RACDatePickerProps<CalendarDate>, 'children' | 'className' | 'size'>,
@@ -75,7 +56,7 @@ export interface DatePickerProps
  * <DatePicker label="Booking" formatOptions={{ dateStyle: 'medium' }} />
  * ```
  */
-export function DatePicker(props: DatePickerProps): ReactElement {
+export function DatePicker(props: DatePickerProps) {
   const {
     label,
     description,
@@ -99,39 +80,16 @@ export function DatePicker(props: DatePickerProps): ReactElement {
           gap="sm"
           className={styles.trigger}
         >
-          <DatePickerValueLabel formatOptions={formatOptions} placeholder={placeholder} />
+          <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
           <Icon icon="calendar" />
         </Flex>
       </FieldGroup>
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
-      <Popover hideArrow contentProps={{ inlinePadding: '0', blockPadding: '0' }}>
+      <Popover hideArrow>
         <Calendar />
       </Popover>
     </Field>
-  );
-}
-
-/** Reads the range value from context and renders `start – end`, or the placeholder. */
-function DateRangePickerValueLabel({
-  formatOptions,
-  placeholder
-}: {
-  formatOptions: Intl.DateTimeFormatOptions;
-  placeholder: string;
-}): ReactElement {
-  const state = useContext(DateRangePickerStateContext);
-  const { locale } = useLocale();
-  const formatter = useMemo(() => new DateFormatter(locale, formatOptions), [locale, formatOptions]);
-  const value = state?.value;
-
-  if (!value?.start || !value?.end) {
-    return <span className={styles.placeholder}>{placeholder}</span>;
-  }
-  return (
-    <span className={styles.value}>
-      {formatter.format(value.start.toDate(getLocalTimeZone()))} – {formatter.format(value.end.toDate(getLocalTimeZone()))}
-    </span>
   );
 }
 
@@ -144,7 +102,7 @@ export interface DateRangePickerProps
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /** Intl.DateTimeFormat options controlling how each date renders in the trigger. @default { dateStyle: 'long' } */
+  /** Intl.DateTimeFormat options controlling how each date renders in the trigger. @default DEFAULT_FORMAT */
   formatOptions?: Intl.DateTimeFormatOptions;
 
   /** Text shown in the trigger when no range is selected. @default 'Select dates' */
@@ -162,7 +120,7 @@ export interface DateRangePickerProps
  * <DateRangePicker label="Trip dates" />
  * ```
  */
-export function DateRangePicker(props: DateRangePickerProps): ReactElement {
+export function DateRangePicker(props: DateRangePickerProps) {
   const {
     label,
     description,
@@ -186,15 +144,74 @@ export function DateRangePicker(props: DateRangePickerProps): ReactElement {
           gap="sm"
           className={styles.trigger}
         >
-          <DateRangePickerValueLabel formatOptions={formatOptions} placeholder={placeholder} />
+          <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
           <Icon icon="calendar" />
         </Flex>
       </FieldGroup>
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
-      <Popover hideArrow contentProps={{ inlinePadding: '0', blockPadding: '0' }}>
+      <Popover hideArrow>
         <RangeCalendar />
       </Popover>
     </Field>
+  );
+}
+
+interface DatePickerValueProps {
+  /** Intl.DateTimeFormat options controlling how the selected date renders in the trigger. */
+  formatOptions: Intl.DateTimeFormatOptions;
+
+  /** Text shown in the trigger when no date is selected. */
+  placeholder: string;
+}
+
+/** Reads the picker value from context and renders it as a formatted label, or the placeholder. */
+function DatePickerValue(props: DatePickerValueProps) {
+  const { formatOptions, placeholder } = props;
+  const state = useContext(DatePickerStateContext);
+  const { locale } = useLocale();
+  const value = state?.value;
+
+  const formatter = useMemo(
+    function getFormatter() {
+      return new DateFormatter(locale, formatOptions);
+    },
+    [locale, formatOptions]
+  );
+
+  if (!value) {
+    return <span className={styles.placeholder}>{placeholder}</span>;
+  }
+
+  return <span>{formatter.format(value.toDate(getLocalTimeZone()))}</span>;
+}
+
+interface DateRangePickerValueProps {
+  /** Intl.DateTimeFormat options controlling how each date renders in the trigger. */
+  formatOptions: Intl.DateTimeFormatOptions;
+
+  /** Text shown in the trigger when no range is selected. */
+  placeholder: string;
+}
+
+/** Reads the range value from context and renders `start – end`, or the placeholder. */
+function DateRangePickerValue(props: DateRangePickerValueProps) {
+  const { formatOptions, placeholder } = props;
+  const state = useContext(DateRangePickerStateContext);
+  const { locale } = useLocale();
+  const formatter = useMemo(() => new DateFormatter(locale, formatOptions), [locale, formatOptions]);
+  const value = state?.value;
+
+  if (!value?.start || !value?.end) {
+    return <span className={styles.placeholder}>{placeholder}</span>;
+  }
+
+  const formattedStart = formatter.format(value.start.toDate(getLocalTimeZone()));
+  const formattedEnd = formatter.format(value.end.toDate(getLocalTimeZone()));
+
+  return (
+    <span>
+      {formattedStart} - {formattedEnd}
+    </span>
   );
 }

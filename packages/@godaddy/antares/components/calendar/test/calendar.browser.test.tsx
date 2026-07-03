@@ -55,5 +55,15 @@ describe('@godaddy/antares', function antares() {
       await expect.element(updated[0]).toHaveTextContent('November');
       await expect.element(updated[1]).toHaveTextContent('December');
     });
+
+    it('keeps month headings fixed when focus moves into the second month', async function headingsTrackVisibleRange() {
+      const screen = await render(<RangeCalendarExample />);
+      // Selecting a day in the second (April) grid moves the focused date into April, but the
+      // visible range — and therefore both headings — should stay March / April.
+      await userEvent.click(screen.getByRole('button', { name: /April 20, 2024/ }));
+      const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
+      await expect.element(monthSelects[0]).toHaveTextContent('March');
+      await expect.element(monthSelects[1]).toHaveTextContent('April');
+    });
   });
 });

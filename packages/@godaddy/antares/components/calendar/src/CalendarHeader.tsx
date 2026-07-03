@@ -32,8 +32,8 @@ export function NavButton(props: { direction: 'previous' | 'next'; hidden?: bool
 }
 
 /**
- * Editable month/year controls for the month `offset` months after the focused date. Subtracting
- * `offset` on change keeps `focusedDate` anchored to the first visible month.
+ * Editable month/year controls for the month `offset` months into the visible range. Subtracting
+ * `offset` on change keeps the edit anchored to the first visible month.
  */
 export function MonthHeading(props: { offset: number }) {
   const { offset } = props;
@@ -41,7 +41,7 @@ export function MonthHeading(props: { offset: number }) {
   const rangeState = useContext(RACRangeCalendarStateContext);
   const state = calendarState ?? rangeState;
   const { locale } = useLocale();
-  const displayDate = state?.focusedDate?.add({ months: offset }) ?? null;
+  const displayDate = state?.visibleRange.start.add({ months: offset }) ?? null;
 
   // Localized month names for the dropdown; recompute only when locale or the shown year changes.
   const monthNames = useMemo(

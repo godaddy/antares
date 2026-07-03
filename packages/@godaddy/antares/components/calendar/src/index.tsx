@@ -18,7 +18,7 @@ export interface CalendarProps extends FlexOwnProps, Omit<RACCalendarProps<Calen
   /** Additional class names merged onto the calendar root. */
   className?: string;
 
-  /** The number of pages to render. */
+  /** Number of month grids to display. @default 1 (2 for `RangeCalendar`) */
   pageCount?: number;
 }
 
