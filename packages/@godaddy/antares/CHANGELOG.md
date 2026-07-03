@@ -1,5 +1,24 @@
 # @godaddy/antares
 
+## 0.4.0
+
+### Minor Changes
+
+- feat: add CircularProgress component ([#230](https://github.com/godaddy/bento/pull/230) by @rmojica-godaddy)
+
+### Patch Changes
+
+- fix(antares): Adds isolation to segmented-controller ([#245](https://github.com/godaddy/bento/pull/245) by @egaitan-godaddy)
+- fix(gauge-chart): align sublabel and range label typography to design spec
+
+  - Switch sublabel and range label font-size from fixed token to CQI units so they scale proportionally with the container
+  - Isolate range label typography tokens (font-weight, line-height) from sublabel tokens
+  - Add overflow: hidden to range labels to clip long values at 4ch
+  - Fix explicit grid placement for min/max range labels to avoid auto-placement fragility
+  - Add CSS variable fallback values for all --ux-{hash} tokens ([#219](https://github.com/godaddy/bento/pull/219) by @rmojica-godaddy)
+
+- fix(chart): align legend and tooltip spacings with Figma spec ([#238](https://github.com/godaddy/bento/pull/238) by @rmojica-godaddy)
+
 ## 0.3.0
 
 ### Minor Changes

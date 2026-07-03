@@ -14,6 +14,7 @@
   --controller-space-030: var(--space-030, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   --controller-space-040: var(--space-040, calc(var(--ux-1sbfig8, 0.25rem) * 4));
 
+  isolation: isolate;
   background: var(--controller-surface-bg);
 
   &:where([data-size="sm"]) {
@@ -35,16 +36,11 @@
 
   :where(.item) {
     position: relative;
-    z-index: 1;
     background: transparent;
     border: 1px solid transparent;
     border-radius: var(--inner-radius);
     scroll-margin-inline: var(--controller-space-005);
-    transform: translateZ(0);
 
-    &:where([data-selected]) {
-      z-index: 0;
-    }
     &:where([data-disabled]) {
       opacity: 0.4;
       cursor: not-allowed;
@@ -91,10 +87,7 @@
     border-radius: var(--inner-radius);
     position: absolute;
     z-index: -1;
-    top: -1px;
-    left: -1px;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     transition-property: translate, width;
     transition-duration: 200ms;
 

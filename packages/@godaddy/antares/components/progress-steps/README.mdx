@@ -1,0 +1,116 @@
+---
+title: ProgressSteps
+description: A multi-step progress indicator for wizard and onboarding flows.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './progress-steps.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import NotStartedExample from './examples/not-started.tsx?raw';
+import VerticalExample from './examples/vertical.tsx?raw';
+import InteractiveExample from './examples/interactive.tsx?raw';
+import DisabledExample from './examples/disabled.tsx?raw';
+import HideStepNumbersExample from './examples/hide-step-numbers.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Horizontal and vertical orientations
+- Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
+- Timeline (past / current / future) derived from a single `currentStep` prop
+- Auto-generated step numbers (opt out with `hideStepNumbers`)
+- Interactive (navigable) and inert (display-only) steps
+- Title truncation and RTL support
+- Rendered as a `<nav>` landmark with an ordered list for assistive technology
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+`ProgressSteps` is the container; its direct children must be `ProgressStep` elements.
+
+### ProgressSteps
+
+<ArgTypes of={Stories.Props} />
+
+### ProgressStep
+
+<ArgTypes of={Stories.ProgressStepProps} />
+
+## Examples
+
+### Default
+
+A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Not started
+
+Omit `currentStep` for a flow that hasn't begun: every step is `future` and none is marked current.
+
+<Story of={Stories.NotStarted} inline />
+<Source language="tsx" code={NotStartedExample} />
+
+### Vertical
+
+Use `orientation="vertical"` to place the accent bar on the leading edge and stack steps in a column.
+
+<Story of={Stories.Vertical} inline />
+<Source language="tsx" code={VerticalExample} />
+
+### Interactive
+
+Give a step an `onPress` handler to make it navigable. Steps without `onPress` are inert.
+
+<Story of={Stories.Interactive} inline />
+<Source language="tsx" code={InteractiveExample} />
+
+### Disabled
+
+A disabled interactive step is muted, removed from the tab order, and cannot be activated.
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={DisabledExample} />
+
+### Hide step numbers
+
+Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
+
+<Story of={Stories.HideStepNumbers} inline />
+<Source language="tsx" code={HideStepNumbersExample} />
+
+## Customization
+
+- Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
+- `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
+- `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
+- `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
+- Pass `className` to the container or an individual step to extend the styles.
+
+## Accessibility
+
+- The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
+- Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
+- The current step is marked with `aria-current="step"`.
+- Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
+- Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
+
+## Best Practices
+
+- Drive the timeline from `currentStep` rather than styling individual steps.
+- Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
+- Keep titles short — they truncate with an ellipsis when space is tight.
+- Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
+
+## Troubleshooting
+
+- **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
+- **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
+- **Titles overflow:** that's expected — titles truncate. Shorten the title.
