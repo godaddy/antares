@@ -2,7 +2,10 @@ import { type StorybookConfig } from '@storybook/react-vite';
 import { type Indexer } from 'storybook/internal/types';
 import { generateCSFPlugin } from './plugin.ts';
 import { storiesIndexer } from './stories-indexer.ts';
+export { toStorybookArgTypes } from './adapters/storybook.ts';
 export * from './getters.ts';
+export { processPropsDoc } from './process.ts';
+export type * from './types.ts';
 
 const STORIES_FILE_REGEX = /\.stories\.tsx$/;
 

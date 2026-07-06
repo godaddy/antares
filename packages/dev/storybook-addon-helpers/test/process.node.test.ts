@@ -4,7 +4,7 @@ import type { ComponentDocsOptions, PropDoc } from '../src/types.ts';
 
 type TestComponent = (props: { alpha: number; beta?: boolean }) => null;
 
-const includeOptions = { include: ['beta', 'alpha'] } satisfies ComponentDocsOptions<TestComponent>;
+const includeOptions = { include: ['beta', 'alpha'] } as const satisfies ComponentDocsOptions<TestComponent>;
 
 const props: PropDoc[] = [
   { name: 'zeta', type: 'string', required: false },

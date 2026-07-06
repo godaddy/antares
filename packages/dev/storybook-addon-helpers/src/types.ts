@@ -1,18 +1,18 @@
 import type { ComponentProps, ComponentType } from 'react';
 
 type DocsOptionsBase<P> = {
-  order?: (keyof P)[];
-  groups?: Record<string, (keyof P)[]>;
+  order?: readonly (keyof P)[];
+  groups?: Record<string, readonly (keyof P)[]>;
 };
 
 type IncludeDocsOptions<P> = DocsOptionsBase<P> & {
-  include?: (keyof P)[];
+  include?: readonly (keyof P)[];
   exclude?: never;
 };
 
 type ExcludeDocsOptions<P> = DocsOptionsBase<P> & {
   include?: never;
-  exclude?: (keyof P)[];
+  exclude?: readonly (keyof P)[];
 };
 
 export type DocsOptions<P> = IncludeDocsOptions<P> | ExcludeDocsOptions<P>;
