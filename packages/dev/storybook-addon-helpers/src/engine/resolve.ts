@@ -14,7 +14,9 @@ export interface Resolver {
   resolveSymbol(symbolName: string, sourceFile: ts.SourceFile): ResolvedSymbol | undefined;
 }
 
-export function createResolver(entryFileName: string): Resolver {
+type LookupMode = 'local' | 'exported';
+
+export function createResolver(_entryFileName: string): Resolver {
   const parsedFiles = new Map<string, ts.SourceFile>();
   const compilerOptions: ts.CompilerOptions = {
     allowJs: true,
@@ -59,23 +61,29 @@ export function createResolver(entryFileName: string): Resolver {
   }
 
   function resolveSymbol(symbolName: string, sourceFile: ts.SourceFile): ResolvedSymbol | undefined {
-    return resolveSymbolInternal(symbolName, sourceFile, new Set<string>());
+    return resolveSymbolInternal(symbolName, sourceFile, new Set<string>(), 'local');
   }
 
   function resolveSymbolInternal(
     symbolName: string,
     sourceFile: ts.SourceFile,
-    visited: Set<string>
+    visited: Set<string>,
+    lookupMode: LookupMode
   ): ResolvedSymbol | undefined {
-    const visitKey = `${sourceFile.fileName}:${symbolName}`;
+    const visitKey = `${lookupMode}:${sourceFile.fileName}:${symbolName}`;
     if (visited.has(visitKey)) return undefined;
     visited.add(visitKey);
 
-    const local = findDeclaration(symbolName, sourceFile);
+    const local =
+      lookupMode === 'exported'
+        ? findDeclaration(symbolName, sourceFile, true)
+        : findDeclaration(symbolName, sourceFile);
     if (local) return { name: symbolName, declaration: local, sourceFile };
 
-    const imported = resolveImportedSymbol(symbolName, sourceFile, visited);
-    if (imported) return imported;
+    if (lookupMode === 'local') {
+      const imported = resolveImportedSymbol(symbolName, sourceFile, visited);
+      if (imported) return imported;
+    }
 
     return resolveExportedSymbol(symbolName, sourceFile, visited);
   }
@@ -100,7 +108,7 @@ export function createResolver(entryFileName: string): Resolver {
 
         const importedFile = getSourceFile(resolvedFileName);
         const actualName = element.propertyName?.text ?? element.name.text;
-        return resolveSymbolInternal(actualName, importedFile, visited);
+        return resolveSymbolInternal(actualName, importedFile, visited, 'exported');
       }
     }
 
@@ -123,7 +131,7 @@ export function createResolver(entryFileName: string): Resolver {
       const exportClause = statement.exportClause;
 
       if (!exportClause) {
-        const resolved = resolveSymbolInternal(symbolName, exportedFile, visited);
+        const resolved = resolveSymbolInternal(symbolName, exportedFile, visited, 'exported');
         if (resolved) return resolved;
         continue;
       }
@@ -134,14 +142,12 @@ export function createResolver(entryFileName: string): Resolver {
         if (element.name.text !== symbolName) continue;
 
         const actualName = element.propertyName?.text ?? element.name.text;
-        return resolveSymbolInternal(actualName, exportedFile, visited);
+        return resolveSymbolInternal(actualName, exportedFile, visited, 'exported');
       }
     }
 
     return undefined;
   }
-
-  getSourceFile(entryFileName);
 
   return {
     getSourceFile,
@@ -163,7 +169,11 @@ function getScriptKind(fileName: string): ts.ScriptKind {
   return ts.ScriptKind.TS;
 }
 
-function findDeclaration(symbolName: string, sourceFile: ts.SourceFile): ts.Declaration | undefined {
+function findDeclaration(
+  symbolName: string,
+  sourceFile: ts.SourceFile,
+  exportedOnly = false
+): ts.Declaration | undefined {
   for (const statement of sourceFile.statements) {
     if (
       (ts.isInterfaceDeclaration(statement) ||
@@ -171,12 +181,15 @@ function findDeclaration(symbolName: string, sourceFile: ts.SourceFile): ts.Decl
         ts.isFunctionDeclaration(statement) ||
         ts.isClassDeclaration(statement) ||
         ts.isEnumDeclaration(statement)) &&
-      statement.name?.text === symbolName
+      statement.name?.text === symbolName &&
+      (!exportedOnly || hasExportModifier(statement))
     ) {
       return statement;
     }
 
     if (ts.isVariableStatement(statement)) {
+      if (exportedOnly && !hasExportModifier(statement)) continue;
+
       for (const declaration of statement.declarationList.declarations) {
         if (ts.isIdentifier(declaration.name) && declaration.name.text === symbolName) return declaration;
       }
@@ -184,4 +197,12 @@ function findDeclaration(symbolName: string, sourceFile: ts.SourceFile): ts.Decl
   }
 
   return undefined;
+}
+
+function hasExportModifier(node: ts.Node): boolean {
+  return Boolean(
+    (node as { modifiers?: readonly ts.ModifierLike[] }).modifiers?.some(
+      (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword
+    )
+  );
 }

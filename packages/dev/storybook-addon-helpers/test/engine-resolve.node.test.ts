@@ -6,6 +6,11 @@ import type { ResolvedSymbol } from '../src/engine/resolve.ts';
 
 const fixturesPath = path.join(__dirname, 'fixtures/engine/types.ts');
 const importedFixturesPath = path.join(__dirname, 'fixtures/engine/imported.ts');
+const privateBarrelFixturesPath = path.join(__dirname, 'fixtures/engine/private-barrel.ts');
+const privateReExportFixturesPath = path.join(__dirname, 'fixtures/engine/private-re-export.ts');
+const privateFixturesPath = path.join(__dirname, 'fixtures/engine/private.ts');
+const cycleAFixturesPath = path.join(__dirname, 'fixtures/engine/cycle-a.ts');
+const cycleBFixturesPath = path.join(__dirname, 'fixtures/engine/cycle-b.ts');
 
 function expectResolvedSymbol(
   actual: ResolvedSymbol | undefined,
@@ -26,6 +31,18 @@ function expectResolvedSymbol(
 }
 
 describe('createResolver', function createResolverTests() {
+  it('does not read the entry file until a source file is requested', function lazilyReadsEntryFile() {
+    let resolver: ReturnType<typeof createResolver> | undefined;
+
+    expect(function createInlineResolver() {
+      resolver = createResolver('inline.tsx');
+    }).not.toThrow();
+
+    expect(function readInlineFile() {
+      resolver?.getSourceFile('inline.tsx');
+    }).toThrow();
+  });
+
   it('finds local symbols', function findsLocalSymbol() {
     const resolver = createResolver(fixturesPath);
     const sourceFile = resolver.getSourceFile(fixturesPath);
@@ -89,6 +106,61 @@ describe('createResolver', function createResolverTests() {
       sourceFileName: importedFixturesPath,
       isDeclarationKind: ts.isTypeAliasDeclaration
     });
+  });
+
+  it('only exposes exported symbols through star re-export module boundaries', function hidesPrivateStarReExports() {
+    const resolver = createResolver(privateBarrelFixturesPath);
+    const sourceFile = resolver.getSourceFile(privateBarrelFixturesPath);
+    const privateSourceFile = resolver.getSourceFile(privateFixturesPath);
+
+    const publicSymbol = resolver.resolveSymbol('PublicProps', sourceFile);
+    const privateSymbol = resolver.resolveSymbol('PrivateProps', sourceFile);
+    const localPrivateSymbol = resolver.resolveSymbol('PrivateProps', privateSourceFile);
+
+    expectResolvedSymbol(publicSymbol, {
+      name: 'PublicProps',
+      sourceFileName: privateFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expect(privateSymbol).toBeUndefined();
+    expectResolvedSymbol(localPrivateSymbol, {
+      name: 'PrivateProps',
+      sourceFileName: privateFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+  });
+
+  it('only exposes exported symbols through named re-export module boundaries', function hidesPrivateNamedReExports() {
+    const resolver = createResolver(privateReExportFixturesPath);
+    const sourceFile = resolver.getSourceFile(privateReExportFixturesPath);
+
+    const publicSymbol = resolver.resolveSymbol('PublicProps', sourceFile);
+    const privateSymbol = resolver.resolveSymbol('ExplicitPrivateProps', sourceFile);
+
+    expectResolvedSymbol(publicSymbol, {
+      name: 'PublicProps',
+      sourceFileName: privateFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expect(privateSymbol).toBeUndefined();
+  });
+
+  it('terminates star re-export cycles and still resolves alternate exported paths', function resolvesStarExportCycles() {
+    const resolver = createResolver(cycleAFixturesPath);
+    const sourceFile = resolver.getSourceFile(cycleAFixturesPath);
+
+    const cycleSymbol = resolver.resolveSymbol('CycleBProps', sourceFile);
+    const missingSymbol = resolver.resolveSymbol('MissingProps', sourceFile);
+
+    expectResolvedSymbol(cycleSymbol, {
+      name: 'CycleBProps',
+      sourceFileName: cycleBFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expect(missingSymbol).toBeUndefined();
   });
 
   it('caches parsed source files by absolute path', function cachesFiles() {
