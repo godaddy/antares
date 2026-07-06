@@ -11,4 +11,4 @@ Adds date components built on React Aria Components:
 - `DatePicker` / `DateRangePicker` — date-only (`CalendarDate`) fields that render the selected
   value as a read-only formatted label and open a calendar in a popover (no editable segmented
   input). Built on the field primitives, with `size`, `formatOptions`, and `placeholder` props.
-- `FieldTrigger` - Used in DatePicker and Select as the component sharing their  styles
+- `FieldTrigger` — Used in DatePicker and Select as the component sharing their styles.
