@@ -33,6 +33,7 @@ export * from './exports/ToggleButton';
 export * from './exports/Alert';
 export * from './exports/Tag';
 export * from './exports/DropZone';
+export * from './exports/FileTrigger';
 export * from './exports/CircularProgress';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
