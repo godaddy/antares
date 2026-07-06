@@ -11,6 +11,9 @@ const privateReExportFixturesPath = path.join(__dirname, 'fixtures/engine/privat
 const privateFixturesPath = path.join(__dirname, 'fixtures/engine/private.ts');
 const cycleAFixturesPath = path.join(__dirname, 'fixtures/engine/cycle-a.ts');
 const cycleBFixturesPath = path.join(__dirname, 'fixtures/engine/cycle-b.ts');
+const localExportListFixturesPath = path.join(__dirname, 'fixtures/engine/local-export-list.ts');
+const localExportListBarrelFixturesPath = path.join(__dirname, 'fixtures/engine/local-export-list-barrel.ts');
+const localExportListImporterFixturesPath = path.join(__dirname, 'fixtures/engine/local-export-list-importer.ts');
 
 function expectResolvedSymbol(
   actual: ResolvedSymbol | undefined,
@@ -161,6 +164,57 @@ describe('createResolver', function createResolverTests() {
     });
 
     expect(missingSymbol).toBeUndefined();
+  });
+
+  it('resolves local export list symbols and aliases', function resolvesLocalExportLists() {
+    const resolver = createResolver(localExportListFixturesPath);
+    const sourceFile = resolver.getSourceFile(localExportListFixturesPath);
+
+    const localSymbol = resolver.resolveSymbol('LocalExportListProps', sourceFile);
+    const generatedAlias = resolver.resolveSymbol('PublicGeneratedProps', sourceFile);
+
+    expectResolvedSymbol(localSymbol, {
+      name: 'LocalExportListProps',
+      sourceFileName: localExportListFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expectResolvedSymbol(generatedAlias, {
+      name: 'GeneratedProps$1',
+      sourceFileName: localExportListFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+  });
+
+  it('resolves local export lists through module boundaries without exposing hidden locals', function resolvesBoundaryLocalExportLists() {
+    const resolver = createResolver(localExportListImporterFixturesPath);
+    const sourceFile = resolver.getSourceFile(localExportListImporterFixturesPath);
+    const barrelSourceFile = resolver.getSourceFile(localExportListBarrelFixturesPath);
+
+    const importedAlias = resolver.resolveSymbol('ImportedPublicGeneratedProps', sourceFile);
+    const barrelPublic = resolver.resolveSymbol('PublicGeneratedProps', barrelSourceFile);
+    const barrelAlias = resolver.resolveSymbol('BarrelPublicGeneratedProps', sourceFile);
+    const hiddenLocal = resolver.resolveSymbol('HiddenLocalProps', barrelSourceFile);
+
+    expectResolvedSymbol(importedAlias, {
+      name: 'GeneratedProps$1',
+      sourceFileName: localExportListFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expectResolvedSymbol(barrelPublic, {
+      name: 'GeneratedProps$1',
+      sourceFileName: localExportListFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expectResolvedSymbol(barrelAlias, {
+      name: 'GeneratedProps$1',
+      sourceFileName: localExportListFixturesPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+
+    expect(hiddenLocal).toBeUndefined();
   });
 
   it('caches parsed source files by absolute path', function cachesFiles() {

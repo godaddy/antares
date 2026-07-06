@@ -122,13 +122,31 @@ export function createResolver(_entryFileName: string): Resolver {
   ): ResolvedSymbol | undefined {
     for (const statement of sourceFile.statements) {
       if (!ts.isExportDeclaration(statement)) continue;
-      if (!statement.moduleSpecifier || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
+
+      const exportClause = statement.exportClause;
+
+      if (!statement.moduleSpecifier) {
+        if (!exportClause || !ts.isNamedExports(exportClause)) continue;
+
+        for (const element of exportClause.elements) {
+          if (element.name.text !== symbolName) continue;
+
+          const actualName = element.propertyName?.text ?? element.name.text;
+          const declaration = findDeclaration(actualName, sourceFile);
+          if (!declaration) return undefined;
+
+          return { name: actualName, declaration, sourceFile };
+        }
+
+        continue;
+      }
+
+      if (!ts.isStringLiteral(statement.moduleSpecifier)) continue;
 
       const resolvedFileName = resolveModule(statement.moduleSpecifier.text, sourceFile.fileName);
       if (!resolvedFileName) continue;
 
       const exportedFile = getSourceFile(resolvedFileName);
-      const exportClause = statement.exportClause;
 
       if (!exportClause) {
         const resolved = resolveSymbolInternal(symbolName, exportedFile, visited, 'exported');
