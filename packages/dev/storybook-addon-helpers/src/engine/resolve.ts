@@ -16,17 +16,9 @@ export interface Resolver {
 
 type LookupMode = 'local' | 'exported';
 
-export function createResolver(_entryFileName: string): Resolver {
+export function createResolver(entryFileName: string): Resolver {
   const parsedFiles = new Map<string, ts.SourceFile>();
-  const compilerOptions: ts.CompilerOptions = {
-    allowJs: true,
-    allowSyntheticDefaultImports: true,
-    esModuleInterop: true,
-    jsx: ts.JsxEmit.ReactJSX,
-    module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Bundler,
-    target: ts.ScriptTarget.Latest
-  };
+  const compilerOptions = loadCompilerOptions(entryFileName);
 
   function getSourceFile(fileName: string): ts.SourceFile {
     const absolutePath = path.resolve(fileName);
@@ -132,10 +124,7 @@ export function createResolver(_entryFileName: string): Resolver {
           if (element.name.text !== symbolName) continue;
 
           const actualName = element.propertyName?.text ?? element.name.text;
-          const declaration = findDeclaration(actualName, sourceFile);
-          if (!declaration) return undefined;
-
-          return { name: actualName, declaration, sourceFile };
+          return resolveSymbolInternal(actualName, sourceFile, visited, 'local');
         }
 
         continue;
@@ -187,6 +176,45 @@ function getScriptKind(fileName: string): ts.ScriptKind {
   return ts.ScriptKind.TS;
 }
 
+function loadCompilerOptions(entryFileName: string): ts.CompilerOptions {
+  const fallbackOptions = getFallbackCompilerOptions();
+  const configSearchPath = getConfigSearchPath(entryFileName);
+  const configFileName = ts.findConfigFile(configSearchPath, ts.sys.fileExists);
+  if (!configFileName) return fallbackOptions;
+
+  const configFile = ts.readConfigFile(configFileName, ts.sys.readFile);
+  if (configFile.error) return fallbackOptions;
+
+  const parsedConfig = ts.parseJsonConfigFileContent(
+    configFile.config,
+    ts.sys,
+    path.dirname(configFileName),
+    fallbackOptions,
+    configFileName
+  );
+
+  return parsedConfig.options;
+}
+
+function getConfigSearchPath(entryFileName: string): string {
+  const entryPath = path.resolve(entryFileName);
+
+  if (fs.existsSync(entryPath) && fs.statSync(entryPath).isDirectory()) return entryPath;
+  return path.dirname(entryPath);
+}
+
+function getFallbackCompilerOptions(): ts.CompilerOptions {
+  return {
+    allowJs: true,
+    allowSyntheticDefaultImports: true,
+    esModuleInterop: true,
+    jsx: ts.JsxEmit.ReactJSX,
+    module: ts.ModuleKind.ESNext,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
+    target: ts.ScriptTarget.Latest
+  };
+}
+
 function findDeclaration(
   symbolName: string,
   sourceFile: ts.SourceFile,
@@ -218,9 +246,6 @@ function findDeclaration(
 }
 
 function hasExportModifier(node: ts.Node): boolean {
-  return Boolean(
-    (node as { modifiers?: readonly ts.ModifierLike[] }).modifiers?.some(
-      (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword
-    )
-  );
+  if (!ts.canHaveModifiers(node)) return false;
+  return Boolean(ts.getModifiers(node)?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword));
 }

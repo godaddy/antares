@@ -14,6 +14,11 @@ const cycleBFixturesPath = path.join(__dirname, 'fixtures/engine/cycle-b.ts');
 const localExportListFixturesPath = path.join(__dirname, 'fixtures/engine/local-export-list.ts');
 const localExportListBarrelFixturesPath = path.join(__dirname, 'fixtures/engine/local-export-list-barrel.ts');
 const localExportListImporterFixturesPath = path.join(__dirname, 'fixtures/engine/local-export-list-importer.ts');
+const importExportListFixturesPath = path.join(__dirname, 'fixtures/engine/import-export-list.ts');
+const importExportListBarrelFixturesPath = path.join(__dirname, 'fixtures/engine/import-export-list-barrel.ts');
+const importExportListImporterFixturesPath = path.join(__dirname, 'fixtures/engine/import-export-list-importer.ts');
+const tsconfigPathsEntryPath = path.join(__dirname, 'fixtures/engine/tsconfig-paths/entry.ts');
+const tsconfigPathsMappedPath = path.join(__dirname, 'fixtures/engine/tsconfig-paths/mapped/mapped.ts');
 
 function expectResolvedSymbol(
   actual: ResolvedSymbol | undefined,
@@ -217,9 +222,48 @@ describe('createResolver', function createResolverTests() {
     expect(hiddenLocal).toBeUndefined();
   });
 
+  it('resolves imported bindings from local export lists', function resolvesImportedExportLists() {
+    const resolver = createResolver(importExportListImporterFixturesPath);
+    const exportListSourceFile = resolver.getSourceFile(importExportListFixturesPath);
+    const importerSourceFile = resolver.getSourceFile(importExportListImporterFixturesPath);
+    const barrelSourceFile = resolver.getSourceFile(importExportListBarrelFixturesPath);
+
+    const localImported = resolver.resolveSymbol('ImportedProps', exportListSourceFile);
+    const localAlias = resolver.resolveSymbol('PublicImportedProps', exportListSourceFile);
+    const imported = resolver.resolveSymbol('ImportedProps', importerSourceFile);
+    const publicImported = resolver.resolveSymbol('PublicImportedProps', importerSourceFile);
+    const barrelAlias = resolver.resolveSymbol('BarrelPublicImportedProps', importerSourceFile);
+    const barrelPublic = resolver.resolveSymbol('BarrelPublicImportedProps', barrelSourceFile);
+    const hiddenLocal = resolver.resolveSymbol('HiddenImportExportListProps', barrelSourceFile);
+
+    for (const actual of [localImported, localAlias, imported, publicImported, barrelAlias, barrelPublic]) {
+      expectResolvedSymbol(actual, {
+        name: 'ImportedProps',
+        sourceFileName: importedFixturesPath,
+        isDeclarationKind: ts.isInterfaceDeclaration
+      });
+    }
+
+    expect(hiddenLocal).toBeUndefined();
+  });
+
+  it('uses nearest tsconfig paths when resolving modules', function resolvesTsconfigPaths() {
+    const resolver = createResolver(tsconfigPathsEntryPath);
+    const sourceFile = resolver.getSourceFile(tsconfigPathsEntryPath);
+
+    expect(resolver.resolveModule('#fixtures/mapped', tsconfigPathsEntryPath)).toBe(tsconfigPathsMappedPath);
+    expectResolvedSymbol(resolver.resolveSymbol('MappedProps', sourceFile), {
+      name: 'MappedProps',
+      sourceFileName: tsconfigPathsMappedPath,
+      isDeclarationKind: ts.isInterfaceDeclaration
+    });
+  });
+
   it('caches parsed source files by absolute path', function cachesFiles() {
     const resolver = createResolver(fixturesPath);
+    const relativeFixturesPath = path.relative(process.cwd(), fixturesPath);
 
     expect(resolver.getSourceFile(fixturesPath)).toBe(resolver.getSourceFile(fixturesPath));
+    expect(resolver.getSourceFile(relativeFixturesPath)).toBe(resolver.getSourceFile(fixturesPath));
   });
 });
