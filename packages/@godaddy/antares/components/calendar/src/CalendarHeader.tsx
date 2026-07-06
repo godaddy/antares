@@ -57,7 +57,7 @@ export function MonthHeading(props: { offset: number }) {
 
   const handleMonthChange = useCallback(
     function handleMonthChange(key: RACKey | null) {
-      if (!state || !displayDate) {
+      if (!state || !displayDate || key === null) {
         return;
       }
 
