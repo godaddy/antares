@@ -2,4 +2,4 @@
 "@godaddy/antares": minor
 ---
 
-feat: add drop-zone component
+feat: add drop-zone and file-trigger components

@@ -17,7 +17,9 @@ export type { DropZoneRenderProps };
 /**
  * Props for the {@link DropZone} component.
  */
-export interface DropZoneProps extends RACDropZoneProps, Omit<FlexOwnProps, 'as'> {}
+export interface DropZoneProps extends Omit<RACDropZoneProps, 'className'>, Omit<FlexOwnProps, 'as'> {
+  className?: string;
+}
 
 /**
  * A standalone region that accepts drag-and-drop file interactions.
@@ -37,12 +39,7 @@ export interface DropZoneProps extends RACDropZoneProps, Omit<FlexOwnProps, 'as'
 export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZone(props, ref) {
   const { children, className, ...rest } = props;
 
-  const resolvedClassName =
-    typeof className === 'function'
-      ? function resolveWithRenderProps(values: DropZoneRenderProps & { defaultClassName: string | undefined }) {
-          return cx(styles.dropZone, className(values));
-        }
-      : cx(styles.dropZone, className);
+  const resolvedClassName = cx(styles.dropZone, className);
 
   return (
     <Flex

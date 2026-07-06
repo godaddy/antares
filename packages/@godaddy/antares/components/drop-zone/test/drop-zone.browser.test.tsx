@@ -78,21 +78,19 @@ describe('@godaddy/antares', function antares() {
       await expect.element(getByText('Replace')).toBeVisible();
     });
 
-    it('accepts a className render prop without throwing', async function classNameRenderProp() {
+    it('applies a custom string className', async function customClassName() {
       const { container } = await render(
         <DropZone
           aria-label="Test"
           onDrop={function noop() {
             /* noop */
           }}
-          className={function renderClass() {
-            return 'custom-class';
-          }}
+          className="custom-class"
         >
           <Text slot="label">Drop here</Text>
         </DropZone>
       );
-      assume(container.querySelector('[data-rac]')).is.not.equal(null);
+      assume(container.querySelector('.custom-class')).is.not.equal(null);
     });
   });
 });
