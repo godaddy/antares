@@ -59,9 +59,32 @@ export function createResolver(entryFileName: string): Resolver {
   }
 
   function resolveSymbol(symbolName: string, sourceFile: ts.SourceFile): ResolvedSymbol | undefined {
+    return resolveSymbolInternal(symbolName, sourceFile, new Set<string>());
+  }
+
+  function resolveSymbolInternal(
+    symbolName: string,
+    sourceFile: ts.SourceFile,
+    visited: Set<string>
+  ): ResolvedSymbol | undefined {
+    const visitKey = `${sourceFile.fileName}:${symbolName}`;
+    if (visited.has(visitKey)) return undefined;
+    visited.add(visitKey);
+
     const local = findDeclaration(symbolName, sourceFile);
     if (local) return { name: symbolName, declaration: local, sourceFile };
 
+    const imported = resolveImportedSymbol(symbolName, sourceFile, visited);
+    if (imported) return imported;
+
+    return resolveExportedSymbol(symbolName, sourceFile, visited);
+  }
+
+  function resolveImportedSymbol(
+    symbolName: string,
+    sourceFile: ts.SourceFile,
+    visited: Set<string>
+  ): ResolvedSymbol | undefined {
     for (const statement of sourceFile.statements) {
       if (!ts.isImportDeclaration(statement)) continue;
       if (!statement.importClause || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
@@ -77,10 +100,41 @@ export function createResolver(entryFileName: string): Resolver {
 
         const importedFile = getSourceFile(resolvedFileName);
         const actualName = element.propertyName?.text ?? element.name.text;
-        const declaration = findDeclaration(actualName, importedFile);
-        if (!declaration) return undefined;
+        return resolveSymbolInternal(actualName, importedFile, visited);
+      }
+    }
 
-        return { name: actualName, declaration, sourceFile: importedFile };
+    return undefined;
+  }
+
+  function resolveExportedSymbol(
+    symbolName: string,
+    sourceFile: ts.SourceFile,
+    visited: Set<string>
+  ): ResolvedSymbol | undefined {
+    for (const statement of sourceFile.statements) {
+      if (!ts.isExportDeclaration(statement)) continue;
+      if (!statement.moduleSpecifier || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
+
+      const resolvedFileName = resolveModule(statement.moduleSpecifier.text, sourceFile.fileName);
+      if (!resolvedFileName) continue;
+
+      const exportedFile = getSourceFile(resolvedFileName);
+      const exportClause = statement.exportClause;
+
+      if (!exportClause) {
+        const resolved = resolveSymbolInternal(symbolName, exportedFile, visited);
+        if (resolved) return resolved;
+        continue;
+      }
+
+      if (!ts.isNamedExports(exportClause)) continue;
+
+      for (const element of exportClause.elements) {
+        if (element.name.text !== symbolName) continue;
+
+        const actualName = element.propertyName?.text ?? element.name.text;
+        return resolveSymbolInternal(actualName, exportedFile, visited);
       }
     }
 
@@ -97,6 +151,12 @@ export function createResolver(entryFileName: string): Resolver {
 }
 
 function getScriptKind(fileName: string): ts.ScriptKind {
+  const getScriptKindFromFileName = (
+    ts as typeof ts & { getScriptKindFromFileName?: (fileName: string) => ts.ScriptKind }
+  ).getScriptKindFromFileName;
+  const scriptKind = getScriptKindFromFileName?.(fileName);
+  if (scriptKind) return scriptKind;
+
   if (fileName.endsWith('.tsx')) return ts.ScriptKind.TSX;
   if (fileName.endsWith('.jsx')) return ts.ScriptKind.JSX;
   if (fileName.endsWith('.js')) return ts.ScriptKind.JS;
