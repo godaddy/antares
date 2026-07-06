@@ -35,7 +35,7 @@ export interface DatePickerProps
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /** Intl.DateTimeFormat options controlling how the selected date renders in the trigger. @default { dateStyle: 'long' } */
+  /** Intl.DateTimeFormat options controlling how the selected date renders in the trigger. @default DEFAULT_FORMAT */
   formatOptions?: Intl.DateTimeFormatOptions;
 
   /** Text shown in the trigger when no date is selected. @default 'Select a date' */
