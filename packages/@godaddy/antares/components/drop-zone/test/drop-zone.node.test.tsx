@@ -2,7 +2,9 @@ import { expect, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
-import { CustomContentExample } from '../examples/custom-content.tsx';
+import { DropTargetLabelExample } from '../examples/drop-target-label.tsx';
+import { FileUploadExample } from '../examples/file-upload.tsx';
+import { ReplaceFileExample } from '../examples/replace-file.tsx';
 import { PlaygroundExample } from '../examples/drop-zone-playground.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -19,8 +21,20 @@ describe('@godaddy/antares', function antares() {
       expect(result).toMatchSnapshot();
     });
 
-    it('renders the drop zone with custom content', function rendersCustomContent() {
-      const result = renderToString(<CustomContentExample />);
+    it('renders the drop target label drop zone', function rendersDropTargetLabel() {
+      const result = renderToString(<DropTargetLabelExample />);
+
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders the file upload drop zone', function rendersFileUpload() {
+      const result = renderToString(<FileUploadExample />);
+
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders the replace file drop zone', function rendersReplaceFile() {
+      const result = renderToString(<ReplaceFileExample />);
 
       expect(result).toMatchSnapshot();
     });

@@ -6,8 +6,10 @@ description: A standalone region that accepts drag-and-drop file interactions, r
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './drop-zone.stories.tsx';
 import DefaultExample from './examples/default.tsx?raw';
-import CustomContentExample from './examples/custom-content.tsx?raw';
 import DisabledExample from './examples/disabled.tsx?raw';
+import FileUploadExample from './examples/file-upload.tsx?raw';
+import DropTargetLabelExample from './examples/drop-target-label.tsx?raw';
+import ReplaceFileExample from './examples/replace-file.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -30,19 +32,44 @@ A minimal drop zone. The `onDrop` callback receives the dropped items; use the e
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
 
-### Custom Content
-
-Pass any React node as `children` to replace the default instructional text — for example, to describe the accepted file types and size limits.
-
-<Story of={Stories.CustomContent} inline />
-<Source language="tsx" code={CustomContentExample} />
-
 ### Disabled
 
 Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
 
 <Story of={Stories.Disabled} inline />
 <Source language="tsx" code={DisabledExample} />
+
+### File Upload
+
+A reference showing how to compose `DropZone` with other Antares components to build a functional file upload experience. Use this as a starting point — adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+It demonstrates the two common upload affordances working together:
+
+- **Click to browse** — the "Add files" button opens the native file picker and returns the selection through `onSelect`. `acceptedFileTypes` restricts the picker to the supported formats.
+- **Drag and drop** — `getDropOperation` inspects the dragged types and returns `'cancel'` for unsupported files so the zone won't accept them, while `onDrop` reads the dropped files with the `isFileDropItem` guard.
+
+Both paths funnel into one handler that renders a preview. `acceptedFileTypes` and `getDropOperation` are best-effort UX filters — validate file type and size again in your handler, since they can be bypassed.
+
+When the drop zone content is composed from multiple elements (icon, button, text), pass `aria-label` directly on `DropZone` to provide a single accessible name for the hidden drop button.
+
+<Story of={Stories.FileUpload} inline />
+<Source language="tsx" code={FileUploadExample} />
+
+### Drop Target Label
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. RAC invokes it with [`DropZoneRenderProps`](https://react-spectrum.adobe.com/react-aria/DropZone.html#dropzonerenderprops) on every state transition, so branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is actually accepted.
+
+<Story of={Stories.DropTargetLabel} inline />
+<Source language="tsx" code={DropTargetLabelExample} />
+
+### Replace Existing File
+
+Demonstrates the `isFilled` pattern: when the zone already holds a file, dragging a new valid file over it shows a "Drop to replace" label while the container switches to its active teal state. The drag path and the click path (`FileTrigger`) share the same handler, so both replace the current selection.
+
+`isFilled` is not a built-in prop — derive it from your own state so your product controls when the zone is considered occupied and when it resets.
+
+<Story of={Stories.ReplaceFile} inline />
+<Source language="tsx" code={ReplaceFileExample} />
 
 ## Accessibility
 

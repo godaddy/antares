@@ -1,6 +1,7 @@
 export {
   DropZone,
   type DropZoneProps,
+  type DropZoneRenderProps,
   isFileDropItem,
   isTextDropItem,
   isDirectoryDropItem

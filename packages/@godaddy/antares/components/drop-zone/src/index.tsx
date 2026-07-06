@@ -1,39 +1,23 @@
-import type React from 'react';
 import { forwardRef } from 'react';
 import { cx } from 'cva';
 import {
   DropZone as RACDropZone,
   type DropZoneProps as RACDropZoneProps,
+  type DropZoneRenderProps,
   isFileDropItem,
   isTextDropItem,
   isDirectoryDropItem
 } from 'react-aria-components';
-import { Flex } from '#components/layout/flex';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
+export type { DropZoneRenderProps };
 
 /**
  * Props for the {@link DropZone} component.
  */
-export interface DropZoneProps extends Omit<RACDropZoneProps, 'className' | 'children'> {
-  /**
-   * Content displayed inside the drop zone. Use `<Text slot="label">` for the primary
-   * label — it is linked via `aria-labelledby` to the visually hidden drop button,
-   * ensuring screen readers announce the correct label.
-   *
-   * @example
-   * ```tsx
-   * <DropZone onDrop={handleDrop}>
-   *   <Text slot="label">Drop files to upload.</Text>
-   * </DropZone>
-   * ```
-   */
-  children?: React.ReactNode;
-
-  /** Additional CSS class names applied to the root element. */
-  className?: string;
-}
+export interface DropZoneProps extends RACDropZoneProps, Omit<FlexOwnProps, 'as'> {}
 
 /**
  * A standalone region that accepts drag-and-drop file interactions.
@@ -53,15 +37,22 @@ export interface DropZoneProps extends Omit<RACDropZoneProps, 'className' | 'chi
 export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZone(props, ref) {
   const { children, className, ...rest } = props;
 
+  const resolvedClassName =
+    typeof className === 'function'
+      ? function resolveWithRenderProps(values: DropZoneRenderProps & { defaultClassName: string | undefined }) {
+          return cx(styles.dropZone, className(values));
+        }
+      : cx(styles.dropZone, className);
+
   return (
     <Flex
-      {...rest}
-      ref={ref}
       direction="column"
       alignItems="center"
       justifyContent="center"
       padding="lg"
-      className={cx(styles.dropZone, className)}
+      {...rest}
+      ref={ref}
+      className={resolvedClassName}
       as={RACDropZone}
     >
       {children}

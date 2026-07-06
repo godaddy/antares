@@ -4,6 +4,7 @@ import { userEvent } from 'vitest/browser';
 import { resetHover } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
+import { DropZone, Text } from '@godaddy/antares';
 
 describe('@godaddy/antares', function antares() {
   beforeEach(resetHover);
@@ -30,6 +31,41 @@ describe('@godaddy/antares', function antares() {
       const dropZone = container.querySelector('[data-rac]') as HTMLElement;
       dropZone.setAttribute('data-drop-target', 'true');
       await expect(container).toMatchScreenshot('drop-target');
+    });
+
+    it('drop target label - active state', async function dropTargetLabelActiveRender() {
+      const { container } = await render(
+        <DropZone
+          aria-label="Drop files to upload"
+          onDrop={function noop() {
+            /* noop */
+          }}
+        >
+          <Text as="strong">Drop files to upload.</Text>
+        </DropZone>
+      );
+      const dropZone = container.querySelector('[data-rac]') as HTMLElement;
+      dropZone.setAttribute('data-drop-target', 'true');
+      await expect(container).toMatchScreenshot('drop-target-label');
+    });
+
+    it('filled tile - replace label active state', async function filledReplaceActiveRender() {
+      const { container } = await render(
+        <div style={{ width: 200 }}>
+          <DropZone
+            aria-label="Replace uploaded file"
+            onDrop={function noop() {
+              /* noop */
+            }}
+            style={{ minHeight: 200 }}
+          >
+            <Text as="strong">Drop to replace</Text>
+          </DropZone>
+        </div>
+      );
+      const dropZone = container.querySelector('[data-rac]') as HTMLElement;
+      dropZone.setAttribute('data-drop-target', 'true');
+      await expect(container).toMatchScreenshot('filled-replace-label');
     });
   });
 });

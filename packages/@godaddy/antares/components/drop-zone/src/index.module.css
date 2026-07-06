@@ -7,6 +7,7 @@
   --drop-zone-radius: var(--ux-2jubes, 16px);
 
   box-sizing: border-box;
+  position: relative;
   width: 100%;
   border: 1.5px dashed var(--drop-zone-border-color);
   border-radius: var(--drop-zone-radius);
