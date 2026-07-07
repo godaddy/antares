@@ -1,5 +1,6 @@
 import type { ComponentProps, ComponentType } from 'react';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
+import type { ComponentDocsOptions, DocsOptions } from './types.ts';
 
 /**
  * Get the meta object for a Story.
@@ -39,22 +40,29 @@ export function getStory<T extends ComponentType<any>>(component: T, _storyObj?:
 /**
  * Get the component docs for a component as a StoryObj.
  *
- * @param component - The component to get the docs from.
+ * The optional `options` object filters, orders, and groups the documented
+ * props. Its keys are type-checked against the component's props at build time;
+ * the CSF transformer extracts and processes the argTypes.
+ *
+ * @param _component - The component to get the docs from.
+ * @param _options - Optional type-safe docs options (ignored at runtime).
  * @returns The docs as a StoryObj.
  */
-export function getComponentDocs<T extends ComponentType<any>>(component: T) {
+export function getComponentDocs<T extends ComponentType<any>>(_component: T, _options?: ComponentDocsOptions<T>) {
   return {} as StoryObj<T>;
 }
 
 /**
- * Get the interface docs for a type as a StoryObj.
+ * Get the docs for any type (interface or type alias) as a StoryObj.
  *
- * The type parameter `T` specifies the interface whose props the CSF transformer
- * will extract into argTypes at build time.
+ * The type parameter `T` specifies the type whose props the CSF transformer will
+ * extract into argTypes at build time. The optional `options` object filters,
+ * orders, and groups the documented props with type-checked keys.
  *
+ * @param _options - Optional type-safe docs options (ignored at runtime).
  * @returns The docs as a StoryObj.
  */
-export function getInterfaceDocs<T>() {
+export function getTypeDocs<T>(_options?: DocsOptions<T>) {
   return {} as StoryObj<T>;
 }
 
