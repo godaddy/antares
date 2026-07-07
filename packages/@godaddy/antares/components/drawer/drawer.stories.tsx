@@ -34,7 +34,8 @@ export const Playground = {
   args: {
     placement: 'right',
     isDismissable: true,
-    showCloseButton: false
+    showCloseButton: false,
+    animate: true
   },
   argTypes: {
     placement: {
@@ -45,6 +46,10 @@ export const Playground = {
     isDismissable: {
       control: 'boolean',
       description: 'Close on backdrop click'
+    },
+    animate: {
+      control: 'boolean',
+      description: 'Animate the open/close slide'
     },
     showCloseButton: {
       control: 'boolean',

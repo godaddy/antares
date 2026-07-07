@@ -64,6 +64,11 @@
   --_min-fallback: 3rem;
 }
 
+.overlay[data-animate='false'],
+.overlay[data-animate='false'] .drawer {
+  transition: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .overlay,
   .drawer {

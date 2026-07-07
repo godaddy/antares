@@ -24,6 +24,17 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    it('disables transitions when animate is false', async function animateOff() {
+      const { getByRole } = await render(<PlaygroundExample animate={false} />);
+
+      await getByRole('button', { name: 'Open drawer' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog').query()).is.not.equal(null);
+      });
+
+      assume(document.querySelector('[data-animate="false"]')).is.not.equal(null);
+    });
+
     it('opens DefaultExample with Enter key', async function keyboardOpen() {
       const { getByRole } = await render(<DefaultExample />);
 

@@ -47,6 +47,9 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps
   /** Accessible label for the close button. @default 'Close' */
   closeLabel?: string;
 
+  /** Animate the open/close slide. @default true */
+  animate?: boolean;
+
   /** Forwarded to the inner Dialog for aria-controls linkage. */
   id?: string;
 
@@ -79,6 +82,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     minSize,
     showCloseButton = false,
     closeLabel = 'Close',
+    animate,
     id,
     children,
     className,
@@ -102,7 +106,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   } as CSSProperties;
 
   return (
-    <RACModalOverlay className={styles.overlay} {...rest}>
+    <RACModalOverlay className={styles.overlay} data-animate={animate === false ? 'false' : undefined} {...rest}>
       <Box
         elevation="overlay"
         data-placement={resolved}

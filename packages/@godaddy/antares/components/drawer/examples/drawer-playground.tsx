@@ -4,6 +4,7 @@ export interface PlaygroundExampleProps {
   placement?: DrawerPlacement;
   showCloseButton?: boolean;
   isDismissable?: boolean;
+  animate?: boolean;
   maxSize?: number | string;
   minSize?: number | string;
 }
@@ -12,6 +13,7 @@ export function PlaygroundExample({
   placement = 'right',
   showCloseButton,
   isDismissable = true,
+  animate,
   maxSize,
   minSize
 }: PlaygroundExampleProps) {
@@ -23,6 +25,7 @@ export function PlaygroundExample({
           placement={placement}
           showCloseButton={showCloseButton}
           isDismissable={isDismissable}
+          animate={animate}
           maxSize={maxSize}
           minSize={minSize}
           aria-label="Drawer"
