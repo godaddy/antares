@@ -1,7 +1,7 @@
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
-import { VerticalExample } from '../examples/vertical.tsx';
+import { PlacementsExample } from '../examples/placements.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/inline-drawer-playground.tsx';
 import { RefForwardingExample, drawerRef, panelRef } from '../examples/ref-forwarding.tsx';
@@ -157,18 +157,18 @@ describe('@godaddy/antares', function antares() {
       assume(trigger?.getAttribute('aria-expanded')).equals('false');
     });
 
-    it('top/bottom placement expands vertically', async function verticalPlacement() {
-      const { getByRole, getByText } = await render(<VerticalExample />);
+    it('toggles a top-placement drawer in PlacementsExample', async function placementsTop() {
+      const { getByRole } = await render(<PlacementsExample />);
 
-      const trigger = getByRole('button', { name: 'Header' }).query();
+      const trigger = getByRole('button', { name: 'top' }).query();
       assume(trigger?.getAttribute('aria-expanded')).equals('true');
 
-      await getByRole('button', { name: 'Header' }).click();
-
+      await getByRole('button', { name: 'top' }).click();
       await vi.waitFor(async function collapsed() {
         assume(trigger?.getAttribute('aria-expanded')).equals('false');
-        assume(getByText('Top drawer content, collapses vertically.').query()).is.not.equal(null);
       });
+
+      assume(document.querySelector('[data-placement="top"]')).is.not.equal(null);
     });
 
     it('bottom placement expands vertically', async function bottomPlacement() {
