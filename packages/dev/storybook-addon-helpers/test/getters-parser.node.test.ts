@@ -3,7 +3,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { describe, it } from 'vitest';
 import { getExportedVariables, extractVariantNames } from '../src/getters-parser.ts';
-import { toTsExpression } from '../src/ats-utils.ts';
+import { toTsExpression } from '../src/literal.ts';
 
 describe('parser', function parserTests() {
   describe('getExportedVariables', function getExportedVariablesTests() {
@@ -13,9 +13,9 @@ describe('parser', function parserTests() {
       assume(Object.fromEntries(result)).to.deep.equal({
         default: { title: 'meta1' },
         ButtonProps: { tags: ['!dev'] },
-        FromInterfaceProps: { tags: ['!dev'] },
-        FromInterfacePickProps: { tags: ['!dev'] },
-        FromInterfaceOmitProps: { tags: ['!dev'] },
+        FromTypeProps: { tags: ['!dev'] },
+        FromTypeIncludeProps: { tags: ['!dev'] },
+        FromTypeExcludeProps: { tags: ['!dev'] },
         NewButton1: {},
         NewButton2: {},
         NewButton3: {},
@@ -66,6 +66,17 @@ describe('parser', function parserTests() {
         story2: { title: 'Test2' },
         default: { title: 'Default' }
       });
+    });
+
+    it('unwraps getTypeDocs as a docs-only story for the indexer', async function unwrapsGetTypeDocs() {
+      const exported = await getExportedVariables({
+        code: `
+          import { getTypeDocs } from '@bento/storybook-addon-helpers';
+          export const Props = getTypeDocs<PropsType>({ include: ['name'] });
+        `
+      });
+
+      assume(exported.get('Props')).to.deep.equal({ tags: ['!dev'] });
     });
   });
 

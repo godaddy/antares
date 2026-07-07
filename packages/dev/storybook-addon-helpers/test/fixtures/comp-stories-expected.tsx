@@ -1,18 +1,13 @@
 import React from 'react';
-import { getComponentDocs, getInterfaceDocs, getMeta, getStory, getVariants } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getMeta, getStory, getTypeDocs, getVariants } from '@bento/storybook-addon-helpers';
 import { Button, Component as AnotherComponent, type InterfaceProps } from './comp.tsx';
-
-// getMeta
-
 const meta = {
   title: 'meta1'
 };
-
 const _meta2 = {
   title: 'meta2',
   component: Button
 };
-
 const _meta3 = {
   title: 'meta3',
   args: {
@@ -26,17 +21,13 @@ const _meta3 = {
     }
   }
 };
-
 export default meta;
-
-// Docs
-
 export const ButtonProps = {
   tags: ['!dev'],
   argTypes: {
     onClick: {
-      description: 'this is the onClick handler',
       name: 'onClick',
+      description: 'this is the onClick handler',
       required: true,
       type: {
         name: '() => void',
@@ -45,18 +36,18 @@ export const ButtonProps = {
       table: {
         defaultValue: {
           summary: null
-        }
+        },
+        category: 'Events'
       }
     }
   }
 };
-
-export const FromInterfaceProps = {
+export const FromTypeProps = {
   tags: ['!dev'],
   argTypes: {
     prop1: {
-      description: 'interface prop description',
       name: 'prop1',
+      description: 'interface prop description',
       required: true,
       type: {
         name: 'string',
@@ -69,8 +60,8 @@ export const FromInterfaceProps = {
       }
     },
     prop2: {
-      description: 'interface prop description 2',
       name: 'prop2',
+      description: 'interface prop description 2',
       required: false,
       type: {
         name: 'string',
@@ -83,8 +74,8 @@ export const FromInterfaceProps = {
       }
     },
     prop3: {
-      description: 'interface prop description 3',
       name: 'prop3',
+      description: 'interface prop description 3',
       required: false,
       type: {
         name: '() => React.ReactNode',
@@ -98,13 +89,12 @@ export const FromInterfaceProps = {
     }
   }
 };
-
-export const FromInterfacePickProps = {
+export const FromTypeIncludeProps = {
   tags: ['!dev'],
   argTypes: {
     prop1: {
-      description: 'interface prop description',
       name: 'prop1',
+      description: 'interface prop description',
       required: true,
       type: {
         name: 'string',
@@ -118,13 +108,12 @@ export const FromInterfacePickProps = {
     }
   }
 };
-
-export const FromInterfaceOmitProps = {
+export const FromTypeExcludeProps = {
   tags: ['!dev'],
   argTypes: {
     prop2: {
-      description: 'interface prop description 2',
       name: 'prop2',
+      description: 'interface prop description 2',
       required: false,
       type: {
         name: 'string',
@@ -138,25 +127,17 @@ export const FromInterfaceOmitProps = {
     }
   }
 };
-
-// getStory
-
 export const NewButton1 = {
   render: (args) => <Button {...args} />
 };
-
 export const NewButton2 = {
   args: { children: 'mundo' },
   render: (args) => <Button {...args} />
 };
-
 export const NewButton3 = {
   args: { children: 'mundo' },
   render: () => <div>override render</div>
 };
-
-// getVariants
-
 export const StylesPrimary = {
   args: {
     children: 'Primary!',
@@ -166,7 +147,6 @@ export const StylesPrimary = {
   },
   render: (args) => <Button {...args} />
 };
-
 export const StylesSecondary = {
   args: {
     style: { backgroundColor: 'red', color: 'white' },
@@ -174,7 +154,6 @@ export const StylesSecondary = {
   },
   render: (args) => <Button {...args} />
 };
-
 export const StylesCustomElement = {
   argTypes: {
     children: {
@@ -186,6 +165,4 @@ export const StylesCustomElement = {
     children: 'hola mundo!'
   }
 };
-
-// expect no variants exported
 export const NoVariants = getVariants(Button, {});

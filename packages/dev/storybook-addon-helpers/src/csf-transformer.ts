@@ -5,13 +5,16 @@ import {
   GET_COMPONENT_DOCS,
   GET_META,
   GET_STORY,
-  GET_VARIANTS,
-  GET_INTERFACE_DOCS
+  GET_TYPE_DOCS,
+  GET_VARIANTS
 } from './getters-parser.ts';
-import { extractInterfaceDoc } from './ats-extractor-interface-doc.ts';
-import { extractComponentDoc } from './ats-extractor-component-doc.ts';
-import { toTsExpression } from './ats-utils.ts';
-import { isExcludedParent } from './prop-filter.ts';
+import { toStorybookArgTypes } from './adapters/storybook.ts';
+import { extractComponentDocs } from './engine/component-type.ts';
+import { extractTypeDocs } from './engine/extract.ts';
+import { createResolver } from './engine/resolve.ts';
+import { toLiteralValue, toTsExpression } from './literal.ts';
+import { processPropsDoc } from './process.ts';
+import type { DocsOptions } from './types.ts';
 
 const RENDER_STR = 'render';
 const factory = ts.factory;
@@ -35,7 +38,7 @@ export async function csfTransformer(input: { filePath?: string; code?: string }
       transformGetStory,
       transformGetVariants,
       transformGetComponentDocs,
-      transformGetInterfaceDocs
+      transformGetTypeDocs
     ])
   ]);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
@@ -152,6 +155,19 @@ function transformGetVariants(node: ts.Node) {
 }
 
 /**
+ * Reads the docs options object literal from a getter call argument.
+ *
+ * @param node - The getter call expression.
+ * @param index - The argument index of the options object literal.
+ * @returns The parsed docs options, or an empty object when absent.
+ */
+function getDocsOptions(node: ts.CallExpression, index: number): DocsOptions<Record<string, unknown>> {
+  const argument = node.arguments[index];
+  if (!argument || !ts.isObjectLiteralExpression(argument)) return {};
+  return toLiteralValue(argument) as DocsOptions<Record<string, unknown>>;
+}
+
+/**
  * Transforms the getComponentDocs function to return the
  * component docs story object.
  * @param node - The node to transform.
@@ -159,7 +175,7 @@ function transformGetVariants(node: ts.Node) {
  *
  * @example
  * ```ts
- * export const ButtonDocs = getComponentDocs(Button);
+ * export const ButtonDocs = getComponentDocs(Button, { include: ['onClick'] });
  *
  * // transformed to:
  * export const ButtonDocs = { tags: ['!dev'], argTypes: { ... } };
@@ -168,78 +184,40 @@ function transformGetVariants(node: ts.Node) {
 function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile) {
   if (!isCallTo(node, GET_COMPONENT_DOCS) || !ts.isIdentifier(node.arguments[0])) return;
 
+  const resolver = createResolver(sourceFile.fileName || 'inline.tsx');
   const componentName = node.arguments[0].text;
-  const componentDoc = extractComponentDoc(componentName, sourceFile);
+  const rawDoc = extractComponentDocs(componentName, sourceFile, resolver);
+  const processedDoc = processPropsDoc(rawDoc, getDocsOptions(node, 1));
 
-  return toTsExpression({ tags: ['!dev'], argTypes: componentDoc.argTypes });
+  return toTsExpression(toStorybookArgTypes(processedDoc));
 }
 
 /**
- * Transforms the getInterfaceDocs function to return the
- * interface docs story object.
+ * Transforms the getTypeDocs function to return the
+ * type docs story object.
  * @param node - The node to transform.
  * @returns The transformed node.
  *
  * @example
  * ```ts
  * import { type ButtonProps } from './button.tsx';
- * export const ButtonDocs = getInterfaceDocs<ButtonProps>();
+ * export const ButtonDocs = getTypeDocs<ButtonProps>({ include: ['onClick'] });
  *
  * // transformed to:
  * export const ButtonDocs = { tags: ['!dev'], argTypes: { ... } };
  * ```
  */
-function transformGetInterfaceDocs(node: ts.Node, sourceFile: ts.SourceFile): ts.Expression | undefined {
-  if (!isCallTo(node, GET_INTERFACE_DOCS) || node.typeArguments?.length !== 1) return;
+function transformGetTypeDocs(node: ts.Node, sourceFile: ts.SourceFile): ts.Expression | undefined {
+  if (!isCallTo(node, GET_TYPE_DOCS) || node.typeArguments?.length !== 1) return;
 
   const typeArg = node.typeArguments[0];
-  if (!ts.isTypeReferenceNode(typeArg) || !ts.isIdentifier(typeArg.typeName)) return undefined;
+  if (!ts.isTypeReferenceNode(typeArg) || !ts.isIdentifier(typeArg.typeName)) return;
 
-  const interfaceName = typeArg.typeName.text;
+  const resolver = createResolver(sourceFile.fileName || 'inline.tsx');
+  const rawDoc = extractTypeDocs(typeArg.typeName.text, sourceFile, resolver);
+  const processedDoc = processPropsDoc(rawDoc, getDocsOptions(node, 0));
 
-  if (typeArg.typeArguments && typeArg.typeArguments.length >= 2) {
-    const baseTypeArg = typeArg.typeArguments[0];
-    const keysArg = typeArg.typeArguments[1];
-
-    if (ts.isTypeReferenceNode(baseTypeArg) && ts.isIdentifier(baseTypeArg.typeName)) {
-      if (interfaceName === 'Pick') return filterInterfaceArgTypes(baseTypeArg, keysArg, sourceFile, 'pick');
-      if (interfaceName === 'Omit') return filterInterfaceArgTypes(baseTypeArg, keysArg, sourceFile, 'omit');
-    }
-  }
-
-  return toTsExpression({
-    tags: ['!dev'],
-    argTypes: extractInterfaceDoc(interfaceName, sourceFile, {
-      propFilter: (prop) => !isExcludedParent(prop.parent.fileName)
-    }).argTypes
-  });
-}
-
-/**
- * Filters argTypes from an interface based on Pick or Omit semantics.
- *
- * @param baseTypeArg - The base type reference node for the interface
- * @param keysArg - The union type node containing the keys to pick or omit
- * @param sourceFile - The TypeScript source file
- * @param mode - Whether to pick or omit the specified keys
- * @returns A TypeScript expression with filtered argTypes
- */
-function filterInterfaceArgTypes(
-  baseTypeArg: ts.TypeReferenceNode,
-  keysArg: ts.TypeNode,
-  sourceFile: ts.SourceFile,
-  mode: 'pick' | 'omit'
-): ts.Expression {
-  const interfaceDoc = extractInterfaceDoc((baseTypeArg.typeName as ts.Identifier).text, sourceFile, {
-    propFilter: (prop) => !isExcludedParent(prop.parent.fileName)
-  });
-  const keys = extractUnionKeys(keysArg);
-  const entries = Object.entries(interfaceDoc.argTypes);
-  const filtered =
-    mode === 'pick'
-      ? Object.fromEntries(entries.filter(([k]) => keys.includes(k)))
-      : Object.fromEntries(entries.filter(([k]) => !keys.includes(k)));
-  return toTsExpression({ tags: ['!dev'], argTypes: filtered });
+  return toTsExpression(toStorybookArgTypes(processedDoc));
 }
 
 /**
@@ -293,26 +271,6 @@ function upsertObjectProp(
     [...obj.properties, ts.factory.createPropertyAssignment(propName, valueExpr)],
     true
   );
-}
-
-/**
- * Extracts string literal keys from a union type like 'prop1' | 'prop2'
- */
-function extractUnionKeys(typeNode: ts.TypeNode): string[] {
-  const keys: string[] = [];
-
-  if (ts.isUnionTypeNode(typeNode)) {
-    for (const type of typeNode.types) {
-      if (ts.isLiteralTypeNode(type) && ts.isStringLiteral(type.literal)) {
-        keys.push(type.literal.text);
-      }
-    }
-  } else if (ts.isLiteralTypeNode(typeNode) && ts.isStringLiteral(typeNode.literal)) {
-    // Handle single key: 'prop1'
-    keys.push(typeNode.literal.text);
-  }
-
-  return keys;
 }
 
 /**

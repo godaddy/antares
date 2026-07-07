@@ -1,13 +1,13 @@
 import ts from 'typescript';
 import { readFile } from 'node:fs/promises';
 import camelCase from 'camelcase';
-import { toLiteralValue } from './ats-utils.ts';
+import { toLiteralValue } from './literal.ts';
 
 export const GET_META = 'getMeta';
 export const GET_STORY = 'getStory';
 export const GET_VARIANTS = 'getVariants';
 export const GET_COMPONENT_DOCS = 'getComponentDocs';
-export const GET_INTERFACE_DOCS = 'getInterfaceDocs';
+export const GET_TYPE_DOCS = 'getTypeDocs';
 
 /**
  * Extract exported variables from a TypeScript file
@@ -109,7 +109,7 @@ function unwrapInitializer(expr: ts.Expression): ts.Expression {
 
   if (callee === GET_META && expr.arguments.length === 1) return unwrapInitializer(expr.arguments[0]);
 
-  if (callee === GET_COMPONENT_DOCS || callee === GET_INTERFACE_DOCS) {
+  if (callee === GET_COMPONENT_DOCS || callee === GET_TYPE_DOCS) {
     return ts.factory.createObjectLiteralExpression([
       ts.factory.createPropertyAssignment(
         'tags',

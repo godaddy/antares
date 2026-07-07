@@ -52,6 +52,24 @@ describe('csf-transformer', function csfTransformerTests() {
     assume(await csfTransformer({})).to.equals('');
   });
 
+  it('transforms getTypeDocs with options from code strings', async function transformTypeDocsCode() {
+    const code = `
+      import { getTypeDocs } from '@bento/storybook-addon-helpers';
+      interface Props {
+        /** label description */
+        label: string;
+        hidden?: boolean;
+      }
+      export const PropsDocs = getTypeDocs<Props>({ include: ['label'] });
+    `;
+
+    const actual = await csfTransformer({ code });
+
+    assume(actual.includes('"label"')).equals(true);
+    assume(actual.includes('"hidden"')).equals(false);
+    assume(actual.includes('"!dev"')).equals(true);
+  });
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
