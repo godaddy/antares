@@ -6,7 +6,6 @@ description: An in-flow collapsible panel that expands and collapses along one a
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './inline-drawer.stories.tsx';
 import DefaultExample from './examples/default.tsx?raw';
-import PlacementsExample from './examples/placements.tsx?raw';
 import SidebarNavExample from './examples/sidebar-nav.tsx?raw';
 import ControlledExample from './examples/controlled.tsx?raw';
 
@@ -44,13 +43,6 @@ The panel toggles when the trigger is pressed, pushing adjacent content as it ex
 
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
-
-### Placements
-
-`placement` selects the collapse axis. `left`/`right` collapse horizontally; `top`/`bottom` collapse vertically.
-
-<Story of={Stories.Placements} inline />
-<Source language="tsx" code={PlacementsExample} />
 
 ### Sidebar Navigation (peek)
 

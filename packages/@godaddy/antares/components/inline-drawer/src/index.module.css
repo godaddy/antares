@@ -5,6 +5,13 @@
 
 /* ---- Peek mode (minSize set): the wrapper animates between min and max size,
    and the panel content stays visible the whole time. ---- */
+
+/* Allow animating to/from intrinsic sizes (min-content/max-content) where
+   supported (Chrome 129+); other browsers snap. */
+.inlineDrawer[data-peek] {
+  interpolate-size: allow-keywords;
+}
+
 .inlineDrawer[data-peek]:where([data-placement='left'], [data-placement='right']) {
   inline-size: var(--_min-size);
   transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);

@@ -1,7 +1,6 @@
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
-import { PlacementsExample } from '../examples/placements.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/inline-drawer-playground.tsx';
 import { RefForwardingExample, drawerRef, panelRef } from '../examples/ref-forwarding.tsx';
@@ -91,18 +90,18 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders SidebarNavExample with minSize panel visible when collapsed', async function sidebarNav() {
-      const { getByRole, getByText } = await render(<SidebarNavExample />);
+    it('renders SidebarNavExample with peek links visible when collapsed', async function sidebarNav() {
+      const { getByRole } = await render(<SidebarNavExample />);
 
       const trigger = getByRole('button', { name: 'Menu' }).query();
       assume(trigger?.getAttribute('aria-expanded')).equals('true');
-      assume(getByText('Home').query()).is.not.equal(null);
+      assume(getByRole('link', { name: 'Dashboard' }).query()).is.not.equal(null);
 
       await getByRole('button', { name: 'Menu' }).click();
 
       await vi.waitFor(async function collapsed() {
         assume(trigger?.getAttribute('aria-expanded')).equals('false');
-        assume(getByText('Home').query()).is.not.equal(null);
+        assume(getByRole('link', { name: 'Dashboard' }).query()).is.not.equal(null);
       });
 
       await getByRole('button', { name: 'Menu' }).click();
@@ -113,7 +112,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('peek panel stays accessible and is wired to the trigger', async function minSizeA11y() {
-      const { getByRole, getByText } = await render(<SidebarNavExample />);
+      const { getByRole } = await render(<SidebarNavExample />);
 
       await getByRole('button', { name: 'Menu' }).click();
       await vi.waitFor(async function collapsed() {
@@ -121,12 +120,10 @@ describe('@godaddy/antares', function antares() {
       });
 
       const trigger = getByRole('button', { name: 'Menu' }).query();
-      const panel = getByText('Home').query()?.closest('[role="group"]') as HTMLElement | null;
+      const panel = getByRole('link', { name: 'Dashboard' }).query()?.closest('[role="group"]') as HTMLElement | null;
 
       assume(panel).is.not.equal(null);
       assume(panel?.getAttribute('aria-hidden')).equals(null);
-      // Trigger's aria-controls points at the always-visible peek region, and the
-      // region is labelled by the trigger.
       assume(trigger?.getAttribute('aria-controls')).equals(panel?.getAttribute('id'));
       assume(panel?.getAttribute('aria-labelledby')).equals(trigger?.getAttribute('id'));
     });
@@ -155,20 +152,6 @@ describe('@godaddy/antares', function antares() {
       (trigger as HTMLElement)?.click();
 
       assume(trigger?.getAttribute('aria-expanded')).equals('false');
-    });
-
-    it('toggles a top-placement drawer in PlacementsExample', async function placementsTop() {
-      const { getByRole } = await render(<PlacementsExample />);
-
-      const trigger = getByRole('button', { name: 'top' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-
-      await getByRole('button', { name: 'top' }).click();
-      await vi.waitFor(async function collapsed() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-      });
-
-      assume(document.querySelector('[data-placement="top"]')).is.not.equal(null);
     });
 
     it('bottom placement expands vertically', async function bottomPlacement() {

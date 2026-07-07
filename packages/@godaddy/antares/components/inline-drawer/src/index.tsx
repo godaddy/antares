@@ -57,6 +57,8 @@ export interface InlineDrawerTriggerProps {
   children?: ReactNode;
   /** Additional CSS class. */
   className?: string;
+  /** Accessible name for the trigger. Set this when the trigger is icon-only. */
+  'aria-label'?: string;
 }
 
 /** Props for the {@link InlineDrawerPanel} component. */
@@ -110,14 +112,12 @@ export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(functi
  * @param props - {@link InlineDrawerTriggerProps}
  */
 export const InlineDrawerTrigger = function InlineDrawerTrigger(props: InlineDrawerTriggerProps) {
-  const { children, className } = props;
+  const { children, className, 'aria-label': ariaLabel } = props;
   const { triggerId, panelId, isPeek } = useContext(InlineDrawerContext);
-  // Peek mode renders a plain region (not RAC's DisclosurePanel), so we thread
-  // aria-controls -> our region id ourselves. In default mode RAC wires it.
   const peekProps = isPeek ? { id: triggerId, 'aria-controls': panelId } : {};
   return (
     <RACHeading className={cx(styles.trigger, className)}>
-      <RACButton slot="trigger" className={styles.triggerButton} {...peekProps}>
+      <RACButton slot="trigger" className={styles.triggerButton} aria-label={ariaLabel} {...peekProps}>
         {children}
       </RACButton>
     </RACHeading>

@@ -2,6 +2,7 @@ import {
   InlineDrawer,
   InlineDrawerTrigger,
   InlineDrawerPanel,
+  Box,
   Text,
   type InlineDrawerPlacement
 } from '@godaddy/antares';
@@ -19,7 +20,9 @@ export function PlaygroundExample({ placement, animate, minSize, maxSize, isDisa
     <InlineDrawer placement={placement} animate={animate} minSize={minSize} maxSize={maxSize} isDisabled={isDisabled}>
       <InlineDrawerTrigger>Toggle panel</InlineDrawerTrigger>
       <InlineDrawerPanel>
-        <Text>Playground content. Adjust props in the controls panel.</Text>
+        <Box padding="md" style={{ inlineSize: 220, whiteSpace: 'nowrap' }}>
+          <Text>Playground content.</Text>
+        </Box>
       </InlineDrawerPanel>
     </InlineDrawer>
   );
