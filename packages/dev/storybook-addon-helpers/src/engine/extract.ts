@@ -94,9 +94,8 @@ function extractFromHeritageType(
 ): PropDoc[] {
   if (!ts.isIdentifier(typeExpression.expression)) return [];
 
-  const symbol = resolver.resolveSymbol(typeExpression.expression.text, sourceFile);
-  if (!symbol) return [];
-  return extractFromDeclaration(symbol.declaration, symbol.sourceFile, resolver, active);
+  const typeNode = ts.factory.createTypeReferenceNode(typeExpression.expression, typeExpression.typeArguments);
+  return extractFromTypeNode(typeNode, sourceFile, resolver, active);
 }
 
 function extractMembers(

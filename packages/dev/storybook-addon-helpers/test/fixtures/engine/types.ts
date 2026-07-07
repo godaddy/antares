@@ -25,6 +25,19 @@ export interface BaseProps {
   b: number;
 }
 
+export interface SiblingBaseProps {
+  a: string;
+  b: number;
+}
+
+export interface PickExtendsProps extends Pick<SiblingBaseProps, 'a'> {
+  ownPick: string;
+}
+
+export interface OmitExtendsProps extends Omit<SiblingBaseProps, 'b'> {
+  ownOmit: string;
+}
+
 export type LiteralProps = {
   /** type literal description */
   literal?: 'a' | 'b';

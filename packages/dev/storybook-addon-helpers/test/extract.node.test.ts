@@ -85,6 +85,11 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
     expect(extract('SiblingUtilityProps').props.map((prop) => prop.name)).toEqual(['a', 'b']);
   });
 
+  it('extracts utility wrapper heritage props', function extractsUtilityHeritage() {
+    expect(extract('PickExtendsProps').props.map((prop) => prop.name)).toEqual(['a', 'ownPick']);
+    expect(extract('OmitExtendsProps').props.map((prop) => prop.name)).toEqual(['a', 'ownOmit']);
+  });
+
   it('keeps base props for unsupported utility key expressions', function extractsUnsupportedUtilityKeys() {
     expect(extract('UnsupportedKeyofPickProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
     expect(extract('UnsupportedKeyofOmitProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
