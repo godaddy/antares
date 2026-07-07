@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import ts from 'typescript';
-import { extractComponentDoc } from '../packages/dev/storybook-addon-helpers/src/ats-extractor-component-doc.ts';
-import { extractInterfaceDoc } from '../packages/dev/storybook-addon-helpers/src/ats-extractor-interface-doc.ts';
+import { extractComponentDocs } from '../packages/dev/storybook-addon-helpers/src/engine/component-type.ts';
+import { extractTypeDocs } from '../packages/dev/storybook-addon-helpers/src/engine/extract.ts';
+import { createResolver } from '../packages/dev/storybook-addon-helpers/src/engine/resolve.ts';
 import { GET_COMPONENT_DOCS } from '../packages/dev/storybook-addon-helpers/src/getters-parser.ts';
-import { resolveImport } from '../packages/dev/storybook-addon-helpers/src/ats-utils.ts';
-import type { ItemDoc } from '../packages/dev/storybook-addon-helpers/src/ats-utils.ts';
+import type { PropDoc } from '../packages/dev/storybook-addon-helpers/src/types.ts';
 
 const mdxPath = 'README.mdx';
 const outPath = 'README.md';
@@ -101,17 +100,15 @@ async function replaceSourceComponents(
 }
 
 /**
- * Generate prop table markdown from argTypes (Storybook docgen format).
- * Converts ItemDoc format from react-docgen-typescript to markdown table.
+ * Generate prop table markdown from the neutral prop-docs model.
  */
-function generatePropTableFromArgTypes(argTypes: ItemDoc): string {
-  const entries = Object.values(argTypes || {}).filter((v): v is NonNullable<typeof v> => v != null);
-  if (entries.length === 0) return '';
+function generatePropTable(props: PropDoc[]): string {
+  if (props.length === 0) return '';
 
   const header = '\n| Prop | Type | Required | Description |\n|------|------|----------|------------|\n';
 
-  const rows = entries.map(function formatArgTypeRow(prop) {
-    const type = (prop.type?.name || 'any').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+  const rows = props.map(function formatPropRow(prop) {
+    const type = (prop.type || 'any').replace(/\|/g, '\\|').replace(/\n/g, ' ');
     const req = prop.required ? 'Yes' : 'No';
     const desc = prop.description || '';
     return `| \`${prop.name}\` | \`${type}\` | ${req} | ${desc} |\n`;
@@ -127,7 +124,7 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
   try {
     const storyContent = await readFile(storyFilePath, 'utf-8');
     const componentDocRegex = new RegExp(
-      `export\\s+const\\s+${propName}\\s*=\\s*${GET_COMPONENT_DOCS}\\(([^)]+)\\)`,
+      `export\\s+const\\s+${propName}\\s*=\\s*${GET_COMPONENT_DOCS}\\(\\s*([\\w$.]+)`,
       's'
     );
     const componentDocMatch = storyContent.match(componentDocRegex);
@@ -136,29 +133,20 @@ async function extractPropTable(propName: string, storyFilePath: string, sourceD
 
     const componentName = componentDocMatch[1].trim();
 
-    // Use Storybook's react-docgen-typescript extractor
-    const storySourceFile = ts.createSourceFile(
-      storyFilePath,
-      storyContent,
-      ts.ScriptTarget.Latest,
-      true,
-      ts.ScriptKind.TSX
-    );
-    const { argTypes } = extractComponentDoc(componentName, storySourceFile);
-    const tableFromDocgen = generatePropTableFromArgTypes(argTypes);
+    // Use the shallow AST engine to resolve the component's props.
+    const resolver = createResolver(storyFilePath);
+    const storySourceFile = resolver.getSourceFile(storyFilePath);
+
+    const componentDoc = extractComponentDocs(componentName, storySourceFile, resolver);
+    const tableFromComponent = generatePropTable(componentDoc.props);
 
     // If component extraction succeeded, return the table
-    if (tableFromDocgen) return tableFromDocgen;
+    if (tableFromComponent) return tableFromComponent;
 
-    // Fallback to interface extraction when component extraction fails
-    // (e.g., for wrapped components that react-docgen-typescript can't parse)
-    // First, resolve the component's source file to find where the interface might be
-    const resolved = resolveImport(componentName, storySourceFile);
-    if (resolved && !resolved.sameFile) {
-      const propsInterfaceName = `${componentName}Props`;
-      const { argTypes: interfaceArgTypes } = extractInterfaceDoc(propsInterfaceName, resolved.targetSourceFile);
-      return generatePropTableFromArgTypes(interfaceArgTypes);
-    }
+    // Fallback to the conventional `${componentName}Props` type when the
+    // component signature can't be resolved (e.g. wrapped components).
+    const typeDoc = extractTypeDocs(`${componentName}Props`, storySourceFile, resolver);
+    return generatePropTable(typeDoc.props);
   } catch {
     // Failed to process
   }
