@@ -18,12 +18,12 @@ export function extractFromTypeNode(
   typeNode: ts.TypeNode,
   sourceFile: ts.SourceFile,
   resolver: Resolver,
-  visited = new Set<string>()
+  active = new Set<string>()
 ): PropDoc[] {
   if (ts.isTypeLiteralNode(typeNode)) return extractMembers(typeNode.members, sourceFile, 'anonymous');
 
   if (ts.isIntersectionTypeNode(typeNode)) {
-    return typeNode.types.flatMap((node) => extractFromTypeNode(node, sourceFile, resolver, visited));
+    return typeNode.types.flatMap((node) => extractFromTypeNode(node, sourceFile, resolver, active));
   }
 
   if (ts.isTypeReferenceNode(typeNode) && ts.isIdentifier(typeNode.typeName)) {
@@ -31,13 +31,13 @@ export function extractFromTypeNode(
     const innerType = getUtilityInnerType(typeName, typeNode.typeArguments ?? []);
 
     if (innerType) {
-      const props = extractFromTypeNode(innerType, sourceFile, resolver, visited);
+      const props = extractFromTypeNode(innerType, sourceFile, resolver, active);
       return applyUtilityType(typeName, props, typeNode.typeArguments ?? []) ?? props;
     }
 
     const symbol = resolver.resolveSymbol(typeName, sourceFile);
     if (!symbol) return [];
-    return extractFromDeclaration(symbol.declaration, symbol.sourceFile, resolver, visited);
+    return extractFromDeclaration(symbol.declaration, symbol.sourceFile, resolver, active);
   }
 
   return [];
@@ -47,35 +47,56 @@ function extractFromDeclaration(
   declaration: ts.Declaration,
   sourceFile: ts.SourceFile,
   resolver: Resolver,
-  visited: Set<string>
+  active: Set<string>
 ): PropDoc[] {
   if (ts.isInterfaceDeclaration(declaration)) {
     const key = `${sourceFile.fileName}:${declaration.name.text}`;
-    if (visited.has(key)) return [];
-    visited.add(key);
+    if (active.has(key)) return [];
+    active.add(key);
 
-    const inherited =
-      declaration.heritageClauses?.flatMap((clause) =>
-        clause.types.flatMap(function extractHeritageType(typeExpression) {
-          const typeNode = ts.factory.createTypeReferenceNode(
-            typeExpression.expression.getText(sourceFile),
-            typeExpression.typeArguments
-          );
-          return extractFromTypeNode(typeNode, sourceFile, resolver, visited);
-        })
-      ) ?? [];
+    try {
+      const inherited =
+        declaration.heritageClauses?.flatMap((clause) =>
+          clause.types.flatMap(function extractHeritageType(typeExpression) {
+            return extractFromHeritageType(typeExpression, sourceFile, resolver, active);
+          })
+        ) ?? [];
 
-    return [...inherited, ...extractMembers(declaration.members, sourceFile, declaration.name.text)];
+      return [...inherited, ...extractMembers(declaration.members, sourceFile, declaration.name.text)];
+    } finally {
+      active.delete(key);
+    }
   }
 
   if (ts.isTypeAliasDeclaration(declaration)) {
-    return extractFromTypeNode(declaration.type, sourceFile, resolver, visited).map((prop) => ({
-      ...prop,
-      declaringType: prop.declaringType === 'anonymous' ? declaration.name.text : prop.declaringType
-    }));
+    const key = `${sourceFile.fileName}:${declaration.name.text}`;
+    if (active.has(key)) return [];
+    active.add(key);
+
+    try {
+      return extractFromTypeNode(declaration.type, sourceFile, resolver, active).map((prop) => ({
+        ...prop,
+        declaringType: prop.declaringType === 'anonymous' ? declaration.name.text : prop.declaringType
+      }));
+    } finally {
+      active.delete(key);
+    }
   }
 
   return [];
+}
+
+function extractFromHeritageType(
+  typeExpression: ts.ExpressionWithTypeArguments,
+  sourceFile: ts.SourceFile,
+  resolver: Resolver,
+  active: Set<string>
+): PropDoc[] {
+  if (!ts.isIdentifier(typeExpression.expression)) return [];
+
+  const symbol = resolver.resolveSymbol(typeExpression.expression.text, sourceFile);
+  if (!symbol) return [];
+  return extractFromDeclaration(symbol.declaration, symbol.sourceFile, resolver, active);
 }
 
 function extractMembers(

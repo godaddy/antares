@@ -20,6 +20,11 @@ export interface ChildProps extends ParentProps {
   child: number;
 }
 
+export interface BaseProps {
+  a: string;
+  b: number;
+}
+
 export type LiteralProps = {
   /** type literal description */
   literal?: 'a' | 'b';
@@ -37,6 +42,28 @@ export type OmittedProps = Omit<ChildProps, 'parent'>;
 export type PartialProps = Partial<ChildProps>;
 
 export type RequiredProps = Required<ChildProps>;
+
+export type SiblingUtilityProps = Pick<BaseProps, 'a'> & Pick<BaseProps, 'b'>;
+
+export type UnsupportedKeyofPickProps = Pick<ChildProps, keyof ChildProps>;
+
+export type UnsupportedKeyofOmitProps = Omit<ChildProps, keyof ParentProps>;
+
+export type AliasCycleAProps = AliasCycleBProps & {
+  a: string;
+};
+
+export type AliasCycleBProps = AliasCycleAProps & {
+  b: string;
+};
+
+export interface MixedCycleInterfaceProps extends MixedCycleAliasProps {
+  mixedInterface: boolean;
+}
+
+export type MixedCycleAliasProps = MixedCycleInterfaceProps & {
+  mixedAlias: string;
+};
 
 export type UsesAliasProps = AliasProps & {
   ownAlias: boolean;

@@ -5,6 +5,7 @@ import { extractFromTypeNode, extractTypeDocs } from '../src/engine/extract.ts';
 import { createResolver } from '../src/engine/resolve.ts';
 
 const fixturePath = path.join(__dirname, 'fixtures/engine/types.ts');
+const importedFixturePath = path.join(__dirname, 'fixtures/engine/imported.ts');
 
 function extract(name: string) {
   const resolver = createResolver(fixturePath);
@@ -45,6 +46,19 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
   it('extracts inherited and imported interface properties', function extractsExtends() {
     expect(extract('UsesImportedProps').props.map((prop) => prop.name)).toEqual(['imported', 'own']);
     expect(extract('ChildProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
+    expect(extract('UsesImportedProps').props[0]).toMatchObject({
+      name: 'imported',
+      required: true,
+      sourceFile: importedFixturePath,
+      declaringType: 'ImportedProps'
+    });
+    expect(extract('ChildProps').props[0]).toMatchObject({
+      name: 'parent',
+      required: false,
+      description: 'parent description',
+      sourceFile: fixturePath,
+      declaringType: 'ParentProps'
+    });
   });
 
   it('extracts type literals and intersections', function extractsAliases() {
@@ -53,7 +67,9 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
   });
 
   it('resolves utility wrappers inside type aliases', function extractsUtilities() {
-    expect(extract('PickedProps').props).toMatchObject([{ name: 'parent', required: false }]);
+    expect(extract('PickedProps').props).toMatchObject([
+      { name: 'parent', required: false, declaringType: 'ParentProps', sourceFile: fixturePath }
+    ]);
     expect(extract('OmittedProps').props.map((prop) => prop.name)).toEqual(['child']);
     expect(extract('PartialProps').props).toMatchObject([
       { name: 'parent', required: false },
@@ -63,6 +79,35 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
       { name: 'parent', required: true },
       { name: 'child', required: true }
     ]);
+  });
+
+  it('keeps sibling utility branches independent', function extractsSiblingUtilities() {
+    expect(extract('SiblingUtilityProps').props.map((prop) => prop.name)).toEqual(['a', 'b']);
+  });
+
+  it('keeps base props for unsupported utility key expressions', function extractsUnsupportedUtilityKeys() {
+    expect(extract('UnsupportedKeyofPickProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
+    expect(extract('UnsupportedKeyofOmitProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
+  });
+
+  it('does not overflow on type alias cycles', function extractsAliasCycles() {
+    let doc: ReturnType<typeof extract> | undefined;
+
+    expect(function extractAliasCycle() {
+      doc = extract('AliasCycleAProps');
+    }).not.toThrow();
+
+    expect(doc?.props.map((prop) => prop.name)).toContain('a');
+  });
+
+  it('does not overflow on mixed interface and type alias cycles', function extractsMixedCycles() {
+    let doc: ReturnType<typeof extract> | undefined;
+
+    expect(function extractMixedCycle() {
+      doc = extract('MixedCycleInterfaceProps');
+    }).not.toThrow();
+
+    expect(doc?.props.map((prop) => prop.name)).toContain('mixedInterface');
   });
 });
 

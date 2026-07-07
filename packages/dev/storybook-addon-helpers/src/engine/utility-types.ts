@@ -8,11 +8,13 @@ export function applyUtilityType(
 ): PropDoc[] | undefined {
   if (name === 'Pick' && typeArgs.length >= 2) {
     const keys = extractStringKeys(typeArgs[1]);
+    if (!keys) return undefined;
     return props.filter((prop) => keys.has(prop.name));
   }
 
   if (name === 'Omit' && typeArgs.length >= 2) {
     const keys = extractStringKeys(typeArgs[1]);
+    if (!keys) return undefined;
     return props.filter((prop) => !keys.has(prop.name));
   }
 
@@ -32,20 +34,24 @@ export function getUtilityInnerType(name: string, typeArgs: readonly ts.TypeNode
   return undefined;
 }
 
-function extractStringKeys(typeNode: ts.TypeNode): Set<string> {
+function extractStringKeys(typeNode: ts.TypeNode): Set<string> | undefined {
   const keys = new Set<string>();
 
   if (ts.isUnionTypeNode(typeNode)) {
-    for (const type of typeNode.types) addStringKey(type, keys);
+    for (const type of typeNode.types) {
+      if (!addStringKey(type, keys)) return undefined;
+    }
     return keys;
   }
 
-  addStringKey(typeNode, keys);
-  return keys;
+  return addStringKey(typeNode, keys) ? keys : undefined;
 }
 
-function addStringKey(typeNode: ts.TypeNode, keys: Set<string>): void {
+function addStringKey(typeNode: ts.TypeNode, keys: Set<string>): boolean {
   if (ts.isLiteralTypeNode(typeNode) && ts.isStringLiteral(typeNode.literal)) {
     keys.add(typeNode.literal.text);
+    return true;
   }
+
+  return false;
 }
