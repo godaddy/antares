@@ -16,7 +16,11 @@ Approved design: `docs/superpowers/specs/2026-07-06-storybook-addon-helpers-prop
 
 ## Checkpoint Status
 
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-06
+
+**Status: COMPLETE.** All 10 tasks implemented, reviewed, and verified. Plus a
+post-plan cleanup pass (dead fixtures + `src/storybook/` reorg) not in the
+original task list.
 
 **Completed and reviewed:**
 - Task 1: Public model, processing, and Storybook adapter.
@@ -28,31 +32,56 @@ Approved design: `docs/superpowers/specs/2026-07-06-storybook-addon-helpers-prop
   - `e3e1e8900 fix(storybook-addon-helpers): harden resolver module boundaries`
   - `90ebed9f0 fix(storybook-addon-helpers): resolve local export lists`
   - `e817d3a06 fix(storybook-addon-helpers): resolve imported export lists and tsconfig paths`
-
-**Implemented, pending final review:**
-- Task 3: Core type extraction engine.
+- Task 3: Core type extraction engine. Reviewed `e817d3a06..674a2d157` — spec-compliant and hardened beyond the plan's starter code (circular-ref `active` set with try/finally, graceful `Pick`/`Omit` degradation, `normalizeProps` override semantics).
   - `8f9b109ba feat(storybook-addon-helpers): extract prop docs from type nodes`
   - `68d1a6995 fix(storybook-addon-helpers): harden type extraction recursion`
   - `1cc0d23a8 fix(storybook-addon-helpers): extract utility heritage props`
   - `674a2d157 fix(storybook-addon-helpers): normalize duplicate extracted props`
-- Before continuing to Task 4, run the Task 3 spec and code-quality review over:
-  - Base: `e817d3a06`
-  - Head: `674a2d157`
+- Task 4: Component props type resolution.
+  - `a34f5fd75 feat(storybook-addon-helpers): resolve component props types`
+- Task 5: Getter runtime types (`getTypeDocs`, options on `getComponentDocs`).
+  - `0981c9fd8 feat(storybook-addon-helpers): add type-safe docs getter options`
+- Task 6: Getter parser and CSF transformer wired to the AST engine.
+  - `4dc343208 feat(storybook-addon-helpers): wire ast docs into csf transform`
+- Task 7: Delete old react-docgen extractor path (added `literal.node.test.ts` for per-file coverage; adjusted `stories-indexer` test).
+  - `cce083c0d refactor(storybook-addon-helpers): remove react docgen extractor path`
+- Task 8: Consumer migration to `getTypeDocs` (+ `scripts/compile-readme.ts` migrated to the new engine).
+  - `583bf8541 refactor(storybook-addon-helpers): migrate docs stories to getTypeDocs`
+- Task 9: Remove `react-docgen-typescript` dependency and sync lockfile.
+  - `254d6ce75 chore(storybook-addon-helpers): remove react docgen dependency`
+- Task 10: Final verification. Surfaced and fixed a real defect — the emitted
+  arg-type object keys were bare identifiers, so newly-included ARIA props
+  (`aria-label`, etc.) produced invalid JS and broke the Storybook build; keys
+  are now quoted.
+  - `57a1c04c6 fix(storybook-addon-helpers): quote emitted arg type keys`
 
-**Latest known verification from Task 3 implementer:**
-- `npx nx run @bento/storybook-addon-helpers:test --no-tui --skipNxCache -- test/extract.node.test.ts --coverage.enabled=false` passed with 12 tests.
-- `npx nx run @bento/storybook-addon-helpers:typecheck --no-tui --skipNxCache` passed.
-- `npx nx run @bento/storybook-addon-helpers:lint --no-tui --skipNxCache` passed.
-- `npx nx run @bento/storybook-addon-helpers:test --no-tui --skipNxCache` passed with 82 tests.
+**Post-plan cleanup (requested after Task 10):**
+- Removed 6 orphaned fixtures under `test/fixtures/{components,interfaces}/` (only used by the deleted `ats-extractor-*` tests) and fixed `getVariants`' unused param.
+  - `501ce0a09 chore(storybook-addon-helpers): remove orphaned ats extractor fixtures`
+- Moved the Storybook glue (getters, getters-parser, csf-transformer, plugin, stories-indexer, literal) into `src/storybook/` per the design spec's intended layout; `engine/`, `process.ts`, `adapters/`, `types.ts` stay as the neutral core.
+  - `72ee9e1b8 refactor(storybook-addon-helpers): group storybook glue under src/storybook`
 
-**Do next:**
-1. Review Task 3 spec compliance for `e817d3a06..674a2d157`.
-2. Review Task 3 code quality for `e817d3a06..674a2d157`.
-3. If both pass, mark Task 3 complete and start Task 4: Component Props Type Resolution.
+**Final verification (all green):**
+- `npx nx run @bento/storybook-addon-helpers:test --no-tui --skipNxCache` — 67 tests pass, per-file coverage thresholds met.
+- `npx nx run @bento/storybook-addon-helpers:typecheck --no-tui --skipNxCache` — passed.
+- `npx nx run @bento/storybook-addon-helpers:lint --no-tui --skipNxCache` — passed.
+- `npx nx run @bento/storybook-addon-helpers:build --no-tui --skipNxCache` — passed.
+- `npx nx run docs:build:storybook --no-tui --skipNxCache` — passed (exercises the new transformer over all migrated stories end-to-end).
+
+**Known behavioral change (per approved design):** the new engine no longer
+filters inherited DOM/ARIA props, so `getComponentDocs(Comp)` without
+`include`/`exclude` now renders the fuller inherited-prop set. Authors narrow it
+via options.
+
+**Deliberately left untouched (out of scope):** `apps/site/lib/filtered-generator.ts`
+and `apps/site/lib/storybook-addon-helpers-shim.ts` — both contain now-stale
+comments referencing the removed `prop-filter.ts` / `react-docgen-typescript`.
 
 **Known unrelated worktree items to ignore:**
 - `.claude/.settings.json.lock`
-- This plan file is untracked under `docs/superpowers/plans/` until committed.
+
+**Do next:** Nothing — implementation complete. Branch `refactor-storybook-helpers`
+kept as-is for later integration (PR/merge).
 
 ## File Structure
 
