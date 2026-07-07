@@ -1,6 +1,6 @@
 import { expectTypeOf, it, describe } from 'vitest';
 import type { Meta, StoryObj } from '@storybook/react';
-import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs } from '../src/getters.ts';
+import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs } from '../src/storybook/getters.ts';
 
 function TestComponent(props: { size: string; disabled?: boolean }) {
   return <div>Test {JSON.stringify(props)}</div>;

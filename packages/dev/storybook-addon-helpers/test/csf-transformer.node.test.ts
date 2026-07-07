@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 import ts from 'typescript';
 import assume from 'assume';
-import { csfTransformer } from '../src/csf-transformer.ts';
+import { csfTransformer } from '../src/storybook/csf-transformer.ts';
 
 /**
  * Formats the code using Biome.

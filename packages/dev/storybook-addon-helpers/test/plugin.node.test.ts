@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('../src/csf-transformer.ts', () => ({
+vi.mock('../src/storybook/csf-transformer.ts', () => ({
   csfTransformer: vi.fn().mockResolvedValue('mocked-csf-output')
 }));
 
-import { generateCSFPlugin } from '../src/plugin.ts';
-import { csfTransformer } from '../src/csf-transformer.ts';
+import { generateCSFPlugin } from '../src/storybook/plugin.ts';
+import { csfTransformer } from '../src/storybook/csf-transformer.ts';
 
 describe('generateCSFPlugin', function pluginTests() {
   it('should return a plugin with the correct name', function testPluginName() {

@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path';
 import { extractComponentDocs } from '../packages/dev/storybook-addon-helpers/src/engine/component-type.ts';
 import { extractTypeDocs } from '../packages/dev/storybook-addon-helpers/src/engine/extract.ts';
 import { createResolver } from '../packages/dev/storybook-addon-helpers/src/engine/resolve.ts';
-import { GET_COMPONENT_DOCS } from '../packages/dev/storybook-addon-helpers/src/getters-parser.ts';
+import { GET_COMPONENT_DOCS } from '../packages/dev/storybook-addon-helpers/src/storybook/getters-parser.ts';
 import type { PropDoc } from '../packages/dev/storybook-addon-helpers/src/types.ts';
 
 const mdxPath = 'README.mdx';

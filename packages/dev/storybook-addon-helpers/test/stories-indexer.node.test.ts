@@ -1,7 +1,7 @@
 import { describe, it } from 'vitest';
 import path from 'node:path';
 import assume from 'assume';
-import { storiesIndexer } from '../src/stories-indexer.ts';
+import { storiesIndexer } from '../src/storybook/stories-indexer.ts';
 
 describe('stories-indexer', function bento() {
   it('should return the correct story indexes for component', async function correctStoryIndexes() {

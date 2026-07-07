@@ -1,9 +1,9 @@
 import { type StorybookConfig } from '@storybook/react-vite';
 import { type Indexer } from 'storybook/internal/types';
-import { generateCSFPlugin } from './plugin.ts';
-import { storiesIndexer } from './stories-indexer.ts';
+import { generateCSFPlugin } from './storybook/plugin.ts';
+import { storiesIndexer } from './storybook/stories-indexer.ts';
 export { toStorybookArgTypes } from './adapters/storybook.ts';
-export * from './getters.ts';
+export * from './storybook/getters.ts';
 export { processPropsDoc } from './process.ts';
 export type * from './types.ts';
 

@@ -2,8 +2,8 @@ import assume from 'assume';
 import path from 'node:path';
 import ts from 'typescript';
 import { describe, it } from 'vitest';
-import { getExportedVariables, extractVariantNames } from '../src/getters-parser.ts';
-import { toTsExpression } from '../src/literal.ts';
+import { getExportedVariables, extractVariantNames } from '../src/storybook/getters-parser.ts';
+import { toTsExpression } from '../src/storybook/literal.ts';
 
 describe('parser', function parserTests() {
   describe('getExportedVariables', function getExportedVariablesTests() {

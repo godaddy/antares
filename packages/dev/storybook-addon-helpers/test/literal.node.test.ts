@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
-import { toLiteralValue, toTsExpression } from '../src/literal.ts';
+import { toLiteralValue, toTsExpression } from '../src/storybook/literal.ts';
 
 function parseExpression(code: string): ts.Expression {
   const sourceFile = ts.createSourceFile('expr.ts', `const value = ${code};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);

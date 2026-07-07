@@ -8,13 +8,13 @@ import {
   GET_TYPE_DOCS,
   GET_VARIANTS
 } from './getters-parser.ts';
-import { toStorybookArgTypes } from './adapters/storybook.ts';
-import { extractComponentDocs } from './engine/component-type.ts';
-import { extractTypeDocs } from './engine/extract.ts';
-import { createResolver } from './engine/resolve.ts';
+import { toStorybookArgTypes } from '../adapters/storybook.ts';
+import { extractComponentDocs } from '../engine/component-type.ts';
+import { extractTypeDocs } from '../engine/extract.ts';
+import { createResolver } from '../engine/resolve.ts';
 import { toLiteralValue, toTsExpression } from './literal.ts';
-import { processPropsDoc } from './process.ts';
-import type { DocsOptions } from './types.ts';
+import { processPropsDoc } from '../process.ts';
+import type { DocsOptions } from '../types.ts';
 
 const RENDER_STR = 'render';
 const factory = ts.factory;

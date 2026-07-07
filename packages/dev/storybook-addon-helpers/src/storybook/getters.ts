@@ -1,6 +1,6 @@
 import type { ComponentProps, ComponentType } from 'react';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
-import type { ComponentDocsOptions, DocsOptions } from './types.ts';
+import type { ComponentDocsOptions, DocsOptions } from '../types.ts';
 
 /**
  * Get the meta object for a Story.
@@ -72,10 +72,10 @@ export function getTypeDocs<T>(_options?: DocsOptions<T>) {
  * The CSF transformer rewrites `getVariants` calls into separate exported story
  * objects at build time; each key in `variants` becomes its own named export.
  *
- * @param component - The component to render each variant with.
+ * @param _component - The component to render each variant with (ignored at runtime).
  * @param variants - Map of variant key to StoryObj annotation.
  * @returns The variants object.
  */
-export function getVariants<T extends ComponentType<any>>(component: T, variants: Record<string, StoryObj<T>>) {
+export function getVariants<T extends ComponentType<any>>(_component: T, variants: Record<string, StoryObj<T>>) {
   return variants;
 }
