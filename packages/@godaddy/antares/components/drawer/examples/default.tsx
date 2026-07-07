@@ -5,7 +5,7 @@ export function DefaultExample() {
     <DrawerTrigger>
       <Button variant="primary">Open drawer</Button>
       <Drawer placement="right" isDismissable aria-label="Drawer">
-        <Box padding="md" style={{ background: '#eef2ff', minBlockSize: '100%' }}>
+        <Box padding="md">
           <Text>Drawer content goes here.</Text>
         </Box>
       </Drawer>

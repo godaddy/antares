@@ -3,7 +3,6 @@ import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
-import { AnimationExample } from '../examples/animation.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { RefForwardingExample } from '../examples/ref-forwarding.tsx';
 import { ClassNamePassthroughExample } from '../examples/classname-passthrough.tsx';
@@ -26,10 +25,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders PlacementsExample', function placementsExample() {
       expect(renderToString(<PlacementsExample />)).toMatchSnapshot();
-    });
-
-    it('renders AnimationExample', function animationExample() {
-      expect(renderToString(<AnimationExample />)).toMatchSnapshot();
     });
 
     it('renders DisabledExample', function disabledExample() {

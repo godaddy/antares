@@ -4,7 +4,6 @@ import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
-import { AnimationExample } from '../examples/animation.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -24,11 +23,6 @@ describe('@godaddy/antares', function antares() {
     it('placements example', async function placementsRender() {
       const { container } = await render(<PlacementsExample />);
       await expect(container).toMatchScreenshot('placements');
-    });
-
-    it('animation example', async function animationRender() {
-      const { container } = await render(<AnimationExample />);
-      await expect(container).toMatchScreenshot('animation');
     });
   });
 });

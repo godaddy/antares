@@ -36,7 +36,9 @@ const InlineDrawerContext = createContext<InlineDrawerContextValue>({
 
 /** Props for the {@link InlineDrawer} component. */
 export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'className' | 'children' | 'style'> {
-  /** Edge the drawer anchors to; selects the collapse axis. Does not flip in RTL. @default 'left' */
+  /** Edge the drawer anchors to; selects the collapse axis. `top`/`bottom` collapse
+   * vertically (height), `left`/`right` collapse horizontally (width). Does not flip
+   * in RTL. @default 'top' */
   placement?: InlineDrawerPlacement;
   /** Collapsed "peek" size. When set, the panel stays visible at this size instead of hiding. Accepts CSS values. */
   minSize?: number | string;
@@ -77,7 +79,7 @@ function toSize(value: number | string): string {
  * @param props - {@link InlineDrawerProps}
  */
 export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(function InlineDrawer(props, ref) {
-  const { placement = 'left', minSize, maxSize, animate, className, children, ...rest } = props;
+  const { placement = 'top', minSize, maxSize, animate, className, children, ...rest } = props;
   const isPeek = minSize !== undefined;
   const triggerId = useId();
   const panelId = useId();

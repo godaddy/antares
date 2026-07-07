@@ -5,7 +5,6 @@ import { DefaultExample } from './examples/default.tsx';
 import { ControlledExample } from './examples/controlled.tsx';
 import { SidebarNavExample } from './examples/sidebar-nav.tsx';
 import { PlacementsExample } from './examples/placements.tsx';
-import { AnimationExample } from './examples/animation.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/inline-drawer-playground.tsx';
 
 export default getMeta({
@@ -21,8 +20,6 @@ export const Controlled = getStory(ControlledExample);
 export const SidebarNav = getStory(SidebarNavExample);
 
 export const Placements = getStory(PlacementsExample);
-
-export const Animation = getStory(AnimationExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,

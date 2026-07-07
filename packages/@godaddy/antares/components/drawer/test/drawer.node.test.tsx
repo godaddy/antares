@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { AnimationExample } from '../examples/animation.tsx';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
@@ -70,10 +69,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders RTLExample', function rtlExample() {
       expect(renderToString(<RTLExample />)).toMatchSnapshot();
-    });
-
-    it('renders AnimationExample', function animationExample() {
-      expect(renderToString(<AnimationExample />)).toMatchSnapshot();
     });
   });
 });

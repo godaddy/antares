@@ -8,7 +8,6 @@ import * as Stories from './inline-drawer.stories.tsx';
 import DefaultExample from './examples/default.tsx?raw';
 import PlacementsExample from './examples/placements.tsx?raw';
 import SidebarNavExample from './examples/sidebar-nav.tsx?raw';
-import AnimationExample from './examples/animation.tsx?raw';
 import ControlledExample from './examples/controlled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
@@ -59,13 +58,6 @@ Set `minSize` and `maxSize` to build a sidebar that collapses to a visible rail 
 
 <Story of={Stories.SidebarNav} inline />
 <Source language="tsx" code={SidebarNavExample} />
-
-### Animation
-
-Drawers animate by default. Set `animate={false}` to disable the transition.
-
-<Story of={Stories.Animation} inline />
-<Source language="tsx" code={AnimationExample} />
 
 ### Controlled
 

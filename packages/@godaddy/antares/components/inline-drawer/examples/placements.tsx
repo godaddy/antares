@@ -8,25 +8,20 @@ import {
   type InlineDrawerPlacement
 } from '@godaddy/antares';
 
-const BG: Record<InlineDrawerPlacement, string> = {
-  left: '#eef2ff',
-  right: '#ecfdf5',
-  top: '#fef3c7',
-  bottom: '#fde2e4'
-};
-
-const PLACEMENTS: InlineDrawerPlacement[] = ['left', 'right', 'top', 'bottom'];
+const PLACEMENTS: InlineDrawerPlacement[] = ['top', 'bottom', 'left', 'right'];
 
 export function PlacementsExample() {
   return (
     <Flex direction="column" gap="md" style={{ maxInlineSize: 360 }}>
       {PLACEMENTS.map(function renderOne(placement) {
         return (
-          <InlineDrawer key={placement} placement={placement} defaultExpanded minSize={40} maxSize={160}>
+          <InlineDrawer key={placement} placement={placement} defaultExpanded minSize={44} maxSize={160}>
             <InlineDrawerTrigger>{placement}</InlineDrawerTrigger>
             <InlineDrawerPanel>
-              <Box padding="sm" style={{ background: BG[placement] }}>
-                <Text>Collapses along the {placement} axis.</Text>
+              {/* nowrap + border so horizontal (left/right) collapse clips cleanly
+                  and vertical (top/bottom) collapse reveals by height. */}
+              <Box padding="sm" style={{ whiteSpace: 'nowrap', border: '1px solid var(--bd-base)' }}>
+                <Text>{placement} axis</Text>
               </Box>
             </InlineDrawerPanel>
           </InlineDrawer>

@@ -14,7 +14,7 @@ export function ControlledExample() {
         <InlineDrawer isExpanded={expanded} onExpandedChange={setExpanded}>
           <InlineDrawerTrigger>Details</InlineDrawerTrigger>
           <InlineDrawerPanel>
-            <Box padding="md" style={{ background: '#ecfdf5' }}>
+            <Box padding="md">
               <Text>Controlled panel content.</Text>
             </Box>
           </InlineDrawerPanel>

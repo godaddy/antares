@@ -6,7 +6,7 @@ export function DefaultExample() {
       <InlineDrawer>
         <InlineDrawerTrigger>Toggle details</InlineDrawerTrigger>
         <InlineDrawerPanel>
-          <Box padding="md" style={{ background: '#eef2ff' }}>
+          <Box padding="md">
             <Text>Collapsible content goes here.</Text>
           </Box>
         </InlineDrawerPanel>

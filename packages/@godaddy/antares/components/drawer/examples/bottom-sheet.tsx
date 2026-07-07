@@ -17,7 +17,7 @@ export function BottomSheetExample() {
         showCloseButton
         aria-label="Bottom sheet"
       >
-        <Box elevation="card" padding="md" style={{ background: '#fef3c7' }}>
+        <Box elevation="card" padding="md">
           <Text as="p">Bottom sheet with close button.</Text>
           <Text as="p">This is the content</Text>
         </Box>
