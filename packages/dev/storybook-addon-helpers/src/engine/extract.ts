@@ -23,7 +23,7 @@ export function extractFromTypeNode(
   if (ts.isTypeLiteralNode(typeNode)) return extractMembers(typeNode.members, sourceFile, 'anonymous');
 
   if (ts.isIntersectionTypeNode(typeNode)) {
-    return typeNode.types.flatMap((node) => extractFromTypeNode(node, sourceFile, resolver, active));
+    return normalizeProps(typeNode.types.flatMap((node) => extractFromTypeNode(node, sourceFile, resolver, active)));
   }
 
   if (ts.isTypeReferenceNode(typeNode) && ts.isIdentifier(typeNode.typeName)) {
@@ -62,7 +62,7 @@ function extractFromDeclaration(
           })
         ) ?? [];
 
-      return [...inherited, ...extractMembers(declaration.members, sourceFile, declaration.name.text)];
+      return normalizeProps([...inherited, ...extractMembers(declaration.members, sourceFile, declaration.name.text)]);
     } finally {
       active.delete(key);
     }
@@ -122,10 +122,30 @@ function extractMembers(
     });
   }
 
-  return props;
+  return normalizeProps(props);
 }
 
 function getPropertyName(name: ts.PropertyName): string | undefined {
   if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) return name.text;
   return undefined;
+}
+
+function normalizeProps(props: PropDoc[]): PropDoc[] {
+  const normalized: PropDoc[] = [];
+  const propIndexes = new Map<string, number>();
+
+  for (const prop of props) {
+    const existingIndex = propIndexes.get(prop.name);
+
+    if (existingIndex === undefined) {
+      propIndexes.set(prop.name, normalized.length);
+      normalized.push(prop);
+      continue;
+    }
+
+    // Keep the first render position while replacing metadata with the later override.
+    normalized[existingIndex] = prop;
+  }
+
+  return normalized;
 }

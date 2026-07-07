@@ -90,6 +90,23 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
     expect(extract('OmitExtendsProps').props.map((prop) => prop.name)).toEqual(['a', 'ownOmit']);
   });
 
+  it('lets own interface props override inherited props', function extractsInterfaceOverrides() {
+    const props = extract('OverrideChildProps').props;
+
+    expect(props.map((prop) => prop.name)).toEqual(['override']);
+    expect(props[0]).toMatchObject({
+      name: 'override',
+      required: true,
+      description: 'child description',
+      declaringType: 'OverrideChildProps'
+    });
+  });
+
+  it('lets rightmost intersection props override earlier props', function extractsIntersectionOverrides() {
+    expect(extract('IntersectionOverrideProps').props).toMatchObject([{ name: 'value', required: true }]);
+    expect(extract('IntersectionOverrideProps').props.map((prop) => prop.name)).toEqual(['value']);
+  });
+
   it('keeps base props for unsupported utility key expressions', function extractsUnsupportedUtilityKeys() {
     expect(extract('UnsupportedKeyofPickProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
     expect(extract('UnsupportedKeyofOmitProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
@@ -102,7 +119,7 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
       doc = extract('AliasCycleAProps');
     }).not.toThrow();
 
-    expect(doc?.props.map((prop) => prop.name)).toContain('a');
+    expect(doc?.props.map((prop) => prop.name)).toEqual(['b', 'a']);
   });
 
   it('does not overflow on mixed interface and type alias cycles', function extractsMixedCycles() {
@@ -112,7 +129,7 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
       doc = extract('MixedCycleInterfaceProps');
     }).not.toThrow();
 
-    expect(doc?.props.map((prop) => prop.name)).toContain('mixedInterface');
+    expect(doc?.props.map((prop) => prop.name)).toEqual(['mixedAlias', 'mixedInterface']);
   });
 });
 

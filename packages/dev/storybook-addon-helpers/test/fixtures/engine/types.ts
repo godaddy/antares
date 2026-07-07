@@ -38,6 +38,16 @@ export interface OmitExtendsProps extends Omit<SiblingBaseProps, 'b'> {
   ownOmit: string;
 }
 
+export interface OverrideBaseProps {
+  /** base description */
+  override?: string;
+}
+
+export interface OverrideChildProps extends OverrideBaseProps {
+  /** child description */
+  override: string;
+}
+
 export type LiteralProps = {
   /** type literal description */
   literal?: 'a' | 'b';
@@ -47,6 +57,8 @@ export type IntersectedProps = ParentProps &
   LiteralProps & {
     intersected: boolean;
   };
+
+export type IntersectionOverrideProps = { value?: string } & { value: string };
 
 export type PickedProps = Pick<ChildProps, 'parent'>;
 
