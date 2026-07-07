@@ -41,32 +41,21 @@ Set `isDisabled` to prevent the drop zone from accepting interactions. The zone 
 
 ### File Upload
 
-A reference showing how to compose `DropZone` with other Antares components to build a functional file upload experience. Use this as a starting point — adapt the accepted formats, size limit, and handlers to your product's requirements.
-
-It demonstrates the two common upload affordances working together:
-
-- **Click to browse** — the "Add files" button opens the native file picker and returns the selection through `onSelect`. `acceptedFileTypes` restricts the picker to the supported formats.
-- **Drag and drop** — `getDropOperation` inspects the dragged types and returns `'cancel'` for unsupported files so the zone won't accept them, while `onDrop` reads the dropped files with the `isFileDropItem` guard.
-
-Both paths funnel into one handler that renders a preview. `acceptedFileTypes` and `getDropOperation` are best-effort UX filters — validate file type and size again in your handler, since they can be bypassed.
-
-When the drop zone content is composed from multiple elements (icon, button, text), pass `aria-label` directly on `DropZone` to provide a single accessible name for the hidden drop button.
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
 
 <Story of={Stories.FileUpload} inline />
 <Source language="tsx" code={FileUploadExample} />
 
 ### Drop Target Label
 
-Pass a render-prop function as `children` to change the zone's content while a valid drag is active. RAC invokes it with [`DropZoneRenderProps`](https://react-spectrum.adobe.com/react-aria/DropZone.html#dropzonerenderprops) on every state transition, so branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is actually accepted.
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is accepted.
 
 <Story of={Stories.DropTargetLabel} inline />
 <Source language="tsx" code={DropTargetLabelExample} />
 
 ### Replace Existing File
 
-Demonstrates the `isFilled` pattern: when the zone already holds a file, dragging a new valid file over it shows a "Drop to replace" label while the container switches to its active teal state. The drag path and the click path (`FileTrigger`) share the same handler, so both replace the current selection.
-
-`isFilled` is not a built-in prop — derive it from your own state so your product controls when the zone is considered occupied and when it resets.
+Use `children` as a render function to show different content based on the current zone state — here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
 
 <Story of={Stories.ReplaceFile} inline />
 <Source language="tsx" code={ReplaceFileExample} />

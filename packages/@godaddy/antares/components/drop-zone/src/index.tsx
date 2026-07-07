@@ -3,7 +3,7 @@ import { cx } from 'cva';
 import {
   DropZone as RACDropZone,
   type DropZoneProps as RACDropZoneProps,
-  type DropZoneRenderProps,
+  type DropZoneRenderProps as RACDropZoneRenderProps,
   isFileDropItem,
   isTextDropItem,
   isDirectoryDropItem
@@ -12,7 +12,7 @@ import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
-export type { DropZoneRenderProps };
+export interface DropZoneRenderProps extends RACDropZoneRenderProps {}
 
 /**
  * Props for the {@link DropZone} component.
@@ -39,8 +39,6 @@ export interface DropZoneProps extends Omit<RACDropZoneProps, 'className'>, Omit
 export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZone(props, ref) {
   const { children, className, ...rest } = props;
 
-  const resolvedClassName = cx(styles.dropZone, className);
-
   return (
     <Flex
       direction="column"
@@ -49,7 +47,7 @@ export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZ
       padding="lg"
       {...rest}
       ref={ref}
-      className={resolvedClassName}
+      className={cx(styles.dropZone, className)}
       as={RACDropZone}
     >
       {children}
