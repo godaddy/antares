@@ -19,21 +19,21 @@ describe('stories-indexer', function bento() {
       {
         title: 'meta1',
         tags: ['!dev'],
-        exportName: 'FromInterfaceProps',
+        exportName: 'FromTypeProps',
         importPath: storiesFilePath,
         type: 'story'
       },
       {
         title: 'meta1',
         tags: ['!dev'],
-        exportName: 'FromInterfacePickProps',
+        exportName: 'FromTypeIncludeProps',
         importPath: storiesFilePath,
         type: 'story'
       },
       {
         title: 'meta1',
         tags: ['!dev'],
-        exportName: 'FromInterfaceOmitProps',
+        exportName: 'FromTypeExcludeProps',
         importPath: storiesFilePath,
         type: 'story'
       },
