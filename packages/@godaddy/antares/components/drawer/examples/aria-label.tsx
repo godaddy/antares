@@ -8,14 +8,7 @@ export function AriaLabelExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open
       </Button>
-      <Drawer
-        placement="right"
-        isOpen={open}
-        onOpenChange={setOpen}
-        isDismissable
-        aria-label="Custom drawer label"
-        animate={false}
-      >
+      <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable aria-label="Custom drawer label">
         <Text>Content without title</Text>
       </Drawer>
     </>

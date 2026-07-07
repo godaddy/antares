@@ -15,7 +15,6 @@ export function AriaLabelWithTitleExample() {
         isDismissable
         title="Visible Title"
         aria-label="Aria Label"
-        animate={false}
       >
         <Text>Both title and aria-label provided</Text>
       </Drawer>

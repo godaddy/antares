@@ -4,14 +4,16 @@ export interface PlaygroundExampleProps {
   placement?: DrawerPlacement;
   showCloseButton?: boolean;
   isDismissable?: boolean;
-  animate?: boolean;
+  title?: string;
+  maxSize?: number | string;
 }
 
 export function PlaygroundExample({
   placement = 'right',
   showCloseButton,
   isDismissable = true,
-  animate
+  title = 'Playground',
+  maxSize
 }: PlaygroundExampleProps) {
   return (
     <Flex padding="2xl" justifyContent="center">
@@ -21,8 +23,8 @@ export function PlaygroundExample({
           placement={placement}
           showCloseButton={showCloseButton}
           isDismissable={isDismissable}
-          animate={animate}
-          title="Playground"
+          title={title}
+          maxSize={maxSize}
         >
           <Text>Drawer content!</Text>
         </Drawer>

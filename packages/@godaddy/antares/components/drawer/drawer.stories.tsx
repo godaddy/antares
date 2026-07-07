@@ -3,11 +3,9 @@ import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-help
 import { Drawer } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { BottomSheetExample } from './examples/bottom-sheet.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
-import { SnapPointsExample } from './examples/snap-points.tsx';
-import { ControlledSnapExample } from './examples/controlled-snap.tsx';
+import { PlacementsExample } from './examples/placements.tsx';
 import { NestedPopoverExample } from './examples/nested-popover.tsx';
-import { PercentSnapPointsExample } from './examples/percent-snap-points.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
 
 export default getMeta({
   title: 'components/Drawer'
@@ -19,11 +17,7 @@ export const Default = getStory(DefaultExample);
 
 export const BottomSheet = getStory(BottomSheetExample);
 
-export const SnapPoints = getStory(SnapPointsExample);
-
-export const ControlledSnap = getStory(ControlledSnapExample);
-
-export const PercentSnapPoints = getStory(PercentSnapPointsExample);
+export const Placements = getStory(PlacementsExample);
 
 export const NestedPopover = getStory(NestedPopoverExample);
 
@@ -33,7 +27,7 @@ export const Playground = {
     placement: 'right',
     isDismissable: true,
     showCloseButton: undefined,
-    animate: true
+    title: 'Playground'
   },
   argTypes: {
     placement: {
@@ -49,9 +43,9 @@ export const Playground = {
       control: 'boolean',
       description: 'Show built-in close button'
     },
-    animate: {
-      control: 'boolean',
-      description: 'Enable/disable spring animation'
+    title: {
+      control: 'text',
+      description: 'Heading rendered inside the drawer'
     }
   }
 };
