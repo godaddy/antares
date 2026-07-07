@@ -154,11 +154,11 @@ describe('@godaddy/antares', function antares() {
       });
 
       await userEvent.keyboard('{Escape}');
-      for (let i = 0; i < 3; i++) {
-        await new Promise(function frame(r) {
-          requestAnimationFrame(r);
-        });
-      }
+      // Wait past the 0.2s exit transition; a non-blocked Escape would have
+      // fully closed and unmounted the dialog by now.
+      await new Promise(function settle(r) {
+        setTimeout(r, 400);
+      });
       assume(getByRole('dialog').query()).is.not.equal(null);
     });
 
@@ -170,13 +170,15 @@ describe('@godaddy/antares', function antares() {
         assume(getByRole('dialog').query()).is.not.equal(null);
       });
 
-      const overlay = document.querySelector('[data-rac]') as HTMLElement;
-      overlay.click();
-      for (let i = 0; i < 3; i++) {
-        await new Promise(function frame(r) {
-          requestAnimationFrame(r);
-        });
-      }
+      // Backdrop = dialog's grandparent (dialog -> panel -> overlay).
+      const overlay = getByRole('dialog').element().parentElement!.parentElement!;
+      await userEvent.click(overlay);
+
+      // Wait past the 0.2s exit transition; the filter returns false so it
+      // must stay open.
+      await new Promise(function settle(r) {
+        setTimeout(r, 400);
+      });
       assume(getByRole('dialog').query()).is.not.equal(null);
     });
 
