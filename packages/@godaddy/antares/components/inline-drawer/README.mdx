@@ -1,6 +1,6 @@
 ---
 title: InlineDrawer
-description: An in-flow collapsible panel that expands and collapses along one axis, supporting sidebar navigation and persistent "peek" content.
+description: An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
 ---
 
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
@@ -13,12 +13,11 @@ import ControlledExample from './examples/controlled.tsx?raw';
 
 ## Features
 
-- In-flow collapsible panel built on RAC Disclosure
+- In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
 - Animated by default; `animate={false}` disables the transition
-- `minSize` "peek": the panel stays visible at a collapsed size (sidebar-nav pattern)
+- `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
 - Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
-- `placement` selects the collapse axis (`left`/`right` → inline, `top`/`bottom` → block)
-- Default (non-peek) collapse uses the browser's `hidden="until-found"` for find-in-page
+- Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
 - `prefers-reduced-motion` support
 
 ## Installation
@@ -33,20 +32,20 @@ npm install --save @godaddy/antares
 
 ## Sub-components
 
-`InlineDrawer` composes with `InlineDrawerTrigger` (the toggle, rendered as a heading + button) and `InlineDrawerPanel` (the collapsible content).
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides (with `hidden="until-found"`) when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
 
 ## Examples
 
-### Basic Usage
+### Accordion
 
-The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
+Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
 
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
 
-### Sidebar Navigation (peek)
+### Sidebar Navigation
 
-Set `minSize` and `maxSize` to build a sidebar that collapses to a visible rail instead of disappearing. The panel content stays mounted and accessible at the collapsed size.
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Here `min-content`/`max-content` fit the icons collapsed and icon + label expanded, so there are no magic numbers.
 
 <Story of={Stories.SidebarNav} inline />
 <Source language="tsx" code={SidebarNavExample} />
@@ -64,19 +63,17 @@ Use `isExpanded` and `onExpandedChange` to drive state externally.
 
 | Key | Action |
 | --- | --- |
-| `Enter` / `Space` | Toggle the drawer via the trigger button |
-| `Tab` | Move focus into/out of the panel |
+| `Enter` / `Space` | Toggle via the slotted trigger |
+| `Tab` | Move focus through the content |
 
 ### ARIA
 
-- `aria-expanded` on the trigger reflects panel state (via RAC Disclosure)
-- `aria-controls` links the trigger to the panel; the panel is `role="group"` and `aria-labelledby` the trigger
-- Default (non-peek) collapsed panels use `hidden="until-found"` for find-in-page and are hidden from assistive tech
-- Peek panels (`minSize`) stay visible and are **not** `aria-hidden`, since their content remains on screen
+- A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
+- For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
 
 ## Best Practices
 
-- Use `minSize` + `maxSize` for sidebar patterns where the collapsed rail stays visible.
-- Omit `minSize` for classic show/hide sections — RAC handles hiding and find-in-page for you.
-- `placement` does not flip in RTL; the drawer's side is decided by document/flex order.
+- Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
+- For the rail, `min-content`/`max-content` size to the content; use pixel `minSize`/`maxSize` if you want a fixed rail.
+- `placement` does not flip in RTL; the side is decided by document/flex order.
 - Don't nest InlineDrawers.

@@ -23,8 +23,6 @@ export const Playground = {
   args: {
     placement: 'top',
     animate: true,
-    minSize: undefined,
-    maxSize: 240,
     isDisabled: false
   },
   argTypes: {
@@ -36,14 +34,6 @@ export const Playground = {
     animate: {
       control: 'boolean',
       description: 'Animate expand/collapse'
-    },
-    minSize: {
-      control: 'text',
-      description: 'Collapsed "peek" size; when set the panel stays visible when collapsed'
-    },
-    maxSize: {
-      control: 'text',
-      description: 'Expanded size'
     },
     isDisabled: {
       control: 'boolean',

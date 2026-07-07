@@ -90,56 +90,21 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders SidebarNavExample with peek links visible when collapsed', async function sidebarNav() {
-      const { getByRole } = await render(<SidebarNavExample />);
+    it('toggles the sidebar rail and reveals labels', async function sidebar() {
+      const { getByRole, getByText } = await render(<SidebarNavExample />);
 
-      const trigger = getByRole('button', { name: 'Menu' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
+      const toggle = getByRole('button', { name: 'Menu' }).query();
+      // Collapsed rail: nav links are present as icons, labels hidden.
+      assume(toggle?.getAttribute('aria-pressed')).equals('false');
       assume(getByRole('link', { name: 'Dashboard' }).query()).is.not.equal(null);
-
-      await getByRole('button', { name: 'Menu' }).click();
-
-      await vi.waitFor(async function collapsed() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-        assume(getByRole('link', { name: 'Dashboard' }).query()).is.not.equal(null);
-      });
+      assume(getByText('Dashboard').query()).equals(null);
 
       await getByRole('button', { name: 'Menu' }).click();
 
       await vi.waitFor(async function expanded() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('true');
+        assume(toggle?.getAttribute('aria-pressed')).equals('true');
+        assume(getByText('Dashboard').query()).is.not.equal(null);
       });
-    });
-
-    it('peek panel stays accessible and is wired to the trigger', async function minSizeA11y() {
-      const { getByRole } = await render(<SidebarNavExample />);
-
-      await getByRole('button', { name: 'Menu' }).click();
-      await vi.waitFor(async function collapsed() {
-        assume(getByRole('button', { name: 'Menu' }).query()?.getAttribute('aria-expanded')).equals('false');
-      });
-
-      const trigger = getByRole('button', { name: 'Menu' }).query();
-      const panel = getByRole('link', { name: 'Dashboard' }).query()?.closest('[role="group"]') as HTMLElement | null;
-
-      assume(panel).is.not.equal(null);
-      assume(panel?.getAttribute('aria-hidden')).equals(null);
-      assume(trigger?.getAttribute('aria-controls')).equals(panel?.getAttribute('id'));
-      assume(panel?.getAttribute('aria-labelledby')).equals(trigger?.getAttribute('id'));
-    });
-
-    it('collapsed panel with minSize allows focus on content', async function minSizeFocus() {
-      const { getByRole } = await render(<SidebarNavExample />);
-
-      await getByRole('button', { name: 'Menu' }).click();
-
-      await vi.waitFor(async function collapsed() {
-        assume(getByRole('button', { name: 'Menu' }).query()?.getAttribute('aria-expanded')).equals('false');
-      });
-
-      const panel = getByRole('group').query();
-      assume(panel).is.not.equal(null);
-      assume(panel?.hasAttribute('aria-hidden')).equals(false);
     });
 
     it('does not toggle when isDisabled', async function disabledNoToggle() {
@@ -202,7 +167,6 @@ describe('@godaddy/antares', function antares() {
       await render(<ClassNamePassthroughExample />);
 
       assume(document.querySelector('.custom-drawer')).is.not.equal(null);
-      assume(document.querySelector('.custom-trigger')).is.not.equal(null);
       assume(document.querySelector('.custom-panel')).is.not.equal(null);
     });
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InlineDrawer, InlineDrawerTrigger, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';
+import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';
 
 export function ControlledExample() {
   const [expanded, setExpanded] = useState(false);
@@ -12,7 +12,7 @@ export function ControlledExample() {
       <Text>Expanded: {String(expanded)}</Text>
       <Box style={{ maxInlineSize: 360 }}>
         <InlineDrawer isExpanded={expanded} onExpandedChange={setExpanded}>
-          <InlineDrawerTrigger>Details</InlineDrawerTrigger>
+          <Button slot="trigger">Details</Button>
           <InlineDrawerPanel>
             <Box padding="md">
               <Text>Controlled panel content.</Text>

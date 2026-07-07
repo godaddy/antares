@@ -1,58 +1,45 @@
-/* Outer disclosure wrapper */
+/* RAC Disclosure root. Animate min/max intrinsic sizes where supported. */
 .inlineDrawer {
   overflow: hidden;
-}
-
-/* ---- Peek mode (minSize set): the wrapper animates between min and max size,
-   and the panel content stays visible the whole time. ---- */
-
-/* Allow animating to/from intrinsic sizes (min-content/max-content) where
-   supported (Chrome 129+); other browsers snap. */
-.inlineDrawer[data-peek] {
   interpolate-size: allow-keywords;
 }
 
-.inlineDrawer[data-peek]:where([data-placement='left'], [data-placement='right']) {
-  inline-size: var(--_min-size);
+/* Wrapper size — used by the sidebar-rail pattern (min/max set). Falls back to
+   `auto` for the accordion pattern, where the panel drives the size instead. */
+.inlineDrawer:where([data-placement='left'], [data-placement='right']) {
+  inline-size: var(--_min-size, auto);
   transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.inlineDrawer[data-peek][data-expanded]:where([data-placement='left'], [data-placement='right']) {
-  inline-size: var(--_max-size);
+.inlineDrawer[data-expanded]:where([data-placement='left'], [data-placement='right']) {
+  inline-size: var(--_max-size, auto);
 }
 
-.inlineDrawer[data-peek]:where([data-placement='top'], [data-placement='bottom']) {
-  block-size: var(--_min-size);
+.inlineDrawer:where([data-placement='top'], [data-placement='bottom']) {
+  block-size: var(--_min-size, auto);
   transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.inlineDrawer[data-peek][data-expanded]:where([data-placement='top'], [data-placement='bottom']) {
-  block-size: var(--_max-size);
+.inlineDrawer[data-expanded]:where([data-placement='top'], [data-placement='bottom']) {
+  block-size: var(--_max-size, auto);
 }
 
-.inlineDrawer[data-peek] > .panel {
+/* Accordion panel — size driven by RAC's --disclosure-panel-* custom properties. */
+.panel {
   overflow: hidden;
+  interpolate-size: numeric-only;
 }
 
-/* ---- Default mode (no minSize): RAC drives the panel size via the
-   --disclosure-panel-width / --disclosure-panel-height custom properties. ---- */
-.inlineDrawer:not([data-peek]) > .panel {
-  overflow: hidden;
-}
-
-.inlineDrawer:not([data-peek]):where([data-placement='left'], [data-placement='right']) > .panel {
+.inlineDrawer:where([data-placement='left'], [data-placement='right']) > .panel {
   inline-size: var(--disclosure-panel-width, auto);
-  max-inline-size: var(--_max-size, none);
   transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.inlineDrawer:not([data-peek]):where([data-placement='top'], [data-placement='bottom']) > .panel {
+.inlineDrawer:where([data-placement='top'], [data-placement='bottom']) > .panel {
   block-size: var(--disclosure-panel-height, auto);
-  max-block-size: var(--_max-size, none);
   transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* Disable animation */
 .inlineDrawer[data-animate='false'],
 .inlineDrawer[data-animate='false'] > .panel {
   transition: none;
@@ -63,28 +50,4 @@
   .inlineDrawer > .panel {
     transition: none;
   }
-}
-
-/* Trigger heading */
-.trigger {
-  margin: 0;
-}
-
-.triggerButton {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-  inline-size: 100%;
-  background: none;
-  border: none;
-  padding: var(--sp-sm) var(--sp-md);
-  cursor: pointer;
-  color: inherit;
-  font: inherit;
-  text-align: start;
-}
-
-.triggerButton[data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
 }

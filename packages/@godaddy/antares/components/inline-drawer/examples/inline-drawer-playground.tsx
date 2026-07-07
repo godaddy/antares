@@ -1,7 +1,7 @@
 import {
   InlineDrawer,
-  InlineDrawerTrigger,
   InlineDrawerPanel,
+  Button,
   Box,
   Text,
   type InlineDrawerPlacement
@@ -10,17 +10,15 @@ import {
 export interface PlaygroundExampleProps {
   placement?: InlineDrawerPlacement;
   animate?: boolean;
-  minSize?: number | string;
-  maxSize?: number | string;
   isDisabled?: boolean;
 }
 
-export function PlaygroundExample({ placement, animate, minSize, maxSize, isDisabled }: PlaygroundExampleProps) {
+export function PlaygroundExample({ placement, animate, isDisabled }: PlaygroundExampleProps) {
   return (
-    <InlineDrawer placement={placement} animate={animate} minSize={minSize} maxSize={maxSize} isDisabled={isDisabled}>
-      <InlineDrawerTrigger>Toggle panel</InlineDrawerTrigger>
+    <InlineDrawer placement={placement} animate={animate} isDisabled={isDisabled}>
+      <Button slot="trigger">Toggle panel</Button>
       <InlineDrawerPanel>
-        <Box padding="md" style={{ inlineSize: 220, whiteSpace: 'nowrap' }}>
+        <Box padding="md">
           <Text>Playground content.</Text>
         </Box>
       </InlineDrawerPanel>

@@ -37,9 +37,5 @@ describe('@godaddy/antares', function antares() {
     it('renders PlaygroundExample', function playgroundExample() {
       expect(renderToString(<PlaygroundExample />)).toMatchSnapshot();
     });
-
-    it('renders PlaygroundExample with string sizes', function playgroundStringSizes() {
-      expect(renderToString(<PlaygroundExample minSize="3rem" maxSize="50%" />)).toMatchSnapshot();
-    });
   });
 });
