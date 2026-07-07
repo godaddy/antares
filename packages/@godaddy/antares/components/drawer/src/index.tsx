@@ -6,13 +6,14 @@ import {
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
+  DialogProps as RACDialogProps,
   useLocale as RACUseLocale
 } from 'react-aria-components';
 import { cx } from 'cva';
 import { Box } from '#components/layout/box';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
-import { Flex } from '#components/layout/flex';
+import { Flex, FlexProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
 /** Edge the drawer slides in from. left/right flip in RTL. */
@@ -54,6 +55,12 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps
 
   /** Additional CSS class for the inner dialog content region. */
   className?: string;
+
+  /** Additional props to pass to the inner modal container. */
+  containerProps?: Omit<FlexProps, 'as'>;
+
+  /** Additional props to pass to the inner dialog content region. */
+  contentProps?: RACDialogProps;
 }
 
 export interface DrawerTriggerProps extends RACDialogTriggerProps {}
@@ -75,6 +82,8 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     id,
     children,
     className,
+    containerProps,
+    contentProps,
     ...rest
   } = props;
 
@@ -82,7 +91,8 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   const resolved = resolvePlacement(placement, direction);
 
   const drawerStyle = {
-    '--_slide': getSlideTransform(resolved, direction),
+    ...containerProps?.style,
+    '--_slide': getSlideTransform(resolved),
     ...(maxSize !== undefined && {
       '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize
     }),
@@ -94,20 +104,22 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   return (
     <RACModalOverlay className={styles.overlay} {...rest}>
       <Box
-        as={RACModal}
         elevation="overlay"
         data-placement={resolved}
         data-has-close={showCloseButton || undefined}
+        {...containerProps}
         style={drawerStyle}
-        className={styles.drawer}
+        as={RACModal}
+        className={cx(styles.drawer, className)}
       >
         <Flex
-          as={RACDialog}
           direction="column"
           ref={ref}
           id={id}
           aria-label={ariaLabel}
-          className={cx(styles.dialog, className)}
+          {...contentProps}
+          as={RACDialog}
+          className={cx(styles.dialog, contentProps?.className)}
         >
           {showCloseButton ? (
             <Button className={styles.close} slot="close" aria-label={closeLabel}>
@@ -140,17 +152,17 @@ function resolvePlacement(placement: DrawerPlacement, direction: string): Drawer
 }
 
 /**
- * Off-screen transform for the entering/exiting state. left/right depend on
- * writing direction because CSS `translateX` is physical while the panel is
- * pinned with logical `inset-inline-*`.
+ * Off-screen transform for the entering/exiting state. `resolved` is already the
+ * physical edge (RTL flipping happens in `resolvePlacement`) and the panel is
+ * pinned with physical `left`/`right`, so the slide is purely physical too — no
+ * extra direction handling, which previously double-flipped the RTL animation.
  */
-function getSlideTransform(resolved: DrawerPlacement, direction: string): string {
-  const rtl = direction === 'rtl';
+function getSlideTransform(resolved: DrawerPlacement): string {
   switch (resolved) {
     case 'right':
-      return `translateX(${rtl ? '-100%' : '100%'})`;
+      return 'translateX(100%)';
     case 'left':
-      return `translateX(${rtl ? '100%' : '-100%'})`;
+      return 'translateX(-100%)';
     case 'bottom':
       return 'translateY(100%)';
     case 'top':

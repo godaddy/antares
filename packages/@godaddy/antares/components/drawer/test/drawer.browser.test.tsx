@@ -8,6 +8,7 @@ import { PlaygroundExample } from '../examples/drawer-playground.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -73,30 +74,6 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('opens with placement="left"', async function leftPlacement() {
-      const { getByRole } = await render(<PlaygroundExample placement="left" />);
-
-      await getByRole('button', { name: 'Open drawer' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('dialog').query()).is.not.equal(null);
-      });
-
-      const panel = document.querySelector('[data-placement]');
-      assume(panel?.getAttribute('data-placement')).equals('left');
-    });
-
-    it('opens with placement="top"', async function topPlacement() {
-      const { getByRole } = await render(<PlaygroundExample placement="top" />);
-
-      await getByRole('button', { name: 'Open drawer' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('dialog').query()).is.not.equal(null);
-      });
-
-      const panel = document.querySelector('[data-placement]');
-      assume(panel?.getAttribute('data-placement')).equals('top');
-    });
-
     it('prevents escape dismiss when isKeyboardDismissDisabled', async function noEscape() {
       const { getByRole } = await render(<NoEscapeDismissExample />);
 
@@ -131,6 +108,41 @@ describe('@godaddy/antares', function antares() {
         setTimeout(r, 400);
       });
       assume(getByRole('dialog').query()).is.not.equal(null);
+    });
+
+    // In RTL the panel must both dock at the mirrored physical edge AND slide in
+    // from that same edge. A prior double-flip left it docked correctly but
+    // sliding from the opposite side, so assert position and transform together.
+    it('docks and slides from the left edge for placement="right" in RTL', async function rtlRight() {
+      const { getByRole } = await render(<RTLExample />);
+
+      await getByRole('button', { name: 'Open right' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog').query()).is.not.equal(null);
+      });
+      await new Promise(function settle(r) {
+        setTimeout(r, 400);
+      });
+
+      const panel = document.querySelector('[data-placement]') as HTMLElement;
+      assume(Math.round(panel.getBoundingClientRect().left)).equals(0);
+      assume(getComputedStyle(panel).getPropertyValue('--_slide').trim()).equals('translateX(-100%)');
+    });
+
+    it('docks and slides from the right edge for placement="left" in RTL', async function rtlLeft() {
+      const { getByRole } = await render(<RTLExample />);
+
+      await getByRole('button', { name: 'Open left' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog').query()).is.not.equal(null);
+      });
+      await new Promise(function settle(r) {
+        setTimeout(r, 400);
+      });
+
+      const panel = document.querySelector('[data-placement]') as HTMLElement;
+      assume(Math.round(panel.getBoundingClientRect().right)).equals(window.innerWidth);
+      assume(getComputedStyle(panel).getPropertyValue('--_slide').trim()).equals('translateX(100%)');
     });
 
     it('popover inside drawer does not close drawer', async function nestedPopover() {

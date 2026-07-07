@@ -13,6 +13,7 @@ export function FilteredDismissExample() {
         isOpen={open}
         onOpenChange={setOpen}
         isDismissable
+        aria-label="Drawer"
         shouldCloseOnInteractOutside={function filter() {
           return false;
         }}

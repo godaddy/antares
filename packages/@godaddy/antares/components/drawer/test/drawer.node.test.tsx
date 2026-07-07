@@ -7,6 +7,7 @@ import { PlacementsExample } from '../examples/placements.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -20,6 +21,14 @@ describe('@godaddy/antares', function antares() {
 
     it('renders PlaygroundExample', function playgroundExample() {
       expect(renderToString(<PlaygroundExample placement="right" />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with placement="left"', function playgroundLeft() {
+      expect(renderToString(<PlaygroundExample placement="left" />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with placement="top"', function playgroundTop() {
+      expect(renderToString(<PlaygroundExample placement="top" />)).toMatchSnapshot();
     });
 
     it('renders PlaygroundExample with numeric maxSize', function playgroundNumericMaxSize() {
@@ -56,6 +65,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders FilteredDismissExample', function filteredDismissExample() {
       expect(renderToString(<FilteredDismissExample />)).toMatchSnapshot();
+    });
+
+    it('renders RTLExample', function rtlExample() {
+      expect(renderToString(<RTLExample />)).toMatchSnapshot();
     });
   });
 });

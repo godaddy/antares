@@ -23,7 +23,13 @@ export function PlacementsExample() {
           </Button>
         );
       })}
-      <Drawer placement={placement} isOpen={open} onOpenChange={setOpen} isDismissable>
+      <Drawer
+        placement={placement}
+        isOpen={open}
+        onOpenChange={setOpen}
+        isDismissable
+        aria-label={`${placement} drawer`}
+      >
         <Box padding="md">
           <Text>Placement: {placement}</Text>
         </Box>

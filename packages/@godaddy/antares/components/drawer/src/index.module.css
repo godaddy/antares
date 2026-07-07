@@ -38,12 +38,15 @@
   min-block-size: var(--_min-size, var(--_min-fallback));
 }
 
+/* Physical edges (not logical inset-inline-*): `resolvePlacement` already maps the
+   placement to a physical edge for RTL, so positioning must stay physical to avoid
+   a second flip when the drawer portals into a dir="rtl" document. */
 .drawer:where([data-placement='right']) {
-  inset-inline-end: 0;
+  right: 0;
 }
 
 .drawer:where([data-placement='left']) {
-  inset-inline-start: 0;
+  left: 0;
 }
 
 .drawer:where([data-placement='bottom']) {

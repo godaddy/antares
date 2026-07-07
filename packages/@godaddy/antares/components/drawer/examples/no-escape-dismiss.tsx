@@ -8,7 +8,14 @@ export function NoEscapeDismissExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open
       </Button>
-      <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable isKeyboardDismissDisabled>
+      <Drawer
+        placement="right"
+        isOpen={open}
+        onOpenChange={setOpen}
+        isDismissable
+        isKeyboardDismissDisabled
+        aria-label="Drawer"
+      >
         <Box padding="md">
           <Text>Cannot escape</Text>
         </Box>

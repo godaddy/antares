@@ -1,14 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Drawer > renders AriaLabelExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
-
-exports[`@godaddy/antares > #Drawer > renders AriaLabelWithTitleExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
-
 exports[`@godaddy/antares > #Drawer > renders BottomSheetExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open bottom sheet</span></button>"`;
 
 exports[`@godaddy/antares > #Drawer > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button>"`;
-
-exports[`@godaddy/antares > #Drawer > renders DefaultOpenExample 1`] = `""`;
 
 exports[`@godaddy/antares > #Drawer > renders FilteredDismissExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
 
@@ -26,8 +20,12 @@ exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with numeric max
 
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with numeric minSize 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
+exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with placement="left" 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
+
+exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with placement="top" 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
+
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with string maxSize 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with string minSize 1`] = `"<div class="box" style="padding:var(--sp-2xl, 32px);display:flex;flex-direction:row;justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
-exports[`@godaddy/antares > #Drawer > renders RTLPlacementExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open</span></button>"`;
+exports[`@godaddy/antares > #Drawer > renders RTLExample 1`] = `"<div class="box" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:var(--sp-md, 8px)"><button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_5_">Open <!-- -->left</button><button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_9_">Open <!-- -->right</button><button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_d_">Open <!-- -->top</button><button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_h_">Open <!-- -->bottom</button></div>"`;

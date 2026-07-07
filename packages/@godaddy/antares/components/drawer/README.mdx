@@ -10,6 +10,7 @@ import BottomSheetExample from './examples/bottom-sheet.tsx?raw';
 import PlacementsExample from './examples/placements.tsx?raw';
 import NestedPopoverExample from './examples/nested-popover.tsx?raw';
 import NoEscapeDismissExample from './examples/no-escape-dismiss.tsx?raw';
+import RTLExample from './examples/rtl.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -36,6 +37,8 @@ npm install --save @godaddy/antares
 ### DrawerTrigger
 
 Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+
+<ArgTypes of={Stories.DrawerTriggerProps} />
 
 ## Examples
 
@@ -74,6 +77,13 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 <Story of={Stories.NoEscapeDismiss} inline />
 <Source language="tsx" code={NoEscapeDismissExample} />
 
+### RTL
+
+In RTL locales, `left` and `right` placements flip automatically so the drawer stays visually consistent.
+
+<Story of={Stories.RTL} inline />
+<Source language="tsx" code={RTLExample} />
+
 ## Accessibility
 
 ### Keyboard
@@ -86,11 +96,11 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 ### ARIA
 
 - `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-- Dialog accessible name via `title` (renders a heading) or `aria-label` (for titleless drawers)
+- Dialog accessible name via `aria-label`
 - `aria-label="Close"` on the built-in close button
 
 ## Best Practices
 
-- Always provide a `title` or `aria-label` so the dialog has an accessible name.
+- Always provide an `aria-label` so the dialog has an accessible name.
 - Use `isDismissable` to allow closing via backdrop click.
 - Don't nest drawers.

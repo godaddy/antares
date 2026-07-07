@@ -25,6 +25,7 @@ export function PlaygroundExample({
           isDismissable={isDismissable}
           maxSize={maxSize}
           minSize={minSize}
+          aria-label="Drawer"
         >
           <Box padding="md">
             <Text>Drawer content!</Text>

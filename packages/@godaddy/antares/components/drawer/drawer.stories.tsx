@@ -1,11 +1,12 @@
 'use client';
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { Drawer } from './src/index.tsx';
+import { Drawer, DrawerTrigger } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { BottomSheetExample } from './examples/bottom-sheet.tsx';
 import { PlacementsExample } from './examples/placements.tsx';
 import { NestedPopoverExample } from './examples/nested-popover.tsx';
 import { NoEscapeDismissExample } from './examples/no-escape-dismiss.tsx';
+import { RTLExample } from './examples/rtl.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
 
 export default getMeta({
@@ -13,6 +14,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(Drawer);
+
+export const DrawerTriggerProps = getComponentDocs(DrawerTrigger);
 
 export const Default = getStory(DefaultExample);
 
@@ -24,13 +27,14 @@ export const NestedPopover = getStory(NestedPopoverExample);
 
 export const NoEscapeDismiss = getStory(NoEscapeDismissExample);
 
+export const RTL = getStory(RTLExample);
+
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
     placement: 'right',
     isDismissable: true,
-    showCloseButton: undefined,
-    title: 'Playground'
+    showCloseButton: false
   },
   argTypes: {
     placement: {
@@ -45,10 +49,6 @@ export const Playground = {
     showCloseButton: {
       control: 'boolean',
       description: 'Show built-in close button'
-    },
-    title: {
-      control: 'text',
-      description: 'Heading rendered inside the drawer'
     }
   }
 };
