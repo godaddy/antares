@@ -65,8 +65,7 @@ export interface InlineDrawerPanelProps extends Omit<RACDisclosurePanelProps, 'c
   className?: string;
 }
 
-function toSize(value: number | string | undefined): string | undefined {
-  if (value === undefined) return undefined;
+function toSize(value: number | string): string {
   return typeof value === 'number' ? `${value}px` : value;
 }
 
