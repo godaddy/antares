@@ -5,6 +5,7 @@ import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
+import { AnimationExample } from '../examples/animation.tsx';
 
 const PLACEMENTS = ['left', 'right', 'top', 'bottom'] as const;
 
@@ -44,6 +45,19 @@ describe('@godaddy/antares', function antares() {
 
       const panel = document.querySelector('[data-placement]') as HTMLElement;
       await expect(panel).toMatchScreenshot('bottom-sheet');
+    });
+
+    it('renders animate=false drawer', async function animateOff() {
+      const { getByRole } = await render(<AnimationExample />);
+
+      await getByRole('button', { name: 'No animation' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog').query()).is.not.equal(null);
+      });
+      await settle();
+
+      const panel = document.querySelector('[data-placement]') as HTMLElement;
+      await expect(panel).toMatchScreenshot('animation-off');
     });
 
     it('flips left placement to the right edge in RTL', async function rtl() {

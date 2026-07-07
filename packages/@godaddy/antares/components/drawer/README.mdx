@@ -11,6 +11,7 @@ import PlacementsExample from './examples/placements.tsx?raw';
 import NestedPopoverExample from './examples/nested-popover.tsx?raw';
 import NoEscapeDismissExample from './examples/no-escape-dismiss.tsx?raw';
 import RTLExample from './examples/rtl.tsx?raw';
+import AnimationExample from './examples/animation.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -48,6 +49,13 @@ Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer open
 
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
+
+### Animation
+
+Drawers animate by default. Set `animate={false}` to disable the slide transition.
+
+<Story of={Stories.Animation} inline />
+<Source language="tsx" code={AnimationExample} />
 
 ### Bottom Sheet
 

@@ -30,7 +30,20 @@ export function PlacementsExample() {
         isDismissable
         aria-label={`${placement} drawer`}
       >
-        <Box padding="md">
+        <Box
+          padding="md"
+          style={{
+            minBlockSize: '100%',
+            background:
+              placement === 'left'
+                ? '#eef2ff'
+                : placement === 'right'
+                  ? '#ecfdf5'
+                  : placement === 'top'
+                    ? '#fef3c7'
+                    : '#fde2e4'
+          }}
+        >
           <Text>Placement: {placement}</Text>
         </Box>
       </Drawer>

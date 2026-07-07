@@ -1,5 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`@godaddy/antares > #Drawer > renders AnimationExample 1`] = `"<div class="box" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:var(--sp-md, 8px)"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_1H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Animated (default)</span></button><button class="button secondary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_2H1_" data-react-aria-pressable="true"><span class="react-aria-Text">No animation</span></button></div>"`;
+
 exports[`@godaddy/antares > #Drawer > renders BottomSheetExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open bottom sheet</span></button>"`;
 
 exports[`@godaddy/antares > #Drawer > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button>"`;
