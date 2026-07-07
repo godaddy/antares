@@ -3,7 +3,6 @@ import {
   Dialog as RACDialog,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
-  Heading as RACHeading,
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
@@ -13,6 +12,7 @@ import { cx } from 'cva';
 import { Box } from '#components/layout/box';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
+import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
 
 /** Edge the drawer slides in from. left/right flip in RTL. */
@@ -24,25 +24,91 @@ type ConflictingProps = 'className' | 'children' | 'style';
 export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps> {
   /** Edge the drawer slides in from. left/right flip in RTL. */
   placement: DrawerPlacement;
-  /** Accessible label for the dialog. Use when `title` is omitted. */
+
+  /** Accessible label for the dialog. */
   'aria-label'?: string;
+
   /** Max size of the drawer along its constrained axis. Accepts CSS values. @default 'min(80vw, 400px)' for left/right, 'calc(100dvh - 80px)' for top/bottom */
   maxSize?: number | string;
-  /** Show built-in X close button. @default true for top/bottom, false for left/right */
+
+  /** Show built-in X close button. @default false */
   showCloseButton?: boolean;
+
   /** Accessible label for the close button. @default 'Close' */
   closeLabel?: string;
-  /** Accessible title rendered as a heading inside the drawer. */
-  title?: ReactNode;
+
   /** Forwarded to the inner Dialog for aria-controls linkage. */
   id?: string;
+
   /** Content to render inside the drawer. */
   children?: ReactNode;
+
   /** Additional CSS class for the inner dialog content region. */
   className?: string;
 }
 
 export interface DrawerTriggerProps extends RACDialogTriggerProps {}
+
+/**
+ * An overlay panel that slides in from a screen edge. Built like `Modal`:
+ * RAC modal overlay + an `elevation="overlay"` Box panel + CSS transitions.
+ *
+ * @param props - {@link DrawerProps}
+ */
+export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props, ref) {
+  const {
+    placement,
+    'aria-label': ariaLabel,
+    maxSize,
+    showCloseButton = false,
+    closeLabel = 'Close',
+    id,
+    children,
+    className,
+    ...rest
+  } = props;
+
+  const { direction } = RACUseLocale();
+  const resolved = resolvePlacement(placement, direction);
+
+  const drawerStyle = {
+    '--_slide': getSlideTransform(resolved, direction)
+    // ...(maxSize !== undefined && {
+    //   '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize
+    // })
+  } as CSSProperties;
+
+  return (
+    <RACModalOverlay className={styles.overlay} {...rest}>
+      <Box as={RACModal} elevation="overlay" data-placement={resolved} style={drawerStyle} className={styles.drawer}>
+        <Flex
+          as={RACDialog}
+          direction="column"
+          ref={ref}
+          id={id}
+          aria-label={ariaLabel}
+          className={cx(styles.dialog, className)}
+        >
+          {showCloseButton ? (
+            <Button className={styles.close} slot="close" aria-label={closeLabel}>
+              <Icon icon="x" />
+            </Button>
+          ) : null}
+          {children}
+        </Flex>
+      </Box>
+    </RACModalOverlay>
+  );
+});
+
+/**
+ * Drawer trigger component. Wraps RAC DialogTrigger.
+ *
+ * @param props - {@link DrawerTriggerProps}
+ */
+export const DrawerTrigger = function DrawerTrigger(props: DrawerTriggerProps) {
+  return <RACDialogTrigger {...props} />;
+};
 
 /** In RTL, left/right swap so `placement` stays visually consistent. */
 function resolvePlacement(placement: DrawerPlacement, direction: string): DrawerPlacement {
@@ -71,64 +137,3 @@ function getSlideTransform(resolved: DrawerPlacement, direction: string): string
       return 'translateY(-100%)';
   }
 }
-
-/**
- * An overlay panel that slides in from a screen edge. Built like `Modal`:
- * RAC modal overlay + an `elevation="overlay"` Box panel + CSS transitions.
- *
- * @param props - {@link DrawerProps}
- */
-export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props, ref) {
-  const {
-    placement,
-    'aria-label': ariaLabel,
-    maxSize,
-    showCloseButton,
-    closeLabel = 'Close',
-    title,
-    id,
-    children,
-    className,
-    ...rest
-  } = props;
-
-  const { direction } = RACUseLocale();
-  const resolved = resolvePlacement(placement, direction);
-  const shouldShowClose = showCloseButton ?? (resolved === 'top' || resolved === 'bottom');
-
-  const drawerStyle = {
-    '--_slide': getSlideTransform(resolved, direction),
-    ...(maxSize !== undefined && {
-      '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize
-    })
-  } as CSSProperties;
-
-  return (
-    <RACModalOverlay className={styles.overlay} {...rest}>
-      <Box as={RACModal} elevation="overlay" data-placement={resolved} style={drawerStyle} className={styles.drawer}>
-        <RACDialog ref={ref} id={id} aria-label={ariaLabel} className={cx(styles.dialog, className)}>
-          {shouldShowClose ? (
-            <Button className={styles.close} slot="close" aria-label={closeLabel}>
-              <Icon icon="x" />
-            </Button>
-          ) : null}
-          {title ? (
-            <RACHeading slot="title" className={styles.title}>
-              {title}
-            </RACHeading>
-          ) : null}
-          {children}
-        </RACDialog>
-      </Box>
-    </RACModalOverlay>
-  );
-});
-
-/**
- * Drawer trigger component. Wraps RAC DialogTrigger.
- *
- * @param props - {@link DrawerTriggerProps}
- */
-export const DrawerTrigger = function DrawerTrigger(props: DrawerTriggerProps) {
-  return <RACDialogTrigger {...props} />;
-};

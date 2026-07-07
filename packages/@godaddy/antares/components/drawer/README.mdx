@@ -9,6 +9,7 @@ import DefaultExample from './examples/default.tsx?raw';
 import BottomSheetExample from './examples/bottom-sheet.tsx?raw';
 import PlacementsExample from './examples/placements.tsx?raw';
 import NestedPopoverExample from './examples/nested-popover.tsx?raw';
+import NoEscapeDismissExample from './examples/no-escape-dismiss.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -65,6 +66,13 @@ Popovers rendered inside a drawer stay open without dismissing the drawer.
 
 <Story of={Stories.NestedPopover} inline />
 <Source language="tsx" code={NestedPopoverExample} />
+
+### No Escape Dismiss
+
+Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+
+<Story of={Stories.NoEscapeDismiss} inline />
+<Source language="tsx" code={NoEscapeDismissExample} />
 
 ## Accessibility
 

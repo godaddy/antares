@@ -16,7 +16,6 @@ export function FilteredDismissExample() {
         shouldCloseOnInteractOutside={function filter() {
           return false;
         }}
-        title="Filtered"
       >
         <Text>Filtered dismiss</Text>
       </Drawer>

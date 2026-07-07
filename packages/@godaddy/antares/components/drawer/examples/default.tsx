@@ -4,7 +4,7 @@ export function DefaultExample() {
   return (
     <DrawerTrigger>
       <Button variant="primary">Open drawer</Button>
-      <Drawer placement="right" isDismissable title="Settings">
+      <Drawer placement="right" isDismissable>
         <Text>Drawer content goes here.</Text>
       </Drawer>
     </DrawerTrigger>

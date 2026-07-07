@@ -1,5 +1,3 @@
-/* Backdrop overlay — CSS fade (mirrors Modal). RAC detects the transition
-   via getAnimations() to delay unmount, so no JS exit machinery is needed. */
 .overlay {
   --_overlay-bg: rgba(0, 0, 0, 0.6);
 
@@ -15,34 +13,32 @@
   opacity: 0;
 }
 
-/* Drawer panel — Box supplies elevation (bg/border/shadow) tokens; this adds
-   edge positioning and the slide transition. */
 .drawer {
   position: fixed;
   outline: none;
   transition: transform 0.2s ease;
 }
 
-.drawer[data-entering],
-.drawer[data-exiting] {
+.drawer:where([data-entering]),
+.drawer:where([data-exiting]) {
   transform: var(--_slide);
 }
 
-.drawer[data-placement="right"] {
+.drawer:where([data-placement='right']) {
   inset-inline-end: 0;
   inset-block: 0;
   max-inline-size: var(--_max-size, min(80vw, 400px));
   block-size: 100%;
 }
 
-.drawer[data-placement="left"] {
+.drawer:where([data-placement='left']) {
   inset-inline-start: 0;
   inset-block: 0;
   max-inline-size: var(--_max-size, min(80vw, 400px));
   block-size: 100%;
 }
 
-.drawer[data-placement="bottom"] {
+.drawer:where([data-placement='bottom']) {
   inset-block-end: 0;
   inset-inline: 0;
   max-block-size: var(--_max-size, calc(100dvh - 80px));
@@ -50,7 +46,7 @@
   border-radius: var(--br-md) var(--br-md) 0 0;
 }
 
-.drawer[data-placement="top"] {
+.drawer:where([data-placement='top']) {
   inset-block-start: 0;
   inset-inline: 0;
   max-block-size: var(--_max-size, calc(100dvh - 80px));
@@ -65,27 +61,12 @@
   }
 }
 
-/* Close button (top-inline-end absolute) */
 .close {
   position: absolute;
-  inset-block-start: var(--sp-md);
-  inset-inline-end: var(--sp-md);
-  z-index: 1;
+  inset-block-start: var(--sp-xs);
+  inset-inline-end: var(--sp-xs);
 }
 
-/* Dialog content layout */
 .dialog {
-  display: flex;
-  flex-direction: column;
-  padding: var(--sp-md);
-  gap: var(--sp-md);
   outline: none;
-}
-
-/* Title */
-.title {
-  margin: 0;
-  font-size: var(--fs-heading-md);
-  font-family: var(--ff-heading);
-  line-height: var(--lh-heading);
 }

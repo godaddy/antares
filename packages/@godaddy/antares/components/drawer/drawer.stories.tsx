@@ -5,6 +5,7 @@ import { DefaultExample } from './examples/default.tsx';
 import { BottomSheetExample } from './examples/bottom-sheet.tsx';
 import { PlacementsExample } from './examples/placements.tsx';
 import { NestedPopoverExample } from './examples/nested-popover.tsx';
+import { NoEscapeDismissExample } from './examples/no-escape-dismiss.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
 
 export default getMeta({
@@ -20,6 +21,8 @@ export const BottomSheet = getStory(BottomSheetExample);
 export const Placements = getStory(PlacementsExample);
 
 export const NestedPopover = getStory(NestedPopoverExample);
+
+export const NoEscapeDismiss = getStory(NoEscapeDismissExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,

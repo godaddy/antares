@@ -9,7 +9,7 @@ export function NestedPopoverExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open drawer
       </Button>
-      <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable title="Drawer with Popover">
+      <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable>
         <PopoverTrigger>
           <Button variant="primary">Open popover</Button>
           <Popover>
