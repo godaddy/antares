@@ -22,6 +22,7 @@ describe('@godaddy/antares', function antares() {
       });
       const { container } = await render(<DefaultExample />);
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      assume(input).is.not.equal(null);
       await userEvent.upload(input, new File(['hello'], 'hello.txt', { type: 'text/plain' }));
       assume(spy.mock.calls.length).equals(1);
       assume((spy.mock.calls[0][1] as File[])[0].name).equals('hello.txt');

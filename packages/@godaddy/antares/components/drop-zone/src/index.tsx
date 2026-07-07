@@ -12,6 +12,11 @@ import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
+
+/**
+ * Render props received by a function child of {@link DropZone}.
+ * Branch on these to change content or styling based on the zone's current state.
+ */
 export interface DropZoneRenderProps extends RACDropZoneRenderProps {}
 
 /**

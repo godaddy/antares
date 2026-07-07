@@ -38,6 +38,7 @@ describe('@godaddy/antares', function antares() {
       const { container } = await render(<DefaultExample />);
       const labelSpan = container.querySelector('[slot="label"]') as HTMLElement;
       assume(labelSpan).is.not.equal(null);
+      assume(labelSpan.id).is.not.equal('');
       const btn = container.querySelector(`button[aria-labelledby*="${labelSpan.id}"]`);
       assume(btn).is.not.equal(null);
     });
