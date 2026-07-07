@@ -1,8 +1,6 @@
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
-import { DismissOnBlurExample } from '../examples/dismiss-on-blur.tsx';
-import { FocusScopeExample } from '../examples/focus-scope.tsx';
 import { VerticalExample } from '../examples/vertical.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/inline-drawer-playground.tsx';
@@ -114,20 +112,23 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('collapsed panel with minSize has no aria-hidden', async function minSizeA11y() {
+    it('peek panel stays accessible and is wired to the trigger', async function minSizeA11y() {
       const { getByRole, getByText } = await render(<SidebarNavExample />);
 
       await getByRole('button', { name: 'Menu' }).click();
-
       await vi.waitFor(async function collapsed() {
-        const trigger = getByRole('button', { name: 'Menu' }).query();
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
+        assume(getByRole('button', { name: 'Menu' }).query()?.getAttribute('aria-expanded')).equals('false');
       });
 
-      const homeText = getByText('Home').query();
-      assume(homeText).is.not.equal(null);
-      const panel = homeText?.closest('[role="group"]');
+      const trigger = getByRole('button', { name: 'Menu' }).query();
+      const panel = getByText('Home').query()?.closest('[role="group"]') as HTMLElement | null;
+
+      assume(panel).is.not.equal(null);
       assume(panel?.getAttribute('aria-hidden')).equals(null);
+      // Trigger's aria-controls points at the always-visible peek region, and the
+      // region is labelled by the trigger.
+      assume(trigger?.getAttribute('aria-controls')).equals(panel?.getAttribute('id'));
+      assume(panel?.getAttribute('aria-labelledby')).equals(trigger?.getAttribute('id'));
     });
 
     it('collapsed panel with minSize allows focus on content', async function minSizeFocus() {
@@ -142,52 +143,6 @@ describe('@godaddy/antares', function antares() {
       const panel = getByRole('group').query();
       assume(panel).is.not.equal(null);
       assume(panel?.hasAttribute('aria-hidden')).equals(false);
-    });
-
-    it('collapses on blur when shouldDismissOnBlur is set', async function dismissOnBlur() {
-      const { getByRole } = await render(<DismissOnBlurExample />);
-
-      const trigger = getByRole('button', { name: 'Panel' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-
-      getByRole('button', { name: 'Inside button' }).query()!.focus();
-      getByRole('button', { name: 'Outside button' }).query()!.focus();
-
-      await vi.waitFor(async function collapsed() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-      });
-    });
-
-    it('does not collapse when relatedTarget is null', async function dismissOnBlurNull() {
-      const { getByRole } = await render(<DismissOnBlurExample />);
-
-      const trigger = getByRole('button', { name: 'Panel' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-
-      const insideButton = getByRole('button', { name: 'Inside button' }).query();
-      insideButton?.focus();
-      insideButton?.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: null }));
-
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-    });
-
-    it('FocusScope traps focus when expanded', async function focusScopeContain() {
-      const { getByRole } = await render(<FocusScopeExample />);
-
-      await getByRole('button', { name: 'Action A' }).click();
-      await userEvent.keyboard('{Tab}');
-
-      await vi.waitFor(async function focusOnB() {
-        assume(document.activeElement?.textContent).equals('Action B');
-      });
-
-      await userEvent.keyboard('{Tab}');
-
-      await vi.waitFor(async function focusWrapped() {
-        const active = document.activeElement?.textContent;
-        const insideDrawer = active === 'Action A' || active === 'Action B' || active === 'Sidebar';
-        assume(insideDrawer).equals(true);
-      });
     });
 
     it('does not toggle when isDisabled', async function disabledNoToggle() {
@@ -253,6 +208,11 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(async function expanded() {
         assume(trigger?.getAttribute('aria-expanded')).equals('true');
       });
+    });
+
+    it('sets data-animate=false when animate is false', async function animateOff() {
+      await render(<PlaygroundExample animate={false} />);
+      assume(document.querySelector('[data-animate="false"]')).is.not.equal(null);
     });
 
     it('passes className to all sub-components', async function classNamePassthrough() {

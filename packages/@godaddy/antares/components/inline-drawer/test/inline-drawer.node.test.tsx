@@ -2,8 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
-import { DismissOnBlurExample } from '../examples/dismiss-on-blur.tsx';
-import { FocusScopeExample } from '../examples/focus-scope.tsx';
 import { VerticalExample } from '../examples/vertical.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { RefForwardingExample } from '../examples/ref-forwarding.tsx';
@@ -23,14 +21,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders SidebarNavExample', function sidebarNavExample() {
       expect(renderToString(<SidebarNavExample />)).toMatchSnapshot();
-    });
-
-    it('renders DismissOnBlurExample', function dismissOnBlurExample() {
-      expect(renderToString(<DismissOnBlurExample />)).toMatchSnapshot();
-    });
-
-    it('renders FocusScopeExample', function focusScopeExample() {
-      expect(renderToString(<FocusScopeExample />)).toMatchSnapshot();
     });
 
     it('renders VerticalExample', function verticalExample() {

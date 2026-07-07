@@ -3,31 +3,58 @@
   overflow: hidden;
 }
 
-/* Horizontal placement: constrain inline-size */
-.inlineDrawer[data-placement="left"],
-.inlineDrawer[data-placement="right"] {
-  inline-size: var(--_size, auto);
+/* ---- Peek mode (minSize set): the wrapper animates between min and max size,
+   and the panel content stays visible the whole time. ---- */
+.inlineDrawer[data-peek]:where([data-placement='left'], [data-placement='right']) {
+  inline-size: var(--_min-size);
   transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* Vertical placement: constrain block-size */
-.inlineDrawer[data-placement="top"],
-.inlineDrawer[data-placement="bottom"] {
-  block-size: var(--_size, auto);
+.inlineDrawer[data-peek][data-expanded]:where([data-placement='left'], [data-placement='right']) {
+  inline-size: var(--_max-size);
+}
+
+.inlineDrawer[data-peek]:where([data-placement='top'], [data-placement='bottom']) {
+  block-size: var(--_min-size);
   transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* When minSize is set, keep panel visible at collapsed size.
-   UA stylesheet applies content-visibility: hidden to [hidden=until-found].
-   Override both display and content-visibility so children are actually visible. */
-.inlineDrawer[data-persist-content] > .panel[hidden] {
-  display: block !important;
-  content-visibility: visible !important;
+.inlineDrawer[data-peek][data-expanded]:where([data-placement='top'], [data-placement='bottom']) {
+  block-size: var(--_max-size);
+}
+
+.inlineDrawer[data-peek] > .panel {
+  overflow: hidden;
+}
+
+/* ---- Default mode (no minSize): RAC drives the panel size via the
+   --disclosure-panel-width / --disclosure-panel-height custom properties. ---- */
+.inlineDrawer:not([data-peek]) > .panel {
+  overflow: hidden;
+}
+
+.inlineDrawer:not([data-peek]):where([data-placement='left'], [data-placement='right']) > .panel {
+  inline-size: var(--disclosure-panel-width, auto);
+  max-inline-size: var(--_max-size, none);
+  transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.inlineDrawer:not([data-peek]):where([data-placement='top'], [data-placement='bottom']) > .panel {
+  block-size: var(--disclosure-panel-height, auto);
+  max-block-size: var(--_max-size, none);
+  transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Disable animation */
+.inlineDrawer[data-animate='false'],
+.inlineDrawer[data-animate='false'] > .panel {
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .inlineDrawer {
-    transition: none !important;
+  .inlineDrawer,
+  .inlineDrawer > .panel {
+    transition: none;
   }
 }
 
@@ -53,9 +80,4 @@
 .triggerButton[data-disabled] {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-/* Panel */
-.panel {
-  overflow: hidden;
 }

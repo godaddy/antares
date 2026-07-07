@@ -9,12 +9,14 @@ import {
 export interface PlaygroundExampleProps {
   placement?: InlineDrawerPlacement;
   animate?: boolean;
-  shouldDismissOnBlur?: boolean;
+  minSize?: number | string;
+  maxSize?: number | string;
+  isDisabled?: boolean;
 }
 
-export function PlaygroundExample({ placement, animate, shouldDismissOnBlur }: PlaygroundExampleProps) {
+export function PlaygroundExample({ placement, animate, minSize, maxSize, isDisabled }: PlaygroundExampleProps) {
   return (
-    <InlineDrawer placement={placement} animate={animate} shouldDismissOnBlur={shouldDismissOnBlur}>
+    <InlineDrawer placement={placement} animate={animate} minSize={minSize} maxSize={maxSize} isDisabled={isDisabled}>
       <InlineDrawerTrigger>Toggle panel</InlineDrawerTrigger>
       <InlineDrawerPanel>
         <Text>Playground content. Adjust props in the controls panel.</Text>
