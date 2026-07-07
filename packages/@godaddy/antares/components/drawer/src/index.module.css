@@ -24,34 +24,41 @@
   transform: var(--_slide);
 }
 
+.drawer:where([data-placement='left'], [data-placement='right']) {
+  inset-block: 0;
+  block-size: 100%;
+  max-inline-size: var(--_max-size, min(80vw, 25rem));
+  min-inline-size: var(--_min-size, var(--_min-fallback));
+}
+
+.drawer:where([data-placement='top'], [data-placement='bottom']) {
+  inset-inline: 0;
+  inline-size: 100%;
+  max-block-size: var(--_max-size, calc(100dvh - 5rem));
+  min-block-size: var(--_min-size, var(--_min-fallback));
+}
+
 .drawer:where([data-placement='right']) {
   inset-inline-end: 0;
-  inset-block: 0;
-  max-inline-size: var(--_max-size, min(80vw, 400px));
-  block-size: 100%;
 }
 
 .drawer:where([data-placement='left']) {
   inset-inline-start: 0;
-  inset-block: 0;
-  max-inline-size: var(--_max-size, min(80vw, 400px));
-  block-size: 100%;
 }
 
 .drawer:where([data-placement='bottom']) {
   inset-block-end: 0;
-  inset-inline: 0;
-  max-block-size: var(--_max-size, calc(100dvh - 80px));
-  inline-size: 100%;
   border-radius: var(--br-md) var(--br-md) 0 0;
 }
 
 .drawer:where([data-placement='top']) {
   inset-block-start: 0;
-  inset-inline: 0;
-  max-block-size: var(--_max-size, calc(100dvh - 80px));
-  inline-size: 100%;
   border-radius: 0 0 var(--br-md) var(--br-md);
+}
+
+/* Floor the free axis so the absolute close button is never clipped by short content. */
+.drawer[data-has-close] {
+  --_min-fallback: 3rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -63,8 +70,8 @@
 
 .close {
   position: absolute;
-  inset-block-start: var(--sp-xs);
-  inset-inline-end: var(--sp-xs);
+  inset-block-start: var(--sp-sm);
+  inset-inline-end: var(--sp-sm);
 }
 
 .dialog {

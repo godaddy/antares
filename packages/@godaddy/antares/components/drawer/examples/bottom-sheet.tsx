@@ -11,7 +11,8 @@ export function BottomSheetExample() {
       </Button>
       <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} isDismissable showCloseButton>
         <Box elevation="card">
-          <Text>Bottom sheet content with close button.</Text>
+          <Text as="p">Bottom sheet with close button.</Text>
+          <Text as="p">This is the content</Text>
         </Box>
       </Drawer>
     </>

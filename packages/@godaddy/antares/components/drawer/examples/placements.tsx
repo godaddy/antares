@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Button, Flex, Text, type DrawerPlacement } from '@godaddy/antares';
+import { Drawer, Button, Flex, Text, type DrawerPlacement, Box } from '@godaddy/antares';
 
 const PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];
 
@@ -23,8 +23,10 @@ export function PlacementsExample() {
           </Button>
         );
       })}
-      <Drawer placement={placement} isOpen={open} onOpenChange={setOpen} isDismissable title={`${placement} drawer`}>
-        <Text>Placement: {placement}</Text>
+      <Drawer placement={placement} isOpen={open} onOpenChange={setOpen} isDismissable>
+        <Box padding="md">
+          <Text>Placement: {placement}</Text>
+        </Box>
       </Drawer>
     </Flex>
   );

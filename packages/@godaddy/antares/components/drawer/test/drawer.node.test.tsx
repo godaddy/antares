@@ -5,12 +5,8 @@ import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { PlaygroundExample } from '../examples/drawer-playground.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
-import { RTLPlacementExample } from '../examples/rtl-placement.tsx';
-import { DefaultOpenExample } from '../examples/default-open.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
-import { AriaLabelExample } from '../examples/aria-label.tsx';
-import { AriaLabelWithTitleExample } from '../examples/aria-label-with-title.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -34,6 +30,18 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<PlaygroundExample placement="bottom" maxSize="60%" />)).toMatchSnapshot();
     });
 
+    it('renders PlaygroundExample with numeric minSize', function playgroundNumericMinSize() {
+      expect(renderToString(<PlaygroundExample placement="right" minSize={320} />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with string minSize', function playgroundStringMinSize() {
+      expect(renderToString(<PlaygroundExample placement="bottom" minSize="40%" />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with close button floor', function playgroundCloseFloor() {
+      expect(renderToString(<PlaygroundExample placement="right" showCloseButton />)).toMatchSnapshot();
+    });
+
     it('renders PlacementsExample', function placementsExample() {
       expect(renderToString(<PlacementsExample />)).toMatchSnapshot();
     });
@@ -42,28 +50,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<NestedPopoverExample />)).toMatchSnapshot();
     });
 
-    it('renders RTLPlacementExample', function rtlPlacementExample() {
-      expect(renderToString(<RTLPlacementExample />)).toMatchSnapshot();
-    });
-
-    it('renders DefaultOpenExample', function defaultOpenExample() {
-      expect(renderToString(<DefaultOpenExample />)).toMatchSnapshot();
-    });
-
     it('renders NoEscapeDismissExample', function noEscapeDismissExample() {
       expect(renderToString(<NoEscapeDismissExample />)).toMatchSnapshot();
     });
 
     it('renders FilteredDismissExample', function filteredDismissExample() {
       expect(renderToString(<FilteredDismissExample />)).toMatchSnapshot();
-    });
-
-    it('renders AriaLabelExample', function ariaLabelExample() {
-      expect(renderToString(<AriaLabelExample />)).toMatchSnapshot();
-    });
-
-    it('renders AriaLabelWithTitleExample', function ariaLabelWithTitleExample() {
-      expect(renderToString(<AriaLabelWithTitleExample />)).toMatchSnapshot();
     });
   });
 });

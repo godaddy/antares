@@ -28,8 +28,17 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps
   /** Accessible label for the dialog. */
   'aria-label'?: string;
 
-  /** Max size of the drawer along its constrained axis. Accepts CSS values. @default 'min(80vw, 400px)' for left/right, 'calc(100dvh - 80px)' for top/bottom */
+  /** Max size of the drawer along its constrained axis. Accepts CSS values.
+   * @default 'min(80vw, 400px)' for left/right, 'calc(100dvh - 80px)' for top/bottom
+   */
   maxSize?: number | string;
+
+  /**
+   * Min size of the drawer along its constrained axis. Accepts CSS values.
+   * When unset, `showCloseButton` establishes a floor so the close button is
+   * never clipped. Wins over `maxSize` if the two conflict.
+   */
+  minSize?: number | string;
 
   /** Show built-in X close button. @default false */
   showCloseButton?: boolean;
@@ -60,6 +69,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     placement,
     'aria-label': ariaLabel,
     maxSize,
+    minSize,
     showCloseButton = false,
     closeLabel = 'Close',
     id,
@@ -72,15 +82,25 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   const resolved = resolvePlacement(placement, direction);
 
   const drawerStyle = {
-    '--_slide': getSlideTransform(resolved, direction)
-    // ...(maxSize !== undefined && {
-    //   '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize
-    // })
+    '--_slide': getSlideTransform(resolved, direction),
+    ...(maxSize !== undefined && {
+      '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize
+    }),
+    ...(minSize !== undefined && {
+      '--_min-size': typeof minSize === 'number' ? `${minSize}px` : minSize
+    })
   } as CSSProperties;
 
   return (
     <RACModalOverlay className={styles.overlay} {...rest}>
-      <Box as={RACModal} elevation="overlay" data-placement={resolved} style={drawerStyle} className={styles.drawer}>
+      <Box
+        as={RACModal}
+        elevation="overlay"
+        data-placement={resolved}
+        data-has-close={showCloseButton || undefined}
+        style={drawerStyle}
+        className={styles.drawer}
+      >
         <Flex
           as={RACDialog}
           direction="column"

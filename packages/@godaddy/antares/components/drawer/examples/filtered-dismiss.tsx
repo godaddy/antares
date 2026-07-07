@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Button, Text } from '@godaddy/antares';
+import { Drawer, Button, Text, Box } from '@godaddy/antares';
 
 export function FilteredDismissExample() {
   const [open, setOpen] = useState(false);
@@ -17,7 +17,9 @@ export function FilteredDismissExample() {
           return false;
         }}
       >
-        <Text>Filtered dismiss</Text>
+        <Box padding="md">
+          <Text>Filtered dismiss</Text>
+        </Box>
       </Drawer>
     </>
   );

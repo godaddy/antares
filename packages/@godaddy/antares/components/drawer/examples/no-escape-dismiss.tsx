@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Button, Text } from '@godaddy/antares';
+import { Drawer, Button, Text, Box } from '@godaddy/antares';
 
 export function NoEscapeDismissExample() {
   const [open, setOpen] = useState(false);
@@ -9,7 +9,9 @@ export function NoEscapeDismissExample() {
         Open
       </Button>
       <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable isKeyboardDismissDisabled>
-        <Text>Cannot escape</Text>
+        <Box padding="md">
+          <Text>Cannot escape</Text>
+        </Box>
       </Drawer>
     </>
   );

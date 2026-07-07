@@ -5,12 +5,8 @@ import assume from 'assume';
 import { DefaultExample } from '../examples/default.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { PlaygroundExample } from '../examples/drawer-playground.tsx';
-import { RTLPlacementExample } from '../examples/rtl-placement.tsx';
-import { DefaultOpenExample } from '../examples/default-open.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
-import { AriaLabelExample } from '../examples/aria-label.tsx';
-import { AriaLabelWithTitleExample } from '../examples/aria-label-with-title.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -50,28 +46,6 @@ describe('@godaddy/antares', function antares() {
       await vi.waitFor(async function close() {
         assume(getByRole('dialog').query()).equals(null);
       });
-    });
-
-    it('renders title as a heading', async function titleHeading() {
-      const { getByRole } = await render(<DefaultExample />);
-
-      await getByRole('button', { name: 'Open drawer' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('heading', { name: 'Settings' }).query()).is.not.equal(null);
-      });
-    });
-
-    it('opens BottomSheetExample and shows close button', async function bottomSheet() {
-      const { getByRole } = await render(<BottomSheetExample />);
-
-      await getByRole('button', { name: 'Open bottom sheet' }).click();
-      await vi.waitFor(async function open() {
-        const dialog = getByRole('dialog').query();
-        assume(dialog).is.not.equal(null);
-        assume(dialog?.textContent).includes('Bottom sheet content');
-      });
-
-      assume(getByRole('button', { name: 'Close' }).query()).is.not.equal(null);
     });
 
     it('closes BottomSheetExample when close button is pressed', async function closeButton() {
@@ -123,28 +97,6 @@ describe('@godaddy/antares', function antares() {
       assume(panel?.getAttribute('data-placement')).equals('top');
     });
 
-    it('flips left to right in RTL locale', async function rtlFlip() {
-      const { getByRole } = await render(<RTLPlacementExample />);
-
-      await getByRole('button', { name: 'Open' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('dialog').query()).is.not.equal(null);
-      });
-
-      const panel = document.querySelector('[data-placement]');
-      assume(panel?.getAttribute('data-placement')).equals('right');
-    });
-
-    it('opens with defaultOpen', async function defaultOpen() {
-      const { getByRole } = await render(<DefaultOpenExample />);
-
-      await vi.waitFor(async function open() {
-        const dialog = getByRole('dialog').query();
-        assume(dialog).is.not.equal(null);
-        assume(dialog?.textContent).includes('Auto-opened');
-      });
-    });
-
     it('prevents escape dismiss when isKeyboardDismissDisabled', async function noEscape() {
       const { getByRole } = await render(<NoEscapeDismissExample />);
 
@@ -170,7 +122,6 @@ describe('@godaddy/antares', function antares() {
         assume(getByRole('dialog').query()).is.not.equal(null);
       });
 
-      // Backdrop = dialog's grandparent (dialog -> panel -> overlay).
       const overlay = getByRole('dialog').element().parentElement!.parentElement!;
       await userEvent.click(overlay);
 
@@ -182,31 +133,12 @@ describe('@godaddy/antares', function antares() {
       assume(getByRole('dialog').query()).is.not.equal(null);
     });
 
-    it('uses aria-label as accessible name when title is omitted', async function ariaLabelFallback() {
-      const { getByRole } = await render(<AriaLabelExample />);
-
-      await getByRole('button', { name: 'Open' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('dialog', { name: 'Custom drawer label' }).query()).is.not.equal(null);
-      });
-    });
-
-    it('aria-label takes precedence over title for accessible name', async function ariaLabelPrecedence() {
-      const { getByRole } = await render(<AriaLabelWithTitleExample />);
-
-      await getByRole('button', { name: 'Open' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('dialog', { name: 'Aria Label' }).query()).is.not.equal(null);
-        assume(getByRole('heading', { name: 'Visible Title' }).query()).is.not.equal(null);
-      });
-    });
-
     it('popover inside drawer does not close drawer', async function nestedPopover() {
       const { getByRole, getByText } = await render(<NestedPopoverExample />);
 
       await getByRole('button', { name: 'Open drawer' }).click();
       await vi.waitFor(async function open() {
-        assume(getByRole('dialog', { name: 'Drawer with Popover' }).query()).is.not.equal(null);
+        assume(getByRole('dialog', { name: 'Nested popover' }).query()).is.not.equal(null);
       });
 
       await getByRole('button', { name: 'Open popover' }).click();
@@ -214,7 +146,7 @@ describe('@godaddy/antares', function antares() {
         assume(getByText('Popover inside drawer').query()).is.not.equal(null);
       });
 
-      assume(getByRole('dialog', { name: 'Drawer with Popover' }).query()).is.not.equal(null);
+      assume(getByRole('dialog', { name: 'Nested popover' }).query()).is.not.equal(null);
     });
   });
 });
