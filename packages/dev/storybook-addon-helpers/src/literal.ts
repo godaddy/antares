@@ -18,7 +18,8 @@ export function toTsExpression(value: unknown): ts.Expression {
   if (typeof value === 'object') {
     return factory.createObjectLiteralExpression(
       Object.entries(value as Record<string, unknown>).map(([key, item]) =>
-        factory.createPropertyAssignment(key, toTsExpression(item))
+        // Quote keys so non-identifier prop names (e.g. `aria-label`, `data-x`) emit valid JS.
+        factory.createPropertyAssignment(factory.createStringLiteral(key), toTsExpression(item))
       ),
       true
     );
