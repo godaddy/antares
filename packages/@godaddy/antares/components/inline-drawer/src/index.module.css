@@ -1,14 +1,11 @@
-/* RAC Disclosure root. Animate min/max intrinsic sizes where supported. */
 .inlineDrawer {
   overflow: hidden;
-  interpolate-size: allow-keywords;
 }
 
-/* Wrapper size — used by the sidebar-rail pattern (min/max set). Falls back to
-   `auto` for the accordion pattern, where the panel drives the size instead. */
+/* Collapse-axis size for the sidebar-rail pattern (min/max set). Accordions leave
+   these `auto` and let the panel drive the size instead. */
 .inlineDrawer:where([data-placement='left'], [data-placement='right']) {
   inline-size: var(--_min-size, auto);
-  transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .inlineDrawer[data-expanded]:where([data-placement='left'], [data-placement='right']) {
@@ -17,27 +14,25 @@
 
 .inlineDrawer:where([data-placement='top'], [data-placement='bottom']) {
   block-size: var(--_min-size, auto);
-  transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .inlineDrawer[data-expanded]:where([data-placement='top'], [data-placement='bottom']) {
   block-size: var(--_max-size, auto);
 }
 
-/* Accordion panel — size driven by RAC's --disclosure-panel-* custom properties. */
-.panel {
-  overflow: hidden;
-  interpolate-size: numeric-only;
-}
-
 .inlineDrawer:where([data-placement='left'], [data-placement='right']) > .panel {
   inline-size: var(--disclosure-panel-width, auto);
-  transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .inlineDrawer:where([data-placement='top'], [data-placement='bottom']) > .panel {
   block-size: var(--disclosure-panel-height, auto);
-  transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.inlineDrawer,
+.inlineDrawer > .panel {
+  transition:
+    inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .inlineDrawer[data-animate='false'],

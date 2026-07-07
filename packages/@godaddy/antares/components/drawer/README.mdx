@@ -14,6 +14,8 @@ import RTLExample from './examples/rtl.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
+Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+
 ## Features
 
 - Slides in from any screen edge (top, bottom, left, right)
@@ -32,11 +34,7 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-## Sub-components
-
-### DrawerTrigger
-
-Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+The `DrawerTrigger` component accepts the following props:
 
 <ArgTypes of={Stories.DrawerTriggerProps} />
 
@@ -88,10 +86,10 @@ In RTL locales, `left` and `right` placements flip automatically so the drawer s
 
 ### Keyboard
 
-| Key | Action |
-| --- | --- |
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
 | `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab` | Move focus within the drawer (focus is trapped) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
 
 ### ARIA
 

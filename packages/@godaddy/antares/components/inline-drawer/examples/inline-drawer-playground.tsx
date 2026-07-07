@@ -1,11 +1,4 @@
-import {
-  InlineDrawer,
-  InlineDrawerPanel,
-  Button,
-  Box,
-  Text,
-  type InlineDrawerPlacement
-} from '@godaddy/antares';
+import { InlineDrawer, InlineDrawerPanel, Button, Box, Text, type InlineDrawerPlacement } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   placement?: InlineDrawerPlacement;
@@ -18,7 +11,7 @@ export function PlaygroundExample({ placement, animate, isDisabled }: Playground
     <InlineDrawer placement={placement} animate={animate} isDisabled={isDisabled}>
       <Button slot="trigger">Toggle panel</Button>
       <InlineDrawerPanel>
-        <Box padding="md">
+        <Box padding="md" style={{ inlineSize: 'max-content' }}>
           <Text>Playground content.</Text>
         </Box>
       </InlineDrawerPanel>

@@ -11,14 +11,8 @@ export function SidebarNavExample() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Flex direction="row" style={{ height: 260, border: '1px solid var(--bd-base)' }}>
-      <InlineDrawer
-        placement="left"
-        isExpanded={expanded}
-        onExpandedChange={setExpanded}
-        minSize="min-content"
-        maxSize="max-content"
-      >
+    <Flex direction="row">
+      <InlineDrawer placement="left" isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>
         <Flex direction="column" gap="xs" padding="xs">
           <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label="Menu">
             <Icon icon="bulleted-list" />

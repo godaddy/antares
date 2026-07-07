@@ -66,8 +66,6 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps
   contentProps?: RACDialogProps;
 }
 
-export interface DrawerTriggerProps extends RACDialogTriggerProps {}
-
 /**
  * An overlay panel that slides in from a screen edge. Built like `Modal`:
  * RAC modal overlay + an `elevation="overlay"` Box panel + CSS transitions.
@@ -136,6 +134,8 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     </RACModalOverlay>
   );
 });
+
+export interface DrawerTriggerProps extends RACDialogTriggerProps {}
 
 /**
  * Drawer trigger component. Wraps RAC DialogTrigger.

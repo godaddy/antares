@@ -11,6 +11,8 @@ import ControlledExample from './examples/controlled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+
 ## Features
 
 - In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
@@ -30,25 +32,18 @@ npm install --save @godaddy/antares
 
 <ArgTypes of={Stories.Props} />
 
-## Sub-components
+The `InlineDrawerPanel` component accepts the following props:
 
-`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides (with `hidden="until-found"`) when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+<ArgTypes of={Stories.PanelProps} />
 
 ## Examples
 
-### Accordion
+### Basic Usage
 
 Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
 
 <Story of={Stories.Default} inline />
 <Source language="tsx" code={DefaultExample} />
-
-### Sidebar Navigation
-
-A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Here `min-content`/`max-content` fit the icons collapsed and icon + label expanded, so there are no magic numbers.
-
-<Story of={Stories.SidebarNav} inline />
-<Source language="tsx" code={SidebarNavExample} />
 
 ### Controlled
 
@@ -57,14 +52,21 @@ Use `isExpanded` and `onExpandedChange` to drive state externally.
 <Story of={Stories.Controlled} inline />
 <Source language="tsx" code={ControlledExample} />
 
+### Sidebar Navigation
+
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
+
+<Story of={Stories.SidebarNav} inline />
+<Source language="tsx" code={SidebarNavExample} />
+
 ## Accessibility
 
 ### Keyboard
 
-| Key | Action |
-| --- | --- |
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
 | `Enter` / `Space` | Toggle via the slotted trigger |
-| `Tab` | Move focus through the content |
+| `Tab`             | Move focus through the content |
 
 ### ARIA
 
@@ -74,6 +76,6 @@ Use `isExpanded` and `onExpandedChange` to drive state externally.
 ## Best Practices
 
 - Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
-- For the rail, `min-content`/`max-content` size to the content; use pixel `minSize`/`maxSize` if you want a fixed rail.
+- For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
 - `placement` does not flip in RTL; the side is decided by document/flex order.
 - Don't nest InlineDrawers.

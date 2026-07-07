@@ -1,6 +1,6 @@
 'use client';
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { InlineDrawer } from './src/index.tsx';
+import { InlineDrawer, InlineDrawerPanel } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { ControlledExample } from './examples/controlled.tsx';
 import { SidebarNavExample } from './examples/sidebar-nav.tsx';
@@ -11,6 +11,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(InlineDrawer);
+
+export const PanelProps = getComponentDocs(InlineDrawerPanel);
 
 export const Default = getStory(DefaultExample);
 
