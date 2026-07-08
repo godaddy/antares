@@ -153,7 +153,7 @@ describe('@godaddy/antares', function antares() {
       assume(document.querySelector('[data-animate="false"]')).is.not.equal(null);
     });
 
-    it('passes className to all sub-components', async function classNamePassthrough() {
+    it('passes className to the drawer root and panel', async function classNamePassthrough() {
       await render(<ClassNamePassthroughExample />);
 
       assume(document.querySelector('.custom-drawer')).is.not.equal(null);
