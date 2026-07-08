@@ -10,7 +10,6 @@ import {
   useLocale as RACUseLocale
 } from 'react-aria-components';
 import { cx } from 'cva';
-import { Box } from '#components/layout/box';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Flex, type FlexProps } from '#components/layout/flex';
@@ -106,7 +105,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
       {...rest}
       className={cx(styles.overlay, className)}
     >
-      <Box
+      <Flex
         elevation="overlay"
         data-placement={resolved}
         data-has-close={showCloseButton || undefined}
@@ -131,7 +130,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           ) : null}
           {children}
         </Flex>
-      </Box>
+      </Flex>
     </RACModalOverlay>
   );
 });
