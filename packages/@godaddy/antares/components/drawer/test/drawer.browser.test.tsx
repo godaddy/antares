@@ -110,8 +110,9 @@ describe('@godaddy/antares', function antares() {
         assume(getByRole('dialog').query()).is.not.equal(null);
       });
 
-      const overlay = getByRole('dialog').element().parentElement!.parentElement!;
-      await userEvent.click(overlay);
+      const overlay = getByRole('dialog').element().parentElement?.parentElement;
+      assume(overlay).is.not.equal(null);
+      await userEvent.click(overlay as HTMLElement);
 
       // Wait past the 0.2s exit transition; the filter returns false so it
       // must stay open.
