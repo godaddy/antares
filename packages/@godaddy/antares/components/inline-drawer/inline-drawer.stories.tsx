@@ -12,7 +12,7 @@ export default getMeta({
 
 export const Props = getComponentDocs(InlineDrawer);
 
-export const PanelProps = getComponentDocs(InlineDrawerPanel);
+export const InlineDrawerPanelProps = getComponentDocs(InlineDrawerPanel);
 
 export const Default = getStory(DefaultExample);
 
