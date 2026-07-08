@@ -3,7 +3,8 @@ import { Button } from '@bento/button';
 import { Container } from '@bento/container';
 import { ListBox, ListBoxItem } from '@bento/listbox';
 /* v8 ignore next */
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
 export function SelectExample() {
   const [isOpen, setIsOpen] = useState(false);

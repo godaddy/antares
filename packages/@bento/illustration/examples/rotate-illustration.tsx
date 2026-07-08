@@ -1,5 +1,5 @@
 import { Illustration } from '@bento/illustration';
-import { type UnknownObject } from '@bento/types';
+import type { UnknownObject } from '@bento/types';
 /* v8 ignore next */
 
 export function RotateSVG(args: UnknownObject) {

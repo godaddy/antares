@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useSyncExternalStore } from 'react';
+import { type ReactElement, useCallback, useSyncExternalStore } from 'react';
 import { createStore } from '@bento/create-external-store';
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';

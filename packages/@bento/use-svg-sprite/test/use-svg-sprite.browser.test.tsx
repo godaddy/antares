@@ -3,7 +3,8 @@ import { render, renderHook } from 'vitest-browser-react';
 import { Environment } from '@bento/environment';
 import { describe, it } from 'vitest';
 import { Icon } from '@bento/icon';
-import React, { act } from 'react';
+import type React from 'react';
+import { act } from 'react';
 import assume from 'assume';
 
 describe('@bento/use-svg-sprite browser', function bento() {

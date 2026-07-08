@@ -1,5 +1,6 @@
 /* v8 ignore next */
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { Container } from '@bento/container';
 import { Input } from '@bento/input';
 import { Text } from '@bento/text';
