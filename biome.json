@@ -75,11 +75,7 @@
         "noMisusedPromises": "error",
         "noFloatingPromises": "warn"
       },
-      "style": {
-        "useBlockStatements": "off",
-        "useImportType": "error",
-        "useExportType": "error"
-      },
+      "style": { "useBlockStatements": "off" },
       "suspicious": {
         "noAsyncPromiseExecutor": "error",
         "noCatchAssign": "error",
