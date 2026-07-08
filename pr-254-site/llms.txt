@@ -12,8 +12,8 @@
 - [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
 - [ListBox](/docs/components/listbox): ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.
 - [Menu](/docs/components/menu): Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
-- [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
+- [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [NumberField](/docs/components/number-field): NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
 - [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
