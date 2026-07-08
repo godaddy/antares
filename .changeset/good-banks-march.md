@@ -2,4 +2,4 @@
 '@godaddy/antares': minor
 ---
 
-refactor: revamping drawer and inline-drawer components
+refactor: revamp Drawer + InlineDrawer (RAC state + CSS transitions); remove Drawer snap-points/handle APIs and InlineDrawerTrigger export
