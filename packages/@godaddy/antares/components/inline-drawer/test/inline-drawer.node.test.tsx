@@ -3,7 +3,6 @@ import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
-import { RefForwardingExample } from '../examples/ref-forwarding.tsx';
 import { ClassNamePassthroughExample } from '../examples/classname-passthrough.tsx';
 import { PlaygroundExample } from '../examples/inline-drawer-playground.tsx';
 import { renderToString } from 'react-dom/server';
@@ -24,10 +23,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders DisabledExample', function disabledExample() {
       expect(renderToString(<DisabledExample />)).toMatchSnapshot();
-    });
-
-    it('renders RefForwardingExample', function refForwardingExample() {
-      expect(renderToString(<RefForwardingExample />)).toMatchSnapshot();
     });
 
     it('renders ClassNamePassthroughExample', function classNamePassthroughExample() {

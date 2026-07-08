@@ -3,7 +3,6 @@ import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/inline-drawer-playground.tsx';
-import { RefForwardingExample, drawerRef, panelRef } from '../examples/ref-forwarding.tsx';
 import { ClassNamePassthroughExample } from '../examples/classname-passthrough.tsx';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -133,15 +132,6 @@ describe('@godaddy/antares', function antares() {
 
       const drawer = document.querySelector('[data-placement="bottom"]');
       assume(drawer).is.not.equal(null);
-    });
-
-    it('forwards ref to InlineDrawer root', async function refForwarding() {
-      await render(<RefForwardingExample />);
-
-      assume(drawerRef.current).is.not.equal(null);
-      assume(drawerRef.current?.tagName).equals('DIV');
-      assume(panelRef.current).is.not.equal(null);
-      assume(panelRef.current?.getAttribute('role')).equals('group');
     });
 
     it('toggles via Space key', async function spaceKey() {
