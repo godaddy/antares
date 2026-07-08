@@ -6,14 +6,14 @@ import {
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
-  DialogProps as RACDialogProps,
+  type DialogProps as RACDialogProps,
   useLocale as RACUseLocale
 } from 'react-aria-components';
 import { cx } from 'cva';
 import { Box } from '#components/layout/box';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
-import { Flex, FlexProps } from '#components/layout/flex';
+import { Flex, type FlexProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
 /** Edge the drawer slides in from. left/right flip in RTL. */
