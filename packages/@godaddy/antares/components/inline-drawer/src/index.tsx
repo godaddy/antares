@@ -26,7 +26,7 @@ export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'className' 
   /** Animate expand/collapse. @default true */
   animate?: boolean;
 
-  /** Additional CSS class for the disclosure root. */
+  /** Additional CSS class for root element. */
   className?: string;
 
   /** Content to render inside the drawer. */
@@ -66,7 +66,10 @@ export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(functi
   );
 });
 
-export interface InlineDrawerPanelProps extends RACDisclosurePanelProps {}
+export interface InlineDrawerPanelProps extends Omit<RACDisclosurePanelProps, 'className'> {
+  /** Additional CSS class. */
+  className?: string;
+}
 
 /**
  * Collapsible content panel for the accordion pattern — a thin wrapper over RAC

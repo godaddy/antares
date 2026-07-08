@@ -19,10 +19,7 @@ import styles from './index.module.css';
 /** Edge the drawer slides in from. left/right flip in RTL. */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-// Props that conflict between our API and RAC's ModalOverlay render props.
-type ConflictingProps = 'className' | 'children' | 'style';
-
-export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps> {
+export interface DrawerProps extends Omit<RACModalOverlayProps, 'className' | 'children' | 'style'> {
   /** Edge the drawer slides in from. left/right flip in RTL. */
   placement: DrawerPlacement;
 
@@ -56,7 +53,7 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, ConflictingProps
   /** Content to render inside the drawer. */
   children?: ReactNode;
 
-  /** Additional CSS class for the inner dialog content region. */
+  /** Additional CSS class for root element. */
   className?: string;
 
   /** Additional props to pass to the inner modal container. */
@@ -104,7 +101,11 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
   } as CSSProperties;
 
   return (
-    <RACModalOverlay className={styles.overlay} data-animate={animate === false ? 'false' : undefined} {...rest}>
+    <RACModalOverlay
+      data-animate={animate === false ? 'false' : undefined}
+      {...rest}
+      className={cx(styles.overlay, className)}
+    >
       <Box
         elevation="overlay"
         data-placement={resolved}
@@ -112,7 +113,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         {...containerProps}
         style={drawerStyle}
         as={RACModal}
-        className={cx(styles.drawer, className)}
+        className={cx(styles.drawer, containerProps?.className)}
       >
         <Flex
           direction="column"
