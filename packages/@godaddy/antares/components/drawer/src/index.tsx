@@ -26,7 +26,7 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, 'className' | 'c
   'aria-label'?: string;
 
   /** Max size of the drawer along its constrained axis. Accepts CSS values.
-   * @default 'min(80vw, 400px)' for left/right, 'calc(100dvh - 80px)' for top/bottom
+   * @default 'min(80vw, 25rem)' for left/right, 'calc(100dvh - 5rem)' for top/bottom
    */
   maxSize?: number | string;
 
