@@ -17,10 +17,7 @@ export default getMeta({
   title: 'components/Button'
 });
 
-export const Props = getComponentDocs(Button, {
-  order: [/^onPress/],
-  categories: { Events: [/^on/], ARIA: [/^aria-/] }
-});
+export const Props = getComponentDocs(Button);
 
 export const LinkButtonProps = getComponentDocs(LinkButton);
 
