@@ -2,49 +2,18 @@ import { basename, dirname, join } from 'node:path';
 import type { MdxJsxFlowElement, MdxJsxAttribute } from 'mdast-util-mdx-jsx';
 import type { Root } from 'mdast';
 import type { Plugin } from 'unified';
-import type { Generator } from 'fumadocs-typescript';
 import { valueToEstree } from 'estree-util-value-to-estree';
 import { visit, SKIP } from 'unist-util-visit';
-import type { CategorizedTypeTable } from './filtered-generator';
+import { resolvePropsDoc, toFumadocsPropTable } from '@bento/storybook-addon-helpers/docs';
 import { addMdxDependency } from './remark-mdx-utils';
 
-/** Options accepted by the remarkArgTypes plugin. */
-export interface RemarkArgTypesOptions {
-  /**
-   * Filtered generator used to resolve and categorize prop types.
-   * When provided, emits a `<PropTable>` component with full prop data.
-   * When absent, falls back to emitting `<auto-type-table>` (fumadocs default).
-   */
-  generator?: Generator & {
-    generateCategorizedTypeTable(props: Parameters<Generator['generateTypeTable']>[0]): Promise<CategorizedTypeTable>;
-  };
-}
-
 /**
- * Derives the TypeScript type name from a Stories property name and file path.
- *
- * - `Props` → `{PascalCase(dirname)}Props` (e.g. `RadioProps` for `radio/README.mdx`)
- * - Anything else → used as-is (e.g. `LinkButtonProps`)
- *
- * @param propertyName - The property name from the `of={Stories.X}` expression
- * @param filePath - Path to the MDX file (used to derive component dirname)
- * @returns The resolved TypeScript type name
- */
-function getTypeName(propertyName: string, filePath: string): string {
-  if (propertyName !== 'Props') return propertyName;
-  return `${basename(dirname(filePath))
-    .split('-')
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join('')}Props`;
-}
-
-/**
- * Extracts the Stories property name from an `<ArgTypes of={Stories.X}>` node.
+ * Extracts the Stories export name from an `<ArgTypes of={Stories.X}>` node.
  *
  * @param node - The MDX JSX flow element to inspect
- * @returns The property name (e.g. `"Props"`, `"LinkButtonProps"`), or undefined if not a valid ArgTypes node
+ * @returns The export name (e.g. `"Props"`, `"LinkButtonProps"`), or undefined
  */
-function getArgTypesPropertyName(node: MdxJsxFlowElement): string | undefined {
+function getArgTypesExportName(node: MdxJsxFlowElement): string | undefined {
   if (node.name !== 'ArgTypes') return;
   const ofAttr = node.attributes.find(
     (attr): attr is MdxJsxAttribute => attr.type === 'mdxJsxAttribute' && attr.name === 'of'
@@ -53,13 +22,7 @@ function getArgTypesPropertyName(node: MdxJsxFlowElement): string | undefined {
   return ofAttr.value.value.split('.').at(-1);
 }
 
-/**
- * Builds an `mdxJsxAttributeValueExpression` wrapping the given value as
- * an estree expression, suitable for use as a JSX attribute value.
- *
- * @param value - Plain JS value to serialize (object, array, string, etc.)
- * @returns An MDX JSX attribute value node with embedded estree AST
- */
+/** Wraps a plain JS value as an MDX JSX attribute value (embedded estree). */
 function toEstreeAttrValue(value: unknown): MdxJsxAttribute['value'] {
   return {
     type: 'mdxJsxAttributeValueExpression',
@@ -74,53 +37,42 @@ function toEstreeAttrValue(value: unknown): MdxJsxAttribute['value'] {
   };
 }
 
+/** Builds a `<PropTable entries={...} categories={...} />` node. */
+function buildPropTable(entries: unknown, categories: unknown): MdxJsxFlowElement {
+  return {
+    type: 'mdxJsxFlowElement',
+    name: 'PropTable',
+    attributes: [
+      { type: 'mdxJsxAttribute', name: 'entries', value: toEstreeAttrValue(entries) },
+      { type: 'mdxJsxAttribute', name: 'categories', value: toEstreeAttrValue(categories) }
+    ],
+    children: []
+  };
+}
+
 /**
- * Transforms `<ArgTypes of={Stories.X}>` MDX nodes.
- *
- * When a `generator` option is provided (recommended for component docs):
- *  - Resolves prop types via `generateCategorizedTypeTable`
- *  - Emits `<PropTable entries={[...]} categories={{...}} />`
- *
- * Without `generator`:
- *  - Falls back to `<auto-type-table path="./src/index.tsx" name="XProps" />`
- *  - Filtering is then delegated to `remarkAutoTypeTable`'s filtered generator
- *
- * The accordion title and type name are derived from the Stories property:
- * - `of={Stories.Props}` → `{PascalCase(dirname)}Props` (e.g. `RadioProps`)
- * - `of={Stories.LinkButtonProps}` → `LinkButtonProps` (used as-is)
+ * Replaces `<ArgTypes of={Stories.X}>` with a `<PropTable>` generated from the
+ * component's `*.stories.tsx` docs getter, via the shared type engine
+ * (`@bento/storybook-addon-helpers/docs`). The stories file is resolved by
+ * convention as `<dir>/<dir>.stories.tsx` relative to the README, and both it
+ * and the component source are registered as MDX dependencies so edits trigger
+ * a rebuild.
  *
  * The transform is invisible to Storybook, which sees the real `ArgTypes` block.
  */
-export const remarkArgTypes: Plugin<[RemarkArgTypesOptions?], Root> = function remarkArgTypes(options) {
-  const generator = options?.generator;
-
-  if (!generator) {
-    return function transform(tree, file) {
-      visit(tree, 'mdxJsxFlowElement', function visitArgTypes(node, index, parent) {
-        if (typeof index !== 'number' || !parent) return;
-        const propertyName = getArgTypesPropertyName(node);
-        if (!propertyName) return;
-
-        const srcPath = join(dirname(file.path), 'src/index.tsx');
-        addMdxDependency(file, srcPath);
-
-        parent.children.splice(index, 1, buildAutoTypeTable(getTypeName(propertyName, file.path)));
-        return [SKIP, index];
-      });
-    };
-  }
-
+export const remarkArgTypes: Plugin<[], Root> = function remarkArgTypes() {
   return function transform(tree, file) {
     const promises: Promise<void>[] = [];
 
     visit(tree, 'mdxJsxFlowElement', function visitArgTypes(node, index, parent) {
       if (typeof index !== 'number' || !parent) return;
-      const propertyName = getArgTypesPropertyName(node);
-      if (!propertyName) return;
+      const exportName = getArgTypesExportName(node);
+      if (!exportName) return;
 
-      const typeName = getTypeName(propertyName, file.path);
-      const srcPath = join(dirname(file.path), 'src/index.tsx');
-      addMdxDependency(file, srcPath);
+      const componentDir = dirname(file.path);
+      const storiesPath = join(componentDir, `${basename(componentDir)}.stories.tsx`);
+      addMdxDependency(file, storiesPath);
+      addMdxDependency(file, join(componentDir, 'src/index.tsx'));
 
       const placeholder: MdxJsxFlowElement = {
         type: 'mdxJsxFlowElement',
@@ -131,45 +83,10 @@ export const remarkArgTypes: Plugin<[RemarkArgTypesOptions?], Root> = function r
       parent.children.splice(index, 1, placeholder);
 
       promises.push(
-        generator.generateCategorizedTypeTable({ path: srcPath, name: typeName }).then(function applyResult({
-          docs,
-          categories
-        }) {
-          const entries = docs.flatMap((doc) =>
-            doc.entries.map(function toEntry(entry) {
-              const defaultTag = entry.tags.find((t) => t.name === 'default');
-              return {
-                name: entry.name,
-                type: entry.type,
-                typeHref: entry.typeHref,
-                default: defaultTag?.text,
-                description: entry.description || undefined,
-                required: entry.required,
-                deprecated: entry.deprecated
-              };
-            })
-          );
-
-          const propTable: MdxJsxFlowElement = {
-            type: 'mdxJsxFlowElement',
-            name: 'PropTable',
-            attributes: [
-              {
-                type: 'mdxJsxAttribute',
-                name: 'entries',
-                value: toEstreeAttrValue(entries)
-              },
-              {
-                type: 'mdxJsxAttribute',
-                name: 'categories',
-                value: toEstreeAttrValue(categories)
-              }
-            ],
-            children: []
-          };
-
+        resolvePropsDoc({ filePath: storiesPath, exportName }).then(function applyResult(doc) {
+          const table = doc ? toFumadocsPropTable(doc) : { entries: [], categories: {} };
           const idx = parent.children.indexOf(placeholder);
-          parent.children.splice(idx, 1, propTable);
+          parent.children.splice(idx, 1, buildPropTable(table.entries, table.categories));
         })
       );
 
@@ -179,21 +96,3 @@ export const remarkArgTypes: Plugin<[RemarkArgTypesOptions?], Root> = function r
     return Promise.all(promises).then(() => undefined);
   };
 };
-
-/**
- * Builds an `<auto-type-table>` element for the fallback (no-generator) path.
- *
- * @param typeName - The TypeScript type name to display
- * @returns An MDX JSX flow element for the auto-type-table
- */
-function buildAutoTypeTable(typeName: string): MdxJsxFlowElement {
-  return {
-    type: 'mdxJsxFlowElement',
-    name: 'auto-type-table',
-    attributes: [
-      { type: 'mdxJsxAttribute', name: 'path', value: './src/index.tsx' },
-      { type: 'mdxJsxAttribute', name: 'name', value: typeName }
-    ],
-    children: []
-  };
-}
