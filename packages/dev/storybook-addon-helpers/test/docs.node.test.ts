@@ -33,4 +33,64 @@ describe('resolvePropsDoc', function resolvePropsDocTests() {
   it('returns undefined for a missing export', async function missingExport() {
     expect(await resolvePropsDoc({ filePath: storiesPath, exportName: 'Nope' })).toBeUndefined();
   });
+
+  it('reads from inline code and applies getTypeDocs options', async function fromCodeType() {
+    const code = `
+      import { getTypeDocs } from '../../src/storybook/getters.ts';
+      interface Local {
+        /** first */
+        a: string;
+        b?: number;
+      }
+      export const T = getTypeDocs<Local>({ exclude: ['b'] });
+    `;
+
+    const doc = await resolvePropsDoc({ code, exportName: 'T' });
+    expect(doc?.name).toBe('Local');
+    expect(doc?.props.map((p) => p.name)).toEqual(['a']);
+  });
+
+  it('reads a bare getComponentDocs (no options) from inline code', async function bareComponent() {
+    const code = `
+      import { getComponentDocs } from '../../src/storybook/getters.ts';
+      interface WProps {
+        /** x */
+        x: string;
+      }
+      function W(_p: WProps) {
+        return null;
+      }
+      export const B = getComponentDocs(W);
+    `;
+
+    const doc = await resolvePropsDoc({ code, exportName: 'B' });
+    expect(doc?.name).toBe('W');
+    expect(doc?.props.map((p) => p.name)).toEqual(['x']);
+  });
+
+  it('unwraps an `as` expression around the getter call', async function unwrapsAs() {
+    const code = `
+      import { getTypeDocs } from '../../src/storybook/getters.ts';
+      interface L {
+        a: string;
+      }
+      export const A = getTypeDocs<L>({}) as unknown as Record<string, never>;
+    `;
+
+    const doc = await resolvePropsDoc({ code, exportName: 'A' });
+    expect(doc?.props.map((p) => p.name)).toEqual(['a']);
+  });
+
+  it('returns undefined when the export initializer is a non-getter call', async function nonGetterCall() {
+    const code = `export const X = other();`;
+    expect(await resolvePropsDoc({ code, exportName: 'X' })).toBeUndefined();
+  });
+
+  it('returns undefined when getComponentDocs first arg is not an identifier', async function nonIdentifierComponent() {
+    const code = `
+      import { getComponentDocs } from '../../src/storybook/getters.ts';
+      export const X = getComponentDocs({}, {});
+    `;
+    expect(await resolvePropsDoc({ code, exportName: 'X' })).toBeUndefined();
+  });
 });
