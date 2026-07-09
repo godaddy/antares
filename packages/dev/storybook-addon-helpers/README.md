@@ -93,3 +93,35 @@ const { entries, categories } = toFumadocsPropTable(doc);
 ```
 
 The Fumadocs docs site (`apps/site`) consumes `./docs` from its `remarkArgTypes` plugin, so both Storybook and the site render the same props from the same `*.stories.tsx` files. `resolvePropsDoc` and the internal `docFromCall` are shared by the CSF transform, so extraction and processing are identical across targets - only the adapter differs.
+
+## Next.js docs sites
+
+When a Next.js app imports `*.stories.tsx` for live previews, alias the main package entry to the browser-safe `./runtime` export. Storybook keeps using the `.` entry (Vite ignores the Next alias).
+
+```js
+// next.config.mjs
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const storybookAddonHelpersDist = join(__dirname, '../../packages/dev/storybook-addon-helpers/dist');
+
+export default {
+  turbopack: {
+    resolveAlias: {
+      '@bento/storybook-addon-helpers/docs': '../../packages/dev/storybook-addon-helpers/dist/docs.mjs',
+      '@bento/storybook-addon-helpers': '../../packages/dev/storybook-addon-helpers/dist/runtime.mjs'
+    }
+  },
+  webpack(config) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@bento/storybook-addon-helpers/docs': join(storybookAddonHelpersDist, 'docs.mjs'),
+      '@bento/storybook-addon-helpers$': join(storybookAddonHelpersDist, 'runtime.mjs')
+    };
+    return config;
+  }
+};
+```
+
+List the `/docs` alias before the root alias in Turbopack so prop-table resolution keeps the Node entry.

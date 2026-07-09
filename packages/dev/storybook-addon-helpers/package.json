@@ -66,6 +66,16 @@
         "default": "./dist/docs.cjs"
       }
     },
+    "./runtime": {
+      "import": {
+        "types": "./dist/runtime.d.mts",
+        "default": "./dist/runtime.mjs"
+      },
+      "require": {
+        "types": "./dist/runtime.d.cts",
+        "default": "./dist/runtime.cjs"
+      }
+    },
     "./package.json": "./package.json"
   }
 }

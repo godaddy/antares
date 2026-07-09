@@ -14,7 +14,6 @@ const config: KnipConfig = {
         'lib/remark-arg-types.ts',
         'lib/remark-mdx-utils.ts',
         'lib/remark-raw-loader.ts',
-        'lib/storybook-addon-helpers-shim.ts',
         'lib/storybook-bridge/**/*'
       ]
     },
