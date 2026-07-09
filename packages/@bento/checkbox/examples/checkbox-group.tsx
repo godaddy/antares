@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 import { Checkbox, CheckboxGroup } from '@bento/checkbox';
 import { Text } from '@bento/text';
 import { FieldError } from '@bento/field-error';

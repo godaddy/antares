@@ -1,4 +1,4 @@
-import { type CalendarDate } from '@internationalized/date';
+import type { CalendarDate } from '@internationalized/date';
 import { Flex, type FlexOwnProps, type FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import {

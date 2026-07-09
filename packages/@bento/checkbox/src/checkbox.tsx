@@ -1,4 +1,5 @@
-import React, { useContext, useRef, useMemo } from 'react';
+import type React from 'react';
+import { useContext, useRef, useMemo } from 'react';
 import { Container, type ContainerProps } from '@bento/container';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { Icon } from '@bento/icon';

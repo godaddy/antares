@@ -1,6 +1,6 @@
 import { withForwardRef } from '@bento/forward';
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 
 interface NoRefProps {
   children?: React.ReactNode;

@@ -1,5 +1,5 @@
-import { type StorybookConfig } from '@storybook/react-vite';
-import { type Indexer } from 'storybook/internal/types';
+import type { StorybookConfig } from '@storybook/react-vite';
+import type { Indexer } from 'storybook/internal/types';
 import { generateCSFPlugin } from './plugin.ts';
 import { storiesIndexer } from './stories-indexer.ts';
 export * from './getters.ts';

@@ -1,8 +1,5 @@
 .field {
-  --field-critical-color: var(
-    --color-feedback-critical-strong,
-    var(--ux-1fhc073, #db1802)
-  );
+  --field-critical-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
   --field-br: var(--ux-1oqjeuu, 0.375rem);
 }
 
@@ -87,7 +84,7 @@
   }
 }
 
-.fieldTrigger[data-variant='select'] {
+.fieldTrigger[data-variant="select"] {
   background: transparent;
 }
 
@@ -96,7 +93,7 @@
   transition: transform 0.15s ease;
 }
 
-.fieldSelectFragment:where([aria-expanded='true']) > [data-icon] {
+.fieldSelectFragment:where([aria-expanded="true"]) > [data-icon] {
   transform: rotate(180deg);
 }
 
@@ -124,7 +121,7 @@
   }
 
   /* sizes */
-  &:where([data-size='sm']) {
+  &:where([data-size="sm"]) {
     & :where(.fieldInput, .fieldTextarea, .fieldButton, .fieldTrigger) {
       font-size: calc(1em / 1.125);
     }
