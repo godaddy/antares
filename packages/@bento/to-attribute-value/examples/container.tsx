@@ -1,7 +1,7 @@
 import { stringify } from '@bento/to-attribute-value';
 import { withSlots } from '@bento/slots';
 /* c8 ignore next */
-import React from 'react';
+import type React from 'react';
 
 interface Example {
   [key: string]: any;

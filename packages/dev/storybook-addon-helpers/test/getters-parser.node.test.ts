@@ -1,6 +1,6 @@
 import assume from 'assume';
 import path from 'node:path';
-import ts from 'typescript';
+import type ts from 'typescript';
 import { describe, it } from 'vitest';
 import { getExportedVariables, extractVariantNames } from '../src/getters-parser.ts';
 import { toTsExpression } from '../src/ats-utils.ts';
