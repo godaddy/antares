@@ -25,7 +25,8 @@ describe('getPropJSDoc', function getPropJSDocTests() {
 
     expect(getPropJSDoc(member)).toEqual({
       description: 'The visible label.',
-      defaultValue: '"Save"'
+      defaultValue: '"Save"',
+      deprecated: false
     });
   });
 
@@ -38,7 +39,26 @@ describe('getPropJSDoc', function getPropJSDocTests() {
 
     expect(getPropJSDoc(member)).toEqual({
       description: undefined,
-      defaultValue: null
+      defaultValue: null,
+      deprecated: false
+    });
+  });
+
+  it('flags props tagged @deprecated', function flagsDeprecated() {
+    const member = getFirstProperty(`
+      interface Props {
+        /**
+         * Old prop.
+         * @deprecated use something else
+         */
+        legacy?: string;
+      }
+    `);
+
+    expect(getPropJSDoc(member)).toEqual({
+      description: 'Old prop.',
+      defaultValue: null,
+      deprecated: true
     });
   });
 });

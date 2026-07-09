@@ -38,6 +38,7 @@ export interface PropDoc {
   required: boolean;
   description?: string;
   defaultValue?: string | null;
+  deprecated?: boolean;
   category?: string;
   sourceFile?: string;
   declaringType?: string;

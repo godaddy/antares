@@ -118,7 +118,8 @@ function extractMembers(
       description: jsDoc.description,
       defaultValue: jsDoc.defaultValue,
       sourceFile: sourceFile.fileName,
-      declaringType
+      declaringType,
+      ...(jsDoc.deprecated ? { deprecated: true } : {})
     });
   }
 

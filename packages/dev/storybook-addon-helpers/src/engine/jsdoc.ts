@@ -1,14 +1,16 @@
 import ts from 'typescript';
 
-export function getPropJSDoc(node: ts.Node): { description?: string; defaultValue: string | null } {
+export function getPropJSDoc(node: ts.Node): { description?: string; defaultValue: string | null; deprecated: boolean } {
   const docs = ts.getJSDocCommentsAndTags(node);
   const jsDoc = docs.find(ts.isJSDoc);
   const description = normalizeComment(jsDoc?.comment);
   const defaultTag = jsDoc?.tags?.find((tag) => tag.tagName.text === 'default');
+  const deprecated = jsDoc?.tags?.some((tag) => tag.tagName.text === 'deprecated') ?? false;
 
   return {
     description,
-    defaultValue: normalizeComment(defaultTag?.comment) ?? null
+    defaultValue: normalizeComment(defaultTag?.comment) ?? null,
+    deprecated
   };
 }
 
