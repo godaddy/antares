@@ -1,6 +1,10 @@
 import ts from 'typescript';
 
-export function getPropJSDoc(node: ts.Node): { description?: string; defaultValue: string | null; deprecated: boolean } {
+export function getPropJSDoc(node: ts.Node): {
+  description?: string;
+  defaultValue: string | null;
+  deprecated: boolean;
+} {
   const docs = ts.getJSDocCommentsAndTags(node);
   const jsDoc = docs.find(ts.isJSDoc);
   const description = normalizeComment(jsDoc?.comment);

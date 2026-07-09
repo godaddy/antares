@@ -14,10 +14,38 @@ describe('toFumadocsPropTable', function toFumadocsPropTableTests() {
     });
 
     expect(result.entries).toEqual([
-      { name: 'children', type: 'ReactNode', default: undefined, description: undefined, required: false, deprecated: undefined },
-      { name: 'onPress', type: '() => void', default: undefined, description: 'Fired on press.', required: false, deprecated: undefined },
-      { name: 'onChange', type: '() => void', default: undefined, description: undefined, required: false, deprecated: undefined },
-      { name: 'aria-label', type: 'string', default: undefined, description: undefined, required: false, deprecated: undefined }
+      {
+        name: 'children',
+        type: 'ReactNode',
+        default: undefined,
+        description: undefined,
+        required: false,
+        deprecated: undefined
+      },
+      {
+        name: 'onPress',
+        type: '() => void',
+        default: undefined,
+        description: 'Fired on press.',
+        required: false,
+        deprecated: undefined
+      },
+      {
+        name: 'onChange',
+        type: '() => void',
+        default: undefined,
+        description: undefined,
+        required: false,
+        deprecated: undefined
+      },
+      {
+        name: 'aria-label',
+        type: 'string',
+        default: undefined,
+        description: undefined,
+        required: false,
+        deprecated: undefined
+      }
     ]);
 
     // Insertion order = declaration order after processing.
