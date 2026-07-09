@@ -3,7 +3,7 @@
 
   position: fixed;
   inset: 0;
-  z-index: 1000; /* portal lands on document.body; 1000 beats most host-page chrome (Ant Design/Bootstrap convention) */
+  z-index: 100; /* matches Modal's overlay so sibling overlays stack by open order, not by a fixed gap */
   background: var(--_overlay-bg);
   transition: opacity 0.2s ease;
 }

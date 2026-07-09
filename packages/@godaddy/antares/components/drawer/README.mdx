@@ -13,7 +13,9 @@ import NoEscapeDismissExample from './examples/no-escape-dismiss.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
-Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
+
+`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
 
 ## Features
 

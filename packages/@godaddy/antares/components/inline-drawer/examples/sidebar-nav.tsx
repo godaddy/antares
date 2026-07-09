@@ -22,7 +22,7 @@ export function SidebarNavExample() {
               <LinkButton
                 key={item.label}
                 href={item.href}
-                aria-label={item.label}
+                aria-label={!expanded ? item.label : undefined}
                 variant="minimal"
                 style={{ justifyContent: 'flex-start' }}
               >
