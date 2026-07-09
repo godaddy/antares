@@ -56,6 +56,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./docs": {
+      "import": {
+        "types": "./dist/docs.d.mts",
+        "default": "./dist/docs.mjs"
+      },
+      "require": {
+        "types": "./dist/docs.d.cts",
+        "default": "./dist/docs.cjs"
+      }
+    },
     "./package.json": "./package.json"
   }
 }
