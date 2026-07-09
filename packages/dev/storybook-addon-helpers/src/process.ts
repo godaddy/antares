@@ -13,9 +13,17 @@ export function processPropsDoc<P>(doc: PropsDoc, options: DocsOptions<P> = {}):
 /** A matcher is an exact prop name or a `RegExp` tested against the prop name. */
 type Matcher = PropertyKey | RegExp;
 
+/**
+ * Index of the first matcher that matches `name` (exact string or `RegExp.test`),
+ * or `-1` when none match.
+ */
+function firstMatchIndex(name: string, matchers: readonly Matcher[]): number {
+  return matchers.findIndex((matcher) => (matcher instanceof RegExp ? matcher.test(name) : String(matcher) === name));
+}
+
 /** True when `name` equals any string matcher or is matched by any RegExp matcher. */
 function matches(name: string, matchers: readonly Matcher[]): boolean {
-  return matchers.some((matcher) => (matcher instanceof RegExp ? matcher.test(name) : String(matcher) === name));
+  return firstMatchIndex(name, matchers) !== -1;
 }
 
 function filterProps<P>(props: PropDoc[], options: DocsOptions<P>): PropDoc[] {
@@ -45,7 +53,16 @@ function sortProps<P>(
   order: DocsOptions<P>['order'],
   categories: DocsOptions<P>['categories']
 ): PropDoc[] {
-  const orderIndex = new Map((order ?? []).map((name, index) => [String(name), index]));
+  // Each prop's rank is the index of the first `order` entry (name or RegExp) that
+  // matches it; props matched by no entry are omitted and fall back to the
+  // required-first, alphabetical ordering below.
+  const orderMatchers = order ?? [];
+  const orderIndex = new Map<string, number>();
+  for (const prop of props) {
+    const rank = firstMatchIndex(prop.name, orderMatchers);
+    if (rank !== -1) orderIndex.set(prop.name, rank);
+  }
+
   const categoryOrder = new Map<string, number>();
 
   for (const category of Object.keys(categories ?? {})) {
@@ -65,7 +82,10 @@ function sortProps<P>(
     const leftOrder = orderIndex.get(left.name);
     const rightOrder = orderIndex.get(right.name);
     if (leftOrder !== undefined || rightOrder !== undefined) {
-      return (leftOrder ?? Number.MAX_SAFE_INTEGER) - (rightOrder ?? Number.MAX_SAFE_INTEGER);
+      // A RegExp entry can match several props, so ranks can tie; equal ranks
+      // fall through to the required-first, alphabetical tie-break below.
+      const orderDelta = (leftOrder ?? Number.MAX_SAFE_INTEGER) - (rightOrder ?? Number.MAX_SAFE_INTEGER);
+      if (orderDelta !== 0) return orderDelta;
     }
 
     if (left.required !== right.required) return left.required ? -1 : 1;

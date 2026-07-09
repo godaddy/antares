@@ -50,10 +50,10 @@ export const TypeDocs = getTypeDocs<ButtonProps>({ exclude: [/^aria-/] });
 `getComponentDocs` and `getTypeDocs` accept an options object that filters, orders, and categorizes the documented props. All keys are type-checked against the target type at build time.
 
 - **`include` / `exclude`** - allowlist or blocklist props. Mutually exclusive.
-- **`order`** - pin specific props to the front; the rest follow (required-first, then alphabetical).
+- **`order`** - pin specific props to the front; the rest follow (required-first, then alphabetical). A prop's position is set by the first entry that matches it; props matched by the same entry (e.g. one `RegExp`) tie-break required-first, then alphabetical.
 - **`categories`** - map a category label to its props. Categories render as sections in the props table (Storybook's `table.category`).
 
-Entries in `include`, `exclude`, and `categories` accept either an exact prop name (type-checked) or a `RegExp` matched against the prop name via `.test()` - you control anchoring:
+Entries in `include`, `exclude`, `order`, and `categories` accept either an exact prop name (type-checked) or a `RegExp` matched against the prop name via `.test()` - you control anchoring:
 
 ```ts
 getComponentDocs(Button, {

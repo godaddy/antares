@@ -5,7 +5,7 @@ import type { StrictArgTypes } from 'storybook/internal/types';
 type PropMatcher<P> = keyof P | RegExp;
 
 type DocsOptionsBase<P> = {
-  order?: readonly (keyof P)[];
+  order?: readonly PropMatcher<P>[];
   categories?: Record<string, readonly PropMatcher<P>[]>;
 };
 

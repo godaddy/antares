@@ -32,6 +32,29 @@ describe('processPropsDoc', function processPropsDocTests() {
     expect(actual.props.map((prop) => prop.name)).toEqual(['zeta', 'alpha', 'gamma', 'beta']);
   });
 
+  it('pins a RegExp-matched group to the front, required-first then alphabetical within it', function regexOrder() {
+    // /^(alpha|beta|zeta)$/ matches alpha (required), beta and zeta (optional);
+    // all share rank 0, so they tie-break required-first then alphabetical, and
+    // the unmatched required `gamma` falls in behind the pinned optionals.
+    const actual = processPropsDoc({ name: 'Thing', props }, { order: [/^(alpha|beta|zeta)$/] });
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['alpha', 'beta', 'zeta', 'gamma']);
+  });
+
+  it('lets an earlier order entry shadow a later one (first match wins)', function orderShadowing() {
+    // `alpha` matches /^a/ at index 0, so the later explicit 'alpha' (index 2) is
+    // unreachable; `alpha` therefore ranks ahead of `beta` (index 1).
+    const actual = processPropsDoc({ name: 'Thing', props }, { order: [/^a/, 'beta', 'alpha'] });
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['alpha', 'beta', 'gamma', 'zeta']);
+  });
+
+  it('orders a mix of string and RegExp entries', function mixedOrder() {
+    const actual = processPropsDoc({ name: 'Thing', props }, { order: ['gamma', /^(beta|zeta)$/] });
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['gamma', 'beta', 'zeta', 'alpha']);
+  });
+
   it('categorizes props and sorts within each category', function categorizeProps() {
     const actual = processPropsDoc(
       { name: 'Thing', props },
