@@ -35,7 +35,15 @@ export function toLiteralValue(node: ts.Expression): unknown {
   if (node.kind === ts.SyntaxKind.FalseKeyword) return false;
   if (node.kind === ts.SyntaxKind.NullKeyword) return null;
 
-  if (ts.isArrayLiteralExpression(node)) return node.elements.map((element) => toLiteralValue(element as ts.Expression));
+  // Regex literals (e.g. `/^on/i`) are read for docs-option matchers; `node.text`
+  // is the full `/pattern/flags` source, so split on the final slash to rebuild it.
+  if (ts.isRegularExpressionLiteral(node)) {
+    const lastSlash = node.text.lastIndexOf('/');
+    return new RegExp(node.text.slice(1, lastSlash), node.text.slice(lastSlash + 1));
+  }
+
+  if (ts.isArrayLiteralExpression(node))
+    return node.elements.map((element) => toLiteralValue(element as ts.Expression));
 
   if (ts.isObjectLiteralExpression(node)) {
     const value: Record<string, unknown> = {};

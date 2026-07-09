@@ -32,11 +32,11 @@ describe('processPropsDoc', function processPropsDocTests() {
     expect(actual.props.map((prop) => prop.name)).toEqual(['zeta', 'alpha', 'gamma', 'beta']);
   });
 
-  it('groups props and sorts within each group', function groupProps() {
+  it('categorizes props and sorts within each category', function categorizeProps() {
     const actual = processPropsDoc(
       { name: 'Thing', props },
       {
-        groups: {
+        categories: {
           Events: ['gamma', 'beta'],
           Layout: ['zeta']
         }
@@ -44,10 +44,42 @@ describe('processPropsDoc', function processPropsDocTests() {
     );
 
     expect(actual.props).toMatchObject([
-      { name: 'gamma', group: 'Events' },
-      { name: 'beta', group: 'Events' },
-      { name: 'zeta', group: 'Layout' },
-      { name: 'alpha', group: undefined }
+      { name: 'gamma', category: 'Events' },
+      { name: 'beta', category: 'Events' },
+      { name: 'zeta', category: 'Layout' },
+      { name: 'alpha', category: undefined }
     ]);
+  });
+
+  it('matches include, exclude, and categories with RegExp', function regexMatchers() {
+    const eventProps: PropDoc[] = [
+      { name: 'onClick', type: '() => void', required: false },
+      { name: 'onPress', type: '() => void', required: false },
+      { name: 'label', type: 'string', required: true }
+    ];
+
+    const included = processPropsDoc({ name: 'Thing', props: eventProps }, { include: [/^on/] });
+    expect(included.props.map((prop) => prop.name)).toEqual(['onClick', 'onPress']);
+
+    const excluded = processPropsDoc({ name: 'Thing', props: eventProps }, { exclude: [/^on/] });
+    expect(excluded.props.map((prop) => prop.name)).toEqual(['label']);
+
+    const categorized = processPropsDoc({ name: 'Thing', props: eventProps }, { categories: { Events: [/^on/] } });
+    expect(categorized.props).toMatchObject([
+      { name: 'onClick', category: 'Events' },
+      { name: 'onPress', category: 'Events' },
+      { name: 'label', category: undefined }
+    ]);
+  });
+
+  it('assigns a prop to the first declared category that matches', function firstMatchWins() {
+    const eventProps: PropDoc[] = [{ name: 'onClick', type: '() => void', required: false }];
+
+    const actual = processPropsDoc(
+      { name: 'Thing', props: eventProps },
+      { categories: { Events: [/^on/], Special: ['onClick'] } }
+    );
+
+    expect(actual.props).toMatchObject([{ name: 'onClick', category: 'Events' }]);
   });
 });

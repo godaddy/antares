@@ -19,12 +19,11 @@ export interface ForwardRefProps {
   forwarded: string;
 }
 
-export const ForwardRefComponent = forwardRef<HTMLDivElement, ForwardRefProps>(function ForwardRefComponent(
-  props,
-  ref
-) {
-  return <div ref={ref}>{props.forwarded}</div>;
-});
+export const ForwardRefComponent = forwardRef<HTMLDivElement, ForwardRefProps>(
+  function ForwardRefComponent(props, ref) {
+    return <div ref={ref}>{props.forwarded}</div>;
+  }
+);
 
 export interface FCProps {
   fc: string;

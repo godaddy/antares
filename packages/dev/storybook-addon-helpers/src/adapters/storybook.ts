@@ -15,7 +15,7 @@ export function toStorybookArgTypes(doc: PropsDoc): StorybookDocs {
         // `table.type.summary` is the source of truth for the rendered "Type" column.
         type: { summary: prop.type },
         defaultValue: { summary: prop.defaultValue ?? undefined },
-        ...(prop.group ? { category: prop.group } : {})
+        ...(prop.category ? { category: prop.category } : {})
       }
     };
 

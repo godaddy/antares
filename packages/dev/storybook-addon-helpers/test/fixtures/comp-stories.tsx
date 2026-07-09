@@ -33,7 +33,7 @@ export default meta;
 
 export const ButtonProps = getComponentDocs(Button, {
   include: ['onClick'],
-  groups: { Events: ['onClick'] }
+  categories: { Events: [/^on/] }
 });
 
 export const FromTypeProps = getTypeDocs<InterfaceProps>();

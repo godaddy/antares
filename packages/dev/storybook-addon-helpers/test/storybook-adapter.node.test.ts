@@ -24,7 +24,7 @@ describe('toStorybookArgTypes', function toStorybookArgTypesTests() {
           required: true,
           description: 'Size description',
           defaultValue: "'sm'",
-          group: 'Appearance'
+          category: 'Appearance'
         },
         {
           name: 'disabled',

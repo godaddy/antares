@@ -73,7 +73,11 @@ describe('getComponentDocs', function getComponentDocsSuite() {
     getComponentDocs(TestComponent, {
       include: ['size'],
       order: ['size'],
-      groups: { Main: ['size'] }
+      categories: { Main: ['size'] }
+    });
+    getComponentDocs(TestComponent, {
+      include: [/^size/],
+      categories: { Main: [/^size/] }
     });
     getComponentDocs(TestComponent, {
       exclude: ['disabled']
@@ -96,7 +100,7 @@ describe('getTypeDocs', function getTypeDocsSuite() {
     const actual = getTypeDocs<{ a: string; b: number }>({
       include: ['a'],
       order: ['a'],
-      groups: { Required: ['a'] }
+      categories: { Required: ['a'] }
     });
 
     expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string; b: number }>>();

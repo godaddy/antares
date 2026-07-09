@@ -21,7 +21,11 @@ function getComponentPropsType(declaration: ts.Declaration, sourceFile: ts.Sourc
 
   if (!ts.isVariableDeclaration(declaration)) return undefined;
 
-  if (declaration.type && ts.isTypeReferenceNode(declaration.type) && isNamedType(declaration.type, ['FC', 'FunctionComponent'])) {
+  if (
+    declaration.type &&
+    ts.isTypeReferenceNode(declaration.type) &&
+    isNamedType(declaration.type, ['FC', 'FunctionComponent'])
+  ) {
     return declaration.type.typeArguments?.[0];
   }
 
@@ -32,7 +36,11 @@ function getComponentPropsType(declaration: ts.Declaration, sourceFile: ts.Sourc
     return initializer.parameters[0]?.type;
   }
 
-  if (ts.isCallExpression(initializer) && ts.isIdentifier(initializer.expression) && initializer.expression.text === 'forwardRef') {
+  if (
+    ts.isCallExpression(initializer) &&
+    ts.isIdentifier(initializer.expression) &&
+    initializer.expression.text === 'forwardRef'
+  ) {
     return initializer.typeArguments?.[1];
   }
 

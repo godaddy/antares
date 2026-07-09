@@ -3,7 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { toLiteralValue, toTsExpression } from '../src/storybook/literal.ts';
 
 function parseExpression(code: string): ts.Expression {
-  const sourceFile = ts.createSourceFile('expr.ts', `const value = ${code};`, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const sourceFile = ts.createSourceFile(
+    'expr.ts',
+    `const value = ${code};`,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS
+  );
   const statement = sourceFile.statements[0] as ts.VariableStatement;
   const initializer = statement.declarationList.declarations[0].initializer;
   if (!initializer) throw new Error('Expected an initializer');
@@ -12,15 +18,7 @@ function parseExpression(code: string): ts.Expression {
 
 describe('toTsExpression', function toTsExpressionTests() {
   it('round-trips primitives, arrays, and objects through toLiteralValue', function roundTrips() {
-    const values = [
-      'text',
-      42,
-      true,
-      false,
-      null,
-      ['a', 1, false],
-      { a: 1, b: 'x', c: [true], d: { e: null } }
-    ];
+    const values = ['text', 42, true, false, null, ['a', 1, false], { a: 1, b: 'x', c: [true], d: { e: null } }];
 
     for (const value of values) {
       expect(toLiteralValue(toTsExpression(value))).toEqual(value);
@@ -44,6 +42,18 @@ describe('toLiteralValue', function toLiteralValueTests() {
 
   it('returns null for unsupported expressions', function unsupported() {
     expect(toLiteralValue(parseExpression('someIdentifier'))).toBeNull();
+  });
+
+  it('reads regex literals into RegExp, preserving pattern and flags', function readsRegex() {
+    const bare = toLiteralValue(parseExpression('/^on/'));
+    expect(bare).toBeInstanceOf(RegExp);
+    expect((bare as RegExp).source).toBe('^on');
+    expect((bare as RegExp).flags).toBe('');
+
+    const withFlags = toLiteralValue(parseExpression('/^on.*/i')) as RegExp;
+    expect(withFlags.source).toBe('^on.*');
+    expect(withFlags.flags).toBe('i');
+    expect(withFlags.test('onClick')).toBe(true);
   });
 
   it('skips methods and computed keys while reading string and numeric keys', function skipsMembers() {

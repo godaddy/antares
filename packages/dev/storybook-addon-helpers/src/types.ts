@@ -1,19 +1,22 @@
 import type { ComponentProps, ComponentType } from 'react';
 import type { StrictArgTypes } from 'storybook/internal/types';
 
+/** A prop name (type-checked against `P`) or a `RegExp` matched against prop names via `.test()`. */
+type PropMatcher<P> = keyof P | RegExp;
+
 type DocsOptionsBase<P> = {
   order?: readonly (keyof P)[];
-  groups?: Record<string, readonly (keyof P)[]>;
+  categories?: Record<string, readonly PropMatcher<P>[]>;
 };
 
 type IncludeDocsOptions<P> = DocsOptionsBase<P> & {
-  include?: readonly (keyof P)[];
+  include?: readonly PropMatcher<P>[];
   exclude?: never;
 };
 
 type ExcludeDocsOptions<P> = DocsOptionsBase<P> & {
   include?: never;
-  exclude?: readonly (keyof P)[];
+  exclude?: readonly PropMatcher<P>[];
 };
 
 export type DocsOptions<P> = IncludeDocsOptions<P> | ExcludeDocsOptions<P>;
@@ -26,7 +29,7 @@ export interface PropDoc {
   required: boolean;
   description?: string;
   defaultValue?: string | null;
-  group?: string;
+  category?: string;
   sourceFile?: string;
   declaringType?: string;
 }

@@ -1,7 +1,6 @@
-import assume from 'assume';
 import path from 'node:path';
 import ts from 'typescript';
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { getExportedVariables, extractVariantNames } from '../src/storybook/getters-parser.ts';
 import { toTsExpression } from '../src/storybook/literal.ts';
 
@@ -10,7 +9,7 @@ describe('parser', function parserTests() {
     it('should extract exported variables from a file', async function getExportedVariablesTest() {
       const result = await getExportedVariables({ filePath: path.join(__dirname, 'fixtures/comp-stories.tsx') });
 
-      assume(Object.fromEntries(result)).to.deep.equal({
+      expect(Object.fromEntries(result)).toEqual({
         default: { title: 'meta1' },
         ButtonProps: { tags: ['!dev'] },
         FromTypeProps: { tags: ['!dev'] },
@@ -33,7 +32,7 @@ describe('parser', function parserTests() {
       `;
       const result = await getExportedVariables({ code });
 
-      assume(Object.fromEntries(result)).to.deep.equal({
+      expect(Object.fromEntries(result)).toEqual({
         default: { title: 'Test' },
         story: { args: { prop: 'value' }, values: ['1', '2'] },
         docs: { tags: ['!dev'] }
@@ -41,15 +40,15 @@ describe('parser', function parserTests() {
     });
 
     it('should handle no filePath and no code', async function generateCSFNoFilePathAndNoCode() {
-      assume(Object.fromEntries(await getExportedVariables({}))).to.deep.equal({});
+      expect(Object.fromEntries(await getExportedVariables({}))).toEqual({});
     });
 
     it('should some edge cases', async function getVariantsTest() {
       const result = await getExportedVariables({ code: `export const Button` });
-      assume(Object.fromEntries(result)).to.deep.equal({ Button: {} });
+      expect(Object.fromEntries(result)).toEqual({ Button: {} });
 
       const result2 = await getExportedVariables({ code: `export default Button` });
-      assume(Object.fromEntries(result2)).to.deep.equal({});
+      expect(Object.fromEntries(result2)).toEqual({});
     });
 
     it('should handle type assertions and satisfies expressions', async function testTypeExpressions() {
@@ -61,7 +60,7 @@ describe('parser', function parserTests() {
       `;
       const result = await getExportedVariables({ code });
 
-      assume(Object.fromEntries(result)).to.deep.equal({
+      expect(Object.fromEntries(result)).toEqual({
         story1: { title: 'Test1' },
         story2: { title: 'Test2' },
         default: { title: 'Default' }
@@ -76,7 +75,7 @@ describe('parser', function parserTests() {
         `
       });
 
-      assume(exported.get('Props')).to.deep.equal({ tags: ['!dev'] });
+      expect(exported.get('Props')).toEqual({ tags: ['!dev'] });
     });
   });
 
@@ -89,7 +88,7 @@ describe('parser', function parserTests() {
           variant2: { args: {}, 3: {}, '4': {} }
         }) as ts.ObjectLiteralExpression
       );
-      assume(result).to.deep.equal(['ButtonVariant1', 'ButtonVariant2']);
+      expect(result).toEqual(['ButtonVariant1', 'ButtonVariant2']);
     });
   });
 });

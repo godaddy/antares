@@ -40,7 +40,7 @@ export function getStory<T extends ComponentType<any>>(component: T, _storyObj?:
 /**
  * Get the component docs for a component as a StoryObj.
  *
- * The optional `options` object filters, orders, and groups the documented
+ * The optional `options` object filters, orders, and categorizes the documented
  * props. Its keys are type-checked against the component's props at build time;
  * the CSF transformer extracts and processes the argTypes.
  *
@@ -57,7 +57,7 @@ export function getComponentDocs<T extends ComponentType<any>>(_component: T, _o
  *
  * The type parameter `T` specifies the type whose props the CSF transformer will
  * extract into argTypes at build time. The optional `options` object filters,
- * orders, and groups the documented props with type-checked keys.
+ * orders, and categorizes the documented props with type-checked keys.
  *
  * @param _options - Optional type-safe docs options (ignored at runtime).
  * @returns The docs as a StoryObj.
