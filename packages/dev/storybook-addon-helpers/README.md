@@ -79,4 +79,17 @@ Every option accepts either an exact prop name (type-checked) or a regular expre
 
 ## How it works
 
-The build-time pipeline is `extract → neutral model → adapter`: the engine reads TypeScript types into a target-agnostic `PropsDoc` model, and an adapter converts that model to Storybook `argTypes`. The neutral model is intentionally decoupled from Storybook so the same engine can later feed other documentation targets such as Fumadocs. That wiring does not exist in this package yet - the Fumadocs docs site (`apps/site`) currently has its own separate generator.
+The build-time pipeline is `extract → neutral model → adapter`: the engine reads TypeScript types into a target-agnostic `PropsDoc` model, and an adapter converts that model to a documentation target. The neutral model is decoupled from Storybook so the same engine feeds multiple targets.
+
+- The Storybook adapter (`toStorybookArgTypes`) is used by the CSF transform on the `.` entry.
+- The Fumadocs adapter is exposed on a separate, Storybook-free `./docs` entry:
+
+```ts
+import { resolvePropsDoc, toFumadocsPropTable } from '@bento/storybook-addon-helpers/docs';
+
+// Resolve a stories-file export to the neutral model, then adapt it.
+const doc = await resolvePropsDoc({ filePath: 'button/button.stories.tsx', exportName: 'Props' });
+const { entries, categories } = toFumadocsPropTable(doc);
+```
+
+The Fumadocs docs site (`apps/site`) consumes `./docs` from its `remarkArgTypes` plugin, so both Storybook and the site render the same props from the same `*.stories.tsx` files. `resolvePropsDoc` and the internal `docFromCall` are shared by the CSF transform, so extraction and processing are identical across targets - only the adapter differs.
