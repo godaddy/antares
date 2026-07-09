@@ -1,7 +1,7 @@
 import { Environment } from '@bento/environment';
 import { withSlots } from '@bento/slots';
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 
 /**
  * Interface for example component props.

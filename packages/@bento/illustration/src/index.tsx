@@ -1,6 +1,6 @@
 import React, { useId, type SVGProps, type ReactElement } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { type AriaLabelingProps } from '@react-types/shared';
+import type { AriaLabelingProps } from '@react-types/shared';
 import { transformers, toViewBox } from './transformers.tsx';
 import { withSlots, type Slots } from '@bento/slots';
 import { useProps } from '@bento/use-props';

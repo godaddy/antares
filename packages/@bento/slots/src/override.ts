@@ -1,6 +1,6 @@
-import { type ComponentType, type CSSProperties } from 'react';
+import type { ComponentType, CSSProperties } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { type BoxContext } from '@bento/box';
+import type { BoxContext } from '@bento/box';
 
 /**
  * Checks if a given key is a CSS variable.

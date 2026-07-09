@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { useProps } from '@bento/use-props';

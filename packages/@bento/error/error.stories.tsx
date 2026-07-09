@@ -1,6 +1,6 @@
 import { getMeta, getInterfaceDocs, getStory } from '@bento/storybook-addon-helpers';
 import { Throws } from './examples/throws.tsx';
-import { type BentoErrorArgs } from './src/index.ts';
+import type { BentoErrorArgs } from './src/index.ts';
 
 export default getMeta({
   title: 'Bento/utility/error'

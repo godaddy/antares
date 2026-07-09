@@ -1,4 +1,5 @@
-import React, { type JSX } from 'react';
+import type React from 'react';
+import type { JSX } from 'react';
 import { Diff } from './diff.tsx';
 
 export interface Event {

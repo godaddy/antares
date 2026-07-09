@@ -2,7 +2,7 @@ import { Button, type ButtonProps } from '@bento/button';
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { renderToString } from 'react-dom/server';
-import { type AnyObject } from '@bento/types';
+import type { AnyObject } from '@bento/types';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'vitest';
 import fs from 'node:fs/promises';

@@ -5,7 +5,7 @@ import { SlotProps } from './examples/slot-props.tsx';
 import { Nested } from './examples/nested.tsx';
 import { Memo } from './examples/memo.tsx';
 import { Merged } from './examples/merged.tsx';
-import { type Slots } from './src/slots.tsx';
+import type { Slots } from './src/slots.tsx';
 
 export default getMeta({
   title: 'Bento/higher-order components/slots'

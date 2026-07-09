@@ -1,6 +1,6 @@
 import { EmptyTabContent, Link } from 'storybook/internal/components';
 import { styled } from 'storybook/theming';
-import { type JSX } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Follows the styling of the Interactions addon.

@@ -1,8 +1,8 @@
 import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 /* v8 ignore next - React import only used for JSX transformation */
-import React, { createContext, ReactNode, useContext } from 'react';
-import { Text, TextProps } from '@bento/text';
+import React, { createContext, type ReactNode, useContext } from 'react';
+import { Text, type TextProps } from '@bento/text';
 
 const Level = createContext<number | null>(null);
 

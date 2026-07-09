@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type ts from 'typescript';
 import { parse } from 'react-docgen-typescript';
 import { type ItemDoc, resolveImport } from './ats-utils.ts';
 import { isExcludedParent } from './prop-filter.ts';
