@@ -108,9 +108,6 @@ export function PropTable({ entries, categories }: PropTableProps) {
   const categorizedNames = new Set(Object.values(categories).flat());
   const uncategorized = entries.filter((e) => !categorizedNames.has(e.name));
   const entryByName = new Map(entries.map((e) => [e.name, e]));
-
-  // Render categories in the order the engine emitted them (stories-file
-  // declaration order), so the site table matches Storybook.
   const orderedCategories = Object.entries(categories);
 
   return (

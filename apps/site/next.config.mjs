@@ -43,8 +43,6 @@ const config = {
       ...config.resolve.alias,
       '@storybook/addon-docs/blocks': join(__dirname, 'lib/storybook-bridge/blocks.tsx'),
       '@storybook/react-vite': join(__dirname, 'lib/storybook-bridge/react-vite.ts'),
-      // Exact match ($) so only the bare specifier maps to the browser shim; the
-      // storybook-free `/docs` subpath must resolve to the real package.
       '@bento/storybook-addon-helpers$': join(__dirname, 'lib/storybook-addon-helpers-shim.ts')
     };
 
