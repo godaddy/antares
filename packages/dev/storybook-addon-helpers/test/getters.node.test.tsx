@@ -72,7 +72,7 @@ describe('getComponentDocs', function getComponentDocsSuite() {
     getComponentDocs(TestComponent);
     getComponentDocs(TestComponent, {
       include: ['size'],
-      order: ['size'],
+      primary: ['size'],
       categories: { Main: ['size'] }
     });
     getComponentDocs(TestComponent, {
@@ -99,7 +99,7 @@ describe('getTypeDocs', function getTypeDocsSuite() {
   it('accepts type-safe docs options', function typeChecking() {
     const actual = getTypeDocs<{ a: string; b: number }>({
       include: ['a'],
-      order: ['a'],
+      primary: ['a'],
       categories: { Required: ['a'] }
     });
 

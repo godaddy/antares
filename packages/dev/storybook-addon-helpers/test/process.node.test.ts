@@ -26,33 +26,45 @@ describe('processPropsDoc', function processPropsDocTests() {
     expect(actual.props.map((prop) => prop.name)).toEqual(['gamma', 'beta', 'zeta']);
   });
 
-  it('pins explicit order before required-first alphabetical fallback', function explicitOrder() {
-    const actual = processPropsDoc({ name: 'Thing', props }, { order: ['zeta'] });
+  it('pins primary props before the required-first alphabetical fallback', function explicitPrimary() {
+    const actual = processPropsDoc({ name: 'Thing', props }, { primary: ['zeta'] });
 
     expect(actual.props.map((prop) => prop.name)).toEqual(['zeta', 'alpha', 'gamma', 'beta']);
   });
 
-  it('pins a RegExp-matched group to the front, required-first then alphabetical within it', function regexOrder() {
-    // /^(alpha|beta|zeta)$/ matches alpha (required), beta and zeta (optional);
-    // all share rank 0, so they tie-break required-first then alphabetical, and
-    // the unmatched required `gamma` falls in behind the pinned optionals.
-    const actual = processPropsDoc({ name: 'Thing', props }, { order: [/^(alpha|beta|zeta)$/] });
+  it('pins a RegExp-matched group to the front, required-first then alphabetical within it', function regexPrimary() {
+    // All three share rank 0, so they tie-break required-first then alphabetical;
+    // the unmatched required `gamma` follows the pinned optionals.
+    const actual = processPropsDoc({ name: 'Thing', props }, { primary: [/^(alpha|beta|zeta)$/] });
 
     expect(actual.props.map((prop) => prop.name)).toEqual(['alpha', 'beta', 'zeta', 'gamma']);
   });
 
-  it('lets an earlier order entry shadow a later one (first match wins)', function orderShadowing() {
-    // `alpha` matches /^a/ at index 0, so the later explicit 'alpha' (index 2) is
-    // unreachable; `alpha` therefore ranks ahead of `beta` (index 1).
-    const actual = processPropsDoc({ name: 'Thing', props }, { order: [/^a/, 'beta', 'alpha'] });
+  it('lets an earlier primary entry shadow a later one (first match wins)', function primaryShadowing() {
+    // `alpha` matches /^a/ at index 0, so the later explicit 'alpha' is unreachable.
+    const actual = processPropsDoc({ name: 'Thing', props }, { primary: [/^a/, 'beta', 'alpha'] });
 
     expect(actual.props.map((prop) => prop.name)).toEqual(['alpha', 'beta', 'gamma', 'zeta']);
   });
 
-  it('orders a mix of string and RegExp entries', function mixedOrder() {
-    const actual = processPropsDoc({ name: 'Thing', props }, { order: ['gamma', /^(beta|zeta)$/] });
+  it('orders a mix of string and RegExp primary entries', function mixedPrimary() {
+    const actual = processPropsDoc({ name: 'Thing', props }, { primary: ['gamma', /^(beta|zeta)$/] });
 
     expect(actual.props.map((prop) => prop.name)).toEqual(['gamma', 'beta', 'zeta', 'alpha']);
+  });
+
+  it('hoists a primary prop to the root even when a category matches it', function primaryBeatsCategory() {
+    const actual = processPropsDoc(
+      { name: 'Thing', props },
+      { primary: ['alpha'], categories: { Greek: [/^(alpha|beta)$/] } }
+    );
+
+    expect(actual.props).toMatchObject([
+      { name: 'beta', category: 'Greek' },
+      { name: 'alpha', category: undefined },
+      { name: 'gamma', category: undefined },
+      { name: 'zeta', category: undefined }
+    ]);
   });
 
   it('categorizes props and sorts within each category', function categorizeProps() {
@@ -72,6 +84,23 @@ describe('processPropsDoc', function processPropsDocTests() {
       { name: 'zeta', category: 'Layout' },
       { name: 'alpha', category: undefined }
     ]);
+  });
+
+  it("orders props within a section by the category's matcher order, then required-first", function categoryOrder() {
+    const eventProps: PropDoc[] = [
+      { name: 'onClick', type: '() => void', required: false },
+      { name: 'onChange', type: '() => void', required: false },
+      { name: 'onBlur', type: '() => void', required: true }
+    ];
+
+    // `onChange` matches the first matcher (rank 0); `onBlur`/`onClick` tie at rank 1
+    // and break required-first, then alphabetical.
+    const actual = processPropsDoc(
+      { name: 'Thing', props: eventProps },
+      { categories: { Events: [/^onChange/, /^on/] } }
+    );
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['onChange', 'onBlur', 'onClick']);
   });
 
   it('matches include, exclude, and categories with RegExp', function regexMatchers() {

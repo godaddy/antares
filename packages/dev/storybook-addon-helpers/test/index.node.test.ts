@@ -7,7 +7,7 @@ describe('index.ts', function coverageTests() {
   it('exports docs model, processor, and Storybook adapter from the root', function exportsDocsHelpers() {
     const props = [{ name: 'label', type: 'string', required: true }] satisfies PropDoc[];
     const docs = { name: 'Thing', props } satisfies PropsDoc;
-    const options = { order: ['label'] } as const satisfies DocsOptions<{ label: string }>;
+    const options = { primary: ['label'] } as const satisfies DocsOptions<{ label: string }>;
 
     const processed = processPropsDoc(docs, options);
     const storybookDocs = toStorybookArgTypes(processed) satisfies StorybookDocs;

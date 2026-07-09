@@ -50,21 +50,22 @@ export const TypeDocs = getTypeDocs<ButtonProps>({ exclude: [/^aria-/] });
 `getComponentDocs` and `getTypeDocs` accept an options object that filters, orders, and categorizes the documented props. All keys are type-checked against the target type at build time.
 
 - **`include` / `exclude`** - allowlist or blocklist props. Mutually exclusive.
-- **`order`** - pin specific props to the front; the rest follow (required-first, then alphabetical). A prop's position is set by the first entry that matches it; props matched by the same entry (e.g. one `RegExp`) tie-break required-first, then alphabetical.
-- **`categories`** - map a category label to its props. Categories render as sections in the props table (Storybook's `table.category`).
+- **`primary`** - props shown first, at the top of the table and outside any category (even one that would otherwise match them), in the order you list them.
+- **`categories`** - map a category label to its props. Each category renders as its own section in the props table, in the order the categories are declared.
 
-Entries in `include`, `exclude`, `order`, and `categories` accept either an exact prop name (type-checked) or a `RegExp` matched against the prop name via `.test()` - you control anchoring:
+Within `primary` or a single category, props appear in the order their entries are listed. When several props match the same entry, required props come first, then the rest alphabetically.
 
 ```ts
 getComponentDocs(Button, {
+  primary: ['onPress'],           // shown first, at the root
   categories: {
-    Events: [/^on/],       // onClick, onPress, ...
+    Events: [/^onChange/, /^on/], // onChange first, then the rest of on*
     Styling: ['className', 'style']
   }
 });
 ```
 
-When more than one category matches a prop, the **first declared** category wins.
+Every option accepts either an exact prop name (type-checked) or a regular expression that matches prop names (for example, `/^on/` matches every `on*` prop). When more than one category matches a prop, the **first declared** category wins.
 
 ## How it works
 
