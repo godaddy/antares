@@ -28,12 +28,15 @@ export const ButtonProps = {
     onClick: {
       name: 'onClick',
       description: 'this is the onClick handler',
-      required: true,
       type: {
-        name: '() => void',
+        name: 'other',
+        value: '() => void',
         required: true
       },
       table: {
+        type: {
+          summary: '() => void'
+        },
         defaultValue: {
           summary: null
         },
@@ -48,12 +51,15 @@ export const FromTypeProps = {
     prop1: {
       name: 'prop1',
       description: 'interface prop description',
-      required: true,
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: true
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: null
         }
@@ -62,12 +68,15 @@ export const FromTypeProps = {
     prop2: {
       name: 'prop2',
       description: 'interface prop description 2',
-      required: false,
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: false
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: "'default value'"
         }
@@ -76,12 +85,15 @@ export const FromTypeProps = {
     prop3: {
       name: 'prop3',
       description: 'interface prop description 3',
-      required: false,
       type: {
-        name: '() => React.ReactNode',
+        name: 'other',
+        value: '() => React.ReactNode',
         required: false
       },
       table: {
+        type: {
+          summary: '() => React.ReactNode'
+        },
         defaultValue: {
           summary: null
         }
@@ -95,12 +107,15 @@ export const FromTypeIncludeProps = {
     prop1: {
       name: 'prop1',
       description: 'interface prop description',
-      required: true,
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: true
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: null
         }
@@ -114,12 +129,15 @@ export const FromTypeExcludeProps = {
     prop2: {
       name: 'prop2',
       description: 'interface prop description 2',
-      required: false,
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: false
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: "'default value'"
         }

@@ -1,19 +1,19 @@
+import { type StrictInputType } from 'storybook/internal/types';
 import { describe, expect, it } from 'vitest';
 import { toStorybookArgTypes } from '../src/adapters/storybook.ts';
-import type { StorybookArgType } from '../src/types.ts';
 
 describe('toStorybookArgTypes', function toStorybookArgTypesTests() {
   it('maps neutral docs to Storybook argTypes in prop order', function mapsDocs() {
     const expectedSizeArgType = {
       name: 'size',
       description: 'Size description',
-      required: true,
-      type: { name: "'sm' | 'lg'", required: true },
+      type: { name: 'other', value: "'sm' | 'lg'", required: true },
       table: {
+        type: { summary: "'sm' | 'lg'" },
         defaultValue: { summary: "'sm'" },
         category: 'Appearance'
       }
-    } satisfies StorybookArgType;
+    } satisfies StrictInputType;
 
     const actual = toStorybookArgTypes({
       name: 'Thing',
@@ -39,7 +39,8 @@ describe('toStorybookArgTypes', function toStorybookArgTypesTests() {
     expect(Object.keys(actual.argTypes)).toEqual(['size', 'disabled']);
     expect(actual.argTypes.size).toEqual(expectedSizeArgType);
     expect(actual.argTypes.disabled.table).toEqual({
-      defaultValue: { summary: null }
+      type: { summary: 'boolean' },
+      defaultValue: { summary: undefined }
     });
   });
 });

@@ -1,4 +1,5 @@
 import type { ComponentProps, ComponentType } from 'react';
+import type { StrictArgTypes } from 'storybook/internal/types';
 
 type DocsOptionsBase<P> = {
   order?: readonly (keyof P)[];
@@ -35,21 +36,7 @@ export interface PropsDoc {
   props: PropDoc[];
 }
 
-export interface StorybookArgType {
-  name: string;
-  description?: string;
-  required: boolean;
-  type: {
-    name: string;
-    required: boolean;
-  };
-  table: {
-    defaultValue: { summary: string | null };
-    category?: string;
-  };
-}
-
 export interface StorybookDocs {
   tags: string[];
-  argTypes: Record<string, StorybookArgType>;
+  argTypes: StrictArgTypes;
 }
