@@ -134,4 +134,72 @@ describe('processPropsDoc', function processPropsDocTests() {
 
     expect(actual.props).toMatchObject([{ name: 'onClick', category: 'Events' }]);
   });
+
+  it('patches an existing prop and leaves its other fields intact', function overridePatch() {
+    const actual = processPropsDoc(
+      { name: 'Thing', props },
+      { overrides: [{ name: 'alpha', description: 'custom', defaultValue: '1' }] }
+    );
+
+    expect(actual.props.find((prop) => prop.name === 'alpha')).toMatchObject({
+      type: 'number',
+      required: true,
+      description: 'custom',
+      defaultValue: '1'
+    });
+  });
+
+  it('adds a prop for an exact name that was not extracted', function overrideAdd() {
+    const actual = processPropsDoc(
+      { name: 'Thing', props },
+      { overrides: [{ name: 'onClick', type: '() => void', description: 'click' }] }
+    );
+
+    expect(actual.props.find((prop) => prop.name === 'onClick')).toEqual({
+      name: 'onClick',
+      type: '() => void',
+      required: false,
+      description: 'click'
+    });
+  });
+
+  it('adds a bare prop with an unknown type when only a name is given', function overrideAddBare() {
+    const actual = processPropsDoc({ name: 'Thing', props }, { overrides: [{ name: 'id' }] });
+
+    expect(actual.props.find((prop) => prop.name === 'id')).toEqual({ name: 'id', type: 'unknown', required: false });
+  });
+
+  it('never creates a prop for a RegExp that matches nothing', function overrideRegexNoCreate() {
+    const actual = processPropsDoc({ name: 'Thing', props }, { overrides: [{ name: /^zzz/, description: 'x' }] });
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['alpha', 'gamma', 'beta', 'zeta']);
+  });
+
+  it('stacks matching overrides, later fields winning', function overrideStacking() {
+    const actual = processPropsDoc(
+      { name: 'Thing', props },
+      {
+        overrides: [
+          { name: /^a/, description: 'family' },
+          { name: 'alpha', defaultValue: '() => {}' }
+        ]
+      }
+    );
+
+    expect(actual.props.find((prop) => prop.name === 'alpha')).toMatchObject({
+      description: 'family',
+      defaultValue: '() => {}'
+    });
+  });
+
+  it('applies overrides before filtering, so exclude can still drop an added prop', function overrideThenExclude() {
+    const added = processPropsDoc({ name: 'Thing', props }, { overrides: [{ name: 'id', type: 'string' }] });
+    expect(added.props.some((prop) => prop.name === 'id')).toBe(true);
+
+    const excluded = processPropsDoc(
+      { name: 'Thing', props },
+      { overrides: [{ name: 'id', type: 'string' }], exclude: ['id'] }
+    );
+    expect(excluded.props.some((prop) => prop.name === 'id')).toBe(false);
+  });
 });

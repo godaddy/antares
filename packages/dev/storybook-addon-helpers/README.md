@@ -50,6 +50,7 @@ export const TypeDocs = getTypeDocs<ButtonProps>({ exclude: [/^aria-/] });
 `getComponentDocs` and `getTypeDocs` accept an options object that filters, orders, and categorizes the documented props. All keys are type-checked against the target type at build time.
 
 - **`include` / `exclude`** - allowlist or blocklist props. Mutually exclusive.
+- **`overrides`** - change a prop's `description`, `defaultValue`, `type`, or `required`. An exact name that no prop matches adds a new prop (handy for documenting props the extractor can't see) - a regular expression only patches props that already exist. Applied before the options below, so an added prop is filtered, categorized, and ordered like any other.
 - **`primary`** - props shown first, at the top of the table and outside any category (even one that would otherwise match them), in the order you list them.
 - **`categories`** - map a category label to its props. Each category renders as its own section in the props table, in the order the categories are declared.
 
@@ -62,6 +63,15 @@ getComponentDocs(Button, {
     Events: [/^onChange/, /^on/], // onChange first, then the rest of on*
     Styling: ['className', 'style']
   }
+});
+```
+
+```ts
+getComponentDocs(Button, {
+  overrides: [
+    { name: 'onPress', description: 'Fired when the button is pressed.' }, // patch existing
+    { name: 'customId', type: 'string', description: 'Custom DOM id.' }                 // add a missing prop
+  ]
 });
 ```
 

@@ -1,7 +1,8 @@
 import type { DocsOptions, PropDoc, PropsDoc } from './types.ts';
 
 export function processPropsDoc<P>(doc: PropsDoc, options: DocsOptions<P> = {}): PropsDoc {
-  const filtered = filterProps(doc.props, options);
+  const overridden = applyOverrides(doc.props, options.overrides);
+  const filtered = filterProps(overridden, options);
   const categorized = applyCategories(filtered, options.categories, options.primary);
 
   return {
@@ -20,6 +21,39 @@ function firstMatchIndex(name: string, matchers: readonly Matcher[]): number {
 
 function matches(name: string, matchers: readonly Matcher[]): boolean {
   return firstMatchIndex(name, matchers) !== -1;
+}
+
+type Override<P> = NonNullable<DocsOptions<P>['overrides']>[number];
+
+function applyOverrides<P>(props: PropDoc[], overrides: DocsOptions<P>['overrides']): PropDoc[] {
+  if (!overrides || overrides.length === 0) return props.map((prop) => ({ ...prop }));
+
+  const result = props.map((prop) => ({ ...prop }));
+  const seen = new Set(result.map((prop) => prop.name));
+
+  // An exact name that matches nothing adds a stub; RegExp names only patch existing props.
+  for (const { name } of overrides) {
+    if (name instanceof RegExp || seen.has(String(name))) continue;
+    seen.add(String(name));
+    result.push({ name: String(name), type: 'unknown', required: false });
+  }
+
+  // Apply every matching override in order; later fields win.
+  return result.map(function patch(prop) {
+    return overrides.reduce(
+      (next, override) => (matches(prop.name, [override.name]) ? mergeOverride(next, override) : next),
+      prop
+    );
+  });
+}
+
+function mergeOverride<P>(prop: PropDoc, override: Override<P>): PropDoc {
+  const next = { ...prop };
+  if (override.type !== undefined) next.type = override.type;
+  if (override.required !== undefined) next.required = override.required;
+  if (override.description !== undefined) next.description = override.description;
+  if (override.defaultValue !== undefined) next.defaultValue = override.defaultValue;
+  return next;
 }
 
 function filterProps<P>(props: PropDoc[], options: DocsOptions<P>): PropDoc[] {
