@@ -10,7 +10,6 @@ import BottomSheetExample from './examples/bottom-sheet.tsx?raw';
 import PlacementsExample from './examples/placements.tsx?raw';
 import NestedPopoverExample from './examples/nested-popover.tsx?raw';
 import NoEscapeDismissExample from './examples/no-escape-dismiss.tsx?raw';
-import RTLExample from './examples/rtl.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -20,7 +19,7 @@ Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` 
 
 - Slides in from any screen edge (top, bottom, left, right)
 - `overlay` elevation panel over a dimmed backdrop, matching `Modal`
-- Automatic RTL flipping for left/right placement
+- Physical `placement` (does not flip for RTL)
 - Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
 - CSS transitions with `prefers-reduced-motion` support
 
@@ -74,13 +73,6 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 
 <Story of={Stories.NoEscapeDismiss} inline />
 <Source language="tsx" code={NoEscapeDismissExample} />
-
-### RTL
-
-In RTL locales, `left` and `right` placements flip automatically so the drawer stays visually consistent.
-
-<Story of={Stories.RTL} inline />
-<Source language="tsx" code={RTLExample} />
 
 ## Accessibility
 

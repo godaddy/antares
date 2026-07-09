@@ -4,27 +4,27 @@
 
 /* Collapse-axis size for the sidebar-rail pattern (min/max set). Accordions leave
    these `auto` and let the panel drive the size instead. */
-.inlineDrawer:where([data-placement='left'], [data-placement='right']) {
+.inlineDrawer:where([data-placement="left"], [data-placement="right"]) {
   inline-size: var(--_min-size, auto);
 }
 
-.inlineDrawer[data-expanded]:where([data-placement='left'], [data-placement='right']) {
+.inlineDrawer[data-expanded]:where([data-placement="left"], [data-placement="right"]) {
   inline-size: var(--_max-size, auto);
 }
 
-.inlineDrawer:where([data-placement='top'], [data-placement='bottom']) {
+.inlineDrawer:where([data-placement="top"], [data-placement="bottom"]) {
   block-size: var(--_min-size, auto);
 }
 
-.inlineDrawer[data-expanded]:where([data-placement='top'], [data-placement='bottom']) {
+.inlineDrawer[data-expanded]:where([data-placement="top"], [data-placement="bottom"]) {
   block-size: var(--_max-size, auto);
 }
 
-.inlineDrawer:where([data-placement='left'], [data-placement='right']) > .panel {
+.inlineDrawer:where([data-placement="left"], [data-placement="right"]) > .panel {
   inline-size: var(--disclosure-panel-width, auto);
 }
 
-.inlineDrawer:where([data-placement='top'], [data-placement='bottom']) > .panel {
+.inlineDrawer:where([data-placement="top"], [data-placement="bottom"]) > .panel {
   block-size: var(--disclosure-panel-height, auto);
 }
 
@@ -35,8 +35,8 @@
     block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.inlineDrawer[data-animate='false'],
-.inlineDrawer[data-animate='false'] > .panel {
+.inlineDrawer[data-animate="false"],
+.inlineDrawer[data-animate="false"] > .panel {
   transition: none;
 }
 

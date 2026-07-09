@@ -6,20 +6,23 @@ import {
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
-  type DialogProps as RACDialogProps,
-  useLocale as RACUseLocale
+  type DialogProps as RACDialogProps
 } from 'react-aria-components';
 import { cx } from 'cva';
+import { toCssSize } from '../../../utils/css.ts';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
-/** Edge the drawer slides in from. left/right flip in RTL. */
+/**
+ * Physical edge the drawer slides in from. Positioning is physical (like Base UI
+ * and MUI drawers), so placement does not flip for RTL.
+ */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 export interface DrawerProps extends Omit<RACModalOverlayProps, 'className' | 'children' | 'style'> {
-  /** Edge the drawer slides in from. left/right flip in RTL. */
+  /** Physical edge the drawer slides in from. */
   placement: DrawerPlacement;
 
   /** Accessible label for the dialog. */
@@ -85,18 +88,11 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     ...rest
   } = props;
 
-  const { direction } = RACUseLocale();
-  const resolved = resolvePlacement(placement, direction);
-
   const drawerStyle = {
     ...containerProps?.style,
-    '--_slide': getSlideTransform(resolved),
-    ...(maxSize !== undefined && {
-      '--_max-size': typeof maxSize === 'number' ? `${maxSize}px` : maxSize
-    }),
-    ...(minSize !== undefined && {
-      '--_min-size': typeof minSize === 'number' ? `${minSize}px` : minSize
-    })
+    '--_slide': getSlideTransform(placement),
+    ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
+    ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
   } as CSSProperties;
 
   return (
@@ -107,7 +103,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     >
       <Flex
         elevation="overlay"
-        data-placement={resolved}
+        data-placement={placement}
         data-has-close={showCloseButton || undefined}
         {...containerProps}
         style={drawerStyle}
@@ -146,23 +142,13 @@ export const DrawerTrigger = function DrawerTrigger(props: DrawerTriggerProps) {
   return <RACDialogTrigger {...props} />;
 };
 
-/** In RTL, left/right swap so `placement` stays visually consistent. */
-function resolvePlacement(placement: DrawerPlacement, direction: string): DrawerPlacement {
-  if (direction === 'rtl') {
-    if (placement === 'left') return 'right';
-    if (placement === 'right') return 'left';
-  }
-  return placement;
-}
-
 /**
- * Off-screen transform for the entering/exiting state. `resolved` is already the
- * physical edge (RTL flipping happens in `resolvePlacement`) and the panel is
- * pinned with physical `left`/`right`, so the slide is purely physical too — no
- * extra direction handling, which previously double-flipped the RTL animation.
+ * Off-screen transform for the entering/exiting state. `placement` is a physical
+ * edge and the panel is pinned with physical `left`/`right`, so the slide is purely
+ * physical too. Placement never flips in RTL.
  */
-function getSlideTransform(resolved: DrawerPlacement): string {
-  switch (resolved) {
+function getSlideTransform(placement: DrawerPlacement): string {
+  switch (placement) {
     case 'right':
       return 'translateX(100%)';
     case 'left':

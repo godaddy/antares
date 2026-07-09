@@ -4,7 +4,6 @@ import assume from 'assume';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { PlacementsExample } from '../examples/placements.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
-import { RTLExample } from '../examples/rtl.tsx';
 
 const PLACEMENTS = ['left', 'right', 'top', 'bottom'] as const;
 
@@ -44,19 +43,6 @@ describe('@godaddy/antares', function antares() {
 
       const panel = document.querySelector('[data-placement]') as HTMLElement;
       await expect(panel).toMatchScreenshot('bottom-sheet');
-    });
-
-    it('flips left placement to the right edge in RTL', async function rtl() {
-      const { getByRole } = await render(<RTLExample />);
-
-      await getByRole('button', { name: 'Open left' }).click();
-      await vi.waitFor(async function open() {
-        assume(getByRole('dialog').query()).is.not.equal(null);
-      });
-      await settle();
-
-      const panel = document.querySelector('[data-placement]') as HTMLElement;
-      await expect(panel).toMatchScreenshot('rtl-left');
     });
   });
 });

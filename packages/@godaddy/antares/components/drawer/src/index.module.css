@@ -24,37 +24,36 @@
   transform: var(--_slide);
 }
 
-.drawer:where([data-placement='left'], [data-placement='right']) {
+.drawer:where([data-placement="left"], [data-placement="right"]) {
   inset-block: 0;
   block-size: 100%;
   max-inline-size: var(--_max-size, min(80vw, 25rem));
   min-inline-size: var(--_min-size, var(--_min-fallback));
 }
 
-.drawer:where([data-placement='top'], [data-placement='bottom']) {
+.drawer:where([data-placement="top"], [data-placement="bottom"]) {
   inset-inline: 0;
   inline-size: 100%;
   max-block-size: var(--_max-size, calc(100dvh - 5rem));
   min-block-size: var(--_min-size, var(--_min-fallback));
 }
 
-/* Physical edges (not logical inset-inline-*): `resolvePlacement` already maps the
-   placement to a physical edge for RTL, so positioning must stay physical to avoid
-   a second flip when the drawer portals into a dir="rtl" document. */
-.drawer:where([data-placement='right']) {
+/* Physical edges (not logical inset-inline-*): placement is a physical side that
+   never flips in RTL, so positioning stays physical and matches the slide transform. */
+.drawer:where([data-placement="right"]) {
   right: 0;
 }
 
-.drawer:where([data-placement='left']) {
+.drawer:where([data-placement="left"]) {
   left: 0;
 }
 
-.drawer:where([data-placement='bottom']) {
+.drawer:where([data-placement="bottom"]) {
   inset-block-end: 0;
   border-radius: var(--br-md) var(--br-md) 0 0;
 }
 
-.drawer:where([data-placement='top']) {
+.drawer:where([data-placement="top"]) {
   inset-block-start: 0;
   border-radius: 0 0 var(--br-md) var(--br-md);
 }
@@ -64,8 +63,8 @@
   --_min-fallback: 3rem;
 }
 
-.overlay[data-animate='false'],
-.overlay[data-animate='false'] .drawer {
+.overlay[data-animate="false"],
+.overlay[data-animate="false"] .drawer {
   transition: none;
 }
 

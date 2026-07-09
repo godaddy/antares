@@ -6,11 +6,15 @@ import {
   type DisclosurePanelProps as RACDisclosurePanelProps
 } from 'react-aria-components';
 import { cx } from 'cva';
+import { toCssSize } from '../../../utils/css.ts';
 import styles from './index.module.css';
 
-/** Edge the drawer anchors to; selects the collapse axis. `top`/`bottom` collapse
- * vertically (height), `left`/`right` collapse horizontally (width). Does not flip
- * in RTL — the side is decided by document/flex order. */
+/**
+ * Edge the drawer anchors to; selects the collapse axis. `top`/`bottom` collapse
+ * vertically (height), `left`/`right` collapse horizontally (width). `placement`
+ * only picks the axis: the component is in-flow, so the visual side follows normal
+ * document/flex order.
+ */
 export type InlineDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
 export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'className' | 'children'> {
@@ -47,8 +51,8 @@ export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(functi
   const { placement = 'top', minSize, maxSize, animate, style: styleProps, className, children, ...rest } = props;
 
   const style = {
-    ...(minSize !== undefined && { '--_min-size': toSize(minSize) }),
-    ...(maxSize !== undefined && { '--_max-size': toSize(maxSize) }),
+    ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) }),
+    ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
     ...styleProps
   } as CSSProperties;
 
@@ -81,8 +85,3 @@ export const InlineDrawerPanel = function InlineDrawerPanel(props: InlineDrawerP
   const { className, ...rest } = props;
   return <RACDisclosurePanel {...rest} className={cx(styles.panel, className)} />;
 };
-
-/** Convert a number or string to a CSS size value. */
-function toSize(value: number | string): string {
-  return typeof value === 'number' ? `${value}px` : value;
-}
