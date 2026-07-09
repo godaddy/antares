@@ -68,6 +68,7 @@ describe('@godaddy/antares', function antares() {
     it('shows "Drop files to upload." when a file is dragged over', async function dropTargetLabelActive() {
       const { container, getByText } = await render(<DropTargetLabelExample />);
       const dropZone = container.querySelector('[data-rac]') as HTMLElement;
+      assume(dropZone).is.not.equal(null);
       await simulateFileDragEnter(dropZone);
       await expect.element(getByText('Drop files to upload.')).toBeVisible();
     });
@@ -83,6 +84,7 @@ describe('@godaddy/antares', function antares() {
     it('shows image preview and filename after selecting an image file', async function fileUploadImagePreview() {
       const { container, getByRole, getByText } = await render(<FileUploadExample />);
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      assume(input).is.not.equal(null);
       await userEvent.upload(input, new File(['x'], 'photo.jpg', { type: 'image/jpeg' }));
       await expect.element(getByRole('img', { name: 'photo.jpg' })).toBeVisible();
       await expect.element(getByText('photo.jpg')).toBeVisible();
@@ -91,6 +93,7 @@ describe('@godaddy/antares', function antares() {
     it('shows file extension and filename after selecting a non-image file', async function fileUploadPdfPreview() {
       const { container, getByText } = await render(<FileUploadExample />);
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      assume(input).is.not.equal(null);
       await userEvent.upload(input, new File(['x'], 'document.pdf', { type: 'application/pdf' }));
       await expect.element(getByText('pdf', { exact: true })).toBeVisible();
       await expect.element(getByText('document.pdf')).toBeVisible();
@@ -106,6 +109,7 @@ describe('@godaddy/antares', function antares() {
     it('shows image preview and Replace button after selecting an image file', async function replaceFileFilledImage() {
       const { container, getByRole, getByText } = await render(<ReplaceFileExample />);
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      assume(input).is.not.equal(null);
       await userEvent.upload(input, new File(['x'], 'photo.png', { type: 'image/png' }));
       await expect.element(getByRole('img', { name: 'photo.png' })).toBeVisible();
       await expect.element(getByText('photo.png')).toBeVisible();
@@ -115,6 +119,7 @@ describe('@godaddy/antares', function antares() {
     it('shows file extension, filename and Replace button after selecting a non-image file', async function replaceFileFilledPdf() {
       const { container, getByText } = await render(<ReplaceFileExample />);
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      assume(input).is.not.equal(null);
       await userEvent.upload(input, new File(['x'], 'report.pdf', { type: 'application/pdf' }));
       await expect.element(getByText('pdf', { exact: true })).toBeVisible();
       await expect.element(getByText('report.pdf')).toBeVisible();
@@ -124,8 +129,10 @@ describe('@godaddy/antares', function antares() {
     it('shows "Drop to replace" when filled and a file is dragged over', async function replaceFilledDropTarget() {
       const { container, getByText } = await render(<ReplaceFileExample />);
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+      assume(input).is.not.equal(null);
       await userEvent.upload(input, new File(['x'], 'photo.png', { type: 'image/png' }));
       const dropZone = container.querySelector('[data-rac]') as HTMLElement;
+      assume(dropZone).is.not.equal(null);
       await simulateFileDragEnter(dropZone);
       await expect.element(getByText('Drop to replace')).toBeVisible();
     });

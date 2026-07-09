@@ -1,6 +1,6 @@
 'use client';
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { DropZone } from '#components/drop-zone';
+import { DropZone } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { DisabledExample } from './examples/disabled.tsx';
 import { FileUploadExample } from './examples/file-upload.tsx';
