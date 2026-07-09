@@ -1,8 +1,8 @@
-import { callback, NextFunction } from './next.ts';
+import { callback, type NextFunction } from './next.ts';
 import { observer } from '../src/observer.ts';
 import { describe, it } from 'vitest';
 import assume from 'assume';
-import { UnknownObject } from '@bento/types';
+import type { UnknownObject } from '@bento/types';
 
 describe('@bento/observe', function bento() {
   it('returns an object', function test() {

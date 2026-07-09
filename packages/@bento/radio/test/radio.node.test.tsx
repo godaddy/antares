@@ -1,12 +1,12 @@
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { Radio, RadioGroup } from '@bento/radio';
+import type { Radio, RadioGroup } from '@bento/radio';
 import { renderToString } from 'react-dom/server';
 import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
-import React, { ComponentProps } from 'react';
+import React, { type ComponentProps } from 'react';
 import { SingleRadioExample } from '../examples/single-radio';
 
 /**

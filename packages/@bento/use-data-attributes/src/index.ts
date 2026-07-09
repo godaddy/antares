@@ -1,6 +1,6 @@
 import { useDeepCompareMemo } from 'use-deep-compare';
 import { stringify } from '@bento/to-attribute-value';
-import { UnknownObject } from '@bento/types';
+import type { UnknownObject } from '@bento/types';
 import dashify from 'dashify';
 
 /**

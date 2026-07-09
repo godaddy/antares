@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { withSlots } from '@bento/slots';
 import { Text, type TextProps } from '@bento/text';
 import { useProps } from '@bento/use-props';

@@ -1,4 +1,4 @@
-import { type StoryIndexInput } from 'storybook/internal/types';
+import type { StoryIndexInput } from 'storybook/internal/types';
 import { getExportedVariables } from './getters-parser.ts';
 
 /**

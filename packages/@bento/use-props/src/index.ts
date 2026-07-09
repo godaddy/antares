@@ -1,6 +1,6 @@
 import { Box, type BoxContext } from '@bento/box';
 import { useInternalProps } from '@bento/internal-props';
-import { AnyObject } from '@bento/types';
+import type { AnyObject } from '@bento/types';
 import { mergeRefs } from '@react-aria/utils';
 import { useContext } from 'react';
 import type { ForwardedRef, Ref } from 'react';

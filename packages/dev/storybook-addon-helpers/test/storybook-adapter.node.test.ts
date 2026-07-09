@@ -1,4 +1,4 @@
-import { type StrictInputType } from 'storybook/internal/types';
+import type { StrictInputType } from 'storybook/internal/types';
 import { describe, expect, it } from 'vitest';
 import { toStorybookArgTypes } from '../src/adapters/storybook.ts';
 

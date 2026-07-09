@@ -28,11 +28,7 @@ export function ProgressStepsPlaygroundExample({
       hideStepNumbers={hideStepNumbers}
     >
       {steps.map((step) => (
-        <ProgressStep
-          key={step.label}
-          status={step.status}
-          onPress={interactive ? () => undefined : undefined}
-        >
+        <ProgressStep key={step.label} status={step.status} onPress={interactive ? () => undefined : undefined}>
           {step.label}
         </ProgressStep>
       ))}
