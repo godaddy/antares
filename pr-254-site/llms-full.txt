@@ -727,7 +727,7 @@ Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` 
 
 * Slides in from any screen edge (top, bottom, left, right)
 * `overlay` elevation panel over a dimmed backdrop, matching `Modal`
-* Automatic RTL flipping for left/right placement
+* Physical `placement` (does not flip for RTL)
 * Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
 * CSS transitions with `prefers-reduced-motion` support
 
@@ -787,14 +787,6 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 
 <Source language="tsx" code="NoEscapeDismissExample" />
 
-### RTL [#rtl]
-
-In RTL locales, `left` and `right` placements flip automatically so the drawer stays visually consistent.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="RTLExample" />
-
 ## Accessibility [#accessibility]
 
 ### Keyboard [#keyboard]
@@ -815,94 +807,6 @@ In RTL locales, `left` and `right` placements flip automatically so the drawer s
 * Always provide an `aria-label` so the dialog has an accessible name.
 * Use `isDismissable` to allow closing via backdrop click.
 * Don't nest drawers.
-
-
-# Field primitives
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
-
-The field decoration is split into granular, composable pieces so the same structure is shared across every field:
-
-* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
-* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
-* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
-* **`FieldInput`*&#x2A; / &#x2A;*`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
-* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
-* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
-* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
-
-`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
-
-## Usage [#usage]
-
-### FieldGroup props [#fieldgroup-props]
-
-<PropTable />
-
-### Basic example [#basic-example]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-## Composition [#composition]
-
-A boxed field composes the primitives inside its React Aria field wrapper. Use
-`Field as={...}` to merge the field wrapper and the layout column into a single
-element:
-
-```text
-Field as={RACTextField}                   ← field wrapper + layout column (one element)
-├── FieldLabel                            ← when label provided (+ required indicator)
-├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
-│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
-├── FieldDescription                      ← when description provided
-└── FieldError                            ← renders validation messages when invalid
-```
-
-A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
-
-`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
-
-### Positioning controls inside the group [#positioning-controls-inside-the-group]
-
-`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
-
-### States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
-
-| State                                                                                    | CSS Selector      |
-| ---------------------------------------------------------------------------------------- | ----------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
-| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
-
-## Examples [#examples]
-
-### Leading control [#leading-control]
-
-<Story of="Stories.LeadingControl" />
-
-### Trailing control [#trailing-control]
-
-<Story of="Stories.TrailingControl" />
-
-<Source language="tsx" code="SourceTrailingControl" />
-
-### Icon accessories [#icon-accessories]
-
-<Story of="Stories.IconAccessories" />
-
-<Source language="tsx" code="SourceIconAccessories" />
 
 
 # Icon
@@ -1315,6 +1219,94 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# Field primitives
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
+
+The field decoration is split into granular, composable pieces so the same structure is shared across every field:
+
+* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
+* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
+* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
+* **`FieldInput`*&#x2A; / &#x2A;*`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
+* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
+* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
+
+`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
+
+## Usage [#usage]
+
+### FieldGroup props [#fieldgroup-props]
+
+<PropTable />
+
+### Basic example [#basic-example]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+## Composition [#composition]
+
+A boxed field composes the primitives inside its React Aria field wrapper. Use
+`Field as={...}` to merge the field wrapper and the layout column into a single
+element:
+
+```text
+Field as={RACTextField}                   ← field wrapper + layout column (one element)
+├── FieldLabel                            ← when label provided (+ required indicator)
+├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
+│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
+├── FieldDescription                      ← when description provided
+└── FieldError                            ← renders validation messages when invalid
+```
+
+A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
+
+`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
+
+### Positioning controls inside the group [#positioning-controls-inside-the-group]
+
+`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
+
+### States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
+
+| State                                                                                    | CSS Selector      |
+| ---------------------------------------------------------------------------------------- | ----------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
+| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
+
+## Examples [#examples]
+
+### Leading control [#leading-control]
+
+<Story of="Stories.LeadingControl" />
+
+### Trailing control [#trailing-control]
+
+<Story of="Stories.TrailingControl" />
+
+<Source language="tsx" code="SourceTrailingControl" />
+
+### Icon accessories [#icon-accessories]
+
+<Story of="Stories.IconAccessories" />
+
+<Source language="tsx" code="SourceIconAccessories" />
 
 
 # InlineDrawer
@@ -2612,62 +2604,6 @@ Set `name` to submit the value with a native `<form>`. Multiple-mode values subm
 <Story of="Stories.Form" />
 
 
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
-
-
 # Tag
 
 
@@ -2783,6 +2719,62 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 * If users need to click or dismiss it — use a **Button** instead.
 * If the label is part of a sentence with no visual distinction — just use text.
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
 
 
 # TextField
