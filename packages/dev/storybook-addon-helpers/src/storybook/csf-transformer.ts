@@ -9,12 +9,8 @@ import {
   GET_VARIANTS
 } from './getters-parser.ts';
 import { toStorybookArgTypes } from '../adapters/storybook.ts';
-import { extractComponentDocs } from '../engine/component-type.ts';
-import { extractTypeDocs } from '../engine/extract.ts';
-import { createResolver } from '../engine/resolve.ts';
-import { toLiteralValue, toTsExpression } from './literal.ts';
-import { processPropsDoc } from '../process.ts';
-import type { DocsOptions } from '../types.ts';
+import { docFromCall } from '../docs.ts';
+import { toTsExpression } from './literal.ts';
 
 const RENDER_STR = 'render';
 const factory = ts.factory;
@@ -155,19 +151,6 @@ function transformGetVariants(node: ts.Node) {
 }
 
 /**
- * Reads the docs options object literal from a getter call argument.
- *
- * @param node - The getter call expression.
- * @param index - The argument index of the options object literal.
- * @returns The parsed docs options, or an empty object when absent.
- */
-function getDocsOptions(node: ts.CallExpression, index: number): DocsOptions<Record<string, unknown>> {
-  const argument = node.arguments[index];
-  if (!argument || !ts.isObjectLiteralExpression(argument)) return {};
-  return toLiteralValue(argument) as DocsOptions<Record<string, unknown>>;
-}
-
-/**
  * Transforms the getComponentDocs function to return the
  * component docs story object.
  * @param node - The node to transform.
@@ -184,12 +167,10 @@ function getDocsOptions(node: ts.CallExpression, index: number): DocsOptions<Rec
 function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile) {
   if (!isCallTo(node, GET_COMPONENT_DOCS) || !ts.isIdentifier(node.arguments[0])) return;
 
-  const resolver = createResolver(sourceFile.fileName || 'inline.tsx');
-  const componentName = node.arguments[0].text;
-  const rawDoc = extractComponentDocs(componentName, sourceFile, resolver);
-  const processedDoc = processPropsDoc(rawDoc, getDocsOptions(node, 1));
+  const doc = docFromCall(node, sourceFile);
+  if (!doc) return;
 
-  return toTsExpression(toStorybookArgTypes(processedDoc));
+  return toTsExpression(toStorybookArgTypes(doc));
 }
 
 /**
@@ -210,14 +191,10 @@ function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile) {
 function transformGetTypeDocs(node: ts.Node, sourceFile: ts.SourceFile): ts.Expression | undefined {
   if (!isCallTo(node, GET_TYPE_DOCS) || node.typeArguments?.length !== 1) return;
 
-  const typeArg = node.typeArguments[0];
-  if (!ts.isTypeReferenceNode(typeArg) || !ts.isIdentifier(typeArg.typeName)) return;
+  const doc = docFromCall(node, sourceFile);
+  if (!doc) return;
 
-  const resolver = createResolver(sourceFile.fileName || 'inline.tsx');
-  const rawDoc = extractTypeDocs(typeArg.typeName.text, sourceFile, resolver);
-  const processedDoc = processPropsDoc(rawDoc, getDocsOptions(node, 0));
-
-  return toTsExpression(toStorybookArgTypes(processedDoc));
+  return toTsExpression(toStorybookArgTypes(doc));
 }
 
 /**
