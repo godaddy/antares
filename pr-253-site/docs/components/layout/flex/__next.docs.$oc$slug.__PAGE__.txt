@@ -1,0 +1,343 @@
+1:"$Sreact.fragment"
+2:I[298330,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"DocsPage"]
+3:I[298330,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"DocsTitle"]
+4:I[298330,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"DocsDescription"]
+5:I[748747,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"LLMCopyButton"]
+6:I[748747,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"ViewOptions"]
+7:I[298330,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"DocsBody"]
+8:I[647873,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"default"]
+9:I[494157,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Heading"]
+a:I[144324,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"CodeBlock"]
+b:I[144324,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Pre"]
+c:I[2247,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"PropTable"]
+d:I[403113,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"StoryRenderer"]
+e:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Default"]
+f:I[904143,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"DynamicCodeBlock"]
+31:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Direction"]
+33:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Alignment"]
+35:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Gap"]
+37:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Wrap"]
+39:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Navbar"]
+3a:I[135253,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js","/antares/pr-253-site/_next/static/chunks/1_g6xhgvwvt2g.js","/antares/pr-253-site/_next/static/chunks/38qdyjvrk4hmj.js","/antares/pr-253-site/_next/static/chunks/0rfzdbhj61_we.js","/antares/pr-253-site/_next/static/chunks/2g18slu_z_ujd.js","/antares/pr-253-site/_next/static/chunks/3o6k0lyn1i9u_.js","/antares/pr-253-site/_next/static/chunks/15t2njvybmh18.js","/antares/pr-253-site/_next/static/chunks/1o8fqgrrtktka.js","/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js"],"Sidebar"]
+3b:I[897367,["/antares/pr-253-site/_next/static/chunks/3-e81dlaebw_n.js","/antares/pr-253-site/_next/static/chunks/1h-nktqotvq9o.js"],"OutletBoundary"]
+3c:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"toc":[{"depth":2,"url":"#installation","title":"Installation"},{"depth":2,"url":"#props","title":"Props"},{"depth":2,"url":"#scale-sizes","title":"Scale Sizes"},{"depth":2,"url":"#examples","title":"Examples"},{"depth":3,"url":"#default","title":"Default"},{"depth":3,"url":"#direction","title":"Direction"},{"depth":3,"url":"#alignment","title":"Alignment"},{"depth":3,"url":"#gap","title":"Gap"},{"depth":3,"url":"#wrap","title":"Wrap"},{"depth":3,"url":"#navbar","title":"Navbar"},{"depth":3,"url":"#sidebar","title":"Sidebar"},{"depth":2,"url":"#rtl-support","title":"RTL Support"},{"depth":2,"url":"#design-tokens","title":"Design Tokens"},{"depth":2,"url":"#migration-from-uxbox","title":"Migration from @ux/box"}],"footer":{"enabled":true},"children":[["$","$L3",null,{"children":"Flex"}],["$","$L4",null,{"className":"mb-0","children":"One-dimensional layout component for arranging children in rows or columns with alignment and spacing control"}],["$","div",null,{"className":"flex flex-row gap-2 items-center border-b pb-6","children":[["$","$L5",null,{"markdownUrl":"/docs/components/layout/flex.mdx"}],["$","$L6",null,{"markdownUrl":"/docs/components/layout/flex.mdx","githubUrl":"https://github.com/godaddy/antares/blob/main/packages/@godaddy/antares/components/layout/flex/README.mdx"}]]}],["$","$L7",null,{"children":[null,"\n",["$","p",null,{"children":["Flex is a one-dimensional layout component for arranging children in rows or columns with alignment and spacing control. It extends ",["$","$L8",null,{"href":"../box/README.mdx","children":["$","code",null,{"children":"Box"}]}],", inheriting all Box capabilities (padding, elevation, rounding, self-alignment, and polymorphic ",["$","code",null,{"children":"as"}]," prop)."]}],"\n",["$","p",null,{"children":[["$","strong",null,{"children":"Recommended default"}],": Use Flex for most layouts. Since it extends Box, you get all Box capabilities without needing to nest components."]}],"\n",["$","$L9",null,{"as":"h2","id":"installation","children":"Installation"}],"\n",["$","$La",null,{"className":"shiki shiki-themes github-light github-dark","style":{"--shiki-light":"#24292e","--shiki-dark":"#e1e4e8","--shiki-light-bg":"#fff","--shiki-dark-bg":"#24292e"},"tabIndex":"0","icon":"<svg viewBox=\"0 0 24 24\"><path d=\"m 4,4 a 1,1 0 0 0 -0.7070312,0.2929687 1,1 0 0 0 0,1.4140625 L 8.5859375,11 3.2929688,16.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.4140624,0 l 5.9999998,-6 a 1.0001,1.0001 0 0 0 0,-1.414062 L 4.7070312,4.2929687 A 1,1 0 0 0 4,4 Z m 8,14 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z\" fill=\"currentColor\" /></svg>","children":["$","$Lb",null,{"children":["$","code",null,{"children":["$","span",null,{"className":"line","children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --save"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" @godaddy/antares"}]]}]}]}]}],"\n",["$","$L9",null,{"as":"h2","id":"props","children":"Props"}],"\n",["$","p",null,{"children":["The ",["$","code",null,{"children":"Flex"}]," component accepts the following props:"]}],"\n",["$","$Lc",null,{"entries":[],"categories":{}}],"\n",["$","$L9",null,{"as":"h2","id":"scale-sizes","children":"Scale Sizes"}],"\n",["$","p",null,{"children":["We use the same scale sizes as the ",["$","code",null,{"children":"Box"}]," component. For more information, see the ",["$","$L8",null,{"href":"../box/README.mdx#scale-sizes","children":["$","strong",null,{"children":"Box component documentation"}]}],"."]}],"\n",["$","$L9",null,{"as":"h2","id":"examples","children":"Examples"}],"\n",["$","$L9",null,{"as":"h3","id":"default","children":"Default"}],"\n",["$","p",null,{"children":"Basic horizontal flex layout with gap."}],"\n",["$","$Ld",null,{"component":"$e"}],"\n",["$","$Lf",null,{"lang":"tsx","code":"import { Flex, type FlexProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: FlexProps) {\n  return (\n    <Flex gap=\"sm\" {...props}>\n      <Flex padding=\"sm\" style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\"sm\" style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\"sm\" style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n    </Flex>\n  );\n}"}],"\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d"]}]]}],["$L2e","$L2f"],"$L30"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"BNJxgDzCWDHbBv7qUWUj4"}
+10:["$","$L9",null,{"as":"h3","id":"direction","children":"Direction"}]
+11:["$","p",null,{"children":["The ",["$","code",null,{"children":"direction"}]," prop controls the main axis orientation."]}]
+12:["$","$Ld",null,{"component":"$31"}]
+32:T5ee,import { Flex } from '@godaddy/antares';
+
+export function DirectionExample() {
+  return (
+    <Flex direction="column" gap="lg">
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">Row (default)</Flex>
+        <Flex gap="sm">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">Column</Flex>
+        <Flex direction="column" gap="sm">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">Row Reverse</Flex>
+        <Flex direction="row-reverse" gap="sm">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+}13:["$","$Lf",null,{"lang":"tsx","code":"$32"}]
+14:["$","$L9",null,{"as":"h3","id":"alignment","children":"Alignment"}]
+15:["$","p",null,{"children":["Use ",["$","code",null,{"children":"justifyContent"}]," for main-axis distribution and ",["$","code",null,{"children":"alignItems"}]," for cross-axis alignment."]}]
+16:["$","$Ld",null,{"component":"$33"}]
+34:T965,import { Flex } from '@godaddy/antares';
+
+export function AlignmentExample() {
+  return (
+    <Flex direction="column" gap="lg">
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">justifyContent: space-between</Flex>
+        <Flex justifyContent="space-between">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Start
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Middle
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            End
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">justifyContent: center</Flex>
+        <Flex justifyContent="center" gap="sm">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">justifyContent: end</Flex>
+        <Flex justifyContent="end" gap="sm">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">alignItems: center (with varying heights)</Flex>
+        <Flex alignItems="center" gap="sm" style={{ height: '100px' }}>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Short
+          </Flex>
+          <Flex padding="lg" style={{ background: '#e0e0e0' }}>
+            Tall
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Short
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">alignItems: stretch (default)</Flex>
+        <Flex alignItems="stretch" gap="sm" style={{ height: '100px' }}>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+}17:["$","$Lf",null,{"lang":"tsx","code":"$34"}]
+18:["$","$L9",null,{"as":"h3","id":"gap","children":"Gap"}]
+19:["$","p",null,{"children":["The ",["$","code",null,{"children":"gap"}]," prop controls spacing between children. Use ",["$","code",null,{"children":"rowGap"}]," and ",["$","code",null,{"children":"columnGap"}]," for independent control."]}]
+1a:["$","$Ld",null,{"component":"$35"}]
+36:Tb73,import { Flex } from '@godaddy/antares';
+
+export function GapExample() {
+  return (
+    <Flex direction="column" gap="lg">
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">gap: xs</Flex>
+        <Flex gap="xs">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">gap: sm</Flex>
+        <Flex gap="sm">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">gap: md</Flex>
+        <Flex gap="md">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">gap: lg</Flex>
+        <Flex gap="lg">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">gap: xl</Flex>
+        <Flex gap="xl">
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">rowGap + columnGap (with wrap)</Flex>
+        <Flex wrap="wrap" rowGap="lg" columnGap="xs" style={{ width: '200px' }}>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 4
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+}1b:["$","$Lf",null,{"lang":"tsx","code":"$36"}]
+1c:["$","$L9",null,{"as":"h3","id":"wrap","children":"Wrap"}]
+1d:["$","p",null,{"children":["The ",["$","code",null,{"children":"wrap"}]," prop controls whether items wrap to multiple lines."]}]
+1e:["$","$Ld",null,{"component":"$37"}]
+38:T780,import { Flex } from '@godaddy/antares';
+
+export function WrapExample() {
+  return (
+    <Flex direction="column" gap="lg">
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">wrap: nowrap (default)</Flex>
+        <Flex wrap="nowrap" gap="sm" style={{ width: '200px' }}>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 4
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">wrap: wrap</Flex>
+        <Flex wrap="wrap" gap="sm" style={{ width: '200px' }}>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 4
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="sm">
+        <Flex as="strong">wrap: wrap-reverse</Flex>
+        <Flex wrap="wrap-reverse" gap="sm" style={{ width: '200px' }}>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 1
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 2
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 3
+          </Flex>
+          <Flex padding="sm" style={{ background: '#e0e0e0' }}>
+            Item 4
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+}1f:["$","$Lf",null,{"lang":"tsx","code":"$38"}]
+20:["$","$L9",null,{"as":"h3","id":"navbar","children":"Navbar"}]
+21:["$","p",null,{"children":"A common navigation bar pattern using space-between and nested Flex containers."}]
+22:["$","$Ld",null,{"component":"$39"}]
+23:["$","$Lf",null,{"lang":"tsx","code":"import { Flex, LinkButton, Button } from '@godaddy/antares';\n\nexport function NavbarExample() {\n  return (\n    <Flex as=\"nav\" alignItems=\"center\" justifyContent=\"space-between\" padding=\"xs\">\n      <Flex as=\"h1\">Logo</Flex>\n\n      <Flex gap=\"sm\">\n        <LinkButton href=\"#\">Home</LinkButton>\n        <LinkButton href=\"#\">About</LinkButton>\n        <LinkButton href=\"#\">Contact</LinkButton>\n      </Flex>\n\n      <Flex gap=\"sm\">\n        <Button variant=\"primary\">Sign In</Button>\n        <Button variant=\"secondary\">Sign Up</Button>\n      </Flex>\n    </Flex>\n  );\n}"}]
+24:["$","$L9",null,{"as":"h3","id":"sidebar","children":"Sidebar"}]
+25:["$","p",null,{"children":["A sidebar layout demonstrating Flex child props (",["$","code",null,{"children":"flexShrink"}],", ",["$","code",null,{"children":"flexGrow"}],")."]}]
+26:["$","$Ld",null,{"component":"$3a"}]
+27:["$","$Lf",null,{"lang":"tsx","code":"import { Flex, LinkButton } from '@godaddy/antares';\n\nexport function SidebarExample() {\n  return (\n    <Flex rounding=\"reduced\">\n      <Flex as=\"aside\" direction=\"column\" gap=\"sm\" padding=\"xs\" flexShrink=\"0\" style={{ width: '200px' }}>\n        <Flex as=\"h3\">Navigation</Flex>\n        <LinkButton href=\"#\">Dashboard</LinkButton>\n        <LinkButton href=\"#\">Settings</LinkButton>\n        <LinkButton href=\"#\">Profile</LinkButton>\n      </Flex>\n\n      <Flex as=\"main\" direction=\"column\" padding=\"md\" flexGrow=\"1\">\n        <Flex as=\"h2\">Main Content</Flex>\n        <Flex as=\"p\">\n          This main content area uses flexGrow=\"1\" to fill the remaining space. The sidebar uses flexShrink=\"0\" to\n          maintain its fixed width.\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}"}]
+28:["$","$L9",null,{"as":"h2","id":"rtl-support","children":"RTL Support"}]
+29:["$","p",null,{"children":["Flex uses CSS logical properties which automatically adapt to RTL layouts. The ",["$","code",null,{"children":"direction"}]," prop values (",["$","code",null,{"children":"row"}],", ",["$","code",null,{"children":"row-reverse"}],") respect the document direction."]}]
+2a:["$","$L9",null,{"as":"h2","id":"design-tokens","children":"Design Tokens"}]
+2b:["$","p",null,{"children":"All gap and padding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system."}]
+2c:["$","$L9",null,{"as":"h2","id":"migration-from-uxbox","children":"Migration from @ux/box"}]
+2d:["$","div",null,{"className":"relative overflow-auto prose-no-margin my-6","children":["$","table",null,{"children":[["$","thead",null,{"children":["$","tr",null,{"children":[["$","th",null,{"children":["Current ",["$","code",null,{"children":"@ux/box"}]]}],["$","th",null,{"children":"New Pattern"}]]}]}],["$","tbody",null,{"children":[["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"<Box orientation=\"horizontal\">"}]}],["$","td",null,{"children":["$","code",null,{"children":"<Flex direction=\"row\" >"}]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"<Box orientation=\"vertical\">"}]}],["$","td",null,{"children":["$","code",null,{"children":"<Flex direction=\"column\" >"}]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"<Box blockAlignChildren=\"center\">"}]}],["$","td",null,{"children":["$","code",null,{"children":"<Flex justifyContent=\"center\">"}]}]]}],["$","tr",null,{"children":[["$","td",null,{"children":["$","code",null,{"children":"<Box inlineAlignChildren=\"center\">"}]}],["$","td",null,{"children":["$","code",null,{"children":"<Flex alignItems=\"center\">"}]}]]}]]}]]}]}]
+2e:["$","script","script-0",{"src":"/antares/pr-253-site/_next/static/chunks/0kwv-w3yo6vff.js","async":true}]
+2f:["$","script","script-1",{"src":"/antares/pr-253-site/_next/static/chunks/1o2dicn68odze.js","async":true}]
+30:["$","$L3b",null,{"children":["$","$3c",null,{"name":"Next.MetadataOutlet","children":"$@3d"}]}]
+3d:null
