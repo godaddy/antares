@@ -2,6 +2,7 @@ import { remarkStripLeadingHeading } from './lib/remark-strip-leading-heading';
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { remarkRawLoader } from './lib/remark-raw-loader.ts';
+import type { StorybookHelpersOptions } from '@bento/storybook-addon-helpers/docs';
 import { remarkArgTypes } from './lib/remark-arg-types.ts';
 
 export const docs = defineDocs({
@@ -34,7 +35,20 @@ export const components = defineDocs({
       applyMdxPreset({
         remarkPlugins: (v) => [
           remarkStripLeadingHeading,
-          [remarkArgTypes, { docsDefaults: { categories: { Events: [/^on/], Aria: [/^aria-/] } } }],
+          [
+            remarkArgTypes,
+            {
+              docsDefaults: {
+                primary: ['id', 'children', 'className', 'style', 'disabled'],
+                categories: {
+
+                  Events: [/^onPress/, /^onChange/, /^onHover/, /^on/],
+                  Form: [/^form/, /^onSubmit/, /^onReset/],
+                  Aria: [/^aria-/]
+                }
+              }
+            } satisfies StorybookHelpersOptions
+          ],
           remarkRawLoader,
           ...v
         ]

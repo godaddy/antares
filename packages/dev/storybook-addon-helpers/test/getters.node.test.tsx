@@ -1,5 +1,5 @@
 import { expectTypeOf, it, describe } from 'vitest';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs } from '../src/storybook/getters.ts';
 
 function TestComponent(props: { size: string; disabled?: boolean }) {
