@@ -656,6 +656,63 @@ Always provide clear error messages and use appropriate validation states:
 * Provide a group label that clearly describes the choice being made
 
 
+# CircularProgress
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="Stories.Emphasis" />
+
+<Source language="tsx" code="SourceEmphasis" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+
 # Drawer
 
 
@@ -840,87 +897,6 @@ The states **disabled**, **readonly**, and **invalid** are applied by the field 
 <Story of="Stories.IconAccessories" />
 
 <Source language="tsx" code="SourceIconAccessories" />
-
-
-# InlineDrawer
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
-
-## Features [#features]
-
-* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
-* Animated by default; `animate={false}` disables the transition
-* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
-* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
-* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
-* `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-The `InlineDrawerPanel` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Controlled [#controlled]
-
-Use `isExpanded` and `onExpandedChange` to drive state externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="ControlledExample" />
-
-### Sidebar Navigation [#sidebar-navigation]
-
-A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
-
-<Story of="Stories.SidebarNav" />
-
-<Source language="tsx" code="SidebarNavExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Action                         |
-| ----------------- | ------------------------------ |
-| `Enter` / `Space` | Toggle via the slotted trigger |
-| `Tab`             | Move focus through the content |
-
-### ARIA [#aria]
-
-* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
-* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
-
-## Best Practices [#best-practices]
-
-* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
-* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
-* `placement` does not flip in RTL; the side is decided by document/flex order.
-* Don't nest InlineDrawers.
 
 
 # Icon
@@ -1335,15 +1311,24 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
-# CircularProgress
-
-
+# InlineDrawer
 
 
 
 
 
 <Meta of="Stories" name="Overview" />
+
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+
+## Features [#features]
+
+* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
+* Animated by default; `animate={false}` disables the transition
+* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
+* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
+* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
+* `prefers-reduced-motion` support
 
 ## Installation [#installation]
 
@@ -1355,41 +1340,56 @@ npm install --save @godaddy/antares
 
 <PropTable />
 
+The `InlineDrawerPanel` component accepts the following props:
+
+<PropTable />
+
 ## Examples [#examples]
 
 ### Basic Usage [#basic-usage]
 
+Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
+
 <Story of="Stories.Default" />
 
-<Source language="tsx" code="SourceDefault" />
+<Source language="tsx" code="DefaultExample" />
 
-### Sizes [#sizes]
+### Controlled [#controlled]
 
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+Use `isExpanded` and `onExpandedChange` to drive state externally.
 
-<Story of="Stories.Sizes" />
+<Story of="Stories.Controlled" />
 
-<Source language="tsx" code="SourceSizes" />
+<Source language="tsx" code="ControlledExample" />
 
-### Emphasis [#emphasis]
+### Sidebar Navigation [#sidebar-navigation]
 
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
 
-<Story of="Stories.Emphasis" />
+<Story of="Stories.SidebarNav" />
 
-<Source language="tsx" code="SourceEmphasis" />
+<Source language="tsx" code="SidebarNavExample" />
 
 ## Accessibility [#accessibility]
 
-### ARIA Support [#aria-support]
+### Keyboard [#keyboard]
 
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
+| `Enter` / `Space` | Toggle via the slotted trigger |
+| `Tab`             | Move focus through the content |
+
+### ARIA [#aria]
+
+* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
+* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
+
+## Best Practices [#best-practices]
+
+* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
+* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
+* `placement` does not flip in RTL; the side is decided by document/flex order.
+* Don't nest InlineDrawers.
 
 
 # ListBox
@@ -2005,6 +2005,61 @@ the close button.
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
+# ProgressBar
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="Stories.Statuses" />
+
+<Source language="tsx" code="SourceStatuses" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+
 # ProgressSteps
 
 
@@ -2119,61 +2174,6 @@ Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
 * **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
 * **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
 * **Titles overflow:** that's expected — titles truncate. Shorten the title.
-
-
-# ProgressBar
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="Stories.Statuses" />
-
-<Source language="tsx" code="SourceStatuses" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
 # Radio
@@ -2606,123 +2606,6 @@ Set `name` to submit the value with a native `<form>`. Multiple-mode values subm
 <Story of="Stories.Form" />
 
 
-# Tag
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A minimal tag with the default emphasis and size.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Emphasis [#emphasis]
-
-Nine emphasis options are available. Choose the one that fits the visual tone of your context.
-
-<Story of="Stories.Emphases" />
-
-<Source language="tsx" code="EmphasesExample" />
-
-### Sizes [#sizes]
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SizesExample" />
-
-### Inline [#inline]
-
-Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of="Stories.Inline" />
-
-<Source language="tsx" code="InlineExample" />
-
-### High Contrast [#high-contrast]
-
-A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
-
-<Story of="Stories.HighContrast" />
-
-<Source language="tsx" code="HighContrastExample" />
-
-### With Icon [#with-icon]
-
-Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
-
-<Story of="Stories.Icons" />
-
-<Source language="tsx" code="IconsExample" />
-
-### Indicator [#indicator]
-
-A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
-
-<Story of="Stories.Indicator" />
-
-<Source language="tsx" code="IndicatorExample" />
-
-## Accessibility [#accessibility]
-
-### Screen readers [#screen-readers]
-
-Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
-
-### Decorative icons [#decorative-icons]
-
-Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
-
-```tsx
-<Tag emphasis="critical">
-  <Icon icon="alert" aria-hidden="true" />
-  Expired
-</Tag>
-```
-
-### Indicator dot [#indicator-dot]
-
-The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
-
-## Best Practices [#best-practices]
-
-* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
-* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
-* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
-* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
-
-## When to Use [#when-to-use]
-
-* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
-* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
-* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
-* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
-
-## When Not to Use [#when-not-to-use]
-
-* If users need to click or dismiss it — use a **Button** instead.
-* If the label is part of a sentence with no visual distinction — just use text.
-
-
 # Text
 
 
@@ -2859,6 +2742,123 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
+
+
+# Tag
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A minimal tag with the default emphasis and size.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Emphasis [#emphasis]
+
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+
+<Story of="Stories.Emphases" />
+
+<Source language="tsx" code="EmphasesExample" />
+
+### Sizes [#sizes]
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SizesExample" />
+
+### Inline [#inline]
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="Stories.Inline" />
+
+<Source language="tsx" code="InlineExample" />
+
+### High Contrast [#high-contrast]
+
+A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
+
+<Story of="Stories.HighContrast" />
+
+<Source language="tsx" code="HighContrastExample" />
+
+### With Icon [#with-icon]
+
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
+
+<Story of="Stories.Icons" />
+
+<Source language="tsx" code="IconsExample" />
+
+### Indicator [#indicator]
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="Stories.Indicator" />
+
+<Source language="tsx" code="IndicatorExample" />
+
+## Accessibility [#accessibility]
+
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices [#best-practices]
+
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use [#when-to-use]
+
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
 
 
 # ToggleButton
@@ -4018,6 +4018,102 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+### Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+
 # Flex
 
 
@@ -4226,99 +4322,3 @@ Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid 
 | Auto-wrapping cards        | Grid (auto-fill) |
 | Navigation bars            | Flex             |
 | Form layouts               | Grid             |
-
-
-# Box
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Box is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="Stories.Padding" />
-
-<Source language="tsx" code="SourcePadding" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="Stories.Elevation" />
-
-<Source language="tsx" code="SourceElevation" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="Stories.Rounding" />
-
-<Source language="tsx" code="SourceRounding" />
-
-### Polymorphic `as` Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-<Story of="Stories.As" />
-
-<Source language="tsx" code="SourceAs" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
