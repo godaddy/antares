@@ -1,6 +1,6 @@
 import { useDataAttributes } from '@bento/use-data-attributes';
-import { type BoxContext } from '@bento/box';
-import { type ComponentType } from 'react';
+import type { BoxContext } from '@bento/box';
+import type { ComponentType } from 'react';
 
 /**
  * Interface representing the arguments required for replacing a component.

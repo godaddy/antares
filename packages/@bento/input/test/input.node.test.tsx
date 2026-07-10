@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { type ComponentProps } from 'react';
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
 import { Input } from '@bento/input';

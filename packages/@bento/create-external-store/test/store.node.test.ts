@@ -1,7 +1,7 @@
 import { createStore, type Store } from '@bento/create-external-store';
 import pkg from '../package.json' with { type: 'json' };
 import { dirname, resolve, join } from 'node:path';
-import { callback, NextFunction } from './next.ts';
+import { callback, type NextFunction } from './next.ts';
 import { beforeEach, describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';

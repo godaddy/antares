@@ -16,8 +16,8 @@
     "test:visual:update": "vitest run --project=Visual --update",
     "test:watch": "vitest",
     "typecheck": "tsgo --noEmit",
-    "lint": "biome lint",
-    "lint:fix": "biome lint --write",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
     "storybook": "storybook dev -p 6006  --no-open",
     "build-storybook": "storybook build"
   },

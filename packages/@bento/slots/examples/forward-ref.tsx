@@ -1,7 +1,7 @@
 import { useProps } from '@bento/use-props';
 import { withSlots, type Slots } from '@bento/slots';
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 
 export interface ForwardRefExampleProps extends Slots, Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   children?: React.ReactNode;

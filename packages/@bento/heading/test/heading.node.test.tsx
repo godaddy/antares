@@ -6,7 +6,7 @@ import { describe, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import assume from 'assume';
-import { type AnyObject } from '@bento/types';
+import type { AnyObject } from '@bento/types';
 import React from 'react';
 
 /**

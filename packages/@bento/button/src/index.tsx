@@ -2,7 +2,8 @@ import { useProps } from '@bento/use-props';
 import { withSlots } from '@bento/slots';
 import { Pressable, type PressableProps } from '@bento/pressable';
 import { useButton } from 'react-aria';
-import React, { ComponentProps } from 'react';
+import type React from 'react';
+import type { ComponentProps } from 'react';
 
 export interface ButtonProps
   extends Omit<PressableProps, 'children'>,

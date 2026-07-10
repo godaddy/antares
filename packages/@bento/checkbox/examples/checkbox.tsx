@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 import { Checkbox } from '@bento/checkbox';
 
 export function CheckboxExample(args: React.ComponentProps<typeof Checkbox>) {

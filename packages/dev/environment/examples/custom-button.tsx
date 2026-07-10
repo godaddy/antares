@@ -1,7 +1,8 @@
 import { Environment } from '@bento/environment';
 import { withSlots } from '@bento/slots';
 /* v8 ignore next */
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { useMemo } from 'react';
 
 /**
  * Interface for component props.
