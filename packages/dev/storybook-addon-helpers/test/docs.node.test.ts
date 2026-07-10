@@ -93,4 +93,41 @@ describe('resolvePropsDoc', function resolvePropsDocTests() {
     `;
     expect(await resolvePropsDoc({ code, exportName: 'X' })).toBeUndefined();
   });
+
+  it('applies global defaults under getComponentDocs; call keys win per key', async function componentDefaults() {
+    const code = `
+      import { getComponentDocs } from '../../src/storybook/getters.ts';
+      interface WProps { label: string; onPress?: () => void; onChange?: () => void; }
+      function W(_p: WProps) { return null; }
+      export const B = getComponentDocs(W, { primary: ['label'] });
+    `;
+
+    const doc = await resolvePropsDoc({ code, exportName: 'B', defaults: { categories: { Events: [/^on/] } } });
+    expect(doc?.props.find((p) => p.name === 'onPress')?.category).toBe('Events');
+    expect(doc?.props.find((p) => p.name === 'onChange')?.category).toBe('Events');
+    expect(doc?.props.find((p) => p.name === 'label')?.category).toBeUndefined();
+  });
+
+  it('lets a call category replace the defaults category wholesale', async function categoryOverride() {
+    const code = `
+      import { getComponentDocs } from '../../src/storybook/getters.ts';
+      interface WProps { label: string; onPress?: () => void; }
+      function W(_p: WProps) { return null; }
+      export const B = getComponentDocs(W, { categories: { Handlers: [/^on/] } });
+    `;
+
+    const doc = await resolvePropsDoc({ code, exportName: 'B', defaults: { categories: { Events: [/^on/] } } });
+    expect(doc?.props.find((p) => p.name === 'onPress')?.category).toBe('Handlers');
+  });
+
+  it('applies global defaults under getTypeDocs too', async function typeDefaults() {
+    const code = `
+      import { getTypeDocs } from '../../src/storybook/getters.ts';
+      interface WProps { label: string; onPress?: () => void; }
+      export const T = getTypeDocs<WProps>({});
+    `;
+
+    const doc = await resolvePropsDoc({ code, exportName: 'T', defaults: { categories: { Events: [/^on/] } } });
+    expect(doc?.props.find((p) => p.name === 'onPress')?.category).toBe('Events');
+  });
 });

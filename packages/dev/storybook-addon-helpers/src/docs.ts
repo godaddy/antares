@@ -3,10 +3,10 @@ import ts from 'typescript';
 import { extractComponentDocs } from './engine/component-type.ts';
 import { extractTypeDocs } from './engine/extract.ts';
 import { createResolver, type Resolver } from './engine/resolve.ts';
-import { processPropsDoc } from './process.ts';
+import { mergeDocsOptions, processPropsDoc } from './process.ts';
 import { GET_COMPONENT_DOCS, GET_TYPE_DOCS } from './storybook/getters-parser.ts';
 import { toLiteralValue } from './storybook/literal.ts';
-import type { DocsOptions, PropsDoc } from './types.ts';
+import type { DocsDefaults, DocsOptions, PropsDoc } from './types.ts';
 
 export { toFumadocsPropTable } from './adapters/fumadocs.ts';
 export type { FumadocsPropEntry, FumadocsPropTable } from './adapters/fumadocs.ts';
@@ -37,21 +37,22 @@ function unwrap(expr: ts.Expression): ts.Expression {
 export function docFromCall(
   node: ts.CallExpression,
   sourceFile: ts.SourceFile,
-  resolver: Resolver = createResolver(sourceFile.fileName || 'inline.tsx')
+  resolver: Resolver = createResolver(sourceFile.fileName || 'inline.tsx'),
+  defaults?: DocsDefaults
 ): PropsDoc | undefined {
   if (!ts.isIdentifier(node.expression)) return undefined;
   const callee = node.expression.text;
 
   if (callee === GET_COMPONENT_DOCS && ts.isIdentifier(node.arguments[0])) {
     const rawDoc = extractComponentDocs(node.arguments[0].text, sourceFile, resolver);
-    return processPropsDoc(rawDoc, getDocsOptions(node, 1));
+    return processPropsDoc(rawDoc, mergeDocsOptions(defaults, getDocsOptions(node, 1)));
   }
 
   if (callee === GET_TYPE_DOCS && node.typeArguments?.length === 1) {
     const typeArg = node.typeArguments[0];
     if (!ts.isTypeReferenceNode(typeArg) || !ts.isIdentifier(typeArg.typeName)) return undefined;
     const rawDoc = extractTypeDocs(typeArg.typeName.text, sourceFile, resolver);
-    return processPropsDoc(rawDoc, getDocsOptions(node, 0));
+    return processPropsDoc(rawDoc, mergeDocsOptions(defaults, getDocsOptions(node, 0)));
   }
 
   return undefined;
@@ -69,6 +70,7 @@ export async function resolvePropsDoc(input: {
   filePath?: string;
   code?: string;
   exportName: string;
+  defaults?: DocsDefaults;
 }): Promise<PropsDoc | undefined> {
   const filePath = input.filePath ?? '';
   const code = input.filePath ? await readFile(input.filePath, 'utf8') : (input.code ?? '');
@@ -88,5 +90,5 @@ export async function resolvePropsDoc(input: {
   });
 
   if (!callNode) return undefined;
-  return docFromCall(callNode, sourceFile);
+  return docFromCall(callNode, sourceFile, undefined, input.defaults);
 }
