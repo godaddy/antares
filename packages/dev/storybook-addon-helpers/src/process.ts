@@ -11,6 +11,33 @@ export function processPropsDoc<P>(doc: PropsDoc, options: DocsOptions<P> = {}):
   };
 }
 
+/**
+ * Merges global docs defaults UNDER a per-call options object. Each key present
+ * on the call replaces that key from the defaults (per-key override); keys absent
+ * on the call fall back to the defaults. `include`/`exclude` are treated as one
+ * filter unit: if the call sets either, both defaults filters are dropped, keeping
+ * their mutual exclusion intact. The result has no `undefined` keys.
+ */
+export function mergeDocsOptions<P>(defaults: DocsOptions<P> | undefined, call: DocsOptions<P>): DocsOptions<P> {
+  const base = defaults ?? {};
+  const merged: Record<string, unknown> = {
+    overrides: call.overrides ?? base.overrides,
+    primary: call.primary ?? base.primary,
+    categories: call.categories ?? base.categories
+  };
+
+  // include/exclude move together; a call-side filter shadows the defaults filter.
+  const filterSource = call.include !== undefined || call.exclude !== undefined ? call : base;
+  if (filterSource.include !== undefined) merged.include = filterSource.include;
+  if (filterSource.exclude !== undefined) merged.exclude = filterSource.exclude;
+
+  for (const key of Object.keys(merged)) {
+    if (merged[key] === undefined) delete merged[key];
+  }
+
+  return merged as DocsOptions<P>;
+}
+
 /** A matcher is an exact prop name or a `RegExp` tested against the prop name. */
 type Matcher = PropertyKey | RegExp;
 
