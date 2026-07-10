@@ -39,7 +39,17 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-onboarding',
     '@storybook/addon-themes',
-    '@bento/storybook-addon-helpers',
+    {
+      name: '@bento/storybook-addon-helpers',
+      options: {
+        docsDefaults: {
+          categories: {
+            Events: [/^on/],
+            Aria: [/^aria-/]
+          }
+        }
+      }
+    },
     join(__dirname, './addons/internal-stories/preset.ts')
   ],
 
