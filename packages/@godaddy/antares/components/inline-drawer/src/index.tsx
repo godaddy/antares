@@ -83,5 +83,6 @@ export interface InlineDrawerPanelProps extends Omit<RACDisclosurePanelProps, 'c
  */
 export const InlineDrawerPanel = function InlineDrawerPanel(props: InlineDrawerPanelProps) {
   const { className, ...rest } = props;
+
   return <RACDisclosurePanel {...rest} className={cx(styles.panel, className)} />;
 };

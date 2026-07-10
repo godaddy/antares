@@ -7,11 +7,20 @@ import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 
 const PLACEMENTS = ['left', 'right', 'top', 'bottom'] as const;
 
-// Open the drawer, wait past the 0.2s slide transition, then screenshot the panel.
+// Open the drawer, wait past the 0.2s slide transition, then screenshot.
 async function settle() {
   await new Promise(function wait(r) {
     setTimeout(r, 400);
   });
+}
+
+// Screenshot the full-viewport overlay (backdrop + panel), not the panel alone:
+// in isolation the panel looks identical for left/right (and top/bottom), so the
+// screenshot must include the viewport to show which edge the drawer slid from.
+function getOverlay(): HTMLElement {
+  const overlay = document.querySelector('[data-placement]')?.parentElement;
+  if (!overlay) throw new Error('Expected drawer overlay to exist');
+  return overlay as HTMLElement;
 }
 
 describe('@godaddy/antares', function antares() {
@@ -28,8 +37,7 @@ describe('@godaddy/antares', function antares() {
       });
       await settle();
 
-      const panel = document.querySelector('[data-placement]') as HTMLElement;
-      await expect(panel).toMatchScreenshot(`placement-${p}`);
+      await expect(getOverlay()).toMatchScreenshot(`placement-${p}`);
     });
 
     it('renders bottom sheet with close button', async function bottomSheet() {
@@ -41,8 +49,7 @@ describe('@godaddy/antares', function antares() {
       });
       await settle();
 
-      const panel = document.querySelector('[data-placement]') as HTMLElement;
-      await expect(panel).toMatchScreenshot('bottom-sheet');
+      await expect(getOverlay()).toMatchScreenshot('bottom-sheet');
     });
   });
 });
