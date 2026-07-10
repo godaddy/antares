@@ -20,6 +20,28 @@ export default {
 
 The preset registers an indexer for `*.stories.tsx` files and a Vite plugin that performs the CSF transform. No per-story configuration is needed.
 
+### Global docs defaults
+
+Pass `docsDefaults` to avoid repeating the same `getComponentDocs`/`getTypeDocs` options in every story. They are merged UNDER each call's own options: a key you set on the call replaces that key from the defaults, absent keys inherit the defaults, and `include`/`exclude` move together (setting either on a call drops both from the defaults).
+
+```ts
+// .storybook/main.ts
+export default {
+  addons: [
+    {
+      name: '@bento/storybook-addon-helpers',
+      options: {
+        docsDefaults: {
+          categories: { Events: [/^on/], Aria: [/^aria-/] }
+        }
+      }
+    }
+  ]
+};
+```
+
+Defaults apply to both `getComponentDocs` and `getTypeDocs`, and to both targets (Storybook and the docs site). The docs site is configured separately: pass the same `docsDefaults` to the `remarkArgTypes` plugin. Because matchers can be arbitrary strings, global defaults are component-agnostic (a category like `Events: [/^on/]` applies wherever an `on*` prop exists).
+
 ## Authoring API
 
 ```tsx
@@ -47,7 +69,7 @@ export const TypeDocs = getTypeDocs<ButtonProps>({ exclude: [/^aria-/] });
 
 ## Docs options
 
-`getComponentDocs` and `getTypeDocs` accept an options object that filters, orders, and categorizes the documented props. All keys are type-checked against the target type at build time.
+`getComponentDocs` and `getTypeDocs` accept an options object that filters, orders, and categorizes the documented props. Keys are autocompleted against the target type, and arbitrary strings are also accepted (so you can reference props the extractor can't see, such as an added override).
 
 - **`include` / `exclude`** - allowlist or blocklist props. Mutually exclusive.
 - **`overrides`** - change a prop's `description`, `defaultValue`, `type`, or `required`. An exact name that no prop matches adds a new prop (handy for documenting props the extractor can't see) - a regular expression only patches props that already exist. Applied before the options below, so an added prop is filtered, categorized, and ordered like any other.
@@ -75,7 +97,7 @@ getComponentDocs(Button, {
 });
 ```
 
-Every option accepts either an exact prop name (type-checked) or a regular expression that matches prop names (for example, `/^on/` matches every `on*` prop). When more than one category matches a prop, the **first declared** category wins.
+Every option accepts either an exact prop name (autocompleted) or any string, or a regular expression that matches prop names (for example, `/^on/` matches every `on*` prop). When more than one category matches a prop, the **first declared** category wins.
 
 ## How it works
 
