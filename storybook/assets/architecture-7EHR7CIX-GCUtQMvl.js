@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-B4cZKGJ2.js";import{y as t}from"./chunk-NNHCCRGN-Cf0PUmgY.js";import{M as n,j as r}from"./mermaid-parser.core-SCG0Tw73.js";e((()=>{n(),t()}))();export{r as createArchitectureServices};
