@@ -29,7 +29,7 @@ const DATA_BY_PRESET = {
   ]
 } as const;
 
-export type DonutChartDataPreset = keyof typeof DATA_BY_PRESET;
+type DonutChartDataPreset = keyof typeof DATA_BY_PRESET;
 
 /** Props for the DonutChart Storybook playground. */
 export interface PlaygroundExampleProps {

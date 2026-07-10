@@ -44,8 +44,6 @@
     "@bento/svg-parser": "^0.1.1",
     "@bento/use-data-attributes": "^0.1.1",
     "@react-aria/focus": "^3.22.0",
-    "@react-aria/utils": "^3.34.0",
-    "@react-stately/utils": "^3.12.0",
     "@visx/axis": "^4.0.1-alpha.0",
     "@visx/grid": "^4.0.1-alpha.0",
     "@visx/group": "^4.0.1-alpha.0",
