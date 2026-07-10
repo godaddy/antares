@@ -1,9 +1,9 @@
-import { InlineDrawer, InlineDrawerTrigger, InlineDrawerPanel, Text } from '@godaddy/antares';
+import { InlineDrawer, InlineDrawerPanel, Button, Text } from '@godaddy/antares';
 
 export function DisabledExample() {
   return (
     <InlineDrawer isDisabled>
-      <InlineDrawerTrigger>Trigger</InlineDrawerTrigger>
+      <Button slot="trigger">Trigger</Button>
       <InlineDrawerPanel>
         <Text>Content</Text>
       </InlineDrawerPanel>

@@ -1,17 +1,21 @@
-import { Drawer, DrawerTrigger, Button, Flex, Text, type DrawerPlacement } from '@godaddy/antares';
+import { Drawer, DrawerTrigger, Button, Flex, Text, Box, type DrawerPlacement } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   placement?: DrawerPlacement;
   showCloseButton?: boolean;
   isDismissable?: boolean;
   animate?: boolean;
+  maxSize?: number | string;
+  minSize?: number | string;
 }
 
 export function PlaygroundExample({
   placement = 'right',
   showCloseButton,
   isDismissable = true,
-  animate
+  animate,
+  maxSize,
+  minSize
 }: PlaygroundExampleProps) {
   return (
     <Flex padding="2xl" justifyContent="center">
@@ -22,9 +26,13 @@ export function PlaygroundExample({
           showCloseButton={showCloseButton}
           isDismissable={isDismissable}
           animate={animate}
-          title="Playground"
+          maxSize={maxSize}
+          minSize={minSize}
+          aria-label="Drawer"
         >
-          <Text>Drawer content!</Text>
+          <Box padding="md">
+            <Text>Drawer content!</Text>
+          </Box>
         </Drawer>
       </DrawerTrigger>
     </Flex>
