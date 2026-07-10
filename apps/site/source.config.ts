@@ -32,7 +32,12 @@ export const components = defineDocs({
     // Wrap with applyMdxPreset so remarkStructure (search indexing) still runs.
     mdxOptions: (env) =>
       applyMdxPreset({
-        remarkPlugins: (v) => [remarkStripLeadingHeading, remarkArgTypes, remarkRawLoader, ...v]
+        remarkPlugins: (v) => [
+          remarkStripLeadingHeading,
+          [remarkArgTypes, { docsDefaults: { categories: { Events: [/^on/], Aria: [/^aria-/] } } }],
+          remarkRawLoader,
+          ...v
+        ]
       })(env)
   },
   meta: {

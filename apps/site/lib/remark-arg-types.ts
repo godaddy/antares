@@ -4,7 +4,7 @@ import type { Root } from 'mdast';
 import type { Plugin } from 'unified';
 import { valueToEstree } from 'estree-util-value-to-estree';
 import { visit, SKIP } from 'unist-util-visit';
-import { resolvePropsDoc, toFumadocsPropTable } from '@bento/storybook-addon-helpers/docs';
+import { resolvePropsDoc, toFumadocsPropTable, type DocsDefaults } from '@bento/storybook-addon-helpers/docs';
 import { addMdxDependency } from './remark-mdx-utils';
 
 /**
@@ -37,6 +37,10 @@ function toEstreeAttrValue(value: unknown): MdxJsxAttribute['value'] {
   };
 }
 
+export interface RemarkArgTypesOptions {
+  docsDefaults?: DocsDefaults;
+}
+
 /** Builds a `<PropTable entries={...} categories={...} />` node. */
 function buildPropTable(entries: unknown, categories: unknown): MdxJsxFlowElement {
   return {
@@ -60,7 +64,7 @@ function buildPropTable(entries: unknown, categories: unknown): MdxJsxFlowElemen
  *
  * The transform is invisible to Storybook, which sees the real `ArgTypes` block.
  */
-export const remarkArgTypes: Plugin<[], Root> = function remarkArgTypes() {
+export const remarkArgTypes: Plugin<[RemarkArgTypesOptions?], Root> = function remarkArgTypes(options = {}) {
   return function transform(tree, file) {
     const promises: Promise<void>[] = [];
 
@@ -83,11 +87,13 @@ export const remarkArgTypes: Plugin<[], Root> = function remarkArgTypes() {
       parent.children.splice(index, 1, placeholder);
 
       promises.push(
-        resolvePropsDoc({ filePath: storiesPath, exportName }).then(function applyResult(doc) {
-          const table = doc ? toFumadocsPropTable(doc) : { entries: [], categories: {} };
-          const idx = parent.children.indexOf(placeholder);
-          parent.children.splice(idx, 1, buildPropTable(table.entries, table.categories));
-        })
+        resolvePropsDoc({ filePath: storiesPath, exportName, defaults: options.docsDefaults }).then(
+          function applyResult(doc) {
+            const table = doc ? toFumadocsPropTable(doc) : { entries: [], categories: {} };
+            const idx = parent.children.indexOf(placeholder);
+            parent.children.splice(idx, 1, buildPropTable(table.entries, table.categories));
+          }
+        )
       );
 
       return [SKIP, index];

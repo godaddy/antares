@@ -118,7 +118,8 @@ describe('remarkArgTypes', function remarkArgTypesTests() {
 
     expect(resolvePropsDoc).toHaveBeenCalledWith({
       filePath: '/fake/radio/radio.stories.tsx',
-      exportName: 'Props'
+      exportName: 'Props',
+      defaults: undefined
     });
     expect(toFumadocsPropTable).toHaveBeenCalledWith({ name: 'Radio', props: [] });
 
@@ -137,7 +138,8 @@ describe('remarkArgTypes', function remarkArgTypesTests() {
     expect(toFumadocsPropTable).not.toHaveBeenCalled();
     expect(resolvePropsDoc).toHaveBeenCalledWith({
       filePath: '/fake/radio/radio.stories.tsx',
-      exportName: 'Missing'
+      exportName: 'Missing',
+      defaults: undefined
     });
   });
 
@@ -148,7 +150,23 @@ describe('remarkArgTypes', function remarkArgTypesTests() {
 
     expect(resolvePropsDoc).toHaveBeenCalledWith({
       filePath: '/fake/radio/radio.stories.tsx',
-      exportName: 'LinkButtonProps'
+      exportName: 'LinkButtonProps',
+      defaults: undefined
+    });
+  });
+
+  it('forwards docsDefaults to resolvePropsDoc', async function forwardsDefaults() {
+    resolvePropsDoc.mockResolvedValue(undefined);
+    const docsDefaults = { categories: { Events: [/^on/] } };
+
+    const processor = unified().use(remarkParse).use(remarkMdx).use(remarkArgTypes, { docsDefaults });
+    const file = new VFile({ path: '/fake/radio/README.mdx', value: '<ArgTypes of={Stories.Props} />' });
+    await processor.run(processor.parse(file), file);
+
+    expect(resolvePropsDoc).toHaveBeenCalledWith({
+      filePath: '/fake/radio/radio.stories.tsx',
+      exportName: 'Props',
+      defaults: docsDefaults
     });
   });
 });
