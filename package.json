@@ -10,6 +10,7 @@
     "deps:check": "syncpack lint && knip --reporter=symbols",
     "deps:fix": "syncpack fix",
     "format": "biome check",
+    "format:fix": "biome check --write",
     "format:package": "syncpack format",
     "lint": "nx run-many -t lint --no-tui",
     "postinstall": "npx playwright install --with-deps && npm run build",

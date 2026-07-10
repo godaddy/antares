@@ -41,7 +41,6 @@ export const components = defineDocs({
               docsDefaults: {
                 primary: ['id', 'children', 'className', 'style', 'disabled'],
                 categories: {
-
                   Events: [/^onPress/, /^onChange/, /^onHover/, /^on/],
                   Form: [/^form/, /^onSubmit/, /^onReset/],
                   Aria: [/^aria-/]
