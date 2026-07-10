@@ -37,7 +37,7 @@ jobs:
           npm ci
           npx playwright install --with-deps
 
-      - name: Run Knip
+      - name: Run Dependency Checks
         run: npm run deps:check
 
       - name: Run Type Check
