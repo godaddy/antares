@@ -3,15 +3,18 @@ set -e
 
 npx lint-staged
 
+echo "🔍 Checking package.json formatting..."
+npm run format:package
+
 # Run dependency checks to prevent circular deps and version mismatches
 echo "🔍 Checking dependencies..."
 npm run deps:check
 
-echo "🔍 Checking package.json formatting..."
-npm run format:package
-
 echo "🔍 Typechecking..."
 npm run typecheck
+
+echo "🔍 Linting..."
+npm run lint
 
 echo "🧪 Running tests (no cache)..."
 npm test -- --skip-nx-cache
