@@ -11,11 +11,16 @@ import {
 import { toStorybookArgTypes } from '../adapters/storybook.ts';
 import { docFromCall } from '../docs.ts';
 import { toTsExpression } from './literal.ts';
+import type { DocsDefaults } from '../types.ts';
 
 const RENDER_STR = 'render';
 const factory = ts.factory;
 
-type TransformerFn = (node: ts.Node, sourceFile: ts.SourceFile) => ts.VisitResult<ts.Node> | undefined;
+type TransformerFn = (
+  node: ts.Node,
+  sourceFile: ts.SourceFile,
+  defaults?: DocsDefaults
+) => ts.VisitResult<ts.Node> | undefined;
 
 /**
  * Applies transformers to a CSF file or code and outputs the transformed CSF code.
@@ -23,19 +28,20 @@ type TransformerFn = (node: ts.Node, sourceFile: ts.SourceFile) => ts.VisitResul
  * @param input - The input to transform. Can be a file path or a code string.
  * @returns Promise resolving to the transformed CSF file.
  */
-export async function csfTransformer(input: { filePath?: string; code?: string }): Promise<string> {
+export async function csfTransformer(input: {
+  filePath?: string;
+  code?: string;
+  defaults?: DocsDefaults;
+}): Promise<string> {
   const filePath = input.filePath ?? '';
   const code = input.filePath ? await readFile(input.filePath, 'utf8') : (input.code ?? '');
   const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 
   const result = ts.transform(sourceFile, [
-    applyTransformers([
-      transformGetMeta,
-      transformGetStory,
-      transformGetVariants,
-      transformGetComponentDocs,
-      transformGetTypeDocs
-    ])
+    applyTransformers(
+      [transformGetMeta, transformGetStory, transformGetVariants, transformGetComponentDocs, transformGetTypeDocs],
+      input.defaults
+    )
   ]);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
   return printer.printFile(result.transformed[0] as ts.SourceFile);
@@ -164,10 +170,10 @@ function transformGetVariants(node: ts.Node) {
  * export const ButtonDocs = { tags: ['!dev'], argTypes: { ... } };
  * ```
  */
-function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile) {
+function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile, defaults?: DocsDefaults) {
   if (!isCallTo(node, GET_COMPONENT_DOCS) || !ts.isIdentifier(node.arguments[0])) return;
 
-  const doc = docFromCall(node, sourceFile);
+  const doc = docFromCall(node, sourceFile, undefined, defaults);
   if (!doc) return;
 
   return toTsExpression(toStorybookArgTypes(doc));
@@ -188,10 +194,14 @@ function transformGetComponentDocs(node: ts.Node, sourceFile: ts.SourceFile) {
  * export const ButtonDocs = { tags: ['!dev'], argTypes: { ... } };
  * ```
  */
-function transformGetTypeDocs(node: ts.Node, sourceFile: ts.SourceFile): ts.Expression | undefined {
+function transformGetTypeDocs(
+  node: ts.Node,
+  sourceFile: ts.SourceFile,
+  defaults?: DocsDefaults
+): ts.Expression | undefined {
   if (!isCallTo(node, GET_TYPE_DOCS) || node.typeArguments?.length !== 1) return;
 
-  const doc = docFromCall(node, sourceFile);
+  const doc = docFromCall(node, sourceFile, undefined, defaults);
   if (!doc) return;
 
   return toTsExpression(toStorybookArgTypes(doc));
@@ -203,12 +213,15 @@ function transformGetTypeDocs(node: ts.Node, sourceFile: ts.SourceFile): ts.Expr
  * @param transformers - The transformers to apply.
  * @returns The transformed CSF file.
  */
-function applyTransformers(transformers: TransformerFn[]): ts.TransformerFactory<ts.SourceFile> {
+function applyTransformers(
+  transformers: TransformerFn[],
+  defaults?: DocsDefaults
+): ts.TransformerFactory<ts.SourceFile> {
   return function _transformer(context) {
     return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
       function visit(node: ts.Node): ts.VisitResult<ts.Node> {
         for (const transformer of transformers) {
-          const result = transformer(node, sourceFile);
+          const result = transformer(node, sourceFile, defaults);
           if (result) return result;
         }
         return ts.visitEachChild(node, visit, context);

@@ -2,6 +2,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import type { Indexer } from 'storybook/internal/types';
 import { generateCSFPlugin } from './storybook/plugin.ts';
 import { storiesIndexer } from './storybook/stories-indexer.ts';
+import type { DocsDefaults } from './types.ts';
 export { toStorybookArgTypes } from './adapters/storybook.ts';
 export * from './storybook/getters.ts';
 export { processPropsDoc } from './process.ts';
@@ -30,8 +31,9 @@ export const experimental_indexers: StorybookConfig['experimental_indexers'] = a
 /**
  * Adds the plugin to the Storybook config.
  */
-export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config: any) {
+export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config: any, options) {
+  const docsDefaults = (options as unknown as { docsDefaults?: DocsDefaults } | undefined)?.docsDefaults;
   config.plugins = config.plugins || [];
-  config.plugins.push(generateCSFPlugin(STORIES_FILE_REGEX));
+  config.plugins.push(generateCSFPlugin(STORIES_FILE_REGEX, docsDefaults));
   return config;
 };

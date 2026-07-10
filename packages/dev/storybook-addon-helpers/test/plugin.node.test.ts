@@ -19,8 +19,17 @@ describe('generateCSFPlugin', function pluginTests() {
     const result = await (plugin.load as Function).call({ addWatchFile }, 'button.stories.tsx');
 
     expect(addWatchFile).toHaveBeenCalledWith('button.stories.tsx');
-    expect(csfTransformer).toHaveBeenCalledWith({ filePath: 'button.stories.tsx' });
+    expect(csfTransformer).toHaveBeenCalledWith({ filePath: 'button.stories.tsx', defaults: undefined });
     expect(result).toBe('mocked-csf-output');
+  });
+
+  it('forwards docsDefaults to csfTransformer', async function testForwardsDefaults() {
+    const defaults = { categories: { Events: [/^on/] } };
+    const plugin = generateCSFPlugin(/\.stories\.tsx$/, defaults);
+    const addWatchFile = vi.fn();
+    await (plugin.load as Function).call({ addWatchFile }, 'button.stories.tsx');
+
+    expect(csfTransformer).toHaveBeenCalledWith({ filePath: 'button.stories.tsx', defaults });
   });
 
   it('should return null when filename does not match', async function testNonMatchingFile() {

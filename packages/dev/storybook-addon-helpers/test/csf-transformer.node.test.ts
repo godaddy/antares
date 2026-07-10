@@ -69,6 +69,20 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual.includes('"!dev"')).toBe(true);
   });
 
+  it('applies global docsDefaults to getComponentDocs', async function appliesDefaults() {
+    const code = `
+      import { getComponentDocs } from '@bento/storybook-addon-helpers';
+      interface WProps { label: string; onPress?: () => void; }
+      function W(_p: WProps) { return null; }
+      export const Docs = getComponentDocs(W);
+    `;
+
+    const actual = await csfTransformer({ code, defaults: { categories: { Events: [/^on/] } } });
+
+    expect(actual.includes('"Events"')).toBe(true);
+    expect(actual.includes('category')).toBe(true);
+  });
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
