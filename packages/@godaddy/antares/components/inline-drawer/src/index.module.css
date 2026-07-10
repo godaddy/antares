@@ -1,61 +1,48 @@
-/* Outer disclosure wrapper */
 .inlineDrawer {
   overflow: hidden;
 }
 
-/* Horizontal placement: constrain inline-size */
-.inlineDrawer[data-placement="left"],
-.inlineDrawer[data-placement="right"] {
-  inline-size: var(--_size, auto);
-  transition: inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+/* Collapse-axis size for the sidebar-rail pattern (min/max set). Accordions leave
+   these `auto` and let the panel drive the size instead. */
+.inlineDrawer:where([data-placement="left"], [data-placement="right"]) {
+  inline-size: var(--_min-size, auto);
 }
 
-/* Vertical placement: constrain block-size */
-.inlineDrawer[data-placement="top"],
-.inlineDrawer[data-placement="bottom"] {
-  block-size: var(--_size, auto);
-  transition: block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+.inlineDrawer[data-expanded]:where([data-placement="left"], [data-placement="right"]) {
+  inline-size: var(--_max-size, auto);
 }
 
-/* When minSize is set, keep panel visible at collapsed size.
-   UA stylesheet applies content-visibility: hidden to [hidden=until-found].
-   Override both display and content-visibility so children are actually visible. */
-.inlineDrawer[data-persist-content] > .panel[hidden] {
-  display: block !important;
-  content-visibility: visible !important;
+.inlineDrawer:where([data-placement="top"], [data-placement="bottom"]) {
+  block-size: var(--_min-size, auto);
+}
+
+.inlineDrawer[data-expanded]:where([data-placement="top"], [data-placement="bottom"]) {
+  block-size: var(--_max-size, auto);
+}
+
+.inlineDrawer:where([data-placement="left"], [data-placement="right"]) > .panel {
+  inline-size: var(--disclosure-panel-width, auto);
+}
+
+.inlineDrawer:where([data-placement="top"], [data-placement="bottom"]) > .panel {
+  block-size: var(--disclosure-panel-height, auto);
+}
+
+.inlineDrawer,
+.inlineDrawer > .panel {
+  transition:
+    inline-size 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    block-size 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.inlineDrawer[data-animate="false"],
+.inlineDrawer[data-animate="false"] > .panel {
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .inlineDrawer {
-    transition: none !important;
+  .inlineDrawer,
+  .inlineDrawer > .panel {
+    transition: none;
   }
-}
-
-/* Trigger heading */
-.trigger {
-  margin: 0;
-}
-
-.triggerButton {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-sm);
-  inline-size: 100%;
-  background: none;
-  border: none;
-  padding: var(--sp-sm) var(--sp-md);
-  cursor: pointer;
-  color: inherit;
-  font: inherit;
-  text-align: start;
-}
-
-.triggerButton[data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* Panel */
-.panel {
-  overflow: hidden;
 }
