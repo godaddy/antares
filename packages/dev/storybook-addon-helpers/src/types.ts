@@ -1,8 +1,13 @@
 import type { ComponentProps, ComponentType } from 'react';
 import type { StrictArgTypes } from 'storybook/internal/types';
 
-/** A prop name (type-checked against `P`) or a `RegExp` matched against prop names via `.test()`. */
-type PropMatcher<P> = keyof P | RegExp;
+/**
+ * A prop name (type-checked against `P`), an arbitrary string, or a `RegExp`
+ * matched against prop names via `.test()`. The `(string & {})` arm keeps
+ * literal autocomplete for real keys while allowing names the extractor can't
+ * see (e.g. add-missing-prop overrides) and component-agnostic global defaults.
+ */
+type PropMatcher<P> = keyof P | (string & {}) | RegExp;
 
 /**
  * Patches the docs for matching props (or, for an exact name that matches nothing, adds a prop).
@@ -31,6 +36,12 @@ type ExcludeDocsOptions<P> = DocsOptionsBase<P> & {
 export type DocsOptions<P> = IncludeDocsOptions<P> | ExcludeDocsOptions<P>;
 
 export type ComponentDocsOptions<C extends ComponentType<any>> = DocsOptions<ComponentProps<C>>;
+
+/**
+ * Global docs defaults, merged UNDER each per-call `getComponentDocs`/`getTypeDocs`
+ * options object. Not tied to a component, so matchers are plain strings or RegExps.
+ */
+export type DocsDefaults = DocsOptions<Record<string, unknown>>;
 
 export interface PropDoc {
   name: string;

@@ -40,7 +40,7 @@ function applyOverrides<P>(props: PropDoc[], overrides: DocsOptions<P>['override
 
   // Apply every matching override in order; later fields win.
   return result.map(function patch(prop) {
-    return overrides.reduce(
+    return overrides.reduce<PropDoc>(
       (next, override) => (matches(prop.name, [override.name]) ? mergeOverride(next, override) : next),
       prop
     );

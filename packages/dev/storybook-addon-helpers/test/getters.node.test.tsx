@@ -86,7 +86,7 @@ describe('getComponentDocs', function getComponentDocsSuite() {
     // @ts-expect-error include and exclude are mutually exclusive
     getComponentDocs(TestComponent, { include: ['size'], exclude: ['disabled'] });
 
-    // @ts-expect-error unknown prop
+    // Arbitrary string names are accepted (matchers are widened to `keyof P | (string & {}) | RegExp`).
     getComponentDocs(TestComponent, { include: ['missing'] });
 
     type ReturnTypeTestCompProps = ReturnType<typeof getComponentDocs<typeof TestComponent>>;
@@ -105,7 +105,7 @@ describe('getTypeDocs', function getTypeDocsSuite() {
 
     expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string; b: number }>>();
 
-    // @ts-expect-error invalid prop
+    // Arbitrary string names are accepted (matchers are widened to `keyof P | (string & {}) | RegExp`).
     getTypeDocs<{ a: string }>({ include: ['b'] });
 
     // @ts-expect-error include and exclude are mutually exclusive
