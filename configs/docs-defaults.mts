@@ -2,7 +2,6 @@ import type { DocsDefaults } from '../packages/dev/storybook-addon-helpers/src/t
 
 /** Shared docs prop-table defaults for Antares components docs (Storybook + docs site). */
 export const docsDefaults = {
-  primary: ['id', 'children', 'className', 'style', 'disabled'],
   categories: {
     Events: [/^onPress/, /^onChange/, /^onHover/, /^on/],
     // box + flex + grid
