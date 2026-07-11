@@ -4,6 +4,7 @@ import type { StorybookHelpersOptions } from '@bento/storybook-addon-helpers';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mergeConfig, type UserConfig } from 'vite';
+import { docsDefaults } from '../../../configs/docs-defaults.mts';
 import { remarkFrontmatterHeading } from '../lib/remark-frontmatter-heading.ts';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
@@ -42,14 +43,7 @@ const config: StorybookConfig = {
     '@storybook/addon-themes',
     {
       name: '@bento/storybook-addon-helpers',
-      options: {
-        docsDefaults: {
-          categories: {
-            Events: [/^on/],
-            Aria: [/^aria-/]
-          }
-        }
-      } satisfies StorybookHelpersOptions
+      options: { docsDefaults } satisfies StorybookHelpersOptions
     },
     join(__dirname, './addons/internal-stories/preset.ts')
   ],
