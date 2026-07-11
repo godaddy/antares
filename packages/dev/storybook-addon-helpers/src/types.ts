@@ -4,6 +4,9 @@ import type { StrictArgTypes } from 'storybook/internal/types';
 /** A prop name (autocompleted from `P`), any other string, or a `RegExp` tested against prop names. */
 type PropMatcher<P> = keyof P | (string & {}) | RegExp;
 
+/** Matches a prop's declaring `sourceFile` path: a `string` (substring) or a `RegExp` (tested). */
+export type SourceFileMatcher = string | RegExp;
+
 /**
  * Patches the docs for matching props (or, for an exact name that matches nothing, adds a prop).
  * Only the fields you set are changed; `type`/`required` also seed a prop that is added.
@@ -16,6 +19,8 @@ type DocsOptionsBase<P> = {
   overrides?: readonly PropOverride<P>[];
   primary?: readonly PropMatcher<P>[];
   categories?: Record<string, readonly PropMatcher<P>[]>;
+  /** Drops props whose `sourceFile` matches. `string` = substring, `RegExp` = tested. */
+  ignoreSourceFiles?: SourceFileMatcher | readonly SourceFileMatcher[];
 };
 
 type IncludeDocsOptions<P> = DocsOptionsBase<P> & {

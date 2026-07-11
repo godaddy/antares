@@ -1,6 +1,5 @@
 import packageJson from '@godaddy/antares/package.json' with { type: 'json' };
 import type { StorybookConfig } from '@storybook/react-vite';
-import type { StorybookHelpersOptions } from '@bento/storybook-addon-helpers';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mergeConfig, type UserConfig } from 'vite';
@@ -43,7 +42,7 @@ const config: StorybookConfig = {
     '@storybook/addon-themes',
     {
       name: '@bento/storybook-addon-helpers',
-      options: { docsDefaults } satisfies StorybookHelpersOptions
+      options: { docsDefaults }
     },
     join(__dirname, './addons/internal-stories/preset.ts')
   ],

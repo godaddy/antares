@@ -2,7 +2,6 @@ import { remarkStripLeadingHeading } from './lib/remark-strip-leading-heading';
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { remarkRawLoader } from './lib/remark-raw-loader.ts';
-import type { StorybookHelpersOptions } from '@bento/storybook-addon-helpers/docs';
 import { docsDefaults } from '../../configs/docs-defaults.mts';
 import { remarkArgTypes } from './lib/remark-arg-types.ts';
 
@@ -34,12 +33,7 @@ export const components = defineDocs({
     // Wrap with applyMdxPreset so remarkStructure (search indexing) still runs.
     mdxOptions: (env) =>
       applyMdxPreset({
-        remarkPlugins: (v) => [
-          remarkStripLeadingHeading,
-          [remarkArgTypes, { docsDefaults } satisfies StorybookHelpersOptions],
-          remarkRawLoader,
-          ...v
-        ]
+        remarkPlugins: (v) => [remarkStripLeadingHeading, [remarkArgTypes, { docsDefaults }], remarkRawLoader, ...v]
       })(env)
   },
   meta: {

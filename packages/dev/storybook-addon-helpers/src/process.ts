@@ -1,4 +1,4 @@
-import type { DocsOptions, PropDoc, PropsDoc } from './types.ts';
+import type { DocsOptions, PropDoc, PropsDoc, SourceFileMatcher } from './types.ts';
 
 export function processPropsDoc<P>(doc: PropsDoc, options: DocsOptions<P> = {}): PropsDoc {
   const overridden = applyOverrides(doc.props, options.overrides);
@@ -21,7 +21,8 @@ export function mergeDocsOptions<P>(defaults: DocsOptions<P> | undefined, call: 
   const merged: Record<string, unknown> = {
     overrides: call.overrides ?? base.overrides,
     primary: call.primary ?? base.primary,
-    categories: call.categories ?? base.categories
+    categories: call.categories ?? base.categories,
+    ignoreSourceFiles: call.ignoreSourceFiles ?? base.ignoreSourceFiles
   };
 
   // include/exclude move together as one filter unit.
@@ -81,14 +82,38 @@ function mergeOverride<P>(prop: PropDoc, override: Override<P>): PropDoc {
   return next;
 }
 
+/** Normalizes a single matcher or array (or absence) into a matcher array. */
+function toSourceFileMatchers(
+  value: SourceFileMatcher | readonly SourceFileMatcher[] | undefined
+): SourceFileMatcher[] {
+  if (value === undefined) return [];
+  if (typeof value === 'string' || value instanceof RegExp) return [value];
+  return [...value];
+}
+
+/** True when `sourceFile` contains a string matcher, or a RegExp matcher tests true. */
+function matchesSourceFile(sourceFile: string, matchers: readonly SourceFileMatcher[]): boolean {
+  return matchers.some((matcher) =>
+    matcher instanceof RegExp ? matcher.test(sourceFile) : sourceFile.includes(matcher)
+  );
+}
+
 function filterProps<P>(props: PropDoc[], options: DocsOptions<P>): PropDoc[] {
   const include = options.include ?? [];
   const exclude = options.exclude ?? [];
+  const ignoreSourceFiles = toSourceFileMatchers(options.ignoreSourceFiles);
 
-  if (include.length > 0) return props.filter((prop) => matches(prop.name, include));
-  if (exclude.length > 0) return props.filter((prop) => !matches(prop.name, exclude));
+  // `ignoreSourceFiles` is a hard exclusion applied first; a prop with no
+  // `sourceFile` is never ignored. It ANDs with include/exclude below.
+  const kept =
+    ignoreSourceFiles.length > 0
+      ? props.filter((prop) => prop.sourceFile === undefined || !matchesSourceFile(prop.sourceFile, ignoreSourceFiles))
+      : props;
 
-  return [...props];
+  if (include.length > 0) return kept.filter((prop) => matches(prop.name, include));
+  if (exclude.length > 0) return kept.filter((prop) => !matches(prop.name, exclude));
+
+  return [...kept];
 }
 
 function applyCategories<P>(

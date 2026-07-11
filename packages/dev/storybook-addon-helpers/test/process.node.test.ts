@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { processPropsDoc } from '../src/process.ts';
+import { mergeDocsOptions, processPropsDoc } from '../src/process.ts';
 import type { ComponentDocsOptions, PropDoc } from '../src/types.ts';
 
 type TestComponent = (props: { alpha: number; beta?: boolean }) => null;
@@ -201,5 +201,64 @@ describe('processPropsDoc', function processPropsDocTests() {
       { overrides: [{ name: 'id', type: 'string' }], exclude: ['id'] }
     );
     expect(excluded.props.some((prop) => prop.name === 'id')).toBe(false);
+  });
+});
+
+describe('processPropsDoc ignoreSourceFiles', function ignoreSourceFilesTests() {
+  const sourcedProps: PropDoc[] = [
+    { name: 'variant', type: 'string', required: true, sourceFile: '/repo/packages/button/button.tsx' },
+    { name: 'className', type: 'string', required: false, sourceFile: '/repo/node_modules/@types/react/index.d.ts' },
+    { name: 'onClick', type: '() => void', required: false, sourceFile: '/repo/node_modules/@types/react/index.d.ts' },
+    { name: 'added', type: 'string', required: false }
+  ];
+
+  it('drops props whose sourceFile contains a string matcher', function stringSubstring() {
+    const actual = processPropsDoc({ name: 'Btn', props: sourcedProps }, { ignoreSourceFiles: '@types/react' });
+
+    expect(actual.props.map((prop) => prop.name).sort()).toEqual(['added', 'variant']);
+  });
+
+  it('drops props whose sourceFile matches a RegExp', function regexMatch() {
+    const actual = processPropsDoc({ name: 'Btn', props: sourcedProps }, { ignoreSourceFiles: /node_modules/ });
+
+    expect(actual.props.map((prop) => prop.name).sort()).toEqual(['added', 'variant']);
+  });
+
+  it('never ignores a prop that has no sourceFile', function keepsUndefinedSource() {
+    const actual = processPropsDoc({ name: 'Btn', props: sourcedProps }, { ignoreSourceFiles: [/.*/] });
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['added']);
+  });
+
+  it('accepts an array of matchers', function arrayOfMatchers() {
+    const actual = processPropsDoc(
+      { name: 'Btn', props: sourcedProps },
+      { ignoreSourceFiles: ['@types/react', /button\.tsx$/] }
+    );
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['added']);
+  });
+
+  it('ANDs with include, so an included prop from an ignored file is still dropped', function andsWithInclude() {
+    const actual = processPropsDoc(
+      { name: 'Btn', props: sourcedProps },
+      { include: ['variant', 'onClick'], ignoreSourceFiles: '@types/react' }
+    );
+
+    expect(actual.props.map((prop) => prop.name)).toEqual(['variant']);
+  });
+});
+
+describe('mergeDocsOptions ignoreSourceFiles', function mergeIgnoreSourceFilesTests() {
+  it('inherits ignoreSourceFiles from defaults when the call omits it', function inherits() {
+    const merged = mergeDocsOptions({ ignoreSourceFiles: '@types/react' }, { primary: ['label'] });
+
+    expect(merged.ignoreSourceFiles).toBe('@types/react');
+  });
+
+  it('lets the call replace the defaults ignoreSourceFiles', function replaces() {
+    const merged = mergeDocsOptions({ ignoreSourceFiles: '@types/react' }, { ignoreSourceFiles: [/node_modules/] });
+
+    expect(merged.ignoreSourceFiles).toEqual([/node_modules/]);
   });
 });
