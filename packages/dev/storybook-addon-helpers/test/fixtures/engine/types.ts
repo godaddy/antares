@@ -105,3 +105,32 @@ export type UsesExportedAliasProps = ExportedAliasProps & {
 export type UsesStarExportedProps = StarExportedRenamedProps & {
   ownStarExported: string;
 };
+
+export interface GenericOwnProps {
+  /** own description */
+  own: boolean;
+}
+
+// A generic alias whose parameter is used directly inside an intersection.
+export type GenericWrapper<T> = T & {
+  wrapped: string;
+};
+
+export type UsesGenericWrapperProps = GenericWrapper<GenericOwnProps>;
+
+export interface GenericLayoutOwnProps {
+  /** layout own description */
+  layout: string;
+}
+
+// Mirrors the polymorphic props pattern: an "own props" parameter threaded
+// through a nested generic alias, plus an element-type parameter with a default.
+export type GenericPolymorphic<E extends string, Own> = Own & {
+  as?: E;
+};
+
+export type GenericLayoutProps<E extends string = 'div'> = GenericPolymorphic<E, GenericLayoutOwnProps>;
+
+export interface UsesGenericHeritageProps extends Omit<GenericLayoutProps<'div'>, 'as'> {
+  extra: number;
+}

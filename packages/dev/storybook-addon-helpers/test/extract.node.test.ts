@@ -43,16 +43,16 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
     });
   });
 
-  it('extracts inherited and imported interface properties', function extractsExtends() {
-    expect(extract('UsesImportedProps').props.map((prop) => prop.name)).toEqual(['imported', 'own']);
-    expect(extract('ChildProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
-    expect(extract('UsesImportedProps').props[0]).toMatchObject({
+  it('extracts own props first, then inherited and imported ones', function extractsExtends() {
+    expect(extract('UsesImportedProps').props.map((prop) => prop.name)).toEqual(['own', 'imported']);
+    expect(extract('ChildProps').props.map((prop) => prop.name)).toEqual(['child', 'parent']);
+    expect(extract('UsesImportedProps').props[1]).toMatchObject({
       name: 'imported',
       required: true,
       sourceFile: importedFixturePath,
       declaringType: 'ImportedProps'
     });
-    expect(extract('ChildProps').props[0]).toMatchObject({
+    expect(extract('ChildProps').props[1]).toMatchObject({
       name: 'parent',
       required: false,
       description: 'parent description',
@@ -72,12 +72,12 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
     ]);
     expect(extract('OmittedProps').props.map((prop) => prop.name)).toEqual(['child']);
     expect(extract('PartialProps').props).toMatchObject([
-      { name: 'parent', required: false },
-      { name: 'child', required: false }
+      { name: 'child', required: false },
+      { name: 'parent', required: false }
     ]);
     expect(extract('RequiredProps').props).toMatchObject([
-      { name: 'parent', required: true },
-      { name: 'child', required: true }
+      { name: 'child', required: true },
+      { name: 'parent', required: true }
     ]);
   });
 
@@ -86,8 +86,8 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
   });
 
   it('extracts utility wrapper heritage props', function extractsUtilityHeritage() {
-    expect(extract('PickExtendsProps').props.map((prop) => prop.name)).toEqual(['a', 'ownPick']);
-    expect(extract('OmitExtendsProps').props.map((prop) => prop.name)).toEqual(['a', 'ownOmit']);
+    expect(extract('PickExtendsProps').props.map((prop) => prop.name)).toEqual(['ownPick', 'a']);
+    expect(extract('OmitExtendsProps').props.map((prop) => prop.name)).toEqual(['ownOmit', 'a']);
   });
 
   it('lets own interface props override inherited props', function extractsInterfaceOverrides() {
@@ -108,8 +108,27 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
   });
 
   it('keeps base props for unsupported utility key expressions', function extractsUnsupportedUtilityKeys() {
-    expect(extract('UnsupportedKeyofPickProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
-    expect(extract('UnsupportedKeyofOmitProps').props.map((prop) => prop.name)).toEqual(['parent', 'child']);
+    expect(extract('UnsupportedKeyofPickProps').props.map((prop) => prop.name)).toEqual(['child', 'parent']);
+    expect(extract('UnsupportedKeyofOmitProps').props.map((prop) => prop.name)).toEqual(['child', 'parent']);
+  });
+
+  it('substitutes a generic type argument used directly in an alias body', function extractsGenericArgument() {
+    expect(extract('UsesGenericWrapperProps').props.map((prop) => prop.name)).toEqual(['own', 'wrapped']);
+    expect(extract('UsesGenericWrapperProps').props[0]).toMatchObject({
+      name: 'own',
+      required: true,
+      description: 'own description',
+      declaringType: 'GenericOwnProps'
+    });
+  });
+
+  it('substitutes generic arguments threaded through nested aliases and heritage', function extractsGenericHeritage() {
+    expect(extract('UsesGenericHeritageProps').props.map((prop) => prop.name)).toEqual(['extra', 'layout']);
+    expect(extract('UsesGenericHeritageProps').props[1]).toMatchObject({
+      name: 'layout',
+      required: true,
+      declaringType: 'GenericLayoutOwnProps'
+    });
   });
 
   it('does not overflow on type alias cycles', function extractsAliasCycles() {
@@ -129,7 +148,7 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
       doc = extract('MixedCycleInterfaceProps');
     }).not.toThrow();
 
-    expect(doc?.props.map((prop) => prop.name)).toEqual(['mixedAlias', 'mixedInterface']);
+    expect(doc?.props.map((prop) => prop.name)).toEqual(['mixedInterface', 'mixedAlias']);
   });
 });
 

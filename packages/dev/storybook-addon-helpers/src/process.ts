@@ -153,7 +153,7 @@ function sortProps<P>(
 
   // Rank within a bucket = first-match index in that bucket's matcher list
   // (`primary` for root, the category's own array for a section); unmatched
-  // props rank last and fall back to required-first, then alphabetical.
+  // props rank last and keep their discovery order.
   const rankByName = new Map<string, number>();
   for (const prop of props) {
     const bucket = prop.category ? (categoryMatchers[prop.category] ?? []) : primaryMatchers;
@@ -169,7 +169,7 @@ function sortProps<P>(
     const rankDelta = (rankByName.get(left.name) ?? 0) - (rankByName.get(right.name) ?? 0);
     if (rankDelta !== 0) return rankDelta;
 
-    if (left.required !== right.required) return left.required ? -1 : 1;
-    return left.name.localeCompare(right.name);
+    // Equal category and rank keep discovery order (stable sort).
+    return 0;
   });
 }
