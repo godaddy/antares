@@ -4,7 +4,8 @@ import type { Root } from 'mdast';
 import type { Plugin } from 'unified';
 import { valueToEstree } from 'estree-util-value-to-estree';
 import { visit, SKIP } from 'unist-util-visit';
-import { resolvePropsDoc, toFumadocsPropTable, type DocsDefaults } from '@bento/storybook-addon-helpers/docs';
+import { resolvePropsDoc, type DocsDefaults } from '@bento/storybook-addon-helpers/docs';
+import { toPropTable } from './prop-table-adapter';
 import { addMdxDependency } from './remark-mdx-utils';
 
 /**
@@ -89,7 +90,7 @@ export const remarkArgTypes: Plugin<[RemarkArgTypesOptions?], Root> = function r
       promises.push(
         resolvePropsDoc({ filePath: storiesPath, exportName, defaults: options.docsDefaults }).then(
           function applyResult(doc) {
-            const table = doc ? toFumadocsPropTable(doc) : { entries: [], categories: {} };
+            const table = doc ? toPropTable(doc) : { entries: [], categories: {} };
             const idx = parent.children.indexOf(placeholder);
             parent.children.splice(idx, 1, buildPropTable(table.entries, table.categories));
           }

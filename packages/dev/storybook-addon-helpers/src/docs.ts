@@ -8,8 +8,6 @@ import { GET_COMPONENT_DOCS, GET_TYPE_DOCS } from './storybook/getters-parser.ts
 import { toLiteralValue } from './storybook/literal.ts';
 import type { DocsDefaults, DocsOptions, PropsDoc } from './types.ts';
 
-export { toFumadocsPropTable } from './adapters/fumadocs.ts';
-export type { FumadocsPropEntry, FumadocsPropTable } from './adapters/fumadocs.ts';
 export type * from './types.ts';
 
 /** Reads the docs-options object literal at `argIndex` of a getter call. */

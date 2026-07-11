@@ -40,7 +40,7 @@ export default {
 };
 ```
 
-Defaults apply to both `getComponentDocs` and `getTypeDocs`, and to both targets (Storybook and the docs site). The docs site is configured separately: pass the same `docsDefaults` to the `remarkArgTypes` plugin. Because matchers can be arbitrary strings, global defaults are component-agnostic (a category like `Events: [/^on/]` applies wherever an `on*` prop exists).
+Defaults apply to both `getComponentDocs` and `getTypeDocs`. Because matchers can be arbitrary strings, global defaults are component-agnostic (a category like `Events: [/^on/]` applies wherever an `on*` prop exists). Other consumers of the neutral model (see [How it works](#how-it-works)) apply the same defaults by passing them to `resolvePropsDoc`.
 
 ## Authoring API
 
@@ -105,46 +105,14 @@ Every option accepts either an exact prop name (autocompleted) or any string, or
 The build-time pipeline is `extract → neutral model → adapter`: the engine reads TypeScript types into a target-agnostic `PropsDoc` model, and an adapter converts that model to a documentation target. The neutral model is decoupled from Storybook so the same engine feeds multiple targets.
 
 - The Storybook adapter (`toStorybookArgTypes`) is used by the CSF transform on the `.` entry.
-- The Fumadocs adapter is exposed on a separate, Storybook-free `./docs` entry:
+- The neutral model is exposed on a separate, Storybook-free `./docs` entry. Any other documentation target resolves a stories-file export to the `PropsDoc` model and adapts it to whatever it renders:
 
 ```ts
-import { resolvePropsDoc, toFumadocsPropTable } from '@bento/storybook-addon-helpers/docs';
+import { resolvePropsDoc } from '@bento/storybook-addon-helpers/docs';
 
-// Resolve a stories-file export to the neutral model, then adapt it.
+// Resolve a stories-file export to the neutral model, then adapt it yourself.
 const doc = await resolvePropsDoc({ filePath: 'button/button.stories.tsx', exportName: 'Props' });
-const { entries, categories } = toFumadocsPropTable(doc);
+// doc: { name, props: [{ name, type, required, defaultValue, description, category, ... }] }
 ```
 
-The Fumadocs docs site (`apps/site`) consumes `./docs` from its `remarkArgTypes` plugin, so both Storybook and the site render the same props from the same `*.stories.tsx` files. `resolvePropsDoc` and the internal `docFromCall` are shared by the CSF transform, so extraction and processing are identical across targets - only the adapter differs.
-
-## Next.js docs sites
-
-When a Next.js app imports `*.stories.tsx` for live previews, alias the main package entry to the browser-safe `./runtime` export. Storybook keeps using the `.` entry (Vite ignores the Next alias).
-
-```js
-// next.config.mjs
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const storybookAddonHelpersDist = join(__dirname, '../../packages/dev/storybook-addon-helpers/dist');
-
-export default {
-  turbopack: {
-    resolveAlias: {
-      '@bento/storybook-addon-helpers/docs': '../../packages/dev/storybook-addon-helpers/dist/docs.mjs',
-      '@bento/storybook-addon-helpers': '../../packages/dev/storybook-addon-helpers/dist/runtime.mjs'
-    }
-  },
-  webpack(config) {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@bento/storybook-addon-helpers/docs': join(storybookAddonHelpersDist, 'docs.mjs'),
-      '@bento/storybook-addon-helpers$': join(storybookAddonHelpersDist, 'runtime.mjs')
-    };
-    return config;
-  }
-};
-```
-
-List the `/docs` alias before the root alias in Turbopack so prop-table resolution keeps the Node entry.
+The addon stays framework-agnostic: it knows nothing about how a consumer renders the model. `resolvePropsDoc` and the internal `docFromCall` are shared by the CSF transform, so extraction and processing are identical across targets - only the adapter differs.

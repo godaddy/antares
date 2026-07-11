@@ -1,6 +1,6 @@
 import type { StrictInputType } from 'storybook/internal/types';
 import { describe, expect, it } from 'vitest';
-import { toStorybookArgTypes } from '../src/adapters/storybook.ts';
+import { toStorybookArgTypes } from '../src/storybook/arg-types.ts';
 
 describe('toStorybookArgTypes', function toStorybookArgTypesTests() {
   it('maps neutral docs to Storybook argTypes in prop order', function mapsDocs() {

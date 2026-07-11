@@ -6,7 +6,7 @@ import Link from 'fumadocs-core/link';
 import { twMerge } from 'tailwind-merge';
 
 /** A single prop entry to display in the table. */
-interface PropTableEntry {
+export interface PropTableEntry {
   /** Prop name. */
   name: string;
   /** Short type string. */
@@ -23,7 +23,7 @@ interface PropTableEntry {
   deprecated?: boolean;
 }
 
-interface PropTableProps {
+export interface PropTableProps {
   /** All prop entries to display. */
   entries: PropTableEntry[];
   /**

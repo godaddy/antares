@@ -3,7 +3,7 @@ import type { Indexer } from 'storybook/internal/types';
 import { generateCSFPlugin } from './storybook/plugin.ts';
 import { storiesIndexer } from './storybook/stories-indexer.ts';
 import type { StorybookHelpersOptions } from './types.ts';
-export { toStorybookArgTypes } from './adapters/storybook.ts';
+export { toStorybookArgTypes } from './storybook/arg-types.ts';
 export * from './storybook/getters.ts';
 export { processPropsDoc } from './process.ts';
 export type * from './types.ts';

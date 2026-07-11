@@ -8,7 +8,7 @@ import {
   GET_TYPE_DOCS,
   GET_VARIANTS
 } from './getters-parser.ts';
-import { toStorybookArgTypes } from '../adapters/storybook.ts';
+import { toStorybookArgTypes } from './arg-types.ts';
 import { docFromCall } from '../docs.ts';
 import { toTsExpression } from './literal.ts';
 import type { DocsDefaults } from '../types.ts';

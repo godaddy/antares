@@ -4,12 +4,13 @@ import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
 import { VFile } from 'vfile';
 
-const { resolvePropsDoc, toFumadocsPropTable } = vi.hoisted(() => ({
+const { resolvePropsDoc, toPropTable } = vi.hoisted(() => ({
   resolvePropsDoc: vi.fn(),
-  toFumadocsPropTable: vi.fn()
+  toPropTable: vi.fn()
 }));
 
-vi.mock('@bento/storybook-addon-helpers/docs', () => ({ resolvePropsDoc, toFumadocsPropTable }));
+vi.mock('@bento/storybook-addon-helpers/docs', () => ({ resolvePropsDoc }));
+vi.mock('../lib/prop-table-adapter', () => ({ toPropTable }));
 
 const { remarkArgTypes } = await import('../lib/remark-arg-types');
 
@@ -31,7 +32,7 @@ function attr(node: any, name: string) {
 describe('remarkArgTypes', function remarkArgTypesTests() {
   beforeEach(function reset() {
     resolvePropsDoc.mockReset();
-    toFumadocsPropTable.mockReset();
+    toPropTable.mockReset();
   });
 
   it('skips non-ArgTypes JSX elements', async function skipsNonArgTypes() {
@@ -101,7 +102,7 @@ describe('remarkArgTypes', function remarkArgTypesTests() {
 
   it('replaces <ArgTypes of={Stories.Props}> with a populated <PropTable>', async function populated() {
     resolvePropsDoc.mockResolvedValue({ name: 'Radio', props: [] });
-    toFumadocsPropTable.mockReturnValue({
+    toPropTable.mockReturnValue({
       entries: [{ name: 'size', type: 'string', required: false }],
       categories: { Events: ['onPress'] }
     });
@@ -121,7 +122,7 @@ describe('remarkArgTypes', function remarkArgTypesTests() {
       exportName: 'Props',
       defaults: undefined
     });
-    expect(toFumadocsPropTable).toHaveBeenCalledWith({ name: 'Radio', props: [] });
+    expect(toPropTable).toHaveBeenCalledWith({ name: 'Radio', props: [] });
 
     // Both the stories file and the component source are registered as deps.
     expect(addDependency).toHaveBeenCalledWith('/fake/radio/radio.stories.tsx');
@@ -135,7 +136,7 @@ describe('remarkArgTypes', function remarkArgTypesTests() {
 
     const propTable = firstChild(tree);
     expect(propTable.name).toBe('PropTable');
-    expect(toFumadocsPropTable).not.toHaveBeenCalled();
+    expect(toPropTable).not.toHaveBeenCalled();
     expect(resolvePropsDoc).toHaveBeenCalledWith({
       filePath: '/fake/radio/radio.stories.tsx',
       exportName: 'Missing',

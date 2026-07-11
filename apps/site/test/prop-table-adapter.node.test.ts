@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { toFumadocsPropTable } from '../src/adapters/fumadocs.ts';
+import { toPropTable } from '../lib/prop-table-adapter';
 
-describe('toFumadocsPropTable', function toFumadocsPropTableTests() {
+describe('toPropTable', function toPropTableTests() {
   it('maps neutral docs to entries + categories preserving order', function mapsDocs() {
-    const result = toFumadocsPropTable({
+    const result = toPropTable({
       name: 'Thing',
       props: [
         { name: 'children', type: 'ReactNode', required: false, defaultValue: null },
@@ -54,7 +54,7 @@ describe('toFumadocsPropTable', function toFumadocsPropTableTests() {
   });
 
   it('maps defaultValue and deprecated', function mapsExtras() {
-    const result = toFumadocsPropTable({
+    const result = toPropTable({
       name: 'Thing',
       props: [{ name: 'size', type: "'sm' | 'lg'", required: true, defaultValue: "'sm'", deprecated: true }]
     });
