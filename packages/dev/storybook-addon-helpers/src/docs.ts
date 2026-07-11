@@ -4,8 +4,8 @@ import { extractComponentDocs } from './engine/component-type.ts';
 import { extractTypeDocs } from './engine/extract.ts';
 import { createResolver, type Resolver } from './engine/resolve.ts';
 import { mergeDocsOptions, processPropsDoc } from './process.ts';
-import { GET_COMPONENT_DOCS, GET_TYPE_DOCS } from './storybook/getters-parser.ts';
-import { toLiteralValue } from './storybook/literal.ts';
+import { GET_COMPONENT_DOCS, GET_TYPE_DOCS } from './getter-names.ts';
+import { toLiteralValue } from './engine/literal.ts';
 import type { DocsDefaults, DocsOptions, PropsDoc } from './types.ts';
 
 export type * from './types.ts';

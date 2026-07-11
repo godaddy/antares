@@ -3,7 +3,7 @@ import type { PropTableEntry, PropTableProps } from '../components/prop-table';
 
 /**
  * Converts a processed neutral `PropsDoc` into the `{ entries, categories }`
- * props consumed by the `<PropTable>` component. Entries keep `doc.props`
+ * shape consumed by the `<PropTable>` component. Entries keep `doc.props`
  * order; category keys are inserted in first-seen order, which - after
  * `processPropsDoc` - is the category declaration order from the stories file.
  */

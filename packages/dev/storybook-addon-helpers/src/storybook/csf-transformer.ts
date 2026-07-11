@@ -1,16 +1,10 @@
 import ts from 'typescript';
 import { readFile } from 'node:fs/promises';
-import {
-  extractVariantNames,
-  GET_COMPONENT_DOCS,
-  GET_META,
-  GET_STORY,
-  GET_TYPE_DOCS,
-  GET_VARIANTS
-} from './getters-parser.ts';
+import { extractVariantNames } from './getters-parser.ts';
+import { GET_COMPONENT_DOCS, GET_META, GET_STORY, GET_TYPE_DOCS, GET_VARIANTS } from '../getter-names.ts';
 import { toStorybookArgTypes } from './arg-types.ts';
 import { docFromCall } from '../docs.ts';
-import { toTsExpression } from './literal.ts';
+import { toTsExpression } from '../engine/literal.ts';
 import type { DocsDefaults } from '../types.ts';
 
 const RENDER_STR = 'render';

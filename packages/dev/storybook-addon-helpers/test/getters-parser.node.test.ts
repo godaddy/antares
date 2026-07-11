@@ -2,7 +2,7 @@ import path from 'node:path';
 import type ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 import { getExportedVariables, extractVariantNames } from '../src/storybook/getters-parser.ts';
-import { toTsExpression } from '../src/storybook/literal.ts';
+import { toTsExpression } from '../src/engine/literal.ts';
 
 describe('parser', function parserTests() {
   describe('getExportedVariables', function getExportedVariablesTests() {

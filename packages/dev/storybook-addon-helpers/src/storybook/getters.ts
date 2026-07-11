@@ -26,7 +26,7 @@ export function getMeta<T extends ComponentType<any>>(
  * reference via RSC and renders it live.
  *
  * The optional `storyObj` is accepted for type-checking purposes (so callers
- * can annotate args/argTypes) but is ignored at runtime — the csf-transformer
+ * can annotate args/argTypes) but is ignored at runtime - the csf-transformer
  * rewrites these calls into proper Storybook story objects at build time.
  *
  * @param component - The component to use as the story.
@@ -41,8 +41,9 @@ export function getStory<T extends ComponentType<any>>(component: T, _storyObj?:
  * Get the component docs for a component as a StoryObj.
  *
  * The optional `options` object filters, orders, and categorizes the documented
- * props. Its keys are type-checked against the component's props at build time;
- * the CSF transformer extracts and processes the argTypes.
+ * props. Prop-name matchers autocomplete from the component's props but also
+ * accept arbitrary strings and `RegExp`s; the CSF transformer extracts and
+ * processes the argTypes at build time.
  *
  * @param _component - The component to get the docs from.
  * @param _options - Optional type-safe docs options (ignored at runtime).
@@ -57,7 +58,8 @@ export function getComponentDocs<T extends ComponentType<any>>(_component: T, _o
  *
  * The type parameter `T` specifies the type whose props the CSF transformer will
  * extract into argTypes at build time. The optional `options` object filters,
- * orders, and categorizes the documented props with type-checked keys.
+ * orders, and categorizes the documented props; prop-name matchers autocomplete
+ * from `T` but also accept arbitrary strings and `RegExp`s.
  *
  * @param _options - Optional type-safe docs options (ignored at runtime).
  * @returns The docs as a StoryObj.

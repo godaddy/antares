@@ -1,13 +1,8 @@
 import ts from 'typescript';
 import { readFile } from 'node:fs/promises';
 import camelCase from 'camelcase';
-import { toLiteralValue } from './literal.ts';
-
-export const GET_META = 'getMeta';
-export const GET_STORY = 'getStory';
-export const GET_VARIANTS = 'getVariants';
-export const GET_COMPONENT_DOCS = 'getComponentDocs';
-export const GET_TYPE_DOCS = 'getTypeDocs';
+import { toLiteralValue } from '../engine/literal.ts';
+import { GET_COMPONENT_DOCS, GET_META, GET_TYPE_DOCS, GET_VARIANTS } from '../getter-names.ts';
 
 /**
  * Extract exported variables from a TypeScript file

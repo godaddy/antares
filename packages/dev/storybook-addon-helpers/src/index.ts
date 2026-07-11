@@ -31,9 +31,9 @@ export const experimental_indexers: StorybookConfig['experimental_indexers'] = a
 /**
  * Adds the plugin to the Storybook config.
  */
-export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config: any, options) {
-  const docsDefaults = (options as unknown as StorybookHelpersOptions | undefined)?.docsDefaults;
-  config.plugins = config.plugins || [];
+export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config, options) {
+  const docsDefaults = (options as StorybookHelpersOptions).docsDefaults;
+  config.plugins ??= [];
   config.plugins.push(generateCSFPlugin(STORIES_FILE_REGEX, docsDefaults));
   return config;
 };
