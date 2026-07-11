@@ -1,5 +1,4 @@
 import type { ComponentProps, ComponentType } from 'react';
-import type { StrictArgTypes } from 'storybook/internal/types';
 
 /** A prop name (autocompleted from `P`), any other string, or a `RegExp` tested against prop names. */
 type PropMatcher<P> = keyof P | (string & {}) | RegExp;
@@ -60,9 +59,4 @@ export interface PropDoc {
 export interface PropsDoc {
   name: string;
   props: PropDoc[];
-}
-
-export interface StorybookDocs {
-  tags: string[];
-  argTypes: StrictArgTypes;
 }

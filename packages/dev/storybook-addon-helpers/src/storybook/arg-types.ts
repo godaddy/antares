@@ -1,5 +1,10 @@
-import type { StrictInputType } from 'storybook/internal/types';
-import type { PropsDoc, StorybookDocs } from '../types.ts';
+import type { StrictArgTypes, StrictInputType } from 'storybook/internal/types';
+import type { PropsDoc } from '../types.ts';
+
+export interface StorybookDocs {
+  tags: string[];
+  argTypes: StrictArgTypes;
+}
 
 export function toStorybookArgTypes(doc: PropsDoc): StorybookDocs {
   const argTypes: StorybookDocs['argTypes'] = {};

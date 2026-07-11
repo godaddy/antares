@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { resolvePropsDoc } from '../src/docs.ts';
 
 const storiesPath = fileURLToPath(new URL('./fixtures/widget.stories.tsx', import.meta.url));
+const ignoreSourcePath = fileURLToPath(new URL('./fixtures/ignore-source/widget.stories.tsx', import.meta.url));
 
 describe('resolvePropsDoc', function resolvePropsDocTests() {
   it('resolves a getComponentDocs export with options applied', async function resolvesComponent() {
@@ -129,5 +130,23 @@ describe('resolvePropsDoc', function resolvePropsDocTests() {
 
     const doc = await resolvePropsDoc({ code, exportName: 'T', defaults: { categories: { Events: [/^on/] } } });
     expect(doc?.props.find((p) => p.name === 'onPress')?.category).toBe('Events');
+  });
+
+  it('drops inherited props whose sourceFile matches ignoreSourceFiles', async function ignoresBySourceFile() {
+    const kept = await resolvePropsDoc({ filePath: ignoreSourcePath, exportName: 'Kept' });
+    expect(kept?.props.map((p) => p.name).sort()).toEqual(['inherited', 'local']);
+
+    const ignored = await resolvePropsDoc({ filePath: ignoreSourcePath, exportName: 'Ignored' });
+    expect(ignored?.props.map((p) => p.name)).toEqual(['local']);
+    expect(ignored?.props.some((p) => p.name === 'inherited')).toBe(false);
+  });
+
+  it('honors a RegExp ignoreSourceFiles supplied via global defaults', async function ignoresViaDefaults() {
+    const doc = await resolvePropsDoc({
+      filePath: ignoreSourcePath,
+      exportName: 'Kept',
+      defaults: { ignoreSourceFiles: [/base-props\.ts$/] }
+    });
+    expect(doc?.props.map((p) => p.name)).toEqual(['local']);
   });
 });
