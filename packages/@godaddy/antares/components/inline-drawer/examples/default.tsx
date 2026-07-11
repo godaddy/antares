@@ -1,12 +1,16 @@
-import { InlineDrawer, InlineDrawerTrigger, InlineDrawerPanel, Text } from '@godaddy/antares';
+import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';
 
 export function DefaultExample() {
   return (
-    <InlineDrawer>
-      <InlineDrawerTrigger>Toggle details</InlineDrawerTrigger>
-      <InlineDrawerPanel>
-        <Text>Collapsible content goes here.</Text>
-      </InlineDrawerPanel>
-    </InlineDrawer>
+    <Box style={{ maxInlineSize: 360 }}>
+      <InlineDrawer>
+        <Button slot="trigger">Toggle details</Button>
+        <InlineDrawerPanel>
+          <Box padding="md">
+            <Text>Collapsible content goes here.</Text>
+          </Box>
+        </InlineDrawerPanel>
+      </InlineDrawer>
+    </Box>
   );
 }

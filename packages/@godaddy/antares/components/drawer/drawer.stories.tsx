@@ -1,13 +1,12 @@
 'use client';
 import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { Drawer } from './src/index.tsx';
+import { Drawer, DrawerTrigger } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { BottomSheetExample } from './examples/bottom-sheet.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
-import { SnapPointsExample } from './examples/snap-points.tsx';
-import { ControlledSnapExample } from './examples/controlled-snap.tsx';
+import { PlacementsExample } from './examples/placements.tsx';
 import { NestedPopoverExample } from './examples/nested-popover.tsx';
-import { PercentSnapPointsExample } from './examples/percent-snap-points.tsx';
+import { NoEscapeDismissExample } from './examples/no-escape-dismiss.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
 
 export default getMeta({
   title: 'components/Drawer'
@@ -15,24 +14,24 @@ export default getMeta({
 
 export const Props = getComponentDocs(Drawer);
 
+export const DrawerTriggerProps = getComponentDocs(DrawerTrigger);
+
 export const Default = getStory(DefaultExample);
 
 export const BottomSheet = getStory(BottomSheetExample);
 
-export const SnapPoints = getStory(SnapPointsExample);
-
-export const ControlledSnap = getStory(ControlledSnapExample);
-
-export const PercentSnapPoints = getStory(PercentSnapPointsExample);
+export const Placements = getStory(PlacementsExample);
 
 export const NestedPopover = getStory(NestedPopoverExample);
+
+export const NoEscapeDismiss = getStory(NoEscapeDismissExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
     placement: 'right',
     isDismissable: true,
-    showCloseButton: undefined,
+    showCloseButton: false,
     animate: true
   },
   argTypes: {
@@ -45,13 +44,13 @@ export const Playground = {
       control: 'boolean',
       description: 'Close on backdrop click'
     },
+    animate: {
+      control: 'boolean',
+      description: 'Animate the open/close slide'
+    },
     showCloseButton: {
       control: 'boolean',
       description: 'Show built-in close button'
-    },
-    animate: {
-      control: 'boolean',
-      description: 'Enable/disable spring animation'
     }
   }
 };

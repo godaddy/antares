@@ -1,12 +1,8 @@
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SidebarNavExample } from '../examples/sidebar-nav.tsx';
-import { DismissOnBlurExample } from '../examples/dismiss-on-blur.tsx';
-import { FocusScopeExample } from '../examples/focus-scope.tsx';
-import { VerticalExample } from '../examples/vertical.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/inline-drawer-playground.tsx';
-import { RefForwardingExample, drawerRef, panelRef } from '../examples/ref-forwarding.tsx';
 import { ClassNamePassthroughExample } from '../examples/classname-passthrough.tsx';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -93,100 +89,20 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders SidebarNavExample with minSize panel visible when collapsed', async function sidebarNav() {
+    it('toggles the sidebar rail and reveals labels', async function sidebar() {
       const { getByRole, getByText } = await render(<SidebarNavExample />);
 
-      const trigger = getByRole('button', { name: 'Menu' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-      assume(getByText('Home').query()).is.not.equal(null);
-
-      await getByRole('button', { name: 'Menu' }).click();
-
-      await vi.waitFor(async function collapsed() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-        assume(getByText('Home').query()).is.not.equal(null);
-      });
+      const toggle = getByRole('button', { name: 'Menu' }).query();
+      // Collapsed rail: nav links are present as icons, labels hidden.
+      assume(toggle?.getAttribute('aria-pressed')).equals('false');
+      assume(getByRole('link', { name: 'Dashboard' }).query()).is.not.equal(null);
+      assume(getByText('Dashboard').query()).equals(null);
 
       await getByRole('button', { name: 'Menu' }).click();
 
       await vi.waitFor(async function expanded() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('true');
-      });
-    });
-
-    it('collapsed panel with minSize has no aria-hidden', async function minSizeA11y() {
-      const { getByRole, getByText } = await render(<SidebarNavExample />);
-
-      await getByRole('button', { name: 'Menu' }).click();
-
-      await vi.waitFor(async function collapsed() {
-        const trigger = getByRole('button', { name: 'Menu' }).query();
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-      });
-
-      const homeText = getByText('Home').query();
-      assume(homeText).is.not.equal(null);
-      const panel = homeText?.closest('[role="group"]');
-      assume(panel?.getAttribute('aria-hidden')).equals(null);
-    });
-
-    it('collapsed panel with minSize allows focus on content', async function minSizeFocus() {
-      const { getByRole } = await render(<SidebarNavExample />);
-
-      await getByRole('button', { name: 'Menu' }).click();
-
-      await vi.waitFor(async function collapsed() {
-        assume(getByRole('button', { name: 'Menu' }).query()?.getAttribute('aria-expanded')).equals('false');
-      });
-
-      const panel = getByRole('group').query();
-      assume(panel).is.not.equal(null);
-      assume(panel?.hasAttribute('aria-hidden')).equals(false);
-    });
-
-    it('collapses on blur when shouldDismissOnBlur is set', async function dismissOnBlur() {
-      const { getByRole } = await render(<DismissOnBlurExample />);
-
-      const trigger = getByRole('button', { name: 'Panel' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-
-      getByRole('button', { name: 'Inside button' }).query()!.focus();
-      getByRole('button', { name: 'Outside button' }).query()!.focus();
-
-      await vi.waitFor(async function collapsed() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-      });
-    });
-
-    it('does not collapse when relatedTarget is null', async function dismissOnBlurNull() {
-      const { getByRole } = await render(<DismissOnBlurExample />);
-
-      const trigger = getByRole('button', { name: 'Panel' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-
-      const insideButton = getByRole('button', { name: 'Inside button' }).query();
-      insideButton?.focus();
-      insideButton?.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: null }));
-
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-    });
-
-    it('FocusScope traps focus when expanded', async function focusScopeContain() {
-      const { getByRole } = await render(<FocusScopeExample />);
-
-      await getByRole('button', { name: 'Action A' }).click();
-      await userEvent.keyboard('{Tab}');
-
-      await vi.waitFor(async function focusOnB() {
-        assume(document.activeElement?.textContent).equals('Action B');
-      });
-
-      await userEvent.keyboard('{Tab}');
-
-      await vi.waitFor(async function focusWrapped() {
-        const active = document.activeElement?.textContent;
-        const insideDrawer = active === 'Action A' || active === 'Action B' || active === 'Sidebar';
-        assume(insideDrawer).equals(true);
+        assume(toggle?.getAttribute('aria-pressed')).equals('true');
+        assume(getByText('Dashboard').query()).is.not.equal(null);
       });
     });
 
@@ -200,20 +116,6 @@ describe('@godaddy/antares', function antares() {
       (trigger as HTMLElement)?.click();
 
       assume(trigger?.getAttribute('aria-expanded')).equals('false');
-    });
-
-    it('top/bottom placement expands vertically', async function verticalPlacement() {
-      const { getByRole, getByText } = await render(<VerticalExample />);
-
-      const trigger = getByRole('button', { name: 'Header' }).query();
-      assume(trigger?.getAttribute('aria-expanded')).equals('true');
-
-      await getByRole('button', { name: 'Header' }).click();
-
-      await vi.waitFor(async function collapsed() {
-        assume(trigger?.getAttribute('aria-expanded')).equals('false');
-        assume(getByText('Top drawer content, collapses vertically.').query()).is.not.equal(null);
-      });
     });
 
     it('bottom placement expands vertically', async function bottomPlacement() {
@@ -232,15 +134,6 @@ describe('@godaddy/antares', function antares() {
       assume(drawer).is.not.equal(null);
     });
 
-    it('forwards ref to InlineDrawer root', async function refForwarding() {
-      await render(<RefForwardingExample />);
-
-      assume(drawerRef.current).is.not.equal(null);
-      assume(drawerRef.current?.tagName).equals('DIV');
-      assume(panelRef.current).is.not.equal(null);
-      assume(panelRef.current?.getAttribute('role')).equals('group');
-    });
-
     it('toggles via Space key', async function spaceKey() {
       const { getByRole } = await render(<DefaultExample />);
 
@@ -255,11 +148,15 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('passes className to all sub-components', async function classNamePassthrough() {
+    it('sets data-animate=false when animate is false', async function animateOff() {
+      await render(<PlaygroundExample animate={false} />);
+      assume(document.querySelector('[data-animate="false"]')).is.not.equal(null);
+    });
+
+    it('passes className to the drawer root and panel', async function classNamePassthrough() {
       await render(<ClassNamePassthroughExample />);
 
       assume(document.querySelector('.custom-drawer')).is.not.equal(null);
-      assume(document.querySelector('.custom-trigger')).is.not.equal(null);
       assume(document.querySelector('.custom-panel')).is.not.equal(null);
     });
 

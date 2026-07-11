@@ -31,7 +31,7 @@ const config: KnipConfig = {
       ignore: ['*.stories.tsx', 'examples/**/*', 'test/**/*']
     },
     'packages/@godaddy/*': {
-      ignore: ['*.stories.tsx', 'examples/**/*', '**/examples/**/*', 'test/**/*']
+      ignore: []
     },
     'packages/dev/*': {
       ignore: ['*.stories.tsx', 'examples/**/*', 'test/**/*', '**/tsdown.config.{ts,mts}']
