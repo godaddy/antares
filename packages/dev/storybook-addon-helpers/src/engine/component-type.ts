@@ -29,8 +29,8 @@ function getComponentPropsType(declaration: ts.Declaration, sourceFile: ts.Sourc
     return declaration.type.typeArguments?.[0];
   }
 
-  const initializer = declaration.initializer;
-  if (!initializer) return undefined;
+  if (!declaration.initializer) return undefined;
+  const initializer = unwrapExpression(declaration.initializer);
 
   if (ts.isArrowFunction(initializer) || ts.isFunctionExpression(initializer)) {
     return initializer.parameters[0]?.type;
@@ -41,17 +41,33 @@ function getComponentPropsType(declaration: ts.Declaration, sourceFile: ts.Sourc
     ts.isIdentifier(initializer.expression) &&
     initializer.expression.text === 'forwardRef'
   ) {
-    return initializer.typeArguments?.[1];
+    // Props are the second type arg, or the render fn's first parameter when omitted.
+    return initializer.typeArguments?.[1] ?? getFunctionArgPropsType(initializer);
   }
 
   if (ts.isCallExpression(initializer) && initializer.arguments.length > 1) {
-    const functionArg = initializer.arguments.find((arg) => ts.isArrowFunction(arg) || ts.isFunctionExpression(arg));
-    if (functionArg && (ts.isArrowFunction(functionArg) || ts.isFunctionExpression(functionArg))) {
-      return functionArg.parameters[0]?.type;
-    }
+    return getFunctionArgPropsType(initializer);
   }
 
   return undefined;
+}
+
+/** Returns the props type from the first parameter of a call's function argument. */
+function getFunctionArgPropsType(call: ts.CallExpression): ts.TypeNode | undefined {
+  const functionArg = call.arguments.find((arg) => ts.isArrowFunction(arg) || ts.isFunctionExpression(arg));
+  if (functionArg && (ts.isArrowFunction(functionArg) || ts.isFunctionExpression(functionArg))) {
+    return functionArg.parameters[0]?.type;
+  }
+  return undefined;
+}
+
+/** Unwraps `as`, `satisfies`, type assertions, and parentheses to reach the inner expression. */
+function unwrapExpression(expr: ts.Expression): ts.Expression {
+  if (ts.isAsExpression(expr) || ts.isSatisfiesExpression(expr) || ts.isTypeAssertionExpression(expr)) {
+    return unwrapExpression(expr.expression);
+  }
+  if (ts.isParenthesizedExpression(expr)) return unwrapExpression(expr.expression);
+  return expr;
 }
 
 function isNamedType(typeNode: ts.TypeReferenceNode, names: string[]): boolean {

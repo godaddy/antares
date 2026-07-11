@@ -102,9 +102,35 @@ describe('extractTypeDocs', function extractTypeDocsTests() {
     });
   });
 
-  it('lets rightmost intersection props override earlier props', function extractsIntersectionOverrides() {
+  it('marks a prop required when any intersection member requires it', function extractsIntersectionOverrides() {
     expect(extract('IntersectionOverrideProps').props).toMatchObject([{ name: 'value', required: true }]);
     expect(extract('IntersectionOverrideProps').props.map((prop) => prop.name)).toEqual(['value']);
+  });
+
+  it('lets the first intersection member win display fields on a name clash', function extractsIntersectionFirstWins() {
+    const props = extract('DocumentedIntersectionProps').props;
+
+    expect(props.map((prop) => prop.name)).toEqual(['dup']);
+    expect(props[0]).toMatchObject({
+      name: 'dup',
+      type: 'string',
+      required: true,
+      description: 'first description'
+    });
+  });
+
+  it('keeps documented metadata when a structural member overrides it', function extractsDocumentedOverride() {
+    const props = extract('DocumentedPolyProps').props;
+
+    expect(props.map((prop) => prop.name)).toEqual(['as', 'layout']);
+    expect(props[0]).toMatchObject({
+      name: 'as',
+      type: 'string',
+      required: false,
+      description: 'Polymorphic element type.',
+      defaultValue: "'div'",
+      declaringType: 'DocumentedPolyOwnProps'
+    });
   });
 
   it('keeps base props for unsupported utility key expressions', function extractsUnsupportedUtilityKeys() {

@@ -60,6 +60,14 @@ export type IntersectedProps = ParentProps &
 
 export type IntersectionOverrideProps = { value?: string } & { value: string };
 
+export type DocumentedIntersectionProps = {
+  /** first description */
+  dup?: string;
+} & {
+  /** second description */
+  dup: number;
+};
+
 export type PickedProps = Pick<ChildProps, 'parent'>;
 
 export type OmittedProps = Omit<ChildProps, 'parent'>;
@@ -134,3 +142,13 @@ export type GenericLayoutProps<E extends string = 'div'> = GenericPolymorphic<E,
 export interface UsesGenericHeritageProps extends Omit<GenericLayoutProps<'div'>, 'as'> {
   extra: number;
 }
+
+export interface DocumentedPolyOwnProps {
+  /** Polymorphic element type. @default 'div' */
+  as?: string;
+  /** own layout thing */
+  layout?: string;
+}
+
+// Documented `as` intersected with the structural `{ as?: E }` refinement.
+export type DocumentedPolyProps<E extends string = 'div'> = GenericPolymorphic<E, DocumentedPolyOwnProps>;

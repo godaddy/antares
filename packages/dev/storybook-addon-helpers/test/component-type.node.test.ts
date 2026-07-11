@@ -27,4 +27,8 @@ describe('extractComponentDocs', function extractComponentDocsTests() {
   it('extracts FC type argument props', function extractsFC() {
     expect(extract('FCComponent').props.map((prop) => prop.name)).toEqual(['fc']);
   });
+
+  it('extracts polymorphic forwardRef props cast with `as`', function extractsPolymorphicForwardRef() {
+    expect(extract('PolymorphicForwardRefComponent').props.map((prop) => prop.name)).toEqual(['polyProp', 'as']);
+  });
 });

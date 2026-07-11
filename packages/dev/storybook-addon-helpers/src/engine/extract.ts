@@ -100,7 +100,7 @@ function extractFromDeclaration(
       const own = extractMembers(declaration.members, sourceFile, declaration.name.text);
 
       // Own members lead, then inherited; own declarations win on a name clash.
-      return normalizeProps([...own, ...inherited], { preferFirst: true });
+      return normalizeProps([...own, ...inherited]);
     } finally {
       active.delete(key);
     }
@@ -210,7 +210,7 @@ function getPropertyName(name: ts.PropertyName): string | undefined {
   return undefined;
 }
 
-function normalizeProps(props: PropDoc[], options: { preferFirst?: boolean } = {}): PropDoc[] {
+function normalizeProps(props: PropDoc[]): PropDoc[] {
   const normalized: PropDoc[] = [];
   const propIndexes = new Map<string, number>();
 
@@ -223,9 +223,27 @@ function normalizeProps(props: PropDoc[], options: { preferFirst?: boolean } = {
       continue;
     }
 
-    // A later duplicate wins its metadata by default; `preferFirst` keeps the first.
-    if (!options.preferFirst) normalized[existingIndex] = prop;
+    normalized[existingIndex] = mergeDuplicateProps(normalized[existingIndex], prop);
   }
 
   return normalized;
+}
+
+/**
+ * Merges two docs for the same prop name. The first declaration wins display
+ * fields; the prop is required if either member requires it, and documentation
+ * is backfilled from the second when the first lacks it.
+ */
+function mergeDuplicateProps(first: PropDoc, second: PropDoc): PropDoc {
+  return {
+    ...first,
+    required: first.required || second.required,
+    description: hasDescription(first) ? first.description : second.description,
+    defaultValue: first.defaultValue != null ? first.defaultValue : second.defaultValue,
+    ...(first.deprecated || second.deprecated ? { deprecated: true } : {})
+  };
+}
+
+function hasDescription(prop: PropDoc): boolean {
+  return Boolean(prop.description && prop.description.trim());
 }
