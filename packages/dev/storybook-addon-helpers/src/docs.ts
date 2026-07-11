@@ -34,10 +34,20 @@ function unwrap(expr: ts.Expression): ts.Expression {
  *
  * @returns the processed doc, or `undefined` if the node is not a docs getter.
  */
+const resolverCache = new WeakMap<ts.SourceFile, Resolver>();
+
+function getCachedResolver(sourceFile: ts.SourceFile): Resolver {
+  const cached = resolverCache.get(sourceFile);
+  if (cached) return cached;
+  const resolver = createResolver(sourceFile.fileName || 'inline.tsx');
+  resolverCache.set(sourceFile, resolver);
+  return resolver;
+}
+
 export function docFromCall(
   node: ts.CallExpression,
   sourceFile: ts.SourceFile,
-  resolver: Resolver = createResolver(sourceFile.fileName || 'inline.tsx'),
+  resolver: Resolver = getCachedResolver(sourceFile),
   defaults?: DocsDefaults
 ): PropsDoc | undefined {
   if (!ts.isIdentifier(node.expression)) return undefined;

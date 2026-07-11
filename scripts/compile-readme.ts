@@ -110,7 +110,7 @@ function generatePropTable(props: PropDoc[]): string {
   const rows = props.map(function formatPropRow(prop) {
     const type = (prop.type || 'any').replace(/\|/g, '\\|').replace(/\n/g, ' ');
     const req = prop.required ? 'Yes' : 'No';
-    const desc = prop.description || '';
+    const desc = (prop.description || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
     return `| \`${prop.name}\` | \`${type}\` | ${req} | ${desc} |\n`;
   });
 
@@ -240,5 +240,5 @@ async function compileReadme(): Promise<void> {
 
 // Only run CLI if executed directly (not imported)
 if (import.meta.url === `file://${process.argv[1]}`) {
-  compileReadme();
+  void compileReadme();
 }
