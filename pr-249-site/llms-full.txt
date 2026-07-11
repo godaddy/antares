@@ -656,127 +656,6 @@ Always provide clear error messages and use appropriate validation states:
 * Provide a group label that clearly describes the choice being made
 
 
-# Drawer
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Slides in from any screen edge (top, bottom, left, right) with spring animation
-* Snap points with drag gestures and keyboard control
-* Numeric and string snap points (`120`, `'50%'`, `'200px'`) resolved against drawer size
-* Automatic RTL flipping for left/right placement
-* Focus trapping, backdrop dismiss, scroll lock via RAC Modal
-* `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Sub-components [#sub-components]
-
-### DrawerTrigger [#drawertrigger]
-
-Wraps a trigger button and a `<Drawer>`. Handles open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
-
-### DrawerHandle [#drawerhandle]
-
-Visual drag handle for touch gestures. Renders a grab bar with a 44px touch target (24px for pointer:fine). When inside a `<Drawer>` with `snapPoints`, the handle becomes interactive and drag-to-snap activates automatically. Without `snapPoints`, the handle renders as a decorative affordance only.
-
-| Prop        | Type     | Description          |
-| ----------- | -------- | -------------------- |
-| `className` | `string` | Additional CSS class |
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Bottom Sheet [#bottom-sheet]
-
-Use `placement="bottom"` with controlled state for a bottom sheet pattern.
-
-<Story of="Stories.BottomSheet" />
-
-<Source language="tsx" code="BottomSheetExample" />
-
-### Snap Points [#snap-points]
-
-Use `snapPoints` with `<DrawerHandle />` for a resizable bottom sheet with touch gesture support.
-
-<Story of="Stories.SnapPoints" />
-
-<Source language="tsx" code="SnapPointsExample" />
-
-### Percentage Snap Points [#percentage-snap-points]
-
-Use string snap points like `'30%'` and `'60%'` for sizes relative to the drawer's rendered dimensions.
-
-<Story of="Stories.PercentSnapPoints" />
-
-<Source language="tsx" code="PercentSnapPointsExample" />
-
-### Controlled Snap Points [#controlled-snap-points]
-
-Use `activeSnapPoint` and `onSnapPointChange` for full control over the active snap point.
-
-<Story of="Stories.ControlledSnap" />
-
-<Source language="tsx" code="ControlledSnapExample" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="Stories.NestedPopover" />
-
-<Source language="tsx" code="NestedPopoverExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key                 | Action                                                                     |
-| ------------------- | -------------------------------------------------------------------------- |
-| `Escape`            | Close the drawer (when `isDismissable` or not `isKeyboardDismissDisabled`) |
-| `Tab`               | Move focus within the drawer (focus is trapped)                            |
-| `Arrow Up / Right`  | Move to next snap point (when snap slider is focused)                      |
-| `Arrow Down / Left` | Move to previous snap point                                                |
-| `Home`              | Jump to first snap point                                                   |
-| `End`               | Jump to last snap point                                                    |
-
-In RTL, horizontal arrow key direction is reversed for the snap slider.
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* Dialog accessible name via `title` (renders a heading) or `aria-label` (for titleless drawers)
-* `aria-label="Close"` on the built-in close button
-* `role="slider"` on the snap point keyboard control with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext`
-* `aria-hidden="true"` on the visual drag handle (decorative)
-
-## Best Practices [#best-practices]
-
-* Always provide a `title` or `aria-label` prop so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
-
-
 # CircularProgress
 
 
@@ -832,6 +711,104 @@ Use the `emphasis` prop to communicate status: `success`, `warning`, or `critica
 * `aria-labelledby` associates the visible label when the `label` prop is provided
 * `aria-describedby` wires the `helperText` to the progressbar for screen readers
 * The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+
+# Drawer
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
+
+`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+
+## Features [#features]
+
+* Slides in from any screen edge (top, bottom, left, right)
+* `overlay` elevation panel over a dimmed backdrop, matching `Modal`
+* Physical `placement` (does not flip for RTL)
+* Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
+* CSS transitions with `prefers-reduced-motion` support
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+The `DrawerTrigger` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Bottom Sheet [#bottom-sheet]
+
+Use `placement="bottom"` with controlled state for a bottom sheet pattern.
+
+<Story of="Stories.BottomSheet" />
+
+<Source language="tsx" code="BottomSheetExample" />
+
+### Placements [#placements]
+
+The drawer slides in from whichever edge you set with `placement`.
+
+<Story of="Stories.Placements" />
+
+<Source language="tsx" code="PlacementsExample" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="Stories.NestedPopover" />
+
+<Source language="tsx" code="NestedPopoverExample" />
+
+### No Escape Dismiss [#no-escape-dismiss]
+
+Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+
+<Story of="Stories.NoEscapeDismiss" />
+
+<Source language="tsx" code="NoEscapeDismissExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
+| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* Dialog accessible name via `aria-label`
+* `aria-label="Close"` on the built-in close button
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
 
 
 # Icon
@@ -1342,13 +1319,15 @@ The states **disabled**, **readonly**, and **invalid** are applied by the field 
 
 <Meta of="Stories" name="Overview" />
 
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+
 ## Features [#features]
 
-* In-flow collapsible panel with CSS transitions
-* `minSize` keeps collapsed content visible (sidebar nav pattern)
-* `shouldDismissOnBlur` with portal-aware focus detection
-* Controlled and uncontrolled modes
-* `hidden="until-found"` for browser find-in-page support
+* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
+* Animated by default; `animate={false}` disables the transition
+* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
+* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
+* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
 * `prefers-reduced-motion` support
 
 ## Installation [#installation]
@@ -1361,11 +1340,15 @@ npm install --save @godaddy/antares
 
 <PropTable />
 
+The `InlineDrawerPanel` component accepts the following props:
+
+<PropTable />
+
 ## Examples [#examples]
 
 ### Basic Usage [#basic-usage]
 
-The panel toggles when the trigger is pressed, pushing adjacent content as it expands.
+Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
 
 <Story of="Stories.Default" />
 
@@ -1373,7 +1356,7 @@ The panel toggles when the trigger is pressed, pushing adjacent content as it ex
 
 ### Controlled [#controlled]
 
-Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a button outside the drawer.
+Use `isExpanded` and `onExpandedChange` to drive state externally.
 
 <Story of="Stories.Controlled" />
 
@@ -1381,57 +1364,31 @@ Use `isExpanded` and `onExpandedChange` to drive state externally, e.g. from a b
 
 ### Sidebar Navigation [#sidebar-navigation]
 
-Combine `minSize` and `maxSize` to create a sidebar that collapses to an icon strip instead of disappearing completely.
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
 
 <Story of="Stories.SidebarNav" />
 
 <Source language="tsx" code="SidebarNavExample" />
 
-### Vertical Placement [#vertical-placement]
-
-Set `placement="top"` or `"bottom"` to collapse vertically instead of horizontally.
-
-<Story of="Stories.Vertical" />
-
-<Source language="tsx" code="VerticalExample" />
-
-### Dismiss on Blur [#dismiss-on-blur]
-
-Set `shouldDismissOnBlur` to auto-collapse when focus leaves the drawer. Tab from the inside button to the outside button to see it collapse. Focus moving to browser chrome (address bar, devtools) does not trigger collapse.
-
-<Story of="Stories.DismissOnBlur" />
-
-<Source language="tsx" code="DismissOnBlurExample" />
-
-### Focus Scope [#focus-scope]
-
-Wrap panel content in `<FocusScope>` to trap focus while expanded. Tab cycles between Action A and Action B without escaping to main content. Use `contain={isExpanded}` so trapping only applies when open.
-
-<Story of="Stories.FocusScope" />
-
-<Source language="tsx" code="FocusScopeExample" />
-
 ## Accessibility [#accessibility]
 
 ### Keyboard [#keyboard]
 
-| Key               | Action                                                                |
-| ----------------- | --------------------------------------------------------------------- |
-| `Enter` / `Space` | Toggle the drawer via the trigger button                              |
-| `Tab`             | Move focus into/out of the panel (or trapped when using `FocusScope`) |
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
+| `Enter` / `Space` | Toggle via the slotted trigger |
+| `Tab`             | Move focus through the content |
 
 ### ARIA [#aria]
 
-* `aria-expanded` on the trigger button reflects panel state (via RAC Disclosure)
-* `aria-controls` links the trigger to the panel
-* `hidden="until-found"` on collapsed panels (browser find-in-page support)
-* Panels with `minSize` override `aria-hidden` to keep collapsed content accessible
+* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
+* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
 
 ## Best Practices [#best-practices]
 
-* Use `minSize` + `maxSize` for sidebar patterns where collapsed content stays visible.
-* `FocusScope` is opt-in. Don't combine `contain={true}` with `shouldDismissOnBlur` (trapped focus can't leave to trigger blur).
-* Collapsed panels use `hidden="until-found"` for browser find-in-page support. Panels with `minSize` override this to keep content visible.
+* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
+* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
+* `placement` does not flip in RTL; the side is decided by document/flex order.
 * Don't nest InlineDrawers.
 
 
@@ -3210,6 +3167,69 @@ To position a tooltip relative to a different focusable element, use the
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Bar Chart
 
 
@@ -3703,69 +3723,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
 
 
 # LineChart
