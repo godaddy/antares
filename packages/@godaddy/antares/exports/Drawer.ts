@@ -1,10 +1,7 @@
 export {
   Drawer,
   DrawerTrigger,
-  DrawerHandle,
   type DrawerProps,
   type DrawerTriggerProps,
-  type DrawerHandleProps,
-  type DrawerPlacement,
-  type DrawerSnapPoint
+  type DrawerPlacement
 } from '#components/drawer';

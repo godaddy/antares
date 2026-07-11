@@ -45,8 +45,6 @@
     "@bento/use-data-attributes": "^0.1.1",
     "@internationalized/date": "^3.12.2",
     "@react-aria/focus": "^3.22.0",
-    "@react-aria/utils": "^3.34.0",
-    "@react-stately/utils": "^3.12.0",
     "@visx/axis": "^4.0.1-alpha.0",
     "@visx/grid": "^4.0.1-alpha.0",
     "@visx/group": "^4.0.1-alpha.0",
@@ -60,7 +58,6 @@
     "embla-carousel": "^9.0.0-rc02",
     "embla-carousel-accessibility": "^9.0.0-rc02",
     "embla-carousel-react": "^9.0.0-rc02",
-    "motion": "^12.40.0",
     "react-aria-components": "^1.18.0"
   },
   "devDependencies": {

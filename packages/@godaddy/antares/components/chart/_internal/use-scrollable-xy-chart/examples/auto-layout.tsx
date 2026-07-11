@@ -3,8 +3,6 @@ import { useScrollableXYChart, type UseScrollableXYChartProps } from '../src/ind
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-export type AutoLayoutExampleOrientation = 'auto' | 'horizontal' | 'vertical';
-
 export function AutoLayoutExample({ xLabelsOrientation }: UseScrollableXYChartProps) {
   const {
     parentRef,
