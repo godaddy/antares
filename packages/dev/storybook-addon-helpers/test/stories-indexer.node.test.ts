@@ -1,7 +1,6 @@
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import path from 'node:path';
-import assume from 'assume';
-import { storiesIndexer } from '../src/stories-indexer.ts';
+import { storiesIndexer } from '../src/storybook/stories-indexer.ts';
 
 describe('stories-indexer', function bento() {
   it('should return the correct story indexes for component', async function correctStoryIndexes() {
@@ -19,21 +18,21 @@ describe('stories-indexer', function bento() {
       {
         title: 'meta1',
         tags: ['!dev'],
-        exportName: 'FromInterfaceProps',
+        exportName: 'FromTypeProps',
         importPath: storiesFilePath,
         type: 'story'
       },
       {
         title: 'meta1',
         tags: ['!dev'],
-        exportName: 'FromInterfacePickProps',
+        exportName: 'FromTypeIncludeProps',
         importPath: storiesFilePath,
         type: 'story'
       },
       {
         title: 'meta1',
         tags: ['!dev'],
-        exportName: 'FromInterfaceOmitProps',
+        exportName: 'FromTypeExcludeProps',
         importPath: storiesFilePath,
         type: 'story'
       },
@@ -81,13 +80,13 @@ describe('stories-indexer', function bento() {
       }
     ];
 
-    assume(actual).deep.equals(expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should return an empty array if the file has no stories', async function noStories() {
     const storiesFilePath = path.join(__dirname, 'fixtures/no-stories.tsx');
     const actual = await storiesIndexer(storiesFilePath);
 
-    assume(actual).deep.equals([]);
+    expect(actual).toEqual([]);
   });
 });

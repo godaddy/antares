@@ -1,6 +1,6 @@
 import { expectTypeOf, it, describe } from 'vitest';
-import type { Meta, StoryObj } from '@storybook/react';
-import { getMeta, getStory, getVariants, getComponentDocs, getInterfaceDocs } from '../src/getters.ts';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs } from '../src/storybook/getters.ts';
 
 function TestComponent(props: { size: string; disabled?: boolean }) {
   return <div>Test {JSON.stringify(props)}</div>;
@@ -68,8 +68,26 @@ describe('getStory', function getStorySuite() {
 });
 
 describe('getComponentDocs', function getComponentDocsSuite() {
-  it('should pass type checking', function typeChecking() {
+  it('accepts type-safe docs options', function typeChecking() {
     getComponentDocs(TestComponent);
+    getComponentDocs(TestComponent, {
+      include: ['size'],
+      primary: ['size'],
+      categories: { Main: ['size'] }
+    });
+    getComponentDocs(TestComponent, {
+      include: [/^size/],
+      categories: { Main: [/^size/] }
+    });
+    getComponentDocs(TestComponent, {
+      exclude: ['disabled']
+    });
+
+    // @ts-expect-error include and exclude are mutually exclusive
+    getComponentDocs(TestComponent, { include: ['size'], exclude: ['disabled'] });
+
+    // Arbitrary string names are accepted (matchers are widened).
+    getComponentDocs(TestComponent, { include: ['missing'] });
 
     type ReturnTypeTestCompProps = ReturnType<typeof getComponentDocs<typeof TestComponent>>;
 
@@ -77,14 +95,21 @@ describe('getComponentDocs', function getComponentDocsSuite() {
   });
 });
 
-describe('getInterfaceDocs', function getInterfaceDocsSuite() {
-  it('should pass type checking', function typeChecking() {
-    const actual = getInterfaceDocs<{ a: string; b: number }>();
+describe('getTypeDocs', function getTypeDocsSuite() {
+  it('accepts type-safe docs options', function typeChecking() {
+    const actual = getTypeDocs<{ a: string; b: number }>({
+      include: ['a'],
+      primary: ['a'],
+      categories: { Required: ['a'] }
+    });
 
     expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string; b: number }>>();
 
-    // @ts-expect-error invalid type
-    expectTypeOf<typeof actual>().toEqualTypeOf<StoryObj<{ a: string; b: string }>>();
+    // Arbitrary string names are accepted (matchers are widened).
+    getTypeDocs<{ a: string }>({ include: ['b'] });
+
+    // @ts-expect-error include and exclude are mutually exclusive
+    getTypeDocs<{ a: string; b: number }>({ include: ['a'], exclude: ['b'] });
   });
 });
 
