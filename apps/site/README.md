@@ -34,9 +34,8 @@ Notable files in `lib/`:
 | --- | --- |
 | `source.ts` | Content source adapter; merges docs and component collections |
 | `layout.shared.tsx` | Shared layout options reused across route layouts |
-| `filtered-generator.ts` | Wraps `fumadocs-typescript` to strip DOM/CSS/ARIA props from auto-generated prop tables and group remaining props by category |
 | `remark-strip-leading-heading.ts` | Remark plugin that removes the leading `#` heading from MDX files |
-| `remark-arg-types.ts` | Remark plugin that injects Storybook arg type metadata into component docs |
+| `remark-arg-types.ts` | Remark plugin that replaces `<ArgTypes of={Stories.X}>` with a `<PropTable>` generated from the component's `*.stories.tsx` via `@bento/storybook-addon-helpers/docs` (the same type engine Storybook uses) |
 | `remark-raw-loader.ts` | Remark plugin that inlines raw source file content |
 | `github-path.ts` | Resolves GitHub source URLs for component files |
 | `storybook-bridge/` | Helpers for sharing Storybook metadata with the docs site |

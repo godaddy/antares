@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('../src/csf-transformer.ts', () => ({
+vi.mock('../src/storybook/csf-transformer.ts', () => ({
   csfTransformer: vi.fn().mockResolvedValue('mocked-csf-output')
 }));
 
-import { generateCSFPlugin } from '../src/plugin.ts';
-import { csfTransformer } from '../src/csf-transformer.ts';
+import { generateCSFPlugin } from '../src/storybook/plugin.ts';
+import { csfTransformer } from '../src/storybook/csf-transformer.ts';
 
 describe('generateCSFPlugin', function pluginTests() {
   it('should return a plugin with the correct name', function testPluginName() {
@@ -19,8 +19,17 @@ describe('generateCSFPlugin', function pluginTests() {
     const result = await (plugin.load as Function).call({ addWatchFile }, 'button.stories.tsx');
 
     expect(addWatchFile).toHaveBeenCalledWith('button.stories.tsx');
-    expect(csfTransformer).toHaveBeenCalledWith({ filePath: 'button.stories.tsx' });
+    expect(csfTransformer).toHaveBeenCalledWith({ filePath: 'button.stories.tsx', defaults: undefined });
     expect(result).toBe('mocked-csf-output');
+  });
+
+  it('forwards docsDefaults to csfTransformer', async function testForwardsDefaults() {
+    const defaults = { categories: { Events: [/^on/] } };
+    const plugin = generateCSFPlugin(/\.stories\.tsx$/, defaults);
+    const addWatchFile = vi.fn();
+    await (plugin.load as Function).call({ addWatchFile }, 'button.stories.tsx');
+
+    expect(csfTransformer).toHaveBeenCalledWith({ filePath: 'button.stories.tsx', defaults });
   });
 
   it('should return null when filename does not match', async function testNonMatchingFile() {

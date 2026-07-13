@@ -1,4 +1,4 @@
-import { getMeta, getInterfaceDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getMeta, getStory, getTypeDocs } from '@bento/storybook-addon-helpers';
 import { CreateStore } from './examples/create-store.tsx';
 import { Icon } from './examples/icon.tsx';
 import type { Store as StoreType } from './src/create-external-store.ts';
@@ -7,7 +7,7 @@ export default getMeta({
   title: 'Bento/utility/create-external-store'
 });
 
-export const api = getInterfaceDocs<StoreType>();
+export const api = getTypeDocs<StoreType>();
 
 export const Icons = getStory(Icon, {
   args: {

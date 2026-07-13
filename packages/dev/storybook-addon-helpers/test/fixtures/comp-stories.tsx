@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComponentDocs, getInterfaceDocs, getMeta, getStory, getVariants } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getMeta, getStory, getTypeDocs, getVariants } from '@bento/storybook-addon-helpers';
 import { Button, Component as AnotherComponent, type InterfaceProps } from './comp.tsx';
 
 // getMeta
@@ -31,13 +31,20 @@ export default meta;
 
 // Docs
 
-export const ButtonProps = getComponentDocs(Button);
+export const ButtonProps = getComponentDocs(Button, {
+  include: ['onClick'],
+  categories: { Events: [/^on/] }
+});
 
-export const FromInterfaceProps = getInterfaceDocs<InterfaceProps>();
+export const FromTypeProps = getTypeDocs<InterfaceProps>();
 
-export const FromInterfacePickProps = getInterfaceDocs<Pick<InterfaceProps, 'prop1'>>();
+export const FromTypeIncludeProps = getTypeDocs<InterfaceProps>({
+  include: ['prop1']
+});
 
-export const FromInterfaceOmitProps = getInterfaceDocs<Omit<InterfaceProps, 'prop1' | 'prop3'>>();
+export const FromTypeExcludeProps = getTypeDocs<InterfaceProps>({
+  exclude: ['prop1', 'prop3']
+});
 
 // getStory
 
