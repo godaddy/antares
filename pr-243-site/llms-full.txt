@@ -1056,6 +1056,98 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 * Don't nest drawers.
 
 
+# DropZone
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Disabled [#disabled]
+
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="DisabledExample" />
+
+### File Upload [#file-upload]
+
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+<Story of="Stories.FileUpload" />
+
+<Source language="tsx" code="FileUploadExample" />
+
+### Drop Target Label [#drop-target-label]
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is accepted.
+
+<Story of="Stories.DropTargetLabel" />
+
+<Source language="tsx" code="DropTargetLabelExample" />
+
+### Replace Existing File [#replace-existing-file]
+
+Use `children` as a render function to show different content based on the current zone state — here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+
+<Story of="Stories.ReplaceFile" />
+
+<Source language="tsx" code="ReplaceFileExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| `Tab`             | Moves focus to the drop zone                                     |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers [#screen-readers]
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
+
+## Best Practices [#best-practices]
+
+* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+* Replace the default text with `children` to communicate the accepted file types and size limits up front.
+* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
+
+
 # Field primitives
 
 
@@ -1144,6 +1236,60 @@ The states **disabled**, **readonly**, and **invalid** are applied by the field 
 <Story of="Stories.IconAccessories" />
 
 <Source language="tsx" code="SourceIconAccessories" />
+
+
+# FileTrigger
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
+* Renders a visually hidden `<input type="file">` — no styling of its own.
+* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
+* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Accepted Types [#accepted-types]
+
+Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
+
+<Story of="Stories.AcceptedTypes" />
+
+<Source language="tsx" code="AcceptedTypesExample" />
+
+## Accessibility [#accessibility]
+
+`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
+
+## Best Practices [#best-practices]
+
+* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
+* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
+* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
 
 
 # Icon
@@ -1866,6 +2012,75 @@ Individual child components can be styled by passing `className` props:
 ```
 
 
+# MetricsLockup
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="Stories.WithTrend" />
+
+<Source language="tsx" code="WithTrendExample" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="Stories.Compact" />
+
+<Source language="tsx" code="CompactExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+
 # Modal
 
 
@@ -1956,75 +2171,6 @@ Pass a `media` element to display imagery alongside the content. Configure its l
 * Set `isDismissable={false}` for required confirmations the user must explicitly answer
 * Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
 * Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
-
-
-# MetricsLockup
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="Stories.WithTrend" />
-
-<Source language="tsx" code="WithTrendExample" />
-
-### Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="Stories.Compact" />
-
-<Source language="tsx" code="CompactExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-### ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
 # NumberField
@@ -3030,88 +3176,6 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 <Source language="tsx" code="WrapExample" />
 
 
-# TextField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `TextField` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with label and placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Adornments [#adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
-
-<Source language="tsx" code="SourceAdornments" />
-
-<Story of="Stories.Adornments" />
-
-### Multiline [#multiline]
-
-Use `multiline` to render a textarea.
-
-<Source language="tsx" code="SourceMultiline" />
-
-<Story of="Stories.Multiline" />
-
-
 # ToggleButton
 
 
@@ -3355,6 +3419,88 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
   <Icon icon="bulleted-list" />
 </ToggleButton>
 ```
+
+
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `TextField` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+### Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
 
 
 # Tooltip
@@ -4365,110 +4511,6 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-
 # Flex
 
 
@@ -4573,3 +4615,107 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
