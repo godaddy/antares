@@ -130,7 +130,7 @@
     }
   }
 
-  /* rounded border corners — :nth-child(of :not(template)) skips RAC's hidden SSR <template> sibling */
+  /* rounded border corners — :nth-child(1 of :not(template)) skips RAC's hidden SSR <template> sibling */
   & > :nth-child(1 of :not(template)) {
     &,
     > :where(.fieldSelectFragment) {

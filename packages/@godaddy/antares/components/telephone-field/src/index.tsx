@@ -58,7 +58,7 @@ export interface TelephoneFieldProps extends Omit<RACTextFieldProps, 'children' 
   onCountryChange?: (key: SelectKey | null) => void;
 
   /** Accessible name for the country picker button, since it has no visible label of its own. */
-  countryLabel?: string;
+  countryLabel: string;
 
   /** Additional props (e.g. `aria-describedby`, `id`) applied to the country picker. */
   countryProps?: CountryFieldProps;
