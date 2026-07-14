@@ -10,13 +10,15 @@ import { RadioRequiredExample } from './examples/radio-required.tsx';
 import { RadioBasicExample } from './examples/radio-basic.tsx';
 import { RadioErrorExample } from './examples/radio-error.tsx';
 import { RadioFormExample } from './examples/radio-form.tsx';
-import { RadioGroup } from './src/index.tsx';
+import { Radio, RadioGroup } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Radio'
 });
 
-export const Props = getComponentDocs(RadioGroup);
+export const Props = getComponentDocs(Radio);
+
+export const GroupProps = getComponentDocs(RadioGroup);
 
 export const Basic = getStory(RadioBasicExample);
 

@@ -1,19 +1,21 @@
-import { describe, it, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
 import { VFile } from 'vfile';
-import assume from 'assume';
-import type { RemarkArgTypesOptions } from '../lib/remark-arg-types';
-import { remarkArgTypes } from '../lib/remark-arg-types';
 
-async function run(
-  mdx: string,
-  filePath: string,
-  options?: RemarkArgTypesOptions,
-  compilerData?: Record<string, unknown>
-) {
-  const processor = unified().use(remarkParse).use(remarkMdx).use(remarkArgTypes, options);
+const { resolvePropsDoc, toPropTable } = vi.hoisted(() => ({
+  resolvePropsDoc: vi.fn(),
+  toPropTable: vi.fn()
+}));
+
+vi.mock('@bento/storybook-addon-helpers/docs', () => ({ resolvePropsDoc }));
+vi.mock('../lib/prop-table-adapter', () => ({ toPropTable }));
+
+const { remarkArgTypes } = await import('../lib/remark-arg-types');
+
+async function run(mdx: string, filePath: string, compilerData?: Record<string, unknown>) {
+  const processor = unified().use(remarkParse).use(remarkMdx).use(remarkArgTypes);
   const file = new VFile({ path: filePath, value: mdx });
   if (compilerData) Object.assign(file.data, compilerData);
   return processor.run(processor.parse(file), file);
@@ -23,260 +25,149 @@ function firstChild(tree: any): any {
   return tree.children[0];
 }
 
-function makeRootArgTypesTree() {
-  return {
-    type: 'mdxJsxFlowElement',
-    name: 'ArgTypes',
-    attributes: [
-      {
-        type: 'mdxJsxAttribute',
-        name: 'of',
-        value: { type: 'mdxJsxAttributeValueExpression', value: 'Stories.Props', data: {} }
-      }
-    ],
-    children: []
-  };
+function attr(node: any, name: string) {
+  return node.attributes.find((a: { name: string }) => a.name === name);
 }
 
-describe('site', function siteTests() {
-  describe('#remarkArgTypes', function remarkArgTypesTests() {
-    it('skips non-ArgTypes JSX elements', async function skipsNonArgTypes() {
-      const tree = await run('<Foo of={Stories.Props} />', '/fake/radio/README.mdx');
-      assume(firstChild(tree).name).equals('Foo');
+describe('remarkArgTypes', function remarkArgTypesTests() {
+  beforeEach(function reset() {
+    resolvePropsDoc.mockReset();
+    toPropTable.mockReset();
+  });
+
+  it('skips non-ArgTypes JSX elements', async function skipsNonArgTypes() {
+    const tree = await run('<Foo of={Stories.Props} />', '/fake/radio/README.mdx');
+    expect(firstChild(tree).name).toBe('Foo');
+    expect(resolvePropsDoc).not.toHaveBeenCalled();
+  });
+
+  it('skips ArgTypes with no of= attribute', async function skipsNoAttributes() {
+    const tree = await run('<ArgTypes />', '/fake/radio/README.mdx');
+    expect(firstChild(tree).name).toBe('ArgTypes');
+    expect(resolvePropsDoc).not.toHaveBeenCalled();
+  });
+
+  it('skips ArgTypes with a string of= attribute (not expression)', async function skipsMalformedOf() {
+    const tree = await run('<ArgTypes of="Stories.Props" />', '/fake/radio/README.mdx');
+    expect(firstChild(tree).name).toBe('ArgTypes');
+    expect(resolvePropsDoc).not.toHaveBeenCalled();
+  });
+
+  it('skips ArgTypes when the expression produces an empty export name', async function skipsEmptyName() {
+    const tree = {
+      type: 'root',
+      children: [
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'ArgTypes',
+          attributes: [
+            {
+              type: 'mdxJsxAttribute',
+              name: 'of',
+              value: { type: 'mdxJsxAttributeValueExpression', value: '.', data: {} }
+            }
+          ],
+          children: []
+        }
+      ]
+    };
+    const file = new VFile({ path: '/fake/radio/README.mdx' });
+    const result = await unified()
+      .use(remarkArgTypes)
+      .run(tree as any, file);
+    expect(firstChild(result).name).toBe('ArgTypes');
+    expect(resolvePropsDoc).not.toHaveBeenCalled();
+  });
+
+  it('skips ArgTypes node when it is the root (no parent)', async function skipsRootNode() {
+    const rootNode = {
+      type: 'mdxJsxFlowElement',
+      name: 'ArgTypes',
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'of',
+          value: { type: 'mdxJsxAttributeValueExpression', value: 'Stories.Props', data: {} }
+        }
+      ],
+      children: []
+    };
+    const file = new VFile({ path: '/fake/radio/README.mdx' });
+    const result = await unified()
+      .use(remarkArgTypes)
+      .run(rootNode as any, file);
+    expect((result as any).name).toBe('ArgTypes');
+    expect(resolvePropsDoc).not.toHaveBeenCalled();
+  });
+
+  it('replaces <ArgTypes of={Stories.Props}> with a populated <PropTable>', async function populated() {
+    resolvePropsDoc.mockResolvedValue({ name: 'Radio', props: [] });
+    toPropTable.mockReturnValue({
+      entries: [{ name: 'size', type: 'string', required: false }],
+      categories: { Events: ['onPress'] }
     });
 
-    it('skips ArgTypes with no attributes', async function skipsNoAttributes() {
-      const tree = await run('<ArgTypes />', '/fake/radio/README.mdx');
-      const node = firstChild(tree);
-      assume(node.name).equals('ArgTypes');
-      assume(node.attributes).deep.equals([]);
+    const addDependency = vi.fn();
+    const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', {
+      _compiler: { addDependency }
     });
 
-    it('skips ArgTypes with a string of= attribute (not expression)', async function skipsMalformedOf() {
-      const tree = await run('<ArgTypes of="Stories.Props" />', '/fake/radio/README.mdx');
-      assume(firstChild(tree).name).equals('ArgTypes');
-    });
+    const propTable = firstChild(tree);
+    expect(propTable.name).toBe('PropTable');
+    expect(attr(propTable, 'entries').value.type).toBe('mdxJsxAttributeValueExpression');
+    expect(attr(propTable, 'categories').value.type).toBe('mdxJsxAttributeValueExpression');
 
-    it('skips ArgTypes when expression value produces empty propertyName', async function skipsEmptyPropertyName() {
-      const tree = {
-        type: 'root',
-        children: [
-          {
-            type: 'mdxJsxFlowElement',
-            name: 'ArgTypes',
-            attributes: [
-              {
-                type: 'mdxJsxAttribute',
-                name: 'of',
-                value: { type: 'mdxJsxAttributeValueExpression', value: '.', data: {} }
-              }
-            ],
-            children: []
-          }
-        ]
-      };
-      const file = new VFile({ path: '/fake/radio/README.mdx' });
-      const result = await unified()
-        .use(remarkArgTypes)
-        .run(tree as any, file);
-      assume(firstChild(result).name).equals('ArgTypes');
+    expect(resolvePropsDoc).toHaveBeenCalledWith({
+      filePath: '/fake/radio/radio.stories.tsx',
+      exportName: 'Props',
+      defaults: undefined
     });
+    expect(toPropTable).toHaveBeenCalledWith({ name: 'Radio', props: [] });
 
-    it('transforms Props branch using kebab dirname into PascalCase + Props', async function transformsPropsKebab() {
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx');
-      assume(firstChild(tree).name).equals('auto-type-table');
-      assume(firstChild(tree).attributes.find((a: { name: string }) => a.name === 'name')?.value).equals('RadioProps');
-    });
+    // Both the stories file and the component source are registered as deps.
+    expect(addDependency).toHaveBeenCalledWith('/fake/radio/radio.stories.tsx');
+    expect(addDependency).toHaveBeenCalledWith('/fake/radio/src/index.tsx');
+  });
 
-    it('transforms multi-segment kebab dirname into PascalCase + Props', async function transformsMultiKebab() {
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/text-field/README.mdx');
-      assume(firstChild(tree).attributes.find((a: { name: string }) => a.name === 'name')?.value).equals(
-        'TextFieldProps'
-      );
-    });
+  it('emits an empty <PropTable> when the export resolves to nothing', async function empty() {
+    resolvePropsDoc.mockResolvedValue(undefined);
 
-    it('uses the Stories property name as-is for non-Props named exports', async function usesNamedExport() {
-      const tree = await run('<ArgTypes of={Stories.LinkButtonProps} />', '/fake/radio/README.mdx');
-      assume(firstChild(tree).attributes.find((a: { name: string }) => a.name === 'name')?.value).equals(
-        'LinkButtonProps'
-      );
-    });
+    const tree = await run('<ArgTypes of={Stories.Missing} />', '/fake/radio/README.mdx');
 
-    it('produces auto-type-table with correct path and name attributes', async function producesCorrectAst() {
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx');
-      const typeTable = firstChild(tree);
-      assume(typeTable.name).equals('auto-type-table');
-      assume(typeTable.attributes.find((a: { name: string }) => a.name === 'path')?.value).equals('./src/index.tsx');
-      assume(typeTable.attributes.find((a: { name: string }) => a.name === 'name')?.value).equals('RadioProps');
-    });
-
-    it('calls addMdxDependency with the src/index.tsx path', async function callsDependency() {
-      const addDependency = vi.fn();
-      await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', undefined, {
-        _compiler: { addDependency }
-      });
-      assume(addDependency.mock.calls.length).equals(1);
-      assume(addDependency.mock.calls[0][0]).equals('/fake/radio/src/index.tsx');
-    });
-
-    it('skips ArgTypes node when it is the root (no parent)', async function skipsRootNode() {
-      const file = new VFile({ path: '/fake/radio/README.mdx' });
-      const result = await unified()
-        .use(remarkArgTypes)
-        .run(makeRootArgTypesTree() as any, file);
-      assume((result as any).name).equals('ArgTypes');
+    const propTable = firstChild(tree);
+    expect(propTable.name).toBe('PropTable');
+    expect(toPropTable).not.toHaveBeenCalled();
+    expect(resolvePropsDoc).toHaveBeenCalledWith({
+      filePath: '/fake/radio/radio.stories.tsx',
+      exportName: 'Missing',
+      defaults: undefined
     });
   });
 
-  describe('#remarkArgTypes with generator', function withGeneratorTests() {
-    function makeGenerator(entries = [{ name: 'size', type: 'string' }]) {
-      return {
-        generateDocumentation: vi.fn(),
-        generateTypeTable: vi.fn(),
-        generateCategorizedTypeTable: vi.fn().mockResolvedValue({
-          docs: [
-            {
-              id: 'test',
-              name: 'RadioProps',
-              entries: entries.map((e) => ({
-                ...e,
-                description: 'A prop',
-                simplifiedType: e.type,
-                tags: [],
-                required: false,
-                deprecated: false
-              }))
-            }
-          ],
-          categories: { Events: ['onPress'] }
-        })
-      };
-    }
+  it('uses the Stories export name as-is for non-Props exports', async function usesNamedExport() {
+    resolvePropsDoc.mockResolvedValue(undefined);
 
-    it('emits PropTable instead of auto-type-table when generator provided', async function emitsPropTable() {
-      const generator = makeGenerator();
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', {
-        generator
-      });
-      assume((tree as any).children[0].name).equals('PropTable');
+    await run('<ArgTypes of={Stories.LinkButtonProps} />', '/fake/radio/README.mdx');
+
+    expect(resolvePropsDoc).toHaveBeenCalledWith({
+      filePath: '/fake/radio/radio.stories.tsx',
+      exportName: 'LinkButtonProps',
+      defaults: undefined
     });
+  });
 
-    it('passes entries as estree attribute on PropTable', async function passesEntries() {
-      const generator = makeGenerator([{ name: 'variant', type: 'string' }]);
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', {
-        generator
-      });
-      const propTable = (tree as any).children[0];
-      const entriesAttr = propTable.attributes.find((a: { name: string }) => a.name === 'entries');
-      assume(entriesAttr).not.equals(undefined);
-      assume(entriesAttr.value.type).equals('mdxJsxAttributeValueExpression');
-    });
+  it('forwards docsDefaults to resolvePropsDoc', async function forwardsDefaults() {
+    resolvePropsDoc.mockResolvedValue(undefined);
+    const docsDefaults = { categories: { Events: [/^on/] } };
 
-    it('passes categories as estree attribute on PropTable', async function passesCategories() {
-      const generator = makeGenerator();
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', {
-        generator
-      });
-      const propTable = (tree as any).children[0];
-      const categoriesAttr = propTable.attributes.find((a: { name: string }) => a.name === 'categories');
-      assume(categoriesAttr).not.equals(undefined);
-      assume(categoriesAttr.value.type).equals('mdxJsxAttributeValueExpression');
-    });
+    const processor = unified().use(remarkParse).use(remarkMdx).use(remarkArgTypes, { docsDefaults });
+    const file = new VFile({ path: '/fake/radio/README.mdx', value: '<ArgTypes of={Stories.Props} />' });
+    await processor.run(processor.parse(file), file);
 
-    it('calls generateCategorizedTypeTable with correct path and type name', async function callsCategorizedApi() {
-      const generator = makeGenerator();
-      await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', { generator });
-      assume(generator.generateCategorizedTypeTable.mock.calls.length).equals(1);
-      const [callArgs] = generator.generateCategorizedTypeTable.mock.calls[0];
-      assume(callArgs.name).equals('RadioProps');
-      assume(callArgs.path).equals('/fake/radio/src/index.tsx');
-    });
-
-    it('skips ArgTypes with malformed of= attribute when generator provided', async function skipsInvalidOfWithGenerator() {
-      const generator = makeGenerator();
-      const tree = await run('<ArgTypes of="Stories.Props" />', '/fake/radio/README.mdx', { generator });
-      assume((tree as any).children[0].name).equals('ArgTypes');
-      assume(generator.generateCategorizedTypeTable.mock.calls.length).equals(0);
-    });
-
-    it('skips ArgTypes when expression produces empty propertyName in generator path', async function skipsEmptyPropertyNameWithGenerator() {
-      const generator = makeGenerator();
-      const tree = {
-        type: 'root',
-        children: [
-          {
-            type: 'mdxJsxFlowElement',
-            name: 'ArgTypes',
-            attributes: [
-              {
-                type: 'mdxJsxAttribute',
-                name: 'of',
-                value: { type: 'mdxJsxAttributeValueExpression', value: '.', data: {} }
-              }
-            ],
-            children: []
-          }
-        ]
-      };
-      const file = new VFile({ path: '/fake/radio/README.mdx' });
-      const result = await unified()
-        .use(remarkArgTypes, { generator })
-        .run(tree as any, file);
-      assume((result as any).children[0].name).equals('ArgTypes');
-    });
-
-    it('uses non-Props named export as-is in generator path', async function usesNamedExportWithGenerator() {
-      const generator = makeGenerator();
-      const tree = await run('<ArgTypes of={Stories.LinkButtonProps} />', '/fake/radio/README.mdx', { generator });
-      assume((tree as any).children[0].name).equals('PropTable');
-      assume(generator.generateCategorizedTypeTable.mock.calls[0][0].name).equals('LinkButtonProps');
-    });
-
-    it('skips ArgTypes node when it is the root in generator path (no parent)', async function skipsRootNodeWithGenerator() {
-      const generator = makeGenerator();
-      const file = new VFile({ path: '/fake/radio/README.mdx' });
-      const result = await unified()
-        .use(remarkArgTypes, { generator })
-        .run(makeRootArgTypesTree() as any, file);
-      assume((result as any).name).equals('ArgTypes');
-      assume(generator.generateCategorizedTypeTable.mock.calls.length).equals(0);
-    });
-
-    it('maps @default tag to the default field in entries', async function mapsDefaultTag() {
-      const generator = {
-        generateDocumentation: vi.fn(),
-        generateTypeTable: vi.fn(),
-        generateCategorizedTypeTable: vi.fn().mockResolvedValue({
-          docs: [
-            {
-              id: 'test',
-              name: 'RadioProps',
-              entries: [
-                {
-                  name: 'size',
-                  type: 'string',
-                  description: '',
-                  simplifiedType: 'string',
-                  tags: [{ name: 'default', text: 'medium' }],
-                  required: false,
-                  deprecated: false
-                }
-              ]
-            }
-          ],
-          categories: {}
-        })
-      };
-
-      const tree = await run('<ArgTypes of={Stories.Props} />', '/fake/radio/README.mdx', {
-        generator
-      });
-      const propTable = (tree as any).children[0];
-      const entriesAttr = propTable.attributes.find((a: { name: string }) => a.name === 'entries');
-      const body = entriesAttr.value.data.estree.body[0].expression;
-      const firstEntry = body.elements[0];
-      const defaultProp = firstEntry.properties.find((p: { key: { value: string } }) => p.key.value === 'default');
-      assume(defaultProp.value.value).equals('medium');
+    expect(resolvePropsDoc).toHaveBeenCalledWith({
+      filePath: '/fake/radio/radio.stories.tsx',
+      exportName: 'Props',
+      defaults: docsDefaults
     });
   });
 });

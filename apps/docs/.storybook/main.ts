@@ -3,6 +3,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mergeConfig, type UserConfig } from 'vite';
+import { docsDefaults } from '../../../configs/docs-defaults.mts';
 import { remarkFrontmatterHeading } from '../lib/remark-frontmatter-heading.ts';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
@@ -39,7 +40,10 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-onboarding',
     '@storybook/addon-themes',
-    '@bento/storybook-addon-helpers',
+    {
+      name: '@bento/storybook-addon-helpers',
+      options: { docsDefaults }
+    },
     join(__dirname, './addons/internal-stories/preset.ts')
   ],
 

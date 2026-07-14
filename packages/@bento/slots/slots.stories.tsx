@@ -1,4 +1,4 @@
-import { getMeta, getInterfaceDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getMeta, getStory, getTypeDocs } from '@bento/storybook-addon-helpers';
 import { ForwardRefExample } from './examples/forward-ref.tsx';
 import { SlotFunction } from './examples/slot-function.tsx';
 import { SlotProps } from './examples/slot-props.tsx';
@@ -11,7 +11,7 @@ export default getMeta({
   title: 'Bento/higher-order components/slots'
 });
 
-export const SlotsAPI = getInterfaceDocs<Slots>();
+export const SlotsAPI = getTypeDocs<Slots>();
 
 export const withSlots = {
   tags: ['!dev', 'stable'],

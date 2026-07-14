@@ -1,18 +1,13 @@
 import React from 'react';
-import { getComponentDocs, getInterfaceDocs, getMeta, getStory, getVariants } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getMeta, getStory, getTypeDocs, getVariants } from '@bento/storybook-addon-helpers';
 import { Button, Component as AnotherComponent, type InterfaceProps } from './comp.tsx';
-
-// getMeta
-
 const meta = {
   title: 'meta1'
 };
-
 const _meta2 = {
   title: 'meta2',
   component: Button
 };
-
 const _meta3 = {
   title: 'meta3',
   args: {
@@ -26,71 +21,79 @@ const _meta3 = {
     }
   }
 };
-
 export default meta;
-
-// Docs
-
 export const ButtonProps = {
   tags: ['!dev'],
   argTypes: {
     onClick: {
-      description: 'this is the onClick handler',
       name: 'onClick',
-      required: true,
+      description: 'this is the onClick handler',
       type: {
-        name: '() => void',
+        name: 'other',
+        value: '() => void',
         required: true
       },
       table: {
+        type: {
+          summary: '() => void'
+        },
         defaultValue: {
           summary: null
-        }
+        },
+        category: 'Events'
       }
     }
   }
 };
-
-export const FromInterfaceProps = {
+export const FromTypeProps = {
   tags: ['!dev'],
   argTypes: {
     prop1: {
-      description: 'interface prop description',
       name: 'prop1',
-      required: true,
+      description: 'interface prop description',
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: true
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: null
         }
       }
     },
     prop2: {
-      description: 'interface prop description 2',
       name: 'prop2',
-      required: false,
+      description: 'interface prop description 2',
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: false
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: "'default value'"
         }
       }
     },
     prop3: {
-      description: 'interface prop description 3',
       name: 'prop3',
-      required: false,
+      description: 'interface prop description 3',
       type: {
-        name: '() => React.ReactNode',
+        name: 'other',
+        value: '() => React.ReactNode',
         required: false
       },
       table: {
+        type: {
+          summary: '() => React.ReactNode'
+        },
         defaultValue: {
           summary: null
         }
@@ -98,19 +101,21 @@ export const FromInterfaceProps = {
     }
   }
 };
-
-export const FromInterfacePickProps = {
+export const FromTypeIncludeProps = {
   tags: ['!dev'],
   argTypes: {
     prop1: {
-      description: 'interface prop description',
       name: 'prop1',
-      required: true,
+      description: 'interface prop description',
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: true
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: null
         }
@@ -118,19 +123,21 @@ export const FromInterfacePickProps = {
     }
   }
 };
-
-export const FromInterfaceOmitProps = {
+export const FromTypeExcludeProps = {
   tags: ['!dev'],
   argTypes: {
     prop2: {
-      description: 'interface prop description 2',
       name: 'prop2',
-      required: false,
+      description: 'interface prop description 2',
       type: {
-        name: 'string',
+        name: 'other',
+        value: 'string',
         required: false
       },
       table: {
+        type: {
+          summary: 'string'
+        },
         defaultValue: {
           summary: "'default value'"
         }
@@ -138,25 +145,17 @@ export const FromInterfaceOmitProps = {
     }
   }
 };
-
-// getStory
-
 export const NewButton1 = {
   render: (args) => <Button {...args} />
 };
-
 export const NewButton2 = {
   args: { children: 'mundo' },
   render: (args) => <Button {...args} />
 };
-
 export const NewButton3 = {
   args: { children: 'mundo' },
   render: () => <div>override render</div>
 };
-
-// getVariants
-
 export const StylesPrimary = {
   args: {
     children: 'Primary!',
@@ -166,7 +165,6 @@ export const StylesPrimary = {
   },
   render: (args) => <Button {...args} />
 };
-
 export const StylesSecondary = {
   args: {
     style: { backgroundColor: 'red', color: 'white' },
@@ -174,7 +172,6 @@ export const StylesSecondary = {
   },
   render: (args) => <Button {...args} />
 };
-
 export const StylesCustomElement = {
   argTypes: {
     children: {
@@ -186,6 +183,4 @@ export const StylesCustomElement = {
     children: 'hola mundo!'
   }
 };
-
-// expect no variants exported
 export const NoVariants = getVariants(Button, {});

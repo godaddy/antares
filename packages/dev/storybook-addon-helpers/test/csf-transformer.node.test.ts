@@ -1,10 +1,9 @@
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 import ts from 'typescript';
-import assume from 'assume';
-import { csfTransformer } from '../src/csf-transformer.ts';
+import { csfTransformer } from '../src/storybook/csf-transformer.ts';
 
 /**
  * Formats the code using Biome.
@@ -24,7 +23,7 @@ describe('csf-transformer', function csfTransformerTests() {
     const actual = formatTypeScript(await csfTransformer({ filePath: path.join(fixturesPath, 'comp-stories.tsx') }));
     const expected = formatTypeScript(fs.readFileSync(path.join(fixturesPath, 'comp-stories-expected.tsx'), 'utf8'));
 
-    assume(actual).deep.equals(expected);
+    expect(actual).toEqual(expected);
   }, 20_000);
 
   it('should support code as a string', async function generateCSFCodeAsString() {
@@ -38,18 +37,50 @@ describe('csf-transformer', function csfTransformerTests() {
       const meta = { title: 'meta1' };
     `);
 
-    assume(actual).deep.equals(expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should support default export getMeta', async function generateCSFDefaultExportGetMeta() {
     const actual = formatTypeScript(await csfTransformer({ code: `export default getMeta({ title: 'meta1' })` }));
     const expected = formatTypeScript(`export default { title: 'meta1' }`);
 
-    assume(actual).deep.equals(expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should handle no filePath and no code', async function generateCSFNoFilePathAndNoCode() {
-    assume(await csfTransformer({})).to.equals('');
+    expect(await csfTransformer({})).toBe('');
+  });
+
+  it('transforms getTypeDocs with options from code strings', async function transformTypeDocsCode() {
+    const code = `
+      import { getTypeDocs } from '@bento/storybook-addon-helpers';
+      interface Props {
+        /** label description */
+        label: string;
+        hidden?: boolean;
+      }
+      export const PropsDocs = getTypeDocs<Props>({ include: ['label'] });
+    `;
+
+    const actual = await csfTransformer({ code });
+
+    expect(actual.includes('"label"')).toBe(true);
+    expect(actual.includes('"hidden"')).toBe(false);
+    expect(actual.includes('"!dev"')).toBe(true);
+  });
+
+  it('applies global docsDefaults to getComponentDocs', async function appliesDefaults() {
+    const code = `
+      import { getComponentDocs } from '@bento/storybook-addon-helpers';
+      interface WProps { label: string; onPress?: () => void; }
+      function W(_p: WProps) { return null; }
+      export const Docs = getComponentDocs(W);
+    `;
+
+    const actual = await csfTransformer({ code, defaults: { categories: { Events: [/^on/] } } });
+
+    expect(actual.includes('"Events"')).toBe(true);
+    expect(actual.includes('category')).toBe(true);
   });
 
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
@@ -72,6 +103,6 @@ describe('csf-transformer', function csfTransformerTests() {
       };
     `);
 
-    assume(actual).deep.equals(expected);
+    expect(actual).toEqual(expected);
   });
 });
