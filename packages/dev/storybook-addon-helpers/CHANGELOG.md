@@ -1,5 +1,12 @@
 # @bento/storybook-addon-helpers
 
+## 0.2.0
+
+### Minor Changes
+
+- - Add AST-based prop docs engine with `./docs` and `./runtime` exports for Fumadocs and Next.js sites.
+  - Add ability to filter, order, and categorize props with type-checked keys. ([#253](https://github.com/godaddy/bento/pull/253) by @egaitan-godaddy)
+
 ## 0.1.1
 
 ### Patch Changes
