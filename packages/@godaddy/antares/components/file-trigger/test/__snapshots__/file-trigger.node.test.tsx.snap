@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #FileTrigger > renders the default file trigger 1`] = `"<button class="button tertiary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Select a file</span></button><input class="" type="file" style="display:none" data-rac=""/>"`;
+
+exports[`@godaddy/antares > #FileTrigger > renders the file trigger with accepted types 1`] = `"<button class="button tertiary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Select images</span></button><input class="" type="file" style="display:none" accept="image/jpeg,image/png,image/gif" multiple="" data-rac=""/>"`;
+
+exports[`@godaddy/antares > #FileTrigger > renders the playground file trigger 1`] = `"<button class="button tertiary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Select a file</span></button><input class="" type="file" style="display:none" data-rac=""/>"`;

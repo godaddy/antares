@@ -1,0 +1,92 @@
+---
+title: DropZone
+description: A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './drop-zone.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import DisabledExample from './examples/disabled.tsx?raw';
+import FileUploadExample from './examples/file-upload.tsx?raw';
+import DropTargetLabelExample from './examples/drop-target-label.tsx?raw';
+import ReplaceFileExample from './examples/replace-file.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Disabled
+
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
+
+<Story of={Stories.Disabled} inline />
+<Source language="tsx" code={DisabledExample} />
+
+### File Upload
+
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+<Story of={Stories.FileUpload} inline />
+<Source language="tsx" code={FileUploadExample} />
+
+### Drop Target Label
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is accepted.
+
+<Story of={Stories.DropTargetLabel} inline />
+<Source language="tsx" code={DropTargetLabelExample} />
+
+### Replace Existing File
+
+Use `children` as a render function to show different content based on the current zone state — here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+
+<Story of={Stories.ReplaceFile} inline />
+<Source language="tsx" code={ReplaceFileExample} />
+
+## Accessibility
+
+### Keyboard
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Moves focus to the drop zone |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
+
+## Best Practices
+
+- Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+- Replace the default text with `children` to communicate the accepted file types and size limits up front.
+- Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+- Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
