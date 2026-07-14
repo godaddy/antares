@@ -1,5 +1,80 @@
 # @godaddy/antares
 
+## 0.4.0
+
+### Minor Changes
+
+- feat: add CircularProgress component ([#230](https://github.com/godaddy/bento/pull/230) by @rmojica-godaddy)
+
+### Patch Changes
+
+- fix(antares): Adds isolation to segmented-controller ([#245](https://github.com/godaddy/bento/pull/245) by @egaitan-godaddy)
+- fix(gauge-chart): align sublabel and range label typography to design spec
+
+  - Switch sublabel and range label font-size from fixed token to CQI units so they scale proportionally with the container
+  - Isolate range label typography tokens (font-weight, line-height) from sublabel tokens
+  - Add overflow: hidden to range labels to clip long values at 4ch
+  - Fix explicit grid placement for min/max range labels to avoid auto-placement fragility
+  - Add CSS variable fallback values for all --ux-{hash} tokens ([#219](https://github.com/godaddy/bento/pull/219) by @rmojica-godaddy)
+
+- fix(chart): align legend and tooltip spacings with Figma spec ([#238](https://github.com/godaddy/bento/pull/238) by @rmojica-godaddy)
+
+## 0.3.0
+
+### Minor Changes
+
+- refactor(antares): public field primitives + FieldSelect, rebuild Select, align Radio/Checkbox
+
+  Splits the field box into composable, **public** primitives — `Field`, `FieldLabel`,
+  `FieldGroup`, `FieldDescription`, `FieldError`, `FieldInput`, `FieldTextArea`, and
+  `FieldButton` — and rebuilds `TextField`, `NumberField`, and `Select` on top. The primitives
+  are exported from the package root and the `@godaddy/antares/Field` subpath so consumers can
+  compose their own fields.
+
+  A `FieldGroup` rounds its outer corners by DOM order — its first and last children round the
+  leading and trailing edges respectively (a lone control rounds both) — so controls need no
+  per-element edge prop or RAC context injection to sit correctly in a shared box.
+
+  Adds `FieldSelect`, a box-less select that composes inside a shared `FieldGroup` so consumers
+  can build composite fields — an input and a select sharing one bordered box (e.g. amount +
+  currency, phone + country code, time + AM/PM). It self-provides its own React Aria Select; the
+  standalone `Select` shares the same trigger.
+
+  `TextField`'s `leadingText` / `trailingText` now accept `ReactNode` (an icon, not just text).
+
+  Adds an optional `size?: 'sm' | 'md'` prop on `TextField`, `NumberField`, and `Select`. In
+  `sm`, the input/textarea/select font-size shrinks to `calc(1em / 1.125)`, the input/textarea
+  block-padding switches to `sm` (inline-padding stays at `md` so the gutter against the border
+  is unchanged), and `FieldButton` shrinks both axes — keeping NumberField steppers naturally
+  square.
+
+  Adds a standalone `ListBox` / `ListBoxItem` primitive. Migrates `Radio` and `Checkbox` off the
+  deprecated RAC `Radio` / `Checkbox` to `RadioField` + `RadioButton` / `CheckboxField` +
+  `CheckboxButton`. `RadioGroup` and `CheckboxGroup` now share the field primitives for
+  consistent label/description/error rendering.
+
+  Drops `Button`'s base `:not(.inline)` selector specificity by wrapping it in `:where()` to
+  align with the rest of the selectors.
+
+  Breaking:
+
+  - `Select`: drops `labelStyle`, `SelectSection`, and `SelectHeader`; controlled API is
+    `value` / `onChange`. (`size` is reintroduced under the new field-primitives cascade.)
+  - `CheckboxGroup`: `direction` → `orientation: 'horizontal' | 'vertical'`.
+  - `TextField` / `NumberField` / `Select`: `description` and `errorMessage` are `ReactNode`. ([#234](https://github.com/godaddy/bento/pull/234) by @egaitan-godaddy)
+
+- feat(antares): expose Tag via subpath export (`@godaddy/antares/Tag`) ([#237](https://github.com/godaddy/bento/pull/237) by @egaitan-godaddy)
+- feat: add tag component ([#208](https://github.com/godaddy/bento/pull/208) by @rmojica-godaddy)
+
+### Patch Changes
+
+- fix: defaulting icon sizes to 1lh ([#229](https://github.com/godaddy/bento/pull/229) by @egaitan-godaddy)
+- fix: align Box/Flex/Grid spacing scale with Figma design system
+
+  The `--sp-*` CSS variables on the `.box` class used an exponential `pow()` formula (`density × 2^n`) that produced values mismatched with the Figma `Computed/Space/Box` variables and legacy `@ux/space` behavior. Replaced with a linear `density × factor` scale: `xs`=×0.5 (2px), `sm`=×1 (4px), `md`=×2 (8px), `lg`=×3 (12px), `xl`=×5 (20px), `2xl`=×8 (32px). `Flex` and `Grid` are fixed automatically. ([#231](https://github.com/godaddy/bento/pull/231) by @rmojica-godaddy)
+
+- fix(antares): antares icon now removes hardcoded fill values from CDN svgs ([#228](https://github.com/godaddy/bento/pull/228) by @egaitan-godaddy)
+
 ## 0.2.0
 
 ### Minor Changes

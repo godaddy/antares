@@ -1,0 +1,54 @@
+---
+title: FileTrigger
+description: A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.
+---
+
+import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './file-trigger.stories.tsx';
+import DefaultExample from './examples/default.tsx?raw';
+import AcceptedTypesExample from './examples/accepted-types.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
+- Renders a visually hidden `<input type="file">` — no styling of its own.
+- Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
+- Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic Usage
+
+Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
+
+<Story of={Stories.Default} inline />
+<Source language="tsx" code={DefaultExample} />
+
+### Accepted Types
+
+Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
+
+<Story of={Stories.AcceptedTypes} inline />
+<Source language="tsx" code={AcceptedTypesExample} />
+
+## Accessibility
+
+`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
+
+## Best Practices
+
+- `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
+- Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
+- Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.

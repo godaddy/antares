@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { type StorybookConfig } from '@storybook/react-vite';
+import type { StorybookConfig } from '@storybook/react-vite';
 import type { Indexer, IndexerOptions } from 'storybook/internal/types';
 
 /**

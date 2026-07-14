@@ -1,17 +1,12 @@
 import { describe, expect, it } from 'vitest';
+import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
 import { PlaygroundExample } from '../examples/drawer-playground.tsx';
-import { SnapPointsExample } from '../examples/snap-points.tsx';
-import { ControlledSnapExample } from '../examples/controlled-snap.tsx';
+import { PlacementsExample } from '../examples/placements.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
-import { RTLPlacementExample } from '../examples/rtl-placement.tsx';
-import { HandleNoSnapsExample } from '../examples/handle-no-snaps.tsx';
-import { DefaultOpenExample } from '../examples/default-open.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
-import { PercentSnapPointsExample } from '../examples/percent-snap-points.tsx';
-import { renderToString } from 'react-dom/server';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -27,28 +22,40 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<PlaygroundExample placement="right" />)).toMatchSnapshot();
     });
 
-    it('renders SnapPointsExample', function snapPointsExample() {
-      expect(renderToString(<SnapPointsExample />)).toMatchSnapshot();
+    it('renders PlaygroundExample with placement="left"', function playgroundLeft() {
+      expect(renderToString(<PlaygroundExample placement="left" />)).toMatchSnapshot();
     });
 
-    it('renders ControlledSnapExample', function controlledSnapExample() {
-      expect(renderToString(<ControlledSnapExample />)).toMatchSnapshot();
+    it('renders PlaygroundExample with placement="top"', function playgroundTop() {
+      expect(renderToString(<PlaygroundExample placement="top" />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with numeric maxSize', function playgroundNumericMaxSize() {
+      expect(renderToString(<PlaygroundExample placement="bottom" maxSize={320} />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with string maxSize', function playgroundStringMaxSize() {
+      expect(renderToString(<PlaygroundExample placement="bottom" maxSize="60%" />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with numeric minSize', function playgroundNumericMinSize() {
+      expect(renderToString(<PlaygroundExample placement="right" minSize={320} />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with string minSize', function playgroundStringMinSize() {
+      expect(renderToString(<PlaygroundExample placement="bottom" minSize="40%" />)).toMatchSnapshot();
+    });
+
+    it('renders PlaygroundExample with close button floor', function playgroundCloseFloor() {
+      expect(renderToString(<PlaygroundExample placement="right" showCloseButton />)).toMatchSnapshot();
+    });
+
+    it('renders PlacementsExample', function placementsExample() {
+      expect(renderToString(<PlacementsExample />)).toMatchSnapshot();
     });
 
     it('renders NestedPopoverExample', function nestedPopoverExample() {
       expect(renderToString(<NestedPopoverExample />)).toMatchSnapshot();
-    });
-
-    it('renders RTLPlacementExample', function rtlPlacementExample() {
-      expect(renderToString(<RTLPlacementExample />)).toMatchSnapshot();
-    });
-
-    it('renders HandleNoSnapsExample', function handleNoSnapsExample() {
-      expect(renderToString(<HandleNoSnapsExample />)).toMatchSnapshot();
-    });
-
-    it('renders DefaultOpenExample', function defaultOpenExample() {
-      expect(renderToString(<DefaultOpenExample />)).toMatchSnapshot();
     });
 
     it('renders NoEscapeDismissExample', function noEscapeDismissExample() {
@@ -57,10 +64,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders FilteredDismissExample', function filteredDismissExample() {
       expect(renderToString(<FilteredDismissExample />)).toMatchSnapshot();
-    });
-
-    it('renders PercentSnapPointsExample', function percentSnapPointsExample() {
-      expect(renderToString(<PercentSnapPointsExample />)).toMatchSnapshot();
     });
   });
 });

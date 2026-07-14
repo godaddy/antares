@@ -1,7 +1,7 @@
 import { Environment } from '@bento/environment';
 import { Icon, set } from '@bento/icon';
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 
 //
 // Uses the exposed `set` method to introduce the icons and their content to

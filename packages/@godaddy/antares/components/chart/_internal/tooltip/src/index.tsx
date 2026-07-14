@@ -98,7 +98,7 @@ export function Tooltip<T extends object = DataPoint>(
               key={item.id}
               role="listitem"
               justifyContent="space-between"
-              gap="md"
+              gap="2xl"
               className={styles.item}
               display="inline-flex"
             >

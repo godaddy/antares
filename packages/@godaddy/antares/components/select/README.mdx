@@ -1,15 +1,28 @@
 ---
 title: Select
-description: Accessible dropdown component supporting single and multiple selection with keyboard navigation and validation
+description: Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
 ---
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceSelectStatic from './examples/select-static.tsx?raw';
-import SourceSelectControlled from './examples/select-controlled.tsx?raw';
-import SourceSelectDynamic from './examples/select-dynamic.tsx?raw';
-import SourceSelectMultiple from './examples/select-multiple.tsx?raw';
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
 import * as Stories from './select.stories.tsx';
 
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceForm from './examples/form.tsx?raw';
+import SourceInvalid from './examples/invalid.tsx?raw';
+import SourceMultiple from './examples/multiple.tsx?raw';
+
 <Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+- **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+- **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+- **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+- **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
 
 ## Installation
 
@@ -19,135 +32,50 @@ npm install --save @godaddy/antares
 
 ## Props
 
+The `Select` component accepts the following props:
+
 <ArgTypes of={Stories.Props} />
 
 ## Examples
 
-### Static
+### Basic
 
-<Story of={Stories.Static} inline />
-<Source language="tsx" code={SourceSelectStatic} />
+Minimal usage with a label and a placeholder.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
 
 ### Controlled
 
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code={SourceControlled} />
 <Story of={Stories.Controlled} inline />
-<Source language="tsx" code={SourceSelectControlled} />
 
-### Dynamic Items
+### Multiple
 
-<Story of={Stories.DynamicItems} inline />
-<Source language="tsx" code={SourceSelectDynamic} />
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
 
-### Multiple Selection
-
+<Source language="tsx" code={SourceMultiple} />
 <Story of={Stories.Multiple} inline />
-<Source language="tsx" code={SourceSelectMultiple} />
 
-## Customization
+### Invalid
 
-### Data Attributes
+Use `isInvalid` with `errorMessage` for validation feedback.
 
-React Aria Components automatically adds data attributes for styling different states:
+<Source language="tsx" code={SourceInvalid} />
+<Story of={Stories.Invalid} inline />
 
-**Select Container:** `data-invalid`, `data-disabled`, `data-required`, `data-focused`
+### Disabled
 
-**Trigger Button:** `data-pressed`, `data-disabled`, `data-focused`, `aria-expanded`
+Use `isDisabled` to prevent interaction.
 
-**Select Value:** `data-placeholder`
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
 
-**Popover:** `data-entering`, `data-exiting`
+### Form
 
-**List Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`, `data-selection-mode`
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
 
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  font-weight: 600;
-}
-
-[data-invalid] .button {
-  border-color: #dc2626;
-}
-
-[aria-expanded="true"] {
-  border-color: #3b82f6;
-}
-```
-
-### Component Customization
-
-Individual child components can be styled by passing `className` props:
-
-```jsx
-<Select label="Coffee">
-  <SelectItem id="espresso" className="premium-option">
-    Espresso
-  </SelectItem>
-  <SelectSection className="featured-section">
-    <SelectHeader>Featured</SelectHeader>
-    <SelectItem id="special">Special Blend</SelectItem>
-  </SelectSection>
-</Select>
-```
-
-## Accessibility
-
-### Keyboard Navigation
-
-- **Space/Enter**: Opens the popover and focuses the selected item
-- **Arrow Down/Up**: Navigate through options
-- **Home/End**: Jump to first/last option
-- **Escape**: Closes the popover
-- **Tab**: Moves focus to the next focusable element
-- **Type to select**: Type characters to jump to matching options
-- **Space** (in multi-select): Toggle selection of focused item
-
-## Troubleshooting
-
-### Selection Not Updating
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<Select value={value} defaultValue="espresso">
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-
-// ✅ Controlled mode
-<Select value={value} onChange={setValue}>
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-
-// ✅ Uncontrolled mode
-<Select defaultValue="espresso">
-  <SelectItem id="espresso">Espresso</SelectItem>
-</Select>
-```
-
-### Styling Overrides Not Applying
-
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
-
-/* ✅ Use data attributes for higher specificity */
-.my-select [data-selected] {
-  background-color: red;
-}
-```
-
-### Keyboard Navigation Not Working
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-.button:focus {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.button:focus-visible {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-```
+<Source language="tsx" code={SourceForm} />
+<Story of={Stories.Form} inline />

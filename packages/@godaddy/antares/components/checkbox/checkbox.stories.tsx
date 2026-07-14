@@ -9,13 +9,16 @@ import { CheckboxGroupRequired } from './examples/required.tsx';
 import { CheckboxGroupDisabled } from './examples/disabled.tsx';
 import { CheckboxGroupInvalid } from './examples/invalid.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/playground.tsx';
+import { Checkbox, CheckboxGroup } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Checkbox',
   component: CheckboxBasic
 });
 
-export const Props = getComponentDocs(CheckboxGroupBasic);
+export const Props = getComponentDocs(Checkbox);
+
+export const GroupProps = getComponentDocs(CheckboxGroup);
 
 export const Basic = getStory(CheckboxBasic);
 
@@ -36,7 +39,7 @@ export const Invalid = getStory(CheckboxGroupInvalid);
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
-    direction: 'column',
+    orientation: 'vertical',
     label: 'Select your preferences',
     description: '',
     isRequired: false,
@@ -46,10 +49,10 @@ export const Playground = {
     defaultValue: ['option2']
   },
   argTypes: {
-    direction: {
+    orientation: {
       control: 'radio',
-      options: ['row', 'column', 'row-reverse', 'column-reverse'],
-      description: 'Layout direction of checkboxes'
+      options: ['horizontal', 'vertical'],
+      description: 'Layout orientation of the checkboxes'
     },
     label: {
       control: 'text',

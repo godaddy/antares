@@ -53,6 +53,25 @@ export function preloadTestIcons() {
         />
       </svg>
     ),
+    circle: (
+      <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" fill="none" r="8" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+    'circle-half': (
+      <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" fill="none" r="8" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" />
+      </svg>
+    ),
+    ok: (
+      <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <g fill="currentColor">
+          <path d="M12 2.25A9.75 9.75 0 1021.75 12 9.761 9.761 0 0012 2.25zm0 18A8.25 8.25 0 1120.25 12 8.26 8.26 0 0112 20.25z" />
+          <path d="M15.47 9.47L11 13.94l-2.47-2.47a.75.75 0 00-1.06 1.06l3 3c.139.14.333.22.53.22s.391-.08.53-.22l5-5a.75.75 0 00-1.06-1.06z" />
+        </g>
+      </svg>
+    ),
     information: (
       <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <g fill="currentColor">

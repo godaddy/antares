@@ -1,5 +1,5 @@
 /* v8 ignore next */
-import React from 'react';
+import type React from 'react';
 import { ListBox, ListBoxItem, ListBoxSection, Header, Collection } from '@bento/listbox';
 import { useProps } from '@bento/use-props';
 import style from './listbox.module.css';

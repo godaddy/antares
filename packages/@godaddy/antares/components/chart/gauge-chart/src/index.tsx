@@ -145,8 +145,8 @@ export function GaugeChart(props: GaugeChartProps) {
       aria-valuetext={subLabel ? `${label} - ${subLabel}` : label}
     >
       <Grid ref={gaugeRef} className={styles.gauge}>
-        <Flex as={Text} className={styles.content} direction="column" alignItems="center" justifyContent="end">
-          {label}
+        <Flex className={styles.content} direction="column" alignItems="center" justifyContent="end">
+          <Text className={styles.value}>{label}</Text>
         </Flex>
       </Grid>
       {rangeLabel && (

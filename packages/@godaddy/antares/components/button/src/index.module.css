@@ -42,7 +42,7 @@
   color: var(--button-text);
 
   /* non-inline buttons */
-  &:not(.inline) {
+  &:where(:not(.inline)) {
     border-width: 1px;
     border-radius: var(--button-radius);
     border-style: solid;

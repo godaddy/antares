@@ -1,55 +1,56 @@
 .root {
   --gauge-thickness: round(nearest, 4.2cqi, 2px);
-  --gauge-label-widths: 25cqi;
   --gauge-gap-angle: atan2(3px, 100px);
-  --gauge-fg-empty: var(--ux-bs151i);
-  --gauge-fg-default: var(--ux-f7kpiw);
-  --gauge-fg-success: var(--ux-sji811);
-  --gauge-fg-warning: var(--ux-1g47djv);
-  --gauge-fg-critical: var(--ux-1ap6ofp);
+  --gauge-fg-empty: var(--ux-bs151i, #d6d6d6);
+  --gauge-fg-default: var(--ux-f7kpiw, #00a4a6);
+  --gauge-fg-success: var(--ux-sji811, #00a63f);
+  --gauge-fg-warning: var(--ux-1g47djv, #de7c00);
+  --gauge-fg-critical: var(--ux-1ap6ofp, #db1802);
   --gauge-fg-color: var(--gauge-fg-default);
 
-  --gauge-fg-label: var(--ux-1le7uoa);
-  --gauge-font-family: var(--ux-1067ph9);
-  --gauge-label-line-height: var(--ux-h93mi7);
+  --gauge-fg-label: var(--ux-1le7uoa, #111);
+  --gauge-font-family: var(--ux-1067ph9, "gdsherpa", Helvetica, Arial, sans-serif);
 
-  --gauge-range-label-font-size: var(--ux-16aixzc);
-  --gauge-range-label-margin-top: var(--ux-19hwfny);
+  --gauge-range-label-fg: var(--ux-by6mab, #767676);
+  --gauge-range-label-font-size: 9.37cqi;
+  --gauge-range-label-font-weight: 500;
+  --gauge-range-label-line-height: var(--ux-h93mi7, 1.375);
+  --gauge-range-label-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
 
-  --gauge-sublabel-fg: var(--ux-by6mab);
-  --gauge-sublabel-font-size: var(--ux-16aixzc);
-  --gauge-sublabel-margin-top: var(--ux-2jubes);
-  --gauge-sublabel-font-weight: var(--ux-sm2he3);
-  --gauge-sublabel-line-height: var(--ux-1pw8hzd);
+  --gauge-sublabel-fg: var(--ux-1le7uoa, #111);
+  --gauge-sublabel-font-size: 9.37cqi;
+  --gauge-sublabel-margin-top: calc(var(--ux-1sbfig8, 0.5rem) * 0.5);
+  --gauge-sublabel-font-weight: 500;
+  --gauge-sublabel-line-height: var(--ux-h93mi7, 1.375);
 
   container-type: inline-size;
   width: 100%;
 
-  &[data-label-type="value"] {
+  &:where([data-label-type="value"]) {
     --gauge-label-font-size: max(19.3cqi, 1px);
   }
 
-  &[data-label-type="text"] {
+  &:where([data-label-type="text"]) {
     --gauge-label-font-size: max(13.56cqi, 1px);
   }
 
-  &[data-variant="success"] {
+  &:where([data-variant="success"]) {
     --gauge-fg-color: var(--gauge-fg-success);
   }
 
-  &[data-variant="warning"] {
+  &:where([data-variant="warning"]) {
     --gauge-fg-color: var(--gauge-fg-warning);
   }
 
-  &[data-variant="critical"] {
+  &:where([data-variant="critical"]) {
     --gauge-fg-color: var(--gauge-fg-critical);
   }
 
-  &[data-filled] .content::before {
+  &:where([data-filled]) .content::before {
     background: var(--gauge-fg-color);
   }
 
-  &[data-full] .content::after {
+  &:where([data-full]) .content::after {
     background: var(--gauge-fg-color);
   }
 }
@@ -58,13 +59,11 @@
 .content {
   aspect-ratio: 2;
   grid-area: 1 / 1 / -1 / -1;
-  margin-bottom: 0;
   position: relative;
   color: var(--gauge-fg-label);
   font-family: var(--gauge-font-family);
   font-size: var(--gauge-label-font-size);
   font-weight: 400;
-  line-height: var(--gauge-label-line-height);
 
   &::after,
   &::before {
@@ -75,7 +74,7 @@
     height: var(--gauge-thickness);
     width: var(--gauge-thickness);
     bottom: 0;
-    border-radius: 9999px;
+    border-radius: calc(infinity * 1px);
     transform: translateY(50%);
     clip-path: inset(50% 0 0 0);
   }
@@ -89,12 +88,20 @@
   }
 }
 
+.value {
+  display: block;
+  max-width: 66cqi;
+  line-height: 1;
+  /* Pull the label down toward the arc base by half the rounded end-cap diameter. */
+  margin-bottom: calc(var(--gauge-thickness) / -2);
+}
+
 /* Arc: ::before = fill, ::after = track (--gauge-gap-angle from inline style after layout) */
 .gauge {
   position: relative;
   grid-area: 1 / 1 / 2 / -1;
   aspect-ratio: 2;
-  width: calc(100% - (var(--gauge-label-widths) - var(--gauge-thickness)));
+  width: 100%;
   margin-bottom: calc(var(--gauge-thickness) / 2);
 
   &::before,
@@ -141,6 +148,11 @@
   }
 }
 
+/* Narrow the arc when range labels are present so its end caps sit just inside them. */
+.root:has([data-range-label]) .gauge {
+  width: calc(100% - 2 * 9.3cqi);
+}
+
 /* Continuous, value 0 */
 .root:not([data-segmented]):not([data-filled]) .gauge {
   &::before {
@@ -161,6 +173,21 @@
 .root[data-segmented] {
   & .gauge {
     --gauge-slice: calc(180deg / var(--gauge-segments));
+
+    /* Repeating mask that carves the arc into evenly spaced segments (gap between each). */
+    --gauge-slice-mask: repeating-conic-gradient(
+      from 270deg at 50% 100%,
+      #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
+      transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
+    );
+
+    /* Re-adds the final gap the slice mask trims off the very last (180deg) segment. */
+    --gauge-full-track-mask: conic-gradient(
+      from 270deg at 50% 100%,
+      transparent calc(180deg - var(--gauge-gap-angle)),
+      #000 calc(180deg - var(--gauge-gap-angle)),
+      #000 180deg
+    );
   }
 
   & .gauge::before {
@@ -170,29 +197,15 @@
         #000 calc(var(--gauge-value) * 180deg),
         transparent calc(var(--gauge-value) * 180deg)
       ),
-      repeating-conic-gradient(
-        from 270deg at 50% 100%,
-        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
-        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
-      );
+      var(--gauge-slice-mask);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
 
   &[data-full] .gauge::before {
     mask:
-      conic-gradient(from 270deg at 50% 100%, #000 180deg, transparent 180deg),
-      repeating-conic-gradient(
-        from 270deg at 50% 100%,
-        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
-        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
-      ),
-      conic-gradient(
-        from 270deg at 50% 100%,
-        transparent calc(180deg - var(--gauge-gap-angle)),
-        #000 calc(180deg - var(--gauge-gap-angle)),
-        #000 180deg
-      );
+      conic-gradient(from 270deg at 50% 100%, #000 180deg, transparent 180deg), var(--gauge-slice-mask),
+      var(--gauge-full-track-mask);
     -webkit-mask-composite: source-in, source-over;
     mask-composite: intersect, add;
   }
@@ -204,11 +217,7 @@
         transparent calc(var(--gauge-value) * 180deg),
         #000 calc(var(--gauge-value) * 180deg)
       ),
-      repeating-conic-gradient(
-        from 270deg at 50% 100%,
-        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
-        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
-      );
+      var(--gauge-slice-mask);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
@@ -220,17 +229,7 @@
         transparent calc(var(--gauge-value) * 180deg),
         #000 calc(var(--gauge-value) * 180deg)
       ),
-      repeating-conic-gradient(
-        from 270deg at 50% 100%,
-        #000 0deg calc(var(--gauge-slice) - var(--gauge-gap-angle)),
-        transparent calc(var(--gauge-slice) - var(--gauge-gap-angle)) var(--gauge-slice)
-      ),
-      conic-gradient(
-        from 270deg at 50% 100%,
-        transparent calc(180deg - var(--gauge-gap-angle)),
-        #000 calc(180deg - var(--gauge-gap-angle)),
-        #000 180deg
-      );
+      var(--gauge-slice-mask), var(--gauge-full-track-mask);
     -webkit-mask-composite: source-in, source-over;
     mask-composite: intersect, add;
   }
@@ -255,15 +254,22 @@
 .rangeLabel {
   display: inline-flex;
   justify-content: center;
-  width: var(--gauge-label-widths);
+  width: 4ch;
+  overflow: hidden;
   margin-top: var(--gauge-range-label-margin-top);
-  color: var(--gauge-sublabel-fg);
+  color: var(--gauge-range-label-fg);
   font-family: var(--gauge-font-family);
   font-size: var(--gauge-range-label-font-size);
-  font-weight: var(--gauge-sublabel-font-weight);
-  line-height: var(--gauge-sublabel-line-height);
+  font-weight: var(--gauge-range-label-font-weight);
+  line-height: var(--gauge-range-label-line-height);
+
+  &[data-range-label="min"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
 
   &[data-range-label="max"] {
     grid-column: 3;
+    grid-row: 2;
   }
 }

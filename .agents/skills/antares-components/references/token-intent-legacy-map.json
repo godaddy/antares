@@ -1,0 +1,3605 @@
+{
+  "ux.action.backgroundColor": {
+    "hash": "1owc8nc",
+    "var": "--ux-1owc8nc",
+    "legacyDefault": "transparent",
+    "token": "color-action-background-tertiary-default",
+    "dtcgDefault": "white"
+  },
+  "ux.action.borderColor": {
+    "hash": "1np4r62",
+    "var": "--ux-1np4r62",
+    "legacyDefault": "transparent",
+    "token": "color-action-border-tertiary-default",
+    "dtcgDefault": "lightgray"
+  },
+  "ux.action.borderRadius": {
+    "hash": "1s5tndb",
+    "var": "--ux-1s5tndb",
+    "legacyDefault": "6px",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.action.borderWidth": {
+    "hash": "1q7rsup",
+    "var": "--ux-1q7rsup",
+    "legacyDefault": "0.0625rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.action.foregroundColor": {
+    "hash": "ut3xrx",
+    "var": "--ux-ut3xrx",
+    "legacyDefault": "#111",
+    "token": "color-action-text-tertiary-default",
+    "dtcgDefault": "royalblue"
+  },
+  "ux.action.outlineColor": {
+    "hash": "8mwkpy",
+    "var": "--ux-8mwkpy",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionChosen.backgroundColor": {
+    "hash": "9qpf6c",
+    "var": "--ux-9qpf6c",
+    "legacyDefault": "#00a4a6",
+    "token": "color-action-background-tertiary-pressed",
+    "dtcgDefault": "gainsboro"
+  },
+  "ux.actionChosen.borderColor": {
+    "hash": "1xliuhi",
+    "var": "--ux-1xliuhi",
+    "legacyDefault": "#00a4a6",
+    "token": "color-action-border-tertiary-pressed",
+    "dtcgDefault": "darkgray"
+  },
+  "ux.actionChosen.borderRadius": {
+    "hash": "jtwoyb",
+    "var": "--ux-jtwoyb",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionChosen.borderWidth": {
+    "hash": "z7ofpp",
+    "var": "--ux-z7ofpp",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionChosen.foregroundColor": {
+    "hash": "h6e7c1",
+    "var": "--ux-h6e7c1",
+    "legacyDefault": "#fff",
+    "token": "color-action-text-tertiary-pressed",
+    "dtcgDefault": "midnightblue"
+  },
+  "ux.actionChosen.outlineColor": {
+    "hash": "1ktd0ca",
+    "var": "--ux-1ktd0ca",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControl.backgroundColor": {
+    "hash": "1mh0ktr",
+    "var": "--ux-1mh0ktr",
+    "legacyDefault": "#f5f5f5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControl.borderColor": {
+    "hash": "1qbn65p",
+    "var": "--ux-1qbn65p",
+    "legacyDefault": "#f5f5f5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControl.borderRadius": {
+    "hash": "zvaw3s",
+    "var": "--ux-zvaw3s",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControl.borderWidth": {
+    "hash": "cc7x2",
+    "var": "--ux-cc7x2",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControl.foregroundColor": {
+    "hash": "1utwv7e",
+    "var": "--ux-1utwv7e",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControl.outlineColor": {
+    "hash": "1iktadd",
+    "var": "--ux-1iktadd",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlChosen.backgroundColor": {
+    "hash": "gdy377",
+    "var": "--ux-gdy377",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlChosen.borderColor": {
+    "hash": "187j9dd",
+    "var": "--ux-187j9dd",
+    "legacyDefault": "#00a4a6",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlChosen.borderRadius": {
+    "hash": "ocvlxw",
+    "var": "--ux-ocvlxw",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlChosen.borderWidth": {
+    "hash": "kvre16",
+    "var": "--ux-kvre16",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlChosen.foregroundColor": {
+    "hash": "k4fkva",
+    "var": "--ux-k4fkva",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlChosen.outlineColor": {
+    "hash": "ws2b8d",
+    "var": "--ux-ws2b8d",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlFocused.backgroundColor": {
+    "hash": "qebq9u",
+    "var": "--ux-qebq9u",
+    "legacyDefault": "#f5f5f5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlFocused.borderColor": {
+    "hash": "18hlgn4",
+    "var": "--ux-18hlgn4",
+    "legacyDefault": "#d6d6d6",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlFocused.borderRadius": {
+    "hash": "kdmzt1",
+    "var": "--ux-kdmzt1",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlFocused.borderWidth": {
+    "hash": "q86vbv",
+    "var": "--ux-q86vbv",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlFocused.foregroundColor": {
+    "hash": "6gm31z",
+    "var": "--ux-6gm31z",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlFocused.outlineColor": {
+    "hash": "1njwmlo",
+    "var": "--ux-1njwmlo",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlHovered.backgroundColor": {
+    "hash": "11rtwg8",
+    "var": "--ux-11rtwg8",
+    "legacyDefault": "#f5f5f5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlHovered.borderColor": {
+    "hash": "bg7olm",
+    "var": "--ux-bg7olm",
+    "legacyDefault": "#d6d6d6",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlHovered.borderRadius": {
+    "hash": "mpv2fj",
+    "var": "--ux-mpv2fj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlHovered.borderWidth": {
+    "hash": "q5jadt",
+    "var": "--ux-q5jadt",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlHovered.foregroundColor": {
+    "hash": "1e4ese5",
+    "var": "--ux-1e4ese5",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionControlHovered.outlineColor": {
+    "hash": "r2wrvq",
+    "var": "--ux-r2wrvq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCritical.backgroundColor": {
+    "hash": "1marogz",
+    "var": "--ux-1marogz",
+    "legacyDefault": "#ae1302",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCritical.borderColor": {
+    "hash": "ceou01",
+    "var": "--ux-ceou01",
+    "legacyDefault": "#ae1302",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCritical.borderRadius": {
+    "hash": "1ycetr8",
+    "var": "--ux-1ycetr8",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCritical.borderWidth": {
+    "hash": "ijmtbu",
+    "var": "--ux-ijmtbu",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCritical.foregroundColor": {
+    "hash": "17htz86",
+    "var": "--ux-17htz86",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCritical.outlineColor": {
+    "hash": "15f15e5",
+    "var": "--ux-15f15e5",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalChosen.backgroundColor": {
+    "hash": "926l8f",
+    "var": "--ux-926l8f",
+    "legacyDefault": "#850f01",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalChosen.borderColor": {
+    "hash": "w3lhdp",
+    "var": "--ux-w3lhdp",
+    "legacyDefault": "#850f01",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalChosen.borderRadius": {
+    "hash": "4a6v3s",
+    "var": "--ux-4a6v3s",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalChosen.borderWidth": {
+    "hash": "1e5fs86",
+    "var": "--ux-1e5fs86",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalChosen.foregroundColor": {
+    "hash": "17znn9m",
+    "var": "--ux-17znn9m",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalChosen.outlineColor": {
+    "hash": "lotcpd",
+    "var": "--ux-lotcpd",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalFocused.backgroundColor": {
+    "hash": "83yt9q",
+    "var": "--ux-83yt9q",
+    "legacyDefault": "#db1802",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalFocused.borderColor": {
+    "hash": "1novelo",
+    "var": "--ux-1novelo",
+    "legacyDefault": "#db1802",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalFocused.borderRadius": {
+    "hash": "xkuqrt",
+    "var": "--ux-xkuqrt",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalFocused.borderWidth": {
+    "hash": "1ndkjvb",
+    "var": "--ux-1ndkjvb",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalFocused.foregroundColor": {
+    "hash": "tt846z",
+    "var": "--ux-tt846z",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalFocused.outlineColor": {
+    "hash": "1she0w",
+    "var": "--ux-1she0w",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalHovered.backgroundColor": {
+    "hash": "1q4q36s",
+    "var": "--ux-1q4q36s",
+    "legacyDefault": "#db1802",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalHovered.borderColor": {
+    "hash": "n0tova",
+    "var": "--ux-n0tova",
+    "legacyDefault": "#db1802",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalHovered.borderRadius": {
+    "hash": "4qu2v7",
+    "var": "--ux-4qu2v7",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalHovered.borderWidth": {
+    "hash": "kx5b8d",
+    "var": "--ux-kx5b8d",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalHovered.foregroundColor": {
+    "hash": "9cq6k1",
+    "var": "--ux-9cq6k1",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionCriticalHovered.outlineColor": {
+    "hash": "1tc6956",
+    "var": "--ux-1tc6956",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionFocused.backgroundColor": {
+    "hash": "15qjz45",
+    "var": "--ux-15qjz45",
+    "legacyDefault": "rgba(17, 17, 17, 0.1)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionFocused.borderColor": {
+    "hash": "1ds8u13",
+    "var": "--ux-1ds8u13",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionFocused.borderRadius": {
+    "hash": "igzbky",
+    "var": "--ux-igzbky",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionFocused.borderWidth": {
+    "hash": "1qsd3ss",
+    "var": "--ux-1qsd3ss",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionFocused.foregroundColor": {
+    "hash": "1e85ids",
+    "var": "--ux-1e85ids",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionFocused.outlineColor": {
+    "hash": "io2uwb",
+    "var": "--ux-io2uwb",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionHovered.backgroundColor": {
+    "hash": "1m7qrkf",
+    "var": "--ux-1m7qrkf",
+    "legacyDefault": "rgba(17, 17, 17, 0.1)",
+    "token": "color-action-background-tertiary-hovered",
+    "dtcgDefault": "whitesmoke"
+  },
+  "ux.actionHovered.borderColor": {
+    "hash": "1bdtclp",
+    "var": "--ux-1bdtclp",
+    "legacyDefault": "transparent",
+    "token": "color-action-border-tertiary-hovered",
+    "dtcgDefault": "silver"
+  },
+  "ux.actionHovered.borderRadius": {
+    "hash": "sh3tns",
+    "var": "--ux-sh3tns",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionHovered.borderWidth": {
+    "hash": "vhg3na",
+    "var": "--ux-vhg3na",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionHovered.foregroundColor": {
+    "hash": "unx9i2",
+    "var": "--ux-unx9i2",
+    "legacyDefault": "#111",
+    "token": "color-action-text-tertiary-hovered",
+    "dtcgDefault": "teal"
+  },
+  "ux.actionHovered.outlineColor": {
+    "hash": "umdazl",
+    "var": "--ux-umdazl",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOption.backgroundColor": {
+    "hash": "1sw32wb",
+    "var": "--ux-1sw32wb",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOption.borderColor": {
+    "hash": "iz7fvt",
+    "var": "--ux-iz7fvt",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOption.borderRadius": {
+    "hash": "1frurfw",
+    "var": "--ux-1frurfw",
+    "legacyDefault": "0",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOption.borderWidth": {
+    "hash": "1ygxynm",
+    "var": "--ux-1ygxynm",
+    "legacyDefault": "0.0625rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOption.foregroundColor": {
+    "hash": "1wf60ri",
+    "var": "--ux-1wf60ri",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOption.outlineColor": {
+    "hash": "1tuh6f9",
+    "var": "--ux-1tuh6f9",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionChosen.backgroundColor": {
+    "hash": "9cqgfr",
+    "var": "--ux-9cqgfr",
+    "legacyDefault": "#f5f7f8",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionChosen.borderColor": {
+    "hash": "5g19it",
+    "var": "--ux-5g19it",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionChosen.borderRadius": {
+    "hash": "1k7w3lc",
+    "var": "--ux-1k7w3lc",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionChosen.borderWidth": {
+    "hash": "36ccxa",
+    "var": "--ux-36ccxa",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionChosen.foregroundColor": {
+    "hash": "h8m2iq",
+    "var": "--ux-h8m2iq",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionChosen.outlineColor": {
+    "hash": "1cl5brt",
+    "var": "--ux-1cl5brt",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionFocused.backgroundColor": {
+    "hash": "1tn536u",
+    "var": "--ux-1tn536u",
+    "legacyDefault": "#f5f5f5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionFocused.borderColor": {
+    "hash": "1x4s92c",
+    "var": "--ux-1x4s92c",
+    "legacyDefault": "#f5f5f5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionFocused.borderRadius": {
+    "hash": "1nlxwe9",
+    "var": "--ux-1nlxwe9",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionFocused.borderWidth": {
+    "hash": "btesf3",
+    "var": "--ux-btesf3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionFocused.foregroundColor": {
+    "hash": "1jz8rn7",
+    "var": "--ux-1jz8rn7",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionFocused.outlineColor": {
+    "hash": "1s3rs7c",
+    "var": "--ux-1s3rs7c",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionHovered.backgroundColor": {
+    "hash": "1x1u50s",
+    "var": "--ux-1x1u50s",
+    "legacyDefault": "#e8eaeb",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionHovered.borderColor": {
+    "hash": "19xthpq",
+    "var": "--ux-19xthpq",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionHovered.borderRadius": {
+    "hash": "qn0bm3",
+    "var": "--ux-qn0bm3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionHovered.borderWidth": {
+    "hash": "108v1hx",
+    "var": "--ux-108v1hx",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionHovered.foregroundColor": {
+    "hash": "1mntjax",
+    "var": "--ux-1mntjax",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionOptionHovered.outlineColor": {
+    "hash": "16ez05e",
+    "var": "--ux-16ez05e",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimary.backgroundColor": {
+    "hash": "c5mlr8",
+    "var": "--ux-c5mlr8",
+    "legacyDefault": "#111",
+    "token": "color-action-background-primary-default",
+    "dtcgDefault": "royalblue"
+  },
+  "ux.actionPrimary.borderColor": {
+    "hash": "kdwujq",
+    "var": "--ux-kdwujq",
+    "legacyDefault": "#111",
+    "token": "color-action-border-primary-default",
+    "dtcgDefault": "royalblue"
+  },
+  "ux.actionPrimary.borderRadius": {
+    "hash": "pe46kj",
+    "var": "--ux-pe46kj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimary.borderWidth": {
+    "hash": "k7zm59",
+    "var": "--ux-k7zm59",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimary.foregroundColor": {
+    "hash": "t04p4h",
+    "var": "--ux-t04p4h",
+    "legacyDefault": "#fff",
+    "token": "color-action-text-primary-default",
+    "dtcgDefault": "white"
+  },
+  "ux.actionPrimary.outlineColor": {
+    "hash": "1nlagp6",
+    "var": "--ux-1nlagp6",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryChosen.backgroundColor": {
+    "hash": "1ehwjjs",
+    "var": "--ux-1ehwjjs",
+    "legacyDefault": "#00a4a6",
+    "token": "color-action-background-primary-pressed",
+    "dtcgDefault": "midnightblue"
+  },
+  "ux.actionPrimaryChosen.borderColor": {
+    "hash": "1hnbfne",
+    "var": "--ux-1hnbfne",
+    "legacyDefault": "#00a4a6",
+    "token": "color-action-border-primary-pressed",
+    "dtcgDefault": "midnightblue"
+  },
+  "ux.actionPrimaryChosen.borderRadius": {
+    "hash": "yfjspr",
+    "var": "--ux-yfjspr",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryChosen.borderWidth": {
+    "hash": "kw43nl",
+    "var": "--ux-kw43nl",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryChosen.foregroundColor": {
+    "hash": "1uyxcq5",
+    "var": "--ux-1uyxcq5",
+    "legacyDefault": "#fff",
+    "token": "color-action-text-primary-pressed",
+    "dtcgDefault": "white"
+  },
+  "ux.actionPrimaryChosen.outlineColor": {
+    "hash": "cc9sba",
+    "var": "--ux-cc9sba",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryFocused.backgroundColor": {
+    "hash": "vhbo95",
+    "var": "--ux-vhbo95",
+    "legacyDefault": "#444444",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryFocused.borderColor": {
+    "hash": "1331zgr",
+    "var": "--ux-1331zgr",
+    "legacyDefault": "#444444",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryFocused.borderRadius": {
+    "hash": "jhk9hq",
+    "var": "--ux-jhk9hq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryFocused.borderWidth": {
+    "hash": "rehd5c",
+    "var": "--ux-rehd5c",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryFocused.foregroundColor": {
+    "hash": "lrwu2k",
+    "var": "--ux-lrwu2k",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryFocused.outlineColor": {
+    "hash": "5mgu1z",
+    "var": "--ux-5mgu1z",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryHovered.backgroundColor": {
+    "hash": "ran6wz",
+    "var": "--ux-ran6wz",
+    "legacyDefault": "#444444",
+    "token": "color-action-background-primary-hovered",
+    "dtcgDefault": "teal"
+  },
+  "ux.actionPrimaryHovered.borderColor": {
+    "hash": "bgke81",
+    "var": "--ux-bgke81",
+    "legacyDefault": "#444444",
+    "token": "color-action-border-primary-hovered",
+    "dtcgDefault": "teal"
+  },
+  "ux.actionPrimaryHovered.borderRadius": {
+    "hash": "wgo7us",
+    "var": "--ux-wgo7us",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryHovered.borderWidth": {
+    "hash": "goxwgq",
+    "var": "--ux-goxwgq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionPrimaryHovered.foregroundColor": {
+    "hash": "1ckzto6",
+    "var": "--ux-1ckzto6",
+    "legacyDefault": "#fff",
+    "token": "color-action-text-primary-hovered",
+    "dtcgDefault": "white"
+  },
+  "ux.actionPrimaryHovered.outlineColor": {
+    "hash": "1fv4i99",
+    "var": "--ux-1fv4i99",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondary.backgroundColor": {
+    "hash": "1r87102",
+    "var": "--ux-1r87102",
+    "legacyDefault": "#fff",
+    "token": "color-action-background-secondary-default",
+    "dtcgDefault": "lavender"
+  },
+  "ux.actionSecondary.borderColor": {
+    "hash": "1p5s1n4",
+    "var": "--ux-1p5s1n4",
+    "legacyDefault": "#767676",
+    "token": "color-action-border-secondary-default",
+    "dtcgDefault": "silver"
+  },
+  "ux.actionSecondary.borderRadius": {
+    "hash": "1y4ebat",
+    "var": "--ux-1y4ebat",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondary.borderWidth": {
+    "hash": "6q21m3",
+    "var": "--ux-6q21m3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondary.foregroundColor": {
+    "hash": "w7826f",
+    "var": "--ux-w7826f",
+    "legacyDefault": "#111",
+    "token": "color-action-text-secondary-default",
+    "dtcgDefault": "black"
+  },
+  "ux.actionSecondary.outlineColor": {
+    "hash": "1hxoam4",
+    "var": "--ux-1hxoam4",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryChosen.backgroundColor": {
+    "hash": "ix2s5q",
+    "var": "--ux-ix2s5q",
+    "legacyDefault": "#00a4a6",
+    "token": "color-action-background-secondary-pressed",
+    "dtcgDefault": "silver"
+  },
+  "ux.actionSecondaryChosen.borderColor": {
+    "hash": "1ixzvrg",
+    "var": "--ux-1ixzvrg",
+    "legacyDefault": "#00a4a6",
+    "token": "color-action-border-secondary-pressed",
+    "dtcgDefault": "gray"
+  },
+  "ux.actionSecondaryChosen.borderRadius": {
+    "hash": "1offyw9",
+    "var": "--ux-1offyw9",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryChosen.borderWidth": {
+    "hash": "1rfac8n",
+    "var": "--ux-1rfac8n",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryChosen.foregroundColor": {
+    "hash": "19ykcyj",
+    "var": "--ux-19ykcyj",
+    "legacyDefault": "#fff",
+    "token": "color-action-text-secondary-pressed",
+    "dtcgDefault": "black"
+  },
+  "ux.actionSecondaryChosen.outlineColor": {
+    "hash": "1l1o468",
+    "var": "--ux-1l1o468",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryFocused.backgroundColor": {
+    "hash": "vqhzzz",
+    "var": "--ux-vqhzzz",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryFocused.borderColor": {
+    "hash": "8qoawt",
+    "var": "--ux-8qoawt",
+    "legacyDefault": "#09757a",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryFocused.borderRadius": {
+    "hash": "1e0u114",
+    "var": "--ux-1e0u114",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryFocused.borderWidth": {
+    "hash": "35c8o6",
+    "var": "--ux-35c8o6",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryFocused.foregroundColor": {
+    "hash": "vwf4ne",
+    "var": "--ux-vwf4ne",
+    "legacyDefault": "#09757a",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryFocused.outlineColor": {
+    "hash": "953c7l",
+    "var": "--ux-953c7l",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryHovered.backgroundColor": {
+    "hash": "c624hh",
+    "var": "--ux-c624hh",
+    "legacyDefault": "#fff",
+    "token": "color-action-background-secondary-hovered",
+    "dtcgDefault": "lightgray"
+  },
+  "ux.actionSecondaryHovered.borderColor": {
+    "hash": "kkdx4n",
+    "var": "--ux-kkdx4n",
+    "legacyDefault": "#09757a",
+    "token": "color-action-border-secondary-hovered",
+    "dtcgDefault": "darkgray"
+  },
+  "ux.actionSecondaryHovered.borderRadius": {
+    "hash": "12gioky",
+    "var": "--ux-12gioky",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryHovered.borderWidth": {
+    "hash": "1v4oiek",
+    "var": "--ux-1v4oiek",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.actionSecondaryHovered.foregroundColor": {
+    "hash": "1e7hthc",
+    "var": "--ux-1e7hthc",
+    "legacyDefault": "#09757a",
+    "token": "color-action-text-secondary-hovered",
+    "dtcgDefault": "black"
+  },
+  "ux.actionSecondaryHovered.outlineColor": {
+    "hash": "1i4dxzv",
+    "var": "--ux-1i4dxzv",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.box.backgroundColor": {
+    "hash": "cao06b",
+    "var": "--ux-cao06b",
+    "legacyDefault": "#fff",
+    "tokens": [
+      {
+        "token": "color-canvas-background",
+        "dtcgDefault": "white"
+      },
+      {
+        "token": "color-surface-background-base",
+        "dtcgDefault": "white"
+      },
+      {
+        "token": "color-surface-background-card",
+        "dtcgDefault": "white"
+      }
+    ]
+  },
+  "ux.box.borderColor": {
+    "hash": "97h3vl",
+    "var": "--ux-97h3vl",
+    "legacyDefault": "#d4dbe0",
+    "tokens": [
+      {
+        "token": "color-surface-border-base",
+        "dtcgDefault": "lavender"
+      },
+      {
+        "token": "color-surface-border-card",
+        "dtcgDefault": "lavender"
+      }
+    ]
+  },
+  "ux.box.borderRadius": {
+    "hash": "2jubes",
+    "var": "--ux-2jubes",
+    "legacyDefault": "6px",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.box.borderWidth": {
+    "hash": "19wr3kq",
+    "var": "--ux-19wr3kq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.box.density": {
+    "hash": "1sbfig8",
+    "var": "--ux-1sbfig8",
+    "legacyDefault": "0.25rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.box.foregroundColor": {
+    "hash": "1leynsm",
+    "var": "--ux-1leynsm",
+    "legacyDefault": "#111",
+    "tokens": [
+      {
+        "token": "color-canvas-text",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-surface-text-base",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-surface-text-card",
+        "dtcgDefault": "black"
+      }
+    ]
+  },
+  "ux.box.outlineColor": {
+    "hash": "wikx71",
+    "var": "--ux-wikx71",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrast.backgroundColor": {
+    "hash": "7wu8i7",
+    "var": "--ux-7wu8i7",
+    "legacyDefault": "#111",
+    "token": "color-surface-background-raised",
+    "dtcgDefault": "snow"
+  },
+  "ux.boxHighContrast.borderColor": {
+    "hash": "1nx9aml",
+    "var": "--ux-1nx9aml",
+    "legacyDefault": "#2b2b2b",
+    "token": "color-surface-border-raised",
+    "dtcgDefault": "lavender"
+  },
+  "ux.boxHighContrast.borderRadius": {
+    "hash": "7r433c",
+    "var": "--ux-7r433c",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrast.borderWidth": {
+    "hash": "7qomgm",
+    "var": "--ux-7qomgm",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrast.density": {
+    "hash": "52eao4",
+    "var": "--ux-52eao4",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrast.foregroundColor": {
+    "hash": "1o8cusa",
+    "var": "--ux-1o8cusa",
+    "legacyDefault": "#fff",
+    "token": "color-surface-text-raised",
+    "dtcgDefault": "black"
+  },
+  "ux.boxHighContrast.outlineColor": {
+    "hash": "cyu71d",
+    "var": "--ux-cyu71d",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrastOverlay.backgroundColor": {
+    "hash": "wxwyd1",
+    "var": "--ux-wxwyd1",
+    "legacyDefault": "rgba(0, 0, 0, 0.6)",
+    "token": "color-surface-background-overlay",
+    "dtcgDefault": "white"
+  },
+  "ux.boxHighContrastOverlay.borderColor": {
+    "hash": "17fhz5j",
+    "var": "--ux-17fhz5j",
+    "legacyDefault": "#2b2b2b",
+    "token": "color-surface-border-overlay",
+    "dtcgDefault": "lightgray"
+  },
+  "ux.boxHighContrastOverlay.borderRadius": {
+    "hash": "1x8ztma",
+    "var": "--ux-1x8ztma",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrastOverlay.borderWidth": {
+    "hash": "l3e54c",
+    "var": "--ux-l3e54c",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrastOverlay.density": {
+    "hash": "19ln2xq",
+    "var": "--ux-19ln2xq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxHighContrastOverlay.foregroundColor": {
+    "hash": "i4fj7k",
+    "var": "--ux-i4fj7k",
+    "legacyDefault": "#fff",
+    "token": "color-surface-text-overlay",
+    "dtcgDefault": "black"
+  },
+  "ux.boxHighContrastOverlay.outlineColor": {
+    "hash": "1newxuj",
+    "var": "--ux-1newxuj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.backgroundColor": {
+    "hash": "l7zq7p",
+    "var": "--ux-l7zq7p",
+    "legacyDefault": "#f5f7f8",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.borderColor": {
+    "hash": "1vw9arb",
+    "var": "--ux-1vw9arb",
+    "legacyDefault": "#d6d6d6",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.borderRadius": {
+    "hash": "1pg7kmq",
+    "var": "--ux-1pg7kmq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.borderWidth": {
+    "hash": "1csydbg",
+    "var": "--ux-1csydbg",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.density": {
+    "hash": "bcvuu6",
+    "var": "--ux-bcvuu6",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.foregroundColor": {
+    "hash": "vuekow",
+    "var": "--ux-vuekow",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrast.outlineColor": {
+    "hash": "1nn4w7v",
+    "var": "--ux-1nn4w7v",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.backgroundColor": {
+    "hash": "1iqicpb",
+    "var": "--ux-1iqicpb",
+    "legacyDefault": "rgba(243, 243, 243, 0.8)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.borderColor": {
+    "hash": "5n4ibx",
+    "var": "--ux-5n4ibx",
+    "legacyDefault": "#d4dbe0",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.borderRadius": {
+    "hash": "148vqzs",
+    "var": "--ux-148vqzs",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.borderWidth": {
+    "hash": "iwu706",
+    "var": "--ux-iwu706",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.density": {
+    "hash": "ter9j8",
+    "var": "--ux-ter9j8",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.foregroundColor": {
+    "hash": "c3e9y2",
+    "var": "--ux-c3e9y2",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.boxLowContrastOverlay.outlineColor": {
+    "hash": "3r9c0x",
+    "var": "--ux-3r9c0x",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.control.backgroundColor": {
+    "hash": "1nu8itt",
+    "var": "--ux-1nu8itt",
+    "legacyDefault": "#fff",
+    "token": "color-input-background-default",
+    "dtcgDefault": "white"
+  },
+  "ux.control.borderColor": {
+    "hash": "by6mab",
+    "var": "--ux-by6mab",
+    "legacyDefault": "#767676",
+    "token": "color-input-border-default",
+    "dtcgDefault": "lightgray"
+  },
+  "ux.control.borderRadius": {
+    "hash": "1oqjeuu",
+    "var": "--ux-1oqjeuu",
+    "legacyDefault": "6px",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.control.borderWidth": {
+    "hash": "3lhizs",
+    "var": "--ux-3lhizs",
+    "legacyDefault": "0.0625rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.control.foregroundColor": {
+    "hash": "1glcx6s",
+    "var": "--ux-1glcx6s",
+    "legacyDefault": "#2b2b2b",
+    "token": "color-input-text-default",
+    "dtcgDefault": "black"
+  },
+  "ux.control.outlineColor": {
+    "hash": "10jlyin",
+    "var": "--ux-10jlyin",
+    "legacyDefault": "#000",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlChosen.backgroundColor": {
+    "hash": "sywk25",
+    "var": "--ux-sywk25",
+    "legacyDefault": "#00a4a6",
+    "tokens": [
+      {
+        "token": "color-input-background-selected",
+        "dtcgDefault": "lavender"
+      },
+      {
+        "token": "color-input-background-selected-hovered",
+        "dtcgDefault": "powderblue"
+      },
+      {
+        "token": "color-input-background-selected-pressed",
+        "dtcgDefault": "lightskyblue"
+      }
+    ]
+  },
+  "ux.controlChosen.borderColor": {
+    "hash": "77zzwv",
+    "var": "--ux-77zzwv",
+    "legacyDefault": "#00a4a6",
+    "tokens": [
+      {
+        "token": "color-input-border-selected",
+        "dtcgDefault": "royalblue"
+      },
+      {
+        "token": "color-input-border-selected-hovered",
+        "dtcgDefault": "teal"
+      },
+      {
+        "token": "color-input-border-selected-pressed",
+        "dtcgDefault": "midnightblue"
+      }
+    ]
+  },
+  "ux.controlChosen.borderRadius": {
+    "hash": "1g781be",
+    "var": "--ux-1g781be",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlChosen.borderWidth": {
+    "hash": "x0z78",
+    "var": "--ux-x0z78",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlChosen.foregroundColor": {
+    "hash": "1lw8azc",
+    "var": "--ux-1lw8azc",
+    "legacyDefault": "#fff",
+    "tokens": [
+      {
+        "token": "color-input-text-selected",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-input-text-selected-hovered",
+        "dtcgDefault": "black"
+      },
+      {
+        "token": "color-input-text-selected-pressed",
+        "dtcgDefault": "black"
+      }
+    ]
+  },
+  "ux.controlChosen.outlineColor": {
+    "hash": "18vl277",
+    "var": "--ux-18vl277",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCritical.backgroundColor": {
+    "hash": "ml23x6",
+    "var": "--ux-ml23x6",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCritical.borderColor": {
+    "hash": "8407ko",
+    "var": "--ux-8407ko",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCritical.borderRadius": {
+    "hash": "l5siyl",
+    "var": "--ux-l5siyl",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCritical.borderWidth": {
+    "hash": "1oilmcj",
+    "var": "--ux-1oilmcj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCritical.foregroundColor": {
+    "hash": "y9h6tr",
+    "var": "--ux-y9h6tr",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCritical.outlineColor": {
+    "hash": "1rlgeno",
+    "var": "--ux-1rlgeno",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalChosen.backgroundColor": {
+    "hash": "1136wzq",
+    "var": "--ux-1136wzq",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalChosen.borderColor": {
+    "hash": "o6bu6c",
+    "var": "--ux-o6bu6c",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalChosen.borderRadius": {
+    "hash": "1ms1fvl",
+    "var": "--ux-1ms1fvl",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalChosen.borderWidth": {
+    "hash": "kd5jjz",
+    "var": "--ux-kd5jjz",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalChosen.foregroundColor": {
+    "hash": "1puehcj",
+    "var": "--ux-1puehcj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalChosen.outlineColor": {
+    "hash": "1emrmp4",
+    "var": "--ux-1emrmp4",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalFocused.backgroundColor": {
+    "hash": "99rjuf",
+    "var": "--ux-99rjuf",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalFocused.borderColor": {
+    "hash": "1fekx2t",
+    "var": "--ux-1fekx2t",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalFocused.borderRadius": {
+    "hash": "n1ib74",
+    "var": "--ux-n1ib74",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalFocused.borderWidth": {
+    "hash": "12oa772",
+    "var": "--ux-12oa772",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalFocused.foregroundColor": {
+    "hash": "1h0i4zm",
+    "var": "--ux-1h0i4zm",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalFocused.outlineColor": {
+    "hash": "gyx95",
+    "var": "--ux-gyx95",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalHovered.backgroundColor": {
+    "hash": "y8ke4d",
+    "var": "--ux-y8ke4d",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalHovered.borderColor": {
+    "hash": "1cjd6f3",
+    "var": "--ux-1cjd6f3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalHovered.borderRadius": {
+    "hash": "1v7nabe",
+    "var": "--ux-1v7nabe",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalHovered.borderWidth": {
+    "hash": "1ax65d0",
+    "var": "--ux-1ax65d0",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalHovered.foregroundColor": {
+    "hash": "x8fngo",
+    "var": "--ux-x8fngo",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlCriticalHovered.outlineColor": {
+    "hash": "jyesr7",
+    "var": "--ux-jyesr7",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlFocused.backgroundColor": {
+    "hash": "1bhon5o",
+    "var": "--ux-1bhon5o",
+    "legacyDefault": "rgba(17, 17, 17, 0.1)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlFocused.borderColor": {
+    "hash": "1ku7w5a",
+    "var": "--ux-1ku7w5a",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlFocused.borderRadius": {
+    "hash": "az5g57",
+    "var": "--ux-az5g57",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlFocused.borderWidth": {
+    "hash": "1ul4sdh",
+    "var": "--ux-1ul4sdh",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlFocused.foregroundColor": {
+    "hash": "1klhlu1",
+    "var": "--ux-1klhlu1",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlFocused.outlineColor": {
+    "hash": "1im0suq",
+    "var": "--ux-1im0suq",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlHovered.backgroundColor": {
+    "hash": "6k4dbq",
+    "var": "--ux-6k4dbq",
+    "legacyDefault": null,
+    "token": "color-input-background-hovered",
+    "dtcgDefault": "snow"
+  },
+  "ux.controlHovered.borderColor": {
+    "hash": "1bdyuno",
+    "var": "--ux-1bdyuno",
+    "legacyDefault": "#00a4a6",
+    "token": "color-input-border-hovered",
+    "dtcgDefault": "darkgray"
+  },
+  "ux.controlHovered.borderRadius": {
+    "hash": "1jc4m9d",
+    "var": "--ux-1jc4m9d",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlHovered.borderWidth": {
+    "hash": "tn5lkf",
+    "var": "--ux-tn5lkf",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlHovered.foregroundColor": {
+    "hash": "wnuweb",
+    "var": "--ux-wnuweb",
+    "legacyDefault": null,
+    "token": "color-input-text-hovered",
+    "dtcgDefault": "black"
+  },
+  "ux.controlHovered.outlineColor": {
+    "hash": "14wjcd4",
+    "var": "--ux-14wjcd4",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnob.backgroundColor": {
+    "hash": "11i8wqh",
+    "var": "--ux-11i8wqh",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnob.borderColor": {
+    "hash": "1szqg1n",
+    "var": "--ux-1szqg1n",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnob.borderRadius": {
+    "hash": "k5kbz2",
+    "var": "--ux-k5kbz2",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnob.borderWidth": {
+    "hash": "14pw934",
+    "var": "--ux-14pw934",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnob.foregroundColor": {
+    "hash": "jg1pik",
+    "var": "--ux-jg1pik",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnob.outlineColor": {
+    "hash": "123ab2v",
+    "var": "--ux-123ab2v",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobChosen.backgroundColor": {
+    "hash": "pvoulh",
+    "var": "--ux-pvoulh",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobChosen.borderColor": {
+    "hash": "1tk38x3",
+    "var": "--ux-1tk38x3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobChosen.borderRadius": {
+    "hash": "z5zhhe",
+    "var": "--ux-z5zhhe",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobChosen.borderWidth": {
+    "hash": "1r9sw64",
+    "var": "--ux-1r9sw64",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobChosen.foregroundColor": {
+    "hash": "yhzkkw",
+    "var": "--ux-yhzkkw",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobChosen.outlineColor": {
+    "hash": "1lnbeh7",
+    "var": "--ux-1lnbeh7",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCritical.backgroundColor": {
+    "hash": "9bh9rm",
+    "var": "--ux-9bh9rm",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCritical.borderColor": {
+    "hash": "1pfh86o",
+    "var": "--ux-1pfh86o",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCritical.borderRadius": {
+    "hash": "y862s5",
+    "var": "--ux-y862s5",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCritical.borderWidth": {
+    "hash": "ygplor",
+    "var": "--ux-ygplor",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCritical.foregroundColor": {
+    "hash": "1gypgdj",
+    "var": "--ux-1gypgdj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCritical.outlineColor": {
+    "hash": "179tqzg",
+    "var": "--ux-179tqzg",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalChosen.backgroundColor": {
+    "hash": "1fcfe9a",
+    "var": "--ux-1fcfe9a",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalChosen.borderColor": {
+    "hash": "3skelo",
+    "var": "--ux-3skelo",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalChosen.borderRadius": {
+    "hash": "11kdop",
+    "var": "--ux-11kdop",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalChosen.borderWidth": {
+    "hash": "umlujb",
+    "var": "--ux-umlujb",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalChosen.foregroundColor": {
+    "hash": "pmc2wr",
+    "var": "--ux-pmc2wr",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalChosen.outlineColor": {
+    "hash": "l60k74",
+    "var": "--ux-l60k74",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalFocused.backgroundColor": {
+    "hash": "lt1tjz",
+    "var": "--ux-lt1tjz",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalFocused.borderColor": {
+    "hash": "119k17h",
+    "var": "--ux-119k17h",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalFocused.borderRadius": {
+    "hash": "1h4euoo",
+    "var": "--ux-1h4euoo",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalFocused.borderWidth": {
+    "hash": "1rwle9y",
+    "var": "--ux-1rwle9y",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalFocused.foregroundColor": {
+    "hash": "zxzmei",
+    "var": "--ux-zxzmei",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalFocused.outlineColor": {
+    "hash": "fcr7zl",
+    "var": "--ux-fcr7zl",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalHovered.backgroundColor": {
+    "hash": "1yku1p1",
+    "var": "--ux-1yku1p1",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalHovered.borderColor": {
+    "hash": "6du6hj",
+    "var": "--ux-6du6hj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalHovered.borderRadius": {
+    "hash": "12k4yoi",
+    "var": "--ux-12k4yoi",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalHovered.borderWidth": {
+    "hash": "13ao4zw",
+    "var": "--ux-13ao4zw",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalHovered.foregroundColor": {
+    "hash": "x7wa8w",
+    "var": "--ux-x7wa8w",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobCriticalHovered.outlineColor": {
+    "hash": "kqb8mz",
+    "var": "--ux-kqb8mz",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobFocused.backgroundColor": {
+    "hash": "payzf8",
+    "var": "--ux-payzf8",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobFocused.borderColor": {
+    "hash": "1oglamu",
+    "var": "--ux-1oglamu",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobFocused.borderRadius": {
+    "hash": "8w22kz",
+    "var": "--ux-8w22kz",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobFocused.borderWidth": {
+    "hash": "16qv2od",
+    "var": "--ux-16qv2od",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobFocused.foregroundColor": {
+    "hash": "yl7bc1",
+    "var": "--ux-yl7bc1",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobFocused.outlineColor": {
+    "hash": "1e2e9ve",
+    "var": "--ux-1e2e9ve",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobHovered.backgroundColor": {
+    "hash": "gdfpcu",
+    "var": "--ux-gdfpcu",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobHovered.borderColor": {
+    "hash": "10l3tcs",
+    "var": "--ux-10l3tcs",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobHovered.borderRadius": {
+    "hash": "1owzuqh",
+    "var": "--ux-1owzuqh",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobHovered.borderWidth": {
+    "hash": "9u01zb",
+    "var": "--ux-9u01zb",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobHovered.foregroundColor": {
+    "hash": "qcz6y3",
+    "var": "--ux-qcz6y3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlKnobHovered.outlineColor": {
+    "hash": "31oipc",
+    "var": "--ux-31oipc",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoid.backgroundColor": {
+    "hash": "1kpdpz9",
+    "var": "--ux-1kpdpz9",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoid.borderColor": {
+    "hash": "1p4dc1z",
+    "var": "--ux-1p4dc1z",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoid.borderRadius": {
+    "hash": "1kjm8y",
+    "var": "--ux-1kjm8y",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoid.borderWidth": {
+    "hash": "3qwjgc",
+    "var": "--ux-3qwjgc",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoid.foregroundColor": {
+    "hash": "1nk9qds",
+    "var": "--ux-1nk9qds",
+    "legacyDefault": "#767676",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoid.outlineColor": {
+    "hash": "1m6arzf",
+    "var": "--ux-1m6arzf",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidChosen.backgroundColor": {
+    "hash": "y20xsp",
+    "var": "--ux-y20xsp",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidChosen.borderColor": {
+    "hash": "1yfmhej",
+    "var": "--ux-1yfmhej",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidChosen.borderRadius": {
+    "hash": "1t6poou",
+    "var": "--ux-1t6poou",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidChosen.borderWidth": {
+    "hash": "1v0ot9c",
+    "var": "--ux-1v0ot9c",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidChosen.foregroundColor": {
+    "hash": "t7jz2k",
+    "var": "--ux-t7jz2k",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidChosen.outlineColor": {
+    "hash": "1ur735j",
+    "var": "--ux-1ur735j",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCritical.backgroundColor": {
+    "hash": "1uv0i32",
+    "var": "--ux-1uv0i32",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCritical.borderColor": {
+    "hash": "1m94d8s",
+    "var": "--ux-1m94d8s",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCritical.borderRadius": {
+    "hash": "12kig15",
+    "var": "--ux-12kig15",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCritical.borderWidth": {
+    "hash": "17klad3",
+    "var": "--ux-17klad3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCritical.foregroundColor": {
+    "hash": "12t4wrf",
+    "var": "--ux-12t4wrf",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCritical.outlineColor": {
+    "hash": "1b0po2o",
+    "var": "--ux-1b0po2o",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalChosen.backgroundColor": {
+    "hash": "4dgjwy",
+    "var": "--ux-4dgjwy",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalChosen.borderColor": {
+    "hash": "17wsfgw",
+    "var": "--ux-17wsfgw",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalChosen.borderRadius": {
+    "hash": "iclaid",
+    "var": "--ux-iclaid",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalChosen.borderWidth": {
+    "hash": "gssnzf",
+    "var": "--ux-gssnzf",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalChosen.foregroundColor": {
+    "hash": "lqyyx3",
+    "var": "--ux-lqyyx3",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalChosen.outlineColor": {
+    "hash": "ta0p18",
+    "var": "--ux-ta0p18",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalFocused.backgroundColor": {
+    "hash": "b450j",
+    "var": "--ux-b450j",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalFocused.borderColor": {
+    "hash": "xxrwgx",
+    "var": "--ux-xxrwgx",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalFocused.borderRadius": {
+    "hash": "1s6ylgk",
+    "var": "--ux-1s6ylgk",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalFocused.borderWidth": {
+    "hash": "16d12m2",
+    "var": "--ux-16d12m2",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalFocused.foregroundColor": {
+    "hash": "45m6ty",
+    "var": "--ux-45m6ty",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalFocused.outlineColor": {
+    "hash": "1680j7x",
+    "var": "--ux-1680j7x",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalHovered.backgroundColor": {
+    "hash": "3w2cyx",
+    "var": "--ux-3w2cyx",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalHovered.borderColor": {
+    "hash": "1rl51wr",
+    "var": "--ux-1rl51wr",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalHovered.borderRadius": {
+    "hash": "yywkmm",
+    "var": "--ux-yywkmm",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalHovered.borderWidth": {
+    "hash": "wevy5s",
+    "var": "--ux-wevy5s",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalHovered.foregroundColor": {
+    "hash": "haskt8",
+    "var": "--ux-haskt8",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidCriticalHovered.outlineColor": {
+    "hash": "zw1wqv",
+    "var": "--ux-zw1wqv",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidFocused.backgroundColor": {
+    "hash": "10pzei0",
+    "var": "--ux-10pzei0",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidFocused.borderColor": {
+    "hash": "1djp2wa",
+    "var": "--ux-1djp2wa",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidFocused.borderRadius": {
+    "hash": "10aqd67",
+    "var": "--ux-10aqd67",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidFocused.borderWidth": {
+    "hash": "1gq85td",
+    "var": "--ux-1gq85td",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidFocused.foregroundColor": {
+    "hash": "1etsin1",
+    "var": "--ux-1etsin1",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidFocused.outlineColor": {
+    "hash": "l1rd52",
+    "var": "--ux-l1rd52",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidHovered.backgroundColor": {
+    "hash": "1wtj1lu",
+    "var": "--ux-1wtj1lu",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidHovered.borderColor": {
+    "hash": "14bzqg0",
+    "var": "--ux-14bzqg0",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidHovered.borderRadius": {
+    "hash": "htktid",
+    "var": "--ux-htktid",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidHovered.borderWidth": {
+    "hash": "jaceyj",
+    "var": "--ux-jaceyj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidHovered.foregroundColor": {
+    "hash": "uw1r4n",
+    "var": "--ux-uw1r4n",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.controlVoidHovered.outlineColor": {
+    "hash": "1ywfpqk",
+    "var": "--ux-1ywfpqk",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedback.feedbackColor": {
+    "hash": "f7kpiw",
+    "var": "--ux-f7kpiw",
+    "legacyDefault": "#00a4a6",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedback.onFeedbackColor": {
+    "hash": "1no0ng9",
+    "var": "--ux-1no0ng9",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackCritical.feedbackColor": {
+    "hash": "1iiiqs3",
+    "var": "--ux-1iiiqs3",
+    "legacyDefault": "#ffbbbb",
+    "token": "color-feedback-critical-strong",
+    "dtcgDefault": "firebrick"
+  },
+  "ux.feedbackCritical.onFeedbackColor": {
+    "hash": "xaxxaq",
+    "var": "--ux-xaxxaq",
+    "legacyDefault": "#111",
+    "token": "color-feedback-critical-onstrong",
+    "dtcgDefault": "white"
+  },
+  "ux.feedbackHighContrastCritical.feedbackColor": {
+    "hash": "1fhc073",
+    "var": "--ux-1fhc073",
+    "legacyDefault": "#db1802",
+    "token": "color-feedback-critical-subtle",
+    "dtcgDefault": "lavenderblush"
+  },
+  "ux.feedbackHighContrastCritical.onFeedbackColor": {
+    "hash": "17o0ohq",
+    "var": "--ux-17o0ohq",
+    "legacyDefault": "#fff",
+    "token": "color-feedback-critical-onsubtle",
+    "dtcgDefault": "darkred"
+  },
+  "ux.feedbackHighContrastHighlight.feedbackColor": {
+    "hash": "cuskv8",
+    "var": "--ux-cuskv8",
+    "legacyDefault": "#09757a",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastHighlight.onFeedbackColor": {
+    "hash": "c419qd",
+    "var": "--ux-c419qd",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastInfo.feedbackColor": {
+    "hash": "1lpd00q",
+    "var": "--ux-1lpd00q",
+    "legacyDefault": "#145fa9",
+    "token": "color-feedback-info-subtle",
+    "dtcgDefault": "lightcyan"
+  },
+  "ux.feedbackHighContrastInfo.onFeedbackColor": {
+    "hash": "15n32fv",
+    "var": "--ux-15n32fv",
+    "legacyDefault": "#fff",
+    "token": "color-feedback-info-onsubtle",
+    "dtcgDefault": "teal"
+  },
+  "ux.feedbackHighContrastInternal.feedbackColor": {
+    "hash": "1iwdp0z",
+    "var": "--ux-1iwdp0z",
+    "legacyDefault": "#b4006c",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastInternal.onFeedbackColor": {
+    "hash": "s2edbm",
+    "var": "--ux-s2edbm",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastNeutral.feedbackColor": {
+    "hash": "e1mf41",
+    "var": "--ux-e1mf41",
+    "legacyDefault": "#145fa9",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastNeutral.onFeedbackColor": {
+    "hash": "wi4oww",
+    "var": "--ux-wi4oww",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastPassive.feedbackColor": {
+    "hash": "1m9ys0v",
+    "var": "--ux-1m9ys0v",
+    "legacyDefault": "#767676",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastPassive.onFeedbackColor": {
+    "hash": "1j2zkam",
+    "var": "--ux-1j2zkam",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastPremium.feedbackColor": {
+    "hash": "143smq7",
+    "var": "--ux-143smq7",
+    "legacyDefault": "#e20087",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastPremium.onFeedbackColor": {
+    "hash": "3lso4u",
+    "var": "--ux-3lso4u",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighContrastSuccess.feedbackColor": {
+    "hash": "1ep3kxj",
+    "var": "--ux-1ep3kxj",
+    "legacyDefault": "#00a63f",
+    "token": "color-feedback-success-subtle",
+    "dtcgDefault": "honeydew"
+  },
+  "ux.feedbackHighContrastSuccess.onFeedbackColor": {
+    "hash": "zk0uja",
+    "var": "--ux-zk0uja",
+    "legacyDefault": "#fff",
+    "token": "color-feedback-success-onsubtle",
+    "dtcgDefault": "darkgreen"
+  },
+  "ux.feedbackHighContrastWarning.feedbackColor": {
+    "hash": "lv1r6m",
+    "var": "--ux-lv1r6m",
+    "legacyDefault": "#de7c00",
+    "token": "color-feedback-warning-subtle",
+    "dtcgDefault": "cornsilk"
+  },
+  "ux.feedbackHighContrastWarning.onFeedbackColor": {
+    "hash": "tqp5z3",
+    "var": "--ux-tqp5z3",
+    "legacyDefault": "#fff",
+    "token": "color-feedback-warning-onsubtle",
+    "dtcgDefault": "orangered"
+  },
+  "ux.feedbackHighlight.feedbackColor": {
+    "hash": "18lg5k",
+    "var": "--ux-18lg5k",
+    "legacyDefault": "#a6fff8",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackHighlight.onFeedbackColor": {
+    "hash": "1iwsz6x",
+    "var": "--ux-1iwsz6x",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackInfo.feedbackColor": {
+    "hash": "1i7a912",
+    "var": "--ux-1i7a912",
+    "legacyDefault": "#ddeaf8",
+    "token": "color-feedback-info-strong",
+    "dtcgDefault": "dodgerblue"
+  },
+  "ux.feedbackInfo.onFeedbackColor": {
+    "hash": "1a8ld87",
+    "var": "--ux-1a8ld87",
+    "legacyDefault": "#111",
+    "token": "color-feedback-info-onstrong",
+    "dtcgDefault": "white"
+  },
+  "ux.feedbackInternal.feedbackColor": {
+    "hash": "bsmnmn",
+    "var": "--ux-bsmnmn",
+    "legacyDefault": "#fbd9ed",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackInternal.onFeedbackColor": {
+    "hash": "1ygutpa",
+    "var": "--ux-1ygutpa",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackNeutral.feedbackColor": {
+    "hash": "1rfp50t",
+    "var": "--ux-1rfp50t",
+    "legacyDefault": "#ddeaf8",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackNeutral.onFeedbackColor": {
+    "hash": "qnydfw",
+    "var": "--ux-qnydfw",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackPassive.feedbackColor": {
+    "hash": "1u2jy43",
+    "var": "--ux-1u2jy43",
+    "legacyDefault": "#d6d6d6",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackPassive.onFeedbackColor": {
+    "hash": "e5ryhe",
+    "var": "--ux-e5ryhe",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackPremium.feedbackColor": {
+    "hash": "1b26o0z",
+    "var": "--ux-1b26o0z",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackPremium.onFeedbackColor": {
+    "hash": "1pqaqki",
+    "var": "--ux-1pqaqki",
+    "legacyDefault": "#e20087",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.feedbackSuccess.feedbackColor": {
+    "hash": "em0gr",
+    "var": "--ux-em0gr",
+    "legacyDefault": "#9fffb8",
+    "token": "color-feedback-success-strong",
+    "dtcgDefault": "forestgreen"
+  },
+  "ux.feedbackSuccess.onFeedbackColor": {
+    "hash": "1mph5ru",
+    "var": "--ux-1mph5ru",
+    "legacyDefault": "#111",
+    "token": "color-feedback-success-onstrong",
+    "dtcgDefault": "white"
+  },
+  "ux.feedbackWarning.feedbackColor": {
+    "hash": "1tgn1ki",
+    "var": "--ux-1tgn1ki",
+    "legacyDefault": "#ffeea9",
+    "token": "color-feedback-warning-strong",
+    "dtcgDefault": "darkorange"
+  },
+  "ux.feedbackWarning.onFeedbackColor": {
+    "hash": "l48e4z",
+    "var": "--ux-l48e4z",
+    "legacyDefault": "#111",
+    "token": "color-feedback-warning-onstrong",
+    "dtcgDefault": "black"
+  },
+  "ux.figure.figureColor0": {
+    "hash": "k4t5bc",
+    "var": "--ux-k4t5bc",
+    "legacyDefault": "#15a4ab",
+    "token": "color-chart-001",
+    "dtcgDefault": "royalblue"
+  },
+  "ux.figure.figureColor1": {
+    "hash": "yscvvt",
+    "var": "--ux-yscvvt",
+    "legacyDefault": "#145fa9",
+    "token": "color-chart-002",
+    "dtcgDefault": "darkcyan"
+  },
+  "ux.figure.figureColor10": {
+    "hash": "99lo9",
+    "var": "--ux-99lo9",
+    "legacyDefault": "#0c8a8f",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor11": {
+    "hash": "ux0m8o",
+    "var": "--ux-ux0m8o",
+    "legacyDefault": "#09757a",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor12": {
+    "hash": "swmbzv",
+    "var": "--ux-swmbzv",
+    "legacyDefault": "#086366",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor13": {
+    "hash": "xpiaca",
+    "var": "--ux-xpiaca",
+    "legacyDefault": "#054648",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor14": {
+    "hash": "ktf9ml",
+    "var": "--ux-ktf9ml",
+    "legacyDefault": "#022627",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor15": {
+    "hash": "1fh6a70",
+    "var": "--ux-1fh6a70",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor16": {
+    "hash": "1dgrzy7",
+    "var": "--ux-1dgrzy7",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor17": {
+    "hash": "1i9nyam",
+    "var": "--ux-1i9nyam",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor18": {
+    "hash": "1xw14a9",
+    "var": "--ux-1xw14a9",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor19": {
+    "hash": "tio2vk",
+    "var": "--ux-tio2vk",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor2": {
+    "hash": "3seoiy",
+    "var": "--ux-3seoiy",
+    "legacyDefault": "#ef6c0f",
+    "token": "color-chart-003",
+    "dtcgDefault": "orange"
+  },
+  "ux.figure.figureColor20": {
+    "hash": "14afgai",
+    "var": "--ux-14afgai",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor21": {
+    "hash": "7j94kb",
+    "var": "--ux-7j94kb",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor22": {
+    "hash": "uf4sqg",
+    "var": "--ux-uf4sqg",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor23": {
+    "hash": "ei6qah",
+    "var": "--ux-ei6qah",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor24": {
+    "hash": "1oul48u",
+    "var": "--ux-1oul48u",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor25": {
+    "hash": "s3esin",
+    "var": "--ux-s3esin",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor26": {
+    "hash": "1ezagos",
+    "var": "--ux-1ezagos",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor27": {
+    "hash": "z2ce8t",
+    "var": "--ux-z2ce8t",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor28": {
+    "hash": "12w2wxe",
+    "var": "--ux-12w2wxe",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor29": {
+    "hash": "64wl77",
+    "var": "--ux-64wl77",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor3": {
+    "hash": "ifyf3f",
+    "var": "--ux-ifyf3f",
+    "legacyDefault": "#e20087",
+    "token": "color-chart-004",
+    "dtcgDefault": "mediumorchid"
+  },
+  "ux.figure.figureColor4": {
+    "hash": "1c4rju4",
+    "var": "--ux-1c4rju4",
+    "legacyDefault": "#744bc4",
+    "token": "color-chart-005",
+    "dtcgDefault": "salmon"
+  },
+  "ux.figure.figureColor5": {
+    "hash": "1qsbael",
+    "var": "--ux-1qsbael",
+    "legacyDefault": "#104a85",
+    "token": "color-chart-006",
+    "dtcgDefault": "mediumturquoise"
+  },
+  "ux.figure.figureColor6": {
+    "hash": "vsd31q",
+    "var": "--ux-vsd31q",
+    "legacyDefault": "#9d470a",
+    "token": "color-chart-007",
+    "dtcgDefault": "darkgray"
+  },
+  "ux.figure.figureColor7": {
+    "hash": "1afwtm7",
+    "var": "--ux-1afwtm7",
+    "legacyDefault": "#8b0053",
+    "token": "color-chart-008",
+    "dtcgDefault": "darkslategray"
+  },
+  "ux.figure.figureColor8": {
+    "hash": "3uv4tc",
+    "var": "--ux-3uv4tc",
+    "legacyDefault": "#462a72",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.figure.figureColor9": {
+    "hash": "iievdt",
+    "var": "--ux-iievdt",
+    "legacyDefault": "#565656",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigate.backgroundColor": {
+    "hash": "1rwkbsh",
+    "var": "--ux-1rwkbsh",
+    "legacyDefault": "transparent",
+    "token": "color-action-background-inline-default",
+    "dtcgDefault": "white"
+  },
+  "ux.navigate.borderColor": {
+    "hash": "1wlhylv",
+    "var": "--ux-1wlhylv",
+    "legacyDefault": "transparent",
+    "token": "color-action-border-inline-default",
+    "dtcgDefault": "royalblue"
+  },
+  "ux.navigate.borderRadius": {
+    "hash": "uzt9o6",
+    "var": "--ux-uzt9o6",
+    "legacyDefault": "0",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigate.foregroundColor": {
+    "hash": "2rqapw",
+    "var": "--ux-2rqapw",
+    "legacyDefault": "#444444",
+    "token": "color-action-text-inline-default",
+    "dtcgDefault": "royalblue"
+  },
+  "ux.navigate.outlineColor": {
+    "hash": "8h038f",
+    "var": "--ux-8h038f",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigate.textDecoration": {
+    "hash": "1f7if5p",
+    "var": "--ux-1f7if5p",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateChosen.backgroundColor": {
+    "hash": "60ig31",
+    "var": "--ux-60ig31",
+    "legacyDefault": "transparent",
+    "token": "color-action-background-inline-pressed",
+    "dtcgDefault": "gainsboro"
+  },
+  "ux.navigateChosen.borderColor": {
+    "hash": "b0nj5b",
+    "var": "--ux-b0nj5b",
+    "legacyDefault": "transparent",
+    "token": "color-action-border-inline-pressed",
+    "dtcgDefault": "midnightblue"
+  },
+  "ux.navigateChosen.borderRadius": {
+    "hash": "1rff5yi",
+    "var": "--ux-1rff5yi",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateChosen.foregroundColor": {
+    "hash": "1ymu8yg",
+    "var": "--ux-1ymu8yg",
+    "legacyDefault": "#104a85",
+    "token": "color-action-text-inline-pressed",
+    "dtcgDefault": "midnightblue"
+  },
+  "ux.navigateChosen.outlineColor": {
+    "hash": "1xi9h6r",
+    "var": "--ux-1xi9h6r",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateChosen.textDecoration": {
+    "hash": "1iu5i01",
+    "var": "--ux-1iu5i01",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateFocused.backgroundColor": {
+    "hash": "3i0zzw",
+    "var": "--ux-3i0zzw",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateFocused.borderColor": {
+    "hash": "13yftfi",
+    "var": "--ux-13yftfi",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateFocused.borderRadius": {
+    "hash": "1xnrqaj",
+    "var": "--ux-1xnrqaj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateFocused.foregroundColor": {
+    "hash": "10kwq3t",
+    "var": "--ux-10kwq3t",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateFocused.outlineColor": {
+    "hash": "1e4z3ma",
+    "var": "--ux-1e4z3ma",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateFocused.textDecoration": {
+    "hash": "z805rk",
+    "var": "--ux-z805rk",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateHovered.backgroundColor": {
+    "hash": "ivu8ja",
+    "var": "--ux-ivu8ja",
+    "legacyDefault": "transparent",
+    "token": "color-action-background-inline-hovered",
+    "dtcgDefault": "whitesmoke"
+  },
+  "ux.navigateHovered.borderColor": {
+    "hash": "4kfa9g",
+    "var": "--ux-4kfa9g",
+    "legacyDefault": "transparent",
+    "token": "color-action-border-inline-hovered",
+    "dtcgDefault": "teal"
+  },
+  "ux.navigateHovered.borderRadius": {
+    "hash": "18eww29",
+    "var": "--ux-18eww29",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateHovered.foregroundColor": {
+    "hash": "1j87vvn",
+    "var": "--ux-1j87vvn",
+    "legacyDefault": "#1976d2",
+    "token": "color-action-text-inline-hovered",
+    "dtcgDefault": "teal"
+  },
+  "ux.navigateHovered.outlineColor": {
+    "hash": "1lqfehk",
+    "var": "--ux-1lqfehk",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateHovered.textDecoration": {
+    "hash": "1ft0khm",
+    "var": "--ux-1ft0khm",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimary.backgroundColor": {
+    "hash": "9i7okd",
+    "var": "--ux-9i7okd",
+    "legacyDefault": "#f5f7f8",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimary.borderColor": {
+    "hash": "492jj",
+    "var": "--ux-492jj",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimary.borderRadius": {
+    "hash": "xo8dtm",
+    "var": "--ux-xo8dtm",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimary.foregroundColor": {
+    "hash": "1xxygco",
+    "var": "--ux-1xxygco",
+    "legacyDefault": "#5e5e5e",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimary.outlineColor": {
+    "hash": "nfbboz",
+    "var": "--ux-nfbboz",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimary.textDecoration": {
+    "hash": "ilzuoh",
+    "var": "--ux-ilzuoh",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryChosen.backgroundColor": {
+    "hash": "1uiriv5",
+    "var": "--ux-1uiriv5",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryChosen.borderColor": {
+    "hash": "t61743",
+    "var": "--ux-t61743",
+    "legacyDefault": "#1bdbdb",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryChosen.borderRadius": {
+    "hash": "mp7zc6",
+    "var": "--ux-mp7zc6",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryChosen.foregroundColor": {
+    "hash": "1i83650",
+    "var": "--ux-1i83650",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryChosen.outlineColor": {
+    "hash": "59c1gv",
+    "var": "--ux-59c1gv",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryChosen.textDecoration": {
+    "hash": "1wmojm5",
+    "var": "--ux-1wmojm5",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryFocused.backgroundColor": {
+    "hash": "n9sg1c",
+    "var": "--ux-n9sg1c",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryFocused.borderColor": {
+    "hash": "1oppzsi",
+    "var": "--ux-1oppzsi",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryFocused.borderRadius": {
+    "hash": "tnfqpj",
+    "var": "--ux-tnfqpj",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryFocused.foregroundColor": {
+    "hash": "1gkt6kl",
+    "var": "--ux-1gkt6kl",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryFocused.outlineColor": {
+    "hash": "1wp39lq",
+    "var": "--ux-1wp39lq",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryFocused.textDecoration": {
+    "hash": "f9p7ss",
+    "var": "--ux-f9p7ss",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryHovered.backgroundColor": {
+    "hash": "1ar08ze",
+    "var": "--ux-1ar08ze",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryHovered.borderColor": {
+    "hash": "1tqourc",
+    "var": "--ux-1tqourc",
+    "legacyDefault": "transparent",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryHovered.borderRadius": {
+    "hash": "uasvjx",
+    "var": "--ux-uasvjx",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryHovered.foregroundColor": {
+    "hash": "h6e91r",
+    "var": "--ux-h6e91r",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryHovered.outlineColor": {
+    "hash": "1qml4es",
+    "var": "--ux-1qml4es",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigatePrimaryHovered.textDecoration": {
+    "hash": "bm66eu",
+    "var": "--ux-bm66eu",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondary.backgroundColor": {
+    "hash": "13vrbmz",
+    "var": "--ux-13vrbmz",
+    "legacyDefault": "rgba(0, 0, 0, 0)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondary.borderColor": {
+    "hash": "ako3l5",
+    "var": "--ux-ako3l5",
+    "legacyDefault": "rgba(0, 0, 0, 0)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondary.borderRadius": {
+    "hash": "mi6bws",
+    "var": "--ux-mi6bws",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondary.foregroundColor": {
+    "hash": "1xeg43i",
+    "var": "--ux-1xeg43i",
+    "legacyDefault": "#767676",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondary.outlineColor": {
+    "hash": "1knxkat",
+    "var": "--ux-1knxkat",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondary.textDecoration": {
+    "hash": "n5xyg7",
+    "var": "--ux-n5xyg7",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryChosen.backgroundColor": {
+    "hash": "1d8mwhj",
+    "var": "--ux-1d8mwhj",
+    "legacyDefault": "#fff",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryChosen.borderColor": {
+    "hash": "1pvg8dx",
+    "var": "--ux-1pvg8dx",
+    "legacyDefault": "#1bdbdb",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryChosen.borderRadius": {
+    "hash": "i71j0w",
+    "var": "--ux-i71j0w",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryChosen.foregroundColor": {
+    "hash": "9gvyua",
+    "var": "--ux-9gvyua",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryChosen.outlineColor": {
+    "hash": "uj1cwp",
+    "var": "--ux-uj1cwp",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryChosen.textDecoration": {
+    "hash": "1ok3h17",
+    "var": "--ux-1ok3h17",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryFocused.backgroundColor": {
+    "hash": "1ajy4cm",
+    "var": "--ux-1ajy4cm",
+    "legacyDefault": "rgba(0, 0, 0, 0)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryFocused.borderColor": {
+    "hash": "1ely98k",
+    "var": "--ux-1ely98k",
+    "legacyDefault": "#afafaf",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryFocused.borderRadius": {
+    "hash": "1r3qa69",
+    "var": "--ux-1r3qa69",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryFocused.foregroundColor": {
+    "hash": "38c183",
+    "var": "--ux-38c183",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryFocused.outlineColor": {
+    "hash": "44qvxk",
+    "var": "--ux-44qvxk",
+    "legacyDefault": "#1976d2",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryFocused.textDecoration": {
+    "hash": "1kgbbii",
+    "var": "--ux-1kgbbii",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryHovered.backgroundColor": {
+    "hash": "1l8kymk",
+    "var": "--ux-1l8kymk",
+    "legacyDefault": "rgba(0, 0, 0, 0)",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryHovered.borderColor": {
+    "hash": "1vtao7i",
+    "var": "--ux-1vtao7i",
+    "legacyDefault": "#afafaf",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryHovered.borderRadius": {
+    "hash": "6kx4cr",
+    "var": "--ux-6kx4cr",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryHovered.foregroundColor": {
+    "hash": "1qc8i9l",
+    "var": "--ux-1qc8i9l",
+    "legacyDefault": "#111",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryHovered.outlineColor": {
+    "hash": "59iv36",
+    "var": "--ux-59iv36",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.navigateSecondaryHovered.textDecoration": {
+    "hash": "1757jy8",
+    "var": "--ux-1757jy8",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.text.fontFamily": {
+    "hash": "1067ph9",
+    "var": "--ux-1067ph9",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.text.fontSize": {
+    "hash": "vvspv2",
+    "var": "--ux-vvspv2",
+    "legacyDefault": "1rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.text.fontVariation": {
+    "hash": "6mut96",
+    "var": "--ux-6mut96",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.text.fontWeight": {
+    "hash": "sm2he3",
+    "var": "--ux-sm2he3",
+    "legacyDefault": "400",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.text.lineHeight": {
+    "hash": "1w31hux",
+    "var": "--ux-1w31hux",
+    "legacyDefault": "1.5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textAction.fontFamily": {
+    "hash": "gfnupv",
+    "var": "--ux-gfnupv",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textAction.fontSize": {
+    "hash": "cxbe8g",
+    "var": "--ux-cxbe8g",
+    "legacyDefault": "1rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textAction.fontVariation": {
+    "hash": "ndnsbo",
+    "var": "--ux-ndnsbo",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textAction.fontWeight": {
+    "hash": "j40yyd",
+    "var": "--ux-j40yyd",
+    "legacyDefault": "500",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textAction.lineHeight": {
+    "hash": "jw5s9j",
+    "var": "--ux-jw5s9j",
+    "legacyDefault": "1.375",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textCaption.fontFamily": {
+    "hash": "1gutwvn",
+    "var": "--ux-1gutwvn",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": "font-detail-family",
+    "dtcgDefault": "system-ui, sans-serif"
+  },
+  "ux.textCaption.fontSize": {
+    "hash": "p4h24g",
+    "var": "--ux-p4h24g",
+    "legacyDefault": "0.875rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textCaption.fontVariation": {
+    "hash": "tjt16c",
+    "var": "--ux-tjt16c",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textCaption.fontWeight": {
+    "hash": "g9ierp",
+    "var": "--ux-g9ierp",
+    "legacyDefault": "400",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textCaption.lineHeight": {
+    "hash": "1dje42v",
+    "var": "--ux-1dje42v",
+    "legacyDefault": "1.5",
+    "token": "font-detail-line-height",
+    "dtcgDefault": "1.4"
+  },
+  "ux.textHeading.fontFamily": {
+    "hash": "shg991",
+    "var": "--ux-shg991",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": "font-heading-family",
+    "dtcgDefault": "system-ui, sans-serif"
+  },
+  "ux.textHeading.fontSize": {
+    "hash": "9ic57q",
+    "var": "--ux-9ic57q",
+    "legacyDefault": "2.5rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textHeading.fontVariation": {
+    "hash": "1458mfm",
+    "var": "--ux-1458mfm",
+    "legacyDefault": "\"DSPL\" 1",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textHeading.fontWeight": {
+    "hash": "c539b7",
+    "var": "--ux-c539b7",
+    "legacyDefault": "700",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textHeading.lineHeight": {
+    "hash": "p25s1t",
+    "var": "--ux-p25s1t",
+    "legacyDefault": "1.25",
+    "token": "font-heading-line-height",
+    "dtcgDefault": "1.25"
+  },
+  "ux.textInput.fontFamily": {
+    "hash": "9wtaa3",
+    "var": "--ux-9wtaa3",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textInput.fontSize": {
+    "hash": "oc0naw",
+    "var": "--ux-oc0naw",
+    "legacyDefault": "1rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textInput.fontVariation": {
+    "hash": "e727t8",
+    "var": "--ux-e727t8",
+    "legacyDefault": "normal",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textInput.fontWeight": {
+    "hash": "3z6ccd",
+    "var": "--ux-3z6ccd",
+    "legacyDefault": "400",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textInput.lineHeight": {
+    "hash": "hm1ty7",
+    "var": "--ux-hm1ty7",
+    "legacyDefault": "1.375",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textLabel.fontFamily": {
+    "hash": "15ks663",
+    "var": "--ux-15ks663",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textLabel.fontSize": {
+    "hash": "16aixzc",
+    "var": "--ux-16aixzc",
+    "legacyDefault": "0.875rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textLabel.fontVariation": {
+    "hash": "1qg0ofw",
+    "var": "--ux-1qg0ofw",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textLabel.fontWeight": {
+    "hash": "aarlu5",
+    "var": "--ux-aarlu5",
+    "legacyDefault": "500",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textLabel.lineHeight": {
+    "hash": "h93mi7",
+    "var": "--ux-h93mi7",
+    "legacyDefault": "1.375",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textParagraph.fontFamily": {
+    "hash": "117cu43",
+    "var": "--ux-117cu43",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textParagraph.fontSize": {
+    "hash": "1klxlj4",
+    "var": "--ux-1klxlj4",
+    "legacyDefault": "1rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textParagraph.fontVariation": {
+    "hash": "1i4pt2s",
+    "var": "--ux-1i4pt2s",
+    "legacyDefault": null,
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textParagraph.fontWeight": {
+    "hash": "8n6y9x",
+    "var": "--ux-8n6y9x",
+    "legacyDefault": "400",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textParagraph.lineHeight": {
+    "hash": "mgbt9j",
+    "var": "--ux-mgbt9j",
+    "legacyDefault": "1.5",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textTitle.fontFamily": {
+    "hash": "p4wcd9",
+    "var": "--ux-p4wcd9",
+    "legacyDefault": "\"gdsherpa\", Helvetica, Arial, sans-serif",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textTitle.fontSize": {
+    "hash": "18ime9a",
+    "var": "--ux-18ime9a",
+    "legacyDefault": "1.375rem",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textTitle.fontVariation": {
+    "hash": "3x9eca",
+    "var": "--ux-3x9eca",
+    "legacyDefault": "\"DSPL\" 1",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textTitle.fontWeight": {
+    "hash": "1a9e4a3",
+    "var": "--ux-1a9e4a3",
+    "legacyDefault": "700",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textTitle.lineHeight": {
+    "hash": "1pw8hzd",
+    "var": "--ux-1pw8hzd",
+    "legacyDefault": "1.25",
+    "token": null,
+    "dtcgDefault": null
+  },
+  "ux.textBody.fontFamily": {
+    "hash": "pze30t",
+    "var": "--ux-pze30t",
+    "legacyDefault": null,
+    "token": "font-body-family",
+    "dtcgDefault": "system-ui, sans-serif"
+  },
+  "ux.textBody.lineHeight": {
+    "hash": "1hhfdnd",
+    "var": "--ux-1hhfdnd",
+    "legacyDefault": null,
+    "token": "font-body-line-height",
+    "dtcgDefault": "1.5"
+  }
+}

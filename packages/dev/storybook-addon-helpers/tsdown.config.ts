@@ -2,6 +2,6 @@ import { config } from '../../../configs/tsdown.config.mts';
 import { mergeConfig } from 'tsdown';
 
 export default mergeConfig(config, {
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/docs.ts', 'src/runtime.ts'],
   inlineOnly: false
 });

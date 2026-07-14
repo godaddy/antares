@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "#fixtures/*": ["mapped/*"]
+    },
+    "target": "ESNext"
+  }
+}

@@ -1,8 +1,13 @@
-import { type StorybookConfig } from '@storybook/react-vite';
-import { type Indexer } from 'storybook/internal/types';
-import { generateCSFPlugin } from './plugin.ts';
-import { storiesIndexer } from './stories-indexer.ts';
-export * from './getters.ts';
+import type { StorybookConfig } from '@storybook/react-vite';
+import type { Indexer } from 'storybook/internal/types';
+import { generateCSFPlugin } from './storybook/plugin.ts';
+import { storiesIndexer } from './storybook/stories-indexer.ts';
+import type { StorybookHelpersOptions } from './types.ts';
+export { toStorybookArgTypes } from './storybook/arg-types.ts';
+export type { StorybookDocs } from './storybook/arg-types.ts';
+export * from './storybook/getters.ts';
+export { processPropsDoc } from './process.ts';
+export type * from './types.ts';
 
 const STORIES_FILE_REGEX = /\.stories\.tsx$/;
 
@@ -27,8 +32,9 @@ export const experimental_indexers: StorybookConfig['experimental_indexers'] = a
 /**
  * Adds the plugin to the Storybook config.
  */
-export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config: any) {
-  config.plugins = config.plugins || [];
-  config.plugins.push(generateCSFPlugin(STORIES_FILE_REGEX));
+export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config, options) {
+  const docsDefaults = (options as StorybookHelpersOptions | undefined)?.docsDefaults;
+  config.plugins ??= [];
+  config.plugins.push(generateCSFPlugin(STORIES_FILE_REGEX, docsDefaults));
   return config;
 };
