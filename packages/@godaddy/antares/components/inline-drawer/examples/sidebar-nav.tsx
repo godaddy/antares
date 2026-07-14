@@ -1,19 +1,39 @@
-import { InlineDrawer, InlineDrawerTrigger, InlineDrawerPanel, Flex, Text } from '@godaddy/antares';
+import { useState } from 'react';
+import { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';
+
+const NAV = [
+  { icon: 'grid', label: 'Dashboard', href: '#' },
+  { icon: 'star', label: 'Favorites', href: '#' },
+  { icon: 'comment', label: 'Messages', href: '#' }
+] as const;
 
 export function SidebarNavExample() {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <Flex direction="row" style={{ height: 300, border: '1px solid var(--bd-base)' }}>
-      <InlineDrawer placement="left" defaultExpanded minSize={48} maxSize={220}>
-        <InlineDrawerTrigger>Menu</InlineDrawerTrigger>
-        <InlineDrawerPanel>
-          <Flex as="nav" direction="column" gap="sm" padding="sm">
-            <Text>Home</Text>
-            <Text>Settings</Text>
-            <Text>Profile</Text>
-          </Flex>
-        </InlineDrawerPanel>
+    <Flex direction="row">
+      <InlineDrawer placement="left" isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>
+        <Flex direction="column" gap="xs" padding="xs">
+          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label="Menu">
+            <Icon icon="bulleted-list" />
+          </ToggleButton>
+          {NAV.map(function renderItem(item) {
+            return (
+              <LinkButton
+                key={item.label}
+                href={item.href}
+                aria-label={!expanded ? item.label : undefined}
+                variant="minimal"
+                style={{ justifyContent: 'flex-start' }}
+              >
+                <Icon icon={item.icon} />
+                {expanded ? item.label : null}
+              </LinkButton>
+            );
+          })}
+        </Flex>
       </InlineDrawer>
-      <Flex padding="md" style={{ flex: 1 }}>
+      <Flex padding="md" style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>
         <Text>Main content area</Text>
       </Flex>
     </Flex>

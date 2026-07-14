@@ -6,7 +6,7 @@ import Link from 'fumadocs-core/link';
 import { twMerge } from 'tailwind-merge';
 
 /** A single prop entry to display in the table. */
-interface PropTableEntry {
+export interface PropTableEntry {
   /** Prop name. */
   name: string;
   /** Short type string. */
@@ -23,7 +23,7 @@ interface PropTableEntry {
   deprecated?: boolean;
 }
 
-interface PropTableProps {
+export interface PropTableProps {
   /** All prop entries to display. */
   entries: PropTableEntry[];
   /**
@@ -108,8 +108,7 @@ export function PropTable({ entries, categories }: PropTableProps) {
   const categorizedNames = new Set(Object.values(categories).flat());
   const uncategorized = entries.filter((e) => !categorizedNames.has(e.name));
   const entryByName = new Map(entries.map((e) => [e.name, e]));
-
-  const sortedCategories = Object.entries(categories).sort(([a], [b]) => a.localeCompare(b));
+  const orderedCategories = Object.entries(categories);
 
   return (
     <div className="flex flex-col bg-fd-card text-fd-card-foreground rounded-2xl border my-6 text-sm overflow-hidden not-prose">
@@ -123,7 +122,7 @@ export function PropTable({ entries, categories }: PropTableProps) {
         <PropRow key={entry.name} entry={entry} />
       ))}
 
-      {sortedCategories.map(function renderCategory([label, propNames]) {
+      {orderedCategories.map(function renderCategory([label, propNames]) {
         const sectionEntries = propNames
           .map(function lookupEntry(name) {
             return entryByName.get(name);

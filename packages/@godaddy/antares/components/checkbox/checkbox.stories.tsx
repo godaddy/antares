@@ -9,13 +9,16 @@ import { CheckboxGroupRequired } from './examples/required.tsx';
 import { CheckboxGroupDisabled } from './examples/disabled.tsx';
 import { CheckboxGroupInvalid } from './examples/invalid.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/playground.tsx';
+import { Checkbox, CheckboxGroup } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Checkbox',
   component: CheckboxBasic
 });
 
-export const Props = getComponentDocs(CheckboxGroupBasic);
+export const Props = getComponentDocs(Checkbox);
+
+export const GroupProps = getComponentDocs(CheckboxGroup);
 
 export const Basic = getStory(CheckboxBasic);
 

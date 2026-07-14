@@ -2,16 +2,17 @@
   "name": "@bento/storybook-addon-helpers",
   "private": true,
   "version": "0.1.1",
-  "description": "Storybook preset addon helpers for the Antares design system",
+  "description": "Build-time Storybook preset that generates CSF and prop docs from TypeScript types",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
-    "lint": "biome lint && tsgo --noEmit",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "typecheck": "tsgo --noEmit -p tsconfig.json"
+    "typecheck": "tsgo --noEmit"
   },
   "keywords": [
     "accessibility",
@@ -31,12 +32,10 @@
   ],
   "dependencies": {
     "camelcase": "^9.0.0",
-    "react-docgen-typescript": "^2.4.0",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
     "@types/react": "^19.2.15",
-    "assume": "^2.3.0",
     "react": "^19.2.6",
     "tsdown": "^0.22.1",
     "vite": "^8.0.14",
@@ -55,6 +54,26 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
+      }
+    },
+    "./docs": {
+      "import": {
+        "types": "./dist/docs.d.mts",
+        "default": "./dist/docs.mjs"
+      },
+      "require": {
+        "types": "./dist/docs.d.cts",
+        "default": "./dist/docs.cjs"
+      }
+    },
+    "./runtime": {
+      "import": {
+        "types": "./dist/runtime.d.mts",
+        "default": "./dist/runtime.mjs"
+      },
+      "require": {
+        "types": "./dist/runtime.d.cts",
+        "default": "./dist/runtime.cjs"
       }
     },
     "./package.json": "./package.json"

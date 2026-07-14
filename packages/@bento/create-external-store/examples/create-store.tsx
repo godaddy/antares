@@ -1,5 +1,6 @@
 /* v8 ignore next */
-import React, { useEffect, useSyncExternalStore } from 'react';
+import type React from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { createStore } from '@bento/create-external-store';
 import { withSlots } from '@bento/slots';
 

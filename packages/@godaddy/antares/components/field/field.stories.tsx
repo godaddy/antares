@@ -11,7 +11,7 @@ export default getMeta({
   title: 'components/Field'
 });
 
-export const Props = getComponentDocs(FieldGroup);
+export const GroupProps = getComponentDocs(FieldGroup);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
