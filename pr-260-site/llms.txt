@@ -10,19 +10,19 @@
 - [DropZone](/docs/components/drop-zone): A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
 - [Field primitives](/docs/components/field): Composable primitives (Field, FieldLabel, FieldGroup, FieldError) for building form fields
 - [FileTrigger](/docs/components/file-trigger): A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.
-- [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
+- [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [ListBox](/docs/components/listbox): ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.
 - [Menu](/docs/components/menu): Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
-- [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
+- [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [NumberField](/docs/components/number-field): NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
 - [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [ProgressBar](/docs/components/progress-bar): A progress bar shows determinate progress of an operation over time
 - [ProgressSteps](/docs/components/progress-steps): A multi-step progress indicator for wizard and onboarding flows.
-- [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
+- [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
 - [Select](/docs/components/select): Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
 - [Tag](/docs/components/tag): Non-interactive labels that highlight statuses and categories.
 - [TelephoneField](/docs/components/telephone-field): TelephoneField pairs a country/dial-code picker with a phone number input inside one bordered field, for capturing an international phone number.
@@ -35,5 +35,5 @@
 - [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
 - [Box](/docs/components/layout/box): Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
-- [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
 - [Grid](/docs/components/layout/grid): Two-dimensional CSS Grid layout component for complex grid-based layouts with rows and columns
+- [Flex](/docs/components/layout/flex): One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
