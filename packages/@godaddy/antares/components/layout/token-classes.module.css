@@ -1,0 +1,214 @@
+/* Shared layout-family token classes: pad* / rad* (Box) and gap* (Flex/Grid).
+   Values come from the --sp-* / --rounding-* scale defined on .box. */
+
+.padXs {
+  padding: var(--sp-xs);
+}
+.padSm {
+  padding: var(--sp-sm);
+}
+.padMd {
+  padding: var(--sp-md);
+}
+.padLg {
+  padding: var(--sp-lg);
+}
+.padXl {
+  padding: var(--sp-xl);
+}
+.pad2xl {
+  padding: var(--sp-2xl);
+}
+
+.padXXs {
+  padding-inline: var(--sp-xs);
+}
+.padXSm {
+  padding-inline: var(--sp-sm);
+}
+.padXMd {
+  padding-inline: var(--sp-md);
+}
+.padXLg {
+  padding-inline: var(--sp-lg);
+}
+.padXXl {
+  padding-inline: var(--sp-xl);
+}
+.padX2xl {
+  padding-inline: var(--sp-2xl);
+}
+
+.padYXs {
+  padding-block: var(--sp-xs);
+}
+.padYSm {
+  padding-block: var(--sp-sm);
+}
+.padYMd {
+  padding-block: var(--sp-md);
+}
+.padYLg {
+  padding-block: var(--sp-lg);
+}
+.padYXl {
+  padding-block: var(--sp-xl);
+}
+.padY2xl {
+  padding-block: var(--sp-2xl);
+}
+
+.padISXs {
+  padding-inline-start: var(--sp-xs);
+}
+.padISSm {
+  padding-inline-start: var(--sp-sm);
+}
+.padISMd {
+  padding-inline-start: var(--sp-md);
+}
+.padISLg {
+  padding-inline-start: var(--sp-lg);
+}
+.padISXl {
+  padding-inline-start: var(--sp-xl);
+}
+.padIS2xl {
+  padding-inline-start: var(--sp-2xl);
+}
+
+.padIEXs {
+  padding-inline-end: var(--sp-xs);
+}
+.padIESm {
+  padding-inline-end: var(--sp-sm);
+}
+.padIEMd {
+  padding-inline-end: var(--sp-md);
+}
+.padIELg {
+  padding-inline-end: var(--sp-lg);
+}
+.padIEXl {
+  padding-inline-end: var(--sp-xl);
+}
+.padIE2xl {
+  padding-inline-end: var(--sp-2xl);
+}
+
+.padBSXs {
+  padding-block-start: var(--sp-xs);
+}
+.padBSSm {
+  padding-block-start: var(--sp-sm);
+}
+.padBSMd {
+  padding-block-start: var(--sp-md);
+}
+.padBSLg {
+  padding-block-start: var(--sp-lg);
+}
+.padBSXl {
+  padding-block-start: var(--sp-xl);
+}
+.padBS2xl {
+  padding-block-start: var(--sp-2xl);
+}
+
+.padBEXs {
+  padding-block-end: var(--sp-xs);
+}
+.padBESm {
+  padding-block-end: var(--sp-sm);
+}
+.padBEMd {
+  padding-block-end: var(--sp-md);
+}
+.padBELg {
+  padding-block-end: var(--sp-lg);
+}
+.padBEXl {
+  padding-block-end: var(--sp-xl);
+}
+.padBE2xl {
+  padding-block-end: var(--sp-2xl);
+}
+
+.gapXs {
+  gap: var(--sp-xs);
+}
+.gapSm {
+  gap: var(--sp-sm);
+}
+.gapMd {
+  gap: var(--sp-md);
+}
+.gapLg {
+  gap: var(--sp-lg);
+}
+.gapXl {
+  gap: var(--sp-xl);
+}
+.gap2xl {
+  gap: var(--sp-2xl);
+}
+
+.gapXXs {
+  column-gap: var(--sp-xs);
+}
+.gapXSm {
+  column-gap: var(--sp-sm);
+}
+.gapXMd {
+  column-gap: var(--sp-md);
+}
+.gapXLg {
+  column-gap: var(--sp-lg);
+}
+.gapXXl {
+  column-gap: var(--sp-xl);
+}
+.gapX2xl {
+  column-gap: var(--sp-2xl);
+}
+
+.gapYXs {
+  row-gap: var(--sp-xs);
+}
+.gapYSm {
+  row-gap: var(--sp-sm);
+}
+.gapYMd {
+  row-gap: var(--sp-md);
+}
+.gapYLg {
+  row-gap: var(--sp-lg);
+}
+.gapYXl {
+  row-gap: var(--sp-xl);
+}
+.gapY2xl {
+  row-gap: var(--sp-2xl);
+}
+
+.radXs {
+  border-radius: var(--rounding-xs);
+}
+.radSm {
+  border-radius: var(--rounding-sm);
+}
+.radMd {
+  border-radius: var(--rounding-md);
+}
+.radLg {
+  border-radius: var(--rounding-lg);
+}
+.radXl {
+  border-radius: var(--rounding-xl);
+}
+.rad2xl {
+  border-radius: var(--rounding-2xl);
+}
+.radFull {
+  border-radius: var(--rounding-full);
+}

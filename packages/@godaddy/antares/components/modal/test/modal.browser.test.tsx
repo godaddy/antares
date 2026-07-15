@@ -130,7 +130,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       const cancel = await page.getByRole('button', { name: 'Cancel' }).element();
-      expect((cancel.parentElement as HTMLElement).style.flexDirection).toBe('row');
+      expect(getComputedStyle(cancel.parentElement as HTMLElement).flexDirection).toBe('row');
     });
 
     it('lays out actions in a column', async function actionsColumn() {
@@ -143,7 +143,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       const cancel = await page.getByRole('button', { name: 'Cancel' }).element();
-      expect((cancel.parentElement as HTMLElement).style.flexDirection).toBe('column');
+      expect(getComputedStyle(cancel.parentElement as HTMLElement).flexDirection).toBe('column');
     });
 
     it('lays out media in a column (default)', async function mediaColumn() {
@@ -153,7 +153,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       const dialog = await page.getByRole('dialog').element();
-      expect((dialog as HTMLElement).style.flexDirection).toBe('column');
+      expect(getComputedStyle(dialog as HTMLElement).flexDirection).toBe('column');
     });
 
     it('lays out media in a row', async function mediaRow() {
@@ -166,7 +166,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       const dialog = await page.getByRole('dialog').element();
-      expect((dialog as HTMLElement).style.flexDirection).toBe('row');
+      expect(getComputedStyle(dialog as HTMLElement).flexDirection).toBe('row');
     });
 
     it('renders media at the start (default) in row layout', async function mediaStart() {
@@ -179,7 +179,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       const dialog = await page.getByRole('dialog').element();
-      expect((dialog as HTMLElement).style.flexDirection).toBe('row');
+      expect(getComputedStyle(dialog as HTMLElement).flexDirection).toBe('row');
     });
 
     it('renders media at the end in row layout', async function mediaEnd() {
@@ -195,7 +195,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       const dialog = await page.getByRole('dialog').element();
-      expect((dialog as HTMLElement).style.flexDirection).toBe('row-reverse');
+      expect(getComputedStyle(dialog as HTMLElement).flexDirection).toBe('row-reverse');
     });
   });
 });

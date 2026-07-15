@@ -7,6 +7,14 @@
   --sp-xl: calc(var(--sp-density) * 5);
   --sp-2xl: calc(var(--sp-density) * 8);
 
+  --rounding-xs: 1px;
+  --rounding-sm: 2px;
+  --rounding-md: 3px;
+  --rounding-lg: 6px;
+  --rounding-xl: 10px;
+  --rounding-2xl: 20px;
+  --rounding-full: 9999px;
+
   --bg-base: var(--ux-cao06b, Canvas);
   --bg-card: color-mix(in oklch, var(--bg-base), white 8%);
   --bg-raised: color-mix(in oklch, var(--bg-card), white 8%);
