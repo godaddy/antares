@@ -3,9 +3,8 @@ import { type CSSProperties, type ElementType, forwardRef } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
-import { resolveTokenStyles } from '../../tokens.ts';
+import { toSpacingVar } from '../../tokens.ts';
 import type { SharedFlexGridProps } from '../../types.ts';
-import tokenClasses from '../../token-classes.module.css';
 import styles from './index.module.css';
 
 export interface GridOwnProps extends BoxOwnProps, SharedFlexGridProps {
@@ -60,16 +59,10 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
     ...rest
   } = props;
 
-  const { classNames, style: gapStyle } = resolveTokenStyles(tokenClasses, [
-    ['gap', 'gap', gap],
-    ['gapX', 'columnGap', columnGap],
-    ['gapY', 'rowGap', rowGap]
-  ]);
   const displayClass = display === 'inline-grid' ? styles.inlineGrid : styles.grid;
 
   const mergedStyle = mergeObjects(
     {
-      ...gapStyle,
       gridTemplateAreas: gridTemplateAreasValue(areas),
       gridTemplateColumns: columns,
       gridTemplateRows: rows,
@@ -79,12 +72,15 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
       justifyContent,
       justifyItems,
       alignContent,
-      alignItems
+      alignItems,
+      gap: toSpacingVar(gap),
+      columnGap: toSpacingVar(columnGap),
+      rowGap: toSpacingVar(rowGap)
     } satisfies CSSProperties,
     style
   );
 
-  return <Box {...rest} ref={ref} className={cx(displayClass, classNames, className)} style={mergedStyle} />;
+  return <Box {...rest} ref={ref} className={cx(displayClass, className)} style={mergedStyle} />;
 }) as PolymorphicComponent<GridOwnProps>;
 
 /**

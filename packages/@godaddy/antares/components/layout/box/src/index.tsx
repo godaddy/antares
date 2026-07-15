@@ -2,8 +2,7 @@ import { cx } from 'cva';
 import { forwardRef, type CSSProperties, type ElementType } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
-import { resolveTokenStyles, toRoundingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
-import tokenClasses from '../../token-classes.module.css';
+import { toRoundingVar, toSpacingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
 import styles from './index.module.css';
 
 export interface BoxOwnProps {
@@ -136,20 +135,15 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     ...rest
   } = props;
 
-  const { classNames, style: tokenStyle } = resolveTokenStyles(tokenClasses, [
-    ['pad', 'padding', padding],
-    ['padX', 'paddingInline', inlinePadding],
-    ['padY', 'paddingBlock', blockPadding],
-    ['padIS', 'paddingInlineStart', inlinePaddingStart],
-    ['padIE', 'paddingInlineEnd', inlinePaddingEnd],
-    ['padBS', 'paddingBlockStart', blockPaddingStart],
-    ['padBE', 'paddingBlockEnd', blockPaddingEnd],
-    ['rad', 'borderRadius', rounding, toRoundingVar]
-  ]);
-
   const mergedStyle: CSSProperties = mergeObjects(
     {
-      ...tokenStyle,
+      padding: toSpacingVar(padding),
+      paddingBlock: toSpacingVar(blockPadding),
+      paddingBlockStart: toSpacingVar(blockPaddingStart),
+      paddingBlockEnd: toSpacingVar(blockPaddingEnd),
+      paddingInline: toSpacingVar(inlinePadding),
+      paddingInlineStart: toSpacingVar(inlinePaddingStart),
+      paddingInlineEnd: toSpacingVar(inlinePaddingEnd),
       alignSelf,
       justifySelf,
       order,
@@ -161,7 +155,8 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
       gridColumnStart,
       gridColumnEnd,
       gridRowStart,
-      gridRowEnd
+      gridRowEnd,
+      borderRadius: toRoundingVar(rounding)
     } satisfies CSSProperties,
     style
   );
@@ -170,7 +165,7 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     <Component
       {...rest}
       ref={ref}
-      className={cx(styles.box, classNames, className)}
+      className={cx(styles.box, className)}
       style={mergedStyle}
       data-elevation={elevation}
     />

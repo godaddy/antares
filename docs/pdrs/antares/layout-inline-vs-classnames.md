@@ -1,194 +1,63 @@
-# Layout: Inline Styles vs Class Names PDR
+# Layout: Styling Strategy PDR
 
-Status: **Complete — defaults + single-token classes** (arrays / custom stay inline)
-
-Related task: `.tasks/2026-07-15-layout-components-inline-vs-classnames.md`
-
-Spike plan: `.plans/2026-07-15-01-layout-inline-vs-classnames.md`
+Status: **Complete**
 
 ## Table of Contents
 
 - [Problem](#problem)
-- [Current State](#current-state)
-- [Approaches Considered](#approaches-considered)
-- [Proposed Solution: Hybrid Classes](#proposed-solution-hybrid-classes)
-- [Impact](#impact)
-- [Risks and Trade-offs](#risks-and-trade-offs)
-- [Recommendation](#recommendation)
-- [Spike Execution Plan](#spike-execution-plan)
-- [Resolved Questions](#resolved-questions)
+- [Styling Strategy](#styling-strategy)
+- [Token Scales](#token-scales)
+- [Split Rule](#split-rule)
+- [Merge Behavior](#merge-behavior)
+- [Trade-offs](#trade-offs)
 
 ---
 
 ## Problem
 
-Layout components (`Box`, `Flex`, `Grid`) put most layout props on the element's `style` attribute. That makes SSR HTML noisy, inflates payload size for deeply nested trees, and produces large, hard-to-review snapshot diffs for small prop changes.
+Layout components (`Box`, `Flex`, `Grid`) are configured entirely through props; consumers are not expected to override layout via CSS classes. Because these primitives wrap most of the component tree, putting every layout prop on the element's `style` attribute inflates the HTML served in SSR environments: defaults like `display: flex; flex-direction: row` repeat on every node, bloating payload size and producing noisy SSR snapshots.
 
-The focus of this spike is reducing DOM / SSR noise. Layout is controlled via component props; consumers are not expected to override layout props through CSS classes.
+The goal is to reduce that SSR HTML footprint while still supporting the full spacing/rounding token scale plus arbitrary freeform CSS values. The main lever is moving Flex/Grid display defaults out of `style` and into CSS classes so the common case ships no inline `style` for display. Spacing/rounding tokens stay inline as `var()` references (kept intentionally simple, resolving against the scales on `.box`), so they do not shrink; the SSR win comes from dropping repeated display defaults, not from the token values.
 
-## Current State
+## Styling Strategy
 
-| Piece | How it styles today |
-| ----- | ------------------- |
-| `Box` | Merges spacing, rounding, self-alignment, flex/grid item props into `style`; applies `styles.box` for spacing/elevation CSS vars; uses `data-elevation` for elevation |
-| `Flex` | Merges `display`, `flexDirection`, alignment, wrap, gap into `style`; renders through `Box` (no Flex CSS module) |
-| `Grid` | Merges `display`, template/auto props, alignment, gap into `style`; renders through `Box` (no Grid CSS module) |
-
-Defaults are still written into HTML. For example, `Flex` always sets `display: flex` and `flexDirection: row` on `style` even when the caller did not pass those props.
-
-SSR snapshots already show the noise. From `box.node.test.tsx.snap` (padding example), a single Flex wrapper alone contributes:
-
-```html
-style="display:flex;flex-direction:column;gap:var(--sp-md, 8px)"
-```
-
-and each child repeats long token strings such as `style="padding:var(--sp-md, 8px)"`.
-
-Elevation already avoids inline styles for a multi-declaration rule: `data-elevation` + CSS in `box/src/index.module.css`.
-
-Spacing and rounding tokens resolve through `toSpacingVar` / `toRoundingVar` to values like `var(--sp-md, 8px)`, then land in `style`.
-
-## Approaches Considered
-
-### 1. Atomic CSS classes for every discrete prop
-
-Map each token/enum value to a CSS Modules class (`gapMd`, `directionRow`, …).
-
-- **Pros:** Strong HTML savings for common cases; familiar Modules pattern.
-- **Cons:** Combinatorial CSS surface; freeform values still need `style`.
-
-### 2. Data attributes for discrete props
-
-Extend the elevation pattern (`data-gap="md"`, `data-direction="row"`).
-
-- **Pros:** Readable DOM; good for multi-declaration rules.
-- **Cons:** Often **does not** shrink HTML vs short inline styles for sparse props. Example ballpark:
-
-  ```html
-  style="display:flex;flex-direction:row;gap:var(--sp-md, 8px)"
-  ```
-
-  vs
-
-  ```html
-  data-display="flex" data-direction="row" data-gap="md"
-  ```
-
-  Similar cost. Data attrs are not the primary size strategy.
-
-### 3. Hybrid classes (chosen direction)
-
-- Base classes for **Flex / Grid defaults**.
-- Utility classes for **all token scale values** (spacing `xs`–`2xl`, rounding including `full`).
-- High-cardinality props and **custom / freeform** values stay on **`style`**.
-- Keep `data-elevation` as-is (multi-declaration rule, not a size play).
-
-## Proposed Solution: Hybrid Classes
-
-Public prop names and types stay the same. Only the DOM styling strategy changes. Goal: less noisy HTML, not CSS override ergonomics.
-
-### Split rule
+Public prop names and types are the API and stay stable. The DOM styling strategy is:
 
 | Category | Mechanism | Examples |
 | -------- | --------- | -------- |
-| Flex / Grid defaults | Base CSS module class | `.flex { display: flex; flex-direction: row }`, `.grid { display: grid }` |
-| Token scale values | Short utility classes | `gap="md"` → `gapMd`; `padding="lg"` → `padLg`; `inlinePadding` → `padX*`; `blockPadding` → `padY*`; `rounding="md"` → `radMd` |
-| High-cardinality props | Keep `style` | Alignment (`alignItems`, `justifyContent`, …), wrap, non-default direction, flex/grid item props, elevation stays on `data-elevation` |
-| Freeform / non-token | Keep `style` | Spacing arrays (`padding={['sm', 'md']}`), raw CSS (`gap="10px"`), `columns` / `rows` / `areas`, caller `style` |
+| Flex / Grid display defaults | Base CSS module class | `.flex { display: flex; flex-direction: row }`, `.inlineFlex`, `.column`, `.grid`, `.inlineGrid` |
+| Elevation | `data-elevation` + CSS rule on `.box` | `data-elevation="card"` |
+| Spacing / rounding tokens | Inline `style` referencing CSS variables | `padding="md"` → `padding: var(--sp-md)`; `gap="sm"` → `gap: var(--sp-sm)`; `rounding="full"` → `border-radius: var(--rounding-full)` |
+| High-cardinality props | Inline `style` | Alignment (`alignItems`, `justifyContent`, …), wrap, non-default direction, flex/grid item props, grid templates |
+| Freeform / non-token | Inline `style` | Spacing arrays (`padding={['sm', 'md']}`), raw CSS (`gap="10px"`), `columns` / `rows` / `areas`, caller `style` |
 
-Non-default Flex direction (e.g. `column`) stays inline for this spike's sketched scope unless a follow-up wants a small enum class set.
+## Token Scales
 
-### Merge behavior
+The `--sp-*` and `--rounding-*` scales are defined once on `.box` in `box/src/index.module.css`. `box.css` is the single source of truth for these values:
 
-- Keep `cx(styles.*, className)` so caller `className` still composes with component classes.
-- Caller `style` continues to merge last (same as today).
+- `--sp-*` derives from `--sp-density` so spacing responds to density/theme changes.
+- `--rounding-*` are fixed lengths.
 
-### Illustrative DOM (from measurement)
+`tokens.ts` maps each scale token to a bare CSS-variable reference (`toSpacingVar('md') → 'var(--sp-md)'`, `toRoundingVar('full') → 'var(--rounding-full)'`). There are no hardcoded fallback lengths in `tokens.ts`, so the scale can never drift from `box.css`. Because `Flex` and `Grid` render through `Box`, every token reference resolves against the scales defined on `.box`.
 
-**Current** (excerpt):
+Non-token values pass through untouched: `toSpacingVar('10px') → '10px'`, and spacing arrays map element-wise (`toSpacingVar(['sm', 'md']) → 'var(--sp-sm) var(--sp-md)'`).
 
-```html
-<div class="box" style="padding:var(--sp-lg, 12px);display:flex;flex-direction:row;align-items:center;gap:var(--sp-md, 8px)">
-```
+## Split Rule
 
-**Hybrid mock** (same tree):
+- **Display defaults** (Flex/Grid `display`, default `row`, and `column` direction) are CSS module classes so they leave the `style` attribute empty in the common case. Reversed directions (`row-reverse` / `column-reverse`) stay inline.
+- **Everything else** - tokens, alignment, wrap, templates, item placement, and caller-provided values - resolves to inline `style`.
 
-```html
-<div class="box flex gapMd paddingLg" style="align-items:center">
-```
+## Merge Behavior
 
-## Impact
+- `cx(styles.*, className)` composes component classes with any caller `className`.
+- Caller `style` merges last, so consumers can always override.
 
-### Expected (qualitative)
+## Trade-offs
 
-| Area | Expected effect |
-| ---- | --------------- |
-| DOM verbosity | Lower for every Flex/Grid node (defaults) and for any token-scale spacing/rounding; high-cardinality / custom values unchanged |
-| SSR output size | Lower from defaults leaving HTML and shorter classes vs `var(--sp-*, …)` / rounding vars on token paths |
-| Snapshot readability | Smaller, more stable diffs when token spacing or structure changes |
+| Aspect | Detail |
+| ------ | ------ |
+| Theming | Token utilities reference `--sp-*` / `--rounding-*` from `.box`, so density/theme changes flow through automatically. |
+| DOM verbosity | Display defaults leave HTML; token and freeform values remain on `style`. |
+| Consistency | A single rule (`known token → var()`, `default display → class`, `everything else → style`) keeps the runtime path predictable. |
 
-### Measured
-
-Representative tree: nested Flex/Box with `gap`/`padding` `md`/`lg`, one `alignItems`, one non-default `direction="column"`. Current path used real `Flex`/`Box` via `renderToString`. Hybrid path was a throwaway DOM mock with the same structure (defaults + token classes; alignment / column direction inline). The sample used `md`/`lg` only; the same per-token savings apply to `xs`/`sm`/`xl`/`2xl` (and rounding tokens).
-
-| Variant | SSR HTML bytes | `style=` footprint (chars) | `style=` attr count |
-| ------- | -------------- | -------------------------- | ------------------- |
-| Current `Flex`/`Box` | **454** | **306** | **6** |
-| Hybrid mock | **271** | **55** | **2** |
-| Delta | **−183 (−40.3%)** | **−251** | **−4** |
-
-Estimated CSS for the utilities used by the mock (source form, not minified): **203 bytes** for the subset touched. Full token coverage is larger but still a **fixed** CSS cost (one class per prop × token), while HTML savings scale with every node that uses a token.
-
-```css
-.flex { display: flex; flex-direction: row; }
-.gapMd { gap: var(--sp-md, 8px); }
-.gapLg { gap: var(--sp-lg, 12px); }
-.paddingMd { padding: var(--sp-md, 8px); }
-.paddingLg { padding: var(--sp-lg, 12px); }
-/* plus gap/padding (and axes) / rounding for xs, sm, xl, 2xl, full as needed */
-```
-
-Notes:
-
-- HTML savings scale with node count; CSS cost is mostly fixed. On this 6-node tree, HTML already saved more than the CSS added for the tokens used.
-- Most of the win is token utilities + dropping defaults, not alignment (which stayed inline).
-- Production CSS Modules hashing may lengthen class names vs the unhashed locals used here (`gapMd`); even with short hashes the classes stay shorter than `padding:var(--sp-md, 8px)`.
-
-## Risks and Trade-offs
-
-| Risk | Detail | Mitigation |
-| ---- | ------ | ---------- |
-| Partial noise remains | Alignment, arrays, and freeform props still inline | Intentional — tokens + defaults only |
-| CSS surface for all tokens | One utility per prop × token (gap, padding axes, rounding, …) | Finite closed set from `tokens.ts`; no classes for arbitrary CSS strings |
-| Theming | Hard-coded lengths would break density/theme | Token utilities must reference `--sp-*` / rounding vars from `.box` |
-| Dynamic styles | Runtime switches between class (token) and inline (custom) paths | Stable rule: known token → class; everything else → `style` |
-| Snapshot churn | Migrating will rewrite layout SSR snapshots | Expected; do in the implementation PR |
-
-Backwards compatibility and class-based overrides of layout props are **out of scope** — props are the API.
-
-## Recommendation
-
-**Ship defaults + single-token classes; keep arrays / custom CSS on `style`.**
-
-1. Flex / Grid **default classes** (`.flex` / `.inlineFlex`, `.grid` / `.inlineGrid`).
-2. Short utilities for single scale tokens via one helper (`tokenClass`) + `utilities.module.css` (`padMd`, `gapSm`, `radFull`, …).
-3. Arrays (e.g. `padding={['sm', 'md']}`), custom CSS (`gap="10px"`), and high-cardinality props stay on **`style`**.
-
-A full explicit class-map module was rejected as too much code; `tokenClass(styles, prefix, value)` keeps the TS surface small.
-
-**Shipped** on `chore/layout-components-inline-vs-classnames`.
-
-## Spike Execution Plan
-
-1. [x] Baseline: `renderToString` current Flex/Box tree with defaults + `md`/`lg` + alignment.
-2. [x] Throwaway hybrid mock: `.flex` defaults + `md`/`lg` utilities; alignment / column direction inline.
-3. [x] Compare HTML bytes and `style=` footprint; note CSS cost.
-4. [x] Update this PDR with numbers and recommendation.
-5. [x] Stop — no product migration in this spike (harness removed after measurement).
-
-## Resolved Questions
-
-1. **Single spacing / rounding tokens?** Classes via minimal `tokenClass` + short names (`padMd`, `gapXMd`, `radFull`, …).
-2. **Arrays / custom CSS?** Stay inline.
-3. **Flex / Grid defaults?** Base classes (shipped).
-4. **High-cardinality props?** Stay inline.
+Class-based overrides of layout props are out of scope - props are the API.

@@ -1,7 +1,7 @@
 {
   "name": "@bento/storybook-addon-helpers",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Build-time Storybook preset that generates CSF and prop docs from TypeScript types",
   "type": "module",
   "main": "./dist/index.cjs",
