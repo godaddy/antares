@@ -1,5 +1,13 @@
 # @godaddy/antares
 
+## 0.5.0
+
+### Minor Changes
+
+- feat: add drop-zone and file-trigger components ([#216](https://github.com/godaddy/bento/pull/216) by @rmojica-godaddy)
+- refactor: revamp Drawer + InlineDrawer (RAC state + CSS transitions); remove Drawer snap-points/handle APIs and InlineDrawerTrigger export ([#254](https://github.com/godaddy/bento/pull/254) by @egaitan-godaddy)
+- feat: progress-steps component ([#240](https://github.com/godaddy/bento/pull/240) by @egaitan-godaddy)
+
 ## 0.4.0
 
 ### Minor Changes
