@@ -5,6 +5,8 @@ import { DatePickerControlledExample } from '../examples/controlled.tsx';
 import { DateRangePickerExample } from '../examples/range.tsx';
 import { DatePickerWithErrorExample } from '../examples/with-error.tsx';
 import { DatePickerDisabledExample } from '../examples/disabled.tsx';
+import { DatePickerMinMaxExample } from '../examples/min-max.tsx';
+import { DatePickerFormatOptionsExample } from '../examples/format-options.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -29,6 +31,16 @@ describe('@godaddy/antares', function antares() {
     it('disabled', async function disabled() {
       const { container } = await render(<DatePickerDisabledExample />);
       await expect(container).toMatchScreenshot('date-picker-disabled');
+    });
+
+    it('min-max', async function minMax() {
+      const { container } = await render(<DatePickerMinMaxExample />);
+      await expect(container).toMatchScreenshot('date-picker-min-max');
+    });
+
+    it('format-options', async function formatOptions() {
+      const { container } = await render(<DatePickerFormatOptionsExample />);
+      await expect(container).toMatchScreenshot('date-picker-format-options');
     });
   });
 });

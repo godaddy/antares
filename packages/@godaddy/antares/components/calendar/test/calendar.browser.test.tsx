@@ -3,6 +3,9 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { CalendarWithValueExample } from '../examples/with-value.tsx';
 import { RangeCalendarExample } from '../examples/range.tsx';
+import { CalendarMinMaxExample } from '../examples/min-max.tsx';
+import { CalendarUnavailableExample } from '../examples/unavailable.tsx';
+import { CalendarDisabledExample } from '../examples/disabled.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Calendar', function calendar() {
@@ -64,6 +67,35 @@ describe('@godaddy/antares', function antares() {
       const monthSelects = screen.getByRole('button', { name: 'Month' }).all();
       await expect.element(monthSelects[0]).toHaveTextContent('March');
       await expect.element(monthSelects[1]).toHaveTextContent('April');
+    });
+
+    it('does not select an unavailable day on click', async function unavailable() {
+      const { getByRole } = await render(<CalendarUnavailableExample />);
+      const saturday = getByRole('button', { name: /March 16, 2024/ });
+      await expect.element(saturday).toHaveAttribute('data-unavailable', 'true');
+      await userEvent.click(saturday, { force: true });
+      await expect.element(saturday).not.toHaveAttribute('data-selected');
+    });
+
+    it('does not select a day when the whole calendar is disabled', async function disabled() {
+      const { getByRole } = await render(<CalendarDisabledExample />);
+      const day = getByRole('button', { name: /March 20, 2024/ });
+      await expect.element(day).toHaveAttribute('data-disabled', 'true');
+      await userEvent.click(day, { force: true });
+      await expect.element(day).not.toHaveAttribute('data-selected');
+    });
+
+    it('enforces min/max bounds when selecting days', async function minMax() {
+      const { getByRole } = await render(<CalendarMinMaxExample />);
+      // March 3 falls before the min (March 5), so it is disabled and cannot be selected.
+      const belowMin = getByRole('button', { name: /March 3, 2024/ });
+      await expect.element(belowMin).toHaveAttribute('data-disabled', 'true');
+      await userEvent.click(belowMin, { force: true });
+      await expect.element(belowMin).not.toHaveAttribute('data-selected');
+      // March 20 is within bounds and selects normally.
+      const inBounds = getByRole('button', { name: /March 20, 2024/ });
+      await userEvent.click(inBounds);
+      await expect.element(inBounds).toHaveAttribute('data-selected', 'true');
     });
   });
 });
