@@ -12,3 +12,5 @@ Adds date components built on React Aria Components:
   value as a read-only formatted label and open a calendar in a popover (no editable segmented
   input). Built on the field primitives, with `size`, `formatOptions`, and `placeholder` props.
 - `FieldTrigger` — Used in DatePicker and Select as the component sharing their styles.
+- `@godaddy/antares/date` — subpath that re-exports `@internationalized/date` (`CalendarDate`,
+  `parseDate`, `today`, …) so consumers construct date values without installing it directly.

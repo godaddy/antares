@@ -129,8 +129,14 @@ const config: StorybookConfig = {
             find: /^@bento\/(.*)$/,
             replacement: resolve(__dirname, '../../../packages/@bento/$1/src')
           },
+          // "@godaddy/antares/<subpath>" resolves to "packages/@godaddy/antares/exports/<subpath>.ts"
           {
-            find: /^@godaddy\/(.*)$/,
+            find: /^@godaddy\/([^/]+)\/(.+)$/,
+            replacement: resolve(__dirname, '../../../packages/@godaddy/$1/exports/$2.ts')
+          },
+          // "@godaddy/antares" resolves to "packages/@godaddy/antares/index.ts"
+          {
+            find: /^@godaddy\/([^/]+)$/,
             replacement: resolve(__dirname, '../../../packages/@godaddy/$1/index.ts')
           }
         ]

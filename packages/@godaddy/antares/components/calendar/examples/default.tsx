@@ -1,5 +1,5 @@
 import { Calendar } from '@godaddy/antares';
-import { parseDate } from '@internationalized/date';
+import { parseDate } from '@godaddy/antares/date';
 
 // Unselected calendar pinned to a fixed visible month so the month/year header snapshots
 // deterministically — without a fixed focus it would show today's month and churn daily.

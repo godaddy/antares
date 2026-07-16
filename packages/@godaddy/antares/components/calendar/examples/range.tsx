@@ -1,5 +1,5 @@
 import { RangeCalendar } from '@godaddy/antares';
-import { parseDate } from '@internationalized/date';
+import { parseDate } from '@godaddy/antares/date';
 
 export function RangeCalendarExample() {
   return (

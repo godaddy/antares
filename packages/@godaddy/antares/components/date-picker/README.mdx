@@ -31,17 +31,17 @@ npm install @godaddy/antares
 
 ## Working with dates
 
-Values are `CalendarDate` objects from `@internationalized/date` (ships transitively — import directly):
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
 
 ```tsx
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
 import { DatePicker } from '@godaddy/antares';
 
 <DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
 <DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
 ```
 
-Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry — selection is via the calendar.
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
 
 ## Props
 

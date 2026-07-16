@@ -1,5 +1,5 @@
 import { Calendar } from '@godaddy/antares';
-import { isWeekend, parseDate } from '@internationalized/date';
+import { isWeekend, parseDate } from '@godaddy/antares/date';
 
 export function CalendarUnavailableExample() {
   return (

@@ -31,15 +31,17 @@ npm install @godaddy/antares
 
 ## Working with dates
 
-`Calendar` values are `CalendarDate` objects from `@internationalized/date`, which is included transitively with `@godaddy/antares`. Add `@internationalized/date` to your `package.json` and use it directly:
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
 
 ```tsx
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
 import { Calendar } from '@godaddy/antares';
 
 <Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
 <Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
 ```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
 
 ## Props
 
