@@ -293,15 +293,17 @@ npm install @godaddy/antares
 
 ## Working with dates [#working-with-dates]
 
-`Calendar` values are `CalendarDate` objects from `@internationalized/date`, which is included transitively with `@godaddy/antares`. Add `@internationalized/date` to your `package.json` and use it directly:
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
 
 ```tsx
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
 import { Calendar } from '@godaddy/antares';
 
 <Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
 <Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
 ```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
 
 ## Props [#props]
 
@@ -831,133 +833,6 @@ Use the `emphasis` prop to communicate status: `success`, `warning`, or `critica
 * The decorative SVG and output text are hidden via `aria-hidden="true"`
 
 
-# DatePicker
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria — native form integration, validation, focus management, and screen-reader support
-* Consumer-controlled label formatting via `formatOptions`
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects from `@internationalized/date` (ships transitively — import directly):
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
-import { DatePicker } from '@godaddy/antares';
-
-<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
-<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-Strict-pnpm users (without `node-linker=hoisted`) must add `@internationalized/date` to their own `package.json`. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry — selection is via the calendar.
-
-## Props [#props]
-
-The `DatePicker` component accepts the following props:
-
-<PropTable />
-
-The `DateRangePicker` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A single date picker.
-
-<Source language="tsx" code="SourceDefault" />
-
-<Story of="Stories.Default" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Source language="tsx" code="SourceRange" />
-
-<Story of="Stories.Range" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Custom format [#custom-format]
-
-Controlling the label with `formatOptions`.
-
-<Source language="tsx" code="SourceFormatOptions" />
-
-<Story of="Stories.FormatOptions" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Source language="tsx" code="SourceMinMax" />
-
-<Story of="Stories.MinMax" />
-
-### Error [#error]
-
-An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
-
-<Source language="tsx" code="SourceWithError" />
-
-<Story of="Stories.WithError" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-## Customization [#customization]
-
-`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
-
-## Accessibility [#accessibility]
-
-* The whole field is a single focusable button; Enter/Space opens the popover
-* Focus is trapped in the open popover and returns to the trigger on close
-* Esc and outside-click dismiss the popover
-* The calendar grid is fully keyboard navigable and screen-reader announced
-
-## Best Practices [#best-practices]
-
-* Provide a `label` (or `aria-label`) on every picker.
-* For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
-* Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
-
-
 # Drawer
 
 
@@ -1054,6 +929,133 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 * Always provide an `aria-label` so the dialog has an accessible name.
 * Use `isDismissable` to allow closing via backdrop click.
 * Don't nest drawers.
+
+
+# DatePicker
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria — native form integration, validation, focus management, and screen-reader support
+* Consumer-controlled label formatting via `formatOptions`
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { DatePicker } from '@godaddy/antares';
+
+<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
+<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
+
+## Props [#props]
+
+The `DatePicker` component accepts the following props:
+
+<PropTable />
+
+The `DateRangePicker` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A single date picker.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Source language="tsx" code="SourceRange" />
+
+<Story of="Stories.Range" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Custom format [#custom-format]
+
+Controlling the label with `formatOptions`.
+
+<Source language="tsx" code="SourceFormatOptions" />
+
+<Story of="Stories.FormatOptions" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Source language="tsx" code="SourceMinMax" />
+
+<Story of="Stories.MinMax" />
+
+### Error [#error]
+
+An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
+
+<Source language="tsx" code="SourceWithError" />
+
+<Story of="Stories.WithError" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+## Customization [#customization]
+
+`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
+
+## Accessibility [#accessibility]
+
+* The whole field is a single focusable button; Enter/Space opens the popover
+* Focus is trapped in the open popover and returns to the trigger on close
+* Esc and outside-click dismiss the popover
+* The calendar grid is fully keyboard navigable and screen-reader announced
+
+## Best Practices [#best-practices]
+
+* Provide a `label` (or `aria-label`) on every picker.
+* For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
+* Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
 
 
 # DropZone
@@ -2342,7 +2344,9 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Source language="tsx" code="SourceOnChange" />
 
 
-# Popover
+# ProgressBar
+
+
 
 
 
@@ -2364,38 +2368,35 @@ npm install --save @godaddy/antares
 
 ### Basic Usage [#basic-usage]
 
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
 <Story of="Stories.Default" />
 
-<Source language="tsx" code="DefaultExample" />
+<Source language="tsx" code="SourceDefault" />
 
-### Custom Anchor [#custom-anchor]
+### Sizes [#sizes]
 
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
 
-<Story of="Stories.CustomAnchor" />
+<Story of="Stories.Sizes" />
 
-<Source language="tsx" code="CustomAnchorExample" />
+<Source language="tsx" code="SourceSizes" />
 
-### Close Button and Header [#close-button-and-header]
+### Statuses [#statuses]
 
-To show a close button in the popover header, use the `showCloseButton` prop.
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
 
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
+<Story of="Stories.Statuses" />
 
-<Story of="Stories.WithCloseButton" />
+<Source language="tsx" code="SourceStatuses" />
 
-<Source language="tsx" code="WithCloseButtonExample" />
+## Accessibility [#accessibility]
 
-## Best Practices [#best-practices]
+### ARIA Support [#aria-support]
 
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
 # ProgressSteps
@@ -2510,6 +2511,62 @@ Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
 * **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
 * **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
 * **Titles overflow:** that's expected — titles truncate. Shorten the title.
+
+
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+### Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+## Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # Radio
@@ -2866,143 +2923,6 @@ Components automatically add data attributes for styling different states:
 * For form input (use RadioGroup instead)
 
 
-# ProgressBar
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="Stories.Statuses" />
-
-<Source language="tsx" code="SourceStatuses" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-
-# Select
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Select` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with a label and a placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Multiple [#multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Source language="tsx" code="SourceMultiple" />
-
-<Story of="Stories.Multiple" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Form [#form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Source language="tsx" code="SourceForm" />
-
-<Story of="Stories.Form" />
-
-
 # Tag
 
 
@@ -3118,6 +3038,88 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 * If users need to click or dismiss it — use a **Button** instead.
 * If the label is part of a sentence with no visual distinction — just use text.
+
+
+# Select
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Select` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with a label and a placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Source language="tsx" code="SourceMultiple" />
+
+<Story of="Stories.Multiple" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Source language="tsx" code="SourceForm" />
+
+<Story of="Stories.Form" />
 
 
 # Text
@@ -3564,464 +3566,6 @@ To position a tooltip relative to a different focusable element, use the
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
-# Gauge Chart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A continuous gauge with a single label.
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceBasic" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="Stories.Continuous" />
-
-<Source language="tsx" code="SourceContinuous" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="Stories.Segmented" />
-
-<Source language="tsx" code="SourceSegmented" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="Stories.WithRangeLabels" />
-
-<Source language="tsx" code="SourceWithRangeLabels" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="Stories.Variants" />
-
-<Source language="tsx" code="SourceVariants" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="Stories.LabelType" />
-
-<Source language="tsx" code="SourceLabelType" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-
-# LineChart
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-#### Single Series [#single-series]
-
-One line with time-scale X-axis and minimal configuration.
-
-<Story of="Stories.SingleSeries" />
-
-<Source language="tsx" code="SourceSingleSeries" />
-
-#### Multiple Series [#multiple-series]
-
-Several lines with a bottom legend and shared X-axis.
-
-<Story of="Stories.MultipleSeries" />
-
-<Source language="tsx" code="SourceMultipleSeries" />
-
-### Axis [#axis]
-
-#### Gridlines [#gridlines]
-
-Vertical and horizontal gridlines via `xGridlines` and `yGridlines`.
-
-<Story of="Stories.Gridlines" />
-
-<Source language="tsx" code="SourceGridlines" />
-
-#### Titles [#titles]
-
-X- and Y-axis titles to label what each axis represents (e.g. "Month", "Temperature (°F)").
-
-<Story of="Stories.Titles" />
-
-<Source language="tsx" code="SourceTitles" />
-
-#### Labels [#labels]
-
-Tick labels on both axes with `xLabels` and `yLabels`.
-
-<Story of="Stories.Labels" />
-
-<Source language="tsx" code="SourceLabels" />
-
-#### Ticks [#ticks]
-
-Tick marks (short lines) at each tick value. Controlled by `xTickMarks` and `yTickMarks`.
-
-<Story of="Stories.Ticks" />
-
-<Source language="tsx" code="SourceTicks" />
-
-#### Baselines [#baselines]
-
-Axis baseline (the main axis line). Controlled by `xBaseline` and `yBaseline`.
-
-<Story of="Stories.Baselines" />
-
-<Source language="tsx" code="SourceBaselines" />
-
-#### Legend [#legend]
-
-Legend showing series names and colors, positioned above or below the chart via `legendPosition`.
-
-<Story of="Stories.Legend" />
-
-<Source language="tsx" code="SourceLegend" />
-
-### Formatting [#formatting]
-
-#### Axis and Tooltip Formatting [#axis-and-tooltip-formatting]
-
-Custom formatters for axis ticks and tooltip values (e.g. currency, dates). Controlled by `xTickFormat` and `yTickFormat`.
-
-<Story of="Stories.Formatting" />
-
-<Source language="tsx" code="SourceFormatting" />
-
-### Scale [#scale]
-
-#### Fixed Domain [#fixed-domain]
-
-Explicit X and Y domain for a fixed range or consistent scale across charts.
-
-<Story of="Stories.FixedDomain" />
-
-<Source language="tsx" code="SourceFixedDomain" />
-
-#### Nice Values [#nice-values]
-
-Domain extended to nice round values (e.g. 0.2–1.0).
-
-<Story of="Stories.NiceValues" />
-
-<Source language="tsx" code="SourceNiceValues" />
-
-#### Zero Included [#zero-included]
-
-X and Y domains include zero via `xZero` and `yZero`.
-
-<Story of="Stories.ZeroIncluded" />
-
-<Source language="tsx" code="SourceZeroIncluded" />
-
-#### Custom Ticks [#custom-ticks]
-
-Explicit tick values or count with `xTickValues` / `yTickValues` or `xNumTicks` / `yNumTicks`.
-
-<Story of="Stories.CustomTicks" />
-
-<Source language="tsx" code="SourceCustomTicks" />
-
-#### Band Padding [#band-padding]
-
-Outer padding on a band-scale axis with `xPaddingOuter` / `yPaddingOuter`.
-
-<Story of="Stories.BandPadding" />
-
-<Source language="tsx" code="SourceBandPadding" />
-
-### Interactive [#interactive]
-
-#### Tooltip Disabled [#tooltip-disabled]
-
-Tooltip, crosshair, and data point glyphs all disabled (`tooltip={false}`, `showCrosshair={false}`, `showDataPoints={false}`).
-
-<Story of="Stories.TooltipDisabled" />
-
-<Source language="tsx" code="SourceTooltipDisabled" />
-
-#### Crosshair Only [#crosshair-only]
-
-Only the vertical crosshair on hover; tooltip and data point glyphs disabled.
-
-<Story of="Stories.CrosshairOnly" />
-
-<Source language="tsx" code="SourceCrosshairOnly" />
-
-#### Custom Tooltip Formatting [#custom-tooltip-formatting]
-
-Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
-
-<Story of="Stories.CustomTooltipFormatting" />
-
-<Source language="tsx" code="SourceCustomTooltipFormatting" />
-
-### Data [#data]
-
-#### Custom Accessors [#custom-accessors]
-
-Custom data shape (e.g. `date`/`value`) with `xAccessor` and `yAccessor`.
-
-<Story of="Stories.CustomAccessors" />
-
-<Source language="tsx" code="SourceCustomAccessors" />
-
-#### Missing Values [#missing-values]
-
-Null Y values create breaks in the line.
-
-<Story of="Stories.MissingValues" />
-
-<Source language="tsx" code="SourceMissingValues" />
-
-### Layout [#layout]
-
-#### Fixed Size [#fixed-size]
-
-Explicit chart size via `width` and `height` props (e.g. 800×400).
-
-<Story of="Stories.FixedSize" />
-
-<Source language="tsx" code="SourceFixedSize" />
-
-### Featured [#featured]
-
-#### Bitcoin Price [#bitcoin-price]
-
-Time-series with date and currency formatting, gridlines, and nice Y-axis.
-
-<Story of="Stories.BitcoinPrice" />
-
-<Source language="tsx" code="SourceBitcoinPrice" />
-
-#### City Temperature [#city-temperature]
-
-Multiple series over time with legend, shared time axis, and temperature (°F) formatting.
-
-<Story of="Stories.CityTemperature" />
-
-<Source language="tsx" code="SourceCityTemperature" />
-
-#### Browser Usage [#browser-usage]
-
-Categorical X-axis (band scale) with multiple series and percentage formatting.
-
-<Story of="Stories.BrowserUsage" />
-
-<Source language="tsx" code="SourceBrowserUsage" />
-
-### Right-to-Left [#right-to-left]
-
-The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes and labels accordingly.
-
-<Story of="Stories.RTL" />
-
-<Source language="tsx" code="SourceRTL" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-The chart root exposes data attributes that reflect prop state for styling:
-
-**Chart container:** `data-width`, `data-height`, `data-x-labels`, `data-y-labels`, `data-x-labels-vertical`, `data-x-baseline`, `data-y-baseline`, `data-x-tick-marks`, `data-y-tick-marks`
-
-### Component Customization [#component-customization]
-
-Use the `className` prop on the chart container to add or override styles:
-
-```tsx
-<LineChart series={series} className="my-custom-chart" />
-```
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* Provide &#x2A;*`aria-label`** to describe the chart (e.g. "Monthly sales revenue from January to May 2024").
-* Use &#x2A;*`desc`** for a longer description rendered in the SVG `<desc>` for screen readers.
-* The component sets ARIA attributes on interactive and structural elements as needed.
-
-## Troubleshooting [#troubleshooting]
-
-### Chart Not Sizing or Empty [#chart-not-sizing-or-empty]
-
-Ensure the chart has a non-zero size. Place it in a container with explicit dimensions or use `width` and `height`:
-
-```tsx
-// ✅ Container with size
-<div style={{ width: '100%', height: 400 }}>
-  <LineChart series={series} />
-</div>
-
-// ✅ Or fixed dimensions on the component
-<LineChart series={series} width={600} height={400} />
-```
-
-### Dates Not Displaying Correctly [#dates-not-displaying-correctly]
-
-Use `xType="time"` when the X-axis values are Date objects:
-
-```tsx
-// ❌ Without xType="time", Date objects may not scale correctly
-<LineChart series={seriesWithDates} />
-
-// ✅ Use time scale for Date X values
-<LineChart series={seriesWithDates} xType="time" />
-```
-
-### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
-
-Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
-
-## Best Practices [#best-practices]
-
-### When to Use LineChart [#when-to-use-linechart]
-
-* Use for trends over time or along a continuous scale.
-* Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
-* Prefer a single chart with a legend over multiple small charts when comparing the same X range.
-
-
 # Bar Chart
 
 
@@ -4415,7 +3959,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# Box
+# Gauge Chart
 
 
 
@@ -4425,9 +3969,168 @@ All examples can be found in the Storybook interface:
 
 <Meta of="Stories" name="Overview" />
 
-`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+## Installation [#installation]
 
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
+# LineChart
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
 
 ## Installation [#installation]
 
@@ -4437,78 +4140,281 @@ npm install --save @godaddy/antares
 
 ## Props [#props]
 
-The `Box` component accepts the following props:
-
 <PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
 
 ## Examples [#examples]
 
-### Padding [#padding]
+### Basic [#basic]
 
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
+#### Single Series [#single-series]
 
-<Story of="Stories.Padding" />
+One line with time-scale X-axis and minimal configuration.
 
-<Source language="tsx" code="SourcePadding" />
+<Story of="Stories.SingleSeries" />
 
-### Elevation [#elevation]
+<Source language="tsx" code="SourceSingleSeries" />
 
-The elevation prop adds visual depth using box-shadow.
+#### Multiple Series [#multiple-series]
 
-<Story of="Stories.Elevation" />
+Several lines with a bottom legend and shared X-axis.
 
-<Source language="tsx" code="SourceElevation" />
+<Story of="Stories.MultipleSeries" />
 
-### Rounding [#rounding]
+<Source language="tsx" code="SourceMultipleSeries" />
 
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
+### Axis [#axis]
 
-<Story of="Stories.Rounding" />
+#### Gridlines [#gridlines]
 
-<Source language="tsx" code="SourceRounding" />
+Vertical and horizontal gridlines via `xGridlines` and `yGridlines`.
 
-### Polymorphic `as` Prop [#polymorphic-as-prop]
+<Story of="Stories.Gridlines" />
 
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+<Source language="tsx" code="SourceGridlines" />
 
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+#### Titles [#titles]
 
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+X- and Y-axis titles to label what each axis represents (e.g. "Month", "Temperature (°F)").
 
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+<Story of="Stories.Titles" />
 
-<Story of="Stories.As" />
+<Source language="tsx" code="SourceTitles" />
 
-<Source language="tsx" code="SourceAs" />
+#### Labels [#labels]
 
-### Alignment [#alignment]
+Tick labels on both axes with `xLabels` and `yLabels`.
 
-Self-alignment props allow Box to position itself within flex or grid containers.
+<Story of="Stories.Labels" />
 
-<Story of="Stories.Alignment" />
+<Source language="tsx" code="SourceLabels" />
 
-<Source language="tsx" code="SourceAlignment" />
+#### Ticks [#ticks]
 
-## RTL Support [#rtl-support]
+Tick marks (short lines) at each tick value. Controlled by `xTickMarks` and `yTickMarks`.
 
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+<Story of="Stories.Ticks" />
 
-## Design Tokens [#design-tokens]
+<Source language="tsx" code="SourceTicks" />
 
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+#### Baselines [#baselines]
+
+Axis baseline (the main axis line). Controlled by `xBaseline` and `yBaseline`.
+
+<Story of="Stories.Baselines" />
+
+<Source language="tsx" code="SourceBaselines" />
+
+#### Legend [#legend]
+
+Legend showing series names and colors, positioned above or below the chart via `legendPosition`.
+
+<Story of="Stories.Legend" />
+
+<Source language="tsx" code="SourceLegend" />
+
+### Formatting [#formatting]
+
+#### Axis and Tooltip Formatting [#axis-and-tooltip-formatting]
+
+Custom formatters for axis ticks and tooltip values (e.g. currency, dates). Controlled by `xTickFormat` and `yTickFormat`.
+
+<Story of="Stories.Formatting" />
+
+<Source language="tsx" code="SourceFormatting" />
+
+### Scale [#scale]
+
+#### Fixed Domain [#fixed-domain]
+
+Explicit X and Y domain for a fixed range or consistent scale across charts.
+
+<Story of="Stories.FixedDomain" />
+
+<Source language="tsx" code="SourceFixedDomain" />
+
+#### Nice Values [#nice-values]
+
+Domain extended to nice round values (e.g. 0.2–1.0).
+
+<Story of="Stories.NiceValues" />
+
+<Source language="tsx" code="SourceNiceValues" />
+
+#### Zero Included [#zero-included]
+
+X and Y domains include zero via `xZero` and `yZero`.
+
+<Story of="Stories.ZeroIncluded" />
+
+<Source language="tsx" code="SourceZeroIncluded" />
+
+#### Custom Ticks [#custom-ticks]
+
+Explicit tick values or count with `xTickValues` / `yTickValues` or `xNumTicks` / `yNumTicks`.
+
+<Story of="Stories.CustomTicks" />
+
+<Source language="tsx" code="SourceCustomTicks" />
+
+#### Band Padding [#band-padding]
+
+Outer padding on a band-scale axis with `xPaddingOuter` / `yPaddingOuter`.
+
+<Story of="Stories.BandPadding" />
+
+<Source language="tsx" code="SourceBandPadding" />
+
+### Interactive [#interactive]
+
+#### Tooltip Disabled [#tooltip-disabled]
+
+Tooltip, crosshair, and data point glyphs all disabled (`tooltip={false}`, `showCrosshair={false}`, `showDataPoints={false}`).
+
+<Story of="Stories.TooltipDisabled" />
+
+<Source language="tsx" code="SourceTooltipDisabled" />
+
+#### Crosshair Only [#crosshair-only]
+
+Only the vertical crosshair on hover; tooltip and data point glyphs disabled.
+
+<Story of="Stories.CrosshairOnly" />
+
+<Source language="tsx" code="SourceCrosshairOnly" />
+
+#### Custom Tooltip Formatting [#custom-tooltip-formatting]
+
+Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
+
+<Story of="Stories.CustomTooltipFormatting" />
+
+<Source language="tsx" code="SourceCustomTooltipFormatting" />
+
+### Data [#data]
+
+#### Custom Accessors [#custom-accessors]
+
+Custom data shape (e.g. `date`/`value`) with `xAccessor` and `yAccessor`.
+
+<Story of="Stories.CustomAccessors" />
+
+<Source language="tsx" code="SourceCustomAccessors" />
+
+#### Missing Values [#missing-values]
+
+Null Y values create breaks in the line.
+
+<Story of="Stories.MissingValues" />
+
+<Source language="tsx" code="SourceMissingValues" />
+
+### Layout [#layout]
+
+#### Fixed Size [#fixed-size]
+
+Explicit chart size via `width` and `height` props (e.g. 800×400).
+
+<Story of="Stories.FixedSize" />
+
+<Source language="tsx" code="SourceFixedSize" />
+
+### Featured [#featured]
+
+#### Bitcoin Price [#bitcoin-price]
+
+Time-series with date and currency formatting, gridlines, and nice Y-axis.
+
+<Story of="Stories.BitcoinPrice" />
+
+<Source language="tsx" code="SourceBitcoinPrice" />
+
+#### City Temperature [#city-temperature]
+
+Multiple series over time with legend, shared time axis, and temperature (°F) formatting.
+
+<Story of="Stories.CityTemperature" />
+
+<Source language="tsx" code="SourceCityTemperature" />
+
+#### Browser Usage [#browser-usage]
+
+Categorical X-axis (band scale) with multiple series and percentage formatting.
+
+<Story of="Stories.BrowserUsage" />
+
+<Source language="tsx" code="SourceBrowserUsage" />
+
+### Right-to-Left [#right-to-left]
+
+The chart follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings. When it is RTL, the chart mirrors axes and labels accordingly.
+
+<Story of="Stories.RTL" />
+
+<Source language="tsx" code="SourceRTL" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+The chart root exposes data attributes that reflect prop state for styling:
+
+**Chart container:** `data-width`, `data-height`, `data-x-labels`, `data-y-labels`, `data-x-labels-vertical`, `data-x-baseline`, `data-y-baseline`, `data-x-tick-marks`, `data-y-tick-marks`
+
+### Component Customization [#component-customization]
+
+Use the `className` prop on the chart container to add or override styles:
+
+```tsx
+<LineChart series={series} className="my-custom-chart" />
+```
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* Provide &#x2A;*`aria-label`** to describe the chart (e.g. "Monthly sales revenue from January to May 2024").
+* Use &#x2A;*`desc`** for a longer description rendered in the SVG `<desc>` for screen readers.
+* The component sets ARIA attributes on interactive and structural elements as needed.
+
+## Troubleshooting [#troubleshooting]
+
+### Chart Not Sizing or Empty [#chart-not-sizing-or-empty]
+
+Ensure the chart has a non-zero size. Place it in a container with explicit dimensions or use `width` and `height`:
+
+```tsx
+// ✅ Container with size
+<div style={{ width: '100%', height: 400 }}>
+  <LineChart series={series} />
+</div>
+
+// ✅ Or fixed dimensions on the component
+<LineChart series={series} width={600} height={400} />
+```
+
+### Dates Not Displaying Correctly [#dates-not-displaying-correctly]
+
+Use `xType="time"` when the X-axis values are Date objects:
+
+```tsx
+// ❌ Without xType="time", Date objects may not scale correctly
+<LineChart series={seriesWithDates} />
+
+// ✅ Use time scale for Date X values
+<LineChart series={seriesWithDates} xType="time" />
+```
+
+### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
+
+Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
+
+## Best Practices [#best-practices]
+
+### When to Use LineChart [#when-to-use-linechart]
+
+* Use for trends over time or along a continuous scale.
+* Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
+* Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
 # Flex
@@ -4615,6 +4521,102 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Box
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="Stories.Padding" />
+
+<Source language="tsx" code="SourcePadding" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="Stories.Elevation" />
+
+<Source language="tsx" code="SourceElevation" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="Stories.Rounding" />
+
+<Source language="tsx" code="SourceRounding" />
+
+### Polymorphic `as` Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+<Story of="Stories.As" />
+
+<Source language="tsx" code="SourceAs" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
 # Grid
