@@ -88,7 +88,9 @@ describe('@godaddy/antares', function antares() {
       const { getByText } = await render(<CompactExample />);
 
       const [dataEl] = getByText('8,021').elements();
-      expect(getComputedStyle(dataEl!.parentElement as HTMLElement).flexDirection).toEqual('row');
+      if (!dataEl?.parentElement) throw new Error('Data element not found');
+
+      expect(getComputedStyle(dataEl.parentElement).flexDirection).toEqual('row');
     });
 
     it('renders info trigger when title and titleInfo are both provided', async function rendersInfoTrigger() {
