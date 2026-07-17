@@ -1,4 +1,4 @@
-import { forwardRef, type RefObject, type ReactNode } from 'react';
+import { forwardRef, type CSSProperties, type RefObject, type ReactNode } from 'react';
 import { cx } from 'cva';
 import {
   Dialog as RACDialog,
@@ -50,7 +50,17 @@ export interface PopoverProps extends RACPopoverProps, FlexOwnProps {
  * @param props - {@link PopoverProps}
  */
 export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(props, ref) {
-  const { className, children, header, showCloseButton, hideArrow, contentProps, ...rest } = props;
+  const {
+    className,
+    children,
+    header,
+    showCloseButton,
+    hideArrow,
+    contentProps,
+    containerPadding = 10,
+    style,
+    ...rest
+  } = props;
 
   return (
     <Flex
@@ -58,8 +68,10 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
       elevation="overlay"
       data-noarrow={hideArrow}
       rounding="md"
+      containerPadding={containerPadding}
       {...rest}
       as={RACPopover}
+      style={{ ...style, '--_container-padding': `${containerPadding}px` } as CSSProperties}
       className={cx(styles.popover, className)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
