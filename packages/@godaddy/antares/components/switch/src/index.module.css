@@ -1,0 +1,71 @@
+.switch {
+  --_thumb-size: 1.25em;
+  --_thumb-inset: calc(var(--ux-1sbfig8, 0.25em) * 0.5);
+  --_track-w: 3.25em;
+  --_track-h: calc(var(--_thumb-size) + var(--_thumb-inset) * 2);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--color-input-text-default, var(--ux-1glcx6s, #2b2b2b));
+
+  &[data-disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &[data-focused] {
+    outline: 2px solid Highlight;
+    border-radius: var(--ux-zvaw3s, 6px);
+  }
+
+  &[data-selected] {
+    .track {
+      background: var(--color-input-background-selected, var(--ux-sywk25, #00a4a6));
+    }
+
+    .thumb {
+      inset-inline-start: calc(var(--_track-w) - var(--_thumb-size) - var(--_thumb-inset));
+    }
+  }
+}
+
+.switch[data-size="sm"] {
+  --_thumb-size: 1em;
+  --_track-w: 2.5em;
+
+  .label {
+    font-size: 0.875em;
+    line-height: 1.375;
+  }
+}
+
+.track {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--_track-w);
+  height: var(--_track-h);
+  border-radius: calc(var(--_track-h) / 2);
+  background: var(--ux-1m9ys0v, #767676);
+  transition: background-color 0.15s ease-in-out;
+  pointer-events: none;
+}
+
+.thumb {
+  position: absolute;
+  inset-block-start: var(--_thumb-inset);
+  inset-inline-start: var(--_thumb-inset);
+  box-sizing: border-box;
+  width: var(--_thumb-size);
+  height: var(--_thumb-size);
+  border-radius: 50%;
+  background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
+  transition: inset-inline-start 0.15s ease-in-out;
+}
+
+.label {
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.125;
+}
