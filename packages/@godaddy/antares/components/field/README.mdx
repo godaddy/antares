@@ -20,8 +20,10 @@ The field decoration is split into granular, composable pieces so the same struc
 - **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
 - **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
 - **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
-- **`FieldInput`** / **`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
+- **`FieldInput`** — the single-line control the user types into (a normalized React Aria `Input` given antares spacing via `Box`).
+- **`FieldTextArea`** — the multiline control the user types into (a normalized React Aria `TextArea` given antares spacing via `Box`).
 - **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+- **`FieldTrigger`** — a full-width value-display button inside the box that opens an overlay (used by Select and DatePicker): a value area plus a trailing icon, laid out across the group. `variant="select"` is transparent and input-like; `variant="control"` is a filled segment inside a shared group.
 - **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
 - **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
 

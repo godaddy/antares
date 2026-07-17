@@ -7,6 +7,7 @@ export {
   FieldError,
   FieldInput,
   FieldTextArea,
+  FieldTrigger,
   type FieldProps,
   type FieldOwnProps,
   type FieldLabelProps,
@@ -16,5 +17,6 @@ export {
   type FieldErrorProps,
   type FieldInputProps,
   type FieldTextAreaProps,
+  type FieldTriggerProps,
   type FieldSize
 } from '#components/field';
