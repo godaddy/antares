@@ -1,6 +1,6 @@
 .switch {
   --_thumb-size: 1.25em;
-  --_thumb-inset: calc(var(--ux-1sbfig8, 0.25em) * 0.5);
+  --_thumb-inset: calc(var(--ux-1sbfig8, 0.25rem) * 0.5);
   --_track-w: 3.25em;
   --_track-h: calc(var(--_thumb-size) + var(--_thumb-inset) * 2);
   cursor: pointer;
