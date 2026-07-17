@@ -1,0 +1,126 @@
+---
+title: DatePicker
+description: Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './date-picker.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceRange from './examples/range.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceFormatOptions from './examples/format-options.tsx?raw';
+import SourceMinMax from './examples/min-max.tsx?raw';
+import SourceWithError from './examples/with-error.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+- Built on React Aria — native form integration, validation, focus management, and screen-reader support
+- Consumer-controlled label formatting via `formatOptions`
+- `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { DatePicker } from '@godaddy/antares';
+
+<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
+<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
+
+## Props
+
+The `DatePicker` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `DateRangePicker` component accepts the following props:
+
+<ArgTypes of={Stories.DateRangePickerProps} />
+
+## Examples
+
+### Basic
+
+A single date picker.
+
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
+
+### Range
+
+A start/end range picker.
+
+<Source language="tsx" code={SourceRange} />
+<Story of={Stories.Range} inline />
+
+### Controlled
+
+Driving the value with `useState`.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Custom format
+
+Controlling the label with `formatOptions`.
+
+<Source language="tsx" code={SourceFormatOptions} />
+<Story of={Stories.FormatOptions} inline />
+
+### Min / Max
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Source language="tsx" code={SourceMinMax} />
+<Story of={Stories.MinMax} inline />
+
+### Error
+
+An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
+
+<Source language="tsx" code={SourceWithError} />
+<Story of={Stories.WithError} inline />
+
+### Disabled
+
+A disabled picker via `isDisabled`.
+
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
+
+## Customization
+
+`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
+
+## Accessibility
+
+- The whole field is a single focusable button; Enter/Space opens the popover
+- Focus is trapped in the open popover and returns to the trigger on close
+- Esc and outside-click dismiss the popover
+- The calendar grid is fully keyboard navigable and screen-reader announced
+
+## Best Practices
+
+- Provide a `label` (or `aria-label`) on every picker.
+- For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
+
+## Troubleshooting
+
+- Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
+- Form value missing on submit? Pass a `name` — React Aria renders the hidden input.

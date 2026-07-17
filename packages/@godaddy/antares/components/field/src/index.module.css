@@ -28,7 +28,7 @@
 .fieldInput,
 .fieldTextarea,
 .fieldButton,
-.fieldSelectFragment {
+.fieldTrigger {
   background: transparent;
   border: none;
   font-family: var(--ux-9wtaa3, sans-serif);
@@ -38,6 +38,7 @@
   padding: var(--sp-md);
   text-align: start;
   min-width: 0;
+  max-width: 100%;
 
   &:where([data-focused]) {
     outline: 2px solid Highlight;
@@ -50,7 +51,7 @@
 }
 
 .fieldButton,
-.fieldSelectFragment {
+.fieldTrigger {
   cursor: pointer;
   background: var(--ux-1mh0ktr, #f5f5f5);
   border-color: var(--ux-1qbn65p, #f5f5f5);
@@ -80,16 +81,20 @@
   > [data-icon] {
     width: 1lh;
     height: 1lh;
-    transition: transform 0.15s ease;
-  }
-
-  &:where([aria-expanded="true"]) > [data-icon] {
-    transform: rotate(180deg);
   }
 }
 
-.fieldSelectFragment[data-variant="select"] {
+.fieldTrigger[data-variant="select"] {
   background: transparent;
+}
+
+/* chevron affordance — Select trigger only; never inherited by a plain .fieldTrigger */
+.fieldSelectFragment > [data-icon] {
+  transition: transform 0.15s ease;
+}
+
+.fieldSelectFragment:where([aria-expanded="true"]) > [data-icon] {
+  transform: rotate(180deg);
 }
 
 .fieldSelectFragmentValue {
@@ -117,7 +122,7 @@
 
   /* sizes */
   &:where([data-size="sm"]) {
-    & :where(.fieldInput, .fieldTextarea, .fieldButton, .fieldSelectFragment) {
+    & :where(.fieldInput, .fieldTextarea, .fieldButton, .fieldTrigger) {
       font-size: calc(1em / 1.125);
     }
 
@@ -125,7 +130,7 @@
       padding-block: var(--sp-sm);
     }
 
-    & :where(.fieldButton, .fieldSelectFragment) {
+    & :where(.fieldButton, .fieldTrigger) {
       padding: var(--sp-sm);
     }
   }
@@ -133,7 +138,7 @@
   /* rounded border corners — :nth-child(1 of :not(template)) skips RAC's hidden SSR <template> sibling */
   & > :nth-child(1 of :not(template)) {
     &,
-    > :where(.fieldSelectFragment) {
+    > :where(.fieldTrigger) {
       border-start-start-radius: var(--field-br);
       border-end-start-radius: var(--field-br);
     }
@@ -141,7 +146,7 @@
 
   & > :nth-last-child(1 of :not(template)) {
     &,
-    > :where(.fieldSelectFragment) {
+    > :where(.fieldTrigger) {
       border-start-end-radius: var(--field-br);
       border-end-end-radius: var(--field-br);
     }
