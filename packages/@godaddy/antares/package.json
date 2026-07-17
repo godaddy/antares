@@ -1,6 +1,6 @@
 {
   "name": "@godaddy/antares",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "The GoDaddy design component library",
   "type": "module",
   "scripts": {
