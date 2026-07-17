@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-DOotEt7k.js";import{y as t}from"./iframe-CdiC1iam.js";import{hr as n}from"./useTooltipTrigger-0ReZL_0P.js";import{t as r}from"./exports-KBumNKAu.js";function i({children:e}){return(0,a.jsx)(n,{locale:o,children:e})}var a,o,s=e((()=>{r(),a=t(),o=`ar-EG`}));export{s as n,i as t};
