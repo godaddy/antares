@@ -14,11 +14,11 @@
   "dependencies": {
     "@bento/storybook-addon-helpers": "*",
     "estree-util-value-to-estree": "^3.5.0",
-    "fumadocs-core": "^16.9.2",
+    "fumadocs-core": "^16.11.5",
     "fumadocs-mdx": "^15.0.9",
-    "fumadocs-ui": "^16.9.2",
+    "fumadocs-ui": "^16.11.5",
     "lucide-react": "^1.17.0",
-    "next": "^16.2.6",
+    "next": "^16.2.10",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwind-merge": "^3.6.0"
