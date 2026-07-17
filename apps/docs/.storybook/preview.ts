@@ -54,7 +54,10 @@ const preview: Preview = {
     docs: {
       toc: {
         title: 'On this page',
-        headingSelector: 'h2, h3'
+        headingSelector: 'h2, h3',
+
+        // Ignore headings rendered inside examples.
+        ignoreSelector: '.docs-story *, .sb-story *'
       },
 
       codePanel: true,

@@ -6,12 +6,12 @@ export type Spacing = (typeof SPACINGS)[number] | (string & {});
 
 /** Mapping of spacing values to CSS variables. */
 const SPACING_MAP = {
-  xs: 'var(--sp-xs, 2px)',
-  sm: 'var(--sp-sm, 4px)',
-  md: 'var(--sp-md, 8px)',
-  lg: 'var(--sp-lg, 12px)',
-  xl: 'var(--sp-xl, 20px)',
-  '2xl': 'var(--sp-2xl, 32px)'
+  xs: 'var(--sp-xs)',
+  sm: 'var(--sp-sm)',
+  md: 'var(--sp-md)',
+  lg: 'var(--sp-lg)',
+  xl: 'var(--sp-xl)',
+  '2xl': 'var(--sp-2xl)'
 } as const satisfies Record<Spacing, string>;
 
 /** Rounding values for border radius. */
@@ -22,13 +22,13 @@ export type Rounding = (typeof ROUNDINGS)[number] | (string & {});
 
 /** Mapping of rounding values to CSS variables. */
 const ROUNDING_MAP = {
-  xs: 'var(--rounding-xs, 1px)',
-  sm: 'var(--rounding-sm, 2px)',
-  md: 'var(--rounding-md, 3px)',
-  lg: 'var(--rounding-lg, 6px)',
-  xl: 'var(--rounding-xl, 10px)',
-  '2xl': 'var(--rounding-2xl, 20px)',
-  full: '9999px'
+  xs: 'var(--rounding-xs)',
+  sm: 'var(--rounding-sm)',
+  md: 'var(--rounding-md)',
+  lg: 'var(--rounding-lg)',
+  xl: 'var(--rounding-xl)',
+  '2xl': 'var(--rounding-2xl)',
+  full: 'var(--rounding-full)'
 } as const satisfies Record<Rounding, string>;
 
 /** Elevation levels for visual depth. */

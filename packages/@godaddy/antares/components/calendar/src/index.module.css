@@ -1,0 +1,90 @@
+.calendar {
+  --_calendar-gu: var(--ux-1sbfig8, 0.5rem);
+  --_calendar-line-height: var(--ux-jw5s9j, 1.375);
+  --_calendar-font-size: var(--ux-cxbe8g, 1rem);
+
+  --_calendar-cell-max: calc(var(--_calendar-gu) * 4 + var(--_calendar-line-height) * var(--_calendar-font-size));
+  /* Reserved from the viewport width: popover padding plus breathing room from screen edges. */
+  --_calendar-viewport-inset: 2rem;
+  /* Fluid, capped square: a fraction of the viewport (7 columns), floored and capped. */
+  --_calendar-cell-width: clamp(2rem, (100vw - var(--_calendar-viewport-inset)) / 7, var(--_calendar-cell-max));
+
+  width: max-content;
+  max-width: 100%;
+}
+
+.yearField {
+  max-width: calc(4ch + var(--_calendar-gu) * 4 + 2px);
+}
+
+.navHidden {
+  visibility: hidden;
+}
+
+.monthDivider {
+  width: 1px;
+  background: currentColor;
+}
+
+.grid {
+  border-collapse: collapse;
+}
+
+.cell {
+  border-width: 1px;
+  border-style: solid;
+  background: var(--color-action-background-tertiary-default, var(--ux-1owc8nc, transparent));
+  border-color: var(--color-action-border-tertiary-default, var(--ux-1np4r62, transparent));
+  color: var(--color-action-text-tertiary-default, var(--ux-ut3xrx, #111));
+  width: var(--_calendar-cell-width);
+  aspect-ratio: 1;
+  cursor: pointer;
+
+  &:where([data-focus-visible]) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    background: var(--ux-15qjz45, rgba(17, 17, 17, 0.1));
+    border-color: var(--ux-1ds8u13, transparent);
+    color: var(--ux-1e85ids, #111);
+  }
+
+  &:where([data-today]) {
+    border-color: currentColor;
+  }
+
+  &:where([data-selected]) {
+    background: var(--ux-l7zq7p, #f5f7f8);
+    border-color: var(--ux-l7zq7p, #f5f7f8);
+    color: var(--ux-vuekow, #111);
+  }
+
+  &:where([data-selected]:not([data-type="range"])),
+  &:where([data-selection-start]:not([data-disabled])),
+  &:where([data-selection-end]:not([data-disabled])) {
+    background: var(--color-action-background-tertiary-pressed, var(--ux-9qpf6c, #00a4a6));
+    border-color: var(--color-action-border-tertiary-pressed, var(--ux-1xliuhi, #00a4a6));
+    color: var(--color-action-text-tertiary-pressed, var(--ux-h6e7c1, #fff));
+  }
+
+  &:where([data-hovered]) {
+    background: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
+    border-color: var(--color-action-border-tertiary-hovered, var(--ux-1bdtclp, transparent));
+    color: var(--color-action-text-tertiary-hovered, var(--ux-unx9i2, #111));
+  }
+
+  &:where([data-outside-month]) {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &:where([data-unavailable]) {
+    text-decoration: line-through;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &:where([data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

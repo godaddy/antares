@@ -21,7 +21,7 @@ Scoped conventions for component work in `packages/@godaddy/antares/`.
 - Prefer `Flex`, `Box`, and `Grid` over hand-rolled CSS. Use layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `wrap`, `padding`, `inlinePadding`, `blockPadding`, `display`) before adding flex/gap rules in `*.module.css`.
 - Use `Flex as={X}` (or `Box as=…`) to give an element flex/layout semantics instead of an extra wrapper div — works for RAC primitives (`RACButton`, …) and native tags (`"div"`, `"nav"`, `"ol"`, `"li"`, etc).
 - When a component wraps such an element, extend `Omit<FlexOwnProps, 'as'>` and spread the rest onto it so callers can pass layout/HTML props. Put fixed props after the `{...rest}` spread so they can't be overridden.
-- Polymorphic `as` does **not** support TypeScript generics — see `types/polymorphic-react.ts`. For generic RAC components (e.g. `RACCalendar<CalendarDate>`, `RACSelect<T>`, `RACListBox<T>`), keep the generic component as the outer element and nest a `Flex` inside rather than `Flex as={RACCalendar}`.
+- Polymorphic `as` can't infer a generic RAC component's type params (see `types/polymorphic-react.ts`). Either pin them at the call site — `Flex as={RACCalendar<CalendarDate>}` — or keep the generic component as the outer element with a `Flex` nested inside. Never use a bare, unparameterized `Flex as={RACCalendar}`.
 - Spacing tokens: `gap="sm"`, `gap="md"`, etc. In CSS, use `var(--sp-sm)` directly. Tokens defined in `components/layout/tokens.ts`. Use t-shirt sizes (`sm`, `md`, `lg`).
 
 ## Imports

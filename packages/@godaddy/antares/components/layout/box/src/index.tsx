@@ -134,6 +134,7 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     gridRowEnd,
     ...rest
   } = props;
+
   const mergedStyle: CSSProperties = mergeObjects(
     {
       padding: toSpacingVar(padding),
