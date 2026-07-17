@@ -1,9 +1,11 @@
+import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
 import { toSpacingVar } from '../../tokens.ts';
 import type { SharedFlexGridProps } from '../../types.ts';
+import styles from './index.module.css';
 
 export interface GridOwnProps extends BoxOwnProps, SharedFlexGridProps {
   /** The display property for the grid container. @default 'grid' */
@@ -56,9 +58,11 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
     rowGap,
     ...rest
   } = props;
+
+  const displayClass = display === 'inline-grid' ? styles.inlineGrid : styles.grid;
+
   const mergedStyle = mergeObjects(
     {
-      display: display,
       gridTemplateAreas: gridTemplateAreasValue(areas),
       gridTemplateColumns: columns,
       gridTemplateRows: rows,
@@ -76,7 +80,7 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
     style
   );
 
-  return <Box {...rest} ref={ref} className={className} style={mergedStyle} />;
+  return <Box {...rest} ref={ref} className={cx(displayClass, className)} style={mergedStyle} />;
 }) as PolymorphicComponent<GridOwnProps>;
 
 /**
