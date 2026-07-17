@@ -1,5 +1,0 @@
-:HL["/antares/pr-264-site/_next/static/chunks/0hcw3l75c_gfs.css","style"]
-:HL["/antares/pr-264-site/_next/static/chunks/0144y00p3n_u5.css","style"]
-:HL["/antares/pr-264-site/_next/static/chunks/1e4v0nw-6buo8.css","style"]
-:HL["/antares/pr-264-site/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"docs","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"oc","key":"components/layout/flex","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"vEEP2L7yRacalAjnC4II6"}
