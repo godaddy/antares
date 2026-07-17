@@ -267,6 +267,120 @@ You may provide an optional [`Icon`](../icon) element to the button. If you do n
 <Source language="tsx" code="SourceDisabled" />
 
 
+# Calendar
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A single-date calendar.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Source language="tsx" code="SourceWithValue" />
+
+<Story of="Stories.WithValue" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Source language="tsx" code="SourceRange" />
+
+<Story of="Stories.Range" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Source language="tsx" code="SourceMinMax" />
+
+<Story of="Stories.MinMax" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Source language="tsx" code="SourceUnavailable" />
+
+<Story of="Stories.Unavailable" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+
 # Carousel
 
 
@@ -719,6 +833,133 @@ Use the `emphasis` prop to communicate status: `success`, `warning`, or `critica
 * The decorative SVG and output text are hidden via `aria-hidden="true"`
 
 
+# DatePicker
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria — native form integration, validation, focus management, and screen-reader support
+* Consumer-controlled label formatting via `formatOptions`
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { DatePicker } from '@godaddy/antares';
+
+<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
+<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
+
+## Props [#props]
+
+The `DatePicker` component accepts the following props:
+
+<PropTable />
+
+The `DateRangePicker` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A single date picker.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Source language="tsx" code="SourceRange" />
+
+<Story of="Stories.Range" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Custom format [#custom-format]
+
+Controlling the label with `formatOptions`.
+
+<Source language="tsx" code="SourceFormatOptions" />
+
+<Story of="Stories.FormatOptions" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Source language="tsx" code="SourceMinMax" />
+
+<Story of="Stories.MinMax" />
+
+### Error [#error]
+
+An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
+
+<Source language="tsx" code="SourceWithError" />
+
+<Story of="Stories.WithError" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+## Customization [#customization]
+
+`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
+
+## Accessibility [#accessibility]
+
+* The whole field is a single focusable button; Enter/Space opens the popover
+* Focus is trapped in the open popover and returns to the trigger on close
+* Esc and outside-click dismiss the popover
+* The calendar grid is fully keyboard navigable and screen-reader announced
+
+## Best Practices [#best-practices]
+
+* Provide a `label` (or `aria-label`) on every picker.
+* For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
+* Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
+
+
 # Drawer
 
 
@@ -926,8 +1167,10 @@ The field decoration is split into granular, composable pieces so the same struc
 * **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
 * **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
 * **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
-* **`FieldInput`*&#x2A; / &#x2A;*`FieldTextArea`** — the control the user types into (normalized React Aria `Input`/`TextArea` given antares spacing via `Box`).
+* **`FieldInput`** — the single-line control the user types into (a normalized React Aria `Input` given antares spacing via `Box`).
+* **`FieldTextArea`** — the multiline control the user types into (a normalized React Aria `TextArea` given antares spacing via `Box`).
 * **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+* **`FieldTrigger`** — a full-width value-display button inside the box that opens an overlay (used by Select and DatePicker): a value area plus a trailing icon, laid out across the group. `variant="select"` is transparent and input-like; `variant="control"` is a filled segment inside a shared group.
 * **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
 * **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
 
@@ -1049,87 +1292,6 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 * `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
 * Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
 * Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
-
-
-# InlineDrawer
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
-
-## Features [#features]
-
-* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
-* Animated by default; `animate={false}` disables the transition
-* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
-* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
-* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
-* `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-The `InlineDrawerPanel` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Controlled [#controlled]
-
-Use `isExpanded` and `onExpandedChange` to drive state externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="ControlledExample" />
-
-### Sidebar Navigation [#sidebar-navigation]
-
-A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
-
-<Story of="Stories.SidebarNav" />
-
-<Source language="tsx" code="SidebarNavExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Action                         |
-| ----------------- | ------------------------------ |
-| `Enter` / `Space` | Toggle via the slotted trigger |
-| `Tab`             | Move focus through the content |
-
-### ARIA [#aria]
-
-* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
-* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
-
-## Best Practices [#best-practices]
-
-* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
-* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
-* `placement` does not flip in RTL; the side is decided by document/flex order.
-* Don't nest InlineDrawers.
 
 
 # Icon
@@ -1542,6 +1704,87 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# InlineDrawer
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+
+## Features [#features]
+
+* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
+* Animated by default; `animate={false}` disables the transition
+* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
+* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
+* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
+* `prefers-reduced-motion` support
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+The `InlineDrawerPanel` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Controlled [#controlled]
+
+Use `isExpanded` and `onExpandedChange` to drive state externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="ControlledExample" />
+
+### Sidebar Navigation [#sidebar-navigation]
+
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
+
+<Story of="Stories.SidebarNav" />
+
+<Source language="tsx" code="SidebarNavExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
+| `Enter` / `Space` | Toggle via the slotted trigger |
+| `Tab`             | Move focus through the content |
+
+### ARIA [#aria]
+
+* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
+* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
+
+## Best Practices [#best-practices]
+
+* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
+* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
+* `placement` does not flip in RTL; the side is decided by document/flex order.
+* Don't nest InlineDrawers.
 
 
 # ListBox
@@ -3804,69 +4047,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Gauge Chart
 
 
@@ -4262,6 +4442,69 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Box
 
 
@@ -4356,110 +4599,6 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 ## Design Tokens [#design-tokens]
 
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
 
 
 # Flex
@@ -4566,3 +4705,107 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
