@@ -23,6 +23,7 @@ export * from './exports/Field';
 export * from './exports/Carousel';
 export * from './exports/Pagination';
 export * from './exports/SegmentedController';
+export * from './exports/Switch';
 export * from './exports/MetricsLockup';
 export * from './exports/Drawer';
 export * from './exports/InlineDrawer';
