@@ -43,10 +43,10 @@
     "@bento/pressable": "^0.1.4",
     "@bento/slots": "^0.3.0",
     "@bento/use-props": "^0.2.1",
-    "react-aria": "^3.48.0"
+    "react-aria": "^3.50.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.15",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "tsdown": "^0.22.1",
     "typescript": "^6.0.3",
