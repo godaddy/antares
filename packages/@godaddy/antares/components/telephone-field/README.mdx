@@ -1,0 +1,87 @@
+---
+title: TelephoneField
+description: TelephoneField pairs a country/dial-code picker with a phone number input inside one bordered field, for capturing an international phone number.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './telephone-field.stories.tsx';
+
+import SourceBasic from './examples/basic.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceInvalid from './examples/invalid.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Country picker + phone input**: A country/dial-code `Select` and a phone number input share one bordered field
+- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+- **Controlled or uncontrolled**: Use `country`/`onCountryChange` and `value`/`onChange` for controlled state, or `defaultCountry`/`defaultValue` for uncontrolled
+- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+- **Raw values, no formatting**: The phone number is the exact string the user typed — TelephoneField applies no masking or E.164 formatting, so combine `country` and `value` however the consuming form or backend expects
+- **Composable options**: Country options are plain `SelectItem` children, so callers control the exact list and label of supported countries
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+The TelephoneField component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Basic
+
+Minimal usage with a label, a default country, and a placeholder.
+
+<Source language="tsx" code={SourceBasic} />
+<Story of={Stories.Basic} inline />
+
+### Controlled
+
+Use `country`/`onCountryChange` and `value`/`onChange` for controlled state.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Invalid
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code={SourceInvalid} />
+<Story of={Stories.Invalid} inline />
+
+### Disabled
+
+Use `isDisabled` to prevent interaction with both the country picker and the phone input.
+
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
+
+### Sizes
+
+Set `size="sm"` for a more compact field.
+
+<Source language="tsx" code={SourceSizes} />
+<Story of={Stories.Sizes} inline />
+
+## Accessibility
+
+- The country picker gets its own accessible name from `countryLabel`, since it has no visible label of its own — always pass one, localized for your UI
+- For anything else the country picker needs (`aria-describedby`, `aria-labelledby`, `id`, …), pass `countryProps`, which is spread onto its underlying `FieldSelect`
+- `label`, `description`, and `errorMessage` are associated with the field automatically
+- Built on React Aria's `TextField` and `Select`, giving full keyboard support: `Tab` moves between the country picker and the phone input, `Enter`/`Space` opens the country picker, and arrow keys/typeahead navigate its options
+- `isDisabled` and `isInvalid` are reflected with `aria-disabled`/`data-disabled` and `aria-invalid`/`data-invalid` on both segments
+
+## Best Practices
+
+- Keep country option labels short and consistent (e.g. always `<ISO code> +<dial code>`) so the trigger stays readable at both `md` and `sm` sizes
+- Pair `isInvalid` with a specific `errorMessage` (e.g. "Enter a valid phone number") rather than a generic one
+- Validate and format the combined `country` + `value` where the number is consumed (on submit, or server-side) — TelephoneField intentionally does not mask or format as the user types
