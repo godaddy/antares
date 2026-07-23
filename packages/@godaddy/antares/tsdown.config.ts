@@ -2,7 +2,8 @@ import packageJson from './package.json' with { type: 'json' };
 import { replacePlugin } from 'rolldown/plugins';
 import { mergeConfig } from 'tsdown';
 import { config } from '../../../configs/tsdown.config.mts';
-import { ICON_CDN_URL } from './utils/icon-types-generated.ts';
+import { generateCdnUrl } from '@godaddy/generate-cdn-url';
+import { CDN, ICON_PACKAGE, DESIGN_ASSETS_MAJOR_VERSION } from './utils/icon-cdn.generated.ts';
 
 //
 // Package versions can include prerelease tags (e.g. 1.2.3-alpha) or build metadata
@@ -22,7 +23,11 @@ const mergedConfig = mergeConfig(config, {
       patch: versionParts[2],
 
       // The CDN URL our icons are deployed to, introduced as a build-time constant.
-      __ICON_CDN_URL__: ICON_CDN_URL
+      __ICON_CDN_URL__: generateCdnUrl({
+        cdn: CDN,
+        packageName: ICON_PACKAGE,
+        version: DESIGN_ASSETS_MAJOR_VERSION
+      })
     })
   ],
   entry: ['./index.ts', './exports/*.ts'],

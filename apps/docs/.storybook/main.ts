@@ -8,7 +8,12 @@ import { remarkFrontmatterHeading } from '../lib/remark-frontmatter-heading.ts';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import replace from '@rollup/plugin-replace';
-import { ICON_CDN_URL } from '../../../packages/@godaddy/antares/utils/icon-types-generated.ts';
+import { generateCdnUrl } from '@godaddy/generate-cdn-url';
+import {
+  CDN,
+  ICON_PACKAGE,
+  DESIGN_ASSETS_MAJOR_VERSION
+} from '../../../packages/@godaddy/antares/utils/icon-cdn.generated.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -103,7 +108,11 @@ const config: StorybookConfig = {
       plugins: [
         replace({
           preventAssignment: true,
-          __ICON_CDN_URL__: ICON_CDN_URL
+          __ICON_CDN_URL__: generateCdnUrl({
+            cdn: CDN,
+            packageName: ICON_PACKAGE,
+            version: DESIGN_ASSETS_MAJOR_VERSION
+          })
         })
       ],
 

@@ -1,5 +1,4 @@
-/** CDN host that serves the icons. */
-export const ICON_CDN_URL = 'https://img6.wsimg.com/ux-assets/@ux/icon/5.0.0';
+// AUTO-GENERATED FILE. Do not edit by hand; regenerate the icon set instead.
 
 /** Every icon name available in the icons' CDN. */
 const ICON_NAMES = [
