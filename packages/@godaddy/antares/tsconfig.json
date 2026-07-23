@@ -4,6 +4,7 @@
     "noEmit": true,
     "paths": {
       "@godaddy/antares": ["./index.ts"],
+      "@godaddy/antares/*": ["./exports/*.ts"],
       "#components/*": [
         "./components/*/src/index.tsx",
         "./components/chart/types.ts"

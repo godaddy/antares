@@ -1,9 +1,11 @@
+import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
 import { toSpacingVar } from '../../tokens.ts';
 import type { SharedFlexGridProps } from '../../types.ts';
+import styles from './index.module.css';
 
 export interface FlexOwnProps extends BoxOwnProps, SharedFlexGridProps {
   /** The display property for the flex container. @default 'flex' */
@@ -39,10 +41,14 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
     rowGap,
     ...rest
   } = props;
+
+  const displayClass = display === 'inline-flex' ? styles.inlineFlex : styles.flex;
+  const columnClass = direction === 'column' ? styles.column : undefined;
+  const flexDirection = direction === 'row' || direction === 'column' ? undefined : direction;
+
   const mergedStyle = mergeObjects(
     {
-      display,
-      flexDirection: direction,
+      flexDirection,
       justifyContent,
       alignContent,
       alignItems,
@@ -54,5 +60,5 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
     style
   );
 
-  return <Box {...rest} ref={ref} className={className} style={mergedStyle} />;
+  return <Box {...rest} ref={ref} className={cx(displayClass, columnClass, className)} style={mergedStyle} />;
 }) as PolymorphicComponent<FlexOwnProps>;
