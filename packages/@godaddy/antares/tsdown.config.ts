@@ -3,7 +3,7 @@ import { replacePlugin } from 'rolldown/plugins';
 import { mergeConfig } from 'tsdown';
 import { config } from '../../../configs/tsdown.config.mts';
 import { generateCdnUrl } from '@godaddy/generate-cdn-url';
-import { CDN, ICON_PACKAGE, DESIGN_ASSETS_MAJOR_VERSION } from './utils/icon-cdn.generated.ts';
+import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from './utils/icon-cdn.ts';
 
 //
 // Package versions can include prerelease tags (e.g. 1.2.3-alpha) or build metadata
@@ -26,7 +26,7 @@ const mergedConfig = mergeConfig(config, {
       __ICON_CDN_URL__: generateCdnUrl({
         cdn: CDN,
         packageName: ICON_PACKAGE,
-        version: DESIGN_ASSETS_MAJOR_VERSION
+        version: DESIGN_ASSETS_VERSION
       })
     })
   ],

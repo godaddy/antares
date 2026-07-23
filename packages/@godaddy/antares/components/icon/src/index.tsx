@@ -3,7 +3,7 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { parser } from '@bento/svg-parser';
 import { forwardRef } from 'react';
 import { cx } from 'cva';
-import type { IconName } from './icon-names.generated.ts';
+import type { IconName } from './icon-names.ts';
 import styles from './index.module.css';
 
 //

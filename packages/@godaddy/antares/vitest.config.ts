@@ -1,8 +1,8 @@
 import sharedConfig, { ssr, browser, visual } from '../../../configs/vitest.config.mts';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import replace from '@rollup/plugin-replace';
-import { generateCdnUrl } from '@godaddy/generate-cdn-url';
-import { CDN, ICON_PACKAGE, DESIGN_ASSETS_MAJOR_VERSION } from './utils/icon-cdn.generated.ts';
+import { generateCdnUrl } from '../generate-cdn-url/src/index.ts';
+import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from './utils/icon-cdn.ts';
 
 export default mergeConfig(
   sharedConfig,
@@ -13,7 +13,7 @@ export default mergeConfig(
         __ICON_CDN_URL__: generateCdnUrl({
           cdn: CDN,
           packageName: ICON_PACKAGE,
-          version: DESIGN_ASSETS_MAJOR_VERSION
+          version: DESIGN_ASSETS_VERSION
         })
       })
     ],

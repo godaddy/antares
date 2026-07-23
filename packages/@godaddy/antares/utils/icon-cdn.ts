@@ -10,4 +10,4 @@ export const ICON_PACKAGE = '@ux/icon';
  * files and deploys them to the CDN. Currently hardcoded until the design
  * assets package is available as a dependency.
  */
-export const DESIGN_ASSETS_MAJOR_VERSION = '5.0.0';
+export const DESIGN_ASSETS_VERSION = '5.0.0';
