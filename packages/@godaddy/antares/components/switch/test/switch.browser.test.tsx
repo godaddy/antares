@@ -10,12 +10,14 @@ import assume from 'assume';
 describe('@godaddy/antares', function antares() {
   describe('#Switch', function switchTests() {
     it('toggles when the track is clicked', async function trackClick() {
-      await render(<SwitchDefault />);
+      const user = userEvent.setup();
+      const { container } = await render(<SwitchDefault />);
 
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
+      const track = container.querySelector('[aria-hidden="true"]') as HTMLElement;
       assume((switchInput.element() as HTMLInputElement).checked).is.false();
 
-      await switchInput.click({ force: true });
+      await user.click(track, { force: true });
 
       await vi.waitFor(function checkSelection() {
         assume((switchInput.element() as HTMLInputElement).checked).is.true();

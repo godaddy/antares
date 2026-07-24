@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import {
   SwitchButton as RACSwitchButton,
   SwitchField as RACSwitchField,
@@ -8,7 +8,9 @@ import { cx } from 'cva';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
-export interface SwitchProps extends Omit<RACSwitchFieldProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
+export interface SwitchProps
+  extends Omit<RACSwitchFieldProps, 'className' | 'children' | 'style'>,
+    Omit<FlexOwnProps, 'as'> {
   /** The label content rendered alongside the track. Omit for a label-less switch, and provide `aria-label` instead. */
   children?: ReactNode;
 
@@ -26,6 +28,9 @@ export interface SwitchProps extends Omit<RACSwitchFieldProps, 'className' | 'ch
 
   /** Additional class names applied to the root element. */
   className?: string;
+
+  /** Inline styles applied to the root element. */
+  style?: CSSProperties;
 }
 
 /**
