@@ -64,6 +64,27 @@
   transition: inset-inline-start 0.15s ease-in-out;
 }
 
+@media (forced-colors: active) {
+  .track {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    forced-color-adjust: none;
+  }
+
+  .thumb {
+    background: CanvasText;
+  }
+
+  .switch[data-selected] .track {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .switch[data-selected] .thumb {
+    background: HighlightText;
+  }
+}
+
 .label {
   font-size: 1em;
   font-weight: bolder;
