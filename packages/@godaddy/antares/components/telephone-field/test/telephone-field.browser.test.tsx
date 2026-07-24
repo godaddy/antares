@@ -6,6 +6,7 @@ import { TelephoneFieldBasicExample } from '../examples/basic';
 import { TelephoneFieldControlledExample } from '../examples/controlled';
 import { TelephoneFieldDisabledExample } from '../examples/disabled';
 import { TelephoneFieldInvalidExample } from '../examples/invalid';
+import { PlaygroundExample } from '../examples/telephone-field-playground';
 
 describe('@godaddy/antares', function antares() {
   describe('#TelephoneField', function telephoneFieldSuite() {
@@ -53,6 +54,21 @@ describe('@godaddy/antares', function antares() {
 
       assume(trigger.hasAttribute('disabled')).equals(true);
       assume(input.hasAttribute('disabled')).equals(true);
+    });
+
+    it('prevents changes to the country and phone number when read-only', async function readOnlyInteraction() {
+      const { container, getByRole } = await render(<PlaygroundExample isReadOnly />);
+
+      const trigger = getByRole('button');
+      const input = getByRole('textbox');
+
+      await expect.element(trigger).toBeDisabled();
+      await userEvent.click(trigger, { force: true });
+      expect(container.querySelector('[role="listbox"]')).toBeNull();
+
+      await userEvent.click(input);
+      await userEvent.keyboard('5551234');
+      await expect.element(input).toHaveValue('');
     });
   });
 });

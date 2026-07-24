@@ -102,7 +102,7 @@ export const TelephoneField = forwardRef<HTMLInputElement, TelephoneFieldProps>(
     type = 'tel',
     ...racProps
   } = props;
-  const { isDisabled, isRequired } = racProps;
+  const { isDisabled, isReadOnly, isRequired } = racProps;
 
   return (
     <Field as={RACTextField} {...racProps} type={type} inputMode={inputMode} autoComplete={autoComplete}>
@@ -111,7 +111,7 @@ export const TelephoneField = forwardRef<HTMLInputElement, TelephoneFieldProps>(
         <FieldSelect
           {...countryProps}
           aria-label={countryLabel}
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || isReadOnly}
           value={country}
           defaultValue={defaultCountry}
           onChange={onCountryChange}

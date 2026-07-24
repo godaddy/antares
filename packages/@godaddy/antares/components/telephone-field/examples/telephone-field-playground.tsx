@@ -4,7 +4,15 @@ import { SelectItem, TelephoneField, type TelephoneFieldProps } from '@godaddy/a
 export interface PlaygroundExampleProps
   extends Pick<
     TelephoneFieldProps,
-    'label' | 'placeholder' | 'description' | 'errorMessage' | 'isDisabled' | 'isRequired' | 'isInvalid' | 'size'
+    | 'label'
+    | 'placeholder'
+    | 'description'
+    | 'errorMessage'
+    | 'isDisabled'
+    | 'isReadOnly'
+    | 'isRequired'
+    | 'isInvalid'
+    | 'size'
   > {}
 
 export function PlaygroundExample({
@@ -13,6 +21,7 @@ export function PlaygroundExample({
   description,
   errorMessage,
   isDisabled = false,
+  isReadOnly = false,
   isRequired = false,
   isInvalid = false,
   size = 'md'
@@ -24,6 +33,7 @@ export function PlaygroundExample({
       description={description}
       errorMessage={errorMessage}
       isDisabled={isDisabled}
+      isReadOnly={isReadOnly}
       isRequired={isRequired}
       isInvalid={isInvalid}
       size={size}
