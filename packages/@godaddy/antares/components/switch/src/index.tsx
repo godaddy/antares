@@ -8,6 +8,7 @@ import { cx } from 'cva';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
+/** Props for configuring the Switch component. */
 export interface SwitchProps
   extends Omit<RACSwitchFieldProps, 'className' | 'children' | 'style'>,
     Omit<FlexOwnProps, 'as'> {
