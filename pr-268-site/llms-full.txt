@@ -381,95 +381,6 @@ A fully disabled calendar.
 * Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
 
 
-# Carousel
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-### External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="Stories.ExternalControlsUncontrolled" />
-
-<Source language="tsx" code="SourceExternalControlsUncontrolled" />
-
-### External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="Stories.ExternalControlsControlled" />
-
-<Source language="tsx" code="SourceExternalControlsControlled" />
-
-### Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="Stories.HideControls" />
-
-<Source language="tsx" code="SourceHideControls" />
-
-### Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="Stories.VariableWidths" />
-
-<Source language="tsx" code="SourceVariableWidths" />
-
-### Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="Stories.Events" />
-
-<Source language="tsx" code="SourceEvents" />
-
-### RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="Stories.RTLDirection" />
-
-<Source language="tsx" code="SourceRTLDirection" />
-
-
 # Checkbox
 
 
@@ -774,6 +685,95 @@ Always provide clear error messages and use appropriate validation states:
 * Use logical ordering (alphabetical, frequency of use, or importance)
 * Consider using CheckboxGroup for related options, even if there are only 2-3
 * Provide a group label that clearly describes the choice being made
+
+
+# Carousel
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="Stories.ExternalControlsUncontrolled" />
+
+<Source language="tsx" code="SourceExternalControlsUncontrolled" />
+
+### External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="Stories.ExternalControlsControlled" />
+
+<Source language="tsx" code="SourceExternalControlsControlled" />
+
+### Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="Stories.HideControls" />
+
+<Source language="tsx" code="SourceHideControls" />
+
+### Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="Stories.VariableWidths" />
+
+<Source language="tsx" code="SourceVariableWidths" />
+
+### Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="Stories.Events" />
+
+<Source language="tsx" code="SourceEvents" />
+
+### RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="Stories.RTLDirection" />
+
+<Source language="tsx" code="SourceRTLDirection" />
 
 
 # CircularProgress
@@ -2455,6 +2455,120 @@ Use the `status` prop to communicate intent: `default`, `success`, `warning`, or
 * `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
+# ProgressSteps
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Horizontal and vertical orientations
+* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
+* Timeline (past / current / future) derived from a single `currentStep` prop
+* Auto-generated step numbers (opt out with `hideStepNumbers`)
+* Interactive (navigable) and inert (display-only) steps
+* Title truncation and RTL support
+* Rendered as a `<nav>` landmark with an ordered list for assistive technology
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `ProgressSteps` component has the following props:
+
+<PropTable />
+
+The `ProgressStep` component has the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Default [#default]
+
+A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Not started [#not-started]
+
+Omit `currentStep` for a flow that hasn't begun: every step is `future` and none is marked current.
+
+<Story of="Stories.NotStarted" />
+
+<Source language="tsx" code="NotStartedExample" />
+
+### Vertical [#vertical]
+
+Use `orientation="vertical"` to place the accent bar on the leading edge and stack steps in a column.
+
+<Story of="Stories.Vertical" />
+
+<Source language="tsx" code="VerticalExample" />
+
+### Interactive [#interactive]
+
+Give a step an `onPress` handler to make it navigable. Steps without `onPress` are inert.
+
+<Story of="Stories.Interactive" />
+
+<Source language="tsx" code="InteractiveExample" />
+
+### Disabled [#disabled]
+
+A disabled interactive step is muted, removed from the tab order, and cannot be activated.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="DisabledExample" />
+
+### Hide step numbers [#hide-step-numbers]
+
+Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
+
+<Story of="Stories.HideStepNumbers" />
+
+<Source language="tsx" code="HideStepNumbersExample" />
+
+## Customization [#customization]
+
+* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
+* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
+* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
+* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
+* Pass `className` to the container or an individual step to extend the styles.
+
+## Accessibility [#accessibility]
+
+* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
+* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
+* The current step is marked with `aria-current="step"`.
+* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
+* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
+
+## Best Practices [#best-practices]
+
+* Drive the timeline from `currentStep` rather than styling individual steps.
+* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
+* Keep titles short — they truncate with an ellipsis when space is tight.
+* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
+
+## Troubleshooting [#troubleshooting]
+
+* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
+* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
+* **Titles overflow:** that's expected — titles truncate. Shorten the title.
+
+
 # Radio
 
 
@@ -2683,120 +2797,6 @@ Always provide clear error messages:
   <Radio value="express">Express</Radio>
 </RadioGroup>
 ```
-
-
-# ProgressSteps
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Horizontal and vertical orientations
-* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
-* Timeline (past / current / future) derived from a single `currentStep` prop
-* Auto-generated step numbers (opt out with `hideStepNumbers`)
-* Interactive (navigable) and inert (display-only) steps
-* Title truncation and RTL support
-* Rendered as a `<nav>` landmark with an ordered list for assistive technology
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `ProgressSteps` component has the following props:
-
-<PropTable />
-
-The `ProgressStep` component has the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Default [#default]
-
-A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Not started [#not-started]
-
-Omit `currentStep` for a flow that hasn't begun: every step is `future` and none is marked current.
-
-<Story of="Stories.NotStarted" />
-
-<Source language="tsx" code="NotStartedExample" />
-
-### Vertical [#vertical]
-
-Use `orientation="vertical"` to place the accent bar on the leading edge and stack steps in a column.
-
-<Story of="Stories.Vertical" />
-
-<Source language="tsx" code="VerticalExample" />
-
-### Interactive [#interactive]
-
-Give a step an `onPress` handler to make it navigable. Steps without `onPress` are inert.
-
-<Story of="Stories.Interactive" />
-
-<Source language="tsx" code="InteractiveExample" />
-
-### Disabled [#disabled]
-
-A disabled interactive step is muted, removed from the tab order, and cannot be activated.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="DisabledExample" />
-
-### Hide step numbers [#hide-step-numbers]
-
-Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
-
-<Story of="Stories.HideStepNumbers" />
-
-<Source language="tsx" code="HideStepNumbersExample" />
-
-## Customization [#customization]
-
-* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
-* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
-* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
-* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
-* Pass `className` to the container or an individual step to extend the styles.
-
-## Accessibility [#accessibility]
-
-* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
-* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
-* The current step is marked with `aria-current="step"`.
-* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
-* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
-
-## Best Practices [#best-practices]
-
-* Drive the timeline from `currentStep` rather than styling individual steps.
-* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
-* Keep titles short — they truncate with an ellipsis when space is tight.
-* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
-
-## Troubleshooting [#troubleshooting]
-
-* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
-* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
-* **Titles overflow:** that's expected — titles truncate. Shorten the title.
 
 
 # SegmentedController
@@ -3103,11 +3103,7 @@ The `Switch` root exposes data attributes for styling different states:
 `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-size`
 
 ```css
-.my-switch[data-selected] .my-track {
-  background-color: #00a4a6;
-}
-
-.my-switch[data-focused] {
+.my-switch[data-focus-visible] {
   outline: 2px solid Highlight;
 }
 
@@ -3138,11 +3134,13 @@ Pass a `className` to style the root element:
 <Switch className="custom-switch">Wi-Fi</Switch>
 ```
 
+Use the root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
 ## Accessibility [#accessibility]
 
 * Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
 * `Space` toggles the switch when it has focus
-* Displays a visible focus ring (`outline: 2px solid Highlight`) when focused
+* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
 * Disabled switches render at `40%` opacity and are excluded from tab order
 * When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
 
