@@ -97,11 +97,7 @@ The `Switch` root exposes data attributes for styling different states:
 `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-size`
 
 ```css
-.my-switch[data-selected] .my-track {
-  background-color: #00a4a6;
-}
-
-.my-switch[data-focused] {
+.my-switch[data-focus-visible] {
   outline: 2px solid Highlight;
 }
 
@@ -132,11 +128,13 @@ Pass a `className` to style the root element:
 <Switch className="custom-switch">Wi-Fi</Switch>
 ```
 
+Use the root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
 ## Accessibility
 
 - Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
 - `Space` toggles the switch when it has focus
-- Displays a visible focus ring (`outline: 2px solid Highlight`) when focused
+- Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
 - Disabled switches render at `40%` opacity and are excluded from tab order
 - When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
 

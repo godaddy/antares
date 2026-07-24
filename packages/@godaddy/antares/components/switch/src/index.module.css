@@ -13,7 +13,7 @@
     cursor: not-allowed;
   }
 
-  &[data-focused] {
+  &[data-focus-visible] {
     outline: 2px solid Highlight;
     border-radius: var(--ux-zvaw3s, 6px);
   }

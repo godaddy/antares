@@ -1,5 +1,6 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { useArgs } from 'storybook/preview-api';
 import { SwitchControlled } from './examples/controlled.tsx';
 import { SwitchDefault } from './examples/default.tsx';
 import { SwitchDisabled } from './examples/disabled.tsx';
@@ -29,7 +30,17 @@ export const Disabled = getStory(SwitchDisabled);
 export const Controlled = getStory(SwitchControlled);
 
 export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+  render: function render(args: PlaygroundExampleProps) {
+    const [{ isSelected }, updateArgs] = useArgs<PlaygroundExampleProps>();
+
+    return (
+      <PlaygroundExample
+        {...args}
+        isSelected={isSelected}
+        onChange={(nextSelected) => updateArgs({ isSelected: nextSelected })}
+      />
+    );
+  },
   args: {
     children: 'Wi-Fi',
     size: 'md',

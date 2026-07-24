@@ -6,7 +6,7 @@ export function SwitchControlled() {
 
   return (
     <Switch isSelected={isSelected} onChange={setIsSelected}>
-      {isSelected ? 'On' : 'Off'}
+      Wi-Fi
     </Switch>
   );
 }

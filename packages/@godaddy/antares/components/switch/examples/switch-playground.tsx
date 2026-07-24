@@ -6,6 +6,7 @@ export interface PlaygroundExampleProps {
   labelPosition?: 'start' | 'end';
   isSelected?: boolean;
   isDisabled?: boolean;
+  onChange?: (isSelected: boolean) => void;
 }
 
 export function PlaygroundExample({
@@ -13,10 +14,17 @@ export function PlaygroundExample({
   size = 'md',
   labelPosition = 'start',
   isSelected = false,
-  isDisabled = false
+  isDisabled = false,
+  onChange
 }: PlaygroundExampleProps) {
   return (
-    <Switch size={size} labelPosition={labelPosition} isSelected={isSelected} isDisabled={isDisabled}>
+    <Switch
+      size={size}
+      labelPosition={labelPosition}
+      isSelected={isSelected}
+      isDisabled={isDisabled}
+      onChange={onChange}
+    >
       {children}
     </Switch>
   );

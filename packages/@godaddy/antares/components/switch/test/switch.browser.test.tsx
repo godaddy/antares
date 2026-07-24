@@ -66,12 +66,12 @@ describe('@godaddy/antares', function antares() {
     it('fires onChange with the new value in SwitchControlled', async function controlledToggle() {
       await render(<SwitchControlled />);
 
-      const switchInput = page.getByRole('switch', { name: 'Off' });
+      const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
 
       await switchInput.click({ force: true });
 
-      await vi.waitFor(function checkLabelUpdated() {
-        assume(page.getByRole('switch', { name: 'On' })).is.not.equal(null);
+      await vi.waitFor(function checkSelection() {
+        assume((switchInput.element() as HTMLInputElement).checked).is.true();
       });
     });
 
