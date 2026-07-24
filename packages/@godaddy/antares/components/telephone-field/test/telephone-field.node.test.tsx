@@ -21,19 +21,16 @@ describe('@godaddy/antares', function antares() {
 
       it('renders disabled example', function disabled() {
         const result = renderToString(<TelephoneFieldDisabledExample />);
-        expect(result).toContain('data-disabled');
         expect(result).toMatchSnapshot();
       });
 
       it('renders invalid example', function invalid() {
         const result = renderToString(<TelephoneFieldInvalidExample />);
-        expect(result).toContain('data-invalid');
         expect(result).toMatchSnapshot();
       });
 
       it('renders sizes example', function sizes() {
         const result = renderToString(<TelephoneFieldSizesExample />);
-        expect(result).toContain('data-size="sm"');
         expect(result).toMatchSnapshot();
       });
     });

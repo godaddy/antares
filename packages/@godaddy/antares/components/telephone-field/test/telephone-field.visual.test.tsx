@@ -1,6 +1,6 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
+import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { TelephoneFieldBasicExample } from '../examples/basic.tsx';
 import { TelephoneFieldControlledExample } from '../examples/controlled.tsx';
 import { TelephoneFieldDisabledExample } from '../examples/disabled.tsx';
@@ -9,6 +9,7 @@ import { TelephoneFieldSizesExample } from '../examples/sizes.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
+  beforeEach(resetHover);
 
   describe('#TelephoneField', function telephoneFieldTests() {
     it('basic example', async function basicRender() {
