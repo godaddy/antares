@@ -81,7 +81,7 @@ describe('@godaddy/antares', function antares() {
       await render(<SwitchNoLabel />);
 
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
-      assume(switchInput).is.not.equal(null);
+      assume(switchInput).exists();
     });
   });
 });
