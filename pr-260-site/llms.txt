@@ -5,8 +5,8 @@
 - [Button](/docs/components/button): The Button component allows users to initiate actions or submit forms with a single click
 - [Calendar](/docs/components/calendar): Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.
 - [Carousel](/docs/components/carousel): The Carousel component allows users to cycle through a series of content panels (typically images, cards, or text) in a horizontal or vertical layout. It is commonly used for featured content, product showcases, or testimonials.
-- [CircularProgress](/docs/components/circular-progress): A circular progress indicator shows determinate progress of an operation over time
 - [Checkbox](/docs/components/checkbox): Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
+- [CircularProgress](/docs/components/circular-progress): A circular progress indicator shows determinate progress of an operation over time
 - [DatePicker](/docs/components/date-picker): Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
 - [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 - [DropZone](/docs/components/drop-zone): A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
