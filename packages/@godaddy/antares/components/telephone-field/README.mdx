@@ -78,7 +78,7 @@ Set `size="sm"` for a more compact field.
 - For anything else the country picker needs (`aria-describedby`, `aria-labelledby`, `id`, …), pass `countryProps`, which is spread onto its underlying `FieldSelect`
 - `label`, `description`, and `errorMessage` are associated with the field automatically
 - Built on React Aria's `TextField` and `Select`, giving full keyboard support: `Tab` moves between the country picker and the phone input, `Enter`/`Space` opens the country picker, and arrow keys/typeahead navigate its options
-- `isDisabled` and `isInvalid` are reflected with `aria-disabled`/`data-disabled` and `aria-invalid`/`data-invalid` on both segments
+- `isDisabled` disables both controls. `isInvalid` marks the phone input and shared field as invalid; if the country selection is independently invalid, pass `countryProps={{ isInvalid: true }}`
 
 ## Best Practices
 

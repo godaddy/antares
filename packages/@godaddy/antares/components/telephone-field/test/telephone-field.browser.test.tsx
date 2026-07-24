@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
@@ -14,8 +14,8 @@ describe('@godaddy/antares', function antares() {
 
       const trigger = page.getByRole('button', { name: /US \+1/ });
       const input = page.getByRole('textbox');
-      assume(trigger).is.not.equal(null);
-      assume(input).is.not.equal(null);
+      await expect.element(trigger).toBeVisible();
+      await expect.element(input).toBeVisible();
     });
 
     it('updates the controlled country on selection and the phone number on typing', async function controlledInteraction() {
@@ -28,7 +28,7 @@ describe('@godaddy/antares', function antares() {
       await userEvent.setup().click(mexico);
 
       const updatedTrigger = page.getByRole('button', { name: /MX \+52/ });
-      assume(updatedTrigger).is.not.equal(null);
+      await expect.element(updatedTrigger).toBeVisible();
 
       const textbox = locator.getByRole('textbox');
       await textbox.fill('5551234');
@@ -38,8 +38,11 @@ describe('@godaddy/antares', function antares() {
     it('marks the group and input invalid from the controlled isInvalid prop', async function controlledInvalid() {
       const { container } = await render(<TelephoneFieldInvalidExample />);
 
-      const invalidElements = container.querySelectorAll('[data-invalid="true"]');
-      assume(invalidElements.length).greaterThan(0);
+      const group = container.querySelector('[role="presentation"][data-invalid="true"]');
+      const input = page.getByRole('textbox');
+
+      assume(group).exists();
+      await expect.element(input).toHaveAttribute('aria-invalid', 'true');
     });
 
     it('disables the country control and the phone number input', async function disabledRender() {
