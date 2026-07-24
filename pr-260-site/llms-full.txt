@@ -3201,13 +3201,69 @@ Set `size="sm"` for a more compact field.
 * For anything else the country picker needs (`aria-describedby`, `aria-labelledby`, `id`, …), pass `countryProps`, which is spread onto its underlying `FieldSelect`
 * `label`, `description`, and `errorMessage` are associated with the field automatically
 * Built on React Aria's `TextField` and `Select`, giving full keyboard support: `Tab` moves between the country picker and the phone input, `Enter`/`Space` opens the country picker, and arrow keys/typeahead navigate its options
-* `isDisabled` and `isInvalid` are reflected with `aria-disabled`/`data-disabled` and `aria-invalid`/`data-invalid` on both segments
+* `isDisabled` disables both controls. `isInvalid` marks the phone input and shared field as invalid; if the country selection is independently invalid, pass `countryProps={{ isInvalid: true }}`
 
 ## Best Practices [#best-practices]
 
 * Keep country option labels short and consistent (e.g. always `<ISO code> +<dial code>`) so the trigger stays readable at both `md` and `sm` sizes
 * Pair `isInvalid` with a specific `errorMessage` (e.g. "Enter a valid phone number") rather than a generic one
 * Validate and format the combined `country` + `value` where the number is consumed (on submit, or server-side) — TelephoneField intentionally does not mask or format as the user types
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
 
 
 # TextField
@@ -3290,62 +3346,6 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
-
-
-# Text
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Source language="tsx" code="AsExample" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
-
-<Source language="tsx" code="AlignExample" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
-
-<Source language="tsx" code="MaxLinesExample" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
-
-<Source language="tsx" code="WrapExample" />
 
 
 # ToggleButton
