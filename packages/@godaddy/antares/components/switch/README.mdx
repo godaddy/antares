@@ -92,7 +92,7 @@ Manage switch state programmatically with `isSelected` and `onChange`.
 
 ### Data Attributes
 
-The `Switch` root exposes data attributes for styling different states:
+The `Switch` interactive root exposes data attributes for styling different states:
 
 `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-size`
 
@@ -122,13 +122,13 @@ The track and thumb read from Antares curated tokens, falling back to legacy `--
 
 ### Component Customization
 
-Pass a `className` to style the root element:
+Pass a `className` or `style` to customize the interactive root element:
 
 ```jsx
 <Switch className="custom-switch">Wi-Fi</Switch>
 ```
 
-Use the root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
 
 ## Accessibility
 

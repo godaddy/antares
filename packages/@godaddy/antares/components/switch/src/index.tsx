@@ -26,10 +26,10 @@ export interface SwitchProps
    */
   labelPosition?: 'start' | 'end';
 
-  /** Additional class names applied to the root element. */
+  /** Additional class names applied to the interactive root element. */
   className?: string;
 
-  /** Inline styles applied to the root element. */
+  /** Inline styles applied to the interactive root element. */
   style?: CSSProperties;
 }
 
@@ -43,7 +43,7 @@ export interface SwitchProps
  * <Switch defaultSelected>Wi-Fi</Switch>
  */
 export function Switch(props: SwitchProps) {
-  const { children, className, size = 'md', labelPosition = 'start', ...rest } = props;
+  const { children, className, style, size = 'md', labelPosition = 'start', ...rest } = props;
 
   const track = (
     <span className={styles.track} aria-hidden="true">
@@ -54,7 +54,14 @@ export function Switch(props: SwitchProps) {
 
   return (
     <Flex {...rest} as={RACSwitchField}>
-      <Flex as={RACSwitchButton} alignItems="center" gap="sm" data-size={size} className={cx(styles.switch, className)}>
+      <Flex
+        as={RACSwitchButton}
+        alignItems="center"
+        gap="sm"
+        data-size={size}
+        className={cx(styles.switch, className)}
+        style={style}
+      >
         {labelPosition === 'start' ? (
           <>
             {label}

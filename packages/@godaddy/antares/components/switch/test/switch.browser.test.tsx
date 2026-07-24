@@ -2,6 +2,7 @@ import { SwitchControlled } from '../examples/controlled';
 import { SwitchDefault } from '../examples/default';
 import { SwitchDisabled } from '../examples/disabled';
 import { SwitchNoLabel } from '../examples/no-label';
+import { Switch } from '../src';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
@@ -82,6 +83,18 @@ describe('@godaddy/antares', function antares() {
 
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
       assume(switchInput).exists();
+    });
+
+    it('applies className and style to the same interactive root', async function rootCustomization() {
+      const { container } = await render(
+        <Switch className="custom-switch" style={{ opacity: 0.5 }}>
+          Wi-Fi
+        </Switch>
+      );
+
+      const interactiveRoot = container.querySelector('.custom-switch') as HTMLElement;
+      assume(interactiveRoot.style.opacity).equals('0.5');
+      assume(interactiveRoot.tagName).equals('LABEL');
     });
   });
 });
