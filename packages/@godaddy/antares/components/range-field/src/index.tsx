@@ -117,7 +117,7 @@ export interface RangeFieldRef {
  * Use a forwarded {@link RangeFieldRef} to focus the first thumb or access the root element.
  *
  * @param props - {@link RangeFieldProps}
- * @returns Slider field with optional value output, markers, endpoint labels, description, and error message.
+ * @returns Slider field with optional value output, markers, endpoint labels, and description.
  *
  * @example
  * ```tsx
