@@ -60,7 +60,7 @@
   width: var(--_thumb-size);
   height: var(--_thumb-size);
   border-radius: 50%;
-  background: var(--color-surface-background-card, var(--ux-cao06b, #fff));
+  background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
   transition: inset-inline-start 0.15s ease-in-out;
 }
 
