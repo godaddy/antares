@@ -3,13 +3,14 @@ import { useDataAttributes } from '@bento/use-data-attributes';
 import { parser } from '@bento/svg-parser';
 import { forwardRef } from 'react';
 import { cx } from 'cva';
+import type { IconName } from './icon-names.ts';
 import styles from './index.module.css';
 
 //
 // Our build process introduces the CDN URL as a build-time constant.
 // @see tsdown.config.ts
 //
-const cdn = '__CDN_URL__';
+const cdn = '__ICON_CDN_URL__';
 
 /**
  * Parser `fill` transformer that lets CDN icons inherit their color.
@@ -63,7 +64,12 @@ ondemand(async function loader(icon: string) {
  * Extends BentoIconProps with additional color option specific to the Antares
  * design system. Use the inherited width and height props for sizing.
  */
-export interface IconProps extends BentoIconProps {
+export interface IconProps extends Omit<BentoIconProps, 'icon'> {
+  /**
+   * The name of the icon to render.
+   */
+  icon: IconName | (string & {});
+
   /**
    * Optional color of the icon
    *

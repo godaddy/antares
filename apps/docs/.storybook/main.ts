@@ -9,6 +9,7 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import replace from '@rollup/plugin-replace';
 import { generateCdnUrl } from '@godaddy/generate-cdn-url';
+import { CDN, ICON_PACKAGE, DESIGN_ASSETS_VERSION } from '../../../packages/@godaddy/antares/utils/icon-cdn.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -103,10 +104,10 @@ const config: StorybookConfig = {
       plugins: [
         replace({
           preventAssignment: true,
-          __CDN_URL__: generateCdnUrl({
-            cdn: 'https://img6.wsimg.com/ux-assets',
-            version: '5.0.0',
-            packageName: '@ux/icon'
+          __ICON_CDN_URL__: generateCdnUrl({
+            cdn: CDN,
+            packageName: ICON_PACKAGE,
+            version: DESIGN_ASSETS_VERSION
           })
         })
       ],
