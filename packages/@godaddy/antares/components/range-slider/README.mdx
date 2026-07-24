@@ -1,0 +1,253 @@
+---
+title: RangeSlider
+description: RangeSlider lets users choose exactly two values that define the start and end of a bounded numeric interval.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './range-slider.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceLabels from './examples/labels.tsx?raw';
+import SourceMarkers from './examples/markers.tsx?raw';
+import SourceForm from './examples/form.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Fixed `[start, end]` tuple with one independently adjustable thumb per value
+- Required accessible labels that distinguish the start and end thumbs
+- Controlled and uncontrolled state with `onChange` and `onChangeEnd` callbacks
+- Independent `startName` and `endName` values for native form submission
+- Configurable minimum, maximum, step, localized value output, endpoint labels, and markers
+- Required, disabled, keyboard, pointer, and touch behavior provided through React Aria
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Default
+
+Use `RangeSlider` for fixed two-value selections such as price or date bounds.
+
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
+
+### Controlled
+
+Use `value` and `onChange` when application state owns both ends of the range.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Disabled
+
+Disable the range slider when its values are visible but unavailable.
+
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
+
+### Labels
+
+Provide visible context and formatted values when precision matters.
+
+<Source language="tsx" code={SourceLabels} />
+<Story of={Stories.Labels} inline />
+
+### Markers
+
+Use markers to show a manageable set of meaningful steps across the range.
+
+<Source language="tsx" code={SourceMarkers} />
+<Story of={Stories.Markers} inline />
+
+### Form submission
+
+Use `startName` and `endName` to submit each thumb as a separate form value.
+
+<Source language="tsx" code={SourceForm} />
+<Story of={Stories.Form} inline />
+
+## Customization
+
+`RangeSlider` exposes content props for product-specific labels and CSS custom properties for visual adjustments. Prefer these APIs over targeting its internal DOM structure.
+
+### Programmatic focus
+
+Attach a `RangeSliderRef` when an application needs to move focus after validation or navigate to the field. Calling `focus()` focuses the start thumb; `container` exposes the root element for DOM operations such as scrolling.
+
+```tsx
+const rangeSliderRef = useRef<RangeSliderRef>(null);
+
+<RangeSlider
+  ref={rangeSliderRef}
+  label="Price range"
+  defaultValue={[20, 80]}
+  thumbLabels={['Minimum price', 'Maximum price']}
+/>
+
+rangeSliderRef.current?.focus();
+rangeSliderRef.current?.container?.scrollIntoView();
+```
+
+### Value display
+
+Use `valueLabel` to place content opposite the field label:
+
+- `true` displays both current values using `formatOptions` and the active locale.
+- A React node displays static content.
+- A render function receives the React Aria slider state and can format both values together.
+
+```tsx
+<RangeSlider
+  label="Price range"
+  defaultValue={[25, 75]}
+  thumbLabels={['Minimum price', 'Maximum price']}
+  valueLabel={({ state }) => `$${state.values[0]} – $${state.values[1]}`}
+/>
+```
+
+`valueLabel` is visual supporting content. It does not replace the field's accessible name or the individual `thumbLabels`.
+
+### Endpoint labels and markers
+
+`minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so the labels remain separated.
+
+Set `markers` to render one marker for every valid step beginning at `minValue`. Markers and thumbs share the same scale and remain aligned. `minValue`, `maxValue`, and `step` determine the marker positions.
+
+### Number formatting
+
+`formatOptions` accepts `Intl.NumberFormatOptions` and controls localized output for the default value label and assistive-technology announcements.
+
+```tsx
+<RangeSlider
+  label="Budget"
+  defaultValue={[500, 1500]}
+  minValue={0}
+  maxValue={2000}
+  step={100}
+  thumbLabels={['Minimum budget', 'Maximum budget']}
+  valueLabel
+  formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
+/>
+```
+
+### Visual styling
+
+Pass `className` to add a class to the root element. The following custom properties are the supported styling surface:
+
+- `--slider-track-height`
+- `--slider-fill-height`
+- `--slider-thumb-size`
+- `--slider-marker-size`
+- `--slider-fill-color`
+- `--slider-track-color`
+- `--slider-thumb-bg`
+- `--slider-thumb-border`
+- `--slider-label-color`
+
+Scope overrides to a local class so other range sliders are unaffected.
+
+```css
+.priceRange {
+  --slider-fill-color: var(--color-control-chosen-background);
+  --slider-thumb-size: 28px;
+}
+```
+
+## Accessibility
+
+### Accessible names
+
+Every range slider needs two levels of naming:
+
+- Use a visible `label`, or `aria-label` when equivalent visible context already exists, to name the range as a whole.
+- Use the required `thumbLabels` tuple to distinguish the purpose of each thumb, for example `['Minimum price', 'Maximum price']`.
+
+Thumb labels should describe meaning rather than repeat the current numbers. `startName` and `endName` configure form submission; they are not accessible labels.
+
+### Keyboard interaction
+
+Each thumb follows the React Aria slider keyboard model:
+
+- Tab and Shift+Tab move between the two thumbs and surrounding controls.
+- Arrow Right and Arrow Up increase the focused value by `step`.
+- Arrow Left and Arrow Down decrease the focused value by `step`.
+- Home moves the focused thumb to its permitted minimum; End moves it to its permitted maximum.
+- Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Each thumb remains within the configured range.
+
+### Value announcements
+
+Use `formatOptions` so each thumb announces values in the product's unit, such as a currency or percentage. `valueLabel` is visual output and does not replace either `thumbLabels` entry.
+
+Markers are decorative and hidden from the accessibility tree. Do not rely on marker appearance alone to explain available choices.
+
+### Instructions, required state, and errors
+
+Use `description` for persistent guidance that applies to the range. Set `isRequired` when a selection is required, and use `errorMessage` with the component's validation state to explain how to correct an invalid range. React Aria associates this content with the control.
+
+### Disabled state
+
+`isDisabled` prevents interaction with both thumbs and exposes the disabled state semantically. Only the slider control is visually muted; the label, endpoint labels, description, and error text remain readable.
+
+## Best Practices
+
+- Use `RangeSlider` when users choose exactly two related values that define a bounded interval, such as a minimum and maximum price.
+- Write `thumbLabels` that clearly distinguish the lower and upper purpose. Avoid generic labels such as `Value 1` and `Value 2`.
+- Keep the tuple in semantic order: the first value and label represent the start or minimum, and the second represent the end or maximum.
+- Use `startName` and `endName` when a native form must submit both values. Choose stable, unique names that match the receiving API.
+- Set `minValue`, `maxValue`, and `step` to meaningful product constraints. Do not expose precision users cannot understand or act on.
+- Show markers only for a manageable number of meaningful steps. A dense set of dots is harder to scan than a continuous track.
+- Use `formatOptions` consistently for the visible value and screen-reader announcement.
+- Use `onChange` for immediate UI feedback and `onChangeEnd` for expensive filtering, requests, or calculations.
+- Use a single-value control when users choose only one number. Use separate numeric fields when exact entry is more important than visually exploring a range.
+
+## Troubleshooting
+
+### The thumbs are indistinguishable to screen-reader users
+
+Provide two specific `thumbLabels` in start/end order. Labels such as `Minimum price` and `Maximum price` communicate purpose even before the current values are announced.
+
+### Form values are missing or use the wrong keys
+
+Set `startName` and `endName` to the field names expected by the form handler. They may be provided independently, but each submitted value needs its own unique name. Remember that these props do not replace `thumbLabels`.
+
+### A controlled range does not move
+
+The `value` tuple is the source of truth. Update it in `onChange` and preserve its `[start, end]` shape. Both entries must remain within `minValue` and `maxValue`.
+
+### Values snap unexpectedly
+
+Verify that `step` represents the intended interval from `minValue`. Both thumbs snap to valid positions on the same configured scale.
+
+### The final marker is missing
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are too dense
+
+Increase `step` or omit `markers`. Markers are most effective when users can visually distinguish the available choices.
+
+### The value or endpoint labels are blank
+
+Enable the current range with `valueLabel={true}` or provide custom output. `minLabel` and `maxLabel` display only explicitly supplied content; they are not generated from the numeric bounds and are not affected by `formatOptions`.
+
+### Negative ranges do not behave as expected
+
+Negative values are supported. Set an appropriate negative `minValue` and keep both tuple entries inside the configured bounds.
+
+### The range configuration is invalid
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and a two-number value in semantic start/end order.

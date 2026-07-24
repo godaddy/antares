@@ -1,0 +1,228 @@
+---
+title: Slider
+description: Slider lets users choose one numeric value within fixed bounds using pointer, touch, or keyboard input.
+---
+
+import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import * as Stories from './slider.stories.tsx';
+
+import SourceDefault from './examples/default.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceDisabled from './examples/disabled.tsx?raw';
+import SourceLabels from './examples/labels.tsx?raw';
+import SourceMarkers from './examples/markers.tsx?raw';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Single `number` value with configurable minimum, maximum, and step
+- Controlled and uncontrolled state with `onChange` and `onChangeEnd` callbacks
+- Optional localized value output, endpoint labels, description, and error message
+- Optional markers generated from the configured step positions
+- Required, disabled, keyboard, pointer, and touch behavior provided through React Aria
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Examples
+
+### Default
+
+Use `Slider` when the user chooses one value, such as volume or quality.
+
+<Source language="tsx" code={SourceDefault} />
+<Story of={Stories.Default} inline />
+
+### Controlled
+
+Use `value` and `onChange` when application state owns the selection.
+
+<Source language="tsx" code={SourceControlled} />
+<Story of={Stories.Controlled} inline />
+
+### Disabled
+
+Disable the slider when the value is visible but unavailable.
+
+<Source language="tsx" code={SourceDisabled} />
+<Story of={Stories.Disabled} inline />
+
+### Labels
+
+Display the current value and endpoints when users need more context.
+
+<Source language="tsx" code={SourceLabels} />
+<Story of={Stories.Labels} inline />
+
+### Markers
+
+Use markers for a small set of meaningful steps.
+
+<Source language="tsx" code={SourceMarkers} />
+<Story of={Stories.Markers} inline />
+
+## Customization
+
+`Slider` provides content props for common product requirements and CSS custom properties for visual adjustments. Prefer these APIs over targeting its internal DOM structure.
+
+### Programmatic focus
+
+Attach a `SliderRef` when an application needs to move focus after validation or navigate to the field. Calling `focus()` focuses the thumb; `container` exposes the root element for DOM operations such as scrolling.
+
+```tsx
+const sliderRef = useRef<SliderRef>(null);
+
+<Slider ref={sliderRef} label="Volume" defaultValue={50} />
+
+sliderRef.current?.focus();
+sliderRef.current?.container?.scrollIntoView();
+```
+
+### Value display
+
+Use `valueLabel` to place content opposite the field label:
+
+- `true` displays the current value using `formatOptions` and the active locale.
+- A React node displays static content, such as a unit or status.
+- A render function receives the React Aria slider state and can derive custom content from the current value.
+
+```tsx
+<Slider
+  label="Storage"
+  defaultValue={50}
+  valueLabel={({ state }) => `${state.values[0]} GB`}
+/>
+```
+
+`valueLabel` is visual supporting content. It does not replace the control's `label` or `aria-label`.
+
+### Endpoint labels and markers
+
+`minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so long labels can wrap without colliding in the center.
+
+Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions always use the same scale as the thumb, so they remain aligned. Use `minValue`, `maxValue`, and `step` to control their number and spacing.
+
+### Number formatting
+
+`formatOptions` accepts `Intl.NumberFormatOptions` and controls localized value output, including the default `valueLabel` and the value announced by assistive technology.
+
+```tsx
+<Slider
+  label="Budget"
+  defaultValue={50}
+  minValue={0}
+  maxValue={100}
+  step={10}
+  valueLabel
+  formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
+/>
+```
+
+### Visual styling
+
+Pass `className` to add a class to the root element. The following custom properties are the supported styling surface:
+
+- `--slider-track-height`
+- `--slider-fill-height`
+- `--slider-thumb-size`
+- `--slider-marker-size`
+- `--slider-fill-color`
+- `--slider-track-color`
+- `--slider-thumb-bg`
+- `--slider-thumb-border`
+- `--slider-label-color`
+
+Scope overrides to a local class so other sliders are unaffected.
+
+```css
+.volumeSlider {
+  --slider-fill-color: var(--color-control-chosen-background);
+  --slider-thumb-size: 28px;
+}
+```
+
+## Accessibility
+
+### Accessible name
+
+Every slider needs an accessible name. Prefer a concise visible `label` because it gives the same context to sighted users and assistive technology. If the surrounding interface already supplies an equivalent visible label, provide `aria-label` instead. Do not use `valueLabel`, `minLabel`, `maxLabel`, or placeholder-like nearby text as the only name.
+
+### Keyboard interaction
+
+The thumb follows the React Aria slider keyboard model:
+
+- Arrow Right and Arrow Up increase the value by `step`.
+- Arrow Left and Arrow Down decrease the value by `step`.
+- Home moves to `minValue`; End moves to `maxValue`.
+- Page Up and Page Down make larger changes.
+- Tab moves focus into and out of the control.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard input all update the same value scale.
+
+### Value announcements
+
+Choose `formatOptions` that communicates the meaning of the number—not only its appearance. For example, announce `50` as 50 US dollars when the value represents a budget. The formatted value is exposed to assistive technology as the thumb changes.
+
+Markers are decorative and are hidden from the accessibility tree. Their meaning must therefore be represented by the slider's label, bounds, step, and formatted value.
+
+### Instructions, required state, and errors
+
+Use `description` for persistent guidance that helps users make a selection. Set `isRequired` when the slider is required, and use `errorMessage` with the component's validation state to explain how to correct an invalid selection. React Aria associates this content with the control; error messages should state the problem and the corrective action.
+
+### Disabled state
+
+`isDisabled` prevents pointer and keyboard changes and exposes the disabled state semantically. The slider control is visually muted while its label, endpoint labels, description, and error text remain readable.
+
+## Best Practices
+
+- Use `Slider` for one approximate numeric choice within known bounds, such as volume, zoom, or intensity.
+- Use a numeric text field when users must enter or verify an exact value efficiently. A slider should not be the only input for high-precision or unbounded data.
+- Set meaningful `minValue`, `maxValue`, and `step` values. The step should match the smallest choice users need to make.
+- Show markers only when the available steps are few enough to scan. Dense markers add visual noise without improving comprehension.
+- Add `minLabel` and `maxLabel` when the endpoints have product meaning that the numeric bounds alone do not explain.
+- Use `formatOptions` for currencies, percentages, units, or other locale-sensitive values.
+- Use `onChange` for immediate UI feedback. Put expensive operations, such as network requests or large calculations, in `onChangeEnd` so they run after the interaction finishes.
+- In controlled usage, update `value` from `onChange`; otherwise the thumb cannot reflect the user's change.
+- Do not use this component to select a minimum and maximum simultaneously. `Slider` intentionally represents one number.
+
+## Troubleshooting
+
+### The thumb snaps to unexpected values
+
+Check that `step` represents the intended interval from `minValue`. Slider values snap to valid steps within the configured bounds. Decimal steps should use values appropriate for the precision your product displays.
+
+### The final marker is missing
+
+Markers begin at `minValue` and are generated at each complete step. A marker appears at `maxValue` only when the range is evenly divisible by `step`. For example, a range from `0` to `10` with a step of `3` ends its markers at `9`.
+
+### Markers are crowded or affect rendering performance
+
+Increase `step` or omit `markers`. Avoid producing hundreds of decorative positions; use a continuous track when every step is not useful to scan.
+
+### The controlled thumb does not move
+
+The `value` prop is the source of truth. Update that value in `onChange`, and ensure it remains between `minValue` and `maxValue`.
+
+### The value label is not visible
+
+Pass `valueLabel={true}`, a React node, or a render function. `formatOptions` only formats a value; it does not enable the visual value label.
+
+### An endpoint label is blank
+
+`minLabel` and `maxLabel` render only the content explicitly provided. They do not default to `minValue` or `maxValue`, and `formatOptions` is not applied to them.
+
+### Negative values do not behave as expected
+
+Negative values are supported. Set a negative `minValue` and ensure the controlled or default value is within the configured range.
+
+### The range is invalid
+
+Provide finite bounds where `minValue` is less than `maxValue`, and a finite `step` greater than zero. Invalid scale values also prevent markers from being generated.

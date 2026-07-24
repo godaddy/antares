@@ -1,0 +1,167 @@
+.slider {
+  --slider-track-height: 2px;
+  --slider-fill-height: 8px;
+  --slider-thumb-size: 24px;
+  --slider-marker-size: 4px;
+  --_slider-marker-edge-gap: 2px;
+  --_slider-marker-inset: calc((var(--slider-marker-size) / 2) + var(--_slider-marker-edge-gap));
+  --slider-fill-color: var(--color-control-chosen-background, var(--ux-sywk25, #00a4a6));
+  --slider-track-color: var(--color-feedback-passive-strong, var(--ux-1m9ys0v, #767676));
+  --slider-thumb-bg: var(--color-control-background, var(--ux-1nu8itt, #fff));
+  --slider-thumb-border: var(--color-control-foreground, var(--ux-1glcx6s, #2b2b2b));
+  --slider-label-color: var(--color-box-foreground, var(--ux-1leynsm, #111));
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  touch-action: none; /* prevent scroll interference during drag */
+}
+
+.slider > [slot="description"] {
+  color: var(--color-feedback-passive-foreground, var(--ux-1m9ys0v, #767676));
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Header row for label */
+.header {
+  height: 1.1875rem;
+}
+
+/* Track container */
+.track {
+  position: relative;
+  isolation: isolate;
+  align-self: center;
+  width: 100%;
+  height: var(--slider-thumb-size);
+  cursor: pointer;
+}
+
+.track:where([data-disabled]) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.track:where([data-markers]) {
+  width: calc(100% - var(--_slider-marker-inset) - var(--_slider-marker-inset));
+}
+
+.track:where([data-markers][data-range]) {
+  width: calc(100% - var(--slider-marker-size));
+}
+
+/* Base rail */
+.track::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  inset-inline: 0;
+  height: var(--slider-track-height);
+  transform: translateY(-50%);
+  background-color: var(--slider-track-color);
+  border-radius: 9999px;
+}
+
+/* Selected fill (RAC SliderFill) */
+.fill {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--slider-fill-color);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.fill:where([data-markers]:not([data-range])) {
+  box-sizing: content-box;
+  margin-inline-start: calc(0px - var(--_slider-marker-inset));
+  padding-inline-start: var(--_slider-marker-inset);
+}
+
+/* Thumb */
+.thumb {
+  z-index: 4;
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  border-radius: 50%;
+  border-width: 2px;
+  border-style: solid;
+  background-color: var(--slider-thumb-bg);
+  border-color: var(--slider-thumb-border);
+  cursor: grab;
+  transition:
+    border-color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    opacity 0.15s ease-in-out;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.thumb:where([data-disabled]) {
+  cursor: not-allowed;
+}
+
+.thumb:hover:not([data-disabled]) {
+  border-color: var(--slider-fill-color);
+}
+
+.thumb[data-dragging] {
+  cursor: grabbing;
+  border-color: var(--slider-fill-color);
+}
+
+.thumb[data-focus-visible] {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+/* Markers */
+.marker {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--slider-marker-size);
+  height: var(--slider-marker-size);
+  border-radius: 50%;
+  background-color: var(--slider-track-color);
+  pointer-events: none;
+  /* left is set inline from the component based on step percentage */
+}
+
+.valueLabel,
+.rangeLabels {
+  color: var(--slider-label-color);
+}
+
+.valueLabel {
+  margin-inline-start: auto;
+  font-size: 0.875rem;
+  line-height: 1.375;
+  font-weight: var(--ux-aarlu5, 500);
+  white-space: nowrap;
+}
+
+.rangeLabels {
+  width: 100%;
+  min-height: 1.1875rem;
+  font-size: 0.875rem;
+  line-height: 1.375;
+  font-weight: var(--ux-aarlu5, 500);
+}
+
+.minLabel,
+.maxLabel {
+  width: 40%;
+  max-width: 40%;
+  overflow-wrap: anywhere;
+}
+
+.maxLabel {
+  text-align: end;
+}
