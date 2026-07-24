@@ -69,6 +69,28 @@ describe('@godaddy/antares', function antares() {
       assume(getValue(thumb.element())).equals(-40);
     });
 
+    it('stacks and right-aligns the value label when the header content does not fit', async function wrappingHeader() {
+      const { container } = await render(
+        <div style={{ width: 180 }}>
+          <SliderPlaygroundExample label="Storage allocation" defaultValue={50} valueLabel="100 GB remaining" />
+        </div>
+      );
+      const label = container.querySelector('label');
+      const valueLabel = container.querySelector('output');
+      const header = label?.parentElement;
+
+      assume(label).is.not.equal(null);
+      assume(valueLabel).is.not.equal(null);
+      assume(header).is.not.equal(null);
+
+      const labelBounds = label?.getBoundingClientRect();
+      const valueLabelBounds = valueLabel?.getBoundingClientRect();
+      const headerBounds = header?.getBoundingClientRect();
+
+      assume(Math.round((valueLabelBounds?.top ?? 0) - (labelBounds?.bottom ?? 0))).equals(4);
+      assume(Math.round((headerBounds?.right ?? 0) - (valueLabelBounds?.right ?? 0))).equals(0);
+    });
+
     it('does not change when disabled', async function disabledValue() {
       const user = userEvent.setup();
       await render(<SliderDisabledExample />);

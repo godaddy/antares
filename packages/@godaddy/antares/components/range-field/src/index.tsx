@@ -207,8 +207,10 @@ function RangeFieldHeader({
   }
 
   return (
-    <Flex direction="row" alignItems="center" className={styles.header}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
+    <Flex direction="row" wrap="wrap" gap="sm" alignItems="center" className={styles.header}>
+      <FieldLabel isRequired={isRequired} className={styles.label}>
+        {label}
+      </FieldLabel>
       {valueLabelVisible && (
         <RACSliderOutput className={styles.valueLabel}>{valueLabel === true ? undefined : valueLabel}</RACSliderOutput>
       )}

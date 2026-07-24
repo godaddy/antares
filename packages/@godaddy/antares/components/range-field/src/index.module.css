@@ -23,9 +23,14 @@
   line-height: 1.5;
 }
 
-/* Header row for label */
 .header {
-  height: 1.1875rem;
+  min-height: 1.1875rem;
+}
+
+.label {
+  flex-shrink: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 /* Track container */
@@ -140,11 +145,14 @@
 }
 
 .valueLabel {
+  flex-shrink: 0;
+  max-width: 100%;
   margin-inline-start: auto;
   font-size: 0.875rem;
   line-height: 1.375;
   font-weight: var(--ux-aarlu5, 500);
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  text-align: end;
 }
 
 .rangeLabels {
