@@ -776,6 +776,63 @@ Always provide clear error messages and use appropriate validation states:
 * Provide a group label that clearly describes the choice being made
 
 
+# CircularProgress
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="Stories.Emphasis" />
+
+<Source language="tsx" code="SourceEmphasis" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+
 # DatePicker
 
 
@@ -999,63 +1056,6 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 * Always provide an `aria-label` so the dialog has an accessible name.
 * Use `isDismissable` to allow closing via backdrop click.
 * Don't nest drawers.
-
-
-# CircularProgress
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="Stories.Emphasis" />
-
-<Source language="tsx" code="SourceEmphasis" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
 
 
 # DropZone
@@ -2344,6 +2344,61 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Source language="tsx" code="SourceOnChange" />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="Stories.Statuses" />
+
+<Source language="tsx" code="SourceStatuses" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+
 # Popover
 
 
@@ -2398,61 +2453,6 @@ the close button.
 ## Best Practices [#best-practices]
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-
-# ProgressBar
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="Stories.Statuses" />
-
-<Source language="tsx" code="SourceStatuses" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
 # ProgressSteps
@@ -2567,236 +2567,6 @@ Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
 * **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
 * **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
 * **Titles overflow:** that's expected — titles truncate. Shorten the title.
-
-
-# Radio
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Radio` component has the following props:
-
-<PropTable />
-
-The `RadioGroup` component has the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-<Story of="Stories.Basic" />
-
-<Source language="tsx" code="SourceRadioBasic" />
-
-### Controlled [#controlled]
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceRadioControlled" />
-
-### Horizontal Layout [#horizontal-layout]
-
-<Story of="Stories.Horizontal" />
-
-<Source language="tsx" code="SourceRadioHorizontal" />
-
-### Disabled States [#disabled-states]
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceRadioDisabled" />
-
-### Required Indicator [#required-indicator]
-
-<Story of="Stories.Required" />
-
-<Source language="tsx" code="SourceRadioRequired" />
-
-### Description Text [#description-text]
-
-<Story of="Stories.Description" />
-
-<Source language="tsx" code="SourceRadioDescription" />
-
-### Error State [#error-state]
-
-<Story of="Stories.ValidationError" />
-
-<Source language="tsx" code="SourceRadioError" />
-
-### Aria Label [#aria-label]
-
-<Story of="Stories.AriaLabel" />
-
-<Source language="tsx" code="SourceRadioAriaLabel" />
-
-### Form Submission [#form-submission]
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceRadioForm" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-radio-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-radio-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-radio-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-radio-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Component Customization [#component-customization]
-
-Individual components can be styled by passing `className` props:
-
-```jsx
-<RadioGroup label="Select plan" className="custom-radio-group">
-  <Radio value="basic" className="custom-radio">
-    Basic
-  </Radio>
-  <Radio value="premium" className="premium-radio">
-    Premium
-  </Radio>
-</RadioGroup>
-```
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the radio group
-* **Arrow Down/Right**: Move to next radio button
-* **Arrow Up/Left**: Move to previous radio button
-* **Space**: Select the focused radio button
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each option
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled options
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<RadioGroup value={value} defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
-</RadioGroup>
-
-// ✅ Controlled mode
-<RadioGroup value={value} onChange={setValue}>
-  <Radio value="basic">Basic</Radio>
-</RadioGroup>
-
-// ✅ Uncontrolled mode
-<RadioGroup defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
-</RadioGroup>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-radio {
-  color: red;
-}
-
-/* ✅ Use data attributes and className for higher specificity */
-.my-radio-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-radio-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-## Best Practices [#best-practices]
-
-### When to Use Radio Buttons [#when-to-use-radio-buttons]
-
-* ✅ When there are 2-7 mutually exclusive options
-* ✅ When all options should be visible at once
-* ✅ When the decision is important and deserves space
-* ❌ For more than 7 options (use Select instead)
-* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
-* ❌ When space is limited (use Select dropdown)
-
-### Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels
-* Keep labels short (1-3 words when possible)
-* Place the most common option first
-* Ensure labels are descriptive without being verbose
-
-### Validation [#validation]
-
-Always provide clear error messages:
-
-```jsx
-<RadioGroup
-  label="Select shipping method"
-  isRequired
-  isInvalid={!selectedShipping}
-  errorMessage="Please select a shipping method"
->
-  <Radio value="standard">Standard</Radio>
-  <Radio value="express">Express</Radio>
-</RadioGroup>
-```
 
 
 # RangeField
@@ -3058,6 +2828,236 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 ### The range configuration is invalid [#the-range-configuration-is-invalid]
 
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
+
+
+# Radio
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Radio` component has the following props:
+
+<PropTable />
+
+The `RadioGroup` component has the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceRadioBasic" />
+
+### Controlled [#controlled]
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceRadioControlled" />
+
+### Horizontal Layout [#horizontal-layout]
+
+<Story of="Stories.Horizontal" />
+
+<Source language="tsx" code="SourceRadioHorizontal" />
+
+### Disabled States [#disabled-states]
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceRadioDisabled" />
+
+### Required Indicator [#required-indicator]
+
+<Story of="Stories.Required" />
+
+<Source language="tsx" code="SourceRadioRequired" />
+
+### Description Text [#description-text]
+
+<Story of="Stories.Description" />
+
+<Source language="tsx" code="SourceRadioDescription" />
+
+### Error State [#error-state]
+
+<Story of="Stories.ValidationError" />
+
+<Source language="tsx" code="SourceRadioError" />
+
+### Aria Label [#aria-label]
+
+<Story of="Stories.AriaLabel" />
+
+<Source language="tsx" code="SourceRadioAriaLabel" />
+
+### Form Submission [#form-submission]
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceRadioForm" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-radio-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-radio-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-radio-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization [#component-customization]
+
+Individual components can be styled by passing `className` props:
+
+```jsx
+<RadioGroup label="Select plan" className="custom-radio-group">
+  <Radio value="basic" className="custom-radio">
+    Basic
+  </Radio>
+  <Radio value="premium" className="premium-radio">
+    Premium
+  </Radio>
+</RadioGroup>
+```
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the radio group
+* **Arrow Down/Right**: Move to next radio button
+* **Arrow Up/Left**: Move to previous radio button
+* **Space**: Select the focused radio button
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each option
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled options
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+
+## Troubleshooting [#troubleshooting]
+
+### Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<RadioGroup value={value} defaultValue="basic">
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Controlled mode
+<RadioGroup value={value} onChange={setValue}>
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Uncontrolled mode
+<RadioGroup defaultValue="basic">
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+```
+
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-radio {
+  color: red;
+}
+
+/* ✅ Use data attributes and className for higher specificity */
+.my-radio-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices [#best-practices]
+
+### When to Use Radio Buttons [#when-to-use-radio-buttons]
+
+* ✅ When there are 2-7 mutually exclusive options
+* ✅ When all options should be visible at once
+* ✅ When the decision is important and deserves space
+* ❌ For more than 7 options (use Select instead)
+* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
+* ❌ When space is limited (use Select dropdown)
+
+### Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels
+* Keep labels short (1-3 words when possible)
+* Place the most common option first
+* Ensure labels are descriptive without being verbose
+
+### Validation [#validation]
+
+Always provide clear error messages:
+
+```jsx
+<RadioGroup
+  label="Select shipping method"
+  isRequired
+  isInvalid={!selectedShipping}
+  errorMessage="Please select a shipping method"
+>
+  <Radio value="standard">Standard</Radio>
+  <Radio value="express">Express</Radio>
+</RadioGroup>
+```
 
 
 # RangeSlider
@@ -4310,69 +4310,6 @@ To position a tooltip relative to a different focusable element, use the
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Bar Chart
 
 
@@ -4766,7 +4703,7 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# Gauge Chart
+# DonutChart
 
 
 
@@ -4779,7 +4716,7 @@ All examples can be found in the Storybook interface:
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Props [#props]
@@ -4790,82 +4727,43 @@ npm install --save @godaddy/antares
 
 ### Basic [#basic]
 
-A continuous gauge with a single label.
-
-<Story of="Stories.Basic" />
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
 <Source language="tsx" code="SourceBasic" />
 
-### Continuous Values [#continuous-values]
+<Story of="Stories.Basic" />
 
-Multiple continuous gauges showing different fill percentages.
+### Single slice [#single-slice]
 
-<Story of="Stories.Continuous" />
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Source language="tsx" code="SourceContinuous" />
+<Source language="tsx" code="SourceSingleSlice" />
 
-### Segmented [#segmented]
+<Story of="Stories.SingleSlice" />
 
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+### Legend placement [#legend-placement]
 
-<Story of="Stories.Segmented" />
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-<Source language="tsx" code="SourceSegmented" />
+<Source language="tsx" code="SourceLegendLayout" />
 
-### With Range Labels [#with-range-labels]
+<Story of="Stories.LegendLayout" />
 
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+### Small slices [#small-slices]
 
-<Story of="Stories.WithRangeLabels" />
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
-<Source language="tsx" code="SourceWithRangeLabels" />
+<Source language="tsx" code="SourceSmallSlices" />
 
-### Variants [#variants]
+<Story of="Stories.SmallSlices" />
 
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+### Format value [#format-value]
 
-<Story of="Stories.Variants" />
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
 
-<Source language="tsx" code="SourceVariants" />
+<Source language="tsx" code="SourceFormatValue" />
 
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="Stories.LabelType" />
-
-<Source language="tsx" code="SourceLabelType" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
+<Story of="Stories.FormatValue" />
 
 
 # LineChart
@@ -5159,6 +5057,108 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 * Use for trends over time or along a continuous scale.
 * Use when comparing a few series (e.g. 2–5 lines); avoid too many overlapping lines.
 * Prefer a single chart with a legend over multiple small charts when comparing the same X range.
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A continuous gauge with a single label.
+
+<Story of="Stories.Basic" />
+
+<Source language="tsx" code="SourceBasic" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="Stories.Continuous" />
+
+<Source language="tsx" code="SourceContinuous" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="Stories.Segmented" />
+
+<Source language="tsx" code="SourceSegmented" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="Stories.WithRangeLabels" />
+
+<Source language="tsx" code="SourceWithRangeLabels" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="Stories.Variants" />
+
+<Source language="tsx" code="SourceVariants" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="Stories.LabelType" />
+
+<Source language="tsx" code="SourceLabelType" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 
 # Box
