@@ -8,7 +8,7 @@ import {
   SliderThumb as RACSliderThumb,
   SliderTrack as RACSliderTrack
 } from 'react-aria-components';
-import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
+import { Field, FieldDescription, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex } from '#components/layout/flex';
 import { cx } from 'cva';
 import {
@@ -21,14 +21,17 @@ import {
   type RefObject,
   useContext,
   useImperativeHandle,
+  useId,
   useMemo,
   useRef
 } from 'react';
 import styles from './index.module.css';
 
-export interface RangeFieldProps<T extends number | number[] = number | number[]>
-  extends Omit<RACSliderProps<T>, 'className' | 'orientation'>,
-    FieldOwnProps {
+const MAX_MARKER_COUNT = 1000;
+
+interface RangeFieldSharedProps<T extends number | number[]>
+  extends Omit<RACSliderProps<T>, 'children' | 'className' | 'orientation' | 'render' | 'style'>,
+    Omit<FieldOwnProps, 'errorMessage'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
@@ -71,12 +74,6 @@ export interface RangeFieldProps<T extends number | number[] = number | number[]
   /** Whether to render a marker at each step position. */
   markers?: boolean;
 
-  /**
-   * Accessible label for each thumb. Keep entries aligned with the values array.
-   * @example ['Minimum price', 'Maximum price']
-   */
-  thumbLabels?: string[];
-
   /** Per-thumb form input names. Length must match value array length. */
   thumbNames?: string[];
 
@@ -86,6 +83,24 @@ export interface RangeFieldProps<T extends number | number[] = number | number[]
   /** Marks the slider as required in a form context. */
   isRequired?: boolean;
 }
+
+/** Props for configuring a {@link RangeField} and its generated slider controls. */
+export type RangeFieldProps<T extends number | number[] = number | number[]> = T extends number[]
+  ? RangeFieldSharedProps<T> & {
+      /**
+       * Accessible label for each thumb. Keep entries aligned with the values array.
+       * @example ['Minimum price', 'Maximum price']
+       */
+      thumbLabels: string[];
+    }
+  : RangeFieldSharedProps<T> & {
+      /** A scalar value is named by the field's visible or ARIA label. */
+      thumbLabels?: never;
+    };
+
+type RangeFieldImplementationProps<T extends number | number[]> = RangeFieldSharedProps<T> & {
+  thumbLabels?: string[];
+};
 
 /** Imperative controls for a {@link RangeField}. */
 export interface RangeFieldRef {
@@ -118,7 +133,6 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
   {
     label,
     description,
-    errorMessage,
     className,
     markers = false,
     valueLabel,
@@ -133,13 +147,16 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
     step = 1,
     isRequired,
     formatOptions,
+    'aria-describedby': ariaDescribedBy,
     gap = 'sm',
     ...props
-  }: RangeFieldProps<T>,
+  }: RangeFieldImplementationProps<T>,
   ref: ForwardedRef<RangeFieldRef>
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
   const thumbInputRefs = useRef<RefObject<HTMLInputElement | null>[]>([]);
+  const descriptionId = useId();
+  const describedBy = [ariaDescribedBy, description ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
 
   useImperativeHandle(
     ref,
@@ -166,6 +183,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
       step={step}
       isRequired={isRequired}
       formatOptions={formatOptions}
+      aria-describedby={describedBy}
       gap={gap}
       {...props}
       className={cx(styles.slider, className)}
@@ -179,10 +197,10 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
         thumbLabels={thumbLabels}
         thumbNames={thumbNames}
         thumbInputRefs={thumbInputRefs}
+        isRequired={isRequired}
       />
       <RangeFieldLabels minLabel={minLabel} maxLabel={maxLabel} />
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
+      <FieldDescription id={descriptionId}>{description}</FieldDescription>
     </Field>
   );
 }) as <T extends number | number[] = number | number[]>(
@@ -199,7 +217,7 @@ function RangeFieldHeader({
   label,
   isRequired,
   valueLabel
-}: Pick<RangeFieldProps, 'label' | 'isRequired' | 'valueLabel'>) {
+}: Pick<RangeFieldSharedProps<number | number[]>, 'label' | 'isRequired' | 'valueLabel'>) {
   const valueLabelVisible = valueLabel != null && valueLabel !== false;
 
   if (!label && !valueLabelVisible) {
@@ -231,9 +249,10 @@ function RangeFieldControl({
   step,
   thumbLabels,
   thumbNames,
-  thumbInputRefs
-}: Required<Pick<RangeFieldProps, 'markers' | 'minValue' | 'maxValue' | 'step'>> &
-  Pick<RangeFieldProps, 'thumbLabels' | 'thumbNames'> & {
+  thumbInputRefs,
+  isRequired
+}: Required<Pick<RangeFieldSharedProps<number | number[]>, 'markers' | 'minValue' | 'maxValue' | 'step'>> &
+  Pick<RangeFieldImplementationProps<number | number[]>, 'isRequired' | 'thumbLabels' | 'thumbNames'> & {
     thumbInputRefs: RefObject<RefObject<HTMLInputElement | null>[]>;
   }) {
   const state = useContext(RACSliderStateContext);
@@ -245,10 +264,21 @@ function RangeFieldControl({
         return [];
       }
 
-      const count = Math.floor(range / step) + 1;
+      const intervalCount = range / step;
+      const roundedIntervalCount = Math.round(intervalCount);
+      const roundingTolerance = Number.EPSILON * Math.max(1, Math.abs(intervalCount)) * 8;
+      const resolvedIntervalCount =
+        Math.abs(intervalCount - roundedIntervalCount) <= roundingTolerance
+          ? roundedIntervalCount
+          : Math.floor(intervalCount);
+      const count = resolvedIntervalCount + 1;
+
+      if (!Number.isSafeInteger(count) || count > MAX_MARKER_COUNT) {
+        return [];
+      }
 
       return Array.from({ length: count }, function getMarkerPosition(_, index) {
-        return (index * step * 100) / range;
+        return Math.min((index * step * 100) / range, 100);
       });
     },
     [markers, minValue, maxValue, step]
@@ -292,7 +322,7 @@ function RangeFieldControl({
       })}
       <RACSliderFill
         className={styles.fill}
-        style={{ height: 'var(--slider-fill-height)' }}
+        style={{ height: 'var(--_slider-fill-height)' }}
         data-markers={markersVisible || undefined}
         data-range={isRange || undefined}
       />
@@ -302,6 +332,7 @@ function RangeFieldControl({
             key={index}
             index={index}
             aria-label={thumbLabels?.[index]}
+            isRequired={isRequired}
             name={thumbNames?.[index]}
             inputRef={getThumbInputRef(index)}
             className={styles.thumb}
@@ -318,7 +349,10 @@ function RangeFieldControl({
  * @param props - Endpoint label content from {@link RangeFieldProps}.
  * @returns Endpoint label row, or `null` when neither label is provided.
  */
-function RangeFieldLabels({ minLabel, maxLabel }: Pick<RangeFieldProps, 'minLabel' | 'maxLabel'>) {
+function RangeFieldLabels({
+  minLabel,
+  maxLabel
+}: Pick<RangeFieldSharedProps<number | number[]>, 'minLabel' | 'maxLabel'>) {
   if (minLabel == null && maxLabel == null) {
     return null;
   }

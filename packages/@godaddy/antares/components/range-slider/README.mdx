@@ -160,7 +160,7 @@ Scope overrides to a local class so other range sliders are unaffected.
 
 ```css
 .priceRange {
-  --slider-fill-color: var(--color-control-chosen-background);
+  --slider-fill-color: var(--color-input-background-selected);
   --slider-thumb-size: 28px;
 }
 ```
@@ -194,9 +194,9 @@ Use `formatOptions` so each thumb announces values in the product's unit, such a
 
 Markers are decorative and hidden from the accessibility tree. Do not rely on marker appearance alone to explain available choices.
 
-### Instructions, required state, and errors
+### Instructions and required state
 
-Use `description` for persistent guidance that applies to the range. Set `isRequired` when a selection is required, and use `errorMessage` with the component's validation state to explain how to correct an invalid range. React Aria associates this content with the control.
+Use `description` for persistent guidance that applies to the range. React Aria associates it with both slider thumbs. Set `isRequired` when the selection is required so the visible label and both slider semantics communicate the requirement consistently.
 
 ### Disabled state
 

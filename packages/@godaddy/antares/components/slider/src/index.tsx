@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 /** Imperative controls for a {@link Slider}. */
 export type SliderRef = RangeFieldRef;
 
+/** Props for configuring a single-value {@link Slider}. */
 export interface SliderProps
   extends Omit<
     RangeFieldProps<number>,

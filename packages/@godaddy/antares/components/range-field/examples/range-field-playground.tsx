@@ -72,14 +72,50 @@ export function RangeFieldPlaygroundExample({
     [value]
   );
 
+  if (Array.isArray(currentValue)) {
+    const arrayDefaultValue = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
+    const accessibleThumbLabels =
+      thumbLabels ??
+      currentValue.map(function createThumbLabel(_, index) {
+        return `Value ${index + 1}`;
+      });
+
+    return (
+      <RangeField<number[]>
+        ref={rootRef}
+        key={isControlled ? 'controlled' : `uncontrolled-${defaultValueKey}`}
+        label={label}
+        description={description}
+        value={isControlled ? currentValue : undefined}
+        defaultValue={isControlled ? undefined : arrayDefaultValue}
+        onChange={isControlled ? setCurrentValue : undefined}
+        minValue={minValue}
+        maxValue={maxValue}
+        step={step}
+        markers={markers}
+        valueLabel={valueLabel}
+        minLabel={minLabel}
+        maxLabel={maxLabel}
+        thumbLabels={accessibleThumbLabels}
+        thumbNames={thumbNames}
+        formatOptions={formatOptions}
+        isRequired={isRequired}
+        isDisabled={isDisabled}
+        onChangeEnd={onChangeEnd}
+      />
+    );
+  }
+
+  const scalarDefaultValue = Array.isArray(defaultValue) ? defaultValue[0] : defaultValue;
+
   return (
-    <RangeField<number | number[]>
+    <RangeField<number>
       ref={rootRef}
       key={isControlled ? 'controlled' : `uncontrolled-${defaultValueKey}`}
       label={label}
       description={description}
       value={isControlled ? currentValue : undefined}
-      defaultValue={isControlled ? undefined : defaultValue}
+      defaultValue={isControlled ? undefined : scalarDefaultValue}
       onChange={isControlled ? setCurrentValue : undefined}
       minValue={minValue}
       maxValue={maxValue}
@@ -88,7 +124,6 @@ export function RangeFieldPlaygroundExample({
       valueLabel={valueLabel}
       minLabel={minLabel}
       maxLabel={maxLabel}
-      thumbLabels={thumbLabels}
       thumbNames={thumbNames}
       formatOptions={formatOptions}
       isRequired={isRequired}

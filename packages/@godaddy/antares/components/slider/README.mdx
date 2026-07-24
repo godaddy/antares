@@ -144,7 +144,7 @@ Scope overrides to a local class so other sliders are unaffected.
 
 ```css
 .volumeSlider {
-  --slider-fill-color: var(--color-control-chosen-background);
+  --slider-fill-color: var(--color-input-background-selected);
   --slider-thumb-size: 28px;
 }
 ```
@@ -173,9 +173,9 @@ Choose `formatOptions` that communicates the meaning of the number—not only it
 
 Markers are decorative and are hidden from the accessibility tree. Their meaning must therefore be represented by the slider's label, bounds, step, and formatted value.
 
-### Instructions, required state, and errors
+### Instructions and required state
 
-Use `description` for persistent guidance that helps users make a selection. Set `isRequired` when the slider is required, and use `errorMessage` with the component's validation state to explain how to correct an invalid selection. React Aria associates this content with the control; error messages should state the problem and the corrective action.
+Use `description` for persistent guidance that helps users make a selection. React Aria associates it with the slider thumb. Set `isRequired` when the selection is required so the visible label and slider semantics communicate the requirement consistently.
 
 ### Disabled state
 

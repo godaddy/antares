@@ -138,6 +138,46 @@ describe('@godaddy/antares', function antares() {
       assume(getValue(thumb.element())).equals(50);
     });
 
+    it('associates its description and required state with every thumb', async function accessibleDetails() {
+      const { container } = await render(
+        <RangeFieldPlaygroundExample
+          label="Thresholds"
+          description="Choose the accepted interval."
+          defaultValue={[20, 80]}
+          thumbLabels={['Minimum threshold', 'Maximum threshold']}
+          isRequired
+        />
+      );
+      const description = container.querySelector('[slot="description"]');
+      const thumbs = await page.getByRole('slider').all();
+
+      assume(description?.id).is.not.equal('');
+      assume(thumbs.length).equals(2);
+
+      thumbs.forEach(function verifyThumb(thumb) {
+        assume(thumb.element().getAttribute('aria-describedby')).includes(description?.id);
+        assume(thumb.element().getAttribute('aria-required')).equals('true');
+      });
+    });
+
+    it('renders decimal markers through the exact maximum', async function decimalMarkers() {
+      const { container } = await render(
+        <RangeFieldPlaygroundExample defaultValue={0.1} minValue={0} maxValue={0.3} step={0.1} markers />
+      );
+      const markers = container.querySelectorAll('[aria-hidden="true"]');
+
+      assume(markers.length).equals(4);
+      assume((markers[3] as HTMLElement).style.insetInlineStart).equals('100%');
+    });
+
+    it('omits markers when the step would produce an unsafe number of elements', async function markerLimit() {
+      const { container } = await render(
+        <RangeFieldPlaygroundExample defaultValue={50} minValue={0} maxValue={100} step={0.000001} markers />
+      );
+
+      assume(container.querySelectorAll('[aria-hidden="true"]').length).equals(0);
+    });
+
     it('updates a state-based value label after interaction', async function stateValueLabel() {
       const user = userEvent.setup();
       await render(

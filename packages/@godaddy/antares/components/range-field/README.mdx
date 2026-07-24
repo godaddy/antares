@@ -163,7 +163,7 @@ Scope overrides to a local class so other range fields are unaffected.
 
 ```css
 .thresholdField {
-  --slider-fill-color: var(--color-control-chosen-background);
+  --slider-fill-color: var(--color-input-background-selected);
   --slider-marker-size: 6px;
 }
 ```
@@ -196,9 +196,9 @@ Use `formatOptions` to expose the meaning and unit of each number to assistive t
 
 Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
 
-### Instructions, required state, and errors
+### Instructions and required state
 
-Use `description` for persistent guidance that applies to every thumb. Set `isRequired` when the field is required, and use `errorMessage` with the component's validation state to explain how to correct an invalid selection. React Aria associates this content with the control; write errors that identify both the affected value and the corrective action when multiple thumbs are present.
+Use `description` for persistent guidance that applies to every thumb. React Aria associates it with each slider input. Set `isRequired` when the selection is required so the visible label and every slider semantic communicate the requirement consistently.
 
 ### Disabled state
 

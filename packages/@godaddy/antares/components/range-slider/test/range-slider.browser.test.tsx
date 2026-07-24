@@ -1,5 +1,5 @@
 import assume from 'assume';
-import type { RangeSliderRef } from '@godaddy/antares';
+import { RangeSlider, type RangeSliderRef } from '@godaddy/antares';
 import { createRef } from 'react';
 import { describe, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
@@ -37,6 +37,20 @@ describe('@godaddy/antares', function antares() {
       assume(thumbs.length).equals(2);
       assume(getValue(page.getByRole('slider', { name: 'Minimum price' }).element())).equals(20);
       assume(getValue(page.getByRole('slider', { name: 'Maximum price' }).element())).equals(80);
+    });
+
+    it('defaults to the configured scale boundaries', async function defaultRange() {
+      await render(
+        <RangeSlider
+          aria-label="Temperature range"
+          minValue={-50}
+          maxValue={50}
+          thumbLabels={['Minimum temperature', 'Maximum temperature']}
+        />
+      );
+
+      assume(getValue(page.getByRole('slider', { name: 'Minimum temperature' }).element())).equals(-50);
+      assume(getValue(page.getByRole('slider', { name: 'Maximum temperature' }).element())).equals(50);
     });
 
     it('updates the controlled tuple', async function controlledValue() {

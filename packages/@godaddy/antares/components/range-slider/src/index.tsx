@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 /** Imperative controls for a {@link RangeSlider}. */
 export type RangeSliderRef = RangeFieldRef;
 
+/** Props for configuring a two-value {@link RangeSlider}. */
 export interface RangeSliderProps
   extends Omit<
     RangeFieldProps<[number, number]>,
@@ -52,18 +53,32 @@ export interface RangeSliderProps
  * ```
  */
 export const RangeSlider = forwardRef<RangeSliderRef, RangeSliderProps>(function RangeSlider(rangeSliderProps, ref) {
-  const { value, defaultValue, onChange, onChangeEnd, thumbLabels, startName, endName, ...props } = rangeSliderProps;
+  const {
+    value,
+    defaultValue,
+    onChange,
+    onChangeEnd,
+    thumbLabels,
+    startName,
+    endName,
+    minValue = 0,
+    maxValue = 100,
+    ...props
+  } = rangeSliderProps;
   const thumbNames = startName || endName ? ([startName, endName] as string[]) : undefined;
+  const resolvedDefaultValue = value === undefined ? (defaultValue ?? [minValue, maxValue]) : defaultValue;
 
   return (
     <RangeField<[number, number]>
       ref={ref}
       value={value}
-      defaultValue={defaultValue}
+      defaultValue={resolvedDefaultValue}
       onChange={onChange}
       onChangeEnd={onChangeEnd}
       thumbLabels={thumbLabels}
       thumbNames={thumbNames}
+      minValue={minValue}
+      maxValue={maxValue}
       {...props}
     />
   );
