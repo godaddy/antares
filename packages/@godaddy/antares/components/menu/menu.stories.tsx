@@ -1,67 +1,70 @@
 'use client';
 import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { BasicExample } from './examples/menu.tsx';
-import { SubmenuExample } from './examples/menu-submenu.tsx';
-import { SelectionExample } from './examples/menu-selection.tsx';
-import { SectionsExample } from './examples/menu-sections.tsx';
-import { PlaygroundExample } from './examples/menu-playground.tsx';
-import { Menu } from './src/index.tsx';
+import { Menu, MenuGroup, MenuItem, MenuSeparator, MenuTrigger, SubmenuTrigger } from './src/index.tsx';
+import { DefaultExample } from './examples/default.tsx';
+import { GroupsExample } from './examples/groups.tsx';
+import { SelectionExample } from './examples/selection.tsx';
+import { SizesExample } from './examples/sizes.tsx';
+import { ControlledExample } from './examples/controlled.tsx';
+import { SubmenuExample } from './examples/submenu.tsx';
+import { BottomSheetExample } from './examples/bottom-sheet.tsx';
+import { PlaygroundExample, type PlaygroundExampleProps } from './examples/menu-playground.tsx';
 
 export default getMeta({
   title: 'components/Menu'
 });
 
 export const Props = getComponentDocs(Menu);
+export const MenuTriggerProps = getComponentDocs(MenuTrigger);
+export const MenuGroupProps = getComponentDocs(MenuGroup);
+export const MenuItemProps = getComponentDocs(MenuItem);
+export const MenuSeparatorProps = getComponentDocs(MenuSeparator);
+export const SubmenuTriggerProps = getComponentDocs(SubmenuTrigger);
 
-export const Basic = getStory(BasicExample);
+export const Basic = getStory(DefaultExample);
+
+export const Controlled = getStory(ControlledExample);
+
+export const Groups = getStory(GroupsExample);
+
+export const Selection = getStory(SelectionExample);
+
+export const Sizes = getStory(SizesExample);
 
 export const WithSubmenus = getStory(SubmenuExample);
 
-export const WithSelection = getStory(SelectionExample);
-
-export const WithSections = getStory(SectionsExample);
+export const BottomSheet = getStory(BottomSheetExample);
 
 export const Playground = {
-  render: (args: Record<string, unknown>) => <PlaygroundExample {...args} />,
+  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
     size: 'md',
-    selectionMode: 'none',
-    matchWidth: false,
+    multiSelect: false,
     withIcons: false,
-    withSections: false,
-    withKeyboardShortcuts: false,
+    withGroups: false,
     disabledItems: false
   },
   argTypes: {
     size: {
       control: 'radio',
       options: ['sm', 'md'],
-      description: 'Size variant for menu items'
+      description: 'Size variant for the menu and its items (inherited by submenus)'
     },
-    selectionMode: {
-      control: 'radio',
-      options: ['none', 'single', 'multiple'],
-      description: 'Selection mode for menu items'
-    },
-    matchWidth: {
+    multiSelect: {
       control: 'boolean',
-      description: 'Match menu width to trigger button'
+      description: 'Enable multiple selection, rendering items as checkboxes'
     },
     withIcons: {
       control: 'boolean',
-      description: 'Show icons in menu items'
+      description: 'Show a leading icon on each item'
     },
-    withSections: {
+    withGroups: {
       control: 'boolean',
-      description: 'Organize items into sections with headers'
-    },
-    withKeyboardShortcuts: {
-      control: 'boolean',
-      description: 'Show keyboard shortcuts'
+      description: 'Organize items into labeled groups separated by a divider'
     },
     disabledItems: {
       control: 'boolean',
-      description: 'Disable some menu items'
+      description: 'Disable an item'
     }
   }
 };

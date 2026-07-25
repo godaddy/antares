@@ -1,17 +1,32 @@
 ---
 title: Menu
-description: Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
+description: Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.
 ---
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceMenu from './examples/menu.tsx?raw';
-import SourceMenuSubmenu from './examples/menu-submenu.tsx?raw';
-import SourceMenuSelection from './examples/menu-selection.tsx?raw';
-import SourceMenuSections from './examples/menu-sections.tsx?raw';
+import SourceDefault from './examples/default.tsx?raw';
+import SourceGroups from './examples/groups.tsx?raw';
+import SourceSelection from './examples/selection.tsx?raw';
+import SourceSizes from './examples/sizes.tsx?raw';
+import SourceControlled from './examples/controlled.tsx?raw';
+import SourceSubmenu from './examples/submenu.tsx?raw';
+import SourceBottomSheet from './examples/bottom-sheet.tsx?raw';
 import * as Stories from './menu.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
+An accessible dropdown menu built on React Aria. It supports grouping with optional
+titles, multi-select checkbox items, leading icons, submenus, and two sizes. It
+reuses Antares' `Popover` for the overlay and `Checkbox` indicator for selection.
+
+## Features
+
+- Grouping with an optional title via `MenuGroup`, plus `MenuSeparator` dividers
+- Multi-select groups: set `selectionMode="multiple"` on a `MenuGroup` to render
+  its items as checkboxes, while other groups stay plain action items
+- Optional leading `icon` per item; links (`href`) and disabled items
+- Submenus via `SubmenuTrigger`
+- Two sizes (`sm`, `md`) that submenus inherit automatically
+- Usable anchored to a trigger or standalone (e.g. inside a bottom-sheet `Drawer`)
 
 ## Installation
 
@@ -21,147 +36,133 @@ npm install --save @godaddy/antares
 
 ## Props
 
+### Menu
+
 <ArgTypes of={Stories.Props} />
+
+### MenuTrigger
+
+<ArgTypes of={Stories.MenuTriggerProps} />
+
+### MenuGroup
+
+<ArgTypes of={Stories.MenuGroupProps} />
+
+### MenuItem
+
+<ArgTypes of={Stories.MenuItemProps} />
+
+### SubmenuTrigger
+
+<ArgTypes of={Stories.SubmenuTriggerProps} />
 
 ## Examples
 
 ### Basic
 
-<Story of={Stories.Basic} inline />
-<Source language="tsx" code={SourceMenu} />
+A trigger with plain action items.
 
-### With Submenus
+<Story of={Stories.Basic} inline />
+<Source language="tsx" code={SourceDefault} />
+
+### Controlled
+
+`MenuTrigger` exposes its open state via `isOpen`/`onOpenChange`, which can be used to drive the rotation of a chevron icon.
+
+<Story of={Stories.Controlled} inline />
+<Source language="tsx" code={SourceControlled} />
+
+### Groups
+
+Labeled groups separated by dividers, a multi-select checkbox group mixed with
+plain action groups, leading icons, a disabled item, and a link.
+
+<Story of={Stories.Groups} inline />
+<Source language="tsx" code={SourceGroups} />
+
+### Multi-select
+
+A `MenuGroup` with `selectionMode="multiple"` renders its items as checkboxes.
+The initially checked items are the group's selected keys - controlled with
+`selectedKeys` + `onSelectionChange`, or uncontrolled with `defaultSelectedKeys`.
+Keys correspond to each `MenuItem`'s `id`.
+
+<Story of={Stories.Selection} inline />
+<Source language="tsx" code={SourceSelection} />
+
+### Sizes
+
+`size` controls item density. Shown here as two standalone menus so both
+sizes are visible at once; in practice you set `size` on the `Menu` inside a
+`MenuTrigger`.
+
+<Story of={Stories.Sizes} inline />
+<Source language="tsx" code={SourceSizes} />
+
+### Submenus
+
+Nested menus via `SubmenuTrigger`.
 
 <Story of={Stories.WithSubmenus} inline />
-<Source language="tsx" code={SourceMenuSubmenu} />
+<Source language="tsx" code={SourceSubmenu} />
 
-### With Selection
+### Bottom sheet
 
-<Story of={Stories.WithSelection} inline />
-<Source language="tsx" code={SourceMenuSelection} />
+Because `Menu` works standalone, it can render inside a bottom `Drawer` for a
+mobile-style sheet.
 
-### With Sections
-
-<Story of={Stories.WithSections} inline />
-<Source language="tsx" code={SourceMenuSections} />
+<Story of={Stories.BottomSheet} inline />
+<Source language="tsx" code={SourceBottomSheet} />
 
 ## Customization
 
-### Data Attributes
+Selection is scoped per group. Give a `MenuGroup` `selectionMode="multiple"` to
+turn its items into checkboxes; leave it off to keep plain action items - both
+can coexist in one menu. Seed the initially checked items with
+`defaultSelectedKeys` (uncontrolled) or drive them with `selectedKeys` +
+`onSelectionChange` (controlled); keys match each `MenuItem`'s `id`. Menu-level
+selection props are also supported for the simple whole-menu case.
 
-React Aria Components automatically adds data attributes for styling different states:
-
-**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
-
-**Popover:** `data-entering`, `data-exiting`
-
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  color: #1e40af;
-}
-
-[data-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-[data-entering] {
-  animation: slideIn 0.2s ease-out;
-}
-```
-
-### Component Customization
-
-Individual child components can be styled by passing `className` props:
-
-```jsx
-<Menu>
-  <MenuItem id="special" className="premium-item">
-    Premium Feature
-  </MenuItem>
-  <MenuSection className="featured-section">
-    <MenuHeader>Featured</MenuHeader>
-    <MenuItem id="new">What's New</MenuItem>
-  </MenuSection>
-</Menu>
-```
+`size` is set per `Menu` (`sm` / `md`). Submenus do not inherit it - set `size`
+on each submenu `Menu` if you want a smaller nested menu. RAC state data
+attributes (`data-hovered`, `data-focused`, `data-selected`, `data-disabled`,
+and `aria-expanded` on the trigger) are available for styling via `className`.
 
 ## Accessibility
 
-### Keyboard Navigation
+- **Space/Enter**: activate an item; **Escape**: close
+- **Arrow Up/Down**: move between items; **Home/End**: first/last
+- **Arrow Right/Left**: open/close a submenu
+- **Type to select**: jump to a matching item (string labels are used as `textValue`)
+- Multi-select items use RAC's `menuitemcheckbox` role; the checkbox indicator is
+  decorative (`aria-hidden`) and the item owns interaction
 
-- **Space/Enter**: Opens menu and activates items
-- **Arrow Down/Up**: Navigate through items
-- **Arrow Right**: Opens submenu
-- **Arrow Left**: Closes submenu
-- **Home/End**: Jump to first/last item
-- **Escape**: Closes menu
-- **Tab**: Closes menu and moves to next element
-- **Type to select**: Type to jump to matching items
+## Best Practices
+
+- Give each selectable `MenuItem` a stable `id`, and provide the `Menu` an
+  `aria-label` when there is no visible label.
+- Use a leading `icon` for recognition, not as the only label - keep a text label.
+- Reserve checkbox groups for multi-select; use plain groups for one-shot actions.
 
 ## Troubleshooting
 
-### Submenu Not Opening
+### Submenu not opening
 
-```jsx
-// ❌ Wrong: MenuItem used directly
+```tsx
+// ❌ Menu nested directly inside a MenuItem
 <MenuItem id="share">
   Share
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
+  <Menu>…</Menu>
 </MenuItem>
 
-// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
+// ✅ Wrap the item and its submenu in SubmenuTrigger
 <SubmenuTrigger>
   <MenuItem id="share">Share</MenuItem>
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
+  <Menu aria-label="Share">…</Menu>
 </SubmenuTrigger>
 ```
 
-### Selection Not Working
+### Every item shows a checkbox
 
-```jsx
-// ❌ Wrong: Using both controlled and uncontrolled props
-<Menu
-  selectedKeys={selected}
-  defaultSelectedKeys={['option1']}
-  selectionMode="single"
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-
-// ✅ Controlled mode
-<Menu
-  selectionMode="single"
-  selectedKeys={selected}
-  onSelectionChange={setSelected}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-
-// ✅ Uncontrolled mode
-<Menu
-  selectionMode="single"
-  defaultSelectedKeys={['option1']}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-```
-
-### Styling Not Applying
-
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
-
-/* ✅ Use data attributes for higher specificity */
-.my-menu [data-selected] {
-  background-color: red;
-}
-```
+`selectionMode="multiple"` on the `Menu` applies to all items. Scope it to a
+`MenuGroup` instead so only that group renders checkboxes.
