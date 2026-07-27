@@ -51,7 +51,7 @@ The `Modal` already demonstrates the whole spread on its own: it is config-drive
 
 - No rule for whether a component should be config-driven or compound.
 - No rule for how to tweak an internal part, so the flat `xxxProps` set grows ad hoc and differs per component.
-- RAC's own customization surface (contexts, `slot=`) leaks through but is entirely undocumented, so consumers cannot rely on it.
+- RAC's own customization surface (contexts, `slot=`) leaks through inconsistently; individual usages are documented, but there is no library-wide contract consumers can rely on.
 - Handler merging is done inconsistently and sometimes incorrectly (see [mergeProps](#rules)).
 
 ## How React Aria Customization Actually Works
