@@ -170,120 +170,6 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 * Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
 
 
-# Calendar
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Props [#props]
-
-The `Calendar` component accepts the following props:
-
-<PropTable />
-
-The `RangeCalendar` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A single-date calendar.
-
-<Source language="tsx" code="SourceDefault" />
-
-<Story of="Stories.Default" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Source language="tsx" code="SourceWithValue" />
-
-<Story of="Stories.WithValue" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Source language="tsx" code="SourceRange" />
-
-<Story of="Stories.Range" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Source language="tsx" code="SourceMinMax" />
-
-<Story of="Stories.MinMax" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Source language="tsx" code="SourceUnavailable" />
-
-<Story of="Stories.Unavailable" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-
 # Button
 
 
@@ -468,6 +354,120 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 <Story of="Stories.RTLDirection" />
 
 <Source language="tsx" code="SourceRTLDirection" />
+
+
+# Calendar
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+A single-date calendar.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Source language="tsx" code="SourceWithValue" />
+
+<Story of="Stories.WithValue" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Source language="tsx" code="SourceRange" />
+
+<Story of="Stories.Range" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Source language="tsx" code="SourceMinMax" />
+
+<Story of="Stories.MinMax" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Source language="tsx" code="SourceUnavailable" />
+
+<Story of="Stories.Unavailable" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
 
 
 # Checkbox
@@ -1865,7 +1865,7 @@ reuses Antares' `Popover` for the overlay and `Checkbox` indicator for selection
   its items as checkboxes, while other groups stay plain action items
 * Optional leading `icon` per item; links (`href`) and disabled items
 * Submenus via `SubmenuTrigger`
-* Two sizes (`sm`, `md`) that submenus inherit automatically
+* Two sizes (`sm`, `md`); set `size` explicitly on each submenu `Menu`
 * Usable anchored to a trigger or standalone (e.g. inside a bottom-sheet `Drawer`)
 
 ## Installation [#installation]
@@ -1923,16 +1923,26 @@ plain action groups, leading icons, a disabled item, and a link.
 
 <Source language="tsx" code="SourceGroups" />
 
+### Single-select [#single-select]
+
+A `MenuGroup` with `selectionMode="single"` lets one item be selected at a time.
+Drive it with `selectedKeys` + `onSelectionChange` or seed it uncontrolled with
+`defaultSelectedKeys`. Keys correspond to each `MenuItem`'s `id`.
+
+<Story of="Stories.SingleSelection" />
+
+<Source language="tsx" code="SourceSingleSelection" />
+
 ### Multi-select [#multi-select]
 
 A `MenuGroup` with `selectionMode="multiple"` renders its items as checkboxes.
-The initially checked items are the group's selected keys - controlled with
-`selectedKeys` + `onSelectionChange`, or uncontrolled with `defaultSelectedKeys`.
-Keys correspond to each `MenuItem`'s `id`.
+Drive the checked items with `selectedKeys` + `onSelectionChange` or
+seed them uncontrolled with `defaultSelectedKeys`. Keys correspond to each
+`MenuItem`'s `id`.
 
-<Story of="Stories.Selection" />
+<Story of="Stories.MultipleSelection" />
 
-<Source language="tsx" code="SourceSelection" />
+<Source language="tsx" code="SourceMultipleSelection" />
 
 ### Sizes [#sizes]
 
@@ -2345,61 +2355,6 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Source language="tsx" code="SourceOnChange" />
 
 
-# ProgressBar
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="Stories.Statuses" />
-
-<Source language="tsx" code="SourceStatuses" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-
 # Popover
 
 
@@ -2454,6 +2409,61 @@ the close button.
 ## Best Practices [#best-practices]
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+
+# ProgressBar
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="Stories.Statuses" />
+
+<Source language="tsx" code="SourceStatuses" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
 
 
 # ProgressSteps
