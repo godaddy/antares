@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import {
   SwitchButton as RACSwitchButton,
   SwitchField as RACSwitchField,
@@ -43,7 +43,7 @@ export interface SwitchProps
  * @example
  * <Switch defaultSelected>Wi-Fi</Switch>
  */
-export function Switch(props: SwitchProps) {
+export const Switch = forwardRef<HTMLLabelElement, SwitchProps>(function Switch(props, ref) {
   const { children, className, style, size = 'md', labelPosition = 'start', ...rest } = props;
 
   const track = (
@@ -62,6 +62,7 @@ export function Switch(props: SwitchProps) {
         data-size={size}
         className={cx(styles.switch, className)}
         style={style}
+        ref={ref}
       >
         {labelPosition === 'start' ? (
           <>
@@ -77,4 +78,4 @@ export function Switch(props: SwitchProps) {
       </Flex>
     </Flex>
   );
-}
+});

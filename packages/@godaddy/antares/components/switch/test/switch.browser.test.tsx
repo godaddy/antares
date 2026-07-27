@@ -1,3 +1,5 @@
+import { Switch } from '@godaddy/antares';
+import { createRef } from 'react';
 import { SwitchControlled } from '../examples/controlled';
 import { SwitchDefault } from '../examples/default';
 import { SwitchDisabled } from '../examples/disabled';
@@ -91,6 +93,15 @@ describe('@godaddy/antares', function antares() {
       const interactiveRoot = container.querySelector('.custom-switch') as HTMLElement;
       assume(interactiveRoot.style.opacity).equals('0.5');
       assume(interactiveRoot.tagName).equals('LABEL');
+    });
+
+    it('forwards ref to the interactive root', async function forwardsRef() {
+      const ref = createRef<HTMLLabelElement>();
+      await render(<Switch ref={ref}>Wi-Fi</Switch>);
+
+      assume(ref.current).is.not.equal(null);
+      assume(ref.current?.tagName).equals('LABEL');
+      assume(ref.current?.querySelector('[role="switch"]')).is.not.equal(null);
     });
   });
 });
