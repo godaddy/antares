@@ -184,7 +184,7 @@ function MenuPopover({ contentProps, style, ...props }: PopoverProps) {
       hideArrow
       rounding="md"
       {...props}
-      contentProps={{ padding: '0', ...contentProps }}
+      contentProps={{ padding: '0', className: styles.menuPopover, ...contentProps }}
       style={{ borderWidth: 0, ...style }}
     />
   );
