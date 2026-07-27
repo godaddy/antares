@@ -14,7 +14,7 @@ import { FieldSelect, type FieldSelectProps, type SelectKey } from '#components/
 
 type CountryFieldProps = Omit<
   FieldSelectProps<object>,
-  'aria-label' | 'children' | 'defaultValue' | 'isDisabled' | 'onChange' | 'value'
+  'aria-label' | 'children' | 'defaultValue' | 'isDisabled' | 'isRequired' | 'onChange' | 'value'
 >;
 
 export interface TelephoneFieldProps extends Omit<RACTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
@@ -111,14 +111,14 @@ export const TelephoneField = forwardRef<HTMLInputElement, TelephoneFieldProps>(
         <FieldSelect
           {...countryProps}
           aria-label={countryLabel}
-          isDisabled={isDisabled || isReadOnly}
+          isDisabled={isDisabled}
           value={country}
           defaultValue={defaultCountry}
           onChange={onCountryChange}
         >
           {children}
         </FieldSelect>
-        <FieldInput ref={ref} placeholder={placeholder} />
+        <FieldInput ref={ref} placeholder={placeholder} readOnly={isReadOnly} />
       </FieldGroup>
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>

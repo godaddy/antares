@@ -56,16 +56,11 @@ describe('@godaddy/antares', function antares() {
       assume(input.hasAttribute('disabled')).equals(true);
     });
 
-    it('prevents changes to the country and phone number when read-only', async function readOnlyInteraction() {
-      const { container, getByRole } = await render(<PlaygroundExample isReadOnly />);
-
-      const trigger = getByRole('button');
+    it('prevents changes to the phone input when read-only', async function readOnlyInput() {
+      const { getByRole } = await render(<PlaygroundExample isReadOnly />);
       const input = getByRole('textbox');
 
-      await expect.element(trigger).toBeDisabled();
-      await userEvent.click(trigger, { force: true });
-      expect(container.querySelector('[role="listbox"]')).toBeNull();
-
+      await expect.element(input).toHaveAttribute('readonly');
       await userEvent.click(input);
       await userEvent.keyboard('5551234');
       await expect.element(input).toHaveValue('');

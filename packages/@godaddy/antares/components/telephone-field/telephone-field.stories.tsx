@@ -31,7 +31,7 @@ export const Playground = {
     description: { control: 'text', description: 'Helper text shown below the field' },
     errorMessage: { control: 'text', description: 'Error message shown when the field is invalid' },
     isDisabled: { control: 'boolean', description: 'Prevents interaction with the field' },
-    isReadOnly: { control: 'boolean', description: 'Prevents changes while keeping the phone number focusable' },
+    isReadOnly: { control: 'boolean', description: 'Prevents changes to the phone input' },
     isRequired: { control: 'boolean', description: 'Marks the field as required' },
     isInvalid: { control: 'boolean', description: 'Marks the field as invalid' },
     size: { control: 'radio', options: ['sm', 'md'], description: 'Visual size of the field' }
