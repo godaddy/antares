@@ -110,7 +110,7 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByRole('button', { name: 'Options' }).element().getAttribute('aria-expanded')).equals('true');
     });
 
-    it('seeds an uncontrolled multi-select group with defaultSelectedKeys', async function uncontrolledDefaults() {
+    it('seeds an multi-select group', async function uncontrolledDefaults() {
       const user = userEvent.setup();
       await render(<MultipleSelectionExample />);
 
