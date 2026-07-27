@@ -5,7 +5,8 @@ import assume from 'assume';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { GroupsExample } from '../examples/groups.tsx';
-import { SelectionExample } from '../examples/selection.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 
@@ -50,14 +51,24 @@ describe('@godaddy/antares', function antares() {
       await expect(getMenuOverlay()).toMatchScreenshot('groups');
     });
 
-    it('selection (open)', async function selectionOpen() {
-      const { getByRole } = await render(<SelectionExample />);
+    it('single selection (open)', async function singleSelectionOpen() {
+      const { getByRole } = await render(<SingleSelectionExample />);
+      await getByRole('button', { name: 'Sort by' }).click();
+      await vi.waitFor(function open() {
+        assume(getByRole('menu').query()).is.not.equal(null);
+      });
+      await settle();
+      await expect(getMenuOverlay()).toMatchScreenshot('single-selection');
+    });
+
+    it('multiple selection (open)', async function multipleSelectionOpen() {
+      const { getByRole } = await render(<MultipleSelectionExample />);
       await getByRole('button', { name: 'Columns' }).click();
       await vi.waitFor(function open() {
         assume(getByRole('menu').query()).is.not.equal(null);
       });
       await settle();
-      await expect(getMenuOverlay()).toMatchScreenshot('selection');
+      await expect(getMenuOverlay()).toMatchScreenshot('multiple-selection');
     });
 
     it('submenu (open)', async function submenuOpen() {

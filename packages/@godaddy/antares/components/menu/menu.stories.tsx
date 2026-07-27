@@ -3,7 +3,8 @@ import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-help
 import { Menu, MenuGroup, MenuItem, MenuSeparator, MenuTrigger, SubmenuTrigger } from './src/index.tsx';
 import { DefaultExample } from './examples/default.tsx';
 import { GroupsExample } from './examples/groups.tsx';
-import { SelectionExample } from './examples/selection.tsx';
+import { SingleSelectionExample } from './examples/single-selection.tsx';
+import { MultipleSelectionExample } from './examples/multiple-selection.tsx';
 import { SizesExample } from './examples/sizes.tsx';
 import { ControlledExample } from './examples/controlled.tsx';
 import { SubmenuExample } from './examples/submenu.tsx';
@@ -27,7 +28,9 @@ export const Controlled = getStory(ControlledExample);
 
 export const Groups = getStory(GroupsExample);
 
-export const Selection = getStory(SelectionExample);
+export const SingleSelection = getStory(SingleSelectionExample);
+
+export const MultipleSelection = getStory(MultipleSelectionExample);
 
 export const Sizes = getStory(SizesExample);
 

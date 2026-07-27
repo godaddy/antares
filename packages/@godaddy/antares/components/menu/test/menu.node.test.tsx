@@ -2,7 +2,8 @@ import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 import { DefaultExample } from '../examples/default.tsx';
 import { GroupsExample } from '../examples/groups.tsx';
-import { SelectionExample } from '../examples/selection.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
@@ -19,8 +20,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<GroupsExample />)).toMatchSnapshot();
     });
 
-    it('renders SelectionExample', function selectionExample() {
-      expect(renderToString(<SelectionExample />)).toMatchSnapshot();
+    it('renders SingleSelectionExample', function singleSelectionExample() {
+      expect(renderToString(<SingleSelectionExample />)).toMatchSnapshot();
+    });
+
+    it('renders MultipleSelectionExample', function multipleSelectionExample() {
+      expect(renderToString(<MultipleSelectionExample />)).toMatchSnapshot();
     });
 
     it('renders SizesExample', function sizesExample() {

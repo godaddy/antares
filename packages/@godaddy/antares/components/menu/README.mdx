@@ -5,7 +5,8 @@ description: Accessible dropdown menu with grouping, multi-select checkbox items
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
 import SourceDefault from './examples/default.tsx?raw';
 import SourceGroups from './examples/groups.tsx?raw';
-import SourceSelection from './examples/selection.tsx?raw';
+import SourceSingleSelection from './examples/single-selection.tsx?raw';
+import SourceMultipleSelection from './examples/multiple-selection.tsx?raw';
 import SourceSizes from './examples/sizes.tsx?raw';
 import SourceControlled from './examples/controlled.tsx?raw';
 import SourceSubmenu from './examples/submenu.tsx?raw';
@@ -80,15 +81,24 @@ plain action groups, leading icons, a disabled item, and a link.
 <Story of={Stories.Groups} inline />
 <Source language="tsx" code={SourceGroups} />
 
+### Single-select
+
+A `MenuGroup` with `selectionMode="single"` lets one item be selected at a time.
+Drive it with `selectedKeys` + `onSelectionChange` or seed it uncontrolled with
+`defaultSelectedKeys`. Keys correspond to each `MenuItem`'s `id`.
+
+<Story of={Stories.SingleSelection} inline />
+<Source language="tsx" code={SourceSingleSelection} />
+
 ### Multi-select
 
 A `MenuGroup` with `selectionMode="multiple"` renders its items as checkboxes.
-The initially checked items are the group's selected keys - controlled with
-`selectedKeys` + `onSelectionChange`, or uncontrolled with `defaultSelectedKeys`.
-Keys correspond to each `MenuItem`'s `id`.
+Drive the checked items with `selectedKeys` + `onSelectionChange` or
+seed them uncontrolled with `defaultSelectedKeys`. Keys correspond to each
+`MenuItem`'s `id`.
 
-<Story of={Stories.Selection} inline />
-<Source language="tsx" code={SourceSelection} />
+<Story of={Stories.MultipleSelection} inline />
+<Source language="tsx" code={SourceMultipleSelection} />
 
 ### Sizes
 

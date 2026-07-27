@@ -49,7 +49,8 @@
     outline-offset: -2px;
   }
 
-  &:where([data-pressed]) {
+  &:where([data-pressed]),
+  &:where([data-selection-mode="single"][data-selected]) {
     background: var(--ux-9cqgfr, #f5f7f8);
     color: var(--ux-h8m2iq, #111);
   }

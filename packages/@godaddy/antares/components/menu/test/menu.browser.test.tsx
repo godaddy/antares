@@ -5,7 +5,8 @@ import assume from 'assume';
 import { DefaultExample } from '../examples/default.tsx';
 import { GroupsExample } from '../examples/groups.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
-import { SelectionExample } from '../examples/selection.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { PlaygroundExample } from '../examples/menu-playground.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
@@ -111,12 +112,25 @@ describe('@godaddy/antares', function antares() {
 
     it('seeds an uncontrolled multi-select group with defaultSelectedKeys', async function uncontrolledDefaults() {
       const user = userEvent.setup();
-      await render(<SelectionExample />);
+      await render(<MultipleSelectionExample />);
 
-      await user.click(page.getByRole('button', { name: 'Filters' }));
-      const unread = page.getByRole('menuitemcheckbox', { name: 'Unread' });
-      const el = await waitForElement(unread);
+      await user.click(page.getByRole('button', { name: 'Columns' }));
+      const name = page.getByRole('menuitemcheckbox', { name: 'Name' });
+      const el = await waitForElement(name);
       assume(el.getAttribute('aria-checked')).equals('true');
+    });
+
+    it('marks the selected item in a single-select group via aria-checked', async function singleSelect() {
+      const user = userEvent.setup();
+      await render(<SingleSelectionExample />);
+
+      await user.click(page.getByRole('button', { name: 'Sort by' }));
+      const recent = page.getByRole('menuitemradio', { name: 'Most recent' });
+      const el = await waitForElement(recent);
+      assume(el.getAttribute('aria-checked')).equals('true');
+
+      const name = page.getByRole('menuitemradio', { name: 'Name' });
+      assume(name.element().getAttribute('aria-checked')).equals('false');
     });
 
     it('reflects the sm size via data-size', async function sizeSm() {
