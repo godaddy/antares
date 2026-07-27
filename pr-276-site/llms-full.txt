@@ -2083,98 +2083,6 @@ Use the `compact` prop to render the metric value and description inline rather 
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 
-# Modal
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic usage [#basic-usage]
-
-The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="Stories.Controlled" />
-
-<Source language="tsx" code="SourceControlled" />
-
-### With actions [#with-actions]
-
-Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
-
-<Story of="Stories.WithActions" />
-
-<Source language="tsx" code="SourceWithActions" />
-
-### Alignment [#alignment]
-
-Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### With media [#with-media]
-
-Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
-
-<Story of="Stories.WithMedia" />
-
-<Source language="tsx" code="SourceWithMedia" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
-* The close button is rendered with `aria-label="Close"`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always provide a `title` so the dialog has an accessible name
-* Pair every footer action with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` for required confirmations the user must explicitly answer
-* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
-* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
-
-
 # NumberField
 
 
@@ -2279,6 +2187,98 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 * Remember valid steps start from &#x2A;*`minValue`**.
 * Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
+
+
+# Modal
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic usage [#basic-usage]
+
+The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceControlled" />
+
+### With actions [#with-actions]
+
+Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+
+<Story of="Stories.WithActions" />
+
+<Source language="tsx" code="SourceWithActions" />
+
+### Alignment [#alignment]
+
+Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### With media [#with-media]
+
+Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
+
+<Story of="Stories.WithMedia" />
+
+<Source language="tsx" code="SourceWithMedia" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| `Escape`      | Closes the modal (when dismissable)                            |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+* The close button is rendered with `aria-label="Close"`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always provide a `title` so the dialog has an accessible name
+* Pair every footer action with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` for required confirmations the user must explicitly answer
+* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
 
 
 # Pagination
@@ -2569,267 +2569,6 @@ Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
 * **Titles overflow:** that's expected — titles truncate. Shorten the title.
 
 
-# RangeField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Generic `number` or `number[]` value with one thumb for each array entry
-* Type-aligned controlled and uncontrolled state, including `onChange` and `onChangeEnd`
-* Per-thumb accessible labels and native form names matched by array index
-* Configurable minimum, maximum, and step values, including negative numeric ranges
-* Optional localized value output, endpoint labels, description, and markers
-* Required, disabled, keyboard, pointer, and touch behavior provided through React Aria
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-`RangeField` infers its generic value type from `value` or `defaultValue`, keeping `onChange` and `onChangeEnd` aligned with either `number` or `number[]`. Provide the generic explicitly when inference is not available, for example `<RangeField<number[]> />`.
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use the default presentation for one adjustable value on a continuous track.
-
-<Source language="tsx" code="SourceDefault" />
-
-<Story of="Stories.Default" />
-
-### Controlled [#controlled]
-
-Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` when the value is visible but unavailable for interaction.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Labels [#labels]
-
-Combine an input label, value label, range labels, and helper text when users need additional context.
-
-<Source language="tsx" code="SourceLabels" />
-
-<Story of="Stories.Labels" />
-
-### Markers [#markers]
-
-Use markers to expose a manageable set of discrete steps for a single value.
-
-<Source language="tsx" code="SourceMarkers" />
-
-<Story of="Stories.Markers" />
-
-### Range [#range]
-
-Pass two values to render a range with two thumbs and step markers.
-
-<Source language="tsx" code="SourceRange" />
-
-<Story of="Stories.Range" />
-
-## Customization [#customization]
-
-`RangeField` supports scalar and array values, so customize it according to the number and meaning of the rendered thumbs. Prefer its content props and CSS custom properties over targeting the internal DOM structure.
-
-### Value shape and thumbs [#value-shape-and-thumbs]
-
-A `number` renders one thumb. A `number[]` renders one thumb per array entry. The generic type keeps `value`, `defaultValue`, `onChange`, and `onChangeEnd` aligned:
-
-```tsx
-<RangeField<number[]>
-  label="Target band"
-  defaultValue={[20, 80]}
-  thumbLabels={['Lower target', 'Upper target']}
-/>
-```
-
-TypeScript usually infers the type from `value` or `defaultValue`. Supply `<number>` or `<number[]>` explicitly when the initial props do not provide enough information for inference.
-
-### Programmatic focus [#programmatic-focus]
-
-Attach a `RangeFieldRef` when an application needs to move focus after validation or navigate to the field. Calling `focus()` focuses the first thumb; `container` exposes the root element for DOM operations such as scrolling.
-
-```tsx
-const rangeFieldRef = useRef<RangeFieldRef>(null);
-
-<RangeField
-  ref={rangeFieldRef}
-  label="Price range"
-  defaultValue={[20, 80]}
-  thumbLabels={['Minimum price', 'Maximum price']}
-/>
-
-rangeFieldRef.current?.focus();
-rangeFieldRef.current?.container?.scrollIntoView();
-```
-
-### Value display [#value-display]
-
-Use `valueLabel` to place content opposite the field label:
-
-* `true` displays all current values using `formatOptions` and the active locale.
-* A React node displays static content.
-* A render function receives the React Aria slider state and can derive output from every current value.
-
-```tsx
-<RangeField<number[]>
-  label="Working range"
-  defaultValue={[30, 70]}
-  thumbLabels={['Range start', 'Range end']}
-  valueLabel={({ state }) => state.values.join(' – ')}
-/>
-```
-
-`valueLabel` is visual supporting content. It does not name the field or its individual thumbs.
-
-### Endpoint labels and markers [#endpoint-labels-and-markers]
-
-`minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so the sides remain visually separated.
-
-Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions use the same scale as every thumb. `minValue`, `maxValue`, and `step` determine their count and spacing; `markers` does not accept a custom list or count.
-
-### Number formatting [#number-formatting]
-
-`formatOptions` accepts `Intl.NumberFormatOptions` and controls localized output for the default value label and assistive-technology announcements. It does not format `minLabel` or `maxLabel` because those props accept arbitrary React content.
-
-### Visual styling [#visual-styling]
-
-Pass `className` to add a class to the root element. The following custom properties are the supported styling surface:
-
-* `--slider-track-height`
-* `--slider-fill-height`
-* `--slider-thumb-size`
-* `--slider-marker-size`
-* `--slider-fill-color`
-* `--slider-track-color`
-* `--slider-thumb-bg`
-* `--slider-thumb-border`
-* `--slider-label-color`
-
-Scope overrides to a local class so other range fields are unaffected.
-
-```css
-.thresholdField {
-  --slider-fill-color: var(--color-input-background-selected);
-  --slider-marker-size: 6px;
-}
-```
-
-## Accessibility [#accessibility]
-
-### Accessible names [#accessible-names]
-
-Every range field needs a name as a whole. Prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
-
-When using an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so the labels must remain aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
-
-`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
-
-### Keyboard interaction [#keyboard-interaction]
-
-Each thumb follows the React Aria slider keyboard model:
-
-* Tab and Shift+Tab move among thumbs and surrounding controls.
-* Arrow Right and Arrow Up increase the focused value by `step`.
-* Arrow Left and Arrow Down decrease the focused value by `step`.
-* Home and End move the focused thumb to its permitted bounds.
-* Page Up and Page Down make larger changes.
-
-Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
-
-### Value announcements [#value-announcements]
-
-Use `formatOptions` to expose the meaning and unit of each number to assistive technology. A percentage, currency, or measurement should be announced in that format rather than as an unexplained raw value.
-
-Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
-
-### Instructions and required state [#instructions-and-required-state]
-
-Use `description` for persistent guidance that applies to every thumb. React Aria associates it with each slider input. Set `isRequired` to display the required indicator in the visible label.
-
-### Disabled state [#disabled-state]
-
-`isDisabled` prevents interaction with every thumb and exposes the disabled state semantically. The slider control is visually muted while the label, endpoint labels, and description remain readable.
-
-## Best Practices [#best-practices]
-
-* Use a scalar value for one adjustable number and an array only when each entry has a clear, independently adjustable meaning.
-* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index. Treat them as parallel collections whenever values are added, removed, or reordered.
-* Use thumb labels that explain purpose instead of repeating the current number.
-* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
-* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
-* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
-* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
-* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units.
-* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
-* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
-
-## Troubleshooting [#troubleshooting]
-
-### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
-
-Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
-
-### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
-
-Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
-
-### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
-
-The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
-
-### The wrong thumb changes meaning [#the-wrong-thumb-changes-meaning]
-
-Values, `thumbLabels`, and `thumbNames` are associated by index. Update all parallel arrays together and keep their semantic order stable.
-
-### Values snap unexpectedly [#values-snap-unexpectedly]
-
-Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
-
-### The final marker is missing [#the-final-marker-is-missing]
-
-Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
-
-### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
-
-Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
-
-### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
-
-Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
-
-### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
-
-Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
-
-### The range configuration is invalid [#the-range-configuration-is-invalid]
-
-Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
-
-
 # Radio
 
 
@@ -3060,6 +2799,267 @@ Always provide clear error messages:
 ```
 
 
+# RangeField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Generic `number` or `number[]` value with one thumb for each array entry
+* Type-aligned controlled and uncontrolled state, including `onChange` and `onChangeEnd`
+* Per-thumb accessible labels and native form names matched by array index
+* Configurable minimum, maximum, and step values, including negative numeric ranges
+* Optional localized value output, endpoint labels, description, and markers
+* Required, disabled, keyboard, pointer, and touch behavior provided through React Aria
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+`RangeField` infers its generic value type from `value` or `defaultValue`, keeping `onChange` and `onChangeEnd` aligned with either `number` or `number[]`. Provide the generic explicitly when inference is not available, for example `<RangeField<number[]> />`.
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use the default presentation for one adjustable value on a continuous track.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+### Controlled [#controlled]
+
+Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` when the value is visible but unavailable for interaction.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Labels [#labels]
+
+Combine an input label, value label, range labels, and helper text when users need additional context.
+
+<Source language="tsx" code="SourceLabels" />
+
+<Story of="Stories.Labels" />
+
+### Markers [#markers]
+
+Use markers to expose a manageable set of discrete steps for a single value.
+
+<Source language="tsx" code="SourceMarkers" />
+
+<Story of="Stories.Markers" />
+
+### Range [#range]
+
+Pass two values to render a range with two thumbs and step markers.
+
+<Source language="tsx" code="SourceRange" />
+
+<Story of="Stories.Range" />
+
+## Customization [#customization]
+
+`RangeField` supports scalar and array values, so customize it according to the number and meaning of the rendered thumbs. Prefer its content props and CSS custom properties over targeting the internal DOM structure.
+
+### Value shape and thumbs [#value-shape-and-thumbs]
+
+A `number` renders one thumb. A `number[]` renders one thumb per array entry. The generic type keeps `value`, `defaultValue`, `onChange`, and `onChangeEnd` aligned:
+
+```tsx
+<RangeField<number[]>
+  label="Target band"
+  defaultValue={[20, 80]}
+  thumbLabels={['Lower target', 'Upper target']}
+/>
+```
+
+TypeScript usually infers the type from `value` or `defaultValue`. Supply `<number>` or `<number[]>` explicitly when the initial props do not provide enough information for inference.
+
+### Programmatic focus [#programmatic-focus]
+
+Attach a `RangeFieldRef` when an application needs to move focus after validation or navigate to the field. Calling `focus()` focuses the first thumb; `container` exposes the root element for DOM operations such as scrolling.
+
+```tsx
+const rangeFieldRef = useRef<RangeFieldRef>(null);
+
+<RangeField
+  ref={rangeFieldRef}
+  label="Price range"
+  defaultValue={[20, 80]}
+  thumbLabels={['Minimum price', 'Maximum price']}
+/>
+
+rangeFieldRef.current?.focus();
+rangeFieldRef.current?.container?.scrollIntoView();
+```
+
+### Value display [#value-display]
+
+Use `valueLabel` to place content opposite the field label:
+
+* `true` displays all current values using `formatOptions` and the active locale.
+* A React node displays static content.
+* A render function receives the React Aria slider state and can derive output from every current value.
+
+```tsx
+<RangeField<number[]>
+  label="Working range"
+  defaultValue={[30, 70]}
+  thumbLabels={['Range start', 'Range end']}
+  valueLabel={({ state }) => state.values.join(' – ')}
+/>
+```
+
+`valueLabel` is visual supporting content. It does not name the field or its individual thumbs.
+
+### Endpoint labels and markers [#endpoint-labels-and-markers]
+
+`minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so the sides remain visually separated.
+
+Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions use the same scale as every thumb. `minValue`, `maxValue`, and `step` determine their count and spacing; `markers` does not accept a custom list or count. If the scale would require more than 1,000 markers, no markers are rendered.
+
+### Number formatting [#number-formatting]
+
+`formatOptions` accepts `Intl.NumberFormatOptions` and controls localized output for the default value label and assistive-technology announcements. It does not format `minLabel` or `maxLabel` because those props accept arbitrary React content.
+
+### Visual styling [#visual-styling]
+
+Pass `className` to add a class to the root element. The following custom properties are the supported styling surface:
+
+* `--slider-track-height`
+* `--slider-fill-height`
+* `--slider-thumb-size`
+* `--slider-marker-size`
+* `--slider-fill-color`
+* `--slider-track-color`
+* `--slider-thumb-bg`
+* `--slider-thumb-border`
+* `--slider-label-color`
+
+Scope overrides to a local class so other range fields are unaffected.
+
+```css
+.thresholdField {
+  --slider-fill-color: var(--color-input-background-selected);
+  --slider-marker-size: 6px;
+}
+```
+
+## Accessibility [#accessibility]
+
+### Accessible names [#accessible-names]
+
+Every range field needs a name as a whole. Prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+When using an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so the labels must remain aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction [#keyboard-interaction]
+
+Each thumb follows the React Aria slider keyboard model:
+
+* Tab and Shift+Tab move among thumbs and surrounding controls.
+* Arrow Right and Arrow Up increase the focused value by `step`.
+* Arrow Left and Arrow Down decrease the focused value by `step`.
+* Home and End move the focused thumb to its permitted bounds.
+* Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+### Value announcements [#value-announcements]
+
+Use `formatOptions` to expose the meaning and unit of each number to assistive technology. A percentage, currency, or measurement should be announced in that format rather than as an unexplained raw value.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+### Instructions and required state [#instructions-and-required-state]
+
+Use `description` for persistent guidance that applies to every thumb. React Aria associates it with each slider input. Set `isRequired` to display the required indicator in the visible label.
+
+### Disabled state [#disabled-state]
+
+`isDisabled` prevents interaction with every thumb and exposes the disabled state semantically. The slider control is visually muted while the label, endpoint labels, and description remain readable.
+
+## Best Practices [#best-practices]
+
+* Use a scalar value for one adjustable number and an array only when each entry has a clear, independently adjustable meaning.
+* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index. Treat them as parallel collections whenever values are added, removed, or reordered.
+* Use thumb labels that explain purpose instead of repeating the current number.
+* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units.
+* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Troubleshooting [#troubleshooting]
+
+### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### The wrong thumb changes meaning [#the-wrong-thumb-changes-meaning]
+
+Values, `thumbLabels`, and `thumbNames` are associated by index. Update all parallel arrays together and keep their semantic order stable.
+
+### Values snap unexpectedly [#values-snap-unexpectedly]
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing [#the-final-marker-is-missing]
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid [#the-range-configuration-is-invalid]
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
+
+
 # RangeSlider
 
 
@@ -3184,7 +3184,7 @@ Use `valueLabel` to place content opposite the field label:
 
 `minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so the labels remain separated.
 
-Set `markers` to render one marker for every valid step beginning at `minValue`. Markers and thumbs share the same scale and remain aligned. `minValue`, `maxValue`, and `step` determine the marker positions.
+Set `markers` to render one marker for every valid step beginning at `minValue`. Markers and thumbs share the same scale and remain aligned. `minValue`, `maxValue`, and `step` determine the marker positions. If the scale would require more than 1,000 markers, no markers are rendered.
 
 ### Number formatting [#number-formatting]
 
@@ -3629,7 +3629,7 @@ Use `valueLabel` to place content opposite the field label:
 
 `minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so long labels can wrap without colliding in the center.
 
-Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions always use the same scale as the thumb, so they remain aligned. Use `minValue`, `maxValue`, and `step` to control their number and spacing.
+Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions always use the same scale as the thumb, so they remain aligned. Use `minValue`, `maxValue`, and `step` to control their number and spacing. If the scale would require more than 1,000 markers, no markers are rendered.
 
 ### Number formatting [#number-formatting]
 
@@ -3747,123 +3747,6 @@ Negative values are supported. Set a negative `minValue` and ensure the controll
 ### The range is invalid [#the-range-is-invalid]
 
 Provide finite bounds where `minValue` is less than `maxValue`, and a finite `step` greater than zero. Invalid scale values also prevent markers from being generated.
-
-
-# Tag
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-A minimal tag with the default emphasis and size.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Emphasis [#emphasis]
-
-Nine emphasis options are available. Choose the one that fits the visual tone of your context.
-
-<Story of="Stories.Emphases" />
-
-<Source language="tsx" code="EmphasesExample" />
-
-### Sizes [#sizes]
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SizesExample" />
-
-### Inline [#inline]
-
-Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of="Stories.Inline" />
-
-<Source language="tsx" code="InlineExample" />
-
-### High Contrast [#high-contrast]
-
-A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
-
-<Story of="Stories.HighContrast" />
-
-<Source language="tsx" code="HighContrastExample" />
-
-### With Icon [#with-icon]
-
-Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
-
-<Story of="Stories.Icons" />
-
-<Source language="tsx" code="IconsExample" />
-
-### Indicator [#indicator]
-
-A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
-
-<Story of="Stories.Indicator" />
-
-<Source language="tsx" code="IndicatorExample" />
-
-## Accessibility [#accessibility]
-
-### Screen readers [#screen-readers]
-
-Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
-
-### Decorative icons [#decorative-icons]
-
-Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
-
-```tsx
-<Tag emphasis="critical">
-  <Icon icon="alert" aria-hidden="true" />
-  Expired
-</Tag>
-```
-
-### Indicator dot [#indicator-dot]
-
-The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
-
-## Best Practices [#best-practices]
-
-* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
-* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
-* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
-* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
-
-## When to Use [#when-to-use]
-
-* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
-* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
-* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
-* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
-
-## When Not to Use [#when-not-to-use]
-
-* If users need to click or dismiss it — use a **Button** instead.
-* If the label is part of a sentence with no visual distinction — just use text.
 
 
 # Switch
@@ -4049,15 +3932,13 @@ Use the interactive root data attributes for state-based customization. The trac
 ```
 
 
-# Text
+# Tag
 
 
 
 
 
 <Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
 
 ## Installation [#installation]
 
@@ -4067,42 +3948,105 @@ npm install --save @godaddy/antares
 
 ## Props [#props]
 
-The `Text` component accepts the following props:
-
 <PropTable />
 
 ## Examples [#examples]
 
-### As [#as]
+### Basic [#basic]
 
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+A minimal tag with the default emphasis and size.
 
-<Source language="tsx" code="AsExample" />
+<Story of="Stories.Default" />
 
-### Align [#align]
+<Source language="tsx" code="DefaultExample" />
 
-Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
-`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+### Emphasis [#emphasis]
 
-<Source language="tsx" code="AlignExample" />
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
 
-### Max Lines [#max-lines]
+<Story of="Stories.Emphases" />
 
-Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+<Source language="tsx" code="EmphasesExample" />
 
-<Source language="tsx" code="MaxLinesExample" />
+### Sizes [#sizes]
 
-### Wrap [#wrap]
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
 
-Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+<Story of="Stories.Sizes" />
 
-* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
-* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
-* `balance` is most commonly used for headlines, titles, and labels.
-* `pretty` is most commonly used for body text.
-* `stable` is commonly used for editable text, such as textareas.
+<Source language="tsx" code="SizesExample" />
 
-<Source language="tsx" code="WrapExample" />
+### Inline [#inline]
+
+Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="Stories.Inline" />
+
+<Source language="tsx" code="InlineExample" />
+
+### High Contrast [#high-contrast]
+
+A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
+
+<Story of="Stories.HighContrast" />
+
+<Source language="tsx" code="HighContrastExample" />
+
+### With Icon [#with-icon]
+
+Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
+
+<Story of="Stories.Icons" />
+
+<Source language="tsx" code="IconsExample" />
+
+### Indicator [#indicator]
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="Stories.Indicator" />
+
+<Source language="tsx" code="IndicatorExample" />
+
+## Accessibility [#accessibility]
+
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices [#best-practices]
+
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use [#when-to-use]
+
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
 
 
 # TextField
@@ -4185,6 +4129,62 @@ Use `multiline` to render a textarea.
 <Source language="tsx" code="SourceMultiline" />
 
 <Story of="Stories.Multiline" />
+
+
+# Text
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Source language="tsx" code="AsExample" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. You can choose from `start`, `center`, `end`, or `justify`.
+`start` works like `left` and `end` works like `right`. These keywords support RTL languages so you do not need to worry about the language of the text.
+
+<Source language="tsx" code="AlignExample" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop allows you to limit the number of lines of text that are displayed using an ellipsis. In browsers that don't support multiline text truncation using `line-clamp`, the text will be truncated after a single line regardless of the number provided for `maxLines`.
+
+<Source language="tsx" code="MaxLinesExample" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop allows you to change the wrapping of the text. The values can be `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+* `wrap` is the setting that is most commonly used. For most elements you will not to explicitly set this.
+* `nowrap` should be avoided except in cases where it is important to prevent the text from wrapping.
+* `balance` is most commonly used for headlines, titles, and labels.
+* `pretty` is most commonly used for body text.
+* `stable` is commonly used for editable text, such as textareas.
+
+<Source language="tsx" code="WrapExample" />
 
 
 # ToggleButton
@@ -4886,6 +4886,69 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
+
+
 # Gauge Chart
 
 
@@ -4986,69 +5049,6 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
-
-
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
 
 
 # LineChart
@@ -5440,6 +5440,110 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
 
 
+# Grid
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
+
+<PropTable />
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="Stories.Columns" />
+
+<Source language="tsx" code="SourceColumns" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="Stories.Gap" />
+
+<Source language="tsx" code="SourceGap" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
+
+<Story of="Stories.Areas" />
+
+<Source language="tsx" code="SourceAreas" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="Stories.Responsive" />
+
+<Source language="tsx" code="SourceResponsive" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="Stories.Alignment" />
+
+<Source language="tsx" code="SourceAlignment" />
+
+### Form Layout [#form-layout]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="Stories.Form" />
+
+<Source language="tsx" code="SourceForm" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+
 # Flex
 
 
@@ -5544,107 +5648,3 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
-
-
-# Grid
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="Stories.Columns" />
-
-<Source language="tsx" code="SourceColumns" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="Stories.Gap" />
-
-<Source language="tsx" code="SourceGap" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use `gridArea` prop for placement.
-
-<Story of="Stories.Areas" />
-
-<Source language="tsx" code="SourceAreas" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="Stories.Responsive" />
-
-<Source language="tsx" code="SourceResponsive" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="Stories.Alignment" />
-
-<Source language="tsx" code="SourceAlignment" />
-
-### Form Layout [#form-layout]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="Stories.Form" />
-
-<Source language="tsx" code="SourceForm" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
