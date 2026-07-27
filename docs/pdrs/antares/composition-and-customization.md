@@ -58,7 +58,7 @@ The `Modal` already demonstrates the whole spread on its own: it is config-drive
 
 RAC customization is **context-based**, and understanding its shape is what drives the decision. Three points matter:
 
-1. **`slot` is a selector, not a payload.** `slot="close"` is a string attribute that tells a component *which named entry of a context to consume*. It carries no behavior or styling by itself; what it delivers is whatever some ancestor provider placed under that name. For the close button, RAC's `Dialog` provides the close **behavior** (an `onPress` that closes the dialog, plus a default `aria-label`). A provider can just as well put `className` or handlers under a slot, so slots are not limited to behavior.
+1. **`slot` is a selector, not a payload.** `slot="close"` is a string attribute that tells a component *which named entry of a context to consume*. It carries no behavior or styling by itself; what it delivers is whatever some ancestor provider placed under that name. For the close button, RAC's `Dialog` provides the close **behavior** (an `onPress` that closes the dialog), while Antares or consumers must provide the accessible label itself. A provider can just as well put `className` or handlers under a slot, so slots are not limited to behavior.
 
 2. **Slots are built for the inverted ownership model.** RAC's slot/context system is designed for *the wrapper provides the context, the consumer provides the children*. Antares is the opposite: **Antares owns the internal element** (the close button lives inside `Modal`), and the consumer wants to reach in. RAC slots cleanly wire *behavior* into an Antares-owned element, but they do **not** cleanly let a consumer tweak or replace an element that Antares already owns, because:
    - Context reads take the **nearest** provider. If Antares provides a context for its own part, a consumer's outer provider is shadowed. RAC does not auto-merge across nested providers of the same context.
@@ -219,7 +219,9 @@ Worked examples using `Modal` as the model. These show the pattern end to end; e
 Curate the exposed parts, type them, and merge each with `mergeProps`. `slot="close"` still pulls the close behavior from RAC's `Dialog`; `mergeProps` chains any consumer handler after it and concatenates `className`.
 
 ```tsx
-import { mergeProps, Dialog as RACDialog, type DialogProps as RACDialogProps } from 'react-aria-components';
+import type { ReactNode } from 'react';
+import { mergeProps } from 'react-aria';
+import { Dialog as RACDialog, type DialogProps as RACDialogProps } from 'react-aria-components';
 import { Text, type TextProps } from '#components/text';
 import { Button, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
@@ -343,7 +345,7 @@ import { ButtonContext } from 'react-aria-components';
 This is not viable:
 
 - **Shadowing.** Modal's own `Dialog` provides the `close` slot value (the close behavior). The nearest provider wins and RAC does not merge across providers, so the consumer's outer value is overridden and the `data-track` never lands.
-- **No types.** The context value and slot name are untyped strings - no autocomplete, and a typo fails silently.
+- **Untyped slot names.** Context props are type checked, but slot keys are unconstrained strings. There is no autocomplete or compile-time validation, and typos are only reported at runtime.
 - **Leaky coupling.** It forces the consumer to import RAC internals and know the undocumented `"close"` slot name - exactly the "cannot rely on it" gap called out in [Current State](#current-state).
 
 ## References
