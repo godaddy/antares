@@ -51,7 +51,7 @@ export const Playground = {
     size: {
       control: 'radio',
       options: ['sm', 'md'],
-      description: 'Size variant for the menu and its items (inherited by submenus)'
+      description: 'Size variant for the menu and its items; set it separately on nested menus'
     },
     multiSelect: {
       control: 'boolean',
