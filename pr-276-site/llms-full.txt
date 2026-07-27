@@ -170,6 +170,103 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 * Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
 
 
+# Button
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Button` component accepts the following props:
+
+<PropTable />
+
+The `LinkButton` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceDefault" />
+
+### Primary [#primary]
+
+The primary button should be used to indicate the most important action for the user to take in their current experience.
+
+<Story of="Stories.Primary" />
+
+<Source language="tsx" code="SourcePrimary" />
+
+### Secondary [#secondary]
+
+The secondary button indicates an action of secondary importance.
+
+<Story of="Stories.Secondary" />
+
+<Source language="tsx" code="SourceSecondary" />
+
+### Critical [#critical]
+
+The critical button signifies to the user a destructive action will take place.
+
+<Story of="Stories.Critical" />
+
+<Source language="tsx" code="SourceCritical" />
+
+### Inline [#inline]
+
+<Story of="Stories.Inline" />
+
+<Source language="tsx" code="SourceInline" />
+
+### Minimal [#minimal]
+
+The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
+
+<Story of="Stories.Minimal" />
+
+<Source language="tsx" code="SourceMinimal" />
+
+### Icon [#icon]
+
+You may provide an optional [`Icon`](../icon) element to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
+
+<Story of="Stories.Icon" />
+
+<Source language="tsx" code="SourceIcon" />
+
+### Sizes [#sizes]
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSizes" />
+
+### Disabled [#disabled]
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceDisabled" />
+
+
 # Calendar
 
 
@@ -282,103 +379,6 @@ A fully disabled calendar.
 ## Troubleshooting [#troubleshooting]
 
 * Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-
-# Button
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Button` component accepts the following props:
-
-<PropTable />
-
-The `LinkButton` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="SourceDefault" />
-
-### Primary [#primary]
-
-The primary button should be used to indicate the most important action for the user to take in their current experience.
-
-<Story of="Stories.Primary" />
-
-<Source language="tsx" code="SourcePrimary" />
-
-### Secondary [#secondary]
-
-The secondary button indicates an action of secondary importance.
-
-<Story of="Stories.Secondary" />
-
-<Source language="tsx" code="SourceSecondary" />
-
-### Critical [#critical]
-
-The critical button signifies to the user a destructive action will take place.
-
-<Story of="Stories.Critical" />
-
-<Source language="tsx" code="SourceCritical" />
-
-### Inline [#inline]
-
-<Story of="Stories.Inline" />
-
-<Source language="tsx" code="SourceInline" />
-
-### Minimal [#minimal]
-
-The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
-
-<Story of="Stories.Minimal" />
-
-<Source language="tsx" code="SourceMinimal" />
-
-### Icon [#icon]
-
-You may provide an optional [`Icon`](../icon) element to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
-
-<Story of="Stories.Icon" />
-
-<Source language="tsx" code="SourceIcon" />
-
-### Sizes [#sizes]
-
-<Story of="Stories.Sizes" />
-
-<Source language="tsx" code="SourceSizes" />
-
-### Disabled [#disabled]
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="SourceDisabled" />
 
 
 # Carousel
@@ -3002,7 +3002,7 @@ Use `description` for persistent guidance that applies to every thumb. React Ari
 
 ### Disabled state [#disabled-state]
 
-`isDisabled` prevents interaction with every thumb and exposes the disabled state semantically. The slider control is visually muted while the label, endpoint labels, description, and error text remain readable.
+`isDisabled` prevents interaction with every thumb and exposes the disabled state semantically. The slider control is visually muted while the label, endpoint labels, and description remain readable.
 
 ## Best Practices [#best-practices]
 
@@ -3261,7 +3261,7 @@ Use `description` for persistent guidance that applies to the range. React Aria 
 
 ### Disabled state [#disabled-state]
 
-`isDisabled` prevents interaction with both thumbs and exposes the disabled state semantically. Only the slider control is visually muted; the label, endpoint labels, description, and error text remain readable.
+`isDisabled` prevents interaction with both thumbs and exposes the disabled state semantically. Only the slider control is visually muted; the label, endpoint labels, and description remain readable.
 
 ## Best Practices [#best-practices]
 
@@ -3312,88 +3312,6 @@ Negative values are supported. Set an appropriate negative `minValue` and keep b
 ### The range configuration is invalid [#the-range-configuration-is-invalid]
 
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and a two-number value in semantic start/end order.
-
-
-# Select
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `Select` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with a label and a placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Multiple [#multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Source language="tsx" code="SourceMultiple" />
-
-<Story of="Stories.Multiple" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Form [#form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Source language="tsx" code="SourceForm" />
-
-<Story of="Stories.Form" />
 
 
 # SegmentedController
@@ -3518,6 +3436,88 @@ Components automatically add data attributes for styling different states:
 
 * For more than 5 options (use Tabs or Select instead)
 * For form input (use RadioGroup instead)
+
+
+# Select
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Select` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with a label and a placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Multiple [#multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Source language="tsx" code="SourceMultiple" />
+
+<Story of="Stories.Multiple" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Form [#form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Source language="tsx" code="SourceForm" />
+
+<Story of="Stories.Form" />
 
 
 # Slider
@@ -3700,7 +3700,7 @@ Use `description` for persistent guidance that helps users make a selection. Rea
 
 ### Disabled state [#disabled-state]
 
-`isDisabled` prevents pointer and keyboard changes and exposes the disabled state semantically. The slider control is visually muted while its label, endpoint labels, description, and error text remain readable.
+`isDisabled` prevents pointer and keyboard changes and exposes the disabled state semantically. The slider control is visually muted while its label, endpoint labels, and description remain readable.
 
 ## Best Practices [#best-practices]
 
@@ -3920,88 +3920,6 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 * `stable` is commonly used for editable text, such as textareas.
 
 <Source language="tsx" code="WrapExample" />
-
-
-# TextField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `TextField` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with label and placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Adornments [#adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
-
-<Source language="tsx" code="SourceAdornments" />
-
-<Story of="Stories.Adornments" />
-
-### Multiline [#multiline]
-
-Use `multiline` to render a textarea.
-
-<Source language="tsx" code="SourceMultiline" />
-
-<Story of="Stories.Multiline" />
 
 
 # ToggleButton
@@ -4247,6 +4165,88 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
   <Icon icon="bulleted-list" />
 </ToggleButton>
 ```
+
+
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `TextField` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+### Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
 
 
 # Tooltip
