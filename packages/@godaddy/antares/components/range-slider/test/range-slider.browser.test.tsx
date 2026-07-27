@@ -141,31 +141,5 @@ describe('@godaddy/antares', function antares() {
       assume(data.get('priceMin')).equals('20');
       assume(data.get('priceMax')).equals('80');
     });
-
-    it('supports only a start form name', async function startName() {
-      const { container } = await render(
-        <form>
-          <RangeSliderPlaygroundExample thumbLabels={['Minimum price', 'Maximum price']} startName="minimum" />
-        </form>
-      );
-      const form = container.querySelector('form');
-      const data = new FormData(form ?? undefined);
-
-      assume(data.get('minimum')).equals('20');
-      assume(Array.from(data.entries()).length).equals(1);
-    });
-
-    it('supports only an end form name', async function endName() {
-      const { container } = await render(
-        <form>
-          <RangeSliderPlaygroundExample thumbLabels={['Minimum price', 'Maximum price']} endName="maximum" />
-        </form>
-      );
-      const form = container.querySelector('form');
-      const data = new FormData(form ?? undefined);
-
-      assume(data.get('maximum')).equals('80');
-      assume(Array.from(data.entries()).length).equals(1);
-    });
   });
 });

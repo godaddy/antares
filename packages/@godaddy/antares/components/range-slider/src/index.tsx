@@ -13,7 +13,7 @@ export interface RangeSliderProps
   /** Current range value [start, end] (controlled). */
   value?: [number, number];
 
-  /** Default range value [start, end] for uncontrolled usage. */
+  /** Default range value [start, end] for uncontrolled usage. Defaults to [minValue, maxValue]. */
   defaultValue?: [number, number];
 
   /** Callback fired when the range value changes. */
@@ -29,11 +29,11 @@ export interface RangeSliderProps
    */
   thumbLabels: [string, string];
 
-  /** HTML input name for the start thumb. Used for form submission. */
-  startName?: string;
-
-  /** HTML input name for the end thumb. Used for form submission. */
-  endName?: string;
+  /**
+   * HTML input names for the start and end thumbs. Used for form submission.
+   * @example ['priceMin', 'priceMax']
+   */
+  thumbNames?: [string, string];
 }
 
 /**
@@ -59,13 +59,11 @@ export const RangeSlider = forwardRef<RangeSliderRef, RangeSliderProps>(function
     onChange,
     onChangeEnd,
     thumbLabels,
-    startName,
-    endName,
+    thumbNames,
     minValue = 0,
     maxValue = 100,
     ...props
   } = rangeSliderProps;
-  const thumbNames = startName || endName ? ([startName, endName] as string[]) : undefined;
   const resolvedDefaultValue = value === undefined ? (defaultValue ?? [minValue, maxValue]) : defaultValue;
 
   return (

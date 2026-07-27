@@ -20,7 +20,7 @@ import SourceForm from './examples/form.tsx?raw';
 - Fixed `[start, end]` tuple with one independently adjustable thumb per value
 - Required accessible labels that distinguish the start and end thumbs
 - Controlled and uncontrolled state with `onChange` and `onChangeEnd` callbacks
-- Independent `startName` and `endName` values for native form submission
+- A `thumbNames` tuple for native form submission
 - Configurable minimum, maximum, step, localized value output, endpoint labels, and markers
 - Required, disabled, keyboard, pointer, and touch behavior provided through React Aria
 
@@ -73,7 +73,7 @@ Use markers to show a manageable set of meaningful steps across the range.
 
 ### Form submission
 
-Use `startName` and `endName` to submit each thumb as a separate form value.
+Use `thumbNames` to submit each thumb as a separate form value.
 
 <Source language="tsx" code={SourceForm} />
 <Story of={Stories.Form} inline />
@@ -174,7 +174,7 @@ Every range slider needs two levels of naming:
 - Use a visible `label`, or `aria-label` when equivalent visible context already exists, to name the range as a whole.
 - Use the required `thumbLabels` tuple to distinguish the purpose of each thumb, for example `['Minimum price', 'Maximum price']`.
 
-Thumb labels should describe meaning rather than repeat the current numbers. `startName` and `endName` configure form submission; they are not accessible labels.
+Thumb labels should describe meaning rather than repeat the current numbers. `thumbNames` configures form submission; it does not provide accessible labels.
 
 ### Keyboard interaction
 
@@ -196,7 +196,7 @@ Markers are decorative and hidden from the accessibility tree. Do not rely on ma
 
 ### Instructions and required state
 
-Use `description` for persistent guidance that applies to the range. React Aria associates it with both slider thumbs. Set `isRequired` when the selection is required so the visible label and both slider semantics communicate the requirement consistently.
+Use `description` for persistent guidance that applies to the range. React Aria associates it with both slider thumbs. Set `isRequired` to display the required indicator in the visible label.
 
 ### Disabled state
 
@@ -207,7 +207,7 @@ Use `description` for persistent guidance that applies to the range. React Aria 
 - Use `RangeSlider` when users choose exactly two related values that define a bounded interval, such as a minimum and maximum price.
 - Write `thumbLabels` that clearly distinguish the lower and upper purpose. Avoid generic labels such as `Value 1` and `Value 2`.
 - Keep the tuple in semantic order: the first value and label represent the start or minimum, and the second represent the end or maximum.
-- Use `startName` and `endName` when a native form must submit both values. Choose stable, unique names that match the receiving API.
+- Use `thumbNames` when a native form must submit both values. Choose stable, unique names that match the receiving API.
 - Set `minValue`, `maxValue`, and `step` to meaningful product constraints. Do not expose precision users cannot understand or act on.
 - Show markers only for a manageable number of meaningful steps. A dense set of dots is harder to scan than a continuous track.
 - Use `formatOptions` consistently for the visible value and screen-reader announcement.
@@ -222,7 +222,7 @@ Provide two specific `thumbLabels` in start/end order. Labels such as `Minimum p
 
 ### Form values are missing or use the wrong keys
 
-Set `startName` and `endName` to the field names expected by the form handler. They may be provided independently, but each submitted value needs its own unique name. Remember that these props do not replace `thumbLabels`.
+Set `thumbNames` to the two field names expected by the form handler, in start/end order. Each submitted value needs its own unique name. Remember that these names do not replace `thumbLabels`.
 
 ### A controlled range does not move
 

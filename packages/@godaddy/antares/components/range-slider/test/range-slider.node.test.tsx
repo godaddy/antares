@@ -53,18 +53,6 @@ describe('@godaddy/antares', function antares() {
           )
         ).toMatchSnapshot();
       });
-
-      it('maps an independently supplied start name', function startName() {
-        expect(
-          renderToString(<RangeSliderPlaygroundExample thumbLabels={['Minimum', 'Maximum']} startName="minimum" />)
-        ).toMatchSnapshot();
-      });
-
-      it('maps an independently supplied end name', function endName() {
-        expect(
-          renderToString(<RangeSliderPlaygroundExample thumbLabels={['Minimum', 'Maximum']} endName="maximum" />)
-        ).toMatchSnapshot();
-      });
     });
   });
 });

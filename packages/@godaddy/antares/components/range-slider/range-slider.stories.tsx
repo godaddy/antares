@@ -34,7 +34,7 @@ export const Playground = {
     maxValue: 100,
     step: 10,
     markers: false,
-    valueLabel: false,
+    valueLabel: undefined,
     minLabel: '',
     maxLabel: '',
     isDisabled: false,
@@ -49,10 +49,11 @@ export const Playground = {
     maxValue: { control: 'number', description: 'Maximum allowed value' },
     step: { control: 'number', description: 'Increment and snap interval' },
     markers: { control: 'boolean', description: 'Show a marker at each step position' },
-    valueLabel: { control: 'boolean', description: 'Display the formatted range' },
+    valueLabel: { control: 'text', description: 'Text displayed opposite the range slider label' },
     minLabel: { control: 'text', description: 'Content displayed at the minimum end of the track' },
     maxLabel: { control: 'text', description: 'Content displayed at the maximum end of the track' },
     isDisabled: { control: 'boolean', description: 'Disable both thumbs' },
-    thumbLabels: { control: 'object', description: 'Accessible labels for the start and end thumbs' }
+    thumbLabels: { control: 'object', description: 'Accessible labels for the start and end thumbs' },
+    thumbNames: { control: 'object', description: 'Form input names for the start and end thumbs' }
   }
 };

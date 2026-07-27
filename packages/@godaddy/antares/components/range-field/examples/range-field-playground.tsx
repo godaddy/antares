@@ -124,6 +124,7 @@ export function RangeFieldPlaygroundExample({
       valueLabel={valueLabel}
       minLabel={minLabel}
       maxLabel={maxLabel}
+      thumbLabels={thumbLabels}
       thumbNames={thumbNames}
       formatOptions={formatOptions}
       isRequired={isRequired}

@@ -138,14 +138,13 @@ describe('@godaddy/antares', function antares() {
       assume(getValue(thumb.element())).equals(50);
     });
 
-    it('associates its description and required state with every thumb', async function accessibleDetails() {
+    it('associates its description with every thumb', async function accessibleDetails() {
       const { container } = await render(
         <RangeFieldPlaygroundExample
           label="Thresholds"
           description="Choose the accepted interval."
           defaultValue={[20, 80]}
           thumbLabels={['Minimum threshold', 'Maximum threshold']}
-          isRequired
         />
       );
       const description = container.querySelector('[slot="description"]');
@@ -156,7 +155,6 @@ describe('@godaddy/antares', function antares() {
 
       thumbs.forEach(function verifyThumb(thumb) {
         assume(thumb.element().getAttribute('aria-describedby')).includes(description?.id);
-        assume(thumb.element().getAttribute('aria-required')).equals('true');
       });
     });
 

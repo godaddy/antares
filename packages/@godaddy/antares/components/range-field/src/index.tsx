@@ -29,7 +29,8 @@ import styles from './index.module.css';
 
 const MAX_MARKER_COUNT = 1000;
 
-interface RangeFieldSharedProps<T extends number | number[]>
+/** Props for configuring a {@link RangeField} */
+export interface RangeFieldProps<T extends number | number[] = number | number[]>
   extends Omit<RACSliderProps<T>, 'children' | 'className' | 'orientation' | 'render' | 'style'>,
     Omit<FieldOwnProps, 'as' | 'errorMessage'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
@@ -74,33 +75,18 @@ interface RangeFieldSharedProps<T extends number | number[]>
   /** Whether to render a marker at each step position. */
   markers?: boolean;
 
-  /** Per-thumb form input names. Length must match value array length. */
+  /** Accessible labels associated with thumbs by index. */
+  thumbLabels?: string[];
+
+  /** Form input names associated with thumbs by index. */
   thumbNames?: string[];
 
   /** Additional CSS class applied to the root element. */
   className?: string;
 
-  /** Marks the slider as required in a form context. */
+  /** Displays a required indicator in the field label. */
   isRequired?: boolean;
 }
-
-/** Props for configuring a {@link RangeField} and its generated slider controls. */
-export type RangeFieldProps<T extends number | number[] = number | number[]> = T extends number[]
-  ? RangeFieldSharedProps<T> & {
-      /**
-       * Accessible label for each thumb. Keep entries aligned with the values array.
-       * @example ['Minimum price', 'Maximum price']
-       */
-      thumbLabels: string[];
-    }
-  : RangeFieldSharedProps<T> & {
-      /** A scalar value is named by the field's visible or ARIA label. */
-      thumbLabels?: never;
-    };
-
-type RangeFieldImplementationProps<T extends number | number[]> = RangeFieldSharedProps<T> & {
-  thumbLabels?: string[];
-};
 
 /** Imperative controls for a {@link RangeField}. */
 export interface RangeFieldRef {
@@ -138,8 +124,8 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
     valueLabel,
     minLabel,
     maxLabel,
-    thumbLabels,
-    thumbNames,
+    thumbLabels = [],
+    thumbNames = [],
     value,
     defaultValue,
     minValue = 0,
@@ -150,7 +136,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
     'aria-describedby': ariaDescribedBy,
     gap = 'sm',
     ...props
-  }: RangeFieldImplementationProps<T>,
+  }: RangeFieldProps<T>,
   ref: ForwardedRef<RangeFieldRef>
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -196,7 +182,6 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
         thumbLabels={thumbLabels}
         thumbNames={thumbNames}
         thumbInputRefs={thumbInputRefs}
-        isRequired={isRequired}
       />
       <RangeFieldLabels minLabel={minLabel} maxLabel={maxLabel} />
       <FieldDescription id={descriptionId}>{description}</FieldDescription>
@@ -216,7 +201,7 @@ function RangeFieldHeader({
   label,
   isRequired,
   valueLabel
-}: Pick<RangeFieldSharedProps<number | number[]>, 'label' | 'isRequired' | 'valueLabel'>) {
+}: Pick<RangeFieldProps<number | number[]>, 'label' | 'isRequired' | 'valueLabel'>) {
   const valueLabelVisible = valueLabel != null && valueLabel !== false;
 
   if (!label && !valueLabelVisible) {
@@ -248,12 +233,12 @@ function RangeFieldControl({
   step,
   thumbLabels,
   thumbNames,
-  thumbInputRefs,
-  isRequired
-}: Required<Pick<RangeFieldSharedProps<number | number[]>, 'markers' | 'minValue' | 'maxValue' | 'step'>> &
-  Pick<RangeFieldImplementationProps<number | number[]>, 'isRequired' | 'thumbLabels' | 'thumbNames'> & {
-    thumbInputRefs: RefObject<RefObject<HTMLInputElement | null>[]>;
-  }) {
+  thumbInputRefs
+}: Required<
+  Pick<RangeFieldProps<number | number[]>, 'markers' | 'minValue' | 'maxValue' | 'step' | 'thumbLabels' | 'thumbNames'>
+> & {
+  thumbInputRefs: RefObject<RefObject<HTMLInputElement | null>[]>;
+}) {
   const state = useContext(RACSliderStateContext);
   const markerPositions = useMemo(
     function calculateMarkerPositions() {
@@ -330,9 +315,8 @@ function RangeFieldControl({
           <RACSliderThumb
             key={index}
             index={index}
-            aria-label={thumbLabels?.[index]}
-            isRequired={isRequired}
-            name={thumbNames?.[index]}
+            aria-label={thumbLabels[index]}
+            name={thumbNames[index]}
             inputRef={getThumbInputRef(index)}
             className={styles.thumb}
           />
@@ -348,10 +332,7 @@ function RangeFieldControl({
  * @param props - Endpoint label content from {@link RangeFieldProps}.
  * @returns Endpoint label row, or `null` when neither label is provided.
  */
-function RangeFieldLabels({
-  minLabel,
-  maxLabel
-}: Pick<RangeFieldSharedProps<number | number[]>, 'minLabel' | 'maxLabel'>) {
+function RangeFieldLabels({ minLabel, maxLabel }: Pick<RangeFieldProps<number | number[]>, 'minLabel' | 'maxLabel'>) {
   if (minLabel == null && maxLabel == null) {
     return null;
   }

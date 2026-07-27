@@ -32,9 +32,7 @@ export interface RangeSliderPlaygroundExampleProps {
 
   thumbLabels: [string, string];
 
-  startName?: string;
-
-  endName?: string;
+  thumbNames?: [string, string];
 
   onChangeEnd?(value: [number, number]): void;
 
@@ -57,8 +55,7 @@ export function RangeSliderPlaygroundExample({
   isRequired,
   isDisabled = false,
   thumbLabels,
-  startName,
-  endName,
+  thumbNames,
   onChangeEnd,
   rootRef
 }: RangeSliderPlaygroundExampleProps) {
@@ -94,8 +91,7 @@ export function RangeSliderPlaygroundExample({
       isRequired={isRequired}
       isDisabled={isDisabled}
       thumbLabels={thumbLabels}
-      startName={startName}
-      endName={endName}
+      thumbNames={thumbNames}
       onChangeEnd={onChangeEnd}
     />
   );

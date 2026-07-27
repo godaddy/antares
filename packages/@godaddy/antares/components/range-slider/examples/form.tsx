@@ -14,8 +14,7 @@ export function RangeSliderFormExample() {
         label="Price range"
         defaultValue={[20, 80]}
         thumbLabels={['Minimum price', 'Maximum price']}
-        startName="priceMin"
-        endName="priceMax"
+        thumbNames={['priceMin', 'priceMax']}
         valueLabel
       />
       <Button type="submit">Apply filter</Button>
