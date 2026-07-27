@@ -31,7 +31,7 @@ const MAX_MARKER_COUNT = 1000;
 
 interface RangeFieldSharedProps<T extends number | number[]>
   extends Omit<RACSliderProps<T>, 'children' | 'className' | 'orientation' | 'render' | 'style'>,
-    Omit<FieldOwnProps, 'errorMessage'> {
+    Omit<FieldOwnProps, 'as' | 'errorMessage'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
@@ -174,6 +174,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
 
   return (
     <Field
+      {...props}
       as={RACSlider<T>}
       ref={containerRef}
       value={value}
@@ -181,11 +182,9 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
       minValue={minValue}
       maxValue={maxValue}
       step={step}
-      isRequired={isRequired}
       formatOptions={formatOptions}
       aria-describedby={describedBy}
       gap={gap}
-      {...props}
       className={cx(styles.slider, className)}
     >
       <RangeFieldHeader label={label} isRequired={isRequired} valueLabel={valueLabel} />
