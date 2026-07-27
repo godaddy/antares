@@ -168,6 +168,30 @@ describe('@godaddy/antares', function antares() {
       assume((markers[3] as HTMLElement).style.insetInlineStart).equals('100%');
     });
 
+    it('renders distinct markers for large finite scales', async function largeScaleMarkers() {
+      const { container } = await render(
+        <RangeFieldPlaygroundExample
+          label="Large finite scale"
+          defaultValue={0}
+          minValue={0}
+          maxValue={1e308}
+          step={1e307}
+          markers
+        />
+      );
+      const markerPositions = Array.from(
+        container.querySelectorAll('[aria-hidden="true"]'),
+        function getPosition(marker) {
+          return (marker as HTMLElement).style.insetInlineStart;
+        }
+      );
+
+      assume(markerPositions.length).equals(11);
+      assume(new Set(markerPositions).size).equals(11);
+      assume(markerPositions[1]).equals('10%');
+      assume(markerPositions[10]).equals('100%');
+    });
+
     it('omits markers when the step would produce an unsafe number of elements', async function markerLimit() {
       const { container } = await render(
         <RangeFieldPlaygroundExample defaultValue={50} minValue={0} maxValue={100} step={0.000001} markers />

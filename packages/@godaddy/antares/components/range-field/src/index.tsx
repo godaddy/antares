@@ -262,7 +262,7 @@ function RangeFieldControl({
       }
 
       return Array.from({ length: count }, function getMarkerPosition(_, index) {
-        return Math.min((index * step * 100) / range, 100);
+        return Math.min(index * (step / range) * 100, 100);
       });
     },
     [markers, minValue, maxValue, step]
