@@ -149,7 +149,7 @@ A natural dividing line decides whether a part is composed or configured:
 - **Consumer-provided content** (collection items, select options, tabs) is inherently the consumer's data. It goes through **composition / children** (Layer 3 style), because the consumer owns it anyway. This is the idiomatic path for collection content, and `Select` already works this way with `SelectItem`.
 - **Antares-owned chrome** (close button, modal title, header) is ours. It goes through **config props + `slotProps`** (Layers 1 and 2), with structural override available via Layer 3.
 
-**Populating a compound collection.** Today, collection content is provided as React node children (`<Select><SelectItem/></Select>`); components narrow `children` to `ReactNode`. RAC also supports a data-driven `items` + render-function form (which enables virtualization for large lists), but Antares does not surface it yet, and no current need requires it. If a data-driven or virtualized case appears, exposing `items` is a natural, RAC-backed extension - out of scope for this PDR.
+**Populating a compound collection.** `Select` is currently documented with React node children (`<Select><SelectItem /></Select>`) and does not expose a data source to its internal `ListBox`. `Menu`, however, already supports RAC's data-driven `items` + render-function form. If a data-driven or virtualized Select case appears, exposing an `items` API is a natural, RAC-backed extension - out of scope for this PDR.
 
 ## Rules
 
