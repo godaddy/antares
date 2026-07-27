@@ -24,7 +24,7 @@ import { Icon } from '#components/icon';
 import { CheckboxIndicator } from '#components/checkbox';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 
-export interface MenuTriggerProps extends FlexOwnProps, Omit<RACMenuTriggerProps, 'children' | 'className'> {
+export interface MenuTriggerProps extends Omit<RACMenuTriggerProps, 'children'> {
   /** Additional props forwarded to the underlying `Popover`. */
   popoverProps?: Omit<PopoverProps, 'children'>;
 
@@ -63,7 +63,7 @@ export interface MenuProps<T> extends FlexOwnProps, Omit<RACMenuProps<T>, 'class
  */
 export function Menu<T extends object>({ className, size = 'md', children, ...props }: MenuProps<T>) {
   return (
-    <Flex as={RACMenu} direction="column" {...props} data-size={size} className={cx(styles.menu, className)}>
+    <Flex {...props} as={RACMenu<T>} direction="column" data-size={size} className={cx(styles.menu, className)}>
       {children}
     </Flex>
   );
@@ -92,7 +92,7 @@ export interface MenuGroupProps<T extends object>
  */
 export function MenuGroup<T extends object>({ label, className, children, ...props }: MenuGroupProps<T>) {
   return (
-    <Flex as={RACMenuSection} {...props} className={cx(styles.group, className)}>
+    <Flex {...props} as={RACMenuSection<T>} className={cx(styles.group, className)}>
       {label == null ? null : <RACHeader className={styles.groupLabel}>{label}</RACHeader>}
       {children}
     </Flex>
@@ -119,8 +119,9 @@ export interface MenuItemProps extends FlexOwnProps, Omit<RACMenuItemProps, 'chi
  */
 export function MenuItem({ icon, children, className, ...props }: MenuItemProps) {
   const textValue = props.textValue ?? (typeof children === 'string' ? children : undefined);
+
   return (
-    <Flex as={RACMenuItem} alignItems="center" {...props} textValue={textValue} className={cx(styles.item, className)}>
+    <Flex alignItems="center" {...props} as={RACMenuItem} textValue={textValue} className={cx(styles.item, className)}>
       {({ hasSubmenu, isSelected, selectionMode }: RACMenuItemRenderProps) => (
         <>
           {selectionMode === 'multiple' ? (
