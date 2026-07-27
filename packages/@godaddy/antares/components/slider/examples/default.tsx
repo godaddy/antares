@@ -1,5 +1,7 @@
-import { Slider } from '@godaddy/antares';
+import { Slider, type SliderProps } from '@godaddy/antares';
 
-export function SliderDefaultExample() {
-  return <Slider label="Volume" defaultValue={50} />;
+export function SliderDefaultExample(
+  props: Pick<SliderProps, 'defaultValue' | 'maxValue' | 'minValue' | 'onChange' | 'onChangeEnd'> = {}
+) {
+  return <Slider label="Volume" defaultValue={50} {...props} />;
 }

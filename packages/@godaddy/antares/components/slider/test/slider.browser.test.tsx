@@ -45,6 +45,29 @@ describe('@godaddy/antares', function antares() {
       assume(getValue(thumb.element())).equals(51);
     });
 
+    it('uses the minimum as a scalar default and callback value', async function minimumDefault() {
+      const user = userEvent.setup();
+      const onChange = vi.fn<(value: number) => void>();
+      const onChangeEnd = vi.fn<(value: number) => void>();
+      await render(
+        <SliderDefaultExample
+          defaultValue={undefined}
+          minValue={10}
+          maxValue={20}
+          onChange={onChange}
+          onChangeEnd={onChangeEnd}
+        />
+      );
+      const thumb = page.getByRole('slider', { name: 'Volume' });
+
+      assume(getValue(thumb.element())).equals(10);
+      thumb.element().focus();
+      await user.keyboard('{ArrowRight}');
+
+      assume(onChange.mock.lastCall?.[0]).equals(11);
+      assume(onChangeEnd.mock.lastCall?.[0]).equals(11);
+    });
+
     it('updates its controlled scalar value', async function controlledValue() {
       const user = userEvent.setup();
       await render(<SliderControlledExample />);

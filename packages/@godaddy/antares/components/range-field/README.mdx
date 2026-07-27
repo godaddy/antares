@@ -139,7 +139,7 @@ Use `valueLabel` to place content opposite the field label:
 
 `minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so the sides remain visually separated.
 
-Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions use the same scale as every thumb. `minValue`, `maxValue`, and `step` determine their count and spacing; `markers` does not accept a custom list or count.
+Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions use the same scale as every thumb. `minValue`, `maxValue`, and `step` determine their count and spacing; `markers` does not accept a custom list or count. If the scale would require more than 1,000 markers, no markers are rendered.
 
 ### Number formatting
 

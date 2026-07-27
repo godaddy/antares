@@ -13,7 +13,7 @@ export interface SliderProps
   /** Current value (controlled). */
   value?: number;
 
-  /** Default value for uncontrolled usage. @default 0 */
+  /** Default value for uncontrolled usage. Defaults to `minValue`. */
   defaultValue?: number;
 
   /** Callback fired when the slider value changes. */
@@ -36,16 +36,19 @@ export interface SliderProps
  * ```
  */
 export const Slider = forwardRef<SliderRef, SliderProps>(function Slider(
-  { value, defaultValue, onChange, onChangeEnd, ...props },
+  { value, defaultValue, onChange, onChangeEnd, minValue = 0, ...props },
   ref
 ) {
+  const resolvedDefaultValue = value === undefined ? (defaultValue ?? minValue) : defaultValue;
+
   return (
     <RangeField<number>
       ref={ref}
       value={value}
-      defaultValue={defaultValue}
+      defaultValue={resolvedDefaultValue}
       onChange={onChange}
       onChangeEnd={onChangeEnd}
+      minValue={minValue}
       {...props}
     />
   );
