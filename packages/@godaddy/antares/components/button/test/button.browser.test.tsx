@@ -2,6 +2,7 @@ import { describe, it, beforeAll, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
+import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -46,6 +47,17 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(el).backgroundColor).toBe(baseBg);
       expect(getComputedStyle(el).borderColor).toBe(baseBorder);
       expect(getComputedStyle(el).outline).toBe(baseOutline);
+    });
+
+    it('keeps a transparent background on inline variant when hovered', async function inlineNoBackground() {
+      const { getByRole } = await render(<InlineExample />);
+      const el = getByRole('button').element();
+
+      const baseBg = getComputedStyle(el).backgroundColor;
+
+      el.setAttribute('data-hovered', 'true');
+      expect(getComputedStyle(el).backgroundColor).toBe(baseBg);
+      el.removeAttribute('data-hovered');
     });
 
     it('handles press events', async function pressEvents() {

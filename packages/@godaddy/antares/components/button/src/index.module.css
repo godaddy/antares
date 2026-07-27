@@ -140,8 +140,8 @@
   }
 
   &:where(.inline) {
-    --button-bg: var(--color-action-background-inline-default, var(--ux-5sxt24, #ffffff));
-    --button-bg-hovered: var(--color-action-background-inline-hovered, var(--ux-sjtbcr, #f5f5f5));
+    --button-bg: transparent;
+    --button-bg-hovered: transparent;
     --button-bg-pressed: var(--color-action-background-inline-pressed, var(--ux-k7opxc, #dcdcdc));
     --button-border: transparent;
     --button-border-hovered: transparent;
