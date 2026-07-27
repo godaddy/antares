@@ -169,7 +169,7 @@ These are the invariants every component must follow so the pattern stays consis
    {...mergeProps({ onPress: onClose, className: styles.close }, slotProps?.close)}
    ```
 
-   Handlers **chain** by default, so consumer props never *silently* clobber Antares behavior; className **concatenates**; scalar props (`aria-label`, `data-*`, `id`) let the **consumer win**. Letting a consumer *override* (rather than augment) a behavior-bearing prop is a **per-component decision** - a component may deliberately expose a specific prop as overridable where it makes sense, but merge, not replace, is the default.
+   Handlers **chain** by default, so consumer props never *silently* clobber Antares behavior; `className` **concatenates**; ordinary scalar props (`aria-label`, `data-*`) let the **consumer win**; and `id` values are deduplicated by `mergeProps`. Letting a consumer *override* rather than augment a behavior-bearing prop is a **per-component decision**. A component may deliberately expose a specific prop as overridable where it makes sense, but merge, not replace, is the default.
 
 4. **Replacement is opt-in or Layer 3.** Because `mergeProps` chains rather than replaces, a consumer who needs to *replace* a handler (for example, prevent the default close) either uses a prop the component has deliberately made overridable, or drops to Layer 3 composition. We do not make replacement the global default.
 
