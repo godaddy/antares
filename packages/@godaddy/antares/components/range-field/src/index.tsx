@@ -333,7 +333,10 @@ function RangeFieldControl({
  * @returns Endpoint label row, or `null` when neither label is provided.
  */
 function RangeFieldLabels({ minLabel, maxLabel }: Pick<RangeFieldProps<number | number[]>, 'minLabel' | 'maxLabel'>) {
-  if (minLabel == null && maxLabel == null) {
+  const hasMinLabel = minLabel != null && minLabel !== '' && typeof minLabel !== 'boolean';
+  const hasMaxLabel = maxLabel != null && maxLabel !== '' && typeof maxLabel !== 'boolean';
+
+  if (!hasMinLabel && !hasMaxLabel) {
     return null;
   }
 

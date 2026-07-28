@@ -88,8 +88,15 @@ describe('@godaddy/antares', function antares() {
             <>
               <RangeFieldPlaygroundExample label="Minimum only" minLabel={<span>Minimum</span>} />
               <RangeFieldPlaygroundExample label="Maximum only" maxLabel={<span>Maximum</span>} />
+              <RangeFieldPlaygroundExample label="Numeric zero" minLabel={0} />
             </>
           )
+        ).toMatchSnapshot();
+      });
+
+      it('omits endpoint labels without renderable content', function emptyEndpointLabels() {
+        expect(
+          renderToString(<RangeFieldPlaygroundExample label="No endpoint labels" minLabel="" maxLabel={false} />)
         ).toMatchSnapshot();
       });
 
