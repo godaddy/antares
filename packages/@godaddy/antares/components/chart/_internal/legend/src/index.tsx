@@ -19,7 +19,7 @@ import styles from './index.module.css';
  * default color dot; `color` overrides the swatch color (otherwise it's allocated from the
  * palette by position). Bar and donut legends omit both and keep the position-based dot.
  */
-export interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name'> {
+interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name'> {
   variant?: LineSeriesVariant;
   color?: string;
 }
