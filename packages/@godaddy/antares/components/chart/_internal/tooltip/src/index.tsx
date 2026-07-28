@@ -23,8 +23,12 @@ function defaultFormatValue<T extends object = DataPoint>(d: T): string {
 interface TooltipBaseProps<T extends object> {
   /** Hovered data from visx. */
   tooltipData?: TooltipData<T>;
-  /** Series config for names and colors. */
-  series: SeriesConfig<T>[];
+  /**
+   * Series config for names and colors. Each item may carry an optional `color` to
+   * override its swatch; when omitted the swatch color falls back to the palette by
+   * position (CSS `:nth-child`).
+   */
+  series: (SeriesConfig<T> & { color?: string })[];
   /** Additional class name. */
   className?: string;
   /** Whether to show the tooltip arrow @default false */
@@ -73,11 +77,11 @@ export function Tooltip<T extends object = DataPoint>(
         return [];
       }
 
-      return (series as SeriesConfig<T>[])
-        .filter(function hasDatum(seriesItem: SeriesConfig<T>) {
+      return (series as (SeriesConfig<T> & { color?: string })[])
+        .filter(function hasDatum(seriesItem) {
           return tooltipData.datumByKey[seriesItem.id] != null;
         })
-        .map(function toSeriesItem(seriesItem: SeriesConfig<T>) {
+        .map(function toSeriesItem(seriesItem) {
           const datum = tooltipData.datumByKey[seriesItem.id];
           return { ...seriesItem, value: (formatValue as (d: unknown) => string)(datum.datum) };
         });
@@ -103,7 +107,11 @@ export function Tooltip<T extends object = DataPoint>(
               display="inline-flex"
             >
               <Flex alignItems="center" gap="sm">
-                <Box className={styles.swatch} rounding="full" />
+                <Box
+                  className={styles.swatch}
+                  rounding="full"
+                  style={item.color ? { backgroundColor: item.color } : undefined}
+                />
                 <Text>{item.name}</Text>
               </Flex>
               <Text className={styles.value}>{item.value}</Text>

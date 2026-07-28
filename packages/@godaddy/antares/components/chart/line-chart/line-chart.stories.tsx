@@ -6,6 +6,7 @@ import { BaselinesExample } from './examples/baselines.tsx';
 import { BitcoinPriceExample } from './examples/bitcoin-price.tsx';
 import { BrowserUsageExample } from './examples/browser-usage.tsx';
 import { CityTemperatureExample } from './examples/city-temperature.tsx';
+import { ColorIndexExample } from './examples/color-index.tsx';
 import { CrosshairOnlyExample } from './examples/crosshair-only.tsx';
 import { CustomAccessorsExample } from './examples/custom-accessors.tsx';
 import { CustomTicksExample } from './examples/custom-ticks.tsx';
@@ -16,6 +17,7 @@ import { FormattingExample } from './examples/formatting.tsx';
 import { GridlinesExample } from './examples/gridlines.tsx';
 import { LabelsExample } from './examples/labels.tsx';
 import { LegendExample } from './examples/legend.tsx';
+import { LineStylesExample } from './examples/line-styles.tsx';
 import { MissingValuesExample } from './examples/missing-values.tsx';
 import { MultipleSeriesExample } from './examples/multiple-series.tsx';
 import { NiceValuesExample } from './examples/nice-values.tsx';
@@ -50,6 +52,10 @@ export const Ticks = getStory(TicksExample);
 export const Baselines = getStory(BaselinesExample);
 
 export const Legend = getStory(LegendExample);
+
+export const LineStyles = getStory(LineStylesExample);
+
+export const ColorIndex = getStory(ColorIndexExample);
 
 export const Formatting = getStory(FormattingExample);
 
@@ -93,6 +99,7 @@ export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
   args: {
     numSeries: 2,
+    lineVariant: 'solid',
     xTitle: 'Date',
     yTitle: 'Temperature (°F)',
     xType: 'time',
@@ -130,6 +137,11 @@ export const Playground = {
       control: 'radio',
       options: [1, 2, 3],
       description: 'Number of series to render'
+    },
+    lineVariant: {
+      control: 'radio',
+      options: ['solid', 'dashed', 'dotted'],
+      description: 'Line style applied to every series'
     },
     rtl: { control: 'boolean', description: 'Render in right-to-left layout' },
     xTitle: { control: 'text', description: 'X-axis title' },

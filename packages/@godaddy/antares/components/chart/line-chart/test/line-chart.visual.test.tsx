@@ -19,6 +19,8 @@ import { FormattingExample } from '../examples/formatting';
 import { GridlinesExample } from '../examples/gridlines';
 import { LabelsExample } from '../examples/labels';
 import { LegendExample } from '../examples/legend';
+import { ColorIndexExample } from '../examples/color-index';
+import { LineStylesExample } from '../examples/line-styles';
 import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
 import { NiceValuesExample } from '../examples/nice-values';
@@ -111,6 +113,20 @@ describe('@godaddy/antares', function antares() {
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('legend');
+      });
+
+      it('line-styles screenshot', async function lineStyles() {
+        const { container } = await renderExampleAndWait(<LineStylesExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('line-styles');
+      });
+
+      it('color-index screenshot', async function colorIndex() {
+        const { container } = await renderExampleAndWait(<ColorIndexExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('color-index');
       });
 
       it('formatting screenshot', async function formatting() {

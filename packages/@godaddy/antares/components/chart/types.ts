@@ -30,6 +30,36 @@ export interface SeriesConfig<T extends object = DataPoint> {
 }
 
 /**
+ * Line style for a line-chart series.
+ *
+ * Maps to an SVG stroke dash pattern: 'solid' draws a continuous stroke,
+ * 'dashed' a long-dash pattern, and 'dotted' a round-dot pattern.
+ */
+export type LineSeriesVariant = 'solid' | 'dashed' | 'dotted';
+
+/**
+ * Config for one line-chart series.
+ *
+ * Extends {@link SeriesConfig} with an optional {@link LineSeriesVariant} so
+ * individual lines can render solid, dashed, or dotted. Line-specific — bar and
+ * donut charts continue to use {@link SeriesConfig}.
+ *
+ * @typeParam T - Item type for data points. Defaults to {@link DataPoint}.
+ */
+export interface LineSeriesConfig<T extends object = DataPoint> extends SeriesConfig<T> {
+  /** Line style for this series. @default 'solid' */
+  variant?: LineSeriesVariant;
+  /**
+   * Index into the chart's data-visualization palette (0-based; wraps modulo the
+   * palette length). Assign the same index to multiple series to give them the
+   * same color — e.g. a solid and a dashed line that belong together. Any series
+   * may use any index independently; there is no grouping or ordering requirement.
+   * When omitted, the series uses its position in `series` (the default behavior).
+   */
+  colorIndex?: number;
+}
+
+/**
  * Accessors for X and Y from a data point.
  *
  * Used by chart components when the data shape differs from {@link DataPoint};

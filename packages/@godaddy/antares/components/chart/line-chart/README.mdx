@@ -24,6 +24,8 @@ import SourceSingleSeries from './examples/single-series.tsx?raw';
 import SourceZeroIncluded from './examples/zero-included.tsx?raw';
 import SourceLabels from './examples/labels.tsx?raw';
 import SourceLegend from './examples/legend.tsx?raw';
+import SourceLineStyles from './examples/line-styles.tsx?raw';
+import SourceColorIndex from './examples/color-index.tsx?raw';
 import SourceTitles from './examples/titles.tsx?raw';
 import SourceTicks from './examples/ticks.tsx?raw';
 import SourceRTL from './examples/rtl.tsx?raw';
@@ -58,6 +60,20 @@ Several lines with a bottom legend and shared X-axis.
 
 <Story of={Stories.MultipleSeries} inline />
 <Source language="tsx" code={SourceMultipleSeries} />
+
+#### Line Styles
+
+Set `variant` on a series to render it `solid` (default), `dashed`, or `dotted` — useful for distinguishing actuals from forecasts or targets. The legend swatch mirrors each line's style.
+
+<Story of={Stories.LineStyles} inline />
+<Source language="tsx" code={SourceLineStyles} />
+
+#### Color Index
+
+Set `colorIndex` on a series to pin it to a specific palette color (0-based, wraps modulo the palette length). Series that share an index share a color; when omitted, a series uses its position. Indices are independent per series — there's no grouping requirement — so this works for solo series, pairs, or any grouping. Combined with `variant`, it lets related lines (e.g. an actual and its forecast) share a color while staying distinguishable.
+
+<Story of={Stories.ColorIndex} inline />
+<Source language="tsx" code={SourceColorIndex} />
 
 ### Axis
 
