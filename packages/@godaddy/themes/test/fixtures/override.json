@@ -1,0 +1,12 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "tokens": {
+      "sources": [
+        { "shared": { "$type": "color", "$value": "first" } },
+        { "shared": { "$type": "color", "$value": "second" } }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/tokens"]
+}
