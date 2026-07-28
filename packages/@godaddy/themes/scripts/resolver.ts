@@ -1,3 +1,14 @@
+/**
+ * Local implementation of a DTCG 2025.10 resolver parser.
+ *
+ * @see https://www.designtokens.org/schemas/2025.10/resolver.json
+ *
+ * The @tokens-studio/resolver-parser package (0.0.1) implements a different
+ * spec variant (modifier permutations) and does not handle our resolver format
+ * ($schema, sets with $ref sources, resolutionOrder). This module fills that
+ * gap and is intended to be replaced once the upstream package supports the
+ * DTCG resolver spec natively.
+ */
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
