@@ -87,6 +87,7 @@ export async function build(srcDir: string, distDir: string) {
               destination: cssFilename,
               format: 'css/variables',
               filter: function excludePartials(token) {
+                if (expectedTokens.has(token.name)) return true;
                 return !partialTokenIds.has(token.name);
               },
               options: {
@@ -104,5 +105,7 @@ export async function build(srcDir: string, distDir: string) {
   }
 }
 
-const root = resolve(import.meta.dirname, '..');
-await build(resolve(root, 'src'), resolve(root, 'dist'));
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const root = resolve(import.meta.dirname, '..');
+  await build(resolve(root, 'src'), resolve(root, 'dist'));
+}
