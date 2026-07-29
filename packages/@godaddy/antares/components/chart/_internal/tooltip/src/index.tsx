@@ -2,12 +2,28 @@ import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
 import { Text } from '#components/text';
 import type { TooltipData } from '@visx/xychart';
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { useMemo } from 'react';
 import type { DataPoint, SeriesConfig } from '../../../types.ts';
 import { yAccessor as defaultYAccessor } from '../../../utils.ts';
 import { cx } from 'cva';
 import styles from './index.module.css';
+
+/**
+ * Styled popover container shared by the built-in tooltip and any custom tooltip
+ * content, so both render with identical chrome (elevation, rounding, padding).
+ *
+ * @param props.children - Tooltip content to render inside the popover.
+ * @param props.className - Additional class name merged onto the container.
+ */
+export function TooltipContainer(props: { children: ReactNode; className?: string }): ReactElement {
+  const { children, className } = props;
+  return (
+    <Box padding="md" rounding="2xl" elevation="raised" className={cx(styles.tooltip, className)}>
+      {children}
+    </Box>
+  );
+}
 
 /** Default formatter: Y as string, or '' if null. */
 function defaultFormatValue<T extends object = DataPoint>(d: T): string {
@@ -94,7 +110,7 @@ export function Tooltip<T extends object = DataPoint>(
   }
 
   return (
-    <Box padding="md" rounding="2xl" elevation="raised" className={cx(styles.tooltip, className)}>
+    <TooltipContainer className={className}>
       <Flex role="list" aria-label="Tooltip data" direction="column" gap="sm">
         {seriesData.map(function renderSeriesItem(item) {
           return (
@@ -120,6 +136,6 @@ export function Tooltip<T extends object = DataPoint>(
         })}
       </Flex>
       {showArrow && <div className={styles.tooltipArrow} />}
-    </Box>
+    </TooltipContainer>
   );
 }

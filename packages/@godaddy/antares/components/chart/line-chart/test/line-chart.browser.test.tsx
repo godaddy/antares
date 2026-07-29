@@ -11,6 +11,7 @@ import { MultipleSeriesExample } from '../examples/multiple-series';
 import { SingleSeriesExample } from '../examples/single-series';
 import { TitlesExample } from '../examples/titles';
 import { FormattingExample } from '../examples/formatting.tsx';
+import { CustomTooltipExample } from '../examples/custom-tooltip.tsx';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting.tsx';
 import { CustomAccessorsExample } from '../examples/custom-accessors.tsx';
 import { BrowserUsageExample } from '../examples/browser-usage.tsx';
@@ -304,6 +305,28 @@ describe('@godaddy/antares', function antares() {
 
       assume(lastTooltip.children.length).greaterThan(0);
       expect(lastTooltip.children[0].textContent).toMatch(/^Series 1Value: \d+\.\d{2} units$/);
+    });
+
+    describe('#custom-tooltip', function customTooltip() {
+      it('renders a custom tooltip specific to the hovered curve', async function hoveredCurveOnly() {
+        const { container, locator, baseElement } = await renderExampleAndWait(<CustomTooltipExample />);
+
+        assume(container.querySelector('svg')).exists();
+
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+
+        const tooltipElements = document.querySelectorAll('.visx-tooltip');
+        const lastTooltip = tooltipElements[tooltipElements.length - 1];
+        const text = lastTooltip.textContent ?? '';
+
+        // The custom tooltip shows only the hovered curve, not every series at the X position:
+        // exactly one city is present (XOR), proving the nearestDatum wiring.
+        assume(text).matches(/°F/);
+        const showsNewYork = text.includes('New York');
+        const showsSanFrancisco = text.includes('San Francisco');
+        assume(showsNewYork !== showsSanFrancisco).is.true();
+      });
     });
 
     describe('#accessors', function accessors() {

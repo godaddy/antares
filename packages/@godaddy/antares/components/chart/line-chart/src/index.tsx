@@ -1,7 +1,7 @@
 import { AxisTitle } from '#components/chart/_internal/axis-title';
 import { TooltipDismissStrip } from '#components/chart/_internal/tooltip-dismiss-strip';
 import { Legend } from '#components/chart/_internal/legend';
-import { Tooltip as ChartTooltip } from '#components/chart/_internal/tooltip';
+import { Tooltip as ChartTooltip, TooltipContainer } from '#components/chart/_internal/tooltip';
 import { CHART_LEGACY_SERIES_COLORS, chartColorForIndex } from '#components/chart/_internal/use-chart-color';
 import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
@@ -16,7 +16,7 @@ import {
   buildChartTheme
 } from '@visx/xychart';
 import { cx } from 'cva';
-import { useCallback, useMemo } from 'react';
+import { type ReactNode, useCallback, useMemo } from 'react';
 import { useLocale } from 'react-aria-components';
 import type {
   AccessorRequirement,
@@ -52,6 +52,28 @@ const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
   dashed: '8 6',
   dotted: '2 6'
 };
+
+/**
+ * Data passed to a custom {@link LineChartPropsBase.renderTooltip} function.
+ *
+ * `hoveredSeriesId` / `hoveredDatum` identify the single curve nearest the cursor
+ * (visx's `nearestDatum`), which is what lets a custom tooltip show information
+ * specific to the line being hovered. `datumByKey` still exposes every series'
+ * point at the current X for tooltips that want to show them all.
+ *
+ * @template T - The data point type. Defaults to DataPoint.
+ * @public
+ */
+export interface LineChartTooltipRenderProps<T extends object = DataPoint> {
+  /** id of the series/curve nearest the cursor; undefined when none is hovered. */
+  hoveredSeriesId?: string;
+  /** The data point on the hovered curve nearest the cursor. */
+  hoveredDatum?: T;
+  /** Nearest datum for each series at the current X position, keyed by series id. */
+  datumByKey: Record<string, T>;
+  /** Resolved series in render order, each with its resolved palette color. */
+  series: (LineSeriesConfig<T> & { color?: string })[];
+}
 
 /**
  * Base props for the LineChart component (without accessors).
@@ -228,6 +250,14 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
    * @default Y as string
    */
   tooltipValueFormatter?: (datum: T) => string;
+  /**
+   * Render a custom tooltip. Receives the hovered series id and datum (the curve
+   * nearest the cursor), every series' datum at the current X, and the resolved
+   * series list — see {@link LineChartTooltipRenderProps}. The returned content is
+   * wrapped in the default styled popover. When omitted, the built-in tooltip (one
+   * row per series) is shown; `tooltipValueFormatter` only affects that built-in tooltip.
+   */
+  renderTooltip?: (props: LineChartTooltipRenderProps<T>) => ReactNode;
 
   /** Outer container width (omitted = 100%) */
   width?: number;
@@ -312,6 +342,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     showCrosshair = true,
     showDataPoints = true,
     tooltipValueFormatter,
+    renderTooltip: renderTooltipContent,
     legendPosition,
 
     // Layout and aria
@@ -360,6 +391,27 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
         return <></>;
       }
 
+      // Custom tooltip: expose the hovered curve (nearestDatum) plus all series at this X,
+      // wrapped in the shared popover chrome so it matches the built-in tooltip.
+      if (renderTooltipContent) {
+        const { tooltipData } = params;
+        const datumByKey = Object.fromEntries(
+          Object.entries(tooltipData?.datumByKey ?? {}).map(function toDatum([key, entry]) {
+            return [key, entry.datum];
+          })
+        );
+        return (
+          <TooltipContainer>
+            {renderTooltipContent({
+              hoveredSeriesId: tooltipData?.nearestDatum?.key,
+              hoveredDatum: tooltipData?.nearestDatum?.datum,
+              datumByKey,
+              series: seriesWithColor
+            })}
+          </TooltipContainer>
+        );
+      }
+
       // Narrow to DataPoint overload; Tooltip overloads can't resolve generic T
       return (
         <ChartTooltip
@@ -369,7 +421,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
         />
       );
     },
-    [seriesWithColor, tooltipValueFormatter, showTooltip]
+    [seriesWithColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
   );
 
   const xScaleConfig = useMemo(

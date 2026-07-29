@@ -3,6 +3,7 @@ title: LineChart
 description: Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
 ---
 import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import SourceCustomTooltip from './examples/custom-tooltip.tsx?raw';
 import SourceCustomTooltipFormatting from './examples/custom-tooltip-formatting.tsx?raw';
 import SourceCityTemperature from './examples/city-temperature.tsx?raw';
 import SourceCustomAccessors from './examples/custom-accessors.tsx?raw';
@@ -187,6 +188,13 @@ Tooltip values formatted with `tooltipValueFormatter` (e.g. currency, units).
 
 <Story of={Stories.CustomTooltipFormatting} inline />
 <Source language="tsx" code={SourceCustomTooltipFormatting} />
+
+#### Custom Tooltip
+
+A fully custom tooltip via `renderTooltip`. The render prop receives `hoveredSeriesId` so the tooltip can show information specific to the hovered curve instead of every series at once. Content is wrapped in the default styled popover.
+
+<Story of={Stories.CustomTooltip} inline />
+<Source language="tsx" code={SourceCustomTooltip} />
 
 ### Data
 

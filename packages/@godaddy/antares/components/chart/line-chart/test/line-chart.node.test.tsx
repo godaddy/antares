@@ -6,6 +6,7 @@
 import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
+import { CustomTooltipExample } from '../examples/custom-tooltip';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';
 import { CityTemperatureExample } from '../examples/city-temperature';
 import { ColorIndexExample } from '../examples/color-index';
@@ -43,6 +44,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['crosshair-only', CrosshairOnlyExample],
   ['custom-accessors', CustomAccessorsExample],
   ['custom-ticks', CustomTicksExample],
+  ['custom-tooltip', CustomTooltipExample],
   ['custom-tooltip-formatting', CustomTooltipFormattingExample],
   ['fixed-domain', FixedDomainExample],
   ['fixed-size', FixedSizeExample],

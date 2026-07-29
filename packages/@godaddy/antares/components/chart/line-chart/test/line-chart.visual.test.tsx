@@ -12,6 +12,7 @@ import { CityTemperatureExample } from '../examples/city-temperature';
 import { CrosshairOnlyExample } from '../examples/crosshair-only';
 import { CustomAccessorsExample } from '../examples/custom-accessors';
 import { CustomTicksExample } from '../examples/custom-ticks';
+import { CustomTooltipExample } from '../examples/custom-tooltip';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';
 import { FixedDomainExample } from '../examples/fixed-domain';
 import { FixedSizeExample } from '../examples/fixed-size';
@@ -197,6 +198,14 @@ describe('@godaddy/antares', function antares() {
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
         await expect(container).toMatchScreenshot('custom-tooltip-formatting');
+      });
+
+      it('custom-tooltip screenshot', async function customTooltip() {
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await expect(container).toMatchScreenshot('custom-tooltip');
       });
     });
 
