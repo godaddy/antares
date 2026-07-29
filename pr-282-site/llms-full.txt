@@ -960,6 +960,98 @@ A disabled picker via `isDisabled`.
 * Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
 
 
+# DropZone
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Disabled [#disabled]
+
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="DisabledExample" />
+
+### File Upload [#file-upload]
+
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+<Story of="Stories.FileUpload" />
+
+<Source language="tsx" code="FileUploadExample" />
+
+### Drop Target Label [#drop-target-label]
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is accepted.
+
+<Story of="Stories.DropTargetLabel" />
+
+<Source language="tsx" code="DropTargetLabelExample" />
+
+### Replace Existing File [#replace-existing-file]
+
+Use `children` as a render function to show different content based on the current zone state — here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+
+<Story of="Stories.ReplaceFile" />
+
+<Source language="tsx" code="ReplaceFileExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| `Tab`             | Moves focus to the drop zone                                     |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers [#screen-readers]
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
+
+## Best Practices [#best-practices]
+
+* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+* Replace the default text with `children` to communicate the accepted file types and size limits up front.
+* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
+
+
 # Drawer
 
 
@@ -1056,98 +1148,6 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 * Always provide an `aria-label` so the dialog has an accessible name.
 * Use `isDismissable` to allow closing via backdrop click.
 * Don't nest drawers.
-
-
-# DropZone
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Disabled [#disabled]
-
-Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
-
-<Story of="Stories.Disabled" />
-
-<Source language="tsx" code="DisabledExample" />
-
-### File Upload [#file-upload]
-
-A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
-
-<Story of="Stories.FileUpload" />
-
-<Source language="tsx" code="FileUploadExample" />
-
-### Drop Target Label [#drop-target-label]
-
-Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types — the label only appears when the drag is accepted.
-
-<Story of="Stories.DropTargetLabel" />
-
-<Source language="tsx" code="DropTargetLabelExample" />
-
-### Replace Existing File [#replace-existing-file]
-
-Use `children` as a render function to show different content based on the current zone state — here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
-
-<Story of="Stories.ReplaceFile" />
-
-<Source language="tsx" code="ReplaceFileExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `Tab`             | Moves focus to the drop zone                                     |
-| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
-
-### Screen readers [#screen-readers]
-
-The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
-
-The button's accessible name is built from two sources, combined in order:
-
-1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
-2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
-
-```tsx
-<DropZone onDrop={handleDrop}>
-  <Text slot="label">Drop files to upload.</Text>
-</DropZone>
-```
-
-## Best Practices [#best-practices]
-
-* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
-* Replace the default text with `children` to communicate the accepted file types and size limits up front.
-* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
-* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
 
 
 # Field primitives
@@ -2281,6 +2281,62 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 * For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
 
 
+# Popover
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
+trigger element (for example, a `Button`).
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the
+`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
+`onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+### Close Button and Header [#close-button-and-header]
+
+To show a close button in the popover header, use the `showCloseButton` prop.
+
+You can also use the `header` prop to render content alongside the close button.
+This is useful for displaying a title or other header content without overlapping
+the close button.
+
+<Story of="Stories.WithCloseButton" />
+
+<Source language="tsx" code="WithCloseButtonExample" />
+
+## Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+
 # Pagination
 
 
@@ -2342,62 +2398,6 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <Story of="Stories.OnChange" />
 
 <Source language="tsx" code="SourceOnChange" />
-
-
-# Popover
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive
-trigger element (for example, a `Button`).
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the
-`triggerRef` and `isOpen` props instead of `<PopoverTrigger>`.
-`onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-### Close Button and Header [#close-button-and-header]
-
-To show a close button in the popover header, use the `showCloseButton` prop.
-
-You can also use the `header` prop to render content alongside the close button.
-This is useful for displaying a title or other header content without overlapping
-the close button.
-
-<Story of="Stories.WithCloseButton" />
-
-<Source language="tsx" code="WithCloseButtonExample" />
-
-## Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 
 # ProgressBar
@@ -3361,6 +3361,149 @@ Setting the `wrap` prop allows you to change the wrapping of the text. The value
 <Source language="tsx" code="WrapExample" />
 
 
+# TextField
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `TextField` component accepts the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+Minimal usage with label and placeholder.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Controlled [#controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Source language="tsx" code="SourceControlled" />
+
+<Story of="Stories.Controlled" />
+
+### Invalid [#invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Source language="tsx" code="SourceInvalid" />
+
+<Story of="Stories.Invalid" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` to prevent input.
+
+<Source language="tsx" code="SourceDisabled" />
+
+<Story of="Stories.Disabled" />
+
+### Adornments [#adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
+
+<Source language="tsx" code="SourceAdornments" />
+
+<Story of="Stories.Adornments" />
+
+### Multiline [#multiline]
+
+Use `multiline` to render a textarea.
+
+<Source language="tsx" code="SourceMultiline" />
+
+<Story of="Stories.Multiline" />
+
+
+# Tooltip
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic Usage [#basic-usage]
+
+Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
+element (for example, a `Button`). The tooltip appears on hover and focus.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="DefaultExample" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the
+`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
+
+<Story of="Stories.CustomAnchor" />
+
+<Source language="tsx" code="CustomAnchorExample" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| Tab    | Moves focus to the focusable element and shows the tooltip |
+| Escape | Closes the tooltip                                         |
+
+### ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+
 # ToggleButton
 
 
@@ -3604,149 +3747,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
   <Icon icon="bulleted-list" />
 </ToggleButton>
 ```
-
-
-# Tooltip
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic Usage [#basic-usage]
-
-Use it with `<TooltipTrigger>`, which wraps both the tooltip content and a focusable
-element (for example, a `Button`). The tooltip appears on hover and focus.
-
-<Story of="Stories.Default" />
-
-<Source language="tsx" code="DefaultExample" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the
-`triggerRef` prop. The `TooltipTrigger` still handles showing/hiding on hover/focus.
-
-<Story of="Stories.CustomAnchor" />
-
-<Source language="tsx" code="CustomAnchorExample" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                |
-| ------ | ---------------------------------------------------------- |
-| Tab    | Moves focus to the focusable element and shows the tooltip |
-| Escape | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-
-# TextField
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Props [#props]
-
-The `TextField` component accepts the following props:
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-Minimal usage with label and placeholder.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Controlled [#controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code="SourceControlled" />
-
-<Story of="Stories.Controlled" />
-
-### Invalid [#invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code="SourceInvalid" />
-
-<Story of="Stories.Invalid" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` to prevent input.
-
-<Source language="tsx" code="SourceDisabled" />
-
-<Story of="Stories.Disabled" />
-
-### Adornments [#adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input (e.g. currency).
-
-<Source language="tsx" code="SourceAdornments" />
-
-<Story of="Stories.Adornments" />
-
-### Multiline [#multiline]
-
-Use `multiline` to render a textarea.
-
-<Source language="tsx" code="SourceMultiline" />
-
-<Story of="Stories.Multiline" />
 
 
 # Bar Chart
@@ -4142,69 +4142,6 @@ All examples can be found in the Storybook interface:
 * **RTL Multi-Series*&#x2A;: Multi-series chart in RTL &#x2A;(in development)*
 
 
-# DonutChart
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic [#basic]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Source language="tsx" code="SourceBasic" />
-
-<Story of="Stories.Basic" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Source language="tsx" code="SourceSingleSlice" />
-
-<Story of="Stories.SingleSlice" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Source language="tsx" code="SourceLegendLayout" />
-
-<Story of="Stories.LegendLayout" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Source language="tsx" code="SourceSmallSlices" />
-
-<Story of="Stories.SmallSlices" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Source language="tsx" code="SourceFormatValue" />
-
-<Story of="Stories.FormatValue" />
-
-
 # Gauge Chart
 
 
@@ -4305,6 +4242,69 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
+
+
+# DonutChart
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic [#basic]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Source language="tsx" code="SourceBasic" />
+
+<Story of="Stories.Basic" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Source language="tsx" code="SourceSingleSlice" />
+
+<Story of="Stories.SingleSlice" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Source language="tsx" code="SourceLegendLayout" />
+
+<Story of="Stories.LegendLayout" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Source language="tsx" code="SourceSmallSlices" />
+
+<Story of="Stories.SmallSlices" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Source language="tsx" code="SourceFormatValue" />
+
+<Story of="Stories.FormatValue" />
 
 
 # LineChart
