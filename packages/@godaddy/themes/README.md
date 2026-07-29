@@ -4,40 +4,56 @@ Theme definitions for GoDaddy products. Each theme provides a complete set of de
 
 ## Structure
 
-The only required file is `src/<brand>/<theme>/index.json`. Everything else — how you split your tokens, whether you use a shared palette, the filenames you choose — is up to you.
+The only required file is `src/<brand>/<theme>/index.json`. Everything else — how you split your tokens, whether you use a shared palette, the filenames you choose is up to you but there are recommendations below.
 
 ```text
 src/
   <brand>/
     CODEOWNERS            # Required — review routing for this brand
     _palette.json         # Shared color aliases (optional)
+    _fonts.json           # Shared font families (optional)
     <theme>/
       CODEOWNERS          # Review routing override (optional)
-      index.json          # Required — must cover all design tokens
+      index.json          # Required must cover all design tokens
+      color.json          # Defines colors for <theme> 
+      typography.json     # Defines typography for <theme>
+      spacing.json        # Defines dimension (spacing/rounding) for <theme>
+      effects.json        # Defines shadows and blurs for <theme>
       ...                 # Any other .json files (optional)
 ```
 
-The `godaddy/airo` directory splits tokens into `color.json`, `typography.json`, `spacing.json`, and `effects.json` referenced by `index.json` — but a theme could just as easily put all tokens directly in `index.json` or organize files differently.
+You can import files into other files to consolidate, organize, and reuse values within a brand and across themes.
 
-Token files follow the [DTCG](https://www.designtokens.org/) specification. Files that combine multiple sources use the **resolver** format:
+Splitting these files allows different slices of a theme to be served. For example, it's more common for colors to change across a brand and not common for typography to change. This means you could have several themes that focus on changing colors, but always reference the same typography values owned by the brand.
 
-```json
+Token files loosely follow the [DTCG](https://www.designtokens.org/) specification. Files that combine multiple sources use the **resolver** format:
+
+```json5
 {
   "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
   "sets": {
     "color": {
       "description": "Semantic color tokens",
       "sources": [
+        // This can be thought of as an "import"
         { "$ref": "../_palette.json" },
-        { "color-action-background-primary-default": { "$type": "color", "$value": "{godaddy-blue}" } }
+        // Additional token-value assignments using the import
+        { "color-action-background-primary-default": {
+            "$type": "color",
+            "$value": "{some-alias}"
+          }
+        }
       ]
     }
   },
+  // This can be thought of as an "export"
   "resolutionOrder": ["sets/color"]
 }
 ```
 
 Plain token files (no `$schema`/`sets`) are also supported and can be referenced via `$ref`.
+
+The values (set at `$value`) can be CSS strings or the expected DTCG format. The transformer should convert DTCG values to the appropriate CSS value or otherwise write the string as provided.
 
 ## Adding a theme
 
@@ -81,7 +97,7 @@ This allows multiple themes to coexist on the same page, each scoped to the subt
 Declaring custom properties on `:root` makes them global — only one theme can be active at a time, and overriding requires specificity tricks or cascade layers. `@scope` ties the properties to the element that loaded the stylesheet, so different regions of the page can use different themes without conflicts. It also means the theme activates based on _where_ the `<link>` appears in the DOM rather than requiring class names or data attributes.
 
 > [!NOTE]
-> This package does not prescribe where the CSS files are hosted. The `href` values above are illustrative — your actual URLs will depend on your CDN or asset pipeline.
+> This package does not prescribe where the CSS files are hosted. The `href` values above are illustrative — your actual URLs will depend on the CDN or asset pipeline.
 
 ## Conventions
 
