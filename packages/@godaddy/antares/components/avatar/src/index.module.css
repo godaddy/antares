@@ -1,0 +1,192 @@
+.avatar {
+  --_avatar-size: 32px;
+  --_avatar-default-bg: var(--ux-7wu8i7, #111);
+  --_avatar-default-fg: var(--ux-1o8cusa, #fff);
+
+  display: inline-grid;
+  flex-shrink: 0;
+  width: var(--_avatar-size);
+  height: var(--_avatar-size);
+  container-type: inline-size;
+  place-items: center;
+  overflow: clip;
+  background-color: var(--_avatar-bg, var(--_avatar-default-bg));
+  color: var(--_avatar-fg, var(--_avatar-default-fg));
+  vertical-align: middle;
+
+  &[data-size="sm"] {
+    --_avatar-size: 24px;
+  }
+
+  &[data-size="md"] {
+    --_avatar-size: 32px;
+  }
+
+  &[data-size="lg"] {
+    --_avatar-size: 40px;
+  }
+
+  &[data-size="xl"] {
+    --_avatar-size: 88px;
+  }
+
+  &[data-shape="circle"] {
+    border-radius: 50%;
+  }
+
+  &[data-shape="square"] {
+    border-radius: var(--ux-2jubes, 6px);
+  }
+
+  &[data-emphasis="subtle"] {
+    --_avatar-default-bg: var(--ux-l7zq7p, #f5f5f5);
+    --_avatar-default-fg: var(--ux-vuekow, #111);
+  }
+
+  &[data-emphasis^="figure"] {
+    --_avatar-default-fg: var(--ux-1o8cusa, #fff);
+  }
+
+  &[data-emphasis="figure0"] {
+    --_avatar-default-bg: var(--ux-k4t5bc, #15a4ab);
+  }
+
+  &[data-emphasis="figure1"] {
+    --_avatar-default-bg: var(--ux-yscvvt, #145fa9);
+  }
+
+  &[data-emphasis="figure2"] {
+    --_avatar-default-bg: var(--ux-3seoiy, #ef6c0f);
+  }
+
+  &[data-emphasis="figure3"] {
+    --_avatar-default-bg: var(--ux-ifyf3f, #e20087);
+  }
+
+  &[data-emphasis="figure4"] {
+    --_avatar-default-bg: var(--ux-1c4rju4, #744bc4);
+  }
+
+  &[data-emphasis="figure5"] {
+    --_avatar-default-bg: var(--ux-1qsbael, #104a85);
+  }
+
+  &[data-emphasis="figure6"] {
+    --_avatar-default-bg: var(--ux-vsd31q, #9d470a);
+  }
+
+  &[data-emphasis="figure7"] {
+    --_avatar-default-bg: var(--ux-1afwtm7, #8b0053);
+  }
+
+  &[data-emphasis="figure8"] {
+    --_avatar-default-bg: var(--ux-3uv4tc, #462a72);
+  }
+
+  &[data-emphasis="figure9"] {
+    --_avatar-default-bg: var(--ux-iievdt, #565656);
+  }
+
+  &[data-emphasis="figure10"] {
+    --_avatar-default-bg: var(--ux-99lo9, #0c8a8f);
+  }
+
+  &[data-emphasis="figure11"] {
+    --_avatar-default-bg: var(--ux-ux0m8o, #09757a);
+  }
+
+  &[data-emphasis="figure12"] {
+    --_avatar-default-bg: var(--ux-swmbzv, #086366);
+  }
+
+  &[data-emphasis="figure13"] {
+    --_avatar-default-bg: var(--ux-xpiaca, #054648);
+  }
+
+  &[data-emphasis="figure14"] {
+    --_avatar-default-bg: var(--ux-ktf9ml, #022627);
+  }
+
+  &[data-loading-status="loaded"] .image {
+    opacity: 1;
+  }
+
+  &[data-loading-status="loaded"] .fallback {
+    display: none;
+  }
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.fallback {
+  position: absolute;
+  display: grid;
+  max-width: 100%;
+  place-items: center;
+  overflow: hidden;
+  font-family: var(--ux-15ks663, gdsherpa, Helvetica, Arial, sans-serif);
+  font-size: round(43.75cqw, 1px);
+  font-weight: bolder;
+  line-height: 1;
+  letter-spacing: 0.2px;
+  text-align: center;
+  text-overflow: clip;
+  white-space: nowrap;
+
+  @supports (text-box-trim: trim-both) {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}
+
+.button {
+  --_avatar-button-radius: 50%;
+
+  display: inline-grid;
+  box-sizing: content-box;
+  flex-shrink: 0;
+  place-items: center;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--_avatar-button-radius);
+  background-color: var(--ux-1owc8nc, transparent);
+
+  &:where([data-hovered]:not([data-disabled])) {
+    background-color: var(--ux-1m7qrkf, rgb(17 17 17 / 10%));
+  }
+
+  &:where([aria-expanded="true"]) {
+    --_avatar-bg: var(--ux-9qpf6c, #00a4a6);
+    --_avatar-fg: var(--ux-h6e7c1, #fff);
+
+    background-color: #f3f3f3;
+  }
+
+  &:where([data-selected]) {
+    .avatar {
+      outline: 2px solid var(--ux-t61743, #1bdbdb);
+    }
+  }
+
+  &:where([data-focus-visible]:not([data-disabled])) {
+    outline: 2px solid Highlight;
+    outline-offset: -4px;
+  }
+
+  &:where([data-disabled]) {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &:has(.avatar[data-shape="square"]) {
+    --_avatar-button-radius: calc(var(--ux-2jubes, 6px) + 4px);
+  }
+}
