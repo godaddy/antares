@@ -1,4 +1,4 @@
-# GU and Spacing PDR
+# GU and Spacing tokens
 
 Status: **Proposed**
 
@@ -175,10 +175,87 @@ Figma.
 Some components such as `Button`, `SegmentedController` can use t-shirt sizes to signal their
 respective sizes. These values have no correlation with t-shirt values used in design tokens.
 
-### 5. Per-component expectations
+### 5. Per-component implementation
 
-Each component should declare its own variables, making it self-contained and able to render
-with either token system, neither token system, or both at the same time.
+Each component declares its own spacing variables, so that it renders correctly under a design-token
+theme, an intent theme, both, or neither. Six rules.
+
+**1. Declare the chain in full: token → intent → literal.**
+
+```css
+.menu {
+  --_menu-padding: var(--size-space-010, calc(var(--ux-1sbfig8, 0.5rem) * 0.5));
+}
+```
+
+Each link covers one of the four scenarios: `--size-space-010` a token theme, `--ux-1sbfig8` an intent
+theme, `0.5rem` neither. Dropping the literal is what makes [Defects](#defects) 1 and 3 render at `0`
+and `normal` - a `var()` whose reference is undefined and which has no fallback is invalid at
+computed-value time, so the property takes its **initial** value, not a smaller version of the intended
+one. The failure is silent and does not look like a missing theme.
+
+**2. Precedence: the token wins.** The token is the outer `var()`, so a consumer shipping both systems
+gets the token value and the intent is never consulted. This is deliberate: the token scale is the
+target vocabulary and the intent chain is the compatibility path, so the compatibility path must not
+be able to override the target.
+
+**3. Declare on the component's own root selector.** Never rely on an ancestor to define the variable.
+`--sp-md` is defined on `.box`, which is exactly why `Menu` - portaled through `RACPopover`, with no
+`Box` anywhere in its subtree - resolves nothing. A component that declares its own variables is
+correct wherever it is rendered, portal included. This is the rule that makes "self-contained"
+enforceable rather than aspirational.
+
+**4. Name the variable after the component, and after whatever the component means by it.** A single
+measurement takes a role name: `--_menu-padding`, `--_alert-gap`, `--_pagination-dot-size`. A ramp that
+tracks the component's own size steps takes those step names: `--_button-space-md` is the space `Button`
+uses at `size="md"`, which is the sense established in [§4](#4-components-with-sized-controls). Both are
+component-local names in the component's own namespace, and neither is constrained by the token
+vocabulary.
+
+So a t-shirt-named local variable holding a numeric-tier value is correct, not a mismatch:
+`--_button-space-md` denotes a button size and resolves to `size-space-040`. The two `md`s are unrelated
+by design, which is what [§4](#4-components-with-sized-controls) already says.
+
+**5. Prefix the variable with `--_`, and keep the component name inside the prefix.** Spacing variables
+are private. The way a consumer changes a component's spacing is by defining the token or the intent -
+not by reaching into the component - and `--_` is what says so.
+
+Do not pair the private variable with a public one. Spacing already has a public surface, and it is the
+token scale ([§1](#1-the-scales-split-by-purpose)); a per-component override would add a fourth link to
+every chain and hand consumers a documented way around the tokens.
+
+The prefix is a convention, not enforcement: custom properties inherit, and CSS Modules does not scope
+them. So the component name stays in the name - `--_button-space-md`, never `--_space-md`. The cost of
+dropping it is already visible in the library: `popover` and `tooltip` both define `--_arrow-offset`,
+`--_content-offset` and `--_animation-offset`, and `drawer` and `inline-drawer` both define `--_min-size`
+and `--_max-size`. Those components nest, and the values stay correct only because each redeclares on its
+own root - that is, only by rule 3. Prefixing removes the dependency on that.
+
+**6. What is reserved is the t-shirt _token_ scale, not the t-shirt _name_**
+([§1](#1-the-scales-split-by-purpose)). A component's own CSS draws from the numeric tiers, whatever it
+calls the variables it puts them in. `size-space-{xs..2xl}` is consumed only by the layout components -
+`Box` / `Flex` / `Grid` and the `Spacing` prop - because that scale measures space between components.
+
+Worked example, `button` today against the same four declarations under this proposal:
+
+```css
+/* today: t-shirt token scale for control internals, half-GU literal */
+--button-space-xs: var(--size-space-xs, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+--button-space-sm: var(--size-space-sm, calc(var(--ux-1sbfig8, 0.25rem) * 1));
+--button-space-md: var(--size-space-md, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+--button-space-lg: var(--size-space-lg, calc(var(--ux-1sbfig8, 0.25rem) * 3));
+
+/* proposed: numeric token scale, GU-correct literal, private prefix */
+--_button-space-xs: var(--size-space-010, calc(var(--ux-1sbfig8, 0.5rem) * 0.5));
+--_button-space-sm: var(--size-space-020, calc(var(--ux-1sbfig8, 0.5rem) * 1));
+--_button-space-md: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
+--_button-space-lg: var(--size-space-060, calc(var(--ux-1sbfig8, 0.5rem) * 3));
+```
+
+The `xs`/`sm`/`md`/`lg` part of each name stays - those are `Button`'s size steps and remain accurate.
+The multipliers stay too, since `button`'s GU counts are already right. Three things change: the token
+the chain reaches for moves to the numeric scale, the literal is corrected to a full GU, and the
+variable is marked private.
 
 ## Audit
 
@@ -211,6 +288,13 @@ value resolves through the nested `var(--ux-1sbfig8, 0.25rem)` fallback.
   [Proposal](#proposal), so the package stops describing both scales as component-internal _and_
   page-level.
 - Update component implementations to follow this proposal.
+- Rename component-local spacing variables to `--_`-prefixed, component-named form per
+  [§5](#5-per-component-implementation) rule 5. This touches every component in the migration rows
+  below, so it should ride along with each one rather than land as its own sweep. Nothing in the docs,
+  examples or stories advertises the current names, so no consumer contract breaks. The already-private
+  bare names - `--_arrow-offset`, `--_content-offset`, `--_animation-offset` in `popover` / `tooltip`,
+  `--_min-size` / `--_max-size` in `drawer` / `inline-drawer` - need the component prefix added even
+  though they are not spacing variables, since they carry the collision this rule exists to prevent.
 - Migrate: the eight `--sp-*` consumers, then `button`, then the hardcoded group. The components that
   already derive from the GU intent need renaming to the proposed tiers, not remeasuring.
 - Extract the per-component GU values from Figma. The audit identifies which components are wrong,
