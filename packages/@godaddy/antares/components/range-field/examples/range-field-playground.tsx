@@ -1,5 +1,5 @@
 import { RangeField, type RangeFieldProps, type RangeFieldRef } from '@godaddy/antares';
-import { type ReactNode, type Ref, useEffect, useState } from 'react';
+import { type ReactNode, type Ref, useEffect, useMemo, useState } from 'react';
 
 export interface RangeFieldPlaygroundExampleProps {
   label?: string;
@@ -39,6 +39,33 @@ export interface RangeFieldPlaygroundExampleProps {
   rootRef?: Ref<RangeFieldRef>;
 }
 
+function normalizeStorybookValue(value: unknown): number | number[] | undefined {
+  if (typeof value === 'number' || Array.isArray(value)) {
+    return value;
+  }
+
+  if (value && typeof value === 'object') {
+    const entries = Object.entries(value);
+
+    if (
+      entries.length &&
+      entries.every(function isIndexedValue([key, entry]) {
+        return /^\d+$/.test(key) && typeof entry === 'number';
+      })
+    ) {
+      return entries
+        .sort(function sortByIndex([firstKey], [secondKey]) {
+          return Number(firstKey) - Number(secondKey);
+        })
+        .map(function getValue([, entry]) {
+          return entry as number;
+        });
+    }
+  }
+
+  return undefined;
+}
+
 export function RangeFieldPlaygroundExample({
   label = 'Volume',
   description,
@@ -59,24 +86,39 @@ export function RangeFieldPlaygroundExample({
   onChangeEnd,
   rootRef
 }: RangeFieldPlaygroundExampleProps) {
-  const [currentValue, setCurrentValue] = useState<number | number[]>(value ?? defaultValue);
-  const isControlled = value !== undefined;
-  const defaultValueKey = Array.isArray(defaultValue) ? defaultValue.join('-') : defaultValue;
-
-  useEffect(
-    function synchronizeControlledValue() {
-      if (value !== undefined) {
-        setCurrentValue(value);
-      }
+  const normalizedValue = useMemo(
+    function normalizeValue() {
+      return normalizeStorybookValue(value);
     },
     [value]
   );
+  const normalizedDefaultValue = useMemo(
+    function normalizeDefaultValue() {
+      return normalizeStorybookValue(defaultValue) ?? 50;
+    },
+    [defaultValue]
+  );
+  const [currentValue, setCurrentValue] = useState<number | number[]>(normalizedValue ?? normalizedDefaultValue);
+  const isControlled = normalizedValue !== undefined;
+  const displayedValue = isControlled ? currentValue : normalizedDefaultValue;
+  const defaultValueKey = Array.isArray(normalizedDefaultValue)
+    ? normalizedDefaultValue.join('-')
+    : normalizedDefaultValue;
 
-  if (Array.isArray(currentValue)) {
-    const arrayDefaultValue = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
+  useEffect(
+    function synchronizeControlledValue() {
+      if (normalizedValue !== undefined) {
+        setCurrentValue(normalizedValue);
+      }
+    },
+    [normalizedValue]
+  );
+
+  if (Array.isArray(displayedValue)) {
+    const arrayDefaultValue = Array.isArray(normalizedDefaultValue) ? normalizedDefaultValue : [normalizedDefaultValue];
     const accessibleThumbLabels =
       thumbLabels ??
-      currentValue.map(function createThumbLabel(_, index) {
+      displayedValue.map(function createThumbLabel(_, index) {
         return `Value ${index + 1}`;
       });
 
@@ -86,7 +128,7 @@ export function RangeFieldPlaygroundExample({
         key={isControlled ? 'controlled' : `uncontrolled-${defaultValueKey}`}
         label={label}
         description={description}
-        value={isControlled ? currentValue : undefined}
+        value={isControlled ? displayedValue : undefined}
         defaultValue={isControlled ? undefined : arrayDefaultValue}
         onChange={isControlled ? setCurrentValue : undefined}
         minValue={minValue}
@@ -106,7 +148,7 @@ export function RangeFieldPlaygroundExample({
     );
   }
 
-  const scalarDefaultValue = Array.isArray(defaultValue) ? defaultValue[0] : defaultValue;
+  const scalarDefaultValue = Array.isArray(normalizedDefaultValue) ? normalizedDefaultValue[0] : normalizedDefaultValue;
 
   return (
     <RangeField<number>
@@ -114,7 +156,7 @@ export function RangeFieldPlaygroundExample({
       key={isControlled ? 'controlled' : `uncontrolled-${defaultValueKey}`}
       label={label}
       description={description}
-      value={isControlled ? currentValue : undefined}
+      value={isControlled ? displayedValue : undefined}
       defaultValue={isControlled ? undefined : scalarDefaultValue}
       onChange={isControlled ? setCurrentValue : undefined}
       minValue={minValue}

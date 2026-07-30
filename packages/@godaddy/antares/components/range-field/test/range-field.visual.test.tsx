@@ -7,6 +7,7 @@ import { RangeFieldDisabledExample } from '../examples/disabled.tsx';
 import { RangeFieldLabelsExample } from '../examples/labels.tsx';
 import { RangeFieldMarkersExample } from '../examples/markers.tsx';
 import { RangeFieldRangeExample } from '../examples/range.tsx';
+import { RangeFieldValueDisplayExample } from '../examples/value-display.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeEach(resetHover);
@@ -30,6 +31,11 @@ describe('@godaddy/antares', function antares() {
     it('labels example', async function labelsExample() {
       const { container } = await render(<RangeFieldLabelsExample />);
       await expect(container).toMatchScreenshot('labels');
+    });
+
+    it('value display example', async function valueDisplayExample() {
+      const { container } = await render(<RangeFieldValueDisplayExample />);
+      await expect(container).toMatchScreenshot('value-display');
     });
 
     it('markers example', async function markersExample() {

@@ -29,20 +29,20 @@ import styles from './index.module.css';
 
 const MAX_MARKER_COUNT = 1000;
 
-/** Props for configuring a {@link RangeField} */
+/** Props for configuring a {@link RangeField}. */
 export interface RangeFieldProps<T extends number | number[] = number | number[]>
   extends Omit<RACSliderProps<T>, 'children' | 'className' | 'orientation' | 'render' | 'style'>,
     Omit<FieldOwnProps, 'as' | 'errorMessage'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
-  /** Default value(s) for uncontrolled usage. */
+  /** Initial value or values for uncontrolled usage. */
   defaultValue?: T;
 
   /** Callback fired when the value or values change. */
   onChange?(value: T): void;
 
-  /** Callback when user stops dragging. */
+  /** Callback fired with the value or values when the user finishes an adjustment. */
   onChangeEnd?(value: T): void;
 
   /** Minimum value. @default 0 */
@@ -98,8 +98,8 @@ export interface RangeFieldRef {
 }
 
 /**
- * Numeric slider field for selecting one or more values within a bounded scale. Pass a number for a
- * single thumb or an array to render one independently adjustable thumb per value.
+ * Numeric slider field for selecting values on a bounded scale. Pass a number for one thumb or an
+ * array for one independently adjustable thumb per value.
  * Use a forwarded {@link RangeFieldRef} to focus the first thumb or access the root element.
  *
  * @param props - {@link RangeFieldProps}
@@ -107,12 +107,7 @@ export interface RangeFieldRef {
  *
  * @example
  * ```tsx
- * <RangeField<number[]>
- *   label="Target range"
- *   defaultValue={[20, 80]}
- *   thumbLabels={['Minimum target', 'Maximum target']}
- *   markers
- * />
+ * <RangeField label="Volume" defaultValue={50} />
  * ```
  */
 export const RangeField = forwardRef(function RangeField<T extends number | number[] = number | number[]>(

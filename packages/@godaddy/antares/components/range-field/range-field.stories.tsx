@@ -6,6 +6,7 @@ import { RangeFieldDisabledExample } from './examples/disabled.tsx';
 import { RangeFieldLabelsExample } from './examples/labels.tsx';
 import { RangeFieldMarkersExample } from './examples/markers.tsx';
 import { RangeFieldRangeExample } from './examples/range.tsx';
+import { RangeFieldValueDisplayExample } from './examples/value-display.tsx';
 import {
   RangeFieldPlaygroundExample,
   type RangeFieldPlaygroundExampleProps
@@ -20,6 +21,7 @@ export const Default = getStory(RangeFieldDefaultExample);
 export const Controlled = getStory(RangeFieldControlledExample);
 export const Disabled = getStory(RangeFieldDisabledExample);
 export const Labels = getStory(RangeFieldLabelsExample);
+export const ValueDisplay = getStory(RangeFieldValueDisplayExample);
 export const Markers = getStory(RangeFieldMarkersExample);
 export const Range = getStory(RangeFieldRangeExample);
 

@@ -7,6 +7,7 @@ import { RangeFieldLabelsExample } from '../examples/labels.tsx';
 import { RangeFieldMarkersExample } from '../examples/markers.tsx';
 import { RangeFieldPlaygroundExample } from '../examples/range-field-playground.tsx';
 import { RangeFieldRangeExample } from '../examples/range.tsx';
+import { RangeFieldValueDisplayExample } from '../examples/value-display.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#RangeField', function rangeFieldTests() {
@@ -25,6 +26,10 @@ describe('@godaddy/antares', function antares() {
 
       it('renders the labels example', function labelsExample() {
         expect(renderToString(<RangeFieldLabelsExample />)).toMatchSnapshot();
+      });
+
+      it('renders the value display example', function valueDisplayExample() {
+        expect(renderToString(<RangeFieldValueDisplayExample />)).toMatchSnapshot();
       });
 
       it('renders the markers example', function markersExample() {
@@ -66,22 +71,6 @@ describe('@godaddy/antares', function antares() {
         ).toMatchSnapshot();
       });
 
-      it('renders static and state-based value labels', function valueLabels() {
-        expect(
-          renderToString(
-            <>
-              <RangeFieldPlaygroundExample label="Static output" valueLabel={<span>Configured</span>} />
-              <RangeFieldPlaygroundExample
-                label="State output"
-                valueLabel={function renderValue({ state }) {
-                  return `Selected: ${state.values.join(' to ')}`;
-                }}
-              />
-            </>
-          )
-        ).toMatchSnapshot();
-      });
-
       it('renders independently supplied endpoint labels', function endpointLabels() {
         expect(
           renderToString(
@@ -97,21 +86,6 @@ describe('@godaddy/antares', function antares() {
       it('omits endpoint labels without renderable content', function emptyEndpointLabels() {
         expect(
           renderToString(<RangeFieldPlaygroundExample label="No endpoint labels" minLabel="" maxLabel={false} />)
-        ).toMatchSnapshot();
-      });
-
-      it('renders formatted values and field guidance', function formattedValue() {
-        expect(
-          renderToString(
-            <RangeFieldPlaygroundExample
-              label="Budget"
-              defaultValue={50}
-              formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
-              valueLabel
-              description="Choose a budget."
-              isRequired
-            />
-          )
         ).toMatchSnapshot();
       });
     });

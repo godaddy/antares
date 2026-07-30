@@ -1,6 +1,6 @@
 ---
 title: RangeField
-description: RangeField lets users select one or multiple independently adjustable numeric values on a shared bounded scale.
+description: RangeField lets users select one numeric value or a related set of values on a bounded scale.
 ---
 
 import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
@@ -12,17 +12,16 @@ import SourceDisabled from './examples/disabled.tsx?raw';
 import SourceLabels from './examples/labels.tsx?raw';
 import SourceMarkers from './examples/markers.tsx?raw';
 import SourceRange from './examples/range.tsx?raw';
+import SourceValueDisplay from './examples/value-display.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
 ## Features
 
-- Generic `number` or `number[]` value with one thumb for each array entry
-- Type-aligned controlled and uncontrolled state, including `onChange` and `onChangeEnd`
-- Per-thumb accessible labels and native form names matched by array index
-- Configurable minimum, maximum, and step values, including negative numeric ranges
-- Optional localized value output, endpoint labels, description, and markers
-- Required, disabled, keyboard, pointer, and touch behavior provided through React Aria
+- Select one value or render one thumb for each value in an array
+- Supports controlled and uncontrolled values with typed change callbacks
+- Provides localized value output, endpoint labels, descriptions, and markers
+- Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
 
 ## Installation
 
@@ -33,8 +32,6 @@ npm install --save @godaddy/antares
 ## Props
 
 <ArgTypes of={Stories.Props} />
-
-`RangeField` infers its generic value type from `value` or `defaultValue`, keeping `onChange` and `onChangeEnd` aligned with either `number` or `number[]`. Provide the generic explicitly when inference is not available, for example `<RangeField<number[]> />`.
 
 ## Examples
 
@@ -66,6 +63,13 @@ Combine an input label, value label, range labels, and helper text when users ne
 <Source language="tsx" code={SourceLabels} />
 <Story of={Stories.Labels} inline />
 
+### Value display
+
+Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
+
+<Source language="tsx" code={SourceValueDisplay} />
+<Story of={Stories.ValueDisplay} inline />
+
 ### Markers
 
 Use markers to expose a manageable set of discrete steps for a single value.
@@ -75,106 +79,18 @@ Use markers to expose a manageable set of discrete steps for a single value.
 
 ### Range
 
-Pass two values to render a range with two thumbs and step markers.
+Pass a `number[]` to render a range with two thumbs and step markers.
 
 <Source language="tsx" code={SourceRange} />
 <Story of={Stories.Range} inline />
-
-## Customization
-
-`RangeField` supports scalar and array values, so customize it according to the number and meaning of the rendered thumbs. Prefer its content props and CSS custom properties over targeting the internal DOM structure.
-
-### Value shape and thumbs
-
-A `number` renders one thumb. A `number[]` renders one thumb per array entry. The generic type keeps `value`, `defaultValue`, `onChange`, and `onChangeEnd` aligned:
-
-```tsx
-<RangeField<number[]>
-  label="Target band"
-  defaultValue={[20, 80]}
-  thumbLabels={['Lower target', 'Upper target']}
-/>
-```
-
-TypeScript usually infers the type from `value` or `defaultValue`. Supply `<number>` or `<number[]>` explicitly when the initial props do not provide enough information for inference.
-
-### Programmatic focus
-
-Attach a `RangeFieldRef` when an application needs to move focus after validation or navigate to the field. Calling `focus()` focuses the first thumb; `container` exposes the root element for DOM operations such as scrolling.
-
-```tsx
-const rangeFieldRef = useRef<RangeFieldRef>(null);
-
-<RangeField
-  ref={rangeFieldRef}
-  label="Price range"
-  defaultValue={[20, 80]}
-  thumbLabels={['Minimum price', 'Maximum price']}
-/>
-
-rangeFieldRef.current?.focus();
-rangeFieldRef.current?.container?.scrollIntoView();
-```
-
-### Value display
-
-Use `valueLabel` to place content opposite the field label:
-
-- `true` displays all current values using `formatOptions` and the active locale.
-- A React node displays static content.
-- A render function receives the React Aria slider state and can derive output from every current value.
-
-```tsx
-<RangeField<number[]>
-  label="Working range"
-  defaultValue={[30, 70]}
-  thumbLabels={['Range start', 'Range end']}
-  valueLabel={({ state }) => state.values.join(' – ')}
-/>
-```
-
-`valueLabel` is visual supporting content. It does not name the field or its individual thumbs.
-
-### Endpoint labels and markers
-
-`minLabel` and `maxLabel` are independent `ReactNode` slots below the track. Provide either one or both; the component does not generate or format their content. Each slot uses at most 40% of the available width so the sides remain visually separated.
-
-Set `markers` to render one marker for every valid step beginning at `minValue`. Marker positions use the same scale as every thumb. `minValue`, `maxValue`, and `step` determine their count and spacing; `markers` does not accept a custom list or count. If the scale would require more than 1,000 markers, no markers are rendered.
-
-### Number formatting
-
-`formatOptions` accepts `Intl.NumberFormatOptions` and controls localized output for the default value label and assistive-technology announcements. It does not format `minLabel` or `maxLabel` because those props accept arbitrary React content.
-
-### Visual styling
-
-Pass `className` to add a class to the root element. The following custom properties are the supported styling surface:
-
-- `--slider-track-height`
-- `--slider-fill-height`
-- `--slider-thumb-size`
-- `--slider-marker-size`
-- `--slider-fill-color`
-- `--slider-track-color`
-- `--slider-thumb-bg`
-- `--slider-thumb-border`
-- `--slider-label-color`
-
-Scope overrides to a local class so other range fields are unaffected.
-
-```css
-.thresholdField {
-  --slider-fill-color: var(--color-input-background-selected);
-  --slider-marker-size: 6px;
-}
-```
 
 ## Accessibility
 
 ### Accessible names
 
-Every range field needs a name as a whole. Prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
 
-When using an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so the labels must remain aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
 
 `thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
 
@@ -190,30 +106,20 @@ Each thumb follows the React Aria slider keyboard model:
 
 Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
 
-### Value announcements
-
-Use `formatOptions` to expose the meaning and unit of each number to assistive technology. A percentage, currency, or measurement should be announced in that format rather than as an unexplained raw value.
-
 Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
-
-### Instructions and required state
-
-Use `description` for persistent guidance that applies to every thumb. React Aria associates it with each slider input. Set `isRequired` to display the required indicator in the visible label.
-
-### Disabled state
-
-`isDisabled` prevents interaction with every thumb and exposes the disabled state semantically. The slider control is visually muted while the label, endpoint labels, and description remain readable.
 
 ## Best Practices
 
-- Use a scalar value for one adjustable number and an array only when each entry has a clear, independently adjustable meaning.
-- Keep `value`, `thumbLabels`, and `thumbNames` aligned by index. Treat them as parallel collections whenever values are added, removed, or reordered.
+- Use an array only when every entry has a clear, independently adjustable meaning.
+- Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
 - Use thumb labels that explain purpose instead of repeating the current number.
 - Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
 - Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
 - Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
 - Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
-- Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units.
+- Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+- Use `description` for persistent guidance and `isRequired` when a value is required.
+- Use `isDisabled` when the value should remain visible but unavailable for interaction.
 - Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
 - Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
 
@@ -227,13 +133,20 @@ Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders
 
 Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
 
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
 ### The controlled thumbs do not move
 
 The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
-
-### The wrong thumb changes meaning
-
-Values, `thumbLabels`, and `thumbNames` are associated by index. Update all parallel arrays together and keep their semantic order stable.
 
 ### Values snap unexpectedly
 

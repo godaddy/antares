@@ -9,6 +9,7 @@ import { RangeFieldDefaultExample } from '../examples/default.tsx';
 import { RangeFieldDisabledExample } from '../examples/disabled.tsx';
 import { RangeFieldPlaygroundExample } from '../examples/range-field-playground.tsx';
 import { RangeFieldRangeExample } from '../examples/range.tsx';
+import { RangeFieldValueDisplayExample } from '../examples/value-display.tsx';
 
 function getValue(element: Element) {
   return Number((element as HTMLInputElement).value);
@@ -218,6 +219,26 @@ describe('@godaddy/antares', function antares() {
       thumb.element().focus();
       await user.keyboard('{ArrowRight}');
       assume(page.getByText('Selected: 60').query()).is.not.equal(null);
+    });
+
+    it('supports formatted, static, and state-based value labels', async function valueDisplay() {
+      const user = userEvent.setup();
+      await render(<RangeFieldValueDisplayExample />);
+      const budget = page.getByRole('slider', { name: 'Monthly budget' });
+      const volume = page.getByRole('slider', { name: 'Volume' });
+
+      assume(page.getByText('$50').query()).is.not.equal(null);
+      assume(page.getByText('Recommended').query()).is.not.equal(null);
+      assume(page.getByText('Current: 50%').query()).is.not.equal(null);
+
+      budget.element().focus();
+      await user.keyboard('{ArrowRight}');
+      assume(page.getByText('$51').query()).is.not.equal(null);
+
+      volume.element().focus();
+      await user.keyboard('{ArrowRight}');
+
+      assume(page.getByText('Current: 51%').query()).is.not.equal(null);
     });
 
     it('calls onChangeEnd with all current values', async function changeEnd() {

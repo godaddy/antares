@@ -3,13 +3,13 @@ import { RangeField } from '@godaddy/antares';
 export function RangeFieldLabelsExample() {
   return (
     <RangeField
-      label="Price range"
-      defaultValue={[25, 75]}
-      thumbLabels={['Minimum price', 'Maximum price']}
+      label="Price limit"
+      defaultValue={50}
+      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
       valueLabel
-      minLabel="Low"
-      maxLabel="High"
-      description="Choose the minimum and maximum price."
+      minLabel="$0"
+      maxLabel="$100"
+      description="Choose the maximum price."
     />
   );
 }
