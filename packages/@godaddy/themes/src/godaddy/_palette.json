@@ -1,0 +1,14 @@
+{
+  "godaddy-blue": {
+    "$type": "color",
+    "$value": "royalblue"
+  },
+  "godaddy-teal": {
+    "$type": "color",
+    "$value": "teal"
+  },
+  "godaddy-navy": {
+    "$type": "color",
+    "$value": "midnightblue"
+  }
+}
