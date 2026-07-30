@@ -61,18 +61,29 @@ const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
  * specific to the line being hovered. `datumByKey` still exposes every series'
  * point at the current X for tooltips that want to show them all.
  *
+ * `S` captures the series-config shape you pass to `series`. If you extend
+ * `LineSeriesConfig` with your own keys (e.g. `period: 'current' | 'previous'`),
+ * those keys are inferred here so `series` is typed with them — no cast needed.
+ *
  * @template T - The data point type. Defaults to DataPoint.
+ * @template S - The series-config shape. Inferred from `series`; defaults to LineSeriesConfig<T>.
  * @public
  */
-export interface LineChartTooltipRenderProps<T extends object = DataPoint> {
+export interface LineChartTooltipRenderProps<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+> {
   /** id of the series/curve nearest the cursor; undefined when none is hovered. */
   hoveredSeriesId?: string;
   /** The data point on the hovered curve nearest the cursor. */
   hoveredDatum?: T;
   /** Nearest datum for each series at the current X position, keyed by series id. */
   datumByKey: Record<string, T>;
-  /** Resolved series in render order, each with its resolved palette color. */
-  series: (LineSeriesConfig<T> & { color?: string })[];
+  /**
+   * Resolved series in render order — the objects you passed in `series` (including
+   * any custom keys), each with a guaranteed `id` and its resolved palette `color`.
+   */
+  series: (S & { id: string; color?: string })[];
 }
 
 /**
@@ -83,14 +94,19 @@ export interface LineChartTooltipRenderProps<T extends object = DataPoint> {
  * import `LineChartProps` instead.
  *
  * @template T - The data point type. Defaults to DataPoint.
+ * @template S - The series-config shape. Inferred from `series`; defaults to LineSeriesConfig<T>.
  * @public
  */
-export interface LineChartPropsBase<T extends object = DataPoint> {
+export interface LineChartPropsBase<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+> {
   /**
    * Data series (id optional; stable id generated when omitted). Each series may
    * set `variant` to 'solid' (default), 'dashed', or 'dotted' to control its line style.
+   * Extra keys on your series objects are preserved and surfaced to `renderTooltip`.
    */
-  series: Optional<LineSeriesConfig<T>, 'id'>[];
+  series: S[];
 
   /** X-axis title */
   xTitle?: string;
@@ -257,7 +273,7 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
    * wrapped in the default styled popover. When omitted, the built-in tooltip (one
    * row per series) is shown; `tooltipValueFormatter` only affects that built-in tooltip.
    */
-  renderTooltip?: (props: LineChartTooltipRenderProps<T>) => ReactNode;
+  renderTooltip?: (props: LineChartTooltipRenderProps<T, S>) => ReactNode;
 
   /** Outer container width (omitted = 100%) */
   width?: number;
@@ -272,7 +288,10 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 }
 
 /** LineChart props. Custom T requires xAccessor and yAccessor. */
-export type LineChartProps<T extends object = DataPoint> = LineChartPropsBase<T> & AccessorRequirement<T>;
+export type LineChartProps<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+> = LineChartPropsBase<T, S> & AccessorRequirement<T>;
 
 /**
  * Line chart for time-series or categorical data with optional responsive horizontal scroll.
@@ -299,7 +318,10 @@ export type LineChartProps<T extends object = DataPoint> = LineChartPropsBase<T>
  * />
  * ```
  */
-export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>) {
+export function LineChart<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+>(props: LineChartProps<T, S>) {
   const {
     // Series and accessors
     series: seriesProp,

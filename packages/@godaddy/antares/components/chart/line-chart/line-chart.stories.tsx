@@ -11,6 +11,8 @@ import { CrosshairOnlyExample } from './examples/crosshair-only.tsx';
 import { CustomAccessorsExample } from './examples/custom-accessors.tsx';
 import { CustomTicksExample } from './examples/custom-ticks.tsx';
 import { CustomTooltipExample } from './examples/custom-tooltip.tsx';
+import { CustomTooltipPairChangeExample } from './examples/custom-tooltip-pair-change.tsx';
+import { CustomTooltipPeriodComparisonExample } from './examples/custom-tooltip-period-comparison.tsx';
 import { CustomTooltipFormattingExample } from './examples/custom-tooltip-formatting.tsx';
 import { FixedDomainExample } from './examples/fixed-domain.tsx';
 import { FixedSizeExample } from './examples/fixed-size.tsx';
@@ -84,6 +86,10 @@ export const CrosshairOnly = getStory(CrosshairOnlyExample);
 export const CustomTooltipFormatting = getStory(CustomTooltipFormattingExample);
 
 export const CustomTooltip = getStory(CustomTooltipExample);
+
+export const CustomTooltipPairChange = getStory(CustomTooltipPairChangeExample);
+
+export const CustomTooltipPeriodComparison = getStory(CustomTooltipPeriodComparisonExample);
 
 // Layout
 export const FixedSize = getStory(FixedSizeExample);
