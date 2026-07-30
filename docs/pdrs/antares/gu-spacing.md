@@ -147,8 +147,8 @@ respective sizes. These values have no correlation with t-shirt values used in d
 
 ### 5. Per-component expectations
 
-Each component should declare its own variables to use, making them self-contained and being able to
-render without any theme, none, or both at the same time.
+Each component should declare its own variables, making it self-contained and able to render
+ with either token system, neither token system, or both at the same time.
 
 ## Audit
 
