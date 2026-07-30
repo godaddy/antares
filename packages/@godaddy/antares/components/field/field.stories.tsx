@@ -5,6 +5,7 @@ import { FieldGroupIconAccessories } from './examples/icon-accessories.tsx';
 import { FieldGroupTrailingControl } from './examples/trailing-control.tsx';
 import { FieldGroupLeadingControl } from './examples/leading-control.tsx';
 import { FieldGroupBasic } from './examples/basic.tsx';
+import { TelephoneFieldExample } from './examples/telephone.tsx';
 import { FieldGroup } from './src/index.tsx';
 
 export default getMeta({
@@ -35,3 +36,5 @@ export const LeadingControl = getStory(FieldGroupLeadingControl);
 export const TrailingControl = getStory(FieldGroupTrailingControl);
 
 export const IconAccessories = getStory(FieldGroupIconAccessories);
+
+export const TelephoneField = getStory(TelephoneFieldExample);

@@ -3,12 +3,20 @@ import { renderToString } from 'react-dom/server';
 import { FieldGroupTrailingControl } from '../examples/trailing-control';
 import { FieldGroupLeadingControl } from '../examples/leading-control';
 import { FieldGroupIconAccessories } from '../examples/icon-accessories';
+import { TelephoneFieldExample } from '../examples/telephone';
 
 describe('@godaddy/antares', function antares() {
   describe('#FieldGroup', function fieldGroup() {
     describe('#LeadingControl', function leadingControl() {
       it('renders', function renders() {
         const result = renderToString(<FieldGroupLeadingControl />);
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    describe('#Telephone', function telephone() {
+      it('renders', function renders() {
+        const result = renderToString(<TelephoneFieldExample />);
         expect(result).toMatchSnapshot();
       });
     });

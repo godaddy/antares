@@ -4,6 +4,7 @@ import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
 import { FieldGroupBasic } from '../examples/basic';
 import { FieldGroupIconAccessories } from '../examples/icon-accessories';
 import { FieldGroupLeadingControl } from '../examples/leading-control';
+import { TelephoneFieldExample } from '../examples/telephone';
 import { FieldGroupTrailingControl } from '../examples/trailing-control';
 
 describe('@godaddy/antares', function antares() {
@@ -28,6 +29,11 @@ describe('@godaddy/antares', function antares() {
     it('leading control example', async function leadingControlRender() {
       const { container } = await render(<FieldGroupLeadingControl />);
       await expect(container).toMatchScreenshot('leading-control');
+    });
+
+    it('telephone example', async function telephoneRender() {
+      const { container } = await render(<TelephoneFieldExample />);
+      await expect(container).toMatchScreenshot('telephone');
     });
 
     it('trailing control example', async function trailingControlRender() {
