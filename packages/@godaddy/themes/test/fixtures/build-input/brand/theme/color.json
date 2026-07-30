@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "color": {
+      "sources": [
+        { "$ref": "../../_palette.json" },
+        {
+          "color-action": { "$type": "color", "$value": "{brand-primary}" },
+          "color-canvas": { "$type": "color", "$value": "white" }
+        }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/color"]
+}

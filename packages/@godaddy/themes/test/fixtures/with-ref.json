@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "tokens": {
+      "description": "Test set with $ref and inline",
+      "sources": [
+        { "$ref": "./_palette.json" },
+        {
+          "color-action": { "$type": "color", "$value": "{brand-blue}" }
+        }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/tokens"]
+}

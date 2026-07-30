@@ -1,0 +1,4 @@
+{
+  "color-primary": { "$type": "color", "$value": "blue" },
+  "size-sm": { "$type": "dimension", "$value": "8px" }
+}

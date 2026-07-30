@@ -1,0 +1,9 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "existing": {
+      "sources": [{ "a": { "$type": "color", "$value": "red" } }]
+    }
+  },
+  "resolutionOrder": ["sets/nonexistent"]
+}

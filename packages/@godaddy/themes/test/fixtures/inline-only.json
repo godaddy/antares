@@ -1,0 +1,13 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "tokens": {
+      "description": "Inline tokens only",
+      "sources": [
+        { "font-size-md": { "$type": "dimension", "$value": "1rem" } },
+        { "font-size-lg": { "$type": "dimension", "$value": "1.25rem" } }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/tokens"]
+}
