@@ -7,6 +7,10 @@ import { WithActionsExample } from './examples/with-actions.tsx';
 import { AlignmentExample } from './examples/alignment.tsx';
 import { WithMediaExample } from './examples/with-media.tsx';
 import { PlaygroundExample, type PlaygroundExampleProps } from './examples/modal-playground.tsx';
+import { SlotPropsExample } from './examples/a1-slot-props.tsx';
+import { CompoundExample } from './examples/a2-compound.tsx';
+import { SlottedChildExample } from './examples/a3-slotted-child.tsx';
+import { ProviderSlotsExample } from './examples/a4-provider-slots.tsx';
 
 export default getMeta({
   title: 'components/Modal'
@@ -23,6 +27,15 @@ export const WithActions = getStory(WithActionsExample);
 export const Alignment = getStory(AlignmentExample);
 
 export const WithMedia = getStory(WithMediaExample);
+
+// Composition/customization prototypes (exploratory - see each src/index-a*.tsx header).
+export const Approach1SlotProps = getStory(SlotPropsExample);
+
+export const Approach2Compound = getStory(CompoundExample);
+
+export const Approach3SlottedChild = getStory(SlottedChildExample);
+
+export const Approach4ProviderSlots = getStory(ProviderSlotsExample);
 
 export const Playground = {
   render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
