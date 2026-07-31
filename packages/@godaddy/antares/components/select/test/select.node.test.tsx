@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { SelectBasic } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { SelectDisabledExample } from '../examples/disabled';
 import { SelectFormExample } from '../examples/form';
@@ -12,7 +12,7 @@ describe('@godaddy/antares', function antares() {
   describe('#Select', function select() {
     describe('#examples', function examples() {
       it('renders basic example', function basic() {
-        const result = renderToString(<SelectBasic />);
+        const result = renderToString(<DefaultExample />);
         expect(result).toMatchSnapshot();
       });
 

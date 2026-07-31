@@ -1,5 +1,9 @@
 import { NumberField } from '@godaddy/antares';
 
+/**
+ * Use `hideStepper` to show only the input without +/- buttons.
+ * @order 5
+ */
 export function NumberFieldHideStepperExample() {
   return (
     <NumberField

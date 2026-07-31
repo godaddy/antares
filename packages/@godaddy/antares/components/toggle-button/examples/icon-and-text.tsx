@@ -1,5 +1,10 @@
 import { ToggleButtonGroup, ToggleButton, Icon } from '@godaddy/antares';
 
+/**
+ * Items can include an `Icon` alongside text for added visual context.
+ * @title Icon + Text
+ * @order 6
+ */
 export function IconAndTextExample() {
   return (
     <ToggleButtonGroup aria-label="Layout" defaultSelectedKeys={['list']} selectionMode="single">

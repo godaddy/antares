@@ -1,5 +1,9 @@
 import { CircularProgress, Flex } from '@godaddy/antares';
 
+/**
+ * Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+ * @order 3
+ */
 export function EmphasisExample() {
   return (
     <Flex gap="lg" alignItems="flex-end">

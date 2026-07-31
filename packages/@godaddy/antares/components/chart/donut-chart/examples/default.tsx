@@ -8,6 +8,10 @@ const data = [
   { id: '5', name: 'Category E', value: 10 }
 ];
 
-export function BasicExample(props: Partial<DonutChartProps>) {
+/**
+ * You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+ * @order 1
+ */
+export function DefaultExample(props: Partial<DonutChartProps>) {
   return <DonutChart data={data} label="100%" aria-label="Donut chart with five categories" {...props} />;
 }

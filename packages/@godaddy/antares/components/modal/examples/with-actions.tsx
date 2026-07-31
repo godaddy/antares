@@ -1,5 +1,10 @@
 import { ModalTrigger, Modal, Button } from '@godaddy/antares';
 
+/**
+ * Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+ * @title With actions
+ * @order 3
+ */
 export function WithActionsExample() {
   return (
     <ModalTrigger>

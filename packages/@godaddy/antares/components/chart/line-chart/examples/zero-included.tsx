@@ -1,6 +1,11 @@
 import { appleStock } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xZero` and `yZero` stretch the domain to include zero. Worth doing when the absolute size of the values matters, not just their movement.
+ * @title Zero included
+ * @order 14
+ */
 export function ZeroIncludedExample(props: Partial<LineChartProps>) {
   const series = [
     {

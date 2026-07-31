@@ -1,5 +1,10 @@
 import { Flex, Icon, Tag } from '@godaddy/antares';
 
+/**
+ * Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child - it inherits the tag's color and scales with its size.
+ * @title With Icon
+ * @order 6
+ */
 export function IconsExample() {
   return (
     <Flex gap="xs" wrap="wrap" alignItems="center">

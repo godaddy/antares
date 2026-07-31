@@ -1,6 +1,11 @@
 import { Popover, Box, Flex, Button } from '@godaddy/antares';
 import { useRef, useState } from 'react';
 
+/**
+ * To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
+ * @title Custom Anchor
+ * @order 2
+ */
 export function CustomAnchorExample() {
   const [isOpen, setOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);

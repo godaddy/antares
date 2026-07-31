@@ -1,5 +1,10 @@
 import { Legend, type LegendProps } from '../src/index.tsx';
 
+/**
+ * Legend items stacked vertically while keeping swatch and label side-by-side, useful when horizontal space is constrained.
+ * @title Vertical orientation
+ * @order 4
+ */
 export function LegendVerticalExample(props: Partial<LegendProps>) {
   const series = [
     { id: 'series-1', name: 'Series 1' },

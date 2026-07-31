@@ -1,5 +1,9 @@
 import { Grid, GaugeChart } from '@godaddy/antares';
 
+/**
+ * Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+ * @order 4
+ */
 export function WithRangeLabelsExample() {
   return (
     <Grid columns="repeat(2, 1fr)" gap="lg" justifyContent="center">

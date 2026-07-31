@@ -9,6 +9,11 @@ function formatTooltipPercentage(d: DataPoint): string {
   return `${(d.y as number).toFixed(2)}%`;
 }
 
+/**
+ * A categorical X axis (band scale) with several series and percentage formatting, for when the X values are names rather than numbers or dates.
+ * @title Browser usage
+ * @order 23
+ */
 export function BrowserUsageExample(props: Partial<LineChartProps>) {
   const browserNames = ['Google Chrome', 'Internet Explorer', 'Firefox', 'Safari', 'Microsoft Edge', 'Opera'] as const;
 

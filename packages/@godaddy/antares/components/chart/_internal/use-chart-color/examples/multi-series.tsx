@@ -9,6 +9,10 @@ function SeriesBar() {
   );
 }
 
+/**
+ * Multiple series each receiving the next color in sequence.
+ * @order 2
+ */
 export function MultiSeriesExample() {
   const series = [{ value: 80 }, { value: 120 }, { value: 60 }];
 

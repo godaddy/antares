@@ -1,5 +1,9 @@
 import { Grid, GaugeChart } from '@godaddy/antares';
 
+/**
+ * Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+ * @order 6
+ */
 export function LabelTypeExample() {
   return (
     <Grid columns="repeat(2, 1fr)" gap="lg" justifyContent="center">

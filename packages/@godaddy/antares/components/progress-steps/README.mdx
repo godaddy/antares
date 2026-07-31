@@ -3,14 +3,8 @@ title: ProgressSteps
 description: A multi-step progress indicator for wizard and onboarding flows.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './progress-steps.stories.tsx';
-import DefaultExample from './examples/default.tsx?raw';
-import NotStartedExample from './examples/not-started.tsx?raw';
-import VerticalExample from './examples/vertical.tsx?raw';
-import InteractiveExample from './examples/interactive.tsx?raw';
-import DisabledExample from './examples/disabled.tsx?raw';
-import HideStepNumbersExample from './examples/hide-step-numbers.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -30,59 +24,9 @@ import HideStepNumbersExample from './examples/hide-step-numbers.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-The `ProgressSteps` component has the following props:
-
-<ArgTypes of={Stories.Props} />
-
-The `ProgressStep` component has the following props:
-
-<ArgTypes of={Stories.ProgressStepProps} />
-
 ## Examples
 
-### Default
-
-A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={DefaultExample} />
-
-### Not started
-
-Omit `currentStep` for a flow that hasn't begun: every step is `future` and none is marked current.
-
-<Story of={Stories.NotStarted} inline />
-<Source language="tsx" code={NotStartedExample} />
-
-### Vertical
-
-Use `orientation="vertical"` to place the accent bar on the leading edge and stack steps in a column.
-
-<Story of={Stories.Vertical} inline />
-<Source language="tsx" code={VerticalExample} />
-
-### Interactive
-
-Give a step an `onPress` handler to make it navigable. Steps without `onPress` are inert.
-
-<Story of={Stories.Interactive} inline />
-<Source language="tsx" code={InteractiveExample} />
-
-### Disabled
-
-A disabled interactive step is muted, removed from the tab order, and cannot be activated.
-
-<Story of={Stories.Disabled} inline />
-<Source language="tsx" code={DisabledExample} />
-
-### Hide step numbers
-
-Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
-
-<Story of={Stories.HideStepNumbers} inline />
-<Source language="tsx" code={HideStepNumbersExample} />
+<Examples of={Stories.Examples} />
 
 ## Customization
 
@@ -112,3 +56,13 @@ Step numbers are prepended automatically. Set `hideStepNumbers` to omit them.
 - **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
 - **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
 - **Titles overflow:** that's expected — titles truncate. Shorten the title.
+
+## Props
+
+The `ProgressSteps` component has the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `ProgressStep` component has the following props:
+
+<ArgTypes of={Stories.ProgressStepProps} />

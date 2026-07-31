@@ -1,5 +1,9 @@
 import { Grid, Flex } from '@godaddy/antares';
 
+/**
+ * The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+ * @order 2
+ */
 export function ColumnsExample() {
   return (
     <Flex direction="column" gap="lg">

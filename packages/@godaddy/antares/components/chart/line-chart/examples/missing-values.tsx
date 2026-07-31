@@ -1,6 +1,11 @@
 import { appleStock } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * A `null` Y value breaks the line instead of drawing through the gap, so missing data reads as missing rather than as a straight interpolation.
+ * @title Missing values
+ * @order 11
+ */
 export function MissingValuesExample(props: Partial<LineChartProps>) {
   const missingPeriodStart = new Date('2010-01-01');
   const missingPeriodEnd = new Date('2010-12-31T23:59:59.999');

@@ -1,12 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Drawer, DrawerTrigger } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { BottomSheetExample } from './examples/bottom-sheet.tsx';
-import { PlacementsExample } from './examples/placements.tsx';
-import { NestedPopoverExample } from './examples/nested-popover.tsx';
-import { NoEscapeDismissExample } from './examples/no-escape-dismiss.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/drawer-playground.tsx';
+import { PlaygroundExample } from './examples/drawer-playground.tsx';
 
 export default getMeta({
   title: 'components/Drawer'
@@ -16,18 +11,9 @@ export const Props = getComponentDocs(Drawer);
 
 export const DrawerTriggerProps = getComponentDocs(DrawerTrigger);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const BottomSheet = getStory(BottomSheetExample);
-
-export const Placements = getStory(PlacementsExample);
-
-export const NestedPopover = getStory(NestedPopoverExample);
-
-export const NoEscapeDismiss = getStory(NoEscapeDismissExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'right',
     isDismissable: true,
@@ -53,4 +39,4 @@ export const Playground = {
       description: 'Show built-in close button'
     }
   }
-};
+});

@@ -1,6 +1,10 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `legendPosition` puts the legend above or below the plot, or hides it with `null`. Multi-series charts get a bottom legend by default.
+ * @order 8
+ */
 export function LegendExample(props: Partial<LineChartProps>) {
   const series = [
     {

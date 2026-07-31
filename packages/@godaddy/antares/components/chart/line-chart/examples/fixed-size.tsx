@@ -1,6 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * Pass `width` and `height` to size the chart explicitly instead of letting it fill its container.
+ * @title Fixed size
+ * @order 20
+ */
 export function FixedSizeExample(props: Partial<LineChartProps>) {
   const series = [
     {

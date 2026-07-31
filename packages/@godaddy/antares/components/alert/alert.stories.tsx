@@ -1,11 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getMeta, getComponentDocs, getExamples, getStory } from '@bento/storybook-addon-helpers';
 import { Alert } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { EmphasesExample } from './examples/emphases.tsx';
-import { DismissibleExample } from './examples/dismissible.tsx';
-import { WithActionExample } from './examples/with-action.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/alert-playground.tsx';
+import { PlaygroundExample } from './examples/alert-playground.tsx';
 
 export default getMeta({
   title: 'components/Alert'
@@ -13,16 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Alert);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const Emphases = getStory(EmphasesExample);
-
-export const Dismissible = getStory(DismissibleExample);
-
-export const WithAction = getStory(WithActionExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     emphasis: 'info',
     title: 'Alert title',
@@ -53,4 +42,4 @@ export const Playground = {
       description: 'Show an action button'
     }
   }
-};
+});

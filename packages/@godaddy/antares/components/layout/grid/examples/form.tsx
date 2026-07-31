@@ -1,5 +1,9 @@
 import { Grid, Flex } from '@godaddy/antares';
 
+/**
+ * A common two-column form pattern with auto-sized label column.
+ * @order 7
+ */
 export function FormExample() {
   return (
     <Grid columns="auto 1fr" gap="md" alignItems="center" style={{ width: '400px' }}>

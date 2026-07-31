@@ -1,11 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/pagination-playground.tsx';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { DefaultActiveExample } from './examples/default-active.tsx';
-import { ControlledExample } from './examples/controlled.tsx';
-import { WithLimitExample } from './examples/with-limit.tsx';
-import { OnChangeExample } from './examples/on-change.tsx';
-import { DefaultExample } from './examples/default.tsx';
+import { PlaygroundExample } from './examples/pagination-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Pagination } from './src/index.tsx';
 
 export default getMeta({
@@ -14,8 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Pagination);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: {
     total: 10,
     variant: 'dots',
@@ -28,14 +24,4 @@ export const Playground = {
     hideControls: { control: 'boolean' },
     limit: { control: 'number' }
   }
-};
-
-export const Default = getStory(DefaultExample);
-
-export const Controlled = getStory(ControlledExample);
-
-export const WithLimit = getStory(WithLimitExample);
-
-export const OnChange = getStory(OnChangeExample);
-
-export const DefaultActive = getStory(DefaultActiveExample);
+});

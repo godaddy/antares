@@ -14,7 +14,7 @@ import { MultipleSeriesExample } from '../examples/multiple-series';
 import { CustomAccessorsExample } from '../examples/custom-accessors';
 import { CrosshairOnlyExample } from '../examples/crosshair-only';
 import { RTLExample } from '../examples/rtl';
-import { SingleSeriesExample } from '../examples/single-series';
+import { DefaultExample } from '../examples/default';
 import { ZeroIncludedExample } from '../examples/zero-included';
 import { BitcoinPriceExample } from '../examples/bitcoin-price';
 import { BrowserUsageExample } from '../examples/browser-usage';
@@ -41,6 +41,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['custom-accessors', CustomAccessorsExample],
   ['custom-ticks', CustomTicksExample],
   ['custom-tooltip-formatting', CustomTooltipFormattingExample],
+  ['default', DefaultExample],
   ['fixed-domain', FixedDomainExample],
   ['fixed-size', FixedSizeExample],
   ['formatting', FormattingExample],
@@ -51,7 +52,6 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['multiple-series', MultipleSeriesExample],
   ['nice-values', NiceValuesExample],
   ['rtl', RTLExample],
-  ['single-series', SingleSeriesExample],
   ['ticks', TicksExample],
   ['titles', TitlesExample],
   ['tooltip-disabled', TooltipDisabledExample],
@@ -61,7 +61,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
 describe('@godaddy/antares', function antares() {
   describe('#LineChart', function lineChartTests() {
     it('does not render SVG on SSR (dimensions from parent ResizeObserver)', function noSvgOnSsr() {
-      const result = renderToString(<SingleSeriesExample />);
+      const result = renderToString(<DefaultExample />);
       expect(result).not.toContain('<svg');
     });
 
