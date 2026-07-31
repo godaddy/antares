@@ -2,7 +2,6 @@ import { Button, Flex, LinkButton } from '@godaddy/antares';
 
 /**
  * Any button variant can be disabled to prevent interaction, communicated with reduced opacity and a not-allowed cursor.
- * @order 10
  */
 export function DisabledExample() {
   return (

@@ -2,7 +2,6 @@ import { Button, Flex, Icon } from '@godaddy/antares';
 
 /**
  * The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
- * @order 7
  */
 export function MinimalExample() {
   return (

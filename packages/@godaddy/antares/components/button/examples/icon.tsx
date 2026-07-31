@@ -1,8 +1,7 @@
 import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';
 
 /**
- * You may provide an optional [`Icon`](../icon) element to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
- * @order 8
+ * You may provide an optional `Icon` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
  */
 export function IconExample() {
   return (
