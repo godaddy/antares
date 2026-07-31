@@ -1,6 +1,11 @@
 import { type DateValue, cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * When your data does not use `x`/`y`, point `xAccessor` and `yAccessor` at the fields it does use (here `date` and `value`) instead of reshaping the data first.
+ * @title Custom accessors
+ * @order 10
+ */
 export function CustomAccessorsExample(props: Partial<LineChartProps<DateValue>>) {
   const series = [
     {

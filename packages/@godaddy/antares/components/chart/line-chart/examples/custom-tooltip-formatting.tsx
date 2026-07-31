@@ -5,6 +5,11 @@ function formatTooltipValue(d: DataPoint): string {
   return `Value: ${(d.y as number).toFixed(2)} units`;
 }
 
+/**
+ * `tooltipValueFormatter` shapes only the tooltip values, so you can show full currency or units there while the axis stays compact.
+ * @title Custom tooltip formatting
+ * @order 19
+ */
 export function CustomTooltipFormattingExample(props: Partial<LineChartProps>) {
   const series = [
     {

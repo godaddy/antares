@@ -23,7 +23,7 @@ import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
 import { NiceValuesExample } from '../examples/nice-values';
 import { RTLExample } from '../examples/rtl';
-import { SingleSeriesExample } from '../examples/single-series';
+import { DefaultExample } from '../examples/default';
 import { TicksExample } from '../examples/ticks';
 import { TitlesExample } from '../examples/titles';
 import { TooltipDisabledExample } from '../examples/tooltip-disabled';
@@ -48,11 +48,11 @@ async function renderExampleAndWait(children: ReactNode, width = 800, height = 4
 describe('@godaddy/antares', function antares() {
   describe('#LineChart', function lineChartTests() {
     describe('#basic', function basic() {
-      it('single-series screenshot', async function singleSeries() {
-        const { container } = await renderExampleAndWait(<SingleSeriesExample />);
+      it('default screenshot', async function defaultExample() {
+        const { container } = await renderExampleAndWait(<DefaultExample />);
 
         assume(container.querySelector('svg')).exists();
-        await expect(container).toMatchScreenshot('single-series');
+        await expect(container).toMatchScreenshot('default');
       });
 
       it('multiple-series screenshot', async function multipleSeries() {
