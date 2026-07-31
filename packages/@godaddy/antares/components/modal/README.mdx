@@ -8,29 +8,16 @@ import * as Stories from './modal.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The Modal is **composition-first**, modeled on React Aria / Spectrum's `Dialog`: it owns only the overlay, container, dialog shell, and scroll layout - it does not decide the interior. You author the content by composing the shared containers (`Header`, `Content`, `Footer`, `ButtonGroup`) plus `Heading slot="title"` and `CloseButton`. The Modal styles each region via context, and React Aria wires the title (`aria-labelledby`) and the close behavior, so you only tag the pieces. A `Modal` with no children renders an empty dialog.
-
-The dialog is a scroll-aware flex column: the `Content` region scrolls while the `Header` and `Footer` stay pinned. That scroll layout is owned by the Modal (a height-constrained container), not by the generic containers, so the same `Content` does not scroll when used elsewhere.
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. Compose the interior:
 
 ```tsx
-<ModalTrigger>
-  <Button variant="primary">Open modal</Button>
-  <Modal>
-    <Header>
-      <Heading slot="title">Delete file?</Heading>
-      <CloseButton />
-    </Header>
-    <Content>This action cannot be undone.</Content>
-    <Footer justifyContent="end">
-      <ButtonGroup>
-        <CloseButton variant="secondary">Cancel</CloseButton>
-        <Button slot="close" variant="critical">
-          Delete
-        </Button>
-      </ButtonGroup>
-    </Footer>
-  </Modal>
-</ModalTrigger>
+<Modal>
+  <Heading slot="title" />
+  <Header />
+  <Content />
+  <Footer />
+  <ButtonGroup />
+</Modal>
 ```
 
 ## Installation
