@@ -66,12 +66,26 @@ describe('remark-examples', function remarkExamplesTests() {
     await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
 
     const imports = tree.children.filter((c) => c.type === 'mdxjsEsm');
-    expect(imports).toHaveLength(4);
+    // One import per example component, plus the doc-blocks import the expansion emits.
+    expect(imports).toHaveLength(5);
     expect(imports[0].data.estree.body[0].source.value).toBe('./examples/default.tsx');
+    expect(imports.some((i) => i.value === 'import { Source, Story } from "@storybook/addon-docs/blocks";')).toBe(true);
 
     const story = byName(tree.children, 'Story')[0];
     expect(expression(story, 'of')).toMatchObject({ type: 'Identifier', name: 'DefaultExample' });
     expect(attr(story, 'inline')).toBeUndefined();
+  });
+
+  it('does not re-import doc blocks the README already imports (fumadocs)', async function dedupesBlocks() {
+    const tree = makeTree();
+    tree.children.unshift({ type: 'mdxjsEsm', value: "import { Source, Story } from '@storybook/addon-docs/blocks';" });
+
+    await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
+
+    const blocksImports = tree.children.filter(
+      (c) => c.type === 'mdxjsEsm' && String(c.value).includes('addon-docs/blocks')
+    );
+    expect(blocksImports).toHaveLength(1);
   });
 
   it('drops the marker when of={Stories.<name>} names an unknown export', async function unknownExport() {

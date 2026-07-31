@@ -123,7 +123,9 @@ import * as Stories from './button.stories.tsx';
 <Examples of={Stories.examples} />
 ```
 
-At build time each example expands into an `### Title` heading, an optional description, a live `<Story>` preview, and a `<Source>` snippet. The README's `<Examples of={Stories.<name>} />` is followed to the colocated stories file, and that export's `getExamples(<dir>)` argument locates the folder - so the path is declared in exactly one place.
+At build time, each example expands into an `### Title` heading, an optional description, a live `<Story>` preview, and a `<Source>` snippet. The generated content also injects any required `Story` and `Source` imports, deduplicating them against existing imports. As a result, the README only needs to import the blocks it declares itself, such as `Meta` and `ArgTypes`.
+
+The README's `<Examples of={Stories.<name>} />` block is resolved to the colocated stories file. The `getExamples(<dir>)` call in that file determines the examples directory, so the path is defined in exactly one place.
 
 ### Example metadata (JSDoc)
 

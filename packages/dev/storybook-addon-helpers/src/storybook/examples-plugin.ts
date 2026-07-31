@@ -6,6 +6,9 @@ import { discoverExamplesForReadme, type ExampleDescriptor } from '../examples.t
 const EXAMPLES_MARKER = /<Examples\b[^>]*\/>/;
 /** Extracts the export name from an `of={Stories.<name>}` attribute on the marker. */
 const OF_ATTR = /\bof=\{\s*[\w$]+\.([\w$]+)\s*\}/;
+/** Doc blocks the expansion emits; imported for the author so `<Examples>` stays self-contained. */
+const BLOCKS_MODULE = '@storybook/addon-docs/blocks';
+const REQUIRED_BLOCKS = ['Source', 'Story'];
 
 /**
  * Vite plugin that expands the `<Examples of={Stories.<name>} />` marker in a
@@ -47,9 +50,31 @@ export function generateExamplesPlugin(readmeRegex: RegExp): Plugin {
         return renderBlock(descriptor);
       });
 
-      return code.replace(EXAMPLES_MARKER, blocks.join('\n\n'));
+      const expanded = code.replace(EXAMPLES_MARKER, blocks.join('\n\n'));
+      return blocks.length > 0 ? ensureBlocksImport(expanded) : expanded;
     }
   };
+}
+
+/**
+ * Injects the `<Source>`/`<Story>` import the expansion relies on, adding only the
+ * names not already imported. This keeps `<Examples>` self-contained so authors
+ * import just the blocks they write themselves (`Meta`, `ArgTypes`, ...).
+ */
+function ensureBlocksImport(code: string): string {
+  const missing = REQUIRED_BLOCKS.filter((name) => !importsBinding(code, name));
+  if (missing.length === 0) return code;
+
+  const importLine = `import { ${missing.join(', ')} } from '${BLOCKS_MODULE}';\n`;
+  // Insert after frontmatter when present (index 0 otherwise), since it must stay first.
+  const end = code.match(/^---\n[\s\S]*?\n---\n/)?.[0].length ?? 0;
+  return `${code.slice(0, end)}${importLine}${code.slice(end)}`;
+}
+
+/** Whether `name` is already bound by an existing `import ... from '...'` statement. */
+function importsBinding(code: string, name: string): boolean {
+  const word = new RegExp(`\\b${name}\\b`);
+  return (code.match(/import\b[\s\S]*?from\s*['"][^'"]+['"]/g) ?? []).some((statement) => word.test(statement));
 }
 
 /** Renders one example as MDX: heading, description, `<Story>`, and inlined `<Source>`. */

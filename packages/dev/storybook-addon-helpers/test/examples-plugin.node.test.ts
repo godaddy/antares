@@ -35,11 +35,20 @@ describe('examples-plugin', function examplesPluginTests() {
     expect(result).toContain('DefaultExample');
     expect(result).not.toContain('@order');
     expect(result).not.toContain('?raw');
+    // The expansion imports the doc blocks it emits, so the README author needn't.
+    expect(result).toContain("import { Source, Story } from '@storybook/addon-docs/blocks';");
+  });
+
+  it('does not re-import doc blocks the README already imports', async function dedupesBlocksImport() {
+    const result = await load(path.join(FIXTURES, 'examples-imports/README.mdx'));
+    expect(result?.match(/from '@storybook\/addon-docs\/blocks'/g)).toHaveLength(1);
   });
 
   it('drops the marker when the component has no examples', async function noExamples() {
     const result = await load(path.join(FIXTURES, 'no-examples/README.mdx'));
     expect(result).not.toContain('<Examples');
     expect(result).not.toContain('<Source');
+    // Nothing was emitted, so no blocks import is injected.
+    expect(result).not.toContain('addon-docs/blocks');
   });
 });

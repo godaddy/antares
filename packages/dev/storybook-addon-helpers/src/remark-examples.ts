@@ -36,6 +36,9 @@ interface RemarkFile {
 type Estree = Record<string, unknown>;
 
 const EXAMPLES_ELEMENT = 'Examples';
+/** Doc blocks the expansion emits; imported for the author so `<Examples>` stays self-contained. */
+const BLOCKS_MODULE = '@storybook/addon-docs/blocks';
+const REQUIRED_BLOCKS = ['Source', 'Story'];
 
 /**
  * Remark plugin that expands an `<Examples of={Stories.<name>} />` node into a
@@ -76,13 +79,26 @@ export function remarkExamples(options: RemarkExamplesOptions) {
       blocks.push(sourceNode(descriptor.source));
 
       if (options.target === 'fumadocs') {
-        imports.push(esmImportNode(descriptor.componentExportName, descriptor.importPath));
+        imports.push(esmImportNode([descriptor.componentExportName], descriptor.importPath));
       }
+    }
+
+    // fumadocs renders the examples directly, so it also needs the doc blocks the
+    // expansion emits. storybook resolves those via the README's own imports.
+    if (options.target === 'fumadocs' && descriptors.length > 0) {
+      const missing = REQUIRED_BLOCKS.filter((name) => !treeImportsBinding(tree, name));
+      if (missing.length > 0) imports.push(esmImportNode(missing, BLOCKS_MODULE));
     }
 
     tree.children.splice(index, 1, ...blocks);
     if (imports.length > 0) tree.children.unshift(...imports);
   };
+}
+
+/** Whether an existing top-level import in the tree already binds `name`. */
+function treeImportsBinding(tree: MdRoot, name: string): boolean {
+  const word = new RegExp(`\\b${name}\\b`);
+  return tree.children.some((node) => node.type === 'mdxjsEsm' && word.test(String(node.value)));
 }
 
 function isExamplesNode(node: MdNode): boolean {
@@ -157,10 +173,10 @@ function expressionAttribute(name: string, expression: Estree, value: string): M
   };
 }
 
-function esmImportNode(name: string, source: string): MdNode {
+function esmImportNode(names: string[], source: string): MdNode {
   return {
     type: 'mdxjsEsm',
-    value: `import { ${name} } from ${JSON.stringify(source)};`,
+    value: `import { ${names.join(', ')} } from ${JSON.stringify(source)};`,
     data: {
       estree: {
         type: 'Program',
@@ -168,7 +184,11 @@ function esmImportNode(name: string, source: string): MdNode {
         body: [
           {
             type: 'ImportDeclaration',
-            specifiers: [{ type: 'ImportSpecifier', imported: identifier(name), local: identifier(name) }],
+            specifiers: names.map((name) => ({
+              type: 'ImportSpecifier',
+              imported: identifier(name),
+              local: identifier(name)
+            })),
             source: literal(source),
             attributes: []
           }

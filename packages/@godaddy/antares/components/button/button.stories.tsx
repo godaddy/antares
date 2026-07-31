@@ -11,7 +11,7 @@ export const Props = getComponentDocs(Button);
 
 export const LinkButtonProps = getComponentDocs(LinkButton);
 
-export const examples = getExamples('./examples');
+export const Examples = getExamples('./examples');
 
 export const Playground = getStory(PlaygroundExample, {
   args: {
