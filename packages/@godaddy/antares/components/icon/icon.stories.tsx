@@ -1,5 +1,5 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/icon-playground.tsx';
+import { PlaygroundExample } from './examples/icon-playground.tsx';
 import { getMeta, getStory, getComponentDocs } from '@bento/storybook-addon-helpers';
 import { DefaultExample } from './examples/default.tsx';
 
@@ -11,8 +11,7 @@ export default getMeta({
   }
 });
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     icon: 'star',
     width: 24,
@@ -24,7 +23,7 @@ export const Playground = {
     width: { control: 'number' },
     height: { control: 'number' }
   }
-};
+});
 
 export const Icon = getStory(DefaultExample);
 
