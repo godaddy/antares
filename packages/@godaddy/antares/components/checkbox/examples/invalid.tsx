@@ -5,7 +5,7 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
  * @title Invalid State
  * @order 8
  */
-export function CheckboxGroupInvalid() {
+export function CheckboxGroupInvalidExample() {
   return (
     <CheckboxGroup label="Favorite colors" isInvalid description="Choose your favorite color">
       <Checkbox value="blue">Blue</Checkbox>

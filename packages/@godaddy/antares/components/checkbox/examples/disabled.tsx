@@ -6,7 +6,7 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
  * @title Disabled States
  * @order 6
  */
-export function CheckboxGroupDisabled() {
+export function CheckboxGroupDisabledExample() {
   const [selected, setSelected] = useState<string[]>(['purple', 'red']);
 
   return (

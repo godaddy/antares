@@ -4,7 +4,7 @@ import { Flex, Switch } from '@godaddy/antares';
  * The `labelPosition` prop places the label at the `start` or `end` of the track.
  * @order 4
  */
-export function SwitchLabelPosition() {
+export function SwitchLabelPositionExample() {
   return (
     <Flex direction="column" gap="md">
       <Switch labelPosition="start" defaultSelected>

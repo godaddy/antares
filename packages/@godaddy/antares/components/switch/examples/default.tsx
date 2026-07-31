@@ -5,6 +5,6 @@ import { Switch } from '@godaddy/antares';
  * @title Default
  * @order 1
  */
-export function SwitchDefault() {
+export function SwitchDefaultExample() {
   return <Switch>Wi-Fi</Switch>;
 }

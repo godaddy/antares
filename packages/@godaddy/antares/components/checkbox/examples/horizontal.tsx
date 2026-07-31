@@ -5,7 +5,7 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
  * @title Horizontal Layout
  * @order 5
  */
-export function CheckboxGroupHorizontal() {
+export function CheckboxGroupHorizontalExample() {
   return (
     <CheckboxGroup label="Favorite colors" orientation="horizontal">
       <Checkbox value="blue">Blue</Checkbox>

@@ -5,7 +5,7 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
  * @title Checkbox Group
  * @order 3
  */
-export function CheckboxGroupBasic() {
+export function CheckboxGroupBasicExample() {
   return (
     <CheckboxGroup label="Favorite colors">
       <Checkbox value="blue">Blue</Checkbox>

@@ -5,6 +5,6 @@ import { Switch } from '@godaddy/antares';
  * @title No Label
  * @order 5
  */
-export function SwitchNoLabel() {
+export function SwitchNoLabelExample() {
   return <Switch aria-label="Wi-Fi" />;
 }

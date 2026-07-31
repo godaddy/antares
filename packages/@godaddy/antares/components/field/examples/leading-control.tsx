@@ -13,7 +13,7 @@ import {
  * @title Leading control
  * @order 2
  */
-export function FieldGroupLeadingControl(props: FieldGroupProps) {
+export function FieldGroupLeadingControlExample(props: FieldGroupProps) {
   return (
     <Field>
       <FieldLabel>Phone</FieldLabel>

@@ -15,7 +15,7 @@ import {
  * @title Icon accessories
  * @order 4
  */
-export function FieldGroupIconAccessories(props: FieldGroupProps) {
+export function FieldGroupIconAccessoriesExample(props: FieldGroupProps) {
   return (
     <Field>
       <FieldLabel>Email</FieldLabel>

@@ -13,7 +13,7 @@ import {
  * @title Trailing control
  * @order 3
  */
-export function FieldGroupTrailingControl(props: FieldGroupProps) {
+export function FieldGroupTrailingControlExample(props: FieldGroupProps) {
   return (
     <Field>
       <FieldLabel>Search</FieldLabel>

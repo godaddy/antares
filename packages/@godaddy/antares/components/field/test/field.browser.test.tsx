@@ -5,8 +5,8 @@ import { page, userEvent } from 'vitest/browser';
 import { TextField as RACTextField } from 'react-aria-components';
 import { Field, FieldError, FieldGroup, FieldInput } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default';
-import { FieldGroupLeadingControl } from '../examples/leading-control';
-import { FieldGroupTrailingControl } from '../examples/trailing-control';
+import { FieldGroupLeadingControlExample } from '../examples/leading-control';
+import { FieldGroupTrailingControlExample } from '../examples/trailing-control';
 
 // Appearance (CSS classes, element presence, layout) is covered by field.visual.test.tsx.
 // These tests cover behavior a screenshot can't assert: conditional rendering, keyboard
@@ -40,7 +40,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#leading-control', function leadingControl() {
       it('moves focus to the leading button on tab', async function focusOrder() {
-        const { locator } = await render(<FieldGroupLeadingControl isDisabled={false} />);
+        const { locator } = await render(<FieldGroupLeadingControlExample isDisabled={false} />);
         const button = locator.getByRole('button').element();
 
         await userEvent.tab();
@@ -50,7 +50,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('marks the group disabled when isDisabled', async function groupDisabled() {
-        const { container } = await render(<FieldGroupLeadingControl isDisabled={true} />);
+        const { container } = await render(<FieldGroupLeadingControlExample isDisabled={true} />);
         const group = container.querySelector('[role="group"]') as HTMLElement;
 
         assume(group.hasAttribute('data-disabled')).equals(true);
@@ -59,7 +59,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#trailing-control', function trailingControl() {
       it('moves focus through the input to the trailing button on tab', async function focusOrder() {
-        const { locator } = await render(<FieldGroupTrailingControl />);
+        const { locator } = await render(<FieldGroupTrailingControlExample />);
         const button = locator.getByRole('button').element();
 
         await userEvent.tab();

@@ -6,7 +6,7 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
  * @title Controlled
  * @order 4
  */
-export function CheckboxGroupControlled() {
+export function CheckboxGroupControlledExample() {
   const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);
 
   return (

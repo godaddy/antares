@@ -5,7 +5,7 @@ import { useState } from 'react';
  * Manage switch state programmatically with `isSelected` and `onChange`.
  * @order 7
  */
-export function SwitchControlled() {
+export function SwitchControlledExample() {
   const [isSelected, setIsSelected] = useState(false);
 
   return (
