@@ -1,22 +1,16 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { DatePicker, DateRangePicker } from '@godaddy/antares';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/date-picker-playground.tsx';
-import { DatePickerDefaultExample } from './examples/default.tsx';
-import { DatePickerControlledExample } from './examples/controlled.tsx';
-import { DateRangePickerExample } from './examples/range.tsx';
-import { DatePickerMinMaxExample } from './examples/min-max.tsx';
-import { DatePickerWithErrorExample } from './examples/with-error.tsx';
-import { DatePickerDisabledExample } from './examples/disabled.tsx';
-import { DatePickerFormatOptionsExample } from './examples/format-options.tsx';
+import { PlaygroundExample } from './examples/date-picker-playground.tsx';
 
 export default getMeta({ title: 'components/DatePicker' });
 
 export const Props = getComponentDocs(DatePicker);
 export const DateRangePickerProps = getComponentDocs(DateRangePicker);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: {
     label: 'Event date',
     placeholder: 'Select a date',
@@ -33,12 +27,4 @@ export const Playground = {
     isInvalid: { control: 'boolean', description: 'Forces the invalid state.' },
     errorMessage: { control: 'text', description: 'Error text shown when invalid.' }
   }
-};
-
-export const Default = getStory(DatePickerDefaultExample);
-export const Controlled = getStory(DatePickerControlledExample);
-export const Range = getStory(DateRangePickerExample);
-export const MinMax = getStory(DatePickerMinMaxExample);
-export const WithError = getStory(DatePickerWithErrorExample);
-export const Disabled = getStory(DatePickerDisabledExample);
-export const FormatOptions = getStory(DatePickerFormatOptionsExample);
+});

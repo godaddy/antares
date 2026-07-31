@@ -1,5 +1,9 @@
 import { Grid, Flex } from '@godaddy/antares';
 
+/**
+ * Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+ * @order 6
+ */
 export function AlignmentExample() {
   return (
     <Flex direction="column" gap="lg">

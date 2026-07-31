@@ -4,7 +4,7 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
 import { SingleSliceExample } from '../examples/single-slice.tsx';
@@ -45,7 +45,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('renders basic chart with central label and category names', async function basicChart() {
-        const { container, locator } = await renderDonutExample(<BasicExample />);
+        const { container, locator } = await renderDonutExample(<DefaultExample />);
 
         const svg = container.querySelector('svg') as SVGSVGElement;
         assume(svg).exists();
@@ -81,7 +81,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#tooltip', function tooltipTests() {
       it('opens tooltip on slice hover and closes when pointer leaves the svg', async function hoverAndLeave() {
-        const { locator } = await renderDonutExample(<BasicExample />);
+        const { locator } = await renderDonutExample(<DefaultExample />);
 
         const chart = locator.getByRole('img');
         const slice = chart.element().querySelectorAll('path')[0];
@@ -147,7 +147,7 @@ describe('@godaddy/antares', function antares() {
 
       it('groups all small slices in one tooltip', async function allSmallSlices() {
         const data = Array.from({ length: 20 }, (_, i) => ({ id: `slice-${i}`, name: `Slice ${i}`, value: 1 }));
-        const { container } = await renderDonutExample(<BasicExample data={data} />);
+        const { container } = await renderDonutExample(<DefaultExample data={data} />);
 
         const paths = container.querySelectorAll('svg path');
         assume(paths.length).equals(20);

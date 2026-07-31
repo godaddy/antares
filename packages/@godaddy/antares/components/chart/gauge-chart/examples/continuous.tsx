@@ -1,5 +1,10 @@
 import { Grid, GaugeChart } from '@godaddy/antares';
 
+/**
+ * Multiple continuous gauges showing different fill percentages.
+ * @title Continuous Values
+ * @order 2
+ */
 export function ContinuousExample() {
   const values = [0, 25, 50, 75, 100];
 

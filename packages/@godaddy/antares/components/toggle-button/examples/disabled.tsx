@@ -1,5 +1,10 @@
 import { ToggleButtonGroup, ToggleButton, Flex } from '@godaddy/antares';
 
+/**
+ * Disable the entire group with `isDisabled` on the container, or disable individual items with `isDisabled` on specific `ToggleButton` elements.
+ * @title Disabled States
+ * @order 4
+ */
 export function DisabledExample() {
   return (
     <Flex direction="column" gap="sm" alignItems="start">

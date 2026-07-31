@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "theme": {
+      "description": "Complete Airo theme combining all token categories",
+      "sources": [
+        { "$ref": "./color.json" },
+        { "$ref": "./effects.json" },
+        { "$ref": "./typography.json" },
+        { "$ref": "./spacing.json" }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/theme"]
+}

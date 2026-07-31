@@ -2,6 +2,10 @@ import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godad
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
 
+/**
+ * Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
+ * @order 4
+ */
 export function DropTargetLabelExample() {
   return (
     <DropZone

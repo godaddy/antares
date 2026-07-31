@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { TextFieldAdornmentsExample } from '../examples/adornments';
-import { TextFieldBasic } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';
 import { TextFieldMultilineExample } from '../examples/multiline';
@@ -11,7 +11,7 @@ describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
     describe('#examples', function examples() {
       it('renders basic example', function basic() {
-        const result = renderToString(<TextFieldBasic />);
+        const result = renderToString(<DefaultExample />);
         expect(result).toMatchSnapshot();
       });
 

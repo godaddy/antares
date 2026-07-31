@@ -1,10 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { InlineDrawer, InlineDrawerPanel } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { ControlledExample } from './examples/controlled.tsx';
-import { SidebarNavExample } from './examples/sidebar-nav.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/inline-drawer-playground.tsx';
+import { PlaygroundExample } from './examples/inline-drawer-playground.tsx';
 
 export default getMeta({
   title: 'components/InlineDrawer'
@@ -14,14 +11,9 @@ export const Props = getComponentDocs(InlineDrawer);
 
 export const InlineDrawerPanelProps = getComponentDocs(InlineDrawerPanel);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const Controlled = getStory(ControlledExample);
-
-export const SidebarNav = getStory(SidebarNavExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'top',
     animate: true,
@@ -42,4 +34,4 @@ export const Playground = {
       description: 'Disable the trigger'
     }
   }
-};
+});

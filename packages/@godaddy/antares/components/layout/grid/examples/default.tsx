@@ -1,5 +1,9 @@
 import { Grid, Flex, type GridProps } from '@godaddy/antares';
 
+/**
+ * Basic 3-column grid layout with gap.
+ * @order 1
+ */
 export function DefaultExample(props: GridProps) {
   return (
     <Grid columns="repeat(3, 1fr)" gap="sm" {...props}>

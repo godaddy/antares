@@ -1,6 +1,11 @@
 import { appleStock } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xDomain` and `yDomain` pin the visible range. Use them to keep a fixed scale, or to keep several charts comparable.
+ * @title Fixed domain
+ * @order 12
+ */
 export function FixedDomainExample(props: Partial<LineChartProps>) {
   const data = appleStock
     .slice(0, 150)

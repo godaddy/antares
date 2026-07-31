@@ -1,9 +1,11 @@
 import ts from 'typescript';
 import { readFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import { extractVariantNames } from './getters-parser.ts';
-import { GET_COMPONENT_DOCS, GET_META, GET_STORY, GET_TYPE_DOCS, GET_VARIANTS } from '../getter-names.ts';
+import { GET_COMPONENT_DOCS, GET_EXAMPLES, GET_META, GET_STORY, GET_TYPE_DOCS, GET_VARIANTS } from '../getter-names.ts';
 import { toStorybookArgTypes } from './arg-types.ts';
 import { docFromCall } from '../docs.ts';
+import { discoverExamples, type ExampleDescriptor } from '../examples.ts';
 import { toTsExpression } from '../engine/literal.ts';
 import type { DocsDefaults } from '../types.ts';
 
@@ -31,11 +33,14 @@ export async function csfTransformer(input: {
   const code = input.filePath ? await readFile(input.filePath, 'utf8') : (input.code ?? '');
   const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 
+  const examples = await scanExamples(filePath, code);
+
   const result = ts.transform(sourceFile, [
     applyTransformers(
       [transformGetMeta, transformGetStory, transformGetVariants, transformGetComponentDocs, transformGetTypeDocs],
       input.defaults
-    )
+    ),
+    transformExamples(examples)
   ]);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
   return printer.printFile(result.transformed[0] as ts.SourceFile);
@@ -148,6 +153,109 @@ function transformGetVariants(node: ts.Node) {
   }
 
   return out;
+}
+
+/**
+ * Discovers the examples referenced by an `export const examples = getExamples(...)`
+ * statement, reading the optional folder-override argument. Returns an empty list
+ * when the file has no such statement or was transformed from an inline string
+ * (no `filePath` to resolve the `examples/` folder against).
+ */
+async function scanExamples(filePath: string, code: string): Promise<ExampleDescriptor[]> {
+  if (!filePath || !code.includes(GET_EXAMPLES)) return [];
+
+  const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+
+  let examplesDir: string | undefined;
+  let present = false;
+
+  sourceFile.forEachChild(function find(statement) {
+    if (present) return;
+    const call = getExamplesGetterCall(statement);
+    if (!call) return;
+    present = true;
+    const arg = call.arguments[0];
+    if (arg && ts.isStringLiteral(arg)) examplesDir = arg.text;
+  });
+
+  if (!present) return [];
+
+  return discoverExamples({ dir: dirname(filePath), examplesDir });
+}
+
+/**
+ * Returns the `getExamples(...)` call of an `export const <name> = getExamples(...)`
+ * statement, or `undefined` for any other statement.
+ */
+function getExamplesGetterCall(statement: ts.Node): ts.CallExpression | undefined {
+  if (!ts.isVariableStatement(statement)) return;
+  if (!statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)) return;
+  const init = statement.declarationList.declarations[0]?.initializer;
+  if (init && isCallTo(init, GET_EXAMPLES)) return init;
+  return undefined;
+}
+
+/**
+ * SourceFile transformer that replaces the `getExamples(...)` statement with one
+ * exported story per discovered example (`export const Primary = PrimaryExample`)
+ * and prepends the matching example-component imports.
+ *
+ * @example
+ * ```ts
+ * export const examples = getExamples();
+ *
+ * // transformed to:
+ * import { PrimaryExample } from './examples/primary.tsx';
+ * export const Primary = PrimaryExample;
+ * ```
+ */
+function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory<ts.SourceFile> {
+  return function _transformer() {
+    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      let found = false;
+      const body: ts.Statement[] = [];
+
+      for (const statement of sourceFile.statements) {
+        if (getExamplesGetterCall(statement)) {
+          found = true;
+          for (const example of examples) {
+            body.push(createStoryExport(example.storyName, example.componentExportName));
+          }
+        } else {
+          body.push(statement);
+        }
+      }
+
+      if (!found) return sourceFile;
+
+      const imports = examples.map((example) => createNamedImport(example.componentExportName, example.importPath));
+      return factory.updateSourceFile(sourceFile, [...imports, ...body]);
+    };
+  };
+}
+
+/** Builds `import { <name> } from '<modulePath>';` */
+function createNamedImport(name: string, modulePath: string): ts.ImportDeclaration {
+  return factory.createImportDeclaration(
+    undefined,
+    factory.createImportClause(
+      false,
+      undefined,
+      factory.createNamedImports([factory.createImportSpecifier(false, undefined, factory.createIdentifier(name))])
+    ),
+    factory.createStringLiteral(modulePath)
+  );
+}
+
+/** Builds `export const <storyName> = <componentName>;` */
+function createStoryExport(storyName: string, componentName: string): ts.VariableStatement {
+  return factory.createVariableStatement(
+    [factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+    factory.createVariableDeclarationList(
+      [factory.createVariableDeclaration(storyName, undefined, undefined, factory.createIdentifier(componentName))],
+      ts.NodeFlags.Const
+    )
+  );
 }
 
 /**

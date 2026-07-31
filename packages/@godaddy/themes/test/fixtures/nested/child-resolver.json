@@ -1,0 +1,12 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "child": {
+      "sources": [
+        { "$ref": "./base.json" },
+        { "child-token": { "$type": "color", "$value": "green" } }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/child"]
+}

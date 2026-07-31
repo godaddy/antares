@@ -1,6 +1,13 @@
-import { expectTypeOf, it, describe } from 'vitest';
+import { expectTypeOf, it, describe, expect } from 'vitest';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs } from '../src/storybook/getters.ts';
+import {
+  getMeta,
+  getStory,
+  getVariants,
+  getComponentDocs,
+  getTypeDocs,
+  getExamples
+} from '../src/storybook/getters.ts';
 
 function TestComponent(props: { size: string; disabled?: boolean }) {
   return <div>Test {JSON.stringify(props)}</div>;
@@ -138,5 +145,12 @@ describe('getVariants', function getVariantsSuite() {
     type VariantsObj = Parameters<typeof getVariants<typeof TestComponent>>[1];
 
     expectTypeOf<VariantsObj>().toEqualTypeOf<Record<string, StoryObj<typeof TestComponent>>>();
+  });
+});
+
+describe('getExamples', function getExamplesSuite() {
+  it('is a no-op at runtime', function noop() {
+    expect(getExamples()).toEqual({});
+    expect(getExamples('./examples')).toEqual({});
   });
 });

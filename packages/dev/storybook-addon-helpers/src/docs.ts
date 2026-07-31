@@ -9,6 +9,10 @@ import { toLiteralValue } from './engine/literal.ts';
 import type { DocsDefaults, DocsOptions, PropsDoc } from './types.ts';
 
 export type * from './types.ts';
+export { discoverExamples } from './examples.ts';
+export type { DiscoverExamplesInput, ExampleDescriptor } from './examples.ts';
+export { remarkExamples } from './remark-examples.ts';
+export type { RemarkExamplesOptions, RemarkExamplesTarget } from './remark-examples.ts';
 
 /** Reads the docs-options object literal at `argIndex` of a getter call. */
 function getDocsOptions(node: ts.CallExpression, argIndex: number): DocsOptions<Record<string, unknown>> {

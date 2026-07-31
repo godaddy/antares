@@ -3,6 +3,11 @@ import { useState } from 'react';
 
 const TOTAL_SLIDES = 3;
 
+/**
+ * You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+ * @title External Controls (Controlled)
+ * @order 4
+ */
 export function ExternalControlsControlledExample() {
   const [activeIndex, setActiveIndex] = useState(1);
 

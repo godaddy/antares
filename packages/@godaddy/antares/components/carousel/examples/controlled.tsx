@@ -1,6 +1,10 @@
 import { Carousel, Flex } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+ * @order 2
+ */
 export function ControlledExample() {
   const [activeIndex, setActiveIndex] = useState(1);
 

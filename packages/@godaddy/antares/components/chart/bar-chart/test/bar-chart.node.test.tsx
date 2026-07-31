@@ -6,30 +6,30 @@
 import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { BarChartCustomDomainExample } from '../examples/custom-domain';
-import { BarChartFormattedTickMarksExample } from '../examples/formatted-tick-marks';
-import { BarChartHorizontalMultiSeriesExample } from '../examples/horizontal-multi-series';
-import { BarChartHorizontalSingleSeriesExample } from '../examples/horizontal-single-series';
-import { BarChartMultiSeriesExample } from '../examples/multi-series';
-import { BarChartRTLHorizontalMultiSeriesExample } from '../examples/rtl-horizontal-multi-series';
-import { BarChartRTLMultiSeriesExample } from '../examples/rtl-multi-series';
-import { BarChartExample } from '../examples/single-series';
+import { CustomDomainExample } from '../examples/custom-domain';
+import { FormattedTickMarksExample } from '../examples/formatted-tick-marks';
+import { HorizontalMultiSeriesExample } from '../examples/horizontal-multi-series';
+import { HorizontalSingleSeriesExample } from '../examples/horizontal-single-series';
+import { MultiSeriesExample } from '../examples/multi-series';
+import { RTLHorizontalMultiSeriesExample } from '../examples/rtl-horizontal-multi-series';
+import { RTLMultiSeriesExample } from '../examples/rtl-multi-series';
+import { DefaultExample } from '../examples/default';
 
 const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
-  ['custom-domain', BarChartCustomDomainExample],
-  ['formatted-tick-marks', BarChartFormattedTickMarksExample],
-  ['horizontal-multi-series', BarChartHorizontalMultiSeriesExample],
-  ['horizontal-single-series', BarChartHorizontalSingleSeriesExample],
-  ['multi-series', BarChartMultiSeriesExample],
-  ['rtl-horizontal-multi-series', BarChartRTLHorizontalMultiSeriesExample],
-  ['rtl-multi-series', BarChartRTLMultiSeriesExample],
-  ['single-series', BarChartExample]
+  ['default', DefaultExample],
+  ['custom-domain', CustomDomainExample],
+  ['formatted-tick-marks', FormattedTickMarksExample],
+  ['horizontal-multi-series', HorizontalMultiSeriesExample],
+  ['horizontal-single-series', HorizontalSingleSeriesExample],
+  ['multi-series', MultiSeriesExample],
+  ['rtl-horizontal-multi-series', RTLHorizontalMultiSeriesExample],
+  ['rtl-multi-series', RTLMultiSeriesExample]
 ];
 
 describe('@godaddy/antares', function antares() {
   describe('#BarChart', function barChartTests() {
     it('does not render SVG on SSR (dimensions from parent ResizeObserver)', function noSvgOnSsr() {
-      const result = renderToString(<BarChartExample />);
+      const result = renderToString(<DefaultExample />);
       expect(result).not.toContain('<svg');
     });
 

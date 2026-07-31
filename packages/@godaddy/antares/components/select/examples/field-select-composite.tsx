@@ -5,6 +5,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSelect, FieldInpu
  * bordered box. The select carries its own provider and `aria-label`; the input fills the
  * leading edge and the select sits at the end. The shared `FieldGroup` rounds the outer
  * corners by DOM order.
+ * @ignore
  */
 export function FieldSelectCompositeExample() {
   return (

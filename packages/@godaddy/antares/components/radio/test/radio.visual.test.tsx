@@ -2,7 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
-import { RadioBasicExample } from '../examples/radio-basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { RadioDescriptionExample } from '../examples/radio-description.tsx';
 import { RadioDisabledExample } from '../examples/radio-disabled.tsx';
 import { RadioErrorExample } from '../examples/radio-error.tsx';
@@ -16,7 +16,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#RadioGroup', function radioGroupTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<RadioBasicExample />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('basic');
     });
 

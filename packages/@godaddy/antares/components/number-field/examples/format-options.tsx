@@ -2,6 +2,11 @@ import { NumberField } from '@godaddy/antares';
 
 const devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();
 
+/**
+ * By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
+ * @title Format options (numbering system)
+ * @order 7
+ */
 export function NumberFieldFormatOptionsExample() {
   return (
     <NumberField

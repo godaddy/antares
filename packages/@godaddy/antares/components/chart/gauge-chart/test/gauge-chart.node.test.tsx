@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ContinuousExample } from '../examples/continuous.tsx';
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';
@@ -10,7 +10,7 @@ import { WithRangeLabelsExample } from '../examples/with-range-labels.tsx';
 
 const SSR_EXAMPLES: Array<[string, ReactElement]> = [
   ['continuous', <ContinuousExample key="continuous" />],
-  ['basic', <BasicExample key="basic" />],
+  ['basic', <DefaultExample key="basic" />],
   [
     'playground',
     <PlaygroundExample

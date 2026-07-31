@@ -3,15 +3,8 @@ title: Tag
 description: Non-interactive labels that highlight statuses and categories.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './tag.stories.tsx';
-import DefaultExample from './examples/default.tsx?raw';
-import EmphasesExample from './examples/emphases.tsx?raw';
-import SizesExample from './examples/sizes.tsx?raw';
-import InlineExample from './examples/inline.tsx?raw';
-import HighContrastExample from './examples/high-contrast.tsx?raw';
-import IconsExample from './examples/icons.tsx?raw';
-import IndicatorExample from './examples/indicator.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -21,60 +14,9 @@ import IndicatorExample from './examples/indicator.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Basic
-
-A minimal tag with the default emphasis and size.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={DefaultExample} />
-
-### Emphasis
-
-Nine emphasis options are available. Choose the one that fits the visual tone of your context.
-
-<Story of={Stories.Emphases} inline />
-<Source language="tsx" code={EmphasesExample} />
-
-### Sizes
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of={Stories.Sizes} inline />
-<Source language="tsx" code={SizesExample} />
-
-### Inline
-
-Use `design="inline"` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of={Stories.Inline} inline />
-<Source language="tsx" code={InlineExample} />
-
-### High Contrast
-
-A bolder color treatment for when tags need to stand out more — for example, on colored backgrounds.
-
-<Story of={Stories.HighContrast} inline />
-<Source language="tsx" code={HighContrastExample} />
-
-### With Icon
-
-Icons reinforce the tag's meaning at a glance. Add an `Icon` as a child — it inherits the tag's color and scales with its size.
-
-<Story of={Stories.Icons} inline />
-<Source language="tsx" code={IconsExample} />
-
-### Indicator
-
-A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
-
-<Story of={Stories.Indicator} inline />
-<Source language="tsx" code={IndicatorExample} />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -115,3 +57,7 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 - If users need to click or dismiss it — use a **Button** instead.
 - If the label is part of a sentence with no visual distinction — just use text.
+
+## Props
+
+<ArgTypes of={Stories.Props} />

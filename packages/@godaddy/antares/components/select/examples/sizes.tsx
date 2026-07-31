@@ -1,5 +1,10 @@
 import { Flex, Select, SelectItem } from '@godaddy/antares';
 
+/**
+ * Compare the supported `md` and `sm` visual sizes.
+ * @title Sizes
+ * @order 7
+ */
 export function SelectSizesExample() {
   return (
     <Flex direction="column" gap="md">

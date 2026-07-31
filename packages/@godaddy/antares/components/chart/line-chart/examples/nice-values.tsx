@@ -1,6 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xNice` and `yNice` round the domain out to friendlier numbers (e.g. 0.2 to 1.0), so ticks land on values people expect.
+ * @title Nice values
+ * @order 13
+ */
 export function NiceValuesExample(props: Partial<LineChartProps>) {
   const series = [
     {

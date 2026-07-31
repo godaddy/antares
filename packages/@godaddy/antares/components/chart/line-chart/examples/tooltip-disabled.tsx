@@ -1,6 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * Turn off the hover affordances entirely with `tooltip={false}`, `showCrosshair={false}`, and `showDataPoints={false}` - useful for a static or print-style chart.
+ * @title Tooltip disabled
+ * @order 17
+ */
 export function TooltipDisabledExample(props: Partial<LineChartProps>) {
   const series = [
     {
