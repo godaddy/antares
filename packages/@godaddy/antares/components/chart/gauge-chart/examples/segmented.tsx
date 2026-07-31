@@ -1,5 +1,9 @@
 import { Grid, GaugeChart } from '@godaddy/antares';
 
+/**
+ * Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+ * @order 3
+ */
 export function SegmentedExample() {
   return (
     <Grid columns="repeat(2, 200px)" gap="md" justifyContent="center">

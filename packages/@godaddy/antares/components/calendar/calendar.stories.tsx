@@ -1,21 +1,16 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Calendar, RangeCalendar } from '@godaddy/antares';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/calendar-playground.tsx';
-import { CalendarDefaultExample } from './examples/default.tsx';
-import { CalendarWithValueExample } from './examples/with-value.tsx';
-import { RangeCalendarExample } from './examples/range.tsx';
-import { CalendarMinMaxExample } from './examples/min-max.tsx';
-import { CalendarUnavailableExample } from './examples/unavailable.tsx';
-import { CalendarDisabledExample } from './examples/disabled.tsx';
+import { PlaygroundExample } from './examples/calendar-playground.tsx';
 
 export default getMeta({ title: 'components/Calendar' });
 
 export const Props = getComponentDocs(Calendar);
 export const RangeCalendarProps = getComponentDocs(RangeCalendar);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: { isDisabled: false, isReadOnly: false, pageCount: 1 },
   argTypes: {
     isDisabled: { control: 'boolean', description: 'Disables the calendar.' },
@@ -26,11 +21,4 @@ export const Playground = {
       description: 'Number of month grids to display (maps to visibleDuration).'
     }
   }
-};
-
-export const Default = getStory(CalendarDefaultExample);
-export const WithValue = getStory(CalendarWithValueExample);
-export const Range = getStory(RangeCalendarExample);
-export const MinMax = getStory(CalendarMinMaxExample);
-export const Unavailable = getStory(CalendarUnavailableExample);
-export const Disabled = getStory(CalendarDisabledExample);
+});

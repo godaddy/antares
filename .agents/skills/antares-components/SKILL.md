@@ -227,7 +227,7 @@ export const Playground = getStory(PlaygroundExample, {
 
 - Include frontmatter with a `title` and a brief `description`.
 - Import only the blocks you write yourself (`Meta`, `ArgTypes`) from `@storybook/addon-docs/blocks`, plus `* as Stories` from the stories file.
-- Use the following suggested `##` sections, in this order, when applicable: Features, Installation, Props, Examples, Customization, Accessibility, Best Practices, Troubleshooting. Add other sections if they better suit the component or documentation.
+- Use the following suggested `##` sections, in this order, when applicable: Features, Installation, Examples, Customization, Accessibility, Best Practices, Troubleshooting, Props. Add other sections if they better suit the component or documentation.
 - Use `<Meta of={Stories} name="Overview" />` for the overview and `<ArgTypes of={Stories.Props} />` for the props table.
 - Use `<Examples of={Stories.examples} />` to render **all** examples. At build time, it expands into one `###` heading, the JSDoc description, a live `<Story>`, and a `<Source>` snippet for each example.
 
@@ -253,11 +253,11 @@ import * as Stories from './button.stories.tsx';
 npm install @godaddy/antares
 \`\`\`
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
 <Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />
 ```

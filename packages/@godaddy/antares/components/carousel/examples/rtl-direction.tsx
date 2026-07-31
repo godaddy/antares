@@ -1,6 +1,10 @@
 import { Carousel, Flex } from '@godaddy/antares';
 import { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';
 
+/**
+ * The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+ * @order 8
+ */
 export function RTLDirectionExample() {
   return (
     <RTLProvider>

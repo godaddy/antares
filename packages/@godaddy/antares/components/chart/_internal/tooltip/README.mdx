@@ -3,12 +3,8 @@ title: Tooltip
 description: An internal component used for displaying tooltip information in chart components.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './tooltip.stories.tsx';
-
-import SourceMultipleSeries from './examples/multiple-series.tsx?raw';
-import SourceSingleSeries from './examples/single-series.tsx?raw';
-import SourceArrow from './examples/arrow.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -21,12 +17,6 @@ import SourceArrow from './examples/arrow.tsx?raw';
 ## Internal Component
 
 This component is **internal-only** and not exported from the package. It is intended for use inside chart components.
-
-## Props
-
-The `Tooltip` component accepts the following props:
-
-<ArgTypes of={Stories.Props} />
 
 ## Value formatting
 
@@ -44,23 +34,10 @@ The `Tooltip` component accepts the following props:
 
 ## Examples
 
-### Single Series
+<Examples of={Stories.Examples} />
 
-Basic tooltip with a single series and default formatting.
+## Props
 
-<Source language='tsx' code={SourceSingleSeries} />
-<Story of={Stories.SingleSeries} inline />
+The `Tooltip` component accepts the following props:
 
-### Multiple Series
-
-Tooltip with multiple series; all series at the same X position are shown together.
-
-<Source language='tsx' code={SourceMultipleSeries} />
-<Story of={Stories.MultipleSeries} inline />
-
-### Arrow
-
-Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
-
-<Source language='tsx' code={SourceArrow} />
-<Story of={Stories.Arrow} inline />
+<ArgTypes of={Stories.Props} />

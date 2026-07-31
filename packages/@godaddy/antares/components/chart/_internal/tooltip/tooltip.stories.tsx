@@ -1,8 +1,5 @@
 'use client';
-import { getMeta, getStory, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { ArrowExample } from './examples/arrow.tsx';
-import { MultipleSeriesExample } from './examples/multiple-series.tsx';
-import { SingleSeriesExample } from './examples/single-series.tsx';
+import { getComponentDocs, getExamples, getMeta } from '@bento/storybook-addon-helpers';
 import { Tooltip } from './src/index.tsx';
 
 export default getMeta({
@@ -11,8 +8,4 @@ export default getMeta({
 
 export const Props: object = getComponentDocs(Tooltip);
 
-export const SingleSeries = getStory(SingleSeriesExample);
-
-export const MultipleSeries = getStory(MultipleSeriesExample);
-
-export const Arrow = getStory(ArrowExample);
+export const Examples = getExamples('./examples');

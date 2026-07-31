@@ -2,6 +2,10 @@ import { Carousel, Flex } from '@godaddy/antares';
 
 const SLIDE_WIDTHS = [200, 100, 300, 100, 200];
 
+/**
+ * It supports multiple slides with different widths.
+ * @order 6
+ */
 export function VariableWidthsExample() {
   return (
     <Carousel style={{ maxWidth: 400 }}>

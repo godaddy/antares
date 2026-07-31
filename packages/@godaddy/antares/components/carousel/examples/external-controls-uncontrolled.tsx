@@ -3,6 +3,11 @@ import { useRef } from 'react';
 
 const TOTAL_SLIDES = 3;
 
+/**
+ * You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+ * @title External Controls (Uncontrolled)
+ * @order 3
+ */
 export function ExternalControlsUncontrolledExample() {
   const carouselRef = useRef<CarouselRef>(null);
 
