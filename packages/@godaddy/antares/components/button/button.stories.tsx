@@ -1,7 +1,7 @@
 'use client';
 import { PlaygroundExample } from './examples/button-playground.tsx';
 import { getMeta, getComponentDocs, getExamples, getStory } from '@bento/storybook-addon-helpers';
-import { Button, LinkButton } from './src/index.tsx';
+import { Button, LinkButton, CloseButton } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Button'
@@ -10,6 +10,8 @@ export default getMeta({
 export const Props = getComponentDocs(Button);
 
 export const LinkButtonProps = getComponentDocs(LinkButton);
+
+export const CloseButtonProps = getComponentDocs(CloseButton);
 
 export const Examples = getExamples('./examples');
 

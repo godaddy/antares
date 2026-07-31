@@ -10,6 +10,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { MinimalExample } from '../examples/minimal.tsx';
+import { CloseButtonExample } from '../examples/close.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -65,6 +66,11 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the primary button with custom props', function customProps() {
       const result = renderToString(<PrimaryExample className="random-class" aria-label="Test Label" />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders the close button example', function rendersCloseButton() {
+      const result = renderToString(<CloseButtonExample />);
       expect(result).toMatchSnapshot();
     });
   });

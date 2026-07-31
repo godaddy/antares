@@ -9,6 +9,8 @@ import * as Stories from './text.stories.tsx';
 
 The `Text` component prepares content with a few properties.
 
+Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
+
 ## Installation
 
 ```bash
@@ -24,3 +26,7 @@ npm install --save @godaddy/antares
 The `Text` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />
+
+The `Heading` component accepts the following props:
+
+<ArgTypes of={Stories.HeadingProps} />
