@@ -1,5 +1,9 @@
 import { Button, Menu, MenuItem, MenuTrigger } from '@godaddy/antares';
 
+/**
+ * A trigger with plain action items.
+ * @order 1
+ */
 export function DefaultExample() {
   return (
     <MenuTrigger>

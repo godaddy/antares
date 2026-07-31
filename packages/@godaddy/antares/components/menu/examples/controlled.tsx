@@ -1,6 +1,11 @@
 import { Button, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * `MenuTrigger` exposes its open state via `isOpen`/`onOpenChange`,
+ * which can be used to drive the rotation of a chevron icon.
+ * @order 2
+ */
 export function ControlledExample() {
   const [isOpen, setIsOpen] = useState(false);
 

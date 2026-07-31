@@ -1,15 +1,7 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getMeta, getExamples, getStory } from '@bento/storybook-addon-helpers';
 import { Menu, MenuGroup, MenuItem, MenuSeparator, MenuTrigger, SubmenuTrigger } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { GroupsExample } from './examples/groups.tsx';
-import { SingleSelectionExample } from './examples/single-selection.tsx';
-import { MultipleSelectionExample } from './examples/multiple-selection.tsx';
-import { SizesExample } from './examples/sizes.tsx';
-import { ControlledExample } from './examples/controlled.tsx';
-import { SubmenuExample } from './examples/submenu.tsx';
-import { BottomSheetExample } from './examples/bottom-sheet.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/menu-playground.tsx';
+import { PlaygroundExample } from './examples/menu-playground.tsx';
 
 export default getMeta({
   title: 'components/Menu'
@@ -22,24 +14,9 @@ export const MenuItemProps = getComponentDocs(MenuItem);
 export const MenuSeparatorProps = getComponentDocs(MenuSeparator);
 export const SubmenuTriggerProps = getComponentDocs(SubmenuTrigger);
 
-export const Basic = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const Controlled = getStory(ControlledExample);
-
-export const Groups = getStory(GroupsExample);
-
-export const SingleSelection = getStory(SingleSelectionExample);
-
-export const MultipleSelection = getStory(MultipleSelectionExample);
-
-export const Sizes = getStory(SizesExample);
-
-export const WithSubmenus = getStory(SubmenuExample);
-
-export const BottomSheet = getStory(BottomSheetExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     size: 'md',
     multiSelect: false,
@@ -70,4 +47,4 @@ export const Playground = {
       description: 'Disable an item'
     }
   }
-};
+});

@@ -1,5 +1,6 @@
 import { Button, Icon, Menu, MenuItem, MenuTrigger, SubmenuTrigger } from '@godaddy/antares';
 
+/** Nested menus via `SubmenuTrigger`. */
 export function SubmenuExample() {
   return (
     <MenuTrigger>

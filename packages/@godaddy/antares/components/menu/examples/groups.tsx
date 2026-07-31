@@ -1,5 +1,9 @@
 import { Button, Icon, Menu, MenuGroup, MenuItem, MenuSeparator, MenuTrigger } from '@godaddy/antares';
 
+/**
+ * Labeled groups separated by dividers, a multi-select checkbox group mixed with
+ * plain action groups, leading icons, a disabled item, and a link.
+ */
 export function GroupsExample() {
   return (
     <MenuTrigger>

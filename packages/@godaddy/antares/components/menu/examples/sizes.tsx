@@ -1,5 +1,10 @@
 import { Flex, Menu, MenuGroup, MenuItem } from '@godaddy/antares';
 
+/**
+ * `size` controls item density. Shown here as two standalone menus so both
+ * sizes are visible at once; in practice you set `size` on the `Menu` inside a
+ * `MenuTrigger`.
+ */
 export function SizesExample() {
   return (
     <Flex gap="xl" alignItems="flex-start">

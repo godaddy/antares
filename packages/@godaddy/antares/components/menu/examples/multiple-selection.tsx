@@ -1,6 +1,12 @@
 import { Button, Flex, Menu, MenuGroup, MenuItem, MenuTrigger, Text, type Selection } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * A `MenuGroup` with `selectionMode="multiple"` renders its items as checkboxes.
+ * Drive the checked items with `selectedKeys` + `onSelectionChange` or
+ * seed them uncontrolled with `defaultSelectedKeys`. Keys correspond to each
+ * `MenuItem`'s `id`.
+ */
 export function MultipleSelectionExample() {
   const [columns, setColumns] = useState<Selection>(new Set(['name', 'date']));
   const selectedLabel = columns === 'all' ? 'all' : [...columns].join(', ');

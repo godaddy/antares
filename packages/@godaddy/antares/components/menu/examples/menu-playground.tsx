@@ -2,7 +2,7 @@ import { Button, Icon, Menu, MenuGroup, MenuItem, MenuSeparator, MenuTrigger, ty
 import type { Selection } from 'react-aria-components';
 import { useState } from 'react';
 
-export interface PlaygroundExampleProps {
+interface PlaygroundExampleProps {
   size?: MenuProps<object>['size'];
   multiSelect?: boolean;
   withIcons?: boolean;
