@@ -2,7 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
-import { CheckboxBasic } from '../examples/default.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { CheckboxIndeterminate } from '../examples/indeterminate.tsx';
 import { CheckboxGroupBasic } from '../examples/group.tsx';
 import { CheckboxGroupControlled } from '../examples/controlled.tsx';
@@ -17,7 +17,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#Checkbox', function checkboxTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<CheckboxBasic />);
+      const { container } = await render(<DefaultExample />);
       await page.getByRole('document').hover({ position: { x: 100, y: 100 } });
       await expect(container).toMatchScreenshot('basic');
     });

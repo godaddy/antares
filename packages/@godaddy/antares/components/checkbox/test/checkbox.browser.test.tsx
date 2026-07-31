@@ -1,4 +1,4 @@
-import { CheckboxBasic } from '../examples/default';
+import { DefaultExample } from '../examples/default';
 import { CheckboxGroupControlled } from '../examples/controlled';
 import { CheckboxGroupDisabled } from '../examples/disabled';
 import { CheckboxGroupBasic } from '../examples/group';
@@ -14,8 +14,8 @@ import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
-    it('renders CheckboxBasic', async function basicRender() {
-      await render(<CheckboxBasic />);
+    it('renders DefaultExample', async function basicRender() {
+      await render(<DefaultExample />);
 
       const checkbox = page.getByRole('checkbox', { name: 'One checkbox' });
       assume(checkbox).is.not.equal(null);

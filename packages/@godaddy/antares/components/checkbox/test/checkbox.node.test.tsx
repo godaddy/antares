@@ -1,4 +1,4 @@
-import { CheckboxBasic } from '../examples/default';
+import { DefaultExample } from '../examples/default';
 import { CheckboxGroupControlled } from '../examples/controlled';
 import { CheckboxGroupDisabled } from '../examples/disabled';
 import { CheckboxGroupBasic } from '../examples/group';
@@ -12,8 +12,8 @@ import { describe, it, expect } from 'vitest';
 
 describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
-    it('renders CheckboxBasic', function basicExample() {
-      const result = renderToString(<CheckboxBasic />);
+    it('renders DefaultExample', function basicExample() {
+      const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();
     });
 

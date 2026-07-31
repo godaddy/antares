@@ -4,7 +4,7 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { TextField as RACTextField } from 'react-aria-components';
 import { Field, FieldError, FieldGroup, FieldInput } from '@godaddy/antares';
-import { FieldGroupBasic } from '../examples/default';
+import { DefaultExample } from '../examples/default';
 import { FieldGroupLeadingControl } from '../examples/leading-control';
 import { FieldGroupTrailingControl } from '../examples/trailing-control';
 
@@ -15,7 +15,7 @@ describe('@godaddy/antares', function antares() {
   describe('#FieldGroup', function fieldGroupTests() {
     describe('#label', function label() {
       it('does not render label when omitted', async function noLabel() {
-        const { container } = await render(<FieldGroupBasic label={undefined} />);
+        const { container } = await render(<DefaultExample label={undefined} />);
         const labels = container.querySelectorAll('label');
         assume(labels.length).equals(0);
       });
@@ -23,7 +23,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#description', function description() {
       it('does not render description when omitted', async function noDescription() {
-        const { container } = await render(<FieldGroupBasic description={undefined} />);
+        const { container } = await render(<DefaultExample description={undefined} />);
         const descriptions = container.querySelectorAll('[slot="description"]');
         assume(descriptions.length).equals(0);
       });
@@ -31,7 +31,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#required', function required() {
       it('renders required asterisk when isRequired', async function rendersRequired() {
-        const { locator } = await render(<FieldGroupBasic label="Email" isRequired />);
+        const { locator } = await render(<DefaultExample label="Email" isRequired />);
 
         const labelEl = locator.getByText('Email').element();
         assume(labelEl.textContent).includes('*');

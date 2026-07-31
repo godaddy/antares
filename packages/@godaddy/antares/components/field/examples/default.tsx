@@ -26,7 +26,7 @@ export interface FieldGroupBasicProps {
  * NumberField, Select).
  * @order 1
  */
-export function FieldGroupBasic({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {
+export function DefaultExample({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {
   return (
     <Field>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>

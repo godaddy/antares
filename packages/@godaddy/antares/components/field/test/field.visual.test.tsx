@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
-import { FieldGroupBasic } from '../examples/default';
+import { DefaultExample } from '../examples/default';
 import { FieldGroupIconAccessories } from '../examples/icon-accessories';
 import { FieldGroupLeadingControl } from '../examples/leading-control';
 import { FieldGroupTrailingControl } from '../examples/trailing-control';
@@ -11,17 +11,17 @@ describe('@godaddy/antares', function antares() {
 
   describe('#FieldGroup', function fieldGroupTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<FieldGroupBasic label="Label" description="Helper text" />);
+      const { container } = await render(<DefaultExample label="Label" description="Helper text" />);
       await expect(container).toMatchScreenshot('basic');
     });
 
     it('required example', async function requiredRender() {
-      const { container } = await render(<FieldGroupBasic label="Label" description="Helper text" isRequired />);
+      const { container } = await render(<DefaultExample label="Label" description="Helper text" isRequired />);
       await expect(container).toMatchScreenshot('required');
     });
 
     it('disabled example', async function disabledRender() {
-      const { container } = await render(<FieldGroupBasic label="Label" description="Helper text" isDisabled />);
+      const { container } = await render(<DefaultExample label="Label" description="Helper text" isDisabled />);
       await expect(container).toMatchScreenshot('disabled');
     });
 
