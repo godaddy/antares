@@ -10,7 +10,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 // Injects `'use client'` into component example modules at build time, so the
 // example source files stay free of the directive (see lib/use-client-loader.cjs).
 const useClientLoader = join(__dirname, 'lib/use-client-loader.cjs');
-const EXAMPLE_MODULE = /[\\/]components[\\/][^\\/]+[\\/]examples[\\/][^\\/]+\.tsx$/;
+const EXAMPLE_MODULE = /[\\/]components[\\/].+[\\/]examples[\\/][^\\/]+\.tsx$/;
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -30,7 +30,7 @@ const config = {
       '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime'
     },
     rules: {
-      '**/components/*/examples/*.tsx': {
+      '**/components/**/examples/*.tsx': {
         loaders: [useClientLoader]
       }
     }
