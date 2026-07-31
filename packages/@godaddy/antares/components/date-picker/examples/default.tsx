@@ -1,5 +1,9 @@
 import { DatePicker } from '@godaddy/antares';
 
-export function DatePickerDefaultExample() {
+/**
+ * A single date picker.
+ * @order 1
+ */
+export function DefaultExample() {
   return <DatePicker label="Event date" />;
 }

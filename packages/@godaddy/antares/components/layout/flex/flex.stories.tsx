@@ -1,13 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/flex-playground.tsx';
-import { getMeta, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { DirectionExample } from './examples/direction.tsx';
-import { AlignmentExample } from './examples/alignment.tsx';
-import { SidebarExample } from './examples/sidebar.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { NavbarExample } from './examples/navbar.tsx';
-import { WrapExample } from './examples/wrap.tsx';
-import { GapExample } from './examples/gap.tsx';
+import { PlaygroundExample } from './examples/flex-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Flex } from './src/index.tsx';
 
 export default getMeta({
@@ -16,8 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Flex);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: {
     direction: 'row',
     gap: 'md',
@@ -34,18 +28,4 @@ export const Playground = {
     gap: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'] },
     as: { control: 'select', options: ['div', 'section', 'article', 'aside'] }
   }
-};
-
-export const Default = DefaultExample;
-
-export const Direction = DirectionExample;
-
-export const Alignment = AlignmentExample;
-
-export const Gap = GapExample;
-
-export const Wrap = WrapExample;
-
-export const Navbar = NavbarExample;
-
-export const Sidebar = SidebarExample;
+});

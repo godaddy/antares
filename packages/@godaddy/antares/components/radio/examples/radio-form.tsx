@@ -1,6 +1,11 @@
 import { Radio, RadioGroup } from '@godaddy/antares';
 import { type FormEvent, useState } from 'react';
 
+/**
+ * A radio group integrated with native form submission.
+ * @title Form Submission
+ * @order 9
+ */
 export function RadioFormExample() {
   const [submittedValue, setSubmittedValue] = useState<string | null>(null);
 

@@ -1,5 +1,9 @@
 import { Button, FileTrigger } from '@godaddy/antares';
 
+/**
+ * Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
+ * @order 2
+ */
 export function AcceptedTypesExample() {
   return (
     <FileTrigger

@@ -1,6 +1,11 @@
 import { useRef } from 'react';
 import { Box, Flex, type BoxProps } from '@godaddy/antares';
 
+/**
+ * Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+ * @title Polymorphic as Prop
+ * @order 4
+ */
 export function AsExample() {
   return (
     <Flex direction="column" gap="md">

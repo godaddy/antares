@@ -2,16 +2,8 @@
 title: Flex
 description: One-dimensional layout component for arranging children in rows or columns with alignment and spacing control
 ---
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './flex.stories.tsx';
-
-import SourceDefault from './examples/default.tsx?raw';
-import SourceDirection from './examples/direction.tsx?raw';
-import SourceAlignment from './examples/alignment.tsx?raw';
-import SourceGap from './examples/gap.tsx?raw';
-import SourceWrap from './examples/wrap.tsx?raw';
-import SourceNavbar from './examples/navbar.tsx?raw';
-import SourceSidebar from './examples/sidebar.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -25,66 +17,13 @@ import SourceSidebar from './examples/sidebar.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-The `Flex` component accepts the following props:
-
-<ArgTypes of={Stories.Props} />
-
 ## Scale Sizes
 
 We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
 
 ## Examples
 
-### Default
-
-Basic horizontal flex layout with gap.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={SourceDefault} />
-
-### Direction
-
-The `direction` prop controls the main axis orientation.
-
-<Story of={Stories.Direction} inline />
-<Source language="tsx" code={SourceDirection} />
-
-### Alignment
-
-Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
-
-<Story of={Stories.Alignment} inline />
-<Source language="tsx" code={SourceAlignment} />
-
-### Gap
-
-The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
-
-<Story of={Stories.Gap} inline />
-<Source language="tsx" code={SourceGap} />
-
-### Wrap
-
-The `wrap` prop controls whether items wrap to multiple lines.
-
-<Story of={Stories.Wrap} inline />
-<Source language="tsx" code={SourceWrap} />
-
-### Navbar
-
-A common navigation bar pattern using space-between and nested Flex containers.
-
-<Story of={Stories.Navbar} inline />
-<Source language="tsx" code={SourceNavbar} />
-
-### Sidebar
-
-A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
-
-<Story of={Stories.Sidebar} inline />
-<Source language="tsx" code={SourceSidebar} />
+<Examples of={Stories.Examples} />
 
 ## RTL Support
 
@@ -102,3 +41,9 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 | `<Box orientation="vertical">`       | `<Flex direction="column" >`     |
 | `<Box blockAlignChildren="center">`  | `<Flex justifyContent="center">` |
 | `<Box inlineAlignChildren="center">` | `<Flex alignItems="center">`     |
+
+## Props
+
+The `Flex` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />

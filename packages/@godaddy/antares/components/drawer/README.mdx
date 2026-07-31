@@ -3,13 +3,8 @@ title: Drawer
 description: An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './drawer.stories.tsx';
-import DefaultExample from './examples/default.tsx?raw';
-import BottomSheetExample from './examples/bottom-sheet.tsx?raw';
-import PlacementsExample from './examples/placements.tsx?raw';
-import NestedPopoverExample from './examples/nested-popover.tsx?raw';
-import NoEscapeDismissExample from './examples/no-escape-dismiss.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -31,50 +26,9 @@ An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC mo
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
-The `DrawerTrigger` component accepts the following props:
-
-<ArgTypes of={Stories.DrawerTriggerProps} />
-
 ## Examples
 
-### Basic Usage
-
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={DefaultExample} />
-
-### Bottom Sheet
-
-Use `placement="bottom"` with controlled state for a bottom sheet pattern.
-
-<Story of={Stories.BottomSheet} inline />
-<Source language="tsx" code={BottomSheetExample} />
-
-### Placements
-
-The drawer slides in from whichever edge you set with `placement`.
-
-<Story of={Stories.Placements} inline />
-<Source language="tsx" code={PlacementsExample} />
-
-### Nested Popover
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of={Stories.NestedPopover} inline />
-<Source language="tsx" code={NestedPopoverExample} />
-
-### No Escape Dismiss
-
-Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
-
-<Story of={Stories.NoEscapeDismiss} inline />
-<Source language="tsx" code={NoEscapeDismissExample} />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -96,3 +50,11 @@ Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by th
 - Always provide an `aria-label` so the dialog has an accessible name.
 - Use `isDismissable` to allow closing via backdrop click.
 - Don't nest drawers.
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+The `DrawerTrigger` component accepts the following props:
+
+<ArgTypes of={Stories.DrawerTriggerProps} />

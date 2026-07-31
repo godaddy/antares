@@ -1,6 +1,11 @@
 import { BarChart } from '@godaddy/antares';
 
-export function BarChartCustomDomainExample() {
+/**
+ * `xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
+ * @title Custom domain
+ * @order 5
+ */
+export function CustomDomainExample() {
   const data = [
     { category: 'A', value: 10 },
     { category: 'B', value: 20 },

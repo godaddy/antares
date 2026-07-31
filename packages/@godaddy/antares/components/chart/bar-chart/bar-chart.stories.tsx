@@ -1,15 +1,7 @@
 'use client';
 import { BarChart } from '#components/chart/bar-chart';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { BarChartCustomDomainExample } from './examples/custom-domain.tsx';
-import { BarChartFormattedTickMarksExample } from './examples/formatted-tick-marks.tsx';
-import { BarChartHorizontalMultiSeriesExample } from './examples/horizontal-multi-series.tsx';
-import { BarChartHorizontalSingleSeriesExample } from './examples/horizontal-single-series.tsx';
-import { BarChartMultiSeriesExample } from './examples/multi-series.tsx';
-import { BarChartRTLHorizontalMultiSeriesExample } from './examples/rtl-horizontal-multi-series.tsx';
-import { BarChartRTLMultiSeriesExample } from './examples/rtl-multi-series.tsx';
-import { BarChartExample } from './examples/single-series.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/bar-chart-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/bar-chart-playground.tsx';
 
 export default getMeta({
   title: 'components/Chart/BarChart',
@@ -29,24 +21,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(BarChart);
 
-export const SingleSeries = getStory(BarChartExample);
+export const Examples = getExamples('./examples');
 
-export const MultiSeries = getStory(BarChartMultiSeriesExample);
-
-export const HorizontalSingleSeries = getStory(BarChartHorizontalSingleSeriesExample);
-
-export const HorizontalMultiSeries = getStory(BarChartHorizontalMultiSeriesExample);
-
-export const RTLHorizontalMultiSeries = getStory(BarChartRTLHorizontalMultiSeriesExample);
-
-export const RTLMultiSeries = getStory(BarChartRTLMultiSeriesExample);
-
-export const CustomDomain = getStory(BarChartCustomDomainExample);
-
-export const FormattedTickMarks = getStory(BarChartFormattedTickMarksExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     orientation: 'vertical',
     numSeries: 2,
@@ -127,4 +104,4 @@ export const Playground = {
     desc: { control: 'text', description: 'Detailed description for screen readers' },
     className: { control: 'text', description: 'Additional CSS class name' }
   }
-};
+});

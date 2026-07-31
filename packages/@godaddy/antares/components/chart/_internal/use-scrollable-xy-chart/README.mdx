@@ -2,10 +2,8 @@
 title: useScrollableXYChart
 description: A hook for scrollable visx XY charts that measures the rendered axes and returns margins, content-sized width and height, scroll offsets, and a vertical-labels flag, so the chart sizes itself to whatever it actually contains.
 ---
-import { Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './use-scrollable-xy-chart.stories.tsx';
-
-import SourceExample from './examples/auto-layout.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -27,9 +25,4 @@ const {
 
 ## Examples
 
-### Auto layout
-
-Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
-
-<Source language="tsx" code={SourceExample} />
-<Story of={Stories.AutoLayout} inline />
+<Examples of={Stories.Examples} />

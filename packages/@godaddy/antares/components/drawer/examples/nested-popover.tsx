@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Drawer, Button, Text, Popover, PopoverTrigger, Box } from '@godaddy/antares';
 
+/**
+ * Popovers rendered inside a drawer stay open without dismissing the drawer.
+ * @title Nested Popover
+ * @order 4
+ */
 export function NestedPopoverExample() {
   const [open, setOpen] = useState(false);
 

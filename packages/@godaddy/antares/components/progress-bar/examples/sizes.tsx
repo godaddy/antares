@@ -1,5 +1,9 @@
 import { ProgressBar, Flex } from '@godaddy/antares';
 
+/**
+ * Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+ * @order 2
+ */
 export function SizesExample() {
   return (
     <Flex direction="column" gap="md">

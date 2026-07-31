@@ -1,5 +1,9 @@
 import { Flex } from '@godaddy/antares';
 
+/**
+ * Use `justifyContent` for main-axis distribution and `alignItems` for cross-axis alignment.
+ * @order 3
+ */
 export function AlignmentExample() {
   return (
     <Flex direction="column" gap="lg">

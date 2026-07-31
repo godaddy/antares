@@ -1,15 +1,6 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/toggle-button-playground.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { MultipleSelectionExample } from './examples/multiple-selection.tsx';
-import { ControlledExample } from './examples/controlled.tsx';
-import { SizesExample } from './examples/sizes.tsx';
-import { IconOnlyExample } from './examples/icon-only.tsx';
-import { IconAndTextExample } from './examples/icon-and-text.tsx';
-import { DisabledExample } from './examples/disabled.tsx';
-import { RTLExample } from './examples/rtl.tsx';
-import { WithDropdownExample } from './examples/with-dropdown.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/toggle-button-playground.tsx';
 import { ToggleButtonGroup } from './src/index.tsx';
 
 export default getMeta({
@@ -18,26 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(ToggleButtonGroup);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const MultipleSelection = getStory(MultipleSelectionExample);
-
-export const Controlled = getStory(ControlledExample);
-
-export const Disabled = getStory(DisabledExample);
-
-export const Sizes = getStory(SizesExample);
-
-export const IconAndText = getStory(IconAndTextExample);
-
-export const IconOnly = getStory(IconOnlyExample);
-
-export const WithDropdown = getStory(WithDropdownExample);
-
-export const RTL = getStory(RTLExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     size: 'md',
     selectionMode: 'single',
@@ -64,4 +38,4 @@ export const Playground = {
       description: 'Whether the group requires at least one item to always be selected'
     }
   }
-};
+});

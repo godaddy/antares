@@ -6,7 +6,7 @@ import { RadioAriaLabelExample } from '../examples/radio-aria-label.tsx';
 import { RadioDisabledExample } from '../examples/radio-disabled.tsx';
 import { RadioRequiredExample } from '../examples/radio-required.tsx';
 import { RadioErrorExample } from '../examples/radio-error.tsx';
-import { RadioBasicExample } from '../examples/radio-basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { RadioFormExample } from '../examples/radio-form.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
@@ -15,8 +15,8 @@ import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
   describe('#RadioGroup', function radioGroupTests() {
-    it('renders RadioBasicExample', async function basicRender() {
-      await render(<RadioBasicExample />);
+    it('renders DefaultExample', async function basicRender() {
+      await render(<DefaultExample />);
 
       assume(page.getByRole('radiogroup')).exists();
       assume(page.getByRole('radio', { name: 'Basic' })).exists();

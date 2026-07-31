@@ -81,3 +81,21 @@ export function getTypeDocs<T>(_options?: DocsOptions<T>) {
 export function getVariants<T extends ComponentType<any>>(_component: T, variants: Record<string, StoryObj<T>>) {
   return variants;
 }
+
+/**
+ * Declares that a component's examples folder should be published as stories.
+ *
+ * At build time the CSF transformer discovers each example file in `examplesDir`,
+ * expands this call into one exported story per example, and the indexer lists
+ * them in the sidebar. The component README renders the same set by referencing
+ * this export: `<Examples of={Stories.<exportName>} />`. At runtime this is a
+ * no-op (returns `{}`), so docs sites that import the stories file directly stay
+ * side-effect free.
+ *
+ * @param _examplesDir - Examples folder relative to the stories file (default
+ * `./examples`). Ignored at runtime, but read statically to locate the examples.
+ * @returns An empty record at runtime.
+ */
+export function getExamples(_examplesDir?: string): Record<string, ComponentType<any>> {
+  return {};
+}

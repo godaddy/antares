@@ -2,14 +2,14 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
-import { ListBoxBasic } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { ListBoxControlledExample } from '../examples/controlled';
 import { ListBoxMultipleExample } from '../examples/multiple';
 
 describe('@godaddy/antares', function antares() {
   describe('#ListBox', function listBoxSuite() {
     it('renders the basic example with options', async function basicRender() {
-      await render(<ListBoxBasic />);
+      await render(<DefaultExample />);
 
       const listbox = page.getByRole('listbox');
       assume(listbox).is.not.equal(null);

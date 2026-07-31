@@ -1,6 +1,10 @@
 import { Flex, Pagination } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Pass `activeIndex` and `onChange` to control the active page externally.
+ * @order 2
+ */
 export function ControlledExample() {
   const [page, setPage] = useState(2);
 

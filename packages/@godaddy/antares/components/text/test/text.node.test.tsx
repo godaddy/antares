@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { TextExample } from '../examples/text.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { AlignExample } from '../examples/align.tsx';
 import { AsExample } from '../examples/as.tsx';
 import { MaxLinesExample } from '../examples/max-lines.tsx';
@@ -10,7 +10,7 @@ import { EmptyTextExample } from '../examples/empty.tsx';
 describe('@godaddy/antares', function antares() {
   describe('#Text', function textTests() {
     it('renders the text example', function rendersText() {
-      const result = renderToString(<TextExample />);
+      const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();
     });
 

@@ -2,7 +2,7 @@ import { beforeEach, describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { Icon, set, ondemand, parser } from '@godaddy/antares';
 import assume from 'assume';
-import { IconExample } from '../examples/icon.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 
 /**
  * Renders the Icon component to a string with provided props for SSR testing
@@ -56,12 +56,12 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders the default Example', function defaultExample() {
-      const result = renderToString(<IconExample />);
+      const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();
     });
 
     it('renders a default svg element if icon is loading or not found', function defaultSvg() {
-      const result = renderToString(<IconExample icon="unknown" />);
+      const result = renderToString(<DefaultExample icon="unknown" />);
       expect(result).toMatchSnapshot();
     });
 

@@ -1,9 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Tooltip } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { CustomAnchorExample } from './examples/custom-anchor.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/tooltip-playground.tsx';
+import { PlaygroundExample } from './examples/tooltip-playground.tsx';
 
 export default getMeta({
   title: 'components/Tooltip'
@@ -11,12 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Tooltip);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const CustomAnchor = getStory(CustomAnchorExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'bottom',
     hideArrow: false,
@@ -42,4 +37,4 @@ export const Playground = {
       description: 'Delay before tooltip closes (ms)'
     }
   }
-};
+});

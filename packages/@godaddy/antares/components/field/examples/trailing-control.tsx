@@ -8,7 +8,12 @@ import {
   type FieldGroupProps
 } from '@godaddy/antares';
 
-export function FieldGroupTrailingControl(props: FieldGroupProps) {
+/**
+ * A field group with an input and a trailing action control.
+ * @title Trailing control
+ * @order 3
+ */
+export function FieldGroupTrailingControlExample(props: FieldGroupProps) {
   return (
     <Field>
       <FieldLabel>Search</FieldLabel>

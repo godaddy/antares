@@ -1,6 +1,10 @@
 import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+ * @order 2
+ */
 export function ControlledExample() {
   const [selected, setSelected] = useState('week');
 

@@ -1,7 +1,12 @@
 import { BarChart } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
 
-export function BarChartMultiSeriesExample(props: any) {
+/**
+ * Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+ * @title Multi-series
+ * @order 2
+ */
+export function MultiSeriesExample(props: any) {
   const cities = ['New York', 'San Francisco', 'Austin'] as const;
 
   const series = cities.map(function mapCity(city, index) {

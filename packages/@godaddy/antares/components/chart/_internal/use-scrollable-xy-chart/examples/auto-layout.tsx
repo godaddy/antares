@@ -3,6 +3,11 @@ import { useScrollableXYChart, type UseScrollableXYChartProps } from '../src/ind
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
+/**
+ * Hook wired to a scrolling parent; scroll or resize to watch the returned values update.
+ * @title Auto layout
+ * @order 1
+ */
 export function AutoLayoutExample({ xLabelsOrientation }: UseScrollableXYChartProps) {
   const {
     parentRef,

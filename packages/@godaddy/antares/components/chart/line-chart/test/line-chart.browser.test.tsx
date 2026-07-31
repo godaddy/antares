@@ -8,7 +8,7 @@ import { BitcoinPriceExample } from '../examples/bitcoin-price';
 import { CityTemperatureExample } from '../examples/city-temperature';
 import { LegendExample } from '../examples/legend';
 import { MultipleSeriesExample } from '../examples/multiple-series';
-import { SingleSeriesExample } from '../examples/single-series';
+import { DefaultExample } from '../examples/default';
 import { TitlesExample } from '../examples/titles';
 import { FormattingExample } from '../examples/formatting.tsx';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting.tsx';
@@ -34,9 +34,9 @@ async function renderExampleAndWait(node: ReactNode, width = 800, height = 400) 
 
 describe('@godaddy/antares', function antares() {
   describe('#LineChart', function lineChartTests() {
-    describe('#single-series', function singleSeries() {
+    describe('#default', function defaultExample() {
       it('renders chart with one series and shows series label', async function renders() {
-        const { container, locator } = await renderExampleAndWait(<SingleSeriesExample />);
+        const { container, locator } = await renderExampleAndWait(<DefaultExample />);
 
         assume(container.querySelector('svg')).exists();
         assume(locator.getByText('Series 1')).exists();
@@ -432,7 +432,7 @@ describe('@godaddy/antares', function antares() {
             ]
           }
         ];
-        const { container } = await renderExampleAndWait(<SingleSeriesExample series={noIdSeries} />);
+        const { container } = await renderExampleAndWait(<DefaultExample series={noIdSeries} />);
         await waitForSelector(container, 'path', { timeout: 1000 });
 
         assume(container.querySelector('svg')).exists();

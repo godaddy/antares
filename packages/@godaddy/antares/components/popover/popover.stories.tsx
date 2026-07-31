@@ -1,9 +1,6 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
-import { Popover, type PopoverProps } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { CustomAnchorExample } from './examples/custom-anchor.tsx';
-import { WithCloseButtonExample } from './examples/with-close-button.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { Popover } from './src/index.tsx';
 import { PlaygroundExample } from './examples/popover-playground.tsx';
 
 export default getMeta({
@@ -12,14 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Popover);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const CustomAnchor = getStory(CustomAnchorExample);
-
-export const WithCloseButton = getStory(WithCloseButtonExample);
-
-export const Playground = {
-  render: (args: PopoverProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'bottom',
     hideArrow: false,
@@ -40,4 +32,4 @@ export const Playground = {
       description: 'Show a close button in the header'
     }
   }
-};
+});

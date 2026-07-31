@@ -1,5 +1,9 @@
 import { Box, Flex } from '@godaddy/antares';
 
+/**
+ * The elevation prop adds visual depth using box-shadow.
+ * @order 2
+ */
 export function ElevationExample() {
   return (
     <Flex direction="column" gap="lg" padding="md">

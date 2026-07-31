@@ -1,6 +1,10 @@
 import { Alert, type AlertProps, Button } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+ * @order 3
+ */
 export function DismissibleExample(props?: Partial<AlertProps>) {
   const [visible, setVisible] = useState(true);
 

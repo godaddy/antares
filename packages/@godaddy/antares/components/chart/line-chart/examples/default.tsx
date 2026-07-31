@@ -1,7 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
-export function SingleSeriesExample(props: Partial<LineChartProps>) {
+/**
+ * One line, a time-scale X axis, and almost nothing else configured - the everyday starting point. You give the chart a `series` array and it reads `x`/`y` from each point.
+ * @order 1
+ */
+export function DefaultExample(props: Partial<LineChartProps>) {
   const series = [
     {
       id: 'series-1',

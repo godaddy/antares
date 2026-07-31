@@ -67,6 +67,30 @@ describe('parser', function parserTests() {
       });
     });
 
+    it('expands getExamples into one story export per discovered example', async function expandsExamples() {
+      const result = await getExportedVariables({
+        filePath: path.join(__dirname, 'fixtures/examples-fixture/widget.stories.tsx')
+      });
+
+      expect(Object.fromEntries(result)).toEqual({
+        default: { title: 'components/Widget' },
+        Default: {},
+        Primary: {},
+        IconOnly: {},
+        Alpha: {}
+      });
+    });
+
+    it('ignores getExamples when parsing a code string without a file path', async function examplesNoPath() {
+      const result = await getExportedVariables({
+        code: `
+          import { getExamples } from '@bento/storybook-addon-helpers';
+          export const examples = getExamples();
+        `
+      });
+      expect(result.has('examples')).toBe(false);
+    });
+
     it('unwraps getTypeDocs as a docs-only story for the indexer', async function unwrapsGetTypeDocs() {
       const exported = await getExportedVariables({
         code: `

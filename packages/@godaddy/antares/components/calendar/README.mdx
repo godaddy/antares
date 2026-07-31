@@ -3,15 +3,8 @@ title: Calendar
 description: Accessible calendar grids for selecting a single date (Calendar) or a date range (RangeCalendar), built on React Aria.
 ---
 
-import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './calendar.stories.tsx';
-
-import SourceDefault from './examples/default.tsx?raw';
-import SourceWithValue from './examples/with-value.tsx?raw';
-import SourceRange from './examples/range.tsx?raw';
-import SourceMinMax from './examples/min-max.tsx?raw';
-import SourceUnavailable from './examples/unavailable.tsx?raw';
-import SourceDisabled from './examples/disabled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -43,59 +36,9 @@ import { Calendar } from '@godaddy/antares';
 
 `@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
 
-## Props
-
-The `Calendar` component accepts the following props:
-
-<ArgTypes of={Stories.Props} />
-
-The `RangeCalendar` component accepts the following props:
-
-<ArgTypes of={Stories.RangeCalendarProps} />
-
 ## Examples
 
-### Basic
-
-A single-date calendar.
-
-<Source language="tsx" code={SourceDefault} />
-<Story of={Stories.Default} inline />
-
-### With value
-
-A calendar with a pre-selected date.
-
-<Source language="tsx" code={SourceWithValue} />
-<Story of={Stories.WithValue} inline />
-
-### Range
-
-Selecting a start and end date.
-
-<Source language="tsx" code={SourceRange} />
-<Story of={Stories.Range} inline />
-
-### Min / Max
-
-Bounding selectable dates.
-
-<Source language="tsx" code={SourceMinMax} />
-<Story of={Stories.MinMax} inline />
-
-### Unavailable
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Source language="tsx" code={SourceUnavailable} />
-<Story of={Stories.Unavailable} inline />
-
-### Disabled
-
-A fully disabled calendar.
-
-<Source language="tsx" code={SourceDisabled} />
-<Story of={Stories.Disabled} inline />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -111,3 +54,13 @@ A fully disabled calendar.
 ## Troubleshooting
 
 - Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props
+
+The `Calendar` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `RangeCalendar` component accepts the following props:
+
+<ArgTypes of={Stories.RangeCalendarProps} />

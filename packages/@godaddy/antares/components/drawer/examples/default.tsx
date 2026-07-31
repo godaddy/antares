@@ -1,5 +1,9 @@
 import { Drawer, DrawerTrigger, Button, Text, Box } from '@godaddy/antares';
 
+/**
+ * Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+ * @order 1
+ */
 export function DefaultExample() {
   return (
     <DrawerTrigger>
