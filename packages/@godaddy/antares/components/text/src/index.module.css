@@ -22,9 +22,3 @@
     text-wrap: var(--wrap);
   }
 }
-
-.heading {
-  margin-block: 0;
-  font-weight: bolder;
-  overflow-wrap: break-word;
-}
