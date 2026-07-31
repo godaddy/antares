@@ -2,9 +2,7 @@ import { expect, describe, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
-import { AlignmentExample } from '../examples/alignment.tsx';
-import { WithActionsExample } from '../examples/with-actions.tsx';
-import { WithMediaExample } from '../examples/with-media.tsx';
+import { ScrollableExample } from '../examples/scrollable.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Modal', function modalTests() {
@@ -18,18 +16,8 @@ describe('@godaddy/antares', function packageTests() {
       expect(html).toMatchSnapshot();
     });
 
-    it('renders WithActionsExample', function withActionsExample() {
-      const html = renderToString(<WithActionsExample />);
-      expect(html).toMatchSnapshot();
-    });
-
-    it('renders AlignmentExample', function alignmentExample() {
-      const html = renderToString(<AlignmentExample />);
-      expect(html).toMatchSnapshot();
-    });
-
-    it('renders WithMediaExample', function withMediaExample() {
-      const html = renderToString(<WithMediaExample />);
+    it('renders ScrollableExample', function scrollableExample() {
+      const html = renderToString(<ScrollableExample />);
       expect(html).toMatchSnapshot();
     });
   });

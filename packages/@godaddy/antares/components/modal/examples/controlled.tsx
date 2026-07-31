@@ -1,4 +1,15 @@
-import { ModalTrigger, Modal, Button, Flex, Text } from '@godaddy/antares';
+import {
+  ModalTrigger,
+  Modal,
+  Button,
+  CloseButton,
+  Header,
+  Heading,
+  Content,
+  Footer,
+  Flex,
+  Text
+} from '@godaddy/antares';
 import { useState } from 'react';
 
 /**
@@ -12,15 +23,20 @@ export function ControlledExample() {
     <Flex direction="column" gap="sm" alignItems="start">
       <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
         <Button variant="primary">Open modal</Button>
-        <Modal
-          title="Modal title"
-          description="She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther."
-          actions={[
-            <Button key="close" slot="close" variant="primary">
-              Close
-            </Button>
-          ]}
-        />
+        <Modal>
+          <Header>
+            <Heading slot="title">Modal title</Heading>
+            <CloseButton />
+          </Header>
+          <Content>
+            <Text as="p">
+              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
+            </Text>
+          </Content>
+          <Footer justifyContent="end">
+            <CloseButton variant="primary">Close</CloseButton>
+          </Footer>
+        </Modal>
       </ModalTrigger>
 
       <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>

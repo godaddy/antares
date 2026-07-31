@@ -7,97 +7,48 @@ import {
   Dialog as RACDialog,
   type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
-  type DialogTriggerProps as RACDialogTriggerProps
+  type DialogTriggerProps as RACDialogTriggerProps,
+  Provider
 } from 'react-aria-components';
-import { Text, type TextProps } from '#components/text';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { Button, type ButtonProps } from '#components/button';
-import { Icon } from '#components/icon';
+import { ContentContext, HeaderContext, FooterContext } from '#components/composition';
 import styles from './index.module.css';
 
-export interface ModalProps extends RACDialogProps {
-  /** Title of the modal. */
-  title?: ReactNode;
-
-  /** Description of the modal. */
-  description?: ReactNode;
-
-  /** Additional props to pass to the overlay container. */
-  overlayProps?: RACModalOverlayProps;
-
-  /** Additional props to pass to the modal container. */
-  containerProps?: Omit<FlexProps, 'as'>;
-
-  /** Additional class name for the modal. */
-  className?: string;
-
-  /** Content of the modal. */
-  children?: ReactNode;
-
-  /** Actions to display in the modal. */
-  actions?: ReactNode;
-
-  /** Additional props to pass to the actions container. */
-  actionProps?: FlexProps;
-
-  /** Media element (e.g. `<img />`) to display in the modal. */
-  media?: ReactNode;
-
-  /** Additional props to pass to the media container. */
-  mediaProps?: FlexProps;
-
-  /** Variant of the media container. */
-  mediaVariant?: 'inset' | 'full';
-
-  /** Position of the media container. */
-  mediaPosition?: 'start' | 'end';
-
-  /** Direction of the media container. */
-  mediaDirection?: 'column' | 'row';
-
-  /** Additional props to pass to the title. */
-  titleProps?: TextProps;
-
-  /** Additional props to pass to the description. */
-  descriptionProps?: TextProps;
-
-  /** Additional props to pass to the close button. */
-  closeProps?: ButtonProps;
-
+export interface ModalProps extends Omit<RACDialogProps, 'children'> {
   /** Whether the modal can be dismissed via overlay click or Escape key. @default true */
   isDismissable?: boolean;
 
-  /** Whether the modal content is centered. */
-  centered?: boolean;
+  /** Additional props for the overlay backdrop. */
+  overlayProps?: RACModalOverlayProps;
+
+  /** Additional props for the modal container. */
+  containerProps?: Omit<FlexProps, 'as'>;
+
+  /** Additional class name for the dialog. */
+  className?: string;
+
+  /**
+   * The modal interior. Compose it from the shared containers (`Header`, `Content`, `Footer`,
+   * `ButtonGroup`) plus `Heading slot="title"` and `CloseButton`. The Modal styles each region
+   * and owns the scroll layout (the `Content` region scrolls while the rest stays pinned);
+   * React Aria wires the title (`aria-labelledby`) and the close behavior. Nothing is rendered
+   * inside when no children are provided.
+   */
+  children?: ReactNode;
 }
 
 /**
- * A modal dialog component.
+ * A composition-first modal dialog, modeled on React Aria / Spectrum's `Dialog`.
+ *
+ * The Modal owns only the overlay, container, and dialog shell plus the scroll layout - it
+ * does not decide the interior structure. Author the content by composing the shared
+ * containers; the Modal provides their styling via context.
  *
  * @param props - {@link ModalProps}
  */
 export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, ref) {
-  const {
-    className,
-    title,
-    titleProps,
-    description,
-    descriptionProps,
-    closeProps,
-    children,
-    actions,
-    actionProps,
-    media,
-    mediaProps,
-    mediaVariant = 'full',
-    mediaDirection = 'column',
-    mediaPosition = 'start',
-    isDismissable = true,
-    containerProps,
-    overlayProps,
-    centered = false,
-    ...modalProps
-  } = props;
+  const { className, isDismissable = true, overlayProps, containerProps, children, ...dialogProps } = props;
+
   return (
     <Flex
       as={RACModalOverlay}
@@ -111,54 +62,20 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
           as={RACDialog}
           elevation="overlay"
           rounding="xl"
-          direction={mediaDirection === 'row' && mediaPosition === 'end' ? 'row-reverse' : mediaDirection}
-          {...modalProps}
+          direction="column"
+          {...dialogProps}
           ref={ref}
           className={cx(styles.modal, className)}
         >
-          {media ? (
-            <Flex
-              {...mediaProps}
-              flexShrink={0}
-              padding={mediaVariant === 'inset' ? 'md' : undefined}
-              blockPaddingEnd={mediaDirection === 'column' && mediaPosition === 'start' ? '0' : undefined}
-              inlinePaddingEnd={mediaDirection === 'row' && mediaPosition === 'start' ? '0' : undefined}
-              blockPaddingStart={mediaDirection === 'column' && mediaPosition === 'end' ? '0' : undefined}
-              inlinePaddingStart={mediaDirection === 'row' && mediaPosition === 'end' ? '0' : undefined}
-            >
-              <Flex className={styles.media} flexGrow={1} rounding={mediaVariant === 'inset' ? 'md' : undefined}>
-                {media}
-              </Flex>
-            </Flex>
-          ) : null}
-
-          <Flex direction="column" padding="md" gap="md">
-            <Flex direction="column" gap="xs" className={cx(centered && styles.centered)}>
-              {title ? (
-                <Text as="h2" {...titleProps} className={cx(styles.title, titleProps?.className)}>
-                  {title}
-                </Text>
-              ) : null}
-
-              {description ? (
-                <Text as="p" {...descriptionProps} className={cx(styles.description, descriptionProps?.className)}>
-                  {description}
-                </Text>
-              ) : null}
-            </Flex>
-
+          <Provider
+            values={[
+              [HeaderContext, { className: styles.header }],
+              [ContentContext, { className: styles.content }],
+              [FooterContext, { className: styles.footer }]
+            ]}
+          >
             {children}
-
-            {actions ? (
-              <Flex gap="md" justifyContent="end" {...actionProps}>
-                {actions}
-              </Flex>
-            ) : null}
-          </Flex>
-
-          <Button aria-label="Close" slot="close" {...closeProps} className={cx(styles.close, closeProps?.className)}>
-            <Icon icon="x" />
-          </Button>
+          </Provider>
         </Flex>
       </Flex>
     </Flex>
