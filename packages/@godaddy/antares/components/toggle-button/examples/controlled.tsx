@@ -1,6 +1,10 @@
 import { ToggleButtonGroup, ToggleButton } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Use `selectedKeys` and `onSelectionChange` to control selection from parent state.
+ * @order 3
+ */
 export function ControlledExample() {
   const [selected, setSelected] = useState<Set<string>>(new Set(['week']));
 

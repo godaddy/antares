@@ -1,6 +1,9 @@
 import { ProgressSteps, ProgressStep } from '@godaddy/antares';
 
-/** Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix. */
+/**
+ * Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
+ * @order 6
+ */
 export function HideStepNumbersExample() {
   return (
     <ProgressSteps aria-label="Checkout" currentStep={1} hideStepNumbers>

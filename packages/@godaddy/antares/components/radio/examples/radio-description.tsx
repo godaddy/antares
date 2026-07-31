@@ -1,5 +1,10 @@
 import { Radio, RadioGroup } from '@godaddy/antares';
 
+/**
+ * A radio group with helper description text.
+ * @title Description Text
+ * @order 6
+ */
 export function RadioDescriptionExample() {
   return (
     <RadioGroup

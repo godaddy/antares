@@ -10,6 +10,11 @@ import {
   type FieldGroupProps
 } from '@godaddy/antares';
 
+/**
+ * A field group with leading icon and trailing action accessories.
+ * @title Icon accessories
+ * @order 4
+ */
 export function FieldGroupIconAccessories(props: FieldGroupProps) {
   return (
     <Field>

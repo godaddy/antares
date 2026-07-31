@@ -1,5 +1,9 @@
 import { Switch } from '@godaddy/antares';
 
+/**
+ * Test-only root customization example.
+ * @ignore
+ */
 export function SwitchRootCustomization() {
   return (
     <Switch className="custom-switch" style={{ opacity: 0.5 }}>

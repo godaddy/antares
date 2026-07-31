@@ -1,5 +1,10 @@
 import { Select, SelectItem, type SelectProps } from '@godaddy/antares';
 
+/**
+ * Minimal usage with a label and a placeholder.
+ * @title Basic
+ * @order 1
+ */
 export function SelectBasic(props: Omit<SelectProps<object>, 'children'> = {}) {
   return (
     <Select label="Coffee" placeholder="Pick a drink" description="Select your favorite coffee" {...props}>

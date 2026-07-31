@@ -1,5 +1,9 @@
 import { Flex, Switch } from '@godaddy/antares';
 
+/**
+ * The `size` prop accepts `md` (default) or `sm`.
+ * @order 3
+ */
 export function SwitchSizes() {
   return (
     <Flex direction="column" gap="md">

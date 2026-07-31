@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';
 
+/**
+ * Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+ * @order 3
+ */
 export function SelectMultipleExample() {
   const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);
 

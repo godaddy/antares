@@ -1,16 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Modal } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { ControlledExample } from './examples/controlled.tsx';
-import { WithActionsExample } from './examples/with-actions.tsx';
-import { AlignmentExample } from './examples/alignment.tsx';
-import { WithMediaExample } from './examples/with-media.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/modal-playground.tsx';
-import { SlotPropsExample } from './examples/a1-slot-props.tsx';
-import { CompoundExample } from './examples/a2-compound.tsx';
-import { SlottedChildExample } from './examples/a3-slotted-child.tsx';
-import { ProviderSlotsExample } from './examples/a4-provider-slots.tsx';
+import { PlaygroundExample } from './examples/modal-playground.tsx';
 
 export default getMeta({
   title: 'components/Modal'
@@ -18,27 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Modal);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const Controlled = getStory(ControlledExample);
-
-export const WithActions = getStory(WithActionsExample);
-
-export const Alignment = getStory(AlignmentExample);
-
-export const WithMedia = getStory(WithMediaExample);
-
-// Composition/customization prototypes (exploratory - see each src/index-a*.tsx header).
-export const Approach1SlotProps = getStory(SlotPropsExample);
-
-export const Approach2Compound = getStory(CompoundExample);
-
-export const Approach3SlottedChild = getStory(SlottedChildExample);
-
-export const Approach4ProviderSlots = getStory(ProviderSlotsExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     isDismissable: true,
     centered: false,
@@ -93,4 +66,4 @@ export const Playground = {
       description: 'Layout direction of footer action buttons'
     }
   }
-};
+});

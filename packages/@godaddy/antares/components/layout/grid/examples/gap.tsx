@@ -1,5 +1,9 @@
 import { Grid, Flex } from '@godaddy/antares';
 
+/**
+ * The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+ * @order 3
+ */
 export function GapExample() {
   return (
     <Flex direction="column" gap="lg">

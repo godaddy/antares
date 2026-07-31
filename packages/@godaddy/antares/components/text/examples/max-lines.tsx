@@ -1,5 +1,10 @@
 import { Text, type TextProps } from '@godaddy/antares';
 
+/**
+ * Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+ * @title Max Lines
+ * @order 4
+ */
 export function MaxLinesExample(args: TextProps) {
   return (
     <div style={{ width: '300px', border: '1px solid red' }}>

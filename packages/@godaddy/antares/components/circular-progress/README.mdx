@@ -2,17 +2,8 @@
 title: CircularProgress
 description: A circular progress indicator shows determinate progress of an operation over time
 ---
-import {
-  Meta,
-  ArgTypes,
-  Source,
-  Story,
-} from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './circular-progress.stories.tsx';
-
-import SourceDefault from './examples/default.tsx?raw';
-import SourceSizes from './examples/sizes.tsx?raw';
-import SourceEmphasis from './examples/emphasis.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -22,30 +13,9 @@ import SourceEmphasis from './examples/emphasis.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Basic Usage
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={SourceDefault} />
-
-### Sizes
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of={Stories.Sizes} inline />
-<Source language="tsx" code={SourceSizes} />
-
-### Emphasis
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of={Stories.Emphasis} inline />
-<Source language="tsx" code={SourceEmphasis} />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -58,3 +28,7 @@ Use the `emphasis` prop to communicate status: `success`, `warning`, or `critica
 - `aria-labelledby` associates the visible label when the `label` prop is provided
 - `aria-describedby` wires the `helperText` to the progressbar for screen readers
 - The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props
+
+<ArgTypes of={Stories.Props} />

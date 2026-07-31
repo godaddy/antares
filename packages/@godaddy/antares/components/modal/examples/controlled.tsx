@@ -1,6 +1,10 @@
 import { ModalTrigger, Modal, Button, Flex, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+ * @order 2
+ */
 export function ControlledExample() {
   const [isOpen, setIsOpen] = useState(false);
 

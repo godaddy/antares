@@ -1,6 +1,10 @@
 import { Switch } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Manage switch state programmatically with `isSelected` and `onChange`.
+ * @order 7
+ */
 export function SwitchControlled() {
   const [isSelected, setIsSelected] = useState(false);
 

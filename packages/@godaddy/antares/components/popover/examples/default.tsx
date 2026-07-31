@@ -1,5 +1,10 @@
 import { Popover, PopoverTrigger, Button } from '@godaddy/antares';
 
+/**
+ * Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
+ * @title Basic Usage
+ * @order 1
+ */
 export function DefaultExample() {
   return (
     <PopoverTrigger>

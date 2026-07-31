@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@godaddy/antares';
 
+/**
+ * Manage checkbox group state programmatically with controlled component pattern.
+ * @title Controlled
+ * @order 4
+ */
 export function CheckboxGroupControlled() {
   const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);
 

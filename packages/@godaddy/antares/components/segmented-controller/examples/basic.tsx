@@ -1,5 +1,9 @@
 import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
 
+/**
+ * An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+ * @order 1
+ */
 export function BasicExample() {
   return (
     <SegmentedController aria-label="View" defaultValue="day">

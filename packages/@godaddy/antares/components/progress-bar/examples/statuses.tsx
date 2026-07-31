@@ -1,5 +1,9 @@
 import { ProgressBar, Flex } from '@godaddy/antares';
 
+/**
+ * Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+ * @order 3
+ */
 export function StatusesExample() {
   return (
     <Flex direction="column" gap="md">

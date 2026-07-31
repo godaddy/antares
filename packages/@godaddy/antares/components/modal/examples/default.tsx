@@ -1,5 +1,10 @@
 import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';
 
+/**
+ * The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+ * @title Basic usage
+ * @order 1
+ */
 export function DefaultExample() {
   return (
     <ModalTrigger>

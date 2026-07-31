@@ -1,5 +1,10 @@
 import { Checkbox, CheckboxGroup } from '@godaddy/antares';
 
+/**
+ * Mark a checkbox group as required with visual indicator and validation.
+ * @title Required Indicator
+ * @order 7
+ */
 export function CheckboxGroupRequired() {
   return (
     <CheckboxGroup

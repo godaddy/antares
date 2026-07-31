@@ -3,11 +3,8 @@ title: InlineDrawer
 description: An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './inline-drawer.stories.tsx';
-import DefaultExample from './examples/default.tsx?raw';
-import SidebarNavExample from './examples/sidebar-nav.tsx?raw';
-import ControlledExample from './examples/controlled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -28,36 +25,9 @@ import ControlledExample from './examples/controlled.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
-The `InlineDrawerPanel` component accepts the following props:
-
-<ArgTypes of={Stories.InlineDrawerPanelProps} />
-
 ## Examples
 
-### Basic Usage
-
-Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={DefaultExample} />
-
-### Controlled
-
-Use `isExpanded` and `onExpandedChange` to drive state externally.
-
-<Story of={Stories.Controlled} inline />
-<Source language="tsx" code={ControlledExample} />
-
-### Sidebar Navigation
-
-A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
-
-<Story of={Stories.SidebarNav} inline />
-<Source language="tsx" code={SidebarNavExample} />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -79,3 +49,11 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 - For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
 - `placement` does not flip in RTL; the side is decided by document/flex order.
 - Don't nest InlineDrawers.
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+The `InlineDrawerPanel` component accepts the following props:
+
+<ArgTypes of={Stories.InlineDrawerPanelProps} />

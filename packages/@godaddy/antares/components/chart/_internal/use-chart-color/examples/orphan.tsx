@@ -3,6 +3,7 @@ import { useChartColor } from '../src/index.tsx';
 /**
  * Example: useChartColor used outside ChartColorProvider. Renders nothing;
  * useChartColor throws when rendered.
+ * @ignore
  */
 export function OrphanExample() {
   useChartColor();

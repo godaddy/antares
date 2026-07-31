@@ -24,6 +24,8 @@ export interface FieldGroupBasicProps {
  * position markers are assembled. The fill is a static placeholder — real value,
  * focus, and validation behavior is wired up by the field components (TextField,
  * NumberField, Select).
+ * @title Basic example
+ * @order 1
  */
 export function FieldGroupBasic({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {
   return (

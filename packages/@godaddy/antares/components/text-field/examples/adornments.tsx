@@ -1,5 +1,9 @@
 import { TextField } from '@godaddy/antares';
 
+/**
+ * Use `leadingText` and `trailingText` for fixed text before and after the input, such as currency.
+ * @order 5
+ */
 export function TextFieldAdornmentsExample() {
   return (
     <TextField
