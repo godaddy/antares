@@ -27,7 +27,7 @@ export function DefaultExample() {
         <Content>
           <Text as="p">This action cannot be undone. The file will be permanently removed.</Text>
         </Content>
-        <ButtonGroup>
+        <ButtonGroup justifyContent="end">
           <CloseButton variant="secondary">Cancel</CloseButton>
           <Button slot="close" variant="critical">
             Delete
