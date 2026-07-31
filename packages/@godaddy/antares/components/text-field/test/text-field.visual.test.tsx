@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { TextFieldBasic } from '../examples/basic.tsx';
+import { TextFieldBasic } from '../examples/default.tsx';
 import { TextFieldControlledExample } from '../examples/controlled.tsx';
 import { TextFieldInvalidExample } from '../examples/invalid.tsx';
 import { TextFieldDisabledExample } from '../examples/disabled.tsx';

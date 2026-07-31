@@ -1,7 +1,7 @@
 import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { NumberFieldBasicExample } from '../examples/basic';
+import { NumberFieldBasicExample } from '../examples/default';
 import { NumberFieldControlledExample } from '../examples/controlled';
 import { NumberFieldDisabledExample } from '../examples/disabled';
 import { NumberFieldFormatOptionsExample } from '../examples/format-options';

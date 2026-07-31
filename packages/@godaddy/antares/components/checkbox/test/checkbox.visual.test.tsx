@@ -2,7 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
-import { CheckboxBasic } from '../examples/basic.tsx';
+import { CheckboxBasic } from '../examples/default.tsx';
 import { CheckboxIndeterminate } from '../examples/indeterminate.tsx';
 import { CheckboxGroupBasic } from '../examples/group.tsx';
 import { CheckboxGroupControlled } from '../examples/controlled.tsx';

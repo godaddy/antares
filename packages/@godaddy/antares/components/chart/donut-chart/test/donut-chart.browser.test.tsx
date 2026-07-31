@@ -4,7 +4,7 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 import { FormatValueExample } from '../examples/format-value.tsx';
 import { LegendLayoutExample } from '../examples/legend-layout.tsx';
 import { SingleSliceExample } from '../examples/single-slice.tsx';

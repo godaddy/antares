@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { SelectBasic } from '../examples/basic';
+import { SelectBasic } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { SelectDisabledExample } from '../examples/disabled';
 import { SelectFormExample } from '../examples/form';

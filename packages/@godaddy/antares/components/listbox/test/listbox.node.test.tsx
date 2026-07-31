@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { ListBoxBasic } from '../examples/basic';
+import { ListBoxBasic } from '../examples/default';
 import { ListBoxControlledExample } from '../examples/controlled';
 import { ListBoxMultipleExample } from '../examples/multiple';
 

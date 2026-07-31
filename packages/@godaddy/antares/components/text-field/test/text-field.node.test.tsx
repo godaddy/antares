@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { TextFieldAdornmentsExample } from '../examples/adornments';
-import { TextFieldBasic } from '../examples/basic';
+import { TextFieldBasic } from '../examples/default';
 import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';
 import { TextFieldMultilineExample } from '../examples/multiline';

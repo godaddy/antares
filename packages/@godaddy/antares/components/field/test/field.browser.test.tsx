@@ -4,7 +4,7 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { TextField as RACTextField } from 'react-aria-components';
 import { Field, FieldError, FieldGroup, FieldInput } from '@godaddy/antares';
-import { FieldGroupBasic } from '../examples/basic';
+import { FieldGroupBasic } from '../examples/default';
 import { FieldGroupLeadingControl } from '../examples/leading-control';
 import { FieldGroupTrailingControl } from '../examples/trailing-control';
 

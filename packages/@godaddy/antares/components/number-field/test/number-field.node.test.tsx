@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { NumberFieldBasicExample } from '../examples/basic';
+import { NumberFieldBasicExample } from '../examples/default';
 import { NumberFieldControlledExample } from '../examples/controlled';
 import { NumberFieldDisabledExample } from '../examples/disabled';
 import { NumberFieldFormatOptionsExample } from '../examples/format-options';

@@ -3,7 +3,7 @@ import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/segmented-controller-playground.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
 import { RTLExample } from '../examples/rtl.tsx';

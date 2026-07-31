@@ -1,4 +1,4 @@
-import { FieldGroupBasic, type FieldGroupBasicProps } from './basic';
+import { FieldGroupBasic, type FieldGroupBasicProps } from './default';
 
 /** Props for the field group playground example. */
 export interface PlaygroundExampleProps extends FieldGroupBasicProps {}

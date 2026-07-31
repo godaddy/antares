@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
-import { ListBoxBasic } from '../examples/basic';
+import { ListBoxBasic } from '../examples/default';
 import { ListBoxControlledExample } from '../examples/controlled';
 import { ListBoxMultipleExample } from '../examples/multiple';
 

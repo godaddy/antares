@@ -2,7 +2,7 @@ import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
 import { LabelTypeExample } from '../examples/label-type.tsx';

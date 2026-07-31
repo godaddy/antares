@@ -2,7 +2,7 @@ import assume from 'assume';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 
 function getStrip(container: HTMLElement) {
   return container.querySelector('[data-tooltip-dismiss-strip]') as HTMLDivElement;

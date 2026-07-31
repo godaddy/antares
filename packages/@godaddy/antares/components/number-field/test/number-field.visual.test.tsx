@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
-import { NumberFieldBasicExample } from '../examples/basic.tsx';
+import { NumberFieldBasicExample } from '../examples/default.tsx';
 import { NumberFieldControlledExample } from '../examples/controlled.tsx';
 import { NumberFieldInvalidExample } from '../examples/invalid.tsx';
 import { NumberFieldDisabledExample } from '../examples/disabled.tsx';

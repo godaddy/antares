@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
-import { SelectBasic } from '../examples/basic';
+import { SelectBasic } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { SelectMultipleExample } from '../examples/multiple';
 import { SelectFormExample } from '../examples/form';

@@ -9,7 +9,7 @@ const data = [
 ];
 
 /**
- * You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle—this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+ * You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
  * @order 1
  */
 export function BasicExample(props: Partial<DonutChartProps>) {

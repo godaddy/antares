@@ -2,7 +2,6 @@ import { ListBox, ListBoxItem } from '@godaddy/antares';
 
 /**
  * Single selection with static children. Use `aria-label` to give the listbox an accessible name.
- * @title Basic
  * @order 1
  */
 export function ListBoxBasic() {

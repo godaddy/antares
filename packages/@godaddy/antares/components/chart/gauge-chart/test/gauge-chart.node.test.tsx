@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ContinuousExample } from '../examples/continuous.tsx';
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
 import { SegmentedExample } from '../examples/segmented.tsx';
 import { VariantsExample } from '../examples/variants.tsx';

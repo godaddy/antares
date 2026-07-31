@@ -2,7 +2,7 @@ import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { TextFieldAdornmentsExample } from '../examples/adornments';
-import { TextFieldBasic } from '../examples/basic';
+import { TextFieldBasic } from '../examples/default';
 import { TextFieldControlledExample } from '../examples/controlled';
 import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';

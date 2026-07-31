@@ -1,4 +1,4 @@
-import { CheckboxBasic } from '../examples/basic';
+import { CheckboxBasic } from '../examples/default';
 import { CheckboxGroupControlled } from '../examples/controlled';
 import { CheckboxGroupDisabled } from '../examples/disabled';
 import { CheckboxGroupBasic } from '../examples/group';

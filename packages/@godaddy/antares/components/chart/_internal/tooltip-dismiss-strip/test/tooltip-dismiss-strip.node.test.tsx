@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#TooltipDismissStrip', function tooltipDismissStripTests() {

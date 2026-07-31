@@ -1,4 +1,4 @@
-import { BasicExample } from '../examples/basic.tsx';
+import { BasicExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
