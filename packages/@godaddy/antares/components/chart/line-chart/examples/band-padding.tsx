@@ -1,5 +1,10 @@
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xPaddingOuter` and `yPaddingOuter` add breathing room at the ends of a band or point scale so the first and last values are not pinned to the edges.
+ * @title Band padding
+ * @order 16
+ */
 export function BandPaddingExample(props: Partial<LineChartProps>) {
   const xDomain = ['Q1', 'Q2', 'Q3', 'Q4'];
 

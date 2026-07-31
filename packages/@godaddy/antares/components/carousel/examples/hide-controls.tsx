@@ -1,5 +1,9 @@
 import { Carousel, Flex } from '@godaddy/antares';
 
+/**
+ * The hide controls carousel is a carousel that hides the navigation controls.
+ * @order 5
+ */
 export function HideControlsExample() {
   return (
     <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>

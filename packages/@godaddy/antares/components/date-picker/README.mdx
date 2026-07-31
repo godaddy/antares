@@ -3,16 +3,8 @@ title: DatePicker
 description: Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
 ---
 
-import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './date-picker.stories.tsx';
-
-import SourceDefault from './examples/default.tsx?raw';
-import SourceRange from './examples/range.tsx?raw';
-import SourceControlled from './examples/controlled.tsx?raw';
-import SourceFormatOptions from './examples/format-options.tsx?raw';
-import SourceMinMax from './examples/min-max.tsx?raw';
-import SourceWithError from './examples/with-error.tsx?raw';
-import SourceDisabled from './examples/disabled.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -43,66 +35,9 @@ import { DatePicker } from '@godaddy/antares';
 
 `@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
 
-## Props
-
-The `DatePicker` component accepts the following props:
-
-<ArgTypes of={Stories.Props} />
-
-The `DateRangePicker` component accepts the following props:
-
-<ArgTypes of={Stories.DateRangePickerProps} />
-
 ## Examples
 
-### Basic
-
-A single date picker.
-
-<Source language="tsx" code={SourceDefault} />
-<Story of={Stories.Default} inline />
-
-### Range
-
-A start/end range picker.
-
-<Source language="tsx" code={SourceRange} />
-<Story of={Stories.Range} inline />
-
-### Controlled
-
-Driving the value with `useState`.
-
-<Source language="tsx" code={SourceControlled} />
-<Story of={Stories.Controlled} inline />
-
-### Custom format
-
-Controlling the label with `formatOptions`.
-
-<Source language="tsx" code={SourceFormatOptions} />
-<Story of={Stories.FormatOptions} inline />
-
-### Min / Max
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Source language="tsx" code={SourceMinMax} />
-<Story of={Stories.MinMax} inline />
-
-### Error
-
-An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
-
-<Source language="tsx" code={SourceWithError} />
-<Story of={Stories.WithError} inline />
-
-### Disabled
-
-A disabled picker via `isDisabled`.
-
-<Source language="tsx" code={SourceDisabled} />
-<Story of={Stories.Disabled} inline />
+<Examples of={Stories.Examples} />
 
 ## Customization
 
@@ -124,3 +59,13 @@ A disabled picker via `isDisabled`.
 
 - Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
 - Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
+
+## Props
+
+The `DatePicker` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `DateRangePicker` component accepts the following props:
+
+<ArgTypes of={Stories.DateRangePickerProps} />

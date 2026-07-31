@@ -6,15 +6,15 @@ import { RadioAriaLabelExample } from '../examples/radio-aria-label.tsx';
 import { RadioDisabledExample } from '../examples/radio-disabled.tsx';
 import { RadioRequiredExample } from '../examples/radio-required.tsx';
 import { RadioErrorExample } from '../examples/radio-error.tsx';
-import { RadioBasicExample } from '../examples/radio-basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { RadioFormExample } from '../examples/radio-form.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
 describe('@godaddy/antares', function antares() {
   describe('#RadioGroup', function radioGroupTests() {
-    it('renders RadioBasicExample', function basicExample() {
-      expect(renderToString(<RadioBasicExample />)).toMatchSnapshot();
+    it('renders DefaultExample', function basicExample() {
+      expect(renderToString(<DefaultExample />)).toMatchSnapshot();
     });
 
     it('renders RadioControlledExample', function controlledExample() {

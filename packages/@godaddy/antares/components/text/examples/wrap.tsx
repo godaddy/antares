@@ -1,5 +1,9 @@
 import { Text, type TextProps } from '@godaddy/antares';
 
+/**
+ * Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+ * @order 5
+ */
 export function WrapExample(args: TextProps) {
   return (
     <div style={{ width: '300px', border: '1px solid red' }}>

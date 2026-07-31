@@ -1,6 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * Keep the vertical crosshair for orientation while hiding the tooltip and the data point glyphs.
+ * @title Crosshair only
+ * @order 18
+ */
 export function CrosshairOnlyExample(props: Partial<LineChartProps>) {
   const series = [
     {

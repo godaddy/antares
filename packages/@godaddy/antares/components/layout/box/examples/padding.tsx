@@ -1,5 +1,9 @@
 import { Box, Flex, type BoxProps } from '@godaddy/antares';
 
+/**
+ * The padding props support t-shirt sizes and CSS logical properties for RTL support.
+ * @order 1
+ */
 export function PaddingExample(attrs: BoxProps) {
   return (
     <Flex direction="column" gap="md">

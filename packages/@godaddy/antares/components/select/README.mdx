@@ -3,15 +3,8 @@ title: Select
 description: Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
 ---
 
-import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './select.stories.tsx';
-
-import SourceBasic from './examples/basic.tsx?raw';
-import SourceControlled from './examples/controlled.tsx?raw';
-import SourceDisabled from './examples/disabled.tsx?raw';
-import SourceForm from './examples/form.tsx?raw';
-import SourceInvalid from './examples/invalid.tsx?raw';
-import SourceMultiple from './examples/multiple.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -30,52 +23,12 @@ import SourceMultiple from './examples/multiple.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
+## Examples
+
+<Examples of={Stories.Examples} />
+
 ## Props
 
 The `Select` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />
-
-## Examples
-
-### Basic
-
-Minimal usage with a label and a placeholder.
-
-<Source language="tsx" code={SourceBasic} />
-<Story of={Stories.Basic} inline />
-
-### Controlled
-
-Use `value` and `onChange` for controlled state.
-
-<Source language="tsx" code={SourceControlled} />
-<Story of={Stories.Controlled} inline />
-
-### Multiple
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Source language="tsx" code={SourceMultiple} />
-<Story of={Stories.Multiple} inline />
-
-### Invalid
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Source language="tsx" code={SourceInvalid} />
-<Story of={Stories.Invalid} inline />
-
-### Disabled
-
-Use `isDisabled` to prevent interaction.
-
-<Source language="tsx" code={SourceDisabled} />
-<Story of={Stories.Disabled} inline />
-
-### Form
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Source language="tsx" code={SourceForm} />
-<Story of={Stories.Form} inline />

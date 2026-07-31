@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { TextFieldBasic } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { TextFieldControlledExample } from '../examples/controlled.tsx';
 import { TextFieldInvalidExample } from '../examples/invalid.tsx';
 import { TextFieldDisabledExample } from '../examples/disabled.tsx';
@@ -11,7 +11,7 @@ import { TextFieldSizesExample } from '../examples/sizes.tsx';
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textFieldTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<TextFieldBasic />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('basic');
     });
 

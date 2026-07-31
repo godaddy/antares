@@ -3,6 +3,11 @@ import { Drawer, Button, Flex, Text, type DrawerPlacement, Box } from '@godaddy/
 
 const PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];
 
+/**
+ * The drawer slides in from whichever edge you set with `placement`.
+ * @title Placements
+ * @order 3
+ */
 export function PlacementsExample() {
   const [placement, setPlacement] = useState<DrawerPlacement>('right');
   const [open, setOpen] = useState(false);

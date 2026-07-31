@@ -1,5 +1,10 @@
 import { Grid, Flex } from '@godaddy/antares';
 
+/**
+ * Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+ * @title Responsive Grid
+ * @order 5
+ */
 export function ResponsiveExample() {
   return (
     <Grid columns="repeat(auto-fill, minmax(150px, 1fr))" gap="sm">

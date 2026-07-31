@@ -2,14 +2,8 @@
 title: Box
 description: Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
 ---
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './box.stories.tsx';
-
-import SourcePadding from './examples/padding.tsx?raw';
-import SourceElevation from './examples/elevation.tsx?raw';
-import SourceRounding from './examples/rounding.tsx?raw';
-import SourceAs from './examples/as.tsx?raw';
-import SourceAlignment from './examples/alignment.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -22,12 +16,6 @@ import SourceAlignment from './examples/alignment.tsx?raw';
 ```bash
 npm install --save @godaddy/antares
 ```
-
-## Props
-
-The `Box` component accepts the following props:
-
-<ArgTypes of={Stories.Props} />
 
 ## Scale Sizes
 
@@ -42,32 +30,7 @@ The spacing props use semantic t-shirt sizes for padding, gap, and other spacing
 
 Custom CSS values are also supported for edge cases.
 
-## Examples
-
-### Padding
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of={Stories.Padding} inline />
-<Source language="tsx" code={SourcePadding} />
-
-### Elevation
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of={Stories.Elevation} inline />
-<Source language="tsx" code={SourceElevation} />
-
-### Rounding
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of={Stories.Rounding} inline />
-<Source language="tsx" code={SourceRounding} />
-
-### Polymorphic `as` Prop
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+## Polymorphic `as` details
 
 **HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
 
@@ -75,15 +38,9 @@ Box is fully polymorphic - the `as` prop allows rendering as any HTML element or
 
 **Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
 
-<Story of={Stories.As} inline />
-<Source language="tsx" code={SourceAs} />
+## Examples
 
-### Alignment
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of={Stories.Alignment} inline />
-<Source language="tsx" code={SourceAlignment} />
+<Examples of={Stories.Examples} />
 
 ## RTL Support
 
@@ -92,3 +49,9 @@ Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, et
 ## Design Tokens
 
 All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+## Props
+
+The `Box` component accepts the following props:
+
+<ArgTypes of={Stories.Props} />

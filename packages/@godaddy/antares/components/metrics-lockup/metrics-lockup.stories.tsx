@@ -1,10 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { MetricsLockup } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { WithTrendExample } from './examples/with-trend.tsx';
-import { CompactExample } from './examples/compact.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/metrics-lockup-playground.tsx';
+import { PlaygroundExample } from './examples/metrics-lockup-playground.tsx';
 
 export default getMeta({
   title: 'components/MetricsLockup'
@@ -12,14 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(MetricsLockup);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const WithTrend = getStory(WithTrendExample);
-
-export const Compact = getStory(CompactExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     title: 'Total Revenue',
     titleInfo: 'Additional information about this metric.',
@@ -55,4 +47,4 @@ export const Playground = {
       description: 'Indicates the direction of change for the metric'
     }
   }
-};
+});

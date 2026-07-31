@@ -30,7 +30,11 @@ function TooltipToolbar() {
   );
 }
 
-export function BasicExample(props: Partial<TooltipDismissStripProps>) {
+/**
+ * Tooltip provider, relative container, optional controls to open the visx tooltip and the dismiss strip on the leading edge.
+ * @order 1
+ */
+export function DefaultExample(props: Partial<TooltipDismissStripProps>) {
   const { width = 200, height = 200, ...boxProps } = props;
 
   return (

@@ -1,6 +1,10 @@
 import { ListBox, ListBoxItem } from '@godaddy/antares';
 
-export function ListBoxBasic() {
+/**
+ * Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+ * @order 1
+ */
+export function DefaultExample() {
   return (
     <ListBox aria-label="Coffee" selectionMode="single">
       <ListBoxItem id="espresso">Espresso</ListBoxItem>

@@ -1,5 +1,9 @@
 import { Flex, NumberField } from '@godaddy/antares';
 
+/**
+ * Compare the supported `md` and `sm` visual sizes.
+ * @order 8
+ */
 export function NumberFieldSizesExample() {
   return (
     <Flex direction="column" gap="md">

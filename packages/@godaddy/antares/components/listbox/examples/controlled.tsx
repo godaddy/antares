@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';
 
+/**
+ * Use `selectedKeys` and `onSelectionChange` for controlled state.
+ * @order 2
+ */
 export function ListBoxControlledExample() {
   const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));
 

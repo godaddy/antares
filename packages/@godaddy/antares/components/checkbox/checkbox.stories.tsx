@@ -1,43 +1,20 @@
 'use client';
-import { getMeta, getStory, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { CheckboxBasic } from './examples/basic.tsx';
-import { CheckboxIndeterminate } from './examples/indeterminate.tsx';
-import { CheckboxGroupBasic } from './examples/group.tsx';
-import { CheckboxGroupHorizontal } from './examples/horizontal.tsx';
-import { CheckboxGroupControlled } from './examples/controlled.tsx';
-import { CheckboxGroupRequired } from './examples/required.tsx';
-import { CheckboxGroupDisabled } from './examples/disabled.tsx';
-import { CheckboxGroupInvalid } from './examples/invalid.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/checkbox-playground.tsx';
 import { Checkbox, CheckboxGroup } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Checkbox',
-  component: CheckboxBasic
+  component: Checkbox
 });
 
 export const Props = getComponentDocs(Checkbox);
 
 export const GroupProps = getComponentDocs(CheckboxGroup);
 
-export const Basic = getStory(CheckboxBasic);
+export const Examples = getExamples('./examples');
 
-export const Indeterminate = getStory(CheckboxIndeterminate);
-
-export const Group = getStory(CheckboxGroupBasic);
-
-export const Horizontal = getStory(CheckboxGroupHorizontal);
-
-export const Controlled = getStory(CheckboxGroupControlled);
-
-export const Required = getStory(CheckboxGroupRequired);
-
-export const Disabled = getStory(CheckboxGroupDisabled);
-
-export const Invalid = getStory(CheckboxGroupInvalid);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     orientation: 'vertical',
     label: 'Select your preferences',
@@ -87,4 +64,4 @@ export const Playground = {
       description: 'Initially selected values (array of strings)'
     }
   }
-};
+});

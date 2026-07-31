@@ -3,10 +3,8 @@ title: useNormalizedSeries
 description: A hook that guarantees every series config has a stable, unique id by filling in missing ones with a component-scoped prefix from useId.
 ---
 
-import { Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './use-normalized-series.stories.tsx';
-
-import SourceMixedIds from './examples/mixed-ids.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -20,9 +18,4 @@ const series = useNormalizedSeries(seriesProp);
 
 ## Examples
 
-### Mixed ids
-
-The first item provides an explicit `id` and is preserved as-is; the remaining two have no `id` and are filled with stable generated ones (`<prefix>-1`, `<prefix>-2`).
-
-<Source language="tsx" code={SourceMixedIds} />
-<Story of={Stories.MixedIds} inline />
+<Examples of={Stories.Examples} />

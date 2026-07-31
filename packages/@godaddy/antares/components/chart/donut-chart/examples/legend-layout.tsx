@@ -7,6 +7,11 @@ const data = [
   { id: '4', name: 'Product D', value: 10 }
 ];
 
+/**
+ * Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+ * @title Legend placement
+ * @order 3
+ */
 export function LegendLayoutExample() {
   return (
     <Flex direction="column" gap="xl">

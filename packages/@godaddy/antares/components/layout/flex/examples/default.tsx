@@ -1,5 +1,9 @@
 import { Flex, type FlexProps } from '@godaddy/antares';
 
+/**
+ * Basic horizontal flex layout with gap.
+ * @order 1
+ */
 export function DefaultExample(props: FlexProps) {
   return (
     <Flex gap="sm" {...props}>

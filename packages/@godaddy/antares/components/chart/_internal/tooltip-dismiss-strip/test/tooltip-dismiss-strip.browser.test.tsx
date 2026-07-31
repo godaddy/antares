@@ -2,7 +2,7 @@ import assume from 'assume';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 
 function getStrip(container: HTMLElement) {
   return container.querySelector('[data-tooltip-dismiss-strip]') as HTMLDivElement;
@@ -12,13 +12,13 @@ describe('@godaddy/antares', function antares() {
   describe('#TooltipDismissStrip', function tooltipDismissStripTests() {
     describe('#basic', function basicTests() {
       it('omits strip in DOM when width is zero', async function zeroWidth() {
-        const { container } = await render(<BasicExample width={0} />);
+        const { container } = await render(<DefaultExample width={0} />);
 
         expect(getStrip(container)).toBeNull();
       });
 
       it('renders dismiss strip and closes tooltip on pointerenter', async function dismissOnEnter() {
-        const { container } = await render(<BasicExample />);
+        const { container } = await render(<DefaultExample />);
 
         const strip = getStrip(container);
         assume(strip).exists();

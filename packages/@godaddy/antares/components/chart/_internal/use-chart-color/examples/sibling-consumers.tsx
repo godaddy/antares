@@ -8,6 +8,7 @@ function Consumer() {
 /**
  * Example: multiple sibling consumers under ChartColorProvider, each
  * receiving a distinct chart color variable.
+ * @ignore
  */
 export function SiblingConsumersExample() {
   return (

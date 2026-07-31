@@ -1,6 +1,6 @@
 # @bento/storybook-addon-helpers
 
-A Storybook preset that turns type-safe authoring helpers (`getMeta`, `getStory`, `getVariants`, `getComponentDocs`, `getTypeDocs`) into standard CSF at build time, via a custom stories indexer and a Vite plugin. Prop documentation is extracted straight from TypeScript types, so `argTypes` stay in sync with the code with no manual upkeep.
+A Storybook preset that turns type-safe authoring helpers (`getMeta`, `getStory`, `getVariants`, `getComponentDocs`, `getTypeDocs`, `getExamples`) into standard CSF at build time, via a custom stories indexer and a Vite plugin. Prop documentation is extracted straight from TypeScript types, so `argTypes` stay in sync with the code with no manual upkeep, and a component's `examples/` folder is published as stories and rendered in its README from a single source.
 
 ## Requirements
 
@@ -45,7 +45,7 @@ Defaults apply to both `getComponentDocs` and `getTypeDocs`. Because matchers ca
 ## Authoring API
 
 ```tsx
-import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs } from '@bento/storybook-addon-helpers';
+import { getMeta, getStory, getVariants, getComponentDocs, getTypeDocs, getExamples } from '@bento/storybook-addon-helpers';
 import { Button, type ButtonProps } from './button.tsx';
 
 // Story metadata (title, component, shared args).
@@ -65,6 +65,9 @@ export const Docs = getComponentDocs(Button, { include: ['children', /^on/] });
 
 // A props table generated from any interface or type alias.
 export const TypeDocs = getTypeDocs<ButtonProps>({ exclude: [/^aria-/] });
+
+// Publish the `./examples` folder: one story per file, mirrored in the README.
+export const examples = getExamples('./examples');
 ```
 
 ## Docs options
@@ -99,6 +102,59 @@ getComponentDocs(Button, {
 ```
 
 Every option accepts either an exact prop name (autocompleted) or any string, or a regular expression that matches prop names (for example, `/^on/` matches every `on*` prop). When more than one category matches a prop, the **first declared** category wins.
+
+## Examples
+
+`getExamples` publishes a component's `examples/` folder as stories, and its README renders the same set - so each example is authored once and appears both in Storybook's sidebar and in the docs site.
+
+Author one file per example under `examples/`, each exporting exactly one function - that function is the example (an `XExample` export becomes the `X` story). A file that exports no function is skipped. Declare the folder in the stories file:
+
+```tsx
+// button.stories.tsx
+export const examples = getExamples('./examples');
+```
+
+Reference that export from the component README to render the examples inline. The marker mirrors the `of={Stories.X}` convention used by `Story`/`ArgTypes`: it is resolved at build time (the `examples` export is a build-time symbol, like `getComponentDocs`), so the value never has to exist at runtime.
+
+```mdx
+<!-- button/README.mdx -->
+import * as Stories from './button.stories.tsx';
+
+<Examples of={Stories.examples} />
+```
+
+At build time, each example expands into an `### Title` heading, an optional description, a live `<Story>` preview, and a `<Source>` snippet. The generated content also injects any required `Story` and `Source` imports, deduplicating them against existing imports. As a result, the README only needs to import the blocks it declares itself, such as `Meta` and `ArgTypes`.
+
+The README's `<Examples of={Stories.<name>} />` block is resolved to the colocated stories file. The `getExamples(<dir>)` call in that file determines the examples directory, so the path is defined in exactly one place.
+
+### Example metadata (JSDoc)
+
+Annotate the exported example with JSDoc to control how it renders:
+
+```tsx
+import { Button } from '@godaddy/antares';
+
+/**
+ * The primary action. Free text becomes the example's description.
+ * @title Primary action
+ * @order 2
+ */
+export function PrimaryExample() {
+  return <Button variant="primary">Save</Button>;
+}
+```
+
+- **description** - the JSDoc free text renders as a paragraph under the heading.
+- **`@title`** - overrides the heading (default: the humanized export name, e.g. `IconOnly` -> `Icon Only`).
+- **`@order N`** - sort position; `@order`-tagged examples come first (ascending), then untagged examples alphabetically.
+- **`@ignore`** - skip the file entirely (no story, no README block).
+- Files ending in `-playground.tsx` are reserved for the args-based Playground story and are never published as examples.
+
+The metadata JSDoc is stripped from the displayed `<Source>` snippet.
+
+### Client boundary (no `'use client'` needed)
+
+Examples render components whose implementation reaches client-only React APIs, and the docs site imports them into React Server Components - a combination that normally requires a `'use client'` directive. Do **not** add one to example files: the docs site injects the client boundary at build time (via a loader on `components/*/examples/*.tsx`), keeping the source clean and out of the displayed `<Source>` snippet. Storybook needs no boundary at all - it runs entirely on the client.
 
 ## How it works
 

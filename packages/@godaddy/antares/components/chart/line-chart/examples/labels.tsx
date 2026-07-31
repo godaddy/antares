@@ -1,6 +1,10 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xLabels` and `yLabels` toggle the tick labels on each axis. Turn them off for sparklines or when the surrounding UI already names the values.
+ * @order 5
+ */
 export function LabelsExample(props: Partial<LineChartProps>) {
   const series = [
     {

@@ -1,6 +1,11 @@
 import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';
 import { useRef } from 'react';
 
+/**
+ * To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
+ * @title Custom Anchor
+ * @order 2
+ */
 export function CustomAnchorExample() {
   const triggerRef = useRef<HTMLDivElement>(null);
 

@@ -1,9 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/progress-bar-playground.tsx';
-import { getMeta, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { DefaultExample } from './examples/default.tsx';
-import { StatusesExample } from './examples/statuses.tsx';
-import { SizesExample } from './examples/sizes.tsx';
+import { PlaygroundExample } from './examples/progress-bar-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { ProgressBar } from './src/index.tsx';
 
 export default getMeta({
@@ -12,14 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(ProgressBar);
 
-export const Default = DefaultExample;
+export const Examples = getExamples('./examples');
 
-export const Sizes = SizesExample;
-
-export const Statuses = StatusesExample;
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     size: 'md',
     status: 'default',
@@ -51,4 +43,4 @@ export const Playground = {
       description: 'Helper or notice text below the track'
     }
   }
-};
+});

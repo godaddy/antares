@@ -1,6 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * Several lines sharing one X axis, with a legend naming each of them. Reach for this when the comparison between series is the story.
+ * @title Multiple series
+ * @order 2
+ */
 export function MultipleSeriesExample(props: Partial<LineChartProps>) {
   const series = [
     {

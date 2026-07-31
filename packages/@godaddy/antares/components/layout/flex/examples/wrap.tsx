@@ -1,5 +1,9 @@
 import { Flex } from '@godaddy/antares';
 
+/**
+ * The `wrap` prop controls whether items wrap to multiple lines.
+ * @order 5
+ */
 export function WrapExample() {
   return (
     <Flex direction="column" gap="lg">

@@ -3,7 +3,10 @@ import { useState } from 'react';
 
 const steps = ['Cart', 'Shipping', 'Payment', 'Review'];
 
-/** Interactive steps: each `onPress` navigates the wizard by updating `currentStep`. */
+/**
+ * Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
+ * @order 4
+ */
 export function InteractiveExample() {
   const [currentStep, setCurrentStep] = useState(1);
 

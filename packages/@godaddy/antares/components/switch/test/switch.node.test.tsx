@@ -1,48 +1,48 @@
-import { SwitchControlled } from '../examples/controlled';
-import { SwitchDefault } from '../examples/default';
-import { SwitchDisabled } from '../examples/disabled';
-import { SwitchLabelPosition } from '../examples/label-position';
-import { SwitchNoLabel } from '../examples/no-label';
-import { SwitchSelected } from '../examples/selected';
-import { SwitchSizes } from '../examples/sizes';
+import { SwitchControlledExample } from '../examples/controlled';
+import { DefaultExample } from '../examples/default';
+import { SwitchDisabledExample } from '../examples/disabled';
+import { SwitchLabelPositionExample } from '../examples/label-position';
+import { SwitchNoLabelExample } from '../examples/no-label';
+import { SwitchSelectedExample } from '../examples/selected';
+import { SwitchSizesExample } from '../examples/sizes';
 import { PlaygroundExample } from '../examples/switch-playground';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
 describe('@godaddy/antares', function antares() {
   describe('#Switch', function switchTests() {
-    it('renders SwitchDefault', function defaultExample() {
-      const result = renderToString(<SwitchDefault />);
+    it('renders DefaultExample', function defaultExample() {
+      const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders SwitchSelected', function selectedExample() {
-      const result = renderToString(<SwitchSelected />);
+    it('renders SwitchSelectedExample', function selectedExample() {
+      const result = renderToString(<SwitchSelectedExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders SwitchSizes', function sizesExample() {
-      const result = renderToString(<SwitchSizes />);
+    it('renders SwitchSizesExample', function sizesExample() {
+      const result = renderToString(<SwitchSizesExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders SwitchLabelPosition', function labelPositionExample() {
-      const result = renderToString(<SwitchLabelPosition />);
+    it('renders SwitchLabelPositionExample', function labelPositionExample() {
+      const result = renderToString(<SwitchLabelPositionExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders SwitchNoLabel', function noLabelExample() {
-      const result = renderToString(<SwitchNoLabel />);
+    it('renders SwitchNoLabelExample', function noLabelExample() {
+      const result = renderToString(<SwitchNoLabelExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders SwitchDisabled', function disabledExample() {
-      const result = renderToString(<SwitchDisabled />);
+    it('renders SwitchDisabledExample', function disabledExample() {
+      const result = renderToString(<SwitchDisabledExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders SwitchControlled', function controlledExample() {
-      const result = renderToString(<SwitchControlled />);
+    it('renders SwitchControlledExample', function controlledExample() {
+      const result = renderToString(<SwitchControlledExample />);
       expect(result).toMatchSnapshot();
     });
 

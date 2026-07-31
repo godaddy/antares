@@ -18,7 +18,7 @@ export function getPropJSDoc(node: ts.Node): {
   };
 }
 
-function normalizeComment(comment: string | ts.NodeArray<ts.JSDocComment> | undefined): string | undefined {
+export function normalizeComment(comment: string | ts.NodeArray<ts.JSDocComment> | undefined): string | undefined {
   if (typeof comment === 'string') {
     const trimmed = comment.trim();
     return trimmed || undefined;

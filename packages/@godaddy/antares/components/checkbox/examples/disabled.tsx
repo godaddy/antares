@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@godaddy/antares';
 
-export function CheckboxGroupDisabled() {
+/**
+ * Individual checkboxes within a group can be disabled while others remain interactive.
+ * @title Disabled States
+ * @order 6
+ */
+export function CheckboxGroupDisabledExample() {
   const [selected, setSelected] = useState<string[]>(['purple', 'red']);
 
   return (

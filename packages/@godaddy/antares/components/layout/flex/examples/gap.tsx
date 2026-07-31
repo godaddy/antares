@@ -1,5 +1,9 @@
 import { Flex } from '@godaddy/antares';
 
+/**
+ * The `gap` prop controls spacing between children. Use `rowGap` and `columnGap` for independent control.
+ * @order 4
+ */
 export function GapExample() {
   return (
     <Flex direction="column" gap="lg">

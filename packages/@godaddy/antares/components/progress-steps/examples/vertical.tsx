@@ -1,6 +1,9 @@
 import { ProgressSteps, ProgressStep } from '@godaddy/antares';
 
-/** Vertical orientation: accent bar on the leading edge, steps stacked in a column. */
+/**
+ * Vertical orientation: accent bar on the leading edge, steps stacked in a column.
+ * @order 3
+ */
 export function VerticalExample() {
   return (
     <ProgressSteps aria-label="Onboarding" orientation="vertical" currentStep={1}>

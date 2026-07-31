@@ -1,13 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/text-field-playground.tsx';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { TextFieldAdornmentsExample } from './examples/adornments';
-import { TextFieldControlledExample } from './examples/controlled';
-import { TextFieldMultilineExample } from './examples/multiline';
-import { TextFieldDisabledExample } from './examples/disabled';
-import { TextFieldInvalidExample } from './examples/invalid';
-import { TextFieldSizesExample } from './examples/sizes';
-import { TextFieldBasic } from './examples/basic';
+import { PlaygroundExample } from './examples/text-field-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { TextField } from './src/index.tsx';
 
 export default getMeta({
@@ -16,8 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(TextField);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: {
     label: 'Label',
     placeholder: 'Enter text',
@@ -40,18 +34,4 @@ export const Playground = {
     multiline: { control: 'boolean' },
     size: { control: 'select', options: ['sm', 'md'] }
   }
-};
-
-export const Basic = getStory(TextFieldBasic);
-
-export const Controlled = getStory(TextFieldControlledExample);
-
-export const Invalid = getStory(TextFieldInvalidExample);
-
-export const Disabled = getStory(TextFieldDisabledExample);
-
-export const Adornments = getStory(TextFieldAdornmentsExample);
-
-export const Multiline = getStory(TextFieldMultilineExample);
-
-export const Sizes = getStory(TextFieldSizesExample);
+});

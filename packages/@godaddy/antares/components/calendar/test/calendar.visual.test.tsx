@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
-import { CalendarDefaultExample } from '../examples/default.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { CalendarWithValueExample } from '../examples/with-value.tsx';
 import { RangeCalendarExample } from '../examples/range.tsx';
 import { CalendarMinMaxExample } from '../examples/min-max.tsx';
@@ -14,7 +14,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#Calendar', function calendar() {
     it('default', async function defaultExample() {
-      const { container } = await render(<CalendarDefaultExample />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('calendar-default');
     });
 

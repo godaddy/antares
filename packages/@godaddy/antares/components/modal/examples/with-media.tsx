@@ -1,6 +1,10 @@
 import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
+ * @order 5
+ */
 export function WithMediaExample() {
   const [mediaVariant, setMediaVariant] = useState<string>();
   const [mediaDirection, setMediaDirection] = useState<string>();

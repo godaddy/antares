@@ -1,13 +1,7 @@
 'use client';
 import { GaugeChart } from '#components/chart/gauge-chart';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ContinuousExample } from './examples/continuous.tsx';
-import { BasicExample } from './examples/basic.tsx';
-import { LabelTypeExample } from './examples/label-type.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/gauge-chart-playground.tsx';
-import { SegmentedExample } from './examples/segmented.tsx';
-import { VariantsExample } from './examples/variants.tsx';
-import { WithRangeLabelsExample } from './examples/with-range-labels.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/gauge-chart-playground.tsx';
 
 export default getMeta({
   title: 'components/Chart/GaugeChart'
@@ -15,20 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(GaugeChart);
 
-export const Basic = getStory(BasicExample);
+export const Examples = getExamples('./examples');
 
-export const Continuous = getStory(ContinuousExample);
-
-export const Segmented = getStory(SegmentedExample);
-
-export const WithRangeLabels = getStory(WithRangeLabelsExample);
-
-export const Variants = getStory(VariantsExample);
-
-export const LabelType = getStory(LabelTypeExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     label: '50%',
     subLabel: 'Sub Label',
@@ -80,4 +63,4 @@ export const Playground = {
       description: 'CSS width for the gauge container (e.g. "200px", "50%")'
     }
   }
-};
+});
