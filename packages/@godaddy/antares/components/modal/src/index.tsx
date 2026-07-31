@@ -11,7 +11,7 @@ import {
   Provider
 } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { ContentContext, HeaderContext, FooterContext } from '#components/composition';
+import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/composition';
 import styles from './index.module.css';
 
 export interface ModalProps extends Omit<RACDialogProps, 'children'> {
@@ -27,13 +27,7 @@ export interface ModalProps extends Omit<RACDialogProps, 'children'> {
   /** Additional class name for the dialog. */
   className?: string;
 
-  /**
-   * The modal interior. Compose it from the shared containers (`Header`, `Content`, `Footer`,
-   * `ButtonGroup`) plus `Heading slot="title"` and `CloseButton`. The Modal styles each region
-   * and owns the scroll layout (the `Content` region scrolls while the rest stays pinned);
-   * React Aria wires the title (`aria-labelledby`) and the close behavior. Nothing is rendered
-   * inside when no children are provided.
-   */
+  /** The content of the modal. */
   children?: ReactNode;
 }
 
@@ -69,9 +63,10 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
         >
           <Provider
             values={[
-              [HeaderContext, { className: styles.header }],
+              [HeaderContext, { className: styles.header, alignItems: 'start' }],
               [ContentContext, { className: styles.content }],
-              [FooterContext, { className: styles.footer }]
+              [FooterContext, { className: styles.footer }],
+              [ButtonGroupContext, { className: styles.buttonGroup }]
             ]}
           >
             {children}

@@ -10,16 +10,6 @@ import * as Stories from './modal.stories.tsx';
 
 Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. Compose the interior:
 
-```tsx
-<Modal>
-  <Heading slot="title" />
-  <Header />
-  <Content />
-  <Footer />
-  <ButtonGroup />
-</Modal>
-```
-
 ## Installation
 
 ```bash
@@ -50,11 +40,20 @@ npm install --save @godaddy/antares
 ## Best Practices
 
 - Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-- Pair every footer action with `slot="close"` (or use `CloseButton`) when it should dismiss the modal
+- Pair every action button with `slot="close"` when it should dismiss the modal
 - Set `isDismissable={false}` for required confirmations the user must explicitly answer
-- Group footer actions in a `ButtonGroup` for consistent spacing and alignment
 
 ## Props
+
+```tsx
+<Modal>
+  <Heading slot="title" />
+  <Header />
+  <Content />
+  <Footer />
+  <ButtonGroup />
+</Modal>
+```
 
 The `Modal` component accepts the following props:
 

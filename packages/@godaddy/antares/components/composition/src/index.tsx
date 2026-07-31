@@ -102,7 +102,8 @@ export interface ButtonGroupProps extends Omit<FlexProps, 'as'> {}
 export const ButtonGroupContext = createContext<ContextValue<ButtonGroupProps, HTMLDivElement>>(null);
 
 /**
- * Generic button cluster: a group of related actions, typically inside a `Footer`.
+ * Generic button cluster: a group of related actions. Use it as a component's actions region
+ * directly (e.g. at the bottom of a `Modal`) or nested inside a `Footer`.
  * Defaults to an end-aligned, wrapping row (`role="group"`).
  *
  * @param props - {@link ButtonGroupProps}

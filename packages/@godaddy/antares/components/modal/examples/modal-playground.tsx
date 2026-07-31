@@ -6,7 +6,6 @@ import {
   Header,
   Heading,
   Content,
-  Footer,
   ButtonGroup,
   Text
 } from '@godaddy/antares';
@@ -17,13 +16,13 @@ const PARAGRAPH =
 export interface PlaygroundExampleProps {
   isDismissable?: boolean;
   longContent?: boolean;
-  showFooter?: boolean;
+  showActions?: boolean;
 }
 
 export function PlaygroundExample({
   isDismissable = true,
   longContent = false,
-  showFooter = true
+  showActions = true
 }: PlaygroundExampleProps) {
   return (
     <ModalTrigger>
@@ -40,15 +39,13 @@ export function PlaygroundExample({
             </Text>
           ))}
         </Content>
-        {showFooter ? (
-          <Footer justifyContent="end">
-            <ButtonGroup>
-              <CloseButton variant="secondary">Cancel</CloseButton>
-              <Button slot="close" variant="primary">
-                Confirm
-              </Button>
-            </ButtonGroup>
-          </Footer>
+        {showActions ? (
+          <ButtonGroup>
+            <CloseButton variant="secondary">Cancel</CloseButton>
+            <Button slot="close" variant="primary">
+              Confirm
+            </Button>
+          </ButtonGroup>
         ) : null}
       </Modal>
     </ModalTrigger>

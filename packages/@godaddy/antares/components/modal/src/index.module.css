@@ -30,13 +30,9 @@
 
 .modal {
   position: relative;
-  border: 0;
-  /* Height tracks the content, capped so the dialog never exceeds the viewport. */
   max-block-size: calc(100dvh - var(--sp-md) * 2);
   inline-size: calc(100dvw - var(--sp-md) * 2);
   max-inline-size: 80ch;
-  /* The dialog itself never scrolls; only the content region does. */
-  overflow: hidden;
 }
 
 /* The content region absorbs the extra height and scrolls; siblings stay pinned. */
@@ -54,7 +50,13 @@
   padding-block-end: var(--sp-sm);
 }
 
-.footer {
+.header :where([slot="close"]) {
+  align-self: flex-start;
+  margin-inline-start: auto;
+}
+
+.footer,
+.buttonGroup {
   flex-shrink: 0;
   padding: var(--sp-md);
   padding-block-start: var(--sp-sm);

@@ -6,16 +6,13 @@ import {
   Header,
   Heading,
   Content,
-  Footer,
   ButtonGroup,
   Text
 } from '@godaddy/antares';
 
 /**
- * A Modal is composition-first: you author the interior from the shared containers
- * (`Header`, `Content`, `Footer`, `ButtonGroup`) plus `Heading slot="title"` and
- * `CloseButton`. The Modal styles each region, owns the scroll layout, and React Aria wires
- * the title and close behavior. `ModalTrigger` manages the open/close state.
+ * Compose a Modal from `Header`, `Content`, and `ButtonGroup`. `ModalTrigger` opens the Modal
+ * and manages its open/close state.
  * @order 1
  */
 export function DefaultExample() {
@@ -30,14 +27,12 @@ export function DefaultExample() {
         <Content>
           <Text as="p">This action cannot be undone. The file will be permanently removed.</Text>
         </Content>
-        <Footer justifyContent="end">
-          <ButtonGroup>
-            <CloseButton variant="secondary">Cancel</CloseButton>
-            <Button slot="close" variant="critical">
-              Delete
-            </Button>
-          </ButtonGroup>
-        </Footer>
+        <ButtonGroup>
+          <CloseButton variant="secondary">Cancel</CloseButton>
+          <Button slot="close" variant="critical">
+            Delete
+          </Button>
+        </ButtonGroup>
       </Modal>
     </ModalTrigger>
   );

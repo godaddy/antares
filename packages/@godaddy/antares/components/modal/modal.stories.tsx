@@ -15,7 +15,7 @@ export const Playground = getStory(PlaygroundExample, {
   args: {
     isDismissable: true,
     longContent: false,
-    showFooter: true
+    showActions: true
   },
   argTypes: {
     isDismissable: {
@@ -24,11 +24,11 @@ export const Playground = getStory(PlaygroundExample, {
     },
     longContent: {
       control: 'boolean',
-      description: 'Fill the content region so it scrolls while the header and footer stay pinned'
+      description: 'Fill the content region so it scrolls while the header and actions stay pinned'
     },
-    showFooter: {
+    showActions: {
       control: 'boolean',
-      description: 'Render a footer with a ButtonGroup'
+      description: 'Render a ButtonGroup with the modal actions'
     }
   }
 });

@@ -69,7 +69,7 @@ describe('@godaddy/antares', function packageTests() {
       await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
     });
 
-    it('makes the content region scrollable while the header stays pinned', async function scrollableContent() {
+    it('makes the content region scroll while the rest stays pinned', async function scrollableContent() {
       await render(<ScrollableExample />);
 
       await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
@@ -78,7 +78,6 @@ describe('@godaddy/antares', function packageTests() {
       const dialog = await page.getByRole('dialog').element();
       const content = dialog.querySelector('section') as HTMLElement;
 
-      expect(getComputedStyle(dialog).overflow).toBe('hidden');
       expect(getComputedStyle(content).overflowY).toBe('auto');
     });
 

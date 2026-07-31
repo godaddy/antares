@@ -6,7 +6,7 @@ import {
   Header,
   Heading,
   Content,
-  Footer,
+  ButtonGroup,
   Flex,
   Text
 } from '@godaddy/antares';
@@ -33,9 +33,9 @@ export function ControlledExample() {
               She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
             </Text>
           </Content>
-          <Footer justifyContent="end">
+          <ButtonGroup>
             <CloseButton variant="primary">Close</CloseButton>
-          </Footer>
+          </ButtonGroup>
         </Modal>
       </ModalTrigger>
 
