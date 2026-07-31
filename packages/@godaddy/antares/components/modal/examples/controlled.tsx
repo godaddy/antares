@@ -34,7 +34,9 @@ export function ControlledExample() {
             </Text>
           </Content>
           <ButtonGroup>
-            <CloseButton variant="primary">Close</CloseButton>
+            <Button slot="close" variant="primary">
+              Close
+            </Button>
           </ButtonGroup>
         </Modal>
       </ModalTrigger>

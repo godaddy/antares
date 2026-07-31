@@ -41,7 +41,9 @@ export function PlaygroundExample({
         </Content>
         {showActions ? (
           <ButtonGroup>
-            <CloseButton variant="secondary">Cancel</CloseButton>
+            <Button slot="close" variant="secondary">
+              Cancel
+            </Button>
             <Button slot="close" variant="primary">
               Confirm
             </Button>

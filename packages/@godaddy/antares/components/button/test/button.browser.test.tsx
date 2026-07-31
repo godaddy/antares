@@ -2,9 +2,9 @@ import { describe, it, beforeAll, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
+import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
-import { CloseButtonExample } from '../examples/close.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -77,14 +77,9 @@ describe('@godaddy/antares', function antares() {
       expect(pressed).toEqual(true);
     });
 
-    it('gives an icon-only CloseButton the "Close" accessible name', async function closeButtonAccessibleName() {
-      const { getByRole } = await render(<CloseButtonExample />);
+    it('renders a CloseButton with the "Close" accessible name', async function closeButtonAccessibleName() {
+      const { getByRole } = await render(<CloseButton />);
       await expect.element(getByRole('button', { name: 'Close' })).toBeVisible();
-    });
-
-    it('labels a CloseButton by its children instead of "Close"', async function closeButtonLabelled() {
-      const { getByRole } = await render(<CloseButtonExample />);
-      await expect.element(getByRole('button', { name: 'Cancel' })).toBeVisible();
     });
   });
 });

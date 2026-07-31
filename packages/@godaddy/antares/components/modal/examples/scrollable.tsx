@@ -36,7 +36,9 @@ export function ScrollableExample() {
           ))}
         </Content>
         <ButtonGroup>
-          <CloseButton variant="secondary">Decline</CloseButton>
+          <Button slot="close" variant="secondary">
+            Decline
+          </Button>
           <Button slot="close" variant="primary">
             Accept
           </Button>
