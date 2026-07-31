@@ -15,7 +15,12 @@ import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from
 import styles from './index.module.css';
 
 export interface ModalProps extends Omit<RACDialogProps, 'children'> {
-  /** Whether the modal can be dismissed via overlay click or Escape key. @default true */
+  /**
+   * Whether the modal can be dismissed by interacting outside it (clicking/pressing the
+   * underlay). Escape always closes the dialog (a11y); disable that via
+   * `overlayProps.isKeyboardDismissDisabled`.
+   * @default true
+   */
   isDismissable?: boolean;
 
   /** Additional props for the overlay backdrop. */

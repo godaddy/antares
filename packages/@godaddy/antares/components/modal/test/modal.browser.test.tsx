@@ -7,6 +7,19 @@ import { ControlledExample } from '../examples/controlled.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { PlaygroundExample } from '../examples/modal-playground.tsx';
 
+/**
+ * Simulate an interaction outside the dialog by dispatching a pointerdown + click on the
+ * underlay (`dialog -> modal container -> overlay`). RAC's `useInteractOutside` matches on the
+ * event target being outside the dialog ref, so the underlay - an ancestor, not a descendant -
+ * is a valid "outside" target regardless of where a synthetic pointer would land.
+ */
+function interactOutside(dialog: Element) {
+  const overlay = dialog.parentElement?.parentElement;
+  if (!overlay) throw new Error('Expected overlay element to exist');
+  overlay.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }));
+  overlay.dispatchEvent(new MouseEvent('click', { bubbles: true, button: 0 }));
+}
+
 describe('@godaddy/antares', function packageTests() {
   describe('#Modal', function modalTests() {
     beforeAll(preloadTestIcons);
@@ -81,14 +94,34 @@ describe('@godaddy/antares', function packageTests() {
       expect(getComputedStyle(content).overflowY).toBe('auto');
     });
 
-    it('does not dismiss when isDismissable is false', async function notDismissable() {
+    it('dismisses on outside interaction by default', async function outsideDismiss() {
+      await render(<DefaultExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+      await expect.element(page.getByRole('dialog')).toBeVisible();
+
+      interactOutside(await page.getByRole('dialog').element());
+      await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('does not dismiss on outside interaction when isDismissable is false', async function notDismissable() {
+      await render(<PlaygroundExample isDismissable={false} />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+      await expect.element(page.getByRole('dialog')).toBeVisible();
+
+      interactOutside(await page.getByRole('dialog').element());
+      await expect.element(page.getByRole('dialog')).toBeVisible();
+    });
+
+    it('still closes on Escape when isDismissable is false', async function escapeAlwaysCloses() {
       await render(<PlaygroundExample isDismissable={false} />);
 
       await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
       await expect.element(page.getByRole('dialog')).toBeVisible();
 
       await userEvent.keyboard('{Escape}');
-      await expect.element(page.getByRole('dialog')).toBeVisible();
+      await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
     });
   });
 });
