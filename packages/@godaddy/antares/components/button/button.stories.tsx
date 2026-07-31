@@ -1,6 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/button-playground.tsx';
-import { getMeta, getComponentDocs, getExamples } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/button-playground.tsx';
+import { getMeta, getComponentDocs, getExamples, getStory } from '@bento/storybook-addon-helpers';
 import { Button, LinkButton } from './src/index.tsx';
 
 export default getMeta({
@@ -11,13 +11,9 @@ export const Props = getComponentDocs(Button);
 
 export const LinkButtonProps = getComponentDocs(LinkButton);
 
-// Discovered from `./examples` at build time: one indexed story per example,
-// ordered by `@order` and titled/described from each example's JSDoc. The
-// README renders the same set via `<Examples of={Stories.examples} />`.
 export const examples = getExamples('./examples');
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     variant: 'primary',
     size: 'md',
@@ -44,4 +40,4 @@ export const Playground = {
       description: 'Button label text'
     }
   }
-};
+});
