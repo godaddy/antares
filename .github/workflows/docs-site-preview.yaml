@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   deploy-preview:
-    if: github.event.action != 'closed'
+    if: github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -97,7 +97,7 @@ jobs:
             }
 
   cleanup-preview:
-    if: github.event.action == 'closed'
+    if: github.event.action == 'closed' && github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout gh-pages Branch
