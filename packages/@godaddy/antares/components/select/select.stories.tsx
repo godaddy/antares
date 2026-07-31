@@ -1,5 +1,5 @@
 'use client';
-import { PlaygroundExample } from './examples/playground.tsx';
+import { PlaygroundExample } from './examples/select-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Select } from './src/index.tsx';
 

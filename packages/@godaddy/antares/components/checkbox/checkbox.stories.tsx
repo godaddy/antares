@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample } from './examples/playground.tsx';
+import { PlaygroundExample } from './examples/checkbox-playground.tsx';
 import { Checkbox, CheckboxGroup } from './src/index.tsx';
 
 export default getMeta({

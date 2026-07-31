@@ -6,7 +6,7 @@ import { CheckboxIndeterminate } from '../examples/indeterminate';
 import { CheckboxGroupInvalid } from '../examples/invalid';
 import { CheckboxGroupRequired } from '../examples/required';
 import { CheckboxGroupHorizontal } from '../examples/horizontal';
-import { PlaygroundExample } from '../examples/playground';
+import { PlaygroundExample } from '../examples/checkbox-playground';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
