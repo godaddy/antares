@@ -7,20 +7,12 @@ const FIXTURE_DIR = path.join(__dirname, 'fixtures/examples-fixture');
 // The plugin operates on a loosely-typed mdast; tests use `any` to poke at nodes.
 type AnyNode = { type: string; [key: string]: any };
 
-function makeTree(attributes: AnyNode[] = []): { type: 'root'; children: AnyNode[] } {
-  return {
-    type: 'root',
-    children: [{ type: 'mdxJsxFlowElement', name: 'Examples', attributes, children: [] }]
-  };
-}
-
-/** Builds an `of={Stories.<name>}` mdast attribute. */
-function ofAttr(reference: string): AnyNode {
-  return {
-    type: 'mdxJsxAttribute',
-    name: 'of',
-    value: { type: 'mdxJsxAttributeValueExpression', value: reference }
-  };
+/** Builds a `<Examples of={Stories.<name>} />` root, as authored in a README. */
+function makeTree(reference = 'Stories.examples'): { type: 'root'; children: AnyNode[] } {
+  const attributes = [
+    { type: 'mdxJsxAttribute', name: 'of', value: { type: 'mdxJsxAttributeValueExpression', value: reference } }
+  ];
+  return { type: 'root', children: [{ type: 'mdxJsxFlowElement', name: 'Examples', attributes, children: [] }] };
 }
 
 function byName(children: AnyNode[], name: string): AnyNode[] {
@@ -36,7 +28,7 @@ function expression(node: AnyNode, name: string): AnyNode {
 }
 
 describe('remark-examples', function remarkExamplesTests() {
-  it('expands <Examples /> into heading + story + source per example (storybook)', async function storybook() {
+  it('expands <Examples of={Stories.examples} /> into heading + story + source per example (storybook)', async function storybook() {
     const tree = makeTree();
     const onDependency = vi.fn();
 
@@ -46,10 +38,10 @@ describe('remark-examples', function remarkExamplesTests() {
     });
 
     expect(tree.children[0]).toMatchObject({ type: 'heading', depth: 3, children: [{ value: 'Basic Usage' }] });
-    expect(byName(tree.children, 'Story')).toHaveLength(6);
-    expect(byName(tree.children, 'Source')).toHaveLength(6);
+    expect(byName(tree.children, 'Story')).toHaveLength(4);
+    expect(byName(tree.children, 'Source')).toHaveLength(4);
     // One dependency for the resolved stories file, plus one per example.
-    expect(onDependency).toHaveBeenCalledTimes(7);
+    expect(onDependency).toHaveBeenCalledTimes(5);
     expect(onDependency).toHaveBeenCalledWith(expect.anything(), path.join(FIXTURE_DIR, 'widget.stories.tsx'));
 
     // No direct imports are injected for the Storybook target.
@@ -74,7 +66,7 @@ describe('remark-examples', function remarkExamplesTests() {
     await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
 
     const imports = tree.children.filter((c) => c.type === 'mdxjsEsm');
-    expect(imports).toHaveLength(6);
+    expect(imports).toHaveLength(4);
     expect(imports[0].data.estree.body[0].source.value).toBe('./examples/default.tsx');
 
     const story = byName(tree.children, 'Story')[0];
@@ -82,26 +74,10 @@ describe('remark-examples', function remarkExamplesTests() {
     expect(attr(story, 'inline')).toBeUndefined();
   });
 
-  it('resolves the folder via of={Stories.<name>} and an explicit getExamples path', async function ofReference() {
-    const tree = makeTree([ofAttr('Stories.examples')]);
-
-    await remarkExamples({ target: 'fumadocs' })(tree, {
-      path: path.join(__dirname, 'fixtures/examples-edge/README.mdx'),
-      data: {}
-    });
-
-    expect(byName(tree.children, 'Story').length).toBeGreaterThan(0);
-    const story = byName(tree.children, 'Story').find((s) => expression(s, 'of').name === 'Example');
-    expect(story).toBeDefined();
-  });
-
   it('drops the marker when of={Stories.<name>} names an unknown export', async function unknownExport() {
-    const tree = makeTree([ofAttr('Stories.missing')]);
+    const tree = makeTree('Stories.missing');
 
-    await remarkExamples({ target: 'fumadocs' })(tree, {
-      path: path.join(FIXTURE_DIR, 'README.mdx'),
-      data: {}
-    });
+    await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
 
     expect(byName(tree.children, 'Story')).toHaveLength(0);
   });

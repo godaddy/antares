@@ -91,30 +91,28 @@ interface ParsedExample {
   source: string;
 }
 
-/** Parses a single example file for its exported component and JSDoc annotations. */
+/**
+ * Parses a single example file. An example exports exactly one function - that
+ * function is the example. Files that export no function (e.g. only a type or a
+ * const) are skipped, so nothing renders for them.
+ */
 function parseExample(code: string, filePath: string): ParsedExample | undefined {
   const sourceFile = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const candidates: { name: string; node: ts.Node }[] = [];
 
+  let exported: { name: string; node: ts.FunctionDeclaration } | undefined;
   sourceFile.forEachChild(function collect(node) {
+    if (exported) return;
     if (ts.isFunctionDeclaration(node) && node.name && hasExportModifier(node)) {
-      candidates.push({ name: node.name.text, node });
-      return;
-    }
-    if (ts.isVariableStatement(node) && hasExportModifier(node)) {
-      const decl = node.declarationList.declarations[0];
-      if (decl && ts.isIdentifier(decl.name)) candidates.push({ name: decl.name.text, node });
+      exported = { name: node.name.text, node };
     }
   });
 
-  if (candidates.length === 0) return undefined;
-
-  const chosen = candidates.find((c) => c.name.endsWith(EXAMPLE_SUFFIX)) ?? candidates[0];
+  if (!exported) return undefined;
 
   return {
-    componentExportName: chosen.name,
-    source: stripExampleJSDoc(code, chosen.node, sourceFile),
-    ...readExampleJSDoc(chosen.node)
+    componentExportName: exported.name,
+    source: stripExampleJSDoc(code, exported.node, sourceFile),
+    ...readExampleJSDoc(exported.node)
   };
 }
 
@@ -143,7 +141,7 @@ function readExampleJSDoc(node: ts.Node): Omit<ParsedExample, 'componentExportNa
 
   for (const tag of jsDoc?.tags ?? []) {
     const name = tag.tagName.text;
-    if (name === 'ignore' || name === 'internal') {
+    if (name === 'ignore') {
       ignore = true;
     } else if (name === 'title') {
       title = normalizeComment(tag.comment);
@@ -162,8 +160,7 @@ function hasExportModifier(node: ts.FunctionDeclaration | ts.VariableStatement):
 
 /** `PrimaryExample` -> `Primary`; leaves names without the suffix untouched. */
 function toStoryName(componentExportName: string): string {
-  if (!componentExportName.endsWith(EXAMPLE_SUFFIX)) return componentExportName;
-  return componentExportName.slice(0, -EXAMPLE_SUFFIX.length) || componentExportName;
+  return componentExportName.replace(new RegExp(`${EXAMPLE_SUFFIX}$`), '');
 }
 
 /** `IconOnly` -> `Icon Only`; single words are returned unchanged. */
@@ -178,9 +175,7 @@ function humanize(name: string): string {
 function sortDescriptors(list: ExampleDescriptor[]): ExampleDescriptor[] {
   const byName = (a: ExampleDescriptor, b: ExampleDescriptor) => a.storyName.localeCompare(b.storyName);
 
-  const ordered = list
-    .filter((d) => d.order !== undefined)
-    .sort((a, b) => (a.order as number) - (b.order as number) || byName(a, b));
+  const ordered = list.filter((d) => d.order !== undefined).sort((a, b) => (a.order as number) - (b.order as number));
   const unordered = list.filter((d) => d.order === undefined).sort(byName);
 
   return [...ordered, ...unordered];

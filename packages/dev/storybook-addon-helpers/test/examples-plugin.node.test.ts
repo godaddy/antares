@@ -22,7 +22,7 @@ describe('examples-plugin', function examplesPluginTests() {
     expect(await load(path.join(FIXTURES, 'no-marker/README.mdx'))).toBeNull();
   });
 
-  it('expands <Examples /> into headings, stories, and inlined sources', async function expands() {
+  it('expands <Examples of={Stories.examples} /> into headings, stories, and inlined sources', async function expands() {
     const result = await load(path.join(FIXTURES, 'examples-fixture/README.mdx'));
 
     expect(result).not.toBeNull();
@@ -35,12 +35,6 @@ describe('examples-plugin', function examplesPluginTests() {
     expect(result).toContain('DefaultExample');
     expect(result).not.toContain('@order');
     expect(result).not.toContain('?raw');
-  });
-
-  it('resolves via of={Stories.<name>} and expands READMEs without frontmatter', async function noFrontmatter() {
-    const result = await load(path.join(FIXTURES, 'examples-edge/README.mdx'));
-    expect(result).toContain('<Story of={Stories.Example} inline />');
-    expect(result).not.toContain('<Examples');
   });
 
   it('drops the marker when the component has no examples', async function noExamples() {

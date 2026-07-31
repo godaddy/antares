@@ -107,7 +107,7 @@ Every option accepts either an exact prop name (autocompleted) or any string, or
 
 `getExamples` publishes a component's `examples/` folder as stories, and its README renders the same set - so each example is authored once and appears both in Storybook's sidebar and in the docs site.
 
-Author one file per example under `examples/`, each exporting a component (an `XExample` export becomes the `X` story). Declare the folder in the stories file:
+Author one file per example under `examples/`, each exporting exactly one function - that function is the example (an `XExample` export becomes the `X` story). A file that exports no function is skipped. Declare the folder in the stories file:
 
 ```tsx
 // button.stories.tsx
@@ -145,7 +145,7 @@ export function PrimaryExample() {
 - **description** - the JSDoc free text renders as a paragraph under the heading.
 - **`@title`** - overrides the heading (default: the humanized export name, e.g. `IconOnly` -> `Icon Only`).
 - **`@order N`** - sort position; `@order`-tagged examples come first (ascending), then untagged examples alphabetically.
-- **`@ignore` / `@internal`** - skip the file entirely (no story, no README block).
+- **`@ignore`** - skip the file entirely (no story, no README block).
 - Files ending in `-playground.tsx` are reserved for the args-based Playground story and are never published as examples.
 
 The metadata JSDoc is stripped from the displayed `<Source>` snippet.

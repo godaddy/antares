@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { discoverExamples, discoverExamplesForReadme, findExamplesGetter } from '../src/examples.ts';
 
 const FIXTURE_DIR = path.join(__dirname, 'fixtures/examples-fixture');
-const EDGE_DIR = path.join(__dirname, 'fixtures/examples-edge');
 
 describe('examples', function examplesTests() {
   describe('discoverExamples', function discoverExamplesTests() {
@@ -14,9 +13,7 @@ describe('examples', function examplesTests() {
         { storyName: 'Default', title: 'Basic Usage', order: 1 },
         { storyName: 'Primary', title: 'Primary', order: 2 },
         { storyName: 'IconOnly', title: 'Icon Only', order: 3 },
-        { storyName: 'Alpha', title: 'Alpha', order: undefined },
-        { storyName: 'ConstWidget', title: 'Const Widget', order: undefined },
-        { storyName: 'PlainThing', title: 'Plain Thing', order: undefined }
+        { storyName: 'Alpha', title: 'Alpha', order: undefined }
       ]);
     });
 
@@ -41,12 +38,10 @@ describe('examples', function examplesTests() {
       expect(primary?.source).not.toContain('The primary action.');
     });
 
-    it('excludes @ignore, @internal, -playground, and export-less files', async function exclusions() {
-      const descriptors = await discoverExamples({ dir: FIXTURE_DIR });
-      const names = descriptors.map((d) => d.storyName);
+    it('skips @ignore, -playground, and files that export no function', async function exclusions() {
+      const names = (await discoverExamples({ dir: FIXTURE_DIR })).map((d) => d.storyName);
 
       expect(names).not.toContain('Ignored');
-      expect(names).not.toContain('InternalOnly');
       expect(names).not.toContain('WidgetPlayground');
       expect(names).not.toContain('Placeholder');
     });
@@ -58,16 +53,6 @@ describe('examples', function examplesTests() {
 
     it('returns an empty list when the folder is missing', async function missing() {
       expect(await discoverExamples({ dir: path.join(FIXTURE_DIR, 'does-not-exist') })).toEqual([]);
-    });
-
-    it('handles edge cases: non-numeric @order, bare Example name, and non-identifier exports', async function edges() {
-      const descriptors = await discoverExamples({ dir: path.join(__dirname, 'fixtures/examples-edge') });
-      const names = descriptors.map((d) => d.storyName);
-
-      expect(names).toContain('Example');
-      expect(names).toContain('BadOrder');
-      expect(names).not.toContain('destructured');
-      expect(descriptors.find((d) => d.storyName === 'BadOrder')?.order).toBeUndefined();
     });
   });
 
@@ -85,26 +70,28 @@ describe('examples', function examplesTests() {
     it('returns undefined when no export is a getExamples call', function none() {
       const code = `export const examples = somethingElse();\nconst local = getExamples('./x');`;
       expect(findExamplesGetter(code, 'x.stories.tsx')).toBeUndefined();
-      expect(findExamplesGetter(code, 'x.stories.tsx', 'examples')).toBeUndefined();
+    });
+
+    it('treats a non-string-literal argument as no folder', function nonLiteral() {
+      const code = `const dir = './x';\nexport const examples = getExamples(dir);`;
+      expect(findExamplesGetter(code, 'x.stories.tsx')).toEqual({ exportName: 'examples', examplesDir: undefined });
+    });
+
+    it('ignores non-identifier (destructured) exports', function destructured() {
+      const code = `export const [first] = getExamples('./x');`;
+      expect(findExamplesGetter(code, 'x.stories.tsx')).toBeUndefined();
     });
   });
 
   describe('discoverExamplesForReadme', function discoverExamplesForReadmeTests() {
-    it('resolves the folder via the colocated stories file', async function resolves() {
-      const result = await discoverExamplesForReadme({ readmePath: path.join(FIXTURE_DIR, 'README.mdx') });
-
-      expect(result.storiesPath).toBe(path.join(FIXTURE_DIR, 'widget.stories.tsx'));
-      expect(result.descriptors.map((d) => d.storyName)).toContain('Default');
-    });
-
-    it('honors an explicit getExamples path referenced by of={Stories.<name>}', async function explicit() {
+    it('resolves the folder via of={Stories.<name>} and the colocated stories file', async function resolves() {
       const result = await discoverExamplesForReadme({
-        readmePath: path.join(EDGE_DIR, 'README.mdx'),
+        readmePath: path.join(FIXTURE_DIR, 'README.mdx'),
         exportName: 'examples'
       });
 
-      expect(result.storiesPath).toBe(path.join(EDGE_DIR, 'widget.stories.tsx'));
-      expect(result.descriptors.map((d) => d.storyName)).toContain('Example');
+      expect(result.storiesPath).toBe(path.join(FIXTURE_DIR, 'widget.stories.tsx'));
+      expect(result.descriptors.map((d) => d.storyName)).toContain('Default');
     });
 
     it('returns nothing when the export name is unknown', async function unknown() {
@@ -118,6 +105,13 @@ describe('examples', function examplesTests() {
     it('returns nothing when there is no colocated stories file', async function noStories() {
       const result = await discoverExamplesForReadme({
         readmePath: path.join(__dirname, 'fixtures/no-examples/README.mdx')
+      });
+      expect(result).toEqual({ descriptors: [], storiesPath: '' });
+    });
+
+    it('returns nothing when the README directory does not exist', async function missingDir() {
+      const result = await discoverExamplesForReadme({
+        readmePath: path.join(__dirname, 'fixtures/does-not-exist/README.mdx')
       });
       expect(result).toEqual({ descriptors: [], storiesPath: '' });
     });

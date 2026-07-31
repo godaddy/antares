@@ -77,9 +77,7 @@ describe('parser', function parserTests() {
         Default: {},
         Primary: {},
         IconOnly: {},
-        Alpha: {},
-        ConstWidget: {},
-        PlainThing: {}
+        Alpha: {}
       });
     });
 

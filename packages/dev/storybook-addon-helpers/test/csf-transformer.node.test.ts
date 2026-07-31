@@ -91,7 +91,6 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).toContain('import { DefaultExample } from "./examples/default.tsx"');
     expect(actual).toContain('export const Default = DefaultExample');
     expect(actual).toContain('export const IconOnly = IconOnlyExample');
-    expect(actual).toContain('export const ConstWidget = ConstWidgetExample');
     expect(actual).not.toContain('IgnoredExample');
     expect(actual).not.toContain('WidgetPlaygroundExample');
     // getMeta on the same file is still transformed to its object literal.
