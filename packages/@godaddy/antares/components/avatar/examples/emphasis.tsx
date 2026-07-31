@@ -25,7 +25,7 @@ export function EmphasisExample() {
     <Flex gap="sm" wrap="wrap">
       {emphases.map(function renderAvatar(emphasis, index) {
         return (
-          <Avatar key={emphasis} aria-label={emphasis} emphasis={emphasis}>
+          <Avatar key={emphasis} emphasis={emphasis}>
             <AvatarFallback>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</AvatarFallback>
           </Avatar>
         );

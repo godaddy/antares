@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, Icon } from '@godaddy/antares';
 
 export function IconFallbackExample() {
   return (
-    <Avatar aria-label="Account">
+    <Avatar>
       <AvatarFallback>
         <Icon icon="user" />
       </AvatarFallback>

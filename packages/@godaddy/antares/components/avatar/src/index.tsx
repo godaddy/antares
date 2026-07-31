@@ -34,7 +34,8 @@ function useAvatarContext(partName: string) {
   return context;
 }
 
-export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
+/** Props for the Avatar component. */
+export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria-label' | 'color'> {
   /** Circle identifies a person; square identifies a business, workspace, or account. @default 'circle' */
   shape?: AvatarShape;
 
@@ -47,9 +48,6 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'colo
    * @default 'primary'
    */
   emphasis?: AvatarEmphasis;
-
-  /** Accessible name for the avatar, such as the person or organization name. */
-  'aria-label'?: string;
 
   /** AvatarImage and/or AvatarFallback children. */
   children?: ReactNode;
@@ -68,6 +66,8 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'colo
  *   <AvatarImage src="/jamie.jpg" alt="Jamie Rivera" />
  *   <AvatarFallback>JR</AvatarFallback>
  * </Avatar>
+ *
+ * @param props - {@link AvatarProps}
  */
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(props, ref) {
   const { shape = 'circle', size = 'md', emphasis = 'primary', className, children, ...rest } = props;
@@ -93,12 +93,13 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
   );
 });
 
+/** Props for the AvatarImage component. */
 export interface AvatarImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'className'> {
   /** Image source URL. */
   src?: string;
 
   /** Alternative text that describes the avatar image. */
-  alt?: string;
+  alt: string;
 
   /** Additional class names applied to the image. */
   className?: string;
@@ -107,6 +108,8 @@ export interface AvatarImageProps extends Omit<ImgHTMLAttributes<HTMLImageElemen
 /**
  * The image content for an Avatar. It remains hidden until it has loaded; AvatarFallback
  * is shown meanwhile and after an image error.
+ *
+ * @param props - {@link AvatarImageProps}
  */
 export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(function AvatarImage(props, ref) {
   const { className, src, onLoad, onError, ...rest } = props;
@@ -136,6 +139,10 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(functi
       } else {
         setLoadingStatus('loading');
       }
+
+      return function resetImageStatus() {
+        setLoadingStatus('idle');
+      };
     },
     [setLoadingStatus, src]
   );
@@ -158,6 +165,7 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(functi
   );
 });
 
+/** Props for the AvatarFallback component. */
 export interface AvatarFallbackProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'className'> {
   /** Monogram, icon, or other fallback content. */
   children?: ReactNode;
@@ -168,6 +176,8 @@ export interface AvatarFallbackProps extends Omit<HTMLAttributes<HTMLSpanElement
 
 /**
  * Fallback content displayed until AvatarImage loads or when no image is available.
+ *
+ * @param props - {@link AvatarFallbackProps}
  */
 export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(function AvatarFallback(props, ref) {
   const { className, children, ...rest } = props;
@@ -184,6 +194,7 @@ type AvatarButtonAccessibleName =
   | { 'aria-label': string; 'aria-labelledby'?: string }
   | { 'aria-label'?: string; 'aria-labelledby': string };
 
+/** Props for the AvatarButton component. */
 export type AvatarButtonProps = Omit<RACButtonProps, 'children' | 'className'> &
   AvatarButtonAccessibleName & {
     /** Whether the button has the selected (chosen) ring. @default false */
@@ -200,6 +211,8 @@ export type AvatarButtonProps = Omit<RACButtonProps, 'children' | 'className'> &
  * An accessible interactive wrapper for an Avatar.
  *
  * Use inside MenuTrigger when the avatar opens an account or profile menu.
+ *
+ * @param props - {@link AvatarButtonProps}
  */
 export const AvatarButton = forwardRef<HTMLButtonElement, AvatarButtonProps>(function AvatarButton(props, ref) {
   const { className, children, isSelected = false, ...rest } = props;

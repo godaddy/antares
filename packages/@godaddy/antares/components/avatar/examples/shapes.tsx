@@ -10,7 +10,7 @@ export function ShapesExample() {
         <Flex alignItems="center" gap="md">
           {sizes.map(function renderCircle(size) {
             return (
-              <Avatar key={size} aria-label={`Uma Thurman, ${size}`} shape="circle" size={size}>
+              <Avatar key={size} shape="circle" size={size}>
                 <AvatarFallback>UT</AvatarFallback>
               </Avatar>
             );
@@ -22,7 +22,7 @@ export function ShapesExample() {
         <Flex alignItems="center" gap="md">
           {sizes.map(function renderSquare(size) {
             return (
-              <Avatar key={size} aria-label={`Acme, ${size}`} shape="square" size={size}>
+              <Avatar key={size} shape="square" size={size}>
                 <AvatarFallback>AC</AvatarFallback>
               </Avatar>
             );

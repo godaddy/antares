@@ -1,3 +1,4 @@
+import type { ReactEventHandler } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -14,6 +15,8 @@ export interface PlaygroundExampleProps {
   src?: string;
   alt?: string;
   fallback?: string;
+  onLoad?: ReactEventHandler<HTMLImageElement>;
+  onError?: ReactEventHandler<HTMLImageElement>;
 }
 
 export function PlaygroundExample({
@@ -22,11 +25,13 @@ export function PlaygroundExample({
   emphasis = 'primary',
   src,
   alt = '',
-  fallback = 'UT'
+  fallback = 'UT',
+  onLoad,
+  onError
 }: PlaygroundExampleProps) {
   return (
-    <Avatar aria-label="Uma Thurman" emphasis={emphasis} shape={shape} size={size}>
-      {src ? <AvatarImage src={src} alt={alt} /> : null}
+    <Avatar emphasis={emphasis} shape={shape} size={size}>
+      {src ? <AvatarImage src={src} alt={alt} onError={onError} onLoad={onLoad} /> : null}
       <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>
   );

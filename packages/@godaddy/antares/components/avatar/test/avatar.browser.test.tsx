@@ -1,17 +1,47 @@
 import assume from 'assume';
-import { describe, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
+import { PlaygroundExample } from '../examples/avatar-playground.tsx';
 import { ButtonDisabledExample } from '../examples/button-disabled.tsx';
 import { ButtonSelectedExample } from '../examples/button-selected.tsx';
+
+const loadedImageSource = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+const invalidImageSource = 'data:image/png;base64,invalid';
+
+function getAvatar(container: HTMLElement) {
+  const avatar = container.querySelector<HTMLElement>('[data-loading-status]');
+
+  if (!avatar) {
+    throw new Error('Expected an Avatar element.');
+  }
+
+  return avatar;
+}
+
+function getImage(container: HTMLElement) {
+  const image = container.querySelector<HTMLImageElement>('img');
+
+  if (!image) {
+    throw new Error('Expected an AvatarImage element.');
+  }
+
+  return image;
+}
 
 describe('@godaddy/antares', function antares() {
   describe('#AvatarButton', function avatarButtonTests() {
     it('does not activate a disabled avatar button', async function disabledButton() {
-      await render(<ButtonDisabledExample />);
+      const onPress = vi.fn();
+      const user = userEvent.setup();
+      await render(<ButtonDisabledExample onPress={onPress} />);
 
       const disabledButton = page.getByRole('button', { name: 'Unavailable account' });
       assume(disabledButton.element().hasAttribute('disabled')).equals(true);
+      await user.tab();
+      await expect.element(disabledButton).not.toHaveFocus();
+      await user.keyboard('{Enter}');
+      expect(onPress).not.toHaveBeenCalled();
     });
 
     it('updates the selected avatar button', async function selectedButton() {
@@ -25,6 +55,50 @@ describe('@godaddy/antares', function antares() {
       await user.click(jamie);
       assume(jamie.element().hasAttribute('data-selected')).equals(true);
       assume(uma.element().hasAttribute('data-selected')).equals(false);
+    });
+  });
+
+  describe('#AvatarImage', function avatarImageTests() {
+    it('shows the image after load and forwards the load event', async function imageLoad() {
+      const onLoad = vi.fn();
+      const { container } = await render(<PlaygroundExample src={loadedImageSource} onLoad={onLoad} />);
+      const avatar = getAvatar(container);
+
+      await expect.element(avatar).toHaveAttribute('data-loading-status', 'loaded');
+      expect(onLoad).toHaveBeenCalledOnce();
+    });
+
+    it('shows the fallback after error and forwards the error event', async function imageError() {
+      const onError = vi.fn();
+      const { container } = await render(<PlaygroundExample src={invalidImageSource} onError={onError} />);
+      const avatar = getAvatar(container);
+
+      await expect.element(avatar).toHaveAttribute('data-loading-status', 'error');
+      expect(onError).toHaveBeenCalledOnce();
+    });
+
+    it('shows a cached image immediately', async function cachedImage() {
+      const { container, rerender } = await render(<PlaygroundExample src="/initial-avatar.png" />);
+      const avatar = getAvatar(container);
+      const image = getImage(container);
+      Object.defineProperties(image, {
+        complete: { configurable: true, value: true },
+        naturalWidth: { configurable: true, value: 128 }
+      });
+
+      await rerender(<PlaygroundExample src="/cached-avatar.png" />);
+
+      await expect.element(avatar).toHaveAttribute('data-loading-status', 'loaded');
+    });
+
+    it('resets to the fallback when the image source changes or unmounts', async function imageSourceChange() {
+      const { container, rerender } = await render(<PlaygroundExample src={loadedImageSource} />);
+      const avatar = getAvatar(container);
+
+      await expect.element(avatar).toHaveAttribute('data-loading-status', 'loaded');
+
+      await rerender(<PlaygroundExample />);
+      await expect.element(avatar).toHaveAttribute('data-loading-status', 'idle');
     });
   });
 });
