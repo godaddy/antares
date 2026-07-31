@@ -3005,6 +3005,189 @@ Set `name` to submit the value with a native `<form>`. Multiple-mode values subm
 <Story of="Stories.Form" />
 
 
+# Switch
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
+* Communicates state to assistive technologies via the WAI-ARIA `switch` role
+* Toggles on click or tap anywhere in the control — track, thumb, or label
+* Toggles with the `Space` key when focused
+* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
+* Two sizes: `md` (default) and `sm`
+* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
+* Takes effect immediately — no form submission required
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Props [#props]
+
+The `Switch` component has the following props:
+
+<PropTable />
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled switch, off by default, with the label at the start.
+
+<Story of="Stories.Default" />
+
+<Source language="tsx" code="SourceSwitchDefault" />
+
+### Selected [#selected]
+
+A switch that starts in the on state via `defaultSelected`.
+
+<Story of="Stories.Selected" />
+
+<Source language="tsx" code="SourceSwitchSelected" />
+
+### Sizes [#sizes]
+
+The `size` prop accepts `'md'` (default) or `'sm'`.
+
+<Story of="Stories.Sizes" />
+
+<Source language="tsx" code="SourceSwitchSizes" />
+
+### Label Position [#label-position]
+
+The `labelPosition` prop places the label at the `start` (default) or `end` of the track.
+
+<Story of="Stories.LabelPosition" />
+
+<Source language="tsx" code="SourceSwitchLabelPosition" />
+
+### No Label [#no-label]
+
+When no label is provided, pass `aria-label` so the switch has an accessible name.
+
+<Story of="Stories.NoLabel" />
+
+<Source language="tsx" code="SourceSwitchNoLabel" />
+
+### Disabled [#disabled]
+
+A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
+
+<Story of="Stories.Disabled" />
+
+<Source language="tsx" code="SourceSwitchDisabled" />
+
+### Controlled [#controlled]
+
+Manage switch state programmatically with `isSelected` and `onChange`.
+
+<Story of="Stories.Controlled" />
+
+<Source language="tsx" code="SourceSwitchControlled" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+The `Switch` interactive root exposes data attributes for styling different states:
+
+`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
+
+```css
+.my-switch[data-focus-visible] {
+  outline: 2px solid Highlight;
+}
+
+.my-switch[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Design Tokens [#design-tokens]
+
+The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
+
+| Element           | Token                               | Legacy fallback |
+| ----------------- | ----------------------------------- | --------------- |
+| Track (off)       | —                                   | `--ux-1m9ys0v`  |
+| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
+| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
+| Thumb inset       | —                                   | `--ux-1sbfig8`  |
+| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
+| Focus ring radius | —                                   | `--ux-zvaw3s`   |
+
+### Component Customization [#component-customization]
+
+Pass a `className` or `style` to customize the interactive root element:
+
+```jsx
+<Switch className="custom-switch">Wi-Fi</Switch>
+```
+
+Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
+## Accessibility [#accessibility]
+
+* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
+* `Space` toggles the switch when it has focus
+* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
+* Disabled switches render at `40%` opacity and are excluded from tab order
+* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
+
+## Best Practices [#best-practices]
+
+### When to Use Switch [#when-to-use-switch]
+
+* ✅ For settings that take effect immediately, without a form submission
+* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
+* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
+* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
+
+### Labeling [#labeling]
+
+* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
+* If the label is omitted, always provide `aria-label`
+* Keep labels short and describe the setting, not its current state
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+```jsx
+// ❌ Wrong: isSelected without onChange leaves the switch stuck
+<Switch isSelected={isOn}>Wi-Fi</Switch>
+
+// ✅ Controlled mode
+<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
+
+// ✅ Uncontrolled mode
+<Switch defaultSelected>Wi-Fi</Switch>
+```
+
+### Missing Accessible Name [#missing-accessible-name]
+
+```jsx
+// ❌ No children and no aria-label — screen readers announce nothing useful
+<Switch />
+
+// ✅ Provide a label
+<Switch>Wi-Fi</Switch>
+
+// ✅ Or an aria-label when the label is visual-only elsewhere
+<Switch aria-label="Wi-Fi" />
+```
+
+
 # Tag
 
 
