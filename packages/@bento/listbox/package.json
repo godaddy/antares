@@ -48,12 +48,12 @@
     "@react-aria/collections": "^3.1.0",
     "@react-types/listbox": "^3.8.0",
     "@react-types/shared": "^3.34.0",
-    "react-aria": "^3.48.0",
-    "react-aria-components": "^1.18.0",
+    "react-aria": "^3.50.0",
+    "react-aria-components": "^1.19.0",
     "react-stately": "^3.46.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.15",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "tsdown": "^0.22.1",
     "typescript": "^6.0.3",
