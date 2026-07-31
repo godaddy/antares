@@ -2,7 +2,6 @@ import { ProgressBar } from '@godaddy/antares';
 
 /**
  * A determinate progress bar with a label and helper text.
- * @title Basic Usage
  * @order 1
  */
 export function DefaultExample() {

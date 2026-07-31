@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { resetHover } from '../../../utils/test-helpers.tsx';
 import { SwitchControlledExample } from '../examples/controlled.tsx';
-import { SwitchDefaultExample } from '../examples/default.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { SwitchDisabledExample } from '../examples/disabled.tsx';
 import { SwitchLabelPositionExample } from '../examples/label-position.tsx';
 import { SwitchNoLabelExample } from '../examples/no-label.tsx';
@@ -15,7 +15,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#Switch', function switchTests() {
     it('default example', async function defaultRender() {
-      const { container } = await render(<SwitchDefaultExample />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('default');
     });
 
@@ -50,7 +50,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('keyboard focus state', async function focusRender() {
-      const { container } = await render(<SwitchDefaultExample />);
+      const { container } = await render(<DefaultExample />);
       await userEvent.keyboard('{Tab}');
       await expect(container).toMatchScreenshot('focus');
     });

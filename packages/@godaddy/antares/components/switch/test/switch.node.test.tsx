@@ -1,5 +1,5 @@
 import { SwitchControlledExample } from '../examples/controlled';
-import { SwitchDefaultExample } from '../examples/default';
+import { DefaultExample } from '../examples/default';
 import { SwitchDisabledExample } from '../examples/disabled';
 import { SwitchLabelPositionExample } from '../examples/label-position';
 import { SwitchNoLabelExample } from '../examples/no-label';
@@ -11,8 +11,8 @@ import { describe, it, expect } from 'vitest';
 
 describe('@godaddy/antares', function antares() {
   describe('#Switch', function switchTests() {
-    it('renders SwitchDefaultExample', function defaultExample() {
-      const result = renderToString(<SwitchDefaultExample />);
+    it('renders DefaultExample', function defaultExample() {
+      const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();
     });
 

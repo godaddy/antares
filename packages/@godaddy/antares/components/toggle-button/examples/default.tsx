@@ -2,7 +2,6 @@ import { ToggleButtonGroup, ToggleButton } from '@godaddy/antares';
 
 /**
  * A `ToggleButton` toggles between selected and unselected. Wrap multiple inside a `ToggleButtonGroup` to link them with shared selection and keyboard navigation.
- * @title Default (Single Selection)
  * @order 1
  */
 export function DefaultExample() {

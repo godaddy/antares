@@ -2,7 +2,6 @@ import { CircularProgress } from '@godaddy/antares';
 
 /**
  * A basic determinate progress indicator with a label and helper text.
- * @title Basic Usage
  * @order 1
  */
 export function DefaultExample() {

@@ -2,10 +2,9 @@ import { Radio, RadioGroup } from '@godaddy/antares';
 
 /**
  * A radio group with a default selection.
- * @title Basic
  * @order 1
  */
-export function RadioBasicExample() {
+export function DefaultExample() {
   return (
     <RadioGroup label="Select your plan" defaultValue="basic">
       <Radio value="basic">Basic</Radio>

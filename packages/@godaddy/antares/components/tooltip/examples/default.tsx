@@ -2,7 +2,6 @@ import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type Tooltip
 
 /**
  * Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
- * @title Basic Usage
  * @order 1
  */
 export function DefaultExample(props: {

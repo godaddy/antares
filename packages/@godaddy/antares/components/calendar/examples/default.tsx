@@ -3,9 +3,8 @@ import { parseDate } from '@godaddy/antares/date';
 
 /**
  * A single-date calendar.
- * @title Basic
  * @order 1
  */
-export function CalendarDefaultExample() {
+export function DefaultExample() {
   return <Calendar aria-label="Event date" defaultFocusedValue={parseDate('2024-03-01')} />;
 }

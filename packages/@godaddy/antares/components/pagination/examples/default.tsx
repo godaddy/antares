@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 /**
  * The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
- * @title Basic Usage
  * @order 1
  */
 export function DefaultExample() {

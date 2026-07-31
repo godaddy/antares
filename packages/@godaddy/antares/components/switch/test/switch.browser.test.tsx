@@ -1,7 +1,7 @@
 import { Switch } from '@godaddy/antares';
 import { createRef } from 'react';
 import { SwitchControlledExample } from '../examples/controlled';
-import { SwitchDefaultExample } from '../examples/default';
+import { DefaultExample } from '../examples/default';
 import { SwitchDisabledExample } from '../examples/disabled';
 import { SwitchNoLabelExample } from '../examples/no-label';
 import { SwitchRootCustomizationExample } from '../examples/root-customization';
@@ -14,7 +14,7 @@ describe('@godaddy/antares', function antares() {
   describe('#Switch', function switchTests() {
     it('toggles when the track is clicked', async function trackClick() {
       const user = userEvent.setup();
-      const { container } = await render(<SwitchDefaultExample />);
+      const { container } = await render(<DefaultExample />);
 
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
       const track = container.querySelector('[aria-hidden="true"]') as HTMLElement;
@@ -29,7 +29,7 @@ describe('@godaddy/antares', function antares() {
 
     it('toggles when the label text is clicked', async function labelClick() {
       const user = userEvent.setup();
-      await render(<SwitchDefaultExample />);
+      await render(<DefaultExample />);
 
       const label = page.getByText('Wi-Fi');
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
@@ -43,7 +43,7 @@ describe('@godaddy/antares', function antares() {
 
     it('toggles with the Space key when focused', async function spaceKeyToggle() {
       const user = userEvent.setup();
-      await render(<SwitchDefaultExample />);
+      await render(<DefaultExample />);
 
       const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
 
