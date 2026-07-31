@@ -1,11 +1,13 @@
 import { discoverExamplesForReadme, type ExampleDescriptor } from './examples.ts';
 
 /**
- * A documentation target. `storybook` references generated CSF stories via the
- * `Stories` namespace already imported by the README; `fumadocs` imports each
- * example component directly (its build never runs the CSF transform).
+ * How the expansion references each example's preview. `stories` references
+ * generated CSF `Stories` exports already imported by the README (as a
+ * Storybook-driven README would); `components` imports each example
+ * component directly, for pipelines - like the fumadocs docs site - whose
+ * build never runs the CSF transform.
  */
-export type RemarkExamplesTarget = 'storybook' | 'fumadocs';
+export type RemarkExamplesTarget = 'stories' | 'components';
 
 export interface RemarkExamplesOptions {
   /** Which documentation pipeline is expanding `<Examples />`. */
@@ -49,10 +51,10 @@ const REQUIRED_BLOCKS = ['Source', 'Story'];
  * preview, and a `<Source>` code block.
  *
  * The two targets differ only in how the preview is referenced:
- * - `storybook`: `<Story of={Stories.X} inline />` (uses the README's existing
+ * - `stories`: `<Story of={Stories.X} inline />` (uses the README's existing
  *   `import * as Stories`).
- * - `fumadocs`: `<Story of={XExample} />` plus a prepended direct import, since
- *   fumadocs cannot consume the CSF-generated `Stories` exports.
+ * - `components`: `<Story of={XExample} />` plus a prepended direct import,
+ *   for pipelines that cannot consume the CSF-generated `Stories` exports.
  *
  * READMEs without an `<Examples />` node are left untouched.
  */
@@ -78,14 +80,14 @@ export function remarkExamples(options: RemarkExamplesOptions) {
       blocks.push(storyNode(descriptor, options.target));
       blocks.push(sourceNode(descriptor.source));
 
-      if (options.target === 'fumadocs') {
+      if (options.target === 'components') {
         imports.push(esmImportNode([descriptor.componentExportName], descriptor.importPath));
       }
     }
 
-    // fumadocs renders the examples directly, so it also needs the doc blocks the
-    // expansion emits. storybook resolves those via the README's own imports.
-    if (options.target === 'fumadocs' && descriptors.length > 0) {
+    // The `components` target renders the examples directly, so it also needs the doc
+    // blocks the expansion emits. `stories` resolves those via the README's own imports.
+    if (options.target === 'components' && descriptors.length > 0) {
       const missing = REQUIRED_BLOCKS.filter((name) => !treeImportsBinding(tree, name));
       if (missing.length > 0) imports.push(esmImportNode(missing, BLOCKS_MODULE));
     }
@@ -132,13 +134,13 @@ function paragraphNode(text: string): MdNode {
 
 function storyNode(descriptor: ExampleDescriptor, target: RemarkExamplesTarget): MdNode {
   const ofExpression =
-    target === 'storybook'
+    target === 'stories'
       ? memberExpression('Stories', descriptor.storyName)
       : identifier(descriptor.componentExportName);
-  const ofSource = target === 'storybook' ? `Stories.${descriptor.storyName}` : descriptor.componentExportName;
+  const ofSource = target === 'stories' ? `Stories.${descriptor.storyName}` : descriptor.componentExportName;
 
   const attributes: MdNode[] = [expressionAttribute('of', ofExpression, ofSource)];
-  if (target === 'storybook') attributes.push({ type: 'mdxJsxAttribute', name: 'inline', value: null });
+  if (target === 'stories') attributes.push({ type: 'mdxJsxAttribute', name: 'inline', value: null });
 
   return { type: 'mdxJsxFlowElement', name: 'Story', attributes, children: [] };
 }

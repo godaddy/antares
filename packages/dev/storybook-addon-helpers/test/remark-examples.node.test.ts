@@ -28,11 +28,11 @@ function expression(node: AnyNode, name: string): AnyNode {
 }
 
 describe('remark-examples', function remarkExamplesTests() {
-  it('expands <Examples of={Stories.examples} /> into heading + story + source per example (storybook)', async function storybook() {
+  it('expands <Examples of={Stories.examples} /> into heading + story + source per example (stories)', async function stories() {
     const tree = makeTree();
     const onDependency = vi.fn();
 
-    await remarkExamples({ target: 'storybook', onDependency })(tree, {
+    await remarkExamples({ target: 'stories', onDependency })(tree, {
       path: path.join(FIXTURE_DIR, 'README.mdx'),
       data: {}
     });
@@ -44,7 +44,7 @@ describe('remark-examples', function remarkExamplesTests() {
     expect(onDependency).toHaveBeenCalledTimes(5);
     expect(onDependency).toHaveBeenCalledWith(expect.anything(), path.join(FIXTURE_DIR, 'widget.stories.tsx'));
 
-    // No direct imports are injected for the Storybook target.
+    // No direct imports are injected for the `stories` target.
     expect(tree.children.some((c) => c.type === 'mdxjsEsm')).toBe(false);
 
     const story = byName(tree.children, 'Story')[0];
@@ -60,10 +60,10 @@ describe('remark-examples', function remarkExamplesTests() {
     expect(expression(source, 'code').value).not.toContain('@order');
   });
 
-  it('injects direct component imports and identifier refs (fumadocs)', async function fumadocs() {
+  it('injects direct component imports and identifier refs (components)', async function components() {
     const tree = makeTree();
 
-    await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
+    await remarkExamples({ target: 'components' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
 
     const imports = tree.children.filter((c) => c.type === 'mdxjsEsm');
     // One import per example component, plus the doc-blocks import the expansion emits.
@@ -76,11 +76,11 @@ describe('remark-examples', function remarkExamplesTests() {
     expect(attr(story, 'inline')).toBeUndefined();
   });
 
-  it('does not re-import doc blocks the README already imports (fumadocs)', async function dedupesBlocks() {
+  it('does not re-import doc blocks the README already imports (components)', async function dedupesBlocks() {
     const tree = makeTree();
     tree.children.unshift({ type: 'mdxjsEsm', value: "import { Source, Story } from '@storybook/addon-docs/blocks';" });
 
-    await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
+    await remarkExamples({ target: 'components' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
 
     const blocksImports = tree.children.filter(
       (c) => c.type === 'mdxjsEsm' && String(c.value).includes('addon-docs/blocks')
@@ -91,7 +91,7 @@ describe('remark-examples', function remarkExamplesTests() {
   it('drops the marker when of={Stories.<name>} names an unknown export', async function unknownExport() {
     const tree = makeTree('Stories.missing');
 
-    await remarkExamples({ target: 'fumadocs' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
+    await remarkExamples({ target: 'components' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
 
     expect(byName(tree.children, 'Story')).toHaveLength(0);
   });
@@ -101,13 +101,13 @@ describe('remark-examples', function remarkExamplesTests() {
       type: 'root',
       children: [{ type: 'paragraph', children: [] }]
     };
-    await remarkExamples({ target: 'storybook' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
+    await remarkExamples({ target: 'stories' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
     expect(tree.children).toHaveLength(1);
   });
 
   it('does nothing without a file path', async function noPath() {
     const tree = makeTree();
-    await remarkExamples({ target: 'storybook' })(tree, { data: {} });
+    await remarkExamples({ target: 'stories' })(tree, { data: {} });
     expect(tree.children).toHaveLength(1);
   });
 });

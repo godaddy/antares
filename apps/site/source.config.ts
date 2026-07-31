@@ -38,7 +38,7 @@ export const components = defineDocs({
         remarkPlugins: (v) => [
           remarkStripLeadingHeading,
           [remarkArgTypes, { docsDefaults }],
-          [remarkExamples, { target: 'fumadocs', onDependency: addMdxDependency }],
+          [remarkExamples, { target: 'components', onDependency: addMdxDependency }],
           remarkRawLoader,
           ...v
         ]
