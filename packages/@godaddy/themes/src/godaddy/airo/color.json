@@ -1,0 +1,452 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+  "sets": {
+    "color": {
+      "description": "Semantic color tokens for the Airo theme, sourced from the brand palette",
+      "sources": [
+        {
+          "$ref": "../_palette.json"
+        },
+        {
+          "color-action-background-primary-default": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-action-background-primary-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-action-background-primary-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-action-border-primary-default": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-action-border-primary-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-action-border-primary-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-action-text-primary-default": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-action-text-primary-hovered": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-action-text-primary-pressed": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-action-background-secondary-default": {
+            "$type": "color",
+            "$value": "lavender"
+          },
+          "color-action-background-secondary-hovered": {
+            "$type": "color",
+            "$value": "lightgray"
+          },
+          "color-action-background-secondary-pressed": {
+            "$type": "color",
+            "$value": "silver"
+          },
+          "color-action-border-secondary-default": {
+            "$type": "color",
+            "$value": "silver"
+          },
+          "color-action-border-secondary-hovered": {
+            "$type": "color",
+            "$value": "darkgray"
+          },
+          "color-action-border-secondary-pressed": {
+            "$type": "color",
+            "$value": "gray"
+          },
+          "color-action-text-secondary-default": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-action-text-secondary-hovered": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-action-text-secondary-pressed": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-action-background-tertiary-default": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-action-background-tertiary-hovered": {
+            "$type": "color",
+            "$value": "whitesmoke"
+          },
+          "color-action-background-tertiary-pressed": {
+            "$type": "color",
+            "$value": "gainsboro"
+          },
+          "color-action-border-tertiary-default": {
+            "$type": "color",
+            "$value": "lightgray"
+          },
+          "color-action-border-tertiary-hovered": {
+            "$type": "color",
+            "$value": "silver"
+          },
+          "color-action-border-tertiary-pressed": {
+            "$type": "color",
+            "$value": "darkgray"
+          },
+          "color-action-text-tertiary-default": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-action-text-tertiary-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-action-text-tertiary-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-action-background-inline-default": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-action-background-inline-hovered": {
+            "$type": "color",
+            "$value": "whitesmoke"
+          },
+          "color-action-background-inline-pressed": {
+            "$type": "color",
+            "$value": "gainsboro"
+          },
+          "color-action-border-inline-default": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-action-border-inline-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-action-border-inline-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-action-text-inline-default": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-action-text-inline-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-action-text-inline-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-canvas-background": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-canvas-text": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-chart-001": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-chart-002": {
+            "$type": "color",
+            "$value": "darkcyan"
+          },
+          "color-chart-003": {
+            "$type": "color",
+            "$value": "orange"
+          },
+          "color-chart-004": {
+            "$type": "color",
+            "$value": "mediumorchid"
+          },
+          "color-chart-005": {
+            "$type": "color",
+            "$value": "salmon"
+          },
+          "color-chart-006": {
+            "$type": "color",
+            "$value": "mediumturquoise"
+          },
+          "color-chart-007": {
+            "$type": "color",
+            "$value": "darkgray"
+          },
+          "color-chart-008": {
+            "$type": "color",
+            "$value": "darkslategray"
+          },
+          "color-feedback-critical-strong": {
+            "$type": "color",
+            "$value": "firebrick"
+          },
+          "color-feedback-critical-onstrong": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-feedback-critical-subtle": {
+            "$type": "color",
+            "$value": "lavenderblush"
+          },
+          "color-feedback-critical-onsubtle": {
+            "$type": "color",
+            "$value": "darkred"
+          },
+          "color-feedback-critical-text": {
+            "$type": "color",
+            "$value": "darkred"
+          },
+          "color-feedback-passive-strong": {
+            "$type": "color",
+            "$value": "gray"
+          },
+          "color-feedback-passive-onstrong": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-feedback-passive-subtle": {
+            "$type": "color",
+            "$value": "whitesmoke"
+          },
+          "color-feedback-passive-onsubtle": {
+            "$type": "color",
+            "$value": "darkslategray"
+          },
+          "color-feedback-passive-text": {
+            "$type": "color",
+            "$value": "darkslategray"
+          },
+          "color-feedback-success-strong": {
+            "$type": "color",
+            "$value": "forestgreen"
+          },
+          "color-feedback-success-onstrong": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-feedback-success-subtle": {
+            "$type": "color",
+            "$value": "honeydew"
+          },
+          "color-feedback-success-onsubtle": {
+            "$type": "color",
+            "$value": "darkgreen"
+          },
+          "color-feedback-success-text": {
+            "$type": "color",
+            "$value": "darkgreen"
+          },
+          "color-feedback-warning-strong": {
+            "$type": "color",
+            "$value": "darkorange"
+          },
+          "color-feedback-warning-onstrong": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-feedback-warning-subtle": {
+            "$type": "color",
+            "$value": "cornsilk"
+          },
+          "color-feedback-warning-onsubtle": {
+            "$type": "color",
+            "$value": "orangered"
+          },
+          "color-feedback-warning-text": {
+            "$type": "color",
+            "$value": "orangered"
+          },
+          "color-feedback-info-strong": {
+            "$type": "color",
+            "$value": "dodgerblue"
+          },
+          "color-feedback-info-onstrong": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-feedback-info-subtle": {
+            "$type": "color",
+            "$value": "lightcyan"
+          },
+          "color-feedback-info-onsubtle": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-feedback-info-text": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-feedback-highlight-strong": {
+            "$type": "color",
+            "$value": "gold"
+          },
+          "color-feedback-highlight-onstrong": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-feedback-highlight-subtle": {
+            "$type": "color",
+            "$value": "lightyellow"
+          },
+          "color-feedback-highlight-onsubtle": {
+            "$type": "color",
+            "$value": "saddlebrown"
+          },
+          "color-feedback-highlight-text": {
+            "$type": "color",
+            "$value": "saddlebrown"
+          },
+          "color-input-background-default": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-input-background-hovered": {
+            "$type": "color",
+            "$value": "snow"
+          },
+          "color-input-background-selected": {
+            "$type": "color",
+            "$value": "lavender"
+          },
+          "color-input-background-selected-hovered": {
+            "$type": "color",
+            "$value": "powderblue"
+          },
+          "color-input-background-selected-pressed": {
+            "$type": "color",
+            "$value": "lightskyblue"
+          },
+          "color-input-border-default": {
+            "$type": "color",
+            "$value": "lightgray"
+          },
+          "color-input-border-hovered": {
+            "$type": "color",
+            "$value": "darkgray"
+          },
+          "color-input-border-selected": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-input-border-selected-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-input-border-selected-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-input-text-default": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-input-text-hovered": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-input-text-selected": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-input-text-selected-hovered": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-input-text-selected-pressed": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-surface-background-base": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-surface-background-card": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-surface-background-overlay": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-surface-background-raised": {
+            "$type": "color",
+            "$value": "snow"
+          },
+          "color-surface-background-scrim": {
+            "$type": "color",
+            "$value": "rgba(0, 0, 0, 0.4)"
+          },
+          "color-surface-border-base": {
+            "$type": "color",
+            "$value": "lavender"
+          },
+          "color-surface-border-card": {
+            "$type": "color",
+            "$value": "lavender"
+          },
+          "color-surface-border-overlay": {
+            "$type": "color",
+            "$value": "lightgray"
+          },
+          "color-surface-border-raised": {
+            "$type": "color",
+            "$value": "lavender"
+          },
+          "color-surface-text-base": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-surface-text-card": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-surface-text-overlay": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-surface-text-raised": {
+            "$type": "color",
+            "$value": "black"
+          },
+          "color-surface-text-scrim": {
+            "$type": "color",
+            "$value": "white"
+          },
+          "color-text-link": {
+            "$type": "color",
+            "$value": "{godaddy-blue}"
+          },
+          "color-text-link-hovered": {
+            "$type": "color",
+            "$value": "{godaddy-teal}"
+          },
+          "color-text-link-pressed": {
+            "$type": "color",
+            "$value": "{godaddy-navy}"
+          },
+          "color-text-link-visited": {
+            "$type": "color",
+            "$value": "indigo"
+          }
+        }
+      ]
+    }
+  },
+  "resolutionOrder": ["sets/color"]
+}

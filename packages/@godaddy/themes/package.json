@@ -1,0 +1,45 @@
+{
+  "name": "@godaddy/themes",
+  "version": "0.0.1",
+  "description": "The GoDaddy themes library",
+  "type": "module",
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "lint": "biome lint",
+    "prepublishOnly": "node ../../../scripts/compile-readme.ts",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godaddy/antares.git",
+    "directory": "packages/@godaddy/themes"
+  },
+  "keywords": [
+    "godaddy",
+    "themes"
+  ],
+  "author": "GoDaddy Operating Company, LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godaddy/antares/issues"
+  },
+  "homepage": "https://github.com/godaddy/antares#readme",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@godaddy/design-tokens": "^0.0.1",
+    "@tokens-studio/sd-transforms": "^2.0.0",
+    "style-dictionary": "^5.4.1",
+    "tsx": "^4.22.3",
+    "vitest": "^4.1.7"
+  },
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

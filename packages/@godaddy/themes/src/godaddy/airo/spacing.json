@@ -1,0 +1,110 @@
+{
+  "size-space-005": {
+    "$type": "dimension",
+    "$value": "2px"
+  },
+  "size-space-010": {
+    "$type": "dimension",
+    "$value": "4px"
+  },
+  "size-space-020": {
+    "$type": "dimension",
+    "$value": "8px"
+  },
+  "size-space-030": {
+    "$type": "dimension",
+    "$value": "12px"
+  },
+  "size-space-040": {
+    "$type": "dimension",
+    "$value": "16px"
+  },
+  "size-space-050": {
+    "$type": "dimension",
+    "$value": "20px"
+  },
+  "size-space-060": {
+    "$type": "dimension",
+    "$value": "24px"
+  },
+  "size-space-070": {
+    "$type": "dimension",
+    "$value": "32px"
+  },
+  "size-space-080": {
+    "$type": "dimension",
+    "$value": "40px"
+  },
+  "size-space-090": {
+    "$type": "dimension",
+    "$value": "48px"
+  },
+  "size-space-100": {
+    "$type": "dimension",
+    "$value": "64px"
+  },
+  "size-space-200": {
+    "$type": "dimension",
+    "$value": "80px"
+  },
+  "size-space-300": {
+    "$type": "dimension",
+    "$value": "96px"
+  },
+  "size-space-400": {
+    "$type": "dimension",
+    "$value": "128px"
+  },
+  "size-space-500": {
+    "$type": "dimension",
+    "$value": "160px"
+  },
+  "size-space-xs": {
+    "$type": "dimension",
+    "$value": "4px"
+  },
+  "size-space-sm": {
+    "$type": "dimension",
+    "$value": "8px"
+  },
+  "size-space-md": {
+    "$type": "dimension",
+    "$value": "16px"
+  },
+  "size-space-lg": {
+    "$type": "dimension",
+    "$value": "24px"
+  },
+  "size-space-xl": {
+    "$type": "dimension",
+    "$value": "32px"
+  },
+  "size-space-2xl": {
+    "$type": "dimension",
+    "$value": "48px"
+  },
+  "size-radius-xs": {
+    "$type": "dimension",
+    "$value": "2px"
+  },
+  "size-radius-sm": {
+    "$type": "dimension",
+    "$value": "4px"
+  },
+  "size-radius-md": {
+    "$type": "dimension",
+    "$value": "6px"
+  },
+  "size-radius-lg": {
+    "$type": "dimension",
+    "$value": "8px"
+  },
+  "size-radius-xl": {
+    "$type": "dimension",
+    "$value": "12px"
+  },
+  "size-radius-2xl": {
+    "$type": "dimension",
+    "$value": "16px"
+  }
+}
