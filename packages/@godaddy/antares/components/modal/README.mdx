@@ -28,7 +28,7 @@ npm install --save @godaddy/antares
 | ------------- | -------------------------------------------------------------- |
 | `Tab`         | Moves focus to the next focusable element inside the modal     |
 | `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
+| `Escape`      | Closes the modal (unless `overlayProps.isKeyboardDismissDisabled`) |
 
 ### ARIA
 
@@ -41,7 +41,7 @@ npm install --save @godaddy/antares
 
 - Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
 - Pair every action button with `slot="close"` when it should dismiss the modal
-- Set `isDismissable={false}` for required confirmations the user must explicitly answer
+- Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `overlayProps={{ isKeyboardDismissDisabled: true }}`
 
 ## Props
 

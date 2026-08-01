@@ -22,7 +22,7 @@ export function DefaultExample() {
         <Text>This action cannot be undone.</Text>
       </Content>
       <Footer>
-        <ButtonGroup>
+        <ButtonGroup flexGrow={1}>
           <Button variant="secondary">Cancel</Button>
           <Button variant="critical">Delete</Button>
         </ButtonGroup>

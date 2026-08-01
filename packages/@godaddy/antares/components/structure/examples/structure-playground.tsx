@@ -35,7 +35,7 @@ export function PlaygroundExample({ contentGap = 'md', actionsJustify = 'end' }:
         <Text>All associated data will be permanently removed.</Text>
       </Content>
       <Footer>
-        <ButtonGroup justifyContent={actionsJustify}>
+        <ButtonGroup flexGrow={1} justifyContent={actionsJustify}>
           <Button variant="secondary">Cancel</Button>
           <Button variant="critical">Delete</Button>
         </ButtonGroup>
