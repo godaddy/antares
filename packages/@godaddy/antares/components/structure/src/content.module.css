@@ -1,4 +1,3 @@
 .content {
-  /* Allow long or overflowing children to shrink/scroll inside a flex parent. */
   min-block-size: 0;
 }
