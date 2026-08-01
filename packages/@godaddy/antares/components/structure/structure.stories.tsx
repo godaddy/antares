@@ -1,10 +1,10 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Content, Header, Footer, ButtonGroup } from './src/index.tsx';
-import { PlaygroundExample } from './examples/composition-playground.tsx';
+import { PlaygroundExample } from './examples/structure-playground.tsx';
 
 export default getMeta({
-  title: 'components/Composition'
+  title: 'components/Structure'
 });
 
 export const ContentProps = getComponentDocs(Content);

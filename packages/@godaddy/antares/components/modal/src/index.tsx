@@ -11,7 +11,7 @@ import {
   Provider
 } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/composition';
+import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import styles from './index.module.css';
 
 export interface ModalProps extends Omit<RACDialogProps, 'children'> {

@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default.tsx';
 
 describe('@godaddy/antares', function antares() {
-  describe('#Composition', function composition() {
+  describe('#Structure', function structure() {
     it('renders the composed structural containers', function rendersDefault() {
       const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();

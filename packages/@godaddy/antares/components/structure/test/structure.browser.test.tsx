@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-react';
 import { DefaultExample } from '../examples/default.tsx';
 
 describe('@godaddy/antares', function antares() {
-  describe('#Composition', function composition() {
+  describe('#Structure', function structure() {
     it('renders the composed containers in the browser', async function rendersDefault() {
       const { getByText, getByRole } = await render(<DefaultExample />);
       await expect.element(getByText('Delete file?')).toBeInTheDocument();

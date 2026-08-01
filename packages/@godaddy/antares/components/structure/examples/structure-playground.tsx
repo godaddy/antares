@@ -10,7 +10,7 @@ import {
   Button
 } from '@godaddy/antares';
 
-/** Props for the composition playground example. */
+/** Props for the structure playground example. */
 export interface PlaygroundExampleProps {
   /** Gap between the content region's lines. */
   contentGap?: ContentProps['gap'];

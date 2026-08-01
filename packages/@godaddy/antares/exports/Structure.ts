@@ -11,4 +11,4 @@ export {
   ButtonGroup,
   ButtonGroupContext,
   type ButtonGroupProps
-} from '#components/composition';
+} from '#components/structure';
