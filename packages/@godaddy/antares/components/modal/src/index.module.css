@@ -7,7 +7,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
   transition: opacity 0.2s;
 }
 
@@ -35,7 +34,6 @@
   max-inline-size: 80ch;
 }
 
-/* The content region absorbs the extra height and scrolls; siblings stay pinned. */
 .content {
   flex: 1 1 auto;
   min-block-size: 0;
@@ -60,4 +58,12 @@
   flex-shrink: 0;
   padding: var(--sp-md);
   padding-block-start: var(--sp-sm);
+}
+
+.buttonGroup {
+  justify-content: end;
+}
+
+.footer > :where(.buttonGroup) {
+  padding: 0;
 }

@@ -17,5 +17,5 @@ export const ButtonGroupContext = createContext<ContextValue<ButtonGroupProps, H
 export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(props, ref) {
   [props, ref] = useContextProps(props, ref, ButtonGroupContext);
 
-  return <Flex as="div" direction="row" gap="sm" justifyContent="end" wrap="wrap" {...props} role="group" ref={ref} />;
+  return <Flex as="div" direction="row" gap="sm" wrap="wrap" {...props} role="group" ref={ref} />;
 });

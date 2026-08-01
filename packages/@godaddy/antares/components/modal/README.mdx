@@ -24,10 +24,10 @@ npm install --save @godaddy/antares
 
 ### Keyboard interaction
 
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| Key           | Action                                                             |
+| ------------- | ------------------------------------------------------------------ |
+| `Tab`         | Moves focus to the next focusable element inside the modal         |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal     |
 | `Escape`      | Closes the modal (unless `overlayProps.isKeyboardDismissDisabled`) |
 
 ### ARIA
@@ -47,11 +47,14 @@ npm install --save @godaddy/antares
 
 ```tsx
 <Modal>
-  <Heading slot="title" />
-  <Header />
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Button slot="close" />
   <Content />
-  <Footer />
   <ButtonGroup />
+  <Footer />
 </Modal>
 ```
 
