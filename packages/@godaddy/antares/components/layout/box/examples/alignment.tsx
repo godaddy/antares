@@ -1,5 +1,9 @@
 import { Box, Flex } from '@godaddy/antares';
 
+/**
+ * Self-alignment props allow Box to position itself within flex or grid containers.
+ * @order 5
+ */
 export function AlignmentExample() {
   return (
     <Flex gap="md" style={{ height: '150px' }}>

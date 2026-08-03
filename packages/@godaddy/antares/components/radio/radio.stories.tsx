@@ -1,15 +1,6 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/radio-playground.tsx';
-import { RadioDescriptionExample } from './examples/radio-description.tsx';
-import { RadioHorizontalExample } from './examples/radio-horizontal.tsx';
-import { RadioControlledExample } from './examples/radio-controlled.tsx';
-import { RadioAriaLabelExample } from './examples/radio-aria-label.tsx';
-import { RadioDisabledExample } from './examples/radio-disabled.tsx';
-import { RadioRequiredExample } from './examples/radio-required.tsx';
-import { RadioBasicExample } from './examples/radio-basic.tsx';
-import { RadioErrorExample } from './examples/radio-error.tsx';
-import { RadioFormExample } from './examples/radio-form.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/radio-playground.tsx';
 import { Radio, RadioGroup } from './src/index.tsx';
 
 export default getMeta({
@@ -20,26 +11,9 @@ export const Props = getComponentDocs(Radio);
 
 export const GroupProps = getComponentDocs(RadioGroup);
 
-export const Basic = getStory(RadioBasicExample);
+export const Examples = getExamples('./examples');
 
-export const Controlled = getStory(RadioControlledExample);
-
-export const Horizontal = getStory(RadioHorizontalExample);
-
-export const Disabled = getStory(RadioDisabledExample);
-
-export const Required = getStory(RadioRequiredExample);
-
-export const Description = getStory(RadioDescriptionExample);
-
-export const ValidationError = getStory(RadioErrorExample);
-
-export const AriaLabel = getStory(RadioAriaLabelExample);
-
-export const Form = getStory(RadioFormExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     orientation: 'vertical',
     label: 'Select your plan',
@@ -86,4 +60,4 @@ export const Playground = {
       description: 'Initially selected value'
     }
   }
-};
+});

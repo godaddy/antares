@@ -1,11 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/text-playground.tsx';
-import { getMeta, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { MaxLinesExample } from './examples/max-lines.tsx';
-import { AlignExample } from './examples/align.tsx';
-import { TextExample } from './examples/text.tsx';
-import { WrapExample } from './examples/wrap.tsx';
-import { AsExample } from './examples/as.tsx';
+import { PlaygroundExample } from './examples/text-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Text } from './src/index.tsx';
 
 export default getMeta({
@@ -14,8 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Text);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: {
     as: 'span',
     children: 'The quick brown fox jumps over the lazy dog.'
@@ -27,14 +23,4 @@ export const Playground = {
     wrap: { control: 'select', options: ['wrap', 'nowrap', 'balance', 'pretty', 'stable'] },
     children: { control: 'text' }
   }
-};
-
-export const Default = TextExample;
-
-export const Align = AlignExample;
-
-export const As = AsExample;
-
-export const MaxLines = MaxLinesExample;
-
-export const Wrap = WrapExample;
+});

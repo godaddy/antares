@@ -4,6 +4,8 @@ import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { remarkRawLoader } from './lib/remark-raw-loader.ts';
 import { docsDefaults } from '../../configs/docs-defaults.mts';
 import { remarkArgTypes } from './lib/remark-arg-types.ts';
+import { remarkExamples } from '@bento/storybook-addon-helpers/docs';
+import { addMdxDependency } from './lib/remark-mdx-utils.ts';
 
 export const docs = defineDocs({
   dir: 'content/docs',
@@ -33,7 +35,13 @@ export const components = defineDocs({
     // Wrap with applyMdxPreset so remarkStructure (search indexing) still runs.
     mdxOptions: (env) =>
       applyMdxPreset({
-        remarkPlugins: (v) => [remarkStripLeadingHeading, [remarkArgTypes, { docsDefaults }], remarkRawLoader, ...v]
+        remarkPlugins: (v) => [
+          remarkStripLeadingHeading,
+          [remarkArgTypes, { docsDefaults }],
+          [remarkExamples, { target: 'components', onDependency: addMdxDependency }],
+          remarkRawLoader,
+          ...v
+        ]
       })(env)
   },
   meta: {

@@ -1,5 +1,9 @@
 import { NumberField } from '@godaddy/antares';
 
+/**
+ * Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
+ * @order 6
+ */
 export function NumberFieldValueScaleExample() {
   return (
     <NumberField

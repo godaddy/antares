@@ -1,7 +1,10 @@
 import { createRef, type ComponentProps } from 'react';
 import { Box } from '@godaddy/antares';
 
-/** Type tests for Box polymorphism. */
+/**
+ * Type tests for Box polymorphism.
+ * @ignore
+ */
 export function TypesExample() {
   const buttonRef = createRef<HTMLButtonElement>();
   const divRef = createRef<HTMLDivElement>();

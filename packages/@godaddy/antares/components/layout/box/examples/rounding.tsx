@@ -1,5 +1,9 @@
 import { Box, Flex } from '@godaddy/antares';
 
+/**
+ * The rounding prop sets border-radius. Use `full` for fully rounded corners.
+ * @order 3
+ */
 export function RoundingExample() {
   return (
     <Flex wrap="wrap" direction="column" gap="md">

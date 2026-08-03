@@ -1,12 +1,12 @@
-import { CheckboxBasic } from '../examples/basic';
-import { CheckboxGroupControlled } from '../examples/controlled';
-import { CheckboxGroupDisabled } from '../examples/disabled';
-import { CheckboxGroupBasic } from '../examples/group';
-import { CheckboxIndeterminate } from '../examples/indeterminate';
-import { CheckboxGroupInvalid } from '../examples/invalid';
-import { CheckboxGroupRequired } from '../examples/required';
-import { CheckboxGroupHorizontal } from '../examples/horizontal';
-import { PlaygroundExample } from '../examples/playground';
+import { DefaultExample } from '../examples/default';
+import { CheckboxGroupControlledExample } from '../examples/controlled';
+import { CheckboxGroupDisabledExample } from '../examples/disabled';
+import { CheckboxGroupBasicExample } from '../examples/group';
+import { CheckboxIndeterminateExample } from '../examples/indeterminate';
+import { CheckboxGroupInvalidExample } from '../examples/invalid';
+import { CheckboxGroupRequiredExample } from '../examples/required';
+import { CheckboxGroupHorizontalExample } from '../examples/horizontal';
+import { PlaygroundExample } from '../examples/checkbox-playground';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
@@ -14,15 +14,15 @@ import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
-    it('renders CheckboxBasic', async function basicRender() {
-      await render(<CheckboxBasic />);
+    it('renders DefaultExample', async function basicRender() {
+      await render(<DefaultExample />);
 
       const checkbox = page.getByRole('checkbox', { name: 'One checkbox' });
       assume(checkbox).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupControlled', async function controlledRender() {
-      await render(<CheckboxGroupControlled />);
+    it('renders CheckboxGroupControlledExample', async function controlledRender() {
+      await render(<CheckboxGroupControlledExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
@@ -35,22 +35,22 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders CheckboxGroupDisabled', async function disabledRender() {
-      await render(<CheckboxGroupDisabled />);
+    it('renders CheckboxGroupDisabledExample', async function disabledRender() {
+      await render(<CheckboxGroupDisabledExample />);
 
       const checkboxGroup = page.getByRole('group', { disabled: true });
       assume(checkboxGroup).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupBasic', async function groupRender() {
-      await render(<CheckboxGroupBasic />);
+    it('renders CheckboxGroupBasicExample', async function groupRender() {
+      await render(<CheckboxGroupBasicExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
     });
 
-    it('renders CheckboxIndeterminate', async function indeterminateRender() {
-      await render(<CheckboxIndeterminate />);
+    it('renders CheckboxIndeterminateExample', async function indeterminateRender() {
+      await render(<CheckboxIndeterminateExample />);
 
       // React aria checkbox does not use aria properties for indeterminate state, so we need to wait for the async icon to be rendered
       await vi.waitFor(function checkIndeterminateIcon() {
@@ -59,8 +59,8 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders CheckboxGroupInvalid', async function invalidRender() {
-      await render(<CheckboxGroupInvalid />);
+    it('renders CheckboxGroupInvalidExample', async function invalidRender() {
+      await render(<CheckboxGroupInvalidExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
@@ -69,15 +69,15 @@ describe('@godaddy/antares', function antares() {
       assume(description).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupRequired', async function requiredRender() {
-      await render(<CheckboxGroupRequired />);
+    it('renders CheckboxGroupRequiredExample', async function requiredRender() {
+      await render(<CheckboxGroupRequiredExample />);
 
       const checkboxGroup = page.getByRole('group', { name: 'Favorite colors' });
       assume(checkboxGroup).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupHorizontal', async function horizontalRender() {
-      await render(<CheckboxGroupHorizontal />);
+    it('renders CheckboxGroupHorizontalExample', async function horizontalRender() {
+      await render(<CheckboxGroupHorizontalExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);

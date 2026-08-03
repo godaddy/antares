@@ -9,6 +9,7 @@ function Bar() {
 /**
  * Example: three bars; a button replaces the middle one. The new bar
  * receives the recycled index (same color as the unmounted one).
+ * @ignore
  */
 export function FreedIndexReuseExample() {
   const [middleKey, setMiddleKey] = useState<'b' | 'd'>('b');

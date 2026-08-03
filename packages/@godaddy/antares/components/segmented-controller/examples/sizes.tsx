@@ -1,5 +1,9 @@
 import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';
 
+/**
+ * Three sizes are available: `sm`, `md` (default), and `lg`.
+ * @order 3
+ */
 export function SizesExample() {
   return (
     <Flex direction="column" gap="lg" alignItems="start">

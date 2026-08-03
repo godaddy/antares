@@ -1,6 +1,10 @@
 import { Switch } from '@godaddy/antares';
 
-export function SwitchRootCustomization() {
+/**
+ * Test-only root customization example.
+ * @ignore
+ */
+export function SwitchRootCustomizationExample() {
   return (
     <Switch className="custom-switch" style={{ opacity: 0.5 }}>
       Wi-Fi

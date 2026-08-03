@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Drawer, Button, Text, Box } from '@godaddy/antares';
 
+/**
+ * Use `placement="bottom"` with controlled state for a bottom sheet pattern.
+ * @title Bottom Sheet
+ * @order 2
+ */
 export function BottomSheetExample() {
   const [open, setOpen] = useState(false);
 

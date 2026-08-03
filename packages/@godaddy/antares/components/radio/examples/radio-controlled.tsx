@@ -1,6 +1,10 @@
 import { Radio, RadioGroup } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * A controlled radio group using `value` and `onChange`.
+ * @order 2
+ */
 export function RadioControlledExample() {
   const [selected, setSelected] = useState('standard');
 

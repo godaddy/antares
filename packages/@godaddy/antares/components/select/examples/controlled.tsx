@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';
 
+/**
+ * Use `value` and `onChange` for controlled state.
+ * @order 2
+ */
 export function SelectControlledExample() {
   const [value, setValue] = useState<SelectKey | null>('latte');
 

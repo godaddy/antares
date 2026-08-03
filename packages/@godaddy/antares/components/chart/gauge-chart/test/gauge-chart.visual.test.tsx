@@ -2,7 +2,7 @@ import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { ContinuousExample } from '../examples/continuous.tsx';
 import { PlaygroundExample } from '../examples/gauge-chart-playground.tsx';
 import { LabelTypeExample } from '../examples/label-type.tsx';
@@ -41,7 +41,7 @@ describe('@godaddy/antares', function antares() {
   describe('#GaugeChart', function gaugeChartTests() {
     describe('#examples', function examples() {
       it('basic screenshot', async function basicShot() {
-        const { container } = await renderAndWait(<BasicExample />);
+        const { container } = await renderAndWait(<DefaultExample />);
 
         await expect(container).toMatchScreenshot('basic');
       });

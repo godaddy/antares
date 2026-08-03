@@ -1,28 +1,28 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { FieldGroupTrailingControl } from '../examples/trailing-control';
-import { FieldGroupLeadingControl } from '../examples/leading-control';
-import { FieldGroupIconAccessories } from '../examples/icon-accessories';
+import { FieldGroupTrailingControlExample } from '../examples/trailing-control';
+import { FieldGroupLeadingControlExample } from '../examples/leading-control';
+import { FieldGroupIconAccessoriesExample } from '../examples/icon-accessories';
 
 describe('@godaddy/antares', function antares() {
   describe('#FieldGroup', function fieldGroup() {
     describe('#LeadingControl', function leadingControl() {
       it('renders', function renders() {
-        const result = renderToString(<FieldGroupLeadingControl />);
+        const result = renderToString(<FieldGroupLeadingControlExample />);
         expect(result).toMatchSnapshot();
       });
     });
 
     describe('#TrailingControl', function trailingControl() {
       it('renders', function renders() {
-        const result = renderToString(<FieldGroupTrailingControl />);
+        const result = renderToString(<FieldGroupTrailingControlExample />);
         expect(result).toMatchSnapshot();
       });
     });
 
     describe('#IconAccessories', function iconAccessories() {
       it('renders', function renders() {
-        const result = renderToString(<FieldGroupIconAccessories />);
+        const result = renderToString(<FieldGroupIconAccessoriesExample />);
         expect(result).toMatchSnapshot();
       });
     });

@@ -1,4 +1,4 @@
-import { IconExample } from '../examples/icon.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { render } from 'vitest-browser-react';
 import { Icon } from '@godaddy/antares';
 import { type ReactElement, createRef } from 'react';
@@ -68,8 +68,8 @@ describe('@godaddy/antares', function antares() {
   }
 
   describe('Examples', function icon() {
-    it('renders IconExample with color prop', async function example() {
-      const { container } = await renderAndWait(<IconExample color="blue" />);
+    it('renders DefaultExample with color prop', async function example() {
+      const { container } = await renderAndWait(<DefaultExample color="blue" />);
 
       const result = container.innerHTML;
 
@@ -82,7 +82,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('renders a placeholder element if icon is loading', async function placeholder() {
-      const { container } = await render(<IconExample icon="unknown" />);
+      const { container } = await render(<DefaultExample icon="unknown" />);
 
       assume(container.innerHTML).includes('<svg data-placeholder="true"');
     });

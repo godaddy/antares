@@ -1,6 +1,10 @@
 import { useState, type FormEvent } from 'react';
 import { Box, Button, Flex, Select, SelectItem, Text } from '@godaddy/antares';
 
+/**
+ * Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+ * @order 6
+ */
 export function SelectFormExample() {
   const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);
 

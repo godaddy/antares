@@ -1,6 +1,11 @@
 import { BarChart } from '@godaddy/antares';
 
-export function BarChartFormattedTickMarksExample() {
+/**
+ * `xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
+ * @title Formatted tick marks
+ * @order 6
+ */
+export function FormattedTickMarksExample() {
   // Example data with Date categories
   const data = [
     { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1

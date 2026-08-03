@@ -23,7 +23,12 @@ const series = [
   { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }
 ];
 
-export function BarChartHorizontalMultiSeriesExample(props: any) {
+/**
+ * Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
+ * @title Horizontal multi-series
+ * @order 4
+ */
+export function HorizontalMultiSeriesExample(props: any) {
   return (
     <BarChart
       series={series}

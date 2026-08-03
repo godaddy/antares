@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Text, TextField } from '@godaddy/antares';
 
+/**
+ * Use `value` and `onChange` for controlled state.
+ * @order 2
+ */
 export function TextFieldControlledExample() {
   const [value, setValue] = useState('');
 

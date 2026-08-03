@@ -4,14 +4,14 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
-import { BarChartCustomDomainExample } from '../examples/custom-domain';
-import { BarChartFormattedTickMarksExample } from '../examples/formatted-tick-marks';
-import { BarChartHorizontalMultiSeriesExample } from '../examples/horizontal-multi-series';
-import { BarChartHorizontalSingleSeriesExample } from '../examples/horizontal-single-series';
-import { BarChartMultiSeriesExample } from '../examples/multi-series';
-import { BarChartRTLHorizontalMultiSeriesExample } from '../examples/rtl-horizontal-multi-series';
-import { BarChartRTLMultiSeriesExample } from '../examples/rtl-multi-series';
-import { BarChartExample } from '../examples/single-series';
+import { CustomDomainExample } from '../examples/custom-domain';
+import { FormattedTickMarksExample } from '../examples/formatted-tick-marks';
+import { HorizontalMultiSeriesExample } from '../examples/horizontal-multi-series';
+import { HorizontalSingleSeriesExample } from '../examples/horizontal-single-series';
+import { MultiSeriesExample } from '../examples/multi-series';
+import { RTLHorizontalMultiSeriesExample } from '../examples/rtl-horizontal-multi-series';
+import { RTLMultiSeriesExample } from '../examples/rtl-multi-series';
+import { DefaultExample } from '../examples/default';
 
 /**
  * Renders an example in a sized container and waits for chart SVG
@@ -34,15 +34,15 @@ async function renderExampleAndWait(Example: React.ComponentType, width = 900, h
 describe('@godaddy/antares', function antares() {
   describe('#BarChart', function barChartTests() {
     describe('#basic', function basic() {
-      it('single-series screenshot', async function singleSeries() {
-        const { container } = await renderExampleAndWait(BarChartExample);
+      it('default screenshot', async function defaultExample() {
+        const { container } = await renderExampleAndWait(DefaultExample);
 
         assume(container.querySelector('svg')).exists();
-        await expect(container).toMatchScreenshot('single-series');
+        await expect(container).toMatchScreenshot('default');
       });
 
       it('multi-series screenshot', async function multiSeries() {
-        const { container } = await renderExampleAndWait(BarChartMultiSeriesExample);
+        const { container } = await renderExampleAndWait(MultiSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('multi-series');
@@ -51,35 +51,35 @@ describe('@godaddy/antares', function antares() {
 
     describe('#feature', function feature() {
       it('horizontal-single-series screenshot', async function horizontalSingleSeries() {
-        const { container } = await renderExampleAndWait(BarChartHorizontalSingleSeriesExample);
+        const { container } = await renderExampleAndWait(HorizontalSingleSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('horizontal-single-series');
       });
 
       it('horizontal-multi-series screenshot', async function horizontalMultiSeries() {
-        const { container } = await renderExampleAndWait(BarChartHorizontalMultiSeriesExample);
+        const { container } = await renderExampleAndWait(HorizontalMultiSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('horizontal-multi-series');
       });
 
       it('rtl-multi-series screenshot', async function rtlMultiSeries() {
-        const { container } = await renderExampleAndWait(BarChartRTLMultiSeriesExample);
+        const { container } = await renderExampleAndWait(RTLMultiSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('rtl-multi-series');
       });
 
       it('rtl-horizontal-multi-series screenshot', async function rtlHorizontalMultiSeries() {
-        const { container } = await renderExampleAndWait(BarChartRTLHorizontalMultiSeriesExample);
+        const { container } = await renderExampleAndWait(RTLHorizontalMultiSeriesExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('rtl-horizontal-multi-series');
       });
 
       it('formatted-tick-marks screenshot', async function formattedTickMarks() {
-        const { container } = await renderExampleAndWait(BarChartFormattedTickMarksExample);
+        const { container } = await renderExampleAndWait(FormattedTickMarksExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('formatted-tick-marks');
@@ -88,7 +88,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#configuration', function configuration() {
       it('custom-domain screenshot', async function customDomain() {
-        const { container } = await renderExampleAndWait(BarChartCustomDomainExample);
+        const { container } = await renderExampleAndWait(CustomDomainExample);
 
         assume(container.querySelector('svg')).exists();
         await expect(container).toMatchScreenshot('custom-domain');

@@ -3,15 +3,8 @@ title: Gauge Chart
 description: A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './gauge-chart.stories.tsx';
-
-import SourceBasic from './examples/basic.tsx?raw';
-import SourceContinuous from './examples/continuous.tsx?raw';
-import SourceSegmented from './examples/segmented.tsx?raw';
-import SourceWithRangeLabels from './examples/with-range-labels.tsx?raw';
-import SourceVariants from './examples/variants.tsx?raw';
-import SourceLabelType from './examples/label-type.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -21,53 +14,9 @@ import SourceLabelType from './examples/label-type.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Basic
-
-A continuous gauge with a single label.
-
-<Story of={Stories.Basic} inline />
-<Source language="tsx" code={SourceBasic} />
-
-### Continuous Values
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of={Stories.Continuous} inline />
-<Source language="tsx" code={SourceContinuous} />
-
-### Segmented
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of={Stories.Segmented} inline />
-<Source language="tsx" code={SourceSegmented} />
-
-### With Range Labels
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of={Stories.WithRangeLabels} inline />
-<Source language="tsx" code={SourceWithRangeLabels} />
-
-### Variants
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of={Stories.Variants} inline />
-<Source language="tsx" code={SourceVariants} />
-
-### Label Type
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of={Stories.LabelType} inline />
-<Source language="tsx" code={SourceLabelType} />
+<Examples of={Stories.Examples} />
 
 ## Troubleshooting
 
@@ -99,3 +48,7 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 // ✅ Segmented: 0 to segments
 <GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
 ```
+
+## Props
+
+<ArgTypes of={Stories.Props} />

@@ -1,0 +1,12 @@
+{
+  "shadow-card": {
+    "$type": "shadow",
+    "$value": {
+      "color": "gray",
+      "offsetX": { "value": 0, "unit": "px" },
+      "offsetY": { "value": 2, "unit": "px" },
+      "blur": { "value": 4, "unit": "px" },
+      "spread": { "value": 0, "unit": "px" }
+    }
+  }
+}

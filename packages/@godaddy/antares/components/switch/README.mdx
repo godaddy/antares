@@ -2,14 +2,7 @@
 title: Switch
 description: A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.
 ---
-import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceSwitchControlled from './examples/controlled.tsx?raw';
-import SourceSwitchDefault from './examples/default.tsx?raw';
-import SourceSwitchDisabled from './examples/disabled.tsx?raw';
-import SourceSwitchLabelPosition from './examples/label-position.tsx?raw';
-import SourceSwitchNoLabel from './examples/no-label.tsx?raw';
-import SourceSwitchSelected from './examples/selected.tsx?raw';
-import SourceSwitchSizes from './examples/sizes.tsx?raw';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './switch.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -31,62 +24,9 @@ import * as Stories from './switch.stories.tsx';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-The `Switch` component has the following props:
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Default
-
-An uncontrolled switch, off by default, with the label at the start.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={SourceSwitchDefault} />
-
-### Selected
-
-A switch that starts in the on state via `defaultSelected`.
-
-<Story of={Stories.Selected} inline />
-<Source language="tsx" code={SourceSwitchSelected} />
-
-### Sizes
-
-The `size` prop accepts `'md'` (default) or `'sm'`.
-
-<Story of={Stories.Sizes} inline />
-<Source language="tsx" code={SourceSwitchSizes} />
-
-### Label Position
-
-The `labelPosition` prop places the label at the `start` (default) or `end` of the track.
-
-<Story of={Stories.LabelPosition} inline />
-<Source language="tsx" code={SourceSwitchLabelPosition} />
-
-### No Label
-
-When no label is provided, pass `aria-label` so the switch has an accessible name.
-
-<Story of={Stories.NoLabel} inline />
-<Source language="tsx" code={SourceSwitchNoLabel} />
-
-### Disabled
-
-A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
-
-<Story of={Stories.Disabled} inline />
-<Source language="tsx" code={SourceSwitchDisabled} />
-
-### Controlled
-
-Manage switch state programmatically with `isSelected` and `onChange`.
-
-<Story of={Stories.Controlled} inline />
-<Source language="tsx" code={SourceSwitchControlled} />
+<Examples of={Stories.Examples} />
 
 ## Customization
 
@@ -180,3 +120,9 @@ Use the interactive root data attributes for state-based customization. The trac
 // ✅ Or an aria-label when the label is visual-only elsewhere
 <Switch aria-label="Wi-Fi" />
 ```
+
+## Props
+
+The `Switch` component has the following props:
+
+<ArgTypes of={Stories.Props} />

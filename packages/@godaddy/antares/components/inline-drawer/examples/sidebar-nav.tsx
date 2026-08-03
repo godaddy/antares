@@ -7,6 +7,10 @@ const NAV = [
   { icon: 'comment', label: 'Messages', href: '#' }
 ] as const;
 
+/**
+ * A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
+ * @order 3
+ */
 export function SidebarNavExample() {
   const [expanded, setExpanded] = useState(false);
 

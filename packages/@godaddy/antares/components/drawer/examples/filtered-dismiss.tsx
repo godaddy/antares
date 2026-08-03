@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Drawer, Button, Text, Box } from '@godaddy/antares';
 
+/**
+ * Test-only example for filtering outside interaction dismissal.
+ * @ignore
+ */
 export function FilteredDismissExample() {
   const [open, setOpen] = useState(false);
   return (

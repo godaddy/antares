@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Drawer, Button, Text, Box } from '@godaddy/antares';
 
+/**
+ * Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+ * @title No Escape Dismiss
+ * @order 5
+ */
 export function NoEscapeDismissExample() {
   const [open, setOpen] = useState(false);
   return (

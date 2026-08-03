@@ -1,6 +1,10 @@
 import { Box, Carousel, Flex } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * You can listen to events like `onChange`, `onPrev`, or `onNext`.
+ * @order 7
+ */
 export function EventsExample() {
   const [message, setMessage] = useState('Listening for change events...');
   const [messagePrev, setMessagePrev] = useState('Listening for prev events...');

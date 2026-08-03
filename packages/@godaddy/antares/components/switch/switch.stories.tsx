@@ -1,46 +1,15 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { useArgs } from 'storybook/preview-api';
-import { SwitchControlled } from './examples/controlled.tsx';
-import { SwitchDefault } from './examples/default.tsx';
-import { SwitchDisabled } from './examples/disabled.tsx';
-import { SwitchLabelPosition } from './examples/label-position.tsx';
-import { SwitchNoLabel } from './examples/no-label.tsx';
-import { SwitchSelected } from './examples/selected.tsx';
-import { SwitchSizes } from './examples/sizes.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/switch-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/switch-playground.tsx';
 import { Switch } from './src/index.tsx';
 
-export default getMeta({ title: 'components/Switch', component: SwitchDefault });
+export default getMeta({ title: 'components/Switch', component: Switch });
 
 export const Props = getComponentDocs(Switch);
 
-export const Default = getStory(SwitchDefault);
+export const Examples = getExamples('./examples');
 
-export const Selected = getStory(SwitchSelected);
-
-export const Sizes = getStory(SwitchSizes);
-
-export const LabelPosition = getStory(SwitchLabelPosition);
-
-export const NoLabel = getStory(SwitchNoLabel);
-
-export const Disabled = getStory(SwitchDisabled);
-
-export const Controlled = getStory(SwitchControlled);
-
-export const Playground = {
-  render: function render(args: PlaygroundExampleProps) {
-    const [{ isSelected }, updateArgs] = useArgs<PlaygroundExampleProps>();
-
-    return (
-      <PlaygroundExample
-        {...args}
-        isSelected={isSelected}
-        onChange={(nextSelected) => updateArgs({ isSelected: nextSelected })}
-      />
-    );
-  },
+export const Playground = getStory(PlaygroundExample, {
   args: {
     children: 'Wi-Fi',
     size: 'md',
@@ -72,4 +41,4 @@ export const Playground = {
       description: 'Disable interaction'
     }
   }
-};
+});

@@ -1,6 +1,10 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xGridlines` and `yGridlines` add faint lines across the plot so it is easier to read a value back off an axis.
+ * @order 3
+ */
 export function GridlinesExample(props: Partial<LineChartProps>) {
   const series = [
     {

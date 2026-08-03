@@ -1,6 +1,10 @@
 import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';
 import { useState } from 'react';
 
+/**
+ * Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+ * @order 4
+ */
 export function AlignmentExample() {
   const [alignment, setAlignment] = useState<string>();
   const [actionsAlignment, setActionsAlignment] = useState<string>();

@@ -16,6 +16,11 @@ function formatTooltipCurrency(d: DataPoint): string {
   return `$${d.y!.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+/**
+ * `xTickFormat` and `yTickFormat` shape the axis labels - dates, currency, units, percentages - and the tooltip follows the same formatting.
+ * @title Axis and tooltip formatting
+ * @order 9
+ */
 export function FormattingExample(props: Partial<LineChartProps>) {
   const series = [
     {

@@ -1,5 +1,10 @@
 import { Radio, RadioGroup, Flex } from '@godaddy/antares';
 
+/**
+ * Disabled group and individually disabled radio options.
+ * @title Disabled States
+ * @order 4
+ */
 export function RadioDisabledExample() {
   return (
     <Flex direction="column" gap="md">

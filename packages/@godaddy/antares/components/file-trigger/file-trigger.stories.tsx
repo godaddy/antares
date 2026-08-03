@@ -1,9 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { FileTrigger } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { AcceptedTypesExample } from './examples/accepted-types.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/file-trigger-playground.tsx';
+import { PlaygroundExample } from './examples/file-trigger-playground.tsx';
 
 export default getMeta({
   title: 'components/FileTrigger'
@@ -11,12 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(FileTrigger);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const AcceptedTypes = getStory(AcceptedTypesExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     allowsMultiple: false,
     acceptDirectory: false
@@ -31,4 +26,4 @@ export const Playground = {
       description: 'Whether directories can be selected instead of individual files'
     }
   }
-};
+});

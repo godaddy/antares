@@ -7,6 +7,11 @@ const series = [
   { id: 'product-c', name: 'Product C' }
 ];
 
+/**
+ * Legend with all supported sizes (`sm`, `md`, `lg`, `xl`).
+ * @title Legend size chart example
+ * @order 5
+ */
 export function LegendSizeChartExample(props: Partial<LegendProps>) {
   return (
     <Flex direction="column" gap="md">
