@@ -3,16 +3,8 @@ title: RangeField
 description: RangeField lets users select one numeric value or a related set of values on a bounded scale.
 ---
 
-import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './range-field.stories.tsx';
-
-import SourceDefault from './examples/default.tsx?raw';
-import SourceControlled from './examples/controlled.tsx?raw';
-import SourceDisabled from './examples/disabled.tsx?raw';
-import SourceLabels from './examples/labels.tsx?raw';
-import SourceMarkers from './examples/markers.tsx?raw';
-import SourceRange from './examples/range.tsx?raw';
-import SourceValueDisplay from './examples/value-display.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -29,60 +21,9 @@ import SourceValueDisplay from './examples/value-display.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Default
-
-Use the default presentation for one adjustable value on a continuous track.
-
-<Source language="tsx" code={SourceDefault} />
-<Story of={Stories.Default} inline />
-
-### Controlled
-
-Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
-
-<Source language="tsx" code={SourceControlled} />
-<Story of={Stories.Controlled} inline />
-
-### Disabled
-
-Use `isDisabled` when the value is visible but unavailable for interaction.
-
-<Source language="tsx" code={SourceDisabled} />
-<Story of={Stories.Disabled} inline />
-
-### Labels
-
-Combine an input label, value label, range labels, and helper text when users need additional context.
-
-<Source language="tsx" code={SourceLabels} />
-<Story of={Stories.Labels} inline />
-
-### Value display
-
-Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
-
-<Source language="tsx" code={SourceValueDisplay} />
-<Story of={Stories.ValueDisplay} inline />
-
-### Markers
-
-Use markers to expose a manageable set of discrete steps for a single value.
-
-<Source language="tsx" code={SourceMarkers} />
-<Story of={Stories.Markers} inline />
-
-### Range
-
-Pass a `number[]` to render a range with two thumbs and step markers.
-
-<Source language="tsx" code={SourceRange} />
-<Story of={Stories.Range} inline />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -122,6 +63,10 @@ Markers are decorative and hidden from the accessibility tree. Ensure the field 
 - Use `isDisabled` when the value should remain visible but unavailable for interaction.
 - Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
 - Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Props
+
+<ArgTypes of={Stories.Props} />
 
 ## Troubleshooting
 

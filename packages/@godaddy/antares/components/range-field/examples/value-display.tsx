@@ -1,5 +1,9 @@
 import { Flex, RangeField } from '@godaddy/antares';
 
+/**
+ * Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
+ * @order 5
+ */
 export function RangeFieldValueDisplayExample() {
   return (
     <Flex direction="column" gap="md">

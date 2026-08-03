@@ -1,32 +1,15 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { RangeFieldControlledExample } from './examples/controlled.tsx';
-import { RangeFieldDefaultExample } from './examples/default.tsx';
-import { RangeFieldDisabledExample } from './examples/disabled.tsx';
-import { RangeFieldLabelsExample } from './examples/labels.tsx';
-import { RangeFieldMarkersExample } from './examples/markers.tsx';
-import { RangeFieldRangeExample } from './examples/range.tsx';
-import { RangeFieldValueDisplayExample } from './examples/value-display.tsx';
-import {
-  RangeFieldPlaygroundExample,
-  type RangeFieldPlaygroundExampleProps
-} from './examples/range-field-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { RangeFieldPlaygroundExample } from './examples/range-field-playground.tsx';
 import { RangeField } from './src/index.tsx';
 
 export default getMeta({ title: 'components/RangeField' });
 
 export const Props = getComponentDocs(RangeField);
 
-export const Default = getStory(RangeFieldDefaultExample);
-export const Controlled = getStory(RangeFieldControlledExample);
-export const Disabled = getStory(RangeFieldDisabledExample);
-export const Labels = getStory(RangeFieldLabelsExample);
-export const ValueDisplay = getStory(RangeFieldValueDisplayExample);
-export const Markers = getStory(RangeFieldMarkersExample);
-export const Range = getStory(RangeFieldRangeExample);
+export const Examples = getExamples('./examples');
 
-export const Playground = {
-  render: (args: RangeFieldPlaygroundExampleProps) => <RangeFieldPlaygroundExample {...args} />,
+export const Playground = getStory(RangeFieldPlaygroundExample, {
   args: {
     label: 'Volume',
     description: '',
@@ -60,4 +43,4 @@ export const Playground = {
     thumbLabels: { control: 'object', description: 'Accessible labels for each thumb' },
     isDisabled: { control: 'boolean', description: 'Disable every thumb' }
   }
-};
+});
