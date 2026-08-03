@@ -5,7 +5,8 @@ import {
   type TooltipProps as RACTooltipProps,
   TooltipTrigger as RACTooltipTrigger,
   type TooltipTriggerComponentProps as RACTooltipTriggerProps,
-  OverlayArrow as RACOverlayArrow
+  OverlayArrow as RACOverlayArrow,
+  composeRenderProps
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import styles from './index.module.css';
@@ -52,7 +53,9 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
       elevation="overlay"
       data-noarrow={hideArrow}
       {...rest}
-      className={cx(styles.tooltip, className)}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.tooltip, value);
+      })}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       {children}

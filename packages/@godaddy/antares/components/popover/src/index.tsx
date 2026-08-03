@@ -7,7 +7,8 @@ import {
   type PopoverProps as RACPopoverProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
-  OverlayArrow as RACOverlayArrow
+  OverlayArrow as RACOverlayArrow,
+  composeRenderProps
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Button } from '#components/button';
@@ -71,8 +72,12 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
       containerPadding={containerPadding}
       {...rest}
       as={RACPopover}
-      style={{ ...style, '--_container-padding': `${containerPadding}px` } as CSSProperties}
-      className={cx(styles.popover, className)}
+      style={composeRenderProps(style, function composeStyle(value) {
+        return { ...value, '--_container-padding': `${containerPadding}px` } as CSSProperties;
+      })}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.popover, value);
+      })}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       <Flex

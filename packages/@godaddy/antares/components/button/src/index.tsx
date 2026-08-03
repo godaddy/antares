@@ -6,7 +6,8 @@ import {
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText
+  Text as RACText,
+  composeRenderProps
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import styles from './index.module.css';
@@ -41,14 +42,11 @@ interface BaseButtonProps {
   /** The size of the button. */
   size?: ButtonVariantProps['size'];
 
-  /** Additional class names to apply to the button. */
-  className?: string;
-
   /** The content of the button. */
   children?: React.ReactNode;
 }
 
-export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'className' | 'children' | 'isPending'> {}
+export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
 /**
  * The Button component allows users to trigger an action.
@@ -59,13 +57,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const { variant, size, className, children, ...rest } = props;
 
   return (
-    <RACButton {...rest} ref={ref} className={buttonVariants({ variant, size, className })}>
+    <RACButton
+      {...rest}
+      ref={ref}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return buttonVariants({ variant, size, className: value });
+      })}
+    >
       {typeof children === 'string' ? <RACText>{children}</RACText> : children}
     </RACButton>
   );
 });
 
-export interface LinkButtonProps extends BaseButtonProps, Omit<RACLinkProps, 'className' | 'children'> {
+export interface LinkButtonProps extends BaseButtonProps, Omit<RACLinkProps, 'children'> {
   /** Whether the link is external. It will show an external icon if true. */
   isExternal?: boolean;
 }
@@ -82,7 +86,9 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
     <RACLink
       {...rest}
       ref={ref}
-      className={buttonVariants({ variant, size, className })}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return buttonVariants({ variant, size, className: value });
+      })}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >

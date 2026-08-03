@@ -3,7 +3,8 @@ import {
   RadioField as RACRadioField,
   type RadioFieldProps as RACRadioFieldProps,
   RadioGroup as RACRadioGroup,
-  type RadioGroupProps as RACRadioGroupProps
+  type RadioGroupProps as RACRadioGroupProps,
+  composeRenderProps
 } from 'react-aria-components';
 import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
@@ -11,12 +12,9 @@ import styles from './index.module.css';
 import type { ReactNode } from 'react';
 import { cx } from 'cva';
 
-export interface RadioProps extends RACRadioFieldProps, FlexOwnProps {
+export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOwnProps {
   /** Label text for the radio button */
   children: ReactNode;
-
-  /** Additional class names applied to the root element. */
-  className?: string;
 }
 
 /**
@@ -25,10 +23,10 @@ export interface RadioProps extends RACRadioFieldProps, FlexOwnProps {
  * @param props - {@link RadioProps}
  * @returns Radio button with indicator and label
  */
-export function Radio({ className, children, ...props }: RadioProps) {
+export function Radio({ children, ...props }: RadioProps) {
   return (
     <Flex {...props} as={RACRadioField}>
-      <Flex as={RACRadioButton} alignItems="center" gap="sm" className={cx(styles.radio, className)}>
+      <Flex as={RACRadioButton} alignItems="center" gap="sm" className={styles.radio}>
         <div className={styles.indicator} />
         {children}
       </Flex>
@@ -57,7 +55,14 @@ export function RadioGroup({
   ...props
 }: RadioGroupProps) {
   return (
-    <Field as={RACRadioGroup} orientation={orientation} {...props} className={cx(styles.radioGroup, className)}>
+    <Field
+      as={RACRadioGroup}
+      orientation={orientation}
+      {...props}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.radioGroup, value);
+      })}
+    >
       <FieldLabel isRequired={props.isRequired}>{label}</FieldLabel>
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}

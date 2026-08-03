@@ -1,5 +1,6 @@
 import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
+import { composeRenderProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
@@ -42,6 +43,7 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
   const {
     style,
     className,
+    as,
     display = 'grid',
     areas,
     columns,
@@ -61,26 +63,35 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
 
   const displayClass = display === 'inline-grid' ? styles.inlineGrid : styles.grid;
 
-  const mergedStyle = mergeObjects(
-    {
-      gridTemplateAreas: gridTemplateAreasValue(areas),
-      gridTemplateColumns: columns,
-      gridTemplateRows: rows,
-      gridAutoColumns: autoColumns,
-      gridAutoRows: autoRows,
-      gridAutoFlow: autoFlow,
-      justifyContent,
-      justifyItems,
-      alignContent,
-      alignItems,
-      gap: toSpacingVar(gap),
-      columnGap: toSpacingVar(columnGap),
-      rowGap: toSpacingVar(rowGap)
-    } satisfies CSSProperties,
-    style
-  );
+  const computedStyle = {
+    gridTemplateAreas: gridTemplateAreasValue(areas),
+    gridTemplateColumns: columns,
+    gridTemplateRows: rows,
+    gridAutoColumns: autoColumns,
+    gridAutoRows: autoRows,
+    gridAutoFlow: autoFlow,
+    justifyContent,
+    justifyItems,
+    alignContent,
+    alignItems,
+    gap: toSpacingVar(gap),
+    columnGap: toSpacingVar(columnGap),
+    rowGap: toSpacingVar(rowGap)
+  } satisfies CSSProperties;
+  const mergedStyle =
+    typeof style === 'function'
+      ? composeRenderProps(style, function composeStyle(value) {
+          return mergeObjects(computedStyle, value);
+        })
+      : mergeObjects(computedStyle, style);
+  const mergedClassName =
+    typeof className === 'function'
+      ? composeRenderProps(className, function composeClassName(value) {
+          return cx(displayClass, value);
+        })
+      : cx(displayClass, className);
 
-  return <Box {...rest} ref={ref} className={cx(displayClass, className)} style={mergedStyle} />;
+  return <Box {...rest} as={as} ref={ref} className={mergedClassName as string} style={mergedStyle as CSSProperties} />;
 }) as PolymorphicComponent<GridOwnProps>;
 
 /**

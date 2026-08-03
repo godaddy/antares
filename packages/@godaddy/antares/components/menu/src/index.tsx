@@ -14,7 +14,8 @@ import {
   type MenuTriggerProps as RACMenuTriggerProps,
   type Selection as RACSelection,
   type SelectionMode as RACSelectionMode,
-  type SubmenuTriggerProps as RACSubmenuTriggerProps
+  type SubmenuTriggerProps as RACSubmenuTriggerProps,
+  composeRenderProps
 } from 'react-aria-components';
 import styles from './index.module.css';
 import React, { type ComponentPropsWithoutRef } from 'react';
@@ -123,7 +124,12 @@ export interface MenuProps<T extends object>
 /** Main menu container with keyboard navigation and selection support */
 export function Menu<T extends object>({ className, size = 'md', ...props }: MenuProps<T>) {
   return (
-    <RACMenu {...props} className={cx(styles.menu, styles[`size-${size}`], className)}>
+    <RACMenu
+      {...props}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.menu, styles[`size-${size}`], value);
+      })}
+    >
       {props.children}
     </RACMenu>
   );
@@ -159,7 +165,13 @@ export function MenuItem(props: MenuItemProps) {
       : extractIconSlots(children);
 
   return (
-    <RACMenuItem {...restProps} textValue={textValue} className={cx(styles.item, props.className)}>
+    <RACMenuItem
+      {...restProps}
+      textValue={textValue}
+      className={composeRenderProps(props.className, function composeClassName(value) {
+        return cx(styles.item, value);
+      })}
+    >
       {({ hasSubmenu, isSelected, selectionMode }) => (
         <>
           {isSelected &&

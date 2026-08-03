@@ -8,6 +8,7 @@ import { Box } from '#components/layout/box';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { Pagination } from '#components/pagination';
 import { cx } from 'cva';
+import { composeRenderProps } from 'react-aria-components';
 import { useNavigationControls, type UseNavigationControlsProps } from './use-navigation-controls.tsx';
 import { useAccessibility } from './use-accessibility.tsx';
 import styles from './index.module.css';
@@ -151,12 +152,16 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
         prevButtonProps={{
           ...prevButtonProps,
           onPress: onPrevButtonPress,
-          className: cx(styles.prev, prevButtonProps?.className, atFirstSlide && styles.hide)
+          className: composeRenderProps(prevButtonProps?.className, function composePreviousButtonClassName(value) {
+            return cx(styles.prev, value, atFirstSlide && styles.hide);
+          })
         }}
         nextButtonProps={{
           ...nextButtonProps,
           onPress: onNextButtonPress,
-          className: cx(styles.next, nextButtonProps?.className, atLastSlide && styles.hide)
+          className: composeRenderProps(nextButtonProps?.className, function composeNextButtonClassName(value) {
+            return cx(styles.next, value, atLastSlide && styles.hide);
+          })
         }}
         prevButtonRef={prevButtonRef}
         nextButtonRef={nextButtonRef}

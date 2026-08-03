@@ -4,13 +4,14 @@ import { cx } from 'cva';
 import {
   ProgressBar as RACProgressBar,
   type ProgressBarProps as RACProgressBarProps,
-  Label as RACLabel
+  Label as RACLabel,
+  composeRenderProps
 } from 'react-aria-components';
 import styles from './index.module.css';
 import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 
-export interface ProgressBarProps extends Omit<RACProgressBarProps, 'className' | 'children' | 'isIndeterminate'> {
+export interface ProgressBarProps extends Omit<RACProgressBarProps, 'children' | 'isIndeterminate'> {
   /** Visible label text rendered above the track. */
   label?: string;
 
@@ -22,9 +23,6 @@ export interface ProgressBarProps extends Omit<RACProgressBarProps, 'className' 
 
   /** Color intent of the fill. @default 'default' */
   status?: 'default' | 'success' | 'warning' | 'critical';
-
-  /** Additional class names to apply to the progress bar. */
-  className?: string;
 }
 
 /**
@@ -56,7 +54,9 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
       direction="column"
       gap="xs"
       ref={ref}
-      className={cx(styles.progressBar, className)}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.progressBar, value);
+      })}
       data-size={size}
       data-status={status}
       aria-describedby={describedBy}

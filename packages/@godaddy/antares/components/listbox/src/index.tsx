@@ -4,15 +4,13 @@ import {
   type ListBoxProps as RACListBoxProps,
   ListBoxItem as RACListBoxItem,
   type ListBoxItemProps as RACListBoxItemProps,
-  type Key as RACKey
+  type Key as RACKey,
+  composeRenderProps
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
-export interface ListBoxProps<T> extends Omit<RACListBoxProps<T>, 'className'>, FlexOwnProps {
-  /** Additional class names applied to the listbox root. */
-  className?: string;
-}
+export interface ListBoxProps<T> extends RACListBoxProps<T>, FlexOwnProps {}
 
 /**
  * Antares ListBox. A selectable collection of items built on React Aria's ListBox,
@@ -38,10 +36,7 @@ export function ListBox<T>(props: ListBoxProps<T>) {
   );
 }
 
-export interface ListBoxItemProps extends Omit<RACListBoxItemProps, 'className'>, FlexOwnProps {
-  /** Additional class names applied to the option. */
-  className?: string;
-}
+export interface ListBoxItemProps extends RACListBoxItemProps, FlexOwnProps {}
 
 /**
  * One option inside a ListBox. Auto-derives `textValue` from string children when not
@@ -55,7 +50,9 @@ export function ListBoxItem(props: ListBoxItemProps) {
       padding="md"
       {...rest}
       as={RACListBoxItem}
-      className={cx(styles.item, className)}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.item, value);
+      })}
     >
       {children}
     </Flex>

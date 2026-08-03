@@ -1,5 +1,6 @@
 import { cx } from 'cva';
 import { forwardRef, type CSSProperties, type ElementType } from 'react';
+import { composeRenderProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { toRoundingVar, toSpacingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
@@ -135,38 +136,47 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     ...rest
   } = props;
 
-  const mergedStyle: CSSProperties = mergeObjects(
-    {
-      padding: toSpacingVar(padding),
-      paddingBlock: toSpacingVar(blockPadding),
-      paddingBlockStart: toSpacingVar(blockPaddingStart),
-      paddingBlockEnd: toSpacingVar(blockPaddingEnd),
-      paddingInline: toSpacingVar(inlinePadding),
-      paddingInlineStart: toSpacingVar(inlinePaddingStart),
-      paddingInlineEnd: toSpacingVar(inlinePaddingEnd),
-      alignSelf,
-      justifySelf,
-      order,
-      flex,
-      flexGrow,
-      flexShrink,
-      flexBasis,
-      gridArea,
-      gridColumnStart,
-      gridColumnEnd,
-      gridRowStart,
-      gridRowEnd,
-      borderRadius: toRoundingVar(rounding)
-    } satisfies CSSProperties,
-    style
-  );
+  const computedStyle = {
+    padding: toSpacingVar(padding),
+    paddingBlock: toSpacingVar(blockPadding),
+    paddingBlockStart: toSpacingVar(blockPaddingStart),
+    paddingBlockEnd: toSpacingVar(blockPaddingEnd),
+    paddingInline: toSpacingVar(inlinePadding),
+    paddingInlineStart: toSpacingVar(inlinePaddingStart),
+    paddingInlineEnd: toSpacingVar(inlinePaddingEnd),
+    alignSelf,
+    justifySelf,
+    order,
+    flex,
+    flexGrow,
+    flexShrink,
+    flexBasis,
+    gridArea,
+    gridColumnStart,
+    gridColumnEnd,
+    gridRowStart,
+    gridRowEnd,
+    borderRadius: toRoundingVar(rounding)
+  } satisfies CSSProperties;
+  const mergedStyle =
+    typeof style === 'function'
+      ? composeRenderProps(style, function composeStyle(value) {
+          return mergeObjects(computedStyle, value);
+        })
+      : mergeObjects(computedStyle, style);
+  const mergedClassName =
+    typeof className === 'function'
+      ? composeRenderProps(className, function composeClassName(value) {
+          return cx(styles.box, value);
+        })
+      : cx(styles.box, className);
 
   return (
     <Component
       {...rest}
       ref={ref}
-      className={cx(styles.box, className)}
-      style={mergedStyle}
+      className={mergedClassName as string}
+      style={mergedStyle as CSSProperties}
       data-elevation={elevation}
     />
   );

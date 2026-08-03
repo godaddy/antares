@@ -8,16 +8,14 @@ import {
   type CalendarProps as RACCalendarProps,
   RangeCalendar as RACRangeCalendar,
   type RangeCalendarProps as RACRangeCalendarProps,
-  type CalendarGridProps as RACCalendarGridProps
+  type CalendarGridProps as RACCalendarGridProps,
+  composeRenderProps
 } from 'react-aria-components';
 import { MonthHeading, NavButton } from './CalendarHeader.tsx';
 import styles from './index.module.css';
 import { cx } from 'cva';
 
-export interface CalendarProps extends FlexOwnProps, Omit<RACCalendarProps<CalendarDate>, 'className'> {
-  /** Additional class names merged onto the calendar root. */
-  className?: string;
-
+export interface CalendarProps extends FlexOwnProps, RACCalendarProps<CalendarDate> {
   /** Number of month grids to display. @default 1 (2 for `RangeCalendar`) */
   pageCount?: number;
 }
@@ -44,7 +42,9 @@ export function Calendar(props: CalendarProps) {
       {...rest}
       visibleDuration={{ months: pageCount }}
       as={RACCalendar<CalendarDate>}
-      className={cx(styles.calendar, className)}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.calendar, value);
+      })}
     >
       <CalendarBody type="single" pageCount={pageCount} />
     </Flex>
@@ -54,10 +54,7 @@ export function Calendar(props: CalendarProps) {
 export interface RangeCalendarProps
   extends FlexOwnProps,
     Pick<CalendarProps, 'pageCount'>,
-    Omit<RACRangeCalendarProps<CalendarDate>, 'className'> {
-  /** Additional class names merged onto the calendar root. */
-  className?: string;
-}
+    RACRangeCalendarProps<CalendarDate> {}
 
 /**
  * Standalone range calendar grid built on React Aria's RangeCalendar. Date-only (`CalendarDate`).
@@ -81,7 +78,9 @@ export function RangeCalendar(props: RangeCalendarProps) {
       {...rest}
       visibleDuration={{ months: pageCount }}
       as={RACRangeCalendar<CalendarDate>}
-      className={cx(styles.calendar, className)}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.calendar, value);
+      })}
     >
       <CalendarBody type="range" pageCount={pageCount} />
     </Flex>

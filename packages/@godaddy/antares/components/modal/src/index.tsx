@@ -7,7 +7,8 @@ import {
   Dialog as RACDialog,
   type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
-  type DialogTriggerProps as RACDialogTriggerProps
+  type DialogTriggerProps as RACDialogTriggerProps,
+  composeRenderProps
 } from 'react-aria-components';
 import { Text, type TextProps } from '#components/text';
 import { Flex, type FlexProps } from '#components/layout/flex';
@@ -26,7 +27,7 @@ export interface ModalProps extends RACDialogProps {
   overlayProps?: RACModalOverlayProps;
 
   /** Additional props to pass to the modal container. */
-  containerProps?: Omit<FlexProps, 'as'>;
+  containerProps?: Omit<FlexProps<typeof RACModal>, 'as'>;
 
   /** Additional class name for the modal. */
   className?: string;
@@ -104,9 +105,17 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
       {...overlayProps}
       isDismissable={isDismissable}
       padding="md"
-      className={cx(styles.overlay, overlayProps?.className)}
+      className={composeRenderProps(overlayProps?.className, function composeOverlayClassName(value) {
+        return cx(styles.overlay, value);
+      })}
     >
-      <Flex as={RACModal} {...containerProps} className={cx(styles.modalContainer, containerProps?.className)}>
+      <Flex
+        as={RACModal}
+        {...containerProps}
+        className={composeRenderProps(containerProps?.className, function composeContainerClassName(value) {
+          return cx(styles.modalContainer, value);
+        })}
+      >
         <Flex
           as={RACDialog}
           elevation="overlay"
@@ -156,7 +165,14 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
             ) : null}
           </Flex>
 
-          <Button aria-label="Close" slot="close" {...closeProps} className={cx(styles.close, closeProps?.className)}>
+          <Button
+            aria-label="Close"
+            slot="close"
+            {...closeProps}
+            className={composeRenderProps(closeProps?.className, function composeCloseClassName(value) {
+              return cx(styles.close, value);
+            })}
+          >
             <Icon icon="x" />
           </Button>
         </Flex>

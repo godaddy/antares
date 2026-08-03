@@ -4,7 +4,8 @@ import {
   CheckboxField as RACCheckboxField,
   type CheckboxFieldProps as RACCheckboxFieldProps,
   CheckboxGroup as RACCheckboxGroup,
-  type CheckboxGroupProps as RACCheckboxGroupProps
+  type CheckboxGroupProps as RACCheckboxGroupProps,
+  composeRenderProps
 } from 'react-aria-components';
 import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
@@ -12,7 +13,7 @@ import { Icon } from '#components/icon';
 import { cx } from 'cva';
 import styles from './index.module.css';
 
-export interface CheckboxProps extends RACCheckboxFieldProps, FlexOwnProps {
+export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, FlexOwnProps {
   /** The content of the checkbox label. */
   children?: ReactNode;
 }
@@ -23,10 +24,10 @@ export interface CheckboxProps extends RACCheckboxFieldProps, FlexOwnProps {
  * @param props - {@link CheckboxProps}
  */
 export function Checkbox(props: CheckboxProps) {
-  const { children, className, ...rest } = props;
+  const { children, ...rest } = props;
   return (
     <Flex {...rest} as={RACCheckboxField}>
-      <Flex as={RACCheckboxButton} className={cx(styles.checkbox, className)}>
+      <Flex as={RACCheckboxButton} className={styles.checkbox}>
         {function renderCheckbox({ isSelected, isIndeterminate }) {
           return (
             <Flex alignItems="center" gap="sm">
@@ -73,7 +74,13 @@ export function CheckboxGroup({
   ...rest
 }: CheckboxGroupProps) {
   return (
-    <Field as={RACCheckboxGroup} {...rest} className={cx(styles.checkboxGroup, className)}>
+    <Field
+      as={RACCheckboxGroup}
+      {...rest}
+      className={composeRenderProps(className, function composeClassName(value) {
+        return cx(styles.checkboxGroup, value);
+      })}
+    >
       <FieldLabel isRequired={rest.isRequired}>{label}</FieldLabel>
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}

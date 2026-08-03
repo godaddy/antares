@@ -1,5 +1,6 @@
 import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
+import { composeRenderProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
 import { mergeObjects } from '../../../../utils/objects.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
@@ -30,6 +31,7 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
   const {
     style,
     className,
+    as,
     display = 'flex',
     direction = 'row',
     justifyContent,
@@ -46,19 +48,28 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
   const columnClass = direction === 'column' ? styles.column : undefined;
   const flexDirection = direction === 'row' || direction === 'column' ? undefined : direction;
 
-  const mergedStyle = mergeObjects(
-    {
-      flexDirection,
-      justifyContent,
-      alignContent,
-      alignItems,
-      flexWrap: wrap,
-      gap: toSpacingVar(gap),
-      columnGap: toSpacingVar(columnGap),
-      rowGap: toSpacingVar(rowGap)
-    } satisfies CSSProperties,
-    style
-  );
+  const computedStyle = {
+    flexDirection,
+    justifyContent,
+    alignContent,
+    alignItems,
+    flexWrap: wrap,
+    gap: toSpacingVar(gap),
+    columnGap: toSpacingVar(columnGap),
+    rowGap: toSpacingVar(rowGap)
+  } satisfies CSSProperties;
+  const mergedStyle =
+    typeof style === 'function'
+      ? composeRenderProps(style, function composeStyle(value) {
+          return mergeObjects(computedStyle, value);
+        })
+      : mergeObjects(computedStyle, style);
+  const mergedClassName =
+    typeof className === 'function'
+      ? composeRenderProps(className, function composeClassName(value) {
+          return cx(displayClass, columnClass, value);
+        })
+      : cx(displayClass, columnClass, className);
 
-  return <Box {...rest} ref={ref} className={cx(displayClass, columnClass, className)} style={mergedStyle} />;
+  return <Box {...rest} as={as} ref={ref} className={mergedClassName as string} style={mergedStyle as CSSProperties} />;
 }) as PolymorphicComponent<FlexOwnProps>;
