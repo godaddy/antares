@@ -1,9 +1,13 @@
-import { TextField as RACTextField } from 'react-aria-components';
 import { Field, FieldDescription, FieldGroup, FieldInput, FieldLabel, FieldSelect, SelectItem } from '@godaddy/antares';
 
+/**
+ * A telephone number input paired with a country-code select.
+ * @title Telephone field
+ * @order 5
+ */
 export function TelephoneFieldExample() {
   return (
-    <Field as={RACTextField} autoComplete="tel-national" inputMode="tel" type="tel">
+    <Field autoComplete="tel-national" inputMode="tel" type="tel">
       <FieldLabel>Phone number</FieldLabel>
       <FieldGroup>
         <FieldSelect aria-label="Country code" defaultValue="us">

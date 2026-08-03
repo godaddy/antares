@@ -3,19 +3,13 @@ import { renderToString } from 'react-dom/server';
 import { FieldGroupTrailingControlExample } from '../examples/trailing-control';
 import { FieldGroupLeadingControlExample } from '../examples/leading-control';
 import { FieldGroupIconAccessoriesExample } from '../examples/icon-accessories';
+import { TelephoneFieldExample } from '../examples/telephone';
 
 describe('@godaddy/antares', function antares() {
   describe('#FieldGroup', function fieldGroup() {
     describe('#LeadingControl', function leadingControl() {
       it('renders', function renders() {
         const result = renderToString(<FieldGroupLeadingControlExample />);
-        expect(result).toMatchSnapshot();
-      });
-    });
-
-    describe('#Telephone', function telephone() {
-      it('renders', function renders() {
-        const result = renderToString(<TelephoneFieldExample />);
         expect(result).toMatchSnapshot();
       });
     });
@@ -30,6 +24,13 @@ describe('@godaddy/antares', function antares() {
     describe('#IconAccessories', function iconAccessories() {
       it('renders', function renders() {
         const result = renderToString(<FieldGroupIconAccessoriesExample />);
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    describe('#Telephone', function telephone() {
+      it('renders', function renders() {
+        const result = renderToString(<TelephoneFieldExample />);
         expect(result).toMatchSnapshot();
       });
     });

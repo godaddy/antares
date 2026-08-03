@@ -4,6 +4,7 @@ import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default';
 import { FieldGroupIconAccessoriesExample } from '../examples/icon-accessories';
 import { FieldGroupLeadingControlExample } from '../examples/leading-control';
+import { TelephoneFieldExample } from '../examples/telephone';
 import { FieldGroupTrailingControlExample } from '../examples/trailing-control';
 
 describe('@godaddy/antares', function antares() {
@@ -30,11 +31,6 @@ describe('@godaddy/antares', function antares() {
       await expect(container).toMatchScreenshot('leading-control');
     });
 
-    it('telephone example', async function telephoneRender() {
-      const { container } = await render(<TelephoneFieldExample />);
-      await expect(container).toMatchScreenshot('telephone');
-    });
-
     it('trailing control example', async function trailingControlRender() {
       const { container } = await render(<FieldGroupTrailingControlExample />);
       await expect(container).toMatchScreenshot('trailing-control');
@@ -53,6 +49,11 @@ describe('@godaddy/antares', function antares() {
     it('small size example', async function sizeSmRender() {
       const { container } = await render(<FieldGroupIconAccessoriesExample size="sm" />);
       await expect(container).toMatchScreenshot('size-sm');
+    });
+
+    it('telephone example', async function telephoneRender() {
+      const { container } = await render(<TelephoneFieldExample />);
+      await expect(container).toMatchScreenshot('telephone');
     });
   });
 });
