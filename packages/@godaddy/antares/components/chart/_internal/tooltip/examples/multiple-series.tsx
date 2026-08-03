@@ -2,6 +2,10 @@ import { Tooltip, type TooltipProps } from '../src/index.tsx';
 import type { TooltipData } from '@visx/xychart';
 import type { DataPoint } from '../../../types.ts';
 
+/**
+ * Tooltip with multiple series; all series at the same X position are shown together.
+ * @order 2
+ */
 export function MultipleSeriesExample(props: Partial<TooltipProps>) {
   const defaultTooltipData: TooltipData<DataPoint> = {
     datumByKey: {

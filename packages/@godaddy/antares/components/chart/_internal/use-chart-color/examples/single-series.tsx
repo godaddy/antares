@@ -9,6 +9,10 @@ function SeriesBar() {
   );
 }
 
+/**
+ * One series using the first chart color.
+ * @order 1
+ */
 export function SingleSeriesExample() {
   const series = [{ value: 100 }];
 

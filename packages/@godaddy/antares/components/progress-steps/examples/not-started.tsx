@@ -1,6 +1,10 @@
 import { ProgressSteps, ProgressStep } from '@godaddy/antares';
 
-/** No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current. */
+/**
+ * No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
+ * @title Not started
+ * @order 2
+ */
 export function NotStartedExample() {
   return (
     <ProgressSteps aria-label="Checkout">

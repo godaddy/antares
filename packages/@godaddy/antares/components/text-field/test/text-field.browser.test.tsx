@@ -2,7 +2,7 @@ import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { TextFieldAdornmentsExample } from '../examples/adornments';
-import { TextFieldBasic } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { TextFieldControlledExample } from '../examples/controlled';
 import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';
@@ -12,7 +12,7 @@ describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
     describe('#basic', function basic() {
       it('renders label and textbox with placeholder', async function renders() {
-        const { locator } = await render(<TextFieldBasic />);
+        const { locator } = await render(<DefaultExample />);
         const textbox = locator.getByRole('textbox', { name: /name/i });
 
         assume(locator.getByText('Name').element()).exists();

@@ -1,9 +1,8 @@
 'use client';
-import { getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { MixedIdsExample } from './examples/mixed-ids.tsx';
+import { getExamples, getMeta } from '@bento/storybook-addon-helpers';
 
 export default getMeta({
   title: 'components/Chart/useNormalizedSeries'
 });
 
-export const MixedIds = getStory(MixedIdsExample);
+export const Examples = getExamples('./examples');

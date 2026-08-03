@@ -2,6 +2,10 @@ import { Tooltip, type TooltipProps } from '../src/index.tsx';
 import type { TooltipData } from '@visx/xychart';
 import type { DataPoint } from '../../../types.ts';
 
+/**
+ * Use the `showArrow` prop to set whether the tooltip arrow is visible or not.
+ * @order 3
+ */
 export function ArrowExample(props: Partial<TooltipProps>) {
   const defaultTooltipData: TooltipData<DataPoint> = {
     datumByKey: {

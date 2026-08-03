@@ -1,5 +1,9 @@
 import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';
 
+/**
+ * A metric with a title, info tooltip, value, and description.
+ * @order 1
+ */
 export function DefaultExample(props: Partial<MetricsLockupProps> = {}) {
   return (
     <MetricsLockup

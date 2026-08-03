@@ -1,5 +1,9 @@
 import { Flex, LinkButton } from '@godaddy/antares';
 
+/**
+ * A sidebar layout demonstrating Flex child props (`flexShrink`, `flexGrow`).
+ * @order 7
+ */
 export function SidebarExample() {
   return (
     <Flex rounding="reduced">

@@ -7,6 +7,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
+// Injects `'use client'` into component example modules at build time, so the
+// example source files stay free of the directive (see lib/use-client-loader.cjs).
+const useClientLoader = join(__dirname, 'lib/use-client-loader.cjs');
+const EXAMPLE_MODULE = /[\\/]components[\\/].+[\\/]examples[\\/][^\\/]+\.tsx$/;
+
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -23,6 +28,11 @@ const config = {
       '@storybook/addon-docs/blocks': './lib/storybook-bridge/blocks.tsx',
       '@storybook/react-vite': './lib/storybook-bridge/react-vite.ts',
       '@bento/storybook-addon-helpers': '@bento/storybook-addon-helpers/runtime'
+    },
+    rules: {
+      '**/components/**/examples/*.tsx': {
+        loaders: [useClientLoader]
+      }
     }
   },
   ...(!isGitHubPages && {
@@ -45,6 +55,12 @@ const config = {
       '@storybook/react-vite': join(__dirname, 'lib/storybook-bridge/react-vite.ts'),
       '@bento/storybook-addon-helpers$': '@bento/storybook-addon-helpers/runtime'
     };
+
+    config.module.rules.push({
+      test: EXAMPLE_MODULE,
+      enforce: 'pre',
+      use: [useClientLoader]
+    });
 
     return config;
   }

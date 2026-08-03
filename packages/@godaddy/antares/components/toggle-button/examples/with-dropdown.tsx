@@ -15,6 +15,11 @@ const ALIGNMENT_LABELS: Record<Alignment, string> = {
   right: 'Align Right'
 };
 
+/**
+ * Wrap a `ToggleButton` in a `MenuTrigger` to add sub-options to a group item.
+ * @title With Dropdown
+ * @order 8
+ */
 export function WithDropdownExample() {
   const [formatting, setFormatting] = useState<Set<string>>(new Set());
   const [[alignment], setAlignment] = useState<Set<Alignment>>(new Set(['left']));

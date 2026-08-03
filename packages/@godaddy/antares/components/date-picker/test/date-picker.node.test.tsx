@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { DatePickerDefaultExample } from '../examples/default.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { DateRangePickerExample } from '../examples/range.tsx';
 import { DatePickerMinMaxExample } from '../examples/min-max.tsx';
 import { DatePickerFormatOptionsExample } from '../examples/format-options.tsx';
@@ -8,7 +8,7 @@ import { DatePickerFormatOptionsExample } from '../examples/format-options.tsx';
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
     it('renders default example', function defaultExample() {
-      const html = renderToString(<DatePickerDefaultExample />);
+      const html = renderToString(<DefaultExample />);
       expect(html).toMatchSnapshot();
     });
 

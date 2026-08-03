@@ -1,6 +1,11 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * Choose the ticks yourself with `xTickValues`/`yTickValues`, or just ask for roughly how many you want with `xNumTicks`/`yNumTicks`.
+ * @title Custom ticks
+ * @order 15
+ */
 export function CustomTicksExample(props: Partial<LineChartProps>) {
   const series = [
     {

@@ -1,5 +1,10 @@
 import { Popover, PopoverTrigger, Button, Text } from '@godaddy/antares';
 
+/**
+ * Use `showCloseButton` to show a close button in the popover header. Use the `header` prop to render content alongside it.
+ * @title Close Button and Header
+ * @order 3
+ */
 export function WithCloseButtonExample() {
   return (
     <PopoverTrigger>

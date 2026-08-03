@@ -1,7 +1,11 @@
 import { BarChart } from '@godaddy/antares';
 import { cityTemperature } from '@visx/mock-data';
 
-export function BarChartExample(props: any) {
+/**
+ * You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+ * @order 1
+ */
+export function DefaultExample(props: any) {
   const series = [
     {
       id: 'new-york-series',

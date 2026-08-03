@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
-import { SelectBasic } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { SelectDisabledExample } from '../examples/disabled.tsx';
 import { SelectInvalidExample } from '../examples/invalid.tsx';
 import { SelectSizesExample } from '../examples/sizes.tsx';
@@ -11,7 +11,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#Select', function selectTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<SelectBasic />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('basic');
     });
 

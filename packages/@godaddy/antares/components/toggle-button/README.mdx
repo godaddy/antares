@@ -2,16 +2,7 @@
 title: ToggleButton
 description: Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.
 ---
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceDefault from './examples/default.tsx?raw';
-import SourceMultiple from './examples/multiple-selection.tsx?raw';
-import SourceControlled from './examples/controlled.tsx?raw';
-import SourceDisabled from './examples/disabled.tsx?raw';
-import SourceSizes from './examples/sizes.tsx?raw';
-import SourceIconAndText from './examples/icon-and-text.tsx?raw';
-import SourceIconOnly from './examples/icon-only.tsx?raw';
-import SourceWithDropdown from './examples/with-dropdown.tsx?raw';
-import SourceRTL from './examples/rtl.tsx?raw';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './toggle-button.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -22,74 +13,9 @@ import * as Stories from './toggle-button.stories.tsx';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Default (Single Selection)
-
-A `ToggleButton` toggles between selected and unselected. Wrap multiple inside a `ToggleButtonGroup` to link them with shared selection and keyboard navigation — `defaultSelectedKeys` sets the initial selection.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={SourceDefault} />
-
-### Multiple Selection
-
-Use `selectionMode="multiple"` to allow more than one item to be active at a time.
-
-<Story of={Stories.MultipleSelection} inline />
-<Source language="tsx" code={SourceMultiple} />
-
-### Controlled
-
-Use `selectedKeys` and `onSelectionChange` to control selection from parent state — `onSelectionChange` receives a `Set<string>` of the selected item `id` values.
-
-<Story of={Stories.Controlled} inline />
-<Source language="tsx" code={SourceControlled} />
-
-### Disabled States
-
-Disable the entire group with `isDisabled` on the container, or disable individual items with `isDisabled` on specific `ToggleButton` elements.
-
-<Story of={Stories.Disabled} inline />
-<Source language="tsx" code={SourceDisabled} />
-
-### Sizes
-
-Two sizes are available: `sm` and `md` (default).
-
-<Story of={Stories.Sizes} inline />
-<Source language="tsx" code={SourceSizes} />
-
-### Icon + Text
-
-Items can include an `Icon` alongside text for added visual context.
-
-<Story of={Stories.IconAndText} inline />
-<Source language="tsx" code={SourceIconAndText} />
-
-### Icon Only
-
-For compact layouts, items can contain only icons. Padding adjusts automatically to keep the button square — no extra prop required. Always provide an `aria-label` on each icon-only item so screen readers can identify the action.
-
-<Story of={Stories.IconOnly} inline />
-<Source language="tsx" code={SourceIconOnly} />
-
-### With Dropdown
-
-Wrap a `ToggleButton` in a `MenuTrigger` to add sub-options to a group item.
-
-<Story of={Stories.WithDropdown} inline />
-<Source language="tsx" code={SourceWithDropdown} />
-
-### RTL Direction
-
-The group follows the document's layout direction, detected automatically from the browser locale.
-
-<Story of={Stories.RTL} inline />
-<Source language="tsx" code={SourceRTL} />
+<Examples of={Stories.Examples} />
 
 ## Customization
 
@@ -242,3 +168,7 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
   <Icon icon="bulleted-list" />
 </ToggleButton>
 ```
+
+## Props
+
+<ArgTypes of={Stories.Props} />

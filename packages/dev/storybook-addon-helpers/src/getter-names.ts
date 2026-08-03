@@ -8,3 +8,4 @@ export const GET_STORY = 'getStory';
 export const GET_VARIANTS = 'getVariants';
 export const GET_COMPONENT_DOCS = 'getComponentDocs';
 export const GET_TYPE_DOCS = 'getTypeDocs';
+export const GET_EXAMPLES = 'getExamples';

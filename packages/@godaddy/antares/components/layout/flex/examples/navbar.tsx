@@ -1,5 +1,9 @@
 import { Flex, LinkButton, Button } from '@godaddy/antares';
 
+/**
+ * A common navigation bar pattern using space-between and nested Flex containers.
+ * @order 6
+ */
 export function NavbarExample() {
   return (
     <Flex as="nav" alignItems="center" justifyContent="space-between" padding="xs">

@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
@@ -14,7 +14,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#SegmentedController', function segmentedControllerTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<BasicExample />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('basic');
     });
 

@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
-import { NumberFieldBasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { NumberFieldControlledExample } from '../examples/controlled.tsx';
 import { NumberFieldInvalidExample } from '../examples/invalid.tsx';
 import { NumberFieldDisabledExample } from '../examples/disabled.tsx';
@@ -15,7 +15,7 @@ describe('@godaddy/antares', function antares() {
 
   describe('#NumberField', function numberFieldTests() {
     it('basic example', async function basicRender() {
-      const { container } = await render(<NumberFieldBasicExample />);
+      const { container } = await render(<DefaultExample />);
       await expect(container).toMatchScreenshot('basic');
     });
 

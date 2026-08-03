@@ -1,6 +1,11 @@
 import { Checkbox, CheckboxGroup } from '@godaddy/antares';
 
-export function CheckboxGroupBasic() {
+/**
+ * Group multiple checkboxes together with a shared label and description.
+ * @title Checkbox Group
+ * @order 3
+ */
+export function CheckboxGroupBasicExample() {
   return (
     <CheckboxGroup label="Favorite colors">
       <Checkbox value="blue">Blue</Checkbox>

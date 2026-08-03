@@ -16,6 +16,11 @@ function formatTooltipCurrency(d: DataPoint): string {
   return `$${(d.y as number).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+/**
+ * A real time series: date formatting on the X axis, currency on the Y axis, gridlines, and a nice-rounded domain.
+ * @title Bitcoin price
+ * @order 21
+ */
 export function BitcoinPriceExample(props: Partial<LineChartProps>) {
   const series = [
     {

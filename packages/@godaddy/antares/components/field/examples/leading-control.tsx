@@ -8,7 +8,12 @@ import {
   type FieldGroupProps
 } from '@godaddy/antares';
 
-export function FieldGroupLeadingControl(props: FieldGroupProps) {
+/**
+ * A field group with a leading control before the input area.
+ * @title Leading control
+ * @order 2
+ */
+export function FieldGroupLeadingControlExample(props: FieldGroupProps) {
   return (
     <Field>
       <FieldLabel>Phone</FieldLabel>

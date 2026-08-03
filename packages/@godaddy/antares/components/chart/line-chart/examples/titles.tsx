@@ -1,6 +1,10 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xTitle` and `yTitle` label what each axis actually measures, e.g. "Month" and "Temperature (°F)".
+ * @order 4
+ */
 export function TitlesExample(props: Partial<LineChartProps>) {
   const series = [
     {

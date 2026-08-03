@@ -1,4 +1,4 @@
-import { FieldGroupBasic, type FieldGroupBasicProps } from './basic';
+import { DefaultExample, type FieldGroupBasicProps } from './default';
 
 /** Props for the field group playground example. */
 export interface PlaygroundExampleProps extends FieldGroupBasicProps {}
@@ -9,5 +9,5 @@ export function PlaygroundExample({
   isDisabled = false,
   ...rest
 }: PlaygroundExampleProps) {
-  return <FieldGroupBasic label={label} isRequired={isRequired} isDisabled={isDisabled} {...rest} />;
+  return <DefaultExample label={label} isRequired={isRequired} isDisabled={isDisabled} {...rest} />;
 }

@@ -13,6 +13,11 @@ const series: SeriesItem[] = [
   { name: 'Profit', data: [5, 5, 5] }
 ];
 
+/**
+ * The first item provides an explicit `id` and is preserved as-is; the remaining two have no `id` and are filled with stable generated ones (`<prefix>-1`, `<prefix>-2`).
+ * @title Mixed ids
+ * @order 1
+ */
 export function MixedIdsExample() {
   const normalized = useNormalizedSeries(series);
 

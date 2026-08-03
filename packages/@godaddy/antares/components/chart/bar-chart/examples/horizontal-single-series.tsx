@@ -7,7 +7,12 @@ const largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distan
 
 const series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];
 
-export function BarChartHorizontalSingleSeriesExample(props: any) {
+/**
+ * `orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
+ * @title Horizontal single series
+ * @order 3
+ */
+export function HorizontalSingleSeriesExample(props: any) {
   return (
     <BarChart
       series={series}

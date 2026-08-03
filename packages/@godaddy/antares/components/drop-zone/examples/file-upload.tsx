@@ -5,6 +5,10 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf
 
 type Preview = { name: string; url?: string };
 
+/**
+ * A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+ * @order 3
+ */
 export function FileUploadExample() {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<Preview[]>([]);

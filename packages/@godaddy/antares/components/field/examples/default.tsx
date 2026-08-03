@@ -21,11 +21,12 @@ export interface FieldGroupBasicProps {
 /**
  * Composes the presentational field primitives (Field, FieldLabel, FieldGroup,
  * FieldDescription) into a minimal boxed field, showing how the group and its
- * position markers are assembled. The fill is a static placeholder — real value,
+ * position markers are assembled. The fill is a static placeholder - real value,
  * focus, and validation behavior is wired up by the field components (TextField,
  * NumberField, Select).
+ * @order 1
  */
-export function FieldGroupBasic({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {
+export function DefaultExample({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {
   return (
     <Field>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>

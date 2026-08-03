@@ -1,11 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/field-playground.tsx';
-import { getMeta, getStory, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { FieldGroupIconAccessories } from './examples/icon-accessories.tsx';
-import { FieldGroupTrailingControl } from './examples/trailing-control.tsx';
-import { FieldGroupLeadingControl } from './examples/leading-control.tsx';
-import { FieldGroupBasic } from './examples/basic.tsx';
-import { TelephoneFieldExample } from './examples/telephone.tsx';
+import { PlaygroundExample } from './examples/field-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { FieldGroup } from './src/index.tsx';
 
 export default getMeta({
@@ -14,8 +9,9 @@ export default getMeta({
 
 export const GroupProps = getComponentDocs(FieldGroup);
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Examples = getExamples('./examples');
+
+export const Playground = getStory(PlaygroundExample, {
   args: {
     label: 'Label',
     isRequired: false,
@@ -27,14 +23,4 @@ export const Playground = {
     isRequired: { control: 'boolean' },
     isDisabled: { control: 'boolean' }
   }
-};
-
-export const Basic = getStory(FieldGroupBasic);
-
-export const LeadingControl = getStory(FieldGroupLeadingControl);
-
-export const TrailingControl = getStory(FieldGroupTrailingControl);
-
-export const IconAccessories = getStory(FieldGroupIconAccessories);
-
-export const TelephoneField = getStory(TelephoneFieldExample);
+});

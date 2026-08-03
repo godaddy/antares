@@ -1,5 +1,9 @@
 import { Checkbox } from '@godaddy/antares';
 
-export function CheckboxBasic() {
+/**
+ * A single checkbox with a label.
+ * @order 1
+ */
+export function DefaultExample() {
   return <Checkbox>One checkbox</Checkbox>;
 }
