@@ -11,15 +11,13 @@ import { IconFallbackExample } from './examples/icon-fallback.tsx';
 import { ImageFallbackExample } from './examples/image-fallback.tsx';
 import { ImageExample } from './examples/image.tsx';
 import { ShapesExample } from './examples/shapes.tsx';
-import { Avatar, AvatarButton, AvatarFallback, AvatarImage } from './src/index.tsx';
+import { Avatar, AvatarButton } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Avatar'
 });
 
 export const Props = getComponentDocs(Avatar);
-export const AvatarImageProps = getComponentDocs(AvatarImage);
-export const AvatarFallbackProps = getComponentDocs(AvatarFallback);
 export const AvatarButtonProps = getComponentDocs(AvatarButton);
 
 export const Default = getStory(DefaultExample);

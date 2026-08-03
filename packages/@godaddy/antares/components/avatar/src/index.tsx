@@ -1,7 +1,8 @@
-import type { HTMLAttributes, ImgHTMLAttributes, ReactNode } from 'react';
-import { createContext, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
+import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { cx } from 'cva';
-import { Button as RACButton, type ButtonProps as RACButtonProps } from 'react-aria-components';
+import { Button as RACButton, Provider, TextContext, type ButtonProps as RACButtonProps } from 'react-aria-components';
+import { ImageContext } from '#components/image';
 import styles from './index.module.css';
 
 export type AvatarShape = 'circle' | 'square';
@@ -12,27 +13,7 @@ export type AvatarFigure = `figure${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
 
 export type AvatarEmphasis = 'primary' | 'subtle' | AvatarFigure;
 
-type AvatarLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';
-
-interface AvatarContextValue {
-  shape: AvatarShape;
-  size: AvatarSize;
-  emphasis: AvatarEmphasis;
-  loadingStatus: AvatarLoadingStatus;
-  setLoadingStatus: (status: AvatarLoadingStatus) => void;
-}
-
-const AvatarContext = createContext<AvatarContextValue | null>(null);
-
-function useAvatarContext(partName: string) {
-  const context = useContext(AvatarContext);
-
-  if (!context) {
-    throw new Error(`${partName} must be rendered inside an Avatar.`);
-  }
-
-  return context;
-}
+type AvatarImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';
 
 /** Props for the Avatar component. */
 export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria-label' | 'color'> {
@@ -49,7 +30,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria
    */
   emphasis?: AvatarEmphasis;
 
-  /** AvatarImage and/or AvatarFallback children. */
+  /** Image content with a Text monogram or Icon fallback. */
   children?: ReactNode;
 
   /** Additional class names applied to the avatar surface. */
@@ -59,25 +40,62 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria
 /**
  * A compact, non-interactive visual identifier for a person or organization.
  *
- * Compose AvatarImage and AvatarFallback to provide image loading and fallback content.
+ * Compose Image and Text to provide image loading and fallback content.
  *
  * @example
  * <Avatar>
- *   <AvatarImage src="/jamie.jpg" alt="Jamie Rivera" />
- *   <AvatarFallback>JR</AvatarFallback>
+ *   <Image src="/jamie.jpg" alt="Jamie Rivera" />
+ *   <Text>JR</Text>
  * </Avatar>
  *
  * @param props - {@link AvatarProps}
  */
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(props, ref) {
   const { shape = 'circle', size = 'md', emphasis = 'primary', className, children, ...rest } = props;
-  const [loadingStatus, setLoadingStatus] = useState<AvatarLoadingStatus>('idle');
-  const setStatus = useCallback(function setStatus(status: AvatarLoadingStatus) {
-    setLoadingStatus(status);
+  const [loadingStatus, setLoadingStatus] = useState<AvatarImageLoadingStatus>('idle');
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const setImageRef = useCallback(function setImageRef(node: HTMLImageElement | null) {
+    imageRef.current = node;
+
+    if (!node) {
+      setLoadingStatus('idle');
+    }
   }, []);
 
+  useLayoutEffect(
+    function synchronizeImageStatus() {
+      const image = imageRef.current;
+
+      if (!image?.src) {
+        setLoadingStatus('idle');
+      } else if (image.complete) {
+        setLoadingStatus(image.naturalWidth > 0 ? 'loaded' : 'error');
+      } else {
+        setLoadingStatus('loading');
+      }
+    },
+    [children]
+  );
+
   return (
-    <AvatarContext.Provider value={{ shape, size, emphasis, loadingStatus, setLoadingStatus: setStatus }}>
+    <Provider
+      values={[
+        [
+          ImageContext,
+          {
+            className: styles.image,
+            ref: setImageRef,
+            onLoad: function handleImageLoad() {
+              setLoadingStatus('loaded');
+            },
+            onError: function handleImageError() {
+              setLoadingStatus('error');
+            }
+          }
+        ],
+        [TextContext, { className: styles.fallback }]
+      ]}
+    >
       <span
         {...rest}
         ref={ref}
@@ -89,104 +107,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
       >
         {children}
       </span>
-    </AvatarContext.Provider>
-  );
-});
-
-/** Props for the AvatarImage component. */
-export interface AvatarImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'className'> {
-  /** Image source URL. */
-  src?: string;
-
-  /** Alternative text that describes the avatar image. */
-  alt: string;
-
-  /** Additional class names applied to the image. */
-  className?: string;
-}
-
-/**
- * The image content for an Avatar. It remains hidden until it has loaded; AvatarFallback
- * is shown meanwhile and after an image error.
- *
- * @param props - {@link AvatarImageProps}
- */
-export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(function AvatarImage(props, ref) {
-  const { className, src, onLoad, onError, ...rest } = props;
-  const { setLoadingStatus } = useAvatarContext('AvatarImage');
-  const imageRef = useRef<HTMLImageElement | null>(null);
-  const setImageRef = useCallback(
-    function setImageRef(node: HTMLImageElement | null) {
-      imageRef.current = node;
-
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref) {
-        ref.current = node;
-      }
-    },
-    [ref]
-  );
-
-  useEffect(
-    function synchronizeImageStatus() {
-      const image = imageRef.current;
-
-      if (!src) {
-        setLoadingStatus('idle');
-      } else if (image?.complete) {
-        setLoadingStatus(image.naturalWidth > 0 ? 'loaded' : 'error');
-      } else {
-        setLoadingStatus('loading');
-      }
-
-      return function resetImageStatus() {
-        setLoadingStatus('idle');
-      };
-    },
-    [setLoadingStatus, src]
-  );
-
-  return (
-    <img
-      {...rest}
-      ref={setImageRef}
-      src={src}
-      className={cx(styles.image, className)}
-      onLoad={function handleLoad(event) {
-        setLoadingStatus('loaded');
-        onLoad?.(event);
-      }}
-      onError={function handleError(event) {
-        setLoadingStatus('error');
-        onError?.(event);
-      }}
-    />
-  );
-});
-
-/** Props for the AvatarFallback component. */
-export interface AvatarFallbackProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'className'> {
-  /** Monogram, icon, or other fallback content. */
-  children?: ReactNode;
-
-  /** Additional class names applied to the fallback content. */
-  className?: string;
-}
-
-/**
- * Fallback content displayed until AvatarImage loads or when no image is available.
- *
- * @param props - {@link AvatarFallbackProps}
- */
-export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(function AvatarFallback(props, ref) {
-  const { className, children, ...rest } = props;
-  useAvatarContext('AvatarFallback');
-
-  return (
-    <span {...rest} ref={ref} className={cx(styles.fallback, className)}>
-      {children}
-    </span>
+    </Provider>
   );
 });
 

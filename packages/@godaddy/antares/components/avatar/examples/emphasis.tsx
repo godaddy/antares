@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, Flex, type AvatarEmphasis } from '@godaddy/antares';
+import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';
 
 const emphases: AvatarEmphasis[] = [
   'primary',
@@ -26,7 +26,7 @@ export function EmphasisExample() {
       {emphases.map(function renderAvatar(emphasis, index) {
         return (
           <Avatar key={emphasis} emphasis={emphasis}>
-            <AvatarFallback>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</AvatarFallback>
+            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>
           </Avatar>
         );
       })}

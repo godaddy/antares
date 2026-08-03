@@ -1,12 +1,5 @@
 import type { ReactEventHandler } from 'react';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  type AvatarEmphasis,
-  type AvatarShape,
-  type AvatarSize
-} from '@godaddy/antares';
+import { Avatar, Image, Text, type AvatarEmphasis, type AvatarShape, type AvatarSize } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   shape?: AvatarShape;
@@ -31,8 +24,8 @@ export function PlaygroundExample({
 }: PlaygroundExampleProps) {
   return (
     <Avatar emphasis={emphasis} shape={shape} size={size}>
-      {src ? <AvatarImage src={src} alt={alt} onError={onError} onLoad={onLoad} /> : null}
-      <AvatarFallback>{fallback}</AvatarFallback>
+      {src ? <Image src={src} alt={alt} onError={onError} onLoad={onLoad} /> : null}
+      <Text>{fallback}</Text>
     </Avatar>
   );
 }

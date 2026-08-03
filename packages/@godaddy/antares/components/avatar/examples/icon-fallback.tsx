@@ -1,11 +1,9 @@
-import { Avatar, AvatarFallback, Icon } from '@godaddy/antares';
+import { Avatar, Icon } from '@godaddy/antares';
 
 export function IconFallbackExample() {
   return (
     <Avatar>
-      <AvatarFallback>
-        <Icon icon="user" />
-      </AvatarFallback>
+      <Icon icon="user" />
     </Avatar>
   );
 }

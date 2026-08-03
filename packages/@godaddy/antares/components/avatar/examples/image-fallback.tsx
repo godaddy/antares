@@ -1,10 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@godaddy/antares';
+import { Avatar, Image, Text } from '@godaddy/antares';
 
 export function ImageFallbackExample() {
   return (
     <Avatar>
-      <AvatarImage src="/missing-avatar-image.png" alt="" />
-      <AvatarFallback>UT</AvatarFallback>
+      <Image src="/missing-avatar-image.png" alt="" />
+      <Text>UT</Text>
     </Avatar>
   );
 }

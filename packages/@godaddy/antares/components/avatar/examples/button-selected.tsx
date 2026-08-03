@@ -1,4 +1,4 @@
-import { Avatar, AvatarButton, AvatarFallback, Flex } from '@godaddy/antares';
+import { Avatar, AvatarButton, Flex, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
 const accounts = [
@@ -23,7 +23,7 @@ export function ButtonSelectedExample() {
             }}
           >
             <Avatar shape={account.id === 'acme' ? 'square' : 'circle'}>
-              <AvatarFallback>{account.initials}</AvatarFallback>
+              <Text>{account.initials}</Text>
             </Avatar>
           </AvatarButton>
         );

@@ -18,9 +18,9 @@ import * as Stories from './avatar.stories.tsx';
 
 ## Features
 
-- Compound `Avatar`, `AvatarImage`, and `AvatarFallback` parts
+- Composable `Avatar`, `Image`, and `Text` parts
 - Circle and rounded-square shapes at four named sizes
-- Image fallback handling that works with server rendering
+- Image fallback handling through Image loading state
 - Primary, subtle, and 15 categorical figure emphases
 - `AvatarButton` for accessible interactive avatar controls
 
@@ -37,18 +37,6 @@ npm install @godaddy/antares
 Configures the Avatar surface, including its shape, size, and color treatment.
 
 <ArgTypes of={Stories.Props} />
-
-### AvatarImage
-
-Renders the image content and supports native image props.
-
-<ArgTypes of={Stories.AvatarImageProps} />
-
-### AvatarFallback
-
-Renders monogram, icon, or other fallback content while an image is unavailable.
-
-<ArgTypes of={Stories.AvatarFallbackProps} />
 
 ### AvatarButton
 
@@ -67,14 +55,14 @@ Use an Avatar with a one- or two-character monogram when no image is available.
 
 ### Image
 
-Place `AvatarImage` before `AvatarFallback`. The fallback is visible until the image loads and after an image error.
+Place `Image` before `Text`. The Text fallback is visible until the image loads and after an image error.
 
 <Source language="tsx" code={SourceImage} />
 <Story of={Stories.Image} inline />
 
 ### Image Fallback
 
-Use a fallback for every image Avatar so an unavailable photo never leaves an empty identity marker.
+Use a Text fallback for every image Avatar so an unavailable photo never leaves an empty identity marker.
 
 <Source language="tsx" code={SourceImageFallback} />
 <Story of={Stories.ImageFallback} inline />
@@ -95,7 +83,7 @@ Use `primary` for the standard high-contrast treatment, `subtle` for a quieter t
 
 ### Icon Fallback
 
-Fallback content can be an icon when a monogram is not meaningful.
+Use Icon directly when a monogram is not meaningful. Avatar applies the same fallback sizing and visibility behavior without a Text wrapper.
 
 <Source language="tsx" code={SourceIconFallback} />
 <Story of={Stories.IconFallback} inline />
@@ -123,12 +111,12 @@ Use `isDisabled` when the action is unavailable.
 
 ## Customization
 
-Use AvatarImage native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
 
 ## Accessibility
 
-- Give AvatarImage meaningful `alt` text when the image conveys an identity.
-- AvatarFallback text remains available to assistive technology when no image loads.
+- Give Image meaningful `alt` text when the image conveys an identity.
+- Text remains available to assistive technology when no image loads.
 - Use `alt=""` or `aria-hidden` when an avatar is purely decorative.
 - AvatarButton requires `aria-label` or `aria-labelledby`.
 - AvatarButton supports keyboard activation and exposes the standard focus-visible state.
@@ -142,6 +130,6 @@ Use AvatarImage native image props for responsive image sources. Choose a determ
 
 ## Troubleshooting
 
-- If an image is unavailable because of a bad URL or CORS policy, AvatarFallback remains visible.
-- Long fallback text is clipped to the avatar shape; provide a one- or two-character monogram or an icon.
+- If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+- Long Text content is clipped to the avatar shape; provide a one- or two-character monogram or an icon.
 - Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.

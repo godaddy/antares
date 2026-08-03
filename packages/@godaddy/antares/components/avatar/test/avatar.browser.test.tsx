@@ -23,7 +23,7 @@ function getImage(container: HTMLElement) {
   const image = container.querySelector<HTMLImageElement>('img');
 
   if (!image) {
-    throw new Error('Expected an AvatarImage element.');
+    throw new Error('Expected an Image element.');
   }
 
   return image;
@@ -58,7 +58,7 @@ describe('@godaddy/antares', function antares() {
     });
   });
 
-  describe('#AvatarImage', function avatarImageTests() {
+  describe('#Image', function imageTests() {
     it('shows the image after load and forwards the load event', async function imageLoad() {
       const onLoad = vi.fn();
       const { container } = await render(<PlaygroundExample src={loadedImageSource} onLoad={onLoad} />);

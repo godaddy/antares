@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, Flex, Text } from '@godaddy/antares';
+import { Avatar, Flex, Text } from '@godaddy/antares';
 
 const sizes = ['sm', 'md', 'lg', 'xl'] as const;
 
@@ -11,7 +11,7 @@ export function ShapesExample() {
           {sizes.map(function renderCircle(size) {
             return (
               <Avatar key={size} shape="circle" size={size}>
-                <AvatarFallback>UT</AvatarFallback>
+                <Text>UT</Text>
               </Avatar>
             );
           })}
@@ -23,7 +23,7 @@ export function ShapesExample() {
           {sizes.map(function renderSquare(size) {
             return (
               <Avatar key={size} shape="square" size={size}>
-                <AvatarFallback>AC</AvatarFallback>
+                <Text>AC</Text>
               </Avatar>
             );
           })}

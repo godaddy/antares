@@ -1,9 +1,9 @@
-import { Avatar, AvatarFallback } from '@godaddy/antares';
+import { Avatar, Text } from '@godaddy/antares';
 
 export function DefaultExample() {
   return (
     <Avatar>
-      <AvatarFallback>UT</AvatarFallback>
+      <Text>UT</Text>
     </Avatar>
   );
 }

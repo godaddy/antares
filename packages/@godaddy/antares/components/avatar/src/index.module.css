@@ -115,6 +115,10 @@
   &[data-loading-status="loaded"] .fallback {
     display: none;
   }
+
+  &[data-loading-status="loaded"] > svg {
+    display: none;
+  }
 }
 
 .image {
@@ -126,7 +130,8 @@
   visibility: hidden;
 }
 
-.fallback {
+.fallback,
+.avatar > svg {
   position: absolute;
   display: grid;
   max-width: 100%;

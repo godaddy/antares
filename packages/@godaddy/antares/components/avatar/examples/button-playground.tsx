@@ -1,8 +1,8 @@
 import {
   Avatar,
   AvatarButton,
-  AvatarFallback,
-  AvatarImage,
+  Image,
+  Text,
   type AvatarEmphasis,
   type AvatarShape,
   type AvatarSize
@@ -34,8 +34,8 @@ export function ButtonPlaygroundExample({
   return (
     <AvatarButton aria-label={ariaLabel} isDisabled={isDisabled} isSelected={isSelected}>
       <Avatar emphasis={emphasis} shape={shape} size={size}>
-        {src ? <AvatarImage src={src} alt={alt} /> : null}
-        <AvatarFallback>{fallback}</AvatarFallback>
+        {src ? <Image src={src} alt={alt} /> : null}
+        <Text>{fallback}</Text>
       </Avatar>
     </AvatarButton>
   );
