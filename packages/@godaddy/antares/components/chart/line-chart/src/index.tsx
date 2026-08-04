@@ -77,8 +77,12 @@ export interface LineChartTooltipRenderProps<
   hoveredSeriesId?: string;
   /** The data point on the hovered curve nearest the cursor. */
   hoveredDatum?: T;
-  /** Nearest datum for each series at the current X position, keyed by series id. */
-  datumByKey: Record<string, T>;
+  /**
+   * Nearest datum for each series at the current X position, keyed by series id.
+   * A series has no entry when it has no point at the hovered X (gaps or a
+   * non-overlapping domain), so this is a partial record — guard before indexing.
+   */
+  datumByKey: Partial<Record<string, T>>;
   /**
    * Resolved series in render order — the objects you passed in `series` (including
    * any custom keys), each with a guaranteed `id` and its resolved palette `color`.
