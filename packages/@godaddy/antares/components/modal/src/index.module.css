@@ -31,37 +31,3 @@
   inline-size: calc(100dvw - var(--sp-md) * 2);
   max-inline-size: 80ch;
 }
-
-.content {
-  flex: 1 1 auto;
-  min-block-size: 0;
-  overflow-y: auto;
-  padding-inline: var(--sp-md);
-  padding-block: var(--sp-sm);
-}
-
-.header {
-  flex-shrink: 0;
-  padding: var(--sp-md);
-  padding-block-end: var(--sp-sm);
-}
-
-.header :where([slot="close"]) {
-  align-self: flex-start;
-  margin-inline-start: auto;
-}
-
-.footer,
-.buttonGroup {
-  flex-shrink: 0;
-  padding: var(--sp-md);
-  padding-block-start: var(--sp-sm);
-}
-
-.buttonGroup {
-  justify-content: end;
-}
-
-.footer > :where(.buttonGroup) {
-  padding: 0;
-}

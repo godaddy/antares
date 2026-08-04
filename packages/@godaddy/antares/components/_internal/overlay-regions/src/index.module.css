@@ -1,0 +1,33 @@
+.header {
+  flex-shrink: 0;
+  padding: var(--sp-md);
+  padding-block-end: var(--sp-sm);
+}
+
+.header :where([slot="close"]) {
+  align-self: flex-start;
+  margin-inline-start: auto;
+}
+
+.content {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+  padding-inline: var(--sp-md);
+  padding-block: var(--sp-sm);
+}
+
+.footer,
+.buttonGroup {
+  flex-shrink: 0;
+  padding: var(--sp-md);
+  padding-block-start: var(--sp-sm);
+}
+
+.buttonGroup {
+  justify-content: end;
+}
+
+.footer > :where(.buttonGroup) {
+  padding: 0;
+}

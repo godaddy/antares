@@ -7,11 +7,10 @@ import {
   Dialog as RACDialog,
   type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
-  type DialogTriggerProps as RACDialogTriggerProps,
-  Provider as RACProvider
+  type DialogTriggerProps as RACDialogTriggerProps
 } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
+import { OverlayRegions } from '#components/_internal/overlay-regions';
 import styles from './index.module.css';
 
 export interface ModalProps extends Omit<RACDialogProps, 'children'> {
@@ -66,16 +65,7 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
           ref={ref}
           className={cx(styles.modal, className)}
         >
-          <RACProvider
-            values={[
-              [HeaderContext, { className: styles.header, alignItems: 'start' }],
-              [ContentContext, { className: styles.content }],
-              [FooterContext, { className: styles.footer }],
-              [ButtonGroupContext, { className: styles.buttonGroup }]
-            ]}
-          >
-            {children}
-          </RACProvider>
+          <OverlayRegions>{children}</OverlayRegions>
         </Flex>
       </Flex>
     </Flex>
