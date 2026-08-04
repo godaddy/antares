@@ -1,12 +1,7 @@
 'use client';
 import { DonutChart } from '#components/chart/donut-chart';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/donut-chart-playground.tsx';
-import { BasicExample } from './examples/basic.tsx';
-import { FormatValueExample } from './examples/format-value.tsx';
-import { LegendLayoutExample } from './examples/legend-layout.tsx';
-import { SingleSliceExample } from './examples/single-slice.tsx';
-import { SmallSlicesExample } from './examples/small-slices.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/donut-chart-playground.tsx';
 
 export default getMeta({
   title: 'components/Chart/DonutChart'
@@ -14,18 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(DonutChart);
 
-export const Basic = getStory(BasicExample);
+export const Examples = getExamples('./examples');
 
-export const SingleSlice = getStory(SingleSliceExample);
-
-export const LegendLayout = getStory(LegendLayoutExample);
-
-export const SmallSlices = getStory(SmallSlicesExample);
-
-export const FormatValue = getStory(FormatValueExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     dataPreset: 'four',
     label: '100%',
@@ -76,4 +62,4 @@ export const Playground = {
       description: 'Width of the chart'
     }
   }
-};
+});

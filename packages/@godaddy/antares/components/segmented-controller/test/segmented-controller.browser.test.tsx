@@ -1,4 +1,4 @@
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { IconOnlyExample } from '../examples/icon-only.tsx';
@@ -11,8 +11,8 @@ import assume from 'assume';
 
 describe('@godaddy/antares', function antares() {
   describe('#SegmentedController', function segmentedControllerTests() {
-    it('renders BasicExample as a radiogroup with radio items', async function basicRenders() {
-      await render(<BasicExample />);
+    it('renders DefaultExample as a radiogroup with radio items', async function defaultRenders() {
+      await render(<DefaultExample />);
 
       assume(page.getByRole('radiogroup').query()).is.not.equal(null);
       assume(page.getByRole('radio', { name: 'Day' }).query()).is.not.equal(null);
@@ -20,9 +20,9 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByRole('radio', { name: 'Month' }).query()).is.not.equal(null);
     });
 
-    it('selects an item on click and deselects the previous in BasicExample', async function basicClickSelection() {
+    it('selects an item on click and deselects the previous in DefaultExample', async function defaultClickSelection() {
       const user = userEvent.setup();
-      await render(<BasicExample />);
+      await render(<DefaultExample />);
 
       const day = page.getByRole('radio', { name: 'Day' });
       const week = page.getByRole('radio', { name: 'Week' });
@@ -43,9 +43,9 @@ describe('@godaddy/antares', function antares() {
       assume(day.element().getAttribute('aria-checked')).equals('false');
     });
 
-    it('prevents empty selection in BasicExample', async function basicNoEmptySelection() {
+    it('prevents empty selection in DefaultExample', async function defaultNoEmptySelection() {
       const user = userEvent.setup();
-      await render(<BasicExample />);
+      await render(<DefaultExample />);
 
       const day = page.getByRole('radio', { name: 'Day' });
 
@@ -57,9 +57,9 @@ describe('@godaddy/antares', function antares() {
       assume(day.element().getAttribute('aria-checked')).equals('true');
     });
 
-    it('navigates with ArrowRight and ArrowLeft in BasicExample', async function basicKeyboardNavigation() {
+    it('navigates with ArrowRight and ArrowLeft in DefaultExample', async function defaultKeyboardNavigation() {
       const user = userEvent.setup();
-      await render(<BasicExample />);
+      await render(<DefaultExample />);
 
       const day = page.getByRole('radio', { name: 'Day' });
       const week = page.getByRole('radio', { name: 'Week' });
@@ -81,9 +81,9 @@ describe('@godaddy/antares', function antares() {
       assume(document.activeElement).equals(day.element());
     });
 
-    it('returns tab focus to the selected item in BasicExample', async function basicTabFocus() {
+    it('returns tab focus to the selected item in DefaultExample', async function defaultTabFocus() {
       const user = userEvent.setup();
-      await render(<BasicExample />);
+      await render(<DefaultExample />);
 
       const week = page.getByRole('radio', { name: 'Week' });
 

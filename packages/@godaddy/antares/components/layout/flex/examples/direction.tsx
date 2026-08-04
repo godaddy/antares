@@ -1,5 +1,9 @@
 import { Flex } from '@godaddy/antares';
 
+/**
+ * The `direction` prop controls the main axis orientation.
+ * @order 2
+ */
 export function DirectionExample() {
   return (
     <Flex direction="column" gap="lg">

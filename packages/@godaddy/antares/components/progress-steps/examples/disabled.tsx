@@ -1,6 +1,9 @@
 import { ProgressSteps, ProgressStep } from '@godaddy/antares';
 
-/** A disabled interactive step is muted, not focusable, and cannot be activated. */
+/**
+ * A disabled interactive step is muted, not focusable, and cannot be activated.
+ * @order 5
+ */
 export function DisabledExample() {
   return (
     <ProgressSteps aria-label="Checkout" currentStep={1}>

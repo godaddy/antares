@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { CalendarDefaultExample } from '../examples/default.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { CalendarWithValueExample } from '../examples/with-value.tsx';
 import { RangeCalendarExample } from '../examples/range.tsx';
 import { CalendarMinMaxExample } from '../examples/min-max.tsx';
@@ -10,7 +10,7 @@ import { CalendarDisabledExample } from '../examples/disabled.tsx';
 describe('@godaddy/antares', function antares() {
   describe('#Calendar', function calendar() {
     it('renders default example', function defaultExample() {
-      const html = renderToString(<CalendarDefaultExample />);
+      const html = renderToString(<DefaultExample />);
       expect(html).toMatchSnapshot();
     });
 

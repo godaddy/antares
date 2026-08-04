@@ -2,15 +2,7 @@
 title: Checkbox
 description: Accessible checkbox component for multi-select options with support for indeterminate states, validation, keyboard navigation, and flexible group layouts.
 ---
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceCheckboxBasic from './examples/basic.tsx?raw';
-import SourceCheckboxIndeterminate from './examples/indeterminate.tsx?raw';
-import SourceCheckboxGroup from './examples/group.tsx?raw';
-import SourceCheckboxHorizontal from './examples/horizontal.tsx?raw';
-import SourceCheckboxControlled from './examples/controlled.tsx?raw';
-import SourceCheckboxRequired from './examples/required.tsx?raw';
-import SourceCheckboxDisabled from './examples/disabled.tsx?raw';
-import SourceCheckboxInvalid from './examples/invalid.tsx?raw';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './checkbox.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -21,73 +13,9 @@ import * as Stories from './checkbox.stories.tsx';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-The `Checkbox` component has the following props:
-
-<ArgTypes of={Stories.Props} />
-
-The `CheckboxGroup` component has the following props:
-
-<ArgTypes of={Stories.GroupProps} />
-
 ## Examples
 
-### Basic
-
-A single checkbox with a label.
-
-<Story of={Stories.Basic} inline />
-<Source language="tsx" code={SourceCheckboxBasic} />
-
-### Indeterminate
-
-Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
-
-<Story of={Stories.Indeterminate} inline />
-<Source language="tsx" code={SourceCheckboxIndeterminate} />
-
-### Checkbox Group
-
-Group multiple checkboxes together with a shared label and description.
-
-<Story of={Stories.Group} inline />
-<Source language="tsx" code={SourceCheckboxGroup} />
-
-### Controlled
-
-Manage checkbox group state programmatically with controlled component pattern.
-
-<Story of={Stories.Controlled} inline />
-<Source language="tsx" code={SourceCheckboxControlled} />
-
-### Horizontal Layout
-
-Display checkboxes in a horizontal row instead of vertical stack.
-
-<Story of={Stories.Horizontal} inline />
-<Source language="tsx" code={SourceCheckboxHorizontal} />
-
-### Disabled States
-
-Individual checkboxes within a group can be disabled while others remain interactive.
-
-<Story of={Stories.Disabled} inline />
-<Source language="tsx" code={SourceCheckboxDisabled} />
-
-### Required Indicator
-
-Mark a checkbox group as required with visual indicator and validation.
-
-<Story of={Stories.Required} inline />
-<Source language="tsx" code={SourceCheckboxRequired} />
-
-### Invalid State
-
-Display error state and error message for validation feedback.
-
-<Story of={Stories.Invalid} inline />
-<Source language="tsx" code={SourceCheckboxInvalid} />
+<Examples of={Stories.Examples} />
 
 ## Customization
 
@@ -303,3 +231,13 @@ Always provide clear error messages and use appropriate validation states:
 - Use logical ordering (alphabetical, frequency of use, or importance)
 - Consider using CheckboxGroup for related options, even if there are only 2-3
 - Provide a group label that clearly describes the choice being made
+
+## Props
+
+The `Checkbox` component has the following props:
+
+<ArgTypes of={Stories.Props} />
+
+The `CheckboxGroup` component has the following props:
+
+<ArgTypes of={Stories.GroupProps} />

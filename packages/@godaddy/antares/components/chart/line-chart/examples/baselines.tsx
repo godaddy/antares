@@ -1,6 +1,10 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xBaseline` and `yBaseline` control the main axis lines themselves. Dropping them gives a lighter, more editorial chart.
+ * @order 7
+ */
 export function BaselinesExample(props: Partial<LineChartProps>) {
   const series = [
     {

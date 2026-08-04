@@ -1,5 +1,10 @@
 import { Grid, Flex } from '@godaddy/antares';
 
+/**
+ * Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+ * @title Named Areas
+ * @order 4
+ */
 export function AreasExample() {
   return (
     <Grid

@@ -3,7 +3,7 @@ import { IconOnlyExample } from '../examples/icon-only.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { PlaygroundExample } from '../examples/segmented-controller-playground.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
-import { BasicExample } from '../examples/basic.tsx';
+import { DefaultExample } from '../examples/default.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
@@ -12,8 +12,8 @@ import { describe, it, expect } from 'vitest';
 
 describe('@godaddy/antares', function antares() {
   describe('#SegmentedController', function segmentedControllerTests() {
-    it('renders BasicExample', function basicExample() {
-      expect(renderToString(<BasicExample />)).toMatchSnapshot();
+    it('renders DefaultExample', function defaultExample() {
+      expect(renderToString(<DefaultExample />)).toMatchSnapshot();
     });
 
     it('renders ControlledExample', function controlledExample() {

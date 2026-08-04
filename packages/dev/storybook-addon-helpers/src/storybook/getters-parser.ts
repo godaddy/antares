@@ -1,8 +1,10 @@
 import ts from 'typescript';
 import { readFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import camelCase from 'camelcase';
 import { toLiteralValue } from '../engine/literal.ts';
-import { GET_COMPONENT_DOCS, GET_META, GET_TYPE_DOCS, GET_VARIANTS } from '../getter-names.ts';
+import { discoverExamples } from '../examples.ts';
+import { GET_COMPONENT_DOCS, GET_EXAMPLES, GET_META, GET_TYPE_DOCS, GET_VARIANTS } from '../getter-names.ts';
 
 /**
  * Extract exported variables from a TypeScript file
@@ -20,6 +22,9 @@ export async function getExportedVariables(input: { filePath?: string; code?: st
   const exported = new Map();
   const locals = new Map();
   /* v8 ignore stop */
+
+  let examplesArg: string | undefined;
+  let hasExamples = false;
 
   sourceFile.forEachChild(function collectLocals(node) {
     if (ts.isVariableStatement(node)) {
@@ -46,6 +51,13 @@ export async function getExportedVariables(input: { filePath?: string; code?: st
               }
             }
 
+            continue;
+          }
+
+          if (ts.isIdentifier(callee) && callee.text === GET_EXAMPLES) {
+            hasExamples = true;
+            const arg = initializer.arguments[0];
+            if (arg && ts.isStringLiteral(arg)) examplesArg = arg.text;
             continue;
           }
         }
@@ -77,6 +89,13 @@ export async function getExportedVariables(input: { filePath?: string; code?: st
       exported.set('default', toLiteralValue(init));
     }
   });
+
+  if (hasExamples && input.filePath) {
+    const descriptors = await discoverExamples({ dir: dirname(input.filePath), examplesDir: examplesArg });
+    for (const descriptor of descriptors) {
+      exported.set(descriptor.storyName, {});
+    }
+  }
 
   return exported;
 }

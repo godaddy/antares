@@ -1,14 +1,7 @@
 'use client';
-import { getMeta, getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { Tag } from './src/index.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { EmphasesExample } from './examples/emphases.tsx';
-import { SizesExample } from './examples/sizes.tsx';
-import { HighContrastExample } from './examples/high-contrast.tsx';
-import { IconsExample } from './examples/icons.tsx';
-import { InlineExample } from './examples/inline.tsx';
-import { IndicatorExample } from './examples/indicator.tsx';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/tag-playground.tsx';
+import { PlaygroundExample } from './examples/tag-playground.tsx';
 
 export default getMeta({
   title: 'components/Tag'
@@ -16,22 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(Tag);
 
-export const Default = getStory(DefaultExample);
+export const Examples = getExamples('./examples');
 
-export const Emphases = getStory(EmphasesExample);
-
-export const Sizes = getStory(SizesExample);
-
-export const Inline = getStory(InlineExample);
-
-export const HighContrast = getStory(HighContrastExample);
-
-export const Icons = getStory(IconsExample);
-
-export const Indicator = getStory(IndicatorExample);
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     emphasis: 'passive',
     size: 'sm',
@@ -69,4 +49,4 @@ export const Playground = {
       description: 'The tag label text'
     }
   }
-};
+});

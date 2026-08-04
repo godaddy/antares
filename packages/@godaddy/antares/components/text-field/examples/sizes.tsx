@@ -1,5 +1,10 @@
 import { Flex, TextField } from '@godaddy/antares';
 
+/**
+ * Compare the supported `md` and `sm` visual sizes.
+ * @title Sizes
+ * @order 7
+ */
 export function TextFieldSizesExample() {
   return (
     <Flex direction="column" gap="md">

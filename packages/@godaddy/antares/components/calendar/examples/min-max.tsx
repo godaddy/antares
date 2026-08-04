@@ -1,6 +1,11 @@
 import { Calendar } from '@godaddy/antares';
 import { parseDate } from '@godaddy/antares/date';
 
+/**
+ * Bounding selectable dates.
+ * @title Min / Max
+ * @order 4
+ */
 export function CalendarMinMaxExample() {
   return (
     <Calendar

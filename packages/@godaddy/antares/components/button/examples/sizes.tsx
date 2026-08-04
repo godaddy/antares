@@ -1,5 +1,8 @@
 import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';
 
+/**
+ * Buttons come in small and medium sizes to fit different layout densities.
+ */
 export function SizesExample() {
   return (
     <Flex alignItems="center" gap="sm" wrap="wrap">

@@ -14,6 +14,11 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf
 
 type Preview = { name: string; url?: string };
 
+/**
+ * Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+ * @title Replace Existing File
+ * @order 5
+ */
 export function ReplaceFileExample() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);

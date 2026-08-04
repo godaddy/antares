@@ -1,6 +1,10 @@
 import { cityTemperature } from '@visx/mock-data';
 import { LineChart, type LineChartProps } from '@godaddy/antares';
 
+/**
+ * `xTickMarks` and `yTickMarks` draw the short lines at each tick value, which helps tie a label to its exact position on the axis.
+ * @order 6
+ */
 export function TicksExample(props: Partial<LineChartProps>) {
   const series = [
     {

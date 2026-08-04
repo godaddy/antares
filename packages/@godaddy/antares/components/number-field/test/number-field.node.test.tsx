@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { NumberFieldBasicExample } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { NumberFieldControlledExample } from '../examples/controlled';
 import { NumberFieldDisabledExample } from '../examples/disabled';
 import { NumberFieldFormatOptionsExample } from '../examples/format-options';
@@ -13,7 +13,7 @@ describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
     describe('#examples', function examples() {
       it('renders basic example', function basic() {
-        const result = renderToString(<NumberFieldBasicExample />);
+        const result = renderToString(<DefaultExample />);
         expect(result).toMatchSnapshot();
       });
 

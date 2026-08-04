@@ -16,6 +16,11 @@ function formatTooltipTemperature(d: DataPoint): string {
   return `${(d.y as number).toFixed(1)}°F`;
 }
 
+/**
+ * Several cities over the same period, with a legend and a shared time axis - the multi-series case as it usually looks in a product.
+ * @title City temperature
+ * @order 22
+ */
 export function CityTemperatureExample(props: Partial<LineChartProps>) {
   const cities = ['New York', 'San Francisco', 'Austin'] as const;
 

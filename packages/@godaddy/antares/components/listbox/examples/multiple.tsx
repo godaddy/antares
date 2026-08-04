@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';
 
+/**
+ * Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+ * @order 3
+ */
 export function ListBoxMultipleExample() {
   const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));
 

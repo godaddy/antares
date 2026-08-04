@@ -1,5 +1,10 @@
 import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';
 
+/**
+ * Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+ * @title Disabled States
+ * @order 8
+ */
 export function DisabledExample() {
   return (
     <Flex direction="column" gap="sm" alignItems="start">

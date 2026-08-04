@@ -12,6 +12,11 @@ const emphases = [
   'neutral'
 ] as const;
 
+/**
+ * Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+ * @title Emphasis
+ * @order 2
+ */
 export function EmphasesExample() {
   return (
     <Flex gap="xs" wrap="wrap" alignItems="center">

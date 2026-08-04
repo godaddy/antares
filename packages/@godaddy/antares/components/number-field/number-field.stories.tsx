@@ -1,17 +1,6 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { NumberFieldBasicExample } from './examples/basic.tsx';
-import { NumberFieldControlledExample } from './examples/controlled.tsx';
-import { NumberFieldDisabledExample } from './examples/disabled.tsx';
-import { NumberFieldFormatOptionsExample } from './examples/format-options.tsx';
-import { NumberFieldHideStepperExample } from './examples/hide-stepper.tsx';
-import { NumberFieldInvalidExample } from './examples/invalid.tsx';
-import {
-  NumberFieldPlaygroundExample,
-  type NumberFieldPlaygroundExampleProps
-} from './examples/number-field-playground.tsx';
-import { NumberFieldSizesExample } from './examples/sizes.tsx';
-import { NumberFieldValueScaleExample } from './examples/value-scale.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { NumberFieldPlaygroundExample } from './examples/number-field-playground.tsx';
 import { NumberField } from './src/index.tsx';
 
 export default getMeta({
@@ -20,24 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(NumberField);
 
-export const Basic = getStory(NumberFieldBasicExample);
+export const Examples = getExamples('./examples');
 
-export const Controlled = getStory(NumberFieldControlledExample);
-
-export const Invalid = getStory(NumberFieldInvalidExample);
-
-export const Disabled = getStory(NumberFieldDisabledExample);
-
-export const HideStepper = getStory(NumberFieldHideStepperExample);
-
-export const ValueScale = getStory(NumberFieldValueScaleExample);
-
-export const FormatOptions = getStory(NumberFieldFormatOptionsExample);
-
-export const Sizes = getStory(NumberFieldSizesExample);
-
-export const Playground = {
-  render: (args: NumberFieldPlaygroundExampleProps) => <NumberFieldPlaygroundExample {...args} />,
+export const Playground = getStory(NumberFieldPlaygroundExample, {
   args: {
     label: 'Quantity',
     minValue: 0,
@@ -59,4 +33,4 @@ export const Playground = {
     isRequired: { control: 'boolean', description: 'Mark as required' },
     size: { control: 'select', options: ['sm', 'md'], description: 'Visual size' }
   }
-};
+});

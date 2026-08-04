@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';
 
+/**
+ * Use `isExpanded` and `onExpandedChange` to drive state externally.
+ * @order 2
+ */
 export function ControlledExample() {
   const [expanded, setExpanded] = useState(false);
 

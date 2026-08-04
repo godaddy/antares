@@ -1,54 +1,54 @@
-import { CheckboxBasic } from '../examples/basic';
-import { CheckboxGroupControlled } from '../examples/controlled';
-import { CheckboxGroupDisabled } from '../examples/disabled';
-import { CheckboxGroupBasic } from '../examples/group';
-import { CheckboxIndeterminate } from '../examples/indeterminate';
-import { CheckboxGroupInvalid } from '../examples/invalid';
-import { CheckboxGroupRequired } from '../examples/required';
-import { CheckboxGroupHorizontal } from '../examples/horizontal';
-import { PlaygroundExample } from '../examples/playground';
+import { DefaultExample } from '../examples/default';
+import { CheckboxGroupControlledExample } from '../examples/controlled';
+import { CheckboxGroupDisabledExample } from '../examples/disabled';
+import { CheckboxGroupBasicExample } from '../examples/group';
+import { CheckboxIndeterminateExample } from '../examples/indeterminate';
+import { CheckboxGroupInvalidExample } from '../examples/invalid';
+import { CheckboxGroupRequiredExample } from '../examples/required';
+import { CheckboxGroupHorizontalExample } from '../examples/horizontal';
+import { PlaygroundExample } from '../examples/checkbox-playground';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
 describe('@godaddy/antares', function antares() {
   describe('#Checkbox', function checkboxTests() {
-    it('renders CheckboxBasic', function basicExample() {
-      const result = renderToString(<CheckboxBasic />);
+    it('renders DefaultExample', function basicExample() {
+      const result = renderToString(<DefaultExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxGroupControlled', function controlledExample() {
-      const result = renderToString(<CheckboxGroupControlled />);
+    it('renders CheckboxGroupControlledExample', function controlledExample() {
+      const result = renderToString(<CheckboxGroupControlledExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxGroupBasic', function groupExample() {
-      const result = renderToString(<CheckboxGroupBasic />);
+    it('renders CheckboxGroupBasicExample', function groupExample() {
+      const result = renderToString(<CheckboxGroupBasicExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxGroupHorizontal', function horizontalExample() {
-      const result = renderToString(<CheckboxGroupHorizontal />);
+    it('renders CheckboxGroupHorizontalExample', function horizontalExample() {
+      const result = renderToString(<CheckboxGroupHorizontalExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxGroupDisabled', function disabledExample() {
-      const result = renderToString(<CheckboxGroupDisabled />);
+    it('renders CheckboxGroupDisabledExample', function disabledExample() {
+      const result = renderToString(<CheckboxGroupDisabledExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxIndeterminate', function indeterminateExample() {
-      const result = renderToString(<CheckboxIndeterminate />);
+    it('renders CheckboxIndeterminateExample', function indeterminateExample() {
+      const result = renderToString(<CheckboxIndeterminateExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxGroupInvalid', function invalidExample() {
-      const result = renderToString(<CheckboxGroupInvalid />);
+    it('renders CheckboxGroupInvalidExample', function invalidExample() {
+      const result = renderToString(<CheckboxGroupInvalidExample />);
       expect(result).toMatchSnapshot();
     });
 
-    it('renders CheckboxGroupRequired', function requiredExample() {
-      const result = renderToString(<CheckboxGroupRequired />);
+    it('renders CheckboxGroupRequiredExample', function requiredExample() {
+      const result = renderToString(<CheckboxGroupRequiredExample />);
       expect(result).toMatchSnapshot();
     });
 

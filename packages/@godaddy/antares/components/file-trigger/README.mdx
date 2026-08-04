@@ -3,10 +3,8 @@ title: FileTrigger
 description: A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.
 ---
 
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './file-trigger.stories.tsx';
-import DefaultExample from './examples/default.tsx?raw';
-import AcceptedTypesExample from './examples/accepted-types.tsx?raw';
 
 <Meta of={Stories} name="Overview" />
 
@@ -23,25 +21,9 @@ import AcceptedTypesExample from './examples/accepted-types.tsx?raw';
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Basic Usage
-
-Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
-
-<Story of={Stories.Default} inline />
-<Source language="tsx" code={DefaultExample} />
-
-### Accepted Types
-
-Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
-
-<Story of={Stories.AcceptedTypes} inline />
-<Source language="tsx" code={AcceptedTypesExample} />
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
@@ -52,3 +34,7 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 - `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
 - Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
 - Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+
+## Props
+
+<ArgTypes of={Stories.Props} />

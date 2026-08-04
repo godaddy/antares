@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
-import { SelectBasic } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { SelectMultipleExample } from '../examples/multiple';
 import { SelectFormExample } from '../examples/form';
@@ -12,7 +12,7 @@ import { FieldSelectCompositeExample } from '../examples/field-select-composite'
 describe('@godaddy/antares', function antares() {
   describe('#Select', function selectSuite() {
     it('renders the basic example', async function basicRender() {
-      await render(<SelectBasic />);
+      await render(<DefaultExample />);
 
       const trigger = page.getByRole('button');
       assume(trigger).is.not.equal(null);

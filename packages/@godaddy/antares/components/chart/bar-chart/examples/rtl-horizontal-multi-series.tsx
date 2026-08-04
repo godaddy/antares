@@ -21,7 +21,12 @@ const series = [
   { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }
 ];
 
-export function BarChartRTLHorizontalMultiSeriesExample(props: any) {
+/**
+ * Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
+ * @title RTL horizontal multi-series
+ * @order 8
+ */
+export function RTLHorizontalMultiSeriesExample(props: any) {
   return (
     <RTLProvider>
       <BarChart

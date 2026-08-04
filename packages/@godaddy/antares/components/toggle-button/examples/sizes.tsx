@@ -1,5 +1,9 @@
 import { ToggleButtonGroup, ToggleButton, Flex } from '@godaddy/antares';
 
+/**
+ * Two sizes are available: `sm` and `md` (default).
+ * @order 5
+ */
 export function SizesExample() {
   return (
     <Flex direction="column" gap="md" alignItems="start">

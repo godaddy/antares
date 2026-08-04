@@ -1,7 +1,7 @@
 import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { NumberFieldBasicExample } from '../examples/basic';
+import { DefaultExample } from '../examples/default';
 import { NumberFieldControlledExample } from '../examples/controlled';
 import { NumberFieldDisabledExample } from '../examples/disabled';
 import { NumberFieldFormatOptionsExample } from '../examples/format-options';
@@ -14,7 +14,7 @@ describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
     describe('#basic', function basic() {
       it('renders label and input with placeholder', async function renders() {
-        const { locator, container } = await render(<NumberFieldBasicExample />);
+        const { locator, container } = await render(<DefaultExample />);
         const input = locator.getByRole('textbox', { name: 'Quantity' });
 
         assume(locator.getByText('Quantity').element()).exists();
@@ -94,7 +94,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#stepper', function stepper() {
       it('renders increment and decrement buttons that are clickable', async function stepperRendersAndClicks() {
-        const { locator } = await render(<NumberFieldBasicExample defaultValue={10} />);
+        const { locator } = await render(<DefaultExample defaultValue={10} />);
         const incrementButton = locator.getByRole('button', { name: 'Increase Quantity' });
         const decrementButton = locator.getByRole('button', { name: 'Decrease Quantity' });
 

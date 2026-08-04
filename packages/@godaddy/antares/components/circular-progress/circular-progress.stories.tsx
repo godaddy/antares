@@ -1,9 +1,6 @@
 'use client';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/circular-progress-playground.tsx';
-import { getMeta, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { DefaultExample } from './examples/default.tsx';
-import { SizesExample } from './examples/sizes.tsx';
-import { EmphasisExample } from './examples/emphasis.tsx';
+import { PlaygroundExample } from './examples/circular-progress-playground.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { CircularProgress } from './src/index.tsx';
 
 export default getMeta({
@@ -12,14 +9,9 @@ export default getMeta({
 
 export const Props = getComponentDocs(CircularProgress);
 
-export const Default = DefaultExample;
+export const Examples = getExamples('./examples');
 
-export const Sizes = SizesExample;
-
-export const Emphasis = EmphasisExample;
-
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     size: 'md',
     value: 60,
@@ -50,4 +42,4 @@ export const Playground = {
       description: 'Helper or notice text displayed below the label'
     }
   }
-};
+});

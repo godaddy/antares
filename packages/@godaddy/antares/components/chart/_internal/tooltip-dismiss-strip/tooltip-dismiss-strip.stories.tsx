@@ -1,6 +1,5 @@
 'use client';
-import { getMeta, getStory, getComponentDocs } from '@bento/storybook-addon-helpers';
-import { BasicExample } from './examples/basic.tsx';
+import { getComponentDocs, getExamples, getMeta } from '@bento/storybook-addon-helpers';
 import { TooltipDismissStrip } from './src/index.tsx';
 
 export default getMeta({
@@ -9,4 +8,4 @@ export default getMeta({
 
 export const Props = getComponentDocs(TooltipDismissStrip);
 
-export const Basic = getStory(BasicExample);
+export const Examples = getExamples('./examples');

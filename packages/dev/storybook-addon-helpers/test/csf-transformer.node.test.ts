@@ -83,6 +83,29 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual.includes('category')).toBe(true);
   });
 
+  it('expands getExamples into imports and story exports', async function expandsExamples() {
+    const actual = await csfTransformer({ filePath: path.join(fixturesPath, 'examples-fixture/widget.stories.tsx') });
+
+    expect(actual).not.toContain('getExamples()');
+    expect(actual).not.toContain('export const examples');
+    expect(actual).toContain('import { DefaultExample } from "./examples/default.tsx"');
+    expect(actual).toContain('export const Default = DefaultExample');
+    expect(actual).toContain('export const IconOnly = IconOnlyExample');
+    expect(actual).not.toContain('IgnoredExample');
+    expect(actual).not.toContain('WidgetPlaygroundExample');
+    // getMeta on the same file is still transformed to its object literal.
+    expect(actual).toContain("title: 'components/Widget'");
+  });
+
+  it('leaves getExamples untouched when transforming from a code string (no folder to resolve)', async function examplesNoPath() {
+    const code = `
+      import { getExamples } from '@bento/storybook-addon-helpers';
+      export const examples = getExamples();
+    `;
+    const actual = await csfTransformer({ code });
+    expect(actual).toContain('getExamples');
+  });
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
