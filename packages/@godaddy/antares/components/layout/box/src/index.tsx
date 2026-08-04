@@ -1,8 +1,6 @@
-import { cx } from 'cva';
 import { forwardRef, type CSSProperties, type ElementType } from 'react';
-import { composeRenderProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
-import { mergeObjects } from '../../../../utils/objects.ts';
+import { composeClassName, composeStyle } from '../../../../utils/render-props.ts';
 import { toRoundingVar, toSpacingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
 import styles from './index.module.css';
 
@@ -158,25 +156,12 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     gridRowEnd,
     borderRadius: toRoundingVar(rounding)
   } satisfies CSSProperties;
-  const mergedStyle =
-    typeof style === 'function'
-      ? composeRenderProps(style, function composeStyle(value) {
-          return mergeObjects(computedStyle, value);
-        })
-      : mergeObjects(computedStyle, style);
-  const mergedClassName =
-    typeof className === 'function'
-      ? composeRenderProps(className, function composeClassName(value) {
-          return cx(styles.box, value);
-        })
-      : cx(styles.box, className);
-
   return (
     <Component
       {...rest}
       ref={ref}
-      className={mergedClassName as string}
-      style={mergedStyle as CSSProperties}
+      className={composeClassName(className, styles.box) as string}
+      style={composeStyle(style, computedStyle) as CSSProperties}
       data-elevation={elevation}
     />
   );

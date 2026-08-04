@@ -7,13 +7,13 @@ import {
   Dialog as RACDialog,
   type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
-  type DialogTriggerProps as RACDialogTriggerProps,
-  composeRenderProps
+  type DialogTriggerProps as RACDialogTriggerProps
 } from 'react-aria-components';
 import { Text, type TextProps } from '#components/text';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { Button, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface ModalProps extends RACDialogProps {
@@ -105,16 +105,12 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
       {...overlayProps}
       isDismissable={isDismissable}
       padding="md"
-      className={composeRenderProps(overlayProps?.className, function composeOverlayClassName(value) {
-        return cx(styles.overlay, value);
-      })}
+      className={composeClassName(overlayProps?.className, styles.overlay)}
     >
       <Flex
         as={RACModal}
         {...containerProps}
-        className={composeRenderProps(containerProps?.className, function composeContainerClassName(value) {
-          return cx(styles.modalContainer, value);
-        })}
+        className={composeClassName(containerProps?.className, styles.modalContainer)}
       >
         <Flex
           as={RACDialog}
@@ -169,9 +165,7 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
             aria-label="Close"
             slot="close"
             {...closeProps}
-            className={composeRenderProps(closeProps?.className, function composeCloseClassName(value) {
-              return cx(styles.close, value);
-            })}
+            className={composeClassName(closeProps?.className, styles.close)}
           >
             <Icon icon="x" />
           </Button>

@@ -1,15 +1,14 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
-import { cx } from 'cva';
 import {
   ProgressBar as RACProgressBar,
   type ProgressBarProps as RACProgressBarProps,
-  Label as RACLabel,
-  composeRenderProps
+  Label as RACLabel
 } from 'react-aria-components';
 import styles from './index.module.css';
 import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 
 export interface ProgressBarProps extends Omit<RACProgressBarProps, 'children' | 'isIndeterminate'> {
   /** Visible label text rendered above the track. */
@@ -54,9 +53,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
       direction="column"
       gap="xs"
       ref={ref}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.progressBar, value);
-      })}
+      className={composeClassName(className, styles.progressBar)}
       data-size={size}
       data-status={status}
       aria-describedby={describedBy}

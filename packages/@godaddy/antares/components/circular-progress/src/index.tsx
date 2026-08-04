@@ -1,6 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
-import { cx } from 'cva';
 import {
   ProgressBar as RACProgressBar,
   type ProgressBarProps as RACProgressBarProps,
@@ -9,6 +8,7 @@ import {
 } from 'react-aria-components';
 import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 const VIEWBOX_SIZE = 100;
@@ -64,9 +64,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
         alignItems="center"
         gap="sm"
         as={RACProgressBar}
-        className={composeRenderProps(className, function composeClassName(value) {
-          return cx(styles.root, value);
-        })}
+        className={composeClassName(className, styles.root)}
         data-size={size}
         data-emphasis={emphasis}
         aria-describedby={describedBy}

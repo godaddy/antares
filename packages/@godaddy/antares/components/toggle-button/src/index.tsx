@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   ToggleButtonGroup as RACToggleButtonGroup,
   type ToggleButtonGroupProps as RACToggleButtonGroupProps,
   ToggleButton as RACToggleButton,
   type ToggleButtonProps as RACToggleButtonProps,
-  useLocale,
-  composeRenderProps
+  useLocale
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface ToggleButtonGroupProps extends Omit<RACToggleButtonGroupProps, 'children' | 'orientation'> {
@@ -48,9 +47,7 @@ export function ToggleButtonGroup(props: ToggleButtonGroupProps) {
       display="inline-flex"
       dir={direction}
       data-size={size}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.container, value);
-      })}
+      className={composeClassName(className, styles.container)}
     >
       {children}
     </Flex>
@@ -82,9 +79,7 @@ export function ToggleButton(props: ToggleButtonProps) {
       {...rest}
       display="inline-flex"
       alignItems="center"
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.item, value);
-      })}
+      className={composeClassName(className, styles.item)}
     >
       {children}
     </Flex>

@@ -13,6 +13,7 @@ import {
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 interface ContentProps extends RACDialogProps, FlexOwnProps {}
@@ -75,9 +76,7 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
       style={composeRenderProps(style, function composeStyle(value) {
         return { ...value, '--_container-padding': `${containerPadding}px` } as CSSProperties;
       })}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.popover, value);
-      })}
+      className={composeClassName(className, styles.popover)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       <Flex

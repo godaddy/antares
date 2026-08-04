@@ -1,15 +1,14 @@
 import { forwardRef } from 'react';
-import { cx } from 'cva';
 import {
   DropZone as RACDropZone,
   type DropZoneProps as RACDropZoneProps,
   type DropZoneRenderProps as RACDropZoneRenderProps,
   isFileDropItem,
   isTextDropItem,
-  isDirectoryDropItem,
-  composeRenderProps
+  isDirectoryDropItem
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
@@ -51,9 +50,7 @@ export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZ
       padding="lg"
       {...rest}
       ref={ref}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.dropZone, value);
-      })}
+      className={composeClassName(className, styles.dropZone)}
       as={RACDropZone}
     >
       {children}

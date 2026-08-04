@@ -3,11 +3,10 @@ import {
   Disclosure as RACDisclosure,
   type DisclosureProps as RACDisclosureProps,
   DisclosurePanel as RACDisclosurePanel,
-  type DisclosurePanelProps as RACDisclosurePanelProps,
-  composeRenderProps
+  type DisclosurePanelProps as RACDisclosurePanelProps
 } from 'react-aria-components';
-import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
+import { composeClassName, composeStyle } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 /**
@@ -52,16 +51,11 @@ export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(functi
     <RACDisclosure
       ref={ref}
       {...rest}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.inlineDrawer, value);
-      })}
-      style={composeRenderProps(styleProps, function composeStyle(value) {
-        return {
-          ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) }),
-          ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
-          ...value
-        } as CSSProperties;
-      })}
+      className={composeClassName(className, styles.inlineDrawer)}
+      style={composeStyle(styleProps, {
+        ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) }),
+        ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) })
+      } as CSSProperties)}
       data-placement={placement}
       data-animate={animate === false ? 'false' : undefined}
     >
@@ -81,12 +75,5 @@ export interface InlineDrawerPanelProps extends RACDisclosurePanelProps {}
 export const InlineDrawerPanel = function InlineDrawerPanel(props: InlineDrawerPanelProps) {
   const { className, ...rest } = props;
 
-  return (
-    <RACDisclosurePanel
-      {...rest}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.panel, value);
-      })}
-    />
-  );
+  return <RACDisclosurePanel {...rest} className={composeClassName(className, styles.panel)} />;
 };

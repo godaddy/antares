@@ -1,5 +1,4 @@
 import { useCallback, type ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   ToggleButtonGroup as RACToggleButtonGroup,
   ToggleButton as RACToggleButton,
@@ -7,12 +6,12 @@ import {
   SelectionIndicator as RACSelectionIndicator,
   type ToggleButtonGroupProps as RACToggleButtonGroupProps,
   type Key as RACKey,
-  useLocale,
-  composeRenderProps
+  useLocale
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { useHorizontalScroll } from './use-horizontal-scroll.ts';
 import styles from './index.module.css';
 
@@ -71,9 +70,7 @@ export function SegmentedController(props: SegmentedControllerProps) {
       selectedKeys={value ? [value] : undefined}
       data-size={size}
       dir={direction}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.container, value);
-      })}
+      className={composeClassName(className, styles.container)}
     >
       <Flex ref={containerRef} gap="xs" padding="xs" className={styles.content}>
         {children}
@@ -137,9 +134,7 @@ export function SegmentedControllerItem(props: SegmentedControllerItemProps) {
       alignItems="center"
       gap="xs"
       onFocus={handleFocus}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.item, value);
-      })}
+      className={composeClassName(className, styles.item)}
     >
       <Flex as={RACSelectionIndicator} className={styles.indicator} />
       {children}

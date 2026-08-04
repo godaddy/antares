@@ -11,6 +11,7 @@ import {
 } from 'react-aria-components';
 import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Flex, type FlexProps } from '#components/layout/flex';
@@ -92,9 +93,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     <RACModalOverlay
       data-animate={animate === false ? 'false' : undefined}
       {...rest}
-      className={composeRenderProps(className, function composeOverlayClassName(value) {
-        return cx(styles.overlay, value);
-      })}
+      className={composeClassName(className, styles.overlay)}
     >
       <Flex
         elevation="overlay"
@@ -110,9 +109,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           } as CSSProperties;
         })}
         as={RACModal}
-        className={composeRenderProps(containerClassName, function composeDrawerClassName(value) {
-          return cx(styles.drawer, value);
-        })}
+        className={composeClassName(containerClassName, styles.drawer)}
       >
         <Flex
           direction="column"

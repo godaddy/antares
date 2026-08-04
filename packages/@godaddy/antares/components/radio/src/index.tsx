@@ -3,14 +3,13 @@ import {
   RadioField as RACRadioField,
   type RadioFieldProps as RACRadioFieldProps,
   RadioGroup as RACRadioGroup,
-  type RadioGroupProps as RACRadioGroupProps,
-  composeRenderProps
+  type RadioGroupProps as RACRadioGroupProps
 } from 'react-aria-components';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 import type { ReactNode } from 'react';
-import { cx } from 'cva';
 
 export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOwnProps {
   /** Label text for the radio button */
@@ -59,9 +58,7 @@ export function RadioGroup({
       as={RACRadioGroup}
       orientation={orientation}
       {...props}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.radioGroup, value);
-      })}
+      className={composeClassName(className, styles.radioGroup)}
     >
       <FieldLabel isRequired={props.isRequired}>{label}</FieldLabel>
       <Flex

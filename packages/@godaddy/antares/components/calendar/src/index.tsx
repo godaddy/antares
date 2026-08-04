@@ -8,9 +8,9 @@ import {
   type CalendarProps as RACCalendarProps,
   RangeCalendar as RACRangeCalendar,
   type RangeCalendarProps as RACRangeCalendarProps,
-  type CalendarGridProps as RACCalendarGridProps,
-  composeRenderProps
+  type CalendarGridProps as RACCalendarGridProps
 } from 'react-aria-components';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { MonthHeading, NavButton } from './CalendarHeader.tsx';
 import styles from './index.module.css';
 import { cx } from 'cva';
@@ -42,9 +42,7 @@ export function Calendar(props: CalendarProps) {
       {...rest}
       visibleDuration={{ months: pageCount }}
       as={RACCalendar<CalendarDate>}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.calendar, value);
-      })}
+      className={composeClassName(className, styles.calendar)}
     >
       <CalendarBody type="single" pageCount={pageCount} />
     </Flex>
@@ -78,9 +76,7 @@ export function RangeCalendar(props: RangeCalendarProps) {
       {...rest}
       visibleDuration={{ months: pageCount }}
       as={RACRangeCalendar<CalendarDate>}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return cx(styles.calendar, value);
-      })}
+      className={composeClassName(className, styles.calendar)}
     >
       <CalendarBody type="range" pageCount={pageCount} />
     </Flex>

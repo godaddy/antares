@@ -1,8 +1,6 @@
-import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
-import { composeRenderProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
-import { mergeObjects } from '../../../../utils/objects.ts';
+import { composeClassName, composeStyle } from '../../../../utils/render-props.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
 import { toSpacingVar } from '../../tokens.ts';
 import type { SharedFlexGridProps } from '../../types.ts';
@@ -58,18 +56,13 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
     columnGap: toSpacingVar(columnGap),
     rowGap: toSpacingVar(rowGap)
   } satisfies CSSProperties;
-  const mergedStyle =
-    typeof style === 'function'
-      ? composeRenderProps(style, function composeStyle(value) {
-          return mergeObjects(computedStyle, value);
-        })
-      : mergeObjects(computedStyle, style);
-  const mergedClassName =
-    typeof className === 'function'
-      ? composeRenderProps(className, function composeClassName(value) {
-          return cx(displayClass, columnClass, value);
-        })
-      : cx(displayClass, columnClass, className);
-
-  return <Box {...rest} as={as} ref={ref} className={mergedClassName as string} style={mergedStyle as CSSProperties} />;
+  return (
+    <Box
+      {...rest}
+      as={as}
+      ref={ref}
+      className={composeClassName(className, displayClass, columnClass) as string}
+      style={composeStyle(style, computedStyle) as CSSProperties}
+    />
+  );
 }) as PolymorphicComponent<FlexOwnProps>;

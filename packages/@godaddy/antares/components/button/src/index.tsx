@@ -6,10 +6,10 @@ import {
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText,
-  composeRenderProps
+  Text as RACText
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 const buttonVariants = cva(styles.button, {
@@ -57,13 +57,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const { variant, size, className, children, ...rest } = props;
 
   return (
-    <RACButton
-      {...rest}
-      ref={ref}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return buttonVariants({ variant, size, className: value });
-      })}
-    >
+    <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
       {typeof children === 'string' ? <RACText>{children}</RACText> : children}
     </RACButton>
   );
@@ -86,9 +80,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
     <RACLink
       {...rest}
       ref={ref}
-      className={composeRenderProps(className, function composeClassName(value) {
-        return buttonVariants({ variant, size, className: value });
-      })}
+      className={composeClassName(className, buttonVariants({ variant, size }))}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
