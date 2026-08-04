@@ -12,32 +12,31 @@
     opacity 0.2s;
 }
 
-.popover[data-noarrow="true"] {
+.popover:where([data-noarrow="true"]) {
   --_arrow-width: 0px;
 }
 
-.popover[data-entering],
-.popover[data-exiting] {
+.popover:where([data-entering], [data-exiting]) {
   transform: var(--_animation-offset);
   opacity: 0;
 }
 
-.popover[data-placement="top"] {
+.popover:where([data-placement="top"]) {
   --_animation-offset: translateY(-8px);
   margin-bottom: var(--_content-offset);
 }
 
-.popover[data-placement="bottom"] {
+.popover:where([data-placement="bottom"]) {
   --_animation-offset: translateY(8px);
   margin-top: var(--_content-offset);
 }
 
-.popover[data-placement="right"] {
+.popover:where([data-placement="right"]) {
   --_animation-offset: translateX(8px);
   margin-left: var(--_content-offset);
 }
 
-.popover[data-placement="left"] {
+.popover:where([data-placement="left"]) {
   --_animation-offset: translateX(-8px);
   margin-right: var(--_content-offset);
 }
@@ -58,23 +57,23 @@
   rotate: 45deg;
 }
 
-.arrow[data-placement="top"] {
+.arrow:where([data-placement="top"]) {
   transform-origin: left;
   rotate: -45deg;
   margin-top: var(--_arrow-offset);
 }
 
-.arrow[data-placement="bottom"] {
+.arrow:where([data-placement="bottom"]) {
   transform-origin: left;
   margin-bottom: var(--_arrow-offset);
 }
 
-.arrow[data-placement="left"] {
+.arrow:where([data-placement="left"]) {
   transform-origin: top;
   margin-left: var(--_arrow-offset);
 }
 
-.arrow[data-placement="right"] {
+.arrow:where([data-placement="right"]) {
   transform-origin: top;
   rotate: -45deg;
   margin-right: var(--_arrow-offset);

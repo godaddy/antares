@@ -8,8 +8,7 @@
   transition: opacity 0.2s ease;
 }
 
-.overlay[data-entering],
-.overlay[data-exiting] {
+.overlay:where([data-entering], [data-exiting]) {
   opacity: 0;
 }
 
@@ -59,12 +58,12 @@
 }
 
 /* Floor the free axis so the absolute close button is never clipped by short content. */
-.drawer[data-has-close] {
+.drawer:where([data-has-close]) {
   --_min-fallback: 3rem;
 }
 
-.overlay[data-animate="false"],
-.overlay[data-animate="false"] .drawer {
+.overlay:where([data-animate="false"]),
+.overlay:where([data-animate="false"]) :where(.drawer) {
   transition: none;
 }
 

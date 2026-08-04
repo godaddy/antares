@@ -10,8 +10,7 @@
   transition: opacity 0.2s;
 }
 
-.overlay[data-entering],
-.overlay[data-exiting] {
+.overlay:where([data-entering], [data-exiting]) {
   opacity: 0;
 }
 
@@ -21,8 +20,7 @@
     opacity 0.2s;
 }
 
-.modalContainer[data-entering],
-.modalContainer[data-exiting] {
+.modalContainer:where([data-entering], [data-exiting]) {
   transform: translateY(8px);
   opacity: 0;
 }
