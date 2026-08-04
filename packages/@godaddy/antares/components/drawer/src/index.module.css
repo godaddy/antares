@@ -1,5 +1,5 @@
 .overlay {
-  --_overlay-bg: rgba(0, 0, 0, 0.6);
+  --_overlay-bg: var(--drawer-overlay-bg, rgba(0, 0, 0, 0.6));
 
   position: fixed;
   inset: 0;
@@ -14,6 +14,7 @@
 .drawer {
   position: fixed;
   outline: none;
+  overflow: hidden;
   transition: transform 0.2s ease;
 }
 
@@ -26,14 +27,14 @@
   inset-block: 0;
   block-size: 100%;
   max-inline-size: var(--_max-size, min(80vw, 25rem));
-  min-inline-size: var(--_min-size, var(--_min-fallback));
+  min-inline-size: var(--_min-size, auto);
 }
 
 .drawer:where([data-placement="top"], [data-placement="bottom"]) {
   inset-inline: 0;
   inline-size: 100%;
   max-block-size: var(--_max-size, calc(100dvh - 5rem));
-  min-block-size: var(--_min-size, var(--_min-fallback));
+  min-block-size: var(--_min-size, auto);
 }
 
 /* Physical edges (not logical inset-inline-*): placement is a physical side that
@@ -56,11 +57,6 @@
   border-radius: 0 0 var(--br-md) var(--br-md);
 }
 
-/* Floor the free axis so the absolute close button is never clipped by short content. */
-.drawer:where([data-has-close]) {
-  --_min-fallback: 3rem;
-}
-
 .overlay:where([data-animate="false"]),
 .overlay:where([data-animate="false"]) :where(.drawer) {
   transition: none;
@@ -73,12 +69,44 @@
   }
 }
 
-.close {
-  position: absolute;
-  inset-block-start: var(--sp-sm);
-  inset-inline-end: var(--sp-sm);
+.dialog {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  max-block-size: 100%;
+  outline: none;
+  overflow: hidden;
 }
 
-.dialog {
-  outline: none;
+.content {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+  padding-inline: var(--sp-md);
+  padding-block: var(--sp-sm);
+}
+
+.header {
+  flex-shrink: 0;
+  padding: var(--sp-md);
+  padding-block-end: var(--sp-sm);
+}
+
+.header :where([slot="close"]) {
+  align-self: flex-start;
+  margin-inline-start: auto;
+}
+
+.footer,
+.buttonGroup {
+  flex-shrink: 0;
+  padding: var(--sp-md);
+  padding-block-start: var(--sp-sm);
+}
+
+.buttonGroup {
+  justify-content: end;
+}
+
+.footer > :where(.buttonGroup) {
+  padding: 0;
 }

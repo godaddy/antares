@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Button, Text, Box } from '@godaddy/antares';
+import { Button, Content, Drawer, Text } from '@godaddy/antares';
 
 /**
  * Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
@@ -21,9 +21,9 @@ export function NoEscapeDismissExample() {
         isKeyboardDismissDisabled
         aria-label="Drawer"
       >
-        <Box padding="md">
+        <Content>
           <Text>Cannot escape</Text>
-        </Box>
+        </Content>
       </Drawer>
     </>
   );

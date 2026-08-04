@@ -8,7 +8,24 @@ import * as Stories from './drawer.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
+An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
+modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
+navigation and bottom sheets.
+
+Like `Modal`, the Drawer owns only its shell and scroll layout - compose the interior:
+
+```tsx
+<Drawer placement="right">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+  <Footer>
+    <ButtonGroup />
+  </Footer>
+</Drawer>
+```
 
 `DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
 
@@ -18,6 +35,7 @@ An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC mo
 - `overlay` elevation panel over a dimmed backdrop, matching `Modal`
 - Physical `placement` (does not flip for RTL)
 - Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
+- Pinned Header/Footer with a scrolling Content region
 - CSS transitions with `prefers-reduced-motion` support
 
 ## Installation
@@ -42,14 +60,28 @@ npm install --save @godaddy/antares
 ### ARIA
 
 - `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-- Dialog accessible name via `aria-label`
-- `aria-label="Close"` on the built-in close button
+- A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
 
 ## Best Practices
 
-- Always provide an `aria-label` so the dialog has an accessible name.
+- Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
 - Use `isDismissable` to allow closing via backdrop click.
 - Don't nest drawers.
+
+## Customization
+
+`className` and `style` apply to the drawer panel. Region spacing comes from the `Header`,
+`Content`, `Footer`, and `ButtonGroup` contexts the Drawer provides, so pass `className` or
+layout props to those containers to restyle a region.
+
+The backdrop is styled with the public `--drawer-overlay-bg` custom property. Because the
+overlay is portaled to `document.body`, set it globally rather than on an ancestor:
+
+```css
+:root {
+  --drawer-overlay-bg: rgba(0, 0, 0, 0.8);
+}
+```
 
 ## Props
 

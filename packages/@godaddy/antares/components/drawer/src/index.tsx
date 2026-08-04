@@ -1,18 +1,18 @@
 import { forwardRef, type ReactNode, type CSSProperties } from 'react';
 import {
   Dialog as RACDialog,
+  type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
-  type DialogProps as RACDialogProps
+  Provider as RACProvider
 } from 'react-aria-components';
 import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
-import { Button } from '#components/button';
-import { Icon } from '#components/icon';
-import { Flex, type FlexProps } from '#components/layout/flex';
+import { Flex } from '#components/layout/flex';
+import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import styles from './index.module.css';
 
 /**
@@ -21,75 +21,73 @@ import styles from './index.module.css';
  */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-export interface DrawerProps extends Omit<RACModalOverlayProps, 'className' | 'children' | 'style'> {
+/** Overlay state and dismissal props hoisted from RAC's `ModalOverlay` onto `Drawer`. */
+type DrawerOverlayBehaviorProps = Pick<
+  RACModalOverlayProps,
+  | 'isOpen'
+  | 'defaultOpen'
+  | 'onOpenChange'
+  | 'isDismissable'
+  | 'isKeyboardDismissDisabled'
+  | 'shouldCloseOnInteractOutside'
+>;
+
+export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOverlayBehaviorProps {
   /** Physical edge the drawer slides in from. */
   placement: DrawerPlacement;
 
-  /** Accessible label for the dialog. */
-  'aria-label'?: string;
-
-  /** Max size of the drawer along its constrained axis. Accepts CSS values.
+  /**
+   * Max size of the drawer along its constrained axis. Accepts CSS values.
    * @default 'min(80vw, 25rem)' for left/right, 'calc(100dvh - 5rem)' for top/bottom
    */
   maxSize?: number | string;
 
-  /**
-   * Min size of the drawer along its constrained axis. Accepts CSS values.
-   * When unset, `showCloseButton` establishes a floor so the close button is
-   * never clipped. Wins over `maxSize` if the two conflict.
-   */
+  /** Min size of the drawer along its constrained axis. Accepts CSS values. Wins over `maxSize` if the two conflict. */
   minSize?: number | string;
-
-  /** Show built-in X close button. @default false */
-  showCloseButton?: boolean;
-
-  /** Accessible label for the close button. @default 'Close' */
-  closeLabel?: string;
 
   /** Animate the open/close slide. @default true */
   animate?: boolean;
 
-  /** Forwarded to the inner Dialog for aria-controls linkage. */
-  id?: string;
+  /** Additional class name for the drawer panel. */
+  className?: string;
 
   /** Content to render inside the drawer. */
   children?: ReactNode;
-
-  /** Additional CSS class for root element. */
-  className?: string;
-
-  /** Additional props to pass to the inner modal container. */
-  containerProps?: Omit<FlexProps, 'as'>;
-
-  /** Additional props to pass to the inner dialog content region. */
-  contentProps?: RACDialogProps;
 }
 
 /**
- * An overlay panel that slides in from a screen edge. Built like `Modal`:
- * RAC modal overlay + an `elevation="overlay"` Box panel + CSS transitions.
+ * A composition-first overlay panel that slides in from a screen edge. Built on the same RAC
+ * stack as `Modal` (modal overlay + `elevation="overlay"` panel + dialog) with edge placement
+ * and a slide transition.
+ *
+ * The Drawer owns only the shell and the scroll layout; compose the interior from `Header`,
+ * `Content`, `Footer`, `ButtonGroup`, `Heading slot="title"`, and `CloseButton`.
+ *
+ * `className` and `style` target the drawer panel. The backdrop is styled globally through the
+ * public `--drawer-overlay-bg` custom property.
  *
  * @param props - {@link DrawerProps}
  */
 export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props, ref) {
   const {
     placement,
-    'aria-label': ariaLabel,
     maxSize,
     minSize,
-    showCloseButton = false,
-    closeLabel = 'Close',
     animate,
-    id,
-    children,
+    isOpen,
+    defaultOpen,
+    onOpenChange,
+    isDismissable,
+    isKeyboardDismissDisabled,
+    shouldCloseOnInteractOutside,
     className,
-    containerProps,
-    contentProps,
-    ...rest
+    style,
+    children,
+    ...dialogProps
   } = props;
 
-  const drawerStyle = {
-    ...containerProps?.style,
+  const panelStyle = {
+    ...style,
     '--_slide': getSlideTransform(placement),
     ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
     ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
@@ -97,34 +95,34 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
 
   return (
     <RACModalOverlay
+      isOpen={isOpen}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      isDismissable={isDismissable}
+      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
+      shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
       data-animate={animate === false ? 'false' : undefined}
-      {...rest}
-      className={cx(styles.overlay, className)}
+      className={styles.overlay}
     >
       <Flex
-        elevation="overlay"
-        data-placement={placement}
-        data-has-close={showCloseButton || undefined}
-        {...containerProps}
-        style={drawerStyle}
         as={RACModal}
-        className={cx(styles.drawer, containerProps?.className)}
+        elevation="overlay"
+        direction="column"
+        data-placement={placement}
+        style={panelStyle}
+        className={cx(styles.drawer, className)}
       >
-        <Flex
-          direction="column"
-          ref={ref}
-          id={id}
-          aria-label={ariaLabel}
-          {...contentProps}
-          as={RACDialog}
-          className={cx(styles.dialog, contentProps?.className)}
-        >
-          {showCloseButton ? (
-            <Button className={styles.close} slot="close" aria-label={closeLabel}>
-              <Icon icon="x" />
-            </Button>
-          ) : null}
-          {children}
+        <Flex as={RACDialog} direction="column" {...dialogProps} ref={ref} className={styles.dialog}>
+          <RACProvider
+            values={[
+              [HeaderContext, { className: styles.header, alignItems: 'start' }],
+              [ContentContext, { className: styles.content }],
+              [FooterContext, { className: styles.footer }],
+              [ButtonGroupContext, { className: styles.buttonGroup }]
+            ]}
+          >
+            {children}
+          </RACProvider>
         </Flex>
       </Flex>
     </RACModalOverlay>

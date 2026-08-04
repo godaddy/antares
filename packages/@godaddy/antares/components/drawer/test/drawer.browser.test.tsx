@@ -8,6 +8,7 @@ import { PlaygroundExample } from '../examples/drawer-playground.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
+import { ScrollableExample } from '../examples/scrollable.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -135,6 +136,20 @@ describe('@godaddy/antares', function antares() {
       });
 
       assume(getByRole('dialog', { name: 'Nested popover' }).query()).is.not.equal(null);
+    });
+
+    it('scrolls the Content region while Header stays pinned', async function scrollableContent() {
+      const { getByRole } = await render(<ScrollableExample />);
+
+      await getByRole('button', { name: 'Open drawer' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog', { name: 'Terms' }).query()).is.not.equal(null);
+      });
+
+      const dialog = getByRole('dialog', { name: 'Terms' }).element();
+      const content = dialog.querySelector('section') as HTMLElement;
+      assume(getComputedStyle(content).overflowY).equals('auto');
+      assume(getComputedStyle(dialog.querySelector('header') as HTMLElement).flexShrink).equals('0');
     });
   });
 });

@@ -17,7 +17,7 @@ export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'right',
     isDismissable: true,
-    showCloseButton: false,
+    showHeader: false,
     animate: true
   },
   argTypes: {
@@ -34,9 +34,9 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'boolean',
       description: 'Animate the open/close slide'
     },
-    showCloseButton: {
+    showHeader: {
       control: 'boolean',
-      description: 'Show built-in close button'
+      description: 'Compose a Header with a title and close button'
     }
   }
 });
