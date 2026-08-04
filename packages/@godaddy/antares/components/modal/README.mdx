@@ -28,7 +28,7 @@ npm install --save @godaddy/antares
 | ------------- | ------------------------------------------------------------------ |
 | `Tab`         | Moves focus to the next focusable element inside the modal         |
 | `Shift + Tab` | Moves focus to the previous focusable element inside the modal     |
-| `Escape`      | Closes the modal (unless `overlayProps.isKeyboardDismissDisabled`) |
+| `Escape`      | Closes the modal (unless `isKeyboardDismissDisabled`)              |
 
 ### ARIA
 
@@ -41,7 +41,22 @@ npm install --save @godaddy/antares
 
 - Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
 - Pair every action button with `slot="close"` when it should dismiss the modal
-- Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `overlayProps={{ isKeyboardDismissDisabled: true }}`
+- Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+
+## Customization
+
+`className` and `style` apply to the dialog panel. Region spacing comes from the `Header`,
+`Content`, `Footer`, and `ButtonGroup` contexts the Modal provides, so pass `className` or
+layout props to those containers to restyle a region.
+
+The backdrop is styled with the public `--modal-overlay-bg` custom property. Because the
+overlay is portaled to `document.body`, set it globally rather than on an ancestor:
+
+```css
+:root {
+  --modal-overlay-bg: rgba(0, 0, 0, 0.8);
+}
+```
 
 ## Props
 

@@ -15,19 +15,21 @@ const PARAGRAPH =
 
 export interface PlaygroundExampleProps {
   isDismissable?: boolean;
+  isKeyboardDismissDisabled?: boolean;
   longContent?: boolean;
   showActions?: boolean;
 }
 
 export function PlaygroundExample({
   isDismissable = true,
+  isKeyboardDismissDisabled = false,
   longContent = false,
   showActions = true
 }: PlaygroundExampleProps) {
   return (
     <ModalTrigger>
       <Button variant="primary">Open modal</Button>
-      <Modal isDismissable={isDismissable}>
+      <Modal isDismissable={isDismissable} isKeyboardDismissDisabled={isKeyboardDismissDisabled}>
         <Header>
           <Heading slot="title">Modal title</Heading>
           <CloseButton />

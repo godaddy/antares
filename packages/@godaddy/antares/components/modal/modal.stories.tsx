@@ -14,6 +14,7 @@ export const Examples = getExamples('./examples');
 export const Playground = getStory(PlaygroundExample, {
   args: {
     isDismissable: true,
+    isKeyboardDismissDisabled: false,
     longContent: false,
     showActions: true
   },
@@ -21,6 +22,10 @@ export const Playground = getStory(PlaygroundExample, {
     isDismissable: {
       control: 'boolean',
       description: 'Whether the modal can be dismissed via overlay click or Escape key'
+    },
+    isKeyboardDismissDisabled: {
+      control: 'boolean',
+      description: 'Prevent Escape from closing the modal'
     },
     longContent: {
       control: 'boolean',

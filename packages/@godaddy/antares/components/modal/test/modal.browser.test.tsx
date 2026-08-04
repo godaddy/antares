@@ -6,6 +6,7 @@ import { DefaultExample } from '../examples/default.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { PlaygroundExample } from '../examples/modal-playground.tsx';
+import { TriggerlessExample } from '../examples/triggerless.tsx';
 
 /**
  * Simulate an interaction outside the dialog by dispatching a pointerdown + click on the
@@ -122,6 +123,26 @@ describe('@godaddy/antares', function packageTests() {
 
       await userEvent.keyboard('{Escape}');
       await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('blocks Escape via the flat isKeyboardDismissDisabled prop', async function flatKeyboardDismiss() {
+      await render(<PlaygroundExample isKeyboardDismissDisabled />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+      await expect.element(page.getByRole('dialog')).toBeVisible();
+
+      await userEvent.keyboard('{Escape}');
+      await expect.element(page.getByRole('dialog')).toBeVisible();
+    });
+
+    it('controls open state with flat isOpen and onOpenChange, no trigger', async function flatOpenState() {
+      await render(<TriggerlessExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+      await expect.element(page.getByRole('dialog', { name: 'Triggerless modal' })).toBeVisible();
+
+      await userEvent.keyboard('{Escape}');
+      await expect.element(page.getByRole('dialog', { name: 'Triggerless modal' })).not.toBeInTheDocument();
     });
   });
 });

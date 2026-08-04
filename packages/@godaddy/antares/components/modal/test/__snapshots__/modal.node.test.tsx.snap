@@ -5,3 +5,5 @@ exports[`@godaddy/antares > #Modal > renders ControlledExample 1`] = `"<div clas
 exports[`@godaddy/antares > #Modal > renders DefaultExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open modal</span></button>"`;
 
 exports[`@godaddy/antares > #Modal > renders ScrollableExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open modal</span></button>"`;
+
+exports[`@godaddy/antares > #Modal > renders TriggerlessExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_1_"><span class="react-aria-Text">Open modal</span></button>"`;
