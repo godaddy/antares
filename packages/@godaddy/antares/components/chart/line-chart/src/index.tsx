@@ -390,7 +390,13 @@ export function LineChart<
   const seriesColors = useMemo(
     function getSeriesColors() {
       return series.map(function resolveColor(oneSeries, index) {
-        return chartColorForIndex(oneSeries.colorIndex ?? index);
+        // colorIndex is public and typed `number`; fall back to the series position for
+        // anything that isn't a valid palette index (undefined, negative, fractional, NaN, ∞),
+        // since chartColorForIndex would otherwise resolve those to `undefined`.
+        const { colorIndex } = oneSeries;
+        const paletteIndex =
+          typeof colorIndex === 'number' && Number.isInteger(colorIndex) && colorIndex >= 0 ? colorIndex : index;
+        return chartColorForIndex(paletteIndex);
       });
     },
     [series]
