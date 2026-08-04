@@ -452,11 +452,12 @@ export function LineChart<
           datumByKey,
           series: seriesWithResolvedColor
         });
-        // A consumer returning nothing (e.g. `null` when no pair is resolvable, `undefined`
-        // from a branch with no return, or a `cond && <X/>` that short-circuits to `false`)
-        // should render no popover at all — otherwise the empty styled container floats at
-        // the cursor. `0`/`NaN` are intentionally left renderable.
-        if (content === null || content === undefined || content === false) {
+        // A consumer returning nothing should render no popover at all — otherwise the empty
+        // styled container floats at the cursor. React renders every boolean as no content, so
+        // a `cond && <X/>` that short-circuits to `false`, a `cond || <X/>` that yields `true`,
+        // `undefined` from a branch with no return, or an explicit `null` should all suppress
+        // it. `0`/`NaN` are intentionally left renderable.
+        if (content === null || content === undefined || typeof content === 'boolean') {
           return null;
         }
         return <TooltipContainer>{content}</TooltipContainer>;
@@ -468,6 +469,7 @@ export function LineChart<
           tooltipData={params.tooltipData as TooltipData<DataPoint> | undefined}
           series={seriesWithColor as (SeriesConfig<DataPoint> & { color?: string })[]}
           formatValue={tooltipValueFormatter as ((datum: DataPoint) => string) | undefined}
+          useSeriesColors
         />
       );
     },
@@ -656,7 +658,9 @@ export function LineChart<
           )}
         </Box>
         {xTitle && <AxisTitle title={xTitle} axis="x" />}
-        {effectiveLegendPosition && <Legend series={seriesWithColor} className={styles.legend} alignSelf="center" />}
+        {effectiveLegendPosition && (
+          <Legend series={seriesWithColor} useSeriesStyles className={styles.legend} alignSelf="center" />
+        )}
       </Flex>
     </Flex>
   );

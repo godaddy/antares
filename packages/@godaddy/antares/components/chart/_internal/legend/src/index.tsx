@@ -14,10 +14,11 @@ import styles from './index.module.css';
  * Colors are handled by the theme.
  */
 /**
- * Series subset the legend renders. Both extra fields are optional and line-specific:
- * `variant` set to 'dashed' or 'dotted' makes the swatch a matching line instead of the
- * default color dot; `color` overrides the swatch color (otherwise it's allocated from the
- * palette by position). Bar and donut legends omit both and keep the position-based dot.
+ * Series subset the legend renders. Both extra fields are optional and line-specific, and are
+ * only honored when {@link LegendProps.useSeriesStyles} is set: `variant` set to 'dashed' or
+ * 'dotted' makes the swatch a matching line instead of the default color dot; `color` overrides
+ * the swatch color (otherwise it's allocated from the palette by position). Bar and donut
+ * legends leave the flag off and keep the position-based dot.
  */
 interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name'> {
   variant?: LineSeriesVariant;
@@ -34,6 +35,13 @@ export interface LegendProps
   size?: 'sm' | 'md' | 'lg' | 'xl';
   /** Layout orientation for legend items. Defaults to horizontal. */
   orientation?: 'horizontal' | 'vertical';
+  /**
+   * When true, each swatch is drawn from its series' explicit `variant` and `color` (line
+   * charts, which support `colorIndex` reordering and dashed/dotted styles). Left off (the
+   * default) for bar/donut, whose series render in order and take a position-based color dot —
+   * so a consumer's incidental `color`/`variant` field never alters a swatch. @default false
+   */
+  useSeriesStyles?: boolean;
 }
 
 /**
@@ -97,20 +105,32 @@ function LegendSwatch(props: LegendSwatchProps) {
 
 interface LegendItemProps {
   seriesItem: LegendSeriesItem;
+  useSeriesStyles: boolean;
 }
 
 function LegendItem(props: LegendItemProps) {
-  const { seriesItem } = props;
+  const { seriesItem, useSeriesStyles } = props;
   return (
     <Flex role="listitem" direction="row" alignItems="center" gap="sm" className={styles.item}>
-      <LegendSwatch variant={seriesItem.variant} color={seriesItem.color} />
+      <LegendSwatch
+        variant={useSeriesStyles ? seriesItem.variant : undefined}
+        color={useSeriesStyles ? seriesItem.color : undefined}
+      />
       <Text>{seriesItem.name}</Text>
     </Flex>
   );
 }
 
 export function Legend(props: LegendProps) {
-  const { series, label, size = 'md', orientation = 'horizontal', className, ...rootFlexProps } = props;
+  const {
+    series,
+    label,
+    size = 'md',
+    orientation = 'horizontal',
+    useSeriesStyles = false,
+    className,
+    ...rootFlexProps
+  } = props;
   const isHorizontal = orientation === 'horizontal';
 
   return (
@@ -136,7 +156,7 @@ export function Legend(props: LegendProps) {
           justifyContent="center"
         >
           {series.map(function renderLegendItem(seriesItem) {
-            return <LegendItem key={seriesItem.id} seriesItem={seriesItem} />;
+            return <LegendItem key={seriesItem.id} seriesItem={seriesItem} useSeriesStyles={useSeriesStyles} />;
           })}
         </Flex>
       </Flex>

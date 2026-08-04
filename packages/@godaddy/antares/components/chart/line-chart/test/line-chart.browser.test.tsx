@@ -432,6 +432,25 @@ describe('@godaddy/antares', function antares() {
 
         assume(document.querySelector('.visx-tooltip')).equals(null);
       });
+
+      it('renders no popover when the custom tooltip returns a boolean', async function booleanContent() {
+        // React renders every boolean as no content, so a renderer whose expression yields
+        // `true` (e.g. `someFlag || <Content/>`) must suppress the popover just like `false`
+        // or `null` — otherwise an empty styled container floats at the cursor. Overriding
+        // renderTooltip via props (spread last in the example) forces the `true` return.
+        const { container, locator } = await renderExampleAndWait(
+          <CustomTooltipPairChangeExample renderTooltip={() => true} />
+        );
+        assume(container.querySelector('svg')).exists();
+
+        await locator.hover({ position: { x: 400, y: 200 } });
+        // Let any tooltip render (it should not); other tests find the popover well within this window.
+        await new Promise(function settle(resolve) {
+          setTimeout(resolve, 500);
+        });
+
+        assume(document.querySelector('.visx-tooltip')).equals(null);
+      });
     });
 
     describe('#custom-tooltip-period-comparison', function customTooltipPeriodComparison() {

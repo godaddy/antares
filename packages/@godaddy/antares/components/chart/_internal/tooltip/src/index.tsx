@@ -40,15 +40,22 @@ interface TooltipBaseProps<T extends object> {
   /** Hovered data from visx. */
   tooltipData?: TooltipData<T>;
   /**
-   * Series config for names and colors. Each item may carry an optional `color` to
-   * override its swatch; when omitted the swatch color falls back to the palette by
-   * position (CSS `:nth-child`).
+   * Series config for names and colors. Each item may carry an optional `color`, but it is
+   * only applied to the swatch when {@link TooltipBaseProps.useSeriesColors} is set (line
+   * charts, which resolve colors explicitly via `colorIndex`). Otherwise the swatch color
+   * falls back to the palette by position (CSS `:nth-child`).
    */
   series: (SeriesConfig<T> & { color?: string })[];
   /** Additional class name. */
   className?: string;
   /** Whether to show the tooltip arrow @default false */
   showArrow?: boolean;
+  /**
+   * When true, each swatch uses its series' explicit `color`. Left off (the default) for
+   * bar charts, whose series render in order and take position-based palette colors — so a
+   * consumer's incidental `color` field never overrides a swatch. @default false
+   */
+  useSeriesColors?: boolean;
 }
 
 /** Props when using the default {@link DataPoint} shape — `formatValue` is optional and defaults to reading `y`. */
@@ -84,7 +91,7 @@ export function Tooltip<T extends object>(props: TooltipPropsCustom<T>): ReactEl
 export function Tooltip<T extends object = DataPoint>(
   props: TooltipProps | TooltipPropsCustom<T>
 ): ReactElement | null {
-  const { tooltipData, series, className, showArrow = false } = props;
+  const { tooltipData, series, className, showArrow = false, useSeriesColors = false } = props;
   const formatValue = props.formatValue ?? (defaultFormatValue as (datum: T) => string);
 
   const seriesData = useMemo(
@@ -126,7 +133,7 @@ export function Tooltip<T extends object = DataPoint>(
                 <Box
                   className={styles.swatch}
                   rounding="full"
-                  style={item.color ? { backgroundColor: item.color } : undefined}
+                  style={useSeriesColors && item.color ? { backgroundColor: item.color } : undefined}
                 />
                 <Text>{item.name}</Text>
               </Flex>
