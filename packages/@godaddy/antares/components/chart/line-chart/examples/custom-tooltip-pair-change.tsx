@@ -33,7 +33,7 @@ function renderPairChangeTooltip({ hoveredSeriesId, datumByKey, series }: LineCh
   return (
     <Flex direction="column" gap="sm">
       <Flex alignItems="center" gap="sm">
-        <Box rounding="full" style={{ width: 10, height: 10, backgroundColor: actual.color }} />
+        <Box rounding="full" style={{ width: 10, height: 10, backgroundColor: actual.resolvedColor }} />
         <Text>{actual.name}</Text>
       </Flex>
       <Text>{`Actual: ${actualY.toFixed(1)}°F`}</Text>

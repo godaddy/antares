@@ -15,7 +15,7 @@ function renderHoveredTooltip({ hoveredSeriesId, hoveredDatum, series }: LineCha
   return (
     <Flex direction="column" gap="sm">
       <Flex alignItems="center" gap="sm">
-        <Box rounding="full" style={{ width: 10, height: 10, backgroundColor: hovered.color }} />
+        <Box rounding="full" style={{ width: 10, height: 10, backgroundColor: hovered.resolvedColor }} />
         <Text>{hovered.name}</Text>
       </Flex>
       <Text>{`${(hoveredDatum.y as number).toFixed(1)}°F`}</Text>

@@ -84,10 +84,12 @@ export interface LineChartTooltipRenderProps<
    */
   datumByKey: Partial<Record<string, T>>;
   /**
-   * Resolved series in render order — the objects you passed in `series` (including
-   * any custom keys), each with a guaranteed `id` and its resolved palette `color`.
+   * Resolved series in render order — the objects you passed in `series`, with every
+   * custom key preserved untouched and a guaranteed `id`. The palette color computed for
+   * each series is exposed under the reserved `resolvedColor` key (not `color`), so a
+   * field literally named `color` on your series survives and its type can't collapse.
    */
-  series: (S & { id: string; color?: string })[];
+  series: (S & { id: string; resolvedColor?: string })[];
 }
 
 /**
@@ -410,6 +412,18 @@ export function LineChart<
     },
     [series, seriesColors]
   );
+  // Series for the custom-tooltip render prop. Unlike the internal swatch shape above, this
+  // preserves every consumer key (including a field literally named `color`) and exposes the
+  // computed palette color under the reserved `resolvedColor` key, so we never clobber or
+  // type-collide with the consumer's own data.
+  const seriesWithResolvedColor = useMemo(
+    function getSeriesWithResolvedColor() {
+      return series.map(function attachResolvedColor(oneSeries, index) {
+        return { ...oneSeries, resolvedColor: seriesColors[index] };
+      });
+    },
+    [series, seriesColors]
+  );
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);
   // See @remarks: custom T requires accessors; assertion satisfies visx LineSeries typings
@@ -436,7 +450,7 @@ export function LineChart<
           hoveredSeriesId: tooltipData?.nearestDatum?.key,
           hoveredDatum: tooltipData?.nearestDatum?.datum,
           datumByKey,
-          series: seriesWithColor
+          series: seriesWithResolvedColor
         });
         // A consumer returning nothing (e.g. `null` when no pair is resolvable, `undefined`
         // from a branch with no return, or a `cond && <X/>` that short-circuits to `false`)
@@ -457,7 +471,7 @@ export function LineChart<
         />
       );
     },
-    [seriesWithColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
+    [seriesWithColor, seriesWithResolvedColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
   );
 
   const xScaleConfig = useMemo(
