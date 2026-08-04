@@ -432,16 +432,20 @@ export function LineChart<
             return [key, entry.datum];
           })
         );
-        return (
-          <TooltipContainer>
-            {renderTooltipContent({
-              hoveredSeriesId: tooltipData?.nearestDatum?.key,
-              hoveredDatum: tooltipData?.nearestDatum?.datum,
-              datumByKey,
-              series: seriesWithColor
-            })}
-          </TooltipContainer>
-        );
+        const content = renderTooltipContent({
+          hoveredSeriesId: tooltipData?.nearestDatum?.key,
+          hoveredDatum: tooltipData?.nearestDatum?.datum,
+          datumByKey,
+          series: seriesWithColor
+        });
+        // A consumer returning nothing (e.g. `null` when no pair is resolvable, `undefined`
+        // from a branch with no return, or a `cond && <X/>` that short-circuits to `false`)
+        // should render no popover at all — otherwise the empty styled container floats at
+        // the cursor. `0`/`NaN` are intentionally left renderable.
+        if (content === null || content === undefined || content === false) {
+          return null;
+        }
+        return <TooltipContainer>{content}</TooltipContainer>;
       }
 
       // Narrow to DataPoint overload; Tooltip overloads can't resolve generic T

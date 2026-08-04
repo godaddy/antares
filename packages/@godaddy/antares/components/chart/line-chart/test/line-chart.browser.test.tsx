@@ -409,6 +409,29 @@ describe('@godaddy/antares', function antares() {
         assume(bottomText.includes('North')).is.false();
         assume(bottomText).matches(/Forecast vs actual: [+-]?\d+\.\d%/);
       });
+
+      it('renders no popover when the custom tooltip returns null', async function nullContent() {
+        // A single, unpaired series makes renderPairChangeTooltip hit its `return null` path
+        // (no dashed forecast partner). renderTooltip returning null suppresses the tooltip
+        // entirely — no empty styled popover floats at the cursor. (400,200) is the same spot
+        // the paired example's test uses to *show* a tooltip, so the position is interactive.
+        const dates = ['2020-01-01', '2020-02-01', '2020-03-01', '2020-04-01', '2020-05-01'].map(
+          (iso) => new Date(iso)
+        );
+        const values = [10, 40, 25, 60, 35];
+        const series = [{ id: 'solo', name: 'Solo', colorIndex: 0, data: dates.map((x, i) => ({ x, y: values[i] })) }];
+
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipPairChangeExample series={series} />);
+        assume(container.querySelector('svg')).exists();
+
+        await locator.hover({ position: { x: 400, y: 200 } });
+        // Let any tooltip render (it should not); other tests find the popover well within this window.
+        await new Promise(function settle(resolve) {
+          setTimeout(resolve, 500);
+        });
+
+        assume(document.querySelector('.visx-tooltip')).equals(null);
+      });
     });
 
     describe('#custom-tooltip-period-comparison', function customTooltipPeriodComparison() {
