@@ -2,40 +2,28 @@ import { forwardRef, type RefObject, type ReactNode } from 'react';
 import { cx } from 'cva';
 import {
   Dialog as RACDialog,
-  type DialogProps as RACDialogProps,
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
-  OverlayArrow as RACOverlayArrow
+  OverlayArrow as RACOverlayArrow,
+  Provider as RACProvider
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Button } from '#components/button';
-import { Icon } from '#components/icon';
+import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import styles from './index.module.css';
-
-interface ContentProps extends RACDialogProps, FlexOwnProps {}
 
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
 
-export interface PopoverProps extends RACPopoverProps, FlexOwnProps {
-  /** The content to display inside the popover. */
+export interface PopoverProps extends Omit<RACPopoverProps, 'children' | 'className'>, FlexOwnProps {
+  /** The content to display inside the popover. Compose `Header`, `Content`, and `Footer`. */
   children?: ReactNode;
-
-  /** Whether to show the close button. */
-  showCloseButton?: boolean;
-
-  /** Props to pass to the content container. */
-  contentProps?: ContentProps;
-
-  /** The placement of the popover relative to the trigger. */
-  placement?: RACPopoverProps['placement'];
 
   /** Whether to hide the arrow. */
   hideArrow?: boolean;
 
-  /** The content to display in the header when `showCloseButton` is `true`. */
-  header?: ReactNode;
+  /** Additional class name for the popover panel. */
+  className?: string;
 
   /**
    * The ref for the element which the popover positions itself with respect to.
@@ -45,12 +33,26 @@ export interface PopoverProps extends RACPopoverProps, FlexOwnProps {
 }
 
 /**
- * A popover component.
+ * A composition-first popover: an overlay positioned relative to a trigger.
+ *
+ * The Popover owns only the positioned panel and the scroll layout; compose the interior from
+ * `Header`, `Content`, `Footer`, `ButtonGroup`, `Heading slot="title"`, and `CloseButton`.
+ *
+ * `className` and `style` target the popover panel. Provide a `Heading slot="title"` or an
+ * `aria-label` so the dialog has an accessible name.
  *
  * @param props - {@link PopoverProps}
  */
 export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(props, ref) {
-  const { className, children, header, showCloseButton, hideArrow, contentProps, ...rest } = props;
+  const {
+    className,
+    children,
+    hideArrow,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    ...rest
+  } = props;
 
   return (
     <Flex
@@ -64,23 +66,23 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       <Flex
-        direction="column"
-        padding="md"
-        aria-label="Content"
-        {...contentProps}
         as={RACDialog}
-        className={cx(styles.content, contentProps?.className)}
+        direction="column"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
+        className={styles.dialog}
       >
-        {showCloseButton ? (
-          <Flex gap="sm">
-            {header}
-            <Button className={styles.close} slot="close" aria-label="Close">
-              <Icon icon="x" />
-            </Button>
-          </Flex>
-        ) : null}
-
-        {children}
+        <RACProvider
+          values={[
+            [HeaderContext, { className: styles.header, alignItems: 'start' }],
+            [ContentContext, { className: styles.content }],
+            [FooterContext, { className: styles.footer }],
+            [ButtonGroupContext, { className: styles.buttonGroup }]
+          ]}
+        >
+          {children}
+        </RACProvider>
       </Flex>
     </Flex>
   );

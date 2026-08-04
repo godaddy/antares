@@ -14,7 +14,7 @@ describe('@godaddy/antares', function antares() {
       await getByRole('button', { name: 'Open popover' }).click();
 
       await vi.waitFor(async function open() {
-        const dialog = getByRole('dialog', { name: 'Content' }).query();
+        const dialog = getByRole('dialog', { name: 'Popover' }).query();
         assume(dialog).is.not.equal(null);
         assume(dialog?.textContent).includes('This is the popover content!');
       });
@@ -27,7 +27,7 @@ describe('@godaddy/antares', function antares() {
       await userEvent.keyboard('{Enter}');
 
       await vi.waitFor(async function open() {
-        const dialog = getByRole('dialog', { name: 'Content' }).query();
+        const dialog = getByRole('dialog', { name: 'Popover' }).query();
         assume(dialog).is.not.equal(null);
         assume(dialog?.textContent).includes('This is the popover content!');
       });
@@ -39,13 +39,13 @@ describe('@godaddy/antares', function antares() {
       await getByRole('button', { name: 'Open popover' }).click();
 
       await vi.waitFor(async function open() {
-        assume(getByRole('dialog', { name: 'Content' }).query()).is.not.equal(null);
+        assume(getByRole('dialog', { name: 'Popover' }).query()).is.not.equal(null);
       });
 
       await userEvent.keyboard('{Escape}');
 
       await vi.waitFor(async function close() {
-        assume(getByRole('dialog', { name: 'Content' }).query()).equals(null);
+        assume(getByRole('dialog', { name: 'Popover' }).query()).equals(null);
       });
     });
 
@@ -55,7 +55,7 @@ describe('@godaddy/antares', function antares() {
       await getByRole('button', { name: 'Open Popover' }).click();
 
       await vi.waitFor(async function open() {
-        const dialog = getByRole('dialog', { name: 'Content' }).query();
+        const dialog = getByRole('dialog', { name: 'Popover' }).query();
         assume(dialog).is.not.equal(null);
         assume(dialog?.textContent).includes('Popover content!');
       });
@@ -75,7 +75,7 @@ describe('@godaddy/antares', function antares() {
       await getByRole('button', { name: 'Close' }).click();
 
       await vi.waitFor(async function close() {
-        assume(getByRole('dialog', { name: 'Content' }).query()).equals(null);
+        assume(getByRole('dialog', { name: 'Popover title' }).query()).equals(null);
       });
     });
 
@@ -85,14 +85,24 @@ describe('@godaddy/antares', function antares() {
       await getByRole('button', { name: 'Open popover' }).click();
 
       await vi.waitFor(async function open() {
-        assume(getByRole('dialog', { name: 'Content' }).query()).is.not.equal(null);
+        assume(getByRole('dialog', { name: 'Popover title' }).query()).is.not.equal(null);
       });
 
       await userEvent.keyboard('{Tab}');
       await userEvent.keyboard('{Enter}');
 
       await vi.waitFor(async function close() {
-        assume(getByRole('dialog', { name: 'Content' }).query()).equals(null);
+        assume(getByRole('dialog', { name: 'Popover title' }).query()).equals(null);
+      });
+    });
+
+    it('labels the dialog from a composed Heading slot="title"', async function headingLabel() {
+      const { getByRole } = await render(<WithCloseButtonExample />);
+
+      await getByRole('button', { name: 'Open popover' }).click();
+
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog', { name: 'Popover title' }).query()).is.not.equal(null);
       });
     });
   });

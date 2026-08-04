@@ -8,6 +8,20 @@ import * as Stories from './popover.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
+The Popover owns only its positioned panel and scroll layout - compose the interior:
+
+```tsx
+<Popover placement="bottom">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+</Popover>
+```
+
+Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
+
 ## Installation
 
 ```bash
@@ -21,6 +35,12 @@ npm install --save @godaddy/antares
 ## Best Practices
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+## Customization
+
+`className` and `style` apply to the popover panel. Region spacing comes from the `Header`,
+`Content`, and `Footer` contexts the Popover provides, so pass `className` or layout props to
+those containers to restyle a region.
 
 ## Props
 

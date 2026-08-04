@@ -22,6 +22,7 @@ import {
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
 import { Calendar, RangeCalendar } from '#components/calendar';
+import { Content } from '#components/structure';
 import styles from './index.module.css';
 
 const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -79,7 +80,9 @@ export function DatePicker(props: DatePickerProps) {
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
       <Popover hideArrow>
-        <Calendar />
+        <Content>
+          <Calendar />
+        </Content>
       </Popover>
     </Field>
   );
@@ -136,7 +139,9 @@ export function DateRangePicker(props: DateRangePickerProps) {
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
       <Popover hideArrow>
-        <RangeCalendar />
+        <Content>
+          <RangeCalendar />
+        </Content>
       </Popover>
     </Field>
   );

@@ -15,7 +15,7 @@ export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'bottom',
     hideArrow: false,
-    showCloseButton: false
+    showHeader: false
   },
   argTypes: {
     placement: {
@@ -27,9 +27,9 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'boolean',
       description: 'Hide the popover arrow'
     },
-    showCloseButton: {
+    showHeader: {
       control: 'boolean',
-      description: 'Show a close button in the header'
+      description: 'Compose a Header with a title and close button'
     }
   }
 });
