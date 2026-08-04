@@ -13,6 +13,8 @@ import { TitlesExample } from '../examples/titles';
 import { FormattingExample } from '../examples/formatting.tsx';
 import { CustomTooltipExample } from '../examples/custom-tooltip.tsx';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting.tsx';
+import { CustomTooltipPairChangeExample } from '../examples/custom-tooltip-pair-change.tsx';
+import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison.tsx';
 import { CustomAccessorsExample } from '../examples/custom-accessors.tsx';
 import { BrowserUsageExample } from '../examples/browser-usage.tsx';
 import { RTLExample } from '../examples/rtl.tsx';
@@ -326,6 +328,49 @@ describe('@godaddy/antares', function antares() {
         const showsNewYork = text.includes('New York');
         const showsSanFrancisco = text.includes('San Francisco');
         assume(showsNewYork !== showsSanFrancisco).is.true();
+      });
+    });
+
+    describe('#custom-tooltip-pair-change', function customTooltipPairChange() {
+      it('combines both lines of the hovered pair and their percent change', async function pairChange() {
+        const { container, locator, baseElement } = await renderExampleAndWait(<CustomTooltipPairChangeExample />);
+
+        assume(container.querySelector('svg')).exists();
+
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+
+        const tooltipElements = document.querySelectorAll('.visx-tooltip');
+        const lastTooltip = tooltipElements[tooltipElements.length - 1];
+        const text = lastTooltip.textContent ?? '';
+
+        // Unlike the single-curve custom tooltip, this one combines the pair: both the actual
+        // and forecast rows plus their computed percent change appear together.
+        assume(text).matches(/Actual: -?\d/);
+        assume(text).matches(/Forecast: -?\d/);
+        assume(text).matches(/Forecast vs actual: [+-]?\d+\.\d%/);
+      });
+    });
+
+    describe('#custom-tooltip-period-comparison', function customTooltipPeriodComparison() {
+      it('shows the period-over-period comparison card for the hovered channel', async function periodComparison() {
+        const { container, locator, baseElement } = await renderExampleAndWait(
+          <CustomTooltipPeriodComparisonExample />
+        );
+
+        assume(container.querySelector('svg')).exists();
+
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+
+        const tooltipElements = document.querySelectorAll('.visx-tooltip');
+        const lastTooltip = tooltipElements[tooltipElements.length - 1];
+        const text = lastTooltip.textContent ?? '';
+
+        // Comparison card: two dated currency values plus a percent change vs the previous period.
+        assume(text).matches(/compared to previous period/);
+        assume(text).matches(/\$\d+\.\d{2}/);
+        assume(text).matches(/\d+\.\d{2}%/);
       });
     });
 

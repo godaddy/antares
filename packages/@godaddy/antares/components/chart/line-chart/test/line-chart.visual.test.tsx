@@ -14,6 +14,8 @@ import { CustomAccessorsExample } from '../examples/custom-accessors';
 import { CustomTicksExample } from '../examples/custom-ticks';
 import { CustomTooltipExample } from '../examples/custom-tooltip';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';
+import { CustomTooltipPairChangeExample } from '../examples/custom-tooltip-pair-change';
+import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison';
 import { FixedDomainExample } from '../examples/fixed-domain';
 import { FixedSizeExample } from '../examples/fixed-size';
 import { FormattingExample } from '../examples/formatting';
@@ -206,6 +208,22 @@ describe('@godaddy/antares', function antares() {
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
         await expect(container).toMatchScreenshot('custom-tooltip');
+      });
+
+      it('custom-tooltip-pair-change screenshot', async function customTooltipPairChange() {
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipPairChangeExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await expect(container).toMatchScreenshot('custom-tooltip-pair-change');
+      });
+
+      it('custom-tooltip-period-comparison screenshot', async function customTooltipPeriodComparison() {
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipPeriodComparisonExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await expect(container).toMatchScreenshot('custom-tooltip-period-comparison');
       });
     });
 

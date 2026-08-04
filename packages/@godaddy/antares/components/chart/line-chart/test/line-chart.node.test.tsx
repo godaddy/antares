@@ -8,6 +8,8 @@ import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { CustomTooltipExample } from '../examples/custom-tooltip';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';
+import { CustomTooltipPairChangeExample } from '../examples/custom-tooltip-pair-change';
+import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison';
 import { CityTemperatureExample } from '../examples/city-temperature';
 import { ColorIndexExample } from '../examples/color-index';
 import { TooltipDisabledExample } from '../examples/tooltip-disabled';
@@ -46,6 +48,8 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['custom-ticks', CustomTicksExample],
   ['custom-tooltip', CustomTooltipExample],
   ['custom-tooltip-formatting', CustomTooltipFormattingExample],
+  ['custom-tooltip-pair-change', CustomTooltipPairChangeExample],
+  ['custom-tooltip-period-comparison', CustomTooltipPeriodComparisonExample],
   ['default', DefaultExample],
   ['fixed-domain', FixedDomainExample],
   ['fixed-size', FixedSizeExample],
