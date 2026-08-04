@@ -332,6 +332,11 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#custom-tooltip-pair-change', function customTooltipPairChange() {
+      function lastTooltipText() {
+        const tooltipElements = document.querySelectorAll('.visx-tooltip');
+        return tooltipElements[tooltipElements.length - 1]?.textContent ?? '';
+      }
+
       it('combines both lines of the hovered pair and their percent change', async function pairChange() {
         const { container, locator, baseElement } = await renderExampleAndWait(<CustomTooltipPairChangeExample />);
 
@@ -340,9 +345,7 @@ describe('@godaddy/antares', function antares() {
         await locator.hover({ position: { x: 400, y: 200 } });
         await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
 
-        const tooltipElements = document.querySelectorAll('.visx-tooltip');
-        const lastTooltip = tooltipElements[tooltipElements.length - 1];
-        const text = lastTooltip.textContent ?? '';
+        const text = lastTooltipText();
 
         // Unlike the single-curve custom tooltip, this one combines the pair: both the actual
         // and forecast rows plus their computed percent change appear together.
@@ -350,9 +353,70 @@ describe('@godaddy/antares', function antares() {
         assume(text).matches(/Forecast: -?\d/);
         assume(text).matches(/Forecast vs actual: [+-]?\d+\.\d%/);
       });
+
+      it('resolves a different pair depending on which curve is nearest', async function perCurve() {
+        // Feed the same renderTooltip two vertically separated pairs (high "North", low "South"),
+        // each a solid actual + dashed forecast sharing a colorIndex. Hovering near the top of the
+        // plot must resolve the North pair and near the bottom the South pair — proving the tooltip
+        // content follows the hovered curve (hoveredSeriesId → colorIndex → pair), not a fixed pair.
+        const dates = ['2020-01-01', '2020-02-01', '2020-03-01', '2020-04-01', '2020-05-01'].map(
+          (iso) => new Date(iso)
+        );
+        const flatLine = (value: number) => dates.map((x) => ({ x, y: value }));
+        const series = [
+          { id: 'north', name: 'North', colorIndex: 0, data: flatLine(90) },
+          {
+            id: 'north-forecast',
+            name: 'North (forecast)',
+            colorIndex: 0,
+            variant: 'dashed' as const,
+            data: flatLine(96)
+          },
+          { id: 'south', name: 'South', colorIndex: 1, data: flatLine(10) },
+          {
+            id: 'south-forecast',
+            name: 'South (forecast)',
+            colorIndex: 1,
+            variant: 'dashed' as const,
+            data: flatLine(12)
+          }
+        ];
+
+        const { container, locator, baseElement } = await renderExampleAndWait(
+          <CustomTooltipPairChangeExample series={series} />
+        );
+        assume(container.querySelector('svg')).exists();
+
+        // Near the top of the plot → the high (North) pair.
+        await locator.hover({ position: { x: 400, y: 70 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+        const topText = lastTooltipText();
+        assume(topText.includes('North')).is.true();
+        assume(topText.includes('South')).is.false();
+        assume(topText).matches(/Forecast vs actual: [+-]?\d+\.\d%/);
+
+        // Near the bottom → the low (South) pair: same tooltip, different resolved content.
+        await locator.hover({ position: { x: 400, y: 330 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+        await vi.waitUntil(
+          function southResolved() {
+            return lastTooltipText().includes('South');
+          },
+          { timeout: 1000 }
+        );
+        const bottomText = lastTooltipText();
+        assume(bottomText.includes('South')).is.true();
+        assume(bottomText.includes('North')).is.false();
+        assume(bottomText).matches(/Forecast vs actual: [+-]?\d+\.\d%/);
+      });
     });
 
     describe('#custom-tooltip-period-comparison', function customTooltipPeriodComparison() {
+      function lastTooltipText() {
+        const tooltipElements = document.querySelectorAll('.visx-tooltip');
+        return tooltipElements[tooltipElements.length - 1]?.textContent ?? '';
+      }
+
       it('shows the period-over-period comparison card for the hovered channel', async function periodComparison() {
         const { container, locator, baseElement } = await renderExampleAndWait(
           <CustomTooltipPeriodComparisonExample />
@@ -363,14 +427,70 @@ describe('@godaddy/antares', function antares() {
         await locator.hover({ position: { x: 400, y: 200 } });
         await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
 
-        const tooltipElements = document.querySelectorAll('.visx-tooltip');
-        const lastTooltip = tooltipElements[tooltipElements.length - 1];
-        const text = lastTooltip.textContent ?? '';
+        const text = lastTooltipText();
 
         // Comparison card: two dated currency values plus a percent change vs the previous period.
         assume(text).matches(/compared to previous period/);
         assume(text).matches(/\$\d+\.\d{2}/);
         assume(text).matches(/\d+\.\d{2}%/);
+      });
+
+      it('resolves a different channel depending on which curve is nearest', async function perChannel() {
+        // Same renderTooltip, two vertically separated channels, each a solid current-period line +
+        // dashed previous-period partner sharing a colorIndex. Hovering near the top resolves the
+        // high channel and near the bottom the low channel — proving the card follows the hovered
+        // curve (hoveredSeriesId → colorIndex → channel), not a fixed channel.
+        const dates = ['2020-01-01', '2020-02-01', '2020-03-01', '2020-04-01', '2020-05-01'].map(
+          (iso) => new Date(iso)
+        );
+        const flatLine = (value: number) => dates.map((x) => ({ x, y: value }));
+        const series = [
+          { id: 'north', name: 'North', colorIndex: 0, period: 'current' as const, data: flatLine(900) },
+          {
+            id: 'north-prev',
+            name: 'North (previous)',
+            colorIndex: 0,
+            period: 'previous' as const,
+            variant: 'dashed' as const,
+            data: flatLine(950)
+          },
+          { id: 'south', name: 'South', colorIndex: 1, period: 'current' as const, data: flatLine(100) },
+          {
+            id: 'south-prev',
+            name: 'South (previous)',
+            colorIndex: 1,
+            period: 'previous' as const,
+            variant: 'dashed' as const,
+            data: flatLine(120)
+          }
+        ];
+
+        const { container, locator, baseElement } = await renderExampleAndWait(
+          <CustomTooltipPeriodComparisonExample series={series} />
+        );
+        assume(container.querySelector('svg')).exists();
+
+        // Near the top of the plot → the high (North) channel.
+        await locator.hover({ position: { x: 400, y: 70 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+        const topText = lastTooltipText();
+        assume(topText.includes('North')).is.true();
+        assume(topText.includes('South')).is.false();
+        assume(topText).matches(/compared to previous period/);
+
+        // Near the bottom → the low (South) channel: same card, different resolved content.
+        await locator.hover({ position: { x: 400, y: 330 } });
+        await waitForSelector(baseElement, '.visx-tooltip', { timeout: 1000 });
+        await vi.waitUntil(
+          function southResolved() {
+            return lastTooltipText().includes('South');
+          },
+          { timeout: 1000 }
+        );
+        const bottomText = lastTooltipText();
+        assume(bottomText.includes('South')).is.true();
+        assume(bottomText.includes('North')).is.false();
+        assume(bottomText).matches(/compared to previous period/);
       });
     });
 
