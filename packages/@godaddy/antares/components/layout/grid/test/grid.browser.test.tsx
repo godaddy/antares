@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { Button as RACButton, ProgressBar as RACProgressBar } from 'react-aria-components';
 import { resetHover } from '../../../../utils/test-helpers.tsx';
-import { Grid } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default.tsx';
 import { ColumnsExample } from '../examples/columns.tsx';
 import { AreasExample } from '../examples/areas.tsx';
+import { HostCompositionExample } from '../examples/host-composition.tsx';
+import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Grid', function gridTests() {
@@ -33,11 +34,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('composes className and style for a host element', async function composesHost() {
-      const { getByText } = await render(
-        <Grid as="span" className="custom" columns="1fr 1fr" style={{ opacity: 0.5 }}>
-          Cell
-        </Grid>
-      );
+      const { getByText } = await render(<HostCompositionExample />);
 
       const span = getByText('Cell');
       expect(span).toHaveClass('custom');
@@ -46,16 +43,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('preserves grid base class on interaction', async function preservesGridClass() {
-      const { getByRole } = await render(
-        <Grid
-          as={RACButton}
-          className={function getClassName({ isHovered }) {
-            return isHovered ? 'hover' : 'idle';
-          }}
-        >
-          Hover me
-        </Grid>
-      );
+      const { getByRole } = await render(<ClassNameRenderPropExample />);
 
       const button = getByRole('button');
       expect(button).toHaveClass('idle');
@@ -67,33 +55,13 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('preserves grid style when progress changes', async function preservesGridStyle() {
-      const { getByRole, rerender } = await render(
-        <Grid
-          as={RACProgressBar}
-          aria-label="Loading"
-          isIndeterminate
-          columns="1fr 1fr"
-          style={function getStyle({ defaultStyle, isIndeterminate }) {
-            return { ...defaultStyle, opacity: isIndeterminate ? 0.5 : 1 };
-          }}
-        />
-      );
+      const { getByRole, rerender } = await render(<StyleRenderPropExample />);
 
       const progressbar = getByRole('progressbar');
       expect(progressbar.element().getAttribute('style')).toContain('grid-template-columns');
       expect(progressbar).toHaveStyle({ opacity: '0.5' });
 
-      await rerender(
-        <Grid
-          as={RACProgressBar}
-          aria-label="Loading"
-          value={50}
-          columns="1fr 1fr"
-          style={function getStyle({ defaultStyle, isIndeterminate }) {
-            return { ...defaultStyle, opacity: isIndeterminate ? 0.5 : 1 };
-          }}
-        />
-      );
+      await rerender(<StyleRenderPropExample isIndeterminate={false} />);
       expect(progressbar.element().getAttribute('style')).toContain('grid-template-columns');
       expect(progressbar).toHaveStyle({ opacity: '1' });
     });

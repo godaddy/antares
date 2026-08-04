@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { Button as RACButton, ProgressBar as RACProgressBar } from 'react-aria-components';
 import { resetHover } from '../../../../utils/test-helpers.tsx';
-import { Flex } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default.tsx';
 import { DirectionExample } from '../examples/direction.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
+import { HostCompositionExample } from '../examples/host-composition.tsx';
+import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Flex', function flexTests() {
@@ -32,11 +33,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('composes className and style for a host element', async function composesHost() {
-      const { getByText } = await render(
-        <Flex as="span" direction="column" className="custom" gap="md" style={{ opacity: 0.5 }}>
-          Item
-        </Flex>
-      );
+      const { getByText } = await render(<HostCompositionExample />);
 
       const span = getByText('Item');
       expect(span).toHaveClass('custom');
@@ -45,17 +42,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('preserves flex base classes on interaction', async function preservesFlexClasses() {
-      const { getByRole } = await render(
-        <Flex
-          as={RACButton}
-          direction="column"
-          className={function getClassName({ isHovered }) {
-            return isHovered ? 'hover' : 'idle';
-          }}
-        >
-          Hover me
-        </Flex>
-      );
+      const { getByRole } = await render(<ClassNameRenderPropExample />);
 
       const button = getByRole('button');
       expect(button).toHaveClass('idle');
@@ -67,33 +54,13 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('preserves layout style when progress changes', async function preservesFlexStyle() {
-      const { getByRole, rerender } = await render(
-        <Flex
-          as={RACProgressBar}
-          aria-label="Loading"
-          isIndeterminate
-          gap="md"
-          style={function getStyle({ defaultStyle, isIndeterminate }) {
-            return { ...defaultStyle, opacity: isIndeterminate ? 0.5 : 1 };
-          }}
-        />
-      );
+      const { getByRole, rerender } = await render(<StyleRenderPropExample />);
 
       const progressbar = getByRole('progressbar');
       expect(progressbar.element().getAttribute('style')).toContain('gap');
       expect(progressbar).toHaveStyle({ opacity: '0.5' });
 
-      await rerender(
-        <Flex
-          as={RACProgressBar}
-          aria-label="Loading"
-          value={50}
-          gap="md"
-          style={function getStyle({ defaultStyle, isIndeterminate }) {
-            return { ...defaultStyle, opacity: isIndeterminate ? 0.5 : 1 };
-          }}
-        />
-      );
+      await rerender(<StyleRenderPropExample isIndeterminate={false} />);
       expect(progressbar.element().getAttribute('style')).toContain('gap');
       expect(progressbar).toHaveStyle({ opacity: '1' });
     });

@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { Button as RACButton, ProgressBar as RACProgressBar } from 'react-aria-components';
 import { resetHover } from '../../../../utils/test-helpers.tsx';
-import { Box } from '@godaddy/antares';
 import { PaddingExample } from '../examples/padding.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
+import { HostCompositionExample } from '../examples/host-composition.tsx';
+import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
@@ -24,11 +25,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('composes className and style for a host element', async function composesHost() {
-      const { getByText } = await render(
-        <Box as="span" className="custom" padding="md" style={{ opacity: 0.5 }}>
-          Save
-        </Box>
-      );
+      const { getByText } = await render(<HostCompositionExample />);
 
       const span = getByText('Save');
       expect(span).toHaveClass('custom');
@@ -37,16 +34,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('composes a function className and re-evaluates on interaction', async function composesFunctionClassName() {
-      const { getByRole } = await render(
-        <Box
-          as={RACButton}
-          className={function getClassName({ isHovered }) {
-            return isHovered ? 'hover' : 'idle';
-          }}
-        >
-          Hover me
-        </Box>
-      );
+      const { getByRole } = await render(<ClassNameRenderPropExample />);
 
       const button = getByRole('button');
       expect(button).toHaveClass('idle');
@@ -58,33 +46,13 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('merges a function style and re-evaluates when progress changes', async function mergesFunctionStyle() {
-      const { getByRole, rerender } = await render(
-        <Box
-          as={RACProgressBar}
-          aria-label="Loading"
-          isIndeterminate
-          padding="md"
-          style={function getStyle({ defaultStyle, isIndeterminate }) {
-            return { ...defaultStyle, opacity: isIndeterminate ? 0.5 : 1 };
-          }}
-        />
-      );
+      const { getByRole, rerender } = await render(<StyleRenderPropExample />);
 
       const progressbar = getByRole('progressbar');
       expect(progressbar.element().getAttribute('style')).toContain('padding');
       expect(progressbar).toHaveStyle({ opacity: '0.5' });
 
-      await rerender(
-        <Box
-          as={RACProgressBar}
-          aria-label="Loading"
-          value={50}
-          padding="md"
-          style={function getStyle({ defaultStyle, isIndeterminate }) {
-            return { ...defaultStyle, opacity: isIndeterminate ? 0.5 : 1 };
-          }}
-        />
-      );
+      await rerender(<StyleRenderPropExample isIndeterminate={false} />);
       expect(progressbar.element().getAttribute('style')).toContain('padding');
       expect(progressbar).toHaveStyle({ opacity: '1' });
     });
