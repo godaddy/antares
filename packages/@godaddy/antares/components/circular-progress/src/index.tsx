@@ -1,13 +1,14 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
-import { cx } from 'cva';
 import {
   ProgressBar as RACProgressBar,
   type ProgressBarProps as RACProgressBarProps,
-  Label as RACLabel
+  Label as RACLabel,
+  composeRenderProps
 } from 'react-aria-components';
 import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 const VIEWBOX_SIZE = 100;
@@ -15,7 +16,7 @@ const STROKE_WIDTH = 12.5;
 const RADIUS = (VIEWBOX_SIZE - STROKE_WIDTH) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export interface CircularProgressProps extends Omit<RACProgressBarProps, 'className' | 'children' | 'isIndeterminate'> {
+export interface CircularProgressProps extends Omit<RACProgressBarProps, 'children' | 'isIndeterminate'> {
   /** Size preset controlling circle diameter and typography scale. @default 'md' */
   size?: 'sm' | 'md' | 'lg' | 'xl';
 
@@ -27,9 +28,6 @@ export interface CircularProgressProps extends Omit<RACProgressBarProps, 'classN
 
   /** Helper or notice text displayed below the label. */
   helperText?: ReactNode;
-
-  /** Additional CSS class name for the root element. */
-  className?: string;
 }
 
 /**
@@ -66,11 +64,13 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
         alignItems="center"
         gap="sm"
         as={RACProgressBar}
-        className={cx(styles.root, className)}
+        className={composeClassName(className, styles.root)}
         data-size={size}
         data-emphasis={emphasis}
         aria-describedby={describedBy}
-        style={{ ...style, '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties}
+        style={composeRenderProps(style, function composeStyle(value) {
+          return { ...value, '--circular-progress-stroke-width': STROKE_WIDTH } as CSSProperties;
+        })}
       >
         {function renderContent({ percentage, valueText }) {
           const offset = CIRCUMFERENCE * (1 - (percentage ?? 0) / 100);

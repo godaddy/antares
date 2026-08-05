@@ -4,6 +4,7 @@ import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
+import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -58,6 +59,26 @@ describe('@godaddy/antares', function antares() {
       el.setAttribute('data-hovered', 'true');
       expect(getComputedStyle(el).backgroundColor).toBe(baseBg);
       el.removeAttribute('data-hovered');
+    });
+
+    it('keeps Antares base classes while a render-prop className tracks interaction state', async function composesRenderPropClassName() {
+      const { getByRole } = await render(<ClassNameRenderPropExample />);
+      const button = getByRole('button');
+      const el = button.element();
+
+      // Antares base classes must survive composition (they drive the layout/styling).
+      expect(getComputedStyle(el).display).toBe('inline-flex');
+      expect(getComputedStyle(el).cursor).toBe('pointer');
+
+      // RAC interaction state must flow through the render-prop className.
+      expect(button).toHaveClass('idle');
+
+      await userEvent.hover(button);
+      expect(button).toHaveClass('hovered');
+      // Base classes still present alongside the state-derived class.
+      expect(getComputedStyle(el).display).toBe('inline-flex');
+
+      await resetHover();
     });
 
     it('handles press events', async function pressEvents() {
