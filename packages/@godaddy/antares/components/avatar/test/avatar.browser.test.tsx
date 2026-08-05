@@ -60,7 +60,7 @@ describe('@godaddy/antares', function antares() {
 
       const disabledButton = page.getByRole('button', { name: 'Unavailable account' });
       assume(disabledButton.element().hasAttribute('disabled')).equals(true);
-      assume(getComputedStyle(disabledButton.element()).opacity).equals('0.5');
+      assume(getComputedStyle(disabledButton.element()).opacity).equals('0.4');
       await user.tab();
       await expect.element(disabledButton).not.toHaveFocus();
       await user.keyboard('{Enter}');
