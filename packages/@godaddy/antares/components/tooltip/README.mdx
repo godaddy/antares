@@ -11,6 +11,23 @@ import * as Stories from './tooltip.stories.tsx';
 Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
 Once a tooltip has been shown, subsequent tooltips appear without delay.
 
+`TooltipTrigger` is the composition helper: it wraps a focusable element and a `<Tooltip>`, handling
+hover/focus state and positioning automatically. Based on RAC `TooltipTrigger`. To anchor a tooltip
+to an element it doesn't wrap, pass `triggerRef` instead.
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+## Features
+
+- `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+- Flips and shifts to stay in the viewport
+- Configurable open and close delays
+
 ## Installation
 
 ```bash
@@ -21,18 +38,23 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Customization
+
+`className` and `style` apply to the tooltip panel.
+
 ## Accessibility
 
 ### Keyboard
 
-| Key    | Description                                                |
-| ------ | ---------------------------------------------------------- |
-| Tab    | Moves focus to the focusable element and shows the tooltip |
-| Escape | Closes the tooltip                                         |
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
 
 ### ARIA
 
-- The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+- The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
+- The arrow is `aria-hidden`
 
 ## Best Practices
 
@@ -42,4 +64,10 @@ npm install --save @godaddy/antares
 
 ## Props
 
+The `Tooltip` component accepts the following props:
+
 <ArgTypes of={Stories.Props} />
+
+The `TooltipTrigger` component accepts the following props:
+
+<ArgTypes of={Stories.TooltipTriggerProps} />

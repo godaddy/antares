@@ -10,13 +10,9 @@ import {
   Text
 } from '@godaddy/antares';
 
-const PARAGRAPH =
-  'She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther. She had never fancied him so little disposed to converse. She had never seen him so desirous to please.';
-
 /**
  * When the content is taller than the viewport, the `Content` region scrolls while the
  * `Header` and `ButtonGroup` stay pinned.
- * @title Scrollable content
  * @order 3
  */
 export function ScrollableExample() {
@@ -29,9 +25,9 @@ export function ScrollableExample() {
           <CloseButton />
         </Header>
         <Content>
-          {Array.from({ length: 12 }, (_, i) => (
+          {Array.from({ length: 24 }, (_, i) => (
             <Text as="p" key={i}>
-              {PARAGRAPH}
+              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
             </Text>
           ))}
         </Content>

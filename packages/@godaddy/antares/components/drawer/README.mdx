@@ -21,13 +21,11 @@ Like `Modal`, the Drawer owns only its shell and scroll layout - compose the int
     <CloseButton />
   </Header>
   <Content />
-  <Footer>
-    <ButtonGroup />
-  </Footer>
 </Drawer>
 ```
 
-`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open
+state automatically. Based on RAC `DialogTrigger`.
 
 ## Features
 
@@ -47,6 +45,19 @@ npm install --save @godaddy/antares
 ## Examples
 
 <Examples of={Stories.Examples} />
+
+## Customization
+
+`className` and `style` apply to the drawer panel.
+
+The backdrop is styled with the public `--drawer-overlay-bg` custom property. Because the overlay is
+portaled to `document.body`, set it globally rather than on an ancestor:
+
+```css
+:root {
+  --drawer-overlay-bg: rgba(0, 0, 0, 0.8);
+}
+```
 
 ## Accessibility
 
@@ -68,22 +79,9 @@ npm install --save @godaddy/antares
 - Use `isDismissable` to allow closing via backdrop click.
 - Don't nest drawers.
 
-## Customization
-
-`className` and `style` apply to the drawer panel. Region spacing comes from the `Header`,
-`Content`, `Footer`, and `ButtonGroup` contexts the Drawer provides, so pass `className` or
-layout props to those containers to restyle a region.
-
-The backdrop is styled with the public `--drawer-overlay-bg` custom property. Because the
-overlay is portaled to `document.body`, set it globally rather than on an ancestor:
-
-```css
-:root {
-  --drawer-overlay-bg: rgba(0, 0, 0, 0.8);
-}
-```
-
 ## Props
+
+The `Drawer` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />
 

@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Popover } from './src/index.tsx';
+import { Popover, PopoverTrigger } from './src/index.tsx';
 import { PlaygroundExample } from './examples/popover-playground.tsx';
 
 export default getMeta({
@@ -8,6 +8,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(Popover);
+
+export const PopoverTriggerProps = getComponentDocs(PopoverTrigger);
 
 export const Examples = getExamples('./examples');
 

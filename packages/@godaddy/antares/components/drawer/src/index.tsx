@@ -12,7 +12,7 @@ import {
 import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
 import { Flex } from '#components/layout/flex';
-import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
+import { HeaderContext } from '#components/structure';
 import styles from './index.module.css';
 
 /**
@@ -60,8 +60,7 @@ export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOve
  * stack as `Modal` (modal overlay + `elevation="overlay"` panel + dialog) with edge placement
  * and a slide transition.
  *
- * The Drawer owns only the shell and the scroll layout; compose the interior from `Header`,
- * `Content`, `Footer`, `ButtonGroup`, `Heading slot="title"`, and `CloseButton`.
+ * The Drawer owns only the shell and the scroll layout; compose the interior.
  *
  * `className` and `style` target the drawer panel. The backdrop is styled globally through the
  * public `--drawer-overlay-bg` custom property.
@@ -113,16 +112,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         className={cx(styles.drawer, className)}
       >
         <Flex as={RACDialog} direction="column" {...dialogProps} ref={ref} className={styles.dialog}>
-          <RACProvider
-            values={[
-              [HeaderContext, { className: styles.header, alignItems: 'start' }],
-              [ContentContext, { className: styles.content }],
-              [FooterContext, { className: styles.footer }],
-              [ButtonGroupContext, { className: styles.buttonGroup }]
-            ]}
-          >
-            {children}
-          </RACProvider>
+          <RACProvider values={[[HeaderContext, { className: styles.header }]]}>{children}</RACProvider>
         </Flex>
       </Flex>
     </RACModalOverlay>

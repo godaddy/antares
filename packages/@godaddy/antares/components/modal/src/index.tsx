@@ -11,21 +11,20 @@ import {
   Provider as RACProvider
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
-import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
+import { HeaderContext, ButtonGroupContext } from '#components/structure';
 import styles from './index.module.css';
 
-/** Overlay state and dismissal props hoisted from RAC's `ModalOverlay` onto `Modal`. */
-type ModalOverlayBehaviorProps = Pick<
-  RACModalOverlayProps,
-  | 'isOpen'
-  | 'defaultOpen'
-  | 'onOpenChange'
-  | 'isDismissable'
-  | 'isKeyboardDismissDisabled'
-  | 'shouldCloseOnInteractOutside'
->;
-
-export interface ModalProps extends Omit<RACDialogProps, 'children'>, ModalOverlayBehaviorProps {
+export interface ModalProps
+  extends Omit<RACDialogProps, 'children'>,
+    Pick<
+      RACModalOverlayProps,
+      | 'isOpen'
+      | 'defaultOpen'
+      | 'onOpenChange'
+      | 'isDismissable'
+      | 'isKeyboardDismissDisabled'
+      | 'shouldCloseOnInteractOutside'
+    > {
   /**
    * Whether the modal can be dismissed by interacting outside it (clicking/pressing the
    * underlay). Escape closes the dialog unless `isKeyboardDismissDisabled` is set.
@@ -41,15 +40,8 @@ export interface ModalProps extends Omit<RACDialogProps, 'children'>, ModalOverl
 }
 
 /**
- * A composition-first modal dialog, modeled on React Aria / Spectrum's `Dialog`.
- *
- * The Modal owns only the overlay, container, and dialog shell plus the scroll layout - it
- * does not decide the interior structure. Author the content by composing the shared
- * containers; the Modal provides their styling via context.
- *
- * `className` and `style` target the dialog panel. The backdrop is styled globally through the
- * public `--modal-overlay-bg` custom property; because the overlay is portaled to
- * `document.body`, that property cannot be set from a React ancestor.
+ * The Modal component presents a dialog window over the page that focuses
+ * the user's attention on a single task or piece of information.
  *
  * @param props - {@link ModalProps}
  */
@@ -78,7 +70,7 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
       padding="md"
       className={styles.overlay}
     >
-      <Flex as={RACModal} className={styles.modalContainer}>
+      <Flex as={RACModal} className={styles.modal}>
         <Flex
           as={RACDialog}
           elevation="overlay"
@@ -86,14 +78,12 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
           direction="column"
           {...dialogProps}
           ref={ref}
-          className={cx(styles.modal, className)}
+          className={cx(styles.dialog, className)}
         >
           <RACProvider
             values={[
-              [HeaderContext, { className: styles.header, alignItems: 'start' }],
-              [ContentContext, { className: styles.content }],
-              [FooterContext, { className: styles.footer }],
-              [ButtonGroupContext, { className: styles.buttonGroup }]
+              [HeaderContext, { className: styles.header }],
+              [ButtonGroupContext, { justifyContent: 'end' }]
             ]}
           >
             {children}

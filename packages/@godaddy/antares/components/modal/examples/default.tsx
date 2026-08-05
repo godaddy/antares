@@ -1,14 +1,4 @@
-import {
-  ModalTrigger,
-  Modal,
-  Button,
-  CloseButton,
-  Header,
-  Heading,
-  Content,
-  ButtonGroup,
-  Text
-} from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, CloseButton, Header, Heading, Content, ButtonGroup } from '@godaddy/antares';
 
 /**
  * Compose a Modal from `Header`, `Content`, and `ButtonGroup`. `ModalTrigger` opens the Modal
@@ -24,13 +14,9 @@ export function DefaultExample() {
           <Heading slot="title">Delete file?</Heading>
           <CloseButton />
         </Header>
-        <Content>
-          <Text as="p">This action cannot be undone. The file will be permanently removed.</Text>
-        </Content>
+        <Content>This action cannot be undone. The file will be permanently removed.</Content>
         <ButtonGroup>
-          <Button slot="close" variant="secondary">
-            Cancel
-          </Button>
+          <Button slot="close">Cancel</Button>
           <Button slot="close" variant="critical">
             Delete
           </Button>

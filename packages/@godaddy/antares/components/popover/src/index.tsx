@@ -10,13 +10,13 @@ import {
   Provider as RACProvider
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { ContentContext, HeaderContext, FooterContext, ButtonGroupContext } from '#components/structure';
+import { HeaderContext } from '#components/structure';
 import styles from './index.module.css';
 
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
 
 export interface PopoverProps extends Omit<RACPopoverProps, 'children' | 'className'>, FlexOwnProps {
-  /** The content to display inside the popover. Compose `Header`, `Content`, and `Footer`. */
+  /** The content of the popover. */
   children?: ReactNode;
 
   /** Whether to hide the arrow. */
@@ -33,13 +33,7 @@ export interface PopoverProps extends Omit<RACPopoverProps, 'children' | 'classN
 }
 
 /**
- * A composition-first popover: an overlay positioned relative to a trigger.
- *
- * The Popover owns only the positioned panel and the scroll layout; compose the interior from
- * `Header`, `Content`, `Footer`, `ButtonGroup`, `Heading slot="title"`, and `CloseButton`.
- *
- * `className` and `style` target the popover panel. Provide a `Heading slot="title"` or an
- * `aria-label` so the dialog has an accessible name.
+ * An overlay positioned relative to a trigger.
  *
  * @param props - {@link PopoverProps}
  */
@@ -71,18 +65,8 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedBy}
-        className={styles.dialog}
       >
-        <RACProvider
-          values={[
-            [HeaderContext, { className: styles.header, alignItems: 'start' }],
-            [ContentContext, { className: styles.content }],
-            [FooterContext, { className: styles.footer }],
-            [ButtonGroupContext, { className: styles.buttonGroup }]
-          ]}
-        >
-          {children}
-        </RACProvider>
+        <RACProvider values={[[HeaderContext, { className: styles.header }]]}>{children}</RACProvider>
       </Flex>
     </Flex>
   );

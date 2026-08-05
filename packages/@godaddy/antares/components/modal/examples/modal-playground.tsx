@@ -10,9 +10,6 @@ import {
   Text
 } from '@godaddy/antares';
 
-const PARAGRAPH =
-  'She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.';
-
 export interface PlaygroundExampleProps {
   isDismissable?: boolean;
   isKeyboardDismissDisabled?: boolean;
@@ -37,7 +34,7 @@ export function PlaygroundExample({
         <Content>
           {Array.from({ length: longContent ? 12 : 1 }, (_, i) => (
             <Text as="p" key={i}>
-              {PARAGRAPH}
+              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
             </Text>
           ))}
         </Content>

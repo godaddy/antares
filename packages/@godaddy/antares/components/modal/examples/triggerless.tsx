@@ -3,7 +3,7 @@ import { Button, ButtonGroup, CloseButton, Content, Header, Heading, Modal, Text
 
 /**
  * `Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
- * `ModalTrigger` - useful when the modal is opened from several places at once.
+ * `ModalTrigger`. Useful when the modal is opened from several places at once.
  * @title Triggerless
  * @order 4
  */
@@ -20,9 +20,7 @@ export function TriggerlessExample() {
           <Heading slot="title">Triggerless modal</Heading>
           <CloseButton />
         </Header>
-        <Content>
-          <Text as="p">Controlled with a flat `isOpen` prop, no trigger required.</Text>
-        </Content>
+        <Content>This is the content of the modal.</Content>
         <ButtonGroup>
           <Button slot="close" variant="primary">
             Done

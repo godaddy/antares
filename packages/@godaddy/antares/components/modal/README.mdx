@@ -8,7 +8,14 @@ import * as Stories from './modal.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. Compose the interior:
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+## Features
+
+- `overlay` elevation panel centered over a dimmed backdrop
+- Focus trapping, outside-click dismiss, and scroll lock via RAC Modal
+- Pinned Header and actions with a scrolling Content region
+- Controlled or uncontrolled open state, on the modal or its trigger
 
 ## Installation
 
@@ -24,17 +31,14 @@ npm install --save @godaddy/antares
 
 ### Keyboard interaction
 
-| Key           | Action                                                             |
-| ------------- | ------------------------------------------------------------------ |
-| `Tab`         | Moves focus to the next focusable element inside the modal         |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal     |
-| `Escape`      | Closes the modal (unless `isKeyboardDismissDisabled`)              |
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Escape`      | Closes the modal (unless `isKeyboardDismissDisabled`)           |
 
 ### ARIA
 
 - `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-- A `Heading slot="title"` is rendered as a heading and linked to the dialog via `aria-labelledby`
-- The `CloseButton` is rendered with `aria-label="Close"` and picks up the close behavior via `slot="close"`
 - Focus is trapped within the modal while open and returned to the trigger on close
 
 ## Best Practices
@@ -43,36 +47,26 @@ npm install --save @godaddy/antares
 - Pair every action button with `slot="close"` when it should dismiss the modal
 - Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
 
-## Customization
-
-`className` and `style` apply to the dialog panel. Region spacing comes from the `Header`,
-`Content`, `Footer`, and `ButtonGroup` contexts the Modal provides, so pass `className` or
-layout props to those containers to restyle a region.
-
-The backdrop is styled with the public `--modal-overlay-bg` custom property. Because the
-overlay is portaled to `document.body`, set it globally rather than on an ancestor:
-
-```css
-:root {
-  --modal-overlay-bg: rgba(0, 0, 0, 0.8);
-}
-```
-
 ## Props
 
 ```tsx
-<Modal>
-  <Header>
-    <Heading slot="title" />
-    <CloseButton />
-  </Header>
-  <Button slot="close" />
-  <Content />
-  <ButtonGroup />
-  <Footer />
-</Modal>
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Header>
+      <Heading slot="title" />
+      <CloseButton />
+    </Header>
+    <Content />
+    <ButtonGroup />
+  </Modal>
+</ModalTrigger>
 ```
 
 The `Modal` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />
+
+The `ModalTrigger` component accepts the following props:
+
+<ArgTypes of={Stories.ModalTriggerProps} />

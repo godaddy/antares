@@ -22,6 +22,7 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(props
       direction="row"
       alignItems="center"
       justifyContent="space-between"
+      padding="md"
       gap="sm"
       {...props}
       ref={ref}

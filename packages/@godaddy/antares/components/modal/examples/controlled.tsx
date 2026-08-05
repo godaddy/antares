@@ -29,9 +29,7 @@ export function ControlledExample() {
             <CloseButton />
           </Header>
           <Content>
-            <Text as="p">
-              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
-            </Text>
+            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
           </Content>
           <ButtonGroup>
             <Button slot="close" variant="primary">
@@ -43,7 +41,7 @@ export function ControlledExample() {
 
       <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>
 
-      <Button variant="secondary" onPress={() => setIsOpen(true)}>
+      <Button variant="primary" onPress={() => setIsOpen(true)}>
         Open from outside
       </Button>
     </Flex>

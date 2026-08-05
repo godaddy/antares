@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Modal } from './src/index.tsx';
+import { Modal, ModalTrigger } from './src/index.tsx';
 import { PlaygroundExample } from './examples/modal-playground.tsx';
 
 export default getMeta({
@@ -8,6 +8,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(Modal);
+
+export const ModalTriggerProps = getComponentDocs(ModalTrigger);
 
 export const Examples = getExamples('./examples');
 
