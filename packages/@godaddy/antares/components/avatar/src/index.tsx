@@ -3,6 +3,7 @@ import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from 'reac
 import { cx } from 'cva';
 import { Button as RACButton, Provider, TextContext, type ButtonProps as RACButtonProps } from 'react-aria-components';
 import { ImageContext } from '#components/image';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export type AvatarShape = 'circle' | 'square';
@@ -38,7 +39,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria
 }
 
 /**
- * A compact, non-interactive visual identifier for a person or organization.
+ * A visual representation of a user or entity, shown as a photo or a monogram of their initials.
  *
  * Compose Image and Text to provide image loading and fallback content.
  *
@@ -116,20 +117,14 @@ type AvatarButtonAccessibleName =
   | { 'aria-label'?: string; 'aria-labelledby': string };
 
 /** Props for the AvatarButton component. */
-export type AvatarButtonProps = Omit<RACButtonProps, 'children' | 'className'> &
+export type AvatarButtonProps = Omit<RACButtonProps, 'children'> &
   AvatarButtonAccessibleName & {
-    /** Avatar subtree to make interactive, typically an Avatar. */
+    /** The Avatar to make interactive. */
     children: ReactNode;
-
-    /** Additional class names applied to the button. */
-    className?: string;
   };
 
 /**
  * An accessible interactive wrapper for an Avatar.
- *
- * Use inside MenuTrigger when the avatar opens an account or profile menu.
- * MenuTrigger applies the open treatment automatically through `aria-expanded`.
  *
  * @param props - {@link AvatarButtonProps}
  */
@@ -137,7 +132,7 @@ export const AvatarButton = forwardRef<HTMLButtonElement, AvatarButtonProps>(fun
   const { className, children, ...rest } = props;
 
   return (
-    <RACButton {...rest} ref={ref} className={cx(styles.button, className)}>
+    <RACButton {...rest} ref={ref} className={composeClassName(className, styles.button)}>
       {children}
     </RACButton>
   );
