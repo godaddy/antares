@@ -31,8 +31,8 @@
   "devDependencies": {
     "@godaddy/design-tokens": "^0.0.1",
     "@tokens-studio/sd-transforms": "^2.0.0",
-    "style-dictionary": "^5.4.1",
-    "tsx": "^4.22.3",
+    "style-dictionary": "^5.5.0",
+    "tsx": "^4.23.5",
     "vitest": "^4.1.7"
   },
   "exports": {
