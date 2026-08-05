@@ -2,16 +2,7 @@
 title: Avatar
 description: Compact visual identifiers for people, organizations, workspaces, and accounts.
 ---
-import { ArgTypes, Meta, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceButton from './examples/button.tsx?raw';
-import SourceButtonDisabled from './examples/button-disabled.tsx?raw';
-import SourceButtonSelected from './examples/button-selected.tsx?raw';
-import SourceDefault from './examples/default.tsx?raw';
-import SourceEmphasis from './examples/emphasis.tsx?raw';
-import SourceIconFallback from './examples/icon-fallback.tsx?raw';
-import SourceImageFallback from './examples/image-fallback.tsx?raw';
-import SourceImage from './examples/image.tsx?raw';
-import SourceShapes from './examples/shapes.tsx?raw';
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './avatar.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -30,84 +21,9 @@ import * as Stories from './avatar.stories.tsx';
 npm install @godaddy/antares
 ```
 
-## Props
-
-### Avatar
-
-Configures the Avatar surface, including its shape, size, and color treatment.
-
-<ArgTypes of={Stories.Props} />
-
-### AvatarButton
-
-Makes an Avatar subtree interactive and adds selected, focus, hover, open, and disabled states.
-
-<ArgTypes of={Stories.AvatarButtonProps} />
-
 ## Examples
 
-### Default
-
-Use an Avatar with a one- or two-character monogram when no image is available.
-
-<Source language="tsx" code={SourceDefault} />
-<Story of={Stories.Default} inline />
-
-### Image
-
-Place `Image` before `Text`. The Text fallback is visible until the image loads and after an image error.
-
-<Source language="tsx" code={SourceImage} />
-<Story of={Stories.Image} inline />
-
-### Image Fallback
-
-Use a Text fallback for every image Avatar so an unavailable photo never leaves an empty identity marker.
-
-<Source language="tsx" code={SourceImageFallback} />
-<Story of={Stories.ImageFallback} inline />
-
-### Shapes and Sizes
-
-Avatar supports circle and square shapes at every named size.
-
-<Source language="tsx" code={SourceShapes} />
-<Story of={Stories.Shapes} inline />
-
-### Emphasis
-
-Use `primary` for the standard high-contrast treatment, `subtle` for a quieter treatment, and a `figure0` through `figure14` value to categorize entities.
-
-<Source language="tsx" code={SourceEmphasis} />
-<Story of={Stories.Emphasis} inline />
-
-### Icon Fallback
-
-Use Icon directly when a monogram is not meaningful. Avatar applies the same fallback sizing and visibility behavior without a Text wrapper.
-
-<Source language="tsx" code={SourceIconFallback} />
-<Story of={Stories.IconFallback} inline />
-
-### AvatarButton
-
-Use AvatarButton when an avatar triggers an action.
-
-<Source language="tsx" code={SourceButton} />
-<Story of={Stories.Button} inline />
-
-### Selected AvatarButton
-
-Use a controlled `isSelected` state when an AvatarButton represents the current selection.
-
-<Source language="tsx" code={SourceButtonSelected} />
-<Story of={Stories.ButtonSelected} inline />
-
-### Disabled AvatarButton
-
-Use `isDisabled` when the action is unavailable.
-
-<Source language="tsx" code={SourceButtonDisabled} />
-<Story of={Stories.ButtonDisabled} inline />
+<Examples of={Stories.Examples} />
 
 ## Customization
 
@@ -131,5 +47,19 @@ Use Image native image props for responsive image sources. Choose a deterministi
 ## Troubleshooting
 
 - If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
-- Long Text content is clipped to the avatar shape; provide a one- or two-character monogram or an icon.
+- Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
 - Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
+
+## Props
+
+### Avatar
+
+Configures the Avatar surface, including its shape, size, and color treatment.
+
+<ArgTypes of={Stories.Props} />
+
+### AvatarButton
+
+Makes an Avatar subtree interactive and adds focus, hover, open, and disabled states. Use it inside MenuTrigger for menu actions; MenuTrigger applies the open state automatically.
+
+<ArgTypes of={Stories.AvatarButtonProps} />

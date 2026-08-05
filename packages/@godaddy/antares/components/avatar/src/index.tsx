@@ -30,7 +30,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria
    */
   emphasis?: AvatarEmphasis;
 
-  /** Image content with a Text monogram or Icon fallback. */
+  /** Image content with a Text monogram fallback. */
   children?: ReactNode;
 
   /** Additional class names applied to the avatar surface. */
@@ -118,10 +118,7 @@ type AvatarButtonAccessibleName =
 /** Props for the AvatarButton component. */
 export type AvatarButtonProps = Omit<RACButtonProps, 'children' | 'className'> &
   AvatarButtonAccessibleName & {
-    /** Whether the button has the selected (chosen) ring. @default false */
-    isSelected?: boolean;
-
-    /** Avatar subtree to make interactive. */
+    /** Avatar subtree to make interactive, typically an Avatar. */
     children: ReactNode;
 
     /** Additional class names applied to the button. */
@@ -132,14 +129,15 @@ export type AvatarButtonProps = Omit<RACButtonProps, 'children' | 'className'> &
  * An accessible interactive wrapper for an Avatar.
  *
  * Use inside MenuTrigger when the avatar opens an account or profile menu.
+ * MenuTrigger applies the open treatment automatically through `aria-expanded`.
  *
  * @param props - {@link AvatarButtonProps}
  */
 export const AvatarButton = forwardRef<HTMLButtonElement, AvatarButtonProps>(function AvatarButton(props, ref) {
-  const { className, children, isSelected = false, ...rest } = props;
+  const { className, children, ...rest } = props;
 
   return (
-    <RACButton {...rest} ref={ref} data-selected={isSelected || undefined} className={cx(styles.button, className)}>
+    <RACButton {...rest} ref={ref} className={cx(styles.button, className)}>
       {children}
     </RACButton>
   );

@@ -20,6 +20,10 @@ const emphases: AvatarEmphasis[] = [
   'figure14'
 ];
 
+/**
+ * Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
+ * @order 5
+ */
 export function EmphasisExample() {
   return (
     <Flex gap="sm" wrap="wrap">

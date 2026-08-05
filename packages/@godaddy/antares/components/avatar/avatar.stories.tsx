@@ -1,16 +1,7 @@
 'use client';
-import { getComponentDocs, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { PlaygroundExample, type PlaygroundExampleProps } from './examples/avatar-playground.tsx';
-import { ButtonExample } from './examples/button.tsx';
-import { ButtonDisabledExample } from './examples/button-disabled.tsx';
-import { ButtonPlaygroundExample, type ButtonPlaygroundExampleProps } from './examples/button-playground.tsx';
-import { ButtonSelectedExample } from './examples/button-selected.tsx';
-import { DefaultExample } from './examples/default.tsx';
-import { EmphasisExample } from './examples/emphasis.tsx';
-import { IconFallbackExample } from './examples/icon-fallback.tsx';
-import { ImageFallbackExample } from './examples/image-fallback.tsx';
-import { ImageExample } from './examples/image.tsx';
-import { ShapesExample } from './examples/shapes.tsx';
+import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
+import { PlaygroundExample } from './examples/avatar-playground.tsx';
+import { ButtonPlaygroundExample } from './examples/button-playground.tsx';
 import { Avatar, AvatarButton } from './src/index.tsx';
 
 export default getMeta({
@@ -20,18 +11,9 @@ export default getMeta({
 export const Props = getComponentDocs(Avatar);
 export const AvatarButtonProps = getComponentDocs(AvatarButton);
 
-export const Default = getStory(DefaultExample);
-export const Image = getStory(ImageExample);
-export const ImageFallback = getStory(ImageFallbackExample);
-export const Shapes = getStory(ShapesExample);
-export const Emphasis = getStory(EmphasisExample);
-export const IconFallback = getStory(IconFallbackExample);
-export const Button = getStory(ButtonExample);
-export const ButtonSelected = getStory(ButtonSelectedExample);
-export const ButtonDisabled = getStory(ButtonDisabledExample);
+export const Examples = getExamples('./examples');
 
-export const Playground = {
-  render: (args: PlaygroundExampleProps) => <PlaygroundExample {...args} />,
+export const Playground = getStory(PlaygroundExample, {
   args: {
     shape: 'circle',
     size: 'md',
@@ -85,17 +67,15 @@ export const Playground = {
       description: 'Monogram or fallback content.'
     }
   }
-};
+});
 
-export const ButtonPlayground = {
-  render: (args: ButtonPlaygroundExampleProps) => <ButtonPlaygroundExample {...args} />,
+export const ButtonPlayground = getStory(ButtonPlaygroundExample, {
   args: {
     shape: 'circle',
     size: 'md',
     emphasis: 'primary',
     fallback: 'UT',
     ariaLabel: 'Account',
-    isSelected: false,
     isDisabled: false
   },
   argTypes: {
@@ -148,13 +128,9 @@ export const ButtonPlayground = {
       control: 'text',
       description: 'Accessible name for the button.'
     },
-    isSelected: {
-      control: 'boolean',
-      description: 'Whether the button shows its selected ring.'
-    },
     isDisabled: {
       control: 'boolean',
       description: 'Whether the button is disabled.'
     }
   }
-};
+});

@@ -16,7 +16,6 @@ export interface ButtonPlaygroundExampleProps {
   alt?: string;
   fallback?: string;
   ariaLabel?: string;
-  isSelected?: boolean;
   isDisabled?: boolean;
 }
 
@@ -28,11 +27,10 @@ export function ButtonPlaygroundExample({
   alt = '',
   fallback = 'UT',
   ariaLabel = 'Account',
-  isSelected = false,
   isDisabled = false
 }: ButtonPlaygroundExampleProps) {
   return (
-    <AvatarButton aria-label={ariaLabel} isDisabled={isDisabled} isSelected={isSelected}>
+    <AvatarButton aria-label={ariaLabel} isDisabled={isDisabled}>
       <Avatar emphasis={emphasis} shape={shape} size={size}>
         {src ? <Image src={src} alt={alt} /> : null}
         <Text>{fallback}</Text>

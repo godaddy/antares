@@ -3,11 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { PlaygroundExample } from '../examples/avatar-playground.tsx';
 import { ButtonExample } from '../examples/button.tsx';
 import { ButtonDisabledExample } from '../examples/button-disabled.tsx';
+import { ButtonMenuExample } from '../examples/button-menu.tsx';
 import { ButtonPlaygroundExample } from '../examples/button-playground.tsx';
-import { ButtonSelectedExample } from '../examples/button-selected.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { EmphasisExample } from '../examples/emphasis.tsx';
-import { IconFallbackExample } from '../examples/icon-fallback.tsx';
 import { ImageFallbackExample } from '../examples/image-fallback.tsx';
 import { ImageExample } from '../examples/image.tsx';
 import { ShapesExample } from '../examples/shapes.tsx';
@@ -34,16 +33,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<EmphasisExample />)).toMatchSnapshot();
     });
 
-    it('renders IconFallbackExample', function iconFallbackExample() {
-      expect(renderToString(<IconFallbackExample />)).toMatchSnapshot();
-    });
-
     it('renders ButtonExample', function buttonExample() {
       expect(renderToString(<ButtonExample />)).toMatchSnapshot();
     });
 
-    it('renders ButtonSelectedExample', function buttonSelectedExample() {
-      expect(renderToString(<ButtonSelectedExample />)).toMatchSnapshot();
+    it('renders ButtonMenuExample', function buttonMenuExample() {
+      expect(renderToString(<ButtonMenuExample />)).toMatchSnapshot();
     });
 
     it('renders ButtonDisabledExample', function buttonDisabledExample() {

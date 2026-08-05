@@ -2,6 +2,11 @@ import { Avatar, Flex, Text } from '@godaddy/antares';
 
 const sizes = ['sm', 'md', 'lg', 'xl'] as const;
 
+/**
+ * Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
+ * @title Shapes and sizes
+ * @order 4
+ */
 export function ShapesExample() {
   return (
     <Flex direction="column" gap="md">

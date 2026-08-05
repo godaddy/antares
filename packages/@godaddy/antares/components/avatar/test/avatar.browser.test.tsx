@@ -3,8 +3,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { PlaygroundExample } from '../examples/avatar-playground.tsx';
+import { ButtonExample } from '../examples/button.tsx';
 import { ButtonDisabledExample } from '../examples/button-disabled.tsx';
-import { ButtonSelectedExample } from '../examples/button-selected.tsx';
+import { ButtonMenuExample } from '../examples/button-menu.tsx';
 
 const loadedImageSource = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 const invalidImageSource = 'data:image/png;base64,invalid';
@@ -31,6 +32,27 @@ function getImage(container: HTMLElement) {
 
 describe('@godaddy/antares', function antares() {
   describe('#AvatarButton', function avatarButtonTests() {
+    it('shows hover feedback', async function hoverButton() {
+      const user = userEvent.setup();
+      await render(<ButtonExample />);
+
+      const button = page.getByRole('button', { name: 'Account' });
+      await user.hover(button);
+
+      await expect.element(button).toHaveAttribute('data-hovered', 'true');
+    });
+
+    it('shows the keyboard focus ring', async function keyboardFocus() {
+      const user = userEvent.setup();
+      await render(<ButtonExample />);
+
+      const button = page.getByRole('button', { name: 'Account' });
+      await user.tab();
+
+      await expect.element(button).toHaveAttribute('data-focus-visible', 'true');
+      assume(getComputedStyle(button.element()).outlineWidth).equals('2px');
+    });
+
     it('does not activate a disabled avatar button', async function disabledButton() {
       const onPress = vi.fn();
       const user = userEvent.setup();
@@ -38,23 +60,29 @@ describe('@godaddy/antares', function antares() {
 
       const disabledButton = page.getByRole('button', { name: 'Unavailable account' });
       assume(disabledButton.element().hasAttribute('disabled')).equals(true);
+      assume(getComputedStyle(disabledButton.element()).opacity).equals('0.5');
       await user.tab();
       await expect.element(disabledButton).not.toHaveFocus();
       await user.keyboard('{Enter}');
       expect(onPress).not.toHaveBeenCalled();
     });
 
-    it('updates the selected avatar button', async function selectedButton() {
+    it('shows the active ring when its menu is open', async function menuButton() {
       const user = userEvent.setup();
-      await render(<ButtonSelectedExample />);
+      await render(<ButtonMenuExample />);
 
-      const uma = page.getByRole('button', { name: 'Switch to Uma Thurman' });
-      const jamie = page.getByRole('button', { name: 'Switch to Jamie Rivera' });
+      const accountMenu = page.getByRole('button', { name: 'Account menu' });
 
-      assume(uma.element().hasAttribute('data-selected')).equals(true);
-      await user.click(jamie);
-      assume(jamie.element().hasAttribute('data-selected')).equals(true);
-      assume(uma.element().hasAttribute('data-selected')).equals(false);
+      assume(accountMenu.element().getAttribute('aria-expanded')).equals('false');
+      await user.click(accountMenu);
+      await expect.element(accountMenu).toHaveAttribute('aria-expanded', 'true');
+      assume(getComputedStyle(accountMenu.element()).outlineWidth).equals('2px');
+      assume(getComputedStyle(accountMenu.element()).outlineOffset).equals('-4px');
+
+      await user.click(page.getByRole('menuitem', { name: 'Profile' }));
+      await expect.element(accountMenu).toHaveAttribute('aria-expanded', 'false');
+      await expect.element(accountMenu).toHaveAttribute('data-focused', 'true');
+      assume(getComputedStyle(accountMenu.element()).outlineWidth).equals('2px');
     });
   });
 
