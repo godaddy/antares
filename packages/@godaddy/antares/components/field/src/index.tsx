@@ -17,6 +17,7 @@ import {
   type TextAreaProps as RACTextAreaProps
 } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../types/polymorphic-react.ts';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Box, type BoxOwnProps } from '#components/layout/box';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
@@ -55,7 +56,17 @@ export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, Fiel
  */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
   const { as, gap = 'sm', className, ...rest } = props;
-  return <Flex direction="column" gap={gap} {...rest} as={as} ref={ref} className={cx(styles.field, className)} />;
+
+  return (
+    <Flex
+      direction="column"
+      gap={gap}
+      {...rest}
+      as={as}
+      ref={ref}
+      className={composeClassName(className, styles.field)}
+    />
+  );
 }) as PolymorphicComponent<FieldOwnProps>;
 
 export interface FieldLabelProps extends RACLabelProps {
@@ -113,7 +124,7 @@ export interface FieldErrorProps extends RACFieldErrorProps {}
  */
 export function FieldError(props: FieldErrorProps) {
   const { className, ...rest } = props;
-  return <RACFieldError {...rest} className={cx(styles.fieldError, className)} />;
+  return <RACFieldError {...rest} className={composeClassName(className, styles.fieldError)} />;
 }
 
 export type FieldSize = 'sm' | 'md';
@@ -152,7 +163,7 @@ export const FieldGroup = forwardRef<HTMLDivElement, FieldGroupProps>(function F
       {...rest}
       as={RACGroup}
       ref={ref}
-      className={cx(styles.fieldGroup, className)}
+      className={composeClassName(className, styles.fieldGroup)}
     />
   );
 });
@@ -168,7 +179,15 @@ export interface FieldButtonProps extends RACButtonProps, FlexOwnProps {}
 export const FieldButton = forwardRef<HTMLButtonElement, FieldButtonProps>(function FieldButton(props, ref) {
   const { className, ...rest } = props;
 
-  return <Flex alignItems="center" {...rest} as={RACButton} ref={ref} className={cx(styles.fieldButton, className)} />;
+  return (
+    <Flex
+      alignItems="center"
+      {...rest}
+      as={RACButton}
+      ref={ref}
+      className={composeClassName(className, styles.fieldButton)}
+    />
+  );
 });
 
 export interface FieldTriggerProps extends RACButtonProps, FlexOwnProps {
@@ -199,7 +218,7 @@ export const FieldTrigger = forwardRef<HTMLButtonElement, FieldTriggerProps>(fun
       as={RACButton}
       data-variant={variant}
       ref={ref}
-      className={cx(styles.fieldTrigger, className)}
+      className={composeClassName(className, styles.fieldTrigger)}
     />
   );
 });
@@ -219,7 +238,7 @@ export function FieldSelectFragment(props: FieldSelectFragmentProps) {
   const { className, ...rest } = props;
 
   return (
-    <FieldTrigger {...rest} className={cx(styles.fieldSelectFragment, className)}>
+    <FieldTrigger {...rest} className={composeClassName(className, styles.fieldSelectFragment)}>
       <Box as={RACSelectValue} className={styles.fieldSelectFragmentValue} flex={1} />
       <Icon icon="chevron-down" />
     </FieldTrigger>
@@ -236,7 +255,7 @@ export interface FieldInputProps extends RACInputProps, BoxOwnProps {}
 export const FieldInput = forwardRef<HTMLInputElement, FieldInputProps>(function FieldInput(props, ref) {
   const { className, ...rest } = props;
 
-  return <Box flex={1} {...rest} as={RACInput} ref={ref} className={cx(styles.fieldInput, className)} />;
+  return <Box flex={1} {...rest} as={RACInput} ref={ref} className={composeClassName(className, styles.fieldInput)} />;
 });
 
 export interface FieldTextAreaProps extends RACTextAreaProps, BoxOwnProps {}
@@ -249,5 +268,7 @@ export interface FieldTextAreaProps extends RACTextAreaProps, BoxOwnProps {}
 export const FieldTextArea = forwardRef<HTMLTextAreaElement, FieldTextAreaProps>(function FieldTextArea(props, ref) {
   const { className, ...rest } = props;
 
-  return <Box flex={1} {...rest} as={RACTextArea} ref={ref} className={cx(styles.fieldTextarea, className)} />;
+  return (
+    <Box flex={1} {...rest} as={RACTextArea} ref={ref} className={composeClassName(className, styles.fieldTextarea)} />
+  );
 });

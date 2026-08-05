@@ -1,7 +1,6 @@
-import { cx } from 'cva';
 import { forwardRef, type CSSProperties, type ElementType } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
-import { mergeObjects } from '../../../../utils/objects.ts';
+import { composeClassName, composeStyle } from '../../../../utils/render-props.ts';
 import { toRoundingVar, toSpacingVar, type Elevation, type Rounding, type Spacing } from '../../tokens.ts';
 import styles from './index.module.css';
 
@@ -135,38 +134,34 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     ...rest
   } = props;
 
-  const mergedStyle: CSSProperties = mergeObjects(
-    {
-      padding: toSpacingVar(padding),
-      paddingBlock: toSpacingVar(blockPadding),
-      paddingBlockStart: toSpacingVar(blockPaddingStart),
-      paddingBlockEnd: toSpacingVar(blockPaddingEnd),
-      paddingInline: toSpacingVar(inlinePadding),
-      paddingInlineStart: toSpacingVar(inlinePaddingStart),
-      paddingInlineEnd: toSpacingVar(inlinePaddingEnd),
-      alignSelf,
-      justifySelf,
-      order,
-      flex,
-      flexGrow,
-      flexShrink,
-      flexBasis,
-      gridArea,
-      gridColumnStart,
-      gridColumnEnd,
-      gridRowStart,
-      gridRowEnd,
-      borderRadius: toRoundingVar(rounding)
-    } satisfies CSSProperties,
-    style
-  );
-
+  const computedStyle = {
+    padding: toSpacingVar(padding),
+    paddingBlock: toSpacingVar(blockPadding),
+    paddingBlockStart: toSpacingVar(blockPaddingStart),
+    paddingBlockEnd: toSpacingVar(blockPaddingEnd),
+    paddingInline: toSpacingVar(inlinePadding),
+    paddingInlineStart: toSpacingVar(inlinePaddingStart),
+    paddingInlineEnd: toSpacingVar(inlinePaddingEnd),
+    alignSelf,
+    justifySelf,
+    order,
+    flex,
+    flexGrow,
+    flexShrink,
+    flexBasis,
+    gridArea,
+    gridColumnStart,
+    gridColumnEnd,
+    gridRowStart,
+    gridRowEnd,
+    borderRadius: toRoundingVar(rounding)
+  } satisfies CSSProperties;
   return (
     <Component
       {...rest}
       ref={ref}
-      className={cx(styles.box, className)}
-      style={mergedStyle}
+      className={composeClassName(className, styles.box) as string}
+      style={composeStyle(style, computedStyle) as CSSProperties}
       data-elevation={elevation}
     />
   );

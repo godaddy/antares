@@ -87,12 +87,12 @@ describe('@godaddy/antares', function antares() {
       assume(switchInput).exists();
     });
 
-    it('applies className and style to the same interactive root', async function rootCustomization() {
+    it('applies className and style to the field container', async function rootCustomization() {
       const { container } = await render(<SwitchRootCustomizationExample />);
 
-      const interactiveRoot = container.querySelector('.custom-switch') as HTMLElement;
-      assume(interactiveRoot.style.opacity).equals('0.5');
-      assume(interactiveRoot.tagName).equals('LABEL');
+      const fieldContainer = container.querySelector('.custom-switch') as HTMLElement;
+      assume(fieldContainer.style.opacity).equals('0.5');
+      assume(fieldContainer.tagName).equals('DIV');
     });
 
     it('forwards ref to the interactive root', async function forwardsRef() {
