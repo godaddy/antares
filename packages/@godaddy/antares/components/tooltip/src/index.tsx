@@ -1,5 +1,4 @@
 import { forwardRef, type RefObject, type ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   Tooltip as RACTooltip,
   type TooltipProps as RACTooltipProps,
@@ -8,6 +7,7 @@ import {
   OverlayArrow as RACOverlayArrow
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface TooltipTriggerProps extends RACTooltipTriggerProps {
@@ -52,7 +52,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
       elevation="overlay"
       data-noarrow={hideArrow}
       {...rest}
-      className={cx(styles.tooltip, className)}
+      className={composeClassName(className, styles.tooltip)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       {children}

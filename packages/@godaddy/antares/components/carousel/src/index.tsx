@@ -8,6 +8,7 @@ import { Box } from '#components/layout/box';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { Pagination } from '#components/pagination';
 import { cx } from 'cva';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { useNavigationControls, type UseNavigationControlsProps } from './use-navigation-controls.tsx';
 import { useAccessibility } from './use-accessibility.tsx';
 import styles from './index.module.css';
@@ -151,12 +152,12 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(function Carousel
         prevButtonProps={{
           ...prevButtonProps,
           onPress: onPrevButtonPress,
-          className: cx(styles.prev, prevButtonProps?.className, atFirstSlide && styles.hide)
+          className: composeClassName(prevButtonProps?.className, styles.prev, atFirstSlide && styles.hide)
         }}
         nextButtonProps={{
           ...nextButtonProps,
           onPress: onNextButtonPress,
-          className: cx(styles.next, nextButtonProps?.className, atLastSlide && styles.hide)
+          className: composeClassName(nextButtonProps?.className, styles.next, atLastSlide && styles.hide)
         }}
         prevButtonRef={prevButtonRef}
         nextButtonRef={nextButtonRef}

@@ -13,6 +13,7 @@ import { Text, type TextProps } from '#components/text';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { Button, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface ModalProps extends RACDialogProps {
@@ -26,7 +27,7 @@ export interface ModalProps extends RACDialogProps {
   overlayProps?: RACModalOverlayProps;
 
   /** Additional props to pass to the modal container. */
-  containerProps?: Omit<FlexProps, 'as'>;
+  containerProps?: Omit<FlexProps<typeof RACModal>, 'as'>;
 
   /** Additional class name for the modal. */
   className?: string;
@@ -104,9 +105,13 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
       {...overlayProps}
       isDismissable={isDismissable}
       padding="md"
-      className={cx(styles.overlay, overlayProps?.className)}
+      className={composeClassName(overlayProps?.className, styles.overlay)}
     >
-      <Flex as={RACModal} {...containerProps} className={cx(styles.modalContainer, containerProps?.className)}>
+      <Flex
+        as={RACModal}
+        {...containerProps}
+        className={composeClassName(containerProps?.className, styles.modalContainer)}
+      >
         <Flex
           as={RACDialog}
           elevation="overlay"
@@ -156,7 +161,12 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
             ) : null}
           </Flex>
 
-          <Button aria-label="Close" slot="close" {...closeProps} className={cx(styles.close, closeProps?.className)}>
+          <Button
+            aria-label="Close"
+            slot="close"
+            {...closeProps}
+            className={composeClassName(closeProps?.className, styles.close)}
+          >
             <Icon icon="x" />
           </Button>
         </Flex>

@@ -32,16 +32,16 @@ npm install --save @godaddy/antares
 
 ### Data Attributes
 
-The `Switch` interactive root exposes data attributes for styling different states:
+The interactive switch control exposes data attributes for styling different states:
 
 `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
 
 ```css
-.my-switch[data-focus-visible] {
+.my-switch [data-focus-visible] {
   outline: 2px solid Highlight;
 }
 
-.my-switch[data-disabled] {
+.my-switch [data-disabled] {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -62,7 +62,7 @@ The track and thumb read from Antares curated tokens, falling back to legacy `--
 
 ### Component Customization
 
-Pass a `className` or `style` to customize the interactive root element:
+Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
 
 ```jsx
 <Switch className="custom-switch">Wi-Fi</Switch>

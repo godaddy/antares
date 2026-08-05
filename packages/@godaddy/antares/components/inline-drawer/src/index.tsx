@@ -5,8 +5,8 @@ import {
   DisclosurePanel as RACDisclosurePanel,
   type DisclosurePanelProps as RACDisclosurePanelProps
 } from 'react-aria-components';
-import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
+import { composeClassName, composeStyle } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 /**
@@ -17,7 +17,7 @@ import styles from './index.module.css';
  */
 export type InlineDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
-export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'className' | 'children'> {
+export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'children'> {
   /** Edge the drawer anchors to; selects the collapse axis. @default 'top' */
   placement?: InlineDrawerPlacement;
 
@@ -29,9 +29,6 @@ export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'className' 
 
   /** Animate expand/collapse. @default true */
   animate?: boolean;
-
-  /** Additional CSS class for root element. */
-  className?: string;
 
   /** Content to render inside the drawer. */
   children?: ReactNode;
@@ -50,18 +47,15 @@ export interface InlineDrawerProps extends Omit<RACDisclosureProps, 'className' 
 export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(function InlineDrawer(props, ref) {
   const { placement = 'top', minSize, maxSize, animate, style: styleProps, className, children, ...rest } = props;
 
-  const style = {
-    ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) }),
-    ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
-    ...styleProps
-  } as CSSProperties;
-
   return (
     <RACDisclosure
       ref={ref}
       {...rest}
-      className={cx(styles.inlineDrawer, className)}
-      style={style}
+      className={composeClassName(className, styles.inlineDrawer)}
+      style={composeStyle(styleProps, {
+        ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) }),
+        ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) })
+      } as CSSProperties)}
       data-placement={placement}
       data-animate={animate === false ? 'false' : undefined}
     >
@@ -70,10 +64,7 @@ export const InlineDrawer = forwardRef<HTMLDivElement, InlineDrawerProps>(functi
   );
 });
 
-export interface InlineDrawerPanelProps extends Omit<RACDisclosurePanelProps, 'className'> {
-  /** Additional CSS class. */
-  className?: string;
-}
+export interface InlineDrawerPanelProps extends RACDisclosurePanelProps {}
 
 /**
  * Collapsible content panel for the accordion pattern — a thin wrapper over RAC
@@ -84,5 +75,5 @@ export interface InlineDrawerPanelProps extends Omit<RACDisclosurePanelProps, 'c
 export const InlineDrawerPanel = function InlineDrawerPanel(props: InlineDrawerPanelProps) {
   const { className, ...rest } = props;
 
-  return <RACDisclosurePanel {...rest} className={cx(styles.panel, className)} />;
+  return <RACDisclosurePanel {...rest} className={composeClassName(className, styles.panel)} />;
 };

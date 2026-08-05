@@ -1,7 +1,6 @@
-import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
-import { mergeObjects } from '../../../../utils/objects.ts';
+import { composeClassName, composeStyle } from '../../../../utils/render-props.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
 import { toSpacingVar } from '../../tokens.ts';
 import type { SharedFlexGridProps } from '../../types.ts';
@@ -42,6 +41,7 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
   const {
     style,
     className,
+    as,
     display = 'grid',
     areas,
     columns,
@@ -61,26 +61,30 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
 
   const displayClass = display === 'inline-grid' ? styles.inlineGrid : styles.grid;
 
-  const mergedStyle = mergeObjects(
-    {
-      gridTemplateAreas: gridTemplateAreasValue(areas),
-      gridTemplateColumns: columns,
-      gridTemplateRows: rows,
-      gridAutoColumns: autoColumns,
-      gridAutoRows: autoRows,
-      gridAutoFlow: autoFlow,
-      justifyContent,
-      justifyItems,
-      alignContent,
-      alignItems,
-      gap: toSpacingVar(gap),
-      columnGap: toSpacingVar(columnGap),
-      rowGap: toSpacingVar(rowGap)
-    } satisfies CSSProperties,
-    style
+  const computedStyle = {
+    gridTemplateAreas: gridTemplateAreasValue(areas),
+    gridTemplateColumns: columns,
+    gridTemplateRows: rows,
+    gridAutoColumns: autoColumns,
+    gridAutoRows: autoRows,
+    gridAutoFlow: autoFlow,
+    justifyContent,
+    justifyItems,
+    alignContent,
+    alignItems,
+    gap: toSpacingVar(gap),
+    columnGap: toSpacingVar(columnGap),
+    rowGap: toSpacingVar(rowGap)
+  } satisfies CSSProperties;
+  return (
+    <Box
+      {...rest}
+      as={as}
+      ref={ref}
+      className={composeClassName(className, displayClass) as string}
+      style={composeStyle(style, computedStyle) as CSSProperties}
+    />
   );
-
-  return <Box {...rest} ref={ref} className={cx(displayClass, className)} style={mergedStyle} />;
 }) as PolymorphicComponent<GridOwnProps>;
 
 /**
