@@ -18,7 +18,9 @@ export const Playground = getStory(PlaygroundExample, {
     isDismissable: true,
     isKeyboardDismissDisabled: false,
     longContent: false,
-    showActions: true
+    showActions: true,
+    showTitle: true,
+    longTitle: false
   },
   argTypes: {
     isDismissable: {
@@ -31,11 +33,19 @@ export const Playground = getStory(PlaygroundExample, {
     },
     longContent: {
       control: 'boolean',
-      description: 'Fill the content region so it scrolls while the header and actions stay pinned'
+      description: 'Fill the content region so it scrolls while the title row and actions stay pinned'
     },
     showActions: {
       control: 'boolean',
       description: 'Render a ButtonGroup with the modal actions'
+    },
+    showTitle: {
+      control: 'boolean',
+      description: 'Render a Heading slot="title". With it off, the close button keeps its top-right position'
+    },
+    longTitle: {
+      control: 'boolean',
+      description: 'Use a title long enough to wrap, showing that it wraps around the close button'
     }
   }
 });

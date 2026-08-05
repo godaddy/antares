@@ -11,7 +11,8 @@ import {
   Provider as RACProvider
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
-import { HeaderContext, ButtonGroupContext } from '#components/structure';
+import { Grid } from '#components/layout/grid';
+import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
 import styles from './index.module.css';
 
 export interface ModalProps
@@ -71,11 +72,10 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
       className={styles.overlay}
     >
       <Flex as={RACModal} className={styles.modal}>
-        <Flex
+        <Grid
           as={RACDialog}
           elevation="overlay"
           rounding="xl"
-          direction="column"
           {...dialogProps}
           ref={ref}
           className={cx(styles.dialog, className)}
@@ -83,12 +83,14 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
           <RACProvider
             values={[
               [HeaderContext, { className: styles.header }],
-              [ButtonGroupContext, { justifyContent: 'end' }]
+              [ContentContext, { className: styles.content }],
+              [FooterContext, { className: styles.footer }],
+              [ButtonGroupContext, { className: styles.buttons, justifyContent: 'end' }]
             ]}
           >
             {children}
           </RACProvider>
-        </Flex>
+        </Grid>
       </Flex>
     </Flex>
   );

@@ -1,36 +1,38 @@
-import {
-  ModalTrigger,
-  Modal,
-  Button,
-  CloseButton,
-  Header,
-  Heading,
-  Content,
-  ButtonGroup,
-  Text
-} from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   isDismissable?: boolean;
   isKeyboardDismissDisabled?: boolean;
   longContent?: boolean;
   showActions?: boolean;
+  showTitle?: boolean;
+  longTitle?: boolean;
 }
 
 export function PlaygroundExample({
   isDismissable = true,
   isKeyboardDismissDisabled = false,
   longContent = false,
-  showActions = true
+  showActions = true,
+  showTitle = true,
+  longTitle = false
 }: PlaygroundExampleProps) {
   return (
     <ModalTrigger>
       <Button variant="primary">Open modal</Button>
-      <Modal isDismissable={isDismissable} isKeyboardDismissDisabled={isKeyboardDismissDisabled}>
-        <Header>
-          <Heading slot="title">Modal title</Heading>
-          <CloseButton />
-        </Header>
+      <Modal
+        isDismissable={isDismissable}
+        isKeyboardDismissDisabled={isKeyboardDismissDisabled}
+        aria-label={showTitle ? undefined : 'Modal without a title'}
+      >
+        {showTitle ? (
+          <Heading slot="title">
+            {longTitle
+              ? 'A deliberately long modal title that has to wrap onto several lines to prove it never runs underneath the close button'
+              : 'Modal title'}
+          </Heading>
+        ) : null}
+        <CloseButton />
         <Content>
           {Array.from({ length: longContent ? 12 : 1 }, (_, i) => (
             <Text as="p" key={i}>

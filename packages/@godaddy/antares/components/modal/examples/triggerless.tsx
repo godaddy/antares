@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ButtonGroup, CloseButton, Content, Header, Heading, Modal, Text } from '@godaddy/antares';
+import { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';
 
 /**
  * `Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
@@ -16,10 +16,8 @@ export function TriggerlessExample() {
         Open modal
       </Button>
       <Modal isOpen={isOpen} onOpenChange={setOpen}>
-        <Header>
-          <Heading slot="title">Triggerless modal</Heading>
-          <CloseButton />
-        </Header>
+        <Heading slot="title">Triggerless modal</Heading>
+        <CloseButton />
         <Content>This is the content of the modal.</Content>
         <ButtonGroup>
           <Button slot="close" variant="primary">

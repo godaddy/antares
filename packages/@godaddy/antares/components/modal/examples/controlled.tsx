@@ -1,15 +1,4 @@
-import {
-  ModalTrigger,
-  Modal,
-  Button,
-  CloseButton,
-  Header,
-  Heading,
-  Content,
-  ButtonGroup,
-  Flex,
-  Text
-} from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
 /**
@@ -24,10 +13,8 @@ export function ControlledExample() {
       <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
         <Button variant="primary">Open modal</Button>
         <Modal>
-          <Header>
-            <Heading slot="title">Modal title</Heading>
-            <CloseButton />
-          </Header>
+          <Heading slot="title">Modal title</Heading>
+          <CloseButton />
           <Content>
             She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
           </Content>

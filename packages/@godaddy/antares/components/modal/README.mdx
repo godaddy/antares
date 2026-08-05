@@ -14,7 +14,8 @@ import * as Stories from './modal.stories.tsx';
 
 - `overlay` elevation panel centered over a dimmed backdrop
 - Focus trapping, outside-click dismiss, and scroll lock via RAC Modal
-- Pinned Header and actions with a scrolling Content region
+- Pinned title row and actions with a scrolling Content region
+- Regions placed by role, so child order does not affect the layout
 - Controlled or uncontrolled open state, on the modal or its trigger
 
 ## Installation
@@ -53,11 +54,11 @@ npm install --save @godaddy/antares
 <ModalTrigger>
   <Button />
   <Modal>
-    <Header>
-      <Heading slot="title" />
-      <CloseButton />
-    </Header>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
     <Content />
+    <Footer />
     <ButtonGroup />
   </Modal>
 </ModalTrigger>
