@@ -180,6 +180,137 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
+# Button
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Button>Click me!</Button>;\n}&#x22;" />
+
+### Primary [#primary]
+
+The primary button should be used to indicate the most important action for the user to take in their current experience.
+
+<Story of="PrimaryExample" />
+
+<Source language="tsx" code="&#x22;import { Button, type ButtonProps } from '@godaddy/antares';\n\nexport function PrimaryExample(props: ButtonProps) {\n  return (\n    <Button {...props} variant=\&#x22;primary\&#x22;>\n      Primary Button\n    </Button>\n  );\n}&#x22;" />
+
+### Secondary [#secondary]
+
+The secondary button indicates an action of secondary importance.
+
+<Story of="SecondaryExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function SecondaryExample() {\n  return <Button variant=\&#x22;secondary\&#x22;>Secondary Button</Button>;\n}&#x22;" />
+
+### Tertiary [#tertiary]
+
+The tertiary button is the default, low-emphasis style used for common, non-critical actions.
+
+<Story of="TertiaryExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function TertiaryExample() {\n  return <Button variant=\&#x22;tertiary\&#x22;>Tertiary Button</Button>;\n}&#x22;" />
+
+### Critical [#critical]
+
+The critical button signifies to the user a destructive action will take place.
+
+<Story of="CriticalExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function CriticalExample() {\n  return <Button variant=\&#x22;critical\&#x22;>Critical Button</Button>;\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Any button variant can be disabled to prevent interaction, communicated with reduced opacity and a not-allowed cursor.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\&#x22;secondary\&#x22; isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\&#x22;tertiary\&#x22; isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\&#x22;critical\&#x22; isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\&#x22;inline\&#x22; isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
+
+### Icon [#icon]
+
+You may provide an optional \`Icon\` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
+
+<Story of="IconExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          <Text>An external link!</Text>\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
+
+### Inline [#inline]
+
+The inline button sits within a run of text, styled like a link while retaining button semantics.
+
+<Story of="InlineExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Text } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <Text>\n      I am an <Button variant=\&#x22;inline\&#x22;>inline button</Button> surrounded by text!\n    </Text>\n  );\n}&#x22;" />
+
+### Minimal [#minimal]
+
+The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
+
+<Story of="MinimalExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <table className=\&#x22;button-story-table\&#x22;>\n      <thead>\n        <tr>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Button Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Gap Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Example\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Usage\n            </Flex>\n          </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Recommended\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Can be used, but not recommended.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Buttons come in small and medium sizes to fit different layout densities.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Button` component accepts the following props:
+
+<PropTable />
+
+The `LinkButton` component accepts the following props:
+
+<PropTable />
+
+
 # Avatar
 
 
@@ -210,7 +341,7 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 
 * Composable `Avatar`, `Image`, and `Text` parts
 * Circle and rounded-square shapes at four named sizes
-* Image fallback handling through Image loading state
+* Automatic image loading with a Text monogram fallback
 * Primary, subtle, and 15 categorical figure emphases
 * `AvatarButton` for accessible interactive avatar controls
 
@@ -448,137 +579,6 @@ The `Calendar` component accepts the following props:
 <PropTable />
 
 The `RangeCalendar` component accepts the following props:
-
-<PropTable />
-
-
-# Button
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Button>Click me!</Button>;\n}&#x22;" />
-
-### Primary [#primary]
-
-The primary button should be used to indicate the most important action for the user to take in their current experience.
-
-<Story of="PrimaryExample" />
-
-<Source language="tsx" code="&#x22;import { Button, type ButtonProps } from '@godaddy/antares';\n\nexport function PrimaryExample(props: ButtonProps) {\n  return (\n    <Button {...props} variant=\&#x22;primary\&#x22;>\n      Primary Button\n    </Button>\n  );\n}&#x22;" />
-
-### Secondary [#secondary]
-
-The secondary button indicates an action of secondary importance.
-
-<Story of="SecondaryExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function SecondaryExample() {\n  return <Button variant=\&#x22;secondary\&#x22;>Secondary Button</Button>;\n}&#x22;" />
-
-### Tertiary [#tertiary]
-
-The tertiary button is the default, low-emphasis style used for common, non-critical actions.
-
-<Story of="TertiaryExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function TertiaryExample() {\n  return <Button variant=\&#x22;tertiary\&#x22;>Tertiary Button</Button>;\n}&#x22;" />
-
-### Critical [#critical]
-
-The critical button signifies to the user a destructive action will take place.
-
-<Story of="CriticalExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function CriticalExample() {\n  return <Button variant=\&#x22;critical\&#x22;>Critical Button</Button>;\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Any button variant can be disabled to prevent interaction, communicated with reduced opacity and a not-allowed cursor.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\&#x22;secondary\&#x22; isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\&#x22;tertiary\&#x22; isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\&#x22;critical\&#x22; isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\&#x22;inline\&#x22; isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
-
-### Icon [#icon]
-
-You may provide an optional \`Icon\` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
-
-<Story of="IconExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          <Text>An external link!</Text>\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
-
-### Inline [#inline]
-
-The inline button sits within a run of text, styled like a link while retaining button semantics.
-
-<Story of="InlineExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Text } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <Text>\n      I am an <Button variant=\&#x22;inline\&#x22;>inline button</Button> surrounded by text!\n    </Text>\n  );\n}&#x22;" />
-
-### Minimal [#minimal]
-
-The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
-
-<Story of="MinimalExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <table className=\&#x22;button-story-table\&#x22;>\n      <thead>\n        <tr>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Button Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Gap Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Example\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Usage\n            </Flex>\n          </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Recommended\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Can be used, but not recommended.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Buttons come in small and medium sizes to fit different layout densities.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Button` component accepts the following props:
-
-<PropTable />
-
-The `LinkButton` component accepts the following props:
 
 <PropTable />
 
@@ -823,7 +823,7 @@ Components automatically add data attributes for styling different states:
 
 ### Component Customization [#component-customization]
 
-Individual components can be styled by passing `className` props:
+Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
 
 ```jsx
 <CheckboxGroup label="Select options" className="custom-checkbox-group">
@@ -1606,6 +1606,47 @@ Restrict the picker to specific MIME types with \`acceptedFileTypes\`, and allow
 <PropTable />
 
 
+# Image
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic image [#basic-image]
+
+Use Image anywhere you would use an `<img>`. It behaves the same and gains Antares styling only from the component it is composed within.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+
 # Icon
 
 
@@ -2016,47 +2057,6 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
-
-
-# Image
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic image [#basic-image]
-
-Use Image anywhere you would use an `<img>`. It behaves the same and gains Antares styling only from the component it is composed within.
-
-<Source language="tsx" code="SourceDefault" />
-
-<Story of="Stories.Default" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
 
 
 # InlineDrawer
@@ -2690,63 +2690,6 @@ The `NumberField` component accepts the following props:
 <PropTable />
 
 
-# Popover
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with \`\<PopoverTrigger>\`, which wraps both the popover content and an interactive trigger element (for example, a \`Button\`).
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>This is the popover content!</Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the \`triggerRef\` and \`isOpen\` props instead of \`\<PopoverTrigger>\`. \`onOpenChange\` is called when the user opens or closes the popover.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>\n        Popover content!\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
-
-### Close Button and Header [#close-button-and-header]
-
-Use \`showCloseButton\` to show a close button in the popover header. Use the \`header\` prop to render content alongside it.
-
-<Story of="WithCloseButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button, Text } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover showCloseButton header={<Text>Content to show next to the close button</Text>}>\n        This is the popover content!\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-## Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
-
-## Props [#props]
-
-<PropTable />
-
-
 # Pagination
 
 
@@ -2814,6 +2757,63 @@ The \`onChange\` callback fires with the new page index whenever the user naviga
 <Story of="OnChangeExample" />
 
 <Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
+# Popover
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with \`\<PopoverTrigger>\`, which wraps both the popover content and an interactive trigger element (for example, a \`Button\`).
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>This is the popover content!</Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the \`triggerRef\` and \`isOpen\` props instead of \`\<PopoverTrigger>\`. \`onOpenChange\` is called when the user opens or closes the popover.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>\n        Popover content!\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
+
+### Close Button and Header [#close-button-and-header]
+
+Use \`showCloseButton\` to show a close button in the popover header. Use the \`header\` prop to render content alongside it.
+
+<Story of="WithCloseButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button, Text } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover showCloseButton header={<Text>Content to show next to the close button</Text>}>\n        This is the popover content!\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+## Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 ## Props [#props]
 
@@ -3152,7 +3152,7 @@ Components automatically add data attributes for styling different states:
 
 ### Component Customization [#component-customization]
 
-Individual components can be styled by passing `className` props:
+Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
 
 ```jsx
 <RadioGroup label="Select plan" className="custom-radio-group">
@@ -3628,16 +3628,16 @@ Manage switch state programmatically with \`isSelected\` and \`onChange\`.
 
 ### Data Attributes [#data-attributes]
 
-The `Switch` interactive root exposes data attributes for styling different states:
+The interactive switch control exposes data attributes for styling different states:
 
 `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
 
 ```css
-.my-switch[data-focus-visible] {
+.my-switch [data-focus-visible] {
   outline: 2px solid Highlight;
 }
 
-.my-switch[data-disabled] {
+.my-switch [data-disabled] {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -3658,7 +3658,7 @@ The track and thumb read from Antares curated tokens, falling back to legacy `--
 
 ### Component Customization [#component-customization]
 
-Pass a `className` or `style` to customize the interactive root element:
+Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
 
 ```jsx
 <Switch className="custom-switch">Wi-Fi</Switch>
@@ -4571,6 +4571,79 @@ For better performance:
 <PropTable />
 
 
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a \`data\` array (\`id\`, \`name\`, \`value\`) and a \`label\` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add \`subLabel\` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch \`legend\` to \`right\` to sit the legend beside the donut, or \`bottom\` to stack it underneath. \`legendLabel\` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below \`smallSliceThreshold\` (default \`0.05\` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use \`formatValue\` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
 # Gauge Chart
 
 
@@ -5006,79 +5079,6 @@ Use `xType="time"` when the X-axis values are Date objects:
 ### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
 
 Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
-
-## Props [#props]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a \`data\` array (\`id\`, \`name\`, \`value\`) and a \`label\` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add \`subLabel\` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch \`legend\` to \`right\` to sit the legend beside the donut, or \`bottom\` to stack it underneath. \`legendLabel\` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below \`smallSliceThreshold\` (default \`0.05\` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use \`formatValue\` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
