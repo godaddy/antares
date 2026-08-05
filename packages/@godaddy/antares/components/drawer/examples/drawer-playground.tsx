@@ -5,7 +5,6 @@ import {
   Drawer,
   DrawerTrigger,
   Flex,
-  Header,
   Heading,
   Text,
   type DrawerPlacement
@@ -13,7 +12,7 @@ import {
 
 export interface PlaygroundExampleProps {
   placement?: DrawerPlacement;
-  showHeader?: boolean;
+  showTitle?: boolean;
   isDismissable?: boolean;
   animate?: boolean;
   maxSize?: number | string;
@@ -22,7 +21,7 @@ export interface PlaygroundExampleProps {
 
 export function PlaygroundExample({
   placement = 'right',
-  showHeader,
+  showTitle,
   isDismissable = true,
   animate,
   maxSize,
@@ -40,12 +39,8 @@ export function PlaygroundExample({
           minSize={minSize}
           aria-label="Drawer"
         >
-          {showHeader ? (
-            <Header>
-              <Heading slot="title">Drawer title</Heading>
-              <CloseButton />
-            </Header>
-          ) : null}
+          {showTitle ? <Heading slot="title">Drawer title</Heading> : null}
+          <CloseButton />
           <Content>
             <Text>Drawer content!</Text>
           </Content>

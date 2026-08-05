@@ -1,16 +1,14 @@
 import { forwardRef, type RefObject, type ReactNode } from 'react';
 import { cx } from 'cva';
 import {
-  Dialog as RACDialog,
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
-  OverlayArrow as RACOverlayArrow,
-  Provider as RACProvider
+  OverlayArrow as RACOverlayArrow
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { HeaderContext } from '#components/structure';
+import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import styles from './index.module.css';
 
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
@@ -59,15 +57,13 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
       className={cx(styles.popover, className)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
-      <Flex
-        as={RACDialog}
-        direction="column"
+      <OverlayDialog
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedBy}
       >
-        <RACProvider values={[[HeaderContext, { className: styles.header }]]}>{children}</RACProvider>
-      </Flex>
+        {children}
+      </OverlayDialog>
     </Flex>
   );
 });

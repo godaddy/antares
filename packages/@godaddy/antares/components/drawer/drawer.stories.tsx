@@ -17,7 +17,7 @@ export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'right',
     isDismissable: true,
-    showHeader: false,
+    showTitle: false,
     animate: true
   },
   argTypes: {
@@ -34,9 +34,9 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'boolean',
       description: 'Animate the open/close slide'
     },
-    showHeader: {
+    showTitle: {
       control: 'boolean',
-      description: 'Compose a Header with a title and close button'
+      description: 'Render a Heading slot="title" beside the close button'
     }
   }
 });

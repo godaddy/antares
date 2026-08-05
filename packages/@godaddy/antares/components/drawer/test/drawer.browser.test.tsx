@@ -138,7 +138,7 @@ describe('@godaddy/antares', function antares() {
       assume(getByRole('dialog', { name: 'Nested popover' }).query()).is.not.equal(null);
     });
 
-    it('scrolls the Content region while Header stays pinned', async function scrollableContent() {
+    it('scrolls the Content region while the title row stays pinned', async function scrollableContent() {
       const { getByRole } = await render(<ScrollableExample />);
 
       await getByRole('button', { name: 'Open drawer' }).click();
@@ -149,7 +149,12 @@ describe('@godaddy/antares', function antares() {
       const dialog = getByRole('dialog', { name: 'Terms' }).element();
       const content = dialog.querySelector('section') as HTMLElement;
       assume(getComputedStyle(content).overflowY).equals('auto');
-      assume(getComputedStyle(dialog.querySelector('header') as HTMLElement).flexShrink).equals('0');
+
+      // The title row is a content-sized grid track, so it cannot be squeezed by the content:
+      // the scrolling region ends inside the panel rather than overflowing it.
+      const title = dialog.querySelector('[slot="title"]') as HTMLElement;
+      assume(title.getBoundingClientRect().bottom <= content.getBoundingClientRect().top).is.true();
+      assume(content.getBoundingClientRect().bottom <= dialog.getBoundingClientRect().bottom).is.true();
     });
   });
 });

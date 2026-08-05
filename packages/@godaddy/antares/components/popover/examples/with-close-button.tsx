@@ -1,9 +1,9 @@
-import { Button, CloseButton, Content, Header, Heading, Popover, PopoverTrigger } from '@godaddy/antares';
+import { Button, CloseButton, Content, Heading, Popover, PopoverTrigger } from '@godaddy/antares';
 
 /**
- * Compose a `Header` with a `Heading slot="title"` and a `CloseButton` for a dismissible
- * popover. The heading also gives the dialog its accessible name.
- * @title Header and Close Button
+ * Add a `Heading slot="title"` and a `CloseButton` for a titled, dismissible popover. The heading
+ * also gives the dialog its accessible name.
+ * @title Title and Close Button
  * @order 3
  */
 export function WithCloseButtonExample() {
@@ -11,10 +11,8 @@ export function WithCloseButtonExample() {
     <PopoverTrigger>
       <Button variant="primary">Open popover</Button>
       <Popover>
-        <Header>
-          <Heading slot="title">Popover title</Heading>
-          <CloseButton />
-        </Header>
+        <Heading slot="title">Popover title</Heading>
+        <CloseButton />
         <Content>This is the popover content!</Content>
       </Popover>
     </PopoverTrigger>

@@ -71,7 +71,8 @@
   margin-right: var(--_arrow-offset);
 }
 
-.header :where([slot="close"]) {
-  align-self: flex-start;
-  margin-inline-start: auto;
-}
+/*
+ * No dialog rules of its own: the panel is the outer `RACPopover`, and the region grid comes
+ * from `OverlayDialog`. A popover uses only the title, close, and content regions, so the rest of
+ * that grid's rows collapse to zero.
+ */

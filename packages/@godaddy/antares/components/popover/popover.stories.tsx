@@ -17,7 +17,9 @@ export const Playground = getStory(PlaygroundExample, {
   args: {
     placement: 'bottom',
     hideArrow: false,
-    showHeader: false
+    showTitle: false,
+    showCloseButton: false,
+    longContent: false
   },
   argTypes: {
     placement: {
@@ -29,9 +31,17 @@ export const Playground = getStory(PlaygroundExample, {
       control: 'boolean',
       description: 'Hide the popover arrow'
     },
-    showHeader: {
+    showTitle: {
       control: 'boolean',
-      description: 'Compose a Header with a title and close button'
+      description: 'Render a Heading slot="title", which also names the dialog'
+    },
+    showCloseButton: {
+      control: 'boolean',
+      description: 'Render a CloseButton in the top corner, beside the title'
+    },
+    longContent: {
+      control: 'boolean',
+      description: 'Use content long enough to wrap, showing that it keeps the full popover width'
     }
   }
 });

@@ -1,18 +1,16 @@
 import { forwardRef, type ReactNode, type CSSProperties } from 'react';
 import {
-  Dialog as RACDialog,
   type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
-  type ModalOverlayProps as RACModalOverlayProps,
-  Provider as RACProvider
+  type ModalOverlayProps as RACModalOverlayProps
 } from 'react-aria-components';
 import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
 import { Flex } from '#components/layout/flex';
-import { HeaderContext } from '#components/structure';
+import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import styles from './index.module.css';
 
 /**
@@ -111,9 +109,9 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         style={panelStyle}
         className={cx(styles.drawer, className)}
       >
-        <Flex as={RACDialog} direction="column" {...dialogProps} ref={ref} className={styles.dialog}>
-          <RACProvider values={[[HeaderContext, { className: styles.header }]]}>{children}</RACProvider>
-        </Flex>
+        <OverlayDialog {...dialogProps} ref={ref} className={styles.dialog}>
+          {children}
+        </OverlayDialog>
       </Flex>
     </RACModalOverlay>
   );

@@ -8,7 +8,7 @@ export function DefaultExample() {
   return (
     <PopoverTrigger>
       <Button variant="primary">Open popover</Button>
-      <Popover aria-label="Popover">
+      <Popover>
         <Content>This is the popover content!</Content>
       </Popover>
     </PopoverTrigger>

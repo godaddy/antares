@@ -47,8 +47,8 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<PlaygroundExample placement="bottom" minSize="40%" />)).toMatchSnapshot();
     });
 
-    it('renders PlaygroundExample with a composed header', function playgroundHeader() {
-      expect(renderToString(<PlaygroundExample placement="right" showHeader />)).toMatchSnapshot();
+    it('renders PlaygroundExample with a composed title', function playgroundTitle() {
+      expect(renderToString(<PlaygroundExample placement="right" showTitle />)).toMatchSnapshot();
     });
 
     it('renders PlacementsExample', function placementsExample() {

@@ -33,12 +33,15 @@ npm install --save @godaddy/antares
 ### ARIA
 
 - `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-- A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
+- A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
+  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
+  `triggerRef` it needs an explicit `aria-label`
 - The arrow is `aria-hidden`
 
 ## Best Practices
 
-- Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
+- Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
+  since there is no trigger to borrow the name from.
 - Popover width is determined by its content, and it's recommended to keep it under 400px.
 
 ## Props
@@ -47,11 +50,10 @@ npm install --save @godaddy/antares
 <PopoverTrigger>
   <Button />
   <Popover>
-    <Header>
-      <Heading slot="title" />
-      <CloseButton />
-    </Header>
+    <Heading slot="title" />
+    <CloseButton />
     <Content />
+    {/* ... */}
   </Popover>
 </PopoverTrigger>
 ```

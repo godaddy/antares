@@ -62,17 +62,16 @@
   transition: none;
 }
 
+/*
+ * Makes the dialog fill the drawer panel it sits inside. Sizing only, no layout: the region grid
+ * comes from `OverlayDialog`.
+ */
 .dialog {
   flex: 1 1 auto;
   min-block-size: 0;
   max-block-size: 100%;
   outline: none;
   overflow: hidden;
-}
-
-.header :where([slot="close"]) {
-  align-self: flex-start;
-  margin-inline-start: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
