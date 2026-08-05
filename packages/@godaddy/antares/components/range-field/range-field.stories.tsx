@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { RangeFieldPlaygroundExample } from './examples/range-field-playground.tsx';
+import { PlaygroundExample } from './examples/range-field-playground.tsx';
 import { RangeField } from './src/index.tsx';
 
 export default getMeta({ title: 'components/RangeField' });
@@ -9,7 +9,7 @@ export const Props = getComponentDocs(RangeField);
 
 export const Examples = getExamples('./examples');
 
-export const Playground = getStory(RangeFieldPlaygroundExample, {
+export const Playground = getStory(PlaygroundExample, {
   args: {
     label: 'Volume',
     description: '',

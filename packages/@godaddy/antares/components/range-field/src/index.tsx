@@ -10,7 +10,7 @@ import {
 } from 'react-aria-components';
 import { Field, FieldDescription, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex } from '#components/layout/flex';
-import { cx } from 'cva';
+import { composeClassName } from '../../../utils/render-props.ts';
 import {
   createRef,
   type ForwardedRef,
@@ -31,8 +31,8 @@ const MAX_MARKER_COUNT = 1000;
 
 /** Props for configuring a {@link RangeField}. */
 export interface RangeFieldProps<T extends number | number[] = number | number[]>
-  extends Omit<RACSliderProps<T>, 'children' | 'className' | 'orientation' | 'render' | 'style'>,
-    Omit<FieldOwnProps, 'as' | 'errorMessage'> {
+  extends Omit<RACSliderProps<T>, 'children' | 'orientation' | 'render'>,
+    Omit<FieldOwnProps, 'as' | 'className' | 'errorMessage'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
@@ -80,9 +80,6 @@ export interface RangeFieldProps<T extends number | number[] = number | number[]
 
   /** Form input names associated with thumbs by index. */
   thumbNames?: string[];
-
-  /** Additional CSS class applied to the root element. */
-  className?: string;
 
   /** Displays a required indicator in the field label. */
   isRequired?: boolean;
@@ -166,7 +163,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
       formatOptions={formatOptions}
       aria-describedby={describedBy}
       gap={gap}
-      className={cx(styles.slider, className)}
+      className={composeClassName(className, styles.slider)}
     >
       <RangeFieldHeader label={label} isRequired={isRequired} valueLabel={valueLabel} />
       <RangeFieldControl

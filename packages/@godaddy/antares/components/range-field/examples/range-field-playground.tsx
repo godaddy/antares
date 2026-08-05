@@ -1,7 +1,7 @@
 import { RangeField, type RangeFieldProps, type RangeFieldRef } from '@godaddy/antares';
 import { type ReactNode, type Ref, useEffect, useMemo, useState } from 'react';
 
-export interface RangeFieldPlaygroundExampleProps {
+export interface PlaygroundExampleProps {
   label?: string;
 
   description?: string;
@@ -66,7 +66,7 @@ function normalizeStorybookValue(value: unknown): number | number[] | undefined 
   return undefined;
 }
 
-export function RangeFieldPlaygroundExample({
+export function PlaygroundExample({
   label = 'Volume',
   description,
   value,
@@ -85,7 +85,7 @@ export function RangeFieldPlaygroundExample({
   isDisabled = false,
   onChangeEnd,
   rootRef
-}: RangeFieldPlaygroundExampleProps) {
+}: PlaygroundExampleProps) {
   const normalizedValue = useMemo(
     function normalizeValue() {
       return normalizeStorybookValue(value);

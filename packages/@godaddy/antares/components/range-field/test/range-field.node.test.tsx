@@ -1,43 +1,43 @@
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { RangeFieldControlledExample } from '../examples/controlled.tsx';
-import { RangeFieldDefaultExample } from '../examples/default.tsx';
-import { RangeFieldDisabledExample } from '../examples/disabled.tsx';
-import { RangeFieldLabelsExample } from '../examples/labels.tsx';
-import { RangeFieldMarkersExample } from '../examples/markers.tsx';
-import { RangeFieldPlaygroundExample } from '../examples/range-field-playground.tsx';
-import { RangeFieldRangeExample } from '../examples/range.tsx';
-import { RangeFieldValueDisplayExample } from '../examples/value-display.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { DefaultExample } from '../examples/default.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { LabelsExample } from '../examples/labels.tsx';
+import { MarkersExample } from '../examples/markers.tsx';
+import { PlaygroundExample } from '../examples/range-field-playground.tsx';
+import { RangeExample } from '../examples/range.tsx';
+import { ValueDisplayExample } from '../examples/value-display.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#RangeField', function rangeFieldTests() {
     describe('#examples', function examples() {
       it('renders the default example', function defaultExample() {
-        expect(renderToString(<RangeFieldDefaultExample />)).toMatchSnapshot();
+        expect(renderToString(<DefaultExample />)).toMatchSnapshot();
       });
 
       it('renders the controlled example', function controlledExample() {
-        expect(renderToString(<RangeFieldControlledExample />)).toMatchSnapshot();
+        expect(renderToString(<ControlledExample />)).toMatchSnapshot();
       });
 
       it('renders the disabled example', function disabledExample() {
-        expect(renderToString(<RangeFieldDisabledExample />)).toMatchSnapshot();
+        expect(renderToString(<DisabledExample />)).toMatchSnapshot();
       });
 
       it('renders the labels example', function labelsExample() {
-        expect(renderToString(<RangeFieldLabelsExample />)).toMatchSnapshot();
+        expect(renderToString(<LabelsExample />)).toMatchSnapshot();
       });
 
       it('renders the value display example', function valueDisplayExample() {
-        expect(renderToString(<RangeFieldValueDisplayExample />)).toMatchSnapshot();
+        expect(renderToString(<ValueDisplayExample />)).toMatchSnapshot();
       });
 
       it('renders the markers example', function markersExample() {
-        expect(renderToString(<RangeFieldMarkersExample />)).toMatchSnapshot();
+        expect(renderToString(<MarkersExample />)).toMatchSnapshot();
       });
 
       it('renders the range example', function rangeExample() {
-        expect(renderToString(<RangeFieldRangeExample />)).toMatchSnapshot();
+        expect(renderToString(<RangeExample />)).toMatchSnapshot();
       });
     });
 
@@ -45,7 +45,7 @@ describe('@godaddy/antares', function antares() {
       it('renders a negative scale', function negativeScale() {
         expect(
           renderToString(
-            <RangeFieldPlaygroundExample
+            <PlaygroundExample
               label="Temperature"
               defaultValue={-20}
               minValue={-100}
@@ -61,7 +61,7 @@ describe('@godaddy/antares', function antares() {
       it('renders multiple independently labelled values', function multipleValues() {
         expect(
           renderToString(
-            <RangeFieldPlaygroundExample
+            <PlaygroundExample
               label="Thresholds"
               defaultValue={[20, 50, 80]}
               thumbLabels={['Low threshold', 'Target threshold', 'High threshold']}
@@ -75,9 +75,9 @@ describe('@godaddy/antares', function antares() {
         expect(
           renderToString(
             <>
-              <RangeFieldPlaygroundExample label="Minimum only" minLabel={<span>Minimum</span>} />
-              <RangeFieldPlaygroundExample label="Maximum only" maxLabel={<span>Maximum</span>} />
-              <RangeFieldPlaygroundExample label="Numeric zero" minLabel={0} />
+              <PlaygroundExample label="Minimum only" minLabel={<span>Minimum</span>} />
+              <PlaygroundExample label="Maximum only" maxLabel={<span>Maximum</span>} />
+              <PlaygroundExample label="Numeric zero" minLabel={0} />
             </>
           )
         ).toMatchSnapshot();
@@ -85,7 +85,7 @@ describe('@godaddy/antares', function antares() {
 
       it('omits endpoint labels without renderable content', function emptyEndpointLabels() {
         expect(
-          renderToString(<RangeFieldPlaygroundExample label="No endpoint labels" minLabel="" maxLabel={false} />)
+          renderToString(<PlaygroundExample label="No endpoint labels" minLabel="" maxLabel={false} />)
         ).toMatchSnapshot();
       });
     });

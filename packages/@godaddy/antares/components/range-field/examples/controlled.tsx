@@ -5,7 +5,7 @@ import { useState } from 'react';
  * Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
  * @order 2
  */
-export function RangeFieldControlledExample() {
+export function ControlledExample() {
   const [value, setValue] = useState(50);
   const [committedValue, setCommittedValue] = useState(50);
 

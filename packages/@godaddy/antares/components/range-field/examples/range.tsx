@@ -4,7 +4,7 @@ import { RangeField } from '@godaddy/antares';
  * Pass a `number[]` to render a range with two thumbs and step markers.
  * @order 7
  */
-export function RangeFieldRangeExample() {
+export function RangeExample() {
   return (
     <RangeField
       aria-label="Price range"

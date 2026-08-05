@@ -4,12 +4,12 @@ import { createRef } from 'react';
 import { describe, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { RangeFieldControlledExample } from '../examples/controlled.tsx';
-import { RangeFieldDefaultExample } from '../examples/default.tsx';
-import { RangeFieldDisabledExample } from '../examples/disabled.tsx';
-import { RangeFieldPlaygroundExample } from '../examples/range-field-playground.tsx';
-import { RangeFieldRangeExample } from '../examples/range.tsx';
-import { RangeFieldValueDisplayExample } from '../examples/value-display.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { DefaultExample } from '../examples/default.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { PlaygroundExample } from '../examples/range-field-playground.tsx';
+import { RangeExample } from '../examples/range.tsx';
+import { ValueDisplayExample } from '../examples/value-display.tsx';
 
 function getValue(element: Element) {
   return Number((element as HTMLInputElement).value);
@@ -19,7 +19,7 @@ describe('@godaddy/antares', function antares() {
   describe('#RangeField', function rangeFieldTests() {
     it('exposes its root element and focuses the first thumb', async function imperativeRef() {
       const rootRef = createRef<RangeFieldRef>();
-      const { container } = await render(<RangeFieldPlaygroundExample rootRef={rootRef} />);
+      const { container } = await render(<PlaygroundExample rootRef={rootRef} />);
       const firstThumb = page.getByRole('slider', { name: 'Volume' }).element();
 
       assume(rootRef.current?.container instanceof HTMLDivElement).equals(true);
@@ -31,7 +31,7 @@ describe('@godaddy/antares', function antares() {
 
     it('changes an uncontrolled value with arrow keys', async function arrowKeys() {
       const user = userEvent.setup();
-      await render(<RangeFieldDefaultExample />);
+      await render(<DefaultExample />);
       const thumb = page.getByRole('slider', { name: 'Volume' });
 
       thumb.element().focus();
@@ -44,7 +44,7 @@ describe('@godaddy/antares', function antares() {
 
     it('moves to the scale boundaries with Home and End', async function boundaries() {
       const user = userEvent.setup();
-      await render(<RangeFieldDefaultExample />);
+      await render(<DefaultExample />);
       const thumb = page.getByRole('slider', { name: 'Volume' });
 
       thumb.element().focus();
@@ -57,7 +57,7 @@ describe('@godaddy/antares', function antares() {
 
     it('changes by a larger interval with Page Up and Page Down', async function pageKeys() {
       const user = userEvent.setup();
-      await render(<RangeFieldDefaultExample />);
+      await render(<DefaultExample />);
       const thumb = page.getByRole('slider', { name: 'Volume' });
 
       thumb.element().focus();
@@ -70,7 +70,7 @@ describe('@godaddy/antares', function antares() {
 
     it('updates controlled and committed values', async function controlledValue() {
       const user = userEvent.setup();
-      await render(<RangeFieldControlledExample />);
+      await render(<ControlledExample />);
       const thumb = page.getByRole('slider', { name: 'Volume' });
 
       thumb.element().focus();
@@ -83,7 +83,7 @@ describe('@godaddy/antares', function antares() {
     it('supports negative scales without clamping to zero', async function negativeScale() {
       const user = userEvent.setup();
       await render(
-        <RangeFieldPlaygroundExample label="Temperature" defaultValue={-20} minValue={-100} maxValue={100} step={20} />
+        <PlaygroundExample label="Temperature" defaultValue={-20} minValue={-100} maxValue={100} step={20} />
       );
       const thumb = page.getByRole('slider', { name: 'Temperature' });
 
@@ -96,7 +96,7 @@ describe('@godaddy/antares', function antares() {
     it('renders and independently adjusts every supplied value', async function multipleValues() {
       const user = userEvent.setup();
       await render(
-        <RangeFieldPlaygroundExample
+        <PlaygroundExample
           label="Thresholds"
           defaultValue={[20, 50, 80]}
           thumbLabels={['Low threshold', 'Target threshold', 'High threshold']}
@@ -117,7 +117,7 @@ describe('@godaddy/antares', function antares() {
 
     it('moves focus through multiple thumbs in value order', async function thumbFocusOrder() {
       const user = userEvent.setup();
-      await render(<RangeFieldRangeExample />);
+      await render(<RangeExample />);
       const minimum = page.getByRole('slider', { name: 'Minimum price' });
       const maximum = page.getByRole('slider', { name: 'Maximum price' });
 
@@ -130,7 +130,7 @@ describe('@godaddy/antares', function antares() {
 
     it('does not change a disabled value', async function disabledValue() {
       const user = userEvent.setup();
-      await render(<RangeFieldDisabledExample />);
+      await render(<DisabledExample />);
       const thumb = page.getByRole('slider', { name: 'Volume' });
 
       thumb.element().focus();
@@ -141,7 +141,7 @@ describe('@godaddy/antares', function antares() {
 
     it('associates its description with every thumb', async function accessibleDetails() {
       const { container } = await render(
-        <RangeFieldPlaygroundExample
+        <PlaygroundExample
           label="Thresholds"
           description="Choose the accepted interval."
           defaultValue={[20, 80]}
@@ -161,7 +161,7 @@ describe('@godaddy/antares', function antares() {
 
     it('renders decimal markers through the exact maximum', async function decimalMarkers() {
       const { container } = await render(
-        <RangeFieldPlaygroundExample defaultValue={0.1} minValue={0} maxValue={0.3} step={0.1} markers />
+        <PlaygroundExample defaultValue={0.1} minValue={0} maxValue={0.3} step={0.1} markers />
       );
       const markers = container.querySelectorAll('[aria-hidden="true"]');
 
@@ -171,7 +171,7 @@ describe('@godaddy/antares', function antares() {
 
     it('renders distinct markers for large finite scales', async function largeScaleMarkers() {
       const { container } = await render(
-        <RangeFieldPlaygroundExample
+        <PlaygroundExample
           label="Large finite scale"
           defaultValue={0}
           minValue={0}
@@ -195,7 +195,7 @@ describe('@godaddy/antares', function antares() {
 
     it('omits markers when the step would produce an unsafe number of elements', async function markerLimit() {
       const { container } = await render(
-        <RangeFieldPlaygroundExample defaultValue={50} minValue={0} maxValue={100} step={0.000001} markers />
+        <PlaygroundExample defaultValue={50} minValue={0} maxValue={100} step={0.000001} markers />
       );
 
       assume(container.querySelectorAll('[aria-hidden="true"]').length).equals(0);
@@ -204,7 +204,7 @@ describe('@godaddy/antares', function antares() {
     it('updates a state-based value label after interaction', async function stateValueLabel() {
       const user = userEvent.setup();
       await render(
-        <RangeFieldPlaygroundExample
+        <PlaygroundExample
           label="Volume"
           defaultValue={50}
           step={10}
@@ -223,7 +223,7 @@ describe('@godaddy/antares', function antares() {
 
     it('supports formatted, static, and state-based value labels', async function valueDisplay() {
       const user = userEvent.setup();
-      await render(<RangeFieldValueDisplayExample />);
+      await render(<ValueDisplayExample />);
       const budget = page.getByRole('slider', { name: 'Monthly budget' });
       const volume = page.getByRole('slider', { name: 'Volume' });
 
@@ -245,7 +245,7 @@ describe('@godaddy/antares', function antares() {
       const user = userEvent.setup();
       const onChangeEnd = vi.fn<(value: number | number[]) => void>();
       await render(
-        <RangeFieldPlaygroundExample
+        <PlaygroundExample
           label="Thresholds"
           defaultValue={[20, 80]}
           thumbLabels={['Minimum threshold', 'Maximum threshold']}
@@ -264,7 +264,7 @@ describe('@godaddy/antares', function antares() {
     it('submits one value for each named thumb', async function formValues() {
       const { container } = await render(
         <form>
-          <RangeFieldPlaygroundExample
+          <PlaygroundExample
             label="Thresholds"
             defaultValue={[20, 50, 80]}
             thumbLabels={['Low threshold', 'Target threshold', 'High threshold']}

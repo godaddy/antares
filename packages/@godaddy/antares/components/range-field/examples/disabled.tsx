@@ -4,7 +4,7 @@ import { RangeField } from '@godaddy/antares';
  * Use `isDisabled` when the value is visible but unavailable for interaction.
  * @order 3
  */
-export function RangeFieldDisabledExample() {
+export function DisabledExample() {
   return (
     <RangeField
       aria-label="Volume"
