@@ -1,0 +1,96 @@
+import{a as e,i as t}from"./preload-helper-DPdjVz-1.js";import{y as n}from"./iframe--v5csJnj.js";import{l as r}from"./exports-Dea95c1V.js";import{t as i}from"./src-BUTsPpoZ.js";import{Dt as a,Ft as o,It as s,Lt as c,Mt as l,Nt as u,Pt as d,Tt as f,qt as p,t as m}from"./antares-Dc0e2KjO.js";function h({className:e,description:t,isDisabled:n,isRequired:r,label:a}){return(0,g.jsxs)(l,{children:[(0,g.jsx)(c,{isRequired:r,children:a}),(0,g.jsx)(o,{className:e,isDisabled:n,gap:`sm`,children:(0,g.jsx)(i,{as:`span`,alignItems:`center`,padding:`md`,children:`Placeholder content`})}),(0,g.jsx)(d,{children:t})]})}var g,_=t((()=>{m(),g=n()}));function v(e){return(0,y.jsxs)(l,{children:[(0,y.jsx)(c,{children:`Phone`}),(0,y.jsxs)(o,{gap:`sm`,...e,children:[(0,y.jsx)(u,{"aria-label":`Country code`,children:`Click Me`}),(0,y.jsx)(i,{as:`span`,flex:1,alignItems:`center`,padding:`md`,children:`Placeholder content`})]}),(0,y.jsx)(d,{children:`Enter your phone number`})]})}var y,b=t((()=>{m(),y=n()}));function x(e){return(0,S.jsxs)(l,{children:[(0,S.jsx)(c,{children:`Search`}),(0,S.jsxs)(o,{gap:`sm`,...e,children:[(0,S.jsx)(s,{placeholder:`Type...`}),(0,S.jsx)(u,{"aria-label":`Search`,children:`Search`})]}),(0,S.jsx)(d,{children:`Search by keyword`})]})}var S,C=t((()=>{m(),S=n()}));function w(e){return(0,T.jsxs)(l,{children:[(0,T.jsx)(c,{children:`Email`}),(0,T.jsxs)(o,{...e,children:[(0,T.jsx)(i,{as:`span`,alignItems:`center`,inlinePaddingStart:`sm`,children:(0,T.jsx)(p,{icon:`star`})}),(0,T.jsx)(s,{placeholder:`Email`}),(0,T.jsx)(u,{"aria-label":`Verify email address`,children:`Verify`})]}),(0,T.jsx)(d,{children:`Enter your email address`})]})}var T,E=t((()=>{m(),T=n()}));function D(){return(0,O.jsxs)(l,{as:r,autoComplete:`tel-national`,inputMode:`tel`,type:`tel`,children:[(0,O.jsx)(c,{children:`Phone number`}),(0,O.jsxs)(o,{children:[(0,O.jsxs)(f,{"aria-label":`Country code`,defaultValue:`us`,children:[(0,O.jsx)(a,{id:`us`,children:`US +1`}),(0,O.jsx)(a,{id:`mx`,children:`MX +52`}),(0,O.jsx)(a,{id:`gb`,children:`GB +44`})]}),(0,O.jsx)(s,{placeholder:`555-555-5555`})]}),(0,O.jsx)(d,{children:`We'll only call about your order.`})]})}var O,k=t((()=>{m(),O=n()}));function A({label:e=`Label`,isRequired:t=!1,isDisabled:n=!1,...r}){return(0,j.jsx)(h,{label:e,isRequired:t,isDisabled:n,...r})}var j,M=t((()=>{_(),j=n()})),N=e({Default:()=>L,FieldGroupIconAccessories:()=>B,FieldGroupLeadingControl:()=>R,FieldGroupTrailingControl:()=>z,GroupProps:()=>I,Playground:()=>H,TelephoneField:()=>V,__namedExportsOrder:()=>U,default:()=>F}),P,F,I,L,R,z,B,V,H,U,W=t((()=>{_(),b(),C(),E(),k(),P=n(),M(),F={title:`components/Field`},I={tags:[`!dev`],argTypes:{onHoverStart:{name:`onHoverStart`,description:`Handler that is called when a hover interaction starts.`,type:{name:`other`,value:`(e: HoverEvent) => void`,required:!1},table:{type:{summary:`(e: HoverEvent) => void`},defaultValue:{summary:null},category:`Events`}},onHoverEnd:{name:`onHoverEnd`,description:`Handler that is called when a hover interaction ends.`,type:{name:`other`,value:`(e: HoverEvent) => void`,required:!1},table:{type:{summary:`(e: HoverEvent) => void`},defaultValue:{summary:null},category:`Events`}},onHoverChange:{name:`onHoverChange`,description:`Handler that is called when the hover state changes.`,type:{name:`other`,value:`(isHovering: boolean) => void`,required:!1},table:{type:{summary:`(isHovering: boolean) => void`},defaultValue:{summary:null},category:`Events`}},display:{name:`display`,description:`The display property for the flex container.`,type:{name:`other`,value:`'flex' | 'inline-flex'`,required:!1},table:{type:{summary:`'flex' | 'inline-flex'`},defaultValue:{summary:`'flex'`},category:`Layout`}},justifyContent:{name:`justifyContent`,description:`The distribution of space around children along the main axis in flex or inline axis in grid`,type:{name:`other`,value:`| 'normal'
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'stretch'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly'
+    | (string & {})`,required:!1},table:{type:{summary:`| 'normal'
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'stretch'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly'
+    | (string & {})`},defaultValue:{summary:null},category:`Layout`}},alignContent:{name:`alignContent`,description:`The distribution of space around children along the cross axis in flex or block axis in grid`,type:{name:`other`,value:`| 'normal'
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'stretch'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly'
+    | 'baseline'
+    | (string & {})`,required:!1},table:{type:{summary:`| 'normal'
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'stretch'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly'
+    | 'baseline'
+    | (string & {})`},defaultValue:{summary:null},category:`Layout`}},justifyItems:{name:`justifyItems`,description:`Defines the default justify-self for all children in a grid container.`,type:{name:`other`,value:`'normal' | 'start' | 'end' | 'center' | 'stretch' | 'legacy' | (string & {})`,required:!1},table:{type:{summary:`'normal' | 'start' | 'end' | 'center' | 'stretch' | 'legacy' | (string & {})`},defaultValue:{summary:null},category:`Layout`}},alignItems:{name:`alignItems`,description:`Sets the align-self property for each child.`,type:{name:`other`,value:`'normal' | 'start' | 'end' | 'center' | 'stretch' | 'baseline' | (string & {})`,required:!1},table:{type:{summary:`'normal' | 'start' | 'end' | 'center' | 'stretch' | 'baseline' | (string & {})`},defaultValue:{summary:null},category:`Layout`}},gap:{name:`gap`,description:`The gap between children.`,type:{name:`other`,value:`Spacing | Spacing[]`,required:!1},table:{type:{summary:`Spacing | Spacing[]`},defaultValue:{summary:null},category:`Layout`}},columnGap:{name:`columnGap`,description:`The gap between columns.`,type:{name:`other`,value:`Spacing`,required:!1},table:{type:{summary:`Spacing`},defaultValue:{summary:null},category:`Layout`}},rowGap:{name:`rowGap`,description:`The gap between rows.`,type:{name:`other`,value:`Spacing`,required:!1},table:{type:{summary:`Spacing`},defaultValue:{summary:null},category:`Layout`}},padding:{name:`padding`,description:`Padding on all sides. Accepts single value or array.`,type:{name:`other`,value:`Spacing | Spacing[]`,required:!1},table:{type:{summary:`Spacing | Spacing[]`},defaultValue:{summary:null},category:`Layout`}},inlinePadding:{name:`inlinePadding`,description:`Padding on inline (horizontal) direction.`,type:{name:`other`,value:`Spacing | Spacing[]`,required:!1},table:{type:{summary:`Spacing | Spacing[]`},defaultValue:{summary:null},category:`Layout`}},inlinePaddingStart:{name:`inlinePaddingStart`,description:`Padding on inline start (left in LTR).`,type:{name:`other`,value:`Spacing`,required:!1},table:{type:{summary:`Spacing`},defaultValue:{summary:null},category:`Layout`}},inlinePaddingEnd:{name:`inlinePaddingEnd`,description:`Padding on inline end (right in LTR).`,type:{name:`other`,value:`Spacing`,required:!1},table:{type:{summary:`Spacing`},defaultValue:{summary:null},category:`Layout`}},blockPadding:{name:`blockPadding`,description:`Padding on block (vertical) direction.`,type:{name:`other`,value:`Spacing | Spacing[]`,required:!1},table:{type:{summary:`Spacing | Spacing[]`},defaultValue:{summary:null},category:`Layout`}},blockPaddingStart:{name:`blockPaddingStart`,description:`Padding on block start (top).`,type:{name:`other`,value:`Spacing`,required:!1},table:{type:{summary:`Spacing`},defaultValue:{summary:null},category:`Layout`}},blockPaddingEnd:{name:`blockPaddingEnd`,description:`Padding on block end (bottom).`,type:{name:`other`,value:`Spacing`,required:!1},table:{type:{summary:`Spacing`},defaultValue:{summary:null},category:`Layout`}},alignSelf:{name:`alignSelf`,description:`In Flex/Grid layout. Cross-axis alignment within flex/grid container.`,type:{name:`other`,value:`| 'auto'
+    | 'normal'
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'self-start'
+    | 'self-end'
+    | 'stretch'
+    | (string & {})`,required:!1},table:{type:{summary:`| 'auto'
+    | 'normal'
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'self-start'
+    | 'self-end'
+    | 'stretch'
+    | (string & {})`},defaultValue:{summary:null},category:`Layout`}},justifySelf:{name:`justifySelf`,description:`In Flex/Grid layout. Main-axis alignment within flex/grid container.`,type:{name:`other`,value:`| 'auto'
+    | 'normal'
+    | 'start'
+    | 'end'
+    | 'flex-start'
+    | 'flex-end'
+    | 'self-start'
+    | 'self-end'
+    | 'center'
+    | 'left'
+    | 'right'
+    | 'stretch'
+    | (string & {})`,required:!1},table:{type:{summary:`| 'auto'
+    | 'normal'
+    | 'start'
+    | 'end'
+    | 'flex-start'
+    | 'flex-end'
+    | 'self-start'
+    | 'self-end'
+    | 'center'
+    | 'left'
+    | 'right'
+    | 'stretch'
+    | (string & {})`},defaultValue:{summary:null},category:`Layout`}},order:{name:`order`,description:`In Flex/Grid layout. Layout order within flex/grid container.`,type:{name:`other`,value:`number | string`,required:!1},table:{type:{summary:`number | string`},defaultValue:{summary:null},category:`Layout`}},flex:{name:`flex`,description:`In Flex/Grid layout. Flex shorthand for grow, shrink, and basis.`,type:{name:`other`,value:`number | string`,required:!1},table:{type:{summary:`number | string`},defaultValue:{summary:null},category:`Layout`}},flexGrow:{name:`flexGrow`,description:`In Flex/Grid layout. How much the item will grow relative to siblings.`,type:{name:`other`,value:`number | string`,required:!1},table:{type:{summary:`number | string`},defaultValue:{summary:null},category:`Layout`}},flexShrink:{name:`flexShrink`,description:`In Flex/Grid layout. How much the item will shrink relative to siblings.`,type:{name:`other`,value:`number | string`,required:!1},table:{type:{summary:`number | string`},defaultValue:{summary:null},category:`Layout`}},flexBasis:{name:`flexBasis`,description:`In Flex/Grid layout. Initial main size before growing/shrinking.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Layout`}},gridArea:{name:`gridArea`,description:`In Flex/Grid layout. Named grid area for placement.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Layout`}},gridColumnStart:{name:`gridColumnStart`,description:`In Flex/Grid layout. Grid column start line.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Layout`}},gridColumnEnd:{name:`gridColumnEnd`,description:`In Flex/Grid layout. Grid column end line.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Layout`}},gridRowStart:{name:`gridRowStart`,description:`In Flex/Grid layout. Grid row start line.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Layout`}},gridRowEnd:{name:`gridRowEnd`,description:`In Flex/Grid layout. Grid row end line.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Layout`}},direction:{name:`direction`,description:`The direction in which to layout children.`,type:{name:`other`,value:`'row' | 'column' | 'row-reverse' | 'column-reverse'`,required:!1},table:{type:{summary:`'row' | 'column' | 'row-reverse' | 'column-reverse'`},defaultValue:{summary:`'row'`},category:`Layout`}},wrap:{name:`wrap`,description:`Whether to wrap items onto multiple lines.`,type:{name:`other`,value:`'nowrap' | 'wrap' | 'wrap-reverse'`,required:!1},table:{type:{summary:`'nowrap' | 'wrap' | 'wrap-reverse'`},defaultValue:{summary:null},category:`Layout`}},"aria-label":{name:`aria-label`,description:`Defines a string value that labels the current element.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Aria`}},"aria-labelledby":{name:`aria-labelledby`,description:`Identifies the element (or elements) that labels the current element.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Aria`}},"aria-describedby":{name:`aria-describedby`,description:`Identifies the element (or elements) that describes the object.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Aria`}},"aria-details":{name:`aria-details`,description:`Identifies the element (or elements) that provide a detailed, extended description for the
+object.`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null},category:`Aria`}},size:{name:`size`,description:`Size for the control fields inside the group.`,type:{name:`other`,value:`FieldSize`,required:!1},table:{type:{summary:`FieldSize`},defaultValue:{summary:`'md'`}}},className:{name:`className`,description:`The CSS [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the
+element. A function may be provided to compute the class based on component state.`,type:{name:`other`,value:`ClassNameOrFunction<GroupRenderProps>`,required:!1},table:{type:{summary:`ClassNameOrFunction<GroupRenderProps>`},defaultValue:{summary:`'react-aria-Group'`}}},isDisabled:{name:`isDisabled`,description:`Whether the group is disabled.`,type:{name:`other`,value:`boolean`,required:!1},table:{type:{summary:`boolean`},defaultValue:{summary:null}}},isInvalid:{name:`isInvalid`,description:`Whether the group is invalid.`,type:{name:`other`,value:`boolean`,required:!1},table:{type:{summary:`boolean`},defaultValue:{summary:null}}},isReadOnly:{name:`isReadOnly`,description:`Whether the group is read only.`,type:{name:`other`,value:`boolean`,required:!1},table:{type:{summary:`boolean`},defaultValue:{summary:null}}},role:{name:`role`,description:"An accessibility role for the group. By default, this is set to `'group'`.\nUse `'region'` when the contents of the group is important enough to be\nincluded in the page table of contents. Use `'presentation'` if the group\nis visual only and does not represent a semantic grouping of controls.",type:{name:`other`,value:`'group' | 'region' | 'presentation'`,required:!1},table:{type:{summary:`'group' | 'region' | 'presentation'`},defaultValue:{summary:`'group'`}}},id:{name:`id`,description:`The element's unique identifier. See
+[MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id).`,type:{name:`other`,value:`string`,required:!1},table:{type:{summary:`string`},defaultValue:{summary:null}}},children:{name:`children`,description:`The children of the component. A function may be provided to alter the children based on
+component state.`,type:{name:`other`,value:`ChildrenOrFunction<T>`,required:!1},table:{type:{summary:`ChildrenOrFunction<T>`},defaultValue:{summary:null}}},style:{name:`style`,description:`The inline [style](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style) for the
+element. A function may be provided to compute the style based on component state.`,type:{name:`other`,value:`StyleOrFunction<T>`,required:!1},table:{type:{summary:`StyleOrFunction<T>`},defaultValue:{summary:null}}},render:{name:`render`,description:`Overrides the default DOM element with a custom render function.
+This allows rendering existing components with built-in styles and behaviors
+such as router links, animation libraries, and pre-styled components.
+
+Requirements:
+
+- You must render the expected element type (e.g. if \`<button>\` is expected, you cannot render an
+  \`<a>\`).
+- Only a single root DOM element can be rendered (no fragments).
+- You must pass through props and ref to the underlying DOM element, merging with your own prop
+  as appropriate.`,type:{name:`other`,value:`DOMRenderFunction<E, T>`,required:!1},table:{type:{summary:`DOMRenderFunction<E, T>`},defaultValue:{summary:null}}},slot:{name:`slot`,description:`A slot name for the component. Slots allow the component to receive props from a parent
+component. An explicit \`null\` value indicates that the local props completely override all
+props received from a parent.`,type:{name:`other`,value:`string | null`,required:!1},table:{type:{summary:`string | null`},defaultValue:{summary:null}}},as:{name:`as`,description:`Polymorphic element type.`,type:{name:`other`,value:`ElementType`,required:!1},table:{type:{summary:`ElementType`},defaultValue:{summary:`'div'`}}},elevation:{name:`elevation`,description:`Elevation levels for visual depth.`,type:{name:`other`,value:`Elevation`,required:!1},table:{type:{summary:`Elevation`},defaultValue:{summary:null}}},rounding:{name:`rounding`,description:`Rounding values for border radius.`,type:{name:`other`,value:`Rounding`,required:!1},table:{type:{summary:`Rounding`},defaultValue:{summary:null}}}}},L=h,R=v,z=x,B=w,V=D,H={args:{label:`Label`,isRequired:!1,isDisabled:!1},argTypes:{label:{control:`text`},description:{control:`text`},isRequired:{control:`boolean`},isDisabled:{control:`boolean`}},render:e=>(0,P.jsx)(A,{...e})},U=[`GroupProps`,`Default`,`FieldGroupLeadingControl`,`FieldGroupTrailingControl`,`FieldGroupIconAccessories`,`TelephoneField`,`Playground`]}));W();export{L as Default,B as FieldGroupIconAccessories,R as FieldGroupLeadingControl,z as FieldGroupTrailingControl,I as GroupProps,H as Playground,V as TelephoneField,U as __namedExportsOrder,F as default,W as n,N as t};
