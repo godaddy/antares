@@ -14,8 +14,7 @@ import {
   type LabelProps as RACLabelProps,
   type GroupProps as RACGroupProps,
   TextArea as RACTextArea,
-  type TextAreaProps as RACTextAreaProps,
-  TextField as RACTextField
+  type TextAreaProps as RACTextAreaProps
 } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../types/polymorphic-react.ts';
 import { Box, type BoxOwnProps } from '#components/layout/box';
@@ -23,6 +22,15 @@ import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { Text, type TextProps } from '#components/text';
 import styles from './index.module.css';
+
+export {
+  TextField as AriaTextField,
+  type TextFieldProps as AriaTextFieldProps,
+  TextArea as AriaTextArea,
+  type TextAreaProps as AriaTextAreaProps,
+  NumberField as AriaNumberField,
+  type NumberFieldProps as AriaNumberFieldProps
+} from 'react-aria-components';
 
 export interface FieldOwnProps extends FlexOwnProps {
   /** Label text shown above the field. */
@@ -35,16 +43,16 @@ export interface FieldOwnProps extends FlexOwnProps {
   errorMessage?: RACFieldErrorProps['children'];
 }
 
-export type FieldProps<C extends ElementType = typeof RACTextField> = PolymorphicProps<C, FieldOwnProps>;
+export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldOwnProps>;
 
 /**
- * Presentational vertical stack for a single field. Pass `as={RACTextField}` (or another RAC field
+ * Presentational vertical stack for a single field. Pass `as={AriaTextField}` (or another RAC field
  * wrapper) to merge the field's RAC provider and context plumbing.
  *
  * @param props - {@link FieldProps}
  *
  * @example
- * <Field as={RACTextField} {...fieldProps}>
+ * <Field as={AriaTextField} {...fieldProps}>
  *   <FieldLabel>Email</FieldLabel>
  *   <FieldGroup>
  *     <FieldInput />
@@ -55,9 +63,9 @@ export type FieldProps<C extends ElementType = typeof RACTextField> = Polymorphi
  * </Field>
  */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
-  const { as = RACTextField, gap = 'sm', className, ...rest } = props;
+  const { as, gap = 'sm', className, ...rest } = props;
   return <Flex direction="column" gap={gap} {...rest} as={as} ref={ref} className={cx(styles.field, className)} />;
-}) as PolymorphicComponent<FieldOwnProps, typeof RACTextField>;
+}) as PolymorphicComponent<FieldOwnProps>;
 
 export interface FieldLabelProps extends RACLabelProps {
   /** When true, renders a required indicator (`*`) after the label text. */

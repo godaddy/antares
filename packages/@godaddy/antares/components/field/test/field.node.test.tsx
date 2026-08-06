@@ -14,6 +14,13 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    describe('#Telephone', function telephone() {
+      it('renders', function renders() {
+        const result = renderToString(<TelephoneFieldExample />);
+        expect(result).toMatchSnapshot();
+      });
+    });
+
     describe('#TrailingControl', function trailingControl() {
       it('renders', function renders() {
         const result = renderToString(<FieldGroupTrailingControlExample />);
@@ -24,13 +31,6 @@ describe('@godaddy/antares', function antares() {
     describe('#IconAccessories', function iconAccessories() {
       it('renders', function renders() {
         const result = renderToString(<FieldGroupIconAccessoriesExample />);
-        expect(result).toMatchSnapshot();
-      });
-    });
-
-    describe('#Telephone', function telephone() {
-      it('renders', function renders() {
-        const result = renderToString(<TelephoneFieldExample />);
         expect(result).toMatchSnapshot();
       });
     });

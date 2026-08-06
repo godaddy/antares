@@ -31,6 +31,11 @@ describe('@godaddy/antares', function antares() {
       await expect(container).toMatchScreenshot('leading-control');
     });
 
+    it('telephone example', async function telephoneRender() {
+      const { container } = await render(<TelephoneFieldExample />);
+      await expect(container).toMatchScreenshot('telephone');
+    });
+
     it('trailing control example', async function trailingControlRender() {
       const { container } = await render(<FieldGroupTrailingControlExample />);
       await expect(container).toMatchScreenshot('trailing-control');
@@ -49,11 +54,6 @@ describe('@godaddy/antares', function antares() {
     it('small size example', async function sizeSmRender() {
       const { container } = await render(<FieldGroupIconAccessoriesExample size="sm" />);
       await expect(container).toMatchScreenshot('size-sm');
-    });
-
-    it('telephone example', async function telephoneRender() {
-      const { container } = await render(<TelephoneFieldExample />);
-      await expect(container).toMatchScreenshot('telephone');
     });
   });
 });

@@ -1,4 +1,13 @@
-import { Field, FieldDescription, FieldGroup, FieldInput, FieldLabel, FieldSelect, SelectItem } from '@godaddy/antares';
+import {
+  AriaTextField,
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldInput,
+  FieldLabel,
+  FieldSelect,
+  SelectItem
+} from '@godaddy/antares';
 
 /**
  * A telephone number input paired with a country-code select.
@@ -7,7 +16,7 @@ import { Field, FieldDescription, FieldGroup, FieldInput, FieldLabel, FieldSelec
  */
 export function TelephoneFieldExample() {
   return (
-    <Field autoComplete="tel-national" inputMode="tel" type="tel">
+    <Field as={AriaTextField} autoComplete="tel-national" inputMode="tel" type="tel">
       <FieldLabel>Phone number</FieldLabel>
       <FieldGroup>
         <FieldSelect aria-label="Country code" defaultValue="us">

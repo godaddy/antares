@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
 import {
+  AriaTextField,
+  type AriaTextFieldProps,
   Field,
   FieldDescription,
   FieldError,
@@ -13,7 +14,7 @@ import {
 } from '#components/field';
 import { Flex } from '#components/layout/flex';
 
-export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<AriaTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
   /** Default value (uncontrolled). */
   defaultValue?: string;
 
@@ -42,7 +43,7 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'cl
   placeholder?: string;
 
   /** Handler called when the value changes. */
-  onChange?: RACTextFieldProps['onChange'];
+  onChange?: AriaTextFieldProps['onChange'];
 }
 
 /**
@@ -69,7 +70,7 @@ export function TextField(props: TextFieldProps) {
   const hasTrailing = trailingText != null && trailingText !== false;
 
   return (
-    <Field as={RACTextField} {...racProps}>
+    <Field as={AriaTextField} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size} gap="sm">
         {hasLeading && (

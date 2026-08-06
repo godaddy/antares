@@ -8,6 +8,9 @@ export {
   FieldInput,
   FieldTextArea,
   FieldTrigger,
+  AriaTextField,
+  AriaTextArea,
+  AriaNumberField,
   type FieldProps,
   type FieldOwnProps,
   type FieldLabelProps,
@@ -18,5 +21,8 @@ export {
   type FieldInputProps,
   type FieldTextAreaProps,
   type FieldTriggerProps,
-  type FieldSize
+  type FieldSize,
+  type AriaTextFieldProps,
+  type AriaTextAreaProps,
+  type AriaNumberFieldProps
 } from '#components/field';

@@ -33,7 +33,6 @@ export type PolymorphicRef<C extends ElementType> = ComponentPropsWithRef<C>['re
  * Use this as the type for the component after casting from forwardRef.
  *
  * @typeParam OwnProps - The component's own props
- * @typeParam DefaultElement - The default element type when `as` is omitted. Defaults to `'div'`.
  *
  * @example
  * ```tsx
@@ -44,8 +43,6 @@ export type PolymorphicRef<C extends ElementType> = ComponentPropsWithRef<C>['re
  * ) as PolymorphicComponent<MyOwnProps>;
  * ```
  */
-export type PolymorphicComponent<OwnProps, DefaultElement extends ElementType = 'div'> = <
-  C extends ElementType = DefaultElement
->(
+export type PolymorphicComponent<OwnProps> = <C extends ElementType = 'div'>(
   props: PolymorphicProps<C, OwnProps> & { ref?: PolymorphicRef<C> }
 ) => ReactNode;
