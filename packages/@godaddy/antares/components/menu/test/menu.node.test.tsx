@@ -9,6 +9,7 @@ import { ControlledExample } from '../examples/controlled.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
 import { PlaygroundExample } from '../examples/menu-playground.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Menu', function menuTests() {
@@ -48,6 +49,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders BottomSheetExample', function bottomSheetExample() {
       expect(renderToString(<BottomSheetExample />)).toMatchSnapshot();
+    });
+
+    it('renders RichContentExample', function richContentExample() {
+      expect(renderToString(<RichContentExample />)).toMatchSnapshot();
     });
   });
 });

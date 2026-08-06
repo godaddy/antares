@@ -46,6 +46,10 @@ npm install --save @godaddy/antares
   `aria-label` when there is no visible label.
 - Use a leading `icon` for recognition, not as the only label - keep a text label.
 - Reserve checkbox groups for multi-select; use plain groups for one-shot actions.
+- A `Menu` is a collection: it only renders `MenuItem`, `MenuGroup`,
+  `MenuSeparator`, and `SubmenuTrigger`. For rich content (a `Calendar`, a form),
+  close the menu from `onAction` and open a separate `Popover` anchored with
+  `triggerRef` instead of putting it in a submenu.
 
 ## Props
 

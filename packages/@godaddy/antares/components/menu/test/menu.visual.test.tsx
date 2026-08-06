@@ -9,6 +9,7 @@ import { SingleSelectionExample } from '../examples/single-selection.tsx';
 import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { SubmenuExample } from '../examples/submenu.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
 // Let the popover open/position transitions settle before capturing.
 async function settle(ms = 300) {
@@ -82,6 +83,21 @@ describe('@godaddy/antares', function antares() {
       await settle();
       // Both popovers are open; capture the whole viewport to show the nesting.
       await expect(document.body).toMatchScreenshot('submenu');
+    });
+
+    it('rich content (calendar popover)', async function richContentOpen() {
+      const user = userEvent.setup();
+      const { getByRole } = await render(<RichContentExample />);
+      await getByRole('button', { name: 'Schedule' }).click();
+      await vi.waitFor(function open() {
+        assume(getByRole('menuitem', { name: 'Pick a date' }).query()).is.not.equal(null);
+      });
+      await user.click(page.getByRole('menuitem', { name: 'Pick a date' }));
+      await vi.waitFor(function calendarOpen() {
+        assume(getByRole('button', { name: /March 20, 2024/ }).query()).is.not.equal(null);
+      });
+      await settle();
+      await expect(document.body).toMatchScreenshot('rich-content');
     });
 
     it('sizes', async function sizes() {

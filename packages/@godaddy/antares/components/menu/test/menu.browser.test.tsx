@@ -10,6 +10,7 @@ import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { PlaygroundExample } from '../examples/menu-playground.tsx';
 import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
 /** Wait for an element to appear by polling. */
 async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 500): Promise<Element> {
@@ -155,6 +156,30 @@ describe('@godaddy/antares', function antares() {
       await user.click(profile);
       await settle();
       assume(await page.getByRole('menuitem', { name: 'Profile' }).query()).equals(null);
+    });
+
+    it('opens a calendar popover from an item and closes it on selection', async function richContent() {
+      const user = userEvent.setup();
+      await render(<RichContentExample />);
+
+      await user.click(page.getByRole('button', { name: 'Schedule' }));
+      const pick = page.getByRole('menuitem', { name: 'Pick a date' });
+      await waitForElement(pick);
+
+      await user.click(pick);
+      await settle();
+
+      // The menu closed and the calendar popover took its place.
+      assume(await page.getByRole('menu').query()).equals(null);
+      const day = page.getByRole('button', { name: /March 20, 2024/ });
+      await waitForElement(day);
+
+      await user.click(day);
+      await settle();
+
+      // Picking a day closes the popover and updates the summary text.
+      assume(await page.getByRole('button', { name: /March 20, 2024/ }).query()).equals(null);
+      assume(document.body.textContent).contains('Publishing on 2024-03-20');
     });
   });
 });
