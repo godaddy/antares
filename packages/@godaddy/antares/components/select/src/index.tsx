@@ -12,6 +12,7 @@ import {
 } from '#components/field';
 import { Popover } from '#components/popover';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
+import { Content } from '#components/structure';
 
 type SelectionMode = 'single' | 'multiple';
 
@@ -30,17 +31,15 @@ function FieldSelectTrigger<T extends object, M extends SelectionMode = 'single'
     <>
       <FieldSelectFragment {...props} />
       <Popover hideArrow>
-        <ListBox>{children}</ListBox>
+        <Content blockPadding="xs" inlinePadding="0">
+          <ListBox>{children}</ListBox>
+        </Content>
       </Popover>
     </>
   );
 }
 
-export interface FieldSelectProps<T extends object, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'className'> {
-  /** Additional class names merged onto the Select wrapper. */
-  className?: string;
-}
+export interface FieldSelectProps<T extends object, M extends SelectionMode = 'single'> extends RACSelectProps<T, M> {}
 
 /**
  * Box-less select for a {@link FieldGroup}.
@@ -69,11 +68,8 @@ export function FieldSelect<T extends object, M extends SelectionMode = 'single'
 }
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'className' | 'size'>,
+  extends Omit<RACSelectProps<T, M>, 'size'>,
     FieldOwnProps {
-  /** Additional class names applied to the field root. */
-  className?: string;
-
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 }

@@ -1,5 +1,4 @@
 import { forwardRef, type RefObject, type ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
@@ -9,19 +8,17 @@ import {
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
 
-export interface PopoverProps extends Omit<RACPopoverProps, 'children' | 'className'>, FlexOwnProps {
+export interface PopoverProps extends Omit<RACPopoverProps, 'children'>, FlexOwnProps {
   /** The content of the popover. */
   children?: ReactNode;
 
   /** Whether to hide the arrow. */
   hideArrow?: boolean;
-
-  /** Additional class name for the popover panel. */
-  className?: string;
 
   /**
    * The ref for the element which the popover positions itself with respect to.
@@ -54,14 +51,10 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
       rounding="md"
       {...rest}
       as={RACPopover}
-      className={cx(styles.popover, className)}
+      className={composeClassName(className, styles.popover)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
-      <OverlayDialog
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledBy}
-        aria-describedby={ariaDescribedBy}
-      >
+      <OverlayDialog aria-label={ariaLabel} aria-labelledby={ariaLabelledBy} aria-describedby={ariaDescribedBy}>
         {children}
       </OverlayDialog>
     </Flex>

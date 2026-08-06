@@ -30,9 +30,6 @@ export interface ModalProps
    */
   isDismissable?: boolean;
 
-  /** Additional class name for the dialog panel. */
-  className?: string;
-
   /** The content of the modal. */
   children?: ReactNode;
 }

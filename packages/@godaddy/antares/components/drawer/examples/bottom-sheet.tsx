@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, CloseButton, Content, Drawer, Heading, Text } from '@godaddy/antares';
+import { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';
 
 /**
  * Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
@@ -18,10 +18,7 @@ export function BottomSheetExample() {
       <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} isDismissable>
         <Heading slot="title">Bottom sheet</Heading>
         <CloseButton />
-        <Content>
-          <Text as="p">Bottom sheet with a composed close button.</Text>
-          <Text as="p">This is the content</Text>
-        </Content>
+        <Content>Bottom sheet with a composed close button.</Content>
       </Drawer>
     </>
   );

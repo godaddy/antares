@@ -11,16 +11,7 @@ import * as Stories from './tooltip.stories.tsx';
 Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
 Once a tooltip has been shown, subsequent tooltips appear without delay.
 
-`TooltipTrigger` is the composition helper: it wraps a focusable element and a `<Tooltip>`, handling
-hover/focus state and positioning automatically. Based on RAC `TooltipTrigger`. To anchor a tooltip
-to an element it doesn't wrap, pass `triggerRef` instead.
-
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
 
 ## Features
 
@@ -54,7 +45,6 @@ npm install --save @godaddy/antares
 ### ARIA
 
 - The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
-- The arrow is `aria-hidden`
 
 ## Best Practices
 
@@ -63,6 +53,13 @@ npm install --save @godaddy/antares
 - Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 ## Props
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
 
 The `Tooltip` component accepts the following props:
 

@@ -1,4 +1,4 @@
-import { Button, Content, Drawer, DrawerTrigger, Text } from '@godaddy/antares';
+import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';
 
 /**
  * Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
@@ -9,9 +9,7 @@ export function DefaultExample() {
     <DrawerTrigger>
       <Button variant="primary">Open drawer</Button>
       <Drawer placement="right" isDismissable aria-label="Drawer">
-        <Content>
-          <Text>Drawer content goes here.</Text>
-        </Content>
+        <Content>Drawer content goes here.</Content>
       </Drawer>
     </DrawerTrigger>
   );

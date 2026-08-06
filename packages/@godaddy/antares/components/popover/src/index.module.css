@@ -7,6 +7,7 @@
   --_arrow-offset: calc(var(--_arrow-height) * -1);
 
   max-inline-size: calc(100dvw - var(--sp-md) * 2);
+  isolation: isolate;
   transition:
     transform 0.2s,
     opacity 0.2s;
@@ -47,6 +48,7 @@
   height: var(--_arrow-rotated-width);
   border-radius: var(--_arrow-rounded-tip);
   rotate: 45deg;
+  z-index: -1;
 }
 
 .arrow:where([data-placement="top"]) {
@@ -70,9 +72,3 @@
   rotate: -45deg;
   margin-right: var(--_arrow-offset);
 }
-
-/*
- * No dialog rules of its own: the panel is the outer `RACPopover`, and the region grid comes
- * from `OverlayDialog`. A popover uses only the title, close, and content regions, so the rest of
- * that grid's rows collapse to zero.
- */

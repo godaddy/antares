@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import { cx } from 'cva';
 import {
   DropZone as RACDropZone,
   type DropZoneProps as RACDropZoneProps,
@@ -9,6 +8,7 @@ import {
   isDirectoryDropItem
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export { isFileDropItem, isTextDropItem, isDirectoryDropItem };
@@ -22,9 +22,7 @@ export interface DropZoneRenderProps extends RACDropZoneRenderProps {}
 /**
  * Props for the {@link DropZone} component.
  */
-export interface DropZoneProps extends Omit<RACDropZoneProps, 'className'>, Omit<FlexOwnProps, 'as'> {
-  className?: string;
-}
+export interface DropZoneProps extends RACDropZoneProps, Omit<FlexOwnProps, 'as'> {}
 
 /**
  * A standalone region that accepts drag-and-drop file interactions.
@@ -52,7 +50,7 @@ export const DropZone = forwardRef<HTMLDivElement, DropZoneProps>(function DropZ
       padding="lg"
       {...rest}
       ref={ref}
-      className={cx(styles.dropZone, className)}
+      className={composeClassName(className, styles.dropZone)}
       as={RACDropZone}
     >
       {children}

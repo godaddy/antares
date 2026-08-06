@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Content, Drawer, Flex, Text, type DrawerPlacement } from '@godaddy/antares';
+import { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';
 
 const PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];
 
@@ -35,9 +35,7 @@ export function PlacementsExample() {
         isDismissable
         aria-label={`${placement} drawer`}
       >
-        <Content>
-          <Text>Placement: {placement}</Text>
-        </Content>
+        <Content>Placement: {placement}</Content>
       </Drawer>
     </Flex>
   );

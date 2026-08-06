@@ -1,8 +1,5 @@
 import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';
 
-const PARAGRAPH =
-  'She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.';
-
 /**
  * When the content is taller than the drawer, the `Content` region scrolls while the title row
  * stays pinned.
@@ -19,7 +16,7 @@ export function ScrollableExample() {
         <Content>
           {Array.from({ length: 12 }, (_, i) => (
             <Text as="p" key={i}>
-              {PARAGRAPH}
+              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.
             </Text>
           ))}
         </Content>

@@ -75,35 +75,7 @@ export interface ButtonProps extends Omit<RACButtonProps, 'className'> {
 - Disabled: `&:where([data-disabled]) { opacity: 0.4; cursor: not-allowed; }` (use `&:where(:disabled)` only for native HTML elements)
 - **Border-width:** always `1px`. No other values, no variables.
 - **Font-weight:** prefer `bolder` when text needs bold and the element doesn't provide it natively; avoid numeric weights and `bold` in new code.
-
-### Specificity: every selector is 0-1-0
-
-Each selector must compute to exactly one class — no more. Wrap state, attribute, and element qualifiers in `:where()`, which contributes zero specificity.
-
-| Instead of | Write |
-| ---------- | ----- |
-| `&[data-hovered]` | `&:where([data-hovered])` |
-| `.overlay[data-entering], .overlay[data-exiting]` | `.overlay:where([data-entering], [data-exiting])` |
-| `.panel[data-placement="top"]` | `.panel:where([data-placement="top"])` |
-| `.overlay[data-animate="false"] .panel` | `.overlay:where([data-animate="false"]) :where(.panel)` |
-| `.header [slot="close"]` | `.header :where([slot="close"])` |
-
-**Source order decides.** With every rule at equal specificity, later rules win — so base rules go first in the file and state/variant rules after. That is the point: a consumer's single class can always override a component rule, and overrides stop escalating.
-
-Where a rule genuinely cannot reach 0-1-0 (competing with an inline style or a third-party stylesheet), leave a comment naming what it is competing with.
-
-**Rollout is incremental.** `modal`, `drawer`, `popover`, and `structure` comply. The other ~30 component stylesheets still use the old form and convert when next touched — that inconsistency is known, not intentional design.
-
-## Overlay prop surface
-
-An overlay (Modal, Drawer, Popover, Tooltip) collapses several RAC elements into one component, so it needs one rule for where props land. Antares follows React Spectrum here, not raw RAC.
-
-- **One flat, hand-curated prop surface.** Never `overlayProps`, `containerProps`, `contentProps`, or `dialogProps`. Build it as `Omit<RACLayerProps, …>` for the dominant layer plus explicitly declared, JSDoc'd props `Pick`ed from the others. Omit RAC props Antares isn't ready to support — exposure is a one-way door.
-- **`className`/`style` target the elevated panel** — the box the user perceives as the component, not the backdrop.
-- **Open state is flat on both the overlay and its trigger.** `isOpen`/`defaultOpen`/`onOpenChange` work on `<Modal>` and on `<ModalTrigger>`; both paths must keep working.
-- **Internals are reachable only via deliberately-exposed CSS custom properties.** Overlays are portaled to `document.body`, so such a var can only be set globally (`:root`), never per-instance — that is accepted.
-- **Never restore a prop bag.** If a layer genuinely needs exposing, add a lower-level component (Spectrum's `CustomDialog` / `PopoverDialog` pattern).
-- **Regions own their padding, shells do not.** Padding on a scrolling element collapses at the scroll edge, so overlays leave the dialog unpadded and pad via the shared `OverlayRegions` contexts.
+- **Specificity:** every selector should compute to exactly **0-1-0**. Wrap state, attribute, and element selectors in `:where()` (for example, `&:where([data-hovered])`, `.overlay:where([data-entering])`, `.header :where([slot="close"])`). If a rule must exceed `0-1-0` (for example, to compete with inline styles or a third-party stylesheet), leave a comment explaining why.
 
 ### Token / intent fallbacks
 

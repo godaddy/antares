@@ -5,10 +5,11 @@ import {
   type DialogTriggerProps as RACDialogTriggerProps,
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
-  type ModalOverlayProps as RACModalOverlayProps
+  type ModalOverlayProps as RACModalOverlayProps,
+  composeRenderProps
 } from 'react-aria-components';
-import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import styles from './index.module.css';
@@ -19,8 +20,7 @@ import styles from './index.module.css';
  */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-/** Overlay state and dismissal props hoisted from RAC's `ModalOverlay` onto `Drawer`. */
-type DrawerOverlayBehaviorProps = Pick<
+type DrawerOverlayProps = Pick<
   RACModalOverlayProps,
   | 'isOpen'
   | 'defaultOpen'
@@ -30,7 +30,7 @@ type DrawerOverlayBehaviorProps = Pick<
   | 'shouldCloseOnInteractOutside'
 >;
 
-export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOverlayBehaviorProps {
+export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOverlayProps {
   /** Physical edge the drawer slides in from. */
   placement: DrawerPlacement;
 
@@ -46,22 +46,12 @@ export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOve
   /** Animate the open/close slide. @default true */
   animate?: boolean;
 
-  /** Additional class name for the drawer panel. */
-  className?: string;
-
   /** Content to render inside the drawer. */
   children?: ReactNode;
 }
 
 /**
- * A composition-first overlay panel that slides in from a screen edge. Built on the same RAC
- * stack as `Modal` (modal overlay + `elevation="overlay"` panel + dialog) with edge placement
- * and a slide transition.
- *
- * The Drawer owns only the shell and the scroll layout; compose the interior.
- *
- * `className` and `style` target the drawer panel. The backdrop is styled globally through the
- * public `--drawer-overlay-bg` custom property.
+ * An overlay panel that slides in from a screen edge.
  *
  * @param props - {@link DrawerProps}
  */
@@ -83,13 +73,6 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     ...dialogProps
   } = props;
 
-  const panelStyle = {
-    ...style,
-    '--_slide': getSlideTransform(placement),
-    ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
-    ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
-  } as CSSProperties;
-
   return (
     <RACModalOverlay
       isOpen={isOpen}
@@ -106,8 +89,15 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
         elevation="overlay"
         direction="column"
         data-placement={placement}
-        style={panelStyle}
-        className={cx(styles.drawer, className)}
+        style={composeRenderProps(style, function composeDrawerStyle(value) {
+          return {
+            ...value,
+            '--_slide': getSlideTransform(placement),
+            ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
+            ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
+          } as CSSProperties;
+        })}
+        className={composeClassName(className, styles.drawer)}
       >
         <OverlayDialog {...dialogProps} ref={ref} className={styles.dialog}>
           {children}
