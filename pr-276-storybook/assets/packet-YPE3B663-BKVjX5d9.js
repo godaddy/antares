@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-DvdRENtr.js";import{y as t}from"./chunk-NNHCCRGN-BGC5mNhj.js";import{b as n,y as r}from"./mermaid-parser.core-IXY7_nG9.js";e((()=>{n(),t()}))();export{r as createPacketServices};
