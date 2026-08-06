@@ -19,6 +19,7 @@ import {
 import styles from './index.module.css';
 import React, { type ComponentPropsWithoutRef } from 'react';
 import { cx } from 'cva';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
 
@@ -123,7 +124,7 @@ export interface MenuProps<T extends object>
 /** Main menu container with keyboard navigation and selection support */
 export function Menu<T extends object>({ className, size = 'md', ...props }: MenuProps<T>) {
   return (
-    <RACMenu {...props} className={cx(styles.menu, styles[`size-${size}`], className)}>
+    <RACMenu {...props} className={composeClassName(className, styles.menu, styles[`size-${size}`])}>
       {props.children}
     </RACMenu>
   );
@@ -159,7 +160,7 @@ export function MenuItem(props: MenuItemProps) {
       : extractIconSlots(children);
 
   return (
-    <RACMenuItem {...restProps} textValue={textValue} className={cx(styles.item, props.className)}>
+    <RACMenuItem {...restProps} textValue={textValue} className={composeClassName(props.className, styles.item)}>
       {({ hasSubmenu, isSelected, selectionMode }) => (
         <>
           {isSelected &&

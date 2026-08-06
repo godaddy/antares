@@ -15,6 +15,7 @@ export * from './exports/Menu';
 export * from './exports/Chart';
 export * from './exports/Checkbox';
 export * from './exports/Radio';
+export * from './exports/RangeField';
 export * from './exports/Popover';
 export * from './exports/Tooltip';
 export * from './exports/TextField';
