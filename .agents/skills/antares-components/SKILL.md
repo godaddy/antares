@@ -66,9 +66,42 @@ export interface ButtonProps extends Omit<RACButtonProps, 'className'> {
 }
 ```
 
+## Composition
+
+A component with an interior **exposes** it instead of configuring it through props like `title`/`actions`/`media`. The consumer composes generic regions — `Header`, `Content`, `Footer`, `ButtonGroup` — and the component only positions and spaces them. Config props describe behavior; structure belongs to the consumer.
+
+A region renders standalone with its own defaults, or adopts a parent's styling when that parent provides its context. Precedence is **defaults < parent context < consumer props**, via `useContextProps`:
+
+```tsx
+export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(props, ref) {
+  [props, ref] = useContextProps(props, ref, HeaderContext);
+
+  return <Flex as="header" justifyContent="space-between" padding="md" {...props} ref={ref} />;
+});
+```
+
+- **Region defaults go before `{...props}`** so context and consumers can override them — the opposite of the usual rule. Only an invariant the consumer must not break goes after the spread.
+- **Export the context and props type with the region**, since a consumer may need to provide the context.
+- **Place regions by named grid area, not source order**, so they can be written in any order.
+- **Regions own their padding; shells do not.** Padding on a scrolling element collapses at the scroll edge.
+- **Keep a shell's layout CSS and its region contexts together** — the CSS defines the areas, the contexts assign them, and copies drift apart.
+
+### Presets
+
+A preset pre-fills props on an existing component so a common composition needs no wiring (a close button that defaults to `slot="close"`; a heading that slots as a dialog's title). Spread the caller's props **after** the defaults so every one stays overridable. When a preset can't express a variant, document the raw composition rather than growing props for it.
+
+### Where props land
+
+One component often renders several nested elements — a backdrop and a panel, a field and its control, a trigger and its overlay — so every prop needs a declared destination.
+
+- **Prefer flat, declared props over a prop bag.** JSDoc what each element needs and leave the rest out; exposing a prop is a one-way door. A bag is defensible for an element the consumer genuinely can't reach, but not as a stand-in for composing it — if it starts carrying structure, expose that element as a lower-level component instead.
+- **`className`/`style` go to the element the consumer perceives as the component** — an overlay's panel rather than its backdrop, a field's container rather than its input.
+- **State props work on the component and on its trigger**, where it has one, so either can be controlled.
+- **A portaled element is reachable only through an exposed custom property**, set globally, since it renders outside the tree.
+
 ## CSS
 
-- Use the `styles.className` pattern, and merge incoming class names with `cx(styles.className, className)` so a caller's `className` augments the styles instead of replacing them.
+- Use the `styles.className` pattern, and merge incoming class names with `composeClassName(className, styles.className)` so a caller's `className` augments the styles instead of replacing them.
 - Data-attribute selectors for RAC state only: `[data-hovered]`, `[data-pressed]`, `[data-disabled]`, etc.
 - Private vars: `--_` prefix. Expose a public `--var`; internally read it as `--_var: var(--var, fallback)`.
 - Focus: `&:where([data-focus-visible]) { outline: 2px solid Highlight; outline-offset: 2px; }`
