@@ -14,7 +14,7 @@ import {
 } from '#components/field';
 import { Flex } from '#components/layout/flex';
 
-export interface TextFieldProps extends Omit<AriaTextFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<AriaTextFieldProps, 'children' | 'size'>, FieldOwnProps {
   /** Default value (uncontrolled). */
   defaultValue?: string;
 
@@ -23,9 +23,6 @@ export interface TextFieldProps extends Omit<AriaTextFieldProps, 'children' | 'c
 
   /** Visual size of the input. @default 'md' */
   size?: FieldSize;
-
-  /** Additional class names applied to the field root. */
-  className?: string;
 
   /** Content rendered before the input (leading adornment) — text or an icon. */
   leadingText?: ReactNode;

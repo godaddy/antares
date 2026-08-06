@@ -10,9 +10,10 @@ import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } f
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
-export interface CheckboxProps extends RACCheckboxFieldProps, FlexOwnProps {
+export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, FlexOwnProps {
   /** The content of the checkbox label. */
   children?: ReactNode;
 }
@@ -23,10 +24,10 @@ export interface CheckboxProps extends RACCheckboxFieldProps, FlexOwnProps {
  * @param props - {@link CheckboxProps}
  */
 export function Checkbox(props: CheckboxProps) {
-  const { children, className, ...rest } = props;
+  const { children, ...rest } = props;
   return (
     <Flex {...rest} as={RACCheckboxField}>
-      <Flex as={RACCheckboxButton} className={cx(styles.checkbox, className)}>
+      <Flex as={RACCheckboxButton} className={styles.checkbox}>
         {function renderCheckbox({ isSelected, isIndeterminate }) {
           return (
             <Flex alignItems="center" gap="sm">
@@ -73,7 +74,7 @@ export function CheckboxGroup({
   ...rest
 }: CheckboxGroupProps) {
   return (
-    <Field as={RACCheckboxGroup} {...rest} className={cx(styles.checkboxGroup, className)}>
+    <Field as={RACCheckboxGroup} {...rest} className={composeClassName(className, styles.checkboxGroup)}>
       <FieldLabel isRequired={rest.isRequired}>{label}</FieldLabel>
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}

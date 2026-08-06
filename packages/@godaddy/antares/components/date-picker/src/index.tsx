@@ -26,12 +26,7 @@ import styles from './index.module.css';
 
 const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 
-export interface DatePickerProps
-  extends Omit<RACDatePickerProps<CalendarDate>, 'children' | 'className' | 'size'>,
-    FieldOwnProps {
-  /** Additional class names applied to the field root. */
-  className?: string;
-
+export interface DatePickerProps extends Omit<RACDatePickerProps<CalendarDate>, 'children' | 'size'>, FieldOwnProps {
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
@@ -86,11 +81,8 @@ export function DatePicker(props: DatePickerProps) {
 }
 
 export interface DateRangePickerProps
-  extends Omit<RACDateRangePickerProps<CalendarDate>, 'children' | 'className' | 'size'>,
+  extends Omit<RACDateRangePickerProps<CalendarDate>, 'children' | 'size'>,
     FieldOwnProps {
-  /** Additional class names applied to the field root. */
-  className?: string;
-
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 

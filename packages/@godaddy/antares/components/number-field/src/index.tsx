@@ -14,10 +14,7 @@ import {
 } from '#components/field';
 import { Icon } from '#components/icon';
 
-export interface NumberFieldProps extends Omit<AriaNumberFieldProps, 'children' | 'className' | 'size'>, FieldOwnProps {
-  /** Additional class names applied to the field root. */
-  className?: string;
-
+export interface NumberFieldProps extends Omit<AriaNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
   /** When true, hides the increment/decrement stepper buttons. @default false */
   hideStepper?: boolean;
 
