@@ -1,0 +1,118 @@
+---
+title: RangeField
+description: RangeField lets users select one numeric value or a related set of values on a bounded scale.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './range-field.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Select one value or render one thumb for each value in an array
+- Supports controlled and uncontrolled values with typed change callbacks
+- Provides localized value output, endpoint labels, descriptions, and markers
+- Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+### Accessible names
+
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction
+
+Each thumb follows the React Aria slider keyboard model:
+
+- Tab and Shift+Tab move among thumbs and surrounding controls.
+- Arrow Right and Arrow Up increase the focused value by `step`.
+- Arrow Left and Arrow Down decrease the focused value by `step`.
+- Home and End move the focused thumb to its permitted bounds.
+- Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+## Best Practices
+
+- Use an array only when every entry has a clear, independently adjustable meaning.
+- Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
+- Use thumb labels that explain purpose instead of repeating the current number.
+- Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+- Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+- Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+- Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+- Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+- Use `description` for persistent guidance and `isRequired` when a value is required.
+- Use `isDisabled` when the value should remain visible but unavailable for interaction.
+- Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+- Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Props
+
+<ArgTypes of={Stories.Props} />
+
+## Troubleshooting
+
+### A thumb is missing a label or form value
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
+### The controlled thumbs do not move
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### Values snap unexpectedly
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
