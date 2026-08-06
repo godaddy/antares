@@ -10,25 +10,32 @@ import {
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
-export interface ModalProps
-  extends Omit<RACDialogProps, 'children'>,
-    Pick<
-      RACModalOverlayProps,
-      | 'isOpen'
-      | 'defaultOpen'
-      | 'onOpenChange'
-      | 'isDismissable'
-      | 'isKeyboardDismissDisabled'
-      | 'shouldCloseOnInteractOutside'
-    > {
+type ModalFlatKeys =
+  | 'isOpen'
+  | 'defaultOpen'
+  | 'onOpenChange'
+  | 'isDismissable'
+  | 'isKeyboardDismissDisabled'
+  | 'shouldCloseOnInteractOutside';
+
+type ModalLayerProps = Omit<RACModalOverlayProps, 'children' | ModalFlatKeys>;
+
+export interface ModalProps extends Omit<RACDialogProps, 'children'>, Pick<RACModalOverlayProps, ModalFlatKeys> {
   /**
    * Whether the modal can be dismissed by interacting outside it (clicking/pressing the
    * underlay). Escape closes the dialog unless `isKeyboardDismissDisabled` is set.
    * @default true
    */
   isDismissable?: boolean;
+
+  /** Props for the modal's backdrop. */
+  overlayProps?: ModalLayerProps;
+
+  /** Props for the modal's positioned container. */
+  containerProps?: ModalLayerProps;
 
   /** The content of the modal. */
   children?: ReactNode;
@@ -49,6 +56,8 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
     isDismissable = true,
     isKeyboardDismissDisabled,
     shouldCloseOnInteractOutside,
+    overlayProps,
+    containerProps,
     children,
     ...dialogProps
   } = props;
@@ -63,9 +72,10 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
       isKeyboardDismissDisabled={isKeyboardDismissDisabled}
       shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
       padding="md"
-      className={styles.overlay}
+      {...overlayProps}
+      className={composeClassName(overlayProps?.className, styles.overlay)}
     >
-      <Flex as={RACModal} className={styles.modal}>
+      <Flex as={RACModal} {...containerProps} className={composeClassName(containerProps?.className, styles.modal)}>
         <OverlayDialog
           elevation="overlay"
           rounding="xl"

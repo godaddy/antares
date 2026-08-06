@@ -1,19 +1,33 @@
-import { forwardRef, type RefObject, type ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import {
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
+  type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
   OverlayArrow as RACOverlayArrow
 } from 'react-aria-components';
-import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Flex } from '#components/layout/flex';
 import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
 
-export interface PopoverProps extends Omit<RACPopoverProps, 'children'>, FlexOwnProps {
+type PopoverPositioningKeys =
+  | 'placement'
+  | 'offset'
+  | 'crossOffset'
+  | 'containerPadding'
+  | 'shouldFlip'
+  | 'triggerRef'
+  | 'isOpen'
+  | 'defaultOpen'
+  | 'onOpenChange'
+  | 'isKeyboardDismissDisabled'
+  | 'shouldCloseOnInteractOutside';
+
+export interface PopoverProps extends Omit<RACDialogProps, 'children'>, Pick<RACPopoverProps, PopoverPositioningKeys> {
   /** The content of the popover. */
   children?: ReactNode;
 
@@ -21,10 +35,14 @@ export interface PopoverProps extends Omit<RACPopoverProps, 'children'>, FlexOwn
   hideArrow?: boolean;
 
   /**
-   * The ref for the element which the popover positions itself with respect to.
-   * When used within `PopoverTrigger` component, this is set automatically.
+   * The ARIA role of the popover's dialog. Use `alertdialog` for an urgent message
+   * that interrupts the user.
+   * @default 'dialog'
    */
-  triggerRef?: RefObject<Element | null>;
+  role?: RACDialogProps['role'];
+
+  /** Props for the positioned panel that holds the popover's dialog. */
+  containerProps?: Omit<RACPopoverProps, 'children' | PopoverPositioningKeys>;
 }
 
 /**
@@ -34,27 +52,47 @@ export interface PopoverProps extends Omit<RACPopoverProps, 'children'>, FlexOwn
  */
 export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(props, ref) {
   const {
-    className,
     children,
     hideArrow,
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-describedby': ariaDescribedBy,
-    ...rest
+    containerProps,
+    className,
+    style,
+    placement,
+    offset,
+    crossOffset,
+    containerPadding,
+    shouldFlip,
+    triggerRef,
+    isOpen,
+    defaultOpen,
+    onOpenChange,
+    isKeyboardDismissDisabled,
+    shouldCloseOnInteractOutside,
+    ...dialogProps
   } = props;
 
   return (
     <Flex
-      ref={ref}
       elevation="overlay"
       data-noarrow={hideArrow}
       rounding="md"
-      {...rest}
+      {...containerProps}
       as={RACPopover}
-      className={composeClassName(className, styles.popover)}
+      placement={placement}
+      offset={offset}
+      crossOffset={crossOffset}
+      containerPadding={containerPadding}
+      shouldFlip={shouldFlip}
+      triggerRef={triggerRef}
+      isOpen={isOpen}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
+      shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
+      className={composeClassName(containerProps?.className, styles.popover)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
-      <OverlayDialog aria-label={ariaLabel} aria-labelledby={ariaLabelledBy} aria-describedby={ariaDescribedBy}>
+      <OverlayDialog {...dialogProps} ref={ref} className={className} style={style}>
         {children}
       </OverlayDialog>
     </Flex>

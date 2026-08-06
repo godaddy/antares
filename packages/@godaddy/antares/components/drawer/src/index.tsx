@@ -8,6 +8,7 @@ import {
   type ModalOverlayProps as RACModalOverlayProps,
   composeRenderProps
 } from 'react-aria-components';
+import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
 import { composeClassName } from '../../../utils/render-props.ts';
 import { Flex } from '#components/layout/flex';
@@ -20,17 +21,17 @@ import styles from './index.module.css';
  */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-type DrawerOverlayProps = Pick<
-  RACModalOverlayProps,
+type DrawerFlatKeys =
   | 'isOpen'
   | 'defaultOpen'
   | 'onOpenChange'
   | 'isDismissable'
   | 'isKeyboardDismissDisabled'
-  | 'shouldCloseOnInteractOutside'
->;
+  | 'shouldCloseOnInteractOutside';
 
-export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOverlayProps {
+type DrawerLayerProps = Omit<RACModalOverlayProps, 'children' | DrawerFlatKeys>;
+
+export interface DrawerProps extends Omit<RACDialogProps, 'children'>, Pick<RACModalOverlayProps, DrawerFlatKeys> {
   /** Physical edge the drawer slides in from. */
   placement: DrawerPlacement;
 
@@ -45,6 +46,12 @@ export interface DrawerProps extends Omit<RACDialogProps, 'children'>, DrawerOve
 
   /** Animate the open/close slide. @default true */
   animate?: boolean;
+
+  /** Props for the drawer's backdrop. */
+  overlayProps?: DrawerLayerProps;
+
+  /** Props for the drawer's positioned container. */
+  containerProps?: DrawerLayerProps;
 
   /** Content to render inside the drawer. */
   children?: ReactNode;
@@ -67,6 +74,8 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     isDismissable,
     isKeyboardDismissDisabled,
     shouldCloseOnInteractOutside,
+    overlayProps,
+    containerProps,
     className,
     style,
     children,
@@ -82,14 +91,17 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
       isKeyboardDismissDisabled={isKeyboardDismissDisabled}
       shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
       data-animate={animate === false ? 'false' : undefined}
-      className={styles.overlay}
+      {...overlayProps}
+      className={composeClassName(overlayProps?.className, styles.overlay)}
     >
       <Flex
         as={RACModal}
         elevation="overlay"
         direction="column"
         data-placement={placement}
-        style={composeRenderProps(style, function composeDrawerStyle(value) {
+        {...containerProps}
+        className={composeClassName(containerProps?.className, styles.drawer)}
+        style={composeRenderProps(containerProps?.style, function composeDrawerStyle(value) {
           return {
             ...value,
             '--_slide': getSlideTransform(placement),
@@ -97,9 +109,8 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
             ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
           } as CSSProperties;
         })}
-        className={composeClassName(className, styles.drawer)}
       >
-        <OverlayDialog {...dialogProps} ref={ref} className={styles.dialog}>
+        <OverlayDialog {...dialogProps} ref={ref} className={cx(styles.dialog, className)} style={style}>
           {children}
         </OverlayDialog>
       </Flex>

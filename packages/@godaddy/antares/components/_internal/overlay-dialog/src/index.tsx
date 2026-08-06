@@ -1,4 +1,4 @@
-import { forwardRef, type CSSProperties, type ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
 import {
   Dialog as RACDialog,
@@ -11,13 +11,7 @@ import styles from './index.module.css';
 
 export interface OverlayDialogProps
   extends Omit<GridOwnProps, 'as' | 'areas' | 'columns' | 'rows'>,
-    Omit<RACDialogProps, 'className' | 'style' | 'children'> {
-  /** Additional class name, for the overlay's own panel sizing and placement. */
-  className?: string;
-
-  /** Inline styles merged onto the dialog. */
-  style?: CSSProperties;
-
+    Omit<RACDialogProps, 'children'> {
   /** The regions of the overlay, in any order. */
   children?: ReactNode;
 }

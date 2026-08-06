@@ -7,6 +7,7 @@ import { ControlledExample } from '../examples/controlled.tsx';
 import { ScrollableExample } from '../examples/scrollable.tsx';
 import { PlaygroundExample } from '../examples/modal-playground.tsx';
 import { TriggerlessExample } from '../examples/triggerless.tsx';
+import { LayerPropsExample } from '../examples/layer-props.tsx';
 
 /**
  * Simulate an interaction outside the dialog by dispatching a pointerdown + click on the
@@ -143,6 +144,26 @@ describe('@godaddy/antares', function packageTests() {
 
       await userEvent.keyboard('{Escape}');
       await expect.element(page.getByRole('dialog', { name: 'Triggerless modal' })).not.toBeInTheDocument();
+    });
+
+    it('routes className and each layer bag to its own element', async function layerProps() {
+      await render(<LayerPropsExample />);
+
+      await userEvent.click(page.getByRole('button', { name: 'Open modal' }));
+      await expect.element(page.getByRole('dialog')).toBeVisible();
+
+      const dialog = document.querySelector('.custom-dialog');
+      const container = document.querySelector('.custom-container');
+      const overlay = document.querySelector('.custom-overlay');
+
+      // Three distinct nested elements: overlay > container > dialog.
+      expect(dialog?.getAttribute('role')).toBe('dialog');
+      expect(container?.contains(dialog as Node)).toBe(true);
+      expect(overlay?.contains(container as Node)).toBe(true);
+
+      // Each bag's class is merged with the component's own, never replacing it.
+      expect(overlay?.className.split(' ').length).toBeGreaterThan(1);
+      expect(container?.className.split(' ').length).toBeGreaterThan(1);
     });
   });
 });

@@ -2,6 +2,7 @@ import { WithCloseButtonExample } from '../examples/with-close-button.tsx';
 import { CustomAnchorExample } from '../examples/custom-anchor.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/popover-playground.tsx';
+import { LayerPropsExample } from '../examples/layer-props.tsx';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
@@ -135,6 +136,25 @@ describe('@godaddy/antares', function antares() {
       // Content spans both columns below, so it keeps the full popover width.
       assume(contentRect.top >= titleRect.bottom).is.true();
       assume(contentRect.right > closeRect.left).is.true();
+    });
+
+    it('routes className to the dialog and containerProps to the panel', async function layerProps() {
+      const { getByRole } = await render(<LayerPropsExample />);
+
+      await getByRole('button', { name: 'Open popover' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog', { name: 'Layer props' }).query()).is.not.equal(null);
+      });
+
+      const dialog = document.querySelector('.custom-dialog');
+      const container = document.querySelector('.custom-container');
+
+      // className lands on the dialog, matching Modal and Drawer; the panel is a distinct ancestor.
+      assume(dialog?.getAttribute('role')).equals('dialog');
+      assume(container?.contains(dialog as Node)).is.true();
+
+      // The panel keeps its own classes alongside the consumer's.
+      assume((container as HTMLElement).className.split(' ').length).is.above(1);
     });
   });
 });

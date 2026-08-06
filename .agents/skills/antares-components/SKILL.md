@@ -92,12 +92,15 @@ A preset pre-fills props on an existing component so a common composition needs 
 
 ### Where props land
 
-One component often renders several nested elements — a backdrop and a panel, a field and its control, a trigger and its overlay — so every prop needs a declared destination.
+One component often renders several nested elements, such as a backdrop, positioned panel, and dialog, or a field and its control. Switching between components should not require guessing which element a prop targets. Props should always map to the same role.
 
-- **Prefer flat, declared props over a prop bag.** JSDoc what each element needs and leave the rest out; exposing a prop is a one-way door. A bag is defensible for an element the consumer genuinely can't reach, but not as a stand-in for composing it — if it starts carrying structure, expose that element as a lower-level component instead.
-- **`className`/`style` go to the element the consumer perceives as the component** — an overlay's panel rather than its backdrop, a field's container rather than its input.
-- **State props work on the component and on its trigger**, where it has one, so either can be controlled.
-- **A portaled element is reachable only through an exposed custom property**, set globally, since it renders outside the tree.
+- **One element is the primary surface, and `...rest`, `className`, `style`, and `ref` always target it.** For overlays, that's the `OverlayDialog`. Where there is no dialog, such as `Tooltip`, it's the positioned panel. No per-component exceptions.
+- **Layer-specific behavior stays flat.** Props such as `placement`, `offset`, `maxSize`, and open state are exposed individually and documented with JSDoc. `Pick` only the required props from the corresponding RAC type rather than extending it wholesale, since exposing an API is a one-way door.
+- **Other layers are configured through a props bag named for the layer**, such as `overlayProps` (backdrop) or `containerProps` (positioned panel), and only on components that actually have that layer. A component without a backdrop should not expose `overlayProps`.
+- **Each props bag omits any prop already exposed at the top level**, so every prop has exactly one home. `className` and `style` are merged with the layer's defaults using `composeClassName` and `composeStyle`, never replaced.
+- **State props are accepted by both the component and its trigger**, where applicable, so either can be controlled.
+
+A props bag is for configuring a layer, not expressing structure. If it starts carrying structure, expose that layer as a lower-level component instead.
 
 ## CSS
 
