@@ -1,8 +1,6 @@
 export {
   Avatar,
   type AvatarProps,
-  AvatarButton,
-  type AvatarButtonProps,
   type AvatarShape,
   type AvatarSize,
   type AvatarFigure,

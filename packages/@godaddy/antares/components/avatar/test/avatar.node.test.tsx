@@ -4,7 +4,6 @@ import { PlaygroundExample } from '../examples/avatar-playground.tsx';
 import { ButtonExample } from '../examples/button.tsx';
 import { ButtonDisabledExample } from '../examples/button-disabled.tsx';
 import { ButtonMenuExample } from '../examples/button-menu.tsx';
-import { ButtonPlaygroundExample } from '../examples/button-playground.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { EmphasisExample } from '../examples/emphasis.tsx';
 import { ImageFallbackExample } from '../examples/image-fallback.tsx';
@@ -43,10 +42,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders ButtonDisabledExample', function buttonDisabledExample() {
       expect(renderToString(<ButtonDisabledExample />)).toMatchSnapshot();
-    });
-
-    it('renders ButtonPlaygroundExample', function buttonPlaygroundExample() {
-      expect(renderToString(<ButtonPlaygroundExample />)).toMatchSnapshot();
     });
 
     it('renders PlaygroundExample', function playgroundExample() {

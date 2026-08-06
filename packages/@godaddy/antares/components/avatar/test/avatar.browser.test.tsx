@@ -31,7 +31,7 @@ function getImage(container: HTMLElement) {
 }
 
 describe('@godaddy/antares', function antares() {
-  describe('#AvatarButton', function avatarButtonTests() {
+  describe('#Avatar as button', function avatarButtonTests() {
     it('shows hover feedback', async function hoverButton() {
       const user = userEvent.setup();
       await render(<ButtonExample />);
@@ -76,13 +76,10 @@ describe('@godaddy/antares', function antares() {
       assume(accountMenu.element().getAttribute('aria-expanded')).equals('false');
       await user.click(accountMenu);
       await expect.element(accountMenu).toHaveAttribute('aria-expanded', 'true');
-      assume(getComputedStyle(accountMenu.element()).outlineWidth).equals('2px');
-      assume(getComputedStyle(accountMenu.element()).outlineOffset).equals('-4px');
 
       await user.click(page.getByRole('menuitem', { name: 'Profile' }));
       await expect.element(accountMenu).toHaveAttribute('aria-expanded', 'false');
       await expect.element(accountMenu).toHaveAttribute('data-focused', 'true');
-      assume(getComputedStyle(accountMenu.element()).outlineWidth).equals('2px');
     });
   });
 

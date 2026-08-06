@@ -13,7 +13,7 @@ import * as Stories from './avatar.stories.tsx';
 - Circle and rounded-square shapes at four named sizes
 - Automatic image loading with a Text monogram fallback
 - Primary, subtle, and 15 categorical figure emphases
-- `AvatarButton` for accessible interactive avatar controls
+- Compose Avatar with Button when it is interactive
 
 ## Installation
 
@@ -29,17 +29,26 @@ npm install @godaddy/antares
 
 Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
 
+When an Avatar triggers an action, wrap it in `Button variant="ghost"`. Compose the Button with `Box` to control its rounding:
+
+```tsx
+<Box as={Button} aria-label="Account menu" variant="ghost" rounding="full">
+  <Avatar>
+    <Text>UT</Text>
+  </Avatar>
+</Box>
+```
+
 ## Accessibility
 
 - Give Image meaningful `alt` text when the image conveys an identity.
 - Text remains available to assistive technology when no image loads.
 - Use `alt=""` or `aria-hidden` when an avatar is purely decorative.
-- AvatarButton requires `aria-label` or `aria-labelledby`.
-- AvatarButton supports keyboard activation and exposes the standard focus-visible state.
+- Give an interactive Button an accessible name with `aria-label` or `aria-labelledby`.
 
 ## Best Practices
 
-- Use Avatar for informational identity; use AvatarButton only when the avatar is independently actionable.
+- Use Avatar for informational identity; wrap it in a ghost Button only when it is independently actionable.
 - Use circle for people and square for businesses, workspaces, and accounts.
 - Keep monograms to one or two uppercase characters.
 - Use the same `figure*` emphasis for the same entity wherever it appears.
@@ -57,9 +66,3 @@ Use Image native image props for responsive image sources. Choose a deterministi
 Configures the Avatar surface, including its shape, size, and color treatment.
 
 <ArgTypes of={Stories.Props} />
-
-### AvatarButton
-
-Makes an Avatar subtree interactive and adds focus, hover, open, and disabled states. Use it inside MenuTrigger for menu actions; MenuTrigger applies the open state automatically.
-
-<ArgTypes of={Stories.AvatarButtonProps} />

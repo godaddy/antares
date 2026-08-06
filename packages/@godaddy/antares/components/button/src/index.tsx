@@ -20,7 +20,8 @@ const buttonVariants = cva(styles.button, {
       tertiary: styles.tertiary,
       critical: styles.critical,
       inline: styles.inline,
-      minimal: styles.minimal
+      minimal: styles.minimal,
+      ghost: styles.ghost
     },
     size: {
       sm: styles.sm,

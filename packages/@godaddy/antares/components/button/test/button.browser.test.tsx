@@ -5,6 +5,7 @@ import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { GhostExample } from '../examples/ghost.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -23,6 +24,16 @@ describe('@godaddy/antares', function antares() {
       const { getByRole } = await render(<PrimaryExample />);
       await userEvent.tab();
       expect(getByRole('button')).toHaveAttribute('data-focus-visible', 'true');
+    });
+
+    it('uses an unoffset focus ring for the ghost variant', async function ghostFocusRing() {
+      const { getByRole } = await render(<GhostExample />);
+      const button = getByRole('button');
+
+      await userEvent.tab();
+
+      expect(button).toHaveAttribute('data-focus-visible', 'true');
+      expect(getComputedStyle(button.element()).outlineOffset).toBe('0px');
     });
 
     it('renders the primary button pressed', async function rendersPrimaryPressed() {

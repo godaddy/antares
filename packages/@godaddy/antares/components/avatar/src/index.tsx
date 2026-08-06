@@ -1,9 +1,8 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { cx } from 'cva';
-import { Button as RACButton, Provider, TextContext, type ButtonProps as RACButtonProps } from 'react-aria-components';
+import { Provider, TextContext } from 'react-aria-components';
 import { ImageContext } from '#components/image';
-import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export type AvatarShape = 'circle' | 'square';
@@ -109,31 +108,5 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
         {children}
       </span>
     </Provider>
-  );
-});
-
-type AvatarButtonAccessibleName =
-  | { 'aria-label': string; 'aria-labelledby'?: string }
-  | { 'aria-label'?: string; 'aria-labelledby': string };
-
-/** Props for the AvatarButton component. */
-export type AvatarButtonProps = Omit<RACButtonProps, 'children'> &
-  AvatarButtonAccessibleName & {
-    /** The Avatar to make interactive. */
-    children: ReactNode;
-  };
-
-/**
- * An accessible interactive wrapper for an Avatar.
- *
- * @param props - {@link AvatarButtonProps}
- */
-export const AvatarButton = forwardRef<HTMLButtonElement, AvatarButtonProps>(function AvatarButton(props, ref) {
-  const { className, children, ...rest } = props;
-
-  return (
-    <RACButton {...rest} ref={ref} className={composeClassName(className, styles.button)}>
-      {children}
-    </RACButton>
   );
 });

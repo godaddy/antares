@@ -1,4 +1,4 @@
-import { Avatar, AvatarButton, Text } from '@godaddy/antares';
+import { Avatar, Box, Button, Text } from '@godaddy/antares';
 
 export interface ButtonDisabledExampleProps {
   onPress?: () => void;
@@ -11,10 +11,10 @@ export interface ButtonDisabledExampleProps {
  */
 export function ButtonDisabledExample({ onPress }: ButtonDisabledExampleProps) {
   return (
-    <AvatarButton aria-label="Unavailable account" isDisabled onPress={onPress}>
+    <Box as={Button} variant="ghost" aria-label="Unavailable account" isDisabled onPress={onPress} rounding="full">
       <Avatar>
         <Text>UT</Text>
       </Avatar>
-    </AvatarButton>
+    </Box>
   );
 }
