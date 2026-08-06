@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   ToggleButtonGroup as RACToggleButtonGroup,
   type ToggleButtonGroupProps as RACToggleButtonGroupProps,
@@ -8,18 +7,15 @@ import {
   useLocale
 } from 'react-aria-components';
 import { Flex } from '#components/layout/flex';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
-export interface ToggleButtonGroupProps
-  extends Omit<RACToggleButtonGroupProps, 'className' | 'children' | 'orientation'> {
+export interface ToggleButtonGroupProps extends Omit<RACToggleButtonGroupProps, 'children' | 'orientation'> {
   /**
    * Size of the buttons within the group.
    * @default 'md'
    */
   size?: 'sm' | 'md';
-
-  /** Additional class names applied to the root element. */
-  className?: string;
 
   /** `ToggleButton` children. */
   children?: ReactNode;
@@ -51,22 +47,19 @@ export function ToggleButtonGroup(props: ToggleButtonGroupProps) {
       display="inline-flex"
       dir={direction}
       data-size={size}
-      className={cx(styles.container, className)}
+      className={composeClassName(className, styles.container)}
     >
       {children}
     </Flex>
   );
 }
 
-export interface ToggleButtonProps extends Omit<RACToggleButtonProps, 'className'> {
+export interface ToggleButtonProps extends RACToggleButtonProps {
   /**
    * The content of the item. Supports text, icon, or icon + text.
    * For icon-only items, provide an `aria-label` for screen readers.
    */
   children?: ReactNode;
-
-  /** Additional class names applied to the item element. */
-  className?: string;
 }
 
 /**
@@ -86,7 +79,7 @@ export function ToggleButton(props: ToggleButtonProps) {
       {...rest}
       display="inline-flex"
       alignItems="center"
-      className={cx(styles.item, className)}
+      className={composeClassName(className, styles.item)}
     >
       {children}
     </Flex>

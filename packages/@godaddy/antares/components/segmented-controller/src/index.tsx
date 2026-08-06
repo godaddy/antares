@@ -1,5 +1,4 @@
 import { useCallback, type ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   ToggleButtonGroup as RACToggleButtonGroup,
   ToggleButton as RACToggleButton,
@@ -12,6 +11,7 @@ import {
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { useHorizontalScroll } from './use-horizontal-scroll.ts';
 import styles from './index.module.css';
 
@@ -20,9 +20,6 @@ export interface SegmentedControllerProps
     Omit<FlexOwnProps, 'as'> {
   /** The size of the segmented controller. */
   size?: 'sm' | 'md' | 'lg';
-
-  /** Additional class names applied to the root element. */
-  className?: string;
 
   /** The initial selected value. (uncontrolled) */
   defaultValue?: string;
@@ -73,7 +70,7 @@ export function SegmentedController(props: SegmentedControllerProps) {
       selectedKeys={value ? [value] : undefined}
       data-size={size}
       dir={direction}
-      className={cx(styles.container, className)}
+      className={composeClassName(className, styles.container)}
     >
       <Flex ref={containerRef} gap="xs" padding="xs" className={styles.content}>
         {children}
@@ -109,9 +106,6 @@ export interface SegmentedControllerItemProps extends Omit<RACToggleButtonProps,
   /** The value of the segment. */
   value: string;
 
-  /** Additional class names applied to the item element. */
-  className?: string;
-
   /** The content of the segment. Can be text, icon+text, or icon-only (with aria-label). */
   children?: ReactNode;
 }
@@ -140,7 +134,7 @@ export function SegmentedControllerItem(props: SegmentedControllerItemProps) {
       alignItems="center"
       gap="xs"
       onFocus={handleFocus}
-      className={cx(styles.item, className)}
+      className={composeClassName(className, styles.item)}
     >
       <Flex as={RACSelectionIndicator} className={styles.indicator} />
       {children}

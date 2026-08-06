@@ -7,11 +7,13 @@ import {
   type PopoverProps as RACPopoverProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
-  OverlayArrow as RACOverlayArrow
+  OverlayArrow as RACOverlayArrow,
+  composeRenderProps
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
+import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 interface ContentProps extends RACDialogProps, FlexOwnProps {}
@@ -71,8 +73,10 @@ export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(pr
       containerPadding={containerPadding}
       {...rest}
       as={RACPopover}
-      style={{ ...style, '--_container-padding': `${containerPadding}px` } as CSSProperties}
-      className={cx(styles.popover, className)}
+      style={composeRenderProps(style, function composeStyle(value) {
+        return { ...value, '--_container-padding': `${containerPadding}px` } as CSSProperties;
+      })}
+      className={composeClassName(className, styles.popover)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
       <Flex

@@ -18,6 +18,7 @@ import {
 import type { ReactElement, ReactNode } from 'react';
 import { cx } from 'cva';
 import styles from './index.module.css';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Popover, type PopoverProps } from '#components/popover';
 import { Text } from '#components/text';
 import { Icon } from '#components/icon';
@@ -47,12 +48,9 @@ export function MenuTrigger({ popoverProps, children, ...props }: MenuTriggerPro
   );
 }
 
-export interface MenuProps<T> extends FlexOwnProps, Omit<RACMenuProps<T>, 'className'> {
+export interface MenuProps<T> extends FlexOwnProps, RACMenuProps<T> {
   /** Size variant for the menu and its items. @default 'md' */
   size?: 'sm' | 'md';
-
-  /** Additional CSS class for the menu. */
-  className?: string;
 }
 
 /**
@@ -63,23 +61,24 @@ export interface MenuProps<T> extends FlexOwnProps, Omit<RACMenuProps<T>, 'class
  */
 export function Menu<T extends object>({ className, size = 'md', children, ...props }: MenuProps<T>) {
   return (
-    <Flex {...props} as={RACMenu<T>} direction="column" data-size={size} className={cx(styles.menu, className)}>
+    <Flex
+      {...props}
+      as={RACMenu<T>}
+      direction="column"
+      data-size={size}
+      className={composeClassName(className, styles.menu)}
+    >
       {children}
     </Flex>
   );
 }
 
-export interface MenuGroupProps<T extends object>
-  extends FlexOwnProps,
-    Omit<RACMenuSectionProps<T>, 'children' | 'className'> {
+export interface MenuGroupProps<T extends object> extends FlexOwnProps, Omit<RACMenuSectionProps<T>, 'children'> {
   /** Optional group title, rendered as the section header. Accepts any node. */
   label?: ReactNode;
 
   /** The items within the group. */
   children?: ReactNode;
-
-  /** Additional CSS class for the menu group. */
-  className?: string;
 }
 
 /**
@@ -99,15 +98,12 @@ export function MenuGroup<T extends object>({ label, className, children, ...pro
   );
 }
 
-export interface MenuItemProps extends FlexOwnProps, Omit<RACMenuItemProps, 'children' | 'className'> {
+export interface MenuItemProps extends FlexOwnProps, Omit<RACMenuItemProps, 'children'> {
   /** Leading icon rendered before the label. */
   icon?: ReactNode;
 
   /** The item label (a string is wrapped for typeahead) or custom content. */
   children?: ReactNode;
-
-  /** Additional CSS class for the menu item. */
-  className?: string;
 }
 
 /**
@@ -121,7 +117,13 @@ export function MenuItem({ icon, children, className, ...props }: MenuItemProps)
   const textValue = props.textValue ?? (typeof children === 'string' ? children : undefined);
 
   return (
-    <Flex alignItems="center" {...props} as={RACMenuItem} textValue={textValue} className={cx(styles.item, className)}>
+    <Flex
+      alignItems="center"
+      {...props}
+      as={RACMenuItem}
+      textValue={textValue}
+      className={composeClassName(className, styles.item)}
+    >
       {({ hasSubmenu, isSelected, selectionMode }: RACMenuItemRenderProps) => (
         <>
           {selectionMode === 'multiple' ? (

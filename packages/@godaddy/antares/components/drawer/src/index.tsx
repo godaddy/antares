@@ -6,10 +6,12 @@ import {
   Modal as RACModal,
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
-  type DialogProps as RACDialogProps
+  type DialogProps as RACDialogProps,
+  composeRenderProps
 } from 'react-aria-components';
 import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
+import { composeClassName } from '../../../utils/render-props.ts';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Flex, type FlexProps } from '#components/layout/flex';
@@ -21,7 +23,7 @@ import styles from './index.module.css';
  */
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-export interface DrawerProps extends Omit<RACModalOverlayProps, 'className' | 'children' | 'style'> {
+export interface DrawerProps extends Omit<RACModalOverlayProps, 'children'> {
   /** Physical edge the drawer slides in from. */
   placement: DrawerPlacement;
 
@@ -55,11 +57,8 @@ export interface DrawerProps extends Omit<RACModalOverlayProps, 'className' | 'c
   /** Content to render inside the drawer. */
   children?: ReactNode;
 
-  /** Additional CSS class for root element. */
-  className?: string;
-
   /** Additional props to pass to the inner modal container. */
-  containerProps?: Omit<FlexProps, 'as'>;
+  containerProps?: Omit<FlexProps<typeof RACModal>, 'as'>;
 
   /** Additional props to pass to the inner dialog content region. */
   contentProps?: RACDialogProps;
@@ -88,27 +87,29 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
     ...rest
   } = props;
 
-  const drawerStyle = {
-    ...containerProps?.style,
-    '--_slide': getSlideTransform(placement),
-    ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
-    ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
-  } as CSSProperties;
+  const { className: containerClassName, style: containerStyle, ...restContainerProps } = containerProps ?? {};
 
   return (
     <RACModalOverlay
       data-animate={animate === false ? 'false' : undefined}
       {...rest}
-      className={cx(styles.overlay, className)}
+      className={composeClassName(className, styles.overlay)}
     >
       <Flex
         elevation="overlay"
         data-placement={placement}
         data-has-close={showCloseButton || undefined}
-        {...containerProps}
-        style={drawerStyle}
+        {...restContainerProps}
+        style={composeRenderProps(containerStyle, function composeDrawerStyle(value) {
+          return {
+            ...value,
+            '--_slide': getSlideTransform(placement),
+            ...(maxSize !== undefined && { '--_max-size': toCssSize(maxSize) }),
+            ...(minSize !== undefined && { '--_min-size': toCssSize(minSize) })
+          } as CSSProperties;
+        })}
         as={RACModal}
-        className={cx(styles.drawer, containerProps?.className)}
+        className={composeClassName(containerClassName, styles.drawer)}
       >
         <Flex
           direction="column"

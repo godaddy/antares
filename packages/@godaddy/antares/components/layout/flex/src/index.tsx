@@ -1,7 +1,6 @@
-import { cx } from 'cva';
 import { type CSSProperties, type ElementType, forwardRef } from 'react';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../../types/polymorphic-react.ts';
-import { mergeObjects } from '../../../../utils/objects.ts';
+import { composeClassName, composeStyle } from '../../../../utils/render-props.ts';
 import { Box, type BoxOwnProps } from '../../box/src/index.tsx';
 import { toSpacingVar } from '../../tokens.ts';
 import type { SharedFlexGridProps } from '../../types.ts';
@@ -30,6 +29,7 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
   const {
     style,
     className,
+    as,
     display = 'flex',
     direction = 'row',
     justifyContent,
@@ -46,19 +46,23 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
   const columnClass = direction === 'column' ? styles.column : undefined;
   const flexDirection = direction === 'row' || direction === 'column' ? undefined : direction;
 
-  const mergedStyle = mergeObjects(
-    {
-      flexDirection,
-      justifyContent,
-      alignContent,
-      alignItems,
-      flexWrap: wrap,
-      gap: toSpacingVar(gap),
-      columnGap: toSpacingVar(columnGap),
-      rowGap: toSpacingVar(rowGap)
-    } satisfies CSSProperties,
-    style
+  const computedStyle = {
+    flexDirection,
+    justifyContent,
+    alignContent,
+    alignItems,
+    flexWrap: wrap,
+    gap: toSpacingVar(gap),
+    columnGap: toSpacingVar(columnGap),
+    rowGap: toSpacingVar(rowGap)
+  } satisfies CSSProperties;
+  return (
+    <Box
+      {...rest}
+      as={as}
+      ref={ref}
+      className={composeClassName(className, displayClass, columnClass) as string}
+      style={composeStyle(style, computedStyle) as CSSProperties}
+    />
   );
-
-  return <Box {...rest} ref={ref} className={cx(displayClass, columnClass, className)} style={mergedStyle} />;
 }) as PolymorphicComponent<FlexOwnProps>;
