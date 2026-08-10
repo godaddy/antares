@@ -110,6 +110,11 @@
   }
 }
 
+.image,
+.fallback {
+  grid-area: 1 / 1;
+}
+
 .image {
   display: block;
   width: 100%;
@@ -119,7 +124,6 @@
 }
 
 .fallback {
-  position: absolute;
   display: grid;
   max-width: 100%;
   place-items: center;
