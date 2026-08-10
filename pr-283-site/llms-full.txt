@@ -180,7 +180,159 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
+# Avatar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Composable `Avatar`, `Image`, and `Text` parts
+* Circle and rounded-square shapes at four named sizes
+* Automatic image loading with a Text monogram fallback
+* Primary, subtle, and 15 categorical figure emphases
+* Compose Avatar with Button when it is interactive
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use an Avatar with a one- or two-character monogram when no image is available.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image [#image]
+
+Place Image before Text so the monogram is available while the image loads or if it fails.
+
+<Story of="ImageExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%23145fa9%22/%3E%3Ctext x=%2264%22 y=%2274%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2252%22 text-anchor=%22middle%22%3EUT%3C/text%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image Fallback [#image-fallback]
+
+Include a Text fallback so an unavailable photo never leaves an empty identity marker.
+
+<Story of="ImageFallbackExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Shapes and sizes [#shapes-and-sizes]
+
+Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
+
+<Story of="ShapesExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Avatar button [#avatar-button]
+
+Turn an avatar into a clickable control by composing it with a \`ghost\` Button.
+Match \`rounding\` to the avatar shape.
+
+<Story of="ButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Flex, Text } from '@godaddy/antares';\n\nexport function ButtonExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22;>\n      <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Account\&#x22; rounding=\&#x22;full\&#x22;>\n        <Avatar>\n          <Text>UT</Text>\n        </Avatar>\n      </Box>\n      <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Workspace\&#x22; rounding=\&#x22;lg\&#x22;>\n        <Avatar shape=\&#x22;square\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Account menu [#account-menu]
+
+Wrap an Avatar in a ghost Button inside MenuTrigger for an account or profile menu.
+
+<Story of="ButtonMenuExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function ButtonMenuExample() {\n  return (\n    <MenuTrigger>\n      <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Account menu\&#x22; rounding=\&#x22;full\&#x22;>\n        <Avatar>\n          <Text>UT</Text>\n        </Avatar>\n      </Box>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+### Disabled avatar button [#disabled-avatar-button]
+
+Use isDisabled when the avatar action is unavailable.
+
+<Story of="ButtonDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Text } from '@godaddy/antares';\n\nexport interface ButtonDisabledExampleProps {\n  onPress?: () => void;\n}\n\nexport function ButtonDisabledExample({ onPress }: ButtonDisabledExampleProps) {\n  return (\n    <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Unavailable account\&#x22; isDisabled onPress={onPress} rounding=\&#x22;full\&#x22;>\n      <Avatar>\n        <Text>UT</Text>\n      </Avatar>\n    </Box>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+
+When an Avatar triggers an action, wrap it in `Button variant="ghost"`. Compose the Button with `Box` to control its rounding:
+
+```tsx
+<Box as={Button} aria-label="Account menu" variant="ghost" rounding="full">
+  <Avatar>
+    <Text>UT</Text>
+  </Avatar>
+</Box>
+```
+
+## Accessibility [#accessibility]
+
+* Give Image meaningful `alt` text when the image conveys an identity.
+* Text remains available to assistive technology when no image loads.
+* Use `alt=""` or `aria-hidden` when an avatar is purely decorative.
+* Give an interactive Button an accessible name with `aria-label` or `aria-labelledby`.
+
+## Best Practices [#best-practices]
+
+* Use Avatar for informational identity; wrap it in a ghost Button only when it is independently actionable.
+* Use circle for people and square for businesses, workspaces, and accounts.
+* Keep monograms to one or two uppercase characters.
+* Use the same `figure*` emphasis for the same entity wherever it appears.
+
+## Troubleshooting [#troubleshooting]
+
+* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
+* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
+
+## Props [#props]
+
+### Avatar [#avatar]
+
+Configures the Avatar surface, including its shape, size, and color treatment.
+
+<PropTable />
+
+
 # Button
+
+
 
 
 
@@ -268,6 +420,16 @@ Any button variant can be disabled to prevent interaction, communicated with red
 
 <Source language="tsx" code="&#x22;import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\&#x22;secondary\&#x22; isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\&#x22;tertiary\&#x22; isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\&#x22;critical\&#x22; isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\&#x22;inline\&#x22; isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
 
+### Ghost [#ghost]
+
+The ghost variant is an unstyled, interactive wrapper. It provides focus, hover,
+and pressed states but no padding, margin, or sizing, so you control the shape.
+Compose with Box to add rounding and padding.
+
+<Story of="GhostExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Text } from '@godaddy/antares';\n\nexport function GhostExample() {\n  return (\n    <Box as={Button} aria-label=\&#x22;Account menu\&#x22; variant=\&#x22;ghost\&#x22; rounding=\&#x22;full\&#x22;>\n      <Avatar>\n        <Text>UT</Text>\n      </Avatar>\n    </Box>\n  );\n}&#x22;" />
+
 ### Icon [#icon]
 
 You may provide an optional \`Icon\` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
@@ -300,6 +462,18 @@ Buttons come in small and medium sizes to fit different layout densities.
 
 <Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
 
+## Customization [#customization]
+
+Use `variant="ghost"` as an unstyled interactive wrapper when the consumer controls rounding. Compose it with `Box` to apply the desired shape:
+
+```tsx
+<Box as={Button} aria-label="Account menu" variant="ghost" rounding="full">
+  <Avatar>
+    <Text>UT</Text>
+  </Avatar>
+</Box>
+```
+
 ## Props [#props]
 
 The `Button` component accepts the following props:
@@ -307,152 +481,6 @@ The `Button` component accepts the following props:
 <PropTable />
 
 The `LinkButton` component accepts the following props:
-
-<PropTable />
-
-
-# Avatar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Composable `Avatar`, `Image`, and `Text` parts
-* Circle and rounded-square shapes at four named sizes
-* Automatic image loading with a Text monogram fallback
-* Primary, subtle, and 15 categorical figure emphases
-* `AvatarButton` for accessible interactive avatar controls
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use an Avatar with a one- or two-character monogram when no image is available.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image [#image]
-
-Place Image before Text so the monogram is available while the image loads or if it fails.
-
-<Story of="ImageExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%23145fa9%22/%3E%3Ctext x=%2264%22 y=%2274%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2252%22 text-anchor=%22middle%22%3EUT%3C/text%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image Fallback [#image-fallback]
-
-Include a Text fallback so an unavailable photo never leaves an empty identity marker.
-
-<Story of="ImageFallbackExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Shapes and sizes [#shapes-and-sizes]
-
-Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
-
-<Story of="ShapesExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Avatar button [#avatar-button]
-
-Use AvatarButton when the avatar triggers an action, such as opening account settings.
-
-<Story of="ButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, AvatarButton, Text } from '@godaddy/antares';\n\nexport function ButtonExample() {\n  return (\n    <AvatarButton aria-label=\&#x22;Account\&#x22;>\n      <Avatar>\n        <Text>UT</Text>\n      </Avatar>\n    </AvatarButton>\n  );\n}&#x22;" />
-
-### Account menu [#account-menu]
-
-Use AvatarButton inside MenuTrigger for an account or profile menu. The open treatment is applied automatically.
-
-<Story of="ButtonMenuExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, AvatarButton, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function ButtonMenuExample() {\n  return (\n    <MenuTrigger>\n      <AvatarButton aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar>\n          <Text>UT</Text>\n        </Avatar>\n      </AvatarButton>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-### Disabled avatar button [#disabled-avatar-button]
-
-Use isDisabled when the avatar action is unavailable.
-
-<Story of="ButtonDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, AvatarButton, Text } from '@godaddy/antares';\n\nexport interface ButtonDisabledExampleProps {\n  onPress?: () => void;\n}\n\nexport function ButtonDisabledExample({ onPress }: ButtonDisabledExampleProps) {\n  return (\n    <AvatarButton aria-label=\&#x22;Unavailable account\&#x22; isDisabled onPress={onPress}>\n      <Avatar>\n        <Text>UT</Text>\n      </Avatar>\n    </AvatarButton>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
-
-## Accessibility [#accessibility]
-
-* Give Image meaningful `alt` text when the image conveys an identity.
-* Text remains available to assistive technology when no image loads.
-* Use `alt=""` or `aria-hidden` when an avatar is purely decorative.
-* AvatarButton requires `aria-label` or `aria-labelledby`.
-* AvatarButton supports keyboard activation and exposes the standard focus-visible state.
-
-## Best Practices [#best-practices]
-
-* Use Avatar for informational identity; use AvatarButton only when the avatar is independently actionable.
-* Use circle for people and square for businesses, workspaces, and accounts.
-* Keep monograms to one or two uppercase characters.
-* Use the same `figure*` emphasis for the same entity wherever it appears.
-
-## Troubleshooting [#troubleshooting]
-
-* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
-* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
-* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
-
-## Props [#props]
-
-### Avatar [#avatar]
-
-Configures the Avatar surface, including its shape, size, and color treatment.
-
-<PropTable />
-
-### AvatarButton [#avatarbutton]
-
-Makes an Avatar subtree interactive and adds focus, hover, open, and disabled states. Use it inside MenuTrigger for menu actions; MenuTrigger applies the open state automatically.
 
 <PropTable />
 
@@ -1606,47 +1634,6 @@ Restrict the picker to specific MIME types with \`acceptedFileTypes\`, and allow
 <PropTable />
 
 
-# Image
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Props [#props]
-
-<PropTable />
-
-## Examples [#examples]
-
-### Basic image [#basic-image]
-
-Use Image anywhere you would use an `<img>`. It behaves the same and gains Antares styling only from the component it is composed within.
-
-<Source language="tsx" code="SourceDefault" />
-
-<Story of="Stories.Default" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-
 # Icon
 
 
@@ -2059,6 +2046,47 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# Image
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Props [#props]
+
+<PropTable />
+
+## Examples [#examples]
+
+### Basic image [#basic-image]
+
+Use Image anywhere you would use an `<img>`. It behaves the same and gains Antares styling only from the component it is composed within.
+
+<Source language="tsx" code="SourceDefault" />
+
+<Story of="Stories.Default" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+
 # InlineDrawer
 
 
@@ -2144,71 +2172,6 @@ A rail whose content stays visible when collapsed is a composition, not a mode: 
 <PropTable />
 
 The `InlineDrawerPanel` component accepts the following props:
-
-<PropTable />
-
-
-# ListBox
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
-* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
-* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
-* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
-* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
-
-`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Single selection with static children. Use \`aria-label\` to give the listbox an accessible name.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
-
-### List Box Controlled [#list-box-controlled]
-
-Use \`selectedKeys\` and \`onSelectionChange\` for controlled state.
-
-<Story of="ListBoxControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### List Box Multiple [#list-box-multiple]
-
-Set \`selectionMode="multiple"\` to allow multiple values. \`selectedKeys\` is a \`Set\<Key>\` (or the literal \`'all'\`).
-
-<Story of="ListBoxMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The ListBox component accepts the following props:
 
 <PropTable />
 
@@ -2379,6 +2342,71 @@ Individual child components can be styled by passing `className` props:
   background-color: red;
 }
 ```
+
+
+# ListBox
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Single selection with static children. Use \`aria-label\` to give the listbox an accessible name.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
+
+### List Box Controlled [#list-box-controlled]
+
+Use \`selectedKeys\` and \`onSelectionChange\` for controlled state.
+
+<Story of="ListBoxControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### List Box Multiple [#list-box-multiple]
+
+Set \`selectionMode="multiple"\` to allow multiple values. \`selectedKeys\` is a \`Set\<Key>\` (or the literal \`'all'\`).
+
+<Story of="ListBoxMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The ListBox component accepts the following props:
+
+<PropTable />
 
 
 # MetricsLockup
@@ -3279,6 +3307,194 @@ The `RadioGroup` component has the following props:
 <PropTable />
 
 
+# RangeField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Select one value or render one thumb for each value in an array
+* Supports controlled and uncontrolled values with typed change callbacks
+* Provides localized value output, endpoint labels, descriptions, and markers
+* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a single value and min/max bounds.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use \`onChange\` for immediate updates and \`onChangeEnd\` for work that should run after interaction finishes.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use \`isDisabled\` when the value is visible but unavailable for interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
+
+### Labels [#labels]
+
+Combine an input label, value label, range labels, and helper text when users need additional context.
+
+<Story of="LabelsExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Value Display [#value-display]
+
+Use \`valueLabel\` to show formatted values, static context, or output derived from the current slider state.
+
+<Story of="ValueDisplayExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Markers [#markers]
+
+Use \`markers\` to expose a manageable set of discrete steps for a single value.
+
+<Story of="MarkersExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
+
+### Range [#range]
+
+Pass a \`number\[]\` to render a range with two thumbs and step markers.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Accessible names [#accessible-names]
+
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction [#keyboard-interaction]
+
+Each thumb follows the React Aria slider keyboard model:
+
+* Tab and Shift+Tab move among thumbs and surrounding controls.
+* Arrow Right and Arrow Up increase the focused value by `step`.
+* Arrow Left and Arrow Down decrease the focused value by `step`.
+* Home and End move the focused thumb to its permitted bounds.
+* Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+## Best Practices [#best-practices]
+
+* Use an array only when every entry has a clear, independently adjustable meaning.
+* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
+* Use thumb labels that explain purpose instead of repeating the current number.
+* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+* Use `description` for persistent guidance and `isRequired` when a value is required.
+* Use `isDisabled` when the value should remain visible but unavailable for interaction.
+* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Props [#props]
+
+<PropTable />
+
+## Troubleshooting [#troubleshooting]
+
+### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
+### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### Values snap unexpectedly [#values-snap-unexpectedly]
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing [#the-final-marker-is-missing]
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid [#the-range-configuration-is-invalid]
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
+
+
 # SegmentedController
 
 
@@ -4038,6 +4254,71 @@ The `TextField` component accepts the following props:
 <PropTable />
 
 
+# Tooltip
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with \`TooltipTrigger\`, which wraps both the tooltip content and a focusable element such as a \`Button\`. The tooltip appears on hover and focus.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the \`triggerRef\` prop. \`TooltipTrigger\` still handles showing and hiding on hover and focus.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                |
+| ------ | ---------------------------------------------------------- |
+| Tab    | Moves focus to the focusable element and shows the tooltip |
+| Escape | Closes the tooltip                                         |
+
+### ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+## Props [#props]
+
+<PropTable />
+
+
 # ToggleButton
 
 
@@ -4297,71 +4578,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
   <Icon icon="bulleted-list" />
 </ToggleButton>
 ```
-
-## Props [#props]
-
-<PropTable />
-
-
-# Tooltip
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with \`TooltipTrigger\`, which wraps both the tooltip content and a focusable element such as a \`Button\`. The tooltip appears on hover and focus.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the \`triggerRef\` prop. \`TooltipTrigger\` still handles showing and hiding on hover and focus.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                |
-| ------ | ---------------------------------------------------------- |
-| Tab    | Moves focus to the focusable element and shows the tooltip |
-| Escape | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 ## Props [#props]
 
