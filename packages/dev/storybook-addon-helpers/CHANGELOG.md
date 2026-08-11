@@ -1,5 +1,11 @@
 # @bento/storybook-addon-helpers
 
+## 0.3.0
+
+### Minor Changes
+
+- introduces `getExamples` helper for auto-generated examples documentation ([#288](https://github.com/godaddy/bento/pull/288) by @egaitan-godaddy)
+
 ## 0.2.0
 
 ### Minor Changes
