@@ -37,7 +37,7 @@
   ],
   "devDependencies": {
     "shx": "^0.4.0",
-    "style-dictionary": "^5.4.1",
+    "style-dictionary": "^5.5.0",
     "tsx": "^4.22.3",
     "vitest": "^4.1.7",
     "yaml": "^2.9.0",
