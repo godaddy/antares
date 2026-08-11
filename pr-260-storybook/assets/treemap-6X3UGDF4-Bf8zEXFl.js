@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-DPdjVz-1.js";import{w as t}from"./chunk-KEIR6QF5-D3VNtNxw.js";import{c as n,l as r}from"./mermaid-parser.core-05DezheG.js";e((()=>{r(),t()}))();export{n as createTreemapServices};
