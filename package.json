@@ -54,7 +54,7 @@
     "knip": "^6.26.0",
     "lint-staged": "^17.0.5",
     "markdownlint-cli2": "^0.23.1",
-    "nx": "22.7.5",
+    "nx": "22.7.7",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-frame-component": "^5.3.2",
