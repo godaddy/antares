@@ -4,7 +4,8 @@ import type {
   DataPoint,
   LegendPosition,
   SeriesConfig,
-  XLabelsOrientation
+  XLabelsOrientation,
+  BarSeriesConfig
 } from '../../types.ts';
 import {
   getXLabelVerticalProps,
@@ -52,7 +53,7 @@ export interface BarChartPropsBase<T extends object = DataPoint> {
    * Configuration for data series.
    * For a single series, provide an array with one element. For multiple series, provide multiple elements.
    */
-  series: SeriesConfig<T>[];
+  series: BarSeriesConfig<T>[];
 
   /**
    * Orientation of the bars.

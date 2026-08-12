@@ -63,6 +63,9 @@ export interface LineSeriesConfig<T extends object = DataPoint> extends Omit<Ser
   colorIndex?: number;
 }
 
+export interface BarSeriesConfig<T extends object = DataPoint>
+  extends Omit<SeriesConfig<T>, '_resolvedColor' | 'variant'> {}
+
 /**
  * Accessors for X and Y from a data point.
  *

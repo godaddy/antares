@@ -66,7 +66,7 @@ const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
  * those keys are inferred here so `series` is typed with them — no cast needed.
  *
  * @template T - The data point type. Defaults to DataPoint.
- * @template S - The series-config shape. Inferred from `series`; defaults to LineSeriesConfig<T>.
+ * @template S - The series-config shape. Inferred from `series`; defaults to SeriesConfig<T>.
  * @public
  */
 export interface LineChartTooltipRenderProps<
