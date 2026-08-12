@@ -931,116 +931,6 @@ Use the \`emphasis\` prop to communicate status: \`success\`, \`warning\`, or \`
 <PropTable />
 
 
-# Drawer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
-
-`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
-
-## Features [#features]
-
-* Slides in from any screen edge (top, bottom, left, right)
-* `overlay` elevation panel over a dimmed backdrop, matching `Modal`
-* Physical `placement` (does not flip for RTL)
-* Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
-* CSS transitions with `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use \`\<DrawerTrigger>\` to wrap a trigger button and a \`\<Drawer>\`. The drawer opens when the trigger is pressed.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Drawer, DrawerTrigger, Button, Text, Box } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Drawer content goes here.</Text>\n        </Box>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
-
-### Bottom Sheet [#bottom-sheet]
-
-Use \`placement="bottom"\` with controlled state for a bottom sheet pattern.
-
-<Story of="BottomSheetExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Box } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer\n        placement=\&#x22;bottom\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        showCloseButton\n        aria-label=\&#x22;Bottom sheet\&#x22;\n      >\n        <Box elevation=\&#x22;card\&#x22; padding=\&#x22;md\&#x22;>\n          <Text as=\&#x22;p\&#x22;>Bottom sheet with close button.</Text>\n          <Text as=\&#x22;p\&#x22;>This is the content</Text>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Placements [#placements]
-
-The drawer slides in from whichever edge you set with \`placement\`.
-
-<Story of="PlacementsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Flex, Text, type DrawerPlacement, Box } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Placement: {placement}</Text>\n        </Box>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="NestedPopoverExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Popover, PopoverTrigger, Box } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Box padding=\&#x22;md\&#x22;>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover>\n              <Text>Popover inside drawer</Text>\n            </Popover>\n          </PopoverTrigger>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### No Escape Dismiss [#no-escape-dismiss]
-
-Use \`isKeyboardDismissDisabled\` to prevent the drawer from being dismissed by the escape key.
-
-<Story of="NoEscapeDismissExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Box } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Cannot escape</Text>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                |
-| -------- | ----------------------------------------------------- |
-| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab`    | Move focus within the drawer (focus is trapped)       |
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* Dialog accessible name via `aria-label`
-* `aria-label="Close"` on the built-in close button
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
-
-## Props [#props]
-
-<PropTable />
-
-The `DrawerTrigger` component accepts the following props:
-
-<PropTable />
-
-
 # DatePicker
 
 
@@ -1178,6 +1068,116 @@ The `DatePicker` component accepts the following props:
 <PropTable />
 
 The `DateRangePicker` component accepts the following props:
+
+<PropTable />
+
+
+# Drawer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
+
+`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
+
+## Features [#features]
+
+* Slides in from any screen edge (top, bottom, left, right)
+* `overlay` elevation panel over a dimmed backdrop, matching `Modal`
+* Physical `placement` (does not flip for RTL)
+* Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
+* CSS transitions with `prefers-reduced-motion` support
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use \`\<DrawerTrigger>\` to wrap a trigger button and a \`\<Drawer>\`. The drawer opens when the trigger is pressed.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Drawer, DrawerTrigger, Button, Text, Box } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Drawer content goes here.</Text>\n        </Box>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+### Bottom Sheet [#bottom-sheet]
+
+Use \`placement="bottom"\` with controlled state for a bottom sheet pattern.
+
+<Story of="BottomSheetExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Box } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer\n        placement=\&#x22;bottom\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        showCloseButton\n        aria-label=\&#x22;Bottom sheet\&#x22;\n      >\n        <Box elevation=\&#x22;card\&#x22; padding=\&#x22;md\&#x22;>\n          <Text as=\&#x22;p\&#x22;>Bottom sheet with close button.</Text>\n          <Text as=\&#x22;p\&#x22;>This is the content</Text>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Placements [#placements]
+
+The drawer slides in from whichever edge you set with \`placement\`.
+
+<Story of="PlacementsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Flex, Text, type DrawerPlacement, Box } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Placement: {placement}</Text>\n        </Box>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="NestedPopoverExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Popover, PopoverTrigger, Box } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Box padding=\&#x22;md\&#x22;>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover>\n              <Text>Popover inside drawer</Text>\n            </Popover>\n          </PopoverTrigger>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### No Escape Dismiss [#no-escape-dismiss]
+
+Use \`isKeyboardDismissDisabled\` to prevent the drawer from being dismissed by the escape key.
+
+<Story of="NoEscapeDismissExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Box } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Cannot escape</Text>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
+| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* Dialog accessible name via `aria-label`
+* `aria-label="Close"` on the built-in close button
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
+
+## Props [#props]
+
+<PropTable />
+
+The `DrawerTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -4369,6 +4369,79 @@ To position a tooltip relative to a different focusable element, use the \`trigg
 <PropTable />
 
 
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a \`data\` array (\`id\`, \`name\`, \`value\`) and a \`label\` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add \`subLabel\` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch \`legend\` to \`right\` to sit the legend beside the donut, or \`bottom\` to stack it underneath. \`legendLabel\` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below \`smallSliceThreshold\` (default \`0.05\` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use \`formatValue\` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
 # Bar Chart
 
 
@@ -4566,79 +4639,6 @@ For better performance:
 1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
-
-## Props [#props]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a \`data\` array (\`id\`, \`name\`, \`value\`) and a \`label\` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add \`subLabel\` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch \`legend\` to \`right\` to sit the legend beside the donut, or \`bottom\` to stack it underneath. \`legendLabel\` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below \`smallSliceThreshold\` (default \`0.05\` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use \`formatValue\` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -5086,6 +5086,114 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 <PropTable />
 
 
+# Box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Polymorphic `as` details [#polymorphic-as-details]
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="PaddingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="ElevationExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use \`full\` for fully rounded corners.
+
+<Story of="RoundingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Polymorphic as Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the \`as\` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+## Props [#props]
+
+The `Box` component accepts the following props:
+
+<PropTable />
+
+
 # Flex
 
 
@@ -5202,114 +5310,6 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
-
-<PropTable />
-
-
-# Box
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Polymorphic `as` details [#polymorphic-as-details]
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="PaddingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="ElevationExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use \`full\` for fully rounded corners.
-
-<Story of="RoundingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Polymorphic as Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the \`as\` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-## Props [#props]
-
-The `Box` component accepts the following props:
 
 <PropTable />
 
