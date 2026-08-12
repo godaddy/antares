@@ -32,10 +32,7 @@ describe('csf-transformer', function csfTransformerTests() {
       const meta = getMeta({ title: 'meta1' });
     `;
     const actual = formatTypeScript(await csfTransformer({ code }));
-    const expected = formatTypeScript(`
-      import { getMeta } from '@bento/storybook-addon-helpers';
-      const meta = { title: 'meta1' };
-    `);
+    const expected = formatTypeScript(`const meta = { title: 'meta1' };`);
 
     expect(actual).toEqual(expected);
   });
@@ -106,6 +103,48 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).toContain('getExamples');
   });
 
+  it('drops imports left unused by the transform, keeping the ones still referenced', async function prunesDeadImports() {
+    const code = `
+      import React from 'react';
+      import './side-effect.css';
+      import type { Props } from './comp.tsx';
+      import { Widget, Unused } from './comp.tsx';
+      import { getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+      export const Docs = getComponentDocs(Widget);
+      export const Story = getStory(Widget);
+    `;
+
+    const actual = await csfTransformer({ code });
+
+    // Widget survives via the generated render function, React and the bare import stay put.
+    expect(actual).toContain("import { Widget } from './comp.tsx'");
+    expect(actual).toContain("import React from 'react'");
+    expect(actual).toContain("import './side-effect.css'");
+    expect(actual).toContain("import type { Props } from './comp.tsx'");
+    expect(actual).not.toContain('Unused');
+    expect(actual).not.toContain('@bento/storybook-addon-helpers');
+  });
+
+  it('does not let a docs import collide with a same-named example story export', async function noDuplicateDeclaration() {
+    const actual = await csfTransformer({
+      filePath: path.join(fixturesPath, 'collision-fixture/collision.stories.tsx')
+    });
+
+    expect(actual).toContain('export const Default = DefaultExample');
+    // The import that fed getComponentDocs is gone, so the story export is the only `Default`.
+    expect(actual).not.toContain('collision-comp.tsx');
+    expect(actual).toContain('"volume"');
+  });
+
+  it('keeps a property named after an import from counting as a use of it', async function propertyKeyIsNotAUse() {
+    const code = `
+      import { Widget } from './comp.tsx';
+      export const Story = { args: { Widget: 'a string' } };
+    `;
+
+    expect(await csfTransformer({ code })).not.toContain('import { Widget }');
+  });
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
@@ -118,8 +157,6 @@ describe('csf-transformer', function csfTransformerTests() {
 
     const actual = formatTypeScript(await csfTransformer({ code }));
     const expected = formatTypeScript(`
-      import { getVariants } from '@bento/storybook-addon-helpers';
-
       export const VariantsSmall = {
         args: { size: 'small' },
         render: args => <TestComponent {...args} />

@@ -40,7 +40,8 @@ export async function csfTransformer(input: {
       [transformGetMeta, transformGetStory, transformGetVariants, transformGetComponentDocs, transformGetTypeDocs],
       input.defaults
     ),
-    transformExamples(examples)
+    transformExamples(examples),
+    pruneUnusedImports()
   ]);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
   return printer.printFile(result.transformed[0] as ts.SourceFile);
@@ -212,6 +213,10 @@ function getExamplesGetterCall(statement: ts.Node): ts.CallExpression | undefine
 function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory<ts.SourceFile> {
   return function _transformer() {
     return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      // Nothing resolved (no file path, or an empty folder): leave the call in place
+      // rather than dropping the declaration and emitting nothing in its stead.
+      if (examples.length === 0) return sourceFile;
+
       let found = false;
       const body: ts.Statement[] = [];
 
@@ -232,6 +237,129 @@ function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory
       return factory.updateSourceFile(sourceFile, [...imports, ...body]);
     };
   };
+}
+
+/**
+ * Drops named import specifiers the transformed output no longer references.
+ *
+ * The getters compile down to literals, so they and any component imported only to
+ * feed them are dead by this point. A leftover binding also collides with the story
+ * export an example of the same name produces.
+ *
+ * Default, namespace, side-effect and type-only imports are left untouched.
+ */
+function pruneUnusedImports(): ts.TransformerFactory<ts.SourceFile> {
+  return function _transformer() {
+    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      const references = collectValueReferences(
+        sourceFile.statements.filter((statement) => !ts.isImportDeclaration(statement))
+      );
+
+      let changed = false;
+      const statements: ts.Statement[] = [];
+
+      for (const statement of sourceFile.statements) {
+        if (!ts.isImportDeclaration(statement)) {
+          statements.push(statement);
+          continue;
+        }
+
+        const clause = statement.importClause;
+        const pruned =
+          clause && clause.phaseModifier === undefined ? keepReferencedBindings(clause, references) : clause;
+        if (pruned === clause) {
+          statements.push(statement);
+          continue;
+        }
+
+        changed = true;
+        if (pruned) {
+          statements.push(
+            factory.updateImportDeclaration(
+              statement,
+              statement.modifiers,
+              pruned,
+              statement.moduleSpecifier,
+              statement.attributes
+            )
+          );
+        }
+      }
+
+      return changed ? factory.updateSourceFile(sourceFile, statements) : sourceFile;
+    };
+  };
+}
+
+/**
+ * Narrows an import clause to the bindings still referenced. Returns the clause
+ * unchanged when nothing is dead, `undefined` when the whole import is.
+ */
+function keepReferencedBindings(clause: ts.ImportClause, references: Set<string>): ts.ImportClause | undefined {
+  const bindings = clause.namedBindings;
+  if (!bindings || ts.isNamespaceImport(bindings)) return clause;
+
+  const kept = bindings.elements.filter((element) => references.has(element.name.text));
+  if (kept.length === bindings.elements.length) return clause;
+  if (kept.length === 0 && !clause.name) return undefined;
+
+  return factory.updateImportClause(
+    clause,
+    clause.phaseModifier,
+    clause.name,
+    kept.length > 0 ? factory.createNamedImports(kept) : undefined
+  );
+}
+
+/** Collects the identifiers the statements reference, ignoring names that only declare or label. */
+function collectValueReferences(statements: readonly ts.Statement[]): Set<string> {
+  const references = new Set<string>();
+
+  function visit(node: ts.Node): void {
+    if (ts.isIdentifier(node)) {
+      references.add(node.text);
+      return;
+    }
+
+    if (ts.isPropertyAccessExpression(node)) {
+      visit(node.expression);
+      return;
+    }
+
+    const name = nonReferenceName(node);
+    ts.forEachChild(node, function visitReference(child) {
+      if (child !== name) visit(child);
+    });
+  }
+
+  statements.forEach(visit);
+  return references;
+}
+
+/**
+ * The child of `node` that names rather than references a binding: an object or JSX
+ * key, or the identifier a declaration introduces. Anything else, including computed
+ * keys and destructuring patterns, is treated as a reference so imports are kept.
+ */
+function nonReferenceName(node: ts.Node): ts.Node | undefined {
+  if (ts.isPropertyAssignment(node) || ts.isJsxAttribute(node)) {
+    return ts.isComputedPropertyName(node.name) ? undefined : node.name;
+  }
+
+  const declaresName =
+    ts.isVariableDeclaration(node) ||
+    ts.isParameter(node) ||
+    ts.isBindingElement(node) ||
+    ts.isFunctionDeclaration(node) ||
+    ts.isFunctionExpression(node) ||
+    ts.isClassDeclaration(node) ||
+    ts.isMethodDeclaration(node) ||
+    ts.isPropertyDeclaration(node) ||
+    ts.isInterfaceDeclaration(node) ||
+    ts.isTypeAliasDeclaration(node) ||
+    ts.isEnumDeclaration(node);
+
+  return declaresName && node.name && ts.isIdentifier(node.name) ? node.name : undefined;
 }
 
 /** Builds `import { <name> } from '<modulePath>';` */
