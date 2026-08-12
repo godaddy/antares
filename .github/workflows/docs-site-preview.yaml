@@ -12,8 +12,12 @@ concurrency:
 
 jobs:
   deploy-preview:
-    if: github.event.action != 'closed' && github.event.pull_request.user.login != 'dependabot[bot]'
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pages: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
