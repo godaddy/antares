@@ -12,7 +12,7 @@ const inter = Inter({
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const searchOptions = {
   api: `${basePath}/api/search`,
-  type: basePath ? ('static' as const) : ('fetch' as const)
+  type: basePath ? ('static' as const) : undefined
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
