@@ -15,7 +15,14 @@ function renderHoveredTooltip({ hoveredSeriesId, hoveredDatum, series }: LineCha
   return (
     <Flex direction="column" gap="sm">
       <Flex alignItems="center" gap="sm">
-        <Box rounding="full" style={{ width: 10, height: 10, backgroundColor: hovered.resolvedColor }} />
+        <Box
+          rounding="full"
+          style={{
+            width: 10,
+            height: 10,
+            backgroundColor: hovered._resolvedColor
+          }}
+        />
         <Text>{hovered.name}</Text>
       </Flex>
       <Text>{`${(hoveredDatum.y as number).toFixed(1)}°F`}</Text>
@@ -32,7 +39,10 @@ export function CustomTooltipExample(props: Partial<LineChartProps>) {
   const rows = cityTemperature.slice(0, 12);
   const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>
     rows
-      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))
+      .map((d) => ({
+        x: new Date(d.date),
+        y: parseFloat(d[city] as string) * scale
+      }))
       .sort((a, b) => a.x.getTime() - b.x.getTime());
 
   const series = [
@@ -44,7 +54,12 @@ export function CustomTooltipExample(props: Partial<LineChartProps>) {
       variant: 'dashed' as const,
       data: toPoints('New York', 1.08)
     },
-    { id: 'sf', name: 'San Francisco', colorIndex: 1, data: toPoints('San Francisco') },
+    {
+      id: 'sf',
+      name: 'San Francisco',
+      colorIndex: 1,
+      data: toPoints('San Francisco')
+    },
     {
       id: 'sf-forecast',
       name: 'San Francisco (forecast)',

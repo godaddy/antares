@@ -25,6 +25,10 @@ export interface SeriesConfig<T extends object = DataPoint> {
   id: string;
   /** Display name for the series (e.g. in legends, tooltips, axes). */
   name: string;
+  /** *For internal use only* The color of the series to be displayed on the chart - can
+   * be resolved/assigned through differnet mechanisms, but is not meant to be assigned
+   * directly by the package consumer and should not be exposed at the top level*/
+  _resolvedColor?: string;
   /** Data points for this series. */
   data: T[];
 }
@@ -46,7 +50,7 @@ export type LineSeriesVariant = 'solid' | 'dashed' | 'dotted';
  *
  * @typeParam T - Item type for data points. Defaults to {@link DataPoint}.
  */
-export interface LineSeriesConfig<T extends object = DataPoint> extends SeriesConfig<T> {
+export interface LineSeriesConfig<T extends object = DataPoint> extends Exclude<SeriesConfig<T>, '_resolvedColor'> {
   /** Line style for this series. @default 'solid' */
   variant?: LineSeriesVariant;
   /**

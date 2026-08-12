@@ -89,7 +89,7 @@ export interface LineChartTooltipRenderProps<
    * each series is exposed under the reserved `resolvedColor` key (not `color`), so a
    * field literally named `color` on your series survives and its type can't collapse.
    */
-  series: (S & { id: string; resolvedColor?: string })[];
+  series: (S & { id: string })[];
 }
 
 /**
@@ -407,23 +407,12 @@ export function LineChart<
   const seriesWithColor = useMemo(
     function getSeriesWithColor() {
       return series.map(function attachColor(oneSeries, index) {
-        return { ...oneSeries, color: seriesColors[index] };
+        return { ...oneSeries, _resolvedColor: seriesColors[index] };
       });
     },
     [series, seriesColors]
   );
-  // Series for the custom-tooltip render prop. Unlike the internal swatch shape above, this
-  // preserves every consumer key (including a field literally named `color`) and exposes the
-  // computed palette color under the reserved `resolvedColor` key, so we never clobber or
-  // type-collide with the consumer's own data.
-  const seriesWithResolvedColor = useMemo(
-    function getSeriesWithResolvedColor() {
-      return series.map(function attachResolvedColor(oneSeries, index) {
-        return { ...oneSeries, resolvedColor: seriesColors[index] };
-      });
-    },
-    [series, seriesColors]
-  );
+
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);
   // See @remarks: custom T requires accessors; assertion satisfies visx LineSeries typings
@@ -450,7 +439,7 @@ export function LineChart<
           hoveredSeriesId: tooltipData?.nearestDatum?.key,
           hoveredDatum: tooltipData?.nearestDatum?.datum,
           datumByKey,
-          series: seriesWithResolvedColor
+          series: seriesWithColor
         });
         // A consumer returning nothing should render no popover at all — otherwise the empty
         // styled container floats at the cursor. React renders every boolean as no content, so
@@ -467,13 +456,13 @@ export function LineChart<
       return (
         <ChartTooltip
           tooltipData={params.tooltipData as TooltipData<DataPoint> | undefined}
-          series={seriesWithColor as (SeriesConfig<DataPoint> & { color?: string })[]}
+          series={seriesWithColor as SeriesConfig<DataPoint>[]}
           formatValue={tooltipValueFormatter as ((datum: DataPoint) => string) | undefined}
           useSeriesColors
         />
       );
     },
-    [seriesWithColor, seriesWithResolvedColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
+    [seriesWithColor, seriesWithColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
   );
 
   const xScaleConfig = useMemo(

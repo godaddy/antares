@@ -20,9 +20,8 @@ import styles from './index.module.css';
  * the swatch color (otherwise it's allocated from the palette by position). Bar and donut
  * legends leave the flag off and keep the position-based dot.
  */
-interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name'> {
+interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name' | '_resolvedColor'> {
   variant?: LineSeriesVariant;
-  color?: string;
 }
 
 export interface LegendProps
@@ -114,7 +113,7 @@ function LegendItem(props: LegendItemProps) {
     <Flex role="listitem" direction="row" alignItems="center" gap="sm" className={styles.item}>
       <LegendSwatch
         variant={useSeriesStyles ? seriesItem.variant : undefined}
-        color={useSeriesStyles ? seriesItem.color : undefined}
+        color={useSeriesStyles ? seriesItem._resolvedColor : undefined}
       />
       <Text>{seriesItem.name}</Text>
     </Flex>

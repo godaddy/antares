@@ -69,7 +69,7 @@ function renderPeriodTooltip({
 
   const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;
   const isUp = change >= 0;
-  const color = current.resolvedColor;
+  const color = current._resolvedColor;
 
   return (
     <Flex direction="column" gap="lg" style={{ minWidth: 260 }}>

@@ -45,7 +45,7 @@ interface TooltipBaseProps<T extends object> {
    * charts, which resolve colors explicitly via `colorIndex`). Otherwise the swatch color
    * falls back to the palette by position (CSS `:nth-child`).
    */
-  series: (SeriesConfig<T> & { color?: string })[];
+  series: SeriesConfig<T>[];
   /** Additional class name. */
   className?: string;
   /** Whether to show the tooltip arrow @default false */
@@ -100,13 +100,16 @@ export function Tooltip<T extends object = DataPoint>(
         return [];
       }
 
-      return (series as (SeriesConfig<T> & { color?: string })[])
+      return (series as SeriesConfig<T>[])
         .filter(function hasDatum(seriesItem) {
           return tooltipData.datumByKey[seriesItem.id] != null;
         })
         .map(function toSeriesItem(seriesItem) {
           const datum = tooltipData.datumByKey[seriesItem.id];
-          return { ...seriesItem, value: (formatValue as (d: unknown) => string)(datum.datum) };
+          return {
+            ...seriesItem,
+            value: (formatValue as (d: unknown) => string)(datum.datum)
+          };
         });
     },
     [tooltipData, series, formatValue]
@@ -133,7 +136,7 @@ export function Tooltip<T extends object = DataPoint>(
                 <Box
                   className={styles.swatch}
                   rounding="full"
-                  style={useSeriesColors && item.color ? { backgroundColor: item.color } : undefined}
+                  style={useSeriesColors && item._resolvedColor ? { backgroundColor: item._resolvedColor } : undefined}
                 />
                 <Text>{item.name}</Text>
               </Flex>

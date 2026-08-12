@@ -33,7 +33,14 @@ function renderPairChangeTooltip({ hoveredSeriesId, datumByKey, series }: LineCh
   return (
     <Flex direction="column" gap="sm">
       <Flex alignItems="center" gap="sm">
-        <Box rounding="full" style={{ width: 10, height: 10, backgroundColor: actual.resolvedColor }} />
+        <Box
+          rounding="full"
+          style={{
+            width: 10,
+            height: 10,
+            backgroundColor: actual._resolvedColor
+          }}
+        />
         <Text>{actual.name}</Text>
       </Flex>
       <Text>{`Actual: ${actualY.toFixed(1)}°F`}</Text>
@@ -59,7 +66,10 @@ export function CustomTooltipPairChangeExample(props: Partial<LineChartProps>) {
   // percent change varies per point and goes negative where the forecast undershoots.
   const toForecast = (city: keyof (typeof cityTemperature)[number], phase = 0) =>
     rows
-      .map((d, i) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * (1 + 0.15 * Math.sin(i + phase)) }))
+      .map((d, i) => ({
+        x: new Date(d.date),
+        y: parseFloat(d[city] as string) * (1 + 0.15 * Math.sin(i + phase))
+      }))
       .sort((a, b) => a.x.getTime() - b.x.getTime());
 
   const series = [
@@ -71,7 +81,12 @@ export function CustomTooltipPairChangeExample(props: Partial<LineChartProps>) {
       variant: 'dashed' as const,
       data: toForecast('New York')
     },
-    { id: 'sf', name: 'San Francisco', colorIndex: 1, data: toPoints('San Francisco') },
+    {
+      id: 'sf',
+      name: 'San Francisco',
+      colorIndex: 1,
+      data: toPoints('San Francisco')
+    },
     {
       id: 'sf-forecast',
       name: 'San Francisco (forecast)',
