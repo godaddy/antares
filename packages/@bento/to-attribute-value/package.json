@@ -43,7 +43,7 @@
     "dashify": "^2.0.0"
   },
   "devDependencies": {
-    "tsdown": "^0.22.1",
+    "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7",
     "vitest-browser-react": "^2.2.0"

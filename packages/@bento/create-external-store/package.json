@@ -42,7 +42,7 @@
     "@bento/use-props": "^0.2.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
-    "tsdown": "^0.22.1",
+    "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7",
     "vitest-browser-react": "^2.2.0"
