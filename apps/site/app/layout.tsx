@@ -1,4 +1,6 @@
 import { RootProvider } from 'fumadocs-ui/provider/next';
+// Must precede global.css so its `body` rule loses the cascade to Fumadocs'.
+import '../../docs/.storybook/legacy-tokens.css';
 import './global.css';
 import { Inter } from 'next/font/google';
 import type { ReactNode } from 'react';

@@ -420,7 +420,9 @@
 *::after {
   box-sizing: border-box;
 }
-body {
+/* `.ux-surface` applies this same context to hosts that do not own their `body`. */
+body,
+.ux-surface {
   margin: 0;
   background-color: var(--ux-cao06b, white);
   color: var(--ux-1leynsm, black);
