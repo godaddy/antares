@@ -21,12 +21,14 @@ export interface DataPoint {
  * @typeParam T - Item type for data points. Defaults to {@link DataPoint}.
  */
 export interface SeriesConfig<T extends object = DataPoint> {
+  /** Line style for this series. @default 'solid' */
+  variant?: LineSeriesVariant;
   /** Unique id for the series (e.g. stable across re-renders for keys and refs). */
   id: string;
   /** Display name for the series (e.g. in legends, tooltips, axes). */
   name: string;
   /** *For internal use only* The color of the series to be displayed on the chart - can
-   * be resolved/assigned through differnet mechanisms, but is not meant to be assigned
+   * be resolved/assigned through different mechanisms, but is not meant to be assigned
    * directly by the package consumer and should not be exposed at the top level*/
   _resolvedColor?: string;
   /** Data points for this series. */
@@ -50,9 +52,7 @@ export type LineSeriesVariant = 'solid' | 'dashed' | 'dotted';
  *
  * @typeParam T - Item type for data points. Defaults to {@link DataPoint}.
  */
-export interface LineSeriesConfig<T extends object = DataPoint> extends Exclude<SeriesConfig<T>, '_resolvedColor'> {
-  /** Line style for this series. @default 'solid' */
-  variant?: LineSeriesVariant;
+export interface LineSeriesConfig<T extends object = DataPoint> extends Omit<SeriesConfig<T>, '_resolvedColor'> {
   /**
    * Index into the chart's data-visualization palette (0-based; wraps modulo the
    * palette length). Assign the same index to multiple series to give them the

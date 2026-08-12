@@ -71,7 +71,7 @@ const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
  */
 export interface LineChartTooltipRenderProps<
   T extends object = DataPoint,
-  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+  S extends Optional<SeriesConfig<T>, 'id'> = Optional<SeriesConfig<T>, 'id'>
 > {
   /** id of the series/curve nearest the cursor; undefined when none is hovered. */
   hoveredSeriesId?: string;
@@ -86,10 +86,10 @@ export interface LineChartTooltipRenderProps<
   /**
    * Resolved series in render order — the objects you passed in `series`, with every
    * custom key preserved untouched and a guaranteed `id`. The palette color computed for
-   * each series is exposed under the reserved `resolvedColor` key (not `color`), so a
+   * each series is exposed under the reserved `_resolvedColor` key (not `color`), so a
    * field literally named `color` on your series survives and its type can't collapse.
    */
-  series: (S & { id: string })[];
+  series: (S & SeriesConfig<T> & { id: string })[];
 }
 
 /**

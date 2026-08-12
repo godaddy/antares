@@ -7,13 +7,6 @@ import { Text } from '#components/text';
 import styles from './index.module.css';
 
 /**
- * Props for the Legend component.
- *
- * Accepts the same series shape used by chart components (subset of {@link SeriesConfig}:
- * id, name). Use with the same series config as the chart so labels stay in sync.
- * Colors are handled by the theme.
- */
-/**
  * Series subset the legend renders. Both extra fields are optional and line-specific, and are
  * only honored when {@link LegendProps.useSeriesStyles} is set: `variant` set to 'dashed' or
  * 'dotted' makes the swatch a matching line instead of the default color dot; `color` overrides
@@ -24,6 +17,13 @@ interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name' | '_resolved
   variant?: LineSeriesVariant;
 }
 
+/**
+ * Props for the Legend component.
+ *
+ * Accepts the same series shape used by chart components (subset of {@link SeriesConfig}:
+ * id, name). Use with the same series config as the chart so labels stay in sync.
+ * Colors are handled by the theme.
+ */
 export interface LegendProps
   extends Omit<FlexProps<'div'>, 'children' | 'direction' | 'display' | 'alignItems' | 'gap'> {
   /** Series to display in the legend (id, name, optional line variant) */
