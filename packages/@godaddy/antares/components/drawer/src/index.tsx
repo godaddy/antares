@@ -116,6 +116,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           ref={ref}
           id={id}
           aria-label={ariaLabel}
+          flex={1}
           {...contentProps}
           as={RACDialog}
           className={cx(styles.dialog, contentProps?.className)}
