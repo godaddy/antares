@@ -1,16 +1,15 @@
 export {
   Menu,
   type MenuProps,
+  MenuGroup,
+  type MenuGroupProps,
   MenuItem,
   type MenuItemProps,
-  MenuSection,
-  type MenuSectionProps,
-  MenuHeader,
-  type MenuHeaderProps,
   MenuSeparator,
   type MenuSeparatorProps,
   MenuTrigger,
   type MenuTriggerProps,
   SubmenuTrigger,
-  type SubmenuTriggerProps
+  type SubmenuTriggerProps,
+  type Selection
 } from '#components/menu';

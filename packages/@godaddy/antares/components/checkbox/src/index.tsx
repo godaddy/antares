@@ -13,6 +13,44 @@ import { cx } from 'cva';
 import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
+export interface CheckboxIndicatorProps {
+  /** Whether the control is selected. */
+  isSelected?: boolean;
+  /** Whether the control is in an indeterminate state. */
+  isIndeterminate?: boolean;
+  /** Additional CSS class for the indicator. */
+  className?: string;
+}
+
+/**
+ * Presentational checkbox indicator: the box plus its check/minus glyph.
+ *
+ * Decorative by default (`aria-hidden`) - the surrounding control owns
+ * interaction and accessibility. It carries its own `data-selected` /
+ * `data-indeterminate` so it renders correctly outside an interactive
+ * `Checkbox` (e.g. as a selection indicator inside a menu item).
+ *
+ * @param props - {@link CheckboxIndicatorProps}
+ */
+export function CheckboxIndicator({ isSelected, isIndeterminate, className }: CheckboxIndicatorProps) {
+  return (
+    <Flex
+      aria-hidden="true"
+      alignItems="center"
+      justifyContent="center"
+      data-selected={isSelected || undefined}
+      data-indeterminate={isIndeterminate || undefined}
+      className={cx(styles.indicator, className)}
+    >
+      {isIndeterminate ? (
+        <Icon icon="minus" className={styles.indeterminateIcon} aria-hidden="true" />
+      ) : (
+        isSelected && <Icon icon="checkmark" className={styles.selectedIcon} aria-hidden="true" />
+      )}
+    </Flex>
+  );
+}
+
 export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, FlexOwnProps {
   /** The content of the checkbox label. */
   children?: ReactNode;
@@ -31,17 +69,7 @@ export function Checkbox(props: CheckboxProps) {
         {function renderCheckbox({ isSelected, isIndeterminate }) {
           return (
             <Flex alignItems="center" gap="sm">
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                className={cx(styles.indicator, isIndeterminate && styles.indeterminate)}
-              >
-                {isIndeterminate ? (
-                  <Icon icon="minus" className={styles.indeterminateIcon} aria-hidden="true" />
-                ) : (
-                  isSelected && <Icon icon="checkmark" className={styles.selectedIcon} aria-hidden="true" />
-                )}
-              </Flex>
+              <CheckboxIndicator isSelected={isSelected} isIndeterminate={isIndeterminate} />
               {children}
             </Flex>
           );
