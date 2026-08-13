@@ -257,7 +257,20 @@ function assertNoStoryCollisions(
       if (examples.length === 0) return sourceFile;
 
       const where = filePath || 'stories file';
-      const byStoryName = new Map(examples.map((example) => [example.storyName, example]));
+      const byStoryName = new Map<string, ExampleDescriptor>();
+
+      // Two examples reducing to one story name declare it twice without any help
+      // from the rest of the file, so they are caught before inspecting statements.
+      for (const example of examples) {
+        const existing = byStoryName.get(example.storyName);
+        if (existing) {
+          throw new Error(
+            `${where}: ${existing.importPath} and ${example.importPath} both generate a story ` +
+              `named "${example.storyName}". Rename one of the example exports.`
+          );
+        }
+        byStoryName.set(example.storyName, example);
+      }
 
       for (const statement of sourceFile.statements) {
         if (isGeneratedStory(statement, byStoryName)) continue;

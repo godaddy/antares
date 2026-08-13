@@ -148,6 +148,12 @@ describe('csf-transformer', function csfTransformerTests() {
     ).rejects.toThrow(/collides with the `Default` declaration/);
   });
 
+  it('fails when two examples reduce to the same story name', async function reportsDuplicateStoryName() {
+    await expect(
+      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/duplicate.stories.tsx') })
+    ).rejects.toThrow(/one\.tsx and \.\/duplicate-examples\/two\.tsx both generate a story named "Primary"/);
+  });
+
   it('keeps a property named after an import from counting as a use of it', async function propertyKeyIsNotAUse() {
     const code = `
       import { Widget } from './comp.tsx';
