@@ -50,8 +50,8 @@
   border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
 }
 
-.checkbox[data-selected] .indicator,
-.checkbox[data-indeterminate] .indicator {
+.indicator[data-selected],
+.indicator[data-indeterminate] {
   background: var(--color-input-background-selected, var(--ux-sywk25, #1bdbdb));
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #1bdbdb));
 }

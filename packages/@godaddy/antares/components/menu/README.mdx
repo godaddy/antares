@@ -1,17 +1,25 @@
 ---
 title: Menu
-description: Accessible dropdown menu supporting keyboard navigation, nested submenus, and flexible item rendering
+description: Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.
 ---
-import { Meta, ArgTypes, Source, Story } from '@storybook/addon-docs/blocks';
-import SourceMenu from './examples/menu.tsx?raw';
-import SourceMenuSubmenu from './examples/menu-submenu.tsx?raw';
-import SourceMenuSelection from './examples/menu-selection.tsx?raw';
-import SourceMenuSections from './examples/menu-sections.tsx?raw';
+import { Meta, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './menu.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-Accessible dropdown menu supporting keyboard navigation, nested submenus, single/multiple selection modes, and flexible item rendering with links and sections.
+An accessible dropdown menu built on React Aria. It supports grouping with optional
+titles, multi-select checkbox items, leading icons, submenus, and two sizes. It
+reuses Antares' `Popover` for the overlay and `Checkbox` indicator for selection.
+
+## Features
+
+- Grouping with an optional title via `MenuGroup`, plus `MenuSeparator` dividers
+- Multi-select groups: set `selectionMode="multiple"` on a `MenuGroup` to render
+  its items as checkboxes, while other groups stay plain action items
+- Optional leading `icon` per item; links (`href`) and disabled items
+- Submenus via `SubmenuTrigger`
+- Two sizes (`sm`, `md`); set `size` explicitly on each submenu `Menu`
+- Usable anchored to a trigger or standalone (e.g. inside a bottom-sheet `Drawer`)
 
 ## Installation
 
@@ -19,149 +27,48 @@ Accessible dropdown menu supporting keyboard navigation, nested submenus, single
 npm install --save @godaddy/antares
 ```
 
-## Props
-
-<ArgTypes of={Stories.Props} />
-
 ## Examples
 
-### Basic
-
-<Story of={Stories.Basic} inline />
-<Source language="tsx" code={SourceMenu} />
-
-### With Submenus
-
-<Story of={Stories.WithSubmenus} inline />
-<Source language="tsx" code={SourceMenuSubmenu} />
-
-### With Selection
-
-<Story of={Stories.WithSelection} inline />
-<Source language="tsx" code={SourceMenuSelection} />
-
-### With Sections
-
-<Story of={Stories.WithSections} inline />
-<Source language="tsx" code={SourceMenuSections} />
-
-## Customization
-
-### Data Attributes
-
-React Aria Components automatically adds data attributes for styling different states:
-
-**Menu Items:** `data-hovered`, `data-focused`, `data-pressed`, `data-selected`, `data-disabled`
-
-**Popover:** `data-entering`, `data-exiting`
-
-```css
-[data-selected] {
-  background-color: #eff6ff;
-  color: #1e40af;
-}
-
-[data-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-[data-entering] {
-  animation: slideIn 0.2s ease-out;
-}
-```
-
-### Component Customization
-
-Individual child components can be styled by passing `className` props:
-
-```jsx
-<Menu>
-  <MenuItem id="special" className="premium-item">
-    Premium Feature
-  </MenuItem>
-  <MenuSection className="featured-section">
-    <MenuHeader>Featured</MenuHeader>
-    <MenuItem id="new">What's New</MenuItem>
-  </MenuSection>
-</Menu>
-```
+<Examples of={Stories.Examples} />
 
 ## Accessibility
 
-### Keyboard Navigation
+- **Space/Enter**: activate an item; **Escape**: close
+- **Arrow Up/Down**: move between items; **Home/End**: first/last
+- **Arrow Right/Left**: open/close a submenu
+- **Type to select**: jump to a matching item (string labels are used as `textValue`)
+- Multi-select items use RAC's `menuitemcheckbox` role; the checkbox indicator is
+  decorative (`aria-hidden`) and the item owns interaction
 
-- **Space/Enter**: Opens menu and activates items
-- **Arrow Down/Up**: Navigate through items
-- **Arrow Right**: Opens submenu
-- **Arrow Left**: Closes submenu
-- **Home/End**: Jump to first/last item
-- **Escape**: Closes menu
-- **Tab**: Closes menu and moves to next element
-- **Type to select**: Type to jump to matching items
+## Best Practices
 
-## Troubleshooting
+- Give each selectable `MenuItem` a stable `id`, and provide the `Menu` an
+  `aria-label` when there is no visible label.
+- Use a leading `icon` for recognition, not as the only label - keep a text label.
+- Reserve checkbox groups for multi-select; use plain groups for one-shot actions.
+- A `Menu` is a collection: it only renders `MenuItem`, `MenuGroup`,
+  `MenuSeparator`, and `SubmenuTrigger`. For rich content (a `Calendar`, a form),
+  close the menu from `onAction` and open a separate `Popover` anchored with
+  `triggerRef` instead of putting it in a submenu.
 
-### Submenu Not Opening
+## Props
 
-```jsx
-// ❌ Wrong: MenuItem used directly
-<MenuItem id="share">
-  Share
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
-</MenuItem>
+### Menu
 
-// ✅ Correct: SubmenuTrigger wrapping MenuItem and Menu
-<SubmenuTrigger>
-  <MenuItem id="share">Share</MenuItem>
-  <Menu>
-    <MenuItem id="email">Email</MenuItem>
-  </Menu>
-</SubmenuTrigger>
-```
+<ArgTypes of={Stories.Props} />
 
-### Selection Not Working
+### MenuTrigger
 
-```jsx
-// ❌ Wrong: Using both controlled and uncontrolled props
-<Menu
-  selectedKeys={selected}
-  defaultSelectedKeys={['option1']}
-  selectionMode="single"
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
+<ArgTypes of={Stories.MenuTriggerProps} />
 
-// ✅ Controlled mode
-<Menu
-  selectionMode="single"
-  selectedKeys={selected}
-  onSelectionChange={setSelected}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
+### MenuGroup
 
-// ✅ Uncontrolled mode
-<Menu
-  selectionMode="single"
-  defaultSelectedKeys={['option1']}
->
-  <MenuItem id="option1">Option 1</MenuItem>
-</Menu>
-```
+<ArgTypes of={Stories.MenuGroupProps} />
 
-### Styling Not Applying
+### MenuItem
 
-```css
-/* ❌ May not have enough specificity */
-.item {
-  background-color: red;
-}
+<ArgTypes of={Stories.MenuItemProps} />
 
-/* ✅ Use data attributes for higher specificity */
-.my-menu [data-selected] {
-  background-color: red;
-}
-```
+### SubmenuTrigger
+
+<ArgTypes of={Stories.SubmenuTriggerProps} />
