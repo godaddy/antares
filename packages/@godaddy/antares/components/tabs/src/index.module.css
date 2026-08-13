@@ -1,0 +1,108 @@
+.tabs {
+  --_tabs-item-fg: var(--color-action-text-secondary-default, var(--ux-1xeg43i, #767676));
+  --_tabs-item-fg-selected: var(--color-action-text-secondary-selected, var(--ux-9gvyua, #111111));
+  --_tabs-item-border: var(--color-action-border-secondary-default, var(--ux-ako3l5, transparent));
+  --_tabs-item-border-selected: var(--color-action-border-secondary-selected, var(--ux-1pvg8dx, #1bdbdb));
+  --_tabs-item-hover-bg: var(--color-action-background-secondary-hovered, var(--ux-15qjz45, rgba(17, 17, 17, 0.1)));
+  --_tabs-border: var(--color-border-low-contrast, var(--ux-ako3l5, #d6d6d6));
+  color: var(--_tabs-item-fg);
+  min-width: 0;
+}
+
+.listShell {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--_tabs-item-border);
+}
+
+.viewport {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    scroll-behavior: auto;
+  }
+}
+
+.list {
+  display: flex;
+  width: max-content;
+}
+
+.tab {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 48px;
+  padding: 11px 16px;
+  border: 1px solid transparent;
+  border-bottom-width: 4px;
+  color: var(--_tabs-item-fg);
+  font-family: var(--ux-15ks663, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 18px;
+  scroll-snap-align: start;
+
+  &:where([data-hovered]:not([data-disabled])),
+  &:where([data-pressed]:not([data-disabled])) {
+    background: var(--_tabs-item-hover-bg);
+  }
+
+  &:where([data-focus-visible]:not([data-disabled])) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  &:where([data-disabled]) {
+    cursor: none;
+    opacity: 0.4;
+  }
+
+  &:where([data-selected]) {
+    color: var(--_tabs-item-fg-selected);
+  }
+
+  &:where([data-design="underline"][data-selected]) {
+    border-bottom-color: var(--_tabs-item-border-selected);
+  }
+
+  &:where([data-design="manila"]) {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-color: var(--_tabs-border);
+  }
+
+  &:where([data-design="manila"][data-selected]) {
+    border-color: var(--_tabs-border);
+    border-bottom-color: transparent;
+  }
+}
+
+.controls {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.controls button {
+  min-width: 48px;
+  min-height: 48px;
+  border-bottom: 0;
+}
+
+.panels {
+  min-width: 0;
+}
+
+.panel {
+  padding-block: 16px;
+}

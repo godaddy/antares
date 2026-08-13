@@ -1,0 +1,56 @@
+---
+title: Tabs
+description: Tabs organize peer sections of content and let users switch between them without leaving the page.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './tabs.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Accessible Tabs semantics powered by React Aria Components.
+- Underline and Manila visual treatments.
+- Controlled and uncontrolled selection.
+- Automatic horizontal overflow controls that move one tab at a time.
+- Localized labels for the automatic overflow controls.
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
+
+`ariaLabels.previous` and `ariaLabels.next` are required because the overflow controls are interactive and must be announced with localized action labels.
+
+`TabList` must be rendered inside `Tabs`. Each `Tab` must have an `id` that matches its associated `TabPanel`.
+
+## Customization
+
+The component exposes state through data attributes:
+
+- `Tabs`: `data-design="underline"` or `data-design="manila"`.
+- `Tab`: `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
+- `TabPanel`: `data-inert` when a force-mounted inactive panel is not interactive.
+
+Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components.
+
+## Best Practices
+
+- Use Tabs for peer panels on the same page and URL.
+- Keep the number of tabs small enough for users to understand the available sections.
+- Do not use Tabs for primary application navigation or route changes.
+- Do not render a standalone `Tab`; compose it inside `Tabs` and `TabList`.
+
+## Props
+
+<ArgTypes of={Stories.Props} />
