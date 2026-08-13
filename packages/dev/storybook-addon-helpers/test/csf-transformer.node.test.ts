@@ -142,6 +142,12 @@ describe('csf-transformer', function csfTransformerTests() {
     ).rejects.toThrow(/"Default" story generated from \.\/examples\/default\.tsx collides with the `Default` import/);
   });
 
+  it('fails when a destructured binding collides with an example story export', async function reportsDestructuredCollision() {
+    await expect(
+      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/destructure-collision.stories.tsx') })
+    ).rejects.toThrow(/collides with the `Default` declaration/);
+  });
+
   it('keeps a property named after an import from counting as a use of it', async function propertyKeyIsNotAUse() {
     const code = `
       import { Widget } from './comp.tsx';

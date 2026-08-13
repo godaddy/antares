@@ -256,6 +256,7 @@ function assertNoStoryCollisions(
     return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
       if (examples.length === 0) return sourceFile;
 
+      const where = filePath || 'stories file';
       const byStoryName = new Map(examples.map((example) => [example.storyName, example]));
 
       for (const statement of sourceFile.statements) {
@@ -266,7 +267,7 @@ function assertNoStoryCollisions(
           if (!example) continue;
 
           throw new Error(
-            `${filePath || 'stories file'}: the "${example.storyName}" story generated from ` +
+            `${where}: the "${example.storyName}" story generated from ` +
               `${example.importPath} collides with the \`${name}\` ${origin} in this file. ` +
               `Rename the example file or the colliding binding.`
           );
@@ -314,9 +315,9 @@ function declaredNames(statement: ts.Statement): [name: string, origin: string][
   }
 
   if (ts.isVariableStatement(statement)) {
-    return statement.declarationList.declarations
-      .filter((declaration) => ts.isIdentifier(declaration.name))
-      .map((declaration) => [(declaration.name as ts.Identifier).text, 'declaration']);
+    return statement.declarationList.declarations.flatMap((declaration) =>
+      bindingIdentifiers(declaration.name).map((name) => [name, 'declaration'] as [string, string])
+    );
   }
 
   if ((ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) && statement.name) {
@@ -324,6 +325,12 @@ function declaredNames(statement: ts.Statement): [name: string, origin: string][
   }
 
   return [];
+}
+
+/** Every identifier a binding name introduces, destructuring patterns included. */
+function bindingIdentifiers(name: ts.BindingName): string[] {
+  if (ts.isIdentifier(name)) return [name.text];
+  return name.elements.flatMap((element) => (ts.isBindingElement(element) ? bindingIdentifiers(element.name) : []));
 }
 
 /**
