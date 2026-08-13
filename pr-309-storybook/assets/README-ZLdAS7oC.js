@@ -1,0 +1,162 @@
+import{i as e}from"./preload-helper-CUucOUc4.js";import{y as t}from"./iframe-BeSkQNJe.js";import{S as n,c as r,l as i,n as a,s as o,u as s}from"./blocks-C7EuLeTc.js";import{t as c}from"./mdx-react-shim--lZVkY-7.js";import{Controlled as l,Default as u,Disabled as d,Manila as f,Overflow as p,Props as m,n as h,t as g}from"./tabs.stories-M1hRaGgs.js";function _(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,ul:`ul`,...n(),...e.components};return(0,y.jsxs)(y.Fragment,{children:[(0,y.jsx)(o,{of:h,name:`Overview`}),`
+`,(0,y.jsx)(t.h1,{id:`tabs`,children:`Tabs`}),`
+`,(0,y.jsx)(t.p,{children:`Tabs organize peer sections of content and let users switch between them without leaving the page.`}),`
+`,(0,y.jsx)(t.h2,{id:`features`,children:`Features`}),`
+`,(0,y.jsxs)(t.ul,{children:[`
+`,(0,y.jsx)(t.li,{children:`Accessible Tabs semantics powered by React Aria Components.`}),`
+`,(0,y.jsx)(t.li,{children:`Underline and Manila visual treatments.`}),`
+`,(0,y.jsx)(t.li,{children:`Controlled and uncontrolled selection.`}),`
+`,(0,y.jsx)(t.li,{children:`Automatic horizontal overflow controls that move one tab at a time.`}),`
+`,(0,y.jsx)(t.li,{children:`Localized labels for the automatic overflow controls.`}),`
+`]}),`
+`,(0,y.jsx)(t.h2,{id:`installation`,children:`Installation`}),`
+`,(0,y.jsx)(t.pre,{children:(0,y.jsx)(t.code,{className:`language-bash`,children:`npm install @godaddy/antares
+`})}),`
+`,(0,y.jsx)(t.h2,{id:`examples`,children:`Examples`}),`
+`,(0,y.jsx)(t.h3,{id:`default`,children:`Default`}),`
+`,(0,y.jsx)(t.p,{children:`Switch between peer sections of content on the same page.`}),`
+`,(0,y.jsx)(i,{of:u,inline:!0}),`
+`,(0,y.jsx)(r,{code:`import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
+
+export function DefaultExample() {
+  return (
+    <Tabs aria-label="Account settings" ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}>
+      <TabList>
+        <Tab id="account">Account</Tab>
+        <Tab id="billing">Billing</Tab>
+        <Tab id="security">Security</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel id="account">Account settings</TabPanel>
+        <TabPanel id="billing">Billing settings</TabPanel>
+        <TabPanel id="security">Security settings</TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
+}`,language:`tsx`}),`
+`,(0,y.jsx)(t.h3,{id:`controlled`,children:`Controlled`}),`
+`,(0,y.jsx)(t.p,{children:`Control the selected panel from application state.`}),`
+`,(0,y.jsx)(i,{of:l,inline:!0}),`
+`,(0,y.jsx)(r,{code:`import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
+import { useState } from 'react';
+
+export function ControlledExample() {
+  const [selectedKey, setSelectedKey] = useState('billing');
+
+  return (
+    <>
+      <Tabs
+        aria-label="Account settings"
+        ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}
+        selectedKey={selectedKey}
+        onSelectionChange={(key) => setSelectedKey(String(key))}
+      >
+        <TabList>
+          <Tab id="account">Account</Tab>
+          <Tab id="billing">Billing</Tab>
+          <Tab id="security">Security</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel id="account">Account settings</TabPanel>
+          <TabPanel id="billing">Billing settings</TabPanel>
+          <TabPanel id="security">Security settings</TabPanel>
+        </TabPanels>
+      </Tabs>
+      <p>Current selection: {selectedKey}</p>
+    </>
+  );
+}`,language:`tsx`}),`
+`,(0,y.jsx)(t.h3,{id:`disabled`,children:`Disabled`}),`
+`,(0,y.jsx)(t.p,{children:`Disable a section while keeping the remaining sections available.`}),`
+`,(0,y.jsx)(i,{of:d,inline:!0}),`
+`,(0,y.jsx)(r,{code:`import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
+
+export function DisabledExample() {
+  return (
+    <Tabs aria-label="Account settings" ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}>
+      <TabList>
+        <Tab id="account">Account</Tab>
+        <Tab id="billing" isDisabled>
+          Billing
+        </Tab>
+        <Tab id="security">Security</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel id="account">Account settings</TabPanel>
+        <TabPanel id="billing">Billing settings</TabPanel>
+        <TabPanel id="security">Security settings</TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
+}`,language:`tsx`}),`
+`,(0,y.jsx)(t.h3,{id:`manila`,children:`Manila`}),`
+`,(0,y.jsx)(t.p,{children:`Use the folder-style Manila treatment for document-oriented sections.`}),`
+`,(0,y.jsx)(i,{of:f,inline:!0}),`
+`,(0,y.jsx)(r,{code:`import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
+
+export function ManilaExample() {
+  return (
+    <Tabs aria-label="Documents" ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design="manila">
+      <TabList>
+        <Tab id="recent">Recent</Tab>
+        <Tab id="shared">Shared</Tab>
+        <Tab id="archived">Archived</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel id="recent">Recent documents</TabPanel>
+        <TabPanel id="shared">Shared documents</TabPanel>
+        <TabPanel id="archived">Archived documents</TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
+}`,language:`tsx`}),`
+`,(0,y.jsx)(t.h3,{id:`overflow`,children:`Overflow`}),`
+`,(0,y.jsx)(t.p,{children:`When the tab strip is narrower than its content, the group adds controls that move one tab at a time.`}),`
+`,(0,y.jsx)(i,{of:p,inline:!0}),`
+`,(0,y.jsx)(r,{code:`import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
+
+export function OverflowExample({ maxWidth = '320px' }: { maxWidth?: string }) {
+  return (
+    <Tabs
+      aria-label="Product settings"
+      ariaLabels={{ previous: 'Scroll previous tabs', next: 'Scroll next tabs' }}
+      style={{ width: maxWidth, maxWidth }}
+    >
+      <TabList>
+        <Tab id="overview">Overview</Tab>
+        <Tab id="availability">Availability</Tab>
+        <Tab id="shipping">Shipping</Tab>
+        <Tab id="returns">Returns</Tab>
+        <Tab id="notifications">Notifications</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel id="overview">Overview</TabPanel>
+        <TabPanel id="availability">Availability</TabPanel>
+        <TabPanel id="shipping">Shipping</TabPanel>
+        <TabPanel id="returns">Returns</TabPanel>
+        <TabPanel id="notifications">Notifications</TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
+}`,language:`tsx`}),`
+`,(0,y.jsx)(t.h2,{id:`accessibility`,children:`Accessibility`}),`
+`,(0,y.jsxs)(t.p,{children:[`Tabs require an accessible label on `,(0,y.jsx)(t.code,{children:`TabList`}),`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `,(0,y.jsx)(t.code,{children:`keyboardActivation="manual"`}),` when focus should move independently of selection.`]}),`
+`,(0,y.jsxs)(t.p,{children:[(0,y.jsx)(t.code,{children:`ariaLabels.previous`}),` and `,(0,y.jsx)(t.code,{children:`ariaLabels.next`}),` are required because the overflow controls are interactive and must be announced with localized action labels.`]}),`
+`,(0,y.jsxs)(t.p,{children:[(0,y.jsx)(t.code,{children:`TabList`}),` must be rendered inside `,(0,y.jsx)(t.code,{children:`Tabs`}),`. Each `,(0,y.jsx)(t.code,{children:`Tab`}),` must have an `,(0,y.jsx)(t.code,{children:`id`}),` that matches its associated `,(0,y.jsx)(t.code,{children:`TabPanel`}),`.`]}),`
+`,(0,y.jsx)(t.h2,{id:`customization`,children:`Customization`}),`
+`,(0,y.jsx)(t.p,{children:`The component exposes state through data attributes:`}),`
+`,(0,y.jsxs)(t.ul,{children:[`
+`,(0,y.jsxs)(t.li,{children:[(0,y.jsx)(t.code,{children:`Tabs`}),`: `,(0,y.jsx)(t.code,{children:`data-design="underline"`}),` or `,(0,y.jsx)(t.code,{children:`data-design="manila"`}),`.`]}),`
+`,(0,y.jsxs)(t.li,{children:[(0,y.jsx)(t.code,{children:`Tab`}),`: `,(0,y.jsx)(t.code,{children:`data-selected`}),`, `,(0,y.jsx)(t.code,{children:`data-hovered`}),`, `,(0,y.jsx)(t.code,{children:`data-pressed`}),`, `,(0,y.jsx)(t.code,{children:`data-focus-visible`}),`, and `,(0,y.jsx)(t.code,{children:`data-disabled`}),`.`]}),`
+`,(0,y.jsxs)(t.li,{children:[(0,y.jsx)(t.code,{children:`TabPanel`}),`: `,(0,y.jsx)(t.code,{children:`data-inert`}),` when a force-mounted inactive panel is not interactive.`]}),`
+`]}),`
+`,(0,y.jsx)(t.p,{children:`Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components.`}),`
+`,(0,y.jsx)(t.h2,{id:`best-practices`,children:`Best Practices`}),`
+`,(0,y.jsxs)(t.ul,{children:[`
+`,(0,y.jsx)(t.li,{children:`Use Tabs for peer panels on the same page and URL.`}),`
+`,(0,y.jsx)(t.li,{children:`Keep the number of tabs small enough for users to understand the available sections.`}),`
+`,(0,y.jsx)(t.li,{children:`Do not use Tabs for primary application navigation or route changes.`}),`
+`,(0,y.jsxs)(t.li,{children:[`Do not render a standalone `,(0,y.jsx)(t.code,{children:`Tab`}),`; compose it inside `,(0,y.jsx)(t.code,{children:`Tabs`}),` and `,(0,y.jsx)(t.code,{children:`TabList`}),`.`]}),`
+`]}),`
+`,(0,y.jsx)(t.h2,{id:`props`,children:`Props`}),`
+`,(0,y.jsx)(a,{of:m})]})}function v(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,y.jsx)(t,{...e,children:(0,y.jsx)(_,{...e})}):_(e)}var y;e((()=>{y=t(),c(),s(),g()}))();export{v as default};
