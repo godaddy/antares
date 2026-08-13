@@ -28,6 +28,14 @@ describe('extractComponentDocs', function extractComponentDocsTests() {
     expect(extract('FCComponent').props.map((prop) => prop.name)).toEqual(['fc']);
   });
 
+  it('extracts props from a qualified FC annotation', function extractsQualifiedFC() {
+    expect(extract('QualifiedFCComponent').props.map((prop) => prop.name)).toEqual(['qualifiedFc']);
+  });
+
+  it('extracts ForwardRefExoticComponent type argument props', function extractsForwardRefExotic() {
+    expect(extract('ForwardRefExoticComponent').props.map((prop) => prop.name)).toEqual(['exotic']);
+  });
+
   it('extracts polymorphic forwardRef props cast with `as`', function extractsPolymorphicForwardRef() {
     expect(extract('PolymorphicForwardRefComponent').props.map((prop) => prop.name)).toEqual(['polyProp', 'as']);
   });
