@@ -1,17 +1,18 @@
-import { CustomIconsExample } from '../examples/menu-custom-icons.tsx';
-import { DisabledExample } from '../examples/menu-disabled.tsx';
-import { LinksExample } from '../examples/menu-links.tsx';
-import { PlaygroundExample } from '../examples/menu-playground.tsx';
-import { SelectionExample } from '../examples/menu-selection.tsx';
-import { SectionsExample } from '../examples/menu-sections.tsx';
-import { SubmenuExample } from '../examples/menu-submenu.tsx';
-import { BasicExample } from '../examples/menu.tsx';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it } from 'vitest';
 import assume from 'assume';
+import { DefaultExample } from '../examples/default.tsx';
+import { GroupsExample } from '../examples/groups.tsx';
+import { SubmenuExample } from '../examples/submenu.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { PlaygroundExample } from '../examples/menu-playground.tsx';
+import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
-/** Wait for element to be visible by polling */
+/** Wait for an element to appear by polling. */
 async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 500): Promise<Element> {
   const start = Date.now();
   while (Date.now() - start < timeout) {
@@ -19,260 +20,166 @@ async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeou
     if (el) return el;
     await new Promise((r) => setTimeout(r, 20));
   }
-  // Final attempt - will throw proper error if still not found
   return locator.element();
 }
 
+const settle = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
+
 describe('@godaddy/antares', function antares() {
-  describe('Examples', function examples() {
-    it('renders BasicExample', async function basic() {
-      await render(<BasicExample />);
-
-      const button = page.getByRole('button', { name: 'Actions' });
-      assume(button).is.not.equal(null);
-    });
-
-    it('renders BasicExample and closes on Escape', async function closeOnEscape() {
+  describe('#Menu', function menuTests() {
+    it('opens on trigger click and closes on Escape', async function openClose() {
       const user = userEvent.setup();
-      await render(<BasicExample />);
+      await render(<DefaultExample />);
 
-      const button = page.getByRole('button', { name: 'Actions' });
-      await user.click(button);
-
+      await user.click(page.getByRole('button', { name: 'Actions' }));
       const menu = page.getByRole('menu');
       await waitForElement(menu);
       assume(await menu.query()).is.not.equal(null);
 
       await user.keyboard('{Escape}');
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await settle();
       assume(await menu.query()).equals(null);
     });
 
-    it('renders BasicExample with keyboard navigation', async function keyboard() {
+    it('navigates items with the keyboard', async function keyboardNav() {
       const user = userEvent.setup();
-      await render(<BasicExample />);
+      await render(<DefaultExample />);
 
-      const button = page.getByRole('button', { name: 'Actions' });
-      await user.click(button);
+      await user.click(page.getByRole('button', { name: 'Actions' }));
+      await waitForElement(page.getByRole('menuitem', { name: 'New file' }));
 
-      const newItem = page.getByRole('menuitem', { name: 'New File' });
-      await waitForElement(newItem);
-
-      // Navigate with arrow keys
-      await user.keyboard('{ArrowDown}');
-      await user.keyboard('{ArrowDown}');
-
-      // Verify menu is still open and has focus
-      const menu = page.getByRole('menu');
-      assume(await menu.query()).is.not.equal(null);
+      await user.keyboard('{ArrowDown}{ArrowDown}');
+      assume(await page.getByRole('menu').query()).is.not.equal(null);
     });
 
-    it('renders DisabledExample with disabled state', async function disabled() {
+    it('toggles a checkbox item in a multi-select group', async function toggleCheckbox() {
       const user = userEvent.setup();
-      await render(<DisabledExample />);
+      await render(<GroupsExample />);
 
-      const button = page.getByRole('button', { name: 'Actions' });
-      await user.click(button);
-
-      const disabledItem = page.getByRole('menuitem', { name: 'Disabled' });
-      const el = await waitForElement(disabledItem);
-      assume(el.hasAttribute('aria-disabled')).equals(true);
-    });
-
-    it('renders SectionsExample with headers and separators', async function sections() {
-      const user = userEvent.setup();
-      await render(<SectionsExample />);
-
-      const button = page.getByRole('button', { name: 'View' });
-      await user.click(button);
-
-      const zoomIn = page.getByRole('menuitem', { name: 'Zoom In' });
-      await waitForElement(zoomIn);
-
-      // Verify sections and headers exist
-      const headers = document.querySelectorAll('header[role="presentation"]');
-      assume(headers.length).equals(3); // Zoom, Layout, Appearance
-
-      const separators = document.querySelectorAll('[role="separator"]');
-      assume(separators.length).greaterThan(0);
-
-      const partialSeparator = Array.from(separators).find((sep) =>
-        Array.from(sep.classList).some((c) => c.includes('partial'))
-      );
-      assume(partialSeparator).is.not.equal(undefined);
-    });
-
-    it('renders SelectionExample with single selection', async function single() {
-      const user = userEvent.setup();
-      await render(<SelectionExample />);
-
-      const button = page.getByRole('button', { name: /Align/ });
-      await user.click(button);
-
-      const leftItem = page.getByRole('menuitemradio', { name: 'Align Left' });
-      const el = await waitForElement(leftItem);
-      assume(el.getAttribute('aria-checked')).equals('true');
-
-      // Verify dot icon is present
-      const dotIcon = el.querySelector('[aria-hidden="true"]');
-      assume(dotIcon?.textContent).equals('•');
-    });
-
-    it('renders SelectionExample with multiple selection', async function multiple() {
-      const user = userEvent.setup();
-      await render(<SelectionExample />);
-
-      const button = page.getByRole('button', { name: /Format/ });
-      await user.click(button);
-
-      const boldItem = page.getByRole('menuitemcheckbox', { name: 'Bold' });
-      const italicItem = page.getByRole('menuitemcheckbox', { name: 'Italic' });
-
-      const boldEl = await waitForElement(boldItem);
-      const italicEl = await waitForElement(italicItem);
-      assume(boldEl.getAttribute('aria-checked')).equals('true');
-      assume(italicEl.getAttribute('aria-checked')).equals('true');
-
-      // Verify check icon is present
-      const checkIcon = boldEl.querySelector('[aria-hidden="true"]');
-      assume(checkIcon?.textContent).equals('✓');
-    });
-
-    it('renders SelectionExample and toggles selection', async function toggle() {
-      const user = userEvent.setup();
-      await render(<SelectionExample />);
-
-      const button = page.getByRole('button', { name: /Format/ });
-      await user.click(button);
-
-      const underlineItem = page.getByRole('menuitemcheckbox', { name: 'Underline' });
-      const el = await waitForElement(underlineItem);
+      await user.click(page.getByRole('button', { name: 'View' }));
+      const sizeItem = page.getByRole('menuitemcheckbox', { name: 'Size' });
+      const el = await waitForElement(sizeItem);
       assume(el.getAttribute('aria-checked')).equals('false');
 
-      await user.click(underlineItem);
-
-      const underlineAfter = page.getByRole('menuitemcheckbox', { name: 'Underline' });
-      assume(underlineAfter.element().getAttribute('aria-checked')).equals('true');
+      await user.click(sizeItem);
+      assume(page.getByRole('menuitemcheckbox', { name: 'Size' }).element().getAttribute('aria-checked')).equals(
+        'true'
+      );
     });
 
-    it('renders SubmenuExample and opens on hover', async function submenu() {
+    it('exposes disabled and link items', async function disabledAndLinks() {
+      const user = userEvent.setup();
+      await render(<GroupsExample />);
+
+      await user.click(page.getByRole('button', { name: 'View' }));
+
+      const archive = page.getByRole('menuitem', { name: 'Archive (unavailable)' });
+      const archiveEl = await waitForElement(archive);
+      assume(archiveEl.getAttribute('aria-disabled')).equals('true');
+
+      const docs = page.getByRole('menuitem', { name: 'Documentation' });
+      const docsEl = await waitForElement(docs);
+      assume(docsEl.getAttribute('href')).equals('https://example.com');
+      assume(docsEl.getAttribute('target')).equals('_blank');
+    });
+
+    it('opens a submenu on hover', async function submenuHover() {
       const user = userEvent.setup();
       await render(<SubmenuExample />);
 
-      const button = page.getByRole('button', { name: 'Edit' });
+      await user.click(page.getByRole('button', { name: 'Share' }));
+      const resourcesItem = page.getByRole('menuitem', { name: 'Resources' });
+      await waitForElement(resourcesItem);
+
+      await user.hover(resourcesItem);
+      await settle(200);
+
+      const file = page.getByRole('menuitem', { name: 'File' });
+      await waitForElement(file);
+      assume(await file.query()).is.not.equal(null);
+    });
+
+    it('flips the chevron trigger via aria-expanded', async function chevronFlip() {
+      const user = userEvent.setup();
+      await render(<ControlledExample />);
+
+      const button = page.getByRole('button', { name: 'Options' });
+      assume(button.element().getAttribute('aria-expanded')).equals('false');
+
       await user.click(button);
-
-      const shareItem = page.getByRole('menuitem', { name: 'Share' });
-      await waitForElement(shareItem);
-
-      // Verify chevron icon is present (icon will render SVG from CDN)
-      const chevronIcon = shareItem.element().querySelector('[data-icon]');
-      assume(chevronIcon).is.not.equal(null);
-
-      await user.hover(shareItem);
-
-      await new Promise((resolve) => setTimeout(resolve, 200));
-
-      const emailItem = page.getByRole('menuitem', { name: 'Email' });
-      await waitForElement(emailItem);
-      assume(emailItem.element()).is.not.equal(null);
+      await waitForElement(page.getByRole('menu'));
+      assume(page.getByRole('button', { name: 'Options' }).element().getAttribute('aria-expanded')).equals('true');
     });
 
-    it('renders PlaygroundExample', async function playground() {
-      await render(<PlaygroundExample />);
+    it('seeds an multi-select group', async function uncontrolledDefaults() {
+      const user = userEvent.setup();
+      await render(<MultipleSelectionExample />);
 
-      const button = page.getByRole('button', { name: 'Actions' });
-      assume(button).is.not.equal(null);
+      await user.click(page.getByRole('button', { name: 'Columns' }));
+      const name = page.getByRole('menuitemcheckbox', { name: 'Name' });
+      const el = await waitForElement(name);
+      assume(el.getAttribute('aria-checked')).equals('true');
     });
 
-    it('renders PlaygroundExample with size sm', async function sizeSm() {
+    it('marks the selected item in a single-select group via aria-checked', async function singleSelect() {
+      const user = userEvent.setup();
+      await render(<SingleSelectionExample />);
+
+      await user.click(page.getByRole('button', { name: 'Sort by' }));
+      const recent = page.getByRole('menuitemradio', { name: 'Most recent' });
+      const el = await waitForElement(recent);
+      assume(el.getAttribute('aria-checked')).equals('true');
+
+      const name = page.getByRole('menuitemradio', { name: 'Name' });
+      assume(name.element().getAttribute('aria-checked')).equals('false');
+    });
+
+    it('reflects the sm size via data-size', async function sizeSm() {
       const user = userEvent.setup();
       await render(<PlaygroundExample size="sm" />);
 
-      const button = page.getByRole('button', { name: 'Actions' });
-      await user.click(button);
-
+      await user.click(page.getByRole('button', { name: 'Format' }));
       const menu = page.getByRole('menu');
       const el = await waitForElement(menu);
-      const classList = Array.from(el.classList);
-      assume(classList.some((c) => c.includes('size-sm'))).equals(true);
+      assume(el.getAttribute('data-size')).equals('sm');
     });
 
-    it('renders PlaygroundExample with matchWidth', async function matchWidth() {
+    it('renders a standalone menu inside a bottom sheet and acts on selection', async function bottomSheet() {
       const user = userEvent.setup();
-      await render(<PlaygroundExample matchWidth />);
+      await render(<BottomSheetExample />);
 
-      const button = page.getByRole('button', { name: 'Actions' });
-      await user.click(button);
+      await user.click(page.getByRole('button', { name: 'Open menu' }));
+      const profile = page.getByRole('menuitem', { name: 'Profile' });
+      await waitForElement(profile);
+      assume(await profile.query()).is.not.equal(null);
 
-      const menu = page.getByRole('menu');
-      const el = await waitForElement(menu);
-      const popover = el.parentElement;
-      const classList = Array.from(popover?.classList || []);
-      assume(classList.some((c) => c.includes('matchWidth'))).equals(true);
+      await user.click(profile);
+      await settle();
+      assume(await page.getByRole('menuitem', { name: 'Profile' }).query()).equals(null);
     });
 
-    it('renders LinksExample with href attributes', async function links() {
+    it('opens a calendar popover from an item and closes it on selection', async function richContent() {
       const user = userEvent.setup();
-      await render(<LinksExample />);
+      await render(<RichContentExample />);
 
-      const button = page.getByRole('button', { name: 'Navigation' });
-      await user.click(button);
+      await user.click(page.getByRole('button', { name: 'Schedule' }));
+      const pick = page.getByRole('menuitem', { name: 'Pick a date' });
+      await waitForElement(pick);
 
-      const dashboardLink = page.getByRole('menuitem', { name: 'Dashboard' });
-      const settingsLink = page.getByRole('menuitem', { name: 'Settings' });
-      const externalLink = page.getByRole('menuitem', { name: 'External Link' });
+      await user.click(pick);
+      await settle();
 
-      const dashEl = await waitForElement(dashboardLink);
-      const setEl = await waitForElement(settingsLink);
-      const extEl = await waitForElement(externalLink);
+      // The menu closed and the calendar popover took its place.
+      assume(await page.getByRole('menu').query()).equals(null);
+      const day = page.getByRole('button', { name: /March 20, 2024/ });
+      await waitForElement(day);
 
-      assume(dashEl.getAttribute('href')).equals('/dashboard');
-      assume(setEl.getAttribute('href')).equals('/settings');
-      assume(extEl.getAttribute('href')).equals('https://example.com');
-      assume(extEl.getAttribute('target')).equals('_blank');
-      assume(extEl.getAttribute('rel')).equals('noopener noreferrer');
-    });
+      await user.click(day);
+      await settle();
 
-    it('renders CustomIconsExample with custom icon slots', async function customIcons() {
-      const user = userEvent.setup();
-      await render(<CustomIconsExample />);
-
-      const checkButton = page.getByRole('button', { name: 'Custom Check Icon' });
-      await user.click(checkButton);
-
-      const boldItem = page.getByRole('menuitemcheckbox', { name: /Bold/ });
-      const el = await waitForElement(boldItem);
-      assume(el.getAttribute('aria-checked')).equals('true');
-
-      const customCheckIcon = el.querySelector('[slot="check"]');
-      assume(customCheckIcon?.textContent).equals('✅');
-
-      await user.keyboard('{Escape}');
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const dotButton = page.getByRole('button', { name: 'Custom Dot Icon' });
-      await user.click(dotButton);
-
-      const leftItem = page.getByRole('menuitemradio', { name: /Left/ });
-      const leftEl = await waitForElement(leftItem);
-      assume(leftEl.getAttribute('aria-checked')).equals('true');
-
-      const customDotIcon = leftEl.querySelector('[slot="dot"]');
-      assume(customDotIcon?.textContent).equals('▪');
-
-      await user.keyboard('{Escape}');
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const chevronButton = page.getByRole('button', { name: 'Custom Chevron Icon' });
-      await user.click(chevronButton);
-
-      const shareItem = page.getByRole('menuitem', { name: /Share/ });
-      const shareEl = await waitForElement(shareItem);
-
-      const customChevronIcon = shareEl.querySelector('[slot="chevron"]');
-      assume(customChevronIcon?.textContent).equals('→');
+      // Picking a day closes the popover and updates the summary text.
+      assume(await page.getByRole('button', { name: /March 20, 2024/ }).query()).equals(null);
+      assume(document.body.textContent).contains('Publishing on 2024-03-20');
     });
   });
 });
