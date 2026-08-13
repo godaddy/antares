@@ -6,8 +6,8 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
  */
 export function ManilaExample() {
   return (
-    <Tabs aria-label="Documents" ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design="manila">
-      <TabList>
+    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design="manila">
+      <TabList aria-label="Documents">
         <Tab id="recent">Recent</Tab>
         <Tab id="shared">Shared</Tab>
         <Tab id="archived">Archived</Tab>

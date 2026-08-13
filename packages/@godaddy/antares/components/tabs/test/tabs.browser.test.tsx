@@ -4,12 +4,15 @@ import { describe, expect, it } from 'vitest';
 import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Tabs', function tabsTests() {
     it('selects a tab and shows its panel', async function selectsTab() {
       const user = userEvent.setup();
       await render(<DefaultExample />);
+
+      await expect.element(page.getByRole('tablist', { name: 'Account settings' })).toBeVisible();
 
       await user.click(page.getByRole('tab', { name: 'Billing' }));
 
@@ -54,11 +57,11 @@ describe('@godaddy/antares', function antares() {
       await expect.poll(() => viewport.scrollLeft).toBeLessThan(positionBeforePrevious);
     });
 
-    it('hides the cursor for disabled tabs', async function disabledCursor() {
+    it('shows a not-allowed cursor for disabled tabs', async function disabledCursor() {
       await render(<DisabledExample />);
       const disabled = page.getByRole('tab', { name: 'Billing' });
 
-      await expect.poll(() => getComputedStyle(disabled.element()).cursor).toBe('none');
+      await expect.poll(() => getComputedStyle(disabled.element()).cursor).toBe('not-allowed');
     });
 
     it('disables next at the end and enables previous after manual scrolling', async function overflowEndState() {
@@ -94,6 +97,18 @@ describe('@godaddy/antares', function antares() {
       root.style.maxWidth = '1000px';
 
       await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).not.toBeInTheDocument();
+    });
+
+    it('scrolls toward the logical next tabs in RTL', async function rtlScrollDirection() {
+      const user = userEvent.setup();
+      await render(<RTLExample />);
+      const viewport = document.querySelector('[class*="viewport"]');
+      if (!viewport) throw new Error('Tabs viewport not found');
+      const initialScrollLeft = viewport.scrollLeft;
+
+      await user.click(page.getByRole('button', { name: 'Scroll next tabs' }));
+
+      await expect.poll(() => viewport.scrollLeft).not.toBe(initialScrollLeft);
     });
   });
 });

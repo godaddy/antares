@@ -6,8 +6,8 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
  */
 export function DisabledExample() {
   return (
-    <Tabs aria-label="Account settings" ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}>
-      <TabList>
+    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}>
+      <TabList aria-label="Account settings">
         <Tab id="account">Account</Tab>
         <Tab id="billing" isDisabled>
           Billing

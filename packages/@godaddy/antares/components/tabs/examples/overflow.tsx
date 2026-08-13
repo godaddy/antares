@@ -7,11 +7,10 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
 export function OverflowExample({ maxWidth = '320px' }: { maxWidth?: string }) {
   return (
     <Tabs
-      aria-label="Product settings"
-      ariaLabels={{ previous: 'Scroll previous tabs', next: 'Scroll next tabs' }}
+      overflowLabels={{ previous: 'Scroll previous tabs', next: 'Scroll next tabs' }}
       style={{ width: maxWidth, maxWidth }}
     >
-      <TabList>
+      <TabList aria-label="Product settings">
         <Tab id="overview">Overview</Tab>
         <Tab id="availability">Availability</Tab>
         <Tab id="shipping">Shipping</Tab>

@@ -30,9 +30,9 @@ npm install @godaddy/antares
 
 Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
 
-`ariaLabels.previous` and `ariaLabels.next` are required because the overflow controls are interactive and must be announced with localized action labels.
+`overflowLabels.previous` and `overflowLabels.next` are required because the overflow controls are interactive and must be announced with localized action labels.
 
-`TabList` must be rendered inside `Tabs`. Each `Tab` must have an `id` that matches its associated `TabPanel`.
+`TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Each `Tab` must have an `id` that matches its associated `TabPanel`.
 
 ## Customization
 

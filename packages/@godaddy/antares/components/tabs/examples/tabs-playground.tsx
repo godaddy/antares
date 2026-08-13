@@ -5,12 +5,11 @@ export interface TabsPlaygroundProps extends Pick<TabsProps, 'design' | 'keyboar
 export function PlaygroundExample({ design = 'underline', keyboardActivation = 'automatic' }: TabsPlaygroundProps) {
   return (
     <Tabs
-      aria-label="Settings"
-      ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}
+      overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}
       design={design}
       keyboardActivation={keyboardActivation}
     >
-      <TabList>
+      <TabList aria-label="Settings">
         <Tab id="account">Account</Tab>
         <Tab id="billing">Billing</Tab>
         <Tab id="security">Security</Tab>

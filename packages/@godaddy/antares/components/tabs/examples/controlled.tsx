@@ -11,12 +11,11 @@ export function ControlledExample() {
   return (
     <>
       <Tabs
-        aria-label="Account settings"
-        ariaLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}
+        overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}
         selectedKey={selectedKey}
         onSelectionChange={(key) => setSelectedKey(String(key))}
       >
-        <TabList>
+        <TabList aria-label="Account settings">
           <Tab id="account">Account</Tab>
           <Tab id="billing">Billing</Tab>
           <Tab id="security">Security</Tab>
