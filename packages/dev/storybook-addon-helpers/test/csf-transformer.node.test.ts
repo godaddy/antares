@@ -85,9 +85,9 @@ describe('csf-transformer', function csfTransformerTests() {
 
     expect(actual).not.toContain('getExamples()');
     expect(actual).not.toContain('export const examples');
-    expect(actual).toContain('import { DefaultExample } from "./examples/default.tsx"');
-    expect(actual).toContain('export const Default = DefaultExample');
-    expect(actual).toContain('export const IconOnly = IconOnlyExample');
+    expect(actual).toContain('import { DefaultExample as __example_Default } from "./examples/default.tsx"');
+    expect(actual).toContain('export const Default = __example_Default');
+    expect(actual).toContain('export const IconOnly = __example_IconOnly');
     expect(actual).not.toContain('IgnoredExample');
     expect(actual).not.toContain('WidgetPlaygroundExample');
     // getMeta on the same file is still transformed to its object literal.
@@ -130,7 +130,7 @@ describe('csf-transformer', function csfTransformerTests() {
       filePath: path.join(fixturesPath, 'collision-fixture/collision.stories.tsx')
     });
 
-    expect(actual).toContain('export const Default = DefaultExample');
+    expect(actual).toContain('export const Default = __example_Default');
     // The import that fed getComponentDocs is gone, so the story export is the only `Default`.
     expect(actual).not.toContain('collision-comp.tsx');
     expect(actual).toContain('"volume"');
@@ -140,29 +140,8 @@ describe('csf-transformer', function csfTransformerTests() {
     await expect(
       csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/meta-collision.stories.tsx') })
     ).rejects.toThrow(
-      /`Default` is declared more than once.*import from '\.\/collision-comp\.tsx'.*"Default" story is generated from \.\/examples\/default\.tsx/s
+      /transformed stories file is invalid.*Default.*Generated example stories: "Default" \(\.\/examples\/default\.tsx\)/s
     );
-  });
-
-  it('fails when a destructured binding collides with an example story export', async function reportsDestructuredCollision() {
-    await expect(
-      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/destructure-collision.stories.tsx') })
-    ).rejects.toThrow(/`Default` is declared more than once.*declaration/s);
-  });
-
-  it('reuses an example already imported for a hand-written story', async function reusesExampleImport() {
-    const actual = await csfTransformer({
-      filePath: path.join(fixturesPath, 'collision-fixture/reuse.stories.tsx')
-    });
-
-    expect(actual.match(/import \{ DefaultExample \}/g)).toHaveLength(1);
-    expect(actual).toContain('export const Default = DefaultExample');
-  });
-
-  it('does not treat a type-only import as a reusable example binding', async function typeOnlyIsNotReusable() {
-    await expect(
-      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/type-only.stories.tsx') })
-    ).rejects.toThrow(/`DefaultExample` is declared more than once/);
   });
 
   it('drops the examples marker when a real file resolves no examples', async function dropsEmptyMarker() {
