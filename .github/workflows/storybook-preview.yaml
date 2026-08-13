@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: gh-pages-storybook-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   build-preview:
     if: github.event.action != 'closed'
@@ -69,6 +73,8 @@ jobs:
           folder: storybook-build
           target-folder: pr-${{ github.event.pull_request.number }}-storybook
           clean: false
+          force: false
+          attempt-limit: 5
 
       - name: Post Preview URL Comment
         uses: actions/github-script@v9

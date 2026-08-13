@@ -80,6 +80,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: /tmp/root-nojekyll
           clean: false
+          force: false
+          attempt-limit: 5
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
@@ -88,6 +90,8 @@ jobs:
           folder: site-build
           target-folder: pr-${{ github.event.pull_request.number }}-site
           clean: false
+          force: false
+          attempt-limit: 5
 
       - name: Post Preview URL Comment
         uses: actions/github-script@v9
