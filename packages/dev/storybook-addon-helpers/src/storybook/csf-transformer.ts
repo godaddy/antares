@@ -41,7 +41,8 @@ export async function csfTransformer(input: {
       input.defaults
     ),
     transformExamples(examples),
-    pruneUnusedImports()
+    pruneUnusedImports(),
+    assertNoStoryCollisions(examples, filePath)
   ]);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
   return printer.printFile(result.transformed[0] as ts.SourceFile);
@@ -237,6 +238,92 @@ function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory
       return factory.updateSourceFile(sourceFile, [...imports, ...body]);
     };
   };
+}
+
+/**
+ * Fails the build when a generated example story is named after a binding the file
+ * still declares, which would emit two top-level declarations of that name.
+ *
+ * Pruning clears the common case, where the binding existed only to feed a getter.
+ * It cannot clear a binding that survives on its own merits - `getMeta({ component })`
+ * keeps its reference - so the remaining overlap is reported instead of emitted.
+ */
+function assertNoStoryCollisions(
+  examples: ExampleDescriptor[],
+  filePath: string
+): ts.TransformerFactory<ts.SourceFile> {
+  return function _transformer() {
+    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      if (examples.length === 0) return sourceFile;
+
+      const byStoryName = new Map(examples.map((example) => [example.storyName, example]));
+
+      for (const statement of sourceFile.statements) {
+        if (isGeneratedStory(statement, byStoryName)) continue;
+
+        for (const [name, origin] of declaredNames(statement)) {
+          const example = byStoryName.get(name);
+          if (!example) continue;
+
+          throw new Error(
+            `${filePath || 'stories file'}: the "${example.storyName}" story generated from ` +
+              `${example.importPath} collides with the \`${name}\` ${origin} in this file. ` +
+              `Rename the example file or the colliding binding.`
+          );
+        }
+      }
+
+      return sourceFile;
+    };
+  };
+}
+
+/** Whether the statement is the `export const <storyName> = <ExampleName>` a story generated. */
+function isGeneratedStory(statement: ts.Statement, byStoryName: Map<string, ExampleDescriptor>): boolean {
+  if (!ts.isVariableStatement(statement) || statement.declarationList.declarations.length !== 1) return false;
+
+  const declaration = statement.declarationList.declarations[0];
+  if (!ts.isIdentifier(declaration.name)) return false;
+
+  const example = byStoryName.get(declaration.name.text);
+  if (!example) return false;
+
+  return Boolean(
+    declaration.initializer &&
+      ts.isIdentifier(declaration.initializer) &&
+      declaration.initializer.text === example.componentExportName
+  );
+}
+
+/** The top-level bindings a statement introduces, each with a phrase describing it. */
+function declaredNames(statement: ts.Statement): [name: string, origin: string][] {
+  if (ts.isImportDeclaration(statement)) {
+    const clause = statement.importClause;
+    if (!clause) return [];
+
+    // Not `getText()`: the example imports are synthesized and have no source position.
+    const specifier = ts.isStringLiteral(statement.moduleSpecifier) ? statement.moduleSpecifier.text : 'another module';
+    const origin = `import from '${specifier}'`;
+    const names = clause.name ? [clause.name.text] : [];
+    const bindings = clause.namedBindings;
+
+    if (bindings && ts.isNamespaceImport(bindings)) names.push(bindings.name.text);
+    if (bindings && ts.isNamedImports(bindings)) names.push(...bindings.elements.map((el) => el.name.text));
+
+    return names.map((name) => [name, origin]);
+  }
+
+  if (ts.isVariableStatement(statement)) {
+    return statement.declarationList.declarations
+      .filter((declaration) => ts.isIdentifier(declaration.name))
+      .map((declaration) => [(declaration.name as ts.Identifier).text, 'declaration']);
+  }
+
+  if ((ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) && statement.name) {
+    return [[statement.name.text, 'declaration']];
+  }
+
+  return [];
 }
 
 /**

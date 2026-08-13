@@ -136,6 +136,12 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).toContain('"volume"');
   });
 
+  it('fails when a surviving reference collides with an example story export', async function reportsCollision() {
+    await expect(
+      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/meta-collision.stories.tsx') })
+    ).rejects.toThrow(/"Default" story generated from \.\/examples\/default\.tsx collides with the `Default` import/);
+  });
+
   it('keeps a property named after an import from counting as a use of it', async function propertyKeyIsNotAUse() {
     const code = `
       import { Widget } from './comp.tsx';
