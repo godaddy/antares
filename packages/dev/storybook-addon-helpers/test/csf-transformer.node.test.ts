@@ -139,13 +139,33 @@ describe('csf-transformer', function csfTransformerTests() {
   it('fails when a surviving reference collides with an example story export', async function reportsCollision() {
     await expect(
       csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/meta-collision.stories.tsx') })
-    ).rejects.toThrow(/"Default" story generated from \.\/examples\/default\.tsx collides with the `Default` import/);
+    ).rejects.toThrow(
+      /`Default` is declared more than once.*import from '\.\/collision-comp\.tsx'.*"Default" story is generated from \.\/examples\/default\.tsx/s
+    );
   });
 
   it('fails when a destructured binding collides with an example story export', async function reportsDestructuredCollision() {
     await expect(
       csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/destructure-collision.stories.tsx') })
-    ).rejects.toThrow(/collides with the `Default` declaration/);
+    ).rejects.toThrow(/`Default` is declared more than once.*declaration/s);
+  });
+
+  it('reuses an example already imported for a hand-written story', async function reusesExampleImport() {
+    const actual = await csfTransformer({
+      filePath: path.join(fixturesPath, 'collision-fixture/reuse.stories.tsx')
+    });
+
+    expect(actual.match(/import \{ DefaultExample \}/g)).toHaveLength(1);
+    expect(actual).toContain('export const Default = DefaultExample');
+  });
+
+  it('drops the examples marker when a real file resolves no examples', async function dropsEmptyMarker() {
+    const actual = await csfTransformer({
+      filePath: path.join(fixturesPath, 'collision-fixture/empty.stories.tsx')
+    });
+
+    expect(actual).not.toContain('getExamples');
+    expect(actual).not.toContain('@bento/storybook-addon-helpers');
   });
 
   it('fails when two examples reduce to the same story name', async function reportsDuplicateStoryName() {

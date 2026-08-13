@@ -36,6 +36,10 @@ describe('extractComponentDocs', function extractComponentDocsTests() {
     expect(extract('ForwardRefExoticComponent').props.map((prop) => prop.name)).toEqual(['exotic']);
   });
 
+  it('ignores a non-React type sharing a component type name', function ignoresForeignQualifiedType() {
+    expect(extract('RegistryEntry').props).toEqual([]);
+  });
+
   it('extracts polymorphic forwardRef props cast with `as`', function extractsPolymorphicForwardRef() {
     expect(extract('PolymorphicForwardRefComponent').props.map((prop) => prop.name)).toEqual(['polyProp', 'as']);
   });

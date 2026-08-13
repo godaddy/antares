@@ -40,7 +40,7 @@ export async function csfTransformer(input: {
       [transformGetMeta, transformGetStory, transformGetVariants, transformGetComponentDocs, transformGetTypeDocs],
       input.defaults
     ),
-    transformExamples(examples),
+    transformExamples(examples, filePath),
     pruneUnusedImports(),
     assertNoStoryCollisions(examples, filePath)
   ]);
@@ -211,12 +211,13 @@ function getExamplesGetterCall(statement: ts.Node): ts.CallExpression | undefine
  * export const Primary = PrimaryExample;
  * ```
  */
-function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory<ts.SourceFile> {
+function transformExamples(examples: ExampleDescriptor[], filePath: string): ts.TransformerFactory<ts.SourceFile> {
   return function _transformer() {
     return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
-      // Nothing resolved (no file path, or an empty folder): leave the call in place
-      // rather than dropping the declaration and emitting nothing in its stead.
-      if (examples.length === 0) return sourceFile;
+      // Inline code has no folder to resolve the call against, so it stays as authored.
+      // A real file that resolved nothing still drops the marker below - leaving it would
+      // keep the build-time addon import in browser-facing output.
+      if (examples.length === 0 && !filePath) return sourceFile;
 
       let found = false;
       const body: ts.Statement[] = [];
@@ -234,19 +235,43 @@ function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory
 
       if (!found) return sourceFile;
 
-      const imports = examples.map((example) => createNamedImport(example.componentExportName, example.importPath));
+      // An example already imported for a hand-written story is reused rather than
+      // imported twice, which would redeclare the binding.
+      const alreadyImported = importedBindings(sourceFile);
+      const imports = examples
+        .filter((example) => alreadyImported.get(example.componentExportName) !== example.importPath)
+        .map((example) => createNamedImport(example.componentExportName, example.importPath));
+
       return factory.updateSourceFile(sourceFile, [...imports, ...body]);
     };
   };
 }
 
+/** Maps each named import binding to the module specifier it came from. */
+function importedBindings(sourceFile: ts.SourceFile): Map<string, string> {
+  const bindings = new Map<string, string>();
+
+  for (const statement of sourceFile.statements) {
+    if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
+
+    const named = statement.importClause?.namedBindings;
+    if (!named || !ts.isNamedImports(named)) continue;
+
+    for (const element of named.elements) bindings.set(element.name.text, statement.moduleSpecifier.text);
+  }
+
+  return bindings;
+}
+
 /**
- * Fails the build when a generated example story is named after a binding the file
- * still declares, which would emit two top-level declarations of that name.
+ * Fails the build when the transformed file declares any top-level name twice, which
+ * a generated example story can cause in several ways.
  *
- * Pruning clears the common case, where the binding existed only to feed a getter.
- * It cannot clear a binding that survives on its own merits - `getMeta({ component })`
- * keeps its reference - so the remaining overlap is reported instead of emitted.
+ * Pruning clears the common case, where the colliding binding existed only to feed a
+ * getter. It cannot clear one that survives on its own merits - `getMeta({ component })`
+ * keeps its reference - so the remaining overlap is reported instead of emitted. The
+ * check counts declarations rather than matching story names, so it also catches a
+ * hand-written story of the same shape as the generated one.
  */
 function assertNoStoryCollisions(
   examples: ExampleDescriptor[],
@@ -272,19 +297,28 @@ function assertNoStoryCollisions(
         byStoryName.set(example.storyName, example);
       }
 
+      const origins = new Map<string, string[]>();
+
       for (const statement of sourceFile.statements) {
-        if (isGeneratedStory(statement, byStoryName)) continue;
-
         for (const [name, origin] of declaredNames(statement)) {
-          const example = byStoryName.get(name);
-          if (!example) continue;
-
-          throw new Error(
-            `${where}: the "${example.storyName}" story generated from ` +
-              `${example.importPath} collides with the \`${name}\` ${origin} in this file. ` +
-              `Rename the example file or the colliding binding.`
-          );
+          const seen = origins.get(name);
+          if (seen) seen.push(origin);
+          else origins.set(name, [origin]);
         }
+      }
+
+      for (const [name, seen] of origins) {
+        if (seen.length < 2) continue;
+
+        const example = byStoryName.get(name);
+        const hint = example
+          ? ` The "${example.storyName}" story is generated from ${example.importPath} - rename` +
+            ` the example export or the colliding binding.`
+          : '';
+
+        throw new Error(
+          `${where}: \`${name}\` is declared more than once after the CSF transform (${seen.join('; ')}).${hint}`
+        );
       }
 
       return sourceFile;
@@ -292,25 +326,13 @@ function assertNoStoryCollisions(
   };
 }
 
-/** Whether the statement is the `export const <storyName> = <ExampleName>` a story generated. */
-function isGeneratedStory(statement: ts.Statement, byStoryName: Map<string, ExampleDescriptor>): boolean {
-  if (!ts.isVariableStatement(statement) || statement.declarationList.declarations.length !== 1) return false;
-
-  const declaration = statement.declarationList.declarations[0];
-  if (!ts.isIdentifier(declaration.name)) return false;
-
-  const example = byStoryName.get(declaration.name.text);
-  if (!example) return false;
-
-  return Boolean(
-    declaration.initializer &&
-      ts.isIdentifier(declaration.initializer) &&
-      declaration.initializer.text === example.componentExportName
-  );
-}
-
-/** The top-level bindings a statement introduces, each with a phrase describing it. */
+/**
+ * The top-level bindings a statement introduces, each with a phrase describing it.
+ * Ambient declarations and overload signatures are skipped: they declare no value.
+ */
 function declaredNames(statement: ts.Statement): [name: string, origin: string][] {
+  if (isAmbient(statement)) return [];
+
   if (ts.isImportDeclaration(statement)) {
     const clause = statement.importClause;
     if (!clause) return [];
@@ -333,11 +355,22 @@ function declaredNames(statement: ts.Statement): [name: string, origin: string][
     );
   }
 
-  if ((ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) && statement.name) {
+  // A bodyless function is an overload signature, which shares one runtime binding.
+  if (ts.isFunctionDeclaration(statement) && statement.name && statement.body) {
+    return [[statement.name.text, 'declaration']];
+  }
+
+  if ((ts.isClassDeclaration(statement) || ts.isEnumDeclaration(statement)) && statement.name) {
     return [[statement.name.text, 'declaration']];
   }
 
   return [];
+}
+
+/** Whether the statement is `declare`d, and so contributes no runtime binding. */
+function isAmbient(statement: ts.Statement): boolean {
+  if (!ts.canHaveModifiers(statement)) return false;
+  return Boolean(ts.getModifiers(statement)?.some((modifier) => modifier.kind === ts.SyntaxKind.DeclareKeyword));
 }
 
 /** Every identifier a binding name introduces, destructuring patterns included. */

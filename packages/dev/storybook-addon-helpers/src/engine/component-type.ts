@@ -80,8 +80,15 @@ function unwrapExpression(expr: ts.Expression): ts.Expression {
   return expr;
 }
 
-/** Matches by the rightmost name, so `FC` and `React.FC` both match. */
+/**
+ * Matches `FC` and `React.FC`. A qualified name must be React's, so an unrelated
+ * `Registry.ComponentType<Key>` is not mistaken for a component annotation.
+ */
 function isNamedType(typeNode: ts.TypeReferenceNode, names: string[]): boolean {
-  const typeName = ts.isQualifiedName(typeNode.typeName) ? typeNode.typeName.right : typeNode.typeName;
-  return names.includes(typeName.text);
+  if (!ts.isQualifiedName(typeNode.typeName)) return names.includes(typeNode.typeName.text);
+
+  const qualifier = typeNode.typeName.left;
+  if (!ts.isIdentifier(qualifier) || qualifier.text !== 'React') return false;
+
+  return names.includes(typeNode.typeName.right.text);
 }

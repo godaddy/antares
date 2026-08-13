@@ -41,6 +41,13 @@ export interface ExoticProps {
   exotic: string;
 }
 
+declare namespace Registry {
+  type ComponentType<T> = { entry: T };
+}
+
+// Shares a rightmost name with React's, but is not a component annotation.
+export declare const RegistryEntry: Registry.ComponentType<FCProps>;
+
 // Mirrors how a built `.d.ts` declares a forwardRef component (e.g. react-aria-components).
 export declare const ForwardRefExoticComponent: React.ForwardRefExoticComponent<
   ExoticProps & React.RefAttributes<HTMLDivElement>
