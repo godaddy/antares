@@ -159,6 +159,12 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).toContain('export const Default = DefaultExample');
   });
 
+  it('does not treat a type-only import as a reusable example binding', async function typeOnlyIsNotReusable() {
+    await expect(
+      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/type-only.stories.tsx') })
+    ).rejects.toThrow(/`DefaultExample` is declared more than once/);
+  });
+
   it('drops the examples marker when a real file resolves no examples', async function dropsEmptyMarker() {
     const actual = await csfTransformer({
       filePath: path.join(fixturesPath, 'collision-fixture/empty.stories.tsx')

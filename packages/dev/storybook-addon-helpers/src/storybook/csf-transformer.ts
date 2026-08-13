@@ -237,9 +237,9 @@ function transformExamples(examples: ExampleDescriptor[], filePath: string): ts.
 
       // An example already imported for a hand-written story is reused rather than
       // imported twice, which would redeclare the binding.
-      const alreadyImported = importedBindings(sourceFile);
+      const alreadyImported = valueImports(sourceFile);
       const imports = examples
-        .filter((example) => alreadyImported.get(example.componentExportName) !== example.importPath)
+        .filter((example) => alreadyImported.get(example.componentExportName) !== importKey(example))
         .map((example) => createNamedImport(example.componentExportName, example.importPath));
 
       return factory.updateSourceFile(sourceFile, [...imports, ...body]);
@@ -247,17 +247,33 @@ function transformExamples(examples: ExampleDescriptor[], filePath: string): ts.
   };
 }
 
-/** Maps each named import binding to the module specifier it came from. */
-function importedBindings(sourceFile: ts.SourceFile): Map<string, string> {
+/** Identifies the export an import binding resolves to, as `<module>#<exportName>`. */
+function importKey(example: ExampleDescriptor): string {
+  return `${example.importPath}#${example.componentExportName}`;
+}
+
+/**
+ * Maps each local name bound by a value import to the export it resolves to. Type-only
+ * clauses and specifiers are excluded: they bind no value, so an example matching one
+ * still has to be imported.
+ */
+function valueImports(sourceFile: ts.SourceFile): Map<string, string> {
   const bindings = new Map<string, string>();
 
   for (const statement of sourceFile.statements) {
     if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
 
-    const named = statement.importClause?.namedBindings;
+    const clause = statement.importClause;
+    if (!clause || clause.phaseModifier !== undefined) continue;
+
+    const named = clause.namedBindings;
     if (!named || !ts.isNamedImports(named)) continue;
 
-    for (const element of named.elements) bindings.set(element.name.text, statement.moduleSpecifier.text);
+    for (const element of named.elements) {
+      if (element.isTypeOnly) continue;
+      const exportName = element.propertyName?.text ?? element.name.text;
+      bindings.set(element.name.text, `${statement.moduleSpecifier.text}#${exportName}`);
+    }
   }
 
   return bindings;
@@ -307,14 +323,22 @@ function assertNoStoryCollisions(
         }
       }
 
+      const byExportName = new Map(examples.map((example) => [example.componentExportName, example]));
+
       for (const [name, seen] of origins) {
         if (seen.length < 2) continue;
 
-        const example = byStoryName.get(name);
-        const hint = example
-          ? ` The "${example.storyName}" story is generated from ${example.importPath} - rename` +
-            ` the example export or the colliding binding.`
-          : '';
+        const story = byStoryName.get(name);
+        const imported = byExportName.get(name);
+        let hint = '';
+
+        if (story) {
+          hint =
+            ` The "${story.storyName}" story is generated from ${story.importPath} - rename` +
+            ` the example export or the colliding binding.`;
+        } else if (imported) {
+          hint = ` ${imported.importPath} is imported under this name to render its story - rename the local binding.`;
+        }
 
         throw new Error(
           `${where}: \`${name}\` is declared more than once after the CSF transform (${seen.join('; ')}).${hint}`
