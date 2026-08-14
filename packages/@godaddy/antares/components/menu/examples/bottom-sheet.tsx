@@ -1,4 +1,4 @@
-import { Button, Drawer, Menu, MenuGroup, MenuItem } from '@godaddy/antares';
+import { Button, CloseButton, Content, Drawer, Menu, MenuGroup, MenuItem } from '@godaddy/antares';
 import { useState } from 'react';
 
 /**
@@ -13,16 +13,19 @@ export function BottomSheetExample() {
       <Button variant="primary" onPress={() => setOpen(true)}>
         Open menu
       </Button>
-      <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} isDismissable showCloseButton aria-label="Menu">
-        <Menu aria-label="Account actions" onAction={() => setOpen(false)} blockPaddingStart="xl">
-          <MenuGroup label="Account">
-            <MenuItem id="profile">Profile</MenuItem>
-            <MenuItem id="settings">Settings</MenuItem>
-          </MenuGroup>
-          <MenuGroup label="Session">
-            <MenuItem id="logout">Log out</MenuItem>
-          </MenuGroup>
-        </Menu>
+      <Drawer placement="bottom" isOpen={open} onOpenChange={setOpen} isDismissable aria-label="Menu">
+        <CloseButton />
+        <Content inlinePadding="0">
+          <Menu aria-label="Account actions" onAction={() => setOpen(false)}>
+            <MenuGroup label="Account">
+              <MenuItem id="profile">Profile</MenuItem>
+              <MenuItem id="settings">Settings</MenuItem>
+            </MenuGroup>
+            <MenuGroup label="Session">
+              <MenuItem id="logout">Log out</MenuItem>
+            </MenuGroup>
+          </Menu>
+        </Content>
       </Drawer>
     </>
   );

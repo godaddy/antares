@@ -1,5 +1,4 @@
 import { forwardRef, type ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   ModalOverlay as RACModalOverlay,
   type ModalOverlayProps as RACModalOverlayProps,
@@ -81,7 +80,7 @@ export const Modal = forwardRef<HTMLElement, ModalProps>(function Modal(props, r
           rounding="xl"
           {...dialogProps}
           ref={ref}
-          className={cx(styles.dialog, className)}
+          className={composeClassName(className, styles.dialog)}
         >
           {children}
         </OverlayDialog>

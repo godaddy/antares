@@ -19,7 +19,9 @@ export function NestedPopoverExample() {
           <PopoverTrigger>
             <Button variant="primary">Open popover</Button>
             <Popover aria-label="Popover">
-              <Text>Popover inside drawer</Text>
+              <Content>
+                <Text>Popover inside drawer</Text>
+              </Content>
             </Popover>
           </PopoverTrigger>
         </Content>
