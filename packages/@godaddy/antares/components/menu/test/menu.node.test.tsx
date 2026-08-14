@@ -1,63 +1,58 @@
-import { MenuTriggerOneChild, SubmenuTriggerOneChild } from '../examples/menu-errors.tsx';
-import { CustomIconsExample } from '../examples/menu-custom-icons.tsx';
-import { PlaygroundExample } from '../examples/menu-playground.tsx';
-import { SelectionExample } from '../examples/menu-selection.tsx';
-import { SectionsExample } from '../examples/menu-sections.tsx';
-import { StandaloneExample } from '../examples/menu-standalone.tsx';
-import { SubmenuExample } from '../examples/menu-submenu.tsx';
-import { BasicExample } from '../examples/menu.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
+import { DefaultExample } from '../examples/default.tsx';
+import { GroupsExample } from '../examples/groups.tsx';
+import { SingleSelectionExample } from '../examples/single-selection.tsx';
+import { MultipleSelectionExample } from '../examples/multiple-selection.tsx';
+import { SizesExample } from '../examples/sizes.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { SubmenuExample } from '../examples/submenu.tsx';
+import { PlaygroundExample } from '../examples/menu-playground.tsx';
+import { BottomSheetExample } from '../examples/bottom-sheet.tsx';
+import { RichContentExample } from '../examples/rich-content.tsx';
 
 describe('@godaddy/antares', function antares() {
-  describe('#examples', function examplesTests() {
+  describe('#Menu', function menuTests() {
     it('renders BasicExample', function basicExample() {
-      const result = renderToString(<BasicExample />);
-      expect(result).toMatchSnapshot();
+      expect(renderToString(<DefaultExample />)).toMatchSnapshot();
     });
 
-    it('renders SubmenuExample with nested menus', function submenuExample() {
-      const result = renderToString(<SubmenuExample />);
-      expect(result).toMatchSnapshot();
+    it('renders GroupsExample', function groupsExample() {
+      expect(renderToString(<GroupsExample />)).toMatchSnapshot();
     });
 
-    it('renders SelectionExample with single and multiple modes', function selectionExample() {
-      const result = renderToString(<SelectionExample />);
-      expect(result).toMatchSnapshot();
+    it('renders SingleSelectionExample', function singleSelectionExample() {
+      expect(renderToString(<SingleSelectionExample />)).toMatchSnapshot();
     });
 
-    it('renders SectionsExample with headers and separators', function sectionsExample() {
-      const result = renderToString(<SectionsExample />);
-      expect(result).toMatchSnapshot();
+    it('renders MultipleSelectionExample', function multipleSelectionExample() {
+      expect(renderToString(<MultipleSelectionExample />)).toMatchSnapshot();
     });
 
-    it('renders PlaygroundExample with default props', function playgroundExample() {
-      const result = renderToString(<PlaygroundExample />);
-      expect(result).toMatchSnapshot();
+    it('renders SizesExample', function sizesExample() {
+      expect(renderToString(<SizesExample />)).toMatchSnapshot();
     });
 
-    it('renders CustomIconsExample with custom icon slots', function customIconsExample() {
-      const result = renderToString(<CustomIconsExample />);
-      expect(result).toMatchSnapshot();
+    it('renders ControlledExample', function controlledExample() {
+      expect(renderToString(<ControlledExample />)).toMatchSnapshot();
     });
 
-    it('renders StandaloneExample with menu content directly', function standaloneExample() {
-      const result = renderToString(<StandaloneExample />);
-      expect(result).toMatchSnapshot();
-    });
-  });
-
-  describe('#error handling', function errorHandlingTests() {
-    it('throws error when MenuTrigger has one child', function menuTriggerOneChild() {
-      expect(() => renderToString(<MenuTriggerOneChild />)).toThrow(
-        'MenuTrigger requires exactly 2 children: a trigger element and a Menu'
-      );
+    it('renders SubmenuExample', function submenuExample() {
+      expect(renderToString(<SubmenuExample />)).toMatchSnapshot();
     });
 
-    it('throws error when SubmenuTrigger has one child', function submenuTriggerOneChild() {
-      expect(() => renderToString(<SubmenuTriggerOneChild />)).toThrow(
-        'SubmenuTrigger requires exactly 2 children: a MenuItem and a Menu'
-      );
+    it('renders PlaygroundExample with all features', function playgroundExample() {
+      expect(
+        renderToString(<PlaygroundExample size="sm" multiSelect withIcons withGroups disabledItems />)
+      ).toMatchSnapshot();
+    });
+
+    it('renders BottomSheetExample', function bottomSheetExample() {
+      expect(renderToString(<BottomSheetExample />)).toMatchSnapshot();
+    });
+
+    it('renders RichContentExample', function richContentExample() {
+      expect(renderToString(<RichContentExample />)).toMatchSnapshot();
     });
   });
 });

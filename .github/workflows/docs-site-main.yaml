@@ -53,6 +53,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: ./apps/site/out
           clean: true
+          force: false
+          attempt-limit: 5
           clean-exclude: |
             storybook
             pr-*

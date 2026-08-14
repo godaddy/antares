@@ -4,258 +4,193 @@ import {
   MenuItem as RACMenuItem,
   MenuSection as RACMenuSection,
   MenuTrigger as RACMenuTrigger,
-  Popover as RACPopover,
   Separator as RACSeparator,
   SubmenuTrigger as RACSubmenuTrigger,
-  type Key as RACKey,
   type MenuItemProps as RACMenuItemProps,
+  type MenuItemRenderProps as RACMenuItemRenderProps,
   type MenuProps as RACMenuProps,
   type MenuSectionProps as RACMenuSectionProps,
   type MenuTriggerProps as RACMenuTriggerProps,
-  type Selection as RACSelection,
-  type SelectionMode as RACSelectionMode,
-  type SubmenuTriggerProps as RACSubmenuTriggerProps
+  type SeparatorProps as RACSeparatorProps,
+  type SubmenuTriggerProps as RACSubmenuTriggerProps,
+  type Selection as RACSelection
 } from 'react-aria-components';
-import styles from './index.module.css';
-import React, { type ComponentPropsWithoutRef } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { cx } from 'cva';
+import styles from './index.module.css';
 import { composeClassName } from '../../../utils/render-props.ts';
-import { Icon } from '#components/icon';
+import { Popover, type PopoverProps } from '#components/popover';
 import { Text } from '#components/text';
+import { Icon } from '#components/icon';
+import { CheckboxIndicator } from '#components/checkbox';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
 
-/**
- * Vertical offset for submenu popover positioning
- */
-const SUBMENU_OFFSET = -2;
+export interface MenuTriggerProps extends Omit<RACMenuTriggerProps, 'children'> {
+  /** Additional props forwarded to the underlying `Popover`. */
+  popoverProps?: Omit<PopoverProps, 'children'>;
 
-/**
- * Horizontal cross-axis offset for submenu popover positioning
- */
-const SUBMENU_CROSS_OFFSET = -4;
-
-interface SlottedIcons {
-  check?: React.ReactElement;
-  dot?: React.ReactElement;
-  chevron?: React.ReactElement;
-  rest: React.ReactNode[];
+  /** Exactly two children: the trigger element and the `Menu`. */
+  children: [trigger: ReactElement, menu: ReactElement];
 }
 
 /**
- * Extract icon slots from MenuItem children
- * @param children - MenuItem children to parse
- * @returns Object with slotted icons and remaining children
+ * Wraps a trigger element and a `Menu`, rendering the menu inside our `Popover`.
+ *
+ * @param props - {@link MenuTriggerProps}
  */
-const extractIconSlots = (children: React.ReactNode): SlottedIcons => {
-  const result: SlottedIcons = { rest: [] };
-
-  React.Children.forEach(children, function processChild(child) {
-    if (
-      React.isValidElement(child) &&
-      typeof child.props === 'object' &&
-      child.props !== null &&
-      'slot' in child.props
-    ) {
-      const slot = child.props.slot as string;
-      if (slot === 'check' || slot === 'dot' || slot === 'chevron') {
-        result[slot] = child;
-        return;
-      }
-    }
-    result.rest.push(child);
-  });
-
-  return result;
-};
-
-export interface MenuTriggerProps extends RACMenuTriggerProps {
-  /** Match popover width to trigger button width */
-  matchWidth?: boolean;
-}
-
-/**
- * MenuTrigger wraps a trigger element and menu with a popover
- */
-export function MenuTrigger({ matchWidth, ...props }: MenuTriggerProps) {
-  const childArray = React.Children.toArray(props.children);
-  if (childArray.length !== 2) {
-    throw new Error('MenuTrigger requires exactly 2 children: a trigger element and a Menu');
-  }
-  const [trigger, menu] = childArray as [React.ReactElement, React.ReactElement];
+export function MenuTrigger({ popoverProps, children, ...props }: MenuTriggerProps) {
+  const [trigger, menu] = children;
   return (
     <RACMenuTrigger {...props}>
       {trigger}
-      <RACPopover className={cx(styles.popover, matchWidth && styles.matchWidth)}>{menu}</RACPopover>
+      <MenuPopover {...popoverProps}>{menu}</MenuPopover>
     </RACMenuTrigger>
   );
 }
 
-export interface MenuProps<T extends object>
-  extends Omit<
-    RACMenuProps<T>,
-    | 'selectionMode'
-    | 'selectedKeys'
-    | 'defaultSelectedKeys'
-    | 'disabledKeys'
-    | 'onAction'
-    | 'onSelectionChange'
-    | 'autoFocus'
-    | 'items'
-  > {
-  /** Size variant for menu items @default 'md' */
+export interface MenuProps<T> extends FlexOwnProps, RACMenuProps<T> {
+  /** Size variant for the menu and its items. @default 'md' */
   size?: 'sm' | 'md';
-  /** The type of selection that is allowed in the collection */
-  selectionMode?: RACSelectionMode;
-  /** The currently selected keys in the collection (controlled) */
-  selectedKeys?: 'all' | Iterable<RACKey>;
-  /** The initial selected keys in the collection (uncontrolled) */
-  defaultSelectedKeys?: 'all' | Iterable<RACKey>;
-  /** The item keys that are disabled */
-  disabledKeys?: Iterable<RACKey>;
-  /** Handler that is called when an item is selected */
-  onAction?: (key: RACKey) => void;
-  /** Handler that is called when the selection changes */
-  onSelectionChange?: (keys: RACSelection) => void;
-  /** Whether the element should receive focus on render */
-  autoFocus?: boolean | 'first' | 'last';
-  /** Item objects in the collection */
-  items?: Iterable<T>;
 }
 
-/** Main menu container with keyboard navigation and selection support */
-export function Menu<T extends object>({ className, size = 'md', ...props }: MenuProps<T>) {
+/**
+ * The menu container. Provides keyboard navigation and selection via RAC.
+ * Usable inside a `MenuTrigger` or standalone (e.g. inside a `Drawer`).
+ *
+ * @param props - {@link MenuProps}
+ */
+export function Menu<T extends object>({ className, size = 'md', children, ...props }: MenuProps<T>) {
   return (
-    <RACMenu {...props} className={composeClassName(className, styles.menu, styles[`size-${size}`])}>
-      {props.children}
-    </RACMenu>
+    <Flex
+      {...props}
+      as={RACMenu<T>}
+      direction="column"
+      data-size={size}
+      className={composeClassName(className, styles.menu)}
+    >
+      {children}
+    </Flex>
   );
 }
 
-export interface MenuItemProps extends Omit<RACMenuItemProps, 'children'> {
-  /**
-   * Content to render in the menu item
-   *
-   * Supports icon slots for customization:
-   * - `slot="check"` - Custom icon for multiple selection state
-   * - `slot="dot"` - Custom icon for single selection state
-   * - `slot="chevron"` - Custom icon for submenu indicator
-   *
-   * @example
-   * ```tsx
-   * <MenuItem>
-   *   <Icon slot="check">✅</Icon>
-   *   Custom check icon
-   * </MenuItem>
-   * ```
-   */
-  children?: React.ReactNode;
+export interface MenuGroupProps<T extends object> extends FlexOwnProps, Omit<RACMenuSectionProps<T>, 'children'> {
+  /** Optional group title, rendered as the section header. Accepts any node. */
+  label?: ReactNode;
+
+  /** The items within the group. */
+  children?: ReactNode;
 }
 
-/** Menu item with automatic selection indicators and submenu chevron */
-export function MenuItem(props: MenuItemProps) {
-  const textValue = props.textValue || (typeof props.children === 'string' ? props.children : undefined);
-  const { children, ...restProps } = props;
-  const { check, dot, chevron, rest } =
-    typeof children === 'string'
-      ? { check: undefined, dot: undefined, chevron: undefined, rest: [children] }
-      : extractIconSlots(children);
+/**
+ * Groups related menu items under an optional title. Selection is scoped to the
+ * group: set `selectionMode="multiple"` (plus `selectedKeys` /
+ * `onSelectionChange`) to turn its items into checkboxes while other groups stay
+ * plain action items.
+ *
+ * @param props - {@link MenuGroupProps}
+ */
+export function MenuGroup<T extends object>({ label, className, children, ...props }: MenuGroupProps<T>) {
+  return (
+    <Flex {...props} as={RACMenuSection<T>} className={cx(styles.group, className)}>
+      {label == null ? null : <RACHeader className={styles.groupLabel}>{label}</RACHeader>}
+      {children}
+    </Flex>
+  );
+}
+
+export interface MenuItemProps extends FlexOwnProps, Omit<RACMenuItemProps, 'children'> {
+  /** Leading icon rendered before the label. */
+  icon?: ReactNode;
+
+  /** The item label (a string is wrapped for typeahead) or custom content. */
+  children?: ReactNode;
+}
+
+/**
+ * A menu item. Renders a leading `icon` (optional), a label, an automatic
+ * multi-select checkbox indicator when its group has `selectionMode="multiple"`,
+ * and a submenu chevron when nested in a `SubmenuTrigger`.
+ *
+ * @param props - {@link MenuItemProps}
+ */
+export function MenuItem({ icon, children, className, ...props }: MenuItemProps) {
+  const textValue = props.textValue ?? (typeof children === 'string' ? children : undefined);
 
   return (
-    <RACMenuItem {...restProps} textValue={textValue} className={composeClassName(props.className, styles.item)}>
-      {({ hasSubmenu, isSelected, selectionMode }) => (
+    <Flex
+      alignItems="center"
+      {...props}
+      as={RACMenuItem}
+      textValue={textValue}
+      className={composeClassName(className, styles.item)}
+    >
+      {({ hasSubmenu, isSelected, selectionMode }: RACMenuItemRenderProps) => (
         <>
-          {isSelected &&
-            selectionMode === 'multiple' &&
-            (check ? (
-              React.cloneElement(check, {
-                className: cx(styles.checkIcon, (check.props as { className?: string }).className)
-              } as Partial<typeof check.props>)
-            ) : (
-              <Icon icon="check" className={styles.checkIcon}>
-                <span aria-hidden="true">✓</span>
-              </Icon>
-            ))}
-          {isSelected &&
-            selectionMode === 'single' &&
-            (dot ? (
-              React.cloneElement(dot, {
-                className: cx(styles.dotIcon, (dot.props as { className?: string }).className)
-              } as Partial<typeof dot.props>)
-            ) : (
-              <Icon icon="dot" className={styles.dotIcon}>
-                <span aria-hidden="true">•</span>
-              </Icon>
-            ))}
-          {rest.length === 1 && typeof rest[0] === 'string' ? (
-            <Text slot="label" className={styles.label}>
-              {rest[0]}
-            </Text>
-          ) : (
-            rest
-          )}
-          {hasSubmenu &&
-            (chevron ? (
-              React.cloneElement(chevron, {
-                className: cx(styles.chevronIcon, (chevron.props as { className?: string }).className)
-              } as Partial<typeof chevron.props>)
-            ) : (
-              <Icon icon="chevron-right" className={styles.chevronIcon}>
-                <span aria-hidden="true">›</span>
-              </Icon>
-            ))}
+          {selectionMode === 'multiple' ? (
+            <CheckboxIndicator isSelected={isSelected} className={styles.indicator} />
+          ) : null}
+          {icon == null ? null : icon}
+          {typeof children === 'string' ? <Text className={styles.label}>{children}</Text> : children}
+          {hasSubmenu ? <Icon icon="chevron-right" /> : null}
         </>
       )}
-    </RACMenuItem>
+    </Flex>
   );
-}
-
-export interface MenuSectionProps<T extends object> extends RACMenuSectionProps<T> {}
-
-/** Groups menu items under a common header */
-export function MenuSection<T extends object>(props: RACMenuSectionProps<T>) {
-  return <RACMenuSection {...props} className={cx(styles.section, props.className)} />;
-}
-
-export interface MenuHeaderProps extends ComponentPropsWithoutRef<typeof RACHeader> {}
-
-/** Header label for a MenuSection */
-export function MenuHeader(props: ComponentPropsWithoutRef<typeof RACHeader>) {
-  return <RACHeader {...props} className={cx(styles.header, props.className)} />;
-}
-
-export interface MenuSeparatorProps extends ComponentPropsWithoutRef<typeof RACSeparator> {
-  /** Separator variant: 'full' (default) or 'partial' @default 'full' */
-  variant?: 'full' | 'partial';
-}
-
-/** Visual separator between menu items or groups */
-export function MenuSeparator({ variant = 'full', className, ...props }: MenuSeparatorProps) {
-  return <RACSeparator {...props} className={cx(styles.separator, styles[variant], className)} />;
 }
 
 export interface SubmenuTriggerProps extends RACSubmenuTriggerProps {
-  /** Vertical offset for submenu popover @default -2 */
-  offset?: number;
-  /** Horizontal cross-axis offset for submenu popover @default -4 */
-  crossOffset?: number;
+  /** Additional props forwarded to the underlying `Popover`. */
+  popoverProps?: Omit<PopoverProps, 'children'>;
+
+  /** Exactly two children: the parent `MenuItem` and the submenu `Menu`. */
+  children: [trigger: ReactElement, menu: ReactElement];
 }
 
-/** Creates a nested menu that appears when hovering or activating a menu item */
-export function SubmenuTrigger({
-  offset = SUBMENU_OFFSET,
-  crossOffset = SUBMENU_CROSS_OFFSET,
-  ...props
-}: SubmenuTriggerProps) {
-  const childArray = React.Children.toArray(props.children);
-  if (childArray.length !== 2) {
-    throw new Error('SubmenuTrigger requires exactly 2 children: a MenuItem and a Menu');
-  }
-  const [trigger, menu] = childArray as [React.ReactElement, React.ReactElement];
+/**
+ * Creates a nested submenu that opens from a `MenuItem`. Takes exactly two
+ * children: the parent `MenuItem` and the submenu `Menu` (wrapped in a
+ * `Popover` automatically).
+ *
+ * @param props - {@link SubmenuTriggerProps}
+ */
+export function SubmenuTrigger({ popoverProps, children, ...props }: SubmenuTriggerProps) {
+  const [trigger, menu] = children;
+
   return (
     <RACSubmenuTrigger {...props}>
       {trigger}
-      <RACPopover className={styles.submenuPopover} offset={offset} crossOffset={crossOffset}>
-        {menu}
-      </RACPopover>
+      <MenuPopover {...popoverProps}>{menu}</MenuPopover>
     </RACSubmenuTrigger>
   );
 }
+
+export interface MenuSeparatorProps extends RACSeparatorProps {}
+
+/**
+ * A visual divider between menu items or groups.
+ *
+ * @param props - {@link MenuSeparatorProps}
+ */
+export function MenuSeparator({ className, ...props }: MenuSeparatorProps) {
+  return <RACSeparator {...props} className={cx(styles.separator, className)} />;
+}
+
+/**
+ * A popover for a menu.
+ *
+ * @param props - {@link PopoverProps}
+ */
+function MenuPopover({ contentProps, style, ...props }: PopoverProps) {
+  return (
+    <Popover
+      hideArrow
+      rounding="md"
+      {...props}
+      contentProps={{ padding: '0', className: styles.menuPopover, ...contentProps }}
+      style={{ borderWidth: 0, ...style }}
+    />
+  );
+}
+
+/** Selection type for a menu. */
+export type { RACSelection as Selection };
