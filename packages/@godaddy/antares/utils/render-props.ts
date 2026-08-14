@@ -12,9 +12,6 @@ type StyleProp<T> =
   | ((renderProps: T & { defaultStyle: CSSProperties }) => CSSProperties | undefined)
   | undefined;
 
-type ClassNameRenderProps<T> = T & { defaultClassName: string | undefined };
-type StyleRenderProps<T> = T & { defaultStyle: CSSProperties };
-
 /**
  * Merges component base class names with a caller-supplied className.
  *
@@ -22,13 +19,13 @@ type StyleRenderProps<T> = T & { defaultStyle: CSSProperties };
  * @param base - Component base classes.
  * @returns The merged className.
  */
-export function composeClassName<T>(
-  className: ClassNameProp<T>,
-  ...base: CxOptions
-): string | ((renderProps: ClassNameRenderProps<T>) => string) {
+export function composeClassName(className: string | undefined, ...base: CxOptions): string;
+export function composeClassName<T>(className: ClassNameProp<T>, ...base: CxOptions): NonNullable<ClassNameProp<T>>;
+export function composeClassName<T>(className: ClassNameProp<T>, ...base: CxOptions) {
   if (typeof className === 'function') {
-    return composeRenderProps<string | undefined, ClassNameRenderProps<T>, string>(className, (value) =>
-      cx(...base, value)
+    return composeRenderProps<string | undefined, T & { defaultClassName: string | undefined }, string>(
+      className,
+      (value) => cx(...base, value)
     );
   }
 
@@ -42,15 +39,15 @@ export function composeClassName<T>(
  * @param computed - The component's computed style.
  * @returns The merged style.
  */
-export function composeStyle<T>(
-  style: StyleProp<T>,
-  computed: CSSProperties
-): CSSProperties | ((renderProps: StyleRenderProps<T>) => CSSProperties | undefined) {
+export function composeStyle(style: CSSProperties | undefined, computed: CSSProperties): CSSProperties;
+export function composeStyle<T>(style: StyleProp<T>, computed: CSSProperties): NonNullable<StyleProp<T>>;
+export function composeStyle<T>(style: StyleProp<T>, computed: CSSProperties) {
   if (typeof style === 'function') {
-    return composeRenderProps<CSSProperties | undefined, StyleRenderProps<T>, CSSProperties | undefined>(
-      style,
-      (value) => mergeObjects(computed, value) as CSSProperties
-    );
+    return composeRenderProps<
+      CSSProperties | undefined,
+      T & { defaultStyle: CSSProperties },
+      CSSProperties | undefined
+    >(style, (value) => mergeObjects(computed, value) as CSSProperties);
   }
 
   return mergeObjects(computed, style) as CSSProperties;

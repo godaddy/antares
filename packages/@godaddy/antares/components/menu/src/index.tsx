@@ -186,7 +186,7 @@ function MenuPopover({ containerProps, className, ...props }: PopoverProps) {
       hideArrow
       aria-label="Menu"
       {...props}
-      className={composeClassName(className, styles.menuPopover) as string}
+      className={composeClassName(className, styles.menuPopover)}
       containerProps={{
         ...containerProps,
         style: composeStyle(containerProps?.style, { borderWidth: 0 })

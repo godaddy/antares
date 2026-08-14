@@ -81,8 +81,8 @@ export const Grid = forwardRef(function Grid(props: GridProps<ElementType>, ref:
       {...rest}
       as={as}
       ref={ref}
-      className={composeClassName(className, displayClass) as string}
-      style={composeStyle(style, computedStyle) as CSSProperties}
+      className={composeClassName(className, displayClass)}
+      style={composeStyle(style, computedStyle)}
     />
   );
 }) as PolymorphicComponent<GridOwnProps>;
