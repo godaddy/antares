@@ -1,5 +1,4 @@
 import { forwardRef, type ReactNode } from 'react';
-import { cx } from 'cva';
 import {
   Dialog as RACDialog,
   type DialogProps as RACDialogProps,
@@ -7,6 +6,7 @@ import {
 } from 'react-aria-components';
 import { Grid, type GridOwnProps } from '#components/layout/grid';
 import { HeaderContext, ContentContext, FooterContext, ButtonGroupContext } from '#components/structure';
+import { composeClassName } from '../../../../utils/render-props.ts';
 import styles from './index.module.css';
 
 export interface OverlayDialogProps
@@ -30,7 +30,7 @@ export const OverlayDialog = forwardRef<HTMLElement, OverlayDialogProps>(functio
   const { className, children, ...rest } = props;
 
   return (
-    <Grid as={RACDialog} {...rest} ref={ref} className={cx(styles.dialog, className)}>
+    <Grid as={RACDialog} {...rest} ref={ref} className={composeClassName(className, styles.dialog)}>
       <RACProvider
         values={[
           [HeaderContext, { className: styles.header }],

@@ -2,7 +2,7 @@ import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 
-export interface FooterProps extends Omit<FlexProps, 'as'> {}
+export interface FooterProps extends FlexProps {}
 
 /** Lets a parent style/space every `Footer` it renders. Optional. */
 export const FooterContext = createContext<ContextValue<FooterProps, HTMLElement>>(null);

@@ -8,7 +8,6 @@ import {
   type ModalOverlayProps as RACModalOverlayProps,
   composeRenderProps
 } from 'react-aria-components';
-import { cx } from 'cva';
 import { toCssSize } from '../../../utils/css.ts';
 import { composeClassName } from '../../../utils/render-props.ts';
 import { Flex } from '#components/layout/flex';
@@ -110,7 +109,7 @@ export const Drawer = forwardRef<HTMLElement, DrawerProps>(function Drawer(props
           } as CSSProperties;
         })}
       >
-        <OverlayDialog {...dialogProps} ref={ref} className={cx(styles.dialog, className)} style={style}>
+        <OverlayDialog {...dialogProps} ref={ref} className={composeClassName(className, styles.dialog)} style={style}>
           {children}
         </OverlayDialog>
       </Flex>

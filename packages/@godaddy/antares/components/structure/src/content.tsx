@@ -1,8 +1,8 @@
-import { createContext, forwardRef, type HTMLAttributes } from 'react';
+import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
-import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Flex, type FlexProps } from '#components/layout/flex';
 
-export interface ContentProps extends FlexOwnProps, HTMLAttributes<HTMLElement> {}
+export interface ContentProps extends FlexProps {}
 
 /** Lets a parent style/space every `Content` it renders. Optional. */
 export const ContentContext = createContext<ContextValue<ContentProps, HTMLElement>>(null);

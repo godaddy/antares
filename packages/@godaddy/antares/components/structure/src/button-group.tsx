@@ -2,7 +2,7 @@ import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 
-export interface ButtonGroupProps extends Omit<FlexProps, 'as'> {}
+export interface ButtonGroupProps extends FlexProps {}
 
 /** Lets a parent style/space every `ButtonGroup` it renders. Optional. */
 export const ButtonGroupContext = createContext<ContextValue<ButtonGroupProps, HTMLDivElement>>(null);

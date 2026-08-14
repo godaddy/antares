@@ -2,7 +2,7 @@ import { createContext, forwardRef } from 'react';
 import { useContextProps, type ContextValue } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 
-export interface HeaderProps extends Omit<FlexProps, 'as'> {}
+export interface HeaderProps extends FlexProps {}
 
 /** Lets a parent style/space every `Header` it renders. Optional. */
 export const HeaderContext = createContext<ContextValue<HeaderProps, HTMLElement>>(null);
