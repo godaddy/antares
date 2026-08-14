@@ -11,12 +11,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy-preview:
+  build-preview:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -39,6 +43,34 @@ jobs:
         run: |
           if [ -d 404 ]; then cp 404/index.html 404.html; fi
 
+      - name: Upload Site Build
+        uses: actions/upload-artifact@v7
+        with:
+          name: docs-site-preview
+          path: apps/site/out
+          include-hidden-files: true
+          retention-days: 1
+          overwrite: true
+
+  deploy-preview:
+    needs: build-preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pages: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Download Site Build
+        uses: actions/download-artifact@v8
+        with:
+          name: docs-site-preview
+          path: site-build
+
       - name: Ensure .nojekyll at gh-pages root
         run: mkdir -p /tmp/root-nojekyll && touch /tmp/root-nojekyll/.nojekyll
 
@@ -48,14 +80,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: /tmp/root-nojekyll
           clean: false
+          force: false
+          attempt-limit: 5
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          folder: ./apps/site/out
+          folder: site-build
           target-folder: pr-${{ github.event.pull_request.number }}-site
           clean: false
+          force: false
+          attempt-limit: 5
 
       - name: Post Preview URL Comment
         uses: actions/github-script@v9
@@ -99,6 +135,8 @@ jobs:
   cleanup-preview:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout gh-pages Branch
         uses: actions/checkout@v7
