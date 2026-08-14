@@ -3609,83 +3609,6 @@ The `Select` component accepts the following props:
 <PropTable />
 
 
-# Structure primitives
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
-
-A parent adopts them by providing the contexts around its children:
-
-```tsx
-import { Provider } from 'react-aria-components';
-import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
-
-<Provider
-  values={[
-    [HeaderContext, { padding: 'md' }],
-    [ContentContext, { padding: 'md' }],
-    [FooterContext, { padding: 'md' }],
-    [ButtonGroupContext, { justifyContent: 'end' }]
-  ]}
->
-  {children}
-</Provider>;
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. \`Modal\`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props (except `as`).
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-
 # Switch
 
 
@@ -3885,19 +3808,7 @@ The `Switch` component has the following props:
 <PropTable />
 
 
-# Tag
-
-
-
-
-
-
-
-
-
-
-
-
+# Structure primitives
 
 
 
@@ -3909,111 +3820,67 @@ The `Switch` component has the following props:
 
 <Meta of="Stories" name="Overview" />
 
-## Installation [#installation]
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
 
-```bash
-npm install --save @godaddy/antares
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
+
+A parent adopts them by providing the contexts around its children:
+
+```tsx
+import { Provider } from 'react-aria-components';
+import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
+
+<Provider
+  values={[
+    [HeaderContext, { padding: 'md' }],
+    [ContentContext, { padding: 'md' }],
+    [FooterContext, { padding: 'md' }],
+    [ButtonGroupContext, { justifyContent: 'end' }]
+  ]}
+>
+  {children}
+</Provider>;
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-A minimal tag with the default emphasis and size.
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. \`Modal\`)
+they adopt that parent's spacing automatically.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Tag, type TagProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<TagProps>) {\n  return <Tag {...props}>Tag</Tag>;\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Nine emphasis options are available. Choose the one that fits the visual tone of your context.
-
-<Story of="EmphasesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis}>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag size=\&#x22;sm\&#x22; emphasis=\&#x22;info\&#x22;>\n        Small\n      </Tag>\n      <Tag size=\&#x22;md\&#x22; emphasis=\&#x22;info\&#x22;>\n        Medium\n      </Tag>\n      <Tag size=\&#x22;lg\&#x22; emphasis=\&#x22;info\&#x22;>\n        Large\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
-
-### Inline [#inline]
-
-Use \`design="inline"\` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
-
-<Story of="InlineExample" />
-
-<Source language="tsx" code="&#x22;import { Tag } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <p>\n      This domain is{' '}\n      <Tag emphasis=\&#x22;success\&#x22; design=\&#x22;inline\&#x22;>\n        Active\n      </Tag>{' '}\n      and your plan is{' '}\n      <Tag emphasis=\&#x22;premium\&#x22; design=\&#x22;inline\&#x22;>\n        Pro\n      </Tag>\n      .\n    </p>\n  );\n}&#x22;" />
-
-### High Contrast [#high-contrast]
-
-A bolder color treatment for when tags need to stand out more - for example, on colored backgrounds.
-
-<Story of="HighContrastExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function HighContrastExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} highContrast>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### With Icon [#with-icon]
-
-Icons reinforce the tag's meaning at a glance. Add an \`Icon\` as a child - it inherits the tag's color and scales with its size.
-
-<Story of="IconsExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Icon, Tag } from '@godaddy/antares';\n\nexport function IconsExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag emphasis=\&#x22;critical\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Critical\n      </Tag>\n      <Tag emphasis=\&#x22;success\&#x22;>\n        <Icon icon=\&#x22;checkmark\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Success\n      </Tag>\n      <Tag emphasis=\&#x22;warning\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Warning\n      </Tag>\n      <Tag emphasis=\&#x22;info\&#x22;>\n        <Icon icon=\&#x22;information\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Info\n      </Tag>\n      <Tag emphasis=\&#x22;highlight\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Highlight\n      </Tag>\n      <Tag emphasis=\&#x22;premium\&#x22;>\n        <Icon icon=\&#x22;diamond\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Premium\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
-
-### Indicator [#indicator]
-
-A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
-
-<Story of="IndicatorExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function IndicatorExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} indicator>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Screen readers [#screen-readers]
-
-Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
-
-### Decorative icons [#decorative-icons]
-
-Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
-
-```tsx
-<Tag emphasis="critical">
-  <Icon icon="alert" aria-hidden="true" />
-  Expired
-</Tag>
-```
-
-### Indicator dot [#indicator-dot]
-
-The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
-
-## Best Practices [#best-practices]
-
-* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
-* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
-* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
-* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
-
-## When to Use [#when-to-use]
-
-* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
-* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
-* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
-* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
-
-## When Not to Use [#when-not-to-use]
-
-* If users need to click or dismiss it — use a **Button** instead.
-* If the label is part of a sentence with no visual distinction — just use text.
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props (except `as`).
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
 
 <PropTable />
 
@@ -4571,6 +4438,139 @@ The `TooltipTrigger` component accepts the following props:
 <PropTable />
 
 
+# Tag
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal tag with the default emphasis and size.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tag, type TagProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<TagProps>) {\n  return <Tag {...props}>Tag</Tag>;\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Nine emphasis options are available. Choose the one that fits the visual tone of your context.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis}>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Choose a size that fits the surrounding content. Smaller tags work well in compact layouts like tables; larger tags suit headings or hero sections.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag size=\&#x22;sm\&#x22; emphasis=\&#x22;info\&#x22;>\n        Small\n      </Tag>\n      <Tag size=\&#x22;md\&#x22; emphasis=\&#x22;info\&#x22;>\n        Medium\n      </Tag>\n      <Tag size=\&#x22;lg\&#x22; emphasis=\&#x22;info\&#x22;>\n        Large\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
+
+### Inline [#inline]
+
+Use \`design="inline"\` to embed a tag within a sentence. The background and border are removed so the tag blends into the text flow.
+
+<Story of="InlineExample" />
+
+<Source language="tsx" code="&#x22;import { Tag } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <p>\n      This domain is{' '}\n      <Tag emphasis=\&#x22;success\&#x22; design=\&#x22;inline\&#x22;>\n        Active\n      </Tag>{' '}\n      and your plan is{' '}\n      <Tag emphasis=\&#x22;premium\&#x22; design=\&#x22;inline\&#x22;>\n        Pro\n      </Tag>\n      .\n    </p>\n  );\n}&#x22;" />
+
+### High Contrast [#high-contrast]
+
+A bolder color treatment for when tags need to stand out more - for example, on colored backgrounds.
+
+<Story of="HighContrastExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function HighContrastExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} highContrast>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### With Icon [#with-icon]
+
+Icons reinforce the tag's meaning at a glance. Add an \`Icon\` as a child - it inherits the tag's color and scales with its size.
+
+<Story of="IconsExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Icon, Tag } from '@godaddy/antares';\n\nexport function IconsExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Tag emphasis=\&#x22;critical\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Critical\n      </Tag>\n      <Tag emphasis=\&#x22;success\&#x22;>\n        <Icon icon=\&#x22;checkmark\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Success\n      </Tag>\n      <Tag emphasis=\&#x22;warning\&#x22;>\n        <Icon icon=\&#x22;alert\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Warning\n      </Tag>\n      <Tag emphasis=\&#x22;info\&#x22;>\n        <Icon icon=\&#x22;information\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Info\n      </Tag>\n      <Tag emphasis=\&#x22;highlight\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Highlight\n      </Tag>\n      <Tag emphasis=\&#x22;premium\&#x22;>\n        <Icon icon=\&#x22;diamond\&#x22; aria-hidden=\&#x22;true\&#x22; />\n        Premium\n      </Tag>\n    </Flex>\n  );\n}&#x22;" />
+
+### Indicator [#indicator]
+
+A minimal style that pairs a small colored dot with a neutral background. Well suited for dense layouts like tables or dashboards where multiple tags in close proximity would otherwise compete for attention.
+
+<Story of="IndicatorExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Tag } from '@godaddy/antares';\n\nconst emphases = [\n  'passive',\n  'critical',\n  'warning',\n  'success',\n  'info',\n  'highlight',\n  'premium',\n  'internal',\n  'neutral'\n] as const;\n\nexport function IndicatorExample() {\n  return (\n    <Flex gap=\&#x22;xs\&#x22; wrap=\&#x22;wrap\&#x22; alignItems=\&#x22;center\&#x22;>\n      {emphases.map((emphasis) => (\n        <Tag key={emphasis} emphasis={emphasis} indicator>\n          {emphasis}\n        </Tag>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Screen readers [#screen-readers]
+
+Tags are `<span>` elements with no special ARIA role. Screen readers announce the tag's text as part of normal page content — no extra markup is needed.
+
+### Decorative icons [#decorative-icons]
+
+Icons passed as children must include `aria-hidden="true"` so they are skipped by screen readers. The text label is the sole carrier of meaning.
+
+```tsx
+<Tag emphasis="critical">
+  <Icon icon="alert" aria-hidden="true" />
+  Expired
+</Tag>
+```
+
+### Indicator dot [#indicator-dot]
+
+The colored dot is decorative and invisible to screen readers. The text label must convey the status on its own — never rely on the dot alone to communicate meaning.
+
+## Best Practices [#best-practices]
+
+* Use the indicator style in dense layouts like tables and dashboards. Use the filled style when the tag is a prominent, standalone element on a card or hero section.
+* Default to the small size in compact layouts like tables and lists. Use medium or large only when the tag needs to stand out as a primary piece of information.
+* Use the inline design only within running prose. In grouped or standalone contexts, the filled style provides better visual separation.
+* Do not stack multiple tags of different emphasis on the same item. Choose the most important one — too many competing labels lose their meaning.
+
+## When to Use [#when-to-use]
+
+* Showing the status of an item on a card, table row, or list entry (e.g. "Active", "Expired", "Pending")
+* Categorizing or grouping content so users can scan and filter quickly (e.g. "New", "Sale", "Beta")
+* Surfacing metadata about an item (e.g. "Pro", "Free trial", "Internal")
+* Communicating priority or category in project management and collaboration tools (e.g. "High priority", "In review")
+
+## When Not to Use [#when-not-to-use]
+
+* If users need to click or dismiss it — use a **Button** instead.
+* If the label is part of a sentence with no visual distinction — just use text.
+
+## Props [#props]
+
+<PropTable />
+
+
 # Bar Chart
 
 
@@ -4768,79 +4768,6 @@ For better performance:
 1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
-
-## Props [#props]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a \`data\` array (\`id\`, \`name\`, \`value\`) and a \`label\` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add \`subLabel\` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch \`legend\` to \`right\` to sit the legend beside the donut, or \`bottom\` to stack it underneath. \`legendLabel\` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below \`smallSliceThreshold\` (default \`0.05\` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use \`formatValue\` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -5282,6 +5209,79 @@ Use `xType="time"` when the X-axis values are Date objects:
 ### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
 
 Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
+
+## Props [#props]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a \`data\` array (\`id\`, \`name\`, \`value\`) and a \`label\` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add \`subLabel\` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch \`legend\` to \`right\` to sit the legend beside the donut, or \`bottom\` to stack it underneath. \`legendLabel\` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below \`smallSliceThreshold\` (default \`0.05\` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use \`formatValue\` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
