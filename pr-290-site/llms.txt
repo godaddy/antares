@@ -23,8 +23,8 @@
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [ProgressBar](/docs/components/progress-bar): A progress bar shows determinate progress of an operation over time
 - [ProgressSteps](/docs/components/progress-steps): A multi-step progress indicator for wizard and onboarding flows.
-- [RangeField](/docs/components/range-field): RangeField lets users select one numeric value or a related set of values on a bounded scale.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
+- [RangeField](/docs/components/range-field): RangeField lets users select one numeric value or a related set of values on a bounded scale.
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
 - [Select](/docs/components/select): Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
 - [Structure primitives](/docs/components/structure): Generic structural containers (Content, Header, Footer, ButtonGroup) for composing a component's interior.
