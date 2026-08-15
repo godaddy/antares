@@ -443,7 +443,7 @@ export function LineChart<
         />
       );
     },
-    [seriesWithColor, seriesWithColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
+    [seriesWithColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
   );
 
   const xScaleConfig = useMemo(

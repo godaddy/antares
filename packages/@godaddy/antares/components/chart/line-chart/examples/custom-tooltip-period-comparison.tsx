@@ -1,4 +1,3 @@
-import type { LineSeriesConfig } from '#components/*';
 import {
   Box,
   type DataPoint,
@@ -6,6 +5,7 @@ import {
   LineChart,
   type LineChartProps,
   type LineChartTooltipRenderProps,
+  type LineSeriesConfig,
   Text
 } from '@godaddy/antares';
 
