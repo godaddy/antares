@@ -57,17 +57,6 @@ const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
 /**
  * Data passed to a custom {@link LineChartPropsBase.renderTooltip} function.
  *
- * `hoveredSeriesId` / `hoveredDatum` identify the single curve nearest the cursor
- * (visx's `nearestDatum`), which is what lets a custom tooltip show information
- * specific to the line being hovered. `datumByKey` still exposes every series'
- * point at the current X for tooltips that want to show them all.
- *
- * `S` captures the series-config shape you pass to `series`. If you extend
- * `LineSeriesConfig` with your own keys (e.g. `period: 'current' | 'previous'`),
- * those keys are inferred here so `series` is typed with them — no cast needed.
- *
- * @template T - The data point type. Defaults to DataPoint.
- * @template S - The series-config shape. Inferred from `series`; defaults to SeriesConfig<T>.
  * @public
  */
 export interface LineChartTooltipRenderProps<
@@ -80,15 +69,10 @@ export interface LineChartTooltipRenderProps<
   hoveredDatum?: T;
   /**
    * Nearest datum for each series at the current X position, keyed by series id.
-   * A series has no entry when it has no point at the hovered X (gaps or a
-   * non-overlapping domain), so this is a partial record — guard before indexing.
    */
   datumByKey: Partial<Record<string, T>>;
   /**
-   * Resolved series in render order — the objects you passed in `series`, with every
-   * custom key preserved untouched and a guaranteed `id`. The palette color computed for
-   * each series is exposed under the reserved `_resolvedColor` key (not `color`), so a
-   * field literally named `color` on your series survives and its type can't collapse.
+   * Resolved series in render order.
    */
   series: (InternalSeriesConfig<T, S['tooltipMetadata']> & { id: string })[];
 }
@@ -109,9 +93,7 @@ export interface LineChartPropsBase<
   S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
 > {
   /**
-   * Data series (id optional; stable id generated when omitted). Each series may
-   * set `variant` to 'solid' (default), 'dashed', or 'dotted' to control its line style.
-   * Extra keys on your series objects are preserved and surfaced to `renderTooltip`.
+   * Data series (id optional; stable id generated when omitted)
    */
   series: S[];
 
@@ -276,9 +258,7 @@ export interface LineChartPropsBase<
   /**
    * Render a custom tooltip. Receives the hovered series id and datum (the curve
    * nearest the cursor), every series' datum at the current X, and the resolved
-   * series list — see {@link LineChartTooltipRenderProps}. The returned content is
-   * wrapped in the default styled popover. When omitted, the built-in tooltip (one
-   * row per series) is shown; `tooltipValueFormatter` only affects that built-in tooltip.
+   * series list — see {@link LineChartTooltipRenderProps}.
    */
   renderTooltip?: (props: LineChartTooltipRenderProps<T, S>) => ReactNode;
 

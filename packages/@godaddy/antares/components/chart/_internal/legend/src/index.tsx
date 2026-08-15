@@ -8,11 +8,7 @@ import styles from './index.module.css';
 
 /**
  * Series subset the legend renders. Both extra fields are optional and line-specific, and are
- * only honored when {@link LegendProps.useSeriesStyles} is set: `variant` set to 'dashed' or
- * 'dotted' makes the swatch a matching line instead of the default color dot; `color` overrides
- * the swatch color (otherwise it's allocated from the palette by position). Bar and donut
- * legends leave the flag off and keep the position-based dot.
- */
+ * only honored when {@link LegendProps.useSeriesStyles} is set */
 interface LegendSeriesItem extends Pick<InternalSeriesConfig, 'id' | 'name' | '_resolvedColor' | 'variant'> {}
 
 /**

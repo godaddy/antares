@@ -4,7 +4,7 @@ import { Text } from '#components/text';
 import type { TooltipData } from '@visx/xychart';
 import type { ReactElement, ReactNode } from 'react';
 import { useMemo } from 'react';
-import type { DataPoint, SeriesConfig } from '../../../types.ts';
+import type { DataPoint, InternalSeriesConfig, SeriesConfig } from '../../../types.ts';
 import { yAccessor as defaultYAccessor } from '../../../utils.ts';
 import { cx } from 'cva';
 import styles from './index.module.css';
@@ -40,20 +40,15 @@ interface TooltipBaseProps<T extends object> {
   /** Hovered data from visx. */
   tooltipData?: TooltipData<T>;
   /**
-   * Series config for names and colors. Each item may carry an optional `color`, but it is
-   * only applied to the swatch when {@link TooltipBaseProps.useSeriesColors} is set (line
-   * charts, which resolve colors explicitly via `colorIndex`). Otherwise the swatch color
-   * falls back to the palette by position (CSS `:nth-child`).
+   * Series config for names and colors.  (CSS `:nth-child`).
    */
-  series: SeriesConfig<T>[];
+  series: InternalSeriesConfig<T>[];
   /** Additional class name. */
   className?: string;
   /** Whether to show the tooltip arrow @default false */
   showArrow?: boolean;
   /**
-   * When true, each swatch uses its series' explicit `color`. Left off (the default) for
-   * bar charts, whose series render in order and take position-based palette colors — so a
-   * consumer's incidental `color` field never overrides a swatch. @default false
+   * When true, each swatch uses its series' explicit `_resolvedColor`. @default false
    */
   useSeriesColors?: boolean;
 }
