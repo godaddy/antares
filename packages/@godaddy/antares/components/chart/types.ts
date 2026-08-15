@@ -52,7 +52,10 @@ export type LineSeriesVariant = 'solid' | 'dashed' | 'dotted';
  *
  * @typeParam T - Item type for data points. Defaults to {@link DataPoint}.
  */
-export interface LineSeriesConfig<T extends object = DataPoint> extends Omit<SeriesConfig<T>, '_resolvedColor'> {
+export interface LineSeriesConfig<
+  T extends object = DataPoint,
+  U extends Record<string, unknown> = Record<string, unknown>
+> extends SeriesConfig<T> {
   /**
    * Index into the chart's data-visualization palette (0-based; wraps modulo the
    * palette length). Assign the same index to multiple series to give them the
@@ -61,10 +64,18 @@ export interface LineSeriesConfig<T extends object = DataPoint> extends Omit<Ser
    * When omitted, the series uses its position in `series` (the default behavior).
    */
   colorIndex?: number;
+  tooltipMetadata?: U;
 }
 
-export interface BarSeriesConfig<T extends object = DataPoint>
-  extends Omit<SeriesConfig<T>, '_resolvedColor' | 'variant'> {}
+export interface InternalSeriesConfig<
+  T extends object = DataPoint,
+  U extends Record<string, unknown> | undefined = Record<string, unknown>
+> extends SeriesConfig<T> {
+  _resolvedColor?: string;
+  variant?: LineSeriesVariant;
+  colorIndex?: number;
+  tooltipMetadata?: U;
+}
 
 /**
  * Accessors for X and Y from a data point.

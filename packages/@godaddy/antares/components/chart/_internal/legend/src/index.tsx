@@ -1,4 +1,4 @@
-import type { LineSeriesVariant, SeriesConfig } from '#components/chart/types.ts';
+import type { InternalSeriesConfig, LineSeriesVariant, SeriesConfig } from '#components/chart/types.ts';
 import { cx } from 'cva';
 import { ChartColorProvider, useChartColor } from '#components/chart/_internal/use-chart-color';
 import { Flex, type FlexProps } from '#components/layout/flex';
@@ -13,9 +13,7 @@ import styles from './index.module.css';
  * the swatch color (otherwise it's allocated from the palette by position). Bar and donut
  * legends leave the flag off and keep the position-based dot.
  */
-interface LegendSeriesItem extends Pick<SeriesConfig, 'id' | 'name' | '_resolvedColor'> {
-  variant?: LineSeriesVariant;
-}
+interface LegendSeriesItem extends Pick<InternalSeriesConfig, 'id' | 'name' | '_resolvedColor' | 'variant'> {}
 
 /**
  * Props for the Legend component.
@@ -35,10 +33,8 @@ export interface LegendProps
   /** Layout orientation for legend items. Defaults to horizontal. */
   orientation?: 'horizontal' | 'vertical';
   /**
-   * When true, each swatch is drawn from its series' explicit `variant` and `color` (line
-   * charts, which support `colorIndex` reordering and dashed/dotted styles). Left off (the
-   * default) for bar/donut, whose series render in order and take a position-based color dot —
-   * so a consumer's incidental `color`/`variant` field never alters a swatch. @default false
+   * When true, each swatch is drawn from its series' explicit settings,
+   * Otherwise, receives default styles based on position @default false
    */
   useSeriesStyles?: boolean;
 }

@@ -1,3 +1,4 @@
+import type { LineSeriesConfig } from '#components/*';
 import {
   Box,
   type DataPoint,
@@ -5,7 +6,6 @@ import {
   LineChart,
   type LineChartProps,
   type LineChartTooltipRenderProps,
-  type LineSeriesConfig,
   Text
 } from '@godaddy/antares';
 
@@ -27,7 +27,7 @@ const formatMoney = (v: number) => `$${v.toFixed(2)}`;
  */
 interface ChannelSeries extends LineSeriesConfig {
   /** Which period this line represents; used to pair current vs previous. */
-  period: 'current' | 'previous';
+  tooltipMetadata: { period: 'current' | 'previous' };
 }
 
 /**
@@ -40,7 +40,7 @@ function renderPeriodTooltip({
   hoveredSeriesId,
   datumByKey,
   series
-}: LineChartTooltipRenderProps<DataPoint, ChannelSeries>) {
+}: LineChartTooltipRenderProps<DataPoint, LineSeriesConfig<DataPoint, { period: 'current' | 'previous' }>>) {
   const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);
   if (!hovered) {
     return null;
@@ -48,8 +48,8 @@ function renderPeriodTooltip({
 
   // Pair by colorIndex, then split by the custom `period` key (typed, no cast needed).
   const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);
-  const current = pair.find((oneSeries) => oneSeries.period === 'current');
-  const previous = pair.find((oneSeries) => oneSeries.period === 'previous');
+  const current = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');
+  const previous = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');
   if (!current || !previous) {
     return null;
   }
@@ -131,14 +131,14 @@ export function CustomTooltipPeriodComparisonExample(props: Partial<LineChartPro
       id: 'online',
       name: 'Online Store',
       colorIndex: 0,
-      period: 'current',
+      tooltipMetadata: { period: 'current' },
       data: buildSeries(680, 90, 0)
     },
     {
       id: 'online-prev',
       name: 'Online Store (previous)',
       colorIndex: 0,
-      period: 'previous',
+      tooltipMetadata: { period: 'previous' },
       variant: 'dashed',
       data: buildSeries(700, 80, 1.2)
     },
@@ -146,14 +146,14 @@ export function CustomTooltipPeriodComparisonExample(props: Partial<LineChartPro
       id: 'retail',
       name: 'Retail',
       colorIndex: 1,
-      period: 'current',
+      tooltipMetadata: { period: 'current' },
       data: buildSeries(430, 70, 0.5)
     },
     {
       id: 'retail-prev',
       name: 'Retail (previous)',
       colorIndex: 1,
-      period: 'previous',
+      tooltipMetadata: { period: 'previous' },
       variant: 'dashed',
       data: buildSeries(410, 60, 1.8)
     }

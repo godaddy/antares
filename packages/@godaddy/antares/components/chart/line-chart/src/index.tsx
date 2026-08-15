@@ -21,6 +21,7 @@ import { useLocale } from 'react-aria-components';
 import type {
   AccessorRequirement,
   DataPoint,
+  InternalSeriesConfig,
   LegendPosition,
   LineSeriesConfig,
   LineSeriesVariant,
@@ -71,7 +72,7 @@ const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
  */
 export interface LineChartTooltipRenderProps<
   T extends object = DataPoint,
-  S extends Optional<SeriesConfig<T>, 'id'> = Optional<SeriesConfig<T>, 'id'>
+  S extends Optional<InternalSeriesConfig<T>, 'id'> = Optional<InternalSeriesConfig<T>, 'id'>
 > {
   /** id of the series/curve nearest the cursor; undefined when none is hovered. */
   hoveredSeriesId?: string;
@@ -89,7 +90,7 @@ export interface LineChartTooltipRenderProps<
    * each series is exposed under the reserved `_resolvedColor` key (not `color`), so a
    * field literally named `color` on your series survives and its type can't collapse.
    */
-  series: (S & SeriesConfig<T> & { id: string })[];
+  series: (InternalSeriesConfig<T, S['tooltipMetadata']> & { id: string })[];
 }
 
 /**

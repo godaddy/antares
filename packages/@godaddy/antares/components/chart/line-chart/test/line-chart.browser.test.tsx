@@ -419,7 +419,14 @@ describe('@godaddy/antares', function antares() {
           (iso) => new Date(iso)
         );
         const values = [10, 40, 25, 60, 35];
-        const series = [{ id: 'solo', name: 'Solo', colorIndex: 0, data: dates.map((x, i) => ({ x, y: values[i] })) }];
+        const series = [
+          {
+            id: 'solo',
+            name: 'Solo',
+            colorIndex: 0,
+            data: dates.map((x, i) => ({ x, y: values[i] }))
+          }
+        ];
 
         const { container, locator } = await renderExampleAndWait(<CustomTooltipPairChangeExample series={series} />);
         assume(container.querySelector('svg')).exists();
@@ -487,21 +494,33 @@ describe('@godaddy/antares', function antares() {
         );
         const flatLine = (value: number) => dates.map((x) => ({ x, y: value }));
         const series = [
-          { id: 'north', name: 'North', colorIndex: 0, period: 'current' as const, data: flatLine(900) },
+          {
+            id: 'north',
+            name: 'North',
+            colorIndex: 0,
+            tooltipMetadata: { period: 'current' as const },
+            data: flatLine(900)
+          },
           {
             id: 'north-prev',
             name: 'North (previous)',
             colorIndex: 0,
-            period: 'previous' as const,
+            tooltipMetadata: { period: 'previous' as const },
             variant: 'dashed' as const,
             data: flatLine(950)
           },
-          { id: 'south', name: 'South', colorIndex: 1, period: 'current' as const, data: flatLine(100) },
+          {
+            id: 'south',
+            name: 'South',
+            colorIndex: 1,
+            tooltipMetadata: { period: 'current' as const },
+            data: flatLine(100)
+          },
           {
             id: 'south-prev',
             name: 'South (previous)',
             colorIndex: 1,
-            period: 'previous' as const,
+            tooltipMetadata: { period: 'previous' as const },
             variant: 'dashed' as const,
             data: flatLine(120)
           }
@@ -545,7 +564,10 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#rtl', function rtl() {
-      function getXYAxisGroups(svg: SVGGraphicsElement): { xAxis: SVGGraphicsElement; yAxis: SVGGraphicsElement } {
+      function getXYAxisGroups(svg: SVGGraphicsElement): {
+        xAxis: SVGGraphicsElement;
+        yAxis: SVGGraphicsElement;
+      } {
         const axes = Array.from(svg.querySelectorAll<SVGGraphicsElement>('g.visx-axis'));
         let xAxis: SVGGraphicsElement | null = null;
         let yAxis: SVGGraphicsElement | null = null;
@@ -564,7 +586,10 @@ describe('@godaddy/antares', function antares() {
           }
         }
 
-        return { xAxis: xAxis as SVGGraphicsElement, yAxis: yAxis as SVGGraphicsElement };
+        return {
+          xAxis: xAxis as SVGGraphicsElement,
+          yAxis: yAxis as SVGGraphicsElement
+        };
       }
 
       it('renders the chart wrapper with dir="rtl" when locale is RTL', async function rtlWrapperDir() {
