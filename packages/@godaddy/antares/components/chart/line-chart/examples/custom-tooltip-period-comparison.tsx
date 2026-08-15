@@ -21,7 +21,7 @@ const formatDate = (d: Date) =>
 const formatMoney = (v: number) => `$${v.toFixed(2)}`;
 
 /**
- * Series shape extended with custom tooltipMetadata. The type of tooltipMeatadata is inferred
+ * Series shape extended with custom tooltipMetadata. The type of tooltipMetadata is inferred
  * from this type in the tooltip render function so no cast is needed at the call site.
  */
 interface ChannelSeries extends LineSeriesConfig {
