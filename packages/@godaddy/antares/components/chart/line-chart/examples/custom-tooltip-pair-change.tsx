@@ -14,7 +14,7 @@ function renderPairChangeTooltip({ hoveredSeriesId, datumByKey, series }: LineCh
   }
 
   // Both lines in a pair share a color; split them into the solid actual and dashed forecast.
-  const pair = series.filter((oneSeries) => oneSeries._resolvedColor === hovered._resolvedColor);
+  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);
   const actual = pair.find((oneSeries) => oneSeries.variant !== 'dashed');
   const forecast = pair.find((oneSeries) => oneSeries.variant === 'dashed');
   if (!actual || !forecast) {

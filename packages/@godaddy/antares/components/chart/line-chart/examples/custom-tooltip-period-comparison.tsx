@@ -21,9 +21,8 @@ const formatDate = (d: Date) =>
 const formatMoney = (v: number) => `$${v.toFixed(2)}`;
 
 /**
- * Series shape extended with a custom `period` key. Because `series` is passed as
- * `ChannelSeries[]`, LineChart infers it and `renderTooltip` receives `series` typed as
- * `ChannelSeries` — so `oneSeries.period` below is fully typesafe with no cast.
+ * Series shape extended with custom tooltipMetadata. The type of tooltipMeatadata is inferred
+ * from this type in the tooltip render function so no cast is needed at the call site.
  */
 interface ChannelSeries extends LineSeriesConfig {
   /** Which period this line represents; used to pair current vs previous. */
@@ -124,8 +123,6 @@ function buildSeries(base: number, amplitude: number, phase: number) {
  * line shows both dated values and the percent change, wrapped in the default popover.
  */
 export function CustomTooltipPeriodComparisonExample(props: Partial<LineChartProps<DataPoint, ChannelSeries>>) {
-  // Typed as ChannelSeries[] so LineChart infers `S = ChannelSeries`; the tooltip's
-  // `series` is then typed with the custom `period` key with no cast at the call site.
   const series: ChannelSeries[] = [
     {
       id: 'online',

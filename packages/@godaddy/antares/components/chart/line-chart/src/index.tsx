@@ -366,16 +366,9 @@ export function LineChart<
   const { direction } = useLocale();
   const isRtl = direction === 'rtl';
   const series = useNormalizedSeries(seriesProp);
-  // Single source of truth for per-series color: an explicit `colorIndex` selects a palette
-  // color, otherwise the series' position is used (preserving default behavior). Feeds the
-  // XYChart theme (line strokes + hover glyphs), the legend swatch, and the tooltip swatch so
-  // all color surfaces stay in sync.
   const seriesColors = useMemo(
     function getSeriesColors() {
       return series.map(function resolveColor(oneSeries, index) {
-        // colorIndex is public and typed `number`; fall back to the series position for
-        // anything that isn't a valid palette index (undefined, negative, fractional, NaN, ∞),
-        // since chartColorForIndex would otherwise resolve those to `undefined`.
         const { colorIndex } = oneSeries;
         const paletteIndex =
           typeof colorIndex === 'number' && Number.isInteger(colorIndex) && colorIndex >= 0 ? colorIndex : index;
@@ -407,8 +400,6 @@ export function LineChart<
         return <></>;
       }
 
-      // Custom tooltip: expose the hovered curve (nearestDatum) plus all series at this X,
-      // wrapped in the shared popover chrome so it matches the built-in tooltip.
       if (renderTooltipContent) {
         const { tooltipData } = params;
         const datumByKey = Object.fromEntries(
@@ -423,10 +414,7 @@ export function LineChart<
           series: seriesWithColor
         });
         // A consumer returning nothing should render no popover at all — otherwise the empty
-        // styled container floats at the cursor. React renders every boolean as no content, so
-        // a `cond && <X/>` that short-circuits to `false`, a `cond || <X/>` that yields `true`,
-        // `undefined` from a branch with no return, or an explicit `null` should all suppress
-        // it. `0`/`NaN` are intentionally left renderable.
+        // styled container floats at the cursor.
         if (content === null || content === undefined || typeof content === 'boolean') {
           return null;
         }
@@ -504,9 +492,6 @@ export function LineChart<
 
   const xyChartTheme = useMemo(
     function buildXyChartTheme() {
-      // visx maps each series (in registration order) to colors[i], so passing the resolved
-      // per-series colors here colors both the line strokes and the tooltip hover glyphs.
-      // Fall back to the full palette when there are no series (empty range is invalid).
       return buildChartTheme({
         backgroundColor: '',
         colors: seriesColors.length > 0 ? seriesColors : [...CHART_LEGACY_SERIES_COLORS],

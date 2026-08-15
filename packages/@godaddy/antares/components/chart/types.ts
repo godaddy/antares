@@ -39,24 +39,13 @@ export type LineSeriesVariant = 'solid' | 'dashed' | 'dotted';
 
 /**
  * Config for one line-chart series.
- *
- * Extends {@link SeriesConfig} with an optional {@link LineSeriesVariant} so
- * individual lines can render solid, dashed, or dotted. Line-specific — bar and
- * donut charts continue to use {@link SeriesConfig}.
- *
- * @typeParam T - Item type for data points. Defaults to {@link DataPoint}.
  */
 export interface LineSeriesConfig<
   T extends object = DataPoint,
   U extends Record<string, unknown> = Record<string, unknown>
 > extends SeriesConfig<T> {
-  /**
-   * Index into the chart's data-visualization palette (0-based; wraps modulo the
-   * palette length). Assign the same index to multiple series to give them the
-   * same color — e.g. a solid and a dashed line that belong together. Any series
-   * may use any index independently; there is no grouping or ordering requirement.
-   * When omitted, the series uses its position in `series` (the default behavior).
-   */
+  // colorIndex instead of color so consumer still has to use
+  // antares theme colors
   colorIndex?: number;
   variant?: LineSeriesVariant;
   tooltipMetadata?: U;

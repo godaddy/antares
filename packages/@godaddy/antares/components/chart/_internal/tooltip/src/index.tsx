@@ -40,7 +40,7 @@ interface TooltipBaseProps<T extends object> {
   /** Hovered data from visx. */
   tooltipData?: TooltipData<T>;
   /**
-   * Series config for names and colors.  (CSS `:nth-child`).
+   * Series config for names and colors.
    */
   series: InternalSeriesConfig<T>[];
   /** Additional class name. */
