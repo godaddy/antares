@@ -4,7 +4,7 @@ import { Text } from '#components/text';
 import type { TooltipData } from '@visx/xychart';
 import type { ReactElement, ReactNode } from 'react';
 import { useMemo } from 'react';
-import type { DataPoint, InternalSeriesConfig, SeriesConfig } from '../../../types.ts';
+import type { DataPoint, InternalSeriesConfig } from '../../../types.ts';
 import { yAccessor as defaultYAccessor } from '../../../utils.ts';
 import { cx } from 'cva';
 import styles from './index.module.css';
@@ -95,7 +95,7 @@ export function Tooltip<T extends object = DataPoint>(
         return [];
       }
 
-      return (series as SeriesConfig<T>[])
+      return (series as InternalSeriesConfig<T>[])
         .filter(function hasDatum(seriesItem) {
           return tooltipData.datumByKey[seriesItem.id] != null;
         })
