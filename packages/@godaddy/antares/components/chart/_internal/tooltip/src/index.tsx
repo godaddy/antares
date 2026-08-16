@@ -8,6 +8,7 @@ import type { DataPoint, InternalSeriesConfig } from '../../../types.ts';
 import { yAccessor as defaultYAccessor } from '../../../utils.ts';
 import { cx } from 'cva';
 import styles from './index.module.css';
+import { SWATCH_DASH_ARRAY } from '#components/chart/_internal/legend';
 
 /**
  * Styled popover container shared by the built-in tooltip and any custom tooltip
@@ -39,17 +40,13 @@ function defaultFormatValue<T extends object = DataPoint>(d: T): string {
 interface TooltipBaseProps<T extends object> {
   /** Hovered data from visx. */
   tooltipData?: TooltipData<T>;
-  /**
-   * Series config for names and colors.
-   */
+  /** Series config for names and colors. */
   series: InternalSeriesConfig<T>[];
   /** Additional class name. */
   className?: string;
   /** Whether to show the tooltip arrow @default false */
   showArrow?: boolean;
-  /**
-   * When true, each swatch uses its series' explicit `_resolvedColor`. @default false
-   */
+  /** When true, each swatch uses its series' explicit `_resolvedColor`. @default false */
   useSeriesColors?: boolean;
 }
 
@@ -118,6 +115,7 @@ export function Tooltip<T extends object = DataPoint>(
     <TooltipContainer className={className}>
       <Flex role="list" aria-label="Tooltip data" direction="column" gap="sm">
         {seriesData.map(function renderSeriesItem(item) {
+          const lineVariant = item.variant ?? 'solid';
           return (
             <Flex
               key={item.id}
@@ -128,11 +126,37 @@ export function Tooltip<T extends object = DataPoint>(
               display="inline-flex"
             >
               <Flex alignItems="center" gap="sm">
-                <Box
-                  className={styles.swatch}
-                  rounding="full"
-                  style={useSeriesColors && item._resolvedColor ? { backgroundColor: item._resolvedColor } : undefined}
-                />
+                {lineVariant === 'solid' ? (
+                  <Box
+                    className={styles.swatch}
+                    rounding="full"
+                    style={
+                      useSeriesColors && item._resolvedColor ? { backgroundColor: item._resolvedColor } : undefined
+                    }
+                  />
+                ) : (
+                  item.variant && (
+                    <svg
+                      className={styles.lineSwatch}
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                      focusable="false"
+                      width="16"
+                      height="16"
+                    >
+                      <line
+                        x1="0"
+                        y1="8"
+                        x2="16"
+                        y2="8"
+                        stroke={item._resolvedColor}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeDasharray={SWATCH_DASH_ARRAY[lineVariant]}
+                      />
+                    </svg>
+                  )
+                )}
                 <Text>{item.name}</Text>
               </Flex>
               <Text className={styles.value}>{item.value}</Text>

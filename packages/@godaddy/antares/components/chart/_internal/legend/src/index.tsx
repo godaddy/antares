@@ -56,7 +56,7 @@ export interface LegendProps
  * ```
  */
 /** stroke-dasharray for the line swatch, mirroring the chart's line variants (scaled for the small swatch). */
-const SWATCH_DASH_ARRAY: Record<Exclude<LineSeriesVariant, 'solid'>, string> = {
+export const SWATCH_DASH_ARRAY: Record<Exclude<LineSeriesVariant, 'solid'>, string> = {
   dashed: '5 3',
   dotted: '1 3'
 };
