@@ -1,24 +1,51 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 
+/** Options for measuring and navigating the Tabs conveyor. */
 interface TabsOverflowOptions {
+  /** Whether the document direction is right-to-left. */
   readonly isRTL?: boolean;
 }
 
+/** Current measurement state for the Tabs conveyor. */
 interface TabsOverflowState {
+  /** Whether the tab conveyor extends beyond its available width. */
   readonly hasOverflow: boolean;
+
+  /** Whether the previous control can reveal an earlier tab. */
   readonly canScrollPrev: boolean;
+
+  /** Whether the next control can reveal a later tab. */
   readonly canScrollNext: boolean;
 }
 
 export interface TabsOverflowResult {
+  /** Ref for the outer conveyor shell. */
   readonly shellRef: RefObject<HTMLDivElement | null>;
+
+  /** Ref for the tab list content. */
   readonly contentRef: RefObject<HTMLDivElement | null>;
+
+  /** Ref for the scrollable viewport. */
   readonly viewportRef: RefObject<HTMLDivElement | null>;
+
+  /** Current overflow and scroll boundary state. */
   readonly state: TabsOverflowState;
+
+  /** Scrolls toward the previous visible tab. */
   readonly scrollPrevious: () => void;
+
+  /** Scrolls toward the next visible tab. */
   readonly scrollNext: () => void;
 }
 
+/**
+ * Reads the conveyor dimensions and determines the available scroll directions.
+ *
+ * @param shell - Outer conveyor shell used to determine available width.
+ * @param content - Tab list content whose width is measured for overflow.
+ * @param viewport - Scrollable viewport used to determine the current position.
+ * @returns The current overflow and scroll boundary state.
+ */
 function readOverflowState(
   shell: HTMLDivElement | null,
   content: HTMLDivElement | null,
@@ -30,13 +57,14 @@ function readOverflowState(
   return {
     hasOverflow: content.scrollWidth > shell.clientWidth + 1,
     canScrollPrev: position > 1,
-    canScrollNext: position < maxScroll - 1
+    canScrollNext: position < maxScroll - 2
   };
 }
 
 /**
  * Measures a horizontal tab-list conveyor and moves one tab at a time.
  *
+ * @param options - Directional options used when calculating logical scroll targets.
  * @returns Conveyor refs, boundary state, and scroll handlers.
  */
 export function useTabsOverflow(options: TabsOverflowOptions = {}): TabsOverflowResult {

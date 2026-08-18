@@ -1,27 +1,36 @@
 .tabs {
+  --_tabs-item-block-space: calc(var(--sp-density) * 1.375);
+  --_tabs-item-inline-space: 0;
+  --_tabs-list-gap: calc(var(--sp-density) * 5);
+  --_tabs-manilla-space: calc(var(--sp-density) * 3);
+  --_tabs-border-width: 1px;
+  --_tabs-underline-width: 4px;
+  --_tabs-panel-space: var(--sp-md);
   --_tabs-item-fg: var(--color-action-text-secondary-default, var(--ux-1xeg43i, #767676));
+  --_tabs-item-fg-hover: var(--color-action-text-secondary-hovered, #111111);
   --_tabs-item-fg-selected: var(--color-action-text-secondary-selected, var(--ux-9gvyua, #111111));
-  --_tabs-item-border: var(--color-action-border-secondary-default, var(--ux-ako3l5, transparent));
+  --_tabs-item-border-hover: var(--color-action-border-secondary-hovered, #afafaf);
   --_tabs-item-border-selected: var(--color-action-border-secondary-selected, var(--ux-1pvg8dx, #1bdbdb));
-  --_tabs-item-hover-bg: var(--color-action-background-secondary-hovered, var(--ux-15qjz45, rgba(17, 17, 17, 0.1)));
-  --_tabs-border: var(--color-border-low-contrast, var(--ux-ako3l5, #d6d6d6));
+  --_tabs-item-hover-bg: var(--color-action-background-secondary-hovered, transparent);
+  --_tabs-border: var(--color-border-low-contrast, #d4dbe0);
   color: var(--_tabs-item-fg);
   min-width: 0;
 }
 
 .listShell {
   display: flex;
+  width: 100%;
   min-width: 0;
   align-items: flex-end;
-  border-bottom: 1px solid var(--_tabs-item-border);
+  border-bottom: var(--_tabs-border-width) solid var(--_tabs-border);
 }
 
 .viewport {
+  flex: 1 1 auto;
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
 }
 
 .viewport::-webkit-scrollbar {
@@ -36,28 +45,35 @@
 
 .list {
   display: flex;
+  gap: var(--_tabs-list-gap);
   width: max-content;
+}
+
+.tabs[data-design="manilla"] .list {
+  gap: 0;
 }
 
 .tab {
   position: relative;
   flex: 0 0 auto;
-  min-height: 48px;
-  padding: 11px 16px;
-  border: 1px solid transparent;
-  border-bottom-width: 4px;
+  padding: var(--_tabs-item-block-space) var(--_tabs-item-inline-space);
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: var(--_tabs-underline-width) solid transparent;
   color: var(--_tabs-item-fg);
   font-family: var(--ux-15ks663, sans-serif);
   font-size: 16px;
   font-weight: 700;
-  line-height: 18px;
+  line-height: 1.125;
   scroll-snap-align: start;
 
   &:where([data-hovered]:not([data-disabled])),
   &:where([data-pressed]:not([data-disabled])) {
     background: var(--_tabs-item-hover-bg);
+    color: var(--_tabs-item-fg-hover);
   }
 
+  &:where(:focus-visible),
   &:where([data-focus-visible]:not([data-disabled])) {
     outline: 2px solid Highlight;
     outline-offset: -2px;
@@ -76,26 +92,41 @@
     border-bottom-color: var(--_tabs-item-border-selected);
   }
 
-  &:where([data-design="manila"]) {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-color: var(--_tabs-border);
+  &:where([data-design="underline"][data-hovered]:not([data-disabled]):not([data-selected])) {
+    border-bottom-color: var(--_tabs-item-border-hover);
   }
 
-  &:where([data-design="manila"][data-selected]) {
-    border-color: var(--_tabs-border);
+  &:where([data-design="manilla"]) {
+    border: var(--_tabs-border-width) solid transparent;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
     border-bottom-color: transparent;
+    padding-inline: var(--_tabs-manilla-space);
+  }
+
+  &:where([data-design="manilla"][data-selected]) {
+    background: var(--color-action-background-secondary-selected, #ffffff);
+    border-color: var(--_tabs-border);
+    border-bottom: 0;
   }
 }
 
 .controls {
   display: flex;
   flex: 0 0 auto;
+  align-items: center;
+  align-self: stretch;
+  background: var(--color-action-control-background, #f5f5f5);
 }
 
-.controls button {
-  min-width: 48px;
-  min-height: 48px;
+.controls .control {
+  align-self: stretch;
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 calc(var(--sp-density) * 0.5);
+  border-radius: 0;
   border-bottom: 0;
 }
 
@@ -108,5 +139,5 @@
 }
 
 .panel {
-  padding-block: 16px;
+  padding-block: var(--_tabs-panel-space);
 }

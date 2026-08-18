@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { ControlledExample } from '../examples/controlled.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
-import { ManilaExample } from '../examples/manila.tsx';
+import { ManillaExample } from '../examples/manilla.tsx';
 import { OverflowExample } from '../examples/overflow.tsx';
+import { RTLExample } from '../examples/rtl.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Tabs', function tabsTests() {
@@ -20,12 +21,16 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<DisabledExample />)).toMatchSnapshot();
     });
 
-    it('renders the Manila example', function manilaExample() {
-      expect(renderToString(<ManilaExample />)).toMatchSnapshot();
+    it('renders the Manilla example', function manillaExample() {
+      expect(renderToString(<ManillaExample />)).toMatchSnapshot();
     });
 
     it('renders the overflow example', function overflowExample() {
       expect(renderToString(<OverflowExample />)).toMatchSnapshot();
+    });
+
+    it('renders the RTL example', function rtlExample() {
+      expect(renderToString(<RTLExample />)).toMatchSnapshot();
     });
   });
 });

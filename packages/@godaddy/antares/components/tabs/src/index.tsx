@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { cx } from 'cva';
 import {
   Tab as RACTab,
   TabList as RACTabList,
@@ -19,8 +20,10 @@ import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 import { useTabsOverflow } from './use-tabs-overflow.ts';
 
-type TabsDesign = 'underline' | 'manila';
+/** Visual designs supported by the Tabs component. */
+type TabsDesign = 'underline' | 'manilla';
 
+/** Accessible labels used by the tab overflow controls. */
 interface TabsOverflowLabels {
   /** Accessible label for the control that reveals previous tabs. */
   previous: string;
@@ -28,8 +31,12 @@ interface TabsOverflowLabels {
   next: string;
 }
 
+/** Internal context shared by the Tabs compound components. */
 interface TabsContextValue {
+  /** Visual treatment applied to the tab group and its tabs. */
   readonly design: TabsDesign;
+
+  /** Accessible labels used by the horizontal overflow controls. */
   readonly overflowLabels: TabsOverflowLabels;
 }
 
@@ -53,14 +60,17 @@ export interface TabListProps<T> extends Omit<RACTabListProps<T>, 'orientation'>
 export interface TabProps extends RACTabProps {}
 
 /** Props for the group of tab panels. */
-export interface TabPanelsProps<T> extends Omit<RACTabPanelsProps<T>, 'className'> {
-  className?: string;
-}
+export type TabPanelsProps<T> = RACTabPanelsProps<T>;
 
 /** Props for an individual tab panel. */
 export interface TabPanelProps extends RACTabPanelProps {}
 
-function OverflowTabList<T>(props: TabListProps<T>) {
+/**
+ * Groups selectable tabs and adds automatic horizontal overflow controls.
+ *
+ * @param props - The properties {@link TabListProps} passed to the component.
+ */
+export function TabList<T>(props: TabListProps<T>) {
   const { className, ...rest } = props;
   const { overflowLabels } = useContext(TabsContext);
   const { direction } = useLocale();
@@ -76,22 +86,24 @@ function OverflowTabList<T>(props: TabListProps<T>) {
       {state.hasOverflow ? (
         <Flex className={styles.controls}>
           <Button
+            className={styles.control}
             aria-label={overflowLabels.previous}
             isDisabled={!state.canScrollPrev}
             onPress={scrollPrevious}
             variant="minimal"
             size="md"
           >
-            <Icon icon="chevron-left" />
+            <Icon icon="chevron-left" width={16} height={16} />
           </Button>
           <Button
+            className={styles.control}
             aria-label={overflowLabels.next}
             isDisabled={!state.canScrollNext}
             onPress={scrollNext}
             variant="minimal"
             size="md"
           >
-            <Icon icon="chevron-right" />
+            <Icon icon="chevron-right" width={16} height={16} />
           </Button>
         </Flex>
       ) : null}
@@ -139,15 +151,6 @@ export function Tabs(props: TabsProps) {
 }
 
 /**
- * Groups selectable tabs and adds automatic horizontal overflow controls.
- *
- * @param props - The properties {@link TabListProps} passed to the component.
- */
-export function TabList<T>(props: TabListProps<T>) {
-  return <OverflowTabList {...props} />;
-}
-
-/**
  * A selectable tab within a {@link TabList}.
  *
  * @param props - The properties {@link TabProps} passed to the component.
@@ -155,7 +158,11 @@ export function TabList<T>(props: TabListProps<T>) {
 export function Tab(props: TabProps) {
   const { className, ...rest } = props;
   const { design } = useContext(TabsContext);
-  return <RACTab {...rest} className={composeClassName(className, styles.tab)} data-design={design} />;
+  return (
+    <RACTab {...rest} className={composeClassName(className, styles.tab)} data-design={design}>
+      {props.children}
+    </RACTab>
+  );
 }
 
 /**
@@ -165,8 +172,7 @@ export function Tab(props: TabProps) {
  */
 export function TabPanels<T>(props: TabPanelsProps<T>) {
   const { className, ...rest } = props;
-  const mergedClassName = composeClassName(className, styles.panels);
-  return <RACTabPanels {...rest} className={typeof mergedClassName === 'string' ? mergedClassName : styles.panels} />;
+  return <RACTabPanels {...rest} className={cx(styles.panels, className)} />;
 }
 
 /**

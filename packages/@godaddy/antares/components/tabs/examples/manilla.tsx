@@ -1,12 +1,12 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
 
 /**
- * Use the folder-style Manila treatment for document-oriented sections.
+ * Use the folder-style Manilla treatment for document-oriented sections.
  * @order 4
  */
-export function ManilaExample() {
+export function ManillaExample() {
   return (
-    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design="manila">
+    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design="manilla">
       <TabList aria-label="Documents">
         <Tab id="recent">Recent</Tab>
         <Tab id="shared">Shared</Tab>

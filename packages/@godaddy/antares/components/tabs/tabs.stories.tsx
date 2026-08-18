@@ -17,7 +17,7 @@ export const Playground = getStory(PlaygroundExample, {
   argTypes: {
     design: {
       control: 'radio',
-      options: ['underline', 'manila'],
+      options: ['underline', 'manilla'],
       description: 'Visual treatment for the tab group'
     },
     keyboardActivation: {
