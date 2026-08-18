@@ -437,111 +437,6 @@ The `RangeCalendar` component accepts the following props:
 <PropTable />
 
 
-# Carousel
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the \`defaultActiveIndex\` prop to the \`Carousel\` component to set the initial active slide index.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the \`activeIndex\` prop.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the \`ref\` prop to the \`Carousel\` component and using the \`emblaApi\` to control the carousel imperatively.
-
-<Story of="ExternalControlsUncontrolledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the \`activeIndex\` prop to control the active slide index.
-
-<Story of="ExternalControlsControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="HideControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="VariableWidthsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Events [#events]
-
-You can listen to events like \`onChange\`, \`onPrev\`, or \`onNext\`.
-
-<Story of="EventsExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The carousel follows the current \*\*layout direction\*\* (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="RTLDirectionExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-
 # Checkbox
 
 
@@ -1286,66 +1181,6 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
-# FileTrigger
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
-* Renders a visually hidden `<input type="file">` — no styling of its own.
-* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
-* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in \`onSelect\`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
-
-### Accepted Types [#accepted-types]
-
-Restrict the picker to specific MIME types with \`acceptedFileTypes\`, and allow more than one file with \`allowsMultiple\`.
-
-<Story of="AcceptedTypesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
-
-## Best Practices [#best-practices]
-
-* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
-* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
-* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
-
-## Props [#props]
-
-<PropTable />
-
-
 # Field primitives
 
 
@@ -1456,6 +1291,171 @@ A field group with leading icon and trailing action accessories.
 ## Props [#props]
 
 The `FieldGroup` component has the following props:
+
+<PropTable />
+
+
+# Carousel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the \`defaultActiveIndex\` prop to the \`Carousel\` component to set the initial active slide index.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the \`activeIndex\` prop.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the \`ref\` prop to the \`Carousel\` component and using the \`emblaApi\` to control the carousel imperatively.
+
+<Story of="ExternalControlsUncontrolledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the \`activeIndex\` prop to control the active slide index.
+
+<Story of="ExternalControlsControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="HideControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="VariableWidthsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Events [#events]
+
+You can listen to events like \`onChange\`, \`onPrev\`, or \`onNext\`.
+
+<Story of="EventsExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The carousel follows the current \*\*layout direction\*\* (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="RTLDirectionExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+
+# FileTrigger
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
+* Renders a visually hidden `<input type="file">` — no styling of its own.
+* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
+* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in \`onSelect\`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+
+### Accepted Types [#accepted-types]
+
+Restrict the picker to specific MIME types with \`acceptedFileTypes\`, and allow more than one file with \`allowsMultiple\`.
+
+<Story of="AcceptedTypesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
+
+## Best Practices [#best-practices]
+
+* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
+* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
+* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+
+## Props [#props]
 
 <PropTable />
 
@@ -2282,136 +2282,6 @@ Use the \`compact\` prop to render the metric value and description inline rathe
 <PropTable />
 
 
-# NumberField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with label, placeholder, and min/max.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: NumberFieldProps) {\n  return <NumberField label=\&#x22;Quantity\&#x22; placeholder=\&#x22;0\&#x22; defaultValue={0} {...props} />;\n}&#x22;" />
-
-### Number Field Controlled [#number-field-controlled]
-
-Use \`value\` and \`onChange\` for controlled state.
-
-<Story of="NumberFieldControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { NumberField, Text } from '@godaddy/antares';\n\nexport function NumberFieldControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField label=\&#x22;Quantity\&#x22; minValue={0} maxValue={100} value={value} onChange={setValue} />\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Number Field Invalid [#number-field-invalid]
-
-Use \`isInvalid\` with \`errorMessage\` for validation feedback.
-
-<Story of="NumberFieldInvalidExample" />
-
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldInvalidExample() {\n  return (\n    <NumberField\n      label=\&#x22;Quantity\&#x22;\n      minValue={0}\n      maxValue={100}\n      errorMessage=\&#x22;Please enter a value between 0 and 100\&#x22;\n      isInvalid\n      isRequired\n    />\n  );\n}&#x22;" />
-
-### Number Field Disabled [#number-field-disabled]
-
-Use \`isDisabled\` to prevent input.
-
-<Story of="NumberFieldDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldDisabledExample() {\n  return <NumberField label=\&#x22;Quantity\&#x22; defaultValue={42} minValue={0} maxValue={100} isDisabled />;\n}&#x22;" />
-
-### Number Field Hide Stepper [#number-field-hide-stepper]
-
-Use \`hideStepper\` to show only the input without +/- buttons.
-
-<Story of="NumberFieldHideStepperExample" />
-
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldHideStepperExample() {\n  return (\n    <NumberField\n      label=\&#x22;Quantity\&#x22;\n      description=\&#x22;Enter a value between 0 and 100.\&#x22;\n      placeholder=\&#x22;0\&#x22;\n      minValue={0}\n      maxValue={100}\n      hideStepper\n    />\n  );\n}&#x22;" />
-
-### Number Field Value Scale [#number-field-value-scale]
-
-Use \`minValue\`, \`maxValue\`, and \`step\` to set the allowed values. Steps are calculated from the minimum value.
-
-<Story of="NumberFieldValueScaleExample" />
-
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldValueScaleExample() {\n  return (\n    <NumberField\n      label=\&#x22;Step value\&#x22;\n      description=\&#x22;Steps are from the minimum: minValue={2}, step={3} gives 2, 5, 8, 11, …\&#x22;\n      placeholder=\&#x22;2\&#x22;\n      minValue={2}\n      maxValue={20}\n      step={3}\n    />\n  );\n}&#x22;" />
-
-### Format options (numbering system) [#format-options-numbering-system]
-
-By default, NumberField displays the value using the numbering system for the user's locale. Use the \`formatOptions\` prop to override the numbering system by setting the Unicode numbering system locale extension.
-
-<Story of="NumberFieldFormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function NumberFieldFormatOptionsExample() {\n  return (\n    <NumberField\n      label=\&#x22;Number (Devanagari)\&#x22;\n      description=\&#x22;By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system locale extension (e.g. nu-deva).\&#x22;\n      hideStepper\n      value={1024}\n      formatOptions={devanagariFormatOptions}\n    />\n  );\n}&#x22;" />
-
-### Number Field Sizes [#number-field-sizes]
-
-Compare the supported \`md\` and \`sm\` visual sizes.
-
-<Story of="NumberFieldSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, NumberField } from '@godaddy/antares';\n\nexport function NumberFieldSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <NumberField label=\&#x22;Quantity (md)\&#x22; placeholder=\&#x22;0\&#x22; minValue={0} maxValue={100} />\n      <NumberField label=\&#x22;Quantity (sm)\&#x22; placeholder=\&#x22;0\&#x22; minValue={0} maxValue={100} size=\&#x22;sm\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
-
-* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
-* **Page Up** / **Page Down**: larger increase or decrease when supported
-* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
-
-Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
-
-### ARIA and labeling [#aria-and-labeling]
-
-* The input is associated with the visible label and optional description and error content for assistive technologies.
-* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
-* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
-
-## Best practices [#best-practices]
-
-* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
-* Remember valid steps start from &#x2A;*`minValue`**.
-* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
-* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
-
-## Props [#props]
-
-The `NumberField` component accepts the following props:
-
-<PropTable />
-
-
 # Modal
 
 
@@ -2703,6 +2573,136 @@ Use the \`status\` prop to communicate intent: \`default\`, \`success\`, \`warni
 * `aria-labelledby` associates the visible label when the `label` prop is provided
 
 ## Props [#props]
+
+<PropTable />
+
+
+# NumberField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with label, placeholder, and min/max.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: NumberFieldProps) {\n  return <NumberField label=\&#x22;Quantity\&#x22; placeholder=\&#x22;0\&#x22; defaultValue={0} {...props} />;\n}&#x22;" />
+
+### Number Field Controlled [#number-field-controlled]
+
+Use \`value\` and \`onChange\` for controlled state.
+
+<Story of="NumberFieldControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { NumberField, Text } from '@godaddy/antares';\n\nexport function NumberFieldControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField label=\&#x22;Quantity\&#x22; minValue={0} maxValue={100} value={value} onChange={setValue} />\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Number Field Invalid [#number-field-invalid]
+
+Use \`isInvalid\` with \`errorMessage\` for validation feedback.
+
+<Story of="NumberFieldInvalidExample" />
+
+<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldInvalidExample() {\n  return (\n    <NumberField\n      label=\&#x22;Quantity\&#x22;\n      minValue={0}\n      maxValue={100}\n      errorMessage=\&#x22;Please enter a value between 0 and 100\&#x22;\n      isInvalid\n      isRequired\n    />\n  );\n}&#x22;" />
+
+### Number Field Disabled [#number-field-disabled]
+
+Use \`isDisabled\` to prevent input.
+
+<Story of="NumberFieldDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldDisabledExample() {\n  return <NumberField label=\&#x22;Quantity\&#x22; defaultValue={42} minValue={0} maxValue={100} isDisabled />;\n}&#x22;" />
+
+### Number Field Hide Stepper [#number-field-hide-stepper]
+
+Use \`hideStepper\` to show only the input without +/- buttons.
+
+<Story of="NumberFieldHideStepperExample" />
+
+<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldHideStepperExample() {\n  return (\n    <NumberField\n      label=\&#x22;Quantity\&#x22;\n      description=\&#x22;Enter a value between 0 and 100.\&#x22;\n      placeholder=\&#x22;0\&#x22;\n      minValue={0}\n      maxValue={100}\n      hideStepper\n    />\n  );\n}&#x22;" />
+
+### Number Field Value Scale [#number-field-value-scale]
+
+Use \`minValue\`, \`maxValue\`, and \`step\` to set the allowed values. Steps are calculated from the minimum value.
+
+<Story of="NumberFieldValueScaleExample" />
+
+<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldValueScaleExample() {\n  return (\n    <NumberField\n      label=\&#x22;Step value\&#x22;\n      description=\&#x22;Steps are from the minimum: minValue={2}, step={3} gives 2, 5, 8, 11, …\&#x22;\n      placeholder=\&#x22;2\&#x22;\n      minValue={2}\n      maxValue={20}\n      step={3}\n    />\n  );\n}&#x22;" />
+
+### Format options (numbering system) [#format-options-numbering-system]
+
+By default, NumberField displays the value using the numbering system for the user's locale. Use the \`formatOptions\` prop to override the numbering system by setting the Unicode numbering system locale extension.
+
+<Story of="NumberFieldFormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function NumberFieldFormatOptionsExample() {\n  return (\n    <NumberField\n      label=\&#x22;Number (Devanagari)\&#x22;\n      description=\&#x22;By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system locale extension (e.g. nu-deva).\&#x22;\n      hideStepper\n      value={1024}\n      formatOptions={devanagariFormatOptions}\n    />\n  );\n}&#x22;" />
+
+### Number Field Sizes [#number-field-sizes]
+
+Compare the supported \`md\` and \`sm\` visual sizes.
+
+<Story of="NumberFieldSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, NumberField } from '@godaddy/antares';\n\nexport function NumberFieldSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <NumberField label=\&#x22;Quantity (md)\&#x22; placeholder=\&#x22;0\&#x22; minValue={0} maxValue={100} />\n      <NumberField label=\&#x22;Quantity (sm)\&#x22; placeholder=\&#x22;0\&#x22; minValue={0} maxValue={100} size=\&#x22;sm\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
+
+* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
+* **Page Up** / **Page Down**: larger increase or decrease when supported
+* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
+
+Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
+
+### ARIA and labeling [#aria-and-labeling]
+
+* The input is associated with the visible label and optional description and error content for assistive technologies.
+* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
+* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
+
+## Best practices [#best-practices]
+
+* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
+* Remember valid steps start from &#x2A;*`minValue`**.
+* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
+* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
+
+## Props [#props]
+
+The `NumberField` component accepts the following props:
 
 <PropTable />
 
@@ -3761,7 +3761,7 @@ The `Switch` component has the following props:
 ## Features [#features]
 
 * Accessible Tabs semantics powered by React Aria Components.
-* Underline and Manila visual treatments.
+* Underline and Manilla visual treatments.
 * Controlled and uncontrolled selection.
 * Automatic horizontal overflow controls that move one tab at a time.
 * Localized labels for the automatic overflow controls.
@@ -3798,13 +3798,13 @@ Disable a section while keeping the remaining sections available.
 
 <Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }}>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22; isDisabled>\n          Billing\n        </Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
 
-### Manila [#manila]
+### Manilla [#manilla]
 
-Use the folder-style Manila treatment for document-oriented sections.
+Use the folder-style Manilla treatment for document-oriented sections.
 
-<Story of="ManilaExample" />
+<Story of="ManillaExample" />
 
-<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function ManilaExample() {\n  return (\n    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design=\&#x22;manila\&#x22;>\n      <TabList aria-label=\&#x22;Documents\&#x22;>\n        <Tab id=\&#x22;recent\&#x22;>Recent</Tab>\n        <Tab id=\&#x22;shared\&#x22;>Shared</Tab>\n        <Tab id=\&#x22;archived\&#x22;>Archived</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;recent\&#x22;>Recent documents</TabPanel>\n        <TabPanel id=\&#x22;shared\&#x22;>Shared documents</TabPanel>\n        <TabPanel id=\&#x22;archived\&#x22;>Archived documents</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function ManillaExample() {\n  return (\n    <Tabs overflowLabels={{ previous: 'Previous tabs', next: 'Next tabs' }} design=\&#x22;manilla\&#x22;>\n      <TabList aria-label=\&#x22;Documents\&#x22;>\n        <Tab id=\&#x22;recent\&#x22;>Recent</Tab>\n        <Tab id=\&#x22;shared\&#x22;>Shared</Tab>\n        <Tab id=\&#x22;archived\&#x22;>Archived</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;recent\&#x22;>Recent documents</TabPanel>\n        <TabPanel id=\&#x22;shared\&#x22;>Shared documents</TabPanel>\n        <TabPanel id=\&#x22;archived\&#x22;>Archived documents</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
 
 ### Overflow [#overflow]
 
@@ -3834,7 +3834,7 @@ Tabs require an accessible label on `TabList`. Use the keyboard to move between 
 
 The component exposes state through data attributes:
 
-* `Tabs`: `data-design="underline"` or `data-design="manila"`.
+* `Tabs`: `data-design="underline"` or `data-design="manilla"`.
 * `Tab`: `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
 * `TabPanel`: `data-inert` when a force-mounted inactive panel is not interactive.
 
