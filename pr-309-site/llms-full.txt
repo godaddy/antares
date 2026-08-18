@@ -1286,6 +1286,66 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
+# FileTrigger
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
+* Renders a visually hidden `<input type="file">` — no styling of its own.
+* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
+* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in \`onSelect\`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+
+### Accepted Types [#accepted-types]
+
+Restrict the picker to specific MIME types with \`acceptedFileTypes\`, and allow more than one file with \`allowsMultiple\`.
+
+<Story of="AcceptedTypesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
+
+## Best Practices [#best-practices]
+
+* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
+* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
+* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+
+## Props [#props]
+
+<PropTable />
+
+
 # Field primitives
 
 
@@ -1396,66 +1456,6 @@ A field group with leading icon and trailing action accessories.
 ## Props [#props]
 
 The `FieldGroup` component has the following props:
-
-<PropTable />
-
-
-# FileTrigger
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
-* Renders a visually hidden `<input type="file">` — no styling of its own.
-* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
-* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in \`onSelect\`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
-
-### Accepted Types [#accepted-types]
-
-Restrict the picker to specific MIME types with \`acceptedFileTypes\`, and allow more than one file with \`allowsMultiple\`.
-
-<Story of="AcceptedTypesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
-
-## Best Practices [#best-practices]
-
-* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
-* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
-* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
-
-## Props [#props]
 
 <PropTable />
 
@@ -2282,108 +2282,6 @@ Use the \`compact\` prop to render the metric value and description inline rathe
 <PropTable />
 
 
-# Modal
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default modal exposes a \`title\`, \`description\`, and \`children\` content area. Open and close state is managed automatically by \`ModalTrigger\`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal\n        title=\&#x22;Modal title\&#x22;\n        description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n      >\n        <Flex padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; justifyContent=\&#x22;center\&#x22;>\n          This is the children content\n        </Flex>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass \`isOpen\` and \`onOpenChange\` to \`ModalTrigger\` to control the open state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          actions={[\n            <Button key=\&#x22;close\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          ]}\n        />\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;secondary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### With actions [#with-actions]
-
-Render footer buttons via the \`actions\` prop. Use \`slot="close"\` on a button to close the modal automatically when pressed.
-
-<Story of="WithActionsExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal\n        title=\&#x22;Modal title\&#x22;\n        description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n        actions={[\n          <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Cancel\n          </Button>,\n          <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Confirm\n          </Button>\n        ]}\n      />\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use \`centered\` to center the title and description, and \`actionProps\` to control the alignment and direction of the action buttons.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function AlignmentExample() {\n  const [alignment, setAlignment] = useState<string>();\n  const [actionsAlignment, setActionsAlignment] = useState<string>();\n  const [actionsDirection, setActionsDirection] = useState<string>();\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          centered={alignment === 'center'}\n          actionProps={{\n            ...(actionsAlignment ? { justifyContent: actionsAlignment } : {}),\n            ...(actionsDirection ? { direction: actionsDirection as 'row' | 'column' } : {})\n          }}\n          actions={[\n            <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n              Cancel\n            </Button>,\n            <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Confirm\n            </Button>\n          ]}\n        />\n      </ModalTrigger>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Modal alignment\&#x22; value={alignment} onChange={setAlignment}>\n        <Radio value=\&#x22;\&#x22;>Start (Default)</Radio>\n        <Radio value=\&#x22;center\&#x22;>Centered</Radio>\n      </RadioGroup>\n\n      <RadioGroup\n        orientation=\&#x22;horizontal\&#x22;\n        label=\&#x22;Actions alignment\&#x22;\n        value={actionsAlignment}\n        onChange={setActionsAlignment}\n      >\n        <Radio value=\&#x22;start\&#x22;>Start</Radio>\n        <Radio value=\&#x22;center\&#x22;>Centered</Radio>\n        <Radio value=\&#x22;\&#x22;>End (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup\n        orientation=\&#x22;horizontal\&#x22;\n        label=\&#x22;Actions direction\&#x22;\n        value={actionsDirection}\n        onChange={setActionsDirection}\n      >\n        <Radio value=\&#x22;row\&#x22;>Row (Default)</Radio>\n        <Radio value=\&#x22;column\&#x22;>Column</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
-
-### With Media [#with-media]
-
-Pass a \`media\` element to display imagery alongside the content. Configure its layout with \`mediaVariant\` (\`full\` or \`inset\`), \`mediaDirection\` (\`column\` or \`row\`), and \`mediaPosition\` (\`start\` or \`end\`).
-
-<Story of="WithMediaExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function WithMediaExample() {\n  const [mediaVariant, setMediaVariant] = useState<string>();\n  const [mediaDirection, setMediaDirection] = useState<string>();\n  const [mediaPosition, setMediaPosition] = useState<string>();\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          media={\n            <Flex style={{ width: '100%', height: '100%', minWidth: 350, minHeight: 200, backgroundColor: 'teal' }} />\n          }\n          mediaVariant={mediaVariant as 'inset' | 'full' | undefined}\n          mediaDirection={mediaDirection as 'column' | 'row' | undefined}\n          mediaPosition={mediaPosition as 'start' | 'end' | undefined}\n          actions={[\n            <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n              Cancel\n            </Button>,\n            <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Confirm\n            </Button>\n          ]}\n        >\n          <Flex padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; justifyContent=\&#x22;center\&#x22;>\n            This is the children content\n          </Flex>\n        </Modal>\n      </ModalTrigger>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Variant\&#x22; value={mediaVariant} onChange={setMediaVariant}>\n        <Radio value=\&#x22;inset\&#x22;>Inset</Radio>\n        <Radio value=\&#x22;full\&#x22;>Full (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Direction\&#x22; value={mediaDirection} onChange={setMediaDirection}>\n        <Radio value=\&#x22;row\&#x22;>Row</Radio>\n        <Radio value=\&#x22;column\&#x22;>Column (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Position\&#x22; value={mediaPosition} onChange={setMediaPosition}>\n        <Radio value=\&#x22;start\&#x22;>Start (Default)</Radio>\n        <Radio value=\&#x22;end\&#x22;>End</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
-* The close button is rendered with `aria-label="Close"`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always provide a `title` so the dialog has an accessible name
-* Pair every footer action with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` for required confirmations the user must explicitly answer
-* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
-* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
-
-## Props [#props]
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-
 # NumberField
 
 
@@ -2510,6 +2408,108 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 ## Props [#props]
 
 The `NumberField` component accepts the following props:
+
+<PropTable />
+
+
+# Modal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default modal exposes a \`title\`, \`description\`, and \`children\` content area. Open and close state is managed automatically by \`ModalTrigger\`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal\n        title=\&#x22;Modal title\&#x22;\n        description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n      >\n        <Flex padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; justifyContent=\&#x22;center\&#x22;>\n          This is the children content\n        </Flex>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass \`isOpen\` and \`onOpenChange\` to \`ModalTrigger\` to control the open state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          actions={[\n            <Button key=\&#x22;close\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          ]}\n        />\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;secondary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### With actions [#with-actions]
+
+Render footer buttons via the \`actions\` prop. Use \`slot="close"\` on a button to close the modal automatically when pressed.
+
+<Story of="WithActionsExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal\n        title=\&#x22;Modal title\&#x22;\n        description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n        actions={[\n          <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Cancel\n          </Button>,\n          <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Confirm\n          </Button>\n        ]}\n      />\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use \`centered\` to center the title and description, and \`actionProps\` to control the alignment and direction of the action buttons.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function AlignmentExample() {\n  const [alignment, setAlignment] = useState<string>();\n  const [actionsAlignment, setActionsAlignment] = useState<string>();\n  const [actionsDirection, setActionsDirection] = useState<string>();\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          centered={alignment === 'center'}\n          actionProps={{\n            ...(actionsAlignment ? { justifyContent: actionsAlignment } : {}),\n            ...(actionsDirection ? { direction: actionsDirection as 'row' | 'column' } : {})\n          }}\n          actions={[\n            <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n              Cancel\n            </Button>,\n            <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Confirm\n            </Button>\n          ]}\n        />\n      </ModalTrigger>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Modal alignment\&#x22; value={alignment} onChange={setAlignment}>\n        <Radio value=\&#x22;\&#x22;>Start (Default)</Radio>\n        <Radio value=\&#x22;center\&#x22;>Centered</Radio>\n      </RadioGroup>\n\n      <RadioGroup\n        orientation=\&#x22;horizontal\&#x22;\n        label=\&#x22;Actions alignment\&#x22;\n        value={actionsAlignment}\n        onChange={setActionsAlignment}\n      >\n        <Radio value=\&#x22;start\&#x22;>Start</Radio>\n        <Radio value=\&#x22;center\&#x22;>Centered</Radio>\n        <Radio value=\&#x22;\&#x22;>End (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup\n        orientation=\&#x22;horizontal\&#x22;\n        label=\&#x22;Actions direction\&#x22;\n        value={actionsDirection}\n        onChange={setActionsDirection}\n      >\n        <Radio value=\&#x22;row\&#x22;>Row (Default)</Radio>\n        <Radio value=\&#x22;column\&#x22;>Column</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+
+### With Media [#with-media]
+
+Pass a \`media\` element to display imagery alongside the content. Configure its layout with \`mediaVariant\` (\`full\` or \`inset\`), \`mediaDirection\` (\`column\` or \`row\`), and \`mediaPosition\` (\`start\` or \`end\`).
+
+<Story of="WithMediaExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function WithMediaExample() {\n  const [mediaVariant, setMediaVariant] = useState<string>();\n  const [mediaDirection, setMediaDirection] = useState<string>();\n  const [mediaPosition, setMediaPosition] = useState<string>();\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          media={\n            <Flex style={{ width: '100%', height: '100%', minWidth: 350, minHeight: 200, backgroundColor: 'teal' }} />\n          }\n          mediaVariant={mediaVariant as 'inset' | 'full' | undefined}\n          mediaDirection={mediaDirection as 'column' | 'row' | undefined}\n          mediaPosition={mediaPosition as 'start' | 'end' | undefined}\n          actions={[\n            <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n              Cancel\n            </Button>,\n            <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Confirm\n            </Button>\n          ]}\n        >\n          <Flex padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; justifyContent=\&#x22;center\&#x22;>\n            This is the children content\n          </Flex>\n        </Modal>\n      </ModalTrigger>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Variant\&#x22; value={mediaVariant} onChange={setMediaVariant}>\n        <Radio value=\&#x22;inset\&#x22;>Inset</Radio>\n        <Radio value=\&#x22;full\&#x22;>Full (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Direction\&#x22; value={mediaDirection} onChange={setMediaDirection}>\n        <Radio value=\&#x22;row\&#x22;>Row</Radio>\n        <Radio value=\&#x22;column\&#x22;>Column (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Position\&#x22; value={mediaPosition} onChange={setMediaPosition}>\n        <Radio value=\&#x22;start\&#x22;>Start (Default)</Radio>\n        <Radio value=\&#x22;end\&#x22;>End</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key           | Action                                                         |
+| ------------- | -------------------------------------------------------------- |
+| `Tab`         | Moves focus to the next focusable element inside the modal     |
+| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
+| `Escape`      | Closes the modal (when dismissable)                            |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
+* The close button is rendered with `aria-label="Close"`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always provide a `title` so the dialog has an accessible name
+* Pair every footer action with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` for required confirmations the user must explicitly answer
+* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
+* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
+
+## Props [#props]
+
+The `Modal` component accepts the following props:
 
 <PropTable />
 
