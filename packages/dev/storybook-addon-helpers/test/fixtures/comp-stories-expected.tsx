@@ -1,6 +1,6 @@
 import React from 'react';
-import { getComponentDocs, getMeta, getStory, getTypeDocs, getVariants } from '@bento/storybook-addon-helpers';
-import { Button, Component as AnotherComponent, type InterfaceProps } from './comp.tsx';
+import { getVariants } from '@bento/storybook-addon-helpers';
+import { Button } from './comp.tsx';
 const meta = {
   title: 'meta1'
 };

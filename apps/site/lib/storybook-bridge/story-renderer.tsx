@@ -20,8 +20,10 @@ export function StoryRenderer({ component: Component }: { component: ComponentTy
   }
 
   return (
-    <div className="my-4 rounded-lg border border-fd-border bg-fd-card p-6">
-      <Component />
+    <div className="my-4 rounded-lg border border-fd-border overflow-hidden">
+      <div className="ux-surface not-prose p-6">
+        <Component />
+      </div>
     </div>
   );
 }

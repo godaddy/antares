@@ -17,6 +17,8 @@ export interface RemarkExamplesOptions {
    * Apps pass their own implementation (e.g. `addMdxDependency`).
    */
   onDependency?: (file: RemarkFile, path: string) => void;
+  /** Parses a description into mdast blocks. Without it, descriptions stay literal text. */
+  parseMarkdown?: (markdown: string) => { type: string }[];
 }
 
 /** Minimal mdast node shape - avoids pulling mdast/unified type deps into this package. */
@@ -76,7 +78,7 @@ export function remarkExamples(options: RemarkExamplesOptions) {
       options.onDependency?.(file, descriptor.filePath);
 
       blocks.push(headingNode(descriptor.title));
-      if (descriptor.description) blocks.push(paragraphNode(descriptor.description));
+      if (descriptor.description) blocks.push(...descriptionNodes(descriptor.description, options.parseMarkdown));
       blocks.push(storyNode(descriptor, options.target));
       blocks.push(sourceNode(descriptor.source));
 
@@ -130,6 +132,11 @@ function headingNode(title: string): MdNode {
 
 function paragraphNode(text: string): MdNode {
   return { type: 'paragraph', children: [{ type: 'text', value: text }] };
+}
+
+function descriptionNodes(description: string, parseMarkdown?: RemarkExamplesOptions['parseMarkdown']): MdNode[] {
+  const parsed = parseMarkdown?.(description) as MdNode[] | undefined;
+  return parsed?.length ? parsed : [paragraphNode(description)];
 }
 
 function storyNode(descriptor: ExampleDescriptor, target: RemarkExamplesTarget): MdNode {

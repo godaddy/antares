@@ -40,7 +40,9 @@ export async function csfTransformer(input: {
       [transformGetMeta, transformGetStory, transformGetVariants, transformGetComponentDocs, transformGetTypeDocs],
       input.defaults
     ),
-    transformExamples(examples)
+    transformExamples(examples, filePath),
+    pruneUnusedImports(),
+    assertNoStoryCollisions(examples, filePath)
   ]);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
   return printer.printFile(result.transformed[0] as ts.SourceFile);
@@ -197,21 +199,30 @@ function getExamplesGetterCall(statement: ts.Node): ts.CallExpression | undefine
 
 /**
  * SourceFile transformer that replaces the `getExamples(...)` statement with one
- * exported story per discovered example (`export const Primary = PrimaryExample`)
- * and prepends the matching example-component imports.
+ * exported story per discovered example and prepends the matching example imports.
+ *
+ * Each import is aliased to a reserved local name, so it cannot collide with anything
+ * the file already imports or declares - including a type-only or aliased import of the
+ * same example. Only the story export names, which Storybook derives story IDs from,
+ * are placed in the file's own namespace.
  *
  * @example
  * ```ts
  * export const examples = getExamples();
  *
  * // transformed to:
- * import { PrimaryExample } from './examples/primary.tsx';
- * export const Primary = PrimaryExample;
+ * import { PrimaryExample as __example_Primary } from './examples/primary.tsx';
+ * export const Primary = __example_Primary;
  * ```
  */
-function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory<ts.SourceFile> {
+function transformExamples(examples: ExampleDescriptor[], filePath: string): ts.TransformerFactory<ts.SourceFile> {
   return function _transformer() {
     return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      // Inline code has no folder to resolve the call against, so it stays as authored.
+      // A real file that resolved nothing still drops the marker below - leaving it would
+      // keep the build-time addon import in browser-facing output.
+      if (examples.length === 0 && !filePath) return sourceFile;
+
       let found = false;
       const body: ts.Statement[] = [];
 
@@ -219,7 +230,7 @@ function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory
         if (getExamplesGetterCall(statement)) {
           found = true;
           for (const example of examples) {
-            body.push(createStoryExport(example.storyName, example.componentExportName));
+            body.push(createStoryExport(example.storyName, exampleLocalName(example)));
           }
         } else {
           body.push(statement);
@@ -228,20 +239,256 @@ function transformExamples(examples: ExampleDescriptor[]): ts.TransformerFactory
 
       if (!found) return sourceFile;
 
-      const imports = examples.map((example) => createNamedImport(example.componentExportName, example.importPath));
+      const imports = examples.map((example) =>
+        createNamedImport(example.componentExportName, exampleLocalName(example), example.importPath)
+      );
+
       return factory.updateSourceFile(sourceFile, [...imports, ...body]);
     };
   };
 }
 
-/** Builds `import { <name> } from '<modulePath>';` */
-function createNamedImport(name: string, modulePath: string): ts.ImportDeclaration {
+/** The reserved local an example is imported as. Story names are unique, so these are too. */
+function exampleLocalName(example: ExampleDescriptor): string {
+  return `__example_${example.storyName}`;
+}
+
+/**
+ * The diagnostics TypeScript reports when a name is declared or exported twice. Asking
+ * the checker avoids enumerating the syntax that can introduce a binding - destructuring,
+ * enums, re-exports, aliased and type-only imports - and it already knows which forms are
+ * exempt, such as `declare` statements and overload signatures.
+ *
+ * Every shape a story export can clash with was measured against this list; the codes,
+ * unlike the syntax, are a closed set.
+ */
+const COLLISION_DIAGNOSTICS = new Set([
+  2300, // Duplicate identifier
+  2323, // Cannot redeclare exported variable
+  2393, // Duplicate function implementation
+  2395, // Individual declarations in merged declaration must be all exported or all local
+  2440, // Import declaration conflicts with local declaration
+  2448, // Block-scoped variable used before its declaration
+  2451, // Cannot redeclare block-scoped variable
+  2484, // Export declaration conflicts with exported declaration
+  2567 // Enum declarations can only merge with namespace or other enum declarations
+]);
+
+/**
+ * Fails the build when a generated example story collides with something the file
+ * already declares or exports, rather than emitting a module that cannot load.
+ *
+ * Pruning clears the common case, where the colliding binding existed only to feed a
+ * getter. It cannot clear one that survives on its own merits - `getMeta({ component })`
+ * keeps its reference - so the remainder is reported here.
+ */
+function assertNoStoryCollisions(
+  examples: ExampleDescriptor[],
+  filePath: string
+): ts.TransformerFactory<ts.SourceFile> {
+  return function _transformer() {
+    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      if (examples.length === 0) return sourceFile;
+
+      const where = filePath || 'stories file';
+      const byStoryName = new Map<string, ExampleDescriptor>();
+
+      // Two examples reducing to one story name collide on their own, and naming both
+      // files beats the checker's report of a redeclared variable.
+      for (const example of examples) {
+        const existing = byStoryName.get(example.storyName);
+        if (existing) {
+          throw new Error(
+            `${where}: ${existing.importPath} and ${example.importPath} both generate a story ` +
+              `named "${example.storyName}". Rename one of the example exports.`
+          );
+        }
+        byStoryName.set(example.storyName, example);
+      }
+
+      const collision = findCollision(sourceFile);
+      if (!collision) return sourceFile;
+
+      const stories = examples.map((example) => `"${example.storyName}" (${example.importPath})`).join(', ');
+
+      throw new Error(
+        `${where}: the transformed stories file is invalid - ${collision} Generated example ` +
+          `stories: ${stories}. Rename the example export or the binding it collides with.`
+      );
+    };
+  };
+}
+
+/** Type-checks the printed output in isolation, returning the first name-collision error. */
+function findCollision(sourceFile: ts.SourceFile): string | undefined {
+  const fileName = 'transformed.tsx';
+  const code = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed }).printFile(sourceFile);
+  const parsed = ts.createSourceFile(fileName, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+
+  // `noResolve`/`noLib` keep this to the one file: imports stay unresolved (reported as
+  // 2307, which is ignored) and no lib or dependency graph is loaded.
+  const host: ts.CompilerHost = {
+    getSourceFile: (name) => (name === fileName ? parsed : undefined),
+    writeFile: () => undefined,
+    getDefaultLibFileName: () => 'lib.d.ts',
+    getCurrentDirectory: () => '',
+    getCanonicalFileName: (name) => name,
+    useCaseSensitiveFileNames: () => true,
+    getNewLine: () => '\n',
+    fileExists: (name) => name === fileName,
+    readFile: (name) => (name === fileName ? code : undefined)
+  };
+
+  const program = ts.createProgram(
+    [fileName],
+    {
+      noResolve: true,
+      noLib: true,
+      noImplicitAny: false,
+      types: [],
+      jsx: ts.JsxEmit.Preserve
+    },
+    host
+  );
+
+  const found = program.getSemanticDiagnostics(parsed).find((diagnostic) => COLLISION_DIAGNOSTICS.has(diagnostic.code));
+
+  return found ? ts.flattenDiagnosticMessageText(found.messageText, ' ') : undefined;
+}
+
+/**
+ * Drops named import specifiers the transformed output no longer references.
+ *
+ * The getters compile down to literals, so they and any component imported only to
+ * feed them are dead by this point. A leftover binding also collides with the story
+ * export an example of the same name produces.
+ *
+ * Default, namespace, side-effect and type-only imports are left untouched.
+ */
+function pruneUnusedImports(): ts.TransformerFactory<ts.SourceFile> {
+  return function _transformer() {
+    return function _visit(sourceFile: ts.SourceFile): ts.SourceFile {
+      const references = collectValueReferences(
+        sourceFile.statements.filter((statement) => !ts.isImportDeclaration(statement))
+      );
+
+      let changed = false;
+      const statements: ts.Statement[] = [];
+
+      for (const statement of sourceFile.statements) {
+        if (!ts.isImportDeclaration(statement)) {
+          statements.push(statement);
+          continue;
+        }
+
+        const clause = statement.importClause;
+        const pruned =
+          clause && clause.phaseModifier === undefined ? keepReferencedBindings(clause, references) : clause;
+        if (pruned === clause) {
+          statements.push(statement);
+          continue;
+        }
+
+        changed = true;
+        if (pruned) {
+          statements.push(
+            factory.updateImportDeclaration(
+              statement,
+              statement.modifiers,
+              pruned,
+              statement.moduleSpecifier,
+              statement.attributes
+            )
+          );
+        }
+      }
+
+      return changed ? factory.updateSourceFile(sourceFile, statements) : sourceFile;
+    };
+  };
+}
+
+/**
+ * Narrows an import clause to the bindings still referenced. Returns the clause
+ * unchanged when nothing is dead, `undefined` when the whole import is.
+ */
+function keepReferencedBindings(clause: ts.ImportClause, references: Set<string>): ts.ImportClause | undefined {
+  const bindings = clause.namedBindings;
+  if (!bindings || ts.isNamespaceImport(bindings)) return clause;
+
+  const kept = bindings.elements.filter((element) => references.has(element.name.text));
+  if (kept.length === bindings.elements.length) return clause;
+  if (kept.length === 0 && !clause.name) return undefined;
+
+  return factory.updateImportClause(
+    clause,
+    clause.phaseModifier,
+    clause.name,
+    kept.length > 0 ? factory.createNamedImports(kept) : undefined
+  );
+}
+
+/** Collects the identifiers the statements reference, ignoring names that only declare or label. */
+function collectValueReferences(statements: readonly ts.Statement[]): Set<string> {
+  const references = new Set<string>();
+
+  function visit(node: ts.Node): void {
+    if (ts.isIdentifier(node)) {
+      references.add(node.text);
+      return;
+    }
+
+    if (ts.isPropertyAccessExpression(node)) {
+      visit(node.expression);
+      return;
+    }
+
+    const name = nonReferenceName(node);
+    ts.forEachChild(node, function visitReference(child) {
+      if (child !== name) visit(child);
+    });
+  }
+
+  statements.forEach(visit);
+  return references;
+}
+
+/**
+ * The child of `node` that names rather than references a binding: an object or JSX
+ * key, or the identifier a declaration introduces. Anything else, including computed
+ * keys and destructuring patterns, is treated as a reference so imports are kept.
+ */
+function nonReferenceName(node: ts.Node): ts.Node | undefined {
+  if (ts.isPropertyAssignment(node) || ts.isJsxAttribute(node)) {
+    return ts.isComputedPropertyName(node.name) ? undefined : node.name;
+  }
+
+  const declaresName =
+    ts.isVariableDeclaration(node) ||
+    ts.isParameter(node) ||
+    ts.isBindingElement(node) ||
+    ts.isFunctionDeclaration(node) ||
+    ts.isFunctionExpression(node) ||
+    ts.isClassDeclaration(node) ||
+    ts.isMethodDeclaration(node) ||
+    ts.isPropertyDeclaration(node) ||
+    ts.isInterfaceDeclaration(node) ||
+    ts.isTypeAliasDeclaration(node) ||
+    ts.isEnumDeclaration(node);
+
+  return declaresName && node.name && ts.isIdentifier(node.name) ? node.name : undefined;
+}
+
+/** Builds `import { <exportName> as <localName> } from '<modulePath>';` */
+function createNamedImport(exportName: string, localName: string, modulePath: string): ts.ImportDeclaration {
   return factory.createImportDeclaration(
     undefined,
     factory.createImportClause(
       false,
       undefined,
-      factory.createNamedImports([factory.createImportSpecifier(false, undefined, factory.createIdentifier(name))])
+      factory.createNamedImports([
+        factory.createImportSpecifier(false, factory.createIdentifier(exportName), factory.createIdentifier(localName))
+      ])
     ),
     factory.createStringLiteral(modulePath)
   );

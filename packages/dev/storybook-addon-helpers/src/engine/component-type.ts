@@ -16,6 +16,16 @@ export function extractComponentDocs(componentName: string, sourceFile: ts.Sourc
   };
 }
 
+/** React component types whose first type argument is the props type. */
+const PROPS_FIRST_COMPONENT_TYPES = [
+  'FC',
+  'FunctionComponent',
+  'ComponentType',
+  'ExoticComponent',
+  'NamedExoticComponent',
+  'ForwardRefExoticComponent'
+];
+
 function getComponentPropsType(declaration: ts.Declaration, sourceFile: ts.SourceFile): ts.TypeNode | undefined {
   if (ts.isFunctionDeclaration(declaration)) return declaration.parameters[0]?.type;
 
@@ -24,7 +34,7 @@ function getComponentPropsType(declaration: ts.Declaration, sourceFile: ts.Sourc
   if (
     declaration.type &&
     ts.isTypeReferenceNode(declaration.type) &&
-    isNamedType(declaration.type, ['FC', 'FunctionComponent'])
+    isNamedType(declaration.type, PROPS_FIRST_COMPONENT_TYPES)
   ) {
     return declaration.type.typeArguments?.[0];
   }
@@ -70,6 +80,15 @@ function unwrapExpression(expr: ts.Expression): ts.Expression {
   return expr;
 }
 
+/**
+ * Matches `FC` and `React.FC`. A qualified name must be React's, so an unrelated
+ * `Registry.ComponentType<Key>` is not mistaken for a component annotation.
+ */
 function isNamedType(typeNode: ts.TypeReferenceNode, names: string[]): boolean {
-  return ts.isIdentifier(typeNode.typeName) && names.includes(typeNode.typeName.text);
+  if (!ts.isQualifiedName(typeNode.typeName)) return names.includes(typeNode.typeName.text);
+
+  const qualifier = typeNode.typeName.left;
+  if (!ts.isIdentifier(qualifier) || qualifier.text !== 'React') return false;
+
+  return names.includes(typeNode.typeName.right.text);
 }
