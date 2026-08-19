@@ -6,6 +6,12 @@ import { docsDefaults } from '../../configs/docs-defaults.mts';
 import { remarkArgTypes } from './lib/remark-arg-types.ts';
 import { remarkExamples } from '@bento/storybook-addon-helpers/docs';
 import { addMdxDependency } from './lib/remark-mdx-utils.ts';
+import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
+
+const descriptionParser = unified().use(remarkParse).use(remarkGfm);
+const parseMarkdown = (markdown: string) => descriptionParser.parse(markdown).children;
 
 export const docs = defineDocs({
   dir: 'content/docs',
@@ -38,7 +44,7 @@ export const components = defineDocs({
         remarkPlugins: (v) => [
           remarkStripLeadingHeading,
           [remarkArgTypes, { docsDefaults }],
-          [remarkExamples, { target: 'components', onDependency: addMdxDependency }],
+          [remarkExamples, { target: 'components', onDependency: addMdxDependency, parseMarkdown }],
           remarkRawLoader,
           ...v
         ]

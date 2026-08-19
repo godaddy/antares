@@ -37,17 +37,19 @@ export interface TagProps extends ComponentProps<'span'> {
   size?: TagSize;
 
   /**
-   * Controls the visual design mode. @default 'filled'
+   * Controls the visual design mode.
    *
    * When `'inline'`, the background and border are removed and high-contrast
    * colors are applied automatically — suitable for tags embedded in running text.
+   * @default 'filled'
    */
   design?: TagDesign;
 
   /**
-   * Enables the high-contrast color variant. @default false
+   * Enables the high-contrast color variant.
    *
    * Also activated automatically when `design="inline"` or `indicator={true}`.
+   * @default false
    */
   highContrast?: boolean;
 

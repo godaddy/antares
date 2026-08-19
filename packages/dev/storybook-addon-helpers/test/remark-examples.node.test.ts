@@ -110,4 +110,41 @@ describe('remark-examples', function remarkExamplesTests() {
     await remarkExamples({ target: 'stories' })(tree, { data: {} });
     expect(tree.children).toHaveLength(1);
   });
+
+  it('emits the description as literal text without a parser', async function literalDescription() {
+    const tree = makeTree();
+
+    await remarkExamples({ target: 'components' })(tree, { path: path.join(FIXTURE_DIR, 'README.mdx'), data: {} });
+
+    const paragraph = tree.children.find((c) => c.type === 'paragraph');
+    expect(paragraph?.children).toEqual([{ type: 'text', value: 'A default button with a text label.' }]);
+  });
+
+  it('splices parsed description blocks when a parser is supplied', async function parsedDescription() {
+    const tree = makeTree();
+    const parseMarkdown = vi.fn((markdown: string) => [
+      { type: 'paragraph', children: [{ type: 'inlineCode', value: markdown.split(' ')[0] }] }
+    ]);
+
+    await remarkExamples({ target: 'components', parseMarkdown })(tree, {
+      path: path.join(FIXTURE_DIR, 'README.mdx'),
+      data: {}
+    });
+
+    expect(parseMarkdown).toHaveBeenCalledWith('A default button with a text label.');
+    const paragraph = tree.children.find((c) => c.type === 'paragraph');
+    expect(paragraph?.children).toEqual([{ type: 'inlineCode', value: 'A' }]);
+  });
+
+  it('falls back to literal text when the parser yields nothing', async function emptyParse() {
+    const tree = makeTree();
+
+    await remarkExamples({ target: 'components', parseMarkdown: () => [] })(tree, {
+      path: path.join(FIXTURE_DIR, 'README.mdx'),
+      data: {}
+    });
+
+    const paragraph = tree.children.find((c) => c.type === 'paragraph');
+    expect(paragraph?.children).toEqual([{ type: 'text', value: 'A default button with a text label.' }]);
+  });
 });

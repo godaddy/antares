@@ -31,6 +31,28 @@ export interface FCProps {
 
 export const FCComponent: FC<FCProps> = (props) => <div>{props.fc}</div>;
 
+export interface QualifiedFCProps {
+  qualifiedFc: string;
+}
+
+export const QualifiedFCComponent: React.FC<QualifiedFCProps> = (props) => <div>{props.qualifiedFc}</div>;
+
+export interface ExoticProps {
+  exotic: string;
+}
+
+declare namespace Registry {
+  type ComponentType<T> = { entry: T };
+}
+
+// Shares a rightmost name with React's, but is not a component annotation.
+export declare const RegistryEntry: Registry.ComponentType<FCProps>;
+
+// Mirrors how a built `.d.ts` declares a forwardRef component (e.g. react-aria-components).
+export declare const ForwardRefExoticComponent: React.ForwardRefExoticComponent<
+  ExoticProps & React.RefAttributes<HTMLDivElement>
+>;
+
 type PolymorphicProps<C, Own> = Own & { as?: C };
 
 interface PolymorphicComponent<Own> {
