@@ -1,0 +1,2 @@
+:HL["/antares/pr-316-site/_next/static/chunks/28okpi0ip8gho.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"gAStXKvLpWCl5L5s8ksxb"}
