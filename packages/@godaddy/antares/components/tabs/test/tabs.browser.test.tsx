@@ -153,8 +153,8 @@ describe('@godaddy/antares', function antares() {
       const viewport = document.querySelector('[class*="viewport"]');
       if (!viewport) throw new Error('Tabs viewport not found');
 
-      await user.click(page.getByRole('button', { name: 'Scroll next tabs' }));
-      await user.click(page.getByRole('button', { name: 'Scroll next tabs' }));
+      const next = page.getByRole('button', { name: 'Scroll next tabs' });
+      await user.click(next);
       await expect.poll(() => viewport.scrollLeft).toBeGreaterThan(0);
       const positionBeforePrevious = viewport.scrollLeft;
 
