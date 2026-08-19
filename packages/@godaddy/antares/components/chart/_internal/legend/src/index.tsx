@@ -7,8 +7,7 @@ import { Text } from '#components/text';
 import styles from './index.module.css';
 
 /**
- * Series subset the legend renders. Both extra fields are optional and line-specific, and are
- * only honored when {@link LegendProps.useSeriesStyles} is set */
+ * Legend display settings derived from the Series. */
 interface LegendSeriesItem extends Pick<InternalSeriesConfig, 'id' | 'name' | '_resolvedColor' | 'variant'> {}
 
 /**
@@ -28,11 +27,6 @@ export interface LegendProps
   size?: 'sm' | 'md' | 'lg' | 'xl';
   /** Layout orientation for legend items. Defaults to horizontal. */
   orientation?: 'horizontal' | 'vertical';
-  /**
-   * When true, each swatch is drawn from its series' explicit settings,
-   * Otherwise, receives default styles based on position @default false
-   */
-  useSeriesStyles?: boolean;
 }
 
 /**
@@ -69,8 +63,6 @@ interface LegendSwatchProps {
 
 function LegendSwatch(props: LegendSwatchProps) {
   const { variant = 'solid', color: colorOverride } = props;
-  // Always called (rules of hooks) so the palette allocator stays in step; the explicit
-  // color, when provided, takes precedence.
   const allocatedColor = useChartColor();
   const color = colorOverride ?? allocatedColor;
 
@@ -96,32 +88,20 @@ function LegendSwatch(props: LegendSwatchProps) {
 
 interface LegendItemProps {
   seriesItem: LegendSeriesItem;
-  useSeriesStyles: boolean;
 }
 
 function LegendItem(props: LegendItemProps) {
-  const { seriesItem, useSeriesStyles } = props;
+  const { seriesItem } = props;
   return (
     <Flex role="listitem" direction="row" alignItems="center" gap="sm" className={styles.item}>
-      <LegendSwatch
-        variant={useSeriesStyles ? seriesItem.variant : undefined}
-        color={useSeriesStyles ? seriesItem._resolvedColor : undefined}
-      />
+      <LegendSwatch variant={seriesItem.variant} color={seriesItem._resolvedColor} />
       <Text>{seriesItem.name}</Text>
     </Flex>
   );
 }
 
 export function Legend(props: LegendProps) {
-  const {
-    series,
-    label,
-    size = 'md',
-    orientation = 'horizontal',
-    useSeriesStyles = false,
-    className,
-    ...rootFlexProps
-  } = props;
+  const { series, label, size = 'md', orientation = 'horizontal', className, ...rootFlexProps } = props;
   const isHorizontal = orientation === 'horizontal';
 
   return (
@@ -147,7 +127,7 @@ export function Legend(props: LegendProps) {
           justifyContent="center"
         >
           {series.map(function renderLegendItem(seriesItem) {
-            return <LegendItem key={seriesItem.id} seriesItem={seriesItem} useSeriesStyles={useSeriesStyles} />;
+            return <LegendItem key={seriesItem.id} seriesItem={seriesItem} />;
           })}
         </Flex>
       </Flex>

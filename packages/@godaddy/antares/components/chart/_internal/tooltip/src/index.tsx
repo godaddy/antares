@@ -46,8 +46,6 @@ interface TooltipBaseProps<T extends object> {
   className?: string;
   /** Whether to show the tooltip arrow @default false */
   showArrow?: boolean;
-  /** When true, each swatch uses its series' explicit `_resolvedColor`. @default false */
-  useSeriesColors?: boolean;
 }
 
 /** Props when using the default {@link DataPoint} shape — `formatValue` is optional and defaults to reading `y`. */
@@ -83,7 +81,7 @@ export function Tooltip<T extends object>(props: TooltipPropsCustom<T>): ReactEl
 export function Tooltip<T extends object = DataPoint>(
   props: TooltipProps | TooltipPropsCustom<T>
 ): ReactElement | null {
-  const { tooltipData, series, className, showArrow = false, useSeriesColors = false } = props;
+  const { tooltipData, series, className, showArrow = false } = props;
   const formatValue = props.formatValue ?? (defaultFormatValue as (datum: T) => string);
 
   const seriesData = useMemo(
@@ -130,9 +128,7 @@ export function Tooltip<T extends object = DataPoint>(
                   <Box
                     className={styles.swatch}
                     rounding="full"
-                    style={
-                      useSeriesColors && item._resolvedColor ? { backgroundColor: item._resolvedColor } : undefined
-                    }
+                    style={item._resolvedColor ? { backgroundColor: item._resolvedColor } : undefined}
                   />
                 ) : (
                   item.variant && (

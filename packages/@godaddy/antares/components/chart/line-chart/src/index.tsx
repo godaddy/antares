@@ -427,7 +427,6 @@ export function LineChart<
           tooltipData={params.tooltipData as TooltipData<DataPoint> | undefined}
           series={seriesWithColor as SeriesConfig<DataPoint>[]}
           formatValue={tooltipValueFormatter as ((datum: DataPoint) => string) | undefined}
-          useSeriesColors
         />
       );
     },
@@ -613,9 +612,7 @@ export function LineChart<
           )}
         </Box>
         {xTitle && <AxisTitle title={xTitle} axis="x" />}
-        {effectiveLegendPosition && (
-          <Legend series={seriesWithColor} useSeriesStyles className={styles.legend} alignSelf="center" />
-        )}
+        {effectiveLegendPosition && <Legend series={seriesWithColor} className={styles.legend} alignSelf="center" />}
       </Flex>
     </Flex>
   );
