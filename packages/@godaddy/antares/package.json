@@ -63,14 +63,14 @@
   "devDependencies": {
     "@bento/storybook-addon-helpers": "^0.3.0",
     "@godaddy/generate-cdn-url": "^0.0.1",
-    "@tsdown/css": "^0.22.2",
+    "@tsdown/css": "^0.22.14",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "assume": "^2.3.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "rolldown": "^1.1.0",
-    "tsdown": "^0.22.1",
+    "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7",
     "vitest-browser-react": "^2.2.0"

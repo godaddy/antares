@@ -32,10 +32,7 @@ describe('csf-transformer', function csfTransformerTests() {
       const meta = getMeta({ title: 'meta1' });
     `;
     const actual = formatTypeScript(await csfTransformer({ code }));
-    const expected = formatTypeScript(`
-      import { getMeta } from '@bento/storybook-addon-helpers';
-      const meta = { title: 'meta1' };
-    `);
+    const expected = formatTypeScript(`const meta = { title: 'meta1' };`);
 
     expect(actual).toEqual(expected);
   });
@@ -88,9 +85,9 @@ describe('csf-transformer', function csfTransformerTests() {
 
     expect(actual).not.toContain('getExamples()');
     expect(actual).not.toContain('export const examples');
-    expect(actual).toContain('import { DefaultExample } from "./examples/default.tsx"');
-    expect(actual).toContain('export const Default = DefaultExample');
-    expect(actual).toContain('export const IconOnly = IconOnlyExample');
+    expect(actual).toContain('import { DefaultExample as __example_Default } from "./examples/default.tsx"');
+    expect(actual).toContain('export const Default = __example_Default');
+    expect(actual).toContain('export const IconOnly = __example_IconOnly');
     expect(actual).not.toContain('IgnoredExample');
     expect(actual).not.toContain('WidgetPlaygroundExample');
     // getMeta on the same file is still transformed to its object literal.
@@ -106,6 +103,71 @@ describe('csf-transformer', function csfTransformerTests() {
     expect(actual).toContain('getExamples');
   });
 
+  it('drops imports left unused by the transform, keeping the ones still referenced', async function prunesDeadImports() {
+    const code = `
+      import React from 'react';
+      import './side-effect.css';
+      import type { Props } from './comp.tsx';
+      import { Widget, Unused } from './comp.tsx';
+      import { getComponentDocs, getStory } from '@bento/storybook-addon-helpers';
+      export const Docs = getComponentDocs(Widget);
+      export const Story = getStory(Widget);
+    `;
+
+    const actual = await csfTransformer({ code });
+
+    // Widget survives via the generated render function, React and the bare import stay put.
+    expect(actual).toContain("import { Widget } from './comp.tsx'");
+    expect(actual).toContain("import React from 'react'");
+    expect(actual).toContain("import './side-effect.css'");
+    expect(actual).toContain("import type { Props } from './comp.tsx'");
+    expect(actual).not.toContain('Unused');
+    expect(actual).not.toContain('@bento/storybook-addon-helpers');
+  });
+
+  it('does not let a docs import collide with a same-named example story export', async function noDuplicateDeclaration() {
+    const actual = await csfTransformer({
+      filePath: path.join(fixturesPath, 'collision-fixture/collision.stories.tsx')
+    });
+
+    expect(actual).toContain('export const Default = __example_Default');
+    // The import that fed getComponentDocs is gone, so the story export is the only `Default`.
+    expect(actual).not.toContain('collision-comp.tsx');
+    expect(actual).toContain('"volume"');
+  });
+
+  it('fails when a surviving reference collides with an example story export', async function reportsCollision() {
+    await expect(
+      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/meta-collision.stories.tsx') })
+    ).rejects.toThrow(
+      /transformed stories file is invalid.*Default.*Generated example stories: "Default" \(\.\/examples\/default\.tsx\)/s
+    );
+  });
+
+  it('drops the examples marker when a real file resolves no examples', async function dropsEmptyMarker() {
+    const actual = await csfTransformer({
+      filePath: path.join(fixturesPath, 'collision-fixture/empty.stories.tsx')
+    });
+
+    expect(actual).not.toContain('getExamples');
+    expect(actual).not.toContain('@bento/storybook-addon-helpers');
+  });
+
+  it('fails when two examples reduce to the same story name', async function reportsDuplicateStoryName() {
+    await expect(
+      csfTransformer({ filePath: path.join(fixturesPath, 'collision-fixture/duplicate.stories.tsx') })
+    ).rejects.toThrow(/one\.tsx and \.\/duplicate-examples\/two\.tsx both generate a story named "Primary"/);
+  });
+
+  it('keeps a property named after an import from counting as a use of it', async function propertyKeyIsNotAUse() {
+    const code = `
+      import { Widget } from './comp.tsx';
+      export const Story = { args: { Widget: 'a string' } };
+    `;
+
+    expect(await csfTransformer({ code })).not.toContain('import { Widget }');
+  });
+
   it('should skip non-property-assignment in variants', async function nonPropertyAssignment() {
     const code = `
       import { getVariants } from '@bento/storybook-addon-helpers';
@@ -118,8 +180,6 @@ describe('csf-transformer', function csfTransformerTests() {
 
     const actual = formatTypeScript(await csfTransformer({ code }));
     const expected = formatTypeScript(`
-      import { getVariants } from '@bento/storybook-addon-helpers';
-
       export const VariantsSmall = {
         args: { size: 'small' },
         render: args => <TestComponent {...args} />

@@ -4,7 +4,7 @@ A Storybook preset that turns type-safe authoring helpers (`getMeta`, `getStory`
 
 ## Requirements
 
-- Storybook `^10.4` with the React + Vite framework (`@storybook/react-vite`).
+- Storybook `^10.5.7` with the React + Vite framework (`@storybook/react-vite`), matching the declared peer range.
 - A React + TypeScript project - prop docs are extracted from TypeScript types.
 - Stories authored as `*.stories.tsx` (the file pattern the indexer matches).
 
