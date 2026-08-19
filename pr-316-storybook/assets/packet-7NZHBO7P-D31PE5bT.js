@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{w as t}from"./chunk-KEIR6QF5-M7yqgjlX.js";import{M as n,N as r}from"./mermaid-parser.core-BjfROBqr.js";function i(){return(i=e((()=>{r(),t()})))()}i();export{n as createPacketServices};
