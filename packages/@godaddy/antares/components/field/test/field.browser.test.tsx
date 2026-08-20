@@ -2,8 +2,7 @@ import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { TextField as RACTextField } from 'react-aria-components';
-import { Field, FieldError, FieldGroup, FieldInput } from '@godaddy/antares';
+import { AriaTextField, Field, FieldError, FieldGroup, FieldInput } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default';
 import { FieldGroupLeadingControlExample } from '../examples/leading-control';
 import { FieldGroupTrailingControlExample } from '../examples/trailing-control';
@@ -76,7 +75,7 @@ describe('@godaddy/antares', function antares() {
       it('marks the group invalid via FieldErrorContext when submit fails validation', async function submitInvalid() {
         const { container } = await render(
           <form>
-            <Field as={RACTextField} isRequired>
+            <Field as={AriaTextField} isRequired>
               <FieldGroup data-testid="group">
                 <FieldInput aria-label="Email" />
               </FieldGroup>

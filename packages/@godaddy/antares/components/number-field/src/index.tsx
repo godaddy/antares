@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
-import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
 import {
+  AriaNumberField,
+  type AriaNumberFieldProps,
   Field,
   FieldButton,
   FieldDescription,
@@ -13,7 +14,7 @@ import {
 } from '#components/field';
 import { Icon } from '#components/icon';
 
-export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
+export interface NumberFieldProps extends Omit<AriaNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
   /** When true, hides the increment/decrement stepper buttons. @default false */
   hideStepper?: boolean;
 
@@ -43,7 +44,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
   const { isDisabled, isRequired } = racProps;
 
   return (
-    <Field as={RACNumberField} {...racProps}>
+    <Field as={AriaNumberField} {...racProps}>
       <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
       <FieldGroup isDisabled={isDisabled} size={size}>
         {!hideStepper && (

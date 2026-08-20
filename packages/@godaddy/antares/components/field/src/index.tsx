@@ -24,6 +24,15 @@ import { Icon } from '#components/icon';
 import { Text, type TextProps } from '#components/text';
 import styles from './index.module.css';
 
+export {
+  TextField as AriaTextField,
+  type TextFieldProps as AriaTextFieldProps,
+  TextArea as AriaTextArea,
+  type TextAreaProps as AriaTextAreaProps,
+  NumberField as AriaNumberField,
+  type NumberFieldProps as AriaNumberFieldProps
+} from 'react-aria-components';
+
 export interface FieldOwnProps extends FlexOwnProps {
   /** Label text shown above the field. */
   label?: ReactNode;
@@ -38,13 +47,13 @@ export interface FieldOwnProps extends FlexOwnProps {
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldOwnProps>;
 
 /**
- * Presentational vertical stack for a single field. Pass `as={RACTextField}` (or another RAC field
+ * Presentational vertical stack for a single field. Pass `as={AriaTextField}` (or another RAC field
  * wrapper) to merge the field's RAC provider and context plumbing.
  *
  * @param props - {@link FieldProps}
  *
  * @example
- * <Field as={RACTextField} {...fieldProps}>
+ * <Field as={AriaTextField} {...fieldProps}>
  *   <FieldLabel>Email</FieldLabel>
  *   <FieldGroup>
  *     <FieldInput />
