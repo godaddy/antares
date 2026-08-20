@@ -1,0 +1,23 @@
+.pressable {
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+  transition: outline-color 0.15s ease-in-out;
+
+  &:where(:hover:not([data-disabled])) {
+    outline-color: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
+  }
+
+  &:where(:active:not([data-disabled])) {
+    outline-color: var(--ux-t61743, #1bdbdb);
+  }
+
+  &:where(:focus-visible:not([data-disabled])) {
+    outline-color: Highlight;
+  }
+
+  &:where([data-disabled]) {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}

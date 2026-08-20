@@ -41,5 +41,6 @@ export * from './exports/CircularProgress';
 export * from './exports/Calendar';
 export * from './exports/DatePicker';
 export * from './exports/Avatar';
+export * from './exports/Pressable.ts';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';
