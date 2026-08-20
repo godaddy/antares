@@ -1,10 +1,14 @@
-import type { SeriesConfig } from '#components/chart/types.ts';
+import type { InternalSeriesConfig, LineSeriesVariant, SeriesConfig } from '#components/chart/types.ts';
 import { cx } from 'cva';
 import { ChartColorProvider, useChartColor } from '#components/chart/_internal/use-chart-color';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { Box } from '#components/layout/box';
 import { Text } from '#components/text';
 import styles from './index.module.css';
+
+/**
+ * Legend display settings derived from the Series. */
+interface LegendSeriesItem extends Pick<InternalSeriesConfig, 'id' | 'name' | '_resolvedColor' | 'variant'> {}
 
 /**
  * Props for the Legend component.
@@ -15,8 +19,8 @@ import styles from './index.module.css';
  */
 export interface LegendProps
   extends Omit<FlexProps<'div'>, 'children' | 'direction' | 'display' | 'alignItems' | 'gap'> {
-  /** Series to display in the legend (id, name) */
-  series: Pick<SeriesConfig, 'id' | 'name'>[];
+  /** Series to display in the legend (id, name, optional line variant) */
+  series: LegendSeriesItem[];
   /** Optional visible and accessible label for the legend. */
   label?: string;
   /** Size of the legend labels and swatches. @default 'md' */
@@ -45,20 +49,52 @@ export interface LegendProps
  * />
  * ```
  */
-function LegendSwatch() {
-  const color = useChartColor();
-  return <Box rounding="full" className={styles.swatch} style={{ backgroundColor: color }} />;
+/** stroke-dasharray for the line swatch, mirroring the chart's line variants (scaled for the small swatch). */
+export const SWATCH_DASH_ARRAY: Record<Exclude<LineSeriesVariant, 'solid'>, string> = {
+  dashed: '5 3',
+  dotted: '1 3'
+};
+
+interface LegendSwatchProps {
+  variant?: LineSeriesVariant;
+  /** Explicit swatch color; falls back to the palette color for this item's position. */
+  color?: string;
+}
+
+function LegendSwatch(props: LegendSwatchProps) {
+  const { variant = 'solid', color: colorOverride } = props;
+  const allocatedColor = useChartColor();
+  const color = colorOverride ?? allocatedColor;
+
+  if (variant === 'solid') {
+    return <Box rounding="full" className={styles.swatch} style={{ backgroundColor: color }} />;
+  }
+
+  return (
+    <svg className={styles.lineSwatch} viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <line
+        x1="0"
+        y1="8"
+        x2="16"
+        y2="8"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray={SWATCH_DASH_ARRAY[variant]}
+      />
+    </svg>
+  );
 }
 
 interface LegendItemProps {
-  seriesItem: Pick<SeriesConfig, 'id' | 'name'>;
+  seriesItem: LegendSeriesItem;
 }
 
 function LegendItem(props: LegendItemProps) {
   const { seriesItem } = props;
   return (
     <Flex role="listitem" direction="row" alignItems="center" gap="sm" className={styles.item}>
-      <LegendSwatch />
+      <LegendSwatch variant={seriesItem.variant} color={seriesItem._resolvedColor} />
       <Text>{seriesItem.name}</Text>
     </Flex>
   );

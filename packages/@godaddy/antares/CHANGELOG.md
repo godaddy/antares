@@ -1,5 +1,12 @@
 # @godaddy/antares
 
+## 0.7.0
+
+### Minor Changes
+
+- For LineChart component, adds 1. ability to assign colorPalette color and dashed or dotted styles to series manually, and 2. Custom tooltip render override function ([#286](https://github.com/godaddy/bento/pull/286) by @amcmillen-godaddy)
+- Menu component revamped to comply with design specs and css design tokens ([#278](https://github.com/godaddy/bento/pull/278) by @egaitan-godaddy)
+
 ## 0.6.0
 
 ### Minor Changes

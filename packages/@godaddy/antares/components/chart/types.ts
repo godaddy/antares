@@ -30,6 +30,38 @@ export interface SeriesConfig<T extends object = DataPoint> {
 }
 
 /**
+ * Line style for a line-chart series.
+ *
+ * Maps to an SVG stroke dash pattern: 'solid' draws a continuous stroke,
+ * 'dashed' a long-dash pattern, and 'dotted' a round-dot pattern.
+ */
+export type LineSeriesVariant = 'solid' | 'dashed' | 'dotted';
+
+/**
+ * Config for one line-chart series.
+ */
+export interface LineSeriesConfig<
+  T extends object = DataPoint,
+  U extends Record<string, unknown> = Record<string, unknown>
+> extends SeriesConfig<T> {
+  // colorIndex instead of color so consumer still has to use
+  // antares theme colors
+  colorIndex?: number;
+  variant?: LineSeriesVariant;
+  tooltipMetadata?: U;
+}
+
+export interface InternalSeriesConfig<
+  T extends object = DataPoint,
+  U extends Record<string, unknown> | undefined = Record<string, unknown>
+> extends SeriesConfig<T> {
+  _resolvedColor?: string;
+  variant?: LineSeriesVariant;
+  colorIndex?: number;
+  tooltipMetadata?: U;
+}
+
+/**
  * Accessors for X and Y from a data point.
  *
  * Used by chart components when the data shape differs from {@link DataPoint};

@@ -1,12 +1,12 @@
 {
   "name": "@godaddy/themes",
+  "private": true,
   "version": "0.0.2",
   "description": "The GoDaddy themes library",
   "type": "module",
   "scripts": {
     "build": "tsx scripts/build.ts",
     "lint": "biome lint",
-    "prepublishOnly": "node ../../../scripts/compile-readme.ts",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
