@@ -180,6 +180,132 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+
 # Button
 
 
@@ -307,132 +433,6 @@ The `Button` component accepts the following props:
 <PropTable />
 
 The `LinkButton` component accepts the following props:
-
-<PropTable />
-
-
-# Calendar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single-date calendar.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Story of="CalendarWithValueExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Story of="RangeCalendarExample" />
-
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Story of="CalendarMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Story of="CalendarUnavailableExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Story of="CalendarDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-## Props [#props]
-
-The `Calendar` component accepts the following props:
-
-<PropTable />
-
-The `RangeCalendar` component accepts the following props:
 
 <PropTable />
 
@@ -1400,66 +1400,6 @@ The `FieldGroup` component has the following props:
 <PropTable />
 
 
-# FileTrigger
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
-* Renders a visually hidden `<input type="file">` — no styling of its own.
-* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
-* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
-
-### Accepted Types [#accepted-types]
-
-Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
-
-<Story of="AcceptedTypesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
-
-## Best Practices [#best-practices]
-
-* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
-* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
-* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
-
-## Props [#props]
-
-<PropTable />
-
-
 # Icon
 
 
@@ -2022,6 +1962,66 @@ Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Se
 ## Props [#props]
 
 The ListBox component accepts the following props:
+
+<PropTable />
+
+
+# FileTrigger
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
+* Renders a visually hidden `<input type="file">` — no styling of its own.
+* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
+* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+
+### Accepted Types [#accepted-types]
+
+Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
+
+<Story of="AcceptedTypesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
+
+## Best Practices [#best-practices]
+
+* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
+* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
+* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+
+## Props [#props]
 
 <PropTable />
 
@@ -2644,69 +2644,6 @@ Popover width is determined by its content, and it’s recommended to keep it un
 <PropTable />
 
 
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-<PropTable />
-
-
 # ProgressSteps
 
 
@@ -2831,6 +2768,69 @@ The `ProgressSteps` component has the following props:
 <PropTable />
 
 The `ProgressStep` component has the following props:
+
+<PropTable />
+
+
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
 
 <PropTable />
 
@@ -4826,6 +4826,16 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 
 
 
+
+
+
+
+
+
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Installation [#installation]
@@ -5028,6 +5038,56 @@ The chart follows the current layout direction, normally detected from the brows
 
 <Source language="tsx" code="&#x22;import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\nimport { CityTemperatureExample } from './city-temperature.tsx';\nimport type { LineChartProps } from '@godaddy/antares';\n\nexport function RTLExample(props: Partial<LineChartProps>) {\n  return (\n    <RTLProvider>\n      <CityTemperatureExample {...props} />\n    </RTLProvider>\n  );\n}&#x22;" />
 
+### Color Index [#color-index]
+
+`colorIndex` pins each series to a palette color. Any series can use any index,
+independently — here two pairs each share an index so an actual line and its
+dashed forecast read as the same color, distinguished only by line style.
+
+<Story of="ColorIndexExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { LineChart, type LineChartProps } from '@godaddy/antares';\n\nexport function ColorIndexExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toPoints('New York', 1.08)\n    },\n    { id: 'sf', name: 'San Francisco', colorIndex: 1, data: toPoints('San Francisco') },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toPoints('San Francisco', 1.08)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Color index example chart\&#x22;\n      desc=\&#x22;Line chart where paired series share a palette color via colorIndex, distinguished by solid and dashed line styles\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip [#custom-tooltip]
+
+`renderTooltip` lets you render a fully custom tooltip and know which curve is
+hovered. Paired series share a `colorIndex`; hovering either line shows a
+tooltip specific to that line, wrapped in the default styled popover.
+
+<Story of="CustomTooltipExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { Box, Flex, LineChart, type LineChartProps, type LineChartTooltipRenderProps, Text } from '@godaddy/antares';\n\n/**\n * Renders a tooltip for the single hovered curve. `renderTooltip` receives\n * `hoveredSeriesId` (the series nearest the cursor) so the tooltip can show\n * information specific to that line instead of every series at once.\n */\nfunction renderHoveredTooltip({ hoveredSeriesId, hoveredDatum, series }: LineChartTooltipRenderProps) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered || !hoveredDatum) {\n    return null;\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Box\n          rounding=\&#x22;full\&#x22;\n          style={{\n            width: 10,\n            height: 10,\n            backgroundColor: hovered._resolvedColor\n          }}\n        />\n        <Text>{hovered.name}</Text>\n      </Flex>\n      <Text>{`${(hoveredDatum.y as number).toFixed(1)}°F`}</Text>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({\n        x: new Date(d.date),\n        y: parseFloat(d[city] as string) * scale\n      }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toPoints('New York', 1.08)\n    },\n    {\n      id: 'sf',\n      name: 'San Francisco',\n      colorIndex: 1,\n      data: toPoints('San Francisco')\n    },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toPoints('San Francisco', 1.08)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Custom tooltip example chart\&#x22;\n      desc=\&#x22;Line chart with a custom tooltip that shows information specific to the hovered curve\&#x22;\n      renderTooltip={renderHoveredTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip Pair Change [#custom-tooltip-pair-change]
+
+`renderTooltip` example combining a pair of series. Each pair shares a `colorIndex`
+(solid actual + dashed forecast); hovering either line shows the percent change of
+the forecast against the actual for that pair, wrapped in the default styled popover.
+
+<Story of="CustomTooltipPairChangeExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { Box, Flex, LineChart, type LineChartProps, type LineChartTooltipRenderProps, Text } from '@godaddy/antares';\n\n/**\n * Two pairs of lines, each a solid \&#x22;actual\&#x22; curve plus its dashed \&#x22;forecast\&#x22; partner\n * (the two share a `colorIndex`). Hovering any line resolves the pair it belongs to and\n * shows both values plus the percent change of the forecast relative to the actual —\n * demonstrating that `renderTooltip` can combine multiple series, not just the hovered one.\n */\nfunction renderPairChangeTooltip({ hoveredSeriesId, datumByKey, series }: LineChartTooltipRenderProps) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered) {\n    return null;\n  }\n\n  // Both lines in a pair share a color; split them into the solid actual and dashed forecast.\n  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);\n  const actual = pair.find((oneSeries) => oneSeries.variant !== 'dashed');\n  const forecast = pair.find((oneSeries) => oneSeries.variant === 'dashed');\n  if (!actual || !forecast) {\n    return null;\n  }\n\n  const actualY = datumByKey[actual.id]?.y as number | undefined;\n  const forecastY = datumByKey[forecast.id]?.y as number | undefined;\n  if (actualY == null || forecastY == null) {\n    return null;\n  }\n\n  const change = ((forecastY - actualY) / actualY) * 100;\n  const sign = change >= 0 ? '+' : '';\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Box\n          rounding=\&#x22;full\&#x22;\n          style={{\n            width: 10,\n            height: 10,\n            backgroundColor: actual._resolvedColor\n          }}\n        />\n        <Text>{actual.name}</Text>\n      </Flex>\n      <Text>{`Actual: ${actualY.toFixed(1)}°F`}</Text>\n      <Text>{`Forecast: ${forecastY.toFixed(1)}°F`}</Text>\n      <Text>{`Forecast vs actual: ${sign}${change.toFixed(1)}%`}</Text>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipPairChangeExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number]) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  // Forecast wobbles deterministically above and below the actual (±~15%) so the\n  // percent change varies per point and goes negative where the forecast undershoots.\n  const toForecast = (city: keyof (typeof cityTemperature)[number], phase = 0) =>\n    rows\n      .map((d, i) => ({\n        x: new Date(d.date),\n        y: parseFloat(d[city] as string) * (1 + 0.15 * Math.sin(i + phase))\n      }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toForecast('New York')\n    },\n    {\n      id: 'sf',\n      name: 'San Francisco',\n      colorIndex: 1,\n      data: toPoints('San Francisco')\n    },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toForecast('San Francisco', 2)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Pair percent-change tooltip example chart\&#x22;\n      desc=\&#x22;Line chart whose tooltip shows the forecast-vs-actual percent change for the hovered pair\&#x22;\n      renderTooltip={renderPairChangeTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip Period Comparison [#custom-tooltip-period-comparison]
+
+`renderTooltip` example styled as a period-over-period comparison card. Paired series
+(solid current period + dashed previous period) share a `colorIndex`; hovering either
+line shows both dated values and the percent change, wrapped in the default popover.
+
+<Story of="CustomTooltipPeriodComparisonExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Box,\n  type DataPoint,\n  Flex,\n  LineChart,\n  type LineChartProps,\n  type LineChartTooltipRenderProps,\n  type LineSeriesConfig,\n  Text\n} from '@godaddy/antares';\n\nconst CURRENT_YEAR = 2026;\nconst POINTS = 12;\n\nconst formatDate = (d: Date) =>\n  d.toLocaleDateString('en-US', {\n    month: 'short',\n    day: 'numeric',\n    year: 'numeric'\n  });\nconst formatMoney = (v: number) => `$${v.toFixed(2)}`;\n\n/**\n * Series shape extended with custom tooltipMetadata. The type of tooltipMetadata is inferred\n * from this type in the tooltip render function so no cast is needed at the call site.\n */\ninterface ChannelSeries extends LineSeriesConfig {\n  /** Which period this line represents; used to pair current vs previous. */\n  tooltipMetadata: { period: 'current' | 'previous' };\n}\n\n/**\n * Period-over-period tooltip. Each channel is a pair sharing a `colorIndex`: a solid\n * \&#x22;current period\&#x22; line and its dashed \&#x22;previous period\&#x22; partner. Hovering either line\n * shows the channel name, both dated values, and the percent change vs the previous period —\n * mirroring a typical analytics comparison card, built entirely from the `renderTooltip` prop.\n */\nfunction renderPeriodTooltip({\n  hoveredSeriesId,\n  datumByKey,\n  series\n}: LineChartTooltipRenderProps<DataPoint, LineSeriesConfig<DataPoint, { period: 'current' | 'previous' }>>) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered) {\n    return null;\n  }\n\n  // Pair by colorIndex, then split by the custom `period` key (typed, no cast needed).\n  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);\n  const current = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');\n  const previous = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');\n  if (!current || !previous) {\n    return null;\n  }\n\n  const currentDatum = datumByKey[current.id];\n  const previousDatum = datumByKey[previous.id];\n  if (!currentDatum || !previousDatum) {\n    return null;\n  }\n\n  const currentValue = currentDatum.y as number;\n  const previousValue = previousDatum.y as number;\n  const currentDate = currentDatum.x as Date;\n  // Both series plot on current-period dates so they overlay; the previous row is labelled one year back.\n  const previousDate = new Date(currentDate);\n  previousDate.setFullYear(currentDate.getFullYear() - 1);\n\n  const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;\n  const isUp = change >= 0;\n  const color = current._resolvedColor;\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ minWidth: 260 }}>\n      <Text style={{ fontSize: 18 }}>{current.name}</Text>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color }} />\n            <Text>{formatDate(currentDate)}</Text>\n          </Flex>\n          <Text>{formatMoney(currentValue)}</Text>\n        </Flex>\n\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box\n              rounding=\&#x22;full\&#x22;\n              style={{\n                width: 12,\n                height: 12,\n                border: `2px solid ${color}`,\n                boxSizing: 'border-box'\n              }}\n            />\n            <Text>{formatDate(previousDate)}</Text>\n          </Flex>\n          <Text>{formatMoney(previousValue)}</Text>\n        </Flex>\n      </Flex>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>\n        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(2)}%`}</Text>\n        <Text style={{ color: '#868e96' }}>compared to previous period</Text>\n      </Flex>\n    </Flex>\n  );\n}\n\n/** Builds a deterministic weekly series in the hundreds-of-dollars range. */\nfunction buildSeries(base: number, amplitude: number, phase: number) {\n  return Array.from({ length: POINTS }, (_, i) => ({\n    x: new Date(CURRENT_YEAR, 0, 2 + i * 7),\n    y: base + amplitude * Math.sin(i * 0.6 + phase)\n  }));\n}\n\nexport function CustomTooltipPeriodComparisonExample(props: Partial<LineChartProps<DataPoint, ChannelSeries>>) {\n  const series: ChannelSeries[] = [\n    {\n      id: 'online',\n      name: 'Online Store',\n      colorIndex: 0,\n      tooltipMetadata: { period: 'current' },\n      data: buildSeries(680, 90, 0)\n    },\n    {\n      id: 'online-prev',\n      name: 'Online Store (previous)',\n      colorIndex: 0,\n      tooltipMetadata: { period: 'previous' },\n      variant: 'dashed',\n      data: buildSeries(700, 80, 1.2)\n    },\n    {\n      id: 'retail',\n      name: 'Retail',\n      colorIndex: 1,\n      tooltipMetadata: { period: 'current' },\n      data: buildSeries(430, 70, 0.5)\n    },\n    {\n      id: 'retail-prev',\n      name: 'Retail (previous)',\n      colorIndex: 1,\n      tooltipMetadata: { period: 'previous' },\n      variant: 'dashed',\n      data: buildSeries(410, 60, 1.8)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Period-over-period comparison tooltip example chart\&#x22;\n      desc=\&#x22;Line chart whose tooltip compares the hovered channel's current and previous period values\&#x22;\n      renderTooltip={renderPeriodTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Line Styles [#line-styles]
+
+`variant` sets each series' line style — 'solid' (default), 'dashed', or
+'dotted' — useful for distinguishing actuals from forecasts or targets. The
+legend swatch mirrors each line's style.
+
+<Story of="LineStylesExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { LineChart, type LineChartProps } from '@godaddy/antares';\n\nexport function LineStylesExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'actual', name: 'Actual', data: toPoints('New York') },\n    { id: 'forecast', name: 'Forecast', variant: 'dashed' as const, data: toPoints('New York', 1.08) },\n    { id: 'target', name: 'Target', variant: 'dotted' as const, data: toPoints('New York', 0.92) }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Line styles example chart\&#x22;\n      desc=\&#x22;Line chart demonstrating solid, dashed, and dotted line styles via the variant prop\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
 ## Customization [#customization]
 
 ### Data Attributes [#data-attributes]
@@ -5205,124 +5265,6 @@ The `Box` component accepts the following props:
 <PropTable />
 
 
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-
 # Flex
 
 
@@ -5439,5 +5381,123 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
+
+<PropTable />
+
+
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
 
 <PropTable />
