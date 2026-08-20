@@ -40,8 +40,8 @@
   "devDependencies": {
     "@bento/slots": "^0.3.0",
     "@bento/use-props": "^0.2.1",
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7",
