@@ -311,111 +311,6 @@ The `LinkButton` component accepts the following props:
 <PropTable />
 
 
-# Carousel
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="ExternalControlsUncontrolledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="ExternalControlsControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="HideControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="VariableWidthsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="EventsExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="RTLDirectionExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-
 # Calendar
 
 
@@ -538,6 +433,435 @@ The `Calendar` component accepts the following props:
 <PropTable />
 
 The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+
+# Carousel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="ExternalControlsUncontrolledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="ExternalControlsControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="HideControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="VariableWidthsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="EventsExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="RTLDirectionExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+
+# Checkbox
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single checkbox with a label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Checkbox>One checkbox</Checkbox>;\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
+
+<Story of="CheckboxIndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function CheckboxIndeterminateExample() {\n  return <Checkbox isIndeterminate>Option 1</Checkbox>;\n}&#x22;" />
+
+### Checkbox Group [#checkbox-group]
+
+Group multiple checkboxes together with a shared label and description.
+
+<Story of="CheckboxGroupBasicExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupBasicExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Manage checkbox group state programmatically with controlled component pattern.
+
+<Story of="CheckboxGroupControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupControlledExample() {\n  const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);\n\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite sports\&#x22;\n      description=\&#x22;Select your favorite sports\&#x22;\n      value={selected}\n      onChange={setSelected}\n    >\n      <Checkbox value=\&#x22;basketball\&#x22;>Basketball</Checkbox>\n      <Checkbox value=\&#x22;soccer\&#x22;>Soccer</Checkbox>\n      <Checkbox value=\&#x22;baseball\&#x22;>Baseball</Checkbox>\n      <Checkbox value=\&#x22;tennis\&#x22;>Tennis</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Horizontal Layout [#horizontal-layout]
+
+Display checkboxes in a horizontal row instead of vertical stack.
+
+<Story of="CheckboxGroupHorizontalExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupHorizontalExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Individual checkboxes within a group can be disabled while others remain interactive.
+
+<Story of="CheckboxGroupDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupDisabledExample() {\n  const [selected, setSelected] = useState<string[]>(['purple', 'red']);\n\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite colors\&#x22;\n      value={selected}\n      onChange={setSelected}\n      errorMessage=\&#x22;At least one color must be selected\&#x22;\n      description=\&#x22;Choose your favorite color\&#x22;\n      isDisabled\n    >\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      <Checkbox value=\&#x22;purple\&#x22;>Purple</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Required Indicator [#required-indicator]
+
+Mark a checkbox group as required with visual indicator and validation.
+
+<Story of="CheckboxGroupRequiredExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupRequiredExample() {\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite colors\&#x22;\n      errorMessage=\&#x22;At least one color must be selected\&#x22;\n      description=\&#x22;Choose your favorite color\&#x22;\n      isRequired\n    >\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Invalid State [#invalid-state]
+
+Display error state and error message for validation feedback.
+
+<Story of="CheckboxGroupInvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupInvalidExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22; isInvalid description=\&#x22;Choose your favorite color\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-checkbox-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-checkbox-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-checkbox-group [data-indeterminate] {
+  background-color: #1976d2;
+}
+
+.my-checkbox-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization [#component-customization]
+
+Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
+
+```jsx
+<CheckboxGroup label="Select options" className="custom-checkbox-group">
+  <Checkbox value="option1" className="custom-checkbox">
+    Option 1
+  </Checkbox>
+  <Checkbox value="option2" className="highlighted-checkbox">
+    Option 2
+  </Checkbox>
+</CheckboxGroup>
+```
+
+## Key Features [#key-features]
+
+### Indeterminate State [#indeterminate-state]
+
+The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
+
+```jsx
+<Checkbox isIndeterminate onChange={handleSelectAll}>
+  Select All
+</Checkbox>
+```
+
+### Group Validation [#group-validation]
+
+CheckboxGroup supports validation states and error messages:
+
+* **isRequired**: Marks the group as required with visual indicator
+* **isInvalid**: Shows error state styling
+* **errorMessage**: Displays validation error text below the group
+
+```jsx
+<CheckboxGroup
+  label="Required selection"
+  isRequired
+  isInvalid={!hasSelection}
+  errorMessage="At least one option must be selected"
+>
+  <Checkbox value="a">Option A</Checkbox>
+  <Checkbox value="b">Option B</Checkbox>
+</CheckboxGroup>
+```
+
+### Orientation [#orientation]
+
+Control the layout with the `orientation` prop (matching `RadioGroup`):
+
+* `vertical` (default): Stacks checkboxes vertically
+* `horizontal`: Arranges checkboxes in a horizontal row
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to the next/previous checkbox
+* **Space**: Toggles the focused checkbox
+* **Shift + Tab**: Moves focus to the previous checkbox
+
+### ARIA Support [#aria-support]
+
+* `aria-disabled` for disabled checkboxes
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+* Proper labeling with `aria-labelledby` and `aria-describedby`
+
+## Troubleshooting [#troubleshooting]
+
+### Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<CheckboxGroup value={value} defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Controlled mode
+<CheckboxGroup value={value} onChange={setValue}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Uncontrolled mode
+<CheckboxGroup defaultValue={["a"]}>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+```
+
+### Indeterminate State Not Updating [#indeterminate-state-not-updating]
+
+The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
+
+```jsx
+// ✅ Correct: Manually manage indeterminate state
+const [childSelections, setChildSelections] = React.useState([]);
+const allSelected = childSelections.length === totalChildren;
+const someSelected = childSelections.length > 0 && !allSelected;
+
+<Checkbox
+  isSelected={allSelected}
+  isIndeterminate={someSelected}
+  onChange={handleSelectAll}
+>
+  Select All
+</Checkbox>
+```
+
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-checkbox {
+  color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-checkbox-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices [#best-practices]
+
+### When to Use Checkboxes [#when-to-use-checkboxes]
+
+* ✅ For selecting multiple independent options
+* ✅ When users can select zero, one, or many items
+* ✅ For toggling settings or features on/off
+* ✅ When all available options should be visible
+* ❌ For mutually exclusive options (use Radio instead)
+* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
+
+### Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels that describe what selecting the option means
+* Keep labels short (1-5 words when possible)
+* Ensure labels are descriptive without being verbose
+* Place the most commonly selected options first in groups
+
+### Validation [#validation]
+
+Always provide clear error messages and use appropriate validation states:
+
+```jsx
+<CheckboxGroup
+  label="Terms and conditions"
+  isRequired
+  isInvalid={!agreedToTerms}
+  errorMessage="You must agree to the terms to continue"
+>
+  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+</CheckboxGroup>
+```
+
+### Group Organization [#group-organization]
+
+* Limit checkbox groups to 7-10 options for better usability
+* Use logical ordering (alphabetical, frequency of use, or importance)
+* Consider using CheckboxGroup for related options, even if there are only 2-3
+* Provide a group label that clearly describes the choice being made
+
+## Props [#props]
+
+The `Checkbox` component has the following props:
+
+<PropTable />
+
+The `CheckboxGroup` component has the following props:
 
 <PropTable />
 
@@ -958,330 +1282,6 @@ The button's accessible name is built from two sources, combined in order:
 * Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Checkbox
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single checkbox with a label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Checkbox>One checkbox</Checkbox>;\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
-
-<Story of="CheckboxIndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function CheckboxIndeterminateExample() {\n  return <Checkbox isIndeterminate>Option 1</Checkbox>;\n}&#x22;" />
-
-### Checkbox Group [#checkbox-group]
-
-Group multiple checkboxes together with a shared label and description.
-
-<Story of="CheckboxGroupBasicExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupBasicExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Manage checkbox group state programmatically with controlled component pattern.
-
-<Story of="CheckboxGroupControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupControlledExample() {\n  const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);\n\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite sports\&#x22;\n      description=\&#x22;Select your favorite sports\&#x22;\n      value={selected}\n      onChange={setSelected}\n    >\n      <Checkbox value=\&#x22;basketball\&#x22;>Basketball</Checkbox>\n      <Checkbox value=\&#x22;soccer\&#x22;>Soccer</Checkbox>\n      <Checkbox value=\&#x22;baseball\&#x22;>Baseball</Checkbox>\n      <Checkbox value=\&#x22;tennis\&#x22;>Tennis</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Horizontal Layout [#horizontal-layout]
-
-Display checkboxes in a horizontal row instead of vertical stack.
-
-<Story of="CheckboxGroupHorizontalExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupHorizontalExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Individual checkboxes within a group can be disabled while others remain interactive.
-
-<Story of="CheckboxGroupDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupDisabledExample() {\n  const [selected, setSelected] = useState<string[]>(['purple', 'red']);\n\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite colors\&#x22;\n      value={selected}\n      onChange={setSelected}\n      errorMessage=\&#x22;At least one color must be selected\&#x22;\n      description=\&#x22;Choose your favorite color\&#x22;\n      isDisabled\n    >\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      <Checkbox value=\&#x22;purple\&#x22;>Purple</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Required Indicator [#required-indicator]
-
-Mark a checkbox group as required with visual indicator and validation.
-
-<Story of="CheckboxGroupRequiredExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupRequiredExample() {\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite colors\&#x22;\n      errorMessage=\&#x22;At least one color must be selected\&#x22;\n      description=\&#x22;Choose your favorite color\&#x22;\n      isRequired\n    >\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Invalid State [#invalid-state]
-
-Display error state and error message for validation feedback.
-
-<Story of="CheckboxGroupInvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupInvalidExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22; isInvalid description=\&#x22;Choose your favorite color\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-checkbox-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-checkbox-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-checkbox-group [data-indeterminate] {
-  background-color: #1976d2;
-}
-
-.my-checkbox-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Component Customization [#component-customization]
-
-Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
-
-```jsx
-<CheckboxGroup label="Select options" className="custom-checkbox-group">
-  <Checkbox value="option1" className="custom-checkbox">
-    Option 1
-  </Checkbox>
-  <Checkbox value="option2" className="highlighted-checkbox">
-    Option 2
-  </Checkbox>
-</CheckboxGroup>
-```
-
-## Key Features [#key-features]
-
-### Indeterminate State [#indeterminate-state]
-
-The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
-
-```jsx
-<Checkbox isIndeterminate onChange={handleSelectAll}>
-  Select All
-</Checkbox>
-```
-
-### Group Validation [#group-validation]
-
-CheckboxGroup supports validation states and error messages:
-
-* **isRequired**: Marks the group as required with visual indicator
-* **isInvalid**: Shows error state styling
-* **errorMessage**: Displays validation error text below the group
-
-```jsx
-<CheckboxGroup
-  label="Required selection"
-  isRequired
-  isInvalid={!hasSelection}
-  errorMessage="At least one option must be selected"
->
-  <Checkbox value="a">Option A</Checkbox>
-  <Checkbox value="b">Option B</Checkbox>
-</CheckboxGroup>
-```
-
-### Orientation [#orientation]
-
-Control the layout with the `orientation` prop (matching `RadioGroup`):
-
-* `vertical` (default): Stacks checkboxes vertically
-* `horizontal`: Arranges checkboxes in a horizontal row
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to the next/previous checkbox
-* **Space**: Toggles the focused checkbox
-* **Shift + Tab**: Moves focus to the previous checkbox
-
-### ARIA Support [#aria-support]
-
-* `aria-disabled` for disabled checkboxes
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-* Proper labeling with `aria-labelledby` and `aria-describedby`
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<CheckboxGroup value={value} defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Controlled mode
-<CheckboxGroup value={value} onChange={setValue}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Uncontrolled mode
-<CheckboxGroup defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-```
-
-### Indeterminate State Not Updating [#indeterminate-state-not-updating]
-
-The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
-
-```jsx
-// ✅ Correct: Manually manage indeterminate state
-const [childSelections, setChildSelections] = React.useState([]);
-const allSelected = childSelections.length === totalChildren;
-const someSelected = childSelections.length > 0 && !allSelected;
-
-<Checkbox
-  isSelected={allSelected}
-  isIndeterminate={someSelected}
-  onChange={handleSelectAll}
->
-  Select All
-</Checkbox>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-checkbox {
-  color: red;
-}
-
-/* ✅ Use data attributes with className for higher specificity */
-.my-checkbox-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-## Best Practices [#best-practices]
-
-### When to Use Checkboxes [#when-to-use-checkboxes]
-
-* ✅ For selecting multiple independent options
-* ✅ When users can select zero, one, or many items
-* ✅ For toggling settings or features on/off
-* ✅ When all available options should be visible
-* ❌ For mutually exclusive options (use Radio instead)
-* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
-
-### Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels that describe what selecting the option means
-* Keep labels short (1-5 words when possible)
-* Ensure labels are descriptive without being verbose
-* Place the most commonly selected options first in groups
-
-### Validation [#validation]
-
-Always provide clear error messages and use appropriate validation states:
-
-```jsx
-<CheckboxGroup
-  label="Terms and conditions"
-  isRequired
-  isInvalid={!agreedToTerms}
-  errorMessage="You must agree to the terms to continue"
->
-  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
-  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
-</CheckboxGroup>
-```
-
-### Group Organization [#group-organization]
-
-* Limit checkbox groups to 7-10 options for better usability
-* Use logical ordering (alphabetical, frequency of use, or importance)
-* Consider using CheckboxGroup for related options, even if there are only 2-3
-* Provide a group label that clearly describes the choice being made
-
-## Props [#props]
-
-The `Checkbox` component has the following props:
-
-<PropTable />
-
-The `CheckboxGroup` component has the following props:
 
 <PropTable />
 
@@ -1961,71 +1961,6 @@ The `InlineDrawerPanel` component accepts the following props:
 <PropTable />
 
 
-# ListBox
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
-* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
-* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
-* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
-* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
-
-`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Single selection with static children. Use `aria-label` to give the listbox an accessible name.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
-
-### List Box Controlled [#list-box-controlled]
-
-Use `selectedKeys` and `onSelectionChange` for controlled state.
-
-<Story of="ListBoxControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### List Box Multiple [#list-box-multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
-
-<Story of="ListBoxMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The ListBox component accepts the following props:
-
-<PropTable />
-
-
 # Menu
 
 
@@ -2205,6 +2140,71 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
+# ListBox
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
+
+### List Box Controlled [#list-box-controlled]
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Story of="ListBoxControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### List Box Multiple [#list-box-multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Story of="ListBoxMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The ListBox component accepts the following props:
+
+<PropTable />
+
+
 # Modal
 
 
@@ -2303,156 +2303,6 @@ Pass a `media` element to display imagery alongside the content. Configure its l
 ## Props [#props]
 
 The `Modal` component accepts the following props:
-
-<PropTable />
-
-
-# MetricsLockup
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A metric with a title, info tooltip, value, and description.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<MetricsLockupProps> = {}) {\n  return (\n    <MetricsLockup\n      title=\&#x22;Total Revenue\&#x22;\n      titleInfo=\&#x22;The total revenue across all products for the selected period.\&#x22;\n      data=\&#x22;$1,234.56\&#x22;\n      description=\&#x22;vs. last month\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-### With Trend [#with-trend]
-
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
-
-<Story of="WithTrendExample" />
-
-<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function WithTrendExample() {\n  return <MetricsLockup title=\&#x22;Conversion Rate\&#x22; data=\&#x22;42%\&#x22; description=\&#x22;+3.2% vs. last month\&#x22; trend=\&#x22;positive\&#x22; />;\n}&#x22;" />
-
-### Compact [#compact]
-
-Use the `compact` prop to render the metric value and description inline rather than stacked.
-
-<Story of="CompactExample" />
-
-<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function CompactExample() {\n  return <MetricsLockup title=\&#x22;Sessions\&#x22; data=\&#x22;8,021\&#x22; description=\&#x22;-12% vs. last week\&#x22; trend=\&#x22;negative\&#x22; compact />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
-
-### ARIA [#aria]
-
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
-
-## Props [#props]
-
-<PropTable />
-
-
-# Pagination
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Default Active [#default-active]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="DefaultActiveExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
-
-### With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="WithLimitExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
-
-### onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="OnChangeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
 
 <PropTable />
 
@@ -2638,6 +2488,79 @@ Use `showCloseButton` to show a close button in the popover header. Use the `hea
 ## Best Practices [#best-practices]
 
 Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Pagination
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Default Active [#default-active]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="DefaultActiveExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+
+### With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="WithLimitExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+
+### onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="OnChangeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -2831,6 +2754,83 @@ The `ProgressSteps` component has the following props:
 <PropTable />
 
 The `ProgressStep` component has the following props:
+
+<PropTable />
+
+
+# MetricsLockup
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<MetricsLockupProps> = {}) {\n  return (\n    <MetricsLockup\n      title=\&#x22;Total Revenue\&#x22;\n      titleInfo=\&#x22;The total revenue across all products for the selected period.\&#x22;\n      data=\&#x22;$1,234.56\&#x22;\n      description=\&#x22;vs. last month\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="WithTrendExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function WithTrendExample() {\n  return <MetricsLockup title=\&#x22;Conversion Rate\&#x22; data=\&#x22;42%\&#x22; description=\&#x22;+3.2% vs. last month\&#x22; trend=\&#x22;positive\&#x22; />;\n}&#x22;" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="CompactExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function CompactExample() {\n  return <MetricsLockup title=\&#x22;Sessions\&#x22; data=\&#x22;8,021\&#x22; description=\&#x22;-12% vs. last week\&#x22; trend=\&#x22;negative\&#x22; compact />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+## Props [#props]
 
 <PropTable />
 
@@ -3826,9 +3826,9 @@ Overflow controls follow the logical reading direction.
 
 Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
 
-`overflowLabels.previous` and `overflowLabels.next` are required because the overflow controls are interactive and must be announced with localized action labels.
+`overflowLabels.previous` and `overflowLabels.next` are required because the overflow controls are interactive and must be announced with localized action labels. These labels should describe the logical direction (e.g., "Previous tabs" and "Next tabs") rather than physical directions like "left" or "right", as the component automatically handles RTL layouts.
 
-`TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Each `Tab` must have an `id` that matches its associated `TabPanel`.
+`TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Give each `Tab` and its corresponding `TabPanel` the same `id`; React Aria uses that key to build their accessible relationship.
 
 ## Customization [#customization]
 
@@ -3838,7 +3838,7 @@ The component exposes state through data attributes:
 * `Tab`: `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
 * `TabPanel`: `data-inert` when a force-mounted inactive panel is not interactive.
 
-Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components.
+Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components. You can also use render props in `className` to style based on state (e.g., `className={({ isSelected }) => isSelected ? 'active' : ''}`).
 
 ## Best Practices [#best-practices]
 
@@ -4942,6 +4942,16 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 
 
 
+
+
+
+
+
+
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Installation [#installation]
@@ -5143,6 +5153,56 @@ The chart follows the current layout direction, normally detected from the brows
 <Story of="RTLExample" />
 
 <Source language="tsx" code="&#x22;import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\nimport { CityTemperatureExample } from './city-temperature.tsx';\nimport type { LineChartProps } from '@godaddy/antares';\n\nexport function RTLExample(props: Partial<LineChartProps>) {\n  return (\n    <RTLProvider>\n      <CityTemperatureExample {...props} />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Color Index [#color-index]
+
+`colorIndex` pins each series to a palette color. Any series can use any index,
+independently — here two pairs each share an index so an actual line and its
+dashed forecast read as the same color, distinguished only by line style.
+
+<Story of="ColorIndexExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { LineChart, type LineChartProps } from '@godaddy/antares';\n\nexport function ColorIndexExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toPoints('New York', 1.08)\n    },\n    { id: 'sf', name: 'San Francisco', colorIndex: 1, data: toPoints('San Francisco') },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toPoints('San Francisco', 1.08)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Color index example chart\&#x22;\n      desc=\&#x22;Line chart where paired series share a palette color via colorIndex, distinguished by solid and dashed line styles\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip [#custom-tooltip]
+
+`renderTooltip` lets you render a fully custom tooltip and know which curve is
+hovered. Paired series share a `colorIndex`; hovering either line shows a
+tooltip specific to that line, wrapped in the default styled popover.
+
+<Story of="CustomTooltipExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { Box, Flex, LineChart, type LineChartProps, type LineChartTooltipRenderProps, Text } from '@godaddy/antares';\n\n/**\n * Renders a tooltip for the single hovered curve. `renderTooltip` receives\n * `hoveredSeriesId` (the series nearest the cursor) so the tooltip can show\n * information specific to that line instead of every series at once.\n */\nfunction renderHoveredTooltip({ hoveredSeriesId, hoveredDatum, series }: LineChartTooltipRenderProps) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered || !hoveredDatum) {\n    return null;\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Box\n          rounding=\&#x22;full\&#x22;\n          style={{\n            width: 10,\n            height: 10,\n            backgroundColor: hovered._resolvedColor\n          }}\n        />\n        <Text>{hovered.name}</Text>\n      </Flex>\n      <Text>{`${(hoveredDatum.y as number).toFixed(1)}°F`}</Text>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({\n        x: new Date(d.date),\n        y: parseFloat(d[city] as string) * scale\n      }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toPoints('New York', 1.08)\n    },\n    {\n      id: 'sf',\n      name: 'San Francisco',\n      colorIndex: 1,\n      data: toPoints('San Francisco')\n    },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toPoints('San Francisco', 1.08)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Custom tooltip example chart\&#x22;\n      desc=\&#x22;Line chart with a custom tooltip that shows information specific to the hovered curve\&#x22;\n      renderTooltip={renderHoveredTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip Pair Change [#custom-tooltip-pair-change]
+
+`renderTooltip` example combining a pair of series. Each pair shares a `colorIndex`
+(solid actual + dashed forecast); hovering either line shows the percent change of
+the forecast against the actual for that pair, wrapped in the default styled popover.
+
+<Story of="CustomTooltipPairChangeExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { Box, Flex, LineChart, type LineChartProps, type LineChartTooltipRenderProps, Text } from '@godaddy/antares';\n\n/**\n * Two pairs of lines, each a solid \&#x22;actual\&#x22; curve plus its dashed \&#x22;forecast\&#x22; partner\n * (the two share a `colorIndex`). Hovering any line resolves the pair it belongs to and\n * shows both values plus the percent change of the forecast relative to the actual —\n * demonstrating that `renderTooltip` can combine multiple series, not just the hovered one.\n */\nfunction renderPairChangeTooltip({ hoveredSeriesId, datumByKey, series }: LineChartTooltipRenderProps) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered) {\n    return null;\n  }\n\n  // Both lines in a pair share a color; split them into the solid actual and dashed forecast.\n  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);\n  const actual = pair.find((oneSeries) => oneSeries.variant !== 'dashed');\n  const forecast = pair.find((oneSeries) => oneSeries.variant === 'dashed');\n  if (!actual || !forecast) {\n    return null;\n  }\n\n  const actualY = datumByKey[actual.id]?.y as number | undefined;\n  const forecastY = datumByKey[forecast.id]?.y as number | undefined;\n  if (actualY == null || forecastY == null) {\n    return null;\n  }\n\n  const change = ((forecastY - actualY) / actualY) * 100;\n  const sign = change >= 0 ? '+' : '';\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Box\n          rounding=\&#x22;full\&#x22;\n          style={{\n            width: 10,\n            height: 10,\n            backgroundColor: actual._resolvedColor\n          }}\n        />\n        <Text>{actual.name}</Text>\n      </Flex>\n      <Text>{`Actual: ${actualY.toFixed(1)}°F`}</Text>\n      <Text>{`Forecast: ${forecastY.toFixed(1)}°F`}</Text>\n      <Text>{`Forecast vs actual: ${sign}${change.toFixed(1)}%`}</Text>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipPairChangeExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number]) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  // Forecast wobbles deterministically above and below the actual (±~15%) so the\n  // percent change varies per point and goes negative where the forecast undershoots.\n  const toForecast = (city: keyof (typeof cityTemperature)[number], phase = 0) =>\n    rows\n      .map((d, i) => ({\n        x: new Date(d.date),\n        y: parseFloat(d[city] as string) * (1 + 0.15 * Math.sin(i + phase))\n      }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toForecast('New York')\n    },\n    {\n      id: 'sf',\n      name: 'San Francisco',\n      colorIndex: 1,\n      data: toPoints('San Francisco')\n    },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toForecast('San Francisco', 2)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Pair percent-change tooltip example chart\&#x22;\n      desc=\&#x22;Line chart whose tooltip shows the forecast-vs-actual percent change for the hovered pair\&#x22;\n      renderTooltip={renderPairChangeTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip Period Comparison [#custom-tooltip-period-comparison]
+
+`renderTooltip` example styled as a period-over-period comparison card. Paired series
+(solid current period + dashed previous period) share a `colorIndex`; hovering either
+line shows both dated values and the percent change, wrapped in the default popover.
+
+<Story of="CustomTooltipPeriodComparisonExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Box,\n  type DataPoint,\n  Flex,\n  LineChart,\n  type LineChartProps,\n  type LineChartTooltipRenderProps,\n  type LineSeriesConfig,\n  Text\n} from '@godaddy/antares';\n\nconst CURRENT_YEAR = 2026;\nconst POINTS = 12;\n\nconst formatDate = (d: Date) =>\n  d.toLocaleDateString('en-US', {\n    month: 'short',\n    day: 'numeric',\n    year: 'numeric'\n  });\nconst formatMoney = (v: number) => `$${v.toFixed(2)}`;\n\n/**\n * Series shape extended with custom tooltipMetadata. The type of tooltipMetadata is inferred\n * from this type in the tooltip render function so no cast is needed at the call site.\n */\ninterface ChannelSeries extends LineSeriesConfig {\n  /** Which period this line represents; used to pair current vs previous. */\n  tooltipMetadata: { period: 'current' | 'previous' };\n}\n\n/**\n * Period-over-period tooltip. Each channel is a pair sharing a `colorIndex`: a solid\n * \&#x22;current period\&#x22; line and its dashed \&#x22;previous period\&#x22; partner. Hovering either line\n * shows the channel name, both dated values, and the percent change vs the previous period —\n * mirroring a typical analytics comparison card, built entirely from the `renderTooltip` prop.\n */\nfunction renderPeriodTooltip({\n  hoveredSeriesId,\n  datumByKey,\n  series\n}: LineChartTooltipRenderProps<DataPoint, LineSeriesConfig<DataPoint, { period: 'current' | 'previous' }>>) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered) {\n    return null;\n  }\n\n  // Pair by colorIndex, then split by the custom `period` key (typed, no cast needed).\n  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);\n  const current = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');\n  const previous = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');\n  if (!current || !previous) {\n    return null;\n  }\n\n  const currentDatum = datumByKey[current.id];\n  const previousDatum = datumByKey[previous.id];\n  if (!currentDatum || !previousDatum) {\n    return null;\n  }\n\n  const currentValue = currentDatum.y as number;\n  const previousValue = previousDatum.y as number;\n  const currentDate = currentDatum.x as Date;\n  // Both series plot on current-period dates so they overlay; the previous row is labelled one year back.\n  const previousDate = new Date(currentDate);\n  previousDate.setFullYear(currentDate.getFullYear() - 1);\n\n  const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;\n  const isUp = change >= 0;\n  const color = current._resolvedColor;\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ minWidth: 260 }}>\n      <Text style={{ fontSize: 18 }}>{current.name}</Text>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color }} />\n            <Text>{formatDate(currentDate)}</Text>\n          </Flex>\n          <Text>{formatMoney(currentValue)}</Text>\n        </Flex>\n\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box\n              rounding=\&#x22;full\&#x22;\n              style={{\n                width: 12,\n                height: 12,\n                border: `2px solid ${color}`,\n                boxSizing: 'border-box'\n              }}\n            />\n            <Text>{formatDate(previousDate)}</Text>\n          </Flex>\n          <Text>{formatMoney(previousValue)}</Text>\n        </Flex>\n      </Flex>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>\n        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(2)}%`}</Text>\n        <Text style={{ color: '#868e96' }}>compared to previous period</Text>\n      </Flex>\n    </Flex>\n  );\n}\n\n/** Builds a deterministic weekly series in the hundreds-of-dollars range. */\nfunction buildSeries(base: number, amplitude: number, phase: number) {\n  return Array.from({ length: POINTS }, (_, i) => ({\n    x: new Date(CURRENT_YEAR, 0, 2 + i * 7),\n    y: base + amplitude * Math.sin(i * 0.6 + phase)\n  }));\n}\n\nexport function CustomTooltipPeriodComparisonExample(props: Partial<LineChartProps<DataPoint, ChannelSeries>>) {\n  const series: ChannelSeries[] = [\n    {\n      id: 'online',\n      name: 'Online Store',\n      colorIndex: 0,\n      tooltipMetadata: { period: 'current' },\n      data: buildSeries(680, 90, 0)\n    },\n    {\n      id: 'online-prev',\n      name: 'Online Store (previous)',\n      colorIndex: 0,\n      tooltipMetadata: { period: 'previous' },\n      variant: 'dashed',\n      data: buildSeries(700, 80, 1.2)\n    },\n    {\n      id: 'retail',\n      name: 'Retail',\n      colorIndex: 1,\n      tooltipMetadata: { period: 'current' },\n      data: buildSeries(430, 70, 0.5)\n    },\n    {\n      id: 'retail-prev',\n      name: 'Retail (previous)',\n      colorIndex: 1,\n      tooltipMetadata: { period: 'previous' },\n      variant: 'dashed',\n      data: buildSeries(410, 60, 1.8)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Period-over-period comparison tooltip example chart\&#x22;\n      desc=\&#x22;Line chart whose tooltip compares the hovered channel's current and previous period values\&#x22;\n      renderTooltip={renderPeriodTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Line Styles [#line-styles]
+
+`variant` sets each series' line style — 'solid' (default), 'dashed', or
+'dotted' — useful for distinguishing actuals from forecasts or targets. The
+legend swatch mirrors each line's style.
+
+<Story of="LineStylesExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { LineChart, type LineChartProps } from '@godaddy/antares';\n\nexport function LineStylesExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'actual', name: 'Actual', data: toPoints('New York') },\n    { id: 'forecast', name: 'Forecast', variant: 'dashed' as const, data: toPoints('New York', 1.08) },\n    { id: 'target', name: 'Target', variant: 'dotted' as const, data: toPoints('New York', 0.92) }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Line styles example chart\&#x22;\n      desc=\&#x22;Line chart demonstrating solid, dashed, and dotted line styles via the variant prop\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Customization [#customization]
 
