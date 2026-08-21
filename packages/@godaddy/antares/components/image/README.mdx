@@ -1,0 +1,34 @@
+---
+title: Image
+description: A native image element that inherits presentation and behavior from its Antares parent.
+---
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './image.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Renders a native `<img>` and accepts all of its attributes
+- Inherits presentation and behavior when composed inside Antares components such as Avatar
+- Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Accessibility
+
+- Provide concise, meaningful `alt` text when the image conveys information.
+- Use `alt=""` for decorative images or images already described by adjacent text.
+- Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props
+
+<ArgTypes of={Stories.Props} />

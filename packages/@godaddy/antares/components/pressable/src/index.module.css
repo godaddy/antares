@@ -1,0 +1,24 @@
+.pressable {
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+  transition: outline-color 0.15s ease-in-out;
+
+  &:where([data-hovered]:not([data-disabled])) {
+    outline-color: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
+  }
+
+  &:where([data-pressed]:not([data-disabled])),
+  &:where([aria-expanded="true"]:not([data-disabled])) {
+    outline-color: var(--ux-t61743, #1bdbdb);
+  }
+
+  &:where([data-focus-visible]:not([data-disabled])) {
+    outline-color: Highlight;
+  }
+
+  &:where([data-disabled]) {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
