@@ -1,5 +1,4 @@
 import { createContext, useContext } from 'react';
-import { cx } from 'cva';
 import {
   Tab as RACTab,
   TabList as RACTabList,
@@ -14,6 +13,7 @@ import {
   type TabsProps as RACTabsProps
 } from 'react-aria-components';
 import { Button } from '#components/button';
+import { Box } from '#components/layout/box';
 import { Icon } from '#components/icon';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '../../../utils/render-props.ts';
@@ -21,10 +21,10 @@ import styles from './index.module.css';
 import { useTabsOverflow } from './use-tabs-overflow.ts';
 
 /** Visual designs supported by the Tabs component. */
-type TabsDesign = 'underline' | 'manilla';
+export type TabsDesign = 'underline' | 'manilla';
 
 /** Accessible labels used by the tab overflow controls. */
-interface TabsOverflowLabels {
+export interface TabsOverflowLabels {
   /** Accessible label for the control that reveals previous tabs. */
   previous: string;
   /** Accessible label for the control that reveals next tabs. */
@@ -79,12 +79,12 @@ export function TabList<T>(props: TabListProps<T>) {
   });
 
   return (
-    <div ref={shellRef} className={styles.listShell} dir={direction}>
-      <div ref={viewportRef} className={styles.viewport}>
+    <Flex ref={shellRef} className={styles.listShell} dir={direction}>
+      <Box ref={viewportRef} className={styles.viewport}>
         <RACTabList ref={contentRef} {...rest} className={composeClassName(className, styles.list)} />
-      </div>
+      </Box>
       {state.hasOverflow ? (
-        <Flex className={styles.controls}>
+        <Flex className={styles.controls} flex="0 0 auto" alignItems="center" alignSelf="stretch">
           <Button
             className={styles.control}
             aria-label={overflowLabels.previous}
@@ -107,7 +107,7 @@ export function TabList<T>(props: TabListProps<T>) {
           </Button>
         </Flex>
       ) : null}
-    </div>
+    </Flex>
   );
 }
 
@@ -172,7 +172,7 @@ export function Tab(props: TabProps) {
  */
 export function TabPanels<T>(props: TabPanelsProps<T>) {
   const { className, ...rest } = props;
-  return <RACTabPanels {...rest} className={cx(styles.panels, className)} />;
+  return <RACTabPanels {...rest} className={composeClassName(className, styles.panels) as string} />;
 }
 
 /**

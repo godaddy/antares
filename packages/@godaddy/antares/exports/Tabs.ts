@@ -8,5 +8,7 @@ export {
   type TabPanelProps,
   type TabPanelsProps,
   type TabProps,
-  type TabsProps
+  type TabsProps,
+  type TabsDesign,
+  type TabsOverflowLabels
 } from '#components/tabs';

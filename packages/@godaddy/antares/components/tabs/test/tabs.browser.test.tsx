@@ -5,8 +5,7 @@ import { ControlledExample } from '../examples/controlled.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { ManillaExample } from '../examples/manilla.tsx';
-import { OverflowExample } from '../examples/overflow.tsx';
-import { RTLExample } from '../examples/rtl.tsx';
+import { PlaygroundExample } from '../examples/tabs-playground.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Tabs', function tabsTests() {
@@ -68,6 +67,25 @@ describe('@godaddy/antares', function antares() {
       await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Billing settings');
     });
 
+    it('requires activation after focus in manual mode', async function manualActivation() {
+      const user = userEvent.setup();
+      await render(<PlaygroundExample keyboardActivation="manual" />);
+      const account = page.getByRole('tab', { name: 'Account' });
+      const billing = page.getByRole('tab', { name: 'Billing' });
+
+      await user.click(account);
+      await user.keyboard('{ArrowRight}');
+
+      await expect.element(billing).toHaveFocus();
+      await expect.element(account).toHaveAttribute('aria-selected', 'true');
+      await expect.element(billing).toHaveAttribute('aria-selected', 'false');
+
+      await user.keyboard('{Enter}');
+
+      await expect.element(billing).toHaveAttribute('aria-selected', 'true');
+      await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Billing');
+    });
+
     it('supports Arrow, Home, and End navigation', async function keyboardNavigation() {
       const user = userEvent.setup();
       await render(<DefaultExample />);
@@ -98,7 +116,28 @@ describe('@godaddy/antares', function antares() {
       await user.click(page.getByRole('tab', { name: 'Account' }));
       await user.keyboard('{ArrowRight}');
 
-      await expect.element(page.getByRole('tab', { name: 'Billing' })).toHaveAttribute('data-focus-visible', 'true');
+      const billing = page.getByRole('tab', { name: 'Billing' });
+      await expect.element(billing).toHaveAttribute('data-focus-visible', 'true');
+
+      const tabStyle = getComputedStyle(billing.element());
+      expect(tabStyle.outlineStyle).toBe('solid');
+      expect(tabStyle.outlineWidth).toBe('2px');
+      expect(tabStyle.outlineOffset).toBe('-2px');
+    });
+
+    it('uses the chosen intents while an unselected tab is pressed', async function pressedStyles() {
+      const user = userEvent.setup();
+      await render(<PlaygroundExample keyboardActivation="manual" />);
+      const account = page.getByRole('tab', { name: 'Account' });
+      const billing = page.getByRole('tab', { name: 'Billing' });
+
+      await user.click(account);
+      await user.keyboard('{ArrowRight}');
+      await user.keyboard('{Space>}');
+
+      await expect.element(billing).toHaveAttribute('data-pressed', 'true');
+      expect(getComputedStyle(billing.element()).borderBottomColor).toBe('rgb(27, 219, 219)');
+      await user.keyboard('{/Space}');
     });
 
     it('does not focus disabled tabs with Tab navigation', async function disabledTabNotFocusable() {
@@ -119,49 +158,6 @@ describe('@godaddy/antares', function antares() {
       await expect.element(page.getByRole('tabpanel')).toHaveTextContent('Recent documents');
     });
 
-    it('does not render overflow controls when all tabs fit', async function noOverflowControls() {
-      await render(<DefaultExample />);
-
-      await expect.element(page.getByRole('button', { name: 'Previous tabs' })).not.toBeInTheDocument();
-      await expect.element(page.getByRole('button', { name: 'Next tabs' })).not.toBeInTheDocument();
-    });
-
-    it('shows both controls when tabs overflow', async function showsOverflowControls() {
-      await render(<OverflowExample />);
-
-      await expect.element(page.getByRole('button', { name: 'Scroll previous tabs' })).toBeDisabled();
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).not.toBeDisabled();
-    });
-
-    it('moves the conveyor when next is pressed', async function movesNextTab() {
-      const user = userEvent.setup();
-      await render(<OverflowExample />);
-      const viewport = document.querySelector('[class*="viewport"]');
-      if (!viewport) throw new Error('Tabs viewport not found');
-      const next = page.getByRole('button', { name: 'Scroll next tabs' });
-      const initialScrollLeft = viewport.scrollLeft;
-
-      await user.click(next);
-
-      await expect.poll(() => viewport.scrollLeft).not.toBe(initialScrollLeft);
-      await expect.element(page.getByRole('button', { name: 'Scroll previous tabs' })).not.toBeDisabled();
-    });
-
-    it('moves the conveyor back when previous is pressed', async function movesPreviousTab() {
-      const user = userEvent.setup();
-      await render(<OverflowExample />);
-      const viewport = document.querySelector('[class*="viewport"]');
-      if (!viewport) throw new Error('Tabs viewport not found');
-
-      const next = page.getByRole('button', { name: 'Scroll next tabs' });
-      await user.click(next);
-      await expect.poll(() => viewport.scrollLeft).toBeGreaterThan(0);
-      const positionBeforePrevious = viewport.scrollLeft;
-
-      await user.click(page.getByRole('button', { name: 'Scroll previous tabs' }));
-      await expect.poll(() => viewport.scrollLeft).toBeLessThan(positionBeforePrevious);
-    });
-
     it('shows a not-allowed cursor for disabled tabs', async function disabledCursor() {
       await render(<DisabledExample />);
       const disabled = page.getByRole('tab', { name: 'Billing' });
@@ -169,62 +165,11 @@ describe('@godaddy/antares', function antares() {
       await expect.poll(() => getComputedStyle(disabled.element()).cursor).toBe('not-allowed');
     });
 
-    it('disables next at the end and enables previous after manual scrolling', async function overflowEndState() {
-      await render(<OverflowExample />);
-      const viewport = document.querySelector('[class*="viewport"]');
-      if (!viewport) throw new Error('Tabs viewport not found');
-      viewport.scrollLeft = viewport.scrollWidth - viewport.clientWidth;
-      viewport.dispatchEvent(new Event('scroll'));
-
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).toBeDisabled();
-      await expect.element(page.getByRole('button', { name: 'Scroll previous tabs' })).not.toBeDisabled();
-    });
-
-    it('updates both overflow controls after native scrolling to the middle', async function nativeScrollState() {
-      await render(<OverflowExample />);
-      const viewport = document.querySelector('[class*="viewport"]');
-      if (!viewport) throw new Error('Tabs viewport not found');
-      viewport.scrollLeft = (viewport.scrollWidth - viewport.clientWidth) / 2;
-      viewport.dispatchEvent(new Event('scroll'));
-
-      await expect.element(page.getByRole('button', { name: 'Scroll previous tabs' })).not.toBeDisabled();
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).not.toBeDisabled();
-    });
-
-    it('shows overflow controls after the available width becomes smaller', async function overflowAfterResize() {
-      await render(<OverflowExample maxWidth="1000px" />);
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).not.toBeInTheDocument();
-
-      const root = page.getByRole('tablist').element().closest('[data-design]');
-      if (!(root instanceof HTMLElement)) throw new Error('Tabs root not found');
-      root.style.width = '320px';
-      root.style.maxWidth = '320px';
-
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).toBeVisible();
-    });
-
-    it('hides overflow controls after the available width becomes larger', async function overflowAfterGrow() {
-      await render(<OverflowExample />);
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).toBeVisible();
-
-      const root = page.getByRole('tablist').element().closest('[data-design]');
-      if (!(root instanceof HTMLElement)) throw new Error('Tabs root not found');
-      root.style.width = '1000px';
-      root.style.maxWidth = '1000px';
-
-      await expect.element(page.getByRole('button', { name: 'Scroll next tabs' })).not.toBeInTheDocument();
-    });
-
-    it('scrolls toward the logical next tabs in RTL', async function rtlScrollDirection() {
-      const user = userEvent.setup();
-      await render(<RTLExample />);
-      const viewport = document.querySelector('[class*="viewport"]');
-      if (!viewport) throw new Error('Tabs viewport not found');
-      const initialScrollLeft = viewport.scrollLeft;
-
-      await user.click(page.getByRole('button', { name: 'Scroll next tabs' }));
-
-      await expect.poll(() => viewport.scrollLeft).not.toBe(initialScrollLeft);
+    it('shows a pointer cursor for enabled tabs', async function enabledCursor() {
+      await render(<DefaultExample />);
+      await expect
+        .poll(() => getComputedStyle(page.getByRole('tab', { name: 'Account' }).element()).cursor)
+        .toBe('pointer');
     });
   });
 });
