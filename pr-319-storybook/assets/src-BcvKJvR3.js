@@ -1,0 +1,1 @@
+import{i as e,s as t}from"./preload-helper-BW7zdJA0.js";import{st as n}from"./iframe-CACXJ_Lt.js";function r(e){let t=typeof e==`function`,n=t&&(e.prototype?.isReactComponent||e.prototype?.render),r=t&&!n&&e.length!==1;return Number.parseInt(`19.2.8`.split(`.`)[0],10)<19&&r?(0,i.forwardRef)(e):e}var i,a=e((()=>{i=t(n(),1)}));export{r as n,a as t};
