@@ -1,8 +1,8 @@
 import { AxisTitle } from '#components/chart/_internal/axis-title';
 import { TooltipDismissStrip } from '#components/chart/_internal/tooltip-dismiss-strip';
 import { Legend } from '#components/chart/_internal/legend';
-import { Tooltip as ChartTooltip } from '#components/chart/_internal/tooltip';
-import { CHART_LEGACY_SERIES_COLORS } from '#components/chart/_internal/use-chart-color';
+import { Tooltip as ChartTooltip, TooltipContainer } from '#components/chart/_internal/tooltip';
+import { CHART_LEGACY_SERIES_COLORS, chartColorForIndex } from '#components/chart/_internal/use-chart-color';
 import { Box } from '#components/layout/box';
 import { Flex } from '#components/layout/flex';
 import {
@@ -16,12 +16,15 @@ import {
   buildChartTheme
 } from '@visx/xychart';
 import { cx } from 'cva';
-import { useCallback, useMemo } from 'react';
+import { type ReactNode, useCallback, useMemo } from 'react';
 import { useLocale } from 'react-aria-components';
 import type {
   AccessorRequirement,
   DataPoint,
+  InternalSeriesConfig,
   LegendPosition,
+  LineSeriesConfig,
+  LineSeriesVariant,
   Optional,
   SeriesConfig,
   XLabelsOrientation
@@ -41,6 +44,40 @@ import styles from './index.module.css';
 type LineChartScaleType = 'linear' | 'time' | 'band' | 'log' | 'sqrt' | 'pow';
 
 /**
+ * SVG stroke-dasharray patterns per line variant. `undefined` for 'solid' leaves
+ * the stroke continuous. The rendered path uses strokeLinecap="round" (set by
+ * visx), so the 'dotted' pattern reads as round dots.
+ */
+const VARIANT_DASH_ARRAY: Record<LineSeriesVariant, string | undefined> = {
+  solid: undefined,
+  dashed: '8 6',
+  dotted: '2 6'
+};
+
+/**
+ * Data passed to a custom {@link LineChartPropsBase.renderTooltip} function.
+ *
+ * @public
+ */
+export interface LineChartTooltipRenderProps<
+  T extends object = DataPoint,
+  S extends Optional<InternalSeriesConfig<T>, 'id'> = Optional<InternalSeriesConfig<T>, 'id'>
+> {
+  /** id of the series/curve nearest the cursor; undefined when none is hovered. */
+  hoveredSeriesId?: string;
+  /** The data point on the hovered curve nearest the cursor. */
+  hoveredDatum?: T;
+  /**
+   * Nearest datum for each series at the current X position, keyed by series id.
+   */
+  datumByKey: Partial<Record<string, T>>;
+  /**
+   * Resolved series in render order.
+   */
+  series: (InternalSeriesConfig<T, S['tooltipMetadata']> & { id: string })[];
+}
+
+/**
  * Base props for the LineChart component (without accessors).
  *
  * Exported so the public `LineChartProps` alias can reference it by name in
@@ -48,11 +85,17 @@ type LineChartScaleType = 'linear' | 'time' | 'band' | 'log' | 'sqrt' | 'pow';
  * import `LineChartProps` instead.
  *
  * @template T - The data point type. Defaults to DataPoint.
+ * @template S - The series-config shape. Inferred from `series`; defaults to LineSeriesConfig<T>.
  * @public
  */
-export interface LineChartPropsBase<T extends object = DataPoint> {
-  /** Data series (id optional; stable id generated when omitted) */
-  series: Optional<SeriesConfig<T>, 'id'>[];
+export interface LineChartPropsBase<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+> {
+  /**
+   * Data series (id optional; stable id generated when omitted)
+   */
+  series: S[];
 
   /** X-axis title */
   xTitle?: string;
@@ -212,6 +255,12 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
    * @default Y as string
    */
   tooltipValueFormatter?: (datum: T) => string;
+  /**
+   * Render a custom tooltip. Receives the hovered series id and datum (the curve
+   * nearest the cursor), every series' datum at the current X, and the resolved
+   * series list — see {@link LineChartTooltipRenderProps}.
+   */
+  renderTooltip?: (props: LineChartTooltipRenderProps<T, S>) => ReactNode;
 
   /** Outer container width (omitted = 100%) */
   width?: number;
@@ -226,7 +275,10 @@ export interface LineChartPropsBase<T extends object = DataPoint> {
 }
 
 /** LineChart props. Custom T requires xAccessor and yAccessor. */
-export type LineChartProps<T extends object = DataPoint> = LineChartPropsBase<T> & AccessorRequirement<T>;
+export type LineChartProps<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+> = LineChartPropsBase<T, S> & AccessorRequirement<T>;
 
 /**
  * Line chart for time-series or categorical data with optional responsive horizontal scroll.
@@ -253,7 +305,10 @@ export type LineChartProps<T extends object = DataPoint> = LineChartPropsBase<T>
  * />
  * ```
  */
-export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>) {
+export function LineChart<
+  T extends object = DataPoint,
+  S extends Optional<LineSeriesConfig<T>, 'id'> = Optional<LineSeriesConfig<T>, 'id'>
+>(props: LineChartProps<T, S>) {
   const {
     // Series and accessors
     series: seriesProp,
@@ -296,6 +351,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     showCrosshair = true,
     showDataPoints = true,
     tooltipValueFormatter,
+    renderTooltip: renderTooltipContent,
     legendPosition,
 
     // Layout and aria
@@ -310,6 +366,27 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
   const { direction } = useLocale();
   const isRtl = direction === 'rtl';
   const series = useNormalizedSeries(seriesProp);
+  const seriesColors = useMemo(
+    function getSeriesColors() {
+      return series.map(function resolveColor(oneSeries, index) {
+        const { colorIndex } = oneSeries;
+        const paletteIndex =
+          typeof colorIndex === 'number' && Number.isInteger(colorIndex) && colorIndex >= 0 ? colorIndex : index;
+        return chartColorForIndex(paletteIndex);
+      });
+    },
+    [series]
+  );
+  // Series annotated with their resolved color, for the legend and tooltip swatches.
+  const seriesWithColor = useMemo(
+    function getSeriesWithColor() {
+      return series.map(function attachColor(oneSeries, index) {
+        return { ...oneSeries, _resolvedColor: seriesColors[index] };
+      });
+    },
+    [series, seriesColors]
+  );
+
   const showInteractiveFeatures = showTooltip || showCrosshair || showDataPoints;
   const effectiveLegendPosition = resolveLegendPosition(legendPosition, series.length);
   // See @remarks: custom T requires accessors; assertion satisfies visx LineSeries typings
@@ -323,16 +400,37 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
         return <></>;
       }
 
+      if (renderTooltipContent) {
+        const { tooltipData } = params;
+        const datumByKey = Object.fromEntries(
+          Object.entries(tooltipData?.datumByKey ?? {}).map(function toDatum([key, entry]) {
+            return [key, entry.datum];
+          })
+        );
+        const content = renderTooltipContent({
+          hoveredSeriesId: tooltipData?.nearestDatum?.key,
+          hoveredDatum: tooltipData?.nearestDatum?.datum,
+          datumByKey,
+          series: seriesWithColor
+        });
+        // A consumer returning nothing should render no popover at all — otherwise the empty
+        // styled container floats at the cursor.
+        if (content === null || content === undefined || typeof content === 'boolean') {
+          return null;
+        }
+        return <TooltipContainer>{content}</TooltipContainer>;
+      }
+
       // Narrow to DataPoint overload; Tooltip overloads can't resolve generic T
       return (
         <ChartTooltip
           tooltipData={params.tooltipData as TooltipData<DataPoint> | undefined}
-          series={series as SeriesConfig<DataPoint>[]}
+          series={seriesWithColor as SeriesConfig<DataPoint>[]}
           formatValue={tooltipValueFormatter as ((datum: DataPoint) => string) | undefined}
         />
       );
     },
-    [series, tooltipValueFormatter, showTooltip]
+    [seriesWithColor, tooltipValueFormatter, renderTooltipContent, showTooltip]
   );
 
   const xScaleConfig = useMemo(
@@ -368,7 +466,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
 
   const seriesElements = useMemo(
     function getSeriesElements() {
-      return series.map(function addSeries(oneSeries: SeriesConfig<T>) {
+      return series.map(function addSeries(oneSeries: LineSeriesConfig<T>) {
         return (
           <VisxLineSeries
             key={oneSeries.id}
@@ -376,6 +474,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
             data={oneSeries.data}
             dataKey={oneSeries.id}
             id={`line-series-${oneSeries.id}`}
+            strokeDasharray={VARIANT_DASH_ARRAY[oneSeries.variant ?? 'solid']}
             xAccessor={typedXAccessor}
             yAccessor={typedYAccessor}
           />
@@ -390,15 +489,18 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
     ['--chart-height' as string]: height !== undefined ? `${height}px` : undefined
   };
 
-  const xyChartTheme = useMemo(function buildXyChartTheme() {
-    return buildChartTheme({
-      backgroundColor: '',
-      colors: [...CHART_LEGACY_SERIES_COLORS],
-      tickLength: 8,
-      gridColor: '',
-      gridColorDark: ''
-    });
-  }, []);
+  const xyChartTheme = useMemo(
+    function buildXyChartTheme() {
+      return buildChartTheme({
+        backgroundColor: '',
+        colors: seriesColors.length > 0 ? seriesColors : [...CHART_LEGACY_SERIES_COLORS],
+        tickLength: 8,
+        gridColor: '',
+        gridColorDark: ''
+      });
+    },
+    [seriesColors]
+  );
 
   // Pin Y-axis chrome to the inline-start edge (visual left in LTR, visual right in RTL) and shift
   // it by `scrollLeft` so it stays in view as the chart scrolls horizontally.
@@ -510,7 +612,7 @@ export function LineChart<T extends object = DataPoint>(props: LineChartProps<T>
           )}
         </Box>
         {xTitle && <AxisTitle title={xTitle} axis="x" />}
-        {effectiveLegendPosition && <Legend series={series} className={styles.legend} alignSelf="center" />}
+        {effectiveLegendPosition && <Legend series={seriesWithColor} className={styles.legend} alignSelf="center" />}
       </Flex>
     </Flex>
   );

@@ -12,13 +12,18 @@ import { CityTemperatureExample } from '../examples/city-temperature';
 import { CrosshairOnlyExample } from '../examples/crosshair-only';
 import { CustomAccessorsExample } from '../examples/custom-accessors';
 import { CustomTicksExample } from '../examples/custom-ticks';
+import { CustomTooltipExample } from '../examples/custom-tooltip';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';
+import { CustomTooltipPairChangeExample } from '../examples/custom-tooltip-pair-change';
+import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison';
 import { FixedDomainExample } from '../examples/fixed-domain';
 import { FixedSizeExample } from '../examples/fixed-size';
 import { FormattingExample } from '../examples/formatting';
 import { GridlinesExample } from '../examples/gridlines';
 import { LabelsExample } from '../examples/labels';
 import { LegendExample } from '../examples/legend';
+import { ColorIndexExample } from '../examples/color-index';
+import { LineStylesExample } from '../examples/line-styles';
 import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
 import { NiceValuesExample } from '../examples/nice-values';
@@ -113,6 +118,20 @@ describe('@godaddy/antares', function antares() {
         await expect(container).toMatchScreenshot('legend');
       });
 
+      it('line-styles screenshot', async function lineStyles() {
+        const { container } = await renderExampleAndWait(<LineStylesExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('line-styles');
+      });
+
+      it('color-index screenshot', async function colorIndex() {
+        const { container } = await renderExampleAndWait(<ColorIndexExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await expect(container).toMatchScreenshot('color-index');
+      });
+
       it('formatting screenshot', async function formatting() {
         const { container, locator } = await renderExampleAndWait(<FormattingExample />);
 
@@ -181,6 +200,30 @@ describe('@godaddy/antares', function antares() {
         assume(container.querySelector('svg')).exists();
         await locator.hover({ position: { x: 400, y: 200 } });
         await expect(container).toMatchScreenshot('custom-tooltip-formatting');
+      });
+
+      it('custom-tooltip screenshot', async function customTooltip() {
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await expect(container).toMatchScreenshot('custom-tooltip');
+      });
+
+      it('custom-tooltip-pair-change screenshot', async function customTooltipPairChange() {
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipPairChangeExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await expect(container).toMatchScreenshot('custom-tooltip-pair-change');
+      });
+
+      it('custom-tooltip-period-comparison screenshot', async function customTooltipPeriodComparison() {
+        const { container, locator } = await renderExampleAndWait(<CustomTooltipPeriodComparisonExample />);
+
+        assume(container.querySelector('svg')).exists();
+        await locator.hover({ position: { x: 400, y: 200 } });
+        await expect(container).toMatchScreenshot('custom-tooltip-period-comparison');
       });
     });
 
