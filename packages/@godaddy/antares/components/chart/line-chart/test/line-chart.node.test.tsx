@@ -6,8 +6,12 @@
 import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
+import { CustomTooltipExample } from '../examples/custom-tooltip';
 import { CustomTooltipFormattingExample } from '../examples/custom-tooltip-formatting';
+import { CustomTooltipPairChangeExample } from '../examples/custom-tooltip-pair-change';
+import { CustomTooltipPeriodComparisonExample } from '../examples/custom-tooltip-period-comparison';
 import { CityTemperatureExample } from '../examples/city-temperature';
+import { ColorIndexExample } from '../examples/color-index';
 import { TooltipDisabledExample } from '../examples/tooltip-disabled';
 import { MissingValuesExample } from '../examples/missing-values';
 import { MultipleSeriesExample } from '../examples/multiple-series';
@@ -28,6 +32,7 @@ import { CustomTicksExample } from '../examples/custom-ticks';
 import { BaselinesExample } from '../examples/baselines';
 import { LabelsExample } from '../examples/labels';
 import { LegendExample } from '../examples/legend';
+import { LineStylesExample } from '../examples/line-styles';
 import { TitlesExample } from '../examples/titles';
 import { TicksExample } from '../examples/ticks';
 
@@ -37,10 +42,14 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['bitcoin-price', BitcoinPriceExample],
   ['browser-usage', BrowserUsageExample],
   ['city-temperature', CityTemperatureExample],
+  ['color-index', ColorIndexExample],
   ['crosshair-only', CrosshairOnlyExample],
   ['custom-accessors', CustomAccessorsExample],
   ['custom-ticks', CustomTicksExample],
+  ['custom-tooltip', CustomTooltipExample],
   ['custom-tooltip-formatting', CustomTooltipFormattingExample],
+  ['custom-tooltip-pair-change', CustomTooltipPairChangeExample],
+  ['custom-tooltip-period-comparison', CustomTooltipPeriodComparisonExample],
   ['default', DefaultExample],
   ['fixed-domain', FixedDomainExample],
   ['fixed-size', FixedSizeExample],
@@ -48,6 +57,7 @@ const SSR_EXAMPLES: Array<[string, React.ComponentType]> = [
   ['gridlines', GridlinesExample],
   ['labels', LabelsExample],
   ['legend', LegendExample],
+  ['line-styles', LineStylesExample],
   ['missing-values', MissingValuesExample],
   ['multiple-series', MultipleSeriesExample],
   ['nice-values', NiceValuesExample],
