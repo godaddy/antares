@@ -74,6 +74,32 @@ describe('@godaddy/antares', function packageTests() {
       expect(onPress).not.toHaveBeenCalled();
     });
 
+    it('composes child focus and hover handlers', async function composesInteractionHandlers() {
+      const onChildPointerEnter = vi.fn();
+      const onChildPointerLeave = vi.fn();
+      const onChildFocus = vi.fn();
+      const onChildBlur = vi.fn();
+      const { getByRole } = await render(
+        <PlaygroundExample
+          onChildPointerEnter={onChildPointerEnter}
+          onChildPointerLeave={onChildPointerLeave}
+          onChildFocus={onChildFocus}
+          onChildBlur={onChildBlur}
+        />
+      );
+      const button = getByRole('button', { name: 'View account summary' });
+
+      await userEvent.hover(button);
+      expect(onChildPointerEnter).toHaveBeenCalledOnce();
+      button.element().dispatchEvent(new PointerEvent('pointerout', { bubbles: true, relatedTarget: document.body }));
+      expect(onChildPointerLeave).toHaveBeenCalledOnce();
+
+      await userEvent.tab();
+      expect(onChildFocus).toHaveBeenCalledOnce();
+      button.element().blur();
+      expect(onChildBlur).toHaveBeenCalledOnce();
+    });
+
     it('preserves the child class name, forwards the ref, and composes event handlers and accessible props', async function refAndClassName() {
       const pressableRef = createRef<HTMLElement>();
       const childRef = createRef<HTMLDivElement>();

@@ -1,6 +1,6 @@
 import React, { forwardRef, type HTMLAttributes, type ReactElement } from 'react';
 import { Pressable as RACPressable } from 'react-aria-components';
-import { useFocusRing, useHover } from 'react-aria';
+import { mergeProps, useFocusRing, useHover } from 'react-aria';
 import type { PressableProps as RACPressableProps } from 'react-aria/Pressable';
 import { composeClassName, type ClassNameProp } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
@@ -47,9 +47,9 @@ export const Pressable = forwardRef<HTMLElement, PressableProps>(function Pressa
     [onPressChange]
   );
   const child = React.Children.only(children) as ReactElement<PressableChildProps>;
+  const mergedChildProps = mergeProps(child.props, hoverProps, focusProps);
   const styledChild = React.cloneElement(child, {
-    ...hoverProps,
-    ...focusProps,
+    ...mergedChildProps,
     'data-focused': isFocused || undefined,
     'data-focus-visible': isFocusVisible || undefined,
     'data-hovered': isHovered || undefined,

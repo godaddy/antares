@@ -1,5 +1,5 @@
 import { Box, Flex, Pressable, Text, type PressableProps } from '@godaddy/antares';
-import type { Ref } from 'react';
+import type { FocusEventHandler, PointerEventHandler, Ref } from 'react';
 
 export interface PlaygroundExampleProps extends Omit<Partial<PressableProps>, 'children'> {
   /** Ref forwarded to the child element for testing composition */
@@ -8,6 +8,14 @@ export interface PlaygroundExampleProps extends Omit<Partial<PressableProps>, 'c
   pressableRef?: Ref<HTMLElement>;
   /** Click handler on the child element for testing event composition */
   onChildClick?: () => void;
+  /** Pointer-enter handler on the child element for testing event composition */
+  onChildPointerEnter?: PointerEventHandler<HTMLDivElement>;
+  /** Pointer-leave handler on the child element for testing event composition */
+  onChildPointerLeave?: PointerEventHandler<HTMLDivElement>;
+  /** Focus handler on the child element for testing event composition */
+  onChildFocus?: FocusEventHandler<HTMLDivElement>;
+  /** Blur handler on the child element for testing event composition */
+  onChildBlur?: FocusEventHandler<HTMLDivElement>;
   /** Class name applied to the child element for testing class composition */
   childClassName?: string;
   /** ARIA describedby applied to the child element for testing accessibility composition */
@@ -22,6 +30,10 @@ export function PlaygroundExample({
   childRef,
   pressableRef,
   onChildClick,
+  onChildPointerEnter,
+  onChildPointerLeave,
+  onChildFocus,
+  onChildBlur,
   childClassName,
   childAriaDescribedBy,
   ...props
@@ -36,6 +48,10 @@ export function PlaygroundExample({
         elevation="card"
         className={childClassName}
         onClick={onChildClick}
+        onPointerEnter={onChildPointerEnter}
+        onPointerLeave={onChildPointerLeave}
+        onFocus={onChildFocus}
+        onBlur={onChildBlur}
         aria-describedby={childAriaDescribedBy}
       >
         <Flex direction="column" gap="xs">

@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { cx } from 'cva';
 import { Provider, TextContext } from 'react-aria-components';
 import { ImageContext } from '#components/image';
@@ -14,6 +14,10 @@ export type AvatarFigure = `figure${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
 export type AvatarEmphasis = 'primary' | 'subtle' | AvatarFigure;
 
 type AvatarImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';
+
+// Avoid useLayoutEffect SSR warnings while synchronizing image status before paint in the browser.
+const canUseDOM = typeof window !== 'undefined';
+const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
 
 /** Props for the Avatar component. */
 export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'aria-label' | 'color'> {
@@ -62,7 +66,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
     }
   }, []);
 
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     function synchronizeImageStatus() {
       const image = imageRef.current;
 
