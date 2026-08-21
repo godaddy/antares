@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { resetHover } from '../../../utils/test-helpers.tsx';
-import { GhostExample } from '../examples/ghost.tsx';
 import { InlineExample } from '../examples/inline.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -12,11 +11,6 @@ describe('@godaddy/antares', function antares() {
     it('inline resting state', async function inlineRestingRender() {
       const { container } = await render(<InlineExample />);
       await expect(container).toMatchScreenshot('inline-resting');
-    });
-
-    it('ghost', async function ghostRender() {
-      const { container } = await render(<GhostExample />);
-      await expect(container).toMatchScreenshot('ghost');
     });
 
     it('inline hovered state', async function inlineHoveredRender() {

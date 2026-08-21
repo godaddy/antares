@@ -23,7 +23,7 @@ export const Playground = getStory(PlaygroundExample, {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'critical', 'inline', 'minimal', 'ghost'],
+      options: ['primary', 'secondary', 'tertiary', 'critical', 'inline', 'minimal'],
       description: 'Visual variant of the button'
     },
     size: {

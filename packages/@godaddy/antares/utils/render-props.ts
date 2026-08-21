@@ -4,7 +4,10 @@ import { composeRenderProps } from 'react-aria-components';
 import { mergeObjects } from './objects.ts';
 
 /** A className prop that may be a static string or a RAC render-prop function. */
-type ClassNameProp<T> = string | ((renderProps: T & { defaultClassName: string | undefined }) => string) | undefined;
+export type ClassNameProp<T> =
+  | string
+  | ((renderProps: T & { defaultClassName: string | undefined }) => string)
+  | undefined;
 
 /** A style prop that may be a static object or a RAC render-prop function. */
 type StyleProp<T> =

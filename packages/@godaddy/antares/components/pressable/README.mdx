@@ -63,6 +63,8 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 - Use `Pressable` for custom visual surfaces that need a press interaction without an additional DOM wrapper.
 - Give every pressable control an accessible name with visible text, `aria-label`, or `aria-labelledby`.
 - Avoid nesting interactive elements inside the child passed to `Pressable`.
+- `Pressable` automatically applies `[data-focus-visible]` and `[data-disabled]` attributes to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+- When `isDisabled` is true, `Pressable` suppresses all pointer and keyboard interactions.
 
 ## Troubleshooting
 

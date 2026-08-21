@@ -3,4 +3,4 @@
 ---
 
 feat(antares): add Avatar components, composed from a new slotted Image and Text
-feat(antares): add ghost Button variant for chromeless, composable triggers
+feat(antares): add Pressable compositions for Avatar Button and Account Menu

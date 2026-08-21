@@ -1,9 +1,8 @@
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
+import { AccountMenuExample } from '../examples/account-menu.tsx';
 import { PlaygroundExample } from '../examples/avatar-playground.tsx';
-import { ButtonExample } from '../examples/button.tsx';
-import { ButtonDisabledExample } from '../examples/button-disabled.tsx';
-import { ButtonMenuExample } from '../examples/button-menu.tsx';
+import { AvatarButtonExample } from '../examples/avatar-button.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { EmphasisExample } from '../examples/emphasis.tsx';
 import { ImageFallbackExample } from '../examples/image-fallback.tsx';
@@ -32,16 +31,12 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<EmphasisExample />)).toMatchSnapshot();
     });
 
-    it('renders ButtonExample', function buttonExample() {
-      expect(renderToString(<ButtonExample />)).toMatchSnapshot();
+    it('renders AvatarButtonExample', function avatarButtonExample() {
+      expect(renderToString(<AvatarButtonExample />)).toMatchSnapshot();
     });
 
-    it('renders ButtonMenuExample', function buttonMenuExample() {
-      expect(renderToString(<ButtonMenuExample />)).toMatchSnapshot();
-    });
-
-    it('renders ButtonDisabledExample', function buttonDisabledExample() {
-      expect(renderToString(<ButtonDisabledExample />)).toMatchSnapshot();
+    it('renders AccountMenuExample', function accountMenuExample() {
+      expect(renderToString(<AccountMenuExample />)).toMatchSnapshot();
     });
 
     it('renders PlaygroundExample', function playgroundExample() {

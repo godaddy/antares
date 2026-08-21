@@ -2,9 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { resetHover } from '../../../utils/test-helpers.tsx';
-import { ButtonExample } from '../examples/button.tsx';
-import { ButtonMenuExample } from '../examples/button-menu.tsx';
-import { ButtonDisabledExample } from '../examples/button-disabled.tsx';
+import { AccountMenuExample } from '../examples/account-menu.tsx';
+import { AvatarButtonExample } from '../examples/avatar-button.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { EmphasisExample } from '../examples/emphasis.tsx';
 import { ImageFallbackExample } from '../examples/image-fallback.tsx';
@@ -40,25 +39,20 @@ describe('@godaddy/antares', function antares() {
       await expect(container).toMatchScreenshot('emphasis');
     });
 
-    it('button default', async function buttonRender() {
-      const { container } = await render(<ButtonExample />);
-      await expect(container).toMatchScreenshot('button');
+    it('avatar button', async function avatarButtonRender() {
+      const { container } = await render(<AvatarButtonExample />);
+      await expect(container).toMatchScreenshot('avatar-button');
     });
 
-    it('button disabled', async function buttonDisabledRender() {
-      const { container } = await render(<ButtonDisabledExample />);
-      await expect(container).toMatchScreenshot('button-disabled');
+    it('account menu', async function accountMenuRender() {
+      const { container } = await render(<AccountMenuExample />);
+      await expect(container).toMatchScreenshot('account-menu');
     });
 
-    it('button menu', async function buttonMenuRender() {
-      const { container } = await render(<ButtonMenuExample />);
-      await expect(container).toMatchScreenshot('button-menu');
-    });
-
-    it('button menu expanded', async function buttonMenuExpandedRender() {
-      const { container } = await render(<ButtonMenuExample />);
+    it('account menu expanded', async function accountMenuExpandedRender() {
+      const { container } = await render(<AccountMenuExample />);
       await userEvent.click(page.getByRole('button', { name: 'Account menu' }));
-      await expect(container).toMatchScreenshot('button-menu-expanded');
+      await expect(container).toMatchScreenshot('account-menu-expanded');
     });
   });
 });
