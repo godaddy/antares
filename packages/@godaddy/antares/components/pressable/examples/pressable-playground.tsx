@@ -6,8 +6,6 @@ export interface PlaygroundExampleProps extends Omit<Partial<PressableProps>, 'c
   childRef?: Ref<HTMLDivElement>;
   /** Ref forwarded to the Pressable element for testing composition */
   pressableRef?: Ref<HTMLElement>;
-  /** Click handler on the child element for testing event composition */
-  onChildClick?: () => void;
   /** Pointer-enter handler on the child element for testing event composition */
   onChildPointerEnter?: PointerEventHandler<HTMLDivElement>;
   /** Pointer-leave handler on the child element for testing event composition */
@@ -29,7 +27,6 @@ export interface PlaygroundExampleProps extends Omit<Partial<PressableProps>, 'c
 export function PlaygroundExample({
   childRef,
   pressableRef,
-  onChildClick,
   onChildPointerEnter,
   onChildPointerLeave,
   onChildFocus,
@@ -47,7 +44,6 @@ export function PlaygroundExample({
         rounding="md"
         elevation="card"
         className={childClassName}
-        onClick={onChildClick}
         onPointerEnter={onChildPointerEnter}
         onPointerLeave={onChildPointerLeave}
         onFocus={onChildFocus}

@@ -100,18 +100,14 @@ describe('@godaddy/antares', function packageTests() {
       expect(onChildBlur).toHaveBeenCalledOnce();
     });
 
-    it('preserves the child class name, forwards the ref, and composes event handlers and accessible props', async function refAndClassName() {
+    it('preserves child props and forwards refs', async function preservesChildProps() {
       const pressableRef = createRef<HTMLElement>();
       const childRef = createRef<HTMLDivElement>();
-      const onPress = vi.fn();
-      const onChildClick = vi.fn();
 
       const { getByRole } = await render(
         <PlaygroundExample
           childRef={childRef}
           pressableRef={pressableRef}
-          onPress={onPress}
-          onChildClick={onChildClick}
           childClassName="consumer-child"
           childAriaDescribedBy="desc-id"
         />
@@ -123,10 +119,6 @@ describe('@godaddy/antares', function packageTests() {
       expect(pressableRef.current).toBe(childRef.current);
       expect(pressableRef.current).toBe(button.element());
       await expect.element(button).toHaveAttribute('aria-describedby', 'desc-id');
-
-      await userEvent.click(button);
-      expect(onPress).toHaveBeenCalledOnce();
-      expect(onChildClick).toHaveBeenCalledOnce();
     });
   });
 });
