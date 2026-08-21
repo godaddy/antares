@@ -13,7 +13,7 @@
     outline-color: var(--ux-t61743, #1bdbdb);
   }
 
-  &:where(:focus-visible:not([data-disabled])) {
+  &:where([data-focus-visible]:not([data-disabled])) {
     outline-color: Highlight;
   }
 
