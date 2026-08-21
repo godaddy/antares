@@ -202,8 +202,6 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 
 
 
-
-
 <Meta of="Stories" name="Overview" />
 
 ## Features [#features]
@@ -212,7 +210,7 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 * Circle and rounded-square shapes at four named sizes
 * Automatic image loading with a Text monogram fallback
 * Primary, subtle, and 15 categorical figure emphases
-* Compose Avatar with Button when it is interactive
+* Avatar Button and Account Menu compositions built with Pressable
 
 ## Installation [#installation]
 
@@ -262,43 +260,34 @@ Use primary or subtle for standard treatments, and a deterministic figure emphas
 
 <Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
-### Avatar button [#avatar-button]
+### Avatar Button [#avatar-button]
 
-Turn an avatar into a clickable control by composing it with a `ghost` Button.
-Match `rounding` to the avatar shape.
+Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
 
-<Story of="ButtonExample" />
+<Story of="AvatarButtonExample" />
 
-<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Flex, Text } from '@godaddy/antares';\n\nexport function ButtonExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22;>\n      <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Account\&#x22; rounding=\&#x22;full\&#x22;>\n        <Avatar>\n          <Text>UT</Text>\n        </Avatar>\n      </Box>\n      <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Workspace\&#x22; rounding=\&#x22;lg\&#x22;>\n        <Avatar shape=\&#x22;square\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
 
-### Account menu [#account-menu]
+### Account Menu [#account-menu]
 
-Wrap an Avatar in a ghost Button inside MenuTrigger for an account or profile menu.
+Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
 
-<Story of="ButtonMenuExample" />
+<Story of="AccountMenuExample" />
 
-<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function ButtonMenuExample() {\n  return (\n    <MenuTrigger>\n      <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Account menu\&#x22; rounding=\&#x22;full\&#x22;>\n        <Avatar>\n          <Text>UT</Text>\n        </Avatar>\n      </Box>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-### Disabled avatar button [#disabled-avatar-button]
-
-Use isDisabled when the avatar action is unavailable.
-
-<Story of="ButtonDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Text } from '@godaddy/antares';\n\nexport interface ButtonDisabledExampleProps {\n  onPress?: () => void;\n}\n\nexport function ButtonDisabledExample({ onPress }: ButtonDisabledExampleProps) {\n  return (\n    <Box as={Button} variant=\&#x22;ghost\&#x22; aria-label=\&#x22;Unavailable account\&#x22; isDisabled onPress={onPress} rounding=\&#x22;full\&#x22;>\n      <Avatar>\n        <Text>UT</Text>\n      </Avatar>\n    </Box>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
 
 ## Customization [#customization]
 
 Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
 
-When an Avatar triggers an action, wrap it in `Button variant="ghost"`. Compose the Button with `Box` to control its rounding:
+When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
 
 ```tsx
-<Box as={Button} aria-label="Account menu" variant="ghost" rounding="full">
-  <Avatar>
+<Pressable aria-label="Account menu" onPress={openAccountMenu}>
+  <Avatar role="button">
     <Text>UT</Text>
   </Avatar>
-</Box>
+</Pressable>
 ```
 
 ## Accessibility [#accessibility]
@@ -306,11 +295,12 @@ When an Avatar triggers an action, wrap it in `Button variant="ghost"`. Compose 
 * Give Image meaningful `alt` text when the image conveys an identity.
 * Text remains available to assistive technology when no image loads.
 * Use `alt=""` or `aria-hidden` when an avatar is purely decorative.
-* Give an interactive Button an accessible name with `aria-label` or `aria-labelledby`.
+* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
+* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
 
 ## Best Practices [#best-practices]
 
-* Use Avatar for informational identity; wrap it in a ghost Button only when it is independently actionable.
+* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
 * Use circle for people and square for businesses, workspaces, and accounts.
 * Keep monograms to one or two uppercase characters.
 * Use the same `figure*` emphasis for the same entity wherever it appears.
@@ -323,16 +313,17 @@ When an Avatar triggers an action, wrap it in `Button variant="ghost"`. Compose 
 
 ## Props [#props]
 
-### Avatar [#avatar]
-
-Configures the Avatar surface, including its shape, size, and color treatment.
+```tsx
+<Avatar>
+  <Image />
+  <Text />
+</Avatar>
+```
 
 <PropTable />
 
 
 # Button
-
-
 
 
 
@@ -420,16 +411,6 @@ Any button variant can be disabled to prevent interaction, communicated with red
 
 <Source language="tsx" code="&#x22;import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\&#x22;secondary\&#x22; isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\&#x22;tertiary\&#x22; isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\&#x22;critical\&#x22; isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\&#x22;inline\&#x22; isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
 
-### Ghost [#ghost]
-
-The ghost variant is an unstyled, interactive wrapper. It provides focus, hover,
-and pressed states but no padding, margin, or sizing, so you control the shape.
-Compose with Box to add rounding and padding.
-
-<Story of="GhostExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Box, Button, Text } from '@godaddy/antares';\n\nexport function GhostExample() {\n  return (\n    <Box as={Button} aria-label=\&#x22;Account menu\&#x22; variant=\&#x22;ghost\&#x22; rounding=\&#x22;full\&#x22;>\n      <Avatar>\n        <Text>UT</Text>\n      </Avatar>\n    </Box>\n  );\n}&#x22;" />
-
 ### Icon [#icon]
 
 You may provide an optional `Icon` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
@@ -462,18 +443,6 @@ Buttons come in small and medium sizes to fit different layout densities.
 
 <Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
 
-## Customization [#customization]
-
-Use `variant="ghost"` as an unstyled interactive wrapper when the consumer controls rounding. Compose it with `Box` to apply the desired shape:
-
-```tsx
-<Box as={Button} aria-label="Account menu" variant="ghost" rounding="full">
-  <Avatar>
-    <Text>UT</Text>
-  </Avatar>
-</Box>
-```
-
 ## Props [#props]
 
 The `Button` component accepts the following props:
@@ -481,111 +450,6 @@ The `Button` component accepts the following props:
 <PropTable />
 
 The `LinkButton` component accepts the following props:
-
-<PropTable />
-
-
-# Carousel
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="ExternalControlsUncontrolledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="ExternalControlsControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="HideControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="VariableWidthsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="EventsExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="RTLDirectionExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Carousel` component accepts the following props:
 
 <PropTable />
 
@@ -712,6 +576,111 @@ The `Calendar` component accepts the following props:
 <PropTable />
 
 The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+
+# Carousel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="ExternalControlsUncontrolledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="ExternalControlsControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="HideControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="VariableWidthsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="EventsExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="RTLDirectionExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Carousel` component accepts the following props:
 
 <PropTable />
 
@@ -2806,6 +2775,151 @@ The `onChange` callback fires with the new page index whenever the user navigate
 <PropTable />
 
 
+# Popover
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>This is the popover content!</Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>\n        Popover content!\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
+
+### Close Button and Header [#close-button-and-header]
+
+Use `showCloseButton` to show a close button in the popover header. Use the `header` prop to render content alongside it.
+
+<Story of="WithCloseButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button, Text } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover showCloseButton header={<Text>Content to show next to the close button</Text>}>\n        This is the popover content!\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+## Best Practices [#best-practices]
+
+Popover width is determined by its content, and it’s recommended to keep it under 400px.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Pressable
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Adds accessible press behavior to an existing visual component.
+* Applies interaction states directly to the child without adding a wrapper element.
+* Supports pointer, touch, and keyboard interactions through React Aria.
+* Preserves the child's layout, shape, and visual styling.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Add accessible press behavior to an existing visual component without adding a wrapper element.
+The callback is invoked for pointer, touch, and keyboard activation.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the props applied by React Aria.
+
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
+
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
+
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
+
+## Best Practices [#best-practices]
+
+* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+* Use `Pressable` for custom visual surfaces that need a press interaction without an additional DOM wrapper.
+* Give every pressable control an accessible name with visible text, `aria-label`, or `aria-labelledby`.
+* Avoid nesting interactive elements inside the child passed to `Pressable`.
+* `Pressable` automatically applies `[data-focus-visible]` and `[data-disabled]` attributes to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+* When `isDisabled` is true, `Pressable` suppresses all pointer and keyboard interactions.
+
+## Troubleshooting [#troubleshooting]
+
+* If React Aria warns that the child is not interactive, add an appropriate role and ensure the child forwards its ref and props.
+* If `onPress` does not fire, confirm that the child is a single focusable element and is not disabled by another component.
+* If a custom component loses interaction props, update it to forward `className`, ref, ARIA attributes, and event handlers to its DOM element.
+
+## Props [#props]
+
+<PropTable />
+
+
 # ProgressBar
 
 
@@ -2863,63 +2977,6 @@ Use the `status` prop to communicate intent: `default`, `success`, `warning`, or
 * `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
 * `aria-valuetext` provides a formatted string (e.g. `"60%"`)
 * `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-<PropTable />
-
-
-# Popover
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `<PopoverTrigger>`, which wraps both the popover content and an interactive trigger element (for example, a `Button`).
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>This is the popover content!</Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a popover relative to a different element than its trigger, use the `triggerRef` and `isOpen` props instead of `<PopoverTrigger>`. `onOpenChange` is called when the user opens or closes the popover.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>\n        Popover content!\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
-
-### Close Button and Header [#close-button-and-header]
-
-Use `showCloseButton` to show a close button in the popover header. Use the `header` prop to render content alongside it.
-
-<Story of="WithCloseButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button, Text } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover showCloseButton header={<Text>Content to show next to the close button</Text>}>\n        This is the popover content!\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
-
-## Best Practices [#best-practices]
-
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
 
 ## Props [#props]
 
@@ -5045,6 +5102,16 @@ Values outside the valid range are clamped silently at runtime. For continuous m
 
 
 
+
+
+
+
+
+
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Installation [#installation]
@@ -5246,6 +5313,56 @@ The chart follows the current layout direction, normally detected from the brows
 <Story of="RTLExample" />
 
 <Source language="tsx" code="&#x22;import { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\nimport { CityTemperatureExample } from './city-temperature.tsx';\nimport type { LineChartProps } from '@godaddy/antares';\n\nexport function RTLExample(props: Partial<LineChartProps>) {\n  return (\n    <RTLProvider>\n      <CityTemperatureExample {...props} />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Color Index [#color-index]
+
+`colorIndex` pins each series to a palette color. Any series can use any index,
+independently — here two pairs each share an index so an actual line and its
+dashed forecast read as the same color, distinguished only by line style.
+
+<Story of="ColorIndexExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { LineChart, type LineChartProps } from '@godaddy/antares';\n\nexport function ColorIndexExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toPoints('New York', 1.08)\n    },\n    { id: 'sf', name: 'San Francisco', colorIndex: 1, data: toPoints('San Francisco') },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toPoints('San Francisco', 1.08)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Color index example chart\&#x22;\n      desc=\&#x22;Line chart where paired series share a palette color via colorIndex, distinguished by solid and dashed line styles\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip [#custom-tooltip]
+
+`renderTooltip` lets you render a fully custom tooltip and know which curve is
+hovered. Paired series share a `colorIndex`; hovering either line shows a
+tooltip specific to that line, wrapped in the default styled popover.
+
+<Story of="CustomTooltipExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { Box, Flex, LineChart, type LineChartProps, type LineChartTooltipRenderProps, Text } from '@godaddy/antares';\n\n/**\n * Renders a tooltip for the single hovered curve. `renderTooltip` receives\n * `hoveredSeriesId` (the series nearest the cursor) so the tooltip can show\n * information specific to that line instead of every series at once.\n */\nfunction renderHoveredTooltip({ hoveredSeriesId, hoveredDatum, series }: LineChartTooltipRenderProps) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered || !hoveredDatum) {\n    return null;\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Box\n          rounding=\&#x22;full\&#x22;\n          style={{\n            width: 10,\n            height: 10,\n            backgroundColor: hovered._resolvedColor\n          }}\n        />\n        <Text>{hovered.name}</Text>\n      </Flex>\n      <Text>{`${(hoveredDatum.y as number).toFixed(1)}°F`}</Text>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({\n        x: new Date(d.date),\n        y: parseFloat(d[city] as string) * scale\n      }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toPoints('New York', 1.08)\n    },\n    {\n      id: 'sf',\n      name: 'San Francisco',\n      colorIndex: 1,\n      data: toPoints('San Francisco')\n    },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toPoints('San Francisco', 1.08)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Custom tooltip example chart\&#x22;\n      desc=\&#x22;Line chart with a custom tooltip that shows information specific to the hovered curve\&#x22;\n      renderTooltip={renderHoveredTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip Pair Change [#custom-tooltip-pair-change]
+
+`renderTooltip` example combining a pair of series. Each pair shares a `colorIndex`
+(solid actual + dashed forecast); hovering either line shows the percent change of
+the forecast against the actual for that pair, wrapped in the default styled popover.
+
+<Story of="CustomTooltipPairChangeExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { Box, Flex, LineChart, type LineChartProps, type LineChartTooltipRenderProps, Text } from '@godaddy/antares';\n\n/**\n * Two pairs of lines, each a solid \&#x22;actual\&#x22; curve plus its dashed \&#x22;forecast\&#x22; partner\n * (the two share a `colorIndex`). Hovering any line resolves the pair it belongs to and\n * shows both values plus the percent change of the forecast relative to the actual —\n * demonstrating that `renderTooltip` can combine multiple series, not just the hovered one.\n */\nfunction renderPairChangeTooltip({ hoveredSeriesId, datumByKey, series }: LineChartTooltipRenderProps) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered) {\n    return null;\n  }\n\n  // Both lines in a pair share a color; split them into the solid actual and dashed forecast.\n  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);\n  const actual = pair.find((oneSeries) => oneSeries.variant !== 'dashed');\n  const forecast = pair.find((oneSeries) => oneSeries.variant === 'dashed');\n  if (!actual || !forecast) {\n    return null;\n  }\n\n  const actualY = datumByKey[actual.id]?.y as number | undefined;\n  const forecastY = datumByKey[forecast.id]?.y as number | undefined;\n  if (actualY == null || forecastY == null) {\n    return null;\n  }\n\n  const change = ((forecastY - actualY) / actualY) * 100;\n  const sign = change >= 0 ? '+' : '';\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Box\n          rounding=\&#x22;full\&#x22;\n          style={{\n            width: 10,\n            height: 10,\n            backgroundColor: actual._resolvedColor\n          }}\n        />\n        <Text>{actual.name}</Text>\n      </Flex>\n      <Text>{`Actual: ${actualY.toFixed(1)}°F`}</Text>\n      <Text>{`Forecast: ${forecastY.toFixed(1)}°F`}</Text>\n      <Text>{`Forecast vs actual: ${sign}${change.toFixed(1)}%`}</Text>\n    </Flex>\n  );\n}\n\nexport function CustomTooltipPairChangeExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number]) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  // Forecast wobbles deterministically above and below the actual (±~15%) so the\n  // percent change varies per point and goes negative where the forecast undershoots.\n  const toForecast = (city: keyof (typeof cityTemperature)[number], phase = 0) =>\n    rows\n      .map((d, i) => ({\n        x: new Date(d.date),\n        y: parseFloat(d[city] as string) * (1 + 0.15 * Math.sin(i + phase))\n      }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'ny', name: 'New York', colorIndex: 0, data: toPoints('New York') },\n    {\n      id: 'ny-forecast',\n      name: 'New York (forecast)',\n      colorIndex: 0,\n      variant: 'dashed' as const,\n      data: toForecast('New York')\n    },\n    {\n      id: 'sf',\n      name: 'San Francisco',\n      colorIndex: 1,\n      data: toPoints('San Francisco')\n    },\n    {\n      id: 'sf-forecast',\n      name: 'San Francisco (forecast)',\n      colorIndex: 1,\n      variant: 'dashed' as const,\n      data: toForecast('San Francisco', 2)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Pair percent-change tooltip example chart\&#x22;\n      desc=\&#x22;Line chart whose tooltip shows the forecast-vs-actual percent change for the hovered pair\&#x22;\n      renderTooltip={renderPairChangeTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom Tooltip Period Comparison [#custom-tooltip-period-comparison]
+
+`renderTooltip` example styled as a period-over-period comparison card. Paired series
+(solid current period + dashed previous period) share a `colorIndex`; hovering either
+line shows both dated values and the percent change, wrapped in the default popover.
+
+<Story of="CustomTooltipPeriodComparisonExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Box,\n  type DataPoint,\n  Flex,\n  LineChart,\n  type LineChartProps,\n  type LineChartTooltipRenderProps,\n  type LineSeriesConfig,\n  Text\n} from '@godaddy/antares';\n\nconst CURRENT_YEAR = 2026;\nconst POINTS = 12;\n\nconst formatDate = (d: Date) =>\n  d.toLocaleDateString('en-US', {\n    month: 'short',\n    day: 'numeric',\n    year: 'numeric'\n  });\nconst formatMoney = (v: number) => `$${v.toFixed(2)}`;\n\n/**\n * Series shape extended with custom tooltipMetadata. The type of tooltipMetadata is inferred\n * from this type in the tooltip render function so no cast is needed at the call site.\n */\ninterface ChannelSeries extends LineSeriesConfig {\n  /** Which period this line represents; used to pair current vs previous. */\n  tooltipMetadata: { period: 'current' | 'previous' };\n}\n\n/**\n * Period-over-period tooltip. Each channel is a pair sharing a `colorIndex`: a solid\n * \&#x22;current period\&#x22; line and its dashed \&#x22;previous period\&#x22; partner. Hovering either line\n * shows the channel name, both dated values, and the percent change vs the previous period —\n * mirroring a typical analytics comparison card, built entirely from the `renderTooltip` prop.\n */\nfunction renderPeriodTooltip({\n  hoveredSeriesId,\n  datumByKey,\n  series\n}: LineChartTooltipRenderProps<DataPoint, LineSeriesConfig<DataPoint, { period: 'current' | 'previous' }>>) {\n  const hovered = series.find((oneSeries) => oneSeries.id === hoveredSeriesId);\n  if (!hovered) {\n    return null;\n  }\n\n  // Pair by colorIndex, then split by the custom `period` key (typed, no cast needed).\n  const pair = series.filter((oneSeries) => oneSeries.colorIndex === hovered.colorIndex);\n  const current = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'current');\n  const previous = pair.find((oneSeries) => oneSeries.tooltipMetadata?.period === 'previous');\n  if (!current || !previous) {\n    return null;\n  }\n\n  const currentDatum = datumByKey[current.id];\n  const previousDatum = datumByKey[previous.id];\n  if (!currentDatum || !previousDatum) {\n    return null;\n  }\n\n  const currentValue = currentDatum.y as number;\n  const previousValue = previousDatum.y as number;\n  const currentDate = currentDatum.x as Date;\n  // Both series plot on current-period dates so they overlay; the previous row is labelled one year back.\n  const previousDate = new Date(currentDate);\n  previousDate.setFullYear(currentDate.getFullYear() - 1);\n\n  const change = previousValue === 0 ? 0 : ((currentValue - previousValue) / previousValue) * 100;\n  const isUp = change >= 0;\n  const color = current._resolvedColor;\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ minWidth: 260 }}>\n      <Text style={{ fontSize: 18 }}>{current.name}</Text>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box rounding=\&#x22;full\&#x22; style={{ width: 12, height: 12, backgroundColor: color }} />\n            <Text>{formatDate(currentDate)}</Text>\n          </Flex>\n          <Text>{formatMoney(currentValue)}</Text>\n        </Flex>\n\n        <Flex justifyContent=\&#x22;space-between\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;2xl\&#x22;>\n          <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n            <Box\n              rounding=\&#x22;full\&#x22;\n              style={{\n                width: 12,\n                height: 12,\n                border: `2px solid ${color}`,\n                boxSizing: 'border-box'\n              }}\n            />\n            <Text>{formatDate(previousDate)}</Text>\n          </Flex>\n          <Text>{formatMoney(previousValue)}</Text>\n        </Flex>\n      </Flex>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text style={{ color: isUp ? '#2f9e44' : '#e03131' }}>{isUp ? '↑' : '↓'}</Text>\n        <Text style={{ fontWeight: 'bolder' }}>{`${Math.abs(change).toFixed(2)}%`}</Text>\n        <Text style={{ color: '#868e96' }}>compared to previous period</Text>\n      </Flex>\n    </Flex>\n  );\n}\n\n/** Builds a deterministic weekly series in the hundreds-of-dollars range. */\nfunction buildSeries(base: number, amplitude: number, phase: number) {\n  return Array.from({ length: POINTS }, (_, i) => ({\n    x: new Date(CURRENT_YEAR, 0, 2 + i * 7),\n    y: base + amplitude * Math.sin(i * 0.6 + phase)\n  }));\n}\n\nexport function CustomTooltipPeriodComparisonExample(props: Partial<LineChartProps<DataPoint, ChannelSeries>>) {\n  const series: ChannelSeries[] = [\n    {\n      id: 'online',\n      name: 'Online Store',\n      colorIndex: 0,\n      tooltipMetadata: { period: 'current' },\n      data: buildSeries(680, 90, 0)\n    },\n    {\n      id: 'online-prev',\n      name: 'Online Store (previous)',\n      colorIndex: 0,\n      tooltipMetadata: { period: 'previous' },\n      variant: 'dashed',\n      data: buildSeries(700, 80, 1.2)\n    },\n    {\n      id: 'retail',\n      name: 'Retail',\n      colorIndex: 1,\n      tooltipMetadata: { period: 'current' },\n      data: buildSeries(430, 70, 0.5)\n    },\n    {\n      id: 'retail-prev',\n      name: 'Retail (previous)',\n      colorIndex: 1,\n      tooltipMetadata: { period: 'previous' },\n      variant: 'dashed',\n      data: buildSeries(410, 60, 1.8)\n    }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Period-over-period comparison tooltip example chart\&#x22;\n      desc=\&#x22;Line chart whose tooltip compares the hovered channel's current and previous period values\&#x22;\n      renderTooltip={renderPeriodTooltip}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Line Styles [#line-styles]
+
+`variant` sets each series' line style — 'solid' (default), 'dashed', or
+'dotted' — useful for distinguishing actuals from forecasts or targets. The
+legend swatch mirrors each line's style.
+
+<Story of="LineStylesExample" />
+
+<Source language="tsx" code="&#x22;import { cityTemperature } from '@visx/mock-data';\nimport { LineChart, type LineChartProps } from '@godaddy/antares';\n\nexport function LineStylesExample(props: Partial<LineChartProps>) {\n  const rows = cityTemperature.slice(0, 12);\n  const toPoints = (city: keyof (typeof cityTemperature)[number], scale = 1) =>\n    rows\n      .map((d) => ({ x: new Date(d.date), y: parseFloat(d[city] as string) * scale }))\n      .sort((a, b) => a.x.getTime() - b.x.getTime());\n\n  const series = [\n    { id: 'actual', name: 'Actual', data: toPoints('New York') },\n    { id: 'forecast', name: 'Forecast', variant: 'dashed' as const, data: toPoints('New York', 1.08) },\n    { id: 'target', name: 'Target', variant: 'dotted' as const, data: toPoints('New York', 0.92) }\n  ];\n\n  return (\n    <LineChart\n      series={series}\n      xType=\&#x22;time\&#x22;\n      yZero={false}\n      xLabels={false}\n      yLabels={false}\n      height={400}\n      aria-label=\&#x22;Line styles example chart\&#x22;\n      desc=\&#x22;Line chart demonstrating solid, dashed, and dotted line styles via the variant prop\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Customization [#customization]
 
