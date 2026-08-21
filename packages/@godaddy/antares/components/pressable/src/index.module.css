@@ -4,11 +4,12 @@
   outline-offset: 0;
   transition: outline-color 0.15s ease-in-out;
 
-  &:where(:hover:not([data-disabled])) {
+  &:where([data-hovered]:not([data-disabled])) {
     outline-color: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));
   }
 
-  &:where(:active:not([data-disabled])) {
+  &:where([data-pressed]:not([data-disabled])),
+  &:where([aria-expanded="true"]:not([data-disabled])) {
     outline-color: var(--ux-t61743, #1bdbdb);
   }
 

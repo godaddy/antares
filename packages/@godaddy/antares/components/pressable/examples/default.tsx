@@ -2,7 +2,7 @@ import { Box, Flex, Pressable, Text } from '@godaddy/antares';
 
 /**
  * Add accessible press behavior to an existing visual component without adding a wrapper element.
- * The callback is invoked for pointer, touch, and keyboard activation.
+ * The surface supports pointer, touch, and keyboard activation.
  * @order 1
  */
 export function DefaultExample() {

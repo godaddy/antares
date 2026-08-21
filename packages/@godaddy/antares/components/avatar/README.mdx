@@ -43,7 +43,7 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 
 - Give Image meaningful `alt` text when the image conveys an identity.
 - Text remains available to assistive technology when no image loads.
-- Use `alt=""` or `aria-hidden` when an avatar is purely decorative.
+- Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
 - Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
 - When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
 
@@ -64,8 +64,8 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 
 ```tsx
 <Avatar>
-  <Image />
-  <Text />
+  <Image src="/jamie.jpg" alt="Jamie Rivera" />
+  <Text>JR</Text>
 </Avatar>
 ```
 

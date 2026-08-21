@@ -1,7 +1,7 @@
 .avatar {
   --_avatar-size: 32px;
-  --_avatar-default-bg: var(--ux-7wu8i7, #111);
-  --_avatar-default-fg: var(--ux-1o8cusa, #fff);
+  --_avatar-default-bg: var(--color-surface-background-raised, var(--ux-7wu8i7, #111));
+  --_avatar-default-fg: var(--color-surface-text-raised, var(--ux-1o8cusa, #fff));
   --_avatar-bg: var(--avatar-bg, var(--_avatar-default-bg));
   --_avatar-fg: var(--avatar-fg, var(--_avatar-default-fg));
 
@@ -42,35 +42,35 @@
   }
 
   &[data-emphasis="figure0"] {
-    --_avatar-default-bg: var(--ux-k4t5bc, #15a4ab);
+    --_avatar-default-bg: var(--color-chart-001, var(--ux-k4t5bc, #15a4ab));
   }
 
   &[data-emphasis="figure1"] {
-    --_avatar-default-bg: var(--ux-yscvvt, #145fa9);
+    --_avatar-default-bg: var(--color-chart-002, var(--ux-yscvvt, #145fa9));
   }
 
   &[data-emphasis="figure2"] {
-    --_avatar-default-bg: var(--ux-3seoiy, #ef6c0f);
+    --_avatar-default-bg: var(--color-chart-003, var(--ux-3seoiy, #ef6c0f));
   }
 
   &[data-emphasis="figure3"] {
-    --_avatar-default-bg: var(--ux-ifyf3f, #e20087);
+    --_avatar-default-bg: var(--color-chart-004, var(--ux-ifyf3f, #e20087));
   }
 
   &[data-emphasis="figure4"] {
-    --_avatar-default-bg: var(--ux-1c4rju4, #744bc4);
+    --_avatar-default-bg: var(--color-chart-005, var(--ux-1c4rju4, #744bc4));
   }
 
   &[data-emphasis="figure5"] {
-    --_avatar-default-bg: var(--ux-1qsbael, #104a85);
+    --_avatar-default-bg: var(--color-chart-006, var(--ux-1qsbael, #104a85));
   }
 
   &[data-emphasis="figure6"] {
-    --_avatar-default-bg: var(--ux-vsd31q, #9d470a);
+    --_avatar-default-bg: var(--color-chart-007, var(--ux-vsd31q, #9d470a));
   }
 
   &[data-emphasis="figure7"] {
-    --_avatar-default-bg: var(--ux-1afwtm7, #8b0053);
+    --_avatar-default-bg: var(--color-chart-008, var(--ux-1afwtm7, #8b0053));
   }
 
   &[data-emphasis="figure8"] {
@@ -129,7 +129,7 @@
   place-items: center;
   overflow: hidden;
   font-size: round(43.75cqw, 1px);
-  font-weight: 600;
+  font-weight: bolder;
   line-height: 1;
   letter-spacing: 0.014em;
   text-align: center;

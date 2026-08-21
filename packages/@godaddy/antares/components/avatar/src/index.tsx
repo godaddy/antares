@@ -83,6 +83,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
         [
           ImageContext,
           {
+            alt: '',
             className: styles.image,
             ref: setImageRef,
             onLoad: function handleImageLoad() {

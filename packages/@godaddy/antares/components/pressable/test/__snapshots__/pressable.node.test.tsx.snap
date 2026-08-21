@@ -1,7 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@godaddy/antares > #Pressable > composes a child class name render prop 1`] = `"<div data-react-aria-pressable="true" data-size="xs" data-status="default" class="box flex column progressBar pressable size-xs-class-60" style="gap:var(--sp-xs)" data-rac="" aria-label="Change progress size" id="react-aria-_R_1_" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-valuetext="60%" role="progressbar"><div class="track" style="--progress-bar-progress:60%"></div></div>"`;
-
 exports[`@godaddy/antares > #Pressable > preserves the child class name 1`] = `"<div role="button" aria-label="View account summary" data-react-aria-pressable="true" tabindex="0" class="box pressable consumer-child" style="padding:var(--sp-md);border-radius:var(--rounding-md)" data-elevation="card"><div class="box flex column" style="gap:var(--sp-xs)"><span class="text">Account summary</span><span class="text">View your account details</span></div></div>"`;
 
 exports[`@godaddy/antares > #Pressable > renders without wrapper 1`] = `"<div role="button" aria-label="View account summary" data-react-aria-pressable="true" tabindex="0" class="box pressable" style="padding:var(--sp-md);border-radius:var(--rounding-md)" data-elevation="card"><div class="box flex column" style="gap:var(--sp-xs)"><span class="text">Account summary</span><span class="text">View your account details</span></div></div>"`;

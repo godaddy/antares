@@ -1,1 +1,1 @@
-export * from '../components/pressable/src/index.tsx';
+export { Pressable, type PressableProps } from '#components/pressable';

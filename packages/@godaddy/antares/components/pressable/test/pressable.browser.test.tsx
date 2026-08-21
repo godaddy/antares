@@ -2,11 +2,46 @@ import { describe, it, expect, vi } from 'vitest';
 import { createRef } from 'react';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
-import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { PlaygroundExample } from '../examples/pressable-playground.tsx';
+import { resetHover } from '../../../utils/test-helpers.tsx';
 
 describe('@godaddy/antares', function packageTests() {
   describe('#Pressable', function pressableTests() {
+    it('applies the hovered data attribute', async function hoveredState() {
+      const { getByRole } = await render(<PlaygroundExample />);
+      const button = getByRole('button', { name: 'View account summary' });
+
+      await userEvent.hover(button);
+      expect(button).toHaveAttribute('data-hovered', 'true');
+      await resetHover();
+    });
+
+    it('applies the focused data attributes', async function focusedState() {
+      const { getByRole } = await render(<PlaygroundExample />);
+      const button = getByRole('button', { name: 'View account summary' });
+
+      await userEvent.tab();
+      expect(button).toHaveAttribute('data-focused', 'true');
+      expect(button).toHaveAttribute('data-focus-visible', 'true');
+    });
+
+    it('applies the pressed data attribute', async function pressedState() {
+      const { getByRole } = await render(<PlaygroundExample />);
+      const button = getByRole('button', { name: 'View account summary' });
+
+      await userEvent.tab();
+      await userEvent.keyboard('{Space>}');
+      expect(button).toHaveAttribute('data-pressed', 'true');
+      await userEvent.keyboard('{/Space}');
+    });
+
+    it('applies the disabled data attribute', async function disabledState() {
+      const { getByRole } = await render(<PlaygroundExample isDisabled />);
+      const button = getByRole('button', { name: 'View account summary' });
+
+      expect(button).toHaveAttribute('data-disabled', 'true');
+    });
+
     it('handles click', async function click() {
       const onPress = vi.fn();
       const { getByRole } = await render(<PlaygroundExample onPress={onPress} />);
@@ -66,26 +101,6 @@ describe('@godaddy/antares', function packageTests() {
       await userEvent.click(button);
       expect(onPress).toHaveBeenCalledOnce();
       expect(onChildClick).toHaveBeenCalledOnce();
-    });
-
-    it('changes the child size class on press', async function classNameRenderProp() {
-      const { getByRole } = await render(<ClassNameRenderPropExample />);
-      const progressBar = getByRole('progressbar', { name: 'Change progress size' });
-
-      expect(progressBar).toHaveClass('size-xs-class-60');
-      await expect.element(progressBar).toHaveAttribute('data-size', 'xs');
-
-      await userEvent.click(progressBar);
-      expect(progressBar).toHaveClass('size-sm-class-60');
-      await expect.element(progressBar).toHaveAttribute('data-size', 'sm');
-
-      await userEvent.click(progressBar);
-      expect(progressBar).toHaveClass('size-md-class-60');
-      await expect.element(progressBar).toHaveAttribute('data-size', 'md');
-
-      await userEvent.click(progressBar);
-      expect(progressBar).toHaveClass('size-xs-class-60');
-      await expect.element(progressBar).toHaveAttribute('data-size', 'xs');
     });
   });
 });

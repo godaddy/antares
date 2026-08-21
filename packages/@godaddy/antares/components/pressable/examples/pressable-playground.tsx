@@ -15,11 +15,8 @@ export interface PlaygroundExampleProps extends Omit<Partial<PressableProps>, 'c
 }
 
 /**
- * The interactive playground for Pressable.
- * We use `Omit<Partial<PressableProps>, 'children'>` because the children are fixed
- * by this example to demonstrate a specific interactive surface. Allowing a caller
- * to pass `children` would either silently override the fixed content or be ignored,
- * both of which are confusing.
+ * Interactive playground for Pressable using a fixed account-summary surface.
+ * The child stays fixed so the controls focus on Pressable behavior and state.
  */
 export function PlaygroundExample({
   childRef,
