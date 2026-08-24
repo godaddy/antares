@@ -14,7 +14,7 @@ exports[`@godaddy/antares > #Drawer > renders PlacementsExample 1`] = `"<div cla
 
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample 1`] = `"<div class="box flex" style="padding:var(--sp-2xl);justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
-exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with close button floor 1`] = `"<div class="box flex" style="padding:var(--sp-2xl);justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
+exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with a composed title 1`] = `"<div class="box flex" style="padding:var(--sp-2xl);justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with numeric maxSize 1`] = `"<div class="box flex" style="padding:var(--sp-2xl);justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
@@ -27,3 +27,5 @@ exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with placement="
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with string maxSize 1`] = `"<div class="box flex" style="padding:var(--sp-2xl);justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
 
 exports[`@godaddy/antares > #Drawer > renders PlaygroundExample with string minSize 1`] = `"<div class="box flex" style="padding:var(--sp-2xl);justify-content:center"><button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button></div>"`;
+
+exports[`@godaddy/antares > #Drawer > renders ScrollableExample 1`] = `"<button class="button primary md" data-rac="" type="button" tabindex="0" aria-expanded="false" id="react-aria-_R_0H1_" data-react-aria-pressable="true"><span class="react-aria-Text">Open drawer</span></button>"`;

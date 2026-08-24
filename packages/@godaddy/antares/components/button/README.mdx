@@ -10,6 +10,8 @@ import * as Stories from './button.stories.tsx';
 
 Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
 
+Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
+
 ## Installation
 
 ```bash
@@ -29,3 +31,7 @@ The `Button` component accepts the following props:
 The `LinkButton` component accepts the following props:
 
 <ArgTypes of={Stories.LinkButtonProps} />
+
+The `CloseButton` component accepts the following props:
+
+<ArgTypes of={Stories.CloseButtonProps} />

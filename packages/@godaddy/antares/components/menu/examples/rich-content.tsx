@@ -1,4 +1,4 @@
-import { Button, Calendar, Icon, Menu, MenuItem, MenuTrigger, Popover, Text } from '@godaddy/antares';
+import { Button, Calendar, Content, Icon, Menu, MenuItem, MenuTrigger, Popover, Text } from '@godaddy/antares';
 import { parseDate, type CalendarDate } from '@godaddy/antares/date';
 import { useRef, useState } from 'react';
 
@@ -35,7 +35,9 @@ export function RichContentExample() {
       </MenuTrigger>
 
       <Popover triggerRef={triggerRef} isOpen={isCalendarOpen} onOpenChange={setCalendarOpen}>
-        <Calendar aria-label="Publish date" value={date} onChange={selectDate} />
+        <Content>
+          <Calendar aria-label="Publish date" value={date} onChange={selectDate} />
+        </Content>
       </Popover>
 
       <Text>Publishing on {date == null ? 'demand' : date.toString()}</Text>

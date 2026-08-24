@@ -8,62 +8,72 @@
   transition:
     transform 0.1s,
     opacity 0.1s;
+
+  /* Own stacking context so `.arrow` can sit behind the content. See `.arrow`. */
+  isolation: isolate;
 }
 
-.tooltip[data-noarrow="true"] {
+.tooltip:where([data-noarrow="true"]) {
   --_arrow-width: 0px;
 }
 
-.tooltip[data-entering],
-.tooltip[data-exiting] {
+.tooltip:where([data-entering], [data-exiting]) {
   transform: var(--_animation-offset);
   opacity: 0;
 }
 
-.tooltip[data-placement="top"] {
+.tooltip:where([data-placement="top"]) {
   --_animation-offset: translateY(-4px);
   margin-bottom: var(--_content-offset);
 }
 
-.tooltip[data-placement="bottom"] {
+.tooltip:where([data-placement="bottom"]) {
   --_animation-offset: translateY(4px);
   margin-top: var(--_content-offset);
 }
 
-.tooltip[data-placement="right"] {
+.tooltip:where([data-placement="right"]) {
   --_animation-offset: translateX(4px);
   margin-left: var(--_content-offset);
 }
 
-.tooltip[data-placement="left"] {
+.tooltip:where([data-placement="left"]) {
   --_animation-offset: translateX(-4px);
   margin-right: var(--_content-offset);
 }
 
+/*
+ * A square rotated 45deg: one corner pokes out past the panel edge as the tip, the rest stays
+ * inside to cover the panel's border so the bubble reads as one shape. That inside half must not
+ * paint over the content, so the arrow goes behind it - `z-index: -1` inside the panel's stacking
+ * context paints above the panel's background and border, but below its in-flow children. The
+ * panel's `elevation` filter still sees the arrow, so bubble and tip share one drop shadow.
+ */
 .arrow {
   background: inherit;
   width: var(--_arrow-rotated-width);
   height: var(--_arrow-rotated-width);
   rotate: 45deg;
+  z-index: -1;
 }
 
-.arrow[data-placement="top"] {
+.arrow:where([data-placement="top"]) {
   transform-origin: left;
   rotate: -45deg;
   margin-top: var(--_arrow-offset);
 }
 
-.arrow[data-placement="bottom"] {
+.arrow:where([data-placement="bottom"]) {
   transform-origin: left;
   margin-bottom: var(--_arrow-offset);
 }
 
-.arrow[data-placement="left"] {
+.arrow:where([data-placement="left"]) {
   transform-origin: top;
   margin-left: var(--_arrow-offset);
 }
 
-.arrow[data-placement="right"] {
+.arrow:where([data-placement="right"]) {
   transform-origin: top;
   rotate: -45deg;
   margin-right: var(--_arrow-offset);

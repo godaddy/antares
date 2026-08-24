@@ -8,6 +8,8 @@ import { PlaygroundExample } from '../examples/drawer-playground.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
+import { ScrollableExample } from '../examples/scrollable.tsx';
+import { LayerPropsExample } from '../examples/layer-props.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -135,6 +137,48 @@ describe('@godaddy/antares', function antares() {
       });
 
       assume(getByRole('dialog', { name: 'Nested popover' }).query()).is.not.equal(null);
+    });
+
+    it('scrolls the Content region while the title row stays pinned', async function scrollableContent() {
+      const { getByRole } = await render(<ScrollableExample />);
+
+      await getByRole('button', { name: 'Open drawer' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog', { name: 'Terms' }).query()).is.not.equal(null);
+      });
+
+      const dialog = getByRole('dialog', { name: 'Terms' }).element();
+      const content = dialog.querySelector('section') as HTMLElement;
+      assume(getComputedStyle(content).overflowY).equals('auto');
+
+      // The title row is a content-sized grid track, so it cannot be squeezed by the content:
+      // the scrolling region ends inside the panel rather than overflowing it.
+      const title = dialog.querySelector('[slot="title"]') as HTMLElement;
+      assume(title.getBoundingClientRect().bottom <= content.getBoundingClientRect().top).is.true();
+      assume(content.getBoundingClientRect().bottom <= dialog.getBoundingClientRect().bottom).is.true();
+    });
+
+    it('routes className and each layer bag to its own element', async function layerProps() {
+      const { getByRole } = await render(<LayerPropsExample />);
+
+      await getByRole('button', { name: 'Open drawer' }).click();
+      await vi.waitFor(async function open() {
+        assume(getByRole('dialog').query()).is.not.equal(null);
+      });
+
+      const dialog = document.querySelector('.custom-dialog');
+      const container = document.querySelector('.custom-container');
+      const overlay = document.querySelector('.custom-overlay');
+
+      // Three distinct nested elements: overlay > container > dialog.
+      assume(dialog?.getAttribute('role')).equals('dialog');
+      assume(container?.contains(dialog as Node)).is.true();
+      assume(overlay?.contains(container as Node)).is.true();
+
+      // The panel keeps its own classes and the slide vars alongside the consumer's class.
+      const panel = container as HTMLElement;
+      assume(panel.className.split(' ').length).is.above(1);
+      assume(panel.style.getPropertyValue('--_slide')).is.not.equal('');
     });
   });
 });

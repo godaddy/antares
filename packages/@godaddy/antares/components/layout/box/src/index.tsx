@@ -160,8 +160,8 @@ export const Box = forwardRef(function Box(props: BoxProps<ElementType>, ref: Po
     <Component
       {...rest}
       ref={ref}
-      className={composeClassName(className, styles.box) as string}
-      style={composeStyle(style, computedStyle) as CSSProperties}
+      className={composeClassName(className, styles.box)}
+      style={composeStyle(style, computedStyle)}
       data-elevation={elevation}
     />
   );
