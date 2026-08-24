@@ -1,1 +1,1 @@
-export { Image, type ImageProps } from '#components/image';
+export { Image, ImageContext, type ImageProps } from '#components/image';

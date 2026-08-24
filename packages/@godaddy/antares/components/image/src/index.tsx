@@ -2,14 +2,16 @@ import { createContext, forwardRef, type ImgHTMLAttributes } from 'react';
 import { type ContextValue, type SlotProps, useContextProps } from 'react-aria-components';
 
 /** Props for the Image component. */
-export interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'alt' | 'slot'>, SlotProps {
+export interface ImageProps
+  extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'alt' | 'slot' | 'children' | 'dangerouslySetInnerHTML'>,
+    SlotProps {
   /** Alternative text for informative images, or an empty string for decorative images. */
   alt: string;
 }
 
 /**
- * Lets an Antares parent (such as Avatar) pass presentation and behavior to a
- * composed Image without wrapping or cloning it. Internal to the design system.
+ * Context used by Antares parents to pass presentation and behavior to a
+ * composed Image without wrapping or cloning it.
  */
 export const ImageContext = createContext<ContextValue<ImageProps, HTMLImageElement>>(null);
 

@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { cx } from 'cva';
-import { Provider, TextContext } from 'react-aria-components';
+import { Provider as RACProvider, TextContext } from 'react-aria-components';
 import { ImageContext } from '#components/image';
 import styles from './index.module.css';
 
@@ -82,7 +82,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
   );
 
   return (
-    <Provider
+    <RACProvider
       values={[
         [
           ImageContext,
@@ -112,6 +112,6 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(p
       >
         {children}
       </span>
-    </Provider>
+    </RACProvider>
   );
 });
