@@ -101,11 +101,11 @@
     --_avatar-default-bg: var(--ux-ktf9ml, #022627);
   }
 
-  &:where([data-loading-status="loaded"]) :where(.image) {
+  &:where([data-loading-status="loaded"]) .image {
     visibility: visible;
   }
 
-  &:where([data-loading-status="loaded"]) :where(.fallback) {
+  &:where([data-loading-status="loaded"]) .fallback {
     display: none;
   }
 }
