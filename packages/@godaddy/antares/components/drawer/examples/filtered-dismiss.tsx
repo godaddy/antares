@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Button, Text, Box } from '@godaddy/antares';
+import { Button, Content, Drawer, Text } from '@godaddy/antares';
 
 /**
  * Test-only example for filtering outside interaction dismissal.
@@ -22,9 +22,9 @@ export function FilteredDismissExample() {
           return false;
         }}
       >
-        <Box padding="md">
+        <Content>
           <Text>Filtered dismiss</Text>
-        </Box>
+        </Content>
       </Drawer>
     </>
   );

@@ -61,8 +61,8 @@ export const Flex = forwardRef(function Flex(props: FlexProps<ElementType>, ref:
       {...rest}
       as={as}
       ref={ref}
-      className={composeClassName(className, displayClass, columnClass) as string}
-      style={composeStyle(style, computedStyle) as CSSProperties}
+      className={composeClassName(className, displayClass, columnClass)}
+      style={composeStyle(style, computedStyle)}
     />
   );
 }) as PolymorphicComponent<FlexOwnProps>;

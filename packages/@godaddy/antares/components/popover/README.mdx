@@ -8,6 +8,9 @@ import * as Stories from './popover.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
+`PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
+Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
+
 ## Installation
 
 ```bash
@@ -18,10 +21,46 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
+## Accessibility
+
+### Keyboard
+
+| Key           | Action                             |
+| ------------- | ---------------------------------- |
+| `Enter/Space` | Opens the popover from its trigger |
+| `Escape`      | Closes the popover                 |
+
+### ARIA
+
+- `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+- A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
+  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
+  `triggerRef` it needs an explicit `aria-label`
+
 ## Best Practices
 
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
+- Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
+  since there is no trigger to borrow the name from.
+- Popover width is determined by its content, and it's recommended to keep it under 400px.
 
 ## Props
 
+```tsx
+<PopoverTrigger>
+  <Button />
+  <Popover>
+    <Heading slot="title" />
+    <CloseButton />
+    <Content />
+    {/* ... */}
+  </Popover>
+</PopoverTrigger>
+```
+
+The `Popover` component accepts the following props:
+
 <ArgTypes of={Stories.Props} />
+
+The `PopoverTrigger` component accepts the following props:
+
+<ArgTypes of={Stories.PopoverTriggerProps} />

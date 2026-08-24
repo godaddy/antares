@@ -1,20 +1,24 @@
-import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';
+import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';
 
 /**
- * The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+ * Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+ * `ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
  * @order 1
  */
 export function DefaultExample() {
   return (
     <ModalTrigger>
       <Button variant="primary">Open modal</Button>
-      <Modal
-        title="Modal title"
-        description="She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther."
-      >
-        <Flex padding="md" elevation="card" justifyContent="center">
-          This is the children content
-        </Flex>
+      <Modal>
+        <Heading slot="title">Delete file?</Heading>
+        <CloseButton />
+        <Content>This action cannot be undone. The file will be permanently removed.</Content>
+        <ButtonGroup>
+          <Button slot="close">Cancel</Button>
+          <Button slot="close" variant="critical">
+            Delete
+          </Button>
+        </ButtonGroup>
       </Modal>
     </ModalTrigger>
   );

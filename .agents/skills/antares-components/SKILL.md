@@ -66,15 +66,52 @@ export interface ButtonProps extends Omit<RACButtonProps, 'className'> {
 }
 ```
 
+## Composition
+
+A component with an interior **exposes** it instead of configuring it through props like `title`/`actions`/`media`. The consumer composes generic regions — `Header`, `Content`, `Footer`, `ButtonGroup` — and the component only positions and spaces them. Config props describe behavior; structure belongs to the consumer.
+
+A region renders standalone with its own defaults, or adopts a parent's styling when that parent provides its context. Precedence is **defaults < parent context < consumer props**, via `useContextProps`:
+
+```tsx
+export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(props, ref) {
+  [props, ref] = useContextProps(props, ref, HeaderContext);
+
+  return <Flex as="header" justifyContent="space-between" padding="md" {...props} ref={ref} />;
+});
+```
+
+- **Region defaults go before `{...props}`** so context and consumers can override them — the opposite of the usual rule. Only an invariant the consumer must not break goes after the spread.
+- **Export the context and props type with the region**, since a consumer may need to provide the context.
+- **Place regions by named grid area, not source order**, so they can be written in any order.
+- **Regions own their padding; shells do not.** Padding on a scrolling element collapses at the scroll edge.
+- **Keep a shell's layout CSS and its region contexts together** — the CSS defines the areas, the contexts assign them, and copies drift apart.
+
+### Presets
+
+A preset pre-fills props on an existing component so a common composition needs no wiring (a close button that defaults to `slot="close"`; a heading that slots as a dialog's title). Spread the caller's props **after** the defaults so every one stays overridable. When a preset can't express a variant, document the raw composition rather than growing props for it.
+
+### Where props land
+
+One component often renders several nested elements, such as a backdrop, positioned panel, and dialog, or a field and its control. Switching between components should not require guessing which element a prop targets. Props should always map to the same role.
+
+- **One element is the primary surface, and `...rest`, `className`, `style`, and `ref` always target it.** For overlays, that's the `OverlayDialog`. Where there is no dialog, such as `Tooltip`, it's the positioned panel. No per-component exceptions.
+- **Layer-specific behavior stays flat.** Props such as `placement`, `offset`, `maxSize`, and open state are exposed individually and documented with JSDoc. `Pick` only the required props from the corresponding RAC type rather than extending it wholesale, since exposing an API is a one-way door.
+- **Other layers are configured through a props bag named for the layer**, such as `overlayProps` (backdrop) or `containerProps` (positioned panel), and only on components that actually have that layer. A component without a backdrop should not expose `overlayProps`.
+- **Each props bag omits any prop already exposed at the top level**, so every prop has exactly one home. `className` and `style` are merged with the layer's defaults using `composeClassName` and `composeStyle`, never replaced.
+- **State props are accepted by both the component and its trigger**, where applicable, so either can be controlled.
+
+A props bag is for configuring a layer, not expressing structure. If it starts carrying structure, expose that layer as a lower-level component instead.
+
 ## CSS
 
-- Use the `styles.className` pattern, and merge incoming class names with `cx(styles.className, className)` so a caller's `className` augments the styles instead of replacing them.
+- Use the `styles.className` pattern, and merge incoming class names with `composeClassName(className, styles.className)` so a caller's `className` augments the styles instead of replacing them.
 - Data-attribute selectors for RAC state only: `[data-hovered]`, `[data-pressed]`, `[data-disabled]`, etc.
 - Private vars: `--_` prefix. Expose a public `--var`; internally read it as `--_var: var(--var, fallback)`.
-- Focus: `&[data-focus-visible] { outline: 2px solid Highlight; outline-offset: 2px; }`
-- Disabled: `&[data-disabled] { opacity: 0.4; cursor: not-allowed; }` (use `&:disabled` only for native HTML elements)
+- Focus: `&:where([data-focus-visible]) { outline: 2px solid Highlight; outline-offset: 2px; }`
+- Disabled: `&:where([data-disabled]) { opacity: 0.4; cursor: not-allowed; }` (use `&:where(:disabled)` only for native HTML elements)
 - **Border-width:** always `1px`. No other values, no variables.
 - **Font-weight:** prefer `bolder` when text needs bold and the element doesn't provide it natively; avoid numeric weights and `bold` in new code.
+- **Specificity:** every selector should compute to exactly **0-1-0**. Wrap state, attribute, and element selectors in `:where()` (for example, `&:where([data-hovered])`, `.overlay:where([data-entering])`, `.header :where([slot="close"])`). If a rule must exceed `0-1-0` (for example, to compete with inline styles or a third-party stylesheet), leave a comment explaining why.
 
 ### Token / intent fallbacks
 
@@ -230,6 +267,19 @@ export const Playground = getStory(PlaygroundExample, {
 - Use the following suggested `##` sections, in this order, when applicable: Features, Installation, Examples, Customization, Accessibility, Best Practices, Troubleshooting, Props. Add other sections if they better suit the component or documentation.
 - Use `<Meta of={Stories} name="Overview" />` for the overview and `<ArgTypes of={Stories.Props} />` for the props table.
 - Use `<Examples of={Stories.examples} />` to render **all** examples. At build time, it expands into one `###` heading, the JSDoc description, a live `<Story>`, and a `<Source>` snippet for each example.
+- Open **Props** with an anatomy block when the component has a composed interior or a trigger: a `tsx` snippet of the element tree, tags only, no props or children beyond what the structure needs (`slot="title"`, `placement="right"`), ending in `{/* ... */}` for the regions a consumer may add. It shows what nests inside what before the tables explain each prop.
+
+```tsx
+<PopoverTrigger>
+  <Button />
+  <Popover>
+    <Heading slot="title" />
+    <CloseButton />
+    <Content />
+    {/* ... */}
+  </Popover>
+</PopoverTrigger>
+```
 
 ```mdx
 ---

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, Button, Text, Popover, PopoverTrigger, Box } from '@godaddy/antares';
+import { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';
 
 /**
  * Popovers rendered inside a drawer stay open without dismissing the drawer.
@@ -15,14 +15,16 @@ export function NestedPopoverExample() {
         Open drawer
       </Button>
       <Drawer placement="right" isOpen={open} onOpenChange={setOpen} isDismissable aria-label="Nested popover">
-        <Box padding="md">
+        <Content>
           <PopoverTrigger>
             <Button variant="primary">Open popover</Button>
-            <Popover>
-              <Text>Popover inside drawer</Text>
+            <Popover aria-label="Popover">
+              <Content>
+                <Text>Popover inside drawer</Text>
+              </Content>
             </Popover>
           </PopoverTrigger>
-        </Box>
+        </Content>
       </Drawer>
     </>
   );

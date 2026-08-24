@@ -16,3 +16,20 @@ figure.shiki pre {
 figure.shiki [role="region"] {
   overflow-x: hidden;
 }
+
+/* Overrides the theme's `body` rule, which Fumadocs' preset only partly re-declares. */
+body {
+  background-color: var(--color-fd-background);
+  color: var(--color-fd-foreground);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Undoes Tailwind preflight inside previews, which Storybook does not apply. */
+.ux-surface :where(p, ul, ol, li, h1, h2, h3, h4, h5, h6, blockquote, dl, dd, figure, hr, pre) {
+  margin: revert;
+  padding: revert;
+  border: revert;
+}

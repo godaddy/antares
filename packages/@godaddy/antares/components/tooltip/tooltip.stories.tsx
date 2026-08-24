@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Tooltip } from './src/index.tsx';
+import { Tooltip, TooltipTrigger } from './src/index.tsx';
 import { PlaygroundExample } from './examples/tooltip-playground.tsx';
 
 export default getMeta({
@@ -8,6 +8,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(Tooltip);
+
+export const TooltipTriggerProps = getComponentDocs(TooltipTrigger);
 
 export const Examples = getExamples('./examples');
 

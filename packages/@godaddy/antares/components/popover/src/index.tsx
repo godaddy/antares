@@ -1,103 +1,100 @@
-import { forwardRef, type CSSProperties, type RefObject, type ReactNode } from 'react';
-import { cx } from 'cva';
+import { forwardRef, type ReactNode } from 'react';
 import {
-  Dialog as RACDialog,
-  type DialogProps as RACDialogProps,
   Popover as RACPopover,
   type PopoverProps as RACPopoverProps,
+  type DialogProps as RACDialogProps,
   DialogTrigger as RACDialogTrigger,
   type DialogTriggerProps as RACDialogTriggerProps,
-  OverlayArrow as RACOverlayArrow,
-  composeRenderProps
+  OverlayArrow as RACOverlayArrow
 } from 'react-aria-components';
-import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Button } from '#components/button';
-import { Icon } from '#components/icon';
+import { Flex } from '#components/layout/flex';
+import { OverlayDialog } from '#components/_internal/overlay-dialog';
 import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 
-interface ContentProps extends RACDialogProps, FlexOwnProps {}
-
 export interface PopoverTriggerProps extends RACDialogTriggerProps {}
 
-export interface PopoverProps extends RACPopoverProps, FlexOwnProps {
-  /** The content to display inside the popover. */
+type PopoverPositioningKeys =
+  | 'placement'
+  | 'offset'
+  | 'crossOffset'
+  | 'containerPadding'
+  | 'shouldFlip'
+  | 'triggerRef'
+  | 'isOpen'
+  | 'defaultOpen'
+  | 'onOpenChange'
+  | 'isKeyboardDismissDisabled'
+  | 'shouldCloseOnInteractOutside';
+
+export interface PopoverProps extends Omit<RACDialogProps, 'children'>, Pick<RACPopoverProps, PopoverPositioningKeys> {
+  /** The content of the popover. */
   children?: ReactNode;
-
-  /** Whether to show the close button. */
-  showCloseButton?: boolean;
-
-  /** Props to pass to the content container. */
-  contentProps?: ContentProps;
-
-  /** The placement of the popover relative to the trigger. */
-  placement?: RACPopoverProps['placement'];
 
   /** Whether to hide the arrow. */
   hideArrow?: boolean;
 
-  /** The content to display in the header when `showCloseButton` is `true`. */
-  header?: ReactNode;
-
   /**
-   * The ref for the element which the popover positions itself with respect to.
-   * When used within `PopoverTrigger` component, this is set automatically.
+   * The ARIA role of the popover's dialog. Use `alertdialog` for an urgent message
+   * that interrupts the user.
+   * @default 'dialog'
    */
-  triggerRef?: RefObject<Element | null>;
+  role?: RACDialogProps['role'];
+
+  /** Props for the positioned panel that holds the popover's dialog. */
+  containerProps?: Omit<RACPopoverProps, 'children' | PopoverPositioningKeys>;
 }
 
 /**
- * A popover component.
+ * An overlay positioned relative to a trigger.
  *
  * @param props - {@link PopoverProps}
  */
 export const Popover = forwardRef<HTMLElement, PopoverProps>(function Popover(props, ref) {
   const {
-    className,
     children,
-    header,
-    showCloseButton,
     hideArrow,
-    contentProps,
-    containerPadding = 10,
+    containerProps,
+    className,
     style,
-    ...rest
+    placement,
+    offset,
+    crossOffset,
+    containerPadding,
+    shouldFlip,
+    triggerRef,
+    isOpen,
+    defaultOpen,
+    onOpenChange,
+    isKeyboardDismissDisabled,
+    shouldCloseOnInteractOutside,
+    ...dialogProps
   } = props;
 
   return (
     <Flex
-      ref={ref}
       elevation="overlay"
       data-noarrow={hideArrow}
       rounding="md"
-      containerPadding={containerPadding}
-      {...rest}
+      {...containerProps}
       as={RACPopover}
-      style={composeRenderProps(style, function composeStyle(value) {
-        return { ...value, '--_container-padding': `${containerPadding}px` } as CSSProperties;
-      })}
-      className={composeClassName(className, styles.popover)}
+      placement={placement}
+      offset={offset}
+      crossOffset={crossOffset}
+      containerPadding={containerPadding}
+      shouldFlip={shouldFlip}
+      triggerRef={triggerRef}
+      isOpen={isOpen}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
+      shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
+      className={composeClassName(containerProps?.className, styles.popover)}
     >
       {hideArrow ? null : <RACOverlayArrow aria-hidden="true" className={styles.arrow} />}
-      <Flex
-        direction="column"
-        padding="md"
-        aria-label="Content"
-        {...contentProps}
-        as={RACDialog}
-        className={cx(styles.content, contentProps?.className)}
-      >
-        {showCloseButton ? (
-          <Flex gap="sm">
-            {header}
-            <Button className={styles.close} slot="close" aria-label="Close">
-              <Icon icon="x" />
-            </Button>
-          </Flex>
-        ) : null}
-
+      <OverlayDialog {...dialogProps} ref={ref} className={className} style={style}>
         {children}
-      </Flex>
+      </OverlayDialog>
     </Flex>
   );
 });

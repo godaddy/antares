@@ -6,6 +6,8 @@ exports[`@godaddy/antares > #Text > renders the align example 1`] = `"<p class="
 
 exports[`@godaddy/antares > #Text > renders the as example 1`] = `"<marquee class="text">A scrolling marquee</marquee>"`;
 
+exports[`@godaddy/antares > #Text > renders the heading example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading">Heading level 1</h1><h2 class="heading">Heading level 2</h2><h3 class="heading">Heading level 3</h3></div>"`;
+
 exports[`@godaddy/antares > #Text > renders the maxLines example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text" style="--max-lines:2">This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"`;
 
 exports[`@godaddy/antares > #Text > renders the text example 1`] = `"<span class="text">Hello, world!</span>"`;

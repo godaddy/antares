@@ -14,9 +14,9 @@
   "dependencies": {
     "@bento/storybook-addon-helpers": "*",
     "estree-util-value-to-estree": "^3.5.0",
-    "fumadocs-core": "^16.9.2",
-    "fumadocs-mdx": "^15.0.9",
-    "fumadocs-ui": "^16.9.2",
+    "fumadocs-core": "^16.14.3",
+    "fumadocs-mdx": "^15.2.3",
+    "fumadocs-ui": "^16.14.3",
     "lucide-react": "^1.17.0",
     "next": "^16.3.0",
     "react": "^19.2.6",

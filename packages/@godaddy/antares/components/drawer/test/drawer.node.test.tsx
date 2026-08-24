@@ -7,6 +7,7 @@ import { PlacementsExample } from '../examples/placements.tsx';
 import { NestedPopoverExample } from '../examples/nested-popover.tsx';
 import { NoEscapeDismissExample } from '../examples/no-escape-dismiss.tsx';
 import { FilteredDismissExample } from '../examples/filtered-dismiss.tsx';
+import { ScrollableExample } from '../examples/scrollable.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Drawer', function drawerTests() {
@@ -46,12 +47,16 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<PlaygroundExample placement="bottom" minSize="40%" />)).toMatchSnapshot();
     });
 
-    it('renders PlaygroundExample with close button floor', function playgroundCloseFloor() {
-      expect(renderToString(<PlaygroundExample placement="right" showCloseButton />)).toMatchSnapshot();
+    it('renders PlaygroundExample with a composed title', function playgroundTitle() {
+      expect(renderToString(<PlaygroundExample placement="right" showTitle />)).toMatchSnapshot();
     });
 
     it('renders PlacementsExample', function placementsExample() {
       expect(renderToString(<PlacementsExample />)).toMatchSnapshot();
+    });
+
+    it('renders ScrollableExample', function scrollableExample() {
+      expect(renderToString(<ScrollableExample />)).toMatchSnapshot();
     });
 
     it('renders NestedPopoverExample', function nestedPopoverExample() {

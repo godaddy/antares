@@ -12,6 +12,7 @@ import {
 } from '#components/field';
 import { Popover } from '#components/popover';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
+import { Content } from '#components/structure';
 
 type SelectionMode = 'single' | 'multiple';
 
@@ -29,8 +30,10 @@ function FieldSelectTrigger<T extends object, M extends SelectionMode = 'single'
   return (
     <>
       <FieldSelectFragment {...props} />
-      <Popover hideArrow contentProps={{ inlinePadding: '0', blockPadding: 'xs' }}>
-        <ListBox>{children}</ListBox>
+      <Popover hideArrow>
+        <Content blockPadding="xs" inlinePadding="0">
+          <ListBox>{children}</ListBox>
+        </Content>
       </Popover>
     </>
   );

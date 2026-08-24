@@ -1,4 +1,4 @@
-import { Popover, Box, Flex, Button } from '@godaddy/antares';
+import { Popover, Box, Content, Flex, Button } from '@godaddy/antares';
 import { useRef, useState } from 'react';
 
 /**
@@ -20,8 +20,8 @@ export function CustomAnchorExample() {
         Popover will be positioned relative to me
       </Box>
 
-      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>
-        Popover content!
+      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen} aria-label="Popover">
+        <Content>Popover content!</Content>
       </Popover>
     </Flex>
   );

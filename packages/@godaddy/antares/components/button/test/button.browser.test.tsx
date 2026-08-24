@@ -2,6 +2,7 @@ import { describe, it, beforeAll, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
+import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
@@ -95,6 +96,11 @@ describe('@godaddy/antares', function antares() {
       expect(pressed).toEqual(false);
       await getByRole('button').click();
       expect(pressed).toEqual(true);
+    });
+
+    it('renders a CloseButton with the "Close" accessible name', async function closeButtonAccessibleName() {
+      const { getByRole } = await render(<CloseButton />);
+      await expect.element(getByRole('button', { name: 'Close' })).toBeVisible();
     });
   });
 });

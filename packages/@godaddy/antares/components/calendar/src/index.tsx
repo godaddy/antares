@@ -16,7 +16,7 @@ import styles from './index.module.css';
 import { cx } from 'cva';
 
 export interface CalendarProps extends FlexOwnProps, RACCalendarProps<CalendarDate> {
-  /** Number of month grids to display. @default 1 (2 for `RangeCalendar`) */
+  /** Number of month grids to display. @default 1 */
   pageCount?: number;
 }
 
@@ -49,10 +49,10 @@ export function Calendar(props: CalendarProps) {
   );
 }
 
-export interface RangeCalendarProps
-  extends FlexOwnProps,
-    Pick<CalendarProps, 'pageCount'>,
-    RACRangeCalendarProps<CalendarDate> {}
+export interface RangeCalendarProps extends FlexOwnProps, RACRangeCalendarProps<CalendarDate> {
+  /** Number of month grids to display. @default 2 */
+  pageCount?: number;
+}
 
 /**
  * Standalone range calendar grid built on React Aria's RangeCalendar. Date-only (`CalendarDate`).

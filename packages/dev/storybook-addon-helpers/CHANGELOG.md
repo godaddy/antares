@@ -1,5 +1,13 @@
 # @bento/storybook-addon-helpers
 
+## 0.3.1
+
+### Patch Changes
+
+- Extract props from qualified type names (`React.FC`) and from `ForwardRefExoticComponent`, `ComponentType`, `ExoticComponent`, and `NamedExoticComponent`. Components re-exported straight from a built `.d.ts`, such as `FileTrigger`, previously documented no props at all.
+
+  Also drop imports left unused after the CSF transform rewrites a stories file, and fail the build when a generated example story is named after a binding the file still declares, instead of emitting two declarations of that name. ([#308](https://github.com/godaddy/bento/pull/308) by @egaitan-godaddy)
+
 ## 0.3.0
 
 ### Minor Changes
