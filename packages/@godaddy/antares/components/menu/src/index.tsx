@@ -18,7 +18,7 @@ import {
 import type { ReactElement, ReactNode } from 'react';
 import { cx } from 'cva';
 import styles from './index.module.css';
-import { composeClassName } from '../../../utils/render-props.ts';
+import { composeClassName, composeStyle } from '../../../utils/render-props.ts';
 import { Popover, type PopoverProps } from '#components/popover';
 import { Text } from '#components/text';
 import { Icon } from '#components/icon';
@@ -180,14 +180,17 @@ export function MenuSeparator({ className, ...props }: MenuSeparatorProps) {
  *
  * @param props - {@link PopoverProps}
  */
-function MenuPopover({ contentProps, style, ...props }: PopoverProps) {
+function MenuPopover({ containerProps, className, ...props }: PopoverProps) {
   return (
     <Popover
       hideArrow
-      rounding="md"
+      aria-label="Menu"
       {...props}
-      contentProps={{ padding: '0', className: styles.menuPopover, ...contentProps }}
-      style={{ borderWidth: 0, ...style }}
+      className={composeClassName(className, styles.menuPopover)}
+      containerProps={{
+        ...containerProps,
+        style: composeStyle(containerProps?.style, { borderWidth: 0 })
+      }}
     />
   );
 }

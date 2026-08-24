@@ -10,6 +10,7 @@ export * from './exports/Button';
 export * from './exports/Text';
 export * from './exports/Image';
 export * from './exports/Layout';
+export * from './exports/Structure';
 export * from './exports/ListBox';
 export * from './exports/Select';
 export * from './exports/Menu';

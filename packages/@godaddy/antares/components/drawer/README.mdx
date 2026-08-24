@@ -8,17 +8,12 @@ import * as Stories from './drawer.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
+An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
+modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
+navigation and bottom sheets.
 
-`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
-
-## Features
-
-- Slides in from any screen edge (top, bottom, left, right)
-- `overlay` elevation panel over a dimmed backdrop, matching `Modal`
-- Physical `placement` (does not flip for RTL)
-- Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
-- CSS transitions with `prefers-reduced-motion` support
+`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
+state automatically.
 
 ## Installation
 
@@ -42,16 +37,28 @@ npm install --save @godaddy/antares
 ### ARIA
 
 - `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-- Dialog accessible name via `aria-label`
-- `aria-label="Close"` on the built-in close button
+- A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
 
 ## Best Practices
 
-- Always provide an `aria-label` so the dialog has an accessible name.
+- Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
 - Use `isDismissable` to allow closing via backdrop click.
 - Don't nest drawers.
 
 ## Props
+
+```tsx
+<Drawer placement="right">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+  {/* ... */}
+</Drawer>
+```
+
+The `Drawer` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />
 

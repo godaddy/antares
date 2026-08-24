@@ -1,0 +1,65 @@
+---
+title: Structure primitives
+description: Generic structural containers (Content, Header, Footer, ButtonGroup) for composing a component's interior.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './structure.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+- **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+- **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+- **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+- **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+
+## Hybrid styling
+
+Each container works in two modes:
+
+- **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
+- **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults < parent context < consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
+
+A parent adopts them by providing the contexts around its children:
+
+```tsx
+import { Provider } from 'react-aria-components';
+import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
+
+<Provider
+  values={[
+    [HeaderContext, { padding: 'md' }],
+    [ContentContext, { padding: 'md' }],
+    [FooterContext, { padding: 'md' }],
+    [ButtonGroupContext, { justifyContent: 'end' }]
+  ]}
+>
+  {children}
+</Provider>;
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
+
+### Content
+
+<ArgTypes of={Stories.ContentProps} />
+
+### Header
+
+<ArgTypes of={Stories.HeaderProps} />
+
+### Footer
+
+<ArgTypes of={Stories.FooterProps} />
+
+### ButtonGroup
+
+<ArgTypes of={Stories.ButtonGroupProps} />

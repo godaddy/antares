@@ -21,6 +21,7 @@ import {
 } from '#components/field';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
+import { Content } from '#components/structure';
 import { Calendar, RangeCalendar } from '#components/calendar';
 import styles from './index.module.css';
 
@@ -74,7 +75,9 @@ export function DatePicker(props: DatePickerProps) {
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
       <Popover hideArrow>
-        <Calendar />
+        <Content>
+          <Calendar />
+        </Content>
       </Popover>
     </Field>
   );
@@ -128,7 +131,9 @@ export function DateRangePicker(props: DateRangePickerProps) {
       <FieldDescription>{description}</FieldDescription>
       <FieldError>{errorMessage}</FieldError>
       <Popover hideArrow>
-        <RangeCalendar />
+        <Content>
+          <RangeCalendar />
+        </Content>
       </Popover>
     </Field>
   );
