@@ -1,4 +1,12 @@
-import { createContext, useContext } from 'react';
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useMemo,
+  type ForwardedRef,
+  type ReactElement,
+  type RefAttributes
+} from 'react';
 import {
   Tab as RACTab,
   TabList as RACTabList,
@@ -12,6 +20,7 @@ import {
   type TabProps as RACTabProps,
   type TabsProps as RACTabsProps
 } from 'react-aria-components';
+import { mergeRefs } from '@react-aria/utils';
 import { Button } from '#components/button';
 import { Box } from '#components/layout/box';
 import { Icon } from '#components/icon';
@@ -31,6 +40,11 @@ export interface TabsOverflowLabels {
   next: string;
 }
 
+const defaultOverflowLabels: TabsOverflowLabels = {
+  previous: 'Previous tabs',
+  next: 'Next tabs'
+};
+
 /** Internal context shared by the Tabs compound components. */
 interface TabsContextValue {
   /** Visual treatment applied to the tab group and its tabs. */
@@ -42,15 +56,15 @@ interface TabsContextValue {
 
 const TabsContext = createContext<TabsContextValue>({
   design: 'underline',
-  overflowLabels: { previous: '', next: '' }
+  overflowLabels: defaultOverflowLabels
 });
 
 export interface TabsProps extends Omit<RACTabsProps, 'orientation'> {
   /** The visual treatment for the tab group. */
   design?: TabsDesign;
 
-  /** Accessible labels for the previous and next overflow controls. */
-  overflowLabels: TabsOverflowLabels;
+  /** Accessible labels for the previous and next overflow controls. Defaults to English labels. */
+  overflowLabels?: TabsOverflowLabels;
 }
 
 /** Props for the tab list and its overflow controls. */
@@ -70,18 +84,19 @@ export interface TabPanelProps extends RACTabPanelProps {}
  *
  * @param props - The properties {@link TabListProps} passed to the component.
  */
-export function TabList<T>(props: TabListProps<T>) {
+export const TabList = forwardRef(function TabList<T>(props: TabListProps<T>, ref: ForwardedRef<HTMLDivElement>) {
   const { className, ...rest } = props;
   const { overflowLabels } = useContext(TabsContext);
   const { direction } = useLocale();
   const { shellRef, contentRef, viewportRef, state, scrollPrevious, scrollNext } = useTabsOverflow({
     isRTL: direction === 'rtl'
   });
+  const mergedContentRef = useMemo(() => mergeRefs(contentRef, ref), [contentRef, ref]);
 
   return (
-    <Flex ref={shellRef} className={styles.listShell} dir={direction}>
+    <Flex ref={shellRef} className={styles.listShell} dir={direction} alignItems="flex-end">
       <Box ref={viewportRef} className={styles.viewport}>
-        <RACTabList ref={contentRef} {...rest} className={composeClassName(className, styles.list)} />
+        <RACTabList {...rest} ref={mergedContentRef} className={composeClassName(className, styles.list)} />
       </Box>
       {state.hasOverflow ? (
         <Flex className={styles.controls} flex="0 0 auto" alignItems="center" alignSelf="stretch">
@@ -109,7 +124,7 @@ export function TabList<T>(props: TabListProps<T>) {
       ) : null}
     </Flex>
   );
-}
+}) as <T>(props: TabListProps<T> & RefAttributes<HTMLDivElement>) => ReactElement;
 
 /**
  * Groups related tabs and their associated panels.
@@ -132,12 +147,13 @@ export function TabList<T>(props: TabListProps<T>) {
  * </Tabs>
  * ```
  */
-export function Tabs(props: TabsProps) {
-  const { overflowLabels, design = 'underline', className, children, ...rest } = props;
+export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref) {
+  const { overflowLabels = defaultOverflowLabels, design = 'underline', className, children, ...rest } = props;
   return (
     <TabsContext.Provider value={{ design, overflowLabels }}>
       <Flex
         {...rest}
+        ref={ref}
         as={RACTabs}
         direction="column"
         orientation="horizontal"
@@ -148,39 +164,39 @@ export function Tabs(props: TabsProps) {
       </Flex>
     </TabsContext.Provider>
   );
-}
+});
 
 /**
  * A selectable tab within a {@link TabList}.
  *
  * @param props - The properties {@link TabProps} passed to the component.
  */
-export function Tab(props: TabProps) {
+export const Tab = forwardRef<HTMLDivElement, TabProps>(function Tab(props, ref) {
   const { className, ...rest } = props;
   const { design } = useContext(TabsContext);
   return (
-    <RACTab {...rest} className={composeClassName(className, styles.tab)} data-design={design}>
+    <RACTab {...rest} ref={ref} className={composeClassName(className, styles.tab)} data-design={design}>
       {props.children}
     </RACTab>
   );
-}
+});
 
 /**
  * Groups the panels associated with a {@link TabList}.
  *
  * @param props - The properties {@link TabPanelsProps} passed to the component.
  */
-export function TabPanels<T>(props: TabPanelsProps<T>) {
+export const TabPanels = forwardRef(function TabPanels<T>(props: TabPanelsProps<T>, ref: ForwardedRef<HTMLDivElement>) {
   const { className, ...rest } = props;
-  return <RACTabPanels {...rest} className={composeClassName(className, styles.panels) as string} />;
-}
+  return <RACTabPanels {...rest} ref={ref} className={composeClassName(className, styles.panels) as string} />;
+}) as <T>(props: TabPanelsProps<T> & RefAttributes<HTMLDivElement>) => ReactElement;
 
 /**
  * Displays the panel associated with the selected {@link Tab}.
  *
  * @param props - The properties {@link TabPanelProps} passed to the component.
  */
-export function TabPanel(props: TabPanelProps) {
+export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(function TabPanel(props, ref) {
   const { className, ...rest } = props;
-  return <RACTabPanel {...rest} className={composeClassName(className, styles.panel)} />;
-}
+  return <RACTabPanel {...rest} ref={ref} className={composeClassName(className, styles.panel)} />;
+});

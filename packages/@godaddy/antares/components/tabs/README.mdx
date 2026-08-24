@@ -30,7 +30,7 @@ npm install @godaddy/antares
 
 Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
 
-`overflowLabels.previous` and `overflowLabels.next` are required because the overflow controls are interactive and must be announced with localized action labels. These labels should describe the logical direction (e.g., "Previous tabs" and "Next tabs") rather than physical directions like "left" or "right", as the component automatically handles RTL layouts.
+`overflowLabels` is optional and defaults to "Previous tabs" and "Next tabs". Provide localized labels when needed; they should describe the logical direction rather than physical directions like "left" or "right", as the component automatically handles RTL layouts.
 
 `TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Give each `Tab` and its corresponding `TabPanel` the same `id`; React Aria uses that key to build their accessible relationship.
 
@@ -53,4 +53,22 @@ Use these attributes to extend styling without replacing the accessibility behav
 
 ## Props
 
+### Tabs
+
 <ArgTypes of={Stories.Props} />
+
+### TabList
+
+<ArgTypes of={Stories.TabListProps} />
+
+### Tab
+
+<ArgTypes of={Stories.TabProps} />
+
+### TabPanels
+
+<ArgTypes of={Stories.TabPanelsProps} />
+
+### TabPanel
+
+<ArgTypes of={Stories.TabPanelProps} />

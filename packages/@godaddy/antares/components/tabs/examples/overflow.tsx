@@ -1,16 +1,20 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
+import type { Ref } from 'react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs, type TabsOverflowLabels } from '@godaddy/antares';
+
+interface OverflowExampleProps {
+  maxWidth?: string;
+  overflowLabels?: TabsOverflowLabels;
+  tabListRef?: Ref<HTMLDivElement>;
+}
 
 /**
  * When the tab strip is narrower than its content, the group adds controls that move one tab at a time.
  * @order 5
  */
-export function OverflowExample({ maxWidth = '320px' }: { maxWidth?: string }) {
+export function OverflowExample({ maxWidth = '320px', overflowLabels, tabListRef }: OverflowExampleProps) {
   return (
-    <Tabs
-      overflowLabels={{ previous: 'Scroll previous tabs', next: 'Scroll next tabs' }}
-      style={{ width: maxWidth, maxWidth }}
-    >
-      <TabList aria-label="Product settings">
+    <Tabs overflowLabels={overflowLabels} style={{ width: maxWidth, maxWidth }}>
+      <TabList ref={tabListRef} aria-label="Product settings">
         <Tab id="overview">Overview</Tab>
         <Tab id="availability">Availability</Tab>
         <Tab id="shipping">Shipping</Tab>
