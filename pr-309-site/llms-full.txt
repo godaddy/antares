@@ -212,6 +212,8 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 
 Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
 
+Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
+
 ## Installation [#installation]
 
 ```bash
@@ -307,6 +309,10 @@ The `Button` component accepts the following props:
 <PropTable />
 
 The `LinkButton` component accepts the following props:
+
+<PropTable />
+
+The `CloseButton` component accepts the following props:
 
 <PropTable />
 
@@ -866,6 +872,71 @@ The `CheckboxGroup` component has the following props:
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+<PropTable />
+
+
 # DatePicker
 
 
@@ -1007,7 +1078,13 @@ The `DateRangePicker` component accepts the following props:
 <PropTable />
 
 
-# CircularProgress
+# Drawer
+
+
+
+
+
+
 
 
 
@@ -1023,6 +1100,13 @@ The `DateRangePicker` component accepts the following props:
 
 <Meta of="Stories" name="Overview" />
 
+An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
+modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
+navigation and bottom sheets.
+
+`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
+state automatically.
+
 ## Installation [#installation]
 
 ```bash
@@ -1033,41 +1117,92 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-A basic determinate progress indicator with a label and helper text.
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
 
-### Sizes [#sizes]
+### Bottom Sheet [#bottom-sheet]
 
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
+`CloseButton` for the dismiss affordance.
 
-<Story of="SizesExample" />
+<Story of="BottomSheetExample" />
 
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
 
-### Emphasis [#emphasis]
+### Placements [#placements]
 
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+The drawer slides in from whichever edge you set with `placement`.
 
-<Story of="EmphasisExample" />
+<Story of="PlacementsExample" />
 
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="NestedPopoverExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### No Escape Dismiss [#no-escape-dismiss]
+
+Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+
+<Story of="NoEscapeDismissExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Scrollable content [#scrollable-content]
+
+When the content is taller than the drawer, the `Content` region scrolls while the title row
+stays pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
-### ARIA Support [#aria-support]
+### Keyboard [#keyboard]
 
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
+| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
+
+## Best Practices [#best-practices]
+
+* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
 
 ## Props [#props]
+
+```tsx
+<Drawer placement="right">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+  {/* ... */}
+</Drawer>
+```
+
+The `Drawer` component accepts the following props:
+
+<PropTable />
+
+The `DrawerTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -1346,116 +1481,6 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 * Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Drawer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-An overlay panel that slides in from a screen edge. Built like `Modal` (a RAC modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar navigation and bottom sheets.
-
-`DrawerTrigger` is the composition helper: it wraps a trigger button and a `<Drawer>`, handling open state and `aria-controls` linkage automatically. Based on RAC `DialogTrigger`.
-
-## Features [#features]
-
-* Slides in from any screen edge (top, bottom, left, right)
-* `overlay` elevation panel over a dimmed backdrop, matching `Modal`
-* Physical `placement` (does not flip for RTL)
-* Focus trapping, backdrop dismiss, and scroll lock via RAC Modal
-* CSS transitions with `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Drawer, DrawerTrigger, Button, Text, Box } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Drawer content goes here.</Text>\n        </Box>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
-
-### Bottom Sheet [#bottom-sheet]
-
-Use `placement="bottom"` with controlled state for a bottom sheet pattern.
-
-<Story of="BottomSheetExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Box } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer\n        placement=\&#x22;bottom\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        showCloseButton\n        aria-label=\&#x22;Bottom sheet\&#x22;\n      >\n        <Box elevation=\&#x22;card\&#x22; padding=\&#x22;md\&#x22;>\n          <Text as=\&#x22;p\&#x22;>Bottom sheet with close button.</Text>\n          <Text as=\&#x22;p\&#x22;>This is the content</Text>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Placements [#placements]
-
-The drawer slides in from whichever edge you set with `placement`.
-
-<Story of="PlacementsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Flex, Text, type DrawerPlacement, Box } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Placement: {placement}</Text>\n        </Box>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="NestedPopoverExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Popover, PopoverTrigger, Box } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Box padding=\&#x22;md\&#x22;>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover>\n              <Text>Popover inside drawer</Text>\n            </Popover>\n          </PopoverTrigger>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### No Escape Dismiss [#no-escape-dismiss]
-
-Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
-
-<Story of="NoEscapeDismissExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Drawer, Button, Text, Box } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Box padding=\&#x22;md\&#x22;>\n          <Text>Cannot escape</Text>\n        </Box>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                |
-| -------- | ----------------------------------------------------- |
-| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab`    | Move focus within the drawer (focus is trapped)       |
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* Dialog accessible name via `aria-label`
-* `aria-label="Close"` on the built-in close button
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
-
-## Props [#props]
-
-<PropTable />
-
-The `DrawerTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -2100,7 +2125,7 @@ popover. Since `Menu` works standalone, drop it into a bottom `Drawer`.
 
 <Story of="BottomSheetExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Drawer, Menu, MenuGroup, MenuItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open menu\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable showCloseButton aria-label=\&#x22;Menu\&#x22;>\n        <Menu aria-label=\&#x22;Account actions\&#x22; onAction={() => setOpen(false)} blockPaddingStart=\&#x22;xl\&#x22;>\n          <MenuGroup label=\&#x22;Account\&#x22;>\n            <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n            <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n          </MenuGroup>\n          <MenuGroup label=\&#x22;Session\&#x22;>\n            <MenuItem id=\&#x22;logout\&#x22;>Log out</MenuItem>\n          </MenuGroup>\n        </Menu>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, Menu, MenuGroup, MenuItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open menu\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Menu\&#x22;>\n        <CloseButton />\n        <Content inlinePadding=\&#x22;0\&#x22;>\n          <Menu aria-label=\&#x22;Account actions\&#x22; onAction={() => setOpen(false)}>\n            <MenuGroup label=\&#x22;Account\&#x22;>\n              <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n              <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n            </MenuGroup>\n            <MenuGroup label=\&#x22;Session\&#x22;>\n              <MenuItem id=\&#x22;logout\&#x22;>Log out</MenuItem>\n            </MenuGroup>\n          </Menu>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
 
 ### Groups [#groups]
 
@@ -2132,7 +2157,7 @@ with `triggerRef`.
 
 <Story of="RichContentExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Calendar, Icon, Menu, MenuItem, MenuTrigger, Popover, Text } from '@godaddy/antares';\nimport { parseDate, type CalendarDate } from '@godaddy/antares/date';\nimport { useRef, useState } from 'react';\n\nexport function RichContentExample() {\n  const triggerRef = useRef<HTMLButtonElement>(null);\n  const [isCalendarOpen, setCalendarOpen] = useState(false);\n  const [date, setDate] = useState<CalendarDate | null>(parseDate('2024-03-01'));\n\n  function selectDate(value: CalendarDate | null) {\n    setDate(value);\n    setCalendarOpen(false);\n  }\n\n  return (\n    <>\n      <MenuTrigger>\n        <Button ref={triggerRef} variant=\&#x22;primary\&#x22;>\n          Schedule\n        </Button>\n        <Menu aria-label=\&#x22;Schedule\&#x22;>\n          <MenuItem id=\&#x22;now\&#x22;>Publish now</MenuItem>\n          <MenuItem id=\&#x22;dates\&#x22; icon={<Icon icon=\&#x22;calendar\&#x22; />} onAction={() => setCalendarOpen(true)}>\n            Pick a date\n          </MenuItem>\n        </Menu>\n      </MenuTrigger>\n\n      <Popover triggerRef={triggerRef} isOpen={isCalendarOpen} onOpenChange={setCalendarOpen}>\n        <Calendar aria-label=\&#x22;Publish date\&#x22; value={date} onChange={selectDate} />\n      </Popover>\n\n      <Text>Publishing on {date == null ? 'demand' : date.toString()}</Text>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Calendar, Content, Icon, Menu, MenuItem, MenuTrigger, Popover, Text } from '@godaddy/antares';\nimport { parseDate, type CalendarDate } from '@godaddy/antares/date';\nimport { useRef, useState } from 'react';\n\nexport function RichContentExample() {\n  const triggerRef = useRef<HTMLButtonElement>(null);\n  const [isCalendarOpen, setCalendarOpen] = useState(false);\n  const [date, setDate] = useState<CalendarDate | null>(parseDate('2024-03-01'));\n\n  function selectDate(value: CalendarDate | null) {\n    setDate(value);\n    setCalendarOpen(false);\n  }\n\n  return (\n    <>\n      <MenuTrigger>\n        <Button ref={triggerRef} variant=\&#x22;primary\&#x22;>\n          Schedule\n        </Button>\n        <Menu aria-label=\&#x22;Schedule\&#x22;>\n          <MenuItem id=\&#x22;now\&#x22;>Publish now</MenuItem>\n          <MenuItem id=\&#x22;dates\&#x22; icon={<Icon icon=\&#x22;calendar\&#x22; />} onAction={() => setCalendarOpen(true)}>\n            Pick a date\n          </MenuItem>\n        </Menu>\n      </MenuTrigger>\n\n      <Popover triggerRef={triggerRef} isOpen={isCalendarOpen} onOpenChange={setCalendarOpen}>\n        <Content>\n          <Calendar aria-label=\&#x22;Publish date\&#x22; value={date} onChange={selectDate} />\n        </Content>\n      </Popover>\n\n      <Text>Publishing on {date == null ? 'demand' : date.toString()}</Text>\n    </>\n  );\n}&#x22;" />
 
 ### Single Selection [#single-selection]
 
@@ -2298,11 +2323,9 @@ Use the `compact` prop to render the metric value and description inline rather 
 
 
 
-
-
 <Meta of="Stories" name="Overview" />
 
-Use `ModalTrigger` to wire a trigger element (typically a `Button`) to a `Modal`. The `Modal` exposes high-level slots for `title`, `description`, `actions`, and `media`, while still accepting arbitrary `children` for custom content.
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
 
 ## Installation [#installation]
 
@@ -2314,11 +2337,12 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-The default modal exposes a `title`, `description`, and `children` content area. Open and close state is managed automatically by `ModalTrigger`.
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal\n        title=\&#x22;Modal title\&#x22;\n        description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n      >\n        <Flex padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; justifyContent=\&#x22;center\&#x22;>\n          This is the children content\n        </Flex>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
 
 ### Controlled [#controlled]
 
@@ -2326,60 +2350,68 @@ Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state ext
 
 <Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          actions={[\n            <Button key=\&#x22;close\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          ]}\n        />\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;secondary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
 
-### With actions [#with-actions]
+### Scrollable [#scrollable]
 
-Render footer buttons via the `actions` prop. Use `slot="close"` on a button to close the modal automatically when pressed.
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
 
-<Story of="WithActionsExample" />
+<Story of="ScrollableExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal\n        title=\&#x22;Modal title\&#x22;\n        description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n        actions={[\n          <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Cancel\n          </Button>,\n          <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Confirm\n          </Button>\n        ]}\n      />\n    </ModalTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
 
-### Alignment [#alignment]
+### Triggerless [#triggerless]
 
-Use `centered` to center the title and description, and `actionProps` to control the alignment and direction of the action buttons.
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
 
-<Story of="AlignmentExample" />
+<Story of="TriggerlessExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function AlignmentExample() {\n  const [alignment, setAlignment] = useState<string>();\n  const [actionsAlignment, setActionsAlignment] = useState<string>();\n  const [actionsDirection, setActionsDirection] = useState<string>();\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          centered={alignment === 'center'}\n          actionProps={{\n            ...(actionsAlignment ? { justifyContent: actionsAlignment } : {}),\n            ...(actionsDirection ? { direction: actionsDirection as 'row' | 'column' } : {})\n          }}\n          actions={[\n            <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n              Cancel\n            </Button>,\n            <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Confirm\n            </Button>\n          ]}\n        />\n      </ModalTrigger>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Modal alignment\&#x22; value={alignment} onChange={setAlignment}>\n        <Radio value=\&#x22;\&#x22;>Start (Default)</Radio>\n        <Radio value=\&#x22;center\&#x22;>Centered</Radio>\n      </RadioGroup>\n\n      <RadioGroup\n        orientation=\&#x22;horizontal\&#x22;\n        label=\&#x22;Actions alignment\&#x22;\n        value={actionsAlignment}\n        onChange={setActionsAlignment}\n      >\n        <Radio value=\&#x22;start\&#x22;>Start</Radio>\n        <Radio value=\&#x22;center\&#x22;>Centered</Radio>\n        <Radio value=\&#x22;\&#x22;>End (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup\n        orientation=\&#x22;horizontal\&#x22;\n        label=\&#x22;Actions direction\&#x22;\n        value={actionsDirection}\n        onChange={setActionsDirection}\n      >\n        <Radio value=\&#x22;row\&#x22;>Row (Default)</Radio>\n        <Radio value=\&#x22;column\&#x22;>Column</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
-
-### With Media [#with-media]
-
-Pass a `media` element to display imagery alongside the content. Configure its layout with `mediaVariant` (`full` or `inset`), `mediaDirection` (`column` or `row`), and `mediaPosition` (`start` or `end`).
-
-<Story of="WithMediaExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, RadioGroup, Radio, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function WithMediaExample() {\n  const [mediaVariant, setMediaVariant] = useState<string>();\n  const [mediaDirection, setMediaDirection] = useState<string>();\n  const [mediaPosition, setMediaPosition] = useState<string>();\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal\n          title=\&#x22;Modal title\&#x22;\n          description=\&#x22;She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\&#x22;\n          media={\n            <Flex style={{ width: '100%', height: '100%', minWidth: 350, minHeight: 200, backgroundColor: 'teal' }} />\n          }\n          mediaVariant={mediaVariant as 'inset' | 'full' | undefined}\n          mediaDirection={mediaDirection as 'column' | 'row' | undefined}\n          mediaPosition={mediaPosition as 'start' | 'end' | undefined}\n          actions={[\n            <Button key=\&#x22;cancel\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n              Cancel\n            </Button>,\n            <Button key=\&#x22;confirm\&#x22; slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Confirm\n            </Button>\n          ]}\n        >\n          <Flex padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; justifyContent=\&#x22;center\&#x22;>\n            This is the children content\n          </Flex>\n        </Modal>\n      </ModalTrigger>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Variant\&#x22; value={mediaVariant} onChange={setMediaVariant}>\n        <Radio value=\&#x22;inset\&#x22;>Inset</Radio>\n        <Radio value=\&#x22;full\&#x22;>Full (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Direction\&#x22; value={mediaDirection} onChange={setMediaDirection}>\n        <Radio value=\&#x22;row\&#x22;>Row</Radio>\n        <Radio value=\&#x22;column\&#x22;>Column (Default)</Radio>\n      </RadioGroup>\n\n      <RadioGroup orientation=\&#x22;horizontal\&#x22; label=\&#x22;Position\&#x22; value={mediaPosition} onChange={setMediaPosition}>\n        <Radio value=\&#x22;start\&#x22;>Start (Default)</Radio>\n        <Radio value=\&#x22;end\&#x22;>End</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
 ### Keyboard interaction [#keyboard-interaction]
 
-| Key           | Action                                                         |
-| ------------- | -------------------------------------------------------------- |
-| `Tab`         | Moves focus to the next focusable element inside the modal     |
-| `Shift + Tab` | Moves focus to the previous focusable element inside the modal |
-| `Escape`      | Closes the modal (when dismissable)                            |
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
 
 ### ARIA [#aria]
 
 * `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* The `title` is rendered as an `<h2>` and linked to the dialog via `aria-labelledby`
-* The close button is rendered with `aria-label="Close"`
 * Focus is trapped within the modal while open and returned to the trigger on close
 
 ## Best Practices [#best-practices]
 
-* Always provide a `title` so the dialog has an accessible name
-* Pair every footer action with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` for required confirmations the user must explicitly answer
-* Provide meaningful `alt` text for image media, or `alt=""` if it's purely decorative
-* Prefer the `actions` prop over manually adding footer buttons in `children` so they get consistent spacing and alignment
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
 
 ## Props [#props]
 
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
 The `Modal` component accepts the following props:
+
+<PropTable />
+
+The `ModalTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -2603,6 +2635,9 @@ The `onChange` callback fires with the new page index whenever the user navigate
 
 <Meta of="Stories" name="Overview" />
 
+`PopoverTrigger` wraps a trigger button and a `<Popover>`, handling open state and positioning automatically.
+Based on RAC `DialogTrigger`. To anchor a popover to an element it doesn't wrap, pass `triggerRef` instead.
+
 ## Installation [#installation]
 
 ```bash
@@ -2617,7 +2652,7 @@ Use it with `<PopoverTrigger>`, which wraps both the popover content and an inte
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>This is the popover content!</Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Content, Popover, PopoverTrigger, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
 
 ### Custom Anchor [#custom-anchor]
 
@@ -2625,21 +2660,58 @@ To position a popover relative to a different element than its trigger, use the 
 
 <Story of="CustomAnchorExample" />
 
-<Source language="tsx" code="&#x22;import { Popover, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen}>\n        Popover content!\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Popover, Box, Content, Flex, Button } from '@godaddy/antares';\nimport { useRef, useState } from 'react';\n\nexport function CustomAnchorExample() {\n  const [isOpen, setOpen] = useState(false);\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open Popover\n      </Button>\n\n      <Box elevation=\&#x22;card\&#x22; ref={triggerRef}>\n        Popover will be positioned relative to me\n      </Box>\n\n      <Popover triggerRef={triggerRef} isOpen={isOpen} onOpenChange={setOpen} aria-label=\&#x22;Popover\&#x22;>\n        <Content>Popover content!</Content>\n      </Popover>\n    </Flex>\n  );\n}&#x22;" />
 
-### Close Button and Header [#close-button-and-header]
+### Title and Close Button [#title-and-close-button]
 
-Use `showCloseButton` to show a close button in the popover header. Use the `header` prop to render content alongside it.
+Add a `Heading slot="title"` and a `CloseButton` for a titled, dismissible popover. The heading
+also gives the dialog its accessible name.
 
 <Story of="WithCloseButtonExample" />
 
-<Source language="tsx" code="&#x22;import { Popover, PopoverTrigger, Button, Text } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover showCloseButton header={<Text>Content to show next to the close button</Text>}>\n        This is the popover content!\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Heading, Popover, PopoverTrigger } from '@godaddy/antares';\n\nexport function WithCloseButtonExample() {\n  return (\n    <PopoverTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n      <Popover>\n        <Heading slot=\&#x22;title\&#x22;>Popover title</Heading>\n        <CloseButton />\n        <Content>This is the popover content!</Content>\n      </Popover>\n    </PopoverTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key           | Action                             |
+| ------------- | ---------------------------------- |
+| `Enter/Space` | Opens the popover from its trigger |
+| `Escape`      | Closes the popover                 |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`. Without one, a popover inside
+  a `PopoverTrigger` falls back to being labelled by its trigger; standing alone with
+  `triggerRef` it needs an explicit `aria-label`
 
 ## Best Practices [#best-practices]
 
-Popover width is determined by its content, and it’s recommended to keep it under 400px.
+* Pass an `aria-label` when anchoring with `triggerRef` instead of wrapping a `PopoverTrigger`,
+  since there is no trigger to borrow the name from.
+* Popover width is determined by its content, and it's recommended to keep it under 400px.
 
 ## Props [#props]
+
+```tsx
+<PopoverTrigger>
+  <Button />
+  <Popover>
+    <Heading slot="title" />
+    <CloseButton />
+    <Content />
+    {/* ... */}
+  </Popover>
+</PopoverTrigger>
+```
+
+The `Popover` component accepts the following props:
+
+<PropTable />
+
+The `PopoverTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -3103,6 +3175,148 @@ The `RadioGroup` component has the following props:
 <PropTable />
 
 
+# SegmentedController
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three sizes are available: `sm`, `md` (default), and `lg`.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+### Icon + Text [#icon--text]
+
+Segments can include an `Icon` alongside text for added visual context.
+
+<Story of="IconExample" />
+
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Icon Only [#icon-only]
+
+For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
+
+<Story of="IconOnlyExample" />
+
+<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### Overflow [#overflow]
+
+When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
+
+<Story of="OverflowExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
+
+<Story of="RTLExample" />
+
+<Source language="tsx" code="&#x22;import { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**SegmentedController Container:** `data-disabled`
+
+**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the segmented controller
+* **Arrow Left/Right**: Move to next/previous segment
+* **Space/Enter**: Select the focused segment
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each segment
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled segments
+* `aria-label` required on the container for screen readers
+
+## Best Practices [#best-practices]
+
+### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
+
+* When switching between 2-5 related views within the same context
+* When all options should be visible at once
+* When the selection immediately changes the displayed content
+
+### When Not to Use [#when-not-to-use]
+
+* For more than 5 options (use Tabs or Select instead)
+* For form input (use RadioGroup instead)
+
+## Props [#props]
+
+<PropTable />
+
+
 # RangeField
 
 
@@ -3291,21 +3505,7 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
-# SegmentedController
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Structure primitives
 
 
 
@@ -3317,222 +3517,67 @@ Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` 
 
 <Meta of="Stories" name="Overview" />
 
-## Installation [#installation]
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
 
-```bash
-npm install --save @godaddy/antares
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
+
+A parent adopts them by providing the contexts around its children:
+
+```tsx
+import { Provider } from 'react-aria-components';
+import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
+
+<Provider
+  values={[
+    [HeaderContext, { padding: 'md' }],
+    [ContentContext, { padding: 'md' }],
+    [FooterContext, { padding: 'md' }],
+    [ButtonGroupContext, { justifyContent: 'end' }]
+  ]}
+>
+  {children}
+</Provider>;
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-An uncontrolled segmented controller with a default selection. The component manages its own state internally via `defaultValue`.
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;View\&#x22; defaultValue=\&#x22;day\&#x22;>\n      <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `value` and `onSelectionChange` to fully control the selected segment from parent state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('week');\n\n  return (\n    <>\n      <SegmentedController aria-label=\&#x22;View\&#x22; value={selected} onSelectionChange={setSelected}>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three sizes are available: `sm`, `md` (default), and `lg`.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; alignItems=\&#x22;start\&#x22;>\n      <SegmentedController aria-label=\&#x22;View (small)\&#x22; size=\&#x22;sm\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week sm</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month sm</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (medium)\&#x22; size=\&#x22;md\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week md</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month md</SegmentedControllerItem>\n      </SegmentedController>\n\n      <SegmentedController aria-label=\&#x22;View (large)\&#x22; size=\&#x22;lg\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week lg</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month lg</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-### Icon + Text [#icon--text]
-
-Segments can include an `Icon` alongside text for added visual context.
-
-<Story of="IconExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22; defaultValue=\&#x22;list\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n        List\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n        Grid\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Icon Only [#icon-only]
-
-For compact layouts, segments can contain only icons. Provide an `aria-label` on each item so screen readers can identify the action.
-
-<Story of="IconOnlyExample" />
-
-<Source language="tsx" code="&#x22;import { Icon, SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function IconOnlyExample() {\n  return (\n    <SegmentedController aria-label=\&#x22;Layout\&#x22;>\n      <SegmentedControllerItem value=\&#x22;list\&#x22; aria-label=\&#x22;List view\&#x22;>\n        <Icon icon=\&#x22;bulleted-list\&#x22; />\n      </SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;grid\&#x22; aria-label=\&#x22;Grid view\&#x22;>\n        <Icon icon=\&#x22;grid\&#x22; />\n      </SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### Overflow [#overflow]
-
-When the number of options exceeds the width of the container, the component automatically shows scroll buttons to let users navigate. Users can also scroll horizontally to navigate the options.
-
-<Story of="OverflowExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem } from '@godaddy/antares';\n\nexport function OverflowExample({ maxWidth = '300px' }: { maxWidth?: string }) {\n  return (\n    <SegmentedController aria-label=\&#x22;Category\&#x22; defaultValue=\&#x22;electronics\&#x22; style={{ maxWidth }}>\n      <SegmentedControllerItem value=\&#x22;electronics\&#x22;>Electronics</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;clothing\&#x22;>Clothing</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;home\&#x22;>Home</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;sports\&#x22;>Sports</SegmentedControllerItem>\n      <SegmentedControllerItem value=\&#x22;toys\&#x22;>Toys</SegmentedControllerItem>\n    </SegmentedController>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The segmented controller follows the current layout direction (LTR or RTL), detected automatically from the browser or system settings.
-
-<Story of="RTLExample" />
-
-<Source language="tsx" code="&#x22;import { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Disable the entire group with `isDisabled` on the container, or disable individual segments with `isDisabled` on specific items.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { SegmentedController, SegmentedControllerItem, Flex } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <label>Disabled group</label>\n      <SegmentedController aria-label=\&#x22;Disabled group\&#x22; isDisabled defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22;>Week</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n\n      <label>Individual disabled</label>\n      <SegmentedController aria-label=\&#x22;Individual disabled\&#x22; defaultValue=\&#x22;day\&#x22;>\n        <SegmentedControllerItem value=\&#x22;day\&#x22;>Day</SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;week\&#x22; isDisabled>\n          Week\n        </SegmentedControllerItem>\n        <SegmentedControllerItem value=\&#x22;month\&#x22;>Month</SegmentedControllerItem>\n      </SegmentedController>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**SegmentedController Container:** `data-disabled`
-
-**SegmentedControllerItem:** `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, `data-disabled`
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the segmented controller
-* **Arrow Left/Right**: Move to next/previous segment
-* **Space/Enter**: Select the focused segment
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each segment
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled segments
-* `aria-label` required on the container for screen readers
-
-## Best Practices [#best-practices]
-
-### When to Use a Segmented Controller [#when-to-use-a-segmented-controller]
-
-* When switching between 2-5 related views within the same context
-* When all options should be visible at once
-* When the selection immediately changes the displayed content
-
-### When Not to Use [#when-not-to-use]
-
-* For more than 5 options (use Tabs or Select instead)
-* For form input (use RadioGroup instead)
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
+
+### Content [#content]
 
 <PropTable />
 
+### Header [#header]
 
-# Select
+<PropTable />
 
+### Footer [#footer]
 
+<PropTable />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a label and a placeholder.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Select, SelectItem, type SelectProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Omit<SelectProps<object>, 'children'> = {}) {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; description=\&#x22;Select your favorite coffee\&#x22; {...props}>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n      <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n    </Select>\n  );\n}&#x22;" />
-
-### Select Controlled [#select-controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="SelectControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Select Multiple [#select-multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Story of="SelectMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectMultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select\n        label=\&#x22;Coffees you like\&#x22;\n        placeholder=\&#x22;Pick one or more\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        value={value}\n        onChange={setValue}\n      >\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Select Invalid [#select-invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Story of="SelectInvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectInvalidExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; errorMessage=\&#x22;Please choose a drink\&#x22; isInvalid isRequired>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
-
-### Select Disabled [#select-disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Story of="SelectDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectDisabledExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
-
-### Select Form [#select-form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Story of="SelectFormExample" />
-
-<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, Flex, Select, SelectItem, Text } from '@godaddy/antares';\n\nexport function SelectFormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; label=\&#x22;Drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; label=\&#x22;Extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n        <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n        <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="SelectSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select label=\&#x22;Coffee (md)\&#x22; placeholder=\&#x22;Pick a drink\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select label=\&#x22;Coffee (sm)\&#x22; placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Select` component accepts the following props:
+### ButtonGroup [#buttongroup]
 
 <PropTable />
 
@@ -3736,6 +3781,110 @@ The `Switch` component has the following props:
 <PropTable />
 
 
+# Select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a label and a placeholder.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Select, SelectItem, type SelectProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Omit<SelectProps<object>, 'children'> = {}) {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; description=\&#x22;Select your favorite coffee\&#x22; {...props}>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n      <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+
+### Select Controlled [#select-controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="SelectControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Select Multiple [#select-multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Story of="SelectMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectMultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select\n        label=\&#x22;Coffees you like\&#x22;\n        placeholder=\&#x22;Pick one or more\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        value={value}\n        onChange={setValue}\n      >\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Select Invalid [#select-invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Story of="SelectInvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectInvalidExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; errorMessage=\&#x22;Please choose a drink\&#x22; isInvalid isRequired>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+
+### Select Disabled [#select-disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Story of="SelectDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectDisabledExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+
+### Select Form [#select-form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Story of="SelectFormExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, Flex, Select, SelectItem, Text } from '@godaddy/antares';\n\nexport function SelectFormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; label=\&#x22;Drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; label=\&#x22;Extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n        <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n        <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes.
+
+<Story of="SelectSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select label=\&#x22;Coffee (md)\&#x22; placeholder=\&#x22;Pick a drink\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select label=\&#x22;Coffee (sm)\&#x22; placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Select` component accepts the following props:
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -3848,83 +3997,6 @@ Use these attributes to extend styling without replacing the accessibility behav
 * Do not render a standalone `Tab`; compose it inside `Tabs` and `TabList`.
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Text
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic text content.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
-
-<Story of="AlignExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
-
-<Story of="MaxLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-<Story of="WrapExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Text` component accepts the following props:
 
 <PropTable />
 
@@ -4058,6 +4130,100 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 * If the label is part of a sentence with no visual distinction — just use text.
 
 ## Props [#props]
+
+<PropTable />
+
+
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Heading [#heading]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="HeadingExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function HeadingExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+The `Heading` component accepts the following props:
 
 <PropTable />
 
@@ -4448,6 +4614,14 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
 Once a tooltip has been shown, subsequent tooltips appear without delay.
 
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
+
+## Features [#features]
+
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
+
 ## Installation [#installation]
 
 ```bash
@@ -4472,18 +4646,22 @@ To position a tooltip relative to a different focusable element, use the `trigge
 
 <Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
 
+## Customization [#customization]
+
+`className` and `style` apply to the tooltip panel.
+
 ## Accessibility [#accessibility]
 
 ### Keyboard [#keyboard]
 
-| Key    | Description                                                |
-| ------ | ---------------------------------------------------------- |
-| Tab    | Moves focus to the focusable element and shows the tooltip |
-| Escape | Closes the tooltip                                         |
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
 
 ### ARIA [#aria]
 
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`.
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
 
 ## Best Practices [#best-practices]
 
@@ -4492,6 +4670,19 @@ To position a tooltip relative to a different focusable element, use the `trigge
 * Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 ## Props [#props]
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
