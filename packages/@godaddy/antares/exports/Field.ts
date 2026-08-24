@@ -8,9 +8,9 @@ export {
   FieldInput,
   FieldTextArea,
   FieldTrigger,
-  AriaTextField,
-  AriaTextArea,
-  AriaNumberField,
+  RACTextField,
+  RACTextArea,
+  RACNumberField,
   type FieldProps,
   type FieldOwnProps,
   type FieldLabelProps,
@@ -22,7 +22,7 @@ export {
   type FieldTextAreaProps,
   type FieldTriggerProps,
   type FieldSize,
-  type AriaTextFieldProps,
-  type AriaTextAreaProps,
-  type AriaNumberFieldProps
+  type RACTextFieldProps,
+  type RACTextAreaProps,
+  type RACNumberFieldProps
 } from '#components/field';

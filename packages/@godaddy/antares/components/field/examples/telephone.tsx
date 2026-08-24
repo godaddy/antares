@@ -1,5 +1,5 @@
 import {
-  AriaTextField,
+  RACTextField,
   Field,
   FieldDescription,
   FieldGroup,
@@ -16,7 +16,7 @@ import {
  */
 export function TelephoneFieldExample() {
   return (
-    <Field as={AriaTextField} autoComplete="tel-national" inputMode="tel" type="tel">
+    <Field as={RACTextField} autoComplete="tel-national" inputMode="tel" type="tel">
       <FieldLabel>Phone number</FieldLabel>
       <FieldGroup>
         <FieldSelect aria-label="Country code" defaultValue="us">
