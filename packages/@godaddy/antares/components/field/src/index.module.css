@@ -136,7 +136,7 @@
   }
 
   /* rounded border corners — :nth-child(1 of :not(template)) skips RAC's hidden SSR <template> sibling */
-  & > :nth-child(1 of :not(template)) {
+  & > :where(:nth-child(1 of :not(template))) {
     &,
     > :where(.fieldTrigger) {
       border-start-start-radius: var(--field-br);
@@ -144,7 +144,7 @@
     }
   }
 
-  & > :nth-last-child(1 of :not(template)) {
+  & > :where(:nth-last-child(1 of :not(template))) {
     &,
     > :where(.fieldTrigger) {
       border-start-end-radius: var(--field-br);

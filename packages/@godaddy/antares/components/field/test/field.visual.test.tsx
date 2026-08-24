@@ -1,6 +1,6 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { preloadTestIcons } from '../../../utils/test-helpers.tsx';
+import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default';
 import { FieldGroupIconAccessoriesExample } from '../examples/icon-accessories';
 import { FieldGroupLeadingControlExample } from '../examples/leading-control';
@@ -9,6 +9,7 @@ import { FieldGroupTrailingControlExample } from '../examples/trailing-control';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
+  beforeEach(resetHover);
 
   describe('#FieldGroup', function fieldGroupTests() {
     it('basic example', async function basicRender() {
