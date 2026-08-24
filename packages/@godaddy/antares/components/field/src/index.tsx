@@ -13,8 +13,12 @@ import {
   Label as RACLabel,
   type LabelProps as RACLabelProps,
   type GroupProps as RACGroupProps,
-  TextArea as RACTextAreaPrimitive,
-  type TextAreaProps as RACTextAreaPrimitiveProps
+  TextArea as RACTextArea,
+  type TextAreaProps as RACTextAreaProps,
+  TextField as RACTextField,
+  type TextFieldProps as RACTextFieldProps,
+  NumberField as RACNumberField,
+  type NumberFieldProps as RACNumberFieldProps
 } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '../../../types/polymorphic-react.ts';
 import { composeClassName } from '../../../utils/render-props.ts';
@@ -24,14 +28,29 @@ import { Icon } from '#components/icon';
 import { Text, type TextProps } from '#components/text';
 import styles from './index.module.css';
 
+/**
+ * React Aria field primitives for custom field compositions.
+ *
+ * Use a `RAC*` primitive as the `Field` `as` prop when composing a field that
+ * Antares does not provide as a complete component. Prefer `TextField`,
+ * `NumberField`, or `Select` when no custom composition is needed.
+ *
+ * @example
+ * <Field as={RACTextField}>
+ *   <FieldLabel>Email</FieldLabel>
+ *   <FieldGroup>
+ *     <FieldInput />
+ *   </FieldGroup>
+ * </Field>
+ */
 export {
-  TextField as RACTextField,
-  type TextFieldProps as RACTextFieldProps,
-  TextArea as RACTextArea,
-  type TextAreaProps as RACTextAreaProps,
-  NumberField as RACNumberField,
-  type NumberFieldProps as RACNumberFieldProps
-} from 'react-aria-components';
+  RACTextField,
+  type RACTextFieldProps,
+  RACTextArea,
+  type RACTextAreaProps,
+  RACNumberField,
+  type RACNumberFieldProps
+};
 
 export interface FieldOwnProps extends FlexOwnProps {
   /** Label text shown above the field. */
@@ -267,7 +286,7 @@ export const FieldInput = forwardRef<HTMLInputElement, FieldInputProps>(function
   return <Box flex={1} {...rest} as={RACInput} ref={ref} className={composeClassName(className, styles.fieldInput)} />;
 });
 
-export interface FieldTextAreaProps extends RACTextAreaPrimitiveProps, BoxOwnProps {}
+export interface FieldTextAreaProps extends RACTextAreaProps, BoxOwnProps {}
 
 /**
  * Multiline fill control inside a `FieldGroup`.
@@ -278,12 +297,6 @@ export const FieldTextArea = forwardRef<HTMLTextAreaElement, FieldTextAreaProps>
   const { className, ...rest } = props;
 
   return (
-    <Box
-      flex={1}
-      {...rest}
-      as={RACTextAreaPrimitive}
-      ref={ref}
-      className={composeClassName(className, styles.fieldTextarea)}
-    />
+    <Box flex={1} {...rest} as={RACTextArea} ref={ref} className={composeClassName(className, styles.fieldTextarea)} />
   );
 });
