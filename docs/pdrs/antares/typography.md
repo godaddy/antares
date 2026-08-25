@@ -168,7 +168,10 @@ Typography joins it:
 
 - A container-injected `level` or `size` reaches the element when the caller passes neither.
 - An explicit prop on the child overrides the injected value.
-- The dialog's accessible name still comes from its title.
+- The dialog's accessible name still comes from its title. RAC's `Dialog` puts the generated title id in
+  the same `HeadingContext` a container would be adding typography to, so the container has to augment
+  that context rather than provide a fresh value inside the dialog. Replacing it drops the id and breaks
+  `aria-labelledby` silently.
 
 `Heading` satisfies none of the first two today: it always passes its own `level`, so the `level: 2` RAC's
 `Dialog` provides to `slot="title"` is discarded - invisible only because both values are `2`. This is a
@@ -179,7 +182,7 @@ assumptions about how RAC wires slots.
 
 | Container                    | Channel                              | Why                                                          |
 | ---------------------------- | ------------------------------------ | ------------------------------------------------------------ |
-| `Button`, `Tag`, MenuItem    | `DEFAULT_SLOT`                       | the whole subtree *is* one text surface; nothing to leak into |
+| Controls (`Button`, `Tag`…)  | `DEFAULT_SLOT`                       | the whole subtree *is* one text surface; nothing to leak into |
 | `Modal`, `Drawer`, `Popover` | named slots (`title`, `description`) | arbitrary body content; `DEFAULT_SLOT` would capture it       |
 | `Content`/`Header`/`Footer`  | flat context, as today               | each is a distinct named component appearing once             |
 
@@ -189,12 +192,13 @@ cost, and it is the right one - the alternative silently restyles body content.
 
 ### 3. Controls keep their type on the control element
 
-For `Button`, `ToggleButton`, `Tag` and menu items, the type goes on the control, and the container tells
-a composed `Text` to **emit no typography of its own, rather than injecting a size** - through the same
-slot context as [§2](#2-containers-inject-defaults-through-slot-context). A `Text` that declares nothing
-inherits every font property from the control, `font-variation-settings` included, which the `font`
-shorthand would not cover. So `<Button>label</Button>` and `<Button><Text>label</Text></Button>` render
-identically, and the label never needs wrapping.
+For every control that owns its type - `Button` and `LinkButton`, `ToggleButton`, `Tag`, menu items - the
+type goes on the control, and the container tells a composed `Text` to **emit no typography of its own,
+rather than injecting a size** - through the same slot context as
+[§2](#2-containers-inject-defaults-through-slot-context). A `Text` that declares nothing inherits every
+font property from the control, `font-variation-settings` included, which the `font` shorthand would not
+cover. So `<Button>label</Button>` and `<Button><Text>label</Text></Button>` render identically, and the
+label never needs wrapping.
 
 **The reason is `Icon`.** `components/icon/src/index.module.css` sizes it `width: 1lh; height: 1lh`, and
 `1lh` resolves from the icon element's own inherited line-height. As siblings, icon and label share the
@@ -262,28 +266,35 @@ place the mapping is duplicated, so the [Audit](#audit) is the artefact to diff 
 
 ### 5. Fallback chains: sizes stop at the literal
 
-**Family, weight, line-height and variation: `token → intent → literal`**, per GU §5 rule 1.
+**All four role properties chain `token → intent → literal`**, per GU §5 rule 1: family, weight,
+line-height and variation. Every chain ends in a literal, so a declaration stays valid when neither the
+token nor the intent is defined.
 
-| Role      | Family         | Line height    | Weight                      | Variation                       |
-| --------- | -------------- | -------------- | --------------------------- | ------------------------------- |
-| `detail`  | `--ux-1gutwvn` | `--ux-1dje42v` | `--ux-g9ierp` (`400`)       | `--ux-tjt16c`; no default       |
-| `body`    | `--ux-pze30t`  | `--ux-1hhfdnd` | none; `--ux-8n6y9x` (`400`) | none; `--ux-1i4pt2s`            |
-| `heading` | `--ux-shg991`  | `--ux-p25s1t`  | `--ux-c539b7` (`700`)       | `--ux-1458mfm` (`"DSPL" 1`)     |
+Which intent family each role maps to is the design decision here:
 
-**`font-variation-settings` is in the chain, not scoped out.** It is the fourth role property, and it is
-the one place an intent carries a value the token set does not: `ux.textHeading.fontVariation` defaults to
-`"DSPL" 1`, so an intent-only theme loses its display axis on every heading if the chain omits it. The
-token value is `normal` in `airo` today, which is exactly why it has to be declared rather than assumed -
-and why a control's label inherits it rather than relying on the `font` shorthand
-([§3](#3-controls-keep-their-type-on-the-control-element)).
+| Role      | Intent family                          |
+| --------- | -------------------------------------- |
+| `detail`  | `ux.textCaption`                       |
+| `body`    | `ux.textBody`, then `ux.textParagraph` |
+| `heading` | `ux.textHeading`                       |
 
-`ux.textBody`'s two intents carry no legacy default in
-`.agents/skills/antares-components/references/token-intent-legacy-map.json`, so `body` chains two intents
-deep to reach a real value:
+`body` needs the second link because `ux.textBody` carries no legacy default, so one `var()` deep is not
+yet a real value:
 
 ```css
 --_x-font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
 ```
+
+Which `--ux-*` variable each role and property resolves to, and which other properties need that second
+link, is a lookup in `.agents/skills/antares-components/references/token-intent-legacy-map.json`. This
+document does not restate it: the file is generated, and a copy here would drift from it. The rule and the
+role mapping are what need ratifying, not the inventory.
+
+**`font-variation-settings` is in the set, not scoped out.** It is the one property where an intent carries
+a value the token set does not - `ux.textHeading.fontVariation` is a real display axis, while the `airo`
+token is `normal` - so omitting it flattens every heading on an intent-only theme. It is also why a
+control's label inherits the axis explicitly rather than relying on the `font` shorthand, which does not
+cover it ([§3](#3-controls-keep-their-type-on-the-control-element)).
 
 **Sizes: `token → literal`, no intent link.** The tokens give each role six tiers; the intents give each
 role one font size, so nothing can mean "heading, lg". An intent-only theme therefore gets the library's
@@ -328,7 +339,7 @@ bundling accident between two component modules. It goes through the slot contex
 applies no typography class at all ([§3](#3-controls-keep-their-type-on-the-control-element)):
 
 ```tsx
-[TextContext, { variant: 'inherit' }]   // on DEFAULT_SLOT, from Button, ToggleButton, Tag
+[TextContext, { variant: 'inherit' }]   // on DEFAULT_SLOT, from any control that owns its type
 ```
 
 `'inherit'` is not in the public `variant` union - it only ever arrives from a container, and a caller's
@@ -475,10 +486,12 @@ Ordered, because the first is a precondition for the rest.
   [§5](#5-fallback-chains-sizes-stop-at-the-literal); give `Heading` its `size` and the `level` → `size`
   map. Both consume their context before applying defaults.
 - Have `Modal`, `Drawer` and `Popover` supply `level` and `size` for their title slot, alongside the
-  region contexts already in `overlay-dialog`.
-- Have `Button`, `ToggleButton` and `Tag` neutralise a composed `Text` so it cannot desynchronise a `1lh`
+  region contexts already in `overlay-dialog`, without replacing the context RAC's `Dialog` provides
+  there.
+- Have every control that owns its type neutralise a composed `Text` so it cannot desynchronise a `1lh`
   `Icon` from its label. `<Button size="sm">label</Button>` and
-  `<Button size="sm"><Text>label</Text></Button>` should be indistinguishable.
+  `<Button size="sm"><Text>label</Text></Button>` should be indistinguishable. `MenuItem` already wraps
+  every string child in a `Text`, so it is the case that exists today rather than one to find.
 - Correct `components/button/examples/icon.tsx`, which wraps a button label in `Text`. It has to land with
   `Text`'s defaults or `Button`'s `size` prop stops sizing its own label. Sweep for other
   composed-`Text`-inside-a-control sites.
