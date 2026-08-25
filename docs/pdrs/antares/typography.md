@@ -2,45 +2,22 @@
 
 Status: **Proposed**
 
-## Table of Contents
-
-- [Problem](#problem)
-- [What the token spec says](#what-the-token-spec-says)
-- [Current state](#current-state)
-- [Proposal](#proposal)
-- [Audit](#audit)
-- [Open questions](#open-questions)
-- [Tasks](#tasks)
-
----
-
 ## Problem
 
-Antares has a `Text` component described as "the entry component for typography" that sets no
-typography at all, a `Heading` that sets no font size, and a theme that ships a complete three-role
-type system almost nothing consumes. Font styles are decided per component, in nine different
-vocabularies, and in one case from a stylesheet that only exists in Storybook.
+`Text` sets no typography at all, `Heading` sets no font size so its sizes come from the user agent, and
+the theme ships a complete three-role type system that two components consume. Everything else decides
+font styles per component, drawing from nine legacy intent families, and in one case from a stylesheet
+that only exists in Storybook.
 
-Two questions have to be answered together, because answering either one alone produces a system
-that cannot express what Figma specs:
+This document is the guideline those components are to be brought in line with. **Nothing here is
+constrained by the current implementations** - `Text`, `Heading`, `Button`, `Modal`, `Drawer`, `Popover`
+and the rest may change in props, markup, context and CSS. Where a proposal implies a public API change,
+that is intended.
 
-1. **Who owns a component's font styles** - the component's own CSS, or a `Text` component the
-  component renders internally?
-2. **How configurable is the public typography API** - which is really "what is the vocabulary", and
-  the theme has already answered it.
+## The vocabulary
 
-Unlike [GU and Spacing tokens](./gu-spacing.md), the two systems here are not incompatible. The
-legacy intents and the new tokens describe the same properties in the same units. The problem is not
-translation, it is that there is no rule about which one a component reaches for, and no rule about
-where typography lives.
-
-## What the token spec says
-
-Source: `@godaddy/design-tokens` `src/tokens.yml`, and `@godaddy/themes` `src/godaddy/airo/typography.json`,
-which defines the same names. Four things bear on this proposal.
-
-**1. Three roles, four properties each, plus a six-step size ramp.**
-
+`@godaddy/design-tokens` and `@godaddy/themes` define three roles, each with four properties and a
+six-step size ramp:
 
 | Role      | Family                  | Line height | Weight   | Sizes `xs` → `2xl` |
 | --------- | ----------------------- | ----------- | -------- | ------------------ |
@@ -48,501 +25,329 @@ which defines the same names. Four things bear on this proposal.
 | `body`    | `--font-body-family`    | `1.5`       | `normal` | 0.75 → 1.5rem      |
 | `heading` | `--font-heading-family` | `1.25`      | `bold`   | 1 → 2.25rem        |
 
+Each role also has `--font-{role}-variation` for variable-font axes. `--font-weight-strong` (`bolder`)
+and `--font-style-em` (`italic`) cover emphasis.
 
-Each role also has a `--font-{role}-variation` for variable-font axis settings.
+Two properties of the ramp matter downstream:
 
-**2. The role ramps are windows over one global scale.** Every role tier is also a
-`--font-size-NNN` tier:
+- **A role is mostly a family, weight and line-height decision.** The tiers overlap in value -
+  `body-sm` and `detail-lg` are both 0.875rem - so `role` picks the treatment and `size` picks the step.
+- **The ramps are hand-picked, not geometric.** The `body` steps ratio 1.167, 1.143, 1.125, 1.111, 1.2.
+  So sizes are never derived by multiplying a base by 1.125; every tier is named explicitly.
 
-
-| Role      | Tiers used                          |
-| --------- | ----------------------------------- |
-| `detail`  | `010` `020` `030` `040` `050` `060` |
-| `body`    | `020` `040` `050` `060` `070` `080` |
-| `heading` | `050` `060` `070` `080` `090` `100` |
-
-
-So the roles are not independent scales. `detail` and `heading` are contiguous windows; `body` skips
-`030`, which is either deliberate or a spec slip (see [Open questions](#open-questions)). The
-consequence for this proposal is that **a role is mostly a family, weight and line-height decision,
-not a size decision** - `body-sm` and `detail-lg` are both 0.875rem and differ only in the other
-three properties.
-
-**3. The ramps are not geometric.** The `body` steps are 0.75, 0.875, 1, 1.125, 1.25, 1.5rem, whose
-successive ratios are 1.167, 1.143, 1.125, 1.111, 1.2. `heading` and `detail` are likewise irregular.
-The scale is hand-picked. This matters because six components currently derive sizes with
-`calc(… * 1.125)`, which reproduces no tier above or below its anchor. See
-[Defects](#defects) 2.
-
-**4. There is no medium weight, and no letter-spacing.** The weight vocabulary is
-`--font-{role}-weight` (`normal`, `normal`, `bold`) plus `--font-weight-strong` (`bolder`) and
-`--font-style-em` (`italic`). Nothing expresses the `500` that `ux.textLabel.fontWeight` and
-`ux.textAction.fontWeight` carry and that `field`, `menu`, `range-field`, `gauge-chart` and
-`toggle-button` all use today. There is no letter-spacing token at all.
-
-## Current state
-
-`Text` **applies no typography.** `components/text/src/text.tsx` sets `--align`, `--max-lines` and
-`--wrap`, and `index.module.css` declares `overflow-wrap` plus three conditional blocks. No family,
-size, weight or line-height. Whatever the host page sets is what renders, so the component described
-as the entry point for typography is not one, and two apps embedding the same `Text` get different
-type.
-
-`Heading` **exists and is styled by the user agent.** `components/text/src/heading.tsx` wraps
-RAC `Heading`, takes `level` (default `2`), and `heading.module.css` sets only `margin-block: 0`,
-`font-weight: bolder` and `overflow-wrap`. With no `font-size`, `<Heading level={1}>` renders at the
-UA default `2em` and `level={6}` at `0.67em`. The UA ramp (2, 1.5, 1.17, 1, 0.83, 0.67em) matches no
-tier in `--font-heading-size-*`, so heading sizes today come from the browser, not the theme. The
-component also has no way to set size independently of level, so a level-3 heading that Figma specs
-at the largest tier cannot be built.
-
-**Nine legacy vocabularies are in use.** `references/token-intent-legacy-map.json` carries nine text
-intent families - `ux.text`, `ux.textAction`, `ux.textBody`, `ux.textCaption`, `ux.textHeading`,
-`ux.textInput`, `ux.textLabel`, `ux.textParagraph`, `ux.textTitle` - and components draw from seven
-of them. Of the 42 typography intents in that file, exactly six carry a `token` mapping -
-`ux.textBody.fontFamily`, `ux.textBody.lineHeight`, `ux.textCaption.fontFamily`,
-`ux.textCaption.lineHeight`, `ux.textHeading.fontFamily`, `ux.textHeading.lineHeight` - and all six
-are family or line-height. No size or weight intent is mapped to a token anywhere, so the
-intent → role correspondence is largely undefined and every component has invented its own.
-
-**The previous library solved this the same way, with a wider vocabulary.** uxcore2's model, as
-recorded by the artifacts in this repo, gave each component its own typography intents aliased to a
-shared text role: `figma-intent-to-token/SKILL.md` documents
-`packages/components/<name>/src/intents.config.mjs` assigning `intents.uxTag.* = intents.ux.*`, and the
-nine text intent families above are those roles. They are named after the *use context* - `textLabel`,
-`textInput`, `textAction` for controls, `textCaption` / `textParagraph` / `textTitle` / `textHeading`
-for content - so a component picked the role matching its part and the theme set the value once. That
-is component-owned typography resolving through a shared vocabulary, which is the architecture
-[Proposal](#proposal) §1-3 restates. The differences are the ones that make the migration lossy: nine
-use-context roles collapse into three semantic roles plus a ramp, and uxcore2 could express the `500`
-weight that the token set cannot. (The uxcore2 repository itself was not readable while writing this;
-these statements come from the intent map and the skill in this repo.)
-
-**The new tokens are consumed by two components.** `segmented-controller` and `button` reference
-`--font-body-size-{sm,md,lg}`. Nothing else in the library references any `--font-*` token.
-
-**A role/tier vocabulary already exists, in the wrong place.**
-`apps/docs/.storybook/variables.css` defines a `pow()`-based scale `--fs-2xs`…`--fs-6xl` with role
-offsets `--fs-heading-{md..3xl}`, `--fs-detail-{md,lg}`, plus `--ff-{base,heading,detail}` and
-`--lh-{base,heading,detail}`. That is the same three-role model the tokens ship, arrived at
-independently, which is a good sign for the model and a bad sign for its location: it is a Storybook
-preview file, it is not published, and its values disagree with the tokens
-(`--fs-detail-lg` is `1rem / 1.125` = 0.889rem where `--font-detail-size-lg` is 0.875rem;
-`--fs-heading-md` is `1rem * 1.125³` = 1.424rem where `--font-heading-size-md` is 1.25rem).
-
-The same file also states the opposite policy to this proposal: "Let font-size cascade and avoid
-using these unless absolutely necessary."
-
-### Defects
-
-1. `metrics-lockup` **has no typography in production.** `metrics-lockup/src/index.module.css`
-  references `--fs-detail-lg` (lines 2, 31), `--fs-2xl` (25) and `--lh-heading` (27). All three are
-   defined only in `apps/docs/.storybook/variables.css`, so in a consumer's app the declarations are
-   invalid at computed-value time and `font-size` and `line-height` take their initial values. The
-   component looks correct in Storybook and in the docs site, and only there. This is the same
-   failure mode as [GU and Spacing](./gu-spacing.md) Defects 1 and 3, and the same lesson: a missing
-   variable does not render as a smaller version of the intended value, it renders as the initial one.
-2. **Nine components derive sizes with a ratio the scale does not have.** `circular-progress`
-  (13 references, up to six chained multiplications), `tag` (2), `segmented-controller` (2),
-   `alert` (`calc(var(--ux-18ime9a, 1.375rem) / var(--ux-7s4p3v, 1.125) / var(--ux-7s4p3v, 1.125))`),
-   `button`, `field` (`calc(1em / 1.125)`), `progress-steps`, `switch` and `toggle-button` all treat
-   the type scale as geometric with ratio 1.125. Per
-   [What the token spec says](#what-the-token-spec-says) 3 it is not, so every derived value lands off
-   the ramp. `circular-progress`'s largest output size computes to `1rem * 1.125⁶` = 2.027rem, between
-   `heading-xl` (1.875) and `heading-2xl` (2.25); `alert`'s title computes to 1.086rem, between
-   `heading-xs` (1) and `heading-sm` (1.125).
-3. **Ten intent hashes resolve to nothing.** Absent from the intent map: `--ux-7s4p3v` (`alert`),
-  `--ux-1nr6ynb` (`chart/axis-title` font-weight), `--ux-1s0t9v0` (`chart/legend`, `chart/tooltip`,
-   `tag`), `--ux-a2dzk8` (`chart/legend`), `--ux-2lqd62` (`chart/legend`, `chart/tooltip`),
-   `--ux-xwz0yz` (`chart/legend`, `tag`), and `--ux-pwotdr`, `--ux-1xzegcp`, `--ux-1fnjqac`,
-   `--ux-2ihv15` (`tag`, and `--ux-1fnjqac` also `progress-steps`). Where they are written without a
-   fallback - the whole of `chart/legend`, `chart/axis-title`, `chart/tooltip`, and `tag`'s size steps
-  - the declaration is invalid at computed-value time. `tag` additionally writes
-   `var(--ux-xwz0yz, inherit)` inside a `calc()`, which cannot work: `calc()` has no `inherit`.
-4. `Button` **opts out of typography entirely for three of four properties.**
-  `button/src/index.module.css:19-22` sets `font-family`, `line-height` and `font-weight` to
-   `inherit`, then sets `font-size` per size step from `--font-body-size-*`. So a button's family and
-   weight come from whatever encloses it and its size comes from the theme, which is two policies in
-   one component.
-5. `progress-steps` **sets** `line-height` **from a font-size intent.**
-  `--_title-line: var(--ux-18ime9a, 1.375rem)` is `ux.textTitle.fontSize`, applied at line 94 as the
-   title's `line-height`. It is valid CSS and almost certainly not the intent: a `1.375rem` line box on
-   a `1.086rem` font size. `ux.textTitle.lineHeight` (`--ux-1pw8hzd`) exists and is unused.
-6. `range-field` **and** `switch` **hardcode.** `range-field` writes `0.875rem` three times and
-  `line-height: 1.5` / `1.375`; `switch` writes `0.875em`, `1em`, `1.375`, `1.125`. No token, no
-   intent, no fallback chain.
-
-
+There is no medium weight token and no letter-spacing token. `ux.textLabel` and `ux.textAction` carry
+`500`, which five components use, so **those surfaces keep a `500` literal until a token exists.**
 
 ## Proposal
 
+### 1. `Text` and `Heading` own the type
 
+They are the single place the role → tier decision is written, and they ship defaults so `<Text>`,
+`<Text as="p">`, `<Text as="label">` and `<Heading>` are correct with no props. Consumers render text
+through them; native elements remain valid, they are just unstyled.
 
-### 1. Three roles, two consumers
+Two things sit outside them: controls, which keep type on the control element
+([§3](#3-controls-keep-their-type-on-the-control-element)), and surfaces that cannot be a component
+([§4](#4-surfaces-that-cannot-be-components-declare-their-own-chain)).
 
-The token roles are the whole vocabulary. There are exactly two things that consume them, and they
-are different jobs that must not be routed through each other:
+### 2. Containers inject defaults through slot context
 
-- **Component chrome** - text the component owns and the consumer cannot re-author: a button's label,
-a tag's text, a calendar's day number, a chart's axis label, an input's value, a placeholder.
-Owned by the component's own CSS.
-- **Content and slots** - text the consumer writes, including the slots a component exposes and
-forwards props for. Owned by `Text` and `Heading`.
+A composed component knows what its parts should look like, so it provides the defaults for the slots it
+defines and the caller overrides with props. `overlay-dialog` already does this for structural regions,
+injecting presentation:
 
-The library already draws this line without stating it. `FieldLabel` renders `RACLabel` with
-`styles.fieldLabel` (chrome); `FieldDescription` renders `Text` with `slot="description"` and types
-its props as `Omit<TextProps, 'as' | 'slot'>` (slot). `Modal` types `titleProps` and
-`descriptionProps` as `TextProps`. This proposal ratifies that instinct as the rule.
+```tsx
+[HeaderContext,      { className: styles.header }],
+[ContentContext,     { className: styles.content }],
+[ButtonGroupContext, { className: styles.buttons, justifyContent: 'end' }]
+```
 
-### 2. Component chrome is CSS, not a composed `Text`
+Typography joins it:
 
-**A component must not render** `Text` **to obtain its own font styles.** Four reasons.
+```tsx
+<Modal>
+  <Heading slot="title">Delete file?</Heading>            {/* h2 at the title tier, nothing passed */}
+  <Heading slot="title" level={3} size="lg">…</Heading>   {/* caller wins */}
+</Modal>
+```
 
-**Not every text surface can be a component.** Chart labels are SVG `<text>`. `Field`'s font has to
-be on the `<input>` itself for the value to inherit it. A button label's font belongs on the
-`<button>`. `::placeholder` cannot be a React component at all. Typography that exists only as a
-component cannot reach any of these, so a CSS mechanism is needed regardless - and then there would
-be two.
+Precedence is child-wins for free: `useContextProps` calls `mergeProps(contextProps, props)` with local
+props last.
 
-**It hardcodes a public API choice into an internal.** If `Field` renders
-`<Text role="detail" size="lg">`, the day Figma moves the label off that tier the fix is either wrong
-markup or a `className` that fights `Text`'s own class. A private custom property is a seam; a
-composed component is not.
+**Named slots for containers, `DEFAULT_SLOT` only for leaf controls.**
 
-**It creates a cascade fight for nothing.** `Text` sets `font-size` on `styles.text`; the composing
-component's class then has to win by specificity or import order.
+| Container                    | Channel                              | Why                                                           |
+| ---------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| `Button`, `Tag`, MenuItem    | `DEFAULT_SLOT`                       | the whole subtree *is* one text surface; nothing to leak into  |
+| `Modal`, `Drawer`, `Popover` | named slots (`title`, `description`) | arbitrary body content; `DEFAULT_SLOT` would capture it        |
+| `Content`/`Header`/`Footer`  | flat context, as today               | each is a distinct named component appearing once              |
 
-**Inheritance already does the composition.** Set the font on the component's root and every
-descendant gets it, portal included. No component can do that.
+RAC sets the precedent: `Dialog` provides `{ slots: { [DEFAULT_SLOT]: {}, title: {…} } }`, where the
+empty `DEFAULT_SLOT` is an escape valve so an unslotted `Heading` receives nothing. Requiring the slot is
+the cost, and it is the right one - the alternative silently restyles body content.
 
-So `<Button>Delete</Button>`, not `<Button><Text>Delete</Button></Text>` and not
-`<Button><span>Delete</span></Button>`. A nested element inside a component is a layout decision -
-`Flex` for an icon beside a label - never a typography one.
+**`Text` and `Heading` must consume their context before applying defaults**, or a container's injected
+value loses to the component's own default every time. `Heading` does this wrong today
+([Tasks](#tasks)).
 
-**An icon does not require a wrapper around the label.** `.button` already sets `display: inline-flex`,
-`align-items: center`, `justify-content: center` and `gap: var(--button-gap)`. A bare text child of a
-flex container becomes an *anonymous flex item*, so it is laid out, centered and gap-spaced exactly as
-the icon is. A real element is needed only when the label needs its own box - truncation, `flex: 1` to
-push an icon to the far end, or a label-specific style - and the one genuine cost of the anonymous item
-is that CSS cannot select it.
+### 3. Controls keep their type on the control element
 
-**This is a regression risk, not a style preference.** `components/button/examples/icon.tsx` currently
-renders `<Button><Icon icon="star" /><Text>With an icon!</Text></Button>`, which is inert today because
-`Text` sets no typography. Once `Text` defaults to `body`/`md`, the span's own `font-size` wins over
-the inherited one, so `<Button size="sm"><Text>label</Text></Button>` renders its label at `body-md`
-and `Button`'s `size` prop stops affecting its own label. Every composed-`Text`-inside-chrome site has
-to be corrected in the same change that gives `Text` its defaults.
+For `Button`, `ToggleButton`, `Tag` and menu items, the type goes on the control, and the container
+injects a **`className`, not a size**:
 
-### 3. Component chrome declares its own variables
+```tsx
+[TextContext, { className: styles.buttonLabel }]
+```
+```css
+.buttonLabel { font: inherit; }
+```
 
-Same six rules as [GU and Spacing](./gu-spacing.md) §5, applied unchanged to typography. Declare the
-chain in full on the component's own root selector, name the variable after the component and after
-what the component means by it, prefix it `--_`.
+So `<Button>label</Button>` and `<Button><Text>label</Text></Button>` render identically, and the label
+never needs wrapping.
+
+**The reason is `Icon`.** It is sized `width: 1lh; height: 1lh`, and `1lh` resolves from the icon
+element's own inherited line-height. As siblings, icon and label share the control's type, so the icon
+matches the label's line box - the point of sizing it in `lh`. Move the label's type into a sibling
+wrapper and inheritance does not reach the icon, since it flows down and not sideways: the two then drift
+whenever the control's size changes. `toggle-button` hand-rolls the same relationship as
+`calc(font-size * line-height)`.
+
+**Do not auto-wrap children in a `Text`.** A control's children are mixed
+(`<Button><Icon />label</Button>`), so wrapping would mean walking the child array and wrapping only
+strings and numbers, which breaks on fragments, arrays and `{count} items`. A wrapper element is fine
+when CSS genuinely needs to select the label; a bare text child is otherwise an anonymous flex item, laid
+out and centred like any item, and the only thing it cannot do is be selected.
+
+**Height follows from one line-height.** A control's height should be its text's line box plus its block
+padding. In a flex container - which `.button` already is - there is no strut, so the container's own
+`line-height` never creates a line box and the height is the flex line's cross size. Either the `Text`
+is the only item and sets it, or a bare text child inherits the control's value and that is it. Two
+line-heights never add up. The stacking to watch for is the strut in a **non-flex** container, where the
+parent's line-height sets a minimum line box height above the child's:
+
+```css
+/* strut = 24px, so the line box is max(24px, 18px) */
+.wrapper { display: block; font-size: 16px; line-height: 1.5; }
+.wrapper > .label { line-height: 18px; }
+```
+
+So: every text surface is either a flex container, or the container owns the line-height.
+
+**Do not set `line-height: 1` on a control.** It removes no stacking, and it makes a `1lh` `Icon`
+resolve to `1 x font-size` - smaller than the label's line box. Kept as-is, a `1lh` icon is exactly the
+height of the text's line box, so it never adds height.
+
+"Derived from the text" and "all `md` controls are the same height" are different requirements.
+Line-height cannot deliver the second; use `min-block-size` derived from the tier, never a fixed
+`block-size`, so a taller fallback font or a user stylesheet raising line-height grows the control
+instead of clipping it.
+
+### 4. Surfaces that cannot be components declare their own chain
+
+`::placeholder` is not an element, chart labels are SVG `<text>`, and a native `<input>`'s value needs the
+font on the input (or `font: inherit` with the type on its wrapper). These declare the chain in CSS,
+following [GU and Spacing](./gu-spacing.md) §5 - full chain, on the component's own root selector,
+`--_`-prefixed and component-named:
 
 ```css
 .field {
-  --_field-label-font-size: var(--font-detail-size-lg, 0.875rem);
-  --_field-label-font-family: var(--font-detail-family, var(--ux-1gutwvn, system-ui, sans-serif));
-  --_field-label-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.4));
-  --_field-label-font-weight: var(--font-detail-weight, var(--ux-g9ierp, normal));
+  --_field-input-font-size: var(--font-body-size-md, 1rem);
+  --_field-input-font-family: var(--font-body-family, var(--ux-pze30t, system-ui, sans-serif));
+  --_field-input-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, 1.5));
 }
 ```
 
-Where a component's own `size` prop selects a tier, the variable takes the component's step names,
-exactly as GU §5 rule 4 establishes for spacing:
+Where a control's own `size` prop selects a tier, the variable takes the control's step names, as GU §5
+rule 4 establishes for spacing:
 
 ```css
 --_button-font-size-sm: var(--font-body-size-sm, 0.875rem);
 --_button-font-size-md: var(--font-body-size-md, 1rem);
 ```
 
-**Chrome sets all four properties explicitly. It does not inherit.** `inherit` means the component
-renders differently in every host app and no Figma spec can be honoured. Fixing Defect 4 means
-`Button` declaring family, weight and line-height alongside the size it already declares.
+These surfaces set all four properties explicitly; they do not `inherit`. This is the one place the
+mapping is duplicated, so the [Audit](#audit) is the artefact to diff when either side changes.
 
-### 4. Fallback chains: sizes stop at the literal
+### 5. Fallback chains: sizes stop at the literal
 
-GU §5 rule 1 requires `token → intent → literal` so that a token theme, an intent theme, both, or
-neither all render correctly. Typography can satisfy that for three properties and cannot for the
-fourth.
+**Family, weight and line-height: `token → intent → literal`**, per GU §5 rule 1.
 
-**Family, weight and line-height: full three-link chain.** Each role has a one-to-one intent, and the
-six family and line-height correspondences are already recorded in the intent map:
+| Role      | Family         | Line height    | Weight                    |
+| --------- | -------------- | -------------- | ------------------------- |
+| `detail`  | `--ux-1gutwvn` | `--ux-1dje42v` | `--ux-g9ierp` (`400`)     |
+| `body`    | `--ux-pze30t`  | `--ux-1hhfdnd` | none; `--ux-8n6y9x` (400) |
+| `heading` | `--ux-shg991`  | `--ux-p25s1t`  | `--ux-c539b7` (`700`)     |
 
-
-| Role      | Family intent             | Line-height intent        | Weight intent         |
-| --------- | ------------------------- | ------------------------- | --------------------- |
-| `detail`  | `--ux-1gutwvn` *(mapped)* | `--ux-1dje42v` *(mapped)* | `--ux-g9ierp` (`400`) |
-| `body`    | `--ux-pze30t` *(mapped)*  | `--ux-1hhfdnd` *(mapped)* | none; see below       |
-| `heading` | `--ux-shg991` *(mapped)*  | `--ux-p25s1t` *(mapped)*  | `--ux-c539b7` (`700`) |
-
-
-Two caveats on the `body` row. `ux.textBody` has only a family and a line-height, no weight, so the
-closest legacy value is `ux.textParagraph.fontWeight` (`--ux-8n6y9x`, `400`), which is not mapped to a
-token. And both mapped `ux.textBody.*` intents carry **no legacy default** in the map, meaning an older
-intent theme defines neither; the legacy values live on `ux.textParagraph.*`, which is unmapped. So
-`body`'s middle link may need to be two intents deep to be worth anything:
+`ux.textBody`'s two intents carry no legacy default, so `body` chains two intents deep to reach a real
+value:
 
 ```css
 --_x-font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
 ```
 
-That is a departure from GU §5 rule 1's three links, and it is proposed only for `body`, only because
-the map shows the newer intent is undefined in practice.
+**Sizes: `token → literal`, no intent link.** The tokens give each role six tiers; the intents give each
+role one font size, so nothing can mean "heading, lg". An intent-only theme therefore gets the library's
+literal sizes and the correct family, weight and line-height.
 
-**Sizes:** `token → literal`**, no intent link.** The tokens give each role six tiers; the intents give
-each role one font size. No intent means "heading, lg", so there is nothing to put in the middle
-link. The two candidate workarounds are both rejected:
-
-- Deriving tiers from the intent with `calc(… * 1.125)` asserts an arithmetic the scale does not have
-([What the token spec says](#what-the-token-spec-says) 3) and the token spec explicitly disclaims -
-the same objection GU §"What the token spec says" 2 quotes from the token set's author. It is also
-already a live defect in six components.
-- Anchoring only each role's `md` tier on the intent makes one tier behave differently from the other
-five for no stated reason, and `ux.textHeading.fontSize` is 2.5rem, above every heading tier, so
-the anchor would be wrong where it mattered most.
-
-The cost is stated plainly: **an intent-only theme gets the library's literal sizes.** It gets the
-correct family, weight and line-height. That is the honest limit of what the intents can express, and
-pretending otherwise is what produced Defect 2.
-
-### 5. `Text` is `role` + `size`, and nothing else
+### 6. `Text` is `role` + `size`, and nothing else
 
 ```tsx
 <Text>Default body, md tier</Text>
 <Text role="detail" size="sm">Supporting copy</Text>
-<Text role="heading" size="lg" as="h2">Section</Text>
 ```
 
 - `role`: `'body' | 'detail' | 'heading'`, default `'body'`. Sets family, weight, line-height.
 - `size`: `'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'`, default `'md'`.
-- `align`, `as`, `maxLines`, `wrap` are unchanged.
+- `align`, `as`, `maxLines`, `wrap` unchanged.
 
-**No** `weight`**,** `family`**,** `lineHeight` **or** `letterSpacing` **props.** Every prop is a permanent promise
-and a documented way to leave the system, and the theme has no vocabulary for any of them beyond what
-`role` already sets. Two roles differ from a third only in these properties, so exposing them
-individually would let a caller build a fourth role the design system never defined.
+**No `weight`, `family`, `lineHeight` or `letterSpacing` props.** The theme has no vocabulary for them
+beyond what `role` sets, and exposing them individually would let a caller build a fourth role the design
+system never defined. The prop names mirror the token names deliberately: `role="detail" size="lg"` names
+`--font-detail-size-lg`.
 
-The prop names mirror the token names, which is deliberate: `role="detail" size="lg"` names
-`--font-detail-size-lg`. A curated preset vocabulary (`variant="label"`, `variant="caption"`) was
-considered and rejected because it invents names neither the tokens nor Figma use, and the mapping
-would then need its own maintenance.
-
-Because a role is applied as a data attribute, chrome and content stay independent:
+Both are applied as data attributes, so a container can neutralise them with a class - which is how a
+control hands its label `font: inherit`:
 
 ```css
 .text {
   --_text-font-family: var(--font-body-family, var(--ux-pze30t, system-ui, sans-serif));
   --_text-font-size: var(--font-body-size-md, 1rem);
-  /* … */
 
   &[data-role="detail"] { /* detail chain */ }
-  &[data-role="heading"] { /* heading chain */ }
-  &[data-size="lg"] { /* per-role tier */ }
+  &[data-size="lg"]     { /* per-role tier */ }
 }
 ```
 
-
-
-### 6. Emphasis is semantic
-
-`--font-weight-strong` (`bolder`) and `--font-style-em` (`italic`) exist so that emphasis is an
-element choice, not a prop:
+### 7. Emphasis is semantic
 
 ```tsx
 <Text as="strong">overdue</Text>
 <Text as="em">Cras probitas</Text>
 ```
 
-This is also why `Text` needs no `weight` prop: the one non-default weight the theme defines is bound
-to `<strong>`, and the one non-default style to `<em>`. It keeps the markup honest, since bold text
-that is not emphasis is a different tier or a different role, not a heavier weight.
+`--font-weight-strong` and `--font-style-em` are bound to those elements, which is why `Text` needs no
+`weight` prop: bold text that is not emphasis is a different tier or role, not a heavier weight.
+Consistent with `antares-components/SKILL.md` preferring `bolder` over numeric weights.
 
-This is consistent with `antares-components/SKILL.md`, which already says to prefer `bolder` over
-numeric weights.
-
-### 7. `Heading`: `level` is semantics, `size` is visuals
-
-`Heading` keeps its RAC base - that is what gives `slot="title"` inside a `Modal` or `Dialog` its
-`aria-labelledby` wiring for free - and gains a `size` prop decoupled from `level`:
+### 8. `Heading`: `level` is semantics, `size` is visuals
 
 ```tsx
-<Heading level={2}>Billing</Heading>              {/* h2, default tier for level 2 */}
-<Heading level={2} size="sm">Billing</Heading>    {/* h2, small tier */}
-<Heading slot="title">Delete file?</Heading>      {/* labels the dialog */}
+<Heading>Billing</Heading>                        {/* h2, default tier for level 2 */}
+<Heading level={2} size="sm">Billing</Heading>
+<Heading slot="title">Delete file?</Heading>      {/* container supplies level and tier */}
 ```
 
-`level` picks the element and nothing else. `size` picks the tier. They must be independent because
-the document outline is decided by page structure and the tier is decided by Figma, and forcing them
-to agree breaks one of the two. A default map keeps the common case a single prop:
-
+`level` picks the element, `size` picks the tier, and they are independent because the document outline is
+decided by page structure while the tier is decided by design. A default map keeps the common case
+propless:
 
 | `level` | 1     | 2    | 3    | 4    | 5    | 6    |
 | ------- | ----- | ---- | ---- | ---- | ---- | ---- |
 | `size`  | `2xl` | `xl` | `lg` | `md` | `sm` | `xs` |
 
+**The default level stays `2`.** Defaulting to `1` would have every unconfigured `Heading` claim to be
+the page title, producing several per page and flattening the outline for anyone navigating by level.
+Containers inject the level they need.
 
-`Heading` always renders the `heading` role. `Text` keeps `role="heading"` because SVG chart titles
-and visually-heading-styled non-heading text both need it, but `Heading` is the one to reach for
-whenever the element is a heading.
+**Each container states its title's tier explicitly**, which is the answer to "what if an `h2` looks
+different in a `Modal` than in a `Drawer`": the element does not differ, the container's title slot does.
 
-**A parent must not push typography down by context.** RAC establishes the precedent and draws the
-line in the right place. `Dialog` provides `HeadingContext` with
-`{ slots: { [DEFAULT_SLOT]: {}, title: { ...titleProps, level: 2 } } }`
-(`react-aria-components/dist/private/Dialog.mjs`): the `id` that makes `aria-labelledby` work, and a
-`level`. No `font-size`, no `line-height`. Precedence is child-wins, since `useContextProps` calls
-`mergeProps(contextProps, props)` with local props last.
+```tsx
+[HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { ...titleProps, level: 2, size: 'xl' } } }]  // Modal
+[HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { ...titleProps, level: 2, size: 'lg' } } }]  // Drawer
+```
 
-The `level` → `size` map above is what makes that sufficient. RAC already supplies `level: 2` to
-`slot="title"`, the map turns level 2 into `size="xl"`, so `<Modal><Heading slot="title">…</Heading></Modal>`
-renders at the heading `xl` tier with nothing configured, and a caller wanting another tier passes
-`size` and wins. A styling context would instead make the rendered size invisible in the caller's JSX
-and add a precedence question per property. If a container's title belongs on a different tier, that is
-a change to the default map, not a context.
+Not `.modal h2 { … }` - descendant element selectors leak into content, so a heading inside the modal
+body would pick up the title tier. And a container does not restyle a caller's `Heading` from its own
+CSS; it supplies the default and the caller's props win.
 
-Note that `[DEFAULT_SLOT]: {}` means an unslotted `Heading` inside a `Dialog` receives nothing, so it
-neither labels the dialog nor picks up `level: 2`. `Modal` should keep accepting a `title` prop and
-render the slotted `Heading` itself rather than relying on callers to remember the slot.
+`heading.module.css` gains the full chain, so sizes stop coming from the user agent and
+`font-weight: bolder` becomes the role's weight token.
 
-`heading.module.css` gains the full chain, so heading sizes stop coming from the user agent, and
-`font-weight: bolder` is replaced by the role's weight token. This is what fixes the
-"styled by the user agent" problem in [Current state](#current-state).
+### 9. Components resolve to a token
 
-### 8. Components resolve to a token; off-ramp Figma values are reconciled
-
-Figma specs component typography directly, and where the specced value is a tier the component writes
-that tier. Where it is not, the value is **snapped to the nearest tier and recorded**, not preserved
-as a literal:
+Where Figma specs a value that is a tier, the component writes that tier. Where it is not, the value
+snaps to the nearest tier with a note, rather than being kept as a literal - otherwise the theme can no
+longer restyle the library:
 
 ```css
-/* Figma 0.9rem; nearest tier detail-lg. TODO(tokens): reconcile with Figma. */
+/* Figma 0.9rem; nearest tier detail-lg. */
 --_tag-font-size: var(--font-detail-size-lg, 0.875rem);
 ```
 
-The reason is the same as GU §5 rule 2's precedence argument: if components keep off-ramp literals,
-the theme can no longer restyle the library, which is the only reason the tokens exist. A value that
-is not on a ramp is a spec to reconcile between Figma and `@godaddy/design-tokens` - not a number to
-freeze into CSS.
+One exception: `gauge-chart` and `donut-chart` size labels in `cqi` so the type scales with the chart.
+That is deliberately fluid and no fixed tier can express it, so those declarations stay.
 
-**One exception, narrowly drawn: container-relative type.** `gauge-chart` and `donut-chart` size
-their labels in `cqi` so the type scales with the chart. That is deliberately fluid and no fixed tier
-can express it. Those declarations stay, and the exception is documented in the component rather than
-argued case by case.
+## Out of scope
 
-### 9. Out of scope: prose
+[shadcn/typeset](https://ui.shadcn.com/docs/typeset) is a CSS file activated by a wrapper class that
+styles `h1`/`p`/`ul`/`table` and expects components to opt out via `not-typeset`. It solves rendered
+markdown, not component internals, so it neither models this proposal nor competes with `Text`. A prose
+scope for consumers rendering markdown is a separate, later piece of work. One technique is worth
+borrowing now: keeping element-level defaults in `:where()` so a consumer's own class overrides them
+without `!important`.
 
-[shadcn/typeset](https://ui.shadcn.com/docs/typeset) was reviewed as prior art. It is a single CSS
-file activated by a `typeset` wrapper class, styling `h1`/`p`/`ul`/`table` through element selectors,
-with `not-typeset` / `data-not-typeset` as the documented opt-out you are expected to put on
-components. It solves styling a rendered markdown blob, and explicitly excludes component internals.
-So it is not a model for component typography and does not compete with `Text` or `Heading`.
-
-Two things are worth taking from it, one now and one later:
-
-- **Now:** `:where()` **for element-level defaults.** Typeset keeps its element selectors in a low
-priority layer wrapped in `:where()`, so a consumer's own class overrides them without
-`!important` and without a specificity fight. That is a better answer to the override problem than
-the `cx(styles.x, className)` merge alone, and it applies to any element-level typography Antares
-ships.
-- **Later: a prose scope is a real, separate need.** A consumer rendering markdown - docs, help
-content, chat - has a third surface alongside chrome and `Text`/`Heading`, and a typeset-shaped CSS
-scope is the right form for it. Naming it here keeps it from being conflated with this proposal.
-
-Its `--typeset-flow` control is block spacing, which in Antares is `Flex` / `Box` `gap`, and its
-`1em` container-relative sizing is deliberately fluid where the tokens are pinned tiers. Neither
-should be absorbed.
+Responsive type is not addressed. The token ramp has no breakpoint behaviour and none is proposed here.
 
 ## Audit
 
-22 CSS files carry typography. Six groups. A component appears in more than one row where it mixes
-approaches.
+22 CSS files carry typography.
 
+| Group                          | Components                                                                                                                            | Action                                                            |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| No typography at all           | `Text`, `Heading`                                                                                                                     | Implement §6 and §8                                                |
+| Sizes derived by ratio         | `circular-progress` (13 refs), `segmented-controller` (2), `tag` (2), `alert`, `button`, `field`, `progress-steps`, `switch`, `toggle-button` | Replace `calc(… * 1.125)` with named tiers                        |
+| Unresolvable intent hashes     | `tag` (12 refs), `chart/legend` (7), `chart/tooltip` (2), `chart/axis-title`, `alert`, `progress-steps`                                | Hashes absent from the intent map; without a fallback the declaration is invalid at computed-value time |
+| Storybook-only variables       | `metrics-lockup`                                                                                                                      | Reads `--fs-detail-lg`, `--fs-2xl`, `--lh-heading`, defined only in `apps/docs/.storybook/variables.css`, so it has no typography in production |
+| Hardcoded                      | `range-field` (8), `switch` (5), `bar-chart` / `line-chart` (`0.794rem`), `gauge-chart`, `donut-chart`, `chart/legend`, `chart/tooltip` | Assign a tier                                                     |
+| Opts out via `inherit`         | `button` (family, weight, line-height)                                                                                                | Declare all four explicitly                                       |
+| Container-relative             | `gauge-chart`, `donut-chart` (`cqi`)                                                                                                  | Keep, per §9                                                      |
 
-| Group                          | Components                                                                                                                                                                                                                                                                                          | Issue                                                                                                                                |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Renders with no typography     | `text` (the `Text` component itself), `text` (`Heading`, no `font-size`), `metrics-lockup` (Defect 1)                                                                                                                                                                                               | `Text` sets none; `Heading` inherits the UA ramp; `metrics-lockup` references variables that exist only in Storybook                 |
-| Derives sizes by ratio         | `circular-progress` (13 refs), `segmented-controller` (2), `tag` (2), `alert` (1), `button` (1), `field` (1), `progress-steps` (1), `switch` (1), `toggle-button` (1)                                                                                                                               | `calc(… * 1.125)` against a scale that is not geometric (Defect 2). Every derived value lands off the ramp                           |
-| References unresolvable hashes | `tag` (12 refs), `chart/legend` (7), `chart/tooltip` (2), `chart/axis-title` (1), `alert` (1), `progress-steps` (1)                                                                                                                                                                                 | Hashes absent from the intent map (Defect 3). Where written without a fallback, the declaration is invalid at computed-value time    |
-| Hardcoded                      | `range-field` (8), `switch` (5), `chart/bar-chart` (`0.794rem`), `chart/line-chart` (`0.794rem`), `circular-progress` (`line-height: 1`), `gauge-chart` (`400`, `500`, `line-height: 1`), `donut-chart` (`bolder`), `chart/legend` (`bold`), `chart/tooltip` (`1.5`), `text` (`Heading`'s `bolder`) | No token, no intent, no chain (Defect 6). `0.794rem` is on no scale in either system                                                 |
-| Opts out                       | `button` (family, weight, line-height `inherit`)                                                                                                                                                                                                                                                    | Defect 4. Type comes from the host app for three properties and from the theme for the fourth                                        |
-| Container-relative             | `gauge-chart` (`9.37cqi`, `19.3cqi`, `13.56cqi`), `donut-chart` (`15.73cqi`, `6.81cqi`)                                                                                                                                                                                                             | Deliberately fluid. Covered by the exception in [Proposal §8](#8-components-resolve-to-a-token-off-ramp-figma-values-are-reconciled) |
+Legacy intent → role mapping for the migration:
 
-
-Legacy intent usage, for the migration. Weight column marks where the token set cannot express the
-current value:
-
-
-| Intent family                         | Used by                                                               | Proposed role   | Weight today | Expressible                 |
-| ------------------------------------- | --------------------------------------------------------------------- | --------------- | ------------ | --------------------------- |
-| `ux.textLabel`                        | `field`, `menu`, `circular-progress`, `progress-bar`, `range-field`   | `detail` `lg`   | `500`        | no                          |
-| `ux.textCaption`                      | `field`, `circular-progress`                                          | `detail` `lg`   | `400`        | yes                         |
-| `ux.textInput`                        | `field`                                                               | `body` `md`     | `400`        | yes                         |
-| `ux.textAction`                       | `menu`, `calendar`, `toggle-button`, `segmented-controller`, `button` | `body` `md`     | `500`        | no                          |
-| `ux.text`                             | `circular-progress`, `chart/axis-title`, `donut-chart`                | `body` `md`     | `400`        | yes                         |
-| `ux.textTitle`                        | `alert`                                                               | `heading` `?`   | `700`        | size is off-ramp (1.375rem) |
-| `ux.textHeading`                      | none directly                                                         | `heading` `2xl` | `700`        | size is off-ramp (2.5rem)   |
-| `ux.text.fontFamily` (`--ux-1067ph9`) | `circular-progress`, `bar-chart`, `line-chart`, `gauge-chart`         | `body` family   | -            | yes                         |
-
-
-
-
-## Open questions
-
-1. `body` **skips** `030`**.** `detail` is `010`-`060` and `heading` is `050`-`100`, both contiguous, but
-  `body` is `020`, `040`, `050`, `060`, `070`, `080`. Deliberate, or a slip in `tokens.yml`? It
-   determines whether `body-xs` (0.75rem) or a `030` tier (0.8125rem) is the right target for the
-   smallest body text.
-2. **No medium weight.** `ux.textLabel.fontWeight` and `ux.textAction.fontWeight` are `500`, used by
-  five components. Migrating them to `--font-detail-weight` / `--font-body-weight` changes them to
-   `normal`, which is a visible change to every field label and menu item in the library. Either that
-   change is accepted, or `@godaddy/design-tokens` needs a medium weight tier.
-3. `ux.textTitle` **and** `ux.textHeading` **sizes are off-ramp** at 1.375rem and 2.5rem. Under
-  [§8](#8-components-resolve-to-a-token-off-ramp-figma-values-are-reconciled) both snap - `alert`'s
-   title from an effective 1.086rem to `heading-xs` (1rem), and any `textHeading` consumer to
-   `heading-2xl` (2.25rem). Both need a Figma value before the snap is more than a guess.
-4. **Does the** `heading` **role's** `bold` **weight belong on** `Heading`**'s CSS or on the element?** The token
-  says `bold`; `SKILL.md` says prefer `bolder`; `h1`-`h6` are already bold by user agent. Picking
-   `--font-heading-weight` means the theme wins and the UA default is overridden explicitly, which is
-   this document's position, but it puts a numeric-ish keyword back in where `SKILL.md` asked for
-   `bolder`.
-5. **Colour is not addressed here.** `--color-text-`* tokens exist and components reference legacy
-  colour intents alongside their font declarations. Whether `Text` gains a `color` prop is a separate
-   decision with the same shape as this one.
-
-
+| Intent family    | Used by                                                                        | Role, tier                    | Weight today |
+| ---------------- | ------------------------------------------------------------------------------ | ----------------------------- | ------------ |
+| `ux.textLabel`   | `field`, `menu`, `circular-progress`, `progress-bar`, `range-field`             | `detail` `lg`                 | `500` literal |
+| `ux.textCaption` | `field`, `circular-progress`                                                   | `detail` `lg`                 | `400`        |
+| `ux.textInput`   | `field`                                                                        | `body` `md`                   | `400`        |
+| `ux.textAction`  | `menu`, `calendar`, `toggle-button`, `segmented-controller`, `button`           | `body` `md`                   | `500` literal |
+| `ux.text`        | `circular-progress`, `chart/axis-title`, `donut-chart`                         | `body` `md`                   | `400`        |
+| `ux.textTitle`   | `alert`, `progress-steps`                                                      | `heading` `xs` (1.375rem → 1rem) | `700`     |
+| `ux.textHeading` | none directly                                                                  | `heading` `2xl` (2.5rem → 2.25rem) | `700`   |
 
 ## Tasks
 
-Independent of ratifying this proposal, all live:
+Fix first, because everything in §2 depends on it:
 
-- Fix `metrics-lockup` (Defect 1). It has no typography outside Storybook.
+- **`Heading` must consume `HeadingContext` before applying defaults.** It currently destructures
+  `level = 2` and always passes an explicit `level` to `RACHeading`, which merges with
+  `mergeProps(contextProps, props)` where local wins - so the `level: 2` that RAC's `Dialog` provides to
+  `slot="title"` is already ignored. Any container-injected level or tier would be silently overridden.
+  Whatever the implementation, it must keep forwarding the context's props and ref, since `Dialog`
+  supplies the title's `id` through them, and must not merge the context twice (that duplicates
+  `className`).
+
+Then:
+
+- Add `role` and `size` to `Text`, with the chains from
+  [§5](#5-fallback-chains-sizes-stop-at-the-literal); `Text` consumes `TextContext` before applying
+  defaults. Update examples, stories, README, snapshots.
+- Add `size` and the `level` → `size` map to `Heading`, and give `heading.module.css` the full chain.
+- Give `Modal`, `Drawer` and `Popover` a `HeadingContext` provider carrying `level` and `size` for the
+  `title` slot, alongside the region contexts in `overlay-dialog`. Named slots only.
+- Give `Button`, `ToggleButton` and `Tag` a `TextContext` provider carrying a `font: inherit` label class
+  ([§3](#3-controls-keep-their-type-on-the-control-element)).
+- Fix `components/button/examples/icon.tsx`, which wraps a button label in `Text`. It must land with
+  `Text`'s defaults or `Button`'s `size` prop stops sizing its own label. Sweep for other sites.
+- Fix `metrics-lockup`, and decide whether the typography block in
+  `apps/docs/.storybook/variables.css` becomes a shim that mirrors the token values or is deleted.
 - Give `chart/legend`, `chart/axis-title`, `chart/tooltip` and `tag` fallbacks, or remove the
-unresolvable hashes (Defect 3). `tag`'s `var(--ux-xwz0yz, inherit)` inside `calc()` cannot work at
-all.
-- Fix `progress-steps`'s `line-height` (Defect 5). `ux.textTitle.lineHeight` exists and is unused.
-- Decide the fate of `apps/docs/.storybook/variables.css`'s typography block. Either it becomes a
-documented shim that mirrors the token values exactly, or it is deleted and the docs app consumes
-the theme. Today it disagrees with the tokens and one component depends on it.
-
-Ratifying this proposal:
-
-- Answer [Open questions](#open-questions) 1-3 with the design system team. Question 2 gates every
-label and control in the library.
-- Add `role` and `size` to `Text`, with the chains from [§4](#4-fallback-chains-sizes-stop-at-the-literal).
-Update examples, stories, README, snapshots.
-- Add `size` to `Heading` and the `level` → `size` default map, and give `heading.module.css` the
-full chain so sizes stop coming from the user agent.
-- Fix `components/button/examples/icon.tsx`, which wraps a button label in `Text`. It must land in the
-same change as `Text`'s defaults or `Button`'s `size` prop stops sizing its own label
-([§2](#2-component-chrome-is-css-not-a-composed-text)). Sweep for other composed-`Text`-in-chrome sites.
-- Point `Modal`'s title at `Heading` and drop the hand-wired title relationship. Same for any other
-component rendering `Text as="h*"`.
-- Correct `antares-components/SKILL.md`: state the chrome/slot rule, that components do not render
-`Text` for their own type, and the `token → intent → literal` chain with the size exception.
-- Migrate the ratio group, then the hardcoded group, then the intent consumers, per the audit. Each
-migration carries the `--_`-prefixed component-named renaming from GU §5 rule 5, as that document
-already prescribes for the same files.
-- Extract per-component typography from Figma. The audit says which components are wrong, not what
-each value should be.
-- Revisit whether the literal fallbacks are still needed once a theme defines the typography tokens.
-
+  unresolvable hashes. `tag` writes `var(--ux-xwz0yz, inherit)` inside a `calc()`, which cannot work.
+- Fix `progress-steps`, which sets `line-height` from `ux.textTitle.fontSize`;
+  `ux.textTitle.lineHeight` exists and is unused.
+- Audit every text surface for the strut condition in
+  [§3](#3-controls-keep-their-type-on-the-control-element), and decide per component whether a
+  `min-block-size` is needed for cross-control alignment.
+- Migrate the audit rows, carrying the `--_`-prefixed component-named renaming from GU §5 rule 5.
+- Correct `antares-components/SKILL.md`: `Text`/`Heading` own the type, containers inject through slot
+  context, controls keep type on the control element, and the chain with the size exception.
