@@ -180,132 +180,6 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
-# Calendar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single-date calendar.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Story of="CalendarWithValueExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Story of="RangeCalendarExample" />
-
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Story of="CalendarMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Story of="CalendarUnavailableExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Story of="CalendarDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-## Props [#props]
-
-The `Calendar` component accepts the following props:
-
-<PropTable />
-
-The `RangeCalendar` component accepts the following props:
-
-<PropTable />
-
-
 # Button
 
 
@@ -439,6 +313,132 @@ The `LinkButton` component accepts the following props:
 <PropTable />
 
 The `CloseButton` component accepts the following props:
+
+<PropTable />
+
+
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
 
 <PropTable />
 
@@ -872,71 +872,6 @@ The `CheckboxGroup` component has the following props:
 <PropTable />
 
 
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-<PropTable />
-
-
 # DatePicker
 
 
@@ -1078,6 +1013,289 @@ The `DateRangePicker` component accepts the following props:
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+<PropTable />
+
+
+# DropZone
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, isFileDropItem, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DropZone\n      onDrop={function handleDrop(e) {\n        const files = e.items.filter(isFileDropItem);\n        console.log('Dropped files:', files);\n      }}\n    >\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DropZone isDisabled>\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
+
+### File Upload [#file-upload]
+
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+<Story of="FileUploadExample" />
+
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
+
+### Drop Target Label [#drop-target-label]
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
+
+<Story of="DropTargetLabelExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\nexport function DropTargetLabelExample() {\n  return (\n    <DropZone\n      getDropOperation={function getDropOperation(types) {\n        return ACCEPTED_TYPES.some(function matches(type) {\n          return types.has(type);\n        })\n          ? 'copy'\n          : 'cancel';\n      }}\n      onDrop={async function handleDrop(e) {\n        const files = await Promise.all(\n          e.items.filter(isFileDropItem).map(function getFile(item) {\n            return item.getFile();\n          })\n        );\n        console.log(\n          'Dropped files:',\n          files.map(function getName(f) {\n            return f.name;\n          })\n        );\n      }}\n    >\n      {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n        return isDropTarget ? (\n          <Text as=\&#x22;strong\&#x22;>Drop files to upload.</Text>\n        ) : (\n          <Text slot=\&#x22;label\&#x22;>Add files or drag them here.</Text>\n        );\n      }}\n    </DropZone>\n  );\n}&#x22;" />
+
+### Replace Existing File [#replace-existing-file]
+
+Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+
+<Story of="ReplaceFileExample" />
+
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| `Tab`             | Moves focus to the drop zone                                     |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers [#screen-readers]
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
+
+## Best Practices [#best-practices]
+
+* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+* Replace the default text with `children` to communicate the accepted file types and size limits up front.
+* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Field primitives
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
+
+The field decoration is split into granular, composable pieces so the same structure is shared across every field:
+
+* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
+* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
+* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
+* **`FieldInput`** — the single-line control the user types into (a normalized React Aria `Input` given antares spacing via `Box`).
+* **`FieldTextArea`** — the multiline control the user types into (a normalized React Aria `TextArea` given antares spacing via `Box`).
+* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
+* **`FieldTrigger`** — a full-width value-display button inside the box that opens an overlay (used by Select and DatePicker): a value area plus a trailing icon, laid out across the group. `variant="select"` is transparent and input-like; `variant="control"` is a filled segment inside a shared group.
+* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
+* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
+
+`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
+
+## Usage [#usage]
+
+## Composition [#composition]
+
+A boxed field composes the primitives inside its React Aria field wrapper. Use
+`Field as={...}` to merge the field wrapper and the layout column into a single
+element:
+
+```text
+Field as={RACTextField}                   ← field wrapper + layout column (one element)
+├── FieldLabel                            ← when label provided (+ required indicator)
+├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
+│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
+├── FieldDescription                      ← when description provided
+└── FieldError                            ← renders validation messages when invalid
+```
+
+A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
+
+`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
+
+### Positioning controls inside the group [#positioning-controls-inside-the-group]
+
+`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
+
+### States [#states]
+
+The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
+
+| State                                                                                    | CSS Selector      |
+| ---------------------------------------------------------------------------------------- | ----------------- |
+| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
+| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
+| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
+
+## Examples [#examples]
+
+### Default [#default]
+
+Composes the presentational field primitives (Field, FieldLabel, FieldGroup,
+FieldDescription) into a minimal boxed field, showing how the group and its
+position markers are assembled. The fill is a static placeholder - real value,
+focus, and validation behavior is wired up by the field components (TextField,
+NumberField, Select).
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Field, FieldDescription, FieldGroup, FieldLabel, Flex } from '@godaddy/antares';\n\n/** Props for the composed field-group examples. */\nexport interface FieldGroupBasicProps {\n  /** Class name merged onto the FieldGroup. */\n  className?: string;\n\n  /** Helper text shown below the group. */\n  description?: string;\n\n  /** Whether the control is disabled. */\n  isDisabled?: boolean;\n\n  /** Whether the field is required. */\n  isRequired?: boolean;\n\n  /** Label text shown above the group. */\n  label?: string;\n}\n\nexport function DefaultExample({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {\n  return (\n    <Field>\n      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>\n      <FieldGroup className={className} isDisabled={isDisabled} gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; padding=\&#x22;md\&#x22;>\n          Placeholder content\n        </Flex>\n      </FieldGroup>\n      <FieldDescription>{description}</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
+
+### Leading control [#leading-control]
+
+A field group with a leading control before the input area.
+
+<Story of="FieldGroupLeadingControlExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  Flex,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupLeadingControlExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Phone</FieldLabel>\n      <FieldGroup gap=\&#x22;sm\&#x22; {...props}>\n        <FieldButton aria-label=\&#x22;Country code\&#x22;>Click Me</FieldButton>\n        <Flex as=\&#x22;span\&#x22; flex={1} alignItems=\&#x22;center\&#x22; padding=\&#x22;md\&#x22;>\n          Placeholder content\n        </Flex>\n      </FieldGroup>\n      <FieldDescription>Enter your phone number</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
+
+### Trailing control [#trailing-control]
+
+A field group with an input and a trailing action control.
+
+<Story of="FieldGroupTrailingControlExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  FieldInput,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupTrailingControlExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Search</FieldLabel>\n      <FieldGroup gap=\&#x22;sm\&#x22; {...props}>\n        <FieldInput placeholder=\&#x22;Type...\&#x22; />\n        <FieldButton aria-label=\&#x22;Search\&#x22;>Search</FieldButton>\n      </FieldGroup>\n      <FieldDescription>Search by keyword</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
+
+### Icon accessories [#icon-accessories]
+
+A field group with leading icon and trailing action accessories.
+
+<Story of="FieldGroupIconAccessoriesExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  Flex,\n  Icon,\n  FieldInput,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupIconAccessoriesExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Email</FieldLabel>\n      <FieldGroup {...props}>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Flex>\n        <FieldInput placeholder=\&#x22;Email\&#x22; />\n        <FieldButton aria-label=\&#x22;Verify email address\&#x22;>Verify</FieldButton>\n      </FieldGroup>\n      <FieldDescription>Enter your email address</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `FieldGroup` component has the following props:
+
+<PropTable />
+
+
 # Drawer
 
 
@@ -1207,110 +1425,6 @@ The `DrawerTrigger` component accepts the following props:
 <PropTable />
 
 
-# DropZone
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, isFileDropItem, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DropZone\n      onDrop={function handleDrop(e) {\n        const files = e.items.filter(isFileDropItem);\n        console.log('Dropped files:', files);\n      }}\n    >\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DropZone isDisabled>\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
-
-### File Upload [#file-upload]
-
-A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
-
-<Story of="FileUploadExample" />
-
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
-
-### Drop Target Label [#drop-target-label]
-
-Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
-
-<Story of="DropTargetLabelExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\nexport function DropTargetLabelExample() {\n  return (\n    <DropZone\n      getDropOperation={function getDropOperation(types) {\n        return ACCEPTED_TYPES.some(function matches(type) {\n          return types.has(type);\n        })\n          ? 'copy'\n          : 'cancel';\n      }}\n      onDrop={async function handleDrop(e) {\n        const files = await Promise.all(\n          e.items.filter(isFileDropItem).map(function getFile(item) {\n            return item.getFile();\n          })\n        );\n        console.log(\n          'Dropped files:',\n          files.map(function getName(f) {\n            return f.name;\n          })\n        );\n      }}\n    >\n      {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n        return isDropTarget ? (\n          <Text as=\&#x22;strong\&#x22;>Drop files to upload.</Text>\n        ) : (\n          <Text slot=\&#x22;label\&#x22;>Add files or drag them here.</Text>\n        );\n      }}\n    </DropZone>\n  );\n}&#x22;" />
-
-### Replace Existing File [#replace-existing-file]
-
-Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
-
-<Story of="ReplaceFileExample" />
-
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `Tab`             | Moves focus to the drop zone                                     |
-| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
-
-### Screen readers [#screen-readers]
-
-The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
-
-The button's accessible name is built from two sources, combined in order:
-
-1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
-2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
-
-```tsx
-<DropZone onDrop={handleDrop}>
-  <Text slot="label">Drop files to upload.</Text>
-</DropZone>
-```
-
-## Best Practices [#best-practices]
-
-* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
-* Replace the default text with `children` to communicate the accepted file types and size limits up front.
-* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
-* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
-
-## Props [#props]
-
-<PropTable />
-
-
 # FileTrigger
 
 
@@ -1367,95 +1481,6 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 * Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
 
 ## Props [#props]
-
-<PropTable />
-
-
-# InlineDrawer
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
-
-## Features [#features]
-
-* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
-* Animated by default; `animate={false}` disables the transition
-* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
-* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
-* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
-* `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Box style={{ maxInlineSize: 360 }}>\n      <InlineDrawer>\n        <Button slot=\&#x22;trigger\&#x22;>Toggle details</Button>\n        <InlineDrawerPanel>\n          <Box padding=\&#x22;md\&#x22;>\n            <Text>Collapsible content goes here.</Text>\n          </Box>\n        </InlineDrawerPanel>\n      </InlineDrawer>\n    </Box>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `isExpanded` and `onExpandedChange` to drive state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setExpanded(!expanded)}>\n        {expanded ? 'Collapse' : 'Expand'}\n      </Button>\n      <Text>Expanded: {String(expanded)}</Text>\n      <Box style={{ maxInlineSize: 360 }}>\n        <InlineDrawer isExpanded={expanded} onExpandedChange={setExpanded}>\n          <Button slot=\&#x22;trigger\&#x22;>Details</Button>\n          <InlineDrawerPanel>\n            <Box padding=\&#x22;md\&#x22;>\n              <Text>Controlled panel content.</Text>\n            </Box>\n          </InlineDrawerPanel>\n        </InlineDrawer>\n      </Box>\n    </>\n  );\n}&#x22;" />
-
-### Sidebar Nav [#sidebar-nav]
-
-A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
-
-<Story of="SidebarNavExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';\n\nconst NAV = [\n  { icon: 'grid', label: 'Dashboard', href: '#' },\n  { icon: 'star', label: 'Favorites', href: '#' },\n  { icon: 'comment', label: 'Messages', href: '#' }\n] as const;\n\nexport function SidebarNavExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;row\&#x22;>\n      <InlineDrawer placement=\&#x22;left\&#x22; isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22; padding=\&#x22;xs\&#x22;>\n          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label=\&#x22;Menu\&#x22;>\n            <Icon icon=\&#x22;bulleted-list\&#x22; />\n          </ToggleButton>\n          {NAV.map(function renderItem(item) {\n            return (\n              <LinkButton\n                key={item.label}\n                href={item.href}\n                aria-label={!expanded ? item.label : undefined}\n                variant=\&#x22;minimal\&#x22;\n                style={{ justifyContent: 'flex-start' }}\n              >\n                <Icon icon={item.icon} />\n                {expanded ? item.label : null}\n              </LinkButton>\n            );\n          })}\n        </Flex>\n      </InlineDrawer>\n      <Flex padding=\&#x22;md\&#x22; style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>\n        <Text>Main content area</Text>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Action                         |
-| ----------------- | ------------------------------ |
-| `Enter` / `Space` | Toggle via the slotted trigger |
-| `Tab`             | Move focus through the content |
-
-### ARIA [#aria]
-
-* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
-* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
-
-## Best Practices [#best-practices]
-
-* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
-* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
-* `placement` does not flip in RTL; the side is decided by document/flex order.
-* Don't nest InlineDrawers.
-
-## Props [#props]
-
-<PropTable />
-
-The `InlineDrawerPanel` component accepts the following props:
 
 <PropTable />
 
@@ -1872,6 +1897,95 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# InlineDrawer
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+
+## Features [#features]
+
+* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
+* Animated by default; `animate={false}` disables the transition
+* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
+* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
+* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
+* `prefers-reduced-motion` support
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Box style={{ maxInlineSize: 360 }}>\n      <InlineDrawer>\n        <Button slot=\&#x22;trigger\&#x22;>Toggle details</Button>\n        <InlineDrawerPanel>\n          <Box padding=\&#x22;md\&#x22;>\n            <Text>Collapsible content goes here.</Text>\n          </Box>\n        </InlineDrawerPanel>\n      </InlineDrawer>\n    </Box>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `isExpanded` and `onExpandedChange` to drive state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setExpanded(!expanded)}>\n        {expanded ? 'Collapse' : 'Expand'}\n      </Button>\n      <Text>Expanded: {String(expanded)}</Text>\n      <Box style={{ maxInlineSize: 360 }}>\n        <InlineDrawer isExpanded={expanded} onExpandedChange={setExpanded}>\n          <Button slot=\&#x22;trigger\&#x22;>Details</Button>\n          <InlineDrawerPanel>\n            <Box padding=\&#x22;md\&#x22;>\n              <Text>Controlled panel content.</Text>\n            </Box>\n          </InlineDrawerPanel>\n        </InlineDrawer>\n      </Box>\n    </>\n  );\n}&#x22;" />
+
+### Sidebar Nav [#sidebar-nav]
+
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
+
+<Story of="SidebarNavExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';\n\nconst NAV = [\n  { icon: 'grid', label: 'Dashboard', href: '#' },\n  { icon: 'star', label: 'Favorites', href: '#' },\n  { icon: 'comment', label: 'Messages', href: '#' }\n] as const;\n\nexport function SidebarNavExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;row\&#x22;>\n      <InlineDrawer placement=\&#x22;left\&#x22; isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22; padding=\&#x22;xs\&#x22;>\n          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label=\&#x22;Menu\&#x22;>\n            <Icon icon=\&#x22;bulleted-list\&#x22; />\n          </ToggleButton>\n          {NAV.map(function renderItem(item) {\n            return (\n              <LinkButton\n                key={item.label}\n                href={item.href}\n                aria-label={!expanded ? item.label : undefined}\n                variant=\&#x22;minimal\&#x22;\n                style={{ justifyContent: 'flex-start' }}\n              >\n                <Icon icon={item.icon} />\n                {expanded ? item.label : null}\n              </LinkButton>\n            );\n          })}\n        </Flex>\n      </InlineDrawer>\n      <Flex padding=\&#x22;md\&#x22; style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>\n        <Text>Main content area</Text>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
+| `Enter` / `Space` | Toggle via the slotted trigger |
+| `Tab`             | Move focus through the content |
+
+### ARIA [#aria]
+
+* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
+* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
+
+## Best Practices [#best-practices]
+
+* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
+* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
+* `placement` does not flip in RTL; the side is decided by document/flex order.
+* Don't nest InlineDrawers.
+
+## Props [#props]
+
+<PropTable />
+
+The `InlineDrawerPanel` component accepts the following props:
+
+<PropTable />
+
+
 # ListBox
 
 
@@ -2116,120 +2230,6 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
-# Field primitives
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
-
-The field decoration is split into granular, composable pieces so the same structure is shared across every field:
-
-* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
-* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
-* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
-* **`FieldInput`** — the single-line control the user types into (a normalized React Aria `Input` given antares spacing via `Box`).
-* **`FieldTextArea`** — the multiline control the user types into (a normalized React Aria `TextArea` given antares spacing via `Box`).
-* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
-* **`FieldTrigger`** — a full-width value-display button inside the box that opens an overlay (used by Select and DatePicker): a value area plus a trailing icon, laid out across the group. `variant="select"` is transparent and input-like; `variant="control"` is a filled segment inside a shared group.
-* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
-* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
-
-`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
-
-## Usage [#usage]
-
-## Composition [#composition]
-
-A boxed field composes the primitives inside its React Aria field wrapper. Use
-`Field as={...}` to merge the field wrapper and the layout column into a single
-element:
-
-```text
-Field as={RACTextField}                   ← field wrapper + layout column (one element)
-├── FieldLabel                            ← when label provided (+ required indicator)
-├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
-│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
-├── FieldDescription                      ← when description provided
-└── FieldError                            ← renders validation messages when invalid
-```
-
-A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
-
-`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
-
-### Positioning controls inside the group [#positioning-controls-inside-the-group]
-
-`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
-
-### States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
-
-| State                                                                                    | CSS Selector      |
-| ---------------------------------------------------------------------------------------- | ----------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
-| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
-
-## Examples [#examples]
-
-### Default [#default]
-
-Composes the presentational field primitives (Field, FieldLabel, FieldGroup,
-FieldDescription) into a minimal boxed field, showing how the group and its
-position markers are assembled. The fill is a static placeholder - real value,
-focus, and validation behavior is wired up by the field components (TextField,
-NumberField, Select).
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Field, FieldDescription, FieldGroup, FieldLabel, Flex } from '@godaddy/antares';\n\n/** Props for the composed field-group examples. */\nexport interface FieldGroupBasicProps {\n  /** Class name merged onto the FieldGroup. */\n  className?: string;\n\n  /** Helper text shown below the group. */\n  description?: string;\n\n  /** Whether the control is disabled. */\n  isDisabled?: boolean;\n\n  /** Whether the field is required. */\n  isRequired?: boolean;\n\n  /** Label text shown above the group. */\n  label?: string;\n}\n\nexport function DefaultExample({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {\n  return (\n    <Field>\n      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>\n      <FieldGroup className={className} isDisabled={isDisabled} gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; padding=\&#x22;md\&#x22;>\n          Placeholder content\n        </Flex>\n      </FieldGroup>\n      <FieldDescription>{description}</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-### Leading control [#leading-control]
-
-A field group with a leading control before the input area.
-
-<Story of="FieldGroupLeadingControlExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  Flex,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupLeadingControlExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Phone</FieldLabel>\n      <FieldGroup gap=\&#x22;sm\&#x22; {...props}>\n        <FieldButton aria-label=\&#x22;Country code\&#x22;>Click Me</FieldButton>\n        <Flex as=\&#x22;span\&#x22; flex={1} alignItems=\&#x22;center\&#x22; padding=\&#x22;md\&#x22;>\n          Placeholder content\n        </Flex>\n      </FieldGroup>\n      <FieldDescription>Enter your phone number</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-### Trailing control [#trailing-control]
-
-A field group with an input and a trailing action control.
-
-<Story of="FieldGroupTrailingControlExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  FieldInput,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupTrailingControlExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Search</FieldLabel>\n      <FieldGroup gap=\&#x22;sm\&#x22; {...props}>\n        <FieldInput placeholder=\&#x22;Type...\&#x22; />\n        <FieldButton aria-label=\&#x22;Search\&#x22;>Search</FieldButton>\n      </FieldGroup>\n      <FieldDescription>Search by keyword</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-### Icon accessories [#icon-accessories]
-
-A field group with leading icon and trailing action accessories.
-
-<Story of="FieldGroupIconAccessoriesExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  Flex,\n  Icon,\n  FieldInput,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupIconAccessoriesExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Email</FieldLabel>\n      <FieldGroup {...props}>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Flex>\n        <FieldInput placeholder=\&#x22;Email\&#x22; />\n        <FieldButton aria-label=\&#x22;Verify email address\&#x22;>Verify</FieldButton>\n      </FieldGroup>\n      <FieldDescription>Enter your email address</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `FieldGroup` component has the following props:
-
-<PropTable />
-
-
 # MetricsLockup
 
 
@@ -2303,115 +2303,6 @@ Use the `compact` prop to render the metric value and description inline rather 
 * `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Modal
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
-`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Scrollable [#scrollable]
-
-When the content is taller than the viewport, the `Content` region scrolls while the title
-row and the `ButtonGroup` stay pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Triggerless [#triggerless]
-
-`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
-`ModalTrigger`. Useful when the modal is opened from several places at once.
-
-<Story of="TriggerlessExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the next focusable element inside the modal |
-| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-* Pair every action button with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
-
-## Props [#props]
-
-```tsx
-<ModalTrigger>
-  <Button />
-  <Modal>
-    <Heading slot="title" />
-    <CloseButton />
-    <Header />
-    <Content />
-    <Footer />
-    <ButtonGroup />
-    {/* ... */}
-  </Modal>
-</ModalTrigger>
-```
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-The `ModalTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -2542,6 +2433,115 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 ## Props [#props]
 
 The `NumberField` component accepts the following props:
+
+<PropTable />
+
+
+# Modal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Scrollable [#scrollable]
+
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Triggerless [#triggerless]
+
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
+
+<Story of="TriggerlessExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+
+## Props [#props]
+
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+The `ModalTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -2775,6 +2775,134 @@ Use the `status` prop to communicate intent: `default`, `success`, `warning`, or
 * `aria-labelledby` associates the visible label when the `label` prop is provided
 
 ## Props [#props]
+
+<PropTable />
+
+
+# ProgressSteps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Horizontal and vertical orientations
+* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
+* Timeline (past / current / future) derived from a single `currentStep` prop
+* Auto-generated step numbers (opt out with `hideStepNumbers`)
+* Interactive (navigable) and inert (display-only) steps
+* Title truncation and RTL support
+* Rendered as a `<nav>` landmark with an ordered list for assistive technology
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep status=\&#x22;error\&#x22;>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Not started [#not-started]
+
+No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
+
+<Story of="NotStartedExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function NotStartedExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22;>\n      <ProgressStep>Cart</ProgressStep>\n      <ProgressStep>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Vertical [#vertical]
+
+Vertical orientation: accent bar on the leading edge, steps stacked in a column.
+
+<Story of="VerticalExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function VerticalExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Onboarding\&#x22; orientation=\&#x22;vertical\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Create account</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Verify email</ProgressStep>\n      <ProgressStep>Add payment method</ProgressStep>\n      <ProgressStep>Invite your team</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Interactive [#interactive]
+
+Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
+
+<Story of="InteractiveExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst steps = ['Cart', 'Shipping', 'Payment', 'Review'];\n\nexport function InteractiveExample() {\n  const [currentStep, setCurrentStep] = useState(1);\n\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={currentStep}>\n      {steps.map((label, index) => (\n        <ProgressStep\n          key={label}\n          status={index < currentStep ? 'complete' : index === currentStep ? 'partial' : 'none'}\n          onPress={() => setCurrentStep(index)}\n        >\n          {label}\n        </ProgressStep>\n      ))}\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled interactive step is muted, not focusable, and cannot be activated.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22; onPress={() => undefined}>\n        Cart\n      </ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22; onPress={() => undefined}>\n        Shipping\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Payment\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Review\n      </ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+### Hide Step Numbers [#hide-step-numbers]
+
+Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
+
+<Story of="HideStepNumbersExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function HideStepNumbersExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1} hideStepNumbers>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
+* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
+* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
+* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
+* Pass `className` to the container or an individual step to extend the styles.
+
+## Accessibility [#accessibility]
+
+* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
+* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
+* The current step is marked with `aria-current="step"`.
+* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
+* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
+
+## Best Practices [#best-practices]
+
+* Drive the timeline from `currentStep` rather than styling individual steps.
+* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
+* Keep titles short — they truncate with an ellipsis when space is tight.
+* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
+
+## Troubleshooting [#troubleshooting]
+
+* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
+* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
+* **Titles overflow:** that's expected — titles truncate. Shorten the title.
+
+## Props [#props]
+
+The `ProgressSteps` component has the following props:
+
+<PropTable />
+
+The `ProgressStep` component has the following props:
 
 <PropTable />
 
@@ -3235,238 +3363,6 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
-# ProgressSteps
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Horizontal and vertical orientations
-* Four completion statuses (`none`, `partial`, `complete`, `error`) with status icons
-* Timeline (past / current / future) derived from a single `currentStep` prop
-* Auto-generated step numbers (opt out with `hideStepNumbers`)
-* Interactive (navigable) and inert (display-only) steps
-* Title truncation and RTL support
-* Rendered as a `<nav>` landmark with an ordered list for assistive technology
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A horizontal stepper. `currentStep` marks the active step; earlier steps are `past`, later are `future`. Each `status` sets the step's icon, and an `error` step turns its accent bar red.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep status=\&#x22;error\&#x22;>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Not started [#not-started]
-
-No `currentStep`: the flow hasn't started, so every step is `future` and none is marked current.
-
-<Story of="NotStartedExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function NotStartedExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22;>\n      <ProgressStep>Cart</ProgressStep>\n      <ProgressStep>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n      <ProgressStep>Review</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Vertical [#vertical]
-
-Vertical orientation: accent bar on the leading edge, steps stacked in a column.
-
-<Story of="VerticalExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function VerticalExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Onboarding\&#x22; orientation=\&#x22;vertical\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22;>Create account</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Verify email</ProgressStep>\n      <ProgressStep>Add payment method</ProgressStep>\n      <ProgressStep>Invite your team</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Interactive [#interactive]
-
-Interactive steps: each `onPress` navigates the wizard by updating `currentStep`.
-
-<Story of="InteractiveExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst steps = ['Cart', 'Shipping', 'Payment', 'Review'];\n\nexport function InteractiveExample() {\n  const [currentStep, setCurrentStep] = useState(1);\n\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={currentStep}>\n      {steps.map((label, index) => (\n        <ProgressStep\n          key={label}\n          status={index < currentStep ? 'complete' : index === currentStep ? 'partial' : 'none'}\n          onPress={() => setCurrentStep(index)}\n        >\n          {label}\n        </ProgressStep>\n      ))}\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled interactive step is muted, not focusable, and cannot be activated.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1}>\n      <ProgressStep status=\&#x22;complete\&#x22; onPress={() => undefined}>\n        Cart\n      </ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22; onPress={() => undefined}>\n        Shipping\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Payment\n      </ProgressStep>\n      <ProgressStep onPress={() => undefined} isDisabled>\n        Review\n      </ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-### Hide Step Numbers [#hide-step-numbers]
-
-Step numbers are shown by default; `hideStepNumbers` omits the "N. " prefix.
-
-<Story of="HideStepNumbersExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressSteps, ProgressStep } from '@godaddy/antares';\n\nexport function HideStepNumbersExample() {\n  return (\n    <ProgressSteps aria-label=\&#x22;Checkout\&#x22; currentStep={1} hideStepNumbers>\n      <ProgressStep status=\&#x22;complete\&#x22;>Cart</ProgressStep>\n      <ProgressStep status=\&#x22;partial\&#x22;>Shipping</ProgressStep>\n      <ProgressStep>Payment</ProgressStep>\n    </ProgressSteps>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-* Step numbers (`"N. "`) are prepended automatically — keep them where possible, as user testing shows people recognize the component better with them. Set `hideStepNumbers` to omit them.
-* `orientation` switches between `horizontal` (accent bar on top) and `vertical` (accent bar on the leading edge).
-* `currentStep` is the single source of truth for the timeline. Omit it for a not-yet-started flow where every step is `future`; pass the step count for a fully completed flow where every step is `past`.
-* `status` is independent of timeline and only controls the status icon and (for `error`) the accent bar color.
-* Pass `className` to the container or an individual step to extend the styles.
-
-## Accessibility [#accessibility]
-
-* The container renders a `<nav>` landmark; set `aria-label` to name it (defaults to `"Progress"`).
-* Steps are an ordered list (`<ol>`/`<li>`) so assistive technology conveys position and count.
-* The current step is marked with `aria-current="step"`.
-* Interactive steps are real buttons: focusable in the natural **Tab** order and activated with **Enter** or **Space**. Status icons are decorative (`aria-hidden`).
-* Focus is shown with a visible outline; disabled steps use `0.4` opacity and are not focusable.
-
-## Best Practices [#best-practices]
-
-* Drive the timeline from `currentStep` rather than styling individual steps.
-* Provide `onPress` only for steps a user can actually navigate to; leave it off for display-only steps.
-* Keep titles short — they truncate with an ellipsis when space is tight.
-* Always give the container an `aria-label` that describes the flow (e.g. `"Checkout progress"`).
-
-## Troubleshooting [#troubleshooting]
-
-* **No step is highlighted:** `currentStep` is omitted, negative, or out of range. Set it to the active step's 0-based index.
-* **A step isn't clickable:** it has no `onPress`, so it's inert by design. Add `onPress` to make it interactive.
-* **Titles overflow:** that's expected — titles truncate. Shorten the title.
-
-## Props [#props]
-
-The `ProgressSteps` component has the following props:
-
-<PropTable />
-
-The `ProgressStep` component has the following props:
-
-<PropTable />
-
-
-# Select
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
-* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a label and a placeholder.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Select, SelectItem, type SelectProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Omit<SelectProps<object>, 'children'> = {}) {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; description=\&#x22;Select your favorite coffee\&#x22; {...props}>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n      <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n    </Select>\n  );\n}&#x22;" />
-
-### Select Controlled [#select-controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="SelectControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Select Multiple [#select-multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
-
-<Story of="SelectMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectMultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select\n        label=\&#x22;Coffees you like\&#x22;\n        placeholder=\&#x22;Pick one or more\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        value={value}\n        onChange={setValue}\n      >\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Select Invalid [#select-invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Story of="SelectInvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectInvalidExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; errorMessage=\&#x22;Please choose a drink\&#x22; isInvalid isRequired>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
-
-### Select Disabled [#select-disabled]
-
-Use `isDisabled` to prevent interaction.
-
-<Story of="SelectDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectDisabledExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
-
-### Select Form [#select-form]
-
-Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
-
-<Story of="SelectFormExample" />
-
-<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, Flex, Select, SelectItem, Text } from '@godaddy/antares';\n\nexport function SelectFormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; label=\&#x22;Drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; label=\&#x22;Extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n        <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n        <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="SelectSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select label=\&#x22;Coffee (md)\&#x22; placeholder=\&#x22;Pick a drink\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select label=\&#x22;Coffee (sm)\&#x22; placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Select` component accepts the following props:
-
-<PropTable />
-
-
 # SegmentedController
 
 
@@ -3609,6 +3505,110 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
+# Select
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
+* **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a label and a placeholder.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Select, SelectItem, type SelectProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Omit<SelectProps<object>, 'children'> = {}) {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; description=\&#x22;Select your favorite coffee\&#x22; {...props}>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n      <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+
+### Select Controlled [#select-controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="SelectControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Select Multiple [#select-multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
+
+<Story of="SelectMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectMultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select\n        label=\&#x22;Coffees you like\&#x22;\n        placeholder=\&#x22;Pick one or more\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        value={value}\n        onChange={setValue}\n      >\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Select Invalid [#select-invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Story of="SelectInvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectInvalidExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; errorMessage=\&#x22;Please choose a drink\&#x22; isInvalid isRequired>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+
+### Select Disabled [#select-disabled]
+
+Use `isDisabled` to prevent interaction.
+
+<Story of="SelectDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectDisabledExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+
+### Select Form [#select-form]
+
+Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
+
+<Story of="SelectFormExample" />
+
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, Flex, Select, SelectItem, Text } from '@godaddy/antares';\n\nexport function SelectFormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; label=\&#x22;Drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; label=\&#x22;Extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n        <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n        <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes.
+
+<Story of="SelectSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select label=\&#x22;Coffee (md)\&#x22; placeholder=\&#x22;Pick a drink\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select label=\&#x22;Coffee (sm)\&#x22; placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Select` component accepts the following props:
+
+<PropTable />
+
+
 # Structure primitives
 
 
@@ -3682,6 +3682,205 @@ they adopt that parent's spacing automatically.
 <PropTable />
 
 ### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+
+# Switch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
+* Communicates state to assistive technologies via the WAI-ARIA `switch` role
+* Toggles on click or tap anywhere in the control — track, thumb, or label
+* Toggles with the `Space` key when focused
+* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
+* Two sizes: `md` (default) and `sm`
+* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
+* Takes effect immediately — no form submission required
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled switch, off by default, with the label at the start.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Selected [#switch-selected]
+
+A switch that starts in the on state via `defaultSelected`.
+
+<Story of="SwitchSelectedExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Sizes [#switch-sizes]
+
+The `size` prop accepts `md` (default) or `sm`.
+
+<Story of="SwitchSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Label Position [#switch-label-position]
+
+The `labelPosition` prop places the label at the `start` or `end` of the track.
+
+<Story of="SwitchLabelPositionExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### No Label [#no-label]
+
+When no label is provided, pass `aria-label` so the switch has an accessible name.
+
+<Story of="SwitchNoLabelExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
+
+### Switch Disabled [#switch-disabled]
+
+A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
+
+<Story of="SwitchDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Controlled [#switch-controlled]
+
+Manage switch state programmatically with `isSelected` and `onChange`.
+
+<Story of="SwitchControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+The interactive switch control exposes data attributes for styling different states:
+
+`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
+
+```css
+.my-switch [data-focus-visible] {
+  outline: 2px solid Highlight;
+}
+
+.my-switch [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Design Tokens [#design-tokens]
+
+The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
+
+| Element           | Token                               | Legacy fallback |
+| ----------------- | ----------------------------------- | --------------- |
+| Track (off)       | —                                   | `--ux-1m9ys0v`  |
+| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
+| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
+| Thumb inset       | —                                   | `--ux-1sbfig8`  |
+| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
+| Focus ring radius | —                                   | `--ux-zvaw3s`   |
+
+### Component Customization [#component-customization]
+
+Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
+
+```jsx
+<Switch className="custom-switch">Wi-Fi</Switch>
+```
+
+Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
+## Accessibility [#accessibility]
+
+* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
+* `Space` toggles the switch when it has focus
+* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
+* Disabled switches render at `40%` opacity and are excluded from tab order
+* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
+
+## Best Practices [#best-practices]
+
+### When to Use Switch [#when-to-use-switch]
+
+* ✅ For settings that take effect immediately, without a form submission
+* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
+* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
+* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
+
+### Labeling [#labeling]
+
+* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
+* If the label is omitted, always provide `aria-label`
+* Keep labels short and describe the setting, not its current state
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+```jsx
+// ❌ Wrong: isSelected without onChange leaves the switch stuck
+<Switch isSelected={isOn}>Wi-Fi</Switch>
+
+// ✅ Controlled mode
+<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
+
+// ✅ Uncontrolled mode
+<Switch defaultSelected>Wi-Fi</Switch>
+```
+
+### Missing Accessible Name [#missing-accessible-name]
+
+```jsx
+// ❌ No children and no aria-label — screen readers announce nothing useful
+<Switch />
+
+// ✅ Provide a label
+<Switch>Wi-Fi</Switch>
+
+// ✅ Or an aria-label when the label is visual-only elsewhere
+<Switch aria-label="Wi-Fi" />
+```
+
+## Props [#props]
+
+The `Switch` component has the following props:
 
 <PropTable />
 
@@ -4013,205 +4212,6 @@ Compare the supported `md` and `sm` visual sizes.
 ## Props [#props]
 
 The `TextField` component accepts the following props:
-
-<PropTable />
-
-
-# Switch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
-* Communicates state to assistive technologies via the WAI-ARIA `switch` role
-* Toggles on click or tap anywhere in the control — track, thumb, or label
-* Toggles with the `Space` key when focused
-* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
-* Two sizes: `md` (default) and `sm`
-* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
-* Takes effect immediately — no form submission required
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-An uncontrolled switch, off by default, with the label at the start.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
-
-### Switch Selected [#switch-selected]
-
-A switch that starts in the on state via `defaultSelected`.
-
-<Story of="SwitchSelectedExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
-
-### Switch Sizes [#switch-sizes]
-
-The `size` prop accepts `md` (default) or `sm`.
-
-<Story of="SwitchSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Label Position [#switch-label-position]
-
-The `labelPosition` prop places the label at the `start` or `end` of the track.
-
-<Story of="SwitchLabelPositionExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### No Label [#no-label]
-
-When no label is provided, pass `aria-label` so the switch has an accessible name.
-
-<Story of="SwitchNoLabelExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
-
-### Switch Disabled [#switch-disabled]
-
-A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
-
-<Story of="SwitchDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Controlled [#switch-controlled]
-
-Manage switch state programmatically with `isSelected` and `onChange`.
-
-<Story of="SwitchControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-The interactive switch control exposes data attributes for styling different states:
-
-`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
-
-```css
-.my-switch [data-focus-visible] {
-  outline: 2px solid Highlight;
-}
-
-.my-switch [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Design Tokens [#design-tokens]
-
-The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
-
-| Element           | Token                               | Legacy fallback |
-| ----------------- | ----------------------------------- | --------------- |
-| Track (off)       | —                                   | `--ux-1m9ys0v`  |
-| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
-| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
-| Thumb inset       | —                                   | `--ux-1sbfig8`  |
-| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
-| Focus ring radius | —                                   | `--ux-zvaw3s`   |
-
-### Component Customization [#component-customization]
-
-Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
-
-```jsx
-<Switch className="custom-switch">Wi-Fi</Switch>
-```
-
-Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
-
-## Accessibility [#accessibility]
-
-* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
-* `Space` toggles the switch when it has focus
-* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
-* Disabled switches render at `40%` opacity and are excluded from tab order
-* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
-
-## Best Practices [#best-practices]
-
-### When to Use Switch [#when-to-use-switch]
-
-* ✅ For settings that take effect immediately, without a form submission
-* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
-* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
-* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
-
-### Labeling [#labeling]
-
-* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
-* If the label is omitted, always provide `aria-label`
-* Keep labels short and describe the setting, not its current state
-
-## Troubleshooting [#troubleshooting]
-
-### Controlled State Not Updating [#controlled-state-not-updating]
-
-```jsx
-// ❌ Wrong: isSelected without onChange leaves the switch stuck
-<Switch isSelected={isOn}>Wi-Fi</Switch>
-
-// ✅ Controlled mode
-<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
-
-// ✅ Uncontrolled mode
-<Switch defaultSelected>Wi-Fi</Switch>
-```
-
-### Missing Accessible Name [#missing-accessible-name]
-
-```jsx
-// ❌ No children and no aria-label — screen readers announce nothing useful
-<Switch />
-
-// ✅ Provide a label
-<Switch>Wi-Fi</Switch>
-
-// ✅ Or an aria-label when the label is visual-only elsewhere
-<Switch aria-label="Wi-Fi" />
-```
-
-## Props [#props]
-
-The `Switch` component has the following props:
 
 <PropTable />
 
@@ -4571,6 +4571,209 @@ The `TooltipTrigger` component accepts the following props:
 <PropTable />
 
 
+# Bar Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single and multi-series support**: Display one or multiple data series with grouped bars
+* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
+* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
+* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
+* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
+* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
+* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
+* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
+* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
+* **TypeScript support**: Fully typed with comprehensive prop interfaces
+* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Multi-series [#multi-series]
+
+Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+
+<Story of="MultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal single series [#horizontal-single-series]
+
+`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
+
+<Story of="HorizontalSingleSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Horizontal multi-series [#horizontal-multi-series]
+
+Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
+
+<Story of="HorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### Custom domain [#custom-domain]
+
+`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
+
+<Story of="CustomDomainExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
+
+### Formatted tick marks [#formatted-tick-marks]
+
+`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
+
+<Story of="FormattedTickMarksExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
+
+### RTL multi-series [#rtl-multi-series]
+
+The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
+
+<Story of="RTLMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+### RTL horizontal multi-series [#rtl-horizontal-multi-series]
+
+Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
+
+<Story of="RTLHorizontalMultiSeriesExample" />
+
+<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Design System Alignment [#design-system-alignment]
+
+### Spacing and Sizing [#spacing-and-sizing]
+
+* **Bar width**: 12px (1.5 grid units)
+* **Bar padding** (multi-series): 4px between bars within a group
+* **Group gap**: Minimum 24px between bar groups
+* **Border radius**: 8px on all bars
+* **Margins**: 20px top/right, 60px bottom/left for axes and labels
+
+### Responsive Behavior [#responsive-behavior]
+
+* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
+* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
+* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
+* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
+
+## Accessibility [#accessibility]
+
+* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
+* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
+* **Tooltips**: Show on both hover and focus for keyboard users
+
+## Performance Considerations [#performance-considerations]
+
+### Rendering Strategy [#rendering-strategy]
+
+The component uses VisX primitives for optimal SVG rendering:
+
+* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
+* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
+* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
+
+### Scrolling Strategy [#scrolling-strategy]
+
+* **Vertical charts**: Horizontal scrolling when many data points exceed container width
+* **Horizontal charts**: Vertical scrolling when many categories exceed container height
+* **Sticky axes**: Positioned absolutely to remain visible during scroll
+
+### Recommendations [#recommendations]
+
+* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
+* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
+* Use **custom domains** to maintain consistent scales across multiple charts
+* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
+
+## Development Status [#development-status]
+
+The BarChart component is in active development. Current focus areas:
+
+* ✅ Single and multi-series support
+* ✅ Vertical and horizontal orientations
+* ✅ Responsive behavior with sticky axes
+* ✅ Interactive tooltips
+* ✅ Custom domains
+* ✅ Design system alignment
+* 🚧 RTL compatibility (axis rendering and spacing refinement)
+* 🚧 Tick mark positioning improvements
+* 🚧 Additional customization options (tick formatting, axis configuration)
+
+## Troubleshooting [#troubleshooting]
+
+### Bars Not Showing [#bars-not-showing]
+
+If bars are not visible:
+
+1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
+2. **Check domains**: Verify `yDomain` (if set) includes your data values
+3. **Check dimensions**: Ensure container has non-zero width and height
+
+### Tooltip Positioning Issues [#tooltip-positioning-issues]
+
+If tooltips appear in the wrong location:
+
+1. **Check scroll position**: The component accounts for horizontal scroll automatically
+2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
+3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+
+### Performance Issues [#performance-issues]
+
+For better performance:
+
+1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
+2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
+3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+<PropTable />
+
+
 # DonutChart
 
 
@@ -4638,120 +4841,6 @@ Use `formatValue` when the raw numbers in the tooltip should read like money, co
 <Story of="FormatValueExample" />
 
 <Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
-# Gauge Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A continuous gauge with a single label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="ContinuousExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="SegmentedExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="WithRangeLabelsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="VariantsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="LabelTypeExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
 
 ## Props [#props]
 
@@ -5145,11 +5234,7 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 <PropTable />
 
 
-# Bar Chart
-
-
-
-
+# Gauge Chart
 
 
 
@@ -5171,20 +5256,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 
 <Meta of="Stories" name="Overview" />
 
-## Features [#features]
-
-* **Single and multi-series support**: Display one or multiple data series with grouped bars
-* **Vertical and horizontal orientations**: Choose the best layout for your data and use case
-* **Responsive behavior**: Auto-sizing with horizontal scrolling for many data points, sticky axes
-* **Design system alignment**: 8px border radius, 12px bar width (1.5 GU), consistent spacing
-* **Interactive tooltips**: Hover to see exact values, with smart positioning and scroll-awareness
-* **Customizable axes**: Control gridlines, tick marks, axis titles, and tick formatting
-* **Custom domains**: Set explicit x and y ranges for controlled scales across multiple charts
-* **RTL support*&#x2A;: Full right-to-left layout support for international audiences &#x2A;(in development)*
-* **Accessibility ready**: Keyboard navigation, screen reader support, and semantic HTML
-* **TypeScript support**: Fully typed with comprehensive prop interfaces
-* **VisX integration**: Leverages VisX primitives for scales, axes, shapes, and responsive layout
-
 ## Installation [#installation]
 
 ```bash
@@ -5195,153 +5266,82 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-You give the chart a `series` array plus `xAccessor` and `yAccessor` so it knows which field is the category and which is the value - this is the everyday setup for one set of vertical bars.
+A continuous gauge with a single label.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function DefaultExample(props: any) {\n  const series = [\n    {\n      id: 'new-york-series',\n      name: 'New York',\n      data: cityTemperature.slice(0, 10)\n    }\n  ];\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.date}\n      yAccessor={(d: any) => d['New York']}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
 
-### Multi-series [#multi-series]
+### Continuous Values [#continuous-values]
 
-Pass more than one entry in `series` and the bars group by category, with a legend naming each series. Use it when the comparison between series matters as much as the values themselves.
+Multiple continuous gauges showing different fill percentages.
 
-<Story of="MultiSeriesExample" />
+<Story of="ContinuousExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\n\nexport function MultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city, index) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <BarChart\n      series={series}\n      xAccessor={(d: any) => d.x}\n      yAccessor={(d: any) => d.y}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n      yDomain={[0, 100]}\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
 
-### Horizontal single series [#horizontal-single-series]
+### Segmented [#segmented]
 
-`orientation="horizontal"` swaps the axes: categories run down the side and values across the bottom. Reach for it when the labels are long or the chart is really a ranking.
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
 
-<Story of="HorizontalSingleSeriesExample" />
+<Story of="SegmentedExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets, type Exoplanets } from '@visx/mock-data';\n\nconst largestExoplanets = [...allExoplanets.filter((d) => d.distance && d.distance > 0)]\n  .sort((a, b) => b.radius - a.radius)\n  .slice(0, 30);\n\nconst series = [{ id: 'radius', name: 'Radius', data: largestExoplanets }];\n\nexport function HorizontalSingleSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: Exoplanets) => d.radius}\n      yAccessor={(d: Exoplanets) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
 
-### Horizontal multi-series [#horizontal-multi-series]
+### With Range Labels [#with-range-labels]
 
-Grouped bars work horizontally too. With many categories the chart scrolls vertically, which is usually easier on a phone than scrolling sideways.
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
 
-<Story of="HorizontalMultiSeriesExample" />
+<Story of="WithRangeLabelsExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\n// Take 90 real exoplanets and use the first 15 names as the shared category axis.\n// Each series maps a different group of 15 planets' radius onto those same category names,\n// demonstrating multi-series grouped bars with real exoplanet data.\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function HorizontalMultiSeriesExample(props: any) {\n  return (\n    <BarChart\n      series={series}\n      orientation=\&#x22;horizontal\&#x22;\n      xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n      yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n      xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n      yAxisTitle=\&#x22;Exoplanet\&#x22;\n      xBaseline={true}\n      yBaseline={true}\n      xTickMarks={true}\n      yTickMarks={true}\n      yGridlines={true}\n      xGridlines={true}\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
 
-### Custom domain [#custom-domain]
+### Variants [#variants]
 
-`xDomain` and `yDomain` pin down exactly which categories and value range to draw. Here category `F` has no data and still gets an empty slot, and the Y range stays `[0, 40]` even though the largest bar is 30 - handy when several charts need to share a scale.
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
 
-<Story of="CustomDomainExample" />
+<Story of="VariantsExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function CustomDomainExample() {\n  const data = [\n    { category: 'A', value: 10 },\n    { category: 'B', value: 20 },\n    { category: 'C', value: 15 },\n    { category: 'D', value: 30 },\n    { category: 'E', value: 5 }\n  ];\n  // Example: set xDomain and yDomain explicitly\n  const xDomain = ['A', 'B', 'D', 'E', 'F', 'C']; // F will show as empty slot\n  const yDomain: [number, number] = [0, 40];\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sample Series',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: string; value: number }) => d.category}\n      yAccessor={(d: { category: string; value: number }) => d.value}\n      height={400}\n      width={600}\n      xAxisTitle=\&#x22;Category\&#x22;\n      yAxisTitle=\&#x22;Value\&#x22;\n      xDomain={xDomain}\n      yDomain={yDomain}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
 
-### Formatted tick marks [#formatted-tick-marks]
+### Label Type [#label-type]
 
-`xTickFormat` and `yTickFormat` shape the axis labels - abbreviated dates on one axis, thousands separators on the other. The functions receive the raw accessor value, so they also cover currency, units, or percentages.
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
 
-<Story of="FormattedTickMarksExample" />
+<Story of="LabelTypeExample" />
 
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\n\nexport function FormattedTickMarksExample() {\n  // Example data with Date categories\n  const data = [\n    { category: new Date(2024, 0, 1), value: 1000 }, // Jan 1\n    { category: new Date(2024, 1, 15), value: 2500 }, // Feb 15\n    { category: new Date(2024, 2, 10), value: 1750 }, // Mar 10\n    { category: new Date(2024, 3, 5), value: 3000 }, // Apr 5\n    { category: new Date(2024, 4, 20), value: 1250 } // May 20\n  ];\n\n  // Format x-axis as abbreviated month and day\n  function formatDateTick(value: Date | string | number) {\n    if (value instanceof Date) {\n      return value.toLocaleString('en-US', { month: 'short', day: 'numeric' });\n    }\n    return String(value);\n  }\n\n  // Format y-axis as comma-separated number\n  function formatNumberWithCommas(value: number | string | Date) {\n    if (typeof value === 'number') {\n      return value.toLocaleString();\n    }\n    return String(value);\n  }\n\n  return (\n    <BarChart\n      series={[\n        {\n          id: 'series1',\n          name: 'Sales',\n          data\n        }\n      ]}\n      xAccessor={(d: { category: Date; value: number }) => d.category}\n      yAccessor={(d: { category: Date; value: number }) => d.value}\n      height={600}\n      width={600}\n      xAxisTitle=\&#x22;Date\&#x22;\n      yAxisTitle=\&#x22;Sales Amount\&#x22;\n      xTickFormat={formatDateTick}\n      yTickFormat={formatNumberWithCommas}\n    />\n  );\n}&#x22;" />
-
-### RTL multi-series [#rtl-multi-series]
-
-The chart follows the current layout direction, which is normally detected from the browser or system settings. In right-to-left it mirrors the axes, bars, and labels; this example forces RTL so you can see it in a left-to-right page. RTL support is still being refined - axis rendering and tick spacing in particular.
-
-<Story of="RTLMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { cityTemperature } from '@visx/mock-data';\nimport { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\n\nexport function RTLMultiSeriesExample(props: any) {\n  const cities = ['New York', 'San Francisco', 'Austin'] as const;\n\n  const series = cities.map(function mapCity(city) {\n    return {\n      id: `city-${city.toLowerCase().replace(/\\s+/g, '-')}`,\n      name: city,\n      data: cityTemperature.slice(0, 10).map(function mapData(d) {\n        return {\n          x: d.date,\n          y: parseFloat(d[city as keyof typeof d])\n        };\n      })\n    };\n  });\n\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        xAccessor={(d: any) => d.x}\n        yAccessor={(d: any) => d.y}\n        xAxisTitle=\&#x22;Date\&#x22;\n        yAxisTitle=\&#x22;Temperature (°F)\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-### RTL horizontal multi-series [#rtl-horizontal-multi-series]
-
-Horizontal grouped bars in a right-to-left layout: bars grow from the right edge and the category axis moves to the right side.
-
-<Story of="RTLHorizontalMultiSeriesExample" />
-
-<Source language="tsx" code="&#x22;import { BarChart } from '@godaddy/antares';\nimport { exoplanets as allExoplanets } from '@visx/mock-data';\nimport { RTLProvider } from '../../../../utils/rtl-locale-provider.tsx';\n\ninterface ExoplanetSurveyPoint {\n  name: string;\n  value: number;\n}\n\nconst trueExoplanets = allExoplanets.filter((d) => d.distance && d.distance > 0).slice(0, 60);\nconst categoryNames = trueExoplanets.slice(0, 15).map((d) => d.name);\n\nfunction toSurveyData(planets: typeof trueExoplanets): ExoplanetSurveyPoint[] {\n  return planets.slice(0, 15).map((d, i) => ({ name: categoryNames[i], value: d.radius }));\n}\n\nconst series = [\n  { id: 'survey-a', name: 'Survey A', data: toSurveyData(trueExoplanets.slice(0, 15)) },\n  { id: 'survey-b', name: 'Survey B', data: toSurveyData(trueExoplanets.slice(15, 30)) },\n  { id: 'survey-c', name: 'Survey C', data: toSurveyData(trueExoplanets.slice(30, 45)) },\n  { id: 'survey-d', name: 'Survey D', data: toSurveyData(trueExoplanets.slice(45, 60)) }\n];\n\nexport function RTLHorizontalMultiSeriesExample(props: any) {\n  return (\n    <RTLProvider>\n      <BarChart\n        series={series}\n        orientation=\&#x22;horizontal\&#x22;\n        xAccessor={(d: ExoplanetSurveyPoint) => d.value}\n        yAccessor={(d: ExoplanetSurveyPoint) => d.name}\n        xAxisTitle=\&#x22;Radius (Rj)\&#x22;\n        yAxisTitle=\&#x22;Exoplanet\&#x22;\n        xBaseline={true}\n        yBaseline={true}\n        xTickMarks={true}\n        yTickMarks={true}\n        yGridlines={true}\n        xGridlines={true}\n        {...props}\n      />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Design System Alignment [#design-system-alignment]
-
-### Spacing and Sizing [#spacing-and-sizing]
-
-* **Bar width**: 12px (1.5 grid units)
-* **Bar padding** (multi-series): 4px between bars within a group
-* **Group gap**: Minimum 24px between bar groups
-* **Border radius**: 8px on all bars
-* **Margins**: 20px top/right, 60px bottom/left for axes and labels
-
-### Responsive Behavior [#responsive-behavior]
-
-* **Auto-sizing**: Uses VisX's `useParentSize` hook to adapt to container width
-* **Horizontal scrolling**: When data points exceed available width, the chart becomes horizontally scrollable
-* **Sticky y-axis**: The y-axis remains visible during horizontal scroll
-* **Minimum spacing**: Group gaps never fall below 24px, triggering scroll instead
-
-## Accessibility [#accessibility]
-
-* **Keyboard navigation**: Bar groups are keyboard accessible with `tabIndex={0}` and `role="group"`
-* **Screen reader support**: Semantic HTML structure with proper ARIA attributes
-* **Tooltips**: Show on both hover and focus for keyboard users
-
-## Performance Considerations [#performance-considerations]
-
-### Rendering Strategy [#rendering-strategy]
-
-The component uses VisX primitives for optimal SVG rendering:
-
-* **Scales**: VisX's `scaleBand` and `scaleLinear` for efficient coordinate mapping
-* **Grouped rendering**: Bars are rendered in SVG `<Group>` elements for logical organization
-* **Responsive sizing**: `useParentSize` hook provides efficient resize detection with debouncing (15ms)
-
-### Scrolling Strategy [#scrolling-strategy]
-
-* **Vertical charts**: Horizontal scrolling when many data points exceed container width
-* **Horizontal charts**: Vertical scrolling when many categories exceed container height
-* **Sticky axes**: Positioned absolutely to remain visible during scroll
-
-### Recommendations [#recommendations]
-
-* For charts with **many data points** (>20), consider enabling horizontal scroll (default behavior)
-* For **horizontal bar charts**, vertical scrolling is more mobile-friendly than horizontal
-* Use **custom domains** to maintain consistent scales across multiple charts
-* **Tooltips** use absolute positioning and scroll-aware calculations for accurate placement
-
-## Development Status [#development-status]
-
-The BarChart component is in active development. Current focus areas:
-
-* ✅ Single and multi-series support
-* ✅ Vertical and horizontal orientations
-* ✅ Responsive behavior with sticky axes
-* ✅ Interactive tooltips
-* ✅ Custom domains
-* ✅ Design system alignment
-* 🚧 RTL compatibility (axis rendering and spacing refinement)
-* 🚧 Tick mark positioning improvements
-* 🚧 Additional customization options (tick formatting, axis configuration)
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
 
 ## Troubleshooting [#troubleshooting]
 
-### Bars Not Showing [#bars-not-showing]
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
 
-If bars are not visible:
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
 
-1. **Check data**: Ensure `series` array has data and `xAccessor`/`yAccessor` return valid values
-2. **Check domains**: Verify `yDomain` (if set) includes your data values
-3. **Check dimensions**: Ensure container has non-zero width and height
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
 
-### Tooltip Positioning Issues [#tooltip-positioning-issues]
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
 
-If tooltips appear in the wrong location:
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
 
-1. **Check scroll position**: The component accounts for horizontal scroll automatically
-2. **Check container**: Ensure the chart container is not transformed or positioned in a complex layout
-3. **Verify event targets**: Tooltips use mouse event coordinates and bar group positions
+### Value Out of Range [#value-out-of-range]
 
-### Performance Issues [#performance-issues]
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
 
-For better performance:
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
 
-1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
-2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
-3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 ## Props [#props]
 
