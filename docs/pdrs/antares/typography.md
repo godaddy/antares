@@ -189,10 +189,12 @@ cost, and it is the right one - the alternative silently restyles body content.
 
 ### 3. Controls keep their type on the control element
 
-For `Button`, `ToggleButton`, `Tag` and menu items, the type goes on the control, and the container
-injects a **class that neutralises the label, not a size** - the class inherits font *and*
-`font-variation-settings`, which the `font` shorthand does not cover. So `<Button>label</Button>` and
-`<Button><Text>label</Text></Button>` render identically, and the label never needs wrapping.
+For `Button`, `ToggleButton`, `Tag` and menu items, the type goes on the control, and the container tells
+a composed `Text` to **emit no typography of its own, rather than injecting a size** - through the same
+slot context as [§2](#2-containers-inject-defaults-through-slot-context). A `Text` that declares nothing
+inherits every font property from the control, `font-variation-settings` included, which the `font`
+shorthand would not cover. So `<Button>label</Button>` and `<Button><Text>label</Text></Button>` render
+identically, and the label never needs wrapping.
 
 **The reason is `Icon`.** `components/icon/src/index.module.css` sizes it `width: 1lh; height: 1lh`, and
 `1lh` resolves from the icon element's own inherited line-height. As siblings, icon and label share the
@@ -243,6 +245,7 @@ chain, on the component's own root selector, `--_`-prefixed and component-named:
   --_field-input-font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
   --_field-input-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, 1.5));
   --_field-input-font-weight: var(--font-body-weight, var(--ux-8n6y9x, normal));
+  --_field-input-font-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
 }
 ```
 
@@ -254,18 +257,25 @@ rule 4 establishes for spacing:
 --_button-font-size-md: var(--font-body-size-md, 1rem);
 ```
 
-These surfaces set all four properties explicitly; they do not `inherit`. This is the one place the
-mapping is duplicated, so the [Audit](#audit) is the artefact to diff when either side changes.
+These surfaces set size and all four role properties explicitly; they do not `inherit`. This is the one
+place the mapping is duplicated, so the [Audit](#audit) is the artefact to diff when either side changes.
 
 ### 5. Fallback chains: sizes stop at the literal
 
-**Family, weight and line-height: `token → intent → literal`**, per GU §5 rule 1.
+**Family, weight, line-height and variation: `token → intent → literal`**, per GU §5 rule 1.
 
-| Role      | Family         | Line height    | Weight                      |
-| --------- | -------------- | -------------- | --------------------------- |
-| `detail`  | `--ux-1gutwvn` | `--ux-1dje42v` | `--ux-g9ierp` (`400`)       |
-| `body`    | `--ux-pze30t`  | `--ux-1hhfdnd` | none; `--ux-8n6y9x` (`400`) |
-| `heading` | `--ux-shg991`  | `--ux-p25s1t`  | `--ux-c539b7` (`700`)       |
+| Role      | Family         | Line height    | Weight                      | Variation                       |
+| --------- | -------------- | -------------- | --------------------------- | ------------------------------- |
+| `detail`  | `--ux-1gutwvn` | `--ux-1dje42v` | `--ux-g9ierp` (`400`)       | `--ux-tjt16c`; no default       |
+| `body`    | `--ux-pze30t`  | `--ux-1hhfdnd` | none; `--ux-8n6y9x` (`400`) | none; `--ux-1i4pt2s`            |
+| `heading` | `--ux-shg991`  | `--ux-p25s1t`  | `--ux-c539b7` (`700`)       | `--ux-1458mfm` (`"DSPL" 1`)     |
+
+**`font-variation-settings` is in the chain, not scoped out.** It is the fourth role property, and it is
+the one place an intent carries a value the token set does not: `ux.textHeading.fontVariation` defaults to
+`"DSPL" 1`, so an intent-only theme loses its display axis on every heading if the chain omits it. The
+token value is `normal` in `airo` today, which is exactly why it has to be declared rather than assumed -
+and why a control's label inherits it rather than relying on the `font` shorthand
+([§3](#3-controls-keep-their-type-on-the-control-element)).
 
 `ux.textBody`'s two intents carry no legacy default in
 `.agents/skills/antares-components/references/token-intent-legacy-map.json`, so `body` chains two intents
@@ -303,13 +313,26 @@ for a live region. `variant` is also the existing idiom in this package.
 beyond what `variant` sets, and exposing them individually would let a caller build a fourth role the
 design system never defined.
 
-Both are exposed as data attributes so that a container can neutralise them with a class, which is how a
-control hands its label an inherited font ([§3](#3-controls-keep-their-type-on-the-control-element)):
+**Neither becomes a data attribute.** `antares-components/SKILL.md` reserves data-attribute selectors for
+RAC state and requires every selector to compute to `0-1-0`, and `.text[data-variant="detail"]` is neither
+RAC state nor `0-1-0`. Both resolve to CSS-module classes, one per role and one per tier within it:
 
 ```css
-.text[data-variant="detail"] { /* the detail chain */ }
-.text[data-size="lg"]        { /* the tier, per variant */ }
+.detail   { /* the detail chain */ }
+.detailLg { /* the tier */ }
 ```
+
+**Neutralising a label is not a cascade override.** A container that wants its label to inherit cannot ship
+a class that out-specifies `.detail`: at the required `0-1-0` the winner is stylesheet order, which is a
+bundling accident between two component modules. It goes through the slot context instead, and `Text`
+applies no typography class at all ([§3](#3-controls-keep-their-type-on-the-control-element)):
+
+```tsx
+[TextContext, { variant: 'inherit' }]   // on DEFAULT_SLOT, from Button, ToggleButton, Tag
+```
+
+`'inherit'` is not in the public `variant` union - it only ever arrives from a container, and a caller's
+explicit `variant` still wins, per [§2](#2-containers-inject-defaults-through-slot-context).
 
 ### 7. Emphasis is semantic
 
@@ -393,7 +416,7 @@ alongside their font declarations, but whether `Text` gains a colour axis is a s
 | Unresolvable intent hashes | `tag` (12 refs), `chart/legend` (7), `chart/tooltip` (2), `chart/axis-title`, `alert`, `progress-steps`                                      | Hashes absent from the intent map; without a fallback the declaration is invalid at computed-value time  |
 | Storybook-only variables   | `metrics-lockup`                                                                                                                            | Reads `--fs-detail-lg`, `--fs-2xl`, `--lh-heading`, defined only in `apps/docs/.storybook/variables.css` |
 | Hardcoded                  | `range-field` (8), `switch` (5), `bar-chart` / `line-chart` (`0.794rem`), `gauge-chart`, `donut-chart`, `chart/legend`, `chart/tooltip`       | Assign a tier                                                                                           |
-| Opts out via `inherit`     | `button` (family, weight, line-height)                                                                                                      | Declare all four explicitly                                                                             |
+| Opts out via `inherit`     | `button` (family, weight, line-height)                                                                                                      | Declare the full chain explicitly                                                                       |
 | Container-relative         | `gauge-chart`, `donut-chart` (`cqi`)                                                                                                        | Keep, per §9                                                                                            |
 
 Legacy intent → role mapping for the migration. Where a component reads one of these intents today, this
