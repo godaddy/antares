@@ -46,6 +46,22 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(title).fontSize).toEqual('30px');
     });
 
+    it('does not inherit an outer lockup narrow title size', async function nestedNarrowTitle() {
+      const { getByRole } = await render(
+        <TextLockup size="2xl">
+          <Heading>Outer</Heading>
+          <div style={{ width: '400px' }}>
+            <TextLockup size="md">
+              <Heading>Inner</Heading>
+            </TextLockup>
+          </div>
+        </TextLockup>
+      );
+
+      // `md` has no narrow step, so it keeps its own tier: 1.25rem = 20px.
+      expect(getComputedStyle(getByRole('heading', { name: 'Inner' }).element()).fontSize).toEqual('20px');
+    });
+
     it('keeps start alignment inside a centered ancestor', async function startInCentered() {
       const { getByRole } = await render(
         <div style={{ textAlign: 'center' }}>

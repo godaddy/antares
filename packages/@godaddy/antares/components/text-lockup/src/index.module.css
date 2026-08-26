@@ -5,6 +5,7 @@
   text-align: start;
 
   --_measure: none;
+  --_title-size-narrow: var(--_title-size);
 
   --_eyebrow-family: var(--font-detail-family, var(--ux-1gutwvn, sans-serif));
   --_eyebrow-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
@@ -87,7 +88,7 @@
 
 @container text-lockup (width < 520px) {
   .title {
-    font-size: var(--_title-size-narrow, var(--_title-size));
+    font-size: var(--_title-size-narrow);
   }
 }
 
