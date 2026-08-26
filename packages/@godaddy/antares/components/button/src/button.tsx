@@ -6,7 +6,9 @@ import {
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText
+  Provider as RACProvider,
+  Text as RACText,
+  TextContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { composeClassName } from '../../../utils/render-props.ts';
@@ -35,6 +37,19 @@ const buttonVariants = cva(styles.button, {
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
+/**
+ * Shadows any `TextContext` an ancestor provides, so a composed `Text` inherits the
+ * button's own type instead of the container's. Without this, a `Button` inside a
+ * container that styles its text slots renders its label at the container's size, and
+ * the `size` prop stops sizing its own label.
+ *
+ * Every RAC control that owns a text surface provides its own `TextContext`; RAC's
+ * `Button` does not, because it never wraps its label. Antares does, so Antares must.
+ */
+function NeutralText({ children }: { children?: React.ReactNode }) {
+  return <RACProvider values={[[TextContext, {}]]}>{children}</RACProvider>;
+}
+
 interface BaseButtonProps {
   /** The variant of the button. */
   variant?: ButtonVariantProps['variant'];
@@ -58,7 +73,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   return (
     <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      <NeutralText>{typeof children === 'string' ? <RACText>{children}</RACText> : children}</NeutralText>
     </RACButton>
   );
 });
@@ -84,7 +99,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      <NeutralText>{typeof children === 'string' ? <RACText>{children}</RACText> : children}</NeutralText>
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );
