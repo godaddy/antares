@@ -24,7 +24,7 @@ describe('@godaddy/antares', function antares() {
 
     it('keeps its default level when the container provides none', async function defaultLevel() {
       const { getByRole } = await render(<HeadingContextExample />);
-      await expect.element(getByRole('heading', { level: 2, name: 'Default level' })).toBeVisible();
+      await expect.element(getByRole('heading', { level: 3, name: 'Default level' })).toBeVisible();
     });
   });
 });

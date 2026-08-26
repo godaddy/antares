@@ -25,9 +25,12 @@ feat: add TextLockup, a composed eyebrow / title / body type group in six sizes
 
 Three supporting changes, each useful on its own:
 
-- **`Heading` now honors a container-provided `level`.** It previously passed its own `level`
-  unconditionally, discarding the one RAC's `Dialog` supplies to a direct `<Heading slot="title">`
-  - invisible only because both values were `2`. An explicit `level` prop still wins.
+- **`Heading` now honors a container-provided `level`, and its default is `3` rather than `2`.**
+  It previously passed its own `level` unconditionally, discarding the one RAC's `Dialog` supplies
+  to a direct `<Heading slot="title">` - invisible only because both values were `2`. `level` is
+  now left unset when you omit it, so RAC resolves it from context and falls back to its own
+  default of `3`. An explicit `level` prop still wins. **A bare `<Heading>` with no container
+  therefore renders `h3` instead of `h2`; pass `level` explicitly to keep the page outline right.**
 - **`Button` and `LinkButton` no longer let an ancestor restyle their label.** They shadow
   `TextContext`, so a button inside a container that styles its text slots keeps its own type.
   Without this, `<Button size="sm">` inside a `TextLockup size="2xl"` rendered a 24px label and

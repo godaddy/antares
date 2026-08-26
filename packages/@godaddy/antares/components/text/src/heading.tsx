@@ -1,18 +1,13 @@
 import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
-import {
-  Heading as RACHeading,
-  HeadingContext,
-  useSlottedContext,
-  type HeadingProps as RACHeadingProps
-} from 'react-aria-components';
+import { Heading as RACHeading, type HeadingProps as RACHeadingProps } from 'react-aria-components';
 import styles from './heading.module.css';
 
 export interface HeadingProps extends Omit<RACHeadingProps, 'className' | 'level'> {
   /**
    * The heading level, rendered as the matching `h1`-`h6` element.
-   * Falls back to the level a container provides, then to `2`.
-   * @default 2
+   * Falls back to the level a container provides, then to `3`.
+   * @default 3
    */
   level?: 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -42,9 +37,7 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className' | 'level
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
   const { level, className, ...rest } = props;
-  const context = useSlottedContext(HeadingContext, props.slot);
 
-  return (
-    <RACHeading {...rest} ref={ref} level={level ?? context?.level ?? 2} className={cx(styles.heading, className)} />
-  );
+  // `level` stays undefined when unset so RACHeading resolves it from context, then its own default.
+  return <RACHeading {...rest} ref={ref} level={level} className={cx(styles.heading, className)} />;
 });
