@@ -15,7 +15,6 @@ import * as Stories from './text-lockup.stories.tsx';
 - Any heading level, chosen independently of the visual size
 - Start or center alignment
 - A legible line-length clamp, on by default
-- The title steps down a tier in narrow containers
 
 ## Installation
 
@@ -33,8 +32,7 @@ npm install @godaddy/antares
 sit alongside them — a call to action, a second paragraph, an image — without the component
 growing a prop for it.
 
-- **The body is a bare `<Text>`.** `slot="description"` is equivalent, for consistency with
-  `Field` and `Modal`.
+- **The body is a bare `<Text>`.** `slot="description"` is equivalent.
 - **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
   freely, and a `Tag` is sized to pair with the lockup.
 - **The title is a `Heading`.** Pick the level from the document outline, not the visual size:
