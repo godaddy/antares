@@ -95,8 +95,11 @@ export interface TagProps extends ComponentProps<'span'> {
  * Provide `DEFAULT_SLOT` alongside any named slot: `useSlottedContext` throws when a
  * context has `slots` and the requested key is missing, so an unslotted `Tag` inside a
  * slots-only provider would crash.
+ *
+ * The value is `Partial<TagProps>` because a parent supplies defaults, not a whole tag;
+ * `TagProps` requires `children`, which only ever comes from the call site.
  */
-export const TagContext = createContext<ContextValue<TagProps, HTMLSpanElement>>(null);
+export const TagContext = createContext<ContextValue<Partial<TagProps>, HTMLSpanElement>>(null);
 
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref) {
   [props, ref] = useContextProps(props, ref, TagContext);

@@ -1,0 +1,119 @@
+/*
+ * Type comes from the three-role token ramp: the eyebrow reads `size` on `detail`, the
+ * title on `heading`, the body on `body`. Every role property chains
+ * `token -> intent -> literal`; sizes chain `token -> literal` only, because an intent
+ * carries one size per role so nothing can express "heading, lg".
+ */
+.lockup {
+  container: text-lockup / inline-size;
+  align-items: flex-start;
+
+  --_measure: none;
+
+  /* detail role, for the eyebrow */
+  --_eyebrow-family: var(--font-detail-family, var(--ux-1gutwvn, system-ui, sans-serif));
+  --_eyebrow-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.4));
+  --_eyebrow-weight: var(--font-detail-weight, var(--ux-g9ierp, normal));
+  --_eyebrow-variation: var(--font-detail-variation, var(--ux-tjt16c, normal));
+
+  /* heading role, for the title. No weight: `Heading` sets `bolder` itself, and adding it
+     here would compete with that at the same 0-1-0, leaving stylesheet order to decide. */
+  --_title-family: var(--font-heading-family, var(--ux-shg991, system-ui, sans-serif));
+  --_title-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  --_title-variation: var(--font-heading-variation, var(--ux-1458mfm, normal));
+
+  /* body role. Needs a second intent link: `ux.textBody` carries no weight or variation
+     and no legacy default, so one `var()` deep is not yet a real value. */
+  --_body-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
+  --_body-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
+  --_body-weight: var(--font-body-weight, var(--ux-8n6y9x, normal));
+  --_body-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
+}
+
+.lockup:where([data-legible-lines]) {
+  --_measure: 60ch;
+}
+
+.lockup:where([data-align="center"]) {
+  align-items: center;
+  text-align: center;
+}
+
+/* `size` is the tier. Deviations from Figma are recorded where they occur. */
+.lockup:where([data-size="2xl"]) {
+  --_eyebrow-size: var(--font-detail-size-2xl, 1.125rem);
+  --_title-size: var(--font-heading-size-2xl, 2.25rem); /* Figma 40px; heading-2xl is the top tier */
+  --_body-size: var(--font-body-size-2xl, 1.5rem);
+}
+
+.lockup:where([data-size="xl"]) {
+  --_eyebrow-size: var(--font-detail-size-xl, 1rem);
+  --_title-size: var(--font-heading-size-xl, 1.875rem);
+  --_body-size: var(--font-body-size-xl, 1.25rem); /* Figma 18px; the diagonal gives 20px */
+}
+
+.lockup:where([data-size="lg"]) {
+  --_eyebrow-size: var(--font-detail-size-lg, 0.875rem);
+  --_title-size: var(--font-heading-size-lg, 1.5rem);
+  --_body-size: var(--font-body-size-lg, 1.125rem); /* Figma 16px; the diagonal gives 18px */
+}
+
+.lockup:where([data-size="md"]) {
+  --_eyebrow-size: var(--font-detail-size-md, 0.8125rem); /* Figma 14px; the diagonal gives 13px */
+  --_title-size: var(--font-heading-size-md, 1.25rem); /* Figma 22px; lg already takes heading-lg */
+  --_body-size: var(--font-body-size-md, 1rem);
+}
+
+.lockup:where([data-size="sm"]) {
+  --_eyebrow-size: var(--font-detail-size-sm, 0.75rem);
+  --_title-size: var(--font-heading-size-sm, 1.125rem);
+  --_body-size: var(--font-body-size-sm, 0.875rem);
+}
+
+.lockup:where([data-size="xs"]) {
+  --_eyebrow-size: var(--font-detail-size-xs, 0.6875rem);
+  --_title-size: var(--font-heading-size-xs, 1rem); /* Figma 14px at the caption role, which was
+    a workaround for the old ratio scale's lower bound; heading-xs is the real bottom tier */
+  --_body-size: var(--font-body-size-xs, 0.75rem);
+}
+
+/*
+ * Narrow: only the title moves, and only where the spec's ratio crosses a tier. Figma scaled
+ * the heading role by 0.75 and the title role by 0.9; the ramp's steps are 11-20%, so 0.9
+ * only crosses one at `sm`. Every other size lands within 2.3px unscaled.
+ */
+@container text-lockup (width < 520px) {
+  .lockup:where([data-size="2xl"]) {
+    --_title-size: var(--font-heading-size-xl, 1.875rem); /* Figma mobile is exactly 30px */
+  }
+
+  .lockup:where([data-size="sm"]) {
+    --_title-size: var(--font-heading-size-xs, 1rem); /* Figma mobile 15.7px */
+  }
+}
+
+.eyebrow {
+  max-width: var(--_measure);
+  font-family: var(--_eyebrow-family);
+  font-size: var(--_eyebrow-size);
+  font-weight: var(--_eyebrow-weight);
+  font-variation-settings: var(--_eyebrow-variation);
+  line-height: var(--_eyebrow-line-height);
+}
+
+.title {
+  max-width: var(--_measure);
+  font-family: var(--_title-family);
+  font-size: var(--_title-size);
+  font-variation-settings: var(--_title-variation);
+  line-height: var(--_title-line-height);
+}
+
+.body {
+  max-width: var(--_measure);
+  font-family: var(--_body-family);
+  font-size: var(--_body-size);
+  font-weight: var(--_body-weight);
+  font-variation-settings: var(--_body-variation);
+  line-height: var(--_body-line-height);
+}
