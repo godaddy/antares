@@ -32,9 +32,6 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className' | 'level
  * `slot="title"` inside a `Modal`/`Dialog` wires the accessible name
  * (`aria-labelledby`) automatically.
  *
- * A container may supply the level through `HeadingContext` — `Dialog` does this
- * for `slot="title"`. An explicit `level` prop always wins.
- *
  * @param props - The properties {@link HeadingProps} passed to the component.
  *
  * @example
@@ -46,9 +43,7 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className' | 'level
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
   const { level, className, ...rest } = props;
 
-  // Read the level a container provides without consuming the rest of the context:
-  // `RACHeading` merges `className`/`id` from the same context itself, and merging
-  // it here as well would duplicate ids and chain handlers twice.
+  // Read only `level`: `RACHeading` merges `className`/`id` from this same context itself.
   const context = useSlottedContext(HeadingContext, props.slot);
 
   return (

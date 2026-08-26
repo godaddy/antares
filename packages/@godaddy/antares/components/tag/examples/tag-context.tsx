@@ -2,9 +2,8 @@ import { DEFAULT_SLOT } from 'react-aria-components';
 import { Flex, Tag, TagContext } from '@godaddy/antares';
 
 /**
- * Fixture for `TagContext`. A parent supplies `size` per slot; an explicit prop wins over
- * it, and an unslotted `Tag` resolves `DEFAULT_SLOT` rather than throwing. The rendered
- * `data-size` attribute is the assertion.
+ * Fixture for `TagContext`: per-slot default, explicit prop wins, unslotted resolves
+ * `DEFAULT_SLOT` instead of throwing.
  * @ignore
  */
 export function TagContextExample() {

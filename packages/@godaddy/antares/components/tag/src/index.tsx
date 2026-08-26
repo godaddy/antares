@@ -72,6 +72,12 @@ export interface TagProps extends ComponentProps<'span'> {
 }
 
 /**
+ * Lets a parent supply per-slot `Tag` defaults; consumer props always win. Providers must
+ * include `DEFAULT_SLOT`, since `useSlottedContext` throws on a missing slot key.
+ */
+export const TagContext = createContext<ContextValue<Partial<TagProps>, HTMLSpanElement>>(null);
+
+/**
  * Highlights statuses and categories with a colored label.
  *
  * Tags are non-interactive and placed in prominent places on related items.
@@ -88,19 +94,6 @@ export interface TagProps extends ComponentProps<'span'> {
  *
  * @param props - {@link TagProps}
  */
-/**
- * Lets a parent supply defaults for every `Tag` it renders, per slot. A `TextLockup`
- * uses it to pair the tag's `size` with its own. Consumer props always win.
- *
- * Provide `DEFAULT_SLOT` alongside any named slot: `useSlottedContext` throws when a
- * context has `slots` and the requested key is missing, so an unslotted `Tag` inside a
- * slots-only provider would crash.
- *
- * The value is `Partial<TagProps>` because a parent supplies defaults, not a whole tag;
- * `TagProps` requires `children`, which only ever comes from the call site.
- */
-export const TagContext = createContext<ContextValue<Partial<TagProps>, HTMLSpanElement>>(null);
-
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref) {
   [props, ref] = useContextProps(props, ref, TagContext);
 
