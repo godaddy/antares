@@ -8,6 +8,7 @@ import { InlineExample } from '../examples/inline.tsx';
 import { IconsExample } from '../examples/icons.tsx';
 import { IndicatorExample } from '../examples/indicator.tsx';
 import { PlaygroundExample } from '../examples/tag-playground.tsx';
+import { TagContextExample } from '../examples/tag-context.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Tag', function tagTests() {
@@ -45,6 +46,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the inline example', function inlineExample() {
       expect(renderToString(<InlineExample />)).toMatchSnapshot();
+    });
+    it('resolves size from TagContext, with explicit props winning', function tagContext() {
+      const result = renderToString(<TagContextExample />);
+      expect(result).toMatchSnapshot();
     });
   });
 });

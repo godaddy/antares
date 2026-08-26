@@ -17,3 +17,5 @@ exports[`@godaddy/antares > #Tag > renders the inline design 1`] = `"<span class
 exports[`@godaddy/antares > #Tag > renders the inline example 1`] = `"<p>This domain is<!-- --> <span class="tag" data-emphasis="success" data-size="md" data-design="inline" data-high-contrast="">Active</span> <!-- -->and your plan is<!-- --> <span class="tag" data-emphasis="premium" data-size="md" data-design="inline" data-high-contrast="">Pro</span>.</p>"`;
 
 exports[`@godaddy/antares > #Tag > renders the playground defaults 1`] = `"<span class="tag" data-emphasis="passive" data-size="sm" data-design="filled">Tag</span>"`;
+
+exports[`@godaddy/antares > #Tag > resolves size from TagContext, with explicit props winning 1`] = `"<div class="box flex" style="gap:var(--sp-sm)"><span slot="eyebrow" class="tag" data-emphasis="passive" data-size="lg" data-design="filled">From context</span><span slot="eyebrow" class="tag" data-emphasis="passive" data-size="sm" data-design="filled">Explicit wins</span><span class="tag" data-emphasis="passive" data-size="md" data-design="filled">Unslotted</span></div>"`;
