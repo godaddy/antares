@@ -2,12 +2,11 @@ import { DEFAULT_SLOT, TextContext } from 'react-aria-components';
 import { Button, Flex, Text } from '@godaddy/antares';
 
 /**
- * Fixture proving a `Button` shadows an ancestor's `TextContext`, so its label keeps the
- * button's own type. `Text` outside the button is the control: it takes the injected size,
- * which shows the provider is live and the assertions are not vacuous.
+ * Fixture proving a `Button` shadows an ancestor's `TextContext`. The `Text` outside the
+ * button is the control, so the assertions cannot pass vacuously.
  * @ignore
  */
-export function NeutralTextExample() {
+export function IsolatedLabelExample() {
   return (
     <TextContext.Provider value={{ slots: { [DEFAULT_SLOT]: { style: { fontSize: '40px' } } } }}>
       <Flex direction="column" gap="sm">

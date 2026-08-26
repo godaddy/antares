@@ -38,16 +38,15 @@ const buttonVariants = cva(styles.button, {
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 /**
- * Shadows any `TextContext` an ancestor provides, so a composed `Text` inherits the
- * button's own type instead of the container's. Without this, a `Button` inside a
- * container that styles its text slots renders its label at the container's size, and
- * the `size` prop stops sizing its own label.
- *
- * Every RAC control that owns a text surface provides its own `TextContext`; RAC's
- * `Button` does not, because it never wraps its label. Antares does, so Antares must.
+ * The button's label region. Shadows an ancestor's `TextContext` so the label keeps the
+ * button's own type; RAC's `Button` skips this because it never wraps its label.
  */
-function NeutralText({ children }: { children?: React.ReactNode }) {
-  return <RACProvider values={[[TextContext, {}]]}>{children}</RACProvider>;
+function ButtonLabel({ children }: { children?: React.ReactNode }) {
+  return (
+    <RACProvider values={[[TextContext, {}]]}>
+      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+    </RACProvider>
+  );
 }
 
 interface BaseButtonProps {
@@ -73,7 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   return (
     <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
-      <NeutralText>{typeof children === 'string' ? <RACText>{children}</RACText> : children}</NeutralText>
+      <ButtonLabel>{children}</ButtonLabel>
     </RACButton>
   );
 });
@@ -99,7 +98,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      <NeutralText>{typeof children === 'string' ? <RACText>{children}</RACText> : children}</NeutralText>
+      <ButtonLabel>{children}</ButtonLabel>
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );
