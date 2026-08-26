@@ -7,6 +7,7 @@ import { MaxLinesExample } from '../examples/max-lines.tsx';
 import { WrapExample } from '../examples/wrap.tsx';
 import { EmptyTextExample } from '../examples/empty.tsx';
 import { HeadingExample } from '../examples/heading.tsx';
+import { HeadingContextExample } from '../examples/heading-context.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Text', function textTests() {
@@ -37,6 +38,11 @@ describe('@godaddy/antares', function antares() {
 
     it('renders empty Text with span element', function emptyChildren() {
       const result = renderToString(<EmptyTextExample />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders the heading level resolution fixture', function rendersHeadingContext() {
+      const result = renderToString(<HeadingContextExample />);
       expect(result).toMatchSnapshot();
     });
 
