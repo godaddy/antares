@@ -1,5 +1,4 @@
-import { forwardRef, useContext, type ReactNode } from 'react';
-import { cx } from 'cva';
+import { forwardRef, type ReactNode } from 'react';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TagContext, type TagSize } from '#components/tag';
@@ -43,50 +42,15 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
   children?: ReactNode;
 }
 
-/** A per-slot defaults map, keyed the way RAC's slotted contexts are. */
-type SlotMap = Record<string | symbol, { className?: string }>;
-
-/** Narrow an inherited context value to its per-slot map. */
-function toSlotMap(inherited: unknown): SlotMap {
-  if (!inherited || typeof inherited !== 'object') return {};
-  if ('slots' in inherited && inherited.slots) return inherited.slots as SlotMap;
-
-  return { [DEFAULT_SLOT]: inherited as SlotMap[string] };
-}
-
-/**
- * Merges per-slot defaults onto whatever context a parent already provides, rather than
- * replacing it.
- *
- * Replacing matters: RAC's `Dialog` puts the id that wires `aria-labelledby` into the same
- * `HeadingContext` this styles, so a fresh value would drop the dialog's accessible name
- * with no error. A parent's props are kept and class names are concatenated, so the
- * dialog's `id` and `level` survive alongside the lockup's type.
- *
- * @param inherited - The context value an ancestor provides, if any.
- * @param ours - The lockup's own per-slot defaults.
- * @returns A slotted context value carrying both.
- */
-function composeSlots(inherited: unknown, ours: SlotMap) {
-  const parent = toSlotMap(inherited);
-  const slots: SlotMap = { ...parent };
-
-  for (const key of Reflect.ownKeys(ours)) {
-    const from = parent[key as string];
-    const mine = ours[key as string];
-
-    slots[key as string] = { ...from, ...mine, className: cx(from?.className, mine.className) };
-  }
-
-  return { slots };
-}
-
 /**
  * Stacks an optional eyebrow, a title and body text as one coordinated type group.
  *
  * The lockup positions and type-sets the parts; the consumer supplies them, so the
  * eyebrow can be plain text or a `Tag`, the title can be any heading level, and anything
  * else (a call to action, a second paragraph) can sit alongside them.
+ *
+ * Slots resolve against the lockup, not an outer container: `slot="title"` names the
+ * lockup's title. A `Modal` still wants its own `<Heading slot="title">` as a direct child.
  *
  * @param props - {@link TextLockupProps}
  *
@@ -101,9 +65,6 @@ function composeSlots(inherited: unknown, ours: SlotMap) {
  */
 export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function TextLockup(props, ref) {
   const { size = 'md', align = 'start', legibleLines = true, className, children, ...rest } = props;
-
-  const inheritedHeading = useContext(HeadingContext);
-  const inheritedText = useContext(TextContext);
 
   return (
     <Flex
@@ -120,18 +81,22 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
         values={[
           [
             HeadingContext,
-            composeSlots(inheritedHeading, {
-              [DEFAULT_SLOT]: { className: styles.title },
-              title: { className: styles.title }
-            })
+            {
+              slots: {
+                [DEFAULT_SLOT]: { className: styles.title },
+                title: { className: styles.title }
+              }
+            }
           ],
           [
             TextContext,
-            composeSlots(inheritedText, {
-              [DEFAULT_SLOT]: { className: styles.body },
-              description: { className: styles.body },
-              eyebrow: { className: styles.eyebrow }
-            })
+            {
+              slots: {
+                [DEFAULT_SLOT]: { className: styles.body },
+                description: { className: styles.body },
+                eyebrow: { className: styles.eyebrow }
+              }
+            }
           ],
           [TagContext, { slots: { [DEFAULT_SLOT]: {}, eyebrow: { size: TAG_SIZE[size] } } }]
         ]}

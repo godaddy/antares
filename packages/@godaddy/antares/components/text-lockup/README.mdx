@@ -51,9 +51,9 @@ growing a prop for it.
 
 - The title carries the heading semantics. Choose `level` so the page outline stays correct
   rather than to achieve a size.
-- Inside a `Modal`, `Drawer` or `Popover`, give the title `slot="title"` so it supplies the
-  dialog's accessible name. The lockup adds its type to that slot without replacing what the
-  dialog provides there.
+- Slots resolve against the lockup, so `slot="title"` names the lockup's title. Inside a
+  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
+  child for the accessible name, and use the lockup for the body.
 - The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
   reads sensibly on its own, since screen reader users often navigate by heading.
 

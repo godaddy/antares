@@ -5,6 +5,8 @@ import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
 import { InModalExample } from '../examples/in-modal.tsx';
+import { HeadingContext } from 'react-aria-components';
+import { Heading, TextLockup } from '@godaddy/antares';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextLockup', function textLockupTests() {
@@ -32,12 +34,39 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
     });
 
-    it('still labels a dialog through the title slot', async function labelsDialog() {
+    it('steps the title down a tier in a narrow container', async function narrowTitle() {
+      const { getByRole } = await render(
+        <div style={{ width: '400px' }}>
+          <TextLockup size="2xl">
+            <Heading>Text Lockup</Heading>
+          </TextLockup>
+        </div>
+      );
+      const title = getByRole('heading').element();
+
+      // 2xl narrow drops to the xl tier: 1.875rem = 30px.
+      expect(getComputedStyle(title).fontSize).toEqual('30px');
+    });
+
+    it('resolves slots against itself, not an outer container', async function ownsSlots() {
+      const { getByRole } = await render(
+        <HeadingContext.Provider value={{ slots: { title: { level: 3 } } }}>
+          <TextLockup>
+            <Heading slot="title">Text Lockup</Heading>
+          </TextLockup>
+        </HeadingContext.Provider>
+      );
+
+      // The lockup owns `title`, so the outer container's level does not reach it.
+      await expect.element(getByRole('heading', { level: 2 })).toBeVisible();
+    });
+
+    it('leaves the dialog to be labelled by its own title', async function labelsDialog() {
       const { getByRole } = await render(<InModalExample />);
       await userEvent.click(getByRole('button', { name: 'Open modal' }));
 
-      // The accessible name comes from <Heading slot="title"> inside the lockup, so the
-      // lockup augmented the dialog's HeadingContext instead of replacing it.
+      // The name comes from the Modal's own <Heading slot="title">; a lockup in the body
+      // does not take it over.
       await expect.element(getByRole('dialog', { name: 'Cancel your subscription?' })).toBeVisible();
     });
   });
