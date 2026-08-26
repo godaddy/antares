@@ -106,7 +106,12 @@ A props bag is for configuring a layer, not expressing structure. If it starts c
 
 - Use the `styles.className` pattern, and merge incoming class names with `composeClassName(className, styles.className)` so a caller's `className` augments the styles instead of replacing them.
 - Data-attribute selectors for RAC state only: `[data-hovered]`, `[data-pressed]`, `[data-disabled]`, etc.
-- Private vars: `--_` prefix. Expose a public `--var`; internally read it as `--_var: var(--var, fallback)`.
+- Private vars: `--_` prefix.
+- Customization is props, `className`, and data attributes. Reach for a public `--var` only when
+  the knob targets an internal child a caller's `className` cannot reach (their selector would
+  need your slot names and would tie at `0-1-0`, leaving stylesheet order to decide). Read it as
+  `--_var: var(--var, fallback)`, and document it under README **Customization** — an undocumented
+  var is not an API.
 - Focus: `&:where([data-focus-visible]) { outline: 2px solid Highlight; outline-offset: 2px; }`
 - Disabled: `&:where([data-disabled]) { opacity: 0.4; cursor: not-allowed; }` (use `&:where(:disabled)` only for native HTML elements)
 - **Border-width:** always `1px`. No other values, no variables.
