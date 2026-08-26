@@ -1,6 +1,8 @@
 .lockup {
   container: text-lockup / inline-size;
   align-items: flex-start;
+  /* Explicit, since `text-align` would otherwise inherit from a centered ancestor. */
+  text-align: start;
 
   --_measure: none;
 

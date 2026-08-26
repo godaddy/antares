@@ -38,7 +38,7 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
    */
   legibleLines?: boolean;
 
-  /** The parts of the lockup, in any order. */
+  /** The parts of the lockup, rendered in source order. */
   children?: ReactNode;
 }
 
