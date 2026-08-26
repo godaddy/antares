@@ -8,7 +8,7 @@ import {
   type LinkProps as RACLinkProps,
   Provider as RACProvider,
   Text as RACText,
-  TextContext
+  TextContext as RACTextContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { composeClassName } from '../../../utils/render-props.ts';
@@ -38,12 +38,12 @@ const buttonVariants = cva(styles.button, {
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 /**
- * The button's label region. Shadows an ancestor's `TextContext` so the label keeps the
- * button's own type; RAC's `Button` skips this because it never wraps its label.
+ * The button's label region.
+ * Shadows an ancestor's `TextContext` so the label keeps the button's own type.
  */
 function ButtonLabel({ children }: { children?: React.ReactNode }) {
   return (
-    <RACProvider values={[[TextContext, {}]]}>
+    <RACProvider values={[[RACTextContext, {}]]}>
       {typeof children === 'string' ? <RACText>{children}</RACText> : children}
     </RACProvider>
   );

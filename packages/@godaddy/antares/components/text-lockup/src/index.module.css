@@ -1,6 +1,3 @@
-/* Roles: eyebrow -> `detail`, title -> `heading`, body -> `body`. Each property chains
-   token -> legacy intent -> that intent's legacy default; sizes have no per-tier intent.
-   Families stop at `sans-serif`, as everywhere else here, over naming an unloaded brand face. */
 .lockup {
   container: text-lockup / inline-size;
   align-items: flex-start;
@@ -12,12 +9,10 @@
   --_eyebrow-weight: var(--font-detail-weight, var(--ux-g9ierp, 400));
   --_eyebrow-variation: var(--font-detail-variation, var(--ux-tjt16c, normal));
 
-  /* No weight: `Heading` sets its own, and a second at 0-1-0 would leave order to decide. */
   --_title-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
   --_title-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
   --_title-variation: var(--font-heading-variation, var(--ux-1458mfm, "DSPL" 1));
 
-  /* Two intent links: `ux.textBody` has no legacy default, `ux.textParagraph` does. */
   --_body-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
   --_body-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
   --_body-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
@@ -33,42 +28,41 @@
   text-align: center;
 }
 
-/* `size` is the tier. Deviations from Figma are recorded where they occur. */
 .lockup:where([data-size="2xl"]) {
   --_eyebrow-size: var(--font-detail-size-2xl, 1.125rem);
-  --_title-size: var(--font-heading-size-2xl, 2.25rem); /* Figma 40px; heading-2xl is the top tier */
-  --_title-size-narrow: var(--font-heading-size-xl, 1.875rem); /* Figma mobile is exactly 30px */
+  --_title-size: var(--font-heading-size-2xl, 2.25rem);
+  --_title-size-narrow: var(--font-heading-size-xl, 1.875rem);
   --_body-size: var(--font-body-size-2xl, 1.5rem);
 }
 
 .lockup:where([data-size="xl"]) {
   --_eyebrow-size: var(--font-detail-size-xl, 1rem);
   --_title-size: var(--font-heading-size-xl, 1.875rem);
-  --_body-size: var(--font-body-size-xl, 1.25rem); /* Figma 18px; the diagonal gives 20px */
+  --_body-size: var(--font-body-size-xl, 1.25rem);
 }
 
 .lockup:where([data-size="lg"]) {
   --_eyebrow-size: var(--font-detail-size-lg, 0.875rem);
   --_title-size: var(--font-heading-size-lg, 1.5rem);
-  --_body-size: var(--font-body-size-lg, 1.125rem); /* Figma 16px; the diagonal gives 18px */
+  --_body-size: var(--font-body-size-lg, 1.125rem);
 }
 
 .lockup:where([data-size="md"]) {
-  --_eyebrow-size: var(--font-detail-size-md, 0.8125rem); /* Figma 14px; the diagonal gives 13px */
-  --_title-size: var(--font-heading-size-md, 1.25rem); /* Figma 22px; lg already takes heading-lg */
+  --_eyebrow-size: var(--font-detail-size-md, 0.8125rem);
+  --_title-size: var(--font-heading-size-md, 1.25rem);
   --_body-size: var(--font-body-size-md, 1rem);
 }
 
 .lockup:where([data-size="sm"]) {
   --_eyebrow-size: var(--font-detail-size-sm, 0.75rem);
   --_title-size: var(--font-heading-size-sm, 1.125rem);
-  --_title-size-narrow: var(--font-heading-size-xs, 1rem); /* Figma mobile 15.7px */
+  --_title-size-narrow: var(--font-heading-size-xs, 1rem);
   --_body-size: var(--font-body-size-sm, 0.875rem);
 }
 
 .lockup:where([data-size="xs"]) {
   --_eyebrow-size: var(--font-detail-size-xs, 0.6875rem);
-  --_title-size: var(--font-heading-size-xs, 1rem); /* Figma 14px on caption; heading-xs is the real floor */
+  --_title-size: var(--font-heading-size-xs, 1rem);
   --_body-size: var(--font-body-size-xs, 0.75rem);
 }
 
@@ -89,9 +83,6 @@
   line-height: var(--_title-line-height);
 }
 
-/* Only the title moves, and only at the two sizes where the spec's mobile ratio crosses a tier.
-   Must target `.title`, not `.lockup`: an element never matches a query against the container it
-   establishes itself. */
 @container text-lockup (width < 520px) {
   .title {
     font-size: var(--_title-size-narrow, var(--_title-size));

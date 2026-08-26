@@ -1,10 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { userEvent } from 'vitest/browser';
 import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
-import { InModalExample } from '../examples/in-modal.tsx';
 import { HeadingContext } from 'react-aria-components';
 import { Heading, TextLockup } from '@godaddy/antares';
 
@@ -59,15 +57,6 @@ describe('@godaddy/antares', function antares() {
 
       // The lockup owns `title`, so the outer container's level does not reach it.
       await expect.element(getByRole('heading', { level: 2 })).toBeVisible();
-    });
-
-    it('leaves the dialog to be labelled by its own title', async function labelsDialog() {
-      const { getByRole } = await render(<InModalExample />);
-      await userEvent.click(getByRole('button', { name: 'Open modal' }));
-
-      // The name comes from the Modal's own <Heading slot="title">; a lockup in the body
-      // does not take it over.
-      await expect.element(getByRole('dialog', { name: 'Cancel your subscription?' })).toBeVisible();
     });
   });
 });

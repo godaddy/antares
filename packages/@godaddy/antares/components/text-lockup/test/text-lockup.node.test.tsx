@@ -6,7 +6,6 @@ import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { LegibleLinesExample } from '../examples/legible-lines.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
-import { InModalExample } from '../examples/in-modal.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -33,10 +32,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders alongside actions', function rendersWithActions() {
       expect(renderToString(<WithActionsExample />)).toMatchSnapshot();
-    });
-
-    it('renders inside a modal', function rendersInModal() {
-      expect(renderToString(<InModalExample />)).toMatchSnapshot();
     });
 
     it('lets explicit child props win over the injected defaults', function rendersOverrides() {

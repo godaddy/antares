@@ -42,8 +42,6 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className' | 'level
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
   const { level, className, ...rest } = props;
-
-  // Read only `level`: `RACHeading` merges `className`/`id` from this same context itself.
   const context = useSlottedContext(HeadingContext, props.slot);
 
   return (

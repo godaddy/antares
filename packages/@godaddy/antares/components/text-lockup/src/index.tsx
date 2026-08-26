@@ -49,9 +49,6 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  * eyebrow can be plain text or a `Tag`, the title can be any heading level, and anything
  * else (a call to action, a second paragraph) can sit alongside them.
  *
- * Slots resolve against the lockup, not an outer container: `slot="title"` names the
- * lockup's title. A `Modal` still wants its own `<Heading slot="title">` as a direct child.
- *
  * @param props - {@link TextLockupProps}
  *
  * @example
