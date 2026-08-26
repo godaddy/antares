@@ -8,7 +8,7 @@ import { Heading } from '@godaddy/antares';
  */
 export function HeadingContextExample() {
   return (
-    <HeadingContext.Provider value={{ slots: { [DEFAULT_SLOT]: {}, title: { level: 3 } } }}>
+    <HeadingContext.Provider value={{ slots: { [DEFAULT_SLOT]: {}, title: { level: 2 } } }}>
       <Heading slot="title">Container level</Heading>
       <Heading slot="title" level={5}>
         Explicit level

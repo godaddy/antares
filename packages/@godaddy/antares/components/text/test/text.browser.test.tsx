@@ -16,7 +16,7 @@ describe('@godaddy/antares', function antares() {
   describe('#Heading', function headingTests() {
     it('takes the level a container provides', async function containerLevel() {
       const { getByRole } = await render(<HeadingContextExample />);
-      await expect.element(getByRole('heading', { level: 3, name: 'Container level' })).toBeVisible();
+      await expect.element(getByRole('heading', { level: 2, name: 'Container level' })).toBeVisible();
     });
 
     it('lets an explicit level win over the container', async function explicitLevel() {
