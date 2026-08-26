@@ -1,32 +1,26 @@
-/*
- * Type comes from the three-role token ramp: the eyebrow reads `size` on `detail`, the
- * title on `heading`, the body on `body`. Every role property chains
- * `token -> intent -> literal`; sizes chain `token -> literal` only, because an intent
- * carries one size per role so nothing can express "heading, lg".
- */
+/* Roles: eyebrow -> `detail`, title -> `heading`, body -> `body`. Each property chains
+   token -> legacy intent -> that intent's legacy default; sizes have no per-tier intent.
+   Families stop at `sans-serif`, as everywhere else here, over naming an unloaded brand face. */
 .lockup {
   container: text-lockup / inline-size;
   align-items: flex-start;
 
   --_measure: none;
 
-  /* detail role, for the eyebrow */
-  --_eyebrow-family: var(--font-detail-family, var(--ux-1gutwvn, system-ui, sans-serif));
-  --_eyebrow-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.4));
-  --_eyebrow-weight: var(--font-detail-weight, var(--ux-g9ierp, normal));
+  --_eyebrow-family: var(--font-detail-family, var(--ux-1gutwvn, sans-serif));
+  --_eyebrow-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
+  --_eyebrow-weight: var(--font-detail-weight, var(--ux-g9ierp, 400));
   --_eyebrow-variation: var(--font-detail-variation, var(--ux-tjt16c, normal));
 
-  /* heading role, for the title. No weight: `Heading` sets `bolder` itself, and adding it
-     here would compete with that at the same 0-1-0, leaving stylesheet order to decide. */
-  --_title-family: var(--font-heading-family, var(--ux-shg991, system-ui, sans-serif));
+  /* No weight: `Heading` sets its own, and a second at 0-1-0 would leave order to decide. */
+  --_title-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
   --_title-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
-  --_title-variation: var(--font-heading-variation, var(--ux-1458mfm, normal));
+  --_title-variation: var(--font-heading-variation, var(--ux-1458mfm, "DSPL" 1));
 
-  /* body role. Needs a second intent link: `ux.textBody` carries no weight or variation
-     and no legacy default, so one `var()` deep is not yet a real value. */
-  --_body-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
+  /* Two intent links: `ux.textBody` has no legacy default, `ux.textParagraph` does. */
+  --_body-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
   --_body-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
-  --_body-weight: var(--font-body-weight, var(--ux-8n6y9x, normal));
+  --_body-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
   --_body-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
 }
 
@@ -43,6 +37,7 @@
 .lockup:where([data-size="2xl"]) {
   --_eyebrow-size: var(--font-detail-size-2xl, 1.125rem);
   --_title-size: var(--font-heading-size-2xl, 2.25rem); /* Figma 40px; heading-2xl is the top tier */
+  --_title-size-narrow: var(--font-heading-size-xl, 1.875rem); /* Figma mobile is exactly 30px */
   --_body-size: var(--font-body-size-2xl, 1.5rem);
 }
 
@@ -67,29 +62,14 @@
 .lockup:where([data-size="sm"]) {
   --_eyebrow-size: var(--font-detail-size-sm, 0.75rem);
   --_title-size: var(--font-heading-size-sm, 1.125rem);
+  --_title-size-narrow: var(--font-heading-size-xs, 1rem); /* Figma mobile 15.7px */
   --_body-size: var(--font-body-size-sm, 0.875rem);
 }
 
 .lockup:where([data-size="xs"]) {
   --_eyebrow-size: var(--font-detail-size-xs, 0.6875rem);
-  --_title-size: var(--font-heading-size-xs, 1rem); /* Figma 14px at the caption role, which was
-    a workaround for the old ratio scale's lower bound; heading-xs is the real bottom tier */
+  --_title-size: var(--font-heading-size-xs, 1rem); /* Figma 14px on caption; heading-xs is the real floor */
   --_body-size: var(--font-body-size-xs, 0.75rem);
-}
-
-/*
- * Narrow: only the title moves, and only where the spec's ratio crosses a tier. Figma scaled
- * the heading role by 0.75 and the title role by 0.9; the ramp's steps are 11-20%, so 0.9
- * only crosses one at `sm`. Every other size lands within 2.3px unscaled.
- */
-@container text-lockup (width < 520px) {
-  .lockup:where([data-size="2xl"]) {
-    --_title-size: var(--font-heading-size-xl, 1.875rem); /* Figma mobile is exactly 30px */
-  }
-
-  .lockup:where([data-size="sm"]) {
-    --_title-size: var(--font-heading-size-xs, 1rem); /* Figma mobile 15.7px */
-  }
 }
 
 .eyebrow {
@@ -107,6 +87,15 @@
   font-size: var(--_title-size);
   font-variation-settings: var(--_title-variation);
   line-height: var(--_title-line-height);
+}
+
+/* Only the title moves, and only at the two sizes where the spec's mobile ratio crosses a tier.
+   Must target `.title`, not `.lockup`: an element never matches a query against the container it
+   establishes itself. */
+@container text-lockup (width < 520px) {
+  .title {
+    font-size: var(--_title-size-narrow, var(--_title-size));
+  }
 }
 
 .body {
