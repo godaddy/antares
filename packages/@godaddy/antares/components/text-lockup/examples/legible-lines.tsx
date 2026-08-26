@@ -8,12 +8,13 @@ const COPY =
 /**
  * The text parts are constrained to a comfortable line length by default. Set
  * `legibleLines={false}` to let them run the full width of their container, which suits a
- * lockup already inside a narrow column.
+ * lockup already inside a narrow column. Both lockups below share one wide container, so the
+ * clamp is what makes the first one narrower.
  * @order 5
  */
 export function LegibleLinesExample() {
   return (
-    <Flex direction="column" gap="lg">
+    <Flex direction="column" gap="lg" style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>
       <TextLockup>
         <Heading>Constrained by default</Heading>
         <Text>{COPY}</Text>

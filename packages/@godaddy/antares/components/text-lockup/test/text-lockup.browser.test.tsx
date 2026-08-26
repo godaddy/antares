@@ -46,6 +46,19 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(title).fontSize).toEqual('30px');
     });
 
+    it('keeps start alignment inside a centered ancestor', async function startInCentered() {
+      const { getByRole } = await render(
+        <div style={{ textAlign: 'center' }}>
+          <TextLockup>
+            <Heading>Text Lockup</Heading>
+          </TextLockup>
+        </div>
+      );
+
+      // `text-align` would otherwise inherit from the ancestor.
+      expect(getComputedStyle(getByRole('heading').element()).textAlign).toEqual('start');
+    });
+
     it('resolves slots against itself, not an outer container', async function ownsSlots() {
       const { getByRole } = await render(
         <HeadingContext.Provider value={{ slots: { title: { level: 3 } } }}>
@@ -56,7 +69,7 @@ describe('@godaddy/antares', function antares() {
       );
 
       // The lockup owns `title`, so the outer container's level does not reach it.
-      await expect.element(getByRole('heading', { level: 2 })).toBeVisible();
+      await expect.element(getByRole('heading', { level: 3 })).toBeVisible();
     });
   });
 });

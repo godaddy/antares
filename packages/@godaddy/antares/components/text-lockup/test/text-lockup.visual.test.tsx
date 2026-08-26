@@ -1,4 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -11,6 +12,10 @@ import { WithActionsExample } from '../examples/with-actions.tsx';
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
   beforeEach(resetHover);
+  // `page.viewport` persists across tests, so reset it for every one.
+  beforeEach(async function resetViewport() {
+    await page.viewport(414, 896);
+  });
 
   describe('#TextLockup', function textLockupTests() {
     it('default example', async function defaultRender() {
@@ -34,6 +39,8 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('legible lines example', async function legibleLinesRender() {
+      // The clamp is 60ch (~534px), so the default 414px viewport cannot show it.
+      await page.viewport(900, 400);
       const { container } = await render(<LegibleLinesExample />);
       await expect(container).toMatchScreenshot('legible-lines');
     });

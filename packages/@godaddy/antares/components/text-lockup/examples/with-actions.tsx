@@ -13,7 +13,7 @@ export function WithActionsExample() {
       </Tag>
       <Heading level={1}>Upgrade your plan</Heading>
       <Text>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>
-      <ButtonGroup>
+      <ButtonGroup inlinePadding="0" blockPadding="0">
         <Button variant="primary">Upgrade</Button>
         <Button variant="secondary">Compare plans</Button>
       </ButtonGroup>
