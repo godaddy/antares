@@ -60,15 +60,17 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('resolves slots against itself, not an outer container', async function ownsSlots() {
-      const { getByRole } = await render(
-        <HeadingContext.Provider value={{ slots: { title: { level: 3 } } }}>
+      const { container, getByRole } = await render(
+        <HeadingContext.Provider value={{ slots: { title: { level: 5 } } }}>
           <TextLockup>
             <Heading slot="title">Text Lockup</Heading>
           </TextLockup>
         </HeadingContext.Provider>
       );
 
-      // The lockup owns `title`, so the outer container's level does not reach it.
+      // The lockup owns `title`, so the outer level never reaches the heading and it falls back
+      // to RAC's default of 3.
+      expect(container.querySelector('h5')).toBeNull();
       await expect.element(getByRole('heading', { level: 3 })).toBeVisible();
     });
   });
