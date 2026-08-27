@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
-import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
 import {
+  RACNumberField,
+  type RACNumberFieldProps,
   Field,
   FieldButton,
   FieldDescription,
