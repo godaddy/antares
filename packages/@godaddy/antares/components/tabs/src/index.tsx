@@ -13,6 +13,8 @@ import {
   TabPanel as RACTabPanel,
   TabPanels as RACTabPanels,
   Tabs as RACTabs,
+  SelectionIndicator as RACSelectionIndicator,
+  composeRenderProps,
   useLocale,
   type TabListProps as RACTabListProps,
   type TabPanelProps as RACTabPanelProps,
@@ -24,7 +26,7 @@ import { mergeRefs } from '@react-aria/utils';
 import { Button } from '#components/button';
 import { Box } from '#components/layout/box';
 import { Icon } from '#components/icon';
-import { Flex } from '#components/layout/flex';
+import { Flex, type FlexProps } from '#components/layout/flex';
 import { composeClassName } from '../../../utils/render-props.ts';
 import styles from './index.module.css';
 import { useTabsOverflow } from './use-tabs-overflow.ts';
@@ -68,7 +70,15 @@ export interface TabsProps extends Omit<RACTabsProps, 'orientation'> {
 }
 
 /** Props for the tab list and its overflow controls. */
-export interface TabListProps<T> extends Omit<RACTabListProps<T>, 'orientation'> {}
+type TabListContainerProps = Omit<
+  FlexProps<'div'>,
+  'as' | 'children' | 'dir' | 'alignItems' | 'direction' | 'display' | 'wrap'
+>;
+
+export interface TabListProps<T> extends Omit<RACTabListProps<T>, 'orientation'> {
+  /** Props for the outer tab list shell. */
+  containerProps?: TabListContainerProps;
+}
 
 /** Props for an individual tab. */
 export interface TabProps extends RACTabProps {}
@@ -85,7 +95,7 @@ export interface TabPanelProps extends RACTabPanelProps {}
  * @param props - The properties {@link TabListProps} passed to the component.
  */
 export const TabList = forwardRef(function TabList<T>(props: TabListProps<T>, ref: ForwardedRef<HTMLDivElement>) {
-  const { className, ...rest } = props;
+  const { className, containerProps, ...rest } = props;
   const { overflowLabels } = useContext(TabsContext);
   const { direction } = useLocale();
   const { shellRef, contentRef, viewportRef, state, scrollPrevious, scrollNext } = useTabsOverflow({
@@ -94,9 +104,20 @@ export const TabList = forwardRef(function TabList<T>(props: TabListProps<T>, re
   const mergedContentRef = useMemo(() => mergeRefs(contentRef, ref), [contentRef, ref]);
 
   return (
-    <Flex ref={shellRef} className={styles.listShell} dir={direction} alignItems="flex-end">
+    <Flex
+      {...containerProps}
+      ref={shellRef}
+      className={composeClassName(containerProps?.className, styles.listShell)}
+      dir={direction}
+      alignItems="flex-end"
+    >
       <Box ref={viewportRef} className={styles.viewport}>
-        <RACTabList {...rest} ref={mergedContentRef} className={composeClassName(className, styles.list)} />
+        <Flex
+          {...rest}
+          ref={mergedContentRef}
+          as={RACTabList<T>}
+          className={composeClassName(className, styles.list)}
+        />
       </Box>
       {state.hasOverflow ? (
         <Flex className={styles.controls} flex="0 0 auto" alignItems="center" alignSelf="stretch">
@@ -148,7 +169,7 @@ export const TabList = forwardRef(function TabList<T>(props: TabListProps<T>, re
  * ```
  */
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref) {
-  const { overflowLabels = defaultOverflowLabels, design = 'underline', className, children, ...rest } = props;
+  const { overflowLabels = defaultOverflowLabels, design = 'underline', className, ...rest } = props;
   return (
     <TabsContext.Provider value={{ design, overflowLabels }}>
       <Flex
@@ -159,9 +180,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, r
         orientation="horizontal"
         className={composeClassName(className, styles.tabs)}
         data-design={design}
-      >
-        {children}
-      </Flex>
+      />
     </TabsContext.Provider>
   );
 });
@@ -176,7 +195,12 @@ export const Tab = forwardRef<HTMLDivElement, TabProps>(function Tab(props, ref)
   const { design } = useContext(TabsContext);
   return (
     <RACTab {...rest} ref={ref} className={composeClassName(className, styles.tab)} data-design={design}>
-      {props.children}
+      {composeRenderProps(props.children, (children) => (
+        <>
+          <Box as={RACSelectionIndicator} className={styles.indicator} data-design={design} />
+          {children}
+        </>
+      ))}
     </RACTab>
   );
 });
@@ -188,7 +212,7 @@ export const Tab = forwardRef<HTMLDivElement, TabProps>(function Tab(props, ref)
  */
 export const TabPanels = forwardRef(function TabPanels<T>(props: TabPanelsProps<T>, ref: ForwardedRef<HTMLDivElement>) {
   const { className, ...rest } = props;
-  return <RACTabPanels {...rest} ref={ref} className={composeClassName(className, styles.panels) as string} />;
+  return <RACTabPanels {...rest} ref={ref} className={composeClassName(className, styles.panels)} />;
 }) as <T>(props: TabPanelsProps<T> & RefAttributes<HTMLDivElement>) => ReactElement;
 
 /**
@@ -198,5 +222,5 @@ export const TabPanels = forwardRef(function TabPanels<T>(props: TabPanelsProps<
  */
 export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(function TabPanel(props, ref) {
   const { className, ...rest } = props;
-  return <RACTabPanel {...rest} ref={ref} className={composeClassName(className, styles.panel)} />;
+  return <Box {...rest} ref={ref} as={RACTabPanel} blockPadding="md" className={className} />;
 });

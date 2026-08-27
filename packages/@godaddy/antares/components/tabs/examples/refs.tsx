@@ -1,4 +1,4 @@
-import type { Ref } from 'react';
+import type { CSSProperties, Ref } from 'react';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';
 
 interface RefsExampleProps {
@@ -7,16 +7,34 @@ interface RefsExampleProps {
   tabRef?: Ref<HTMLDivElement>;
   tabPanelsRef?: Ref<HTMLDivElement>;
   tabPanelRef?: Ref<HTMLDivElement>;
+  tabListClassName?: string;
+  tabListStyle?: CSSProperties;
+  tabListContainerProps?: { className?: string; style?: CSSProperties; dir?: 'ltr' | 'rtl'; alignItems?: 'flex-start' };
 }
 
 /**
  * Provides refs for each public Tabs component to verify their forwarded targets.
  * @ignore
  */
-export function RefsExample({ tabsRef, tabListRef, tabRef, tabPanelsRef, tabPanelRef }: RefsExampleProps) {
+export function RefsExample({
+  tabsRef,
+  tabListRef,
+  tabRef,
+  tabPanelsRef,
+  tabPanelRef,
+  tabListClassName,
+  tabListStyle,
+  tabListContainerProps
+}: RefsExampleProps) {
   return (
     <Tabs ref={tabsRef}>
-      <TabList ref={tabListRef} aria-label="Account settings">
+      <TabList
+        ref={tabListRef}
+        aria-label="Account settings"
+        className={tabListClassName}
+        style={tabListStyle}
+        containerProps={tabListContainerProps}
+      >
         <Tab ref={tabRef} id="account">
           Account
         </Tab>
