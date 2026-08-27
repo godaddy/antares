@@ -180,7 +180,9 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
-# Calendar
+# Avatar
+
+
 
 
 
@@ -204,11 +206,11 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 
 ## Features [#features]
 
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
+* Composable `Avatar`, `Image`, and `Text` parts
+* Circle and rounded-square shapes at four named sizes
+* Automatic image loading with a Text monogram fallback
+* Primary, subtle, and 15 categorical figure emphases
+* Avatar Button and Account Menu compositions built with Pressable
 
 ## Installation [#installation]
 
@@ -216,92 +218,107 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 npm install @godaddy/antares
 ```
 
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
 ## Examples [#examples]
 
 ### Default [#default]
 
-A single-date calendar.
+Use an Avatar with a one- or two-character monogram when no image is available.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
 
-### With value [#with-value]
+### Image [#image]
 
-A calendar with a pre-selected date.
+Place Image before Text so the monogram is available while the image loads or if it fails.
 
-<Story of="CalendarWithValueExample" />
+<Story of="ImageExample" />
 
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
 
-### Range [#range]
+### Image Fallback [#image-fallback]
 
-Selecting a start and end date.
+Include a Text fallback so an unavailable photo never leaves an empty identity marker.
 
-<Story of="RangeCalendarExample" />
+<Story of="ImageFallbackExample" />
 
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
 
-### Min / Max [#min--max]
+### Shapes and sizes [#shapes-and-sizes]
 
-Bounding selectable dates.
+Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
 
-<Story of="CalendarMinMaxExample" />
+<Story of="ShapesExample" />
 
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
-### Unavailable [#unavailable]
+### Emphasis [#emphasis]
 
-Disabling scattered individual dates with `isDateUnavailable`.
+Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
 
-<Story of="CalendarUnavailableExample" />
+<Story of="EmphasisExample" />
 
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
-### Disabled [#disabled]
+### Avatar Button [#avatar-button]
 
-A fully disabled calendar.
+Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
 
-<Story of="CalendarDisabledExample" />
+<Story of="AvatarButtonExample" />
 
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
+
+### Account Menu [#account-menu]
+
+Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
+
+<Story of="AccountMenuExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+
+When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
+
+```tsx
+<Pressable aria-label="Account menu" onPress={openAccountMenu}>
+  <Avatar role="button">
+    <Text>UT</Text>
+  </Avatar>
+</Pressable>
+```
 
 ## Accessibility [#accessibility]
 
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
+* Give Image meaningful `alt` text when the image conveys an identity.
+* Text remains available to assistive technology when no image loads.
+* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
+* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
+* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
 
 ## Best Practices [#best-practices]
 
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
+* Use circle for people and square for businesses, workspaces, and accounts.
+* Keep monograms to one or two uppercase characters.
+* Use the same `figure*` emphasis for the same entity wherever it appears.
 
 ## Troubleshooting [#troubleshooting]
 
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
+* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
 
 ## Props [#props]
 
-The `Calendar` component accepts the following props:
-
-<PropTable />
-
-The `RangeCalendar` component accepts the following props:
+```tsx
+<Avatar>
+  <Image />
+  <Text />
+</Avatar>
+```
 
 <PropTable />
 
@@ -443,6 +460,132 @@ The `CloseButton` component accepts the following props:
 <PropTable />
 
 
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+
 # Carousel
 
 
@@ -544,71 +687,6 @@ The carousel follows the current **layout direction** (LTR or RTL). By default, 
 ## Props [#props]
 
 The `Carousel` component accepts the following props:
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
 
 <PropTable />
 
@@ -933,6 +1011,71 @@ The `Checkbox` component has the following props:
 <PropTable />
 
 The `CheckboxGroup` component has the following props:
+
+<PropTable />
+
+
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
 
 <PropTable />
 
@@ -1897,6 +2040,51 @@ For performance optimization:
 3. **Minimize icon sets**: Only load icons that are actually used
 
 
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+<PropTable />
+
+
 # InlineDrawer
 
 
@@ -2716,6 +2904,88 @@ The `PopoverTrigger` component accepts the following props:
 <PropTable />
 
 
+# Pressable
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Adds accessible press behavior to an existing visual component.
+* Applies interaction states directly to the child without adding a wrapper element.
+* Supports pointer, touch, and keyboard interactions through React Aria.
+* Preserves the child's layout, shape, and base visual styling while adding state feedback.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Add accessible press behavior to an existing visual component without adding a wrapper element.
+The surface supports pointer, touch, and keyboard activation.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
+
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
+
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
+
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
+
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
+
+## Best Practices [#best-practices]
+
+* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+* Avoid nesting interactive elements inside the child passed to `Pressable`.
+* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+
+## Troubleshooting [#troubleshooting]
+
+* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
+* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
+
+## Props [#props]
+
+```tsx
+<Pressable>
+  <Box />
+</Pressable>
+```
+
+<PropTable />
+
+
 # ProgressBar
 
 
@@ -2905,194 +3175,6 @@ The `ProgressSteps` component has the following props:
 The `ProgressStep` component has the following props:
 
 <PropTable />
-
-
-# RangeField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Select one value or render one thumb for each value in an array
-* Supports controlled and uncontrolled values with typed change callbacks
-* Provides localized value output, endpoint labels, descriptions, and markers
-* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with a single value and min/max bounds.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Use `isDisabled` when the value is visible but unavailable for interaction.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
-
-### Labels [#labels]
-
-Combine an input label, value label, range labels, and helper text when users need additional context.
-
-<Story of="LabelsExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Value Display [#value-display]
-
-Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
-
-<Story of="ValueDisplayExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Markers [#markers]
-
-Use `markers` to expose a manageable set of discrete steps for a single value.
-
-<Story of="MarkersExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
-
-### Range [#range]
-
-Pass a `number[]` to render a range with two thumbs and step markers.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Accessible names [#accessible-names]
-
-For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
-
-For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
-
-`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
-
-### Keyboard interaction [#keyboard-interaction]
-
-Each thumb follows the React Aria slider keyboard model:
-
-* Tab and Shift+Tab move among thumbs and surrounding controls.
-* Arrow Right and Arrow Up increase the focused value by `step`.
-* Arrow Left and Arrow Down decrease the focused value by `step`.
-* Home and End move the focused thumb to its permitted bounds.
-* Page Up and Page Down make larger changes.
-
-Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
-
-Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
-
-## Best Practices [#best-practices]
-
-* Use an array only when every entry has a clear, independently adjustable meaning.
-* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
-* Use thumb labels that explain purpose instead of repeating the current number.
-* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
-* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
-* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
-* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
-* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
-* Use `description` for persistent guidance and `isRequired` when a value is required.
-* Use `isDisabled` when the value should remain visible but unavailable for interaction.
-* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
-* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
-
-## Props [#props]
-
-<PropTable />
-
-## Troubleshooting [#troubleshooting]
-
-### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
-
-Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
-
-### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
-
-Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
-
-```tsx
-const [targets, setTargets] = useState<number[]>([20, 80]);
-
-<RangeField<number[]>
-  label="Target range"
-  value={targets}
-  onChange={setTargets}
-  thumbLabels={['Minimum target', 'Maximum target']}
-/>;
-```
-
-### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
-
-The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
-
-### Values snap unexpectedly [#values-snap-unexpectedly]
-
-Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
-
-### The final marker is missing [#the-final-marker-is-missing]
-
-Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
-
-### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
-
-Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
-
-### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
-
-Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
-
-### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
-
-Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
-
-### The range configuration is invalid [#the-range-configuration-is-invalid]
-
-Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
 # Radio
@@ -3363,6 +3445,194 @@ The `RadioGroup` component has the following props:
 <PropTable />
 
 
+# RangeField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Select one value or render one thumb for each value in an array
+* Supports controlled and uncontrolled values with typed change callbacks
+* Provides localized value output, endpoint labels, descriptions, and markers
+* Integrates with native forms, keyboard, pointer, and touch interaction through React Aria
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with a single value and min/max bounds.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} />;\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `onChange` for immediate updates and `onChangeEnd` for work that should run after interaction finishes.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(50);\n  const [committedValue, setCommittedValue] = useState(50);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <RangeField<number>\n        aria-label=\&#x22;Volume\&#x22;\n        value={value}\n        onChange={setValue}\n        onChangeEnd={setCommittedValue}\n        step={10}\n      />\n      <p>Current value: {value}</p>\n      <p>Committed value: {committedValue}</p>\n    </Flex>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Use `isDisabled` when the value is visible but unavailable for interaction.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Volume\&#x22;\n      label=\&#x22;Volume\&#x22;\n      description=\&#x22;This is a description\&#x22;\n      minLabel=\&#x22;Low\&#x22;\n      maxLabel=\&#x22;High\&#x22;\n      defaultValue={50}\n      isDisabled\n    />\n  );\n}&#x22;" />
+
+### Labels [#labels]
+
+Combine an input label, value label, range labels, and helper text when users need additional context.
+
+<Story of="LabelsExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function LabelsExample() {\n  return (\n    <RangeField\n      label=\&#x22;Price limit\&#x22;\n      defaultValue={50}\n      formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n      valueLabel\n      minLabel=\&#x22;$0\&#x22;\n      maxLabel=\&#x22;$100\&#x22;\n      description=\&#x22;Choose the maximum price.\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Value Display [#value-display]
+
+Use `valueLabel` to show formatted values, static context, or output derived from the current slider state.
+
+<Story of="ValueDisplayExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, RangeField } from '@godaddy/antares';\n\nexport function ValueDisplayExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RangeField\n        label=\&#x22;Monthly budget\&#x22;\n        defaultValue={50}\n        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}\n        valueLabel\n      />\n      <RangeField label=\&#x22;Storage quota\&#x22; defaultValue={50} valueLabel={<span>Recommended</span>} />\n      <RangeField\n        label=\&#x22;Volume\&#x22;\n        defaultValue={50}\n        valueLabel={function renderValue({ state }) {\n          return `Current: ${state.values[0]}%`;\n        }}\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Markers [#markers]
+
+Use `markers` to expose a manageable set of discrete steps for a single value.
+
+<Story of="MarkersExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function MarkersExample() {\n  return <RangeField aria-label=\&#x22;Volume\&#x22; defaultValue={50} minValue={0} maxValue={100} step={10} markers />;\n}&#x22;" />
+
+### Range [#range]
+
+Pass a `number[]` to render a range with two thumbs and step markers.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { RangeField } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <RangeField\n      aria-label=\&#x22;Price range\&#x22;\n      defaultValue={[25, 75]}\n      thumbLabels={['Minimum price', 'Maximum price']}\n      minValue={0}\n      maxValue={100}\n      step={25}\n      markers\n    />\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Accessible names [#accessible-names]
+
+For a single value, prefer a visible `label`; use `aria-label` only when equivalent visible context already exists.
+
+For an array, provide one descriptive `thumbLabels` entry for every value. Entries are matched by index, so keep them aligned when values are added, removed, or reordered. Describe each thumb's purpose, such as `Lower warning threshold`, rather than its current number.
+
+`thumbNames` configures native form field names and does not provide accessible labels. Likewise, `valueLabel`, `minLabel`, and `maxLabel` are visual context rather than substitutes for accessible naming.
+
+### Keyboard interaction [#keyboard-interaction]
+
+Each thumb follows the React Aria slider keyboard model:
+
+* Tab and Shift+Tab move among thumbs and surrounding controls.
+* Arrow Right and Arrow Up increase the focused value by `step`.
+* Arrow Left and Arrow Down decrease the focused value by `step`.
+* Home and End move the focused thumb to its permitted bounds.
+* Page Up and Page Down make larger changes.
+
+Directional behavior follows the user's locale where appropriate. Pointer, touch, and keyboard interaction all use the same scale and constraints.
+
+Markers are decorative and hidden from the accessibility tree. Ensure the field label, thumb labels, bounds, step, and formatted values communicate all required information without relying on marker appearance.
+
+## Best Practices [#best-practices]
+
+* Use an array only when every entry has a clear, independently adjustable meaning.
+* Keep `value`, `thumbLabels`, and `thumbNames` aligned by index.
+* Use thumb labels that explain purpose instead of repeating the current number.
+* Keep array values in a stable semantic order. If crossing or reordering thumbs would make their meaning ambiguous, enforce the appropriate ordering in product state.
+* Avoid large value arrays. Every entry creates another focusable control, which increases keyboard effort and cognitive load.
+* Set meaningful `minValue`, `maxValue`, and `step` values. The scale should match the precision users actually need.
+* Use markers only when there are few enough steps to scan. Tiny steps across a large range can create an excessive number of DOM elements.
+* Use `formatOptions` for currency, percentages, measurements, and other locale-sensitive units so values display and announce their meaning.
+* Use `description` for persistent guidance and `isRequired` when a value is required.
+* Use `isDisabled` when the value should remain visible but unavailable for interaction.
+* Use `onChange` for lightweight immediate feedback and `onChangeEnd` for expensive requests, filtering, or calculations.
+* Use a text-entry control when exact numeric input is essential. A track is best for exploring or adjusting values within known bounds.
+
+## Props [#props]
+
+<PropTable />
+
+## Troubleshooting [#troubleshooting]
+
+### A thumb is missing a label or form value [#a-thumb-is-missing-a-label-or-form-value]
+
+Check the same index in `thumbLabels` and `thumbNames`. Each array entry renders a thumb, and its accessible label and form name are read from the corresponding positions. A form name does not replace an accessible label.
+
+### TypeScript reports the wrong callback value type [#typescript-reports-the-wrong-callback-value-type]
+
+Keep the controlled or default value and callback signatures consistent. When inference is unavailable, provide the generic explicitly: `<RangeField<number>>` for a scalar or `<RangeField<number[]>>` for an array.
+
+```tsx
+const [targets, setTargets] = useState<number[]>([20, 80]);
+
+<RangeField<number[]>
+  label="Target range"
+  value={targets}
+  onChange={setTargets}
+  thumbLabels={['Minimum target', 'Maximum target']}
+/>;
+```
+
+### The controlled thumbs do not move [#the-controlled-thumbs-do-not-move]
+
+The `value` prop is the source of truth. Update the scalar or array in `onChange` without changing its intended shape. For arrays, return a new array so application state observes the update.
+
+### Values snap unexpectedly [#values-snap-unexpectedly]
+
+Verify that `step` represents the intended interval from `minValue`. Every thumb snaps to valid positions on the same configured scale.
+
+### The final marker is missing [#the-final-marker-is-missing]
+
+Markers begin at `minValue` and appear at complete step positions. `maxValue` receives a marker only when the range is evenly divisible by `step`.
+
+### Markers are crowded or rendering is slow [#markers-are-crowded-or-rendering-is-slow]
+
+Increase `step` or omit `markers`. Large ranges with small steps can produce many decorative elements even when users cannot distinguish them visually.
+
+### The value or endpoint labels are blank [#the-value-or-endpoint-labels-are-blank]
+
+Enable automatic current-value output with `valueLabel={true}` or provide custom content. `minLabel` and `maxLabel` display only explicitly supplied content; neither defaults to a numeric bound or receives `formatOptions`.
+
+### Negative values do not behave as expected [#negative-values-do-not-behave-as-expected]
+
+Negative values are supported. Set a negative `minValue` and ensure every scalar or array value remains within the configured bounds.
+
+### The range configuration is invalid [#the-range-configuration-is-invalid]
+
+Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
+
+
 # SegmentedController
 
 
@@ -3609,83 +3879,6 @@ The `Select` component accepts the following props:
 <PropTable />
 
 
-# Structure primitives
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
-
-A parent adopts them by providing the contexts around its children:
-
-```tsx
-import { Provider } from 'react-aria-components';
-import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
-
-<Provider
-  values={[
-    [HeaderContext, { padding: 'md' }],
-    [ContentContext, { padding: 'md' }],
-    [FooterContext, { padding: 'md' }],
-    [ButtonGroupContext, { justifyContent: 'end' }]
-  ]}
->
-  {children}
-</Provider>;
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-
 # Switch
 
 
@@ -3881,6 +4074,83 @@ Use the interactive root data attributes for state-based customization. The trac
 ## Props [#props]
 
 The `Switch` component has the following props:
+
+<PropTable />
+
+
+# Structure primitives
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
+
+A parent adopts them by providing the contexts around its children:
+
+```tsx
+import { Provider } from 'react-aria-components';
+import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
+
+<Provider
+  values={[
+    [HeaderContext, { padding: 'md' }],
+    [ContentContext, { padding: 'md' }],
+    [FooterContext, { padding: 'md' }],
+    [ButtonGroupContext, { justifyContent: 'end' }]
+  ]}
+>
+  {children}
+</Provider>;
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
 
 <PropTable />
 
@@ -4216,6 +4486,152 @@ The `TextField` component accepts the following props:
 <PropTable />
 
 
+# TextLockup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Six coordinated sizes, from a `2xl` page title down to `xs`
+* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
+* Any heading level, chosen independently of the visual size
+* Start or center alignment
+* A legible line-length clamp, on by default
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A lockup stacks an optional eyebrow, a title and body text as one coordinated type
+group. You supply the parts, so the title can be any heading level and the body any
+number of paragraphs; `size` sets the tier for all of them at once.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading>Text Lockup</Heading>\n      <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n    </TextLockup>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+`size` is the tier: the eyebrow reads it on the `detail` ramp, the title on `heading`,
+and the body on `body`. Use `2xl` for a page title, `xl` for a hero, `lg` for a section
+title, and `md` (the default) everywhere else.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading>Text Lockup</Heading>\n            <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Tag Eyebrow [#tag-eyebrow]
+
+The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
+forms swap freely, and the lockup pairs the tag's `size` with its own.
+
+<Story of="TagEyebrowExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading>Tag eyebrow</Heading>\n        <Text>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading>The same lockup, smaller</Heading>\n        <Text>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading>Start aligned</Heading>\n        <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading>Center aligned</Heading>\n        <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Legible Lines [#legible-lines]
+
+The text parts are constrained to a comfortable line length by default. Set
+`legibleLines={false}` to let them run the full width of their container, which suits a
+lockup already inside a narrow column. Both lockups below share one wide container, so the
+clamp is what makes the first one narrower.
+
+<Story of="LegibleLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading>Constrained by default</Heading>\n        <Text>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading>Full width</Heading>\n        <Text>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
+
+### With Actions [#with-actions]
+
+Because you compose the parts, anything else can sit alongside them — a call to action
+here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
+
+<Story of="WithActionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading level={1}>Upgrade your plan</Heading>\n      <Text>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
+sit alongside them — a call to action, a second paragraph, an image — without the component
+growing a prop for it.
+
+* **The body is a bare `<Text>`.** `slot="description"` is equivalent.
+* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
+  freely, and a `Tag` is sized to pair with the lockup.
+* **The title is a `Heading`.** Pick the level from the document outline, not the visual size:
+  `size` handles the visuals, so `<Heading level={1}>` in an `xs` lockup is perfectly valid.
+* **An explicit prop on a child always wins** over what the lockup supplies. Pass
+  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
+* **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
+  not the lockup's.
+* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
+  the body on `body`, so there is no table to memorize.
+* Pass `className` to extend the styles, or select on `[data-size]` and `[data-align]`.
+
+## Accessibility [#accessibility]
+
+* The title carries the heading semantics. Choose `level` so the page outline stays correct
+  rather than to achieve a size.
+* Slots resolve against the lockup, so `slot="title"` names the lockup's title. Inside a
+  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
+  child for the accessible name, and use the lockup for the body.
+* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
+  reads sensibly on its own, since screen reader users often navigate by heading.
+
+## Best Practices [#best-practices]
+
+* Use one `2xl` lockup per page at most — it is the page title.
+* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
+  narrow column, where the clamp does nothing but complicate the layout.
+* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
+* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
+
+## Props [#props]
+
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Heading />
+  <Text />
+  {/* ... */}
+</TextLockup>
+```
+
+<PropTable />
+
+
 # ToggleButton
 
 
@@ -4477,152 +4893,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 ```
 
 ## Props [#props]
-
-<PropTable />
-
-
-# TextLockup
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Six coordinated sizes, from a `2xl` page title down to `xs`
-* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
-* Any heading level, chosen independently of the visual size
-* Start or center alignment
-* A legible line-length clamp, on by default
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A lockup stacks an optional eyebrow, a title and body text as one coordinated type
-group. You supply the parts, so the title can be any heading level and the body any
-number of paragraphs; `size` sets the tier for all of them at once.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading>Text Lockup</Heading>\n      <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n    </TextLockup>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-`size` is the tier: the eyebrow reads it on the `detail` ramp, the title on `heading`,
-and the body on `body`. Use `2xl` for a page title, `xl` for a hero, `lg` for a section
-title, and `md` (the default) everywhere else.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading>Text Lockup</Heading>\n            <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Tag Eyebrow [#tag-eyebrow]
-
-The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
-forms swap freely, and the lockup pairs the tag's `size` with its own.
-
-<Story of="TagEyebrowExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading>Tag eyebrow</Heading>\n        <Text>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading>The same lockup, smaller</Heading>\n        <Text>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading>Start aligned</Heading>\n        <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading>Center aligned</Heading>\n        <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Legible Lines [#legible-lines]
-
-The text parts are constrained to a comfortable line length by default. Set
-`legibleLines={false}` to let them run the full width of their container, which suits a
-lockup already inside a narrow column. Both lockups below share one wide container, so the
-clamp is what makes the first one narrower.
-
-<Story of="LegibleLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading>Constrained by default</Heading>\n        <Text>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading>Full width</Heading>\n        <Text>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
-
-### With Actions [#with-actions]
-
-Because you compose the parts, anything else can sit alongside them — a call to action
-here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
-
-<Story of="WithActionsExample" />
-
-<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading level={1}>Upgrade your plan</Heading>\n      <Text>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
-sit alongside them — a call to action, a second paragraph, an image — without the component
-growing a prop for it.
-
-* **The body is a bare `<Text>`.** `slot="description"` is equivalent.
-* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
-  freely, and a `Tag` is sized to pair with the lockup.
-* **The title is a `Heading`.** Pick the level from the document outline, not the visual size:
-  `size` handles the visuals, so `<Heading level={1}>` in an `xs` lockup is perfectly valid.
-* **An explicit prop on a child always wins** over what the lockup supplies. Pass
-  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
-* **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
-  not the lockup's.
-* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
-  the body on `body`, so there is no table to memorize.
-* Pass `className` to extend the styles, or select on `[data-size]` and `[data-align]`.
-
-## Accessibility [#accessibility]
-
-* The title carries the heading semantics. Choose `level` so the page outline stays correct
-  rather than to achieve a size.
-* Slots resolve against the lockup, so `slot="title"` names the lockup's title. Inside a
-  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
-  child for the accessible name, and use the lockup for the body.
-* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
-  reads sensibly on its own, since screen reader users often navigate by heading.
-
-## Best Practices [#best-practices]
-
-* Use one `2xl` lockup per page at most — it is the page title.
-* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
-  narrow column, where the clamp does nothing but complicate the layout.
-* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
-* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
-
-## Props [#props]
-
-```tsx
-<TextLockup>
-  <Tag slot="eyebrow" />
-  <Heading />
-  <Text />
-  {/* ... */}
-</TextLockup>
-```
 
 <PropTable />
 
