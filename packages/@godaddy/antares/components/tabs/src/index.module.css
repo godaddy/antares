@@ -1,6 +1,6 @@
 .tabs {
   --_tabs-item-block-space: calc(var(--sp-density) * 1.375);
-  --_tabs-item-inline-space: var(--sp-sm);
+  --_tabs-item-inline-space: var(--sp-md);
   --_tabs-list-gap: calc(var(--sp-density) * 5);
   --_tabs-manilla-space: calc(var(--sp-density) * 3);
   --_tabs-border-width: 1px;
