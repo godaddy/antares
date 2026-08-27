@@ -8,6 +8,7 @@
 export * from './exports/Icon';
 export * from './exports/Button';
 export * from './exports/Text';
+export * from './exports/Image';
 export * from './exports/Layout';
 export * from './exports/Structure';
 export * from './exports/ListBox';
@@ -41,5 +42,7 @@ export * from './exports/CircularProgress';
 export * from './exports/Calendar';
 export * from './exports/DatePicker';
 export * from './exports/Tabs';
+export * from './exports/Avatar';
+export * from './exports/Pressable.ts';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';

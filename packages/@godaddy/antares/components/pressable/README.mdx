@@ -1,0 +1,71 @@
+---
+title: Pressable
+description: A wrapperless interaction primitive that adds accessible press behavior to a single child element.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './pressable.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Adds accessible press behavior to an existing visual component.
+- Applies interaction states directly to the child without adding a wrapper element.
+- Supports pointer, touch, and keyboard interactions through React Aria.
+- Preserves the child's layout, shape, and base visual styling while adding state feedback.
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
+
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
+
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+## Accessibility
+
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
+
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
+
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
+
+## Best Practices
+
+- Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+- Avoid nesting interactive elements inside the child passed to `Pressable`.
+- `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+
+## Troubleshooting
+
+- If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
+- If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
+
+## Props
+
+```tsx
+<Pressable>
+  <Box />
+</Pressable>
+```
+
+<ArgTypes of={Stories.Props} />

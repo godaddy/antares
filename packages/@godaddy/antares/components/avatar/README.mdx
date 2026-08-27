@@ -1,0 +1,72 @@
+---
+title: Avatar
+description: A visual representation of a user or entity, shown as a photo or a monogram of their initials.
+---
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './avatar.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Composable `Avatar`, `Image`, and `Text` parts
+- Circle and rounded-square shapes at four named sizes
+- Automatic image loading with a Text monogram fallback
+- Primary, subtle, and 15 categorical figure emphases
+- Avatar Button and Account Menu compositions built with Pressable
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+
+When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
+
+```tsx
+<Pressable aria-label="Account menu" onPress={openAccountMenu}>
+  <Avatar role="button">
+    <Text>UT</Text>
+  </Avatar>
+</Pressable>
+```
+
+## Accessibility
+
+- Give Image meaningful `alt` text when the image conveys an identity.
+- Text remains available to assistive technology when no image loads.
+- Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
+- Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
+- When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
+
+## Best Practices
+
+- Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
+- Use circle for people and square for businesses, workspaces, and accounts.
+- Keep monograms to one or two uppercase characters.
+- Use the same `figure*` emphasis for the same entity wherever it appears.
+
+## Troubleshooting
+
+- If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+- Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
+- Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
+
+## Props
+
+```tsx
+<Avatar>
+  <Image />
+  <Text />
+</Avatar>
+```
+
+<ArgTypes of={Stories.Props} />
