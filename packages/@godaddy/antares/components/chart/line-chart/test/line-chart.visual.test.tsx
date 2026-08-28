@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
+import { waitForStableRender } from '../../../../utils/wait-for-stable-render.ts';
 import { BandPaddingExample } from '../examples/band-padding';
 import { BaselinesExample } from '../examples/baselines';
 import { BitcoinPriceExample } from '../examples/bitcoin-price';
@@ -35,17 +36,22 @@ import { TooltipDisabledExample } from '../examples/tooltip-disabled';
 import { ZeroIncludedExample } from '../examples/zero-included';
 
 /**
- * Renders an example in a sized container and waits for chart SVG
+ * Renders an example in a sized container and waits for the chart to finish laying out
+ *
+ * The SVG is present several passes before the plot reaches its final origin, and axis
+ * margins carry hysteresis, so a hover dispatched mid-layout both resolves to a different
+ * datum and steers the chart to a different final layout.
  *
  * @param children - Example element(s) to render (e.g. <MyExample />)
  * @param width - Viewport and container width in px (default: 800)
  * @param height - Viewport and container height in px (default: 400)
- * @returns Render result after SVG is present
+ * @returns Render result after the chart geometry is stable
  */
 async function renderExampleAndWait(children: ReactNode, width = 800, height = 400) {
   await page.viewport(width, height);
   const result = await render(<div style={{ width: `${width}px`, height: `${height}px` }}>{children}</div>);
   await waitForSelector(result.container, 'svg');
+  await waitForStableRender(result.container);
 
   return result;
 }
@@ -262,6 +268,7 @@ describe('@godaddy/antares', function antares() {
         const svg = container.querySelector('svg') as SVGGraphicsElement;
         const area = svg.parentNode as HTMLElement;
         area.scrollLeft = 400;
+        await waitForStableRender(container);
 
         await expect(container).toMatchScreenshot('bitcoin-price-scroll');
       });
