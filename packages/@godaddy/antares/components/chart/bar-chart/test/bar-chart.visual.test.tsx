@@ -3,7 +3,7 @@ import type React from 'react';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
-import { waitForSelector } from '../../../../utils/wait-for-selector.ts';
+import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 import { CustomDomainExample } from '../examples/custom-domain';
 import { FormattedTickMarksExample } from '../examples/formatted-tick-marks';
 import { HorizontalMultiSeriesExample } from '../examples/horizontal-multi-series';

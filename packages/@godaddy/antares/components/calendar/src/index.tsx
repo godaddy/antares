@@ -10,7 +10,7 @@ import {
   type RangeCalendarProps as RACRangeCalendarProps,
   type CalendarGridProps as RACCalendarGridProps
 } from 'react-aria-components';
-import { composeClassName } from '../../../utils/render-props.ts';
+import { composeClassName } from '#utils/render-props.ts';
 import { MonthHeading, NavButton } from './CalendarHeader.tsx';
 import styles from './index.module.css';
 import { cx } from 'cva';

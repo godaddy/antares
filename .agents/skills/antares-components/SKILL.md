@@ -26,9 +26,12 @@ Scoped conventions for component work in `packages/@godaddy/antares/`.
 
 ## Imports
 
-- Path alias within package: `import { Icon } from '#components/icon'`
+Use aliases for in-package imports, not relative `../../..`:
+
+- Internal components: `import { Icon } from '#components/icon'` (no extension)
+- Shipped helpers: `#utils/render-props.ts`, `#types/polymorphic-react.ts` (with extension)
+- Test helpers: `#test/utils/test-helpers.tsx`
 - Public import in examples: `import { Icon } from '@godaddy/antares'`
-- Internal components: use `#components/...`
 
 ## Component recipe
 
@@ -128,6 +131,8 @@ Three Vitest projects: `*.node.test.tsx`, `*.browser.test.tsx`, `*.visual.test.t
 
 **Import examples, not `src/` directly.** To close coverage gaps, add/update examples.
 
+**Shared test helpers live in `test/utils/`, not `utils/`** (`utils/` is shipped source).
+
 Describe hierarchy: `'@godaddy/antares'` > `'#ComponentName'`. Use named functions (not arrow).
 
 ### Node tests
@@ -174,12 +179,12 @@ describe('@godaddy/antares', function packageTests() {
 
 ### Visual tests
 
-One screenshot per example (cover variants/orientations/states by adding examples, not by hand-building markup). Render the example and `toMatchScreenshot('name')`. If the example renders an `Icon`, `beforeAll(preloadTestIcons)`; `beforeEach(resetHover)` clears hover so screenshots are deterministic (both from `utils/test-helpers.tsx`).
+One screenshot per example (cover variants/orientations/states by adding examples, not by hand-building markup). Render the example and `toMatchScreenshot('name')`. If the example renders an `Icon`, `beforeAll(preloadTestIcons)`; `beforeEach(resetHover)` clears hover so screenshots are deterministic (both from `#test/utils/test-helpers.tsx`).
 
 ```typescript
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { preloadTestIcons, resetHover } from '../../../utils/test-helpers.tsx';
+import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 
 describe('@godaddy/antares', function packageTests() {

@@ -27,7 +27,7 @@ import { Button } from '#components/button';
 import { Box } from '#components/layout/box';
 import { Icon } from '#components/icon';
 import { Flex, type FlexProps } from '#components/layout/flex';
-import { composeClassName } from '../../../utils/render-props.ts';
+import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 import { useTabsOverflow } from './use-tabs-overflow.ts';
 
