@@ -10,7 +10,7 @@ Status: **Proposed**
 - [Proposal](#proposal)
 - [Reference](#reference): [vocabulary](#the-vocabulary), [prior art](#prior-art),
   [out of scope](#out-of-scope), [audit](#audit),
-  [gaps](#where-this-proposal-is-likely-incomplete), [tasks](#tasks)
+  [gaps](#where-this-proposal-is-likely-incomplete)
 
 ---
 
@@ -186,7 +186,7 @@ own root selector, `--_`-prefixed and component-named.
 .field {
   --_field-input-font-size: var(--font-body-size-md, 1rem);
   --_field-input-font-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, system-ui, sans-serif)));
-  --_field-input-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, 1.5));
+  --_field-input-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
   --_field-input-font-weight: var(--font-body-weight, var(--ux-8n6y9x, normal));
   --_field-input-font-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
 }
@@ -298,7 +298,7 @@ outline while design decides the tier. A default map keeps the common case short
 | `size`  | `2xl` | `xl` | `lg` | `md` | `sm` | `xs` |
 
 **The default level becomes `3`, but set it deliberately.** It is `2` today
-(`packages/@godaddy/antares/components/text/src/heading.tsx:38`), so this is a public API change. The default
+(`components/text/src/heading.tsx`), so this is a public API change. The default
 is there so a bare `Heading` renders without a browser font size, not because the component can work out
 where it belongs in the outline. It cannot, and it does not try. Defaulting low would have every unset
 `Heading` claim to be the page title or a top-level section, several per page, which flattens the outline for
@@ -325,12 +325,10 @@ can no longer restyle the library.
 
 The exceptions are the container-relative sizes: `gauge-chart` and `donut-chart` size their labels in `cqi`
 so the type scales with the chart, and `avatar` sizes its monogram in `cqw`. No fixed tier can express those,
-so the declarations stay. All three already render the fluid size through a `Text` with an injected class
-(`chart/gauge-chart/src/index.tsx:149`, `chart/donut-chart/src/index.tsx:324`,
-`components/avatar/src/index.tsx`), so once `Text` carries a default tier the two compete at `0-1-0` and
-stylesheet order decides. Keeping the fluid size therefore needs rule 3's signal, not a cascade override: the
-component sends "emit no typography" alongside its class, and the class declares the full chain for every
-property it owns.
+so the declarations stay. All three already render the fluid size through a `Text` with an injected class, so
+once `Text` carries a default tier the two compete at `0-1-0` and stylesheet order decides. Keeping the fluid
+size therefore needs rule 3's signal, not a cascade override: the component sends "emit no typography"
+alongside its class, and the class declares the full chain for every property it owns.
 
 ---
 
@@ -369,7 +367,7 @@ Four things about the ramp shape the proposal:
 - **The ramps are hand-picked, not geometric.** The `body` steps ratio 1.167, 1.143, 1.125, 1.111, 1.2, so a
   size is never derived by multiplying a base by 1.125.
 - **There is no medium weight token and no letter-spacing token.** `ux.textLabel` and `ux.textAction` carry
-  `500`, which five components use, so those surfaces keep a `500` literal until a token exists.
+  `500`, and several components need it, so those surfaces keep a `500` literal until a token exists.
 - **Five steps are unreachable through a role**: `005` (0.625rem) and `200` to `500` (3rem to 6rem). A
   component needing 3rem has no tier to snap to, which limits [rule 9](#9-components-resolve-to-a-token).
 
@@ -398,7 +396,7 @@ provider. The alternatives are a dedicated subcomponent per slot (MUI's `DialogT
 
 - **Strictness.** Polaris exposes `fontWeight` and `tone`, Radix `weight` and `color`, Chakra everything.
   Only Spectrum is as closed as [rule 6](#6-a-component-per-role-size-is-the-only-prop), and the token set
-  forces that rather than the proposal choosing it. Every other library offers a `medium` weight and five
+  forces that rather than the proposal choosing it. Every other library offers a `medium` weight and several
   components here need exactly that, which is an argument for asking for the token.
 - **A component per role.** Polaris (`headingMd`) and MUI (`h6`) fuse role and tier into one name. Splitting
   them mirrors `--font-{role}-size-{tier}` exactly, so there is no second vocabulary to maintain, and
@@ -425,36 +423,37 @@ font declarations, but whether these components gain a colour axis is a separate
 
 ### Audit
 
-24 component stylesheets declare or read typography, and every one appears in a group below, because the last
-[task](#tasks) is to migrate the rows. `Text`'s own stylesheet is not among them.
+Every component stylesheet that declares or reads typography falls into one of these groups. The counts and
+values behind each row live in the code, not here, because they move: what this table fixes is the *kind* of
+change each group needs, and the fact that no stylesheet is outside it.
 
-| Group                         | Components                                                                                                                                                                                            | Action                                                                                                                        |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Typography missing or partial | `Text` (no font declarations at all), `Heading` (`font-weight: bolder` only)                                                                                                                          | Implement [rule 6](#6-a-component-per-role-size-is-the-only-prop) and [rule 8](#8-heading-level-is-semantics-size-is-visuals) |
-| Sizes derived by ratio        | `circular-progress` (13 refs), `segmented-controller` (2), `tag` (2), `alert`, `button`, `field`, `progress-steps`, `switch`, `toggle-button`                                                         | Replace `calc(… * 1.125)` with named tiers                                                                                    |
-| Resolvable legacy intents     | `menu` (`ux.textLabel`, `ux.textAction`), `progress-bar` (`ux.textLabel`, `ux.textInput`, `ux.textCaption`), `tabs` (`ux.textLabel.fontFamily`, whose `sans-serif` fallback drops the legacy default) | Move to the role chain in [rule 5](#5-fallback-chains-sizes-stop-at-the-literal)                                              |
-| Unresolvable intent hashes    | `tag` (12 refs), `chart/legend` (7), `chart/tooltip` (2), `chart/axis-title`, `alert`, `progress-steps`                                                                                               | Hashes absent from the intent map; without a fallback the declaration is invalid at computed-value time                       |
-| Reads a type intent for a box | `calendar` (`ux.textAction` size and line height, only to compute `--_calendar-cell-max`)                                                                                                             | Sets no font properties; point the calculation at the tier tokens                                                             |
-| Storybook-only variables      | `metrics-lockup`                                                                                                                                                                                      | Reads `--fs-detail-lg`, `--fs-2xl`, `--lh-heading`, defined only in `apps/docs/.storybook/variables.css`                      |
-| Hardcoded sizes               | `range-field` (8), `switch` (5), `bar-chart` / `line-chart` (`0.794rem`), `tabs` (`16px`), `chart/legend`, `chart/tooltip`                                                                            | Snap to the nearest tier, per [rule 9](#9-components-resolve-to-a-token)                                                      |
-| Hardcoded weights and leading | `gauge-chart` (`font-weight: 400`), `donut-chart` (`font-weight: bolder`), `tabs` (`font-weight: bolder`, `line-height: 1.125`)                                                                       | Role properties, not tiers: resolve through the chain in [rule 5](#5-fallback-chains-sizes-stop-at-the-literal)               |
-| Retained `500` literals       | `gauge-chart` (two), and the `ux.textLabel` / `ux.textAction` weights in `menu`, `field`, `range-field`, `toggle-button`, `segmented-controller`                                                      | Keep. There is no medium weight token to resolve them to                                                                      |
-| Opts out via `inherit`        | `button` (family, weight, line height)                                                                                                                                                                | Declare the full chain explicitly                                                                                             |
-| Container-relative            | `gauge-chart`, `donut-chart`: the `cqi` **font sizes** only; `avatar`: the `cqw` monogram                                                                                                             | Keep, and send rule 3's signal so `Text` emits no competing tier                                                              |
+| Group                              | Components                                                                                                                  | Why it has to change                                                                                                                                                                      |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Typography missing or partial      | `Text`, `Heading`                                                                                                           | `Text` declares no font properties at all and `Heading` declares only a weight, so the primitives a consumer reaches for first are the two with no type                                   |
+| Sizes derived by ratio             | `alert`, `button`, `circular-progress`, `field`, `progress-steps`, `segmented-controller`, `switch`, `tag`, `toggle-button` | Multiplying a base by 1.125 assumes a geometric ramp; the real one is hand-picked, so derived sizes land off every tier                                                                   |
+| Legacy intents that resolve        | `menu`, `progress-bar`, `tabs`                                                                                              | Correct today, but pinned to one intent size per family, so a theme cannot move them to another tier                                                                                      |
+| Legacy intents that do not resolve | `alert`, `chart/axis-title`, `chart/legend`, `chart/tooltip`, `progress-steps`, `tag`                                       | Hashes absent from the intent map, and without a fallback the declaration is invalid at computed-value time. `tag` also writes an `inherit` fallback inside a `calc()`, which cannot work |
+| Type intents read for a box        | `calendar`                                                                                                                  | Sizes a cell from a font size and line height without setting either, so the box silently depends on the type system                                                                      |
+| Storybook-only variables           | `metrics-lockup`                                                                                                            | Its variables are defined only in the docs app, so the component has no typography in production                                                                                          |
+| Hardcoded sizes                    | `bar-chart`, `chart/legend`, `chart/tooltip`, `line-chart`, `range-field`, `switch`, `tabs`                                 | Literal sizes cannot be restyled by a theme                                                                                                                                               |
+| Hardcoded weights and leading      | `donut-chart`, `gauge-chart`, `tabs`                                                                                        | Role properties written as literals, so they miss the chain the role already defines                                                                                                      |
+| Weights with no token              | `field`, `gauge-chart`, `menu`, `range-field`, `segmented-controller`, `toggle-button`                                      | They need a medium weight, which the token set does not have, so these stay literal until it does                                                                                         |
+| Opts out via `inherit`             | `button`                                                                                                                    | Inheriting family, weight and leading makes the control's type depend on wherever it is mounted                                                                                           |
+| Container-relative sizes           | `avatar`, `donut-chart`, `gauge-chart`                                                                                      | Deliberately fluid, so they stay, but each competes with `Text`'s default tier at the same specificity ([rule 9](#9-components-resolve-to-a-token))                                       |
 
-Where a component reads one of these intents today, this is the tier it moves to. The comparison of values
-picks a token name, not a value: after the migration a component writes `--font-heading-size-sm` and the
-theme decides what that is.
+Which role each legacy intent becomes is the migration's one design decision. The values behind it pick a
+token name, not a value: afterwards a component writes `--font-heading-size-sm` and the theme decides what
+that is.
 
-| Intent family    | Used by                                                                     | Role, tier                                            | Weight today  |
-| ---------------- | --------------------------------------------------------------------------- | ----------------------------------------------------- | ------------- |
-| `ux.textLabel`   | `field`, `menu`, `circular-progress`, `progress-bar`, `range-field`, `tabs` | `detail` `lg`                                         | `500` literal |
-| `ux.textCaption` | `field`, `circular-progress`, `donut-chart` (tooltip)                       | `detail` `lg`                                         | `400`         |
-| `ux.textInput`   | `field`, `progress-bar`, `donut-chart` (label leading)                      | `body` `md`                                           | `400`         |
-| `ux.textAction`  | `menu`, `calendar`, `toggle-button`, `segmented-controller`, `button`       | `body` `md`                                           | `500` literal |
-| `ux.text`        | `circular-progress`, `chart/axis-title`, `donut-chart`                      | `body` `md`                                           | `400`         |
-| `ux.textTitle`   | `alert`, `progress-steps`                                                   | `heading` `sm`, see [open decisions](#open-decisions) | `700`         |
-| `ux.textHeading` | none directly                                                               | `heading` `2xl` (2.5rem → 2.25rem)                    | `700`         |
+| Intent family    | Becomes                                               | Weight today  |
+| ---------------- | ----------------------------------------------------- | ------------- |
+| `ux.textLabel`   | `detail` `lg`                                         | `500` literal |
+| `ux.textCaption` | `detail` `lg`                                         | `400`         |
+| `ux.textInput`   | `body` `md`                                           | `400`         |
+| `ux.textAction`  | `body` `md`                                           | `500` literal |
+| `ux.text`        | `body` `md`                                           | `400`         |
+| `ux.textTitle`   | `heading` `sm`, see [open decisions](#open-decisions) | `700`         |
+| `ux.textHeading` | `heading` `2xl`                                       | `700`         |
 
 ### Where this proposal is likely incomplete
 
@@ -467,43 +466,10 @@ to be wrong. Each is worth raising against this document rather than working aro
 - **A control whose height changes** after migrating.
   [Rule 3](#3-controls-keep-their-type-on-the-control-element) predicts it should not, so a change means
   either the strut case or a `1lh` coupling somewhere unexpected.
+- **Controls that have to match each other's height.** Line height cannot deliver that, since it derives
+  height from the text. It needs a `min-block-size` per tier, which this proposal does not settle.
 - **A visual difference the tier change does not explain**, especially in `tag`, `menu` and `field`, where
   current values resolve through fallbacks rather than through any theme.
 - **A weight other than `normal`, `bold`, `bolder` or the `500` literal.** The token set has no vocabulary
   for it, and neither does emphasis that has to differ per role.
 - **Anything here that contradicts the code**, which has moved since this was written.
-
-### Tasks
-
-Ordered, because the first is a precondition for the rest.
-
-- Make `Heading` honour a container-provided `level` and `size`, with tests for all three behaviours in
-  [rule 2](#2-containers-inject-defaults-through-slot-context). Until this holds, every container injection
-  below fails silently.
-- Give `Text` its `size` vocabulary and the chains from
-  [rule 5](#5-fallback-chains-sizes-stop-at-the-literal), and add `Detail` on the same implementation. Give
-  `Heading` its `size`, the `level` → `size` map, the new default `level` of `3`, and `as`. All three consume
-  their context before applying defaults.
-- Have `Modal`, `Drawer` and `Popover` supply `level` and `size` for their title slot, alongside the region
-  contexts already in `overlay-dialog`, without replacing the context RAC's `Dialog` provides there.
-- Have every control that owns its type tell a composed `Text` to emit nothing, so it cannot desynchronise a
-  `1lh` `Icon` from its label. `MenuItem` already wraps every string child in a `Text`, so it is a case that
-  exists today rather than one to find.
-- Send the same signal from `Avatar`, `gauge-chart` and `donut-chart`, whose fluid `cqw` and `cqi` classes
-  would otherwise compete with `Text`'s default tier on stylesheet order.
-- Correct `components/button/examples/icon.tsx`, which wraps a button label in `Text`, and sweep for other
-  composed-`Text`-inside-a-control sites.
-- Fix the live defects, each independent of the rest. `chart/legend`, `chart/axis-title`, `chart/tooltip` and
-  `tag` need fallbacks or the unresolvable hashes removed, and `tag` writes `var(--ux-xwz0yz, inherit)` inside
-  a `calc()`, which cannot work. `progress-steps` sets `line-height` from `ux.textTitle.fontSize` while
-  `ux.textTitle.lineHeight` sits unused.
-- Decide the fate of the typography block in `apps/docs/.storybook/variables.css`, which is why
-  `metrics-lockup` has no typography in production. Either it mirrors the token values exactly, or it goes and
-  the docs app consumes the theme. Today it disagrees with the tokens and one component depends on it.
-- Migrate the audit rows, carrying the `--_`-prefixed component-named renaming from
-  [GU and Spacing](./gu-spacing.md#5-per-component-implementation) rule 5, and decide whether a
-  `min-block-size` derived from the tier is needed for cross-control alignment.
-- Correct `.agents/skills/antares-components/SKILL.md`: the three components own the type, containers inject
-  through slot context, controls keep type on the control element, and the fallback chain with its size
-  exception.
-- Revisit whether the literal fallbacks are still needed once a theme defines the typography tokens.
