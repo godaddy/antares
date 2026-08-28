@@ -11,7 +11,7 @@ import {
   type CalendarGridProps as RACCalendarGridProps
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
-import { MonthHeading, NavButton } from './CalendarHeader.tsx';
+import { MonthHeading, NavButton } from './calendar-header.tsx';
 import styles from './index.module.css';
 import { cx } from 'cva';
 
