@@ -204,6 +204,13 @@ the label's type into a sibling wrapper and inheritance does not reach the icon,
 sideways: the two then drift whenever the control's size changes. `toggle-button` hand-rolls the same
 relationship as `calc(font-size * line-height)`.
 
+**One display surface needs the same neutralisation.** `Avatar` is not a control, but it composes a `Text`
+as its monogram fallback and injects a `.fallback` class through `TextContext`
+(`components/avatar/src/index.tsx`). That class owns the type - `font-size: round(43.75cqw, 1px)`,
+`font-weight`, `line-height` and `letter-spacing` - so the monogram scales with the avatar's size. Once
+`Text` carries defaults, those defaults would compete with the injected class, so `Avatar` has to send the
+"emit no typography" signal alongside it, exactly as a control does.
+
 **Children are never auto-wrapped in a `Text`.** A control's children are mixed
 (`<Button><Icon />label</Button>`), so wrapping could only apply to some of them, and which ones would
 depend on child types. A wrapper element is still fine where CSS genuinely needs to select the label; a
@@ -416,8 +423,9 @@ Where Figma specs a value that is a tier, the component writes that tier. Where 
 to the nearest tier with a comment recording the original, rather than being kept as a literal. Otherwise
 the theme can no longer restyle the library.
 
-One exception: `gauge-chart` and `donut-chart` size labels in `cqi` so the type scales with the chart.
-That is deliberately fluid and no fixed tier can express it, so those declarations stay.
+The exceptions are the container-relative sizes: `gauge-chart` and `donut-chart` size labels in `cqi` so
+the type scales with the chart, and `avatar` sizes its monogram in `cqw` so it scales with the avatar.
+Those are deliberately fluid and no fixed tier can express them, so those declarations stay.
 
 ---
 
@@ -551,7 +559,7 @@ alongside their font declarations, but whether `Text` gains a colour axis is a s
 
 ### Audit
 
-22 CSS files carry typography.
+23 CSS files carry typography.
 
 | Group                         | Components                                                                                                                                                                                                                                  | Action                                                                                                                    |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -561,7 +569,7 @@ alongside their font declarations, but whether `Text` gains a colour axis is a s
 | Storybook-only variables      | `metrics-lockup`                                                                                                                                                                                                                            | Reads `--fs-detail-lg`, `--fs-2xl`, `--lh-heading`, defined only in `apps/docs/.storybook/variables.css`                  |
 | Hardcoded                     | `range-field` (8), `switch` (5), `bar-chart` / `line-chart` (`0.794rem`), `chart/legend`, `chart/tooltip`, and the non-`cqi` properties of `gauge-chart` (`font-weight: 400`, two `500` literals) and `donut-chart` (`font-weight: bolder`) | Assign a tier                                                                                                             |
 | Opts out via `inherit`        | `button` (family, weight, line-height)                                                                                                                                                                                                      | Declare the full chain explicitly                                                                                         |
-| Container-relative            | `gauge-chart`, `donut-chart`: the `cqi` **font sizes** only                                                                                                                                                                                 | Keep, per [rule 9](#9-components-resolve-to-a-token)                                                                      |
+| Container-relative            | `gauge-chart`, `donut-chart`: the `cqi` **font sizes** only; `avatar`: the `cqw` monogram font size                                                                                                                                                                                 | Keep, per [rule 9](#9-components-resolve-to-a-token)                                                                      |
 
 Legacy intent → role mapping for the migration. Where a component reads one of these intents today, this
 is the tier it moves to:
@@ -624,7 +632,9 @@ Ordered, because the first is a precondition for the rest.
 - Have every control that owns its type neutralise a composed `Text` so it cannot desynchronise a `1lh`
   `Icon` from its label. `<Button size="sm">label</Button>` and
   `<Button size="sm"><Text>label</Text></Button>` should be indistinguishable. `MenuItem` already wraps
-  every string child in a `Text`, so it is the case that exists today rather than one to find.
+  every string child in a `Text`, so it is the case that exists today rather than one to find. `Avatar`
+  needs the same signal for its monogram fallback, whose `.fallback` class owns fluid `cqw` type that
+  `Text`'s defaults would otherwise compete with.
 - Correct `components/button/examples/icon.tsx`, which wraps a button label in `Text`. It has to land with
   `Text`'s defaults or `Button`'s `size` prop stops sizing its own label. Sweep for other
   composed-`Text`-inside-a-control sites.
