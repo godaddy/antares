@@ -92,94 +92,6 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
-# Alert
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal alert with a title and body text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
-
-### Emphasis Variants [#emphasis-variants]
-
-All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
-
-<Story of="EmphasesExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Dismissible [#dismissible]
-
-When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
-
-<Story of="DismissibleExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
-
-### With Action [#with-action]
-
-Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
-
-<Story of="WithActionExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| `Tab`             | Moves focus to the dismiss button or action button |
-| `Space` / `Enter` | Activates the focused button                       |
-
-### Screen readers [#screen-readers]
-
-The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
-
-### Dismiss button label [#dismiss-button-label]
-
-The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
-
-## Best Practices [#best-practices]
-
-* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
-* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
-* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
-* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
-* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
-
-## Props [#props]
-
-<PropTable />
-
-
 # Avatar
 
 
@@ -319,6 +231,94 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
   <Text />
 </Avatar>
 ```
+
+<PropTable />
+
+
+# Alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal alert with a title and body text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
+
+### Emphasis Variants [#emphasis-variants]
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Dismissible [#dismissible]
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of="DismissibleExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
+
+### With Action [#with-action]
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of="WithActionExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
+
+### Screen readers [#screen-readers]
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+### Dismiss button label [#dismiss-button-label]
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+## Best Practices [#best-practices]
+
+* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+
+## Props [#props]
 
 <PropTable />
 
@@ -2904,88 +2904,6 @@ The `PopoverTrigger` component accepts the following props:
 <PropTable />
 
 
-# Pressable
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Adds accessible press behavior to an existing visual component.
-* Applies interaction states directly to the child without adding a wrapper element.
-* Supports pointer, touch, and keyboard interactions through React Aria.
-* Preserves the child's layout, shape, and base visual styling while adding state feedback.
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Add accessible press behavior to an existing visual component without adding a wrapper element.
-The surface supports pointer, touch, and keyboard activation.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
-
-Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
-
-Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
-
-```tsx
-<Pressable aria-label="View account summary" onPress={handlePress}>
-  <Box role="button" padding="md" rounding="md" elevation="card">
-    Account summary
-  </Box>
-</Pressable>
-```
-
-## Accessibility [#accessibility]
-
-`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
-
-Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
-
-Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
-
-## Best Practices [#best-practices]
-
-* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
-* Avoid nesting interactive elements inside the child passed to `Pressable`.
-* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
-
-## Troubleshooting [#troubleshooting]
-
-* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
-* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
-
-## Props [#props]
-
-```tsx
-<Pressable>
-  <Box />
-</Pressable>
-```
-
-<PropTable />
-
-
 # ProgressBar
 
 
@@ -3775,6 +3693,88 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
+# Pressable
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Adds accessible press behavior to an existing visual component.
+* Applies interaction states directly to the child without adding a wrapper element.
+* Supports pointer, touch, and keyboard interactions through React Aria.
+* Preserves the child's layout, shape, and base visual styling while adding state feedback.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Add accessible press behavior to an existing visual component without adding a wrapper element.
+The surface supports pointer, touch, and keyboard activation.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
+
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
+
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
+
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
+
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
+
+## Best Practices [#best-practices]
+
+* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+* Avoid nesting interactive elements inside the child passed to `Pressable`.
+* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+
+## Troubleshooting [#troubleshooting]
+
+* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
+* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
+
+## Props [#props]
+
+```tsx
+<Pressable>
+  <Box />
+</Pressable>
+```
+
+<PropTable />
+
+
 # Select
 
 
@@ -4151,6 +4151,142 @@ Use the interactive root data attributes for state-based customization. The trac
 ## Props [#props]
 
 The `Switch` component has the following props:
+
+<PropTable />
+
+
+# Tabs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Accessible Tabs semantics powered by React Aria Components.
+* Underline and Manilla visual treatments.
+* Controlled and uncontrolled selection.
+* Automatic horizontal overflow controls that move one tab at a time.
+* Localized labels for the automatic overflow controls.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Switch between peer sections of content on the same page.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Tabs>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22;>Billing</Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Control the selected panel from application state.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selectedKey, setSelectedKey] = useState('billing');\n\n  return (\n    <>\n      <Tabs selectedKey={selectedKey} onSelectionChange={(key) => setSelectedKey(String(key))}>\n        <TabList aria-label=\&#x22;Account settings\&#x22;>\n          <Tab id=\&#x22;account\&#x22;>Account</Tab>\n          <Tab id=\&#x22;billing\&#x22;>Billing</Tab>\n          <Tab id=\&#x22;security\&#x22;>Security</Tab>\n        </TabList>\n        <TabPanels>\n          <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n          <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n          <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n        </TabPanels>\n      </Tabs>\n      <p>Current selection: {selectedKey}</p>\n    </>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Disable a section while keeping the remaining sections available.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Tabs>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22; isDisabled>\n          Billing\n        </Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
+
+### Manilla [#manilla]
+
+Use the folder-style Manilla treatment for document-oriented sections.
+
+<Story of="ManillaExample" />
+
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function ManillaExample() {\n  return (\n    <Tabs design=\&#x22;manilla\&#x22;>\n      <TabList aria-label=\&#x22;Documents\&#x22;>\n        <Tab id=\&#x22;recent\&#x22;>Recent</Tab>\n        <Tab id=\&#x22;shared\&#x22;>Shared</Tab>\n        <Tab id=\&#x22;archived\&#x22;>Archived</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;recent\&#x22;>Recent documents</TabPanel>\n        <TabPanel id=\&#x22;shared\&#x22;>Shared documents</TabPanel>\n        <TabPanel id=\&#x22;archived\&#x22;>Archived documents</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
+
+### Overflow [#overflow]
+
+When the tab strip is narrower than its content, the group adds controls that move one tab at a time.
+
+<Story of="OverflowExample" />
+
+<Source language="tsx" code="&#x22;import type { Ref } from 'react';\nimport { Tab, TabList, TabPanel, TabPanels, Tabs, type TabsOverflowLabels } from '@godaddy/antares';\n\ninterface OverflowExampleProps {\n  maxWidth?: string;\n  overflowLabels?: TabsOverflowLabels;\n  tabListRef?: Ref<HTMLDivElement>;\n}\n\nexport function OverflowExample({ maxWidth = '320px', overflowLabels, tabListRef }: OverflowExampleProps) {\n  return (\n    <Tabs overflowLabels={overflowLabels} style={{ width: maxWidth, maxWidth }}>\n      <TabList ref={tabListRef} aria-label=\&#x22;Product settings\&#x22;>\n        <Tab id=\&#x22;overview\&#x22;>Overview</Tab>\n        <Tab id=\&#x22;availability\&#x22;>Availability</Tab>\n        <Tab id=\&#x22;shipping\&#x22;>Shipping</Tab>\n        <Tab id=\&#x22;returns\&#x22;>Returns</Tab>\n        <Tab id=\&#x22;notifications\&#x22;>Notifications</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;overview\&#x22;>Overview</TabPanel>\n        <TabPanel id=\&#x22;availability\&#x22;>Availability</TabPanel>\n        <TabPanel id=\&#x22;shipping\&#x22;>Shipping</TabPanel>\n        <TabPanel id=\&#x22;returns\&#x22;>Returns</TabPanel>\n        <TabPanel id=\&#x22;notifications\&#x22;>Notifications</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
+
+### RTL [#rtl]
+
+Overflow controls follow the logical reading direction.
+
+<Story of="RTLExample" />
+
+<Source language="tsx" code="&#x22;import { RTLProvider } from '../../../utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
+
+`overflowLabels` is optional and defaults to "Previous tabs" and "Next tabs". Provide localized labels when needed; they should describe the logical direction rather than physical directions like "left" or "right", as the component automatically handles RTL layouts.
+
+`TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Give each `Tab` and its corresponding `TabPanel` the same `id`; React Aria uses that key to build their accessible relationship.
+
+## Customization [#customization]
+
+The component exposes state through data attributes:
+
+* `Tabs`: `data-design="underline"` or `data-design="manilla"`.
+* `Tab`: `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
+* `TabPanel`: `data-inert` when a force-mounted inactive panel is not interactive.
+
+Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components. You can also use render props in `className` to style based on state (e.g., `className={({ isSelected }) => isSelected ? 'active' : ''}`).
+
+Use `TabList`'s `containerProps` to customize the outer tab list shell, such as increasing its width.
+
+## Best Practices [#best-practices]
+
+* Use Tabs for peer panels on the same page and URL.
+* Keep the number of tabs small enough for users to understand the available sections.
+* Do not use Tabs for primary application navigation or route changes.
+* Do not render a standalone `Tab`; compose it inside `Tabs` and `TabList`.
+
+## Props [#props]
+
+### Tabs [#tabs]
+
+<PropTable />
+
+### TabList [#tablist]
+
+<PropTable />
+
+### Tab [#tab]
+
+<PropTable />
+
+### TabPanels [#tabpanels]
+
+<PropTable />
+
+### TabPanel [#tabpanel]
 
 <PropTable />
 
@@ -4841,79 +4977,6 @@ The `TooltipTrigger` component accepts the following props:
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # Bar Chart
 
 
@@ -5111,6 +5174,79 @@ For better performance:
 1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -5726,124 +5862,6 @@ The `Box` component accepts the following props:
 <PropTable />
 
 
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-
 # Flex
 
 
@@ -5960,5 +5978,123 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
+
+<PropTable />
+
+
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
 
 <PropTable />
