@@ -70,17 +70,17 @@ what a `variant` already sets.
 
 ### The nine rules
 
-| Rule                                                                                                 | In one line                                                                          |
-| ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| 1. [`Text` and `Heading` own the type](#1-text-and-heading-own-the-type)                              | the only place the variant → tier decision is written, and they carry defaults         |
-| 2. [Containers inject defaults through slot context](#2-containers-inject-defaults-through-slot-context) | a `Modal` decorates its `title` slot; an explicit prop on the child still wins       |
-| 3. [Controls keep their type on the control element](#3-controls-keep-their-type-on-the-control-element) | so a `1lh` `Icon` stays locked to its label; a composed `Text` emits nothing         |
-| 4. [Non-component surfaces declare their own chain](#4-surfaces-that-cannot-be-components-declare-their-own-chain) | `::placeholder`, SVG `<text>`, a native input's value: declared in CSS      |
-| 5. [Chains are `token → intent → literal`](#5-fallback-chains-sizes-stop-at-the-literal)              | except sizes, which skip the intent link, because intents have no size ramp            |
-| 6. [`Text` is `variant` + `size`, and nothing else](#6-text-is-variant--size-and-nothing-else)        | no `weight`, `family`, `lineHeight` or `letterSpacing` props                           |
-| 7. [Emphasis is semantic](#7-emphasis-is-semantic)                                                    | `<Text as="strong">`, not a `weight` prop                                             |
-| 8. [`Heading`: `level` is semantics, `size` is visuals](#8-heading-level-is-semantics-size-is-visuals) | independent axes, with a `level` → `size` default map                                 |
-| 9. [Components resolve to a token](#9-components-resolve-to-a-token)                                  | snap off-ramp Figma values to the nearest tier, with the original in a comment         |
+| Rule                                                                                                               | In one line                                                                    |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| 1. [`Text` and `Heading` own the type](#1-text-and-heading-own-the-type)                                           | the only place the variant → tier decision is written, and they carry defaults |
+| 2. [Containers inject defaults through slot context](#2-containers-inject-defaults-through-slot-context)           | a `Modal` decorates its `title` slot; an explicit prop on the child still wins |
+| 3. [Controls keep their type on the control element](#3-controls-keep-their-type-on-the-control-element)           | so a `1lh` `Icon` stays locked to its label; a composed `Text` emits nothing   |
+| 4. [Non-component surfaces declare their own chain](#4-surfaces-that-cannot-be-components-declare-their-own-chain) | `::placeholder`, SVG `<text>`, a native input's value: declared in CSS         |
+| 5. [Chains are `token → intent → literal`](#5-fallback-chains-sizes-stop-at-the-literal)                           | except sizes, which skip the intent link, because intents have no size ramp    |
+| 6. [`Text` is `variant` + `size`, and nothing else](#6-text-is-variant--size-and-nothing-else)                     | no `weight`, `family`, `lineHeight` or `letterSpacing` props                   |
+| 7. [Emphasis is semantic](#7-emphasis-is-semantic)                                                                 | `<Text as="strong">`, not a `weight` prop                                      |
+| 8. [`Heading`: `level` is semantics, `size` is visuals](#8-heading-level-is-semantics-size-is-visuals)             | independent axes, with a `level` → `size` default map                          |
+| 9. [Components resolve to a token](#9-components-resolve-to-a-token)                                               | snap off-ramp Figma values to the nearest tier, with the original in a comment |
 
 Rules 1 to 3 are the substance and 4 to 9 mostly follow from them. If you read one section, read
 [rule 2](#2-containers-inject-defaults-through-slot-context): it is the mechanism everything else assumes,
@@ -113,8 +113,12 @@ The two things this document cannot answer on its own.
    and `typeface` are the alternatives. This fixes the public API, so it should be settled before `Text`
    changes.
 2. **The tier for the off-ramp legacy sizes.** `ux.textTitle` is 1.375rem and `ux.textHeading` 2.5rem,
-   neither on a ramp. The audit proposes `heading-xs` and `heading-2xl`; `alert`'s title in particular is
-   a visible change.
+   neither on a ramp. `ux.textHeading` snaps cleanly to `heading-2xl`. `ux.textTitle` does not, because its
+   two consumers divide it by 1.125 twice before using it: snapping what renders (~1.086rem) gives
+   `heading-sm` and preserves today's appearance, while snapping the declared 1.375rem ties between
+   `heading-md` and `heading-lg` and makes `alert`'s title visibly larger. The [audit](#audit) proposes
+   `heading-sm`; the call is whether the intent's declared value or its rendered value is the thing to
+   honour.
 
 Two positions in the proposal are deliberate divergences from every comparable library, and are worth
 ratifying knowingly rather than accepting by default: the **strictness** of
@@ -173,8 +177,8 @@ section, and all three behaviours want tests rather than assumptions about how R
 
 **Named slots for containers, `DEFAULT_SLOT` only for leaf controls.**
 
-| Container                    | Channel                              | Why                                                          |
-| ---------------------------- | ------------------------------------ | ------------------------------------------------------------ |
+| Container                    | Channel                              | Why                                                           |
+| ---------------------------- | ------------------------------------ | ------------------------------------------------------------- |
 | Controls (`Button`, `Tag`…)  | `DEFAULT_SLOT`                       | the whole subtree *is* one text surface; nothing to leak into |
 | `Modal`, `Drawer`, `Popover` | named slots (`title`, `description`) | arbitrary body content; `DEFAULT_SLOT` would capture it       |
 | `Content`/`Header`/`Footer`  | flat context, as today               | each is a distinct named component appearing once             |
@@ -232,8 +236,8 @@ the control instead of clipping it.
 
 ### 4. Surfaces that cannot be components declare their own chain
 
-`::placeholder` is not an element, chart labels are SVG `<text>`, and a native `<input>`'s value needs the
-font on the input. These declare the chain in CSS, following
+`::placeholder` is not an element, a chart's axis tick labels are SVG `<text>` rendered by visx, and a
+native `<input>`'s value needs the font on the input. These declare the chain in CSS, following
 [GU and Spacing, rule 5](./gu-spacing.md#5-per-component-implementation): the full chain, on the
 component's own root selector, `--_`-prefixed and component-named:
 
@@ -344,6 +348,13 @@ applies no typography class at all ([rule 3](#3-controls-keep-their-type-on-the-
 `'inherit'` is not in the public `variant` union. It only ever arrives from a container, and a caller's
 explicit `variant` still wins, per [rule 2](#2-containers-inject-defaults-through-slot-context).
 
+**A caller who passes only `size` opts out too.** `<Button><Text size="lg">…</Text></Button>` merges to
+`variant: 'inherit'` plus `size: 'lg'`, and a tier class cannot be selected without a variant to select it
+from. So any explicit typography prop cancels the neutralisation, and the axis the caller left out falls
+back to its public default rather than to `'inherit'`: `size="lg"` alone resolves to `body` `lg`. The
+neutralised path is therefore the propless one, which is the case [rule 3](#3-controls-keep-their-type-on-the-control-element)
+exists to protect, and a caller who states a size has said they want the label to differ from the control.
+
 ### 7. Emphasis is semantic
 
 ```tsx
@@ -357,7 +368,7 @@ explicit `variant` still wins, per [rule 2](#2-containers-inject-defaults-throug
 ### 8. `Heading`: `level` is semantics, `size` is visuals
 
 ```tsx
-level?: 1 | 2 | 3 | 4 | 5 | 6;                    // default 3, or the level a container injects
+level?: 1 | 2 | 3 | 4 | 5 | 6;                    // proposed default 3 (2 today), or the level a container injects
 size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';  // default derived from level
 ```
 
@@ -375,7 +386,9 @@ propless:
 | ------- | ----- | ---- | ---- | ---- | ---- | ---- |
 | `size`  | `2xl` | `xl` | `lg` | `md` | `sm` | `xs` |
 
-**The default level is `3`, and a container injects what it needs.** Defaulting low would have every
+**The default level becomes `3`, and a container injects what it needs.** It is `2` today
+(`packages/@godaddy/antares/components/text/src/heading.tsx:38`), so this is a public API change, of the
+kind the [Problem](#problem) section says is in scope. Defaulting low would have every
 unconfigured `Heading` claim to be the page title or a top-level section, producing several per page and
 flattening the outline for anyone navigating by level. `3` sits far enough down that a bare `Heading`
 dropped into a consumer's layout is unlikely to outrank the headings around it. Containers are the
@@ -384,7 +397,9 @@ slot, since a dialog title is the top of its own outline while the page keeps it
 defaults to `3` for the same reason.
 
 `Heading` always renders the `heading` role, so it needs no `variant`. `Text` keeps `variant="heading"`
-for SVG chart titles and for text that should look like a heading without being one.
+for text that should look like a heading without being one, such as a chart's own HTML title or
+`donut-chart`'s centre label. SVG `<text>` is not one of these: it cannot render through `Text` and takes
+its type from CSS instead ([rule 4](#4-surfaces-that-cannot-be-components-declare-their-own-chain)).
 
 **Each container states its title's tier explicitly**, which is the answer to "what if an `h2` looks
 different in a `Modal` than in a `Drawer`": the element does not differ, the container's title slot does.
@@ -459,16 +474,16 @@ Three properties of the ramp shape the proposal:
 
 ### Prior art
 
-| Library                  | Element                                          | Visual                                                                    | Container injects?                        | Other axes                                                    |
-| ------------------------ | ------------------------------------------------ | ------------------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------- |
-| **Antares (this)**       | `Heading level`, `Text as`                       | `variant` role + `size` tier                                              | yes, slot context                         | none                                                          |
-| **React Spectrum v3**    | `Heading level` (default 3)                      | none at all                                                               | yes, `slot` (default `'heading'`)         | layout/spacing props, `UNSAFE_*`                              |
-| **Spectrum 2**           | `Heading level`                                  | `styles` macro                                                            | yes, own `HeadingContext` consumed first  | -                                                             |
-| **MUI**                  | `component` per call, `variantMapping` theme-wide | `variant`: `h1`-`h6`, `subtitle1/2`, `body1/2`, `button`, `caption`, `overline` | no                                   | `sx`                                                          |
-| **Polaris**              | `as` (required), `h1`-`h6`/`p`/`span`/`dt`/`dd`/`strong` | `variant`, fused: `headingXs`…`heading2xl`, `bodyXs`…`bodyLg`      | no                                        | `fontWeight`, `tone`, `alignment`, `numeric`, `truncate`       |
-| **Radix Themes**         | `as`, documented as purely semantic              | `size` 1-9; also sets line height **and letter spacing**                   | no                                        | `weight`, `color`, `highContrast`, `trim`, `truncate`, `wrap`  |
-| **Chakra v3**            | style props                                      | `textStyle` presets or `fontSize`                                         | no                                        | the full CSS surface                                          |
-| **shadcn typeset**       | element selectors                                | wrapper class + preset class                                              | n/a, components opt *out*                 | three CSS variables                                           |
+| Library               | Element                                                  | Visual                                                                          | Container injects?                       | Other axes                                                    |
+| --------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------- |
+| **Antares (this)**    | `Heading level`, `Text as`                               | `variant` role + `size` tier                                                    | yes, slot context                        | none                                                          |
+| **React Spectrum v3** | `Heading level` (default 3)                              | none at all                                                                     | yes, `slot` (default `'heading'`)        | layout/spacing props, `UNSAFE_*`                              |
+| **Spectrum 2**        | `Heading level`                                          | `styles` macro                                                                  | yes, own `HeadingContext` consumed first | -                                                             |
+| **MUI**               | `component` per call, `variantMapping` theme-wide        | `variant`: `h1`-`h6`, `subtitle1/2`, `body1/2`, `button`, `caption`, `overline` | no                                       | `sx`                                                          |
+| **Polaris**           | `as` (required), `h1`-`h6`/`p`/`span`/`dt`/`dd`/`strong` | `variant`, fused: `headingXs`…`heading2xl`, `bodyXs`…`bodyLg`                   | no                                       | `fontWeight`, `tone`, `alignment`, `numeric`, `truncate`      |
+| **Radix Themes**      | `as`, documented as purely semantic                      | `size` 1-9; also sets line height **and letter spacing**                        | no                                       | `weight`, `color`, `highContrast`, `trim`, `truncate`, `wrap` |
+| **Chakra v3**         | style props                                              | `textStyle` presets or `fontSize`                                               | no                                       | the full CSS surface                                          |
+| **shadcn typeset**    | element selectors                                        | wrapper class + preset class                                                    | n/a, components opt *out*                | three CSS variables                                           |
 
 **Separating the element from the visual is universal.** Every library above does it, and MUI argues it
 on accessibility grounds: keep a valid heading hierarchy without being forced into a font size. So
@@ -538,28 +553,37 @@ alongside their font declarations, but whether `Text` gains a colour axis is a s
 
 22 CSS files carry typography.
 
-| Group                      | Components                                                                                                                                  | Action                                                                                                  |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| No typography at all       | `Text`, `Heading`                                                                                                                           | Implement [rule 6](#6-text-is-variant--size-and-nothing-else) and [rule 8](#8-heading-level-is-semantics-size-is-visuals)                                                                                     |
-| Sizes derived by ratio     | `circular-progress` (13 refs), `segmented-controller` (2), `tag` (2), `alert`, `button`, `field`, `progress-steps`, `switch`, `toggle-button` | Replace `calc(… * 1.125)` with named tiers                                                              |
-| Unresolvable intent hashes | `tag` (12 refs), `chart/legend` (7), `chart/tooltip` (2), `chart/axis-title`, `alert`, `progress-steps`                                      | Hashes absent from the intent map; without a fallback the declaration is invalid at computed-value time  |
-| Storybook-only variables   | `metrics-lockup`                                                                                                                            | Reads `--fs-detail-lg`, `--fs-2xl`, `--lh-heading`, defined only in `apps/docs/.storybook/variables.css` |
-| Hardcoded                  | `range-field` (8), `switch` (5), `bar-chart` / `line-chart` (`0.794rem`), `gauge-chart`, `donut-chart`, `chart/legend`, `chart/tooltip`       | Assign a tier                                                                                           |
-| Opts out via `inherit`     | `button` (family, weight, line-height)                                                                                                      | Declare the full chain explicitly                                                                       |
-| Container-relative         | `gauge-chart`, `donut-chart` (`cqi`)                                                                                                        | Keep, per [rule 9](#9-components-resolve-to-a-token)                                                                                            |
+| Group                         | Components                                                                                                                                                                                                                                  | Action                                                                                                                    |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Typography missing or partial | `Text` (no font declarations at all), `Heading` (`font-weight: bolder` only, so no size, family or line-height)                                                                                                                             | Implement [rule 6](#6-text-is-variant--size-and-nothing-else) and [rule 8](#8-heading-level-is-semantics-size-is-visuals) |
+| Sizes derived by ratio        | `circular-progress` (13 refs), `segmented-controller` (2), `tag` (2), `alert`, `button`, `field`, `progress-steps`, `switch`, `toggle-button`                                                                                               | Replace `calc(… * 1.125)` with named tiers                                                                                |
+| Unresolvable intent hashes    | `tag` (12 refs), `chart/legend` (7), `chart/tooltip` (2), `chart/axis-title`, `alert`, `progress-steps`                                                                                                                                     | Hashes absent from the intent map; without a fallback the declaration is invalid at computed-value time                   |
+| Storybook-only variables      | `metrics-lockup`                                                                                                                                                                                                                            | Reads `--fs-detail-lg`, `--fs-2xl`, `--lh-heading`, defined only in `apps/docs/.storybook/variables.css`                  |
+| Hardcoded                     | `range-field` (8), `switch` (5), `bar-chart` / `line-chart` (`0.794rem`), `chart/legend`, `chart/tooltip`, and the non-`cqi` properties of `gauge-chart` (`font-weight: 400`, two `500` literals) and `donut-chart` (`font-weight: bolder`) | Assign a tier                                                                                                             |
+| Opts out via `inherit`        | `button` (family, weight, line-height)                                                                                                                                                                                                      | Declare the full chain explicitly                                                                                         |
+| Container-relative            | `gauge-chart`, `donut-chart`: the `cqi` **font sizes** only                                                                                                                                                                                 | Keep, per [rule 9](#9-components-resolve-to-a-token)                                                                      |
 
 Legacy intent → role mapping for the migration. Where a component reads one of these intents today, this
 is the tier it moves to:
 
-| Intent family    | Used by                                                              | Role, tier                         | Weight today  |
-| ---------------- | -------------------------------------------------------------------- | ---------------------------------- | ------------- |
+| Intent family    | Used by                                                               | Role, tier                         | Weight today  |
+| ---------------- | --------------------------------------------------------------------- | ---------------------------------- | ------------- |
 | `ux.textLabel`   | `field`, `menu`, `circular-progress`, `progress-bar`, `range-field`   | `detail` `lg`                      | `500` literal |
-| `ux.textCaption` | `field`, `circular-progress`                                         | `detail` `lg`                      | `400`         |
-| `ux.textInput`   | `field`                                                              | `body` `md`                        | `400`         |
+| `ux.textCaption` | `field`, `circular-progress`                                          | `detail` `lg`                      | `400`         |
+| `ux.textInput`   | `field`                                                               | `body` `md`                        | `400`         |
 | `ux.textAction`  | `menu`, `calendar`, `toggle-button`, `segmented-controller`, `button` | `body` `md`                        | `500` literal |
-| `ux.text`        | `circular-progress`, `chart/axis-title`, `donut-chart`               | `body` `md`                        | `400`         |
-| `ux.textTitle`   | `alert`, `progress-steps`                                            | `heading` `xs` (1.375rem → 1rem)   | `700`         |
-| `ux.textHeading` | none directly                                                        | `heading` `2xl` (2.5rem → 2.25rem) | `700`         |
+| `ux.text`        | `circular-progress`, `chart/axis-title`, `donut-chart`                | `body` `md`                        | `400`         |
+| `ux.textTitle`   | `alert`, `progress-steps`                                             | `heading` `sm` (see below)         | `700`         |
+| `ux.textHeading` | none directly                                                         | `heading` `2xl` (2.5rem → 2.25rem) | `700`         |
+
+`ux.textTitle` is the one row [rule 9](#9-components-resolve-to-a-token) does not settle on its own, because
+there are two candidate values to snap. The intent declares 1.375rem, but neither consumer uses it directly:
+`alert` and `progress-steps` both divide it by 1.125 twice, so what renders today is about 1.086rem. Snapping
+what renders gives `heading` `sm` (1.125rem, 0.039rem away), which is the row above because it is the mapping
+that preserves the current appearance. Snapping the declared 1.375rem instead gives a tie between `heading`
+`md` (1.25rem) and `heading` `lg` (1.5rem), both 0.125rem away, and either would grow `alert`'s title
+noticeably. `heading` `xs` is nearest to neither. Which value to snap is
+[open decision 2](#open-decisions).
 
 ### Where this proposal is likely incomplete
 
