@@ -1,4 +1,4 @@
-# Typography in components
+# Typography in Antares
 
 Status: **Proposed**
 
@@ -21,18 +21,20 @@ from the user agent, and every other component decides its own font styles, draw
 intent families and, in one case, from a stylesheet that only exists in Storybook. Meanwhile the theme
 already ships a complete type system that two components consume.
 
-**The vocabulary already exists, so this document does not invent one.** The theme defines three roles
-(`detail`, `body`, `heading`), each with a family, weight and line-height, and each with a six-step size
-ramp from `xs` to `2xl`, published as `--font-{role}-{property}` and `--font-{role}-size-{tier}`. What is
-missing is not names but ownership: who writes those tokens, and how they reach the parts of a composed
-component. Full tables in [The vocabulary](#the-vocabulary).
+**The vocabulary already exists, so this document does not invent one.** The theme defines three type
+roles, each with a family, weight and line-height, and each with a six-step size ramp from `xs` to `2xl`,
+published as `--font-{role}-{property}` and `--font-{role}-size-{tier}`. `Text` exposes those three roles
+as its `variant` prop, so **`variant` below always means one of `body`, `detail` or `heading`**, and the
+word "role" only appears when talking about the tokens themselves. What is missing is not names but
+ownership: who writes those tokens, and how they reach the parts of a composed component. Full tables in
+[The vocabulary](#the-vocabulary).
 
 ### The resulting API
 
 Two components carry all of it, and both are usable with no props at all.
 
 ```tsx
-// Text: a role and a step on that role's ramp. Defaults to body/md.
+// Text: a variant and a step on that variant's ramp. Defaults to body/md.
 <Text>Body copy at the md tier</Text>
 <Text variant="detail" size="sm">Supporting copy</Text>
 <Text as="p">Same type, a real paragraph element</Text>
@@ -47,10 +49,14 @@ Two components carry all of it, and both are usable with no props at all.
 <Heading level={4}>Billing</Heading>             {/* h4, md tier */}
 <Heading level={2} size="sm">Billing</Heading>   {/* both stated */}
 
-// Containers set the defaults for the slots they define, and the caller can still override.
+// A container supplies the defaults for the slots it defines.
 <Modal>
-  <Heading slot="title">Delete file?</Heading>
-  <Heading slot="title" level={3} size="lg">Delete file?</Heading>
+  <Heading slot="title">Delete file?</Heading>   {/* h2 at the tier Modal picks */}
+</Modal>
+
+// The caller can still override either axis.
+<Modal>
+  <Heading slot="title" level={4} size="lg">Delete file?</Heading>
 </Modal>
 
 // Controls own their own type, so a composed Text inherits rather than restyling.
@@ -60,13 +66,13 @@ Two components carry all of it, and both are usable with no props at all.
 
 That is the whole public surface. `Text` takes `variant` and `size` and nothing else typographic: no
 `weight`, `family`, `lineHeight` or `letterSpacing`, because the theme has no vocabulary for them beyond
-what a role already sets. `align`, `as`, `maxLines` and `wrap` are unchanged.
+what a `variant` already sets.
 
 ### The nine rules
 
 | Rule                                                                                                 | In one line                                                                          |
 | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| 1. [`Text` and `Heading` own the type](#1-text-and-heading-own-the-type)                              | the only place the role → tier decision is written, and they carry defaults            |
+| 1. [`Text` and `Heading` own the type](#1-text-and-heading-own-the-type)                              | the only place the variant → tier decision is written, and they carry defaults         |
 | 2. [Containers inject defaults through slot context](#2-containers-inject-defaults-through-slot-context) | a `Modal` decorates its `title` slot; an explicit prop on the child still wins       |
 | 3. [Controls keep their type on the control element](#3-controls-keep-their-type-on-the-control-element) | so a `1lh` `Icon` stays locked to its label; a composed `Text` emits nothing         |
 | 4. [Non-component surfaces declare their own chain](#4-surfaces-that-cannot-be-components-declare-their-own-chain) | `::placeholder`, SVG `<text>`, a native input's value: declared in CSS      |
@@ -139,12 +145,16 @@ does this for structural regions, injecting presentation:
 [ButtonGroupContext, { className: styles.buttons, justifyContent: 'end' }]
 ```
 
-Typography joins it:
+Typography joins it. `Modal` supplies the `level` and `size` for its title slot, so the common case passes
+nothing, and a caller who needs a different element or tier says so:
 
 ```tsx
 <Modal>
   <Heading slot="title">Delete file?</Heading>            {/* h2 at the title tier, nothing passed */}
-  <Heading slot="title" level={4} size="lg">…</Heading>   {/* caller wins */}
+</Modal>
+
+<Modal>
+  <Heading slot="title" level={4} size="lg">…</Heading>   {/* caller wins on both axes */}
 </Modal>
 ```
 
@@ -158,10 +168,8 @@ Typography joins it:
   `aria-labelledby` silently.
 
 `Heading` satisfies none of the first two today: it always passes its own `level`, so the `level: 2` RAC's
-`Dialog` provides to `slot="title"` is discarded, which is invisible today only because both values are
-`2`. This is a
-precondition for everything else in this section, and all three behaviours want tests rather than
-assumptions about how RAC wires slots.
+`Dialog` provides to `slot="title"` is discarded. This is a precondition for everything else in this
+section, and all three behaviours want tests rather than assumptions about how RAC wires slots.
 
 **Named slots for containers, `DEFAULT_SLOT` only for leaf controls.**
 
@@ -367,9 +375,13 @@ propless:
 | ------- | ----- | ---- | ---- | ---- | ---- | ---- |
 | `size`  | `2xl` | `xl` | `lg` | `md` | `sm` | `xs` |
 
-**The default level stays `2`.** Defaulting to `1` would have every unconfigured `Heading` claim to be the
-page title, producing several per page and flattening the outline for anyone navigating by level.
-Containers inject the level they need.
+**The default level is `3`, and a container injects what it needs.** Defaulting low would have every
+unconfigured `Heading` claim to be the page title or a top-level section, producing several per page and
+flattening the outline for anyone navigating by level. `3` sits far enough down that a bare `Heading`
+dropped into a consumer's layout is unlikely to outrank the headings around it. Containers are the
+exception, because they know their own depth: `Modal` and `Drawer` inject `level={2}` for their title
+slot, since a dialog title is the top of its own outline while the page keeps its `h1`. React Spectrum v3
+defaults to `3` for the same reason.
 
 `Heading` always renders the `heading` role, so it needs no `variant`. `Text` keeps `variant="heading"`
 for SVG chart titles and for text that should look like a heading without being one.
