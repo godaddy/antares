@@ -12,9 +12,8 @@ feat: add TextLockup, a composed eyebrow / title / body type group in six sizes
   `--font-{role}-size-{tier}` tokens with a literal fallback; there is no legacy intent per tier,
   because an intent carries a single size per role. Every other type property does chain through
   its legacy intent to that intent's legacy default. Where the design spec named a value that is
-  not a tier, it snaps to the nearest one with a comment recording the original - six such cells,
-  the largest being the `2xl` title at 36px where the spec asks 40px, because `heading-2xl` is
-  the top tier.
+  not a tier, it snaps to the nearest one - six such cells, the largest being the `2xl` title at
+  36px where the spec asks 40px, because `heading-2xl` is the top tier.
 - The body is a bare `<Text>` (`slot="description"` is equivalent); the eyebrow is
   `slot="eyebrow"` on either a `Text` or a `Tag`, and a `Tag` there is sized to pair with the
   lockup. An explicit prop on a child always wins over what the lockup supplies.
