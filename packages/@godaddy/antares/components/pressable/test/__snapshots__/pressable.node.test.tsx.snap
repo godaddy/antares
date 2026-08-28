@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Pressable > preserves the child class name 1`] = `"<div role="button" aria-label="View account summary" data-react-aria-pressable="true" tabindex="0" class="box pressable consumer-child" style="padding:var(--sp-md);border-radius:var(--rounding-md)" data-elevation="card"><div class="box flex column" style="gap:var(--sp-xs)"><span class="text">Account summary</span><span class="text">View your account details</span></div></div>"`;
+
+exports[`@godaddy/antares > #Pressable > renders without wrapper 1`] = `"<div role="button" aria-label="View account summary" data-react-aria-pressable="true" tabindex="0" class="box pressable" style="padding:var(--sp-md);border-radius:var(--rounding-md)" data-elevation="card"><div class="box flex column" style="gap:var(--sp-xs)"><span class="text">Account summary</span><span class="text">View your account details</span></div></div>"`;
