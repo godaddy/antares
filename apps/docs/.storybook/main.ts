@@ -125,6 +125,10 @@ const config: StorybookConfig = {
             find: new RegExp(`^@bento/${pkg}$`),
             replacement: resolve(__dirname, `../../../packages/dev/${pkg}/src`)
           })),
+          {
+            find: /^@bento\/storybook-addon-helpers\/runtime$/,
+            replacement: resolve(__dirname, '../../../packages/dev/storybook-addon-helpers/src/runtime.ts')
+          },
           // Regular @bento packages
           {
             find: /^@bento\/(.*)$/,
