@@ -2,7 +2,7 @@ import { forwardRef, type ReactNode } from 'react';
 import { DEFAULT_SLOT, HeadingContext, Provider as RACProvider, TextContext } from 'react-aria-components';
 import { Flex, type FlexProps } from '#components/layout/flex';
 import { TagContext, type TagSize } from '#components/tag';
-import { composeClassName } from '../../../utils/render-props.ts';
+import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 /** Controls the coordinated type size of every part of the lockup. */
