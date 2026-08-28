@@ -41,7 +41,6 @@ One component per role. `size` is the only typography prop.
 // Heading: level picks the element, size picks the tier, size defaults from level.
 <Heading level={2}>Billing</Heading>             {/* h2, xl tier */}
 <Heading level={2} size="sm">Billing</Heading>   {/* both stated */}
-<Heading as="div" size="lg">$1,204</Heading>     {/* heading type, outside the outline */}
 
 // A container supplies the defaults for the slots it defines. An explicit prop still wins.
 <Modal>
@@ -143,11 +142,21 @@ cost, and the alternative silently restyles body content.
 
 ### 3. Controls keep their type on the control element
 
-Every control that owns its type (`Button` and `LinkButton`, `ToggleButton`, `Tag`, menu items) keeps that
-type on the control, and tells a composed `Text` to **emit no typography of its own, rather than injecting a
-size**, through the slot context of [rule 2](#2-containers-inject-defaults-through-slot-context). A `Text`
-that declares nothing inherits every font property from the control, `font-variation-settings` included,
-which the `font` shorthand would not cover.
+Every control (`Button` and `LinkButton`, `ToggleButton`, `Tag`, menu items) declares its type on the control
+element, and tells a composed `Text` to **emit no typography of its own, rather than injecting a size**,
+through the slot context of [rule 2](#2-containers-inject-defaults-through-slot-context). A `Text` that
+declares nothing inherits every font property from the control, `font-variation-settings` included, which the
+`font` shorthand would not cover.
+
+**The signal makes `Text` omit its type-bearing class**, rather than only withholding props: a declaration on
+the label beats a value inherited from the control at any specificity, so an empty context value stops being
+enough once `Text` carries defaults.
+
+**Where the type is declared and what it resolves to are separate questions.** A control that is its own box
+resolves to a tier on its role's ramp; one that is a word inside a run of text, `variant="inline"` on `Button`
+and `LinkButton`, resolves to `inherit`, because matching the text around it *is* its type. Both declare all
+four properties on the control element, so the `1lh` relationship below holds for either and the signal above
+applies unchanged to both.
 
 **The reason is `Icon`.** `components/icon/src/index.module.css` sizes it `width: 1lh; height: 1lh`, and
 `1lh` resolves from the icon's own inherited line height. As siblings, icon and label share the control's
@@ -280,14 +289,14 @@ emits `body` `lg`. The path that inherits is the one with no props.
 
 `--font-weight-strong` (`bolder`) and `--font-style-em` (`italic`) are bound to those elements. They are
 modifiers rather than a fourth role, since `bolder` is relative to the inherited weight, so one token
-composes with all three roles. Bold text that is not emphasis is a different tier or role.
+composes with all three roles. Bold text that is not emphasis is a different role: a tier moves only the
+size, and the weight is whatever the role fixes.
 
 ### 8. `Heading`: `level` is semantics, `size` is visuals
 
 ```tsx
 level?: 1 | 2 | 3 | 4 | 5 | 6;                    // proposed default 3 (2 today), or the level a container injects
 size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';  // default derived from level
-as?: string;                                      // a non-heading element, for heading type outside the outline
 ```
 
 `level` picks the element and `size` picks the tier. They are independent, because page structure decides the
@@ -304,11 +313,6 @@ where it belongs in the outline. It cannot, and it does not try. Defaulting low 
 `Heading` claim to be the page title or a top-level section, several per page, which flattens the outline for
 anyone navigating by level. Containers are the exception, because they know their own depth: `Modal` and
 `Drawer` inject `level={2}` for their title slot. React Spectrum v3 defaults to `3` for the same reason.
-
-**`as` covers heading type that is not a heading**, such as a chart's own HTML title or `donut-chart`'s
-centre label. `<Heading as="div">` renders the heading role on a non-heading element, and `level` does not
-apply. SVG `<text>` is not one of these cases: it cannot render through a component at all and takes its type
-from CSS ([rule 4](#4-surfaces-that-cannot-be-components-declare-their-own-chain)).
 
 **Each container states its title's tier explicitly**, so an `h2` can look different in a `Modal` than in a
 `Drawer` without the element differing. Not `.modal h2 { … }`, because descendant element selectors leak into
@@ -438,7 +442,7 @@ change each group needs, and the fact that no stylesheet is outside it.
 | Hardcoded sizes                    | `bar-chart`, `chart/legend`, `chart/tooltip`, `line-chart`, `range-field`, `switch`, `tabs`                                 | Literal sizes cannot be restyled by a theme                                                                                                                                               |
 | Hardcoded weights and leading      | `donut-chart`, `gauge-chart`, `tabs`                                                                                        | Role properties written as literals, so they miss the chain the role already defines                                                                                                      |
 | Weights with no token              | `field`, `gauge-chart`, `menu`, `range-field`, `segmented-controller`, `toggle-button`                                      | They need a medium weight, which the token set does not have, so these stay literal until it does                                                                                         |
-| Opts out via `inherit`             | `button`                                                                                                                    | Inheriting family, weight and leading makes the control's type depend on wherever it is mounted                                                                                           |
+| Opts out via `inherit`             | `button`                                                                                                                    | Family, weight and leading are inherited on every variant, so a non-inline button's type depends on wherever it is mounted                                                                |
 | Container-relative sizes           | `avatar`, `donut-chart`, `gauge-chart`                                                                                      | Deliberately fluid, so they stay, but each competes with `Text`'s default tier at the same specificity ([rule 9](#9-components-resolve-to-a-token))                                       |
 
 Which role each legacy intent becomes is the migration's one design decision. The values behind it pick a
