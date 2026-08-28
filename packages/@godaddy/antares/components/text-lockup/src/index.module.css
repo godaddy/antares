@@ -1,5 +1,7 @@
 .lockup {
   container: text-lockup / inline-size;
+  /* Definite, since `inline-size` containment drops the children from the intrinsic size. */
+  inline-size: 100%;
   align-items: flex-start;
   /* Explicit, since `text-align` would otherwise inherit from a centered ancestor. */
   text-align: start;

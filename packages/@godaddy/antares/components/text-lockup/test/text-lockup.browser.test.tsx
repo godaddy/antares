@@ -4,7 +4,7 @@ import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
 import { HeadingContext } from 'react-aria-components';
-import { Heading, TextLockup } from '@godaddy/antares';
+import { Flex, Heading, TextLockup } from '@godaddy/antares';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextLockup', function textLockupTests() {
@@ -73,6 +73,22 @@ describe('@godaddy/antares', function antares() {
 
       // `text-align` would otherwise inherit from the ancestor.
       expect(getComputedStyle(getByRole('heading').element()).textAlign).toEqual('start');
+    });
+
+    it('keeps its width inside a row that does not stretch it', async function widthInRow() {
+      const { container } = await render(
+        <div style={{ width: '600px' }}>
+          <Flex direction="row">
+            <TextLockup>
+              <Heading>Text Lockup</Heading>
+            </TextLockup>
+          </Flex>
+        </div>
+      );
+
+      // `inline-size` containment drops the children from the root's intrinsic size, so without
+      // a definite inline size the lockup would collapse to 0.
+      expect((container.querySelector('[data-size]') as HTMLElement).getBoundingClientRect().width).toEqual(600);
     });
 
     it('resolves slots against itself, not an outer container', async function ownsSlots() {

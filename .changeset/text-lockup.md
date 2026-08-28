@@ -18,7 +18,9 @@ feat: add TextLockup, a composed eyebrow / title / body type group in six sizes
   `slot="eyebrow"` on either a `Text` or a `Tag`, and a `Tag` there is sized to pair with the
   lockup. An explicit prop on a child always wins over what the lockup supplies.
 - In narrow containers the title steps down one tier at `2xl` and `sm`, via a container query.
-  Those are the only two sizes where the spec's mobile ratio crosses a tier.
+  Those are the only two sizes where the spec's mobile ratio crosses a tier. The lockup is the
+  query container, so it takes `inline-size: 100%`; `inline-size` containment would otherwise
+  collapse it to zero in a flex row or as `inline-flex`.
 - `legibleLines` (default `true`) constrains the text parts to a comfortable line length. It
   clamps the text children rather than the root, so a composed `Button` is unaffected.
 
