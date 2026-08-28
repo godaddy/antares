@@ -266,7 +266,7 @@ export const Playground = getStory(PlaygroundExample, {
 - Import only the blocks you write yourself (`Meta`, `ArgTypes`) from `@storybook/addon-docs/blocks`, plus `* as Stories` from the stories file.
 - Use the following suggested `##` sections, in this order, when applicable: Features, Installation, Examples, Customization, Accessibility, Best Practices, Troubleshooting, Props. Add other sections if they better suit the component or documentation.
 - Use `<Meta of={Stories} name="Overview" />` for the overview and `<ArgTypes of={Stories.Props} />` for the props table.
-- Use `<Examples of={Stories.examples} />` to render **all** examples. At build time, it expands into one `###` heading, the JSDoc description, a live `<Story>`, and a `<Source>` snippet for each example.
+- Import `Examples` from `@bento/storybook-addon-helpers/runtime`, then use `<Examples of={Stories.examples} />` to render **all** examples. At build time, it expands into one `###` heading, the JSDoc description, a live `<Story>`, and a `<Source>` snippet for each example.
 - Open **Props** with an anatomy block when the component has a composed interior or a trigger: a `tsx` snippet of the element tree, tags only, no props or children beyond what the structure needs (`slot="title"`, `placement="right"`), ending in `{/* ... */}` for the regions a consumer may add. It shows what nests inside what before the tables explain each prop.
 
 ```tsx
@@ -288,6 +288,7 @@ description: The Button component is a clickable control for actions, with varia
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
 import * as Stories from './button.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
