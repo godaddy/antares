@@ -11,4 +11,13 @@ export const Props = getComponentDocs(Label);
 
 export const Examples = getExamples('./examples');
 
-export const Playground = getStory(PlaygroundExample);
+export const Playground = getStory(PlaygroundExample, {
+  args: {
+    as: 'label',
+    children: 'Email'
+  },
+  argTypes: {
+    as: { control: 'select', options: ['label', 'span', 'div'], description: 'HTML element to render' },
+    children: { control: 'text', description: 'Label content' }
+  }
+});
