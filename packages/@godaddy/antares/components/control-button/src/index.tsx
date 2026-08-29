@@ -6,19 +6,31 @@ import {
   type ContextValue
 } from 'react-aria-components';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { composeClassName } from '#utils/render-props.ts';
+import styles from './index.module.css';
 
 export interface ControlButtonProps extends RACButtonProps, FlexOwnProps {}
 
-/** Lets Field inject in-group button chrome without restyling {@link Button}. */
+/** Context for configuring descendant ControlButton components. */
 export const ControlButtonContext = createContext<ContextValue<ControlButtonProps, HTMLButtonElement>>(null);
 
 /**
- * Pressable control for use inside a {@link Group}. Field paints it via {@link ControlButtonContext}.
+ * Pressable control for use inside a {@link Group}.
  *
  * @param props - {@link ControlButtonProps}
  */
 export const ControlButton = forwardRef<HTMLButtonElement, ControlButtonProps>(function ControlButton(props, ref) {
   [props, ref] = useContextProps(props, ref, ControlButtonContext);
+  const { className, ...rest } = props;
 
-  return <Flex alignItems="center" {...props} as={RACButton} ref={ref} />;
+  return (
+    <Flex
+      alignItems="center"
+      {...rest}
+      as={RACButton}
+      ref={ref}
+      className={composeClassName(className, styles.controlButton)}
+      data-control-button
+    />
+  );
 });

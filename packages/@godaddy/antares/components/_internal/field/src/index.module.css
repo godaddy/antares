@@ -2,7 +2,7 @@
   --field-critical-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
 }
 
-.field:where([data-required]) :where(label)::after {
+.field:where([data-required]) :where(.label)::after {
   content: " *";
   color: var(--field-critical-color);
 }
@@ -21,8 +21,7 @@
 }
 
 .input,
-.textarea,
-.controlButton {
+.textarea {
   background: transparent;
   border: none;
   font-family: var(--ux-9wtaa3, sans-serif);
@@ -44,43 +43,6 @@
   min-height: min-content;
 }
 
-.controlButton {
-  cursor: pointer;
-  background: var(--ux-1mh0ktr, #f5f5f5);
-  border-color: var(--ux-1qbn65p, #f5f5f5);
-  color: var(--ux-1utwv7e, #111);
-
-  &:where([data-hovered]) {
-    background: var(--ux-11rtwg8, #f5f5f5);
-    border-color: var(--ux-bg7olm, #d6d6d6);
-    color: var(--ux-1e4ese5, #111);
-  }
-
-  &:where([data-pressed]) {
-    background: var(--ux-gdy377, #fff);
-    border-color: var(--ux-187j9dd, #00a4a6);
-    color: var(--ux-k4fkva, #111);
-  }
-
-  &:where([data-focused]) {
-    outline: 2px solid Highlight;
-  }
-
-  &:where([data-disabled]),
-  &:disabled {
-    cursor: not-allowed;
-  }
-
-  > [data-icon] {
-    width: 1lh;
-    height: 1lh;
-  }
-}
-
-.controlButton[data-variant="select"] {
-  background: transparent;
-}
-
 .group {
   --field-br: var(--ux-1oqjeuu, 0.375rem);
   border-radius: var(--field-br);
@@ -95,30 +57,26 @@
   }
 
   &:where([data-size="sm"]) {
-    & :where(.input, .textarea, .controlButton) {
-      font-size: calc(1em / 1.125);
-    }
+    --control-button-font-size: calc(1em / 1.125);
+    --control-button-padding: var(--sp-sm);
 
     & :where(.input, .textarea) {
+      font-size: calc(1em / 1.125);
       padding-block: var(--sp-sm);
-    }
-
-    & :where(.controlButton) {
-      padding: var(--sp-sm);
     }
   }
 
-  & > :first-child {
+  & > :where(:nth-child(1 of :not(template))) {
     &,
-    > :where(.controlButton) {
+    > :where([data-control-button]) {
       border-start-start-radius: var(--field-br);
       border-end-start-radius: var(--field-br);
     }
   }
 
-  & > :last-child {
+  & > :where(:nth-last-child(1 of :not(template))) {
     &,
-    > :where(.controlButton) {
+    > :where([data-control-button]) {
       border-start-end-radius: var(--field-br);
       border-end-end-radius: var(--field-br);
     }

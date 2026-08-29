@@ -1,0 +1,44 @@
+.controlButton {
+  background: var(--ux-1mh0ktr, #f5f5f5);
+  border: none;
+  border-color: var(--ux-1qbn65p, #f5f5f5);
+  color: var(--ux-1utwv7e, #111);
+  cursor: pointer;
+  font-family: var(--ux-9wtaa3, sans-serif);
+  line-height: var(--ux-hm1ty7, 1.375);
+  font-size: var(--control-button-font-size, var(--ux-oc0naw, 1rem));
+  padding: var(--control-button-padding, var(--sp-md));
+  text-align: start;
+  min-width: 0;
+  max-width: 100%;
+
+  &:where([data-hovered]) {
+    background: var(--ux-11rtwg8, #f5f5f5);
+    border-color: var(--ux-bg7olm, #d6d6d6);
+    color: var(--ux-1e4ese5, #111);
+  }
+
+  &:where([data-pressed]) {
+    background: var(--ux-gdy377, #fff);
+    border-color: var(--ux-187j9dd, #00a4a6);
+    color: var(--ux-k4fkva, #111);
+  }
+
+  &:where([data-focused]) {
+    outline: 2px solid Highlight;
+  }
+
+  &:where([data-disabled]),
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  > :where([data-icon]) {
+    width: 1lh;
+    height: 1lh;
+  }
+}
+
+.controlButton:where([data-variant="select"]) {
+  background: transparent;
+}

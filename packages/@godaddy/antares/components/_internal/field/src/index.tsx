@@ -5,7 +5,6 @@ import type { FieldErrorProps as RACFieldErrorProps } from 'react-aria-component
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { ControlButtonContext } from '#components/control-button';
 import { InputContext } from '#components/input';
 import { FieldStateContext, GroupContext, type FieldSize, type FieldState } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
@@ -59,7 +58,6 @@ function FieldContexts({ children, isDisabled, size }: { children: ReactNode } &
   const input = useContext(InputContext);
   const textArea = useContext(TextAreaContext);
   const text = useContext(TextContext);
-  const controlButton = useContext(ControlButtonContext);
 
   return (
     <RACProvider
@@ -69,8 +67,7 @@ function FieldContexts({ children, isDisabled, size }: { children: ReactNode } &
         [GroupContext, mergeProps(group ?? {}, { className: styles.group })],
         [InputContext, mergeProps(input ?? {}, { className: styles.input })],
         [TextAreaContext, mergeProps(textArea ?? {}, { className: styles.textarea })],
-        [TextContext, mergeDescriptionClass(text, styles.description)],
-        [ControlButtonContext, mergeProps(controlButton ?? {}, { className: styles.controlButton })]
+        [TextContext, mergeDescriptionClass(text, styles.description)]
       ]}
     >
       {children}
