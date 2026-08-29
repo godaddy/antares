@@ -323,6 +323,132 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 <PropTable />
 
 
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+
 # Button
 
 
@@ -456,132 +582,6 @@ The `LinkButton` component accepts the following props:
 <PropTable />
 
 The `CloseButton` component accepts the following props:
-
-<PropTable />
-
-
-# Calendar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single-date calendar.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Story of="CalendarWithValueExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Story of="RangeCalendarExample" />
-
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Story of="CalendarMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Story of="CalendarUnavailableExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Story of="CalendarDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-## Props [#props]
-
-The `Calendar` component accepts the following props:
-
-<PropTable />
-
-The `RangeCalendar` component accepts the following props:
 
 <PropTable />
 
@@ -2174,71 +2174,6 @@ The `InlineDrawerPanel` component accepts the following props:
 <PropTable />
 
 
-# ListBox
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
-* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
-* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
-* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
-* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
-
-`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Single selection with static children. Use `aria-label` to give the listbox an accessible name.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
-
-### List Box Controlled [#list-box-controlled]
-
-Use `selectedKeys` and `onSelectionChange` for controlled state.
-
-<Story of="ListBoxControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### List Box Multiple [#list-box-multiple]
-
-Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
-
-<Story of="ListBoxMultipleExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The ListBox component accepts the following props:
-
-<PropTable />
-
-
 # Menu
 
 
@@ -2418,7 +2353,151 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
-# Modal
+# ListBox
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Single or multiple selection**: Set `selectionMode="single"` or `"multiple"`.
+* **Controlled or uncontrolled**: Use `selectedKeys` and `onSelectionChange` for controlled state, or `defaultSelectedKeys` for uncontrolled.
+* **Layout primitive**: `ListBox` and `ListBoxItem` accept layout props (`gap`, `padding`, etc.) — they extend `FlexOwnProps`.
+* **Composes into other components**: `Select` uses `ListBox` internally; reach for `ListBox` directly when you need an inline list rather than a popover dropdown.
+* **React Aria integration**: Built on React Aria ListBox for accessibility, keyboard navigation, and typeahead.
+
+`ListBox` requires either `aria-label` or `aria-labelledby`. For a labeled, popover-style picker, prefer `Select`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Single selection with static children. Use `aria-label` to give the listbox an accessible name.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ListBox, ListBoxItem } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ListBox aria-label=\&#x22;Coffee\&#x22; selectionMode=\&#x22;single\&#x22;>\n      <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n      <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n      <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n      <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n      <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n    </ListBox>\n  );\n}&#x22;" />
+
+### List Box Controlled [#list-box-controlled]
+
+Use `selectedKeys` and `onSelectionChange` for controlled state.
+
+<Story of="ListBoxControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxControlledExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<ListBoxKey>>(new Set(['latte']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffee\&#x22;\n        selectionMode=\&#x22;single\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? new Set() : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Value:</strong> {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### List Box Multiple [#list-box-multiple]
+
+Set `selectionMode="multiple"` to allow multiple values. `selectedKeys` is a `Set<Key>` (or the literal `'all'`).
+
+<Story of="ListBoxMultipleExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ListBox, ListBoxItem, Text, type ListBoxKey } from '@godaddy/antares';\n\nexport function ListBoxMultipleExample() {\n  const [selectedKeys, setSelectedKeys] = useState<'all' | Set<ListBoxKey>>(new Set(['latte', 'mocha']));\n\n  return (\n    <>\n      <ListBox\n        aria-label=\&#x22;Coffees you like\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={(keys) => setSelectedKeys(keys === 'all' ? 'all' : new Set(keys))}\n      >\n        <ListBoxItem id=\&#x22;espresso\&#x22;>Espresso</ListBoxItem>\n        <ListBoxItem id=\&#x22;latte\&#x22;>Latte</ListBoxItem>\n        <ListBoxItem id=\&#x22;cappuccino\&#x22;>Cappuccino</ListBoxItem>\n        <ListBoxItem id=\&#x22;americano\&#x22;>Americano</ListBoxItem>\n        <ListBoxItem id=\&#x22;mocha\&#x22;>Mocha</ListBoxItem>\n      </ListBox>\n      <Text>\n        <strong>Selected:</strong>{' '}\n        {selectedKeys === 'all' ? '(all)' : selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The ListBox component accepts the following props:
+
+<PropTable />
+
+
+# MetricsLockup
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A metric with a title, info tooltip, value, and description.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<MetricsLockupProps> = {}) {\n  return (\n    <MetricsLockup\n      title=\&#x22;Total Revenue\&#x22;\n      titleInfo=\&#x22;The total revenue across all products for the selected period.\&#x22;\n      data=\&#x22;$1,234.56\&#x22;\n      description=\&#x22;vs. last month\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+### With Trend [#with-trend]
+
+Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+
+<Story of="WithTrendExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function WithTrendExample() {\n  return <MetricsLockup title=\&#x22;Conversion Rate\&#x22; data=\&#x22;42%\&#x22; description=\&#x22;+3.2% vs. last month\&#x22; trend=\&#x22;positive\&#x22; />;\n}&#x22;" />
+
+### Compact [#compact]
+
+Use the `compact` prop to render the metric value and description inline rather than stacked.
+
+<Story of="CompactExample" />
+
+<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function CompactExample() {\n  return <MetricsLockup title=\&#x22;Sessions\&#x22; data=\&#x22;8,021\&#x22; description=\&#x22;-12% vs. last week\&#x22; trend=\&#x22;negative\&#x22; compact />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key    | Description                                                  |
+| ------ | ------------------------------------------------------------ |
+| Tab    | Moves focus to the info trigger button and shows the tooltip |
+| Escape | Closes the tooltip                                           |
+
+### ARIA [#aria]
+
+* The info trigger button uses `aria-label="More information"` to describe its purpose.
+* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
+* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content concise and informative.
+* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
+* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
+* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Pagination
+
+
 
 
 
@@ -2436,8 +2515,6 @@ Nested menus via `SubmenuTrigger`.
 
 <Meta of="Stories" name="Overview" />
 
-`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
-
 ## Installation [#installation]
 
 ```bash
@@ -2448,81 +2525,45 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
-`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Controlled [#controlled]
 
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+Pass `activeIndex` and `onChange` to control the active page externally.
 
 <Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
-### Scrollable [#scrollable]
+### Default Active [#default-active]
 
-When the content is taller than the viewport, the `Content` region scrolls while the title
-row and the `ButtonGroup` stay pinned.
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
 
-<Story of="ScrollableExample" />
+<Story of="DefaultActiveExample" />
 
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
 
-### Triggerless [#triggerless]
+### With Limit [#with-limit]
 
-`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
-`ModalTrigger`. Useful when the modal is opened from several places at once.
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
 
-<Story of="TriggerlessExample" />
+<Story of="WithLimitExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
 
-## Accessibility [#accessibility]
+### onChange Event [#onchange-event]
 
-### Keyboard interaction [#keyboard-interaction]
+The `onChange` callback fires with the new page index whenever the user navigates.
 
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the next focusable element inside the modal |
-| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
+<Story of="OnChangeExample" />
 
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-* Pair every action button with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
-
-```tsx
-<ModalTrigger>
-  <Button />
-  <Modal>
-    <Heading slot="title" />
-    <CloseButton />
-    <Header />
-    <Content />
-    <Footer />
-    <ButtonGroup />
-    {/* ... */}
-  </Modal>
-</ModalTrigger>
-```
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-The `ModalTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -2653,79 +2694,6 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 ## Props [#props]
 
 The `NumberField` component accepts the following props:
-
-<PropTable />
-
-
-# Pagination
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Default Active [#default-active]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="DefaultActiveExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
-
-### With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="WithLimitExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
-
-### onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="OnChangeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
 
 <PropTable />
 
@@ -2909,7 +2877,9 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 <PropTable />
 
 
-# MetricsLockup
+# Modal
+
+
 
 
 
@@ -2925,7 +2895,7 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 
 <Meta of="Stories" name="Overview" />
 
-MetricsLockup displays a metric value prominently, with an optional title and tooltip for context, an optional trend icon to show direction of change, and a description label below the value.
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
 
 ## Installation [#installation]
 
@@ -2937,51 +2907,81 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-A metric with a title, info tooltip, value, and description.
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { MetricsLockup, type MetricsLockupProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<MetricsLockupProps> = {}) {\n  return (\n    <MetricsLockup\n      title=\&#x22;Total Revenue\&#x22;\n      titleInfo=\&#x22;The total revenue across all products for the selected period.\&#x22;\n      data=\&#x22;$1,234.56\&#x22;\n      description=\&#x22;vs. last month\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
 
-### With Trend [#with-trend]
+### Controlled [#controlled]
 
-Use the `trend` prop to show a directional icon next to the description. Accepts `'positive'`, `'negative'`, or `'neutral'`.
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
 
-<Story of="WithTrendExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function WithTrendExample() {\n  return <MetricsLockup title=\&#x22;Conversion Rate\&#x22; data=\&#x22;42%\&#x22; description=\&#x22;+3.2% vs. last month\&#x22; trend=\&#x22;positive\&#x22; />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
 
-### Compact [#compact]
+### Scrollable [#scrollable]
 
-Use the `compact` prop to render the metric value and description inline rather than stacked.
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
 
-<Story of="CompactExample" />
+<Story of="ScrollableExample" />
 
-<Source language="tsx" code="&#x22;import { MetricsLockup } from '@godaddy/antares';\n\nexport function CompactExample() {\n  return <MetricsLockup title=\&#x22;Sessions\&#x22; data=\&#x22;8,021\&#x22; description=\&#x22;-12% vs. last week\&#x22; trend=\&#x22;negative\&#x22; compact />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Triggerless [#triggerless]
+
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
+
+<Story of="TriggerlessExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
-### Keyboard [#keyboard]
+### Keyboard interaction [#keyboard-interaction]
 
-| Key    | Description                                                  |
-| ------ | ------------------------------------------------------------ |
-| Tab    | Moves focus to the info trigger button and shows the tooltip |
-| Escape | Closes the tooltip                                           |
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
 
 ### ARIA [#aria]
 
-* The info trigger button uses `aria-label="More information"` to describe its purpose.
-* The tooltip uses `role="tooltip"` and is associated with the info trigger via `aria-describedby`.
-* The info trigger has a minimum touch target of 44×44px, achieved via a CSS pseudo-element, to meet WCAG 2.5.5.
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* Focus is trapped within the modal while open and returned to the trigger on close
 
 ## Best Practices [#best-practices]
 
-* Keep tooltip content concise and informative.
-* The `data` prop accepts strings or numbers — format currency and percentages before passing them in.
-* `titleInfo` requires `title` to be set — the info icon is contextually tied to the title label. If `title` is absent, `titleInfo` has no effect.
-* `trend` is intended to accompany `description` to provide temporal context (e.g. "↑ +3% vs. last month"). A trend icon alone, with no description, leaves the direction unanchored ("up since *when*?"). If `description` is not provided, `trend` has no effect.
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
 
 ## Props [#props]
+
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+The `ModalTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -4155,142 +4155,6 @@ The `Switch` component has the following props:
 <PropTable />
 
 
-# Tabs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Accessible Tabs semantics powered by React Aria Components.
-* Underline and Manilla visual treatments.
-* Controlled and uncontrolled selection.
-* Automatic horizontal overflow controls that move one tab at a time.
-* Localized labels for the automatic overflow controls.
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Switch between peer sections of content on the same page.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Tabs>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22;>Billing</Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Control the selected panel from application state.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selectedKey, setSelectedKey] = useState('billing');\n\n  return (\n    <>\n      <Tabs selectedKey={selectedKey} onSelectionChange={(key) => setSelectedKey(String(key))}>\n        <TabList aria-label=\&#x22;Account settings\&#x22;>\n          <Tab id=\&#x22;account\&#x22;>Account</Tab>\n          <Tab id=\&#x22;billing\&#x22;>Billing</Tab>\n          <Tab id=\&#x22;security\&#x22;>Security</Tab>\n        </TabList>\n        <TabPanels>\n          <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n          <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n          <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n        </TabPanels>\n      </Tabs>\n      <p>Current selection: {selectedKey}</p>\n    </>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Disable a section while keeping the remaining sections available.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Tabs>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22; isDisabled>\n          Billing\n        </Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
-
-### Manilla [#manilla]
-
-Use the folder-style Manilla treatment for document-oriented sections.
-
-<Story of="ManillaExample" />
-
-<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function ManillaExample() {\n  return (\n    <Tabs design=\&#x22;manilla\&#x22;>\n      <TabList aria-label=\&#x22;Documents\&#x22;>\n        <Tab id=\&#x22;recent\&#x22;>Recent</Tab>\n        <Tab id=\&#x22;shared\&#x22;>Shared</Tab>\n        <Tab id=\&#x22;archived\&#x22;>Archived</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;recent\&#x22;>Recent documents</TabPanel>\n        <TabPanel id=\&#x22;shared\&#x22;>Shared documents</TabPanel>\n        <TabPanel id=\&#x22;archived\&#x22;>Archived documents</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
-
-### Overflow [#overflow]
-
-When the tab strip is narrower than its content, the group adds controls that move one tab at a time.
-
-<Story of="OverflowExample" />
-
-<Source language="tsx" code="&#x22;import type { Ref } from 'react';\nimport { Tab, TabList, TabPanel, TabPanels, Tabs, type TabsOverflowLabels } from '@godaddy/antares';\n\ninterface OverflowExampleProps {\n  maxWidth?: string;\n  overflowLabels?: TabsOverflowLabels;\n  tabListRef?: Ref<HTMLDivElement>;\n}\n\nexport function OverflowExample({ maxWidth = '320px', overflowLabels, tabListRef }: OverflowExampleProps) {\n  return (\n    <Tabs overflowLabels={overflowLabels} style={{ width: maxWidth, maxWidth }}>\n      <TabList ref={tabListRef} aria-label=\&#x22;Product settings\&#x22;>\n        <Tab id=\&#x22;overview\&#x22;>Overview</Tab>\n        <Tab id=\&#x22;availability\&#x22;>Availability</Tab>\n        <Tab id=\&#x22;shipping\&#x22;>Shipping</Tab>\n        <Tab id=\&#x22;returns\&#x22;>Returns</Tab>\n        <Tab id=\&#x22;notifications\&#x22;>Notifications</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;overview\&#x22;>Overview</TabPanel>\n        <TabPanel id=\&#x22;availability\&#x22;>Availability</TabPanel>\n        <TabPanel id=\&#x22;shipping\&#x22;>Shipping</TabPanel>\n        <TabPanel id=\&#x22;returns\&#x22;>Returns</TabPanel>\n        <TabPanel id=\&#x22;notifications\&#x22;>Notifications</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
-
-### RTL [#rtl]
-
-Overflow controls follow the logical reading direction.
-
-<Story of="RTLExample" />
-
-<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
-
-`overflowLabels` is optional and defaults to "Previous tabs" and "Next tabs". Provide localized labels when needed; they should describe the logical direction rather than physical directions like "left" or "right", as the component automatically handles RTL layouts.
-
-`TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Give each `Tab` and its corresponding `TabPanel` the same `id`; React Aria uses that key to build their accessible relationship.
-
-## Customization [#customization]
-
-The component exposes state through data attributes:
-
-* `Tabs`: `data-design="underline"` or `data-design="manilla"`.
-* `Tab`: `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
-* `TabPanel`: `data-inert` when a force-mounted inactive panel is not interactive.
-
-Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components. You can also use render props in `className` to style based on state (e.g., `className={({ isSelected }) => isSelected ? 'active' : ''}`).
-
-Use `TabList`'s `containerProps` to customize the outer tab list shell, such as increasing its width.
-
-## Best Practices [#best-practices]
-
-* Use Tabs for peer panels on the same page and URL.
-* Keep the number of tabs small enough for users to understand the available sections.
-* Do not use Tabs for primary application navigation or route changes.
-* Do not render a standalone `Tab`; compose it inside `Tabs` and `TabList`.
-
-## Props [#props]
-
-### Tabs [#tabs]
-
-<PropTable />
-
-### TabList [#tablist]
-
-<PropTable />
-
-### Tab [#tab]
-
-<PropTable />
-
-### TabPanels [#tabpanels]
-
-<PropTable />
-
-### TabPanel [#tabpanel]
-
-<PropTable />
-
-
 # Tag
 
 
@@ -4424,7 +4288,7 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 <PropTable />
 
 
-# Text
+# Tabs
 
 
 
@@ -4446,74 +4310,116 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 <Meta of="Stories" name="Overview" />
 
-The `Text` component prepares content with a few properties.
+## Features [#features]
 
-Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
+* Accessible Tabs semantics powered by React Aria Components.
+* Underline and Manilla visual treatments.
+* Controlled and uncontrolled selection.
+* Automatic horizontal overflow controls that move one tab at a time.
+* Localized labels for the automatic overflow controls.
 
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-Basic text content.
+Switch between peer sections of content on the same page.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Tabs>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22;>Billing</Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
 
-### As [#as]
+### Controlled [#controlled]
 
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+Control the selected panel from application state.
 
-<Story of="AsExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selectedKey, setSelectedKey] = useState('billing');\n\n  return (\n    <>\n      <Tabs selectedKey={selectedKey} onSelectionChange={(key) => setSelectedKey(String(key))}>\n        <TabList aria-label=\&#x22;Account settings\&#x22;>\n          <Tab id=\&#x22;account\&#x22;>Account</Tab>\n          <Tab id=\&#x22;billing\&#x22;>Billing</Tab>\n          <Tab id=\&#x22;security\&#x22;>Security</Tab>\n        </TabList>\n        <TabPanels>\n          <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n          <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n          <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n        </TabPanels>\n      </Tabs>\n      <p>Current selection: {selectedKey}</p>\n    </>\n  );\n}&#x22;" />
 
-### Heading [#heading]
+### Disabled [#disabled]
 
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+Disable a section while keeping the remaining sections available.
 
-<Story of="HeadingExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function HeadingExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Tabs>\n      <TabList aria-label=\&#x22;Account settings\&#x22;>\n        <Tab id=\&#x22;account\&#x22;>Account</Tab>\n        <Tab id=\&#x22;billing\&#x22; isDisabled>\n          Billing\n        </Tab>\n        <Tab id=\&#x22;security\&#x22;>Security</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;account\&#x22;>Account settings</TabPanel>\n        <TabPanel id=\&#x22;billing\&#x22;>Billing settings</TabPanel>\n        <TabPanel id=\&#x22;security\&#x22;>Security settings</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
 
-### Align [#align]
+### Manilla [#manilla]
 
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+Use the folder-style Manilla treatment for document-oriented sections.
 
-<Story of="AlignExample" />
+<Story of="ManillaExample" />
 
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@godaddy/antares';\n\nexport function ManillaExample() {\n  return (\n    <Tabs design=\&#x22;manilla\&#x22;>\n      <TabList aria-label=\&#x22;Documents\&#x22;>\n        <Tab id=\&#x22;recent\&#x22;>Recent</Tab>\n        <Tab id=\&#x22;shared\&#x22;>Shared</Tab>\n        <Tab id=\&#x22;archived\&#x22;>Archived</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;recent\&#x22;>Recent documents</TabPanel>\n        <TabPanel id=\&#x22;shared\&#x22;>Shared documents</TabPanel>\n        <TabPanel id=\&#x22;archived\&#x22;>Archived documents</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
 
-### Max Lines [#max-lines]
+### Overflow [#overflow]
 
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+When the tab strip is narrower than its content, the group adds controls that move one tab at a time.
 
-<Story of="MaxLinesExample" />
+<Story of="OverflowExample" />
 
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import type { Ref } from 'react';\nimport { Tab, TabList, TabPanel, TabPanels, Tabs, type TabsOverflowLabels } from '@godaddy/antares';\n\ninterface OverflowExampleProps {\n  maxWidth?: string;\n  overflowLabels?: TabsOverflowLabels;\n  tabListRef?: Ref<HTMLDivElement>;\n}\n\nexport function OverflowExample({ maxWidth = '320px', overflowLabels, tabListRef }: OverflowExampleProps) {\n  return (\n    <Tabs overflowLabels={overflowLabels} style={{ width: maxWidth, maxWidth }}>\n      <TabList ref={tabListRef} aria-label=\&#x22;Product settings\&#x22;>\n        <Tab id=\&#x22;overview\&#x22;>Overview</Tab>\n        <Tab id=\&#x22;availability\&#x22;>Availability</Tab>\n        <Tab id=\&#x22;shipping\&#x22;>Shipping</Tab>\n        <Tab id=\&#x22;returns\&#x22;>Returns</Tab>\n        <Tab id=\&#x22;notifications\&#x22;>Notifications</Tab>\n      </TabList>\n      <TabPanels>\n        <TabPanel id=\&#x22;overview\&#x22;>Overview</TabPanel>\n        <TabPanel id=\&#x22;availability\&#x22;>Availability</TabPanel>\n        <TabPanel id=\&#x22;shipping\&#x22;>Shipping</TabPanel>\n        <TabPanel id=\&#x22;returns\&#x22;>Returns</TabPanel>\n        <TabPanel id=\&#x22;notifications\&#x22;>Notifications</TabPanel>\n      </TabPanels>\n    </Tabs>\n  );\n}&#x22;" />
 
-### Wrap [#wrap]
+### RTL [#rtl]
 
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+Overflow controls follow the logical reading direction.
 
-<Story of="WrapExample" />
+<Story of="RTLExample" />
 
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { RTLProvider } from '#utils/rtl-locale-provider.tsx';\nimport { OverflowExample } from './overflow.tsx';\n\nexport function RTLExample() {\n  return (\n    <RTLProvider>\n      <OverflowExample />\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+Tabs require an accessible label on `TabList`. Use the keyboard to move between tabs with the arrow keys. Disabled tabs are skipped. Use `keyboardActivation="manual"` when focus should move independently of selection.
+
+`overflowLabels` is optional and defaults to "Previous tabs" and "Next tabs". Provide localized labels when needed; they should describe the logical direction rather than physical directions like "left" or "right", as the component automatically handles RTL layouts.
+
+`TabList` must be rendered inside `Tabs` and must provide `aria-label` or `aria-labelledby`. Give each `Tab` and its corresponding `TabPanel` the same `id`; React Aria uses that key to build their accessible relationship.
+
+## Customization [#customization]
+
+The component exposes state through data attributes:
+
+* `Tabs`: `data-design="underline"` or `data-design="manilla"`.
+* `Tab`: `data-selected`, `data-hovered`, `data-pressed`, `data-focus-visible`, and `data-disabled`.
+* `TabPanel`: `data-inert` when a force-mounted inactive panel is not interactive.
+
+Use these attributes to extend styling without replacing the accessibility behavior supplied by React Aria Components. You can also use render props in `className` to style based on state (e.g., `className={({ isSelected }) => isSelected ? 'active' : ''}`).
+
+Use `TabList`'s `containerProps` to customize the outer tab list shell, such as increasing its width.
+
+## Best Practices [#best-practices]
+
+* Use Tabs for peer panels on the same page and URL.
+* Keep the number of tabs small enough for users to understand the available sections.
+* Do not use Tabs for primary application navigation or route changes.
+* Do not render a standalone `Tab`; compose it inside `Tabs` and `TabList`.
 
 ## Props [#props]
 
-The `Text` component accepts the following props:
+### Tabs [#tabs]
 
 <PropTable />
 
-The `Heading` component accepts the following props:
+### TabList [#tablist]
+
+<PropTable />
+
+### Tab [#tab]
+
+<PropTable />
+
+### TabPanels [#tabpanels]
+
+<PropTable />
+
+### TabPanel [#tabpanel]
 
 <PropTable />
 
@@ -4883,6 +4789,100 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 ```
 
 ## Props [#props]
+
+<PropTable />
+
+
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Heading [#heading]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="HeadingExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function HeadingExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+The `Heading` component accepts the following props:
 
 <PropTable />
 
