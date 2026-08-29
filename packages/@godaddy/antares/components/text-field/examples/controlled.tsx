@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, TextField } from '@godaddy/antares';
+import { Group, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Use `value` and `onChange` for controlled state.
@@ -10,7 +10,12 @@ export function TextFieldControlledExample() {
 
   return (
     <>
-      <TextField label="Email" placeholder="you@example.com" value={value} onChange={setValue} />
+      <TextField value={value} onChange={setValue}>
+        <Label>Email</Label>
+        <Group>
+          <Input placeholder="you@example.com" />
+        </Group>
+      </TextField>
       <Text>
         <strong>Value:</strong> {value || '(empty)'}
       </Text>

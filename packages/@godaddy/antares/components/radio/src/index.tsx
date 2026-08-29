@@ -6,7 +6,9 @@ import {
   type RadioGroupProps as RACRadioGroupProps
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
-import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { FieldError } from '#components/field-error';
+import { Label, Text } from '#components/text';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 import type { ReactNode } from 'react';
@@ -60,14 +62,14 @@ export function RadioGroup({
       {...props}
       className={composeClassName(className, styles.radioGroup)}
     >
-      <FieldLabel isRequired={props.isRequired}>{label}</FieldLabel>
+      {label ? <Label>{label}</Label> : null}
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}
         gap={orientation === 'horizontal' ? 'lg' : 'md'}
       >
         {children}
       </Flex>
-      <FieldDescription>{description}</FieldDescription>
+      {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
     </Field>
   );

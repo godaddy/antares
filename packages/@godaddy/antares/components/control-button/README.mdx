@@ -1,0 +1,29 @@
+---
+title: ControlButton
+description: Unstyled RAC Button for use inside a Group. Field paints it via ControlButtonContext, not ButtonContext, so page Buttons stay unchanged.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './control-button.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Use for NumberField steppers, Select/DatePicker triggers, and in-group actions.
+- Do not use `Button` for those slots; Field would restyle every page button if it merged RAC `ButtonContext`.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

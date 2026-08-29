@@ -1,6 +1,6 @@
 ---
 title: TextField
-description: TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
+description: TextField is a form root for typed text. Compose Label, Group, Input or TextArea, description Text, and FieldError as children.
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -11,12 +11,10 @@ import * as Stories from './text-field.stories.tsx';
 
 ## Features
 
-- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-- **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-- **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-- **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-- **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+- **Composition**: Nest `Label`, `Group`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Size lives on `Group`. Placeholder lives on `Input` / `TextArea`.
+- **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled.
+- **Validation states**: Use `isInvalid` with `FieldError` and `isDisabled` for validation and disabled state.
+- **Required indicator**: `isRequired` sets `data-required` on the field; Field CSS draws the asterisk on the label.
 
 ## Installation
 

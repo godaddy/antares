@@ -1,0 +1,29 @@
+---
+title: TextArea
+description: Multiline text control for use inside a Group. Field injects field chrome via TextAreaContext.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './text-area.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- RAC `TextArea` with fill layout (`flex={1}`).
+- Pair with `TextField` and `Group` instead of a `multiline` prop on TextField.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

@@ -6,7 +6,9 @@ import {
   CheckboxGroup as RACCheckboxGroup,
   type CheckboxGroupProps as RACCheckboxGroupProps
 } from 'react-aria-components';
-import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { FieldError } from '#components/field-error';
+import { Label, Text } from '#components/text';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
@@ -103,14 +105,14 @@ export function CheckboxGroup({
 }: CheckboxGroupProps) {
   return (
     <Field as={RACCheckboxGroup} {...rest} className={composeClassName(className, styles.checkboxGroup)}>
-      <FieldLabel isRequired={rest.isRequired}>{label}</FieldLabel>
+      {label ? <Label>{label}</Label> : null}
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}
         gap={orientation === 'horizontal' ? 'lg' : 'md'}
       >
         {children}
       </Flex>
-      <FieldDescription>{description}</FieldDescription>
+      {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
     </Field>
   );

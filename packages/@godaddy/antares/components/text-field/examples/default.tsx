@@ -1,9 +1,16 @@
-import { TextField, type TextFieldProps } from '@godaddy/antares';
+import { Group, Input, Label, TextField, type TextFieldProps } from '@godaddy/antares';
 
 /**
- * Minimal usage with label and placeholder.
+ * Compose Label, Group, and Input inside TextField.
  * @order 1
  */
 export function DefaultExample(props: TextFieldProps) {
-  return <TextField label="Name" placeholder="Enter your name" {...props} />;
+  return (
+    <TextField {...props}>
+      <Label>Name</Label>
+      <Group>
+        <Input placeholder="Enter your name" />
+      </Group>
+    </TextField>
+  );
 }

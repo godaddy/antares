@@ -3,9 +3,12 @@ import { renderToString } from 'react-dom/server';
 import { TextFieldAdornmentsExample } from '../examples/adornments';
 import { DefaultExample } from '../examples/default';
 import { TextFieldDisabledExample } from '../examples/disabled';
+import { TextFieldIconAccessoriesExample } from '../examples/icon-accessories';
 import { TextFieldInvalidExample } from '../examples/invalid';
+import { TextFieldLeadingControlExample } from '../examples/leading-control';
 import { TextFieldMultilineExample } from '../examples/multiline';
 import { TextFieldSizesExample } from '../examples/sizes';
+import { TextFieldTrailingControlExample } from '../examples/trailing-control';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -42,6 +45,18 @@ describe('@godaddy/antares', function antares() {
         const result = renderToString(<TextFieldSizesExample />);
         expect(result).toContain('data-size="sm"');
         expect(result).toMatchSnapshot();
+      });
+
+      it('renders leading control example', function leadingControl() {
+        expect(renderToString(<TextFieldLeadingControlExample />)).toMatchSnapshot();
+      });
+
+      it('renders trailing control example', function trailingControl() {
+        expect(renderToString(<TextFieldTrailingControlExample />)).toMatchSnapshot();
+      });
+
+      it('renders icon accessories example', function iconAccessories() {
+        expect(renderToString(<TextFieldIconAccessoriesExample />)).toMatchSnapshot();
       });
     });
   });

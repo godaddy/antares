@@ -1,9 +1,16 @@
-import { TextField, type TextFieldProps } from '@godaddy/antares';
+import { Group, Label, TextArea, TextField, type TextFieldProps } from '@godaddy/antares';
 
 /**
- * Use `multiline` to render a textarea.
+ * Use TextArea instead of Input for multiline text.
  * @order 6
  */
 export function TextFieldMultilineExample(props: TextFieldProps) {
-  return <TextField label="Comment" placeholder="Enter your comment" multiline {...props} />;
+  return (
+    <TextField {...props}>
+      <Label>Comment</Label>
+      <Group>
+        <TextArea placeholder="Enter your comment" />
+      </Group>
+    </TextField>
+  );
 }

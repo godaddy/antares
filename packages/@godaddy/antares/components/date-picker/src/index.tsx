@@ -9,19 +9,13 @@ import {
   DateRangePickerStateContext,
   useLocale
 } from 'react-aria-components';
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldTrigger,
-  type FieldOwnProps,
-  type FieldSize
-} from '#components/field';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { FieldError } from '#components/field-error';
+import { Label, Text } from '#components/text';
+import { Group, Content, type FieldSize } from '#components/structure';
+import { ControlButton } from '#components/control-button';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
-import { Content } from '#components/structure';
 import { Calendar, RangeCalendar } from '#components/calendar';
 import styles from './index.module.css';
 
@@ -61,18 +55,18 @@ export function DatePicker(props: DatePickerProps) {
     placeholder = 'Select a date',
     ...racProps
   } = props;
-  const { isDisabled, isRequired } = racProps;
+  const { isDisabled } = racProps;
 
   return (
     <Field as={RACDatePicker} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <FieldTrigger variant="select">
+      {label ? <Label>{label}</Label> : null}
+      <Group isDisabled={isDisabled} size={size} alignItems="center">
+        <ControlButton flex={1} gap="sm" data-variant="select">
           <Icon icon="calendar" />
           <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-        </FieldTrigger>
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
+        </ControlButton>
+      </Group>
+      {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
       <Popover hideArrow>
         <Content>
@@ -117,18 +111,18 @@ export function DateRangePicker(props: DateRangePickerProps) {
     placeholder = 'Select dates',
     ...racProps
   } = props;
-  const { isDisabled, isRequired } = racProps;
+  const { isDisabled } = racProps;
 
   return (
     <Field as={RACDateRangePicker} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <FieldTrigger variant="select">
+      {label ? <Label>{label}</Label> : null}
+      <Group isDisabled={isDisabled} size={size} alignItems="center">
+        <ControlButton flex={1} gap="sm" data-variant="select">
           <Icon icon="calendar" />
           <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-        </FieldTrigger>
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
+        </ControlButton>
+      </Group>
+      {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
       <Popover hideArrow>
         <Content>

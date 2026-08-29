@@ -8,6 +8,8 @@ exports[`@godaddy/antares > #Text > renders the as example 1`] = `"<marquee clas
 
 exports[`@godaddy/antares > #Text > renders the heading example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading">Heading level 1</h1><h2 class="heading">Heading level 2</h2><h3 class="heading">Heading level 3</h3></div>"`;
 
+exports[`@godaddy/antares > #Text > renders the label example 1`] = `"<div class="box flex column field" style="gap:var(--sp-sm)" data-rac="" data-required="true"><label class="label" id="react-aria-_R_0H1_" for="react-aria-_R_0_">Email</label><div role="presentation" class="group box flex" style="align-self:stretch;align-items:stretch;flex-wrap:nowrap" data-elevation="card" data-rac=""><input type="text" required="" placeholder="you@example.com" tabindex="0" id="react-aria-_R_0_" aria-labelledby="react-aria-_R_0H1_" aria-describedby="react-aria-_R_0H3_ react-aria-_R_0H4_" class="input box" style="flex:1" data-rac="" value=""/></div></div>"`;
+
 exports[`@godaddy/antares > #Text > renders the maxLines example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text" style="--max-lines:2">This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"`;
 
 exports[`@godaddy/antares > #Text > renders the text example 1`] = `"<span class="text">Hello, world!</span>"`;

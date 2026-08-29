@@ -1,16 +1,11 @@
 import { forwardRef } from 'react';
 import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
-import {
-  Field,
-  FieldButton,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  type FieldSize,
-  FieldInput,
-  type FieldOwnProps
-} from '#components/field';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { FieldError } from '#components/field-error';
+import { Label, Text } from '#components/text';
+import { Group, type FieldSize } from '#components/structure';
+import { ControlButton } from '#components/control-button';
+import { Input } from '#components/input';
 import { Icon } from '#components/icon';
 
 export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
@@ -25,40 +20,31 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
 }
 
 /**
- * Antares NumberField component. Renders a numeric input with label, description, error message, and optional stepper buttons.
+ * Numeric input with label, description, error message, and optional stepper buttons.
  *
  * @param props - {@link NumberFieldProps}
- * @param ref - Ref for the input element.
- * @returns JSX element
- *
- * @example
- * ```tsx
- * <NumberField label="Quantity" placeholder="0" minValue={0} maxValue={100} />
- * <NumberField label="Amount" value={amount} onChange={setAmount} minValue={0} />
- * <NumberField label="Guests" hideStepper description="Enter a whole number." />
- * ```
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
   const { description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
-  const { isDisabled, isRequired } = racProps;
+  const { isDisabled } = racProps;
 
   return (
     <Field as={RACNumberField} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size}>
+      {label ? <Label>{label}</Label> : null}
+      <Group isDisabled={isDisabled} size={size}>
         {!hideStepper && (
-          <FieldButton slot="decrement">
+          <ControlButton slot="decrement">
             <Icon icon="minus" />
-          </FieldButton>
+          </ControlButton>
         )}
-        <FieldInput ref={ref} placeholder={placeholder} />
+        <Input ref={ref} placeholder={placeholder} />
         {!hideStepper && (
-          <FieldButton slot="increment">
+          <ControlButton slot="increment">
             <Icon icon="plus" />
-          </FieldButton>
+          </ControlButton>
         )}
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
+      </Group>
+      {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
     </Field>
   );

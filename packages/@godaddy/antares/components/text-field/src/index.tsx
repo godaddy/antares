@@ -1,88 +1,45 @@
 import type { ReactNode } from 'react';
 import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  type FieldSize,
-  FieldInput,
-  FieldTextArea,
-  type FieldOwnProps
-} from '#components/field';
-import { Flex } from '#components/layout/flex';
+import { Field } from '#components/_internal/field';
 
-export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'size'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'children'> {
   /** Default value (uncontrolled). */
   defaultValue?: string;
 
   /** Current value (controlled). */
   value?: string;
 
-  /** Visual size of the input. @default 'md' */
-  size?: FieldSize;
-
-  /** Content rendered before the input (leading adornment) — text or an icon. */
-  leadingText?: ReactNode;
-
-  /** Content rendered after the input (trailing adornment) — text or an icon. */
-  trailingText?: ReactNode;
-
-  /** When true, renders a textarea instead of a single-line input. */
-  multiline?: boolean;
-
   /** Name of the input element, used when submitting a form. */
   name?: string;
 
-  /** Placeholder text when the input value is empty. */
-  placeholder?: string;
-
   /** Handler called when the value changes. */
   onChange?: RACTextFieldProps['onChange'];
+
+  /** Composed interior: Label, Group, Input or TextArea, description Text, FieldError. */
+  children?: ReactNode;
 }
 
 /**
- * TextField composes React Aria TextField with the field primitives (Field, FieldLabel,
- * FieldGroup, FieldError) and optional leading/trailing text adornments. Use for
- * single-line or multiline text input with label, description, and error message.
+ * RAC TextField plus the Field shell. Compose Label, Group, Input, and FieldError as children.
  *
  * @param props - {@link TextFieldProps}
- * @returns JSX element
  *
  * @example
  * ```tsx
- * <TextField label="Email" placeholder="you@example.com" />
- * <TextField label="Amount" leadingText="$" trailingText=".00" />
- * <TextField label="Comment" multiline placeholder="Enter a comment" />
+ * <TextField>
+ *   <Label>Email</Label>
+ *   <Group>
+ *     <Input placeholder="you@example.com" />
+ *   </Group>
+ * </TextField>
  * ```
  */
 export function TextField(props: TextFieldProps) {
-  const { description, errorMessage, label, leadingText, multiline, placeholder, size, trailingText, ...racProps } =
-    props;
-  const { isDisabled, isRequired } = racProps;
-
-  const hasLeading = leadingText != null && leadingText !== false;
-  const hasTrailing = trailingText != null && trailingText !== false;
+  const { children, ...racProps } = props;
 
   return (
     <Field as={RACTextField} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size} gap="sm">
-        {hasLeading && (
-          <Flex as="span" alignItems="center" inlinePaddingStart="md">
-            {leadingText}
-          </Flex>
-        )}
-        {multiline ? <FieldTextArea placeholder={placeholder} /> : <FieldInput placeholder={placeholder} />}
-        {hasTrailing && (
-          <Flex as="span" alignItems="center" inlinePaddingEnd="md">
-            {trailingText}
-          </Flex>
-        )}
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
+      {children}
     </Field>
   );
 }

@@ -1,0 +1,5 @@
+.fieldError {
+  color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
+  font-size: var(--ux-p4h24g, 0.875rem);
+  font-weight: var(--ux-g9ierp, 400);
+}

@@ -1,12 +1,16 @@
 import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { page, userEvent } from 'vitest/browser';
+import { FieldError, Group, Input, TextField } from '@godaddy/antares';
 import { TextFieldAdornmentsExample } from '../examples/adornments';
 import { DefaultExample } from '../examples/default';
 import { TextFieldControlledExample } from '../examples/controlled';
 import { TextFieldDisabledExample } from '../examples/disabled';
 import { TextFieldInvalidExample } from '../examples/invalid';
+import { TextFieldLeadingControlExample } from '../examples/leading-control';
 import { TextFieldMultilineExample } from '../examples/multiline';
+import { TextFieldTrailingControlExample } from '../examples/trailing-control';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -56,7 +60,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#adornments', function adornments() {
-      it('renders leadingText and trailingText', async function adornmentsRendered() {
+      it('renders leading and trailing text', async function adornmentsRendered() {
         const { locator } = await render(<TextFieldAdornmentsExample />);
         const leadingText = locator.getByText('$').element();
         const trailingText = locator.getByText('.00').element();
@@ -70,7 +74,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#multiline', function multiline() {
-      it('renders textarea when multiline', async function textareaRendered() {
+      it('renders a textarea', async function textareaRendered() {
         const { locator } = await render(<TextFieldMultilineExample />);
         const textarea = locator.getByRole('textbox').element();
 
@@ -88,6 +92,61 @@ describe('@godaddy/antares', function antares() {
         const newHeight = textarea.getBoundingClientRect().height;
 
         assume(newHeight).is.greaterThan(initialHeight);
+      });
+    });
+
+    describe('#leading-control', function leadingControl() {
+      it('moves focus to the leading button on tab', async function focusOrder() {
+        const { locator } = await render(<TextFieldLeadingControlExample isDisabled={false} />);
+        const button = locator.getByRole('button').element();
+
+        await userEvent.tab();
+        assume(document.activeElement).equals(button);
+        assume(button.hasAttribute('data-focus-visible')).equals(true);
+        assume(button.hasAttribute('data-focused')).equals(true);
+      });
+
+      it('marks the group disabled when isDisabled', async function groupDisabled() {
+        const { container } = await render(<TextFieldLeadingControlExample isDisabled={true} />);
+        const group = container.querySelector('[data-disabled]') as HTMLElement;
+
+        assume(group).exists();
+      });
+    });
+
+    describe('#trailing-control', function trailingControl() {
+      it('moves focus through the input to the trailing button on tab', async function focusOrder() {
+        const { locator } = await render(<TextFieldTrailingControlExample />);
+        const button = locator.getByRole('button').element();
+
+        await userEvent.tab();
+        await userEvent.tab();
+        assume(document.activeElement).equals(button);
+        assume(button.hasAttribute('data-focus-visible')).equals(true);
+        assume(button.hasAttribute('data-focused')).equals(true);
+      });
+    });
+
+    describe('#validation', function validation() {
+      it('marks the group invalid via FieldErrorContext when submit fails validation', async function submitInvalid() {
+        const { container } = await render(
+          <form>
+            <TextField isRequired>
+              <Group data-testid="group">
+                <Input aria-label="Email" />
+              </Group>
+              <FieldError />
+            </TextField>
+            <button type="submit">Submit</button>
+          </form>
+        );
+
+        const group = container.querySelector('[data-testid="group"]') as HTMLElement;
+        assume(group.hasAttribute('data-invalid')).equals(false);
+
+        await userEvent.click(page.getByRole('button', { name: 'Submit' }));
+
+        assume(group.hasAttribute('data-invalid')).equals(true);
       });
     });
   });

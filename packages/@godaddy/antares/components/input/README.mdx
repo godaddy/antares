@@ -1,0 +1,29 @@
+---
+title: Input
+description: Single-line text control for use inside a Group. Field injects field chrome via InputContext.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './input.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- RAC `Input` with fill layout (`flex={1}`).
+- Pair with `TextField` (or another field root) and `Group`. Do not import `react-aria-components`.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

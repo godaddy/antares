@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { preloadTestIcons } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { TextFieldControlledExample } from '../examples/controlled.tsx';
 import { TextFieldInvalidExample } from '../examples/invalid.tsx';
@@ -7,8 +8,13 @@ import { TextFieldDisabledExample } from '../examples/disabled.tsx';
 import { TextFieldAdornmentsExample } from '../examples/adornments.tsx';
 import { TextFieldMultilineExample } from '../examples/multiline.tsx';
 import { TextFieldSizesExample } from '../examples/sizes.tsx';
+import { TextFieldIconAccessoriesExample } from '../examples/icon-accessories.tsx';
+import { TextFieldLeadingControlExample } from '../examples/leading-control.tsx';
+import { TextFieldTrailingControlExample } from '../examples/trailing-control.tsx';
 
 describe('@godaddy/antares', function antares() {
+  beforeAll(preloadTestIcons);
+
   describe('#TextField', function textFieldTests() {
     it('basic example', async function basicRender() {
       const { container } = await render(<DefaultExample />);
@@ -43,6 +49,31 @@ describe('@godaddy/antares', function antares() {
     it('sizes example', async function sizesRender() {
       const { container } = await render(<TextFieldSizesExample />);
       await expect(container).toMatchScreenshot('sizes');
+    });
+
+    it('leading control example', async function leadingControlRender() {
+      const { container } = await render(<TextFieldLeadingControlExample />);
+      await expect(container).toMatchScreenshot('leading-control');
+    });
+
+    it('trailing control example', async function trailingControlRender() {
+      const { container } = await render(<TextFieldTrailingControlExample />);
+      await expect(container).toMatchScreenshot('trailing-control');
+    });
+
+    it('icon accessories example', async function iconAccessoriesRender() {
+      const { container } = await render(<TextFieldIconAccessoriesExample />);
+      await expect(container).toMatchScreenshot('icon-accessories');
+    });
+
+    it('invalid trailing control example', async function invalidTrailingRender() {
+      const { container } = await render(<TextFieldTrailingControlExample isInvalid />);
+      await expect(container).toMatchScreenshot('trailing-invalid');
+    });
+
+    it('small size icon accessories example', async function sizeSmRender() {
+      const { container } = await render(<TextFieldIconAccessoriesExample size="sm" />);
+      await expect(container).toMatchScreenshot('size-sm');
     });
   });
 });
