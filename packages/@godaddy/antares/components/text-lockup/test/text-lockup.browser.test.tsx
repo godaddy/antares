@@ -3,8 +3,11 @@ import { render } from 'vitest-browser-react';
 import { TagEyebrowExample } from '../examples/tag-eyebrow.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
-import { HeadingContext } from 'react-aria-components';
-import { Flex, Heading, TextLockup } from '@godaddy/antares';
+import { NarrowContainerExample } from '../examples/narrow-container.tsx';
+import { NestedNarrowContainerExample } from '../examples/nested-narrow-container.tsx';
+import { CenteredAncestorExample } from '../examples/centered-ancestor.tsx';
+import { InRowExample } from '../examples/in-row.tsx';
+import { SlotOwnershipExample } from '../examples/slot-ownership.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextLockup', function textLockupTests() {
@@ -33,13 +36,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('steps the title down a tier in a narrow container', async function narrowTitle() {
-      const { getByRole } = await render(
-        <div style={{ width: '400px' }}>
-          <TextLockup size="2xl">
-            <Heading>Text Lockup</Heading>
-          </TextLockup>
-        </div>
-      );
+      const { getByRole } = await render(<NarrowContainerExample />);
       const title = getByRole('heading').element();
 
       // 2xl narrow drops to the xl tier: 1.875rem = 30px.
@@ -47,44 +44,21 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('does not inherit an outer lockup narrow title size', async function nestedNarrowTitle() {
-      const { getByRole } = await render(
-        <TextLockup size="2xl">
-          <Heading>Outer</Heading>
-          <div style={{ width: '400px' }}>
-            <TextLockup size="md">
-              <Heading>Inner</Heading>
-            </TextLockup>
-          </div>
-        </TextLockup>
-      );
+      const { getByRole } = await render(<NestedNarrowContainerExample />);
 
       // `md` has no narrow step, so it keeps its own tier: 1.25rem = 20px.
       expect(getComputedStyle(getByRole('heading', { name: 'Inner' }).element()).fontSize).toEqual('20px');
     });
 
     it('keeps start alignment inside a centered ancestor', async function startInCentered() {
-      const { getByRole } = await render(
-        <div style={{ textAlign: 'center' }}>
-          <TextLockup>
-            <Heading>Text Lockup</Heading>
-          </TextLockup>
-        </div>
-      );
+      const { getByRole } = await render(<CenteredAncestorExample />);
 
       // `text-align` would otherwise inherit from the ancestor.
       expect(getComputedStyle(getByRole('heading').element()).textAlign).toEqual('start');
     });
 
     it('keeps its width inside a row that does not stretch it', async function widthInRow() {
-      const { container } = await render(
-        <div style={{ width: '600px' }}>
-          <Flex direction="row">
-            <TextLockup>
-              <Heading>Text Lockup</Heading>
-            </TextLockup>
-          </Flex>
-        </div>
-      );
+      const { container } = await render(<InRowExample />);
 
       // `inline-size` containment drops the children from the root's intrinsic size, so without
       // a definite inline size the lockup would collapse to 0.
@@ -92,13 +66,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('resolves slots against itself, not an outer container', async function ownsSlots() {
-      const { container, getByRole } = await render(
-        <HeadingContext.Provider value={{ slots: { title: { level: 5 } } }}>
-          <TextLockup>
-            <Heading slot="title">Text Lockup</Heading>
-          </TextLockup>
-        </HeadingContext.Provider>
-      );
+      const { container, getByRole } = await render(<SlotOwnershipExample />);
 
       // The lockup owns `title`, so the outer level never reaches the heading and it falls back
       // to RAC's default of 3.

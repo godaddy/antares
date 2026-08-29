@@ -1,9 +1,8 @@
-import type { CSSProperties } from 'react';
 import { render } from 'vitest-browser-react';
 import { describe, expect, it } from 'vitest';
-import { Heading } from '@godaddy/antares';
 import { DefaultExample } from '../examples/default.tsx';
 import { HeadingContextExample } from '../examples/heading-context.tsx';
+import { HeadingWeightExample } from '../examples/heading-weight.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Text', function textTests() {
@@ -30,11 +29,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('takes its weight from the heading ramp', async function headingWeight() {
-      const { getByRole } = await render(
-        <div style={{ '--font-heading-weight': '500' } as CSSProperties}>
-          <Heading>Themed weight</Heading>
-        </div>
-      );
+      const { getByRole } = await render(<HeadingWeightExample />);
 
       // A relative `bolder` would resolve to 700 and ignore the theme.
       expect(getComputedStyle(getByRole('heading').element()).fontWeight).toEqual('500');
