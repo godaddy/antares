@@ -45,9 +45,9 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
 /**
  * Stacks an optional eyebrow, a title and body text as one coordinated type group.
  *
- * The lockup positions and type-sets the parts; the consumer supplies them, so the
- * eyebrow can be plain text or a `Tag`, the title can be any heading level, and anything
- * else (a call to action, a second paragraph) can sit alongside them.
+ * The lockup positions and type-sets the parts; the consumer supplies them. Each part names its
+ * role with a slot (`eyebrow`, `title`, `body`), so the eyebrow can be plain text or a `Tag`, the
+ * title can be any heading level, and anything unslotted is left on its own type.
  *
  * @param props - {@link TextLockupProps}
  *
@@ -55,8 +55,8 @@ export interface TextLockupProps extends Omit<FlexProps, 'as' | 'direction' | 'a
  * ```tsx
  * <TextLockup size="xl">
  *   <Tag slot="eyebrow">New</Tag>
- *   <Heading level={1}>Text Lockup</Heading>
- *   <Text>She expressed her gratitude again.</Text>
+ *   <Heading slot="title" level={1}>Text Lockup</Heading>
+ *   <Text slot="body">She expressed her gratitude again.</Text>
  * </TextLockup>
  * ```
  */
@@ -76,22 +76,14 @@ export const TextLockup = forwardRef<HTMLDivElement, TextLockupProps>(function T
     >
       <RACProvider
         values={[
-          [
-            HeadingContext,
-            {
-              slots: {
-                [DEFAULT_SLOT]: { className: styles.title },
-                title: { className: styles.title }
-              }
-            }
-          ],
+          [HeadingContext, { slots: { [DEFAULT_SLOT]: {}, title: { className: styles.title } } }],
           [
             TextContext,
             {
               slots: {
-                [DEFAULT_SLOT]: { className: styles.body },
-                description: { className: styles.body },
-                eyebrow: { className: styles.eyebrow }
+                [DEFAULT_SLOT]: {},
+                eyebrow: { className: styles.eyebrow },
+                body: { className: styles.body }
               }
             }
           ],

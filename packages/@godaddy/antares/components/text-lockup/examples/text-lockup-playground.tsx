@@ -12,8 +12,10 @@ export function PlaygroundExample(props: PlaygroundExampleProps) {
   return (
     <TextLockup {...rest}>
       {tagEyebrow ? <Tag slot="eyebrow">New</Tag> : <Text slot="eyebrow">Unaffectedly Modest</Text>}
-      <Heading>Text Lockup</Heading>
-      <Text>She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.</Text>
+      <Heading slot="title">Text Lockup</Heading>
+      <Text slot="body">
+        She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.
+      </Text>
     </TextLockup>
   );
 }

@@ -7,11 +7,7 @@ import { AlignmentExample } from '../examples/alignment.tsx';
 import { LegibleLinesExample } from '../examples/legible-lines.tsx';
 import { WithActionsExample } from '../examples/with-actions.tsx';
 import { OverridesExample } from '../examples/overrides.tsx';
-import { NarrowContainerExample } from '../examples/narrow-container.tsx';
-import { NestedNarrowContainerExample } from '../examples/nested-narrow-container.tsx';
-import { CenteredAncestorExample } from '../examples/centered-ancestor.tsx';
-import { InRowExample } from '../examples/in-row.tsx';
-import { SlotOwnershipExample } from '../examples/slot-ownership.tsx';
+import { SelfContainedExample } from '../examples/self-contained.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextLockup', function textLockupTests() {
@@ -43,24 +39,8 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<OverridesExample />)).toMatchSnapshot();
     });
 
-    it('renders in a narrow container', function rendersNarrowContainer() {
-      expect(renderToString(<NarrowContainerExample />)).toMatchSnapshot();
-    });
-
-    it('renders a lockup nested in a narrow container', function rendersNestedNarrowContainer() {
-      expect(renderToString(<NestedNarrowContainerExample />)).toMatchSnapshot();
-    });
-
-    it('renders inside a centered ancestor', function rendersCenteredAncestor() {
-      expect(renderToString(<CenteredAncestorExample />)).toMatchSnapshot();
-    });
-
-    it('renders inside a row', function rendersInRow() {
-      expect(renderToString(<InRowExample />)).toMatchSnapshot();
-    });
-
-    it('renders the slot ownership fixture', function rendersSlotOwnership() {
-      expect(renderToString(<SlotOwnershipExample />)).toMatchSnapshot();
+    it('renders the self-contained fixture', function rendersSelfContained() {
+      expect(renderToString(<SelfContainedExample />)).toMatchSnapshot();
     });
   });
 });

@@ -16,13 +16,13 @@ export function LegibleLinesExample() {
   return (
     <Flex direction="column" gap="lg" style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>
       <TextLockup>
-        <Heading>Constrained by default</Heading>
-        <Text>{COPY}</Text>
+        <Heading slot="title">Constrained by default</Heading>
+        <Text slot="body">{COPY}</Text>
       </TextLockup>
 
       <TextLockup legibleLines={false}>
-        <Heading>Full width</Heading>
-        <Text>{COPY}</Text>
+        <Heading slot="title">Full width</Heading>
+        <Text slot="body">{COPY}</Text>
       </TextLockup>
     </Flex>
   );

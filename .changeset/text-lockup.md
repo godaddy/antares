@@ -14,9 +14,11 @@ feat: add TextLockup, a composed eyebrow / title / body type group in six sizes
   its legacy intent to that intent's legacy default. Where the design spec named a value that is
   not a tier, it snaps to the nearest one - six such cells, the largest being the `2xl` title at
   36px where the spec asks 40px, because `heading-2xl` is the top tier.
-- The body is a bare `<Text>` (`slot="description"` is equivalent); the eyebrow is
-  `slot="eyebrow"` on either a `Text` or a `Tag`, and a `Tag` there is sized to pair with the
-  lockup. An explicit prop on a child always wins over what the lockup supplies.
+- Each part names its role with a slot: `slot="eyebrow"` on either a `Text` or a `Tag` (a `Tag`
+  there is sized to pair with the lockup), `<Heading slot="title">`, and `<Text slot="body">`. The
+  unslotted case is deliberately left unstyled: these contexts reach every descendant, so styling
+  it would restyle the internal text of any nested component - a `Field`'s description, a
+  `ProgressStep`'s label. An explicit prop on a child always wins over what the lockup supplies.
 - In narrow containers the title steps down one tier at `2xl` and `sm`, via a container query.
   Those are the only two sizes where the spec's mobile ratio crosses a tier. The lockup is the
   query container, so it takes `inline-size: 100%`; `inline-size` containment would otherwise

@@ -12,16 +12,16 @@ export function TagEyebrowExample() {
         <Tag slot="eyebrow" emphasis="success">
           New
         </Tag>
-        <Heading>Tag eyebrow</Heading>
-        <Text>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>
+        <Heading slot="title">Tag eyebrow</Heading>
+        <Text slot="body">The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>
       </TextLockup>
 
       <TextLockup size="sm">
         <Tag slot="eyebrow" emphasis="success">
           New
         </Tag>
-        <Heading>The same lockup, smaller</Heading>
-        <Text>The tag steps down with it.</Text>
+        <Heading slot="title">The same lockup, smaller</Heading>
+        <Text slot="body">The tag steps down with it.</Text>
       </TextLockup>
     </Flex>
   );

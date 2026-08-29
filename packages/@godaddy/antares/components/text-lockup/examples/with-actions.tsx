@@ -11,8 +11,10 @@ export function WithActionsExample() {
       <Tag slot="eyebrow" emphasis="premium">
         Pro
       </Tag>
-      <Heading level={1}>Upgrade your plan</Heading>
-      <Text>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>
+      <Heading slot="title" level={1}>
+        Upgrade your plan
+      </Heading>
+      <Text slot="body">Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>
       <ButtonGroup inlinePadding="0" blockPadding="0">
         <Button variant="primary">Upgrade</Button>
         <Button variant="secondary">Compare plans</Button>

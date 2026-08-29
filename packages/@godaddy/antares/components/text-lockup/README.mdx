@@ -13,6 +13,7 @@ import * as Stories from './text-lockup.stories.tsx';
 
 - Six coordinated sizes, from a `2xl` page title down to `xs`
 - An eyebrow that takes plain text or a `Tag`, sized to match the lockup
+- Slotted parts, so nested components keep their own type
 - Any heading level, chosen independently of the visual size
 - Start or center alignment
 - A legible line-length clamp, on by default
@@ -33,11 +34,14 @@ npm install @godaddy/antares
 sit alongside them — a call to action, a second paragraph, an image — without the component
 growing a prop for it.
 
-- **The body is a bare `<Text>`.** `slot="description"` is equivalent.
+- **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Anything unslotted is
+  left alone, which is what lets a nested component keep its own internal text. Forget the slot
+  and the text simply renders untypeset rather than erroring.
 - **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
   freely, and a `Tag` is sized to pair with the lockup.
-- **The title is a `Heading`.** Pick the level from the document outline, not the visual size:
-  `size` handles the visuals, so `<Heading level={1}>` in an `xs` lockup is perfectly valid.
+- **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
+  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
+- **The body is `<Text slot="body">`**, once or as many times as the copy needs.
 - **An explicit prop on a child always wins** over what the lockup supplies. Pass
   `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
 - **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
@@ -50,7 +54,8 @@ growing a prop for it.
 
 - The title carries the heading semantics. Choose `level` so the page outline stays correct
   rather than to achieve a size.
-- Slots resolve against the lockup, so `slot="title"` names the lockup's title. Inside a
+- Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
+  container's. Inside a
   `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
   child for the accessible name, and use the lockup for the body.
 - The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
@@ -69,8 +74,8 @@ growing a prop for it.
 ```tsx
 <TextLockup>
   <Tag slot="eyebrow" />
-  <Heading />
-  <Text />
+  <Heading slot="title" />
+  <Text slot="body" />
   {/* ... */}
 </TextLockup>
 ```
