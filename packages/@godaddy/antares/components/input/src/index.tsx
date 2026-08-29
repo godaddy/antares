@@ -1,13 +1,17 @@
 import { forwardRef } from 'react';
-import { Input as RACInput, InputContext, type InputProps as RACInputProps } from 'react-aria-components';
+import {
+  Input as RACInput,
+  InputContext as RACInputContext,
+  type InputProps as RACInputProps
+} from 'react-aria-components';
 import { Box, type BoxOwnProps } from '#components/layout/box';
 
-export { InputContext };
+export const InputContext = RACInputContext;
 
 export interface InputProps extends RACInputProps, BoxOwnProps {}
 
 /**
- * RAC `Input` with fill layout. Field injects chrome via RAC `InputContext`.
+ * Single-line input that fills a Group. Field injects chrome via InputContext.
  *
  * @param props - {@link InputProps}
  */

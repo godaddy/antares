@@ -1,9 +1,13 @@
 import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
-import { Heading as RACHeading, HeadingContext, type HeadingProps as RACHeadingProps } from 'react-aria-components';
+import {
+  Heading as RACHeading,
+  HeadingContext as RACHeadingContext,
+  type HeadingProps as RACHeadingProps
+} from 'react-aria-components';
 import styles from './heading.module.css';
 
-export { HeadingContext };
+export const HeadingContext = RACHeadingContext;
 
 export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
   /**

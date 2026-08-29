@@ -1,11 +1,11 @@
 import { ControlButton, Flex, Group, Icon, Input, Label, Text, TextField, type GroupProps } from '@godaddy/antares';
 
 /**
- * Leading icon and trailing action inside the group.
+ * Compose with `children` for a leading icon and trailing action; `leadingText` and `trailingText` are for fixed text only.
  * @title Icon accessories
  * @order 10
  */
-export function TextFieldIconAccessoriesExample(props: GroupProps) {
+export function IconAccessoriesExample(props: GroupProps) {
   return (
     <TextField isDisabled={props.isDisabled} isInvalid={props.isInvalid}>
       <Label>Email</Label>

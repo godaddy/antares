@@ -5,7 +5,7 @@ import { Text, TextField } from '@godaddy/antares';
  * Use `value` and `onChange` for controlled state.
  * @order 2
  */
-export function TextFieldControlledExample() {
+export function ControlledExample() {
   const [value, setValue] = useState('');
 
   return (

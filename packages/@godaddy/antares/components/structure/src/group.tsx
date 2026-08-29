@@ -1,9 +1,13 @@
 import { createContext, forwardRef, useContext } from 'react';
-import { Group as RACGroup, GroupContext, type GroupProps as RACGroupProps } from 'react-aria-components';
+import {
+  Group as RACGroup,
+  GroupContext as RACGroupContext,
+  type GroupProps as RACGroupProps
+} from 'react-aria-components';
 import { FieldErrorContext } from '#components/field-error';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 
-export { GroupContext };
+export const GroupContext = RACGroupContext;
 
 /** Size for controls inside a field group. @default 'md' */
 export type FieldSize = 'sm' | 'md';
@@ -20,7 +24,7 @@ export interface GroupProps extends RACGroupProps, FlexOwnProps {
 export const InGroupContext = createContext(false);
 
 /**
- * RAC `Group` with row layout defaults. Field injects chrome via RAC `GroupContext`.
+ * Boxed row for field controls. Field injects chrome via GroupContext.
  *
  * @param props - {@link GroupProps}
  */

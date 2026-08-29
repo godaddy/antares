@@ -5,7 +5,7 @@ import { Flex, TextField } from '@godaddy/antares';
  * @title Sizes
  * @order 7
  */
-export function TextFieldSizesExample() {
+export function SizesExample() {
   return (
     <Flex direction="column" gap="md">
       <TextField label="Email (md)" placeholder="you@example.com" />

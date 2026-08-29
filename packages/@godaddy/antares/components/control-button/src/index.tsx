@@ -13,7 +13,7 @@ export interface ControlButtonProps extends RACButtonProps, FlexOwnProps {}
 export const ControlButtonContext = createContext<ContextValue<ControlButtonProps, HTMLButtonElement>>(null);
 
 /**
- * Unstyled RAC `Button` for use inside a {@link Group}. Field paints it via {@link ControlButtonContext}.
+ * Pressable control for use inside a {@link Group}. Field paints it via {@link ControlButtonContext}.
  *
  * @param props - {@link ControlButtonProps}
  */

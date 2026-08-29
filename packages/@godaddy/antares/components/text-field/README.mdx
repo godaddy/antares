@@ -17,7 +17,6 @@ import * as Stories from './text-field.stories.tsx';
 - **Multiline**: Set `multiline` to render a textarea instead of a single-line input
 - **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
 - **Composition**: For custom interiors (leading/trailing controls, icons), pass `children` and compose `Label`, `Group`, `Input`, and `ControlButton`
-- **React Aria integration**: Built on React Aria TextField for accessibility and behavior
 
 ## Installation
 
@@ -30,6 +29,20 @@ npm install --save @godaddy/antares
 <Examples of={Stories.Examples} />
 
 ## Props
+
+When `children` is passed, `TextField` is composed.
+
+```tsx
+<TextField>
+  <Label />
+  <Group>
+    <Input /> {/* or <TextArea /> */}
+    <ControlButton />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</TextField>
+```
 
 The `TextField` component accepts the following props:
 

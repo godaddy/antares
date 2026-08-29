@@ -3,14 +3,14 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import { FieldError, Group, Input, TextField } from '@godaddy/antares';
-import { TextFieldAdornmentsExample } from '../examples/adornments';
+import { AdornmentsExample } from '../examples/adornments';
 import { DefaultExample } from '../examples/default';
-import { TextFieldControlledExample } from '../examples/controlled';
-import { TextFieldDisabledExample } from '../examples/disabled';
-import { TextFieldInvalidExample } from '../examples/invalid';
-import { TextFieldLeadingControlExample } from '../examples/leading-control';
-import { TextFieldMultilineExample } from '../examples/multiline';
-import { TextFieldTrailingControlExample } from '../examples/trailing-control';
+import { ControlledExample } from '../examples/controlled';
+import { DisabledExample } from '../examples/disabled';
+import { InvalidExample } from '../examples/invalid';
+import { LeadingControlExample } from '../examples/leading-control';
+import { MultilineExample } from '../examples/multiline';
+import { TrailingControlExample } from '../examples/trailing-control';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -26,7 +26,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#controlled', function controlled() {
       it('updates value when user types', async function updatesValue() {
-        const { locator } = await render(<TextFieldControlledExample />);
+        const { locator } = await render(<ControlledExample />);
         const textbox = locator.getByRole('textbox', { name: /email/i });
 
         await textbox.fill('test@example.com');
@@ -38,7 +38,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#invalid', function invalid() {
       it('renders error message and data-invalid on frame and input', async function invalidState() {
-        const { locator } = await render(<TextFieldInvalidExample />);
+        const { locator } = await render(<InvalidExample />);
         const frame = locator.getByRole('presentation').element();
         const textbox = locator.getByRole('textbox').element();
 
@@ -50,7 +50,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#disabled', function disabled() {
       it('renders disabled input and data-disabled on frame', async function disabledState() {
-        const { locator } = await render(<TextFieldDisabledExample />);
+        const { locator } = await render(<DisabledExample />);
         const textbox = locator.getByRole('textbox').element();
         const frame = locator.getByRole('presentation').element();
 
@@ -61,7 +61,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#adornments', function adornments() {
       it('renders leading and trailing text', async function adornmentsRendered() {
-        const { locator } = await render(<TextFieldAdornmentsExample />);
+        const { locator } = await render(<AdornmentsExample />);
         const leadingText = locator.getByText('$').element();
         const trailingText = locator.getByText('.00').element();
         const textbox = locator.getByRole('textbox').element();
@@ -75,7 +75,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#multiline', function multiline() {
       it('renders a textarea', async function textareaRendered() {
-        const { locator } = await render(<TextFieldMultilineExample />);
+        const { locator } = await render(<MultilineExample />);
         const textarea = locator.getByRole('textbox').element();
 
         assume(locator.getByText('Comment').element()).exists();
@@ -83,12 +83,12 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('renders textarea with dynamic height for long text', async function rendersTextareaWithDynamicHeightForLongText() {
-        const { locator, rerender } = await render(<TextFieldMultilineExample />);
+        const { locator, rerender } = await render(<MultilineExample />);
         const textarea = locator.getByRole('textbox').element();
         const initialHeight = textarea.getBoundingClientRect().height;
         const longText = 'This is a long text '.repeat(10);
 
-        await rerender(<TextFieldMultilineExample value={longText} />);
+        await rerender(<MultilineExample value={longText} />);
         const newHeight = textarea.getBoundingClientRect().height;
 
         assume(newHeight).is.greaterThan(initialHeight);
@@ -97,7 +97,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#leading-control', function leadingControl() {
       it('moves focus to the leading button on tab', async function focusOrder() {
-        const { locator } = await render(<TextFieldLeadingControlExample isDisabled={false} />);
+        const { locator } = await render(<LeadingControlExample isDisabled={false} />);
         const button = locator.getByRole('button').element();
 
         await userEvent.tab();
@@ -107,7 +107,7 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('marks the group disabled when isDisabled', async function groupDisabled() {
-        const { container } = await render(<TextFieldLeadingControlExample isDisabled={true} />);
+        const { container } = await render(<LeadingControlExample isDisabled={true} />);
         const group = container.querySelector('[data-disabled]') as HTMLElement;
 
         assume(group).exists();
@@ -116,7 +116,7 @@ describe('@godaddy/antares', function antares() {
 
     describe('#trailing-control', function trailingControl() {
       it('moves focus through the input to the trailing button on tab', async function focusOrder() {
-        const { locator } = await render(<TextFieldTrailingControlExample />);
+        const { locator } = await render(<TrailingControlExample />);
         const button = locator.getByRole('button').element();
 
         await userEvent.tab();

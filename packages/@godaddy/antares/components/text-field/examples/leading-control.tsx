@@ -1,19 +1,17 @@
-import { ControlButton, Flex, Group, Label, Text, TextField, type GroupProps } from '@godaddy/antares';
+import { ControlButton, Group, Input, Label, Text, TextField, type GroupProps } from '@godaddy/antares';
 
 /**
- * A group with a leading control before the fill.
+ * Compose with `children` when you need a leading control instead of `leadingText`.
  * @title Leading control
  * @order 8
  */
-export function TextFieldLeadingControlExample(props: GroupProps) {
+export function LeadingControlExample(props: GroupProps) {
   return (
     <TextField isDisabled={props.isDisabled} isInvalid={props.isInvalid}>
       <Label>Phone</Label>
       <Group gap="sm" {...props}>
         <ControlButton aria-label="Country code">Click Me</ControlButton>
-        <Flex as="span" flex={1} alignItems="center" padding="md">
-          Placeholder content
-        </Flex>
+        <Input placeholder="Enter your phone number" />
       </Group>
       <Text slot="description">Enter your phone number</Text>
     </TextField>

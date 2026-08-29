@@ -1,17 +1,17 @@
 import { forwardRef } from 'react';
 import {
   TextArea as RACTextArea,
-  TextAreaContext,
+  TextAreaContext as RACTextAreaContext,
   type TextAreaProps as RACTextAreaProps
 } from 'react-aria-components';
 import { Box, type BoxOwnProps } from '#components/layout/box';
 
-export { TextAreaContext };
+export const TextAreaContext = RACTextAreaContext;
 
 export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {}
 
 /**
- * RAC `TextArea` with fill layout. Field injects chrome via RAC `TextAreaContext`.
+ * Multiline input that fills a Group. Field injects chrome via TextAreaContext.
  *
  * @param props - {@link TextAreaProps}
  */

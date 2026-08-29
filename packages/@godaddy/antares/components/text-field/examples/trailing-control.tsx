@@ -1,11 +1,11 @@
 import { ControlButton, Group, Input, Label, Text, TextField, type GroupProps } from '@godaddy/antares';
 
 /**
- * An input with a trailing action control.
+ * Compose with `children` when you need a trailing control instead of `trailingText`.
  * @title Trailing control
  * @order 9
  */
-export function TextFieldTrailingControlExample(props: GroupProps) {
+export function TrailingControlExample(props: GroupProps) {
   return (
     <TextField isDisabled={props.isDisabled} isInvalid={props.isInvalid}>
       <Label>Search</Label>

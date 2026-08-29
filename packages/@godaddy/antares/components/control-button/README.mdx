@@ -1,6 +1,6 @@
 ---
 title: ControlButton
-description: Unstyled RAC Button for use inside a Group. Field paints it via ControlButtonContext, not ButtonContext, so page Buttons stay unchanged.
+description: Pressable control for use inside a Group. Field paints it via ControlButtonContext so page Buttons stay unchanged.
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -12,7 +12,7 @@ import * as Stories from './control-button.stories.tsx';
 ## Features
 
 - Use for NumberField steppers, Select/DatePicker triggers, and in-group actions.
-- Do not use `Button` for those slots; Field would restyle every page button if it merged RAC `ButtonContext`.
+- Use `ControlButton` for those slots instead of `Button`, so page buttons keep their own styles.
 
 ## Installation
 

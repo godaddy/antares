@@ -1,9 +1,9 @@
 import { forwardRef, type ReactNode } from 'react';
 import { cx } from 'cva';
-import { Text as RACText, TextContext, type TextProps as RACTextProps } from 'react-aria-components';
+import { Text as RACText, TextContext as RACTextContext, type TextProps as RACTextProps } from 'react-aria-components';
 import styles from './index.module.css';
 
-export { TextContext };
+export const TextContext = RACTextContext;
 
 export interface TextProps extends RACTextProps {
   /**

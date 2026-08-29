@@ -4,7 +4,7 @@ import { TextField } from '@godaddy/antares';
  * Use `isInvalid` with `errorMessage` for validation feedback.
  * @order 3
  */
-export function TextFieldInvalidExample() {
+export function InvalidExample() {
   return (
     <TextField
       label="Email"
