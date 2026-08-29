@@ -92,94 +92,6 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
-# Alert
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal alert with a title and body text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
-
-### Emphasis Variants [#emphasis-variants]
-
-All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
-
-<Story of="EmphasesExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
-
-### Dismissible [#dismissible]
-
-When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
-
-<Story of="DismissibleExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
-
-### With Action [#with-action]
-
-Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
-
-<Story of="WithActionExample" />
-
-<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| `Tab`             | Moves focus to the dismiss button or action button |
-| `Space` / `Enter` | Activates the focused button                       |
-
-### Screen readers [#screen-readers]
-
-The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
-
-### Dismiss button label [#dismiss-button-label]
-
-The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
-
-## Best Practices [#best-practices]
-
-* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
-* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
-* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
-* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
-* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
-
-## Props [#props]
-
-<PropTable />
-
-
 # Avatar
 
 
@@ -323,6 +235,220 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 <PropTable />
 
 
+# Alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal alert with a title and body text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
+
+### Emphasis Variants [#emphasis-variants]
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Dismissible [#dismissible]
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of="DismissibleExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
+
+### With Action [#with-action]
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of="WithActionExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
+
+### Screen readers [#screen-readers]
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+### Dismiss button label [#dismiss-button-label]
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+## Best Practices [#best-practices]
+
+* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Calendar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
+* Month dropdown plus a typeable year input in the header for fast navigation
+* Keyboard navigable and screen-reader announced
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Date-only values via `@internationalized/date`'s `CalendarDate`
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
+import { Calendar } from '@godaddy/antares';
+
+<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
+<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
+```
+
+`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single-date calendar.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
+
+### With value [#with-value]
+
+A calendar with a pre-selected date.
+
+<Story of="CalendarWithValueExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
+
+### Range [#range]
+
+Selecting a start and end date.
+
+<Story of="RangeCalendarExample" />
+
+<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates.
+
+<Story of="CalendarMinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
+
+### Unavailable [#unavailable]
+
+Disabling scattered individual dates with `isDateUnavailable`.
+
+<Story of="CalendarUnavailableExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A fully disabled calendar.
+
+<Story of="CalendarDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
+* Focus-visible outline; disabled days are not focusable
+* Out-of-month days render at reduced opacity and are not selectable
+
+## Best Practices [#best-practices]
+
+* Always provide an `aria-label` on standalone calendars.
+* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
+
+## Troubleshooting [#troubleshooting]
+
+* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
+
+## Props [#props]
+
+The `Calendar` component accepts the following props:
+
+<PropTable />
+
+The `RangeCalendar` component accepts the following props:
+
+<PropTable />
+
+
 # Button
 
 
@@ -456,132 +582,6 @@ The `LinkButton` component accepts the following props:
 <PropTable />
 
 The `CloseButton` component accepts the following props:
-
-<PropTable />
-
-
-# Calendar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Single-date (`Calendar`) and range (`RangeCalendar`) grids built on React Aria
-* Month dropdown plus a typeable year input in the header for fast navigation
-* Keyboard navigable and screen-reader announced
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-* Date-only values via `@internationalized/date`'s `CalendarDate`
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-`Calendar` values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Calendar } from '@godaddy/antares';
-
-<Calendar aria-label="Date" defaultValue={parseDate('2024-03-15')} />;
-<Calendar aria-label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single-date calendar.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DefaultExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultFocusedValue={parseDate('2024-03-01')} />;\n}&#x22;" />
-
-### With value [#with-value]
-
-A calendar with a pre-selected date.
-
-<Story of="CalendarWithValueExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarWithValueExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} />;\n}&#x22;" />
-
-### Range [#range]
-
-Selecting a start and end date.
-
-<Story of="RangeCalendarExample" />
-
-<Source language="tsx" code="&#x22;import { RangeCalendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function RangeCalendarExample() {\n  return (\n    <RangeCalendar\n      aria-label=\&#x22;Trip dates\&#x22;\n      defaultValue={{ start: parseDate('2024-03-10'), end: parseDate('2024-03-15') }}\n    />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates.
-
-<Story of="CalendarMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function CalendarMinMaxExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Booking date\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      minValue={parseDate('2024-03-05')}\n      maxValue={parseDate('2024-03-25')}\n    />\n  );\n}&#x22;" />
-
-### Unavailable [#unavailable]
-
-Disabling scattered individual dates with `isDateUnavailable`.
-
-<Story of="CalendarUnavailableExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { isWeekend, parseDate } from '@godaddy/antares/date';\n\nexport function CalendarUnavailableExample() {\n  return (\n    <Calendar\n      aria-label=\&#x22;Weekday only\&#x22;\n      defaultValue={parseDate('2024-03-15')}\n      isDateUnavailable={(date) => isWeekend(date, 'en-US')}\n    />\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A fully disabled calendar.
-
-<Story of="CalendarDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Calendar } from '@godaddy/antares';\nimport { parseDate } from '@internationalized/date';\n\nexport function CalendarDisabledExample() {\n  return <Calendar aria-label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} isDisabled />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Arrow keys move by day; PageUp/PageDown by month; Home/End to row edges
-* Focus-visible outline; disabled days are not focusable
-* Out-of-month days render at reduced opacity and are not selectable
-
-## Best Practices [#best-practices]
-
-* Always provide an `aria-label` on standalone calendars.
-* Use `isDateUnavailable` for scattered disabled days; use `minValue` / `maxValue` for contiguous bounds.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not formatting per locale? Ensure the app is wrapped in `<I18nProvider locale="…">`.
-
-## Props [#props]
-
-The `Calendar` component accepts the following props:
-
-<PropTable />
-
-The `RangeCalendar` component accepts the following props:
 
 <PropTable />
 
@@ -1221,6 +1221,110 @@ The `DateRangePicker` component accepts the following props:
 <PropTable />
 
 
+# DropZone
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, isFileDropItem, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DropZone\n      onDrop={function handleDrop(e) {\n        const files = e.items.filter(isFileDropItem);\n        console.log('Dropped files:', files);\n      }}\n    >\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DropZone isDisabled>\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
+
+### File Upload [#file-upload]
+
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+<Story of="FileUploadExample" />
+
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
+
+### Drop Target Label [#drop-target-label]
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
+
+<Story of="DropTargetLabelExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\nexport function DropTargetLabelExample() {\n  return (\n    <DropZone\n      getDropOperation={function getDropOperation(types) {\n        return ACCEPTED_TYPES.some(function matches(type) {\n          return types.has(type);\n        })\n          ? 'copy'\n          : 'cancel';\n      }}\n      onDrop={async function handleDrop(e) {\n        const files = await Promise.all(\n          e.items.filter(isFileDropItem).map(function getFile(item) {\n            return item.getFile();\n          })\n        );\n        console.log(\n          'Dropped files:',\n          files.map(function getName(f) {\n            return f.name;\n          })\n        );\n      }}\n    >\n      {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n        return isDropTarget ? (\n          <Text as=\&#x22;strong\&#x22;>Drop files to upload.</Text>\n        ) : (\n          <Text slot=\&#x22;label\&#x22;>Add files or drag them here.</Text>\n        );\n      }}\n    </DropZone>\n  );\n}&#x22;" />
+
+### Replace Existing File [#replace-existing-file]
+
+Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+
+<Story of="ReplaceFileExample" />
+
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| `Tab`             | Moves focus to the drop zone                                     |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers [#screen-readers]
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
+
+## Best Practices [#best-practices]
+
+* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+* Replace the default text with `children` to communicate the accepted file types and size limits up front.
+* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
+
+## Props [#props]
+
+<PropTable />
+
+
 # Drawer
 
 
@@ -1346,110 +1450,6 @@ The `Drawer` component accepts the following props:
 <PropTable />
 
 The `DrawerTrigger` component accepts the following props:
-
-<PropTable />
-
-
-# DropZone
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, isFileDropItem, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DropZone\n      onDrop={function handleDrop(e) {\n        const files = e.items.filter(isFileDropItem);\n        console.log('Dropped files:', files);\n      }}\n    >\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DropZone isDisabled>\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
-
-### File Upload [#file-upload]
-
-A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
-
-<Story of="FileUploadExample" />
-
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
-
-### Drop Target Label [#drop-target-label]
-
-Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
-
-<Story of="DropTargetLabelExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\nexport function DropTargetLabelExample() {\n  return (\n    <DropZone\n      getDropOperation={function getDropOperation(types) {\n        return ACCEPTED_TYPES.some(function matches(type) {\n          return types.has(type);\n        })\n          ? 'copy'\n          : 'cancel';\n      }}\n      onDrop={async function handleDrop(e) {\n        const files = await Promise.all(\n          e.items.filter(isFileDropItem).map(function getFile(item) {\n            return item.getFile();\n          })\n        );\n        console.log(\n          'Dropped files:',\n          files.map(function getName(f) {\n            return f.name;\n          })\n        );\n      }}\n    >\n      {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n        return isDropTarget ? (\n          <Text as=\&#x22;strong\&#x22;>Drop files to upload.</Text>\n        ) : (\n          <Text slot=\&#x22;label\&#x22;>Add files or drag them here.</Text>\n        );\n      }}\n    </DropZone>\n  );\n}&#x22;" />
-
-### Replace Existing File [#replace-existing-file]
-
-Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
-
-<Story of="ReplaceFileExample" />
-
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `Tab`             | Moves focus to the drop zone                                     |
-| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
-
-### Screen readers [#screen-readers]
-
-The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
-
-The button's accessible name is built from two sources, combined in order:
-
-1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
-2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
-
-```tsx
-<DropZone onDrop={handleDrop}>
-  <Text slot="label">Drop files to upload.</Text>
-</DropZone>
-```
-
-## Best Practices [#best-practices]
-
-* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
-* Replace the default text with `children` to communicate the accepted file types and size limits up front.
-* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
-* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
-
-## Props [#props]
 
 <PropTable />
 
@@ -4664,110 +4664,6 @@ growing a prop for it.
 <PropTable />
 
 
-# TextField
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
-* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Minimal usage with label and placeholder.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: TextFieldProps) {\n  return <TextField label=\&#x22;Name\&#x22; placeholder=\&#x22;Enter your name\&#x22; {...props} />;\n}&#x22;" />
-
-### Text Field Controlled [#text-field-controlled]
-
-Use `value` and `onChange` for controlled state.
-
-<Story of="TextFieldControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Text, TextField } from '@godaddy/antares';\n\nexport function TextFieldControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField label=\&#x22;Email\&#x22; placeholder=\&#x22;you@example.com\&#x22; value={value} onChange={setValue} />\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
-
-### Text Field Invalid [#text-field-invalid]
-
-Use `isInvalid` with `errorMessage` for validation feedback.
-
-<Story of="TextFieldInvalidExample" />
-
-<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldInvalidExample() {\n  return (\n    <TextField\n      label=\&#x22;Email\&#x22;\n      placeholder=\&#x22;you@example.com\&#x22;\n      errorMessage=\&#x22;Please enter a valid email address\&#x22;\n      isInvalid\n      isRequired\n    />\n  );\n}&#x22;" />
-
-### Text Field Disabled [#text-field-disabled]
-
-Use `isDisabled` to prevent input.
-
-<Story of="TextFieldDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldDisabledExample() {\n  return <TextField label=\&#x22;Name\&#x22; placeholder=\&#x22;Enter your name\&#x22; defaultValue=\&#x22;Disabled value\&#x22; isDisabled />;\n}&#x22;" />
-
-### Text Field Adornments [#text-field-adornments]
-
-Use `leadingText` and `trailingText` for fixed text before and after the input, such as currency.
-
-<Story of="TextFieldAdornmentsExample" />
-
-<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldAdornmentsExample() {\n  return (\n    <TextField\n      description=\&#x22;Use leadingText and trailingText to show fixed text before and after the input (e.g. currency).\&#x22;\n      label=\&#x22;Amount\&#x22;\n      leadingText=\&#x22;$\&#x22;\n      placeholder=\&#x22;0.00\&#x22;\n      trailingText=\&#x22;.00\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Text Field Multiline [#text-field-multiline]
-
-Use `multiline` to render a textarea.
-
-<Story of="TextFieldMultilineExample" />
-
-<Source language="tsx" code="&#x22;import { TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function TextFieldMultilineExample(props: TextFieldProps) {\n  return <TextField label=\&#x22;Comment\&#x22; placeholder=\&#x22;Enter your comment\&#x22; multiline {...props} />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Compare the supported `md` and `sm` visual sizes.
-
-<Story of="TextFieldSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, TextField } from '@godaddy/antares';\n\nexport function TextFieldSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField label=\&#x22;Email (md)\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      <TextField label=\&#x22;Email (sm)\&#x22; placeholder=\&#x22;you@example.com\&#x22; size=\&#x22;sm\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `TextField` component accepts the following props:
-
-<PropTable />
-
-
 # ToggleButton
 
 
@@ -5029,6 +4925,110 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 ```
 
 ## Props [#props]
+
+<PropTable />
+
+
+# TextField
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
+* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Minimal usage with label and placeholder.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: TextFieldProps) {\n  return <TextField label=\&#x22;Name\&#x22; placeholder=\&#x22;Enter your name\&#x22; {...props} />;\n}&#x22;" />
+
+### Text Field Controlled [#text-field-controlled]
+
+Use `value` and `onChange` for controlled state.
+
+<Story of="TextFieldControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Text, TextField } from '@godaddy/antares';\n\nexport function TextFieldControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField label=\&#x22;Email\&#x22; placeholder=\&#x22;you@example.com\&#x22; value={value} onChange={setValue} />\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+
+### Text Field Invalid [#text-field-invalid]
+
+Use `isInvalid` with `errorMessage` for validation feedback.
+
+<Story of="TextFieldInvalidExample" />
+
+<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldInvalidExample() {\n  return (\n    <TextField\n      label=\&#x22;Email\&#x22;\n      placeholder=\&#x22;you@example.com\&#x22;\n      errorMessage=\&#x22;Please enter a valid email address\&#x22;\n      isInvalid\n      isRequired\n    />\n  );\n}&#x22;" />
+
+### Text Field Disabled [#text-field-disabled]
+
+Use `isDisabled` to prevent input.
+
+<Story of="TextFieldDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldDisabledExample() {\n  return <TextField label=\&#x22;Name\&#x22; placeholder=\&#x22;Enter your name\&#x22; defaultValue=\&#x22;Disabled value\&#x22; isDisabled />;\n}&#x22;" />
+
+### Text Field Adornments [#text-field-adornments]
+
+Use `leadingText` and `trailingText` for fixed text before and after the input, such as currency.
+
+<Story of="TextFieldAdornmentsExample" />
+
+<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldAdornmentsExample() {\n  return (\n    <TextField\n      description=\&#x22;Use leadingText and trailingText to show fixed text before and after the input (e.g. currency).\&#x22;\n      label=\&#x22;Amount\&#x22;\n      leadingText=\&#x22;$\&#x22;\n      placeholder=\&#x22;0.00\&#x22;\n      trailingText=\&#x22;.00\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Text Field Multiline [#text-field-multiline]
+
+Use `multiline` to render a textarea.
+
+<Story of="TextFieldMultilineExample" />
+
+<Source language="tsx" code="&#x22;import { TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function TextFieldMultilineExample(props: TextFieldProps) {\n  return <TextField label=\&#x22;Comment\&#x22; placeholder=\&#x22;Enter your comment\&#x22; multiline {...props} />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Compare the supported `md` and `sm` visual sizes.
+
+<Story of="TextFieldSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, TextField } from '@godaddy/antares';\n\nexport function TextFieldSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField label=\&#x22;Email (md)\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      <TextField label=\&#x22;Email (sm)\&#x22; placeholder=\&#x22;you@example.com\&#x22; size=\&#x22;sm\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `TextField` component accepts the following props:
 
 <PropTable />
 
@@ -5393,6 +5393,120 @@ Use `formatValue` when the raw numbers in the tooltip should read like money, co
 <Story of="FormatValueExample" />
 
 <Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A continuous gauge with a single label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="ContinuousExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="SegmentedExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="WithRangeLabelsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="VariantsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="LabelTypeExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 ## Props [#props]
 
@@ -5780,120 +5894,6 @@ Use `xType="time"` when the X-axis values are Date objects:
 ### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
 
 Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
-
-## Props [#props]
-
-<PropTable />
-
-
-# Gauge Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A continuous gauge with a single label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="ContinuousExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="SegmentedExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="WithRangeLabelsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="VariantsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="LabelTypeExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
 
 ## Props [#props]
 
