@@ -117,6 +117,14 @@ describe('@godaddy/antares', function antares() {
         expect(label).not.toBeNull();
         expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
       }
+
+      for (const name of ['String link label', 'Composed link label']) {
+        const link = getByRole('link', { name }).element();
+        const label = link.querySelector('span');
+
+        expect(label).not.toBeNull();
+        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(link).fontSize);
+      }
     });
   });
 });
