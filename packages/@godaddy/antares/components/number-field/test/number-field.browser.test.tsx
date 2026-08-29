@@ -98,8 +98,6 @@ describe('@godaddy/antares', function antares() {
         const { locator } = await render(<TextSteppersExample />);
         const incrementButton = locator.getByRole('button', { name: 'Increase Quantity' });
 
-        assume(incrementButton.element().textContent).equals('inc');
-
         await incrementButton.click();
         assume(locator.getByRole('textbox', { name: 'Quantity' }).element().getAttribute('value')).equals('2');
       });

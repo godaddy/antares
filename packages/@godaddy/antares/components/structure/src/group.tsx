@@ -23,15 +23,32 @@ export interface GroupProps extends RACGroupProps, FlexOwnProps {
  */
 export const InGroupContext = createContext(false);
 
+export interface FieldState {
+  /** Whether the field is disabled. */
+  isDisabled?: boolean;
+
+  /** Size for the controls inside the group. */
+  size?: FieldSize;
+}
+
+/**
+ * Field state a field root passes down, so a composed {@link Group} inherits it
+ * instead of the consumer repeating it.
+ */
+export const FieldStateContext = createContext<FieldState>({});
+
 /**
  * Boxed row for field controls. Field injects chrome via GroupContext.
  *
  * @param props - {@link GroupProps}
  */
 export const Group = forwardRef<HTMLDivElement, GroupProps>(function Group(props, ref) {
-  const { className, isInvalid, size, ...rest } = props;
+  const { className, isDisabled, isInvalid, size, ...rest } = props;
+  const fieldState = useContext(FieldStateContext);
   const validation = useContext(FieldErrorContext);
+  const isDisabledResolved = isDisabled ?? fieldState.isDisabled;
   const isInvalidResolved = isInvalid ?? validation?.isInvalid;
+  const sizeResolved = size ?? fieldState.size;
 
   return (
     <InGroupContext.Provider value={true}>
@@ -41,8 +58,9 @@ export const Group = forwardRef<HTMLDivElement, GroupProps>(function Group(props
         alignSelf="stretch"
         alignItems="stretch"
         elevation="card"
+        isDisabled={isDisabledResolved}
         isInvalid={isInvalidResolved}
-        data-size={size === 'sm' ? 'sm' : undefined}
+        data-size={sizeResolved === 'sm' ? 'sm' : undefined}
         {...rest}
         as={RACGroup}
         ref={ref}

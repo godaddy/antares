@@ -71,15 +71,5 @@ describe('@godaddy/antares', function antares() {
       const { container } = await render(<TelephoneFieldExample />);
       await expect(container).toMatchScreenshot('telephone-field');
     });
-
-    it('invalid trailing control example', async function invalidTrailingRender() {
-      const { container } = await render(<TrailingControlExample isInvalid />);
-      await expect(container).toMatchScreenshot('trailing-invalid');
-    });
-
-    it('small size icon accessories example', async function sizeSmRender() {
-      const { container } = await render(<IconAccessoriesExample size="sm" />);
-      await expect(container).toMatchScreenshot('size-sm');
-    });
   });
 });

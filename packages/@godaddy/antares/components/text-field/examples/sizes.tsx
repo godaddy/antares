@@ -1,7 +1,7 @@
 import { Flex, TextField } from '@godaddy/antares';
 
 /**
- * Compare the supported `md` and `sm` visual sizes.
+ * Compare the supported `md` and `sm` visual sizes. Set `size` on `TextField`; a composed `Group` inherits it.
  * @title Sizes
  * @order 7
  */

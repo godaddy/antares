@@ -1,15 +1,15 @@
-import { ControlButton, Group, Input, Label, Text, TextField, type GroupProps } from '@godaddy/antares';
+import { ControlButton, Group, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Compose with `children` when you need a leading control instead of `leadingText`.
  * @title Leading control
  * @order 8
  */
-export function LeadingControlExample(props: GroupProps) {
+export function LeadingControlExample() {
   return (
-    <TextField isDisabled={props.isDisabled} isInvalid={props.isInvalid}>
+    <TextField>
       <Label>Phone</Label>
-      <Group gap="sm" {...props}>
+      <Group>
         <ControlButton aria-label="Country code">Click Me</ControlButton>
         <Input placeholder="Enter your phone number" />
       </Group>

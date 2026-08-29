@@ -7,7 +7,7 @@ import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { ControlButtonContext } from '#components/control-button';
 import { InputContext } from '#components/input';
-import { GroupContext } from '#components/structure';
+import { FieldStateContext, GroupContext, type FieldSize, type FieldState } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
 import { LabelContext, TextContext } from '#components/text';
 import styles from './index.module.css';
@@ -21,6 +21,12 @@ export interface FieldOwnProps extends FlexOwnProps {
 
   /** Error message shown when the field is invalid. Forwarded to FieldError. */
   errorMessage?: RACFieldErrorProps['children'];
+
+  /** Whether the field is disabled. Inherited by a composed Group. @default false */
+  isDisabled?: boolean;
+
+  /** Visual size of the controls. Inherited by a composed Group. @default 'md' */
+  size?: FieldSize;
 }
 
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldOwnProps>;
@@ -47,7 +53,7 @@ function mergeDescriptionClass(text: unknown, className: string) {
   };
 }
 
-function FieldContexts({ children }: { children: ReactNode }) {
+function FieldContexts({ children, isDisabled, size }: { children: ReactNode } & FieldState) {
   const label = useContext(LabelContext);
   const group = useContext(GroupContext);
   const input = useContext(InputContext);
@@ -58,6 +64,7 @@ function FieldContexts({ children }: { children: ReactNode }) {
   return (
     <RACProvider
       values={[
+        [FieldStateContext, { isDisabled, size }],
         [LabelContext, mergeProps(label ?? {}, { className: styles.label })],
         [GroupContext, mergeProps(group ?? {}, { className: styles.group })],
         [InputContext, mergeProps(input ?? {}, { className: styles.input })],
@@ -77,7 +84,8 @@ function FieldContexts({ children }: { children: ReactNode }) {
  * @param props - {@link FieldProps}
  */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
-  const { as, children, gap = 'sm', className, ...rest } = props;
+  const { as, children, gap = 'sm', className, size, ...rest } = props;
+  const isDisabled = props.isDisabled;
 
   return (
     <Flex
@@ -88,7 +96,9 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
       ref={ref}
       className={composeClassName(className, styles.field)}
     >
-      <FieldContexts>{children}</FieldContexts>
+      <FieldContexts isDisabled={isDisabled} size={size}>
+        {children}
+      </FieldContexts>
     </Flex>
   );
 }) as PolymorphicComponent<FieldOwnProps>;

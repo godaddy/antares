@@ -69,16 +69,15 @@ export function TextField(props: TextFieldProps) {
     trailingText,
     ...racProps
   } = props;
-  const { isDisabled } = racProps;
   const hasLeading = leadingText != null && leadingText !== false;
   const hasTrailing = trailingText != null && trailingText !== false;
 
   return (
-    <Field as={RACTextField} {...racProps}>
+    <Field as={RACTextField} size={size} {...racProps}>
       {children ?? (
         <>
           {label ? <Label>{label}</Label> : null}
-          <Group isDisabled={isDisabled} size={size} gap="sm">
+          <Group>
             {hasLeading ? (
               <Flex as="span" alignItems="center" inlinePaddingStart="md">
                 {leadingText}

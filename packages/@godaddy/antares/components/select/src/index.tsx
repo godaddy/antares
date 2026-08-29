@@ -62,7 +62,6 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
   const inGroup = useContext(InGroupContext);
   const { label, description, errorMessage, children, size, ...racProps } = props;
-  const { isDisabled } = racProps;
 
   if (inGroup) {
     return (
@@ -74,9 +73,9 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   }
 
   return (
-    <Field as={RACSelect} {...racProps}>
+    <Field as={RACSelect} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
-      <Group isDisabled={isDisabled} size={size} alignItems="center">
+      <Group alignItems="center">
         <SelectTrigger variant="select" />
       </Group>
       {description ? <Text slot="description">{description}</Text> : null}

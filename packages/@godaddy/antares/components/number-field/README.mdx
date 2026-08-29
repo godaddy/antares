@@ -51,7 +51,7 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 
 ## Props
 
-When `children` is passed, `NumberField` is composed. Use `slot="decrement"` and `slot="increment"` on `ControlButton` so the steppers still change the value.
+When `children` is passed, `NumberField` is composed. Use `slot="decrement"` and `slot="increment"` on `ControlButton` so the steppers still change the value. A composed `Group` inherits `size` and `isDisabled` from the field, so set them on `NumberField` and leave the interior to the markup.
 
 ```tsx
 <NumberField>

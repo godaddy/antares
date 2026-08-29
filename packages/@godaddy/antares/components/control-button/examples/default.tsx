@@ -8,7 +8,7 @@ export function DefaultExample() {
   return (
     <TextField>
       <Label>Search</Label>
-      <Group gap="sm">
+      <Group>
         <Input placeholder="Type..." />
         <ControlButton aria-label="Search">Search</ControlButton>
       </Group>

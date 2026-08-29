@@ -55,12 +55,11 @@ export function DatePicker(props: DatePickerProps) {
     placeholder = 'Select a date',
     ...racProps
   } = props;
-  const { isDisabled } = racProps;
 
   return (
-    <Field as={RACDatePicker} {...racProps}>
+    <Field as={RACDatePicker} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
-      <Group isDisabled={isDisabled} size={size} alignItems="center">
+      <Group alignItems="center">
         <ControlButton flex={1} gap="sm" data-variant="select">
           <Icon icon="calendar" />
           <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
@@ -111,12 +110,11 @@ export function DateRangePicker(props: DateRangePickerProps) {
     placeholder = 'Select dates',
     ...racProps
   } = props;
-  const { isDisabled } = racProps;
 
   return (
-    <Field as={RACDateRangePicker} {...racProps}>
+    <Field as={RACDateRangePicker} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
-      <Group isDisabled={isDisabled} size={size} alignItems="center">
+      <Group alignItems="center">
         <ControlButton flex={1} gap="sm" data-variant="select">
           <Icon icon="calendar" />
           <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />

@@ -33,14 +33,13 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
   const { children, description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
-  const { isDisabled } = racProps;
 
   return (
-    <Field as={RACNumberField} {...racProps}>
+    <Field as={RACNumberField} size={size} {...racProps}>
       {children ?? (
         <>
           {label ? <Label>{label}</Label> : null}
-          <Group isDisabled={isDisabled} size={size}>
+          <Group>
             {!hideStepper && (
               <ControlButton slot="decrement">
                 <Icon icon="minus" />

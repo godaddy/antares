@@ -1,15 +1,15 @@
-import { ControlButton, Group, Input, Label, Text, TextField, type GroupProps } from '@godaddy/antares';
+import { ControlButton, Group, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Compose with `children` when you need a trailing control instead of `trailingText`.
  * @title Trailing control
  * @order 9
  */
-export function TrailingControlExample(props: GroupProps) {
+export function TrailingControlExample() {
   return (
-    <TextField isDisabled={props.isDisabled} isInvalid={props.isInvalid}>
+    <TextField>
       <Label>Search</Label>
-      <Group gap="sm" {...props}>
+      <Group>
         <Input placeholder="Type..." />
         <ControlButton aria-label="Search">Search</ControlButton>
       </Group>

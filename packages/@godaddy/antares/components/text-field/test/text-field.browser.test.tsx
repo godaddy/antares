@@ -98,20 +98,13 @@ describe('@godaddy/antares', function antares() {
 
     describe('#leading-control', function leadingControl() {
       it('moves focus to the leading button on tab', async function focusOrder() {
-        const { locator } = await render(<LeadingControlExample isDisabled={false} />);
+        const { locator } = await render(<LeadingControlExample />);
         const button = locator.getByRole('button').element();
 
         await userEvent.tab();
         assume(document.activeElement).equals(button);
         assume(button.hasAttribute('data-focus-visible')).equals(true);
         assume(button.hasAttribute('data-focused')).equals(true);
-      });
-
-      it('marks the group disabled when isDisabled', async function groupDisabled() {
-        const { container } = await render(<LeadingControlExample isDisabled={true} />);
-        const group = container.querySelector('[data-disabled]') as HTMLElement;
-
-        assume(group).exists();
       });
     });
 

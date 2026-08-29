@@ -30,7 +30,7 @@ npm install --save @godaddy/antares
 
 ## Props
 
-When `children` is passed, `TextField` is composed.
+When `children` is passed, `TextField` is composed. A composed `Group` inherits `size` and `isDisabled` from the field, so set them on `TextField` and leave the interior to the markup.
 
 ```tsx
 <TextField>

@@ -4,7 +4,7 @@ export function PlaygroundExample() {
   return (
     <TextField>
       <Label>Search</Label>
-      <Group gap="sm">
+      <Group>
         <Input placeholder="Type..." />
         <ControlButton>Go</ControlButton>
       </Group>
