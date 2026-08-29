@@ -8,6 +8,12 @@ import * as Stories from './number-field.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
+## Features
+
+- **Label, description, error**: Optional label, helper text, and error message
+- **Steppers**: Increment and decrement buttons, or `hideStepper` for a plain numeric input
+- **Composition**: To customize the interior (for example text steppers instead of `-` and `+` icons), pass `children` and compose `Label`, `Group`, `Input`, and `ControlButton`
+
 ## Installation
 
 ```bash
@@ -44,6 +50,21 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 - For currency or units, ensure **`formatOptions`** (and locale) match what users are allowed to type.
 
 ## Props
+
+When `children` is passed, `NumberField` is composed. Use `slot="decrement"` and `slot="increment"` on `ControlButton` so the steppers still change the value.
+
+```tsx
+<NumberField>
+  <Label />
+  <Group>
+    <ControlButton slot="decrement" />
+    <Input />
+    <ControlButton slot="increment" />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</NumberField>
+```
 
 The `NumberField` component accepts the following props:
 

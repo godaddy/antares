@@ -8,6 +8,7 @@ import { NumberFieldHideStepperExample } from '../examples/hide-stepper';
 import { NumberFieldInvalidExample } from '../examples/invalid';
 import { NumberFieldSizesExample } from '../examples/sizes';
 import { NumberFieldValueScaleExample } from '../examples/value-scale';
+import { TextSteppersExample } from '../examples/text-steppers';
 
 describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
@@ -53,6 +54,10 @@ describe('@godaddy/antares', function antares() {
         const result = renderToString(<NumberFieldSizesExample />);
         expect(result).toContain('data-size="sm"');
         expect(result).toMatchSnapshot();
+      });
+
+      it('renders text steppers example', function textSteppers() {
+        expect(renderToString(<TextSteppersExample />)).toMatchSnapshot();
       });
     });
   });

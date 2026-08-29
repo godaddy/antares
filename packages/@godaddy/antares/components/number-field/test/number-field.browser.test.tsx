@@ -8,6 +8,7 @@ import { NumberFieldFormatOptionsExample } from '../examples/format-options';
 import { NumberFieldHideStepperExample } from '../examples/hide-stepper';
 import { NumberFieldInvalidExample } from '../examples/invalid';
 import { NumberFieldValueScaleExample } from '../examples/value-scale';
+import { TextSteppersExample } from '../examples/text-steppers';
 import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 
 describe('@godaddy/antares', function antares() {
@@ -89,6 +90,18 @@ describe('@godaddy/antares', function antares() {
         assume(locator.getByText('Number (Devanagari)').element()).exists();
         const value = locator.getByRole('textbox', { name: 'Number (Devanagari)' }).element().getAttribute('value');
         assume(value != null && value.length > 0).equals(true);
+      });
+    });
+
+    describe('#text-steppers', function textSteppers() {
+      it('increments through composed stepper slots', async function composedSteppers() {
+        const { locator } = await render(<TextSteppersExample />);
+        const incrementButton = locator.getByRole('button', { name: 'Increase Quantity' });
+
+        assume(incrementButton.element().textContent).equals('inc');
+
+        await incrementButton.click();
+        assume(locator.getByRole('textbox', { name: 'Quantity' }).element().getAttribute('value')).equals('2');
       });
     });
 

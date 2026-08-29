@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
@@ -17,35 +17,46 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
 
   /** Visual size of the input. @default 'md' */
   size?: FieldSize;
+
+  /**
+   * Optional composed interior (Label, Group, Input, ControlButton, FieldError).
+   * When set, the default label / group / steppers layout is not rendered.
+   */
+  children?: ReactNode;
 }
 
 /**
  * Numeric input with label, description, error message, and optional stepper buttons.
+ * Pass `children` to compose a custom interior instead of the default layout.
  *
  * @param props - {@link NumberFieldProps}
  */
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
-  const { description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
+  const { children, description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
   const { isDisabled } = racProps;
 
   return (
     <Field as={RACNumberField} {...racProps}>
-      {label ? <Label>{label}</Label> : null}
-      <Group isDisabled={isDisabled} size={size}>
-        {!hideStepper && (
-          <ControlButton slot="decrement">
-            <Icon icon="minus" />
-          </ControlButton>
-        )}
-        <Input ref={ref} placeholder={placeholder} />
-        {!hideStepper && (
-          <ControlButton slot="increment">
-            <Icon icon="plus" />
-          </ControlButton>
-        )}
-      </Group>
-      {description ? <Text slot="description">{description}</Text> : null}
-      <FieldError>{errorMessage}</FieldError>
+      {children ?? (
+        <>
+          {label ? <Label>{label}</Label> : null}
+          <Group isDisabled={isDisabled} size={size}>
+            {!hideStepper && (
+              <ControlButton slot="decrement">
+                <Icon icon="minus" />
+              </ControlButton>
+            )}
+            <Input ref={ref} placeholder={placeholder} />
+            {!hideStepper && (
+              <ControlButton slot="increment">
+                <Icon icon="plus" />
+              </ControlButton>
+            )}
+          </Group>
+          {description ? <Text slot="description">{description}</Text> : null}
+          <FieldError>{errorMessage}</FieldError>
+        </>
+      )}
     </Field>
   );
 });

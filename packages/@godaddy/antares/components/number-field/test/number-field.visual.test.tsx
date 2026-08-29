@@ -9,6 +9,7 @@ import { NumberFieldHideStepperExample } from '../examples/hide-stepper.tsx';
 import { NumberFieldValueScaleExample } from '../examples/value-scale.tsx';
 import { NumberFieldFormatOptionsExample } from '../examples/format-options.tsx';
 import { NumberFieldSizesExample } from '../examples/sizes.tsx';
+import { TextSteppersExample } from '../examples/text-steppers.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -52,6 +53,11 @@ describe('@godaddy/antares', function antares() {
     it('sizes example', async function sizesRender() {
       const { container } = await render(<NumberFieldSizesExample />);
       await expect(container).toMatchScreenshot('sizes');
+    });
+
+    it('text steppers example', async function textSteppersRender() {
+      const { container } = await render(<TextSteppersExample />);
+      await expect(container).toMatchScreenshot('text-steppers');
     });
   });
 });
