@@ -1,16 +1,16 @@
+import { forwardRef } from 'react';
 import {
   Label as RACLabel,
   LabelContext as RACLabelContext,
   type LabelProps as RACLabelProps
 } from 'react-aria-components';
-import { forwardRef } from 'react';
 
 export const LabelContext = RACLabelContext;
 
 export interface LabelProps extends RACLabelProps {}
 
 /**
- * Label is a component that wraps a label for a form field.
+ * Names a form field. Field injects label chrome via {@link LabelContext}.
  *
  * @param props - {@link LabelProps}
  */

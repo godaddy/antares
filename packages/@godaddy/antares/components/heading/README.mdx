@@ -1,14 +1,18 @@
 ---
-title: Text
-description: Text component for displaying and formatting text content with alignment and truncation options
+title: Heading
+description: Semantic h1-h6 heading. Use slot="title" inside a Modal or Dialog to name the overlay.
 ---
+
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
-import * as Stories from './text.stories.tsx';
+import * as Stories from './heading.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
-The `Text` component prepares content with a few properties.
+## Features
+
+- Renders `h1`-`h6` from the `level` prop (default `2`).
+- `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
 
 ## Installation
 
@@ -21,7 +25,5 @@ npm install --save @godaddy/antares
 <Examples of={Stories.Examples} />
 
 ## Props
-
-The `Text` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />

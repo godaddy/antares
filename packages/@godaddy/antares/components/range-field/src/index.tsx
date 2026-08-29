@@ -9,7 +9,8 @@ import {
   SliderTrack as RACSliderTrack
 } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
-import { Label, Text } from '#components/text';
+import { Label } from '#components/label';
+import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import {

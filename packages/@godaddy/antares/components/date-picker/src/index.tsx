@@ -11,7 +11,8 @@ import {
 } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
-import { Label, Text } from '#components/text';
+import { Label } from '#components/label';
+import { Text } from '#components/text';
 import { Group, Content, type FieldSize } from '#components/structure';
 import { ControlButton } from '#components/control-button';
 import { Icon } from '#components/icon';

@@ -1,0 +1,29 @@
+---
+title: Label
+description: Names a form field. Field injects label chrome. The required asterisk comes from Field when the field is required.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './label.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Associates the visible name with the field control.
+- Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

@@ -6,9 +6,10 @@ import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#ty
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { InputContext } from '#components/input';
+import { LabelContext } from '#components/label';
 import { FieldStateContext, GroupContext, type FieldSize, type FieldState } from '#components/structure';
+import { TextContext } from '#components/text';
 import { TextAreaContext } from '#components/text-area';
-import { LabelContext, TextContext } from '#components/text';
 import styles from './index.module.css';
 
 export interface FieldOwnProps extends FlexOwnProps {

@@ -2,9 +2,9 @@ import { Group, Input, Label, TextField } from '@godaddy/antares';
 
 /**
  * Label names a field. The required asterisk comes from Field CSS when the root is `isRequired`.
- * @order 9
+ * @order 1
  */
-export function LabelExample() {
+export function DefaultExample() {
   return (
     <TextField isRequired>
       <Label>Email</Label>

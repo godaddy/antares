@@ -8,7 +8,8 @@ import {
 } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
-import { Label, Text } from '#components/text';
+import { Label } from '#components/label';
+import { Text } from '#components/text';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';

@@ -5,7 +5,7 @@ import {
   HeadingContext as RACHeadingContext,
   type HeadingProps as RACHeadingProps
 } from 'react-aria-components';
-import styles from './heading.module.css';
+import styles from './index.module.css';
 
 export const HeadingContext = RACHeadingContext;
 
@@ -28,9 +28,8 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
 }
 
 /**
- * A semantic heading. Renders an `h1`-`h6` element via RAC's `Heading`, so
- * `slot="title"` inside a `Modal`/`Dialog` wires the accessible name
- * (`aria-labelledby`) automatically.
+ * A semantic heading. Renders an `h1`-`h6` element, so `slot="title"` inside a
+ * `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
  *
  * @param props - The properties {@link HeadingProps} passed to the component.
  *

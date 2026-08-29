@@ -4,8 +4,9 @@ import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybo
 import { ControlButton } from '#components/control-button';
 import { FieldError } from '#components/field-error';
 import { Input } from '#components/input';
+import { Label } from '#components/label';
 import { Group } from '#components/structure';
-import { Label, Text } from '#components/text';
+import { Text } from '#components/text';
 import { TextArea } from '#components/text-area';
 import { TextField } from './src/index.tsx';
 

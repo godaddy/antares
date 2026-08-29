@@ -8,7 +8,8 @@ import {
 import { composeClassName } from '#utils/render-props.ts';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
-import { Label, Text } from '#components/text';
+import { Label } from '#components/label';
+import { Text } from '#components/text';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 import type { ReactNode } from 'react';

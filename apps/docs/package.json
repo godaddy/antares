@@ -7,7 +7,7 @@
     "build": "nx build:storybook",
     "preinstall": "node ./scripts/preinstall.ts",
     "preview": "vite preview",
-    "storybook": "nx serve:storybook -p 6006 --no-open",
+    "storybook": "nx serve:storybook --port 6006 --no-open",
     "typecheck": "tsgo --noEmit -p tsconfig.json"
   },
   "dependencies": {
