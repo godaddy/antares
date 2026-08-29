@@ -11,6 +11,7 @@ import { InvalidExample } from '../examples/invalid';
 import { LeadingControlExample } from '../examples/leading-control';
 import { MultilineExample } from '../examples/multiline';
 import { TrailingControlExample } from '../examples/trailing-control';
+import { TelephoneFieldExample } from '../examples/telephone-field';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -124,6 +125,21 @@ describe('@godaddy/antares', function antares() {
         assume(document.activeElement).equals(button);
         assume(button.hasAttribute('data-focus-visible')).equals(true);
         assume(button.hasAttribute('data-focused')).equals(true);
+      });
+    });
+
+    describe('#telephone-field', function telephoneField() {
+      it('selects a country code from the nested Select', async function selectsCountry() {
+        await render(<TelephoneFieldExample />);
+
+        const trigger = page.getByRole('button', { name: /country code/i });
+        await userEvent.click(trigger);
+
+        const mexico = page.getByRole('option', { name: 'MX +52' });
+        await userEvent.click(mexico);
+
+        const updated = page.getByRole('button', { name: /MX \+52/ });
+        assume(updated).is.not.equal(null);
       });
     });
 

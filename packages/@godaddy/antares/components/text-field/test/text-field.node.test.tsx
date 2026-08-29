@@ -9,6 +9,7 @@ import { LeadingControlExample } from '../examples/leading-control';
 import { MultilineExample } from '../examples/multiline';
 import { SizesExample } from '../examples/sizes';
 import { TrailingControlExample } from '../examples/trailing-control';
+import { TelephoneFieldExample } from '../examples/telephone-field';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -57,6 +58,10 @@ describe('@godaddy/antares', function antares() {
 
       it('renders icon accessories example', function iconAccessories() {
         expect(renderToString(<IconAccessoriesExample />)).toMatchSnapshot();
+      });
+
+      it('renders telephone field example', function telephoneField() {
+        expect(renderToString(<TelephoneFieldExample />)).toMatchSnapshot();
       });
     });
   });

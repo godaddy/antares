@@ -11,6 +11,7 @@ import { SizesExample } from '../examples/sizes.tsx';
 import { IconAccessoriesExample } from '../examples/icon-accessories.tsx';
 import { LeadingControlExample } from '../examples/leading-control.tsx';
 import { TrailingControlExample } from '../examples/trailing-control.tsx';
+import { TelephoneFieldExample } from '../examples/telephone-field.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -64,6 +65,11 @@ describe('@godaddy/antares', function antares() {
     it('icon accessories example', async function iconAccessoriesRender() {
       const { container } = await render(<IconAccessoriesExample />);
       await expect(container).toMatchScreenshot('icon-accessories');
+    });
+
+    it('telephone field example', async function telephoneFieldRender() {
+      const { container } = await render(<TelephoneFieldExample />);
+      await expect(container).toMatchScreenshot('telephone-field');
     });
 
     it('invalid trailing control example', async function invalidTrailingRender() {
