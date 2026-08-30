@@ -16,13 +16,16 @@ export function SelectMultipleExample() {
         selectionMode="multiple"
         value={value}
         onChange={setValue}
-      >
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
-        <SelectItem id="americano">Americano</SelectItem>
-        <SelectItem id="mocha">Mocha</SelectItem>
-      </Select>
+        options={
+          <>
+            <SelectItem id="espresso">Espresso</SelectItem>
+            <SelectItem id="latte">Latte</SelectItem>
+            <SelectItem id="cappuccino">Cappuccino</SelectItem>
+            <SelectItem id="americano">Americano</SelectItem>
+            <SelectItem id="mocha">Mocha</SelectItem>
+          </>
+        }
+      />
       <Text>
         <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}
       </Text>

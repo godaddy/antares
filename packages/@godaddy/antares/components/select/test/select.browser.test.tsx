@@ -2,12 +2,13 @@ import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
+import { ComposedExample } from '../examples/composed';
 import { DefaultExample } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { SelectMultipleExample } from '../examples/multiple';
 import { SelectFormExample } from '../examples/form';
 import { SelectInvalidExample } from '../examples/invalid';
-import { FieldSelectCompositeExample } from '../examples/field-select-composite';
+import { InGroupExample } from '../examples/in-group';
 
 describe('@godaddy/antares', function antares() {
   describe('#Select', function selectSuite() {
@@ -29,6 +30,15 @@ describe('@godaddy/antares', function antares() {
 
       const updated = page.getByRole('button', { name: /Espresso/ });
       assume(updated).is.not.equal(null);
+    });
+
+    it('selects an option from a composed interior', async function composedInteraction() {
+      await render(<ComposedExample />);
+
+      await userEvent.setup().click(page.getByRole('button', { name: /pick a drink/i }));
+      await userEvent.setup().click(page.getByRole('option', { name: 'Tea' }));
+
+      assume(page.getByRole('button', { name: /tea/i })).is.not.equal(null);
     });
 
     it('toggles items in multiple selection', async function multipleInteraction() {
@@ -61,8 +71,8 @@ describe('@godaddy/antares', function antares() {
       assume(group.hasAttribute('data-invalid')).equals(true);
     });
 
-    it('collects options and selects in a self-provided FieldSelect composite', async function compositeFieldSelect() {
-      await render(<FieldSelectCompositeExample />);
+    it('collects options and selects inside a shared Group', async function inGroupSelect() {
+      await render(<InGroupExample />);
 
       const trigger = page.getByRole('button');
       await userEvent.setup().click(trigger);

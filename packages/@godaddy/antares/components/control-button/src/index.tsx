@@ -9,7 +9,10 @@ import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
-export interface ControlButtonProps extends RACButtonProps, FlexOwnProps {}
+export interface ControlButtonProps extends RACButtonProps, FlexOwnProps {
+  /** Visual treatment for the control. @default 'default' */
+  variant?: 'default' | 'select';
+}
 
 /** Context for configuring descendant ControlButton components. */
 export const ControlButtonContext = createContext<ContextValue<ControlButtonProps, HTMLButtonElement>>(null);
@@ -21,7 +24,7 @@ export const ControlButtonContext = createContext<ContextValue<ControlButtonProp
  */
 export const ControlButton = forwardRef<HTMLButtonElement, ControlButtonProps>(function ControlButton(props, ref) {
   [props, ref] = useContextProps(props, ref, ControlButtonContext);
-  const { className, ...rest } = props;
+  const { className, variant = 'default', ...rest } = props;
 
   return (
     <Flex
@@ -30,6 +33,7 @@ export const ControlButton = forwardRef<HTMLButtonElement, ControlButtonProps>(f
       as={RACButton}
       ref={ref}
       className={composeClassName(className, styles.controlButton)}
+      data-variant={variant === 'select' ? 'select' : undefined}
       data-control-button
     />
   );

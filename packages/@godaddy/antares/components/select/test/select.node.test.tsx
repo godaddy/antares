@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
+import { ComposedExample } from '../examples/composed';
 import { SelectDisabledExample } from '../examples/disabled';
 import { SelectFormExample } from '../examples/form';
 import { SelectInvalidExample } from '../examples/invalid';
@@ -18,6 +19,11 @@ describe('@godaddy/antares', function antares() {
 
       it('renders controlled example', function controlled() {
         const result = renderToString(<SelectControlledExample />);
+        expect(result).toMatchSnapshot();
+      });
+
+      it('renders composed example', function composed() {
+        const result = renderToString(<ComposedExample />);
         expect(result).toMatchSnapshot();
       });
 
