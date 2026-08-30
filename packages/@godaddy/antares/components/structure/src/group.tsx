@@ -45,19 +45,21 @@ export const Group = forwardRef<HTMLDivElement, GroupProps>(function Group(props
   const sizeResolved = size ?? fieldState.size;
 
   return (
-    <Flex
-      direction="row"
-      wrap="nowrap"
-      alignSelf="stretch"
-      alignItems="stretch"
-      elevation="card"
-      isDisabled={isDisabledResolved}
-      isInvalid={isInvalidResolved}
-      data-size={sizeResolved === 'sm' ? 'sm' : undefined}
-      {...rest}
-      as={RACGroup}
-      ref={ref}
-      className={className}
-    />
+    <FieldStateContext.Provider value={{ isDisabled: isDisabledResolved, size: sizeResolved }}>
+      <Flex
+        direction="row"
+        wrap="nowrap"
+        alignSelf="stretch"
+        alignItems="stretch"
+        elevation="card"
+        isDisabled={isDisabledResolved}
+        isInvalid={isInvalidResolved}
+        data-size={sizeResolved === 'sm' ? 'sm' : undefined}
+        {...rest}
+        as={RACGroup}
+        ref={ref}
+        className={className}
+      />
+    </FieldStateContext.Provider>
   );
 });

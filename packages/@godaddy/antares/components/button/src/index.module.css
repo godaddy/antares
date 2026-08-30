@@ -67,8 +67,13 @@
 
   &:where([data-disabled]),
   &:disabled {
-    opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  /* Group owns the dim; control/trigger sit inside it. */
+  &:where([data-disabled]:not(.control, .trigger)),
+  &:disabled:where(:not(.control, .trigger)) {
+    opacity: 0.4;
   }
 
   /* variants */

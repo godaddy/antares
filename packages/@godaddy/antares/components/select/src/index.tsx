@@ -72,7 +72,7 @@ function isComposedInterior(children: ReactNode): boolean {
 export interface SelectRenderProps extends RACSelectRenderProps {}
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'children' | 'size'>,
+  extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
     FieldOwnProps {
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
