@@ -12,7 +12,7 @@ import * as Stories from './select.stories.tsx';
 ## Features
 
 - **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-- **Composable interior**: Pass `children` to compose the label, trigger group, selected value, messages, and popover
+- **Composable interior**: Pass a function child to compose the label, trigger group, selected value, messages, and popover
 - **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
@@ -29,9 +29,10 @@ npm install --save @godaddy/antares
 
 <Examples of={Stories.Examples} />
 
-Pass `options` to render the default layout: label, trigger, messages, and popover listbox. Pass `children`
-instead to build the interior yourself, where `SelectValue` displays the current selection inside a
-`ControlButton`. The two are mutually exclusive: `children` replaces the default layout entirely.
+`SelectItem` children are the options, and Select renders the label, trigger, messages, and popover
+listbox around them. To build that interior yourself, pass a function instead: it receives the current
+state (`isOpen`, `isInvalid`, and so on) and replaces the default layout entirely, with `SelectValue`
+displaying the current selection inside a `ControlButton`.
 
 ## Props
 

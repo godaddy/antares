@@ -41,6 +41,16 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByRole('button', { name: /tea/i })).is.not.equal(null);
     });
 
+    it('passes the open state to a composed interior', async function composedRenderProps() {
+      const { container } = await render(<ComposedExample />);
+
+      assume(container.textContent).contains('Choose your favorite drink');
+
+      await userEvent.setup().click(page.getByRole('button', { name: /pick a drink/i }));
+
+      assume(container.textContent).contains('Use the arrow keys to browse');
+    });
+
     it('toggles items in multiple selection', async function multipleInteraction() {
       await render(<SelectMultipleExample />);
 

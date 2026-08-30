@@ -28,32 +28,16 @@ export function SelectFormExample() {
 
   return (
     <Flex as="form" direction="column" gap="md" onSubmit={handleSubmit}>
-      <Select
-        name="drink"
-        label="Drink"
-        placeholder="Pick a drink"
-        isRequired
-        options={
-          <>
-            <SelectItem id="espresso">Espresso</SelectItem>
-            <SelectItem id="latte">Latte</SelectItem>
-            <SelectItem id="cappuccino">Cappuccino</SelectItem>
-          </>
-        }
-      />
-      <Select
-        name="extras"
-        label="Extras"
-        placeholder="Pick any extras"
-        selectionMode="multiple"
-        options={
-          <>
-            <SelectItem id="oat-milk">Oat milk</SelectItem>
-            <SelectItem id="extra-shot">Extra shot</SelectItem>
-            <SelectItem id="vanilla">Vanilla syrup</SelectItem>
-          </>
-        }
-      />
+      <Select name="drink" label="Drink" placeholder="Pick a drink" isRequired>
+        <SelectItem id="espresso">Espresso</SelectItem>
+        <SelectItem id="latte">Latte</SelectItem>
+        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+      </Select>
+      <Select name="extras" label="Extras" placeholder="Pick any extras" selectionMode="multiple">
+        <SelectItem id="oat-milk">Oat milk</SelectItem>
+        <SelectItem id="extra-shot">Extra shot</SelectItem>
+        <SelectItem id="vanilla">Vanilla syrup</SelectItem>
+      </Select>
       <Flex gap="sm">
         <Button type="submit">Submit</Button>
         <Button type="reset" variant="minimal" onPress={() => setSubmitted(null)}>

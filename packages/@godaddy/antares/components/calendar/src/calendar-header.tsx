@@ -83,18 +83,15 @@ export function MonthHeading(props: { offset: number }) {
 
   return (
     <Flex direction="row" gap="sm" alignItems="center">
-      <Select
-        aria-label="Month"
-        value={String(displayDate.month)}
-        onChange={handleMonthChange}
-        options={monthNames.map(function mapMonthNames(name, index) {
+      <Select aria-label="Month" value={String(displayDate.month)} onChange={handleMonthChange}>
+        {monthNames.map(function mapMonthNames(name, index) {
           return (
             <SelectItem key={index + 1} id={String(index + 1)}>
               {name}
             </SelectItem>
           );
         })}
-      />
+      </Select>
       <NumberField
         aria-label="Year"
         hideStepper

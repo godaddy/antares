@@ -85,6 +85,23 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
   const { as, children, gap = 'sm', className, size, ...rest } = props;
   const isDisabled = props.isDisabled;
 
+  function withContexts(content: ReactNode) {
+    return (
+      <FieldContexts isDisabled={isDisabled} size={size}>
+        {content}
+      </FieldContexts>
+    );
+  }
+
+  // RAC roots call function children with their render props, so keep the function
+  // shape intact and wrap only what it returns.
+  const content =
+    typeof children === 'function'
+      ? function renderWithContexts(renderProps: never) {
+          return withContexts(children(renderProps));
+        }
+      : withContexts(children);
+
   return (
     <Flex
       direction="column"
@@ -94,9 +111,7 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
       ref={ref}
       className={composeClassName(className, styles.field)}
     >
-      <FieldContexts isDisabled={isDisabled} size={size}>
-        {children}
-      </FieldContexts>
+      {content}
     </Flex>
   );
 }) as PolymorphicComponent<FieldOwnProps>;

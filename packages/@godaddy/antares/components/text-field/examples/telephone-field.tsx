@@ -10,17 +10,11 @@ export function TelephoneFieldExample() {
     <TextField>
       <Label>Phone number</Label>
       <Group>
-        <Select
-          aria-label="Country code"
-          defaultValue="us"
-          options={
-            <>
-              <SelectItem id="us">US +1</SelectItem>
-              <SelectItem id="mx">MX +52</SelectItem>
-              <SelectItem id="gb">GB +44</SelectItem>
-            </>
-          }
-        />
+        <Select aria-label="Country code" defaultValue="us">
+          <SelectItem id="us">US +1</SelectItem>
+          <SelectItem id="mx">MX +52</SelectItem>
+          <SelectItem id="gb">GB +44</SelectItem>
+        </Select>
         <Input autoComplete="tel-national" inputMode="tel" placeholder="555-555-5555" type="tel" />
       </Group>
       <Text slot="description">We'll only call about your order.</Text>

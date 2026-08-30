@@ -9,6 +9,7 @@ import {
 import {
   Select as RACSelect,
   type SelectProps as RACSelectProps,
+  type SelectRenderProps as RACSelectRenderProps,
   type Key as RACKey,
   SelectValue as RACSelectValue,
   type SelectValueProps as RACSelectValueProps
@@ -46,20 +47,23 @@ function SelectPopover<T extends object>({ children }: { children?: ListBoxProps
   );
 }
 
+/** State passed to a composed Select interior. */
+export interface SelectRenderProps extends RACSelectRenderProps {}
+
 export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<RACSelectProps<T, M>, 'children' | 'size'>,
     FieldOwnProps {
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /** Options shown in the popover. */
-  options?: ListBoxProps<T>['children'];
-
   /**
-   * Composed interior (Label, Group, ControlButton, SelectValue, Popover, Content,
-   * ListBox, Text, FieldError). When set, the default layout is not rendered.
+   * The options to choose from, rendered by the default layout.
+   *
+   * Pass a function instead to compose the whole interior yourself out of Label,
+   * Group, ControlButton, SelectValue, Popover, Content, ListBox, Text, and
+   * FieldError. It receives the current {@link SelectRenderProps}.
    */
-  children?: ReactNode;
+  children?: ReactNode | ((renderProps: SelectRenderProps) => ReactNode);
 }
 
 /**
@@ -68,20 +72,25 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
  *
  * @example
  * ```tsx
- * <Select label="Coffee" options={<SelectItem id="espresso">Espresso</SelectItem>} />
+ * <Select label="Coffee">
+ *   <SelectItem id="espresso">Espresso</SelectItem>
+ * </Select>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
   const inGroup = useContext(InGroupContext);
-  const { label, description, errorMessage, children, options, size, className, ...racProps } = props;
+  const { label, description, errorMessage, children, size, className, ...racProps } = props;
+  const isComposed = typeof children === 'function';
 
   if (inGroup) {
     return (
       <RACSelect {...racProps} className={composeClassName(className, styles.select)}>
-        {children ?? (
+        {isComposed ? (
+          children
+        ) : (
           <>
             <SelectTrigger />
-            <SelectPopover>{options}</SelectPopover>
+            <SelectPopover>{children}</SelectPopover>
           </>
         )}
       </RACSelect>
@@ -90,7 +99,9 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
 
   return (
     <Field as={RACSelect} size={size} {...racProps} className={composeClassName(className, styles.select)}>
-      {children ?? (
+      {isComposed ? (
+        children
+      ) : (
         <>
           {label ? <Label>{label}</Label> : null}
           <Group alignItems="center">
@@ -98,7 +109,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
           </Group>
           {description ? <Text slot="description">{description}</Text> : null}
           <FieldError>{errorMessage}</FieldError>
-          <SelectPopover>{options}</SelectPopover>
+          <SelectPopover>{children}</SelectPopover>
         </>
       )}
     </Field>
