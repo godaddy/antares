@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  type ForwardedRef,
-  type ReactElement,
-  type ReactNode,
-  type RefAttributes,
-  useContext
-} from 'react';
+import { forwardRef, type ReactNode, useContext } from 'react';
 import {
   Select as RACSelect,
   type SelectProps as RACSelectProps,
@@ -116,19 +109,16 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   );
 }
 
-export interface SelectValueProps<T extends object = object> extends RACSelectValueProps<T> {}
+export interface SelectValueProps extends RACSelectValueProps<object> {}
 
 /**
  * Displays the selected option, or the Select placeholder when no option is selected.
  */
-export const SelectValue = forwardRef(function SelectValue<T extends object = object>(
-  props: SelectValueProps<T>,
-  ref: ForwardedRef<HTMLSpanElement>
-) {
+export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(function SelectValue(props, ref) {
   const { className, ...rest } = props;
 
   return <RACSelectValue {...rest} ref={ref} className={composeClassName(className, styles.value)} />;
-}) as <T extends object = object>(props: SelectValueProps<T> & RefAttributes<HTMLSpanElement>) => ReactElement;
+});
 
 export interface SelectItemProps extends ListBoxItemProps {}
 

@@ -1,16 +1,16 @@
 import { Group, Input, Label, Select, SelectItem, Text, TextField } from '@godaddy/antares';
 
 /**
- * Amount input and currency Select sharing one Group. Select sees InGroupContext
- * and skips its own Field/Group wrapper.
+ * Amount input and currency Select sharing one Group. The Label names the input;
+ * the nested Select needs its own `aria-label`.
  * @ignore
  */
 export function InGroupExample() {
   return (
     <TextField>
-      <Label id="price-label">Price</Label>
-      <Group aria-labelledby="price-label">
-        <Input aria-label="Amount" placeholder="12,231.67" />
+      <Label>Price</Label>
+      <Group>
+        <Input placeholder="12,231.67" />
         <Select aria-label="Currency" defaultValue="usd">
           <SelectItem id="usd">USD</SelectItem>
           <SelectItem id="eur">EUR</SelectItem>
