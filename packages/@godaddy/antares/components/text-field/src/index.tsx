@@ -38,7 +38,7 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'si
   onChange?: RACTextFieldProps['onChange'];
 
   /**
-   * Optional composed interior (Label, Group, Input, ControlButton, FieldError).
+   * Optional composed interior (Label, Group, Input, Button, FieldError).
    * When set, the default label / group / input layout is not rendered.
    */
   children?: ReactNode;

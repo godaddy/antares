@@ -9,6 +9,7 @@ import { SelectFormExample } from '../examples/form';
 import { SelectInvalidExample } from '../examples/invalid';
 import { SelectMultipleExample } from '../examples/multiple';
 import { SelectSizesExample } from '../examples/sizes';
+import { CustomOptionExample } from '../examples/custom-option';
 
 describe('@godaddy/antares', function antares() {
   describe('#Select', function select() {
@@ -58,6 +59,11 @@ describe('@godaddy/antares', function antares() {
       it('renders sizes example', function sizes() {
         const result = renderToString(<SelectSizesExample />);
         expect(result).toContain('data-size="sm"');
+        expect(result).toMatchSnapshot();
+      });
+
+      it('renders custom option components', function customOption() {
+        const result = renderToString(<CustomOptionExample />);
         expect(result).toMatchSnapshot();
       });
     });

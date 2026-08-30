@@ -2,10 +2,10 @@
 '@godaddy/antares': minor
 ---
 
-feat: compose field primitives instead of Field* wrappers
+feat: compose field components instead of Field* wrappers
 
 `TextField` keeps `label`, `description`, `errorMessage`, `placeholder`, `leadingText`, `trailingText`, `multiline`, and `size` for the common case. Pass `children` to compose `Label`, `Group`, `Input` or `TextArea`, and `FieldError` instead.
 
-`Select` keeps its shorthand field props and its `SelectItem` children. Its `children` now also accept a composed interior built from field primitives and the new `SelectValue` component, or a function returning that interior when it needs the Select state (`isOpen` and friends).
+`Select` keeps its shorthand field props and its `SelectItem` children, including components that wrap `SelectItem`. Its `children` also accept a composed interior built from Antares components and the new `SelectValue`, or a function returning that interior when it needs Select state. Use `variant="control"` when Select shares another field's Group.
 
-Public primitives: `Label`/`LabelContext`, `Group`/`GroupContext`/`FieldSize`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, `ControlButton`/`ControlButtonContext`, `FieldError`/`FieldErrorContext`. Field is an internal shell that merges RAC contexts to inject chrome. `Select` uses `InGroupContext` to share a box with `Input`.
+Public components: `Label`/`LabelContext`, `Group`/`GroupContext`/`FieldSize`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.

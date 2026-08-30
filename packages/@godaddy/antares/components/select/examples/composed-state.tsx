@@ -1,6 +1,6 @@
 import {
   Content,
-  ControlButton,
+  Button,
   FieldError,
   Group,
   Icon,
@@ -27,10 +27,10 @@ export function ComposedStateExample() {
           <>
             <Label>Drink</Label>
             <Group alignItems="center">
-              <ControlButton flex={1} gap="sm" variant="select">
+              <Button variant="trigger">
                 <SelectValue />
                 <Icon icon="chevron-down" />
-              </ControlButton>
+              </Button>
             </Group>
             <Text slot="description">{isOpen ? 'Use the arrow keys to browse' : 'Choose your favorite drink'}</Text>
             <FieldError />

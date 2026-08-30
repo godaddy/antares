@@ -10,7 +10,7 @@ export function TelephoneFieldExample() {
     <TextField>
       <Label>Phone number</Label>
       <Group>
-        <Select aria-label="Country code" defaultValue="us">
+        <Select aria-label="Country code" defaultValue="us" variant="control">
           <SelectItem id="us">US +1</SelectItem>
           <SelectItem id="mx">MX +52</SelectItem>
           <SelectItem id="gb">GB +44</SelectItem>

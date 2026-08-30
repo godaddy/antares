@@ -11,7 +11,7 @@ export function InGroupExample() {
       <Label>Price</Label>
       <Group>
         <Input placeholder="12,231.67" />
-        <Select aria-label="Currency" defaultValue="usd">
+        <Select aria-label="Currency" defaultValue="usd" variant="control">
           <SelectItem id="usd">USD</SelectItem>
           <SelectItem id="eur">EUR</SelectItem>
           <SelectItem id="gbp">GBP</SelectItem>

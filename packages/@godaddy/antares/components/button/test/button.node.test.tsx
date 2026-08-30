@@ -10,6 +10,8 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { IconExample } from '../examples/icon.tsx';
 import { MinimalExample } from '../examples/minimal.tsx';
+import { ControlExample } from '../examples/control.tsx';
+import { TriggerExample } from '../examples/trigger.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -45,6 +47,16 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the minimal button', function rendersMinimal() {
       const result = renderToString(<MinimalExample />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders the control button', function rendersControl() {
+      const result = renderToString(<ControlExample />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders the trigger button', function rendersTrigger() {
+      const result = renderToString(<TriggerExample />);
       expect(result).toMatchSnapshot();
     });
 

@@ -27,7 +27,6 @@ export * from './exports/NumberField';
 export * from './exports/Field';
 export * from './exports/Input';
 export * from './exports/TextArea';
-export * from './exports/ControlButton';
 export * from './exports/Carousel';
 export * from './exports/Pagination';
 export * from './exports/SegmentedController';

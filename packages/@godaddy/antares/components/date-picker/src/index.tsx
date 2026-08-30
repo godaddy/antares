@@ -14,7 +14,7 @@ import { FieldError } from '#components/field-error';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
 import { Group, Content, type FieldSize } from '#components/structure';
-import { ControlButton } from '#components/control-button';
+import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
 import { Calendar, RangeCalendar } from '#components/calendar';
@@ -61,10 +61,10 @@ export function DatePicker(props: DatePickerProps) {
     <Field as={RACDatePicker} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
       <Group alignItems="center">
-        <ControlButton flex={1} gap="sm" data-variant="select">
+        <Button variant="trigger">
           <Icon icon="calendar" />
           <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-        </ControlButton>
+        </Button>
       </Group>
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
@@ -116,10 +116,10 @@ export function DateRangePicker(props: DateRangePickerProps) {
     <Field as={RACDateRangePicker} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
       <Group alignItems="center">
-        <ControlButton flex={1} gap="sm" data-variant="select">
+        <Button variant="trigger">
           <Icon icon="calendar" />
           <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-        </ControlButton>
+        </Button>
       </Group>
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>

@@ -77,7 +77,7 @@ function FieldContexts({ children, isDisabled, size }: { children: ReactNode } &
 }
 
 /**
- * Internal field shell: column layout plus merged RAC (and ControlButton) contexts.
+ * Internal field shell: column layout plus merged RAC contexts.
  *
  * @param props - {@link FieldProps}
  */

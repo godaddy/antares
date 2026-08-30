@@ -12,7 +12,7 @@ import * as Stories from './select.stories.tsx';
 ## Features
 
 - **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-- **Composable interior**: Replace the default layout with field primitives, or with a function when the interior needs the Select state
+- **Composable interior**: Replace the default layout with Antares components, or with a function when the interior needs the Select state
 - **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
@@ -32,14 +32,20 @@ npm install --save @godaddy/antares
 `children` accepts three shapes:
 
 - **`SelectItem` options.** Select renders the label, trigger, messages, and popover listbox around them.
-- **A composed interior.** Pass field primitives (`Label`, `Group`, `ControlButton`, `SelectValue`, `Popover`,
+- **A composed interior.** Pass Antares components (`Label`, `Group`, `Button`, `SelectValue`, `Popover`,
   `Content`, `ListBox`, `Text`, `FieldError`) and Select renders them as-is instead of its default layout.
-  `SelectValue` displays the current selection inside the `ControlButton`.
+  `SelectValue` displays the current selection inside a `Button variant="trigger"`.
 - **A function returning that interior.** Use this when the interior needs the Select state: it receives
   `isOpen`, `isInvalid`, and the rest of the render props.
 
-Select recognizes a composed interior by seeing one of those field primitives as a direct child. If you
+Select recognizes a composed interior by seeing one of those components as a direct child. If you
 wrap them in your own component or an element, use the function form so there is nothing to detect.
+
+Use `variant="control"` when Select shares a `Group` owned by another field, such as a currency Select
+inside a TextField. This explicitly omits Select's own field shell. The default variant renders a complete field.
+
+Option components may wrap `SelectItem`. Select passes unrecognized children to its ListBox, whose collection
+builder resolves the wrapped items.
 
 ## Props
 

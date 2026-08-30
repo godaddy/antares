@@ -10,6 +10,7 @@ import { SelectMultipleExample } from '../examples/multiple';
 import { SelectFormExample } from '../examples/form';
 import { SelectInvalidExample } from '../examples/invalid';
 import { InGroupExample } from '../examples/in-group';
+import { CustomOptionExample } from '../examples/custom-option';
 
 describe('@godaddy/antares', function antares() {
   describe('#Select', function selectSuite() {
@@ -83,7 +84,9 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('collects options and selects inside a shared Group', async function inGroupSelect() {
-      await render(<InGroupExample />);
+      const { container } = await render(<InGroupExample />);
+
+      assume(container.querySelectorAll('[data-elevation="card"]').length).equals(1);
 
       const trigger = page.getByRole('button');
       await userEvent.setup().click(trigger);
@@ -94,6 +97,15 @@ describe('@godaddy/antares', function antares() {
 
       const updated = page.getByRole('button', { name: /EUR/ });
       assume(updated).is.not.equal(null);
+    });
+
+    it('collects options wrapped in a custom component', async function customOption() {
+      await render(<CustomOptionExample />);
+
+      await userEvent.setup().click(page.getByRole('button'));
+      await userEvent.setup().click(page.getByRole('option', { name: 'Mexico' }));
+
+      assume(page.getByRole('button', { name: /Mexico/ })).is.not.equal(null);
     });
   });
 });

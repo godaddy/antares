@@ -1,4 +1,4 @@
-import { ControlButton, Group, Input, Label, Text, TextField } from '@godaddy/antares';
+import { Button, Group, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Compose with `children` when you need a leading control instead of `leadingText`.
@@ -10,7 +10,9 @@ export function LeadingControlExample() {
     <TextField>
       <Label>Phone</Label>
       <Group>
-        <ControlButton aria-label="Country code">Click Me</ControlButton>
+        <Button aria-label="Country code" variant="control">
+          Click Me
+        </Button>
         <Input placeholder="Enter your phone number" />
       </Group>
       <Text slot="description">Enter your phone number</Text>

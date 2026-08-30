@@ -1,4 +1,4 @@
-import { forwardRef, isValidElement, type ReactNode, useContext } from 'react';
+import { forwardRef, isValidElement, type ReactNode } from 'react';
 import {
   Select as RACSelect,
   type SelectProps as RACSelectProps,
@@ -11,8 +11,8 @@ import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
-import { Content, Group, InGroupContext, type FieldSize } from '#components/structure';
-import { ControlButton } from '#components/control-button';
+import { Content, Group, type FieldSize } from '#components/structure';
+import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Popover } from '#components/popover';
 import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
@@ -21,12 +21,12 @@ import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-function SelectTrigger({ variant }: { variant?: 'select' | 'control' }) {
+function SelectTrigger({ variant = 'trigger' }: { variant?: 'trigger' | 'control' }) {
   return (
-    <ControlButton flex={1} gap="sm" variant={variant === 'select' ? 'select' : 'default'}>
+    <Button variant={variant}>
       <SelectValue />
       <Icon icon="chevron-down" />
-    </ControlButton>
+    </Button>
   );
 }
 
@@ -41,12 +41,12 @@ function SelectPopover<T extends object>({ children }: { children?: ListBoxProps
 }
 
 /**
- * The field primitives a composed interior is built from. Seeing one of these as a
+ * The components a composed interior is built from. Seeing one of these as a
  * direct child is what tells Select the children are an interior and not options.
  * Items are the open set (any component may render a SelectItem), so the closed set
- * of our own primitives is the side worth recognizing.
+ * of our own components is the side worth recognizing.
  */
-const INTERIOR_PARTS = new Set<unknown>([Content, ControlButton, FieldError, Group, Label, ListBox, Popover, Text]);
+const INTERIOR_PARTS = new Set<unknown>([Button, Content, FieldError, Group, Label, ListBox, Popover, Text]);
 
 function isComposedInterior(children: ReactNode): boolean {
   if (Array.isArray(children)) {
@@ -77,9 +77,12 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
+  /** Whether Select renders a complete field or a control inside another field. @default 'default' */
+  variant?: 'default' | 'control';
+
   /**
    * `SelectItem` options for the default layout, an interior composed from Label,
-   * Group, ControlButton, SelectValue, Popover, Content, ListBox, Text, and
+   * Group, Button, SelectValue, Popover, Content, ListBox, Text, and
    * FieldError, or a function returning that interior.
    *
    * A function receives the current {@link SelectRenderProps}, which is the only way
@@ -89,8 +92,8 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 }
 
 /**
- * Antares Select. Standalone it is a labeled field. Inside a {@link Group} it is
- * box-less (own Select provider only) so it can share a box with an {@link Input}.
+ * Antares Select. By default it is a labeled field. Use `variant="control"` to
+ * share another field's {@link Group} without rendering a second field shell.
  *
  * @example
  * ```tsx
@@ -108,14 +111,13 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
-  const inGroup = useContext(InGroupContext);
-  const { label, description, errorMessage, children, size, className, ...racProps } = props;
+  const { label, description, errorMessage, children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
 
   // A composed interior owns everything inside, so Select only supplies the RAC root
-  // (plus the field shell when it is not sharing someone else's Group).
+  // (plus the field shell for the default variant).
   if (typeof children === 'function' || isComposedInterior(children)) {
-    return inGroup ? (
+    return variant === 'control' ? (
       <RACSelect {...racProps} className={selectClass}>
         {children}
       </RACSelect>
@@ -128,10 +130,10 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
 
   const options = children as ListBoxProps<T>['children'];
 
-  if (inGroup) {
+  if (variant === 'control') {
     return (
       <RACSelect {...racProps} className={selectClass}>
-        <SelectTrigger />
+        <SelectTrigger variant="control" />
         <SelectPopover>{options}</SelectPopover>
       </RACSelect>
     );
@@ -141,7 +143,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
     <Field as={RACSelect} size={size} {...racProps} className={selectClass}>
       {label ? <Label>{label}</Label> : null}
       <Group alignItems="center">
-        <SelectTrigger variant="select" />
+        <SelectTrigger />
       </Group>
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>

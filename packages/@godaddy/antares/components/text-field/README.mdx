@@ -16,7 +16,7 @@ import * as Stories from './text-field.stories.tsx';
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Multiline**: Set `multiline` to render a textarea instead of a single-line input
 - **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-- **Composition**: For custom interiors (leading/trailing controls, icons, nested Select), pass `children` and compose `Label`, `Group`, `Input`, `ControlButton`, and `Select`
+- **Composition**: For custom interiors (leading/trailing controls, icons, nested Select), pass `children` and compose `Label`, `Group`, `Input`, `Button`, and `Select`
 
 ## Installation
 
@@ -36,9 +36,9 @@ When `children` is passed, `TextField` is composed. A composed `Group` inherits 
 <TextField>
   <Label />
   <Group>
-    <Select />
+    <Select variant="control" />
     <Input /> {/* or <TextArea /> */}
-    <ControlButton />
+    <Button variant="control" />
   </Group>
   <Text slot="description" />
   <FieldError />

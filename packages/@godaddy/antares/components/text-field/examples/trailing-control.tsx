@@ -1,4 +1,4 @@
-import { ControlButton, Group, Input, Label, Text, TextField } from '@godaddy/antares';
+import { Button, Group, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Compose with `children` when you need a trailing control instead of `trailingText`.
@@ -11,7 +11,9 @@ export function TrailingControlExample() {
       <Label>Search</Label>
       <Group>
         <Input placeholder="Type..." />
-        <ControlButton aria-label="Search">Search</ControlButton>
+        <Button aria-label="Search" variant="control">
+          Search
+        </Button>
       </Group>
       <Text slot="description">Search by keyword</Text>
     </TextField>

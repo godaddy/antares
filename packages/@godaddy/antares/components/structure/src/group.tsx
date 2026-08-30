@@ -17,12 +17,6 @@ export interface GroupProps extends RACGroupProps, FlexOwnProps {
   size?: FieldSize;
 }
 
-/**
- * True when the nearest ancestor is an Antares {@link Group}. Used by Select
- * to omit its own Field/Group wrapper inside a shared box.
- */
-export const InGroupContext = createContext(false);
-
 export interface FieldState {
   /** Whether the field is disabled. */
   isDisabled?: boolean;
@@ -51,21 +45,19 @@ export const Group = forwardRef<HTMLDivElement, GroupProps>(function Group(props
   const sizeResolved = size ?? fieldState.size;
 
   return (
-    <InGroupContext.Provider value={true}>
-      <Flex
-        direction="row"
-        wrap="nowrap"
-        alignSelf="stretch"
-        alignItems="stretch"
-        elevation="card"
-        isDisabled={isDisabledResolved}
-        isInvalid={isInvalidResolved}
-        data-size={sizeResolved === 'sm' ? 'sm' : undefined}
-        {...rest}
-        as={RACGroup}
-        ref={ref}
-        className={className}
-      />
-    </InGroupContext.Provider>
+    <Flex
+      direction="row"
+      wrap="nowrap"
+      alignSelf="stretch"
+      alignItems="stretch"
+      elevation="card"
+      isDisabled={isDisabledResolved}
+      isInvalid={isInvalidResolved}
+      data-size={sizeResolved === 'sm' ? 'sm' : undefined}
+      {...rest}
+      as={RACGroup}
+      ref={ref}
+      className={className}
+    />
   );
 });

@@ -139,6 +139,27 @@
     --button-text-pressed: var(--color-feedback-critical-onstrong, var(--ux-17znn9m, #ffffff));
   }
 
+  &:where(.control, .trigger) {
+    --button-bg: var(--ux-1mh0ktr, #f5f5f5);
+    --button-bg-hovered: var(--ux-11rtwg8, #f5f5f5);
+    --button-bg-pressed: var(--ux-gdy377, #fff);
+    --button-border: var(--ux-1qbn65p, #f5f5f5);
+    --button-border-hovered: var(--ux-bg7olm, #d6d6d6);
+    --button-border-pressed: var(--ux-187j9dd, #00a4a6);
+    --button-text: var(--ux-1utwv7e, #111);
+    --button-text-hovered: var(--ux-1e4ese5, #111);
+    --button-text-pressed: var(--ux-k4fkva, #111);
+  }
+
+  &:where(.trigger) {
+    --button-bg: transparent;
+
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-start;
+    text-align: start;
+  }
+
   &:where(.inline) {
     --button-bg: transparent;
     --button-bg-hovered: transparent;

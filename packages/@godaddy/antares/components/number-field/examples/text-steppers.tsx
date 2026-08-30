@@ -1,4 +1,4 @@
-import { ControlButton, Group, Input, Label, NumberField, Text } from '@godaddy/antares';
+import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';
 
 /**
  * Compose with `children` to replace the stepper icons with your own content, such as text.
@@ -9,9 +9,13 @@ export function TextSteppersExample() {
     <NumberField defaultValue={1} minValue={0}>
       <Label>Quantity</Label>
       <Group>
-        <ControlButton slot="decrement">decrement</ControlButton>
+        <Button slot="decrement" variant="control">
+          decrement
+        </Button>
         <Input />
-        <ControlButton slot="increment">increment</ControlButton>
+        <Button slot="increment" variant="control">
+          increment
+        </Button>
       </Group>
       <Text slot="description">Use decrement and increment to change the value.</Text>
     </NumberField>

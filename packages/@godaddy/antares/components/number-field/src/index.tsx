@@ -5,7 +5,7 @@ import { FieldError } from '#components/field-error';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
 import { Group, type FieldSize } from '#components/structure';
-import { ControlButton } from '#components/control-button';
+import { Button } from '#components/button';
 import { Input } from '#components/input';
 import { Icon } from '#components/icon';
 
@@ -20,7 +20,7 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
   size?: FieldSize;
 
   /**
-   * Optional composed interior (Label, Group, Input, ControlButton, FieldError).
+   * Optional composed interior (Label, Group, Input, Button, FieldError).
    * When set, the default label / group / steppers layout is not rendered.
    */
   children?: ReactNode;
@@ -42,15 +42,15 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(functi
           {label ? <Label>{label}</Label> : null}
           <Group>
             {!hideStepper && (
-              <ControlButton slot="decrement">
+              <Button slot="decrement" variant="control">
                 <Icon icon="minus" />
-              </ControlButton>
+              </Button>
             )}
             <Input ref={ref} placeholder={placeholder} />
             {!hideStepper && (
-              <ControlButton slot="increment">
+              <Button slot="increment" variant="control">
                 <Icon icon="plus" />
-              </ControlButton>
+              </Button>
             )}
           </Group>
           {description ? <Text slot="description">{description}</Text> : null}

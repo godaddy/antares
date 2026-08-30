@@ -1,4 +1,4 @@
-import { ControlButton, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';
+import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Compose with `children` for a leading icon and trailing action; `leadingText` and `trailingText` are for fixed text only.
@@ -14,7 +14,9 @@ export function IconAccessoriesExample() {
           <Icon icon="star" />
         </Flex>
         <Input placeholder="Email" />
-        <ControlButton aria-label="Verify email address">Verify</ControlButton>
+        <Button aria-label="Verify email address" variant="control">
+          Verify
+        </Button>
       </Group>
       <Text slot="description">Enter your email address</Text>
     </TextField>

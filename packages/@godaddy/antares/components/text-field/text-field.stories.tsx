@@ -1,7 +1,7 @@
 'use client';
 import { PlaygroundExample } from './examples/text-field-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ControlButton } from '#components/control-button';
+import { Button } from '#components/button';
 import { FieldError } from '#components/field-error';
 import { Input } from '#components/input';
 import { Label } from '#components/label';
@@ -24,7 +24,7 @@ export const InputProps = getComponentDocs(Input);
 
 export const TextAreaProps = getComponentDocs(TextArea);
 
-export const ControlButtonProps = getComponentDocs(ControlButton);
+export const ButtonProps = getComponentDocs(Button);
 
 export const TextProps = getComponentDocs(Text);
 

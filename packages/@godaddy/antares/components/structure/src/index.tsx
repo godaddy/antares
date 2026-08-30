@@ -6,7 +6,6 @@ export {
   FieldStateContext,
   Group,
   GroupContext,
-  InGroupContext,
   type FieldSize,
   type FieldState,
   type GroupProps

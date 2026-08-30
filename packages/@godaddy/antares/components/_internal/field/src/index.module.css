@@ -57,9 +57,6 @@
   }
 
   &:where([data-size="sm"]) {
-    --control-button-font-size: calc(1em / 1.125);
-    --control-button-padding: var(--sp-sm);
-
     & :where(.input, .textarea) {
       font-size: calc(1em / 1.125);
       padding-block: var(--sp-sm);
@@ -68,7 +65,7 @@
 
   & > :where(:nth-child(1 of :not(template))) {
     &,
-    > :where([data-control-button]) {
+    > :where([data-button-variant]) {
       border-start-start-radius: var(--field-br);
       border-end-start-radius: var(--field-br);
     }
@@ -76,7 +73,7 @@
 
   & > :where(:nth-last-child(1 of :not(template))) {
     &,
-    > :where([data-control-button]) {
+    > :where([data-button-variant]) {
       border-start-end-radius: var(--field-br);
       border-end-end-radius: var(--field-br);
     }

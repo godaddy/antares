@@ -6,6 +6,8 @@ import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
+import { ControlExample } from '../examples/control.tsx';
+import { TriggerExample } from '../examples/trigger.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
@@ -32,6 +34,16 @@ describe('@godaddy/antares', function antares() {
       await userEvent.keyboard('{Space>}');
       expect(getByRole('button')).toHaveAttribute('data-pressed', 'true');
       await userEvent.keyboard('{/Space}');
+    });
+
+    it('keeps the control variant content-sized', async function controlSize() {
+      const { getByRole } = await render(<ControlExample />);
+      expect(getComputedStyle(getByRole('button').element()).flexGrow).toBe('0');
+    });
+
+    it('grows the trigger variant to fill its Group', async function triggerSize() {
+      const { getByRole } = await render(<TriggerExample />);
+      expect(getComputedStyle(getByRole('button').element()).flexGrow).toBe('1');
     });
 
     it('does not apply hover or focus styles when disabled', async function disabledNoHoverStyles() {

@@ -1,5 +1,5 @@
 import type React from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
@@ -9,6 +9,7 @@ import {
   Text as RACText
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
+import { FieldStateContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -20,7 +21,9 @@ const buttonVariants = cva(styles.button, {
       tertiary: styles.tertiary,
       critical: styles.critical,
       inline: styles.inline,
-      minimal: styles.minimal
+      minimal: styles.minimal,
+      control: styles.control,
+      trigger: styles.trigger
     },
     size: {
       sm: styles.sm,
@@ -34,10 +37,12 @@ const buttonVariants = cva(styles.button, {
 });
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+type ButtonVariant = ButtonVariantProps['variant'];
+type LinkButtonVariant = Exclude<ButtonVariant, 'control' | 'trigger'>;
 
-interface BaseButtonProps {
+interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
   /** The variant of the button. */
-  variant?: ButtonVariantProps['variant'];
+  variant?: V;
 
   /** The size of the button. */
   size?: ButtonVariantProps['size'];
@@ -55,15 +60,24 @@ export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'chil
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   const { variant, size, className, children, ...rest } = props;
+  const fieldState = useContext(FieldStateContext);
+  const inheritsFieldSize = variant === 'control' || variant === 'trigger';
+  const resolvedSize = size ?? (inheritsFieldSize ? fieldState.size : undefined);
+  const content = typeof children === 'string' && !inheritsFieldSize ? <RACText>{children}</RACText> : children;
 
   return (
-    <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+    <RACButton
+      {...rest}
+      ref={ref}
+      className={composeClassName(className, buttonVariants({ variant, size: resolvedSize }))}
+      data-button-variant={inheritsFieldSize ? variant : undefined}
+    >
+      {content}
     </RACButton>
   );
 });
 
-export interface LinkButtonProps extends BaseButtonProps, Omit<RACLinkProps, 'children'> {
+export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omit<RACLinkProps, 'children'> {
   /** Whether the link is external. It will show an external icon if true. */
   isExternal?: boolean;
 }
