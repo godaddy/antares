@@ -3,11 +3,11 @@ import { Group, Input, Label, Select, SelectItem, Text, TextField } from '@godad
 /**
  * Compose a telephone number input paired with a country-code select.
  *
- * @order 11
+ * @order 9
  */
 export function TelephoneFieldExample() {
   return (
-    <TextField>
+    <TextField autoComplete="tel-national" inputMode="tel" type="tel">
       <Label>Phone number</Label>
       <Group>
         <Select aria-label="Country code" defaultValue="us" variant="control">
@@ -15,7 +15,7 @@ export function TelephoneFieldExample() {
           <SelectItem id="mx">MX +52</SelectItem>
           <SelectItem id="gb">GB +44</SelectItem>
         </Select>
-        <Input autoComplete="tel-national" inputMode="tel" placeholder="555-555-5555" type="tel" />
+        <Input placeholder="555-555-5555" />
       </Group>
       <Text slot="description">We'll only call about your order.</Text>
     </TextField>

@@ -8,9 +8,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { AdornmentsExample } from '../examples/adornments.tsx';
 import { MultilineExample } from '../examples/multiline.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
-import { IconAccessoriesExample } from '../examples/icon-accessories.tsx';
-import { LeadingControlExample } from '../examples/leading-control.tsx';
-import { TrailingControlExample } from '../examples/trailing-control.tsx';
+import { ControlsExample } from '../examples/controls.tsx';
 import { TelephoneFieldExample } from '../examples/telephone-field.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -52,19 +50,9 @@ describe('@godaddy/antares', function antares() {
       await expect(container).toMatchScreenshot('sizes');
     });
 
-    it('leading control example', async function leadingControlRender() {
-      const { container } = await render(<LeadingControlExample />);
-      await expect(container).toMatchScreenshot('leading-control');
-    });
-
-    it('trailing control example', async function trailingControlRender() {
-      const { container } = await render(<TrailingControlExample />);
-      await expect(container).toMatchScreenshot('trailing-control');
-    });
-
-    it('icon accessories example', async function iconAccessoriesRender() {
-      const { container } = await render(<IconAccessoriesExample />);
-      await expect(container).toMatchScreenshot('icon-accessories');
+    it('controls example', async function controlsRender() {
+      const { container } = await render(<ControlsExample />);
+      await expect(container).toMatchScreenshot('controls');
     });
 
     it('telephone field example', async function telephoneFieldRender() {

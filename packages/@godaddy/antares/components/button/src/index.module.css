@@ -41,8 +41,7 @@
   border-color: var(--button-border);
   color: var(--button-text);
 
-  /* non-inline buttons */
-  &:where(:not(.inline)) {
+  &:where(:not(.inline, .control, .trigger)) {
     border-width: 1px;
     border-radius: var(--button-radius);
     border-style: solid;
@@ -64,7 +63,6 @@
   &:where([data-focus-visible]:not([data-disabled])) {
     outline: 2px solid Highlight;
     outline-offset: 2px;
-    border-radius: var(--button-radius);
   }
 
   &:where([data-disabled]),
@@ -143,9 +141,6 @@
     --button-bg: var(--ux-1mh0ktr, #f5f5f5);
     --button-bg-hovered: var(--ux-11rtwg8, #f5f5f5);
     --button-bg-pressed: var(--ux-gdy377, #fff);
-    --button-border: var(--ux-1qbn65p, #f5f5f5);
-    --button-border-hovered: var(--ux-bg7olm, #d6d6d6);
-    --button-border-pressed: var(--ux-187j9dd, #00a4a6);
     --button-text: var(--ux-1utwv7e, #111);
     --button-text-hovered: var(--ux-1e4ese5, #111);
     --button-text-pressed: var(--ux-k4fkva, #111);
@@ -172,6 +167,7 @@
     --button-text-pressed: var(--color-action-text-inline-pressed, var(--ux-1ymu8yg, #191970));
 
     text-decoration: underline;
+    border-radius: var(--button-radius);
   }
 
   /* sizes */
@@ -203,6 +199,14 @@
         padding: var(--button-space-xs);
         margin: calc(var(--button-space-xs) * -1);
       }
+    }
+  }
+
+  &:where(.control, .trigger) {
+    padding: var(--button-space-md);
+
+    &:where(.sm) {
+      padding: var(--button-space-sm);
     }
   }
 }

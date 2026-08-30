@@ -1,14 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { AdornmentsExample } from '../examples/adornments';
+import { ControlsExample } from '../examples/controls';
 import { DefaultExample } from '../examples/default';
 import { DisabledExample } from '../examples/disabled';
-import { IconAccessoriesExample } from '../examples/icon-accessories';
 import { InvalidExample } from '../examples/invalid';
-import { LeadingControlExample } from '../examples/leading-control';
 import { MultilineExample } from '../examples/multiline';
 import { SizesExample } from '../examples/sizes';
-import { TrailingControlExample } from '../examples/trailing-control';
 import { TelephoneFieldExample } from '../examples/telephone-field';
 
 describe('@godaddy/antares', function antares() {
@@ -48,16 +46,8 @@ describe('@godaddy/antares', function antares() {
         expect(result).toMatchSnapshot();
       });
 
-      it('renders leading control example', function leadingControl() {
-        expect(renderToString(<LeadingControlExample />)).toMatchSnapshot();
-      });
-
-      it('renders trailing control example', function trailingControl() {
-        expect(renderToString(<TrailingControlExample />)).toMatchSnapshot();
-      });
-
-      it('renders icon accessories example', function iconAccessories() {
-        expect(renderToString(<IconAccessoriesExample />)).toMatchSnapshot();
+      it('renders controls example', function controls() {
+        expect(renderToString(<ControlsExample />)).toMatchSnapshot();
       });
 
       it('renders telephone field example', function telephoneField() {

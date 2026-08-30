@@ -46,6 +46,19 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(getByRole('button').element()).flexGrow).toBe('1');
     });
 
+    it('lets the Group own the control variant border and corners', async function controlBorders() {
+      const { getByRole } = await render(<ControlExample />);
+      const el = getByRole('button').element();
+      const button = getComputedStyle(el);
+      const group = getComputedStyle(el.parentElement as HTMLElement);
+
+      expect(button.borderStyle).toBe('none');
+      expect(button.borderTopRightRadius).toBe(group.borderTopRightRadius);
+      expect(button.borderBottomRightRadius).toBe(group.borderBottomRightRadius);
+      expect(button.borderTopLeftRadius).toBe('0px');
+      expect(button.borderBottomLeftRadius).toBe('0px');
+    });
+
     it('does not apply hover or focus styles when disabled', async function disabledNoHoverStyles() {
       const { getByRole } = await render(<PrimaryExample isDisabled />);
       const el = getByRole('button').element();

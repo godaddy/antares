@@ -6,11 +6,10 @@ import { FieldError, Group, Input, TextField } from '@godaddy/antares';
 import { AdornmentsExample } from '../examples/adornments';
 import { DefaultExample } from '../examples/default';
 import { ControlledExample } from '../examples/controlled';
+import { ControlsExample } from '../examples/controls';
 import { DisabledExample } from '../examples/disabled';
 import { InvalidExample } from '../examples/invalid';
-import { LeadingControlExample } from '../examples/leading-control';
 import { MultilineExample } from '../examples/multiline';
-import { TrailingControlExample } from '../examples/trailing-control';
 import { TelephoneFieldExample } from '../examples/telephone-field';
 
 describe('@godaddy/antares', function antares() {
@@ -96,28 +95,19 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    describe('#leading-control', function leadingControl() {
-      it('moves focus to the leading button on tab', async function focusOrder() {
-        const { locator } = await render(<LeadingControlExample />);
-        const button = locator.getByRole('button').element();
+    describe('#controls', function controls() {
+      it('tabs through each control in the order it is composed', async function focusOrder() {
+        const { locator } = await render(<ControlsExample />);
+        const leading = locator.getByRole('button', { name: /browse/i }).element();
+        const image = locator.getByRole('textbox', { name: /image/i }).element();
+        const email = locator.getByRole('textbox', { name: /email/i }).element();
+        const trailing = locator.getByRole('button', { name: /verify/i }).element();
 
-        await userEvent.tab();
-        assume(document.activeElement).equals(button);
-        assume(button.hasAttribute('data-focus-visible')).equals(true);
-        assume(button.hasAttribute('data-focused')).equals(true);
-      });
-    });
-
-    describe('#trailing-control', function trailingControl() {
-      it('moves focus through the input to the trailing button on tab', async function focusOrder() {
-        const { locator } = await render(<TrailingControlExample />);
-        const button = locator.getByRole('button').element();
-
-        await userEvent.tab();
-        await userEvent.tab();
-        assume(document.activeElement).equals(button);
-        assume(button.hasAttribute('data-focus-visible')).equals(true);
-        assume(button.hasAttribute('data-focused')).equals(true);
+        for (const expected of [leading, image, email, trailing]) {
+          await userEvent.tab();
+          assume(document.activeElement).equals(expected);
+          assume(expected.hasAttribute('data-focus-visible')).equals(true);
+        }
       });
     });
 

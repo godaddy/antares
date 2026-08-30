@@ -1,0 +1,35 @@
+import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';
+
+/**
+ * Compose with `children` to put a control or an icon beside the input. `leadingText` and
+ * `trailingText` are for fixed text only.
+ * @title Controls and icons
+ * @order 8
+ */
+export function ControlsExample() {
+  return (
+    <Flex direction="column" gap="md">
+      <TextField>
+        <Label>Image</Label>
+        <Group>
+          <Button variant="control">Browse</Button>
+          <Input placeholder="Paste an image URL" />
+        </Group>
+      </TextField>
+
+      <TextField>
+        <Label>Email</Label>
+        <Group>
+          <Flex as="span" alignItems="center" inlinePaddingStart="sm">
+            <Icon icon="star" />
+          </Flex>
+          <Input placeholder="Email" />
+          <Button aria-label="Verify email address" variant="control">
+            Verify
+          </Button>
+        </Group>
+        <Text slot="description">Enter your email address</Text>
+      </TextField>
+    </Flex>
+  );
+}
