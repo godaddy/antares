@@ -3,6 +3,7 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
 import { ComposedExample } from '../examples/composed';
+import { ComposedStateExample } from '../examples/composed-state';
 import { DefaultExample } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { SelectMultipleExample } from '../examples/multiple';
@@ -42,7 +43,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('passes the open state to a composed interior', async function composedRenderProps() {
-      const { container } = await render(<ComposedExample />);
+      const { container } = await render(<ComposedStateExample />);
 
       assume(container.textContent).contains('Choose your favorite drink');
 

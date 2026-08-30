@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode, useContext } from 'react';
+import { forwardRef, isValidElement, type ReactNode, useContext } from 'react';
 import {
   Select as RACSelect,
   type SelectProps as RACSelectProps,
@@ -40,6 +40,34 @@ function SelectPopover<T extends object>({ children }: { children?: ListBoxProps
   );
 }
 
+/**
+ * The field primitives a composed interior is built from. Seeing one of these as a
+ * direct child is what tells Select the children are an interior and not options.
+ * Items are the open set (any component may render a SelectItem), so the closed set
+ * of our own primitives is the side worth recognizing.
+ */
+const INTERIOR_PARTS = new Set<unknown>([Content, ControlButton, FieldError, Group, Label, ListBox, Popover, Text]);
+
+function isComposedInterior(children: ReactNode): boolean {
+  if (Array.isArray(children)) {
+    return children.some(function containsInteriorPart(child) {
+      return isComposedInterior(child);
+    });
+  }
+
+  if (!isValidElement(children)) {
+    return false;
+  }
+
+  if (INTERIOR_PARTS.has(children.type)) {
+    return true;
+  }
+
+  // Built-ins such as Fragment carry a symbol type rather than a component, so look
+  // through them to reach the parts a consumer actually wrote.
+  return typeof children.type === 'symbol' && isComposedInterior((children.props as { children?: ReactNode }).children);
+}
+
 /** State passed to a composed Select interior. */
 export interface SelectRenderProps extends RACSelectRenderProps {}
 
@@ -50,11 +78,12 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   size?: FieldSize;
 
   /**
-   * The options to choose from, rendered by the default layout.
-   *
-   * Pass a function instead to compose the whole interior yourself out of Label,
+   * `SelectItem` options for the default layout, an interior composed from Label,
    * Group, ControlButton, SelectValue, Popover, Content, ListBox, Text, and
-   * FieldError. It receives the current {@link SelectRenderProps}.
+   * FieldError, or a function returning that interior.
+   *
+   * A function receives the current {@link SelectRenderProps}, which is the only way
+   * to read state such as `isOpen` while composing.
    */
   children?: ReactNode | ((renderProps: SelectRenderProps) => ReactNode);
 }
@@ -68,43 +97,55 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
  * <Select label="Coffee">
  *   <SelectItem id="espresso">Espresso</SelectItem>
  * </Select>
+ *
+ * <Select>
+ *   <Label>Coffee</Label>
+ *   <Group>{'…'}</Group>
+ *   <Popover>{'…'}</Popover>
+ * </Select>
+ *
+ * <Select>{({ isOpen }) => <>{'…'}</>}</Select>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
   const inGroup = useContext(InGroupContext);
   const { label, description, errorMessage, children, size, className, ...racProps } = props;
-  const isComposed = typeof children === 'function';
+  const selectClass = composeClassName(className, styles.select);
+
+  // A composed interior owns everything inside, so Select only supplies the RAC root
+  // (plus the field shell when it is not sharing someone else's Group).
+  if (typeof children === 'function' || isComposedInterior(children)) {
+    return inGroup ? (
+      <RACSelect {...racProps} className={selectClass}>
+        {children}
+      </RACSelect>
+    ) : (
+      <Field as={RACSelect} size={size} {...racProps} className={selectClass}>
+        {children}
+      </Field>
+    );
+  }
+
+  const options = children as ListBoxProps<T>['children'];
 
   if (inGroup) {
     return (
-      <RACSelect {...racProps} className={composeClassName(className, styles.select)}>
-        {isComposed ? (
-          children
-        ) : (
-          <>
-            <SelectTrigger />
-            <SelectPopover>{children}</SelectPopover>
-          </>
-        )}
+      <RACSelect {...racProps} className={selectClass}>
+        <SelectTrigger />
+        <SelectPopover>{options}</SelectPopover>
       </RACSelect>
     );
   }
 
   return (
-    <Field as={RACSelect} size={size} {...racProps} className={composeClassName(className, styles.select)}>
-      {isComposed ? (
-        children
-      ) : (
-        <>
-          {label ? <Label>{label}</Label> : null}
-          <Group alignItems="center">
-            <SelectTrigger variant="select" />
-          </Group>
-          {description ? <Text slot="description">{description}</Text> : null}
-          <FieldError>{errorMessage}</FieldError>
-          <SelectPopover>{children}</SelectPopover>
-        </>
-      )}
+    <Field as={RACSelect} size={size} {...racProps} className={selectClass}>
+      {label ? <Label>{label}</Label> : null}
+      <Group alignItems="center">
+        <SelectTrigger variant="select" />
+      </Group>
+      {description ? <Text slot="description">{description}</Text> : null}
+      <FieldError>{errorMessage}</FieldError>
+      <SelectPopover>{options}</SelectPopover>
     </Field>
   );
 }

@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { DefaultExample } from '../examples/default';
 import { SelectControlledExample } from '../examples/controlled';
 import { ComposedExample } from '../examples/composed';
+import { ComposedStateExample } from '../examples/composed-state';
 import { SelectDisabledExample } from '../examples/disabled';
 import { SelectFormExample } from '../examples/form';
 import { SelectInvalidExample } from '../examples/invalid';
@@ -24,6 +25,11 @@ describe('@godaddy/antares', function antares() {
 
       it('renders composed example', function composed() {
         const result = renderToString(<ComposedExample />);
+        expect(result).toMatchSnapshot();
+      });
+
+      it('renders composed state example', function composedState() {
+        const result = renderToString(<ComposedStateExample />);
         expect(result).toMatchSnapshot();
       });
 
