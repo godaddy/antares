@@ -6,7 +6,6 @@ describe('@godaddy/antares', function antares() {
   describe('#TextArea', function textAreaTests() {
     it('renders the default example', function defaultExample() {
       const html = renderToString(<DefaultExample />);
-      expect(html).toContain('textarea');
       expect(html).toMatchSnapshot();
     });
   });

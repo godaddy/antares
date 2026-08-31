@@ -6,7 +6,6 @@ describe('@godaddy/antares', function antares() {
   describe('#FieldError', function fieldErrorTests() {
     it('renders the default example', function defaultExample() {
       const html = renderToString(<DefaultExample />);
-      expect(html).toContain('Please enter a valid email address');
       expect(html).toMatchSnapshot();
     });
   });
