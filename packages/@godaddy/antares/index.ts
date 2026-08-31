@@ -24,7 +24,7 @@ export * from './exports/Popover';
 export * from './exports/Tooltip';
 export * from './exports/TextField';
 export * from './exports/NumberField';
-export * from './exports/Field';
+export * from './exports/FieldError';
 export * from './exports/Input';
 export * from './exports/TextArea';
 export * from './exports/Carousel';

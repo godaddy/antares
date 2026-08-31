@@ -9,7 +9,7 @@ import { Input } from '#components/input';
 import { TextArea } from '#components/text-area';
 import { Flex } from '#components/layout/flex';
 
-export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'size'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, FieldOwnProps {
   /** Default value (uncontrolled). */
   defaultValue?: string;
 
@@ -36,12 +36,6 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'si
 
   /** Handler called when the value changes. */
   onChange?: RACTextFieldProps['onChange'];
-
-  /**
-   * Optional composed interior (Label, Group, Input, Button, FieldError).
-   * When set, the default label / group / input layout is not rendered.
-   */
-  children?: ReactNode;
 }
 
 /**
