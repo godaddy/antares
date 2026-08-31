@@ -8,7 +8,7 @@ import { Box, type BoxOwnProps } from '#components/layout/box';
 
 export const TextAreaContext = RACTextAreaContext;
 
-export interface TextAreaProps extends RACTextAreaProps, BoxOwnProps {}
+export interface TextAreaProps extends RACTextAreaProps, Omit<BoxOwnProps, 'as'> {}
 
 /**
  * Multiline input that fills a Group. Field injects chrome via TextAreaContext.

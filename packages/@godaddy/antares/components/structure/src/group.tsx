@@ -12,7 +12,7 @@ export const GroupContext = RACGroupContext;
 /** Size for controls inside a field group. @default 'md' */
 export type FieldSize = 'sm' | 'md';
 
-export interface GroupProps extends RACGroupProps, FlexOwnProps {
+export interface GroupProps extends RACGroupProps, Omit<FlexOwnProps, 'as'> {
   /** Size for the controls inside the group. @default 'md' */
   size?: FieldSize;
 }

@@ -8,7 +8,7 @@ import { Box, type BoxOwnProps } from '#components/layout/box';
 
 export const InputContext = RACInputContext;
 
-export interface InputProps extends RACInputProps, BoxOwnProps {}
+export interface InputProps extends RACInputProps, Omit<BoxOwnProps, 'as'> {}
 
 /**
  * Single-line input that fills a Group. Field injects chrome via InputContext.
