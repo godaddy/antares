@@ -7,6 +7,7 @@ import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 import { ControlExample } from '../examples/control.tsx';
+import { ControlDisabledExample } from '../examples/control-disabled.tsx';
 import { TriggerExample } from '../examples/trigger.tsx';
 
 describe('@godaddy/antares', function antares() {
@@ -49,6 +50,23 @@ describe('@godaddy/antares', function antares() {
     it('disables a control button when the field is disabled', async function controlInheritsDisabled() {
       const { getByRole } = await render(<ControlExample isDisabled />);
       expect(getByRole('button')).toHaveAttribute('disabled');
+    });
+
+    it('dims a disabled control button when the group is enabled', async function controlDisabledOpacity() {
+      const { getByRole } = await render(<ControlDisabledExample />);
+      const button = getByRole('button').element();
+
+      expect(button).toHaveAttribute('disabled');
+      expect(getComputedStyle(button).opacity).toBe('0.4');
+    });
+
+    it('does not double-dim a control button when the group is disabled', async function controlGroupOwnsOpacity() {
+      const { getByRole } = await render(<ControlExample isDisabled />);
+      const button = getByRole('button').element();
+      const group = button.parentElement as HTMLElement;
+
+      expect(getComputedStyle(group).opacity).toBe('0.4');
+      expect(getComputedStyle(button).opacity).toBe('1');
     });
 
     it('lets the Group own the control variant border and corners', async function controlBorders() {

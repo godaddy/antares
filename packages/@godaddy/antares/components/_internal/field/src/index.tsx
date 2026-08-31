@@ -12,7 +12,7 @@ import { TextContext } from '#components/text';
 import { TextAreaContext } from '#components/text-area';
 import styles from './index.module.css';
 
-export interface FieldOwnProps extends FlexOwnProps {
+export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
   /** Label text shown above the field. */
   label?: ReactNode;
 

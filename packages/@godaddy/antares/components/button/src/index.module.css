@@ -70,7 +70,7 @@
     cursor: not-allowed;
   }
 
-  /* Group owns the dim; control/trigger sit inside it. */
+  /* Group already dims the row; skip a second fade on in-group buttons. */
   &:where([data-disabled]:not(.control, .trigger)),
   &:disabled:where(:not(.control, .trigger)) {
     opacity: 0.4;

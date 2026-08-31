@@ -122,7 +122,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
         {children}
       </RACSelect>
     ) : (
-      <Field as={RACSelect} size={size} {...racProps} className={selectClass}>
+      <Field as={RACSelect as typeof RACSelect<T, M>} size={size} {...racProps} className={selectClass}>
         {children}
       </Field>
     );
@@ -140,7 +140,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   }
 
   return (
-    <Field as={RACSelect} size={size} {...racProps} className={selectClass}>
+    <Field as={RACSelect as typeof RACSelect<T, M>} size={size} {...racProps} className={selectClass}>
       {label ? <Label>{label}</Label> : null}
       <Group alignItems="center">
         <SelectTrigger />

@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type ReactNode, type Ref } from 'react';
 import {
   Label as RACLabel,
   LabelContext as RACLabelContext,
@@ -29,8 +29,8 @@ export interface LabelProps extends Omit<RACLabelProps, 'elementType'> {
  * <Label>Email</Label>
  * ```
  */
-export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(props, ref) {
+export const Label = forwardRef<HTMLElement, LabelProps>(function Label(props, ref) {
   const { as, ...rest } = props;
 
-  return <RACLabel {...rest} ref={ref} elementType={as} />;
+  return <RACLabel {...rest} ref={ref as Ref<HTMLLabelElement>} elementType={as} />;
 });

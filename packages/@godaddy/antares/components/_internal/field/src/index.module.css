@@ -52,6 +52,10 @@
     opacity: 0.4;
   }
 
+  &:where(:not([data-disabled])) :where([data-button-variant][data-disabled]) {
+    opacity: 0.4;
+  }
+
   &:where([data-invalid]) {
     border-color: var(--field-critical-color);
   }

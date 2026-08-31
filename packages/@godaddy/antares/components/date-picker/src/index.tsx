@@ -58,7 +58,7 @@ export function DatePicker(props: DatePickerProps) {
   } = props;
 
   return (
-    <Field as={RACDatePicker} size={size} {...racProps}>
+    <Field as={RACDatePicker as typeof RACDatePicker<CalendarDate>} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
       <Group alignItems="center">
         <Button variant="trigger">
@@ -113,7 +113,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
   } = props;
 
   return (
-    <Field as={RACDateRangePicker} size={size} {...racProps}>
+    <Field as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>} size={size} {...racProps}>
       {label ? <Label>{label}</Label> : null}
       <Group alignItems="center">
         <Button variant="trigger">
