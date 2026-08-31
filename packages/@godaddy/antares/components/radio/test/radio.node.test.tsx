@@ -8,6 +8,7 @@ import { RadioRequiredExample } from '../examples/radio-required.tsx';
 import { RadioErrorExample } from '../examples/radio-error.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { RadioFormExample } from '../examples/radio-form.tsx';
+import { ComposedExample } from '../examples/composed.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
@@ -51,6 +52,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders RadioFormExample', function formExample() {
       expect(renderToString(<RadioFormExample />)).toMatchSnapshot();
+    });
+
+    it('renders ComposedExample', function composedExample() {
+      expect(renderToString(<ComposedExample />)).toMatchSnapshot();
     });
   });
 });

@@ -14,7 +14,6 @@ import {
 
 /**
  * Compose a DateRangePicker interior the same way: Label, Group, trigger, RangeCalendar.
- * @title Composed range
  * @order 9
  */
 export function ComposedRangeExample() {

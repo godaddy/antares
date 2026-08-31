@@ -7,6 +7,7 @@ import { CheckboxGroupInvalidExample } from '../examples/invalid';
 import { CheckboxGroupRequiredExample } from '../examples/required';
 import { CheckboxGroupHorizontalExample } from '../examples/horizontal';
 import { PlaygroundExample } from '../examples/checkbox-playground';
+import { ComposedExample } from '../examples/composed';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
@@ -54,6 +55,11 @@ describe('@godaddy/antares', function antares() {
 
     it('renders PlaygroundExample with default props', function playgroundExample() {
       const result = renderToString(<PlaygroundExample />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders ComposedExample', function composedExample() {
+      const result = renderToString(<ComposedExample />);
       expect(result).toMatchSnapshot();
     });
   });

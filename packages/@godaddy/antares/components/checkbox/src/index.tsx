@@ -1,12 +1,14 @@
 import type { ReactNode } from 'react';
 import {
   CheckboxButton as RACCheckboxButton,
+  type CheckboxButtonProps as RACCheckboxButtonProps,
   CheckboxField as RACCheckboxField,
   type CheckboxFieldProps as RACCheckboxFieldProps,
   CheckboxGroup as RACCheckboxGroup,
-  type CheckboxGroupProps as RACCheckboxGroupProps
+  type CheckboxGroupProps as RACCheckboxGroupProps,
+  type CheckboxGroupRenderProps as RACCheckboxGroupRenderProps
 } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { Field, isComposedInterior, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
@@ -19,8 +21,10 @@ import styles from './index.module.css';
 export interface CheckboxIndicatorProps {
   /** Whether the control is selected. */
   isSelected?: boolean;
+
   /** Whether the control is in an indeterminate state. */
   isIndeterminate?: boolean;
+
   /** Additional CSS class for the indicator. */
   className?: string;
 }
@@ -54,8 +58,23 @@ export function CheckboxIndicator({ isSelected, isIndeterminate, className }: Ch
   );
 }
 
+interface CheckboxButtonProps extends Omit<RACCheckboxButtonProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
+  children?: RACCheckboxButtonProps['children'];
+  className?: string;
+}
+
+function CheckboxButton(props: CheckboxButtonProps) {
+  const { className, children, ...rest } = props;
+
+  return (
+    <Flex {...rest} as={RACCheckboxButton} className={composeClassName(className, styles.checkbox)}>
+      {children}
+    </Flex>
+  );
+}
+
 export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, FlexOwnProps {
-  /** The content of the checkbox label. */
+  /** Label text shown next to the indicator. */
   children?: ReactNode;
 }
 
@@ -66,9 +85,10 @@ export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, 
  */
 export function Checkbox(props: CheckboxProps) {
   const { children, ...rest } = props;
+
   return (
     <Flex {...rest} as={RACCheckboxField}>
-      <Flex as={RACCheckboxButton} className={styles.checkbox}>
+      <CheckboxButton>
         {function renderCheckbox({ isSelected, isIndeterminate }) {
           return (
             <Flex alignItems="center" gap="sm">
@@ -77,14 +97,16 @@ export function Checkbox(props: CheckboxProps) {
             </Flex>
           );
         }}
-      </Flex>
+      </CheckboxButton>
     </Flex>
   );
 }
 
-export interface CheckboxGroupProps extends RACCheckboxGroupProps, FieldOwnProps {
-  /** The checkboxes within the group. */
-  children?: ReactNode;
+const GROUP_INTERIOR_PARTS = new Set<unknown>([FieldError, Label, Text]);
+
+export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'children'>, FieldOwnProps {
+  /** Item checkboxes, or a composed interior. */
+  children?: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
 
   /** Layout orientation of the checkboxes. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
@@ -104,8 +126,18 @@ export function CheckboxGroup({
   description,
   ...rest
 }: CheckboxGroupProps) {
+  const classNames = composeClassName(className, styles.checkboxGroup);
+
+  if (typeof children === 'function' || isComposedInterior(children, GROUP_INTERIOR_PARTS)) {
+    return (
+      <Field as={RACCheckboxGroup} {...rest} className={classNames}>
+        {children}
+      </Field>
+    );
+  }
+
   return (
-    <Field as={RACCheckboxGroup} {...rest} className={composeClassName(className, styles.checkboxGroup)}>
+    <Field as={RACCheckboxGroup} {...rest} className={classNames}>
       {label ? <Label>{label}</Label> : null}
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}

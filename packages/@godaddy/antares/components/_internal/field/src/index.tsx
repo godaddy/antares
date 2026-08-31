@@ -115,3 +115,5 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
     </Flex>
   );
 }) as PolymorphicComponent<FieldOwnProps>;
+
+export { isComposedInterior } from './is-composed-interior.ts';

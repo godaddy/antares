@@ -7,6 +7,7 @@ import { CheckboxGroupInvalidExample } from '../examples/invalid';
 import { CheckboxGroupRequiredExample } from '../examples/required';
 import { CheckboxGroupHorizontalExample } from '../examples/horizontal';
 import { PlaygroundExample } from '../examples/checkbox-playground';
+import { ComposedExample } from '../examples/composed';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
@@ -88,6 +89,17 @@ describe('@godaddy/antares', function antares() {
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
+    });
+
+    it('selects a checkbox from a composed interior', async function composedInteraction() {
+      await render(<ComposedExample />);
+
+      const red = page.getByRole('checkbox', { name: 'Red' });
+      await red.click({ force: true });
+
+      await vi.waitFor(function checkSelection() {
+        assume((red.element() as HTMLInputElement).checked).is.true();
+      });
     });
   });
 });

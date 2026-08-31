@@ -16,7 +16,6 @@ import { parseDate } from '@godaddy/antares/date';
 /**
  * Pass a function when the interior needs the DatePicker state. It receives `isOpen`
  * and the rest of the render props.
- * @title Composed with state
  * @order 10
  */
 export function ComposedStateExample() {

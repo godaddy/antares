@@ -1,22 +1,45 @@
+import type { ReactNode } from 'react';
 import {
   RadioButton as RACRadioButton,
+  type RadioButtonProps as RACRadioButtonProps,
   RadioField as RACRadioField,
   type RadioFieldProps as RACRadioFieldProps,
   RadioGroup as RACRadioGroup,
-  type RadioGroupProps as RACRadioGroupProps
+  type RadioGroupProps as RACRadioGroupProps,
+  type RadioGroupRenderProps as RACRadioGroupRenderProps
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { Field, isComposedInterior, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
-import type { ReactNode } from 'react';
+
+interface RadioButtonProps extends Omit<RACRadioButtonProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
+  children?: RACRadioButtonProps['children'];
+  className?: string;
+}
+
+function RadioButton(props: RadioButtonProps) {
+  const { className, children, ...rest } = props;
+
+  return (
+    <Flex
+      alignItems="center"
+      gap="sm"
+      {...rest}
+      as={RACRadioButton}
+      className={composeClassName(className, styles.radio)}
+    >
+      {children}
+    </Flex>
+  );
+}
 
 export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOwnProps {
-  /** Label text for the radio button */
-  children: ReactNode;
+  /** Label text shown next to the indicator. */
+  children?: ReactNode;
 }
 
 /**
@@ -28,17 +51,19 @@ export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOw
 export function Radio({ children, ...props }: RadioProps) {
   return (
     <Flex {...props} as={RACRadioField}>
-      <Flex as={RACRadioButton} alignItems="center" gap="sm" className={styles.radio}>
+      <RadioButton>
         <div className={styles.indicator} />
         {children}
-      </Flex>
+      </RadioButton>
     </Flex>
   );
 }
 
-export interface RadioGroupProps extends RACRadioGroupProps, FieldOwnProps {
-  /** Radio elements */
-  children: ReactNode;
+const GROUP_INTERIOR_PARTS = new Set<unknown>([FieldError, Label, Text]);
+
+export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, FieldOwnProps {
+  /** Item radios, or a composed interior. */
+  children?: ReactNode | ((renderProps: RACRadioGroupRenderProps) => ReactNode);
 }
 
 /**
@@ -56,13 +81,18 @@ export function RadioGroup({
   orientation = 'vertical',
   ...props
 }: RadioGroupProps) {
+  const classNames = composeClassName(className, styles.radioGroup);
+
+  if (typeof children === 'function' || isComposedInterior(children, GROUP_INTERIOR_PARTS)) {
+    return (
+      <Field as={RACRadioGroup} orientation={orientation} {...props} className={classNames}>
+        {children}
+      </Field>
+    );
+  }
+
   return (
-    <Field
-      as={RACRadioGroup}
-      orientation={orientation}
-      {...props}
-      className={composeClassName(className, styles.radioGroup)}
-    >
+    <Field as={RACRadioGroup} orientation={orientation} {...props} className={classNames}>
       {label ? <Label>{label}</Label> : null}
       <Flex
         direction={orientation === 'horizontal' ? 'row' : 'column'}

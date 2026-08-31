@@ -10,4 +10,6 @@ feat: compose field components instead of Field* wrappers
 
 `DatePicker` and `DateRangePicker` keep their shorthand field props. Pass `children` to compose the interior, including `DatePickerValue` / `DateRangePickerValue`, or a function returning that interior when it needs picker state.
 
+`CheckboxGroup` and `RadioGroup` keep `label` / `description` / `errorMessage` / `orientation`. Item children stay the default; a composed interior is detected from `Label`, `Text`, and `FieldError`. `Checkbox` and `Radio` keep children-as-label next to the indicator.
+
 Public components: `Label`/`LabelContext`, `Group`/`GroupContext`/`FieldSize`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.

@@ -16,7 +16,6 @@ import { parseDate } from '@godaddy/antares/date';
 /**
  * Compose the interior out of Antares components when the default layout is not enough.
  * DatePicker renders your children as-is instead of building its own layout.
- * @title Composed
  * @order 8
  */
 export function ComposedExample() {

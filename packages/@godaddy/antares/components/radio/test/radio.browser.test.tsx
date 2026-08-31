@@ -8,6 +8,7 @@ import { RadioRequiredExample } from '../examples/radio-required.tsx';
 import { RadioErrorExample } from '../examples/radio-error.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { RadioFormExample } from '../examples/radio-form.tsx';
+import { ComposedExample } from '../examples/composed.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
@@ -78,6 +79,15 @@ describe('@godaddy/antares', function antares() {
       await render(<RadioFormExample />);
 
       assume(page.getByRole('radiogroup')).exists();
+    });
+
+    it('selects a radio from a composed interior', async function composedInteraction() {
+      await render(<ComposedExample />);
+
+      await page.getByRole('radio', { name: 'Premium' }).click({ force: true });
+      await vi.waitFor(function checkSelection() {
+        assume((page.getByRole('radio', { name: 'Premium' }).element() as HTMLInputElement).checked).is.true();
+      });
     });
   });
 });

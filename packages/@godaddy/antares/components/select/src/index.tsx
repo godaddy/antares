@@ -1,4 +1,4 @@
-import { forwardRef, isValidElement, type ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import {
   Select as RACSelect,
   type SelectProps as RACSelectProps,
@@ -7,7 +7,7 @@ import {
   SelectValue as RACSelectValue,
   type SelectValueProps as RACSelectValueProps
 } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { Field, isComposedInterior, type FieldOwnProps } from '#components/_internal/field';
 import { FieldError } from '#components/field-error';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
@@ -40,33 +40,7 @@ function SelectPopover<T extends object>({ children }: { children?: ListBoxProps
   );
 }
 
-/**
- * The components a composed interior is built from. Seeing one of these as a
- * direct child is what tells Select the children are an interior and not options.
- * Items are the open set (any component may render a SelectItem), so the closed set
- * of our own components is the side worth recognizing.
- */
 const INTERIOR_PARTS = new Set<unknown>([Button, Content, FieldError, Group, Label, ListBox, Popover, Text]);
-
-function isComposedInterior(children: ReactNode): boolean {
-  if (Array.isArray(children)) {
-    return children.some(function containsInteriorPart(child) {
-      return isComposedInterior(child);
-    });
-  }
-
-  if (!isValidElement(children)) {
-    return false;
-  }
-
-  if (INTERIOR_PARTS.has(children.type)) {
-    return true;
-  }
-
-  // Built-ins such as Fragment carry a symbol type rather than a component, so look
-  // through them to reach the parts a consumer actually wrote.
-  return typeof children.type === 'symbol' && isComposedInterior((children.props as { children?: ReactNode }).children);
-}
 
 /** State passed to a composed Select interior. */
 export interface SelectRenderProps extends RACSelectRenderProps {}
@@ -116,7 +90,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
 
   // A composed interior owns everything inside, so Select only supplies the RAC root
   // (plus the field shell for the default variant).
-  if (typeof children === 'function' || isComposedInterior(children)) {
+  if (typeof children === 'function' || isComposedInterior(children, INTERIOR_PARTS)) {
     return variant === 'control' ? (
       <RACSelect {...racProps} className={selectClass}>
         {children}
