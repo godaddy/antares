@@ -59,18 +59,20 @@ export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'chil
  * @param props - The properties {@link ButtonProps} passed to the component.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  const { variant, size, className, children, ...rest } = props;
+  const { variant, size, className, children, isDisabled, ...rest } = props;
   const fieldState = useContext(FieldStateContext);
-  const inheritsFieldSize = variant === 'control' || variant === 'trigger';
-  const resolvedSize = size ?? (inheritsFieldSize ? fieldState.size : undefined);
-  const content = typeof children === 'string' && !inheritsFieldSize ? <RACText>{children}</RACText> : children;
+  const inheritsFromField = variant === 'control' || variant === 'trigger';
+  const resolvedSize = size ?? (inheritsFromField ? fieldState.size : undefined);
+  const resolvedIsDisabled = isDisabled ?? (inheritsFromField ? fieldState.isDisabled : undefined);
+  const content = typeof children === 'string' && !inheritsFromField ? <RACText>{children}</RACText> : children;
 
   return (
     <RACButton
       {...rest}
       ref={ref}
+      isDisabled={resolvedIsDisabled}
       className={composeClassName(className, buttonVariants({ variant, size: resolvedSize }))}
-      data-button-variant={inheritsFieldSize ? variant : undefined}
+      data-button-variant={inheritsFromField ? variant : undefined}
     >
       {content}
     </RACButton>

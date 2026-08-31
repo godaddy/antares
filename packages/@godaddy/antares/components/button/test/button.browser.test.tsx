@@ -46,6 +46,11 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(getByRole('button').element()).flexGrow).toBe('1');
     });
 
+    it('disables a control button when the field is disabled', async function controlInheritsDisabled() {
+      const { getByRole } = await render(<ControlExample isDisabled />);
+      expect(getByRole('button')).toHaveAttribute('disabled');
+    });
+
     it('lets the Group own the control variant border and corners', async function controlBorders() {
       const { getByRole } = await render(<ControlExample />);
       const el = getByRole('button').element();
