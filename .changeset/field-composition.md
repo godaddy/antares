@@ -8,4 +8,6 @@ feat: compose field components instead of Field* wrappers
 
 `Select` keeps its shorthand field props and its `SelectItem` children, including components that wrap `SelectItem`. Its `children` also accept a composed interior built from Antares components and the new `SelectValue`, or a function returning that interior when it needs Select state. Use `variant="control"` when Select shares another field's Group.
 
+`DatePicker` and `DateRangePicker` keep their shorthand field props. Pass `children` to compose the interior, including `DatePickerValue` / `DateRangePickerValue`, or a function returning that interior when it needs picker state.
+
 Public components: `Label`/`LabelContext`, `Group`/`GroupContext`/`FieldSize`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.

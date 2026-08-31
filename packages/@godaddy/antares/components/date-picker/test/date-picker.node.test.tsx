@@ -4,6 +4,8 @@ import { DefaultExample } from '../examples/default.tsx';
 import { DateRangePickerExample } from '../examples/range.tsx';
 import { DatePickerMinMaxExample } from '../examples/min-max.tsx';
 import { DatePickerFormatOptionsExample } from '../examples/format-options.tsx';
+import { ComposedExample } from '../examples/composed.tsx';
+import { ComposedRangeExample } from '../examples/composed-range.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
@@ -24,6 +26,16 @@ describe('@godaddy/antares', function antares() {
 
     it('renders format-options example', function formatOptions() {
       const html = renderToString(<DatePickerFormatOptionsExample />);
+      expect(html).toMatchSnapshot();
+    });
+
+    it('renders composed example', function composed() {
+      const html = renderToString(<ComposedExample />);
+      expect(html).toMatchSnapshot();
+    });
+
+    it('renders composed range example', function composedRange() {
+      const html = renderToString(<ComposedRangeExample />);
       expect(html).toMatchSnapshot();
     });
   });
