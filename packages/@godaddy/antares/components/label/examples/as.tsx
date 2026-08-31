@@ -1,7 +1,7 @@
 import { Group, Input, Label, TextField } from '@godaddy/antares';
 
 /**
- * Setting the `as` prop changes the HTML tag. The default is `label`.
+ * Setting the `as` prop changes the HTML tag.
  * @order 2
  */
 export function AsExample() {

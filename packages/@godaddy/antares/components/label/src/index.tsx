@@ -10,9 +10,8 @@ export const LabelContext = RACLabelContext;
 export interface LabelProps extends Omit<RACLabelProps, 'elementType'> {
   /**
    * The HTML element to render the label as.
-   * @default 'label'
    */
-  as?: string;
+  as?: RACLabelProps['elementType'];
 
   /**
    * The content to display inside the label.
@@ -31,7 +30,7 @@ export interface LabelProps extends Omit<RACLabelProps, 'elementType'> {
  * ```
  */
 export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(props, ref) {
-  const { as = 'label', ...rest } = props;
+  const { as, ...rest } = props;
 
   return <RACLabel {...rest} ref={ref} elementType={as} />;
 });
