@@ -16,7 +16,7 @@ import {
 import { Icon, IconContext } from '#components/icon';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Text } from '#components/text';
-import { composeClassName } from '../../../utils/render-props.ts';
+import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 /** Visual size shared by every Chip in a ChipGroup. */

@@ -1,7 +1,9 @@
 .group {
+  --_chip-group-gap: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+
   display: flex;
   flex-direction: column;
-  gap: var(--sp-sm);
+  gap: var(--_chip-group-gap);
   min-inline-size: 0;
 }
 
@@ -36,25 +38,25 @@
 }
 
 .chip {
-  --_density: var(--ux-1sbfig8, 0.5rem);
-  --_font-size: 1rem;
-  --_line-height: 1.375;
-  --_block-padding: var(--size-space-020, var(--_density));
-  --_inline-padding: var(--size-space-040, calc(var(--_density) * 2));
-  --_foreground: var(--ux-1utwv7e, #111);
-  --_background: var(--ux-1mh0ktr, #f5f5f5);
-  --_border: var(--ux-1qbn65p, #f5f5f5);
+  --_chip-density: var(--ux-1sbfig8, 0.5rem);
+  --_chip-font-size: 1rem;
+  --_chip-line-height: 1.375;
+  --_chip-block-padding: var(--size-space-020, var(--_chip-density));
+  --_chip-inline-padding: var(--size-space-040, calc(var(--_chip-density) * 2));
+  --_chip-foreground: var(--ux-1utwv7e, #111);
+  --_chip-background: var(--ux-1mh0ktr, #f5f5f5);
+  --_chip-border: var(--ux-1qbn65p, #f5f5f5);
 
   &:where([data-size="sm"]) {
-    --_font-size: 0.875rem;
-    --_block-padding: var(--size-space-010, calc(var(--_density) * 0.5));
-    --_inline-padding: var(--size-space-020, var(--_density));
+    --_chip-font-size: 0.875rem;
+    --_chip-block-padding: var(--size-space-010, calc(var(--_chip-density) * 0.5));
+    --_chip-inline-padding: var(--size-space-020, var(--_chip-density));
   }
 
   &:where([data-size="lg"]) {
-    --_font-size: 1.125rem;
-    --_block-padding: var(--size-space-040, calc(var(--_density) * 2));
-    --_inline-padding: var(--size-space-060, calc(var(--_density) * 3));
+    --_chip-font-size: 1.125rem;
+    --_chip-block-padding: var(--size-space-040, calc(var(--_chip-density) * 2));
+    --_chip-inline-padding: var(--size-space-060, calc(var(--_chip-density) * 3));
   }
 
   position: relative;
@@ -62,17 +64,17 @@
   box-sizing: border-box;
   min-inline-size: 0;
   max-inline-size: 100%;
-  padding-block: var(--_block-padding);
-  padding-inline: var(--_inline-padding);
+  padding-block: var(--_chip-block-padding);
+  padding-inline: var(--_chip-inline-padding);
   overflow: visible;
-  border: 1px solid var(--_border);
+  border: 1px solid var(--_chip-border);
   border-radius: 9999px;
-  color: var(--_foreground);
-  background: var(--_background);
+  color: var(--_chip-foreground);
+  background: var(--_chip-background);
   font-family: "Gd Sherpa VF5", Helvetica, Arial, sans-serif;
-  font-size: var(--_font-size);
+  font-size: var(--_chip-font-size);
   font-weight: normal;
-  line-height: var(--_line-height);
+  line-height: var(--_chip-line-height);
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -91,33 +93,33 @@
   }
 
   &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
-    --_foreground: var(--ux-1e4ese5, #111);
-    --_background: var(--ux-11rtwg8, #f5f5f5);
-    --_border: var(--ux-bg7olm, #d6d6d6);
+    --_chip-foreground: var(--ux-1e4ese5, #111);
+    --_chip-background: var(--ux-11rtwg8, #f5f5f5);
+    --_chip-border: var(--ux-bg7olm, #d6d6d6);
   }
 
   &:where([data-focus-visible]:not([data-disabled])) {
-    --_foreground: var(--ux-6gm31z, #111);
-    --_background: var(--ux-qebq9u, #f5f5f5);
-    --_border: var(--ux-18hlgn4, #d6d6d6);
+    --_chip-foreground: var(--ux-6gm31z, #111);
+    --_chip-background: var(--ux-qebq9u, #f5f5f5);
+    --_chip-border: var(--ux-18hlgn4, #d6d6d6);
     outline: 2px solid Highlight;
   }
 
   &:where([data-selected]) {
-    --_foreground: var(--ux-k4fkva, #111);
-    --_background: var(--ux-gdy377, #fff);
-    --_border: var(--ux-187j9dd, #09757a);
+    --_chip-foreground: var(--ux-k4fkva, #111);
+    --_chip-background: var(--ux-gdy377, #fff);
+    --_chip-border: var(--ux-187j9dd, #09757a);
 
     &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
-      --_foreground: var(--ux-k4fkva, #111);
-      --_background: var(--ux-gdy377, #fff);
-      --_border: var(--ux-bg7olm, #d6d6d6);
+      --_chip-foreground: var(--ux-k4fkva, #111);
+      --_chip-background: var(--ux-gdy377, #fff);
+      --_chip-border: var(--ux-bg7olm, #d6d6d6);
     }
 
     &:where([data-focus-visible]) {
-      --_foreground: var(--ux-k4fkva, #111);
-      --_background: var(--ux-gdy377, #fff);
-      --_border: var(--ux-187j9dd, #09757a);
+      --_chip-foreground: var(--ux-k4fkva, #111);
+      --_chip-background: var(--ux-gdy377, #fff);
+      --_chip-border: var(--ux-187j9dd, #09757a);
     }
   }
 
@@ -135,16 +137,16 @@
 
   :where(.icon) {
     flex: none;
-    inline-size: calc(var(--_font-size) * 1.5);
-    block-size: calc(var(--_font-size) * 1.5);
-    margin-block: calc((var(--_font-size) * var(--_line-height) - var(--_font-size) * 1.5) / 2);
+    inline-size: calc(var(--_chip-font-size) * 1.5);
+    block-size: calc(var(--_chip-font-size) * 1.5);
+    margin-block: calc((var(--_chip-font-size) * var(--_chip-line-height) - var(--_chip-font-size) * 1.5) / 2);
     overflow: visible;
   }
 
   /* Trailing consumer icon: Toggle check. Descendant — Tag gridcell. */
   :where(.icon:last-child) {
-    inline-size: calc(var(--_font-size) * var(--_line-height));
-    block-size: calc(var(--_font-size) * var(--_line-height));
+    inline-size: calc(var(--_chip-font-size) * var(--_chip-line-height));
+    block-size: calc(var(--_chip-font-size) * var(--_chip-line-height));
     margin-block: 0;
   }
 
