@@ -1,0 +1,128 @@
+---
+title: Chip
+description: Grouped pill-shaped items for selecting values and removing user-added filters or tokens. Use a rounded Button for menu filters.
+---
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './chip.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
+- Toggle Chips for selecting multiple peer filters
+- Removable Chips for user-added filters and input tokens
+- Shared `sm`, `md`, and `lg` sizes, with optional leading icons
+- Menu filters use a fully rounded Antares Button, not Chip
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+Chip lives inside a collection. Compose the group like this:
+
+```tsx
+<ChipGroup size="md" selectionMode="multiple">
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+A plain string is enough for simple chips (`<Chip>Austin</Chip>`). With an icon or remove button, wrap the copy in `<Text>` so the label remains an explicit content role.
+
+The group applies its size consistently to every Chip. Keep one Chip family and one size per group, and let the list wrap horizontally when needed.
+
+For removable chips, enable `onRemove` on the group and place a self-closing remove button. Chip merges the default X into RAC’s remove slot:
+
+```tsx
+<Chip id="austin" textValue="Austin">
+  Austin
+  <Button slot="remove" />
+</Chip>
+```
+
+Compose a selected check when you want Toggle affordance:
+
+```tsx
+<Chip id="home" textValue="Home">
+  {({ isSelected }) => (
+    <>
+      Home
+      {isSelected ? <Icon icon="checkmark" /> : null}
+    </>
+  )}
+</Chip>
+```
+
+Chip is reserved for items inside `ChipGroup`. For a filter that opens a menu, use a fully rounded Button:
+
+```tsx
+<MenuTrigger>
+  <Flex as={Button} alignItems="center" gap="sm" rounding="full" variant="secondary">
+    <Icon icon="map-pin" />
+    <Text>Location</Text>
+    <Icon icon="chevron-down" />
+  </Flex>
+  <Menu>{/* ... */}</Menu>
+</MenuTrigger>
+```
+
+## Accessibility
+
+- Every `ChipGroup` needs a composed `Label` or `aria-label`.
+- Use `textValue` when children are composed (icon + text, or a render prop).
+- RAC supplies remove button naming (`Remove` + row label); you usually do not need a manual remove `aria-label`.
+- Menu filter Buttons expose `aria-haspopup` / `aria-expanded`; add `aria-label` when visible text is incomplete.
+
+## Best Practices
+
+- Keep labels brief; truncation should be exceptional.
+- Prefer groups of three or more related chips; lay them out horizontally and let them wrap.
+- Keep one family and one size per group.
+- Use only Removable chips as tokens inside an input.
+- Do not use Chip outside `ChipGroup` — use a rounded Button for menu filters.
+
+## Props
+
+```tsx
+<ChipGroup>
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+### Chip
+
+<ArgTypes of={Stories.Props} />
+
+### ChipGroup
+
+<ArgTypes of={Stories.ChipGroupProps} />
+
+### ChipList
+
+<ArgTypes of={Stories.ChipListProps} />

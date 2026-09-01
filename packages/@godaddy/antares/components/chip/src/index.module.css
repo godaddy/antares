@@ -1,0 +1,205 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  min-inline-size: 0;
+}
+
+.label {
+  color: var(--ux-1glcx6s, #2b2b2b);
+  font-family: var(--ux-15ks663, "Gd Sherpa VF5", Helvetica, Arial, sans-serif);
+  font-size: var(--ux-16aixzc, 0.875rem);
+  font-weight: var(--ux-aarlu5, 500);
+  line-height: 1.25;
+}
+
+.description {
+  color: var(--ux-1m9ys0v, #767676);
+  font-family: var(--ux-15ks663, "Gd Sherpa VF5", Helvetica, Arial, sans-serif);
+  font-size: var(--ux-p4h24g, 0.875rem);
+  font-weight: var(--ux-g9ierp, 400);
+  line-height: 1.25;
+  min-inline-size: 0;
+}
+
+.errorMessage {
+  color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
+  font-family: var(--ux-15ks663, "Gd Sherpa VF5", Helvetica, Arial, sans-serif);
+  font-size: var(--ux-p4h24g, 0.875rem);
+  font-weight: var(--ux-g9ierp, 400);
+  line-height: 1.25;
+  min-inline-size: 0;
+}
+
+.list {
+  min-inline-size: 0;
+}
+
+.chip {
+  --_density: var(--ux-1sbfig8, 0.5rem);
+  --_font-size: 1rem;
+  --_line-height: 1.375;
+  --_block-padding: var(--size-space-020, var(--_density));
+  --_inline-padding: var(--size-space-040, calc(var(--_density) * 2));
+  --_foreground: var(--ux-1utwv7e, #111);
+  --_background: var(--ux-1mh0ktr, #f5f5f5);
+  --_border: var(--ux-1qbn65p, #f5f5f5);
+
+  &:where([data-size="sm"]) {
+    --_font-size: 0.875rem;
+    --_block-padding: var(--size-space-010, calc(var(--_density) * 0.5));
+    --_inline-padding: var(--size-space-020, var(--_density));
+  }
+
+  &:where([data-size="lg"]) {
+    --_font-size: 1.125rem;
+    --_block-padding: var(--size-space-040, calc(var(--_density) * 2));
+    --_inline-padding: var(--size-space-060, calc(var(--_density) * 3));
+  }
+
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding-block: var(--_block-padding);
+  padding-inline: var(--_inline-padding);
+  overflow: visible;
+  border: 1px solid var(--_border);
+  border-radius: 9999px;
+  color: var(--_foreground);
+  background: var(--_background);
+  font-family: "Gd Sherpa VF5", Helvetica, Arial, sans-serif;
+  font-size: var(--_font-size);
+  font-weight: normal;
+  line-height: var(--_line-height);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  /* Invisible 38px hit target. */
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    min-block-size: 38px;
+    block-size: max(100%, 38px);
+    translate: 0 -50%;
+    border-radius: inherit;
+  }
+
+  &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
+    --_foreground: var(--ux-1e4ese5, #111);
+    --_background: var(--ux-11rtwg8, #f5f5f5);
+    --_border: var(--ux-bg7olm, #d6d6d6);
+  }
+
+  &:where([data-focus-visible]:not([data-disabled])) {
+    --_foreground: var(--ux-6gm31z, #111);
+    --_background: var(--ux-qebq9u, #f5f5f5);
+    --_border: var(--ux-18hlgn4, #d6d6d6);
+    outline: 2px solid Highlight;
+  }
+
+  &:where([data-selected]) {
+    --_foreground: var(--ux-k4fkva, #111);
+    --_background: var(--ux-gdy377, #fff);
+    --_border: var(--ux-187j9dd, #09757a);
+
+    &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
+      --_foreground: var(--ux-k4fkva, #111);
+      --_background: var(--ux-gdy377, #fff);
+      --_border: var(--ux-bg7olm, #d6d6d6);
+    }
+
+    &:where([data-focus-visible]) {
+      --_foreground: var(--ux-k4fkva, #111);
+      --_background: var(--ux-gdy377, #fff);
+      --_border: var(--ux-187j9dd, #09757a);
+    }
+  }
+
+  &:where([data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  :where(.text) {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :where(.icon) {
+    flex: none;
+    inline-size: calc(var(--_font-size) * 1.5);
+    block-size: calc(var(--_font-size) * 1.5);
+    margin-block: calc((var(--_font-size) * var(--_line-height) - var(--_font-size) * 1.5) / 2);
+    overflow: visible;
+  }
+
+  /* Trailing consumer icon: Toggle check. Descendant — Tag gridcell. */
+  :where(.icon:last-child) {
+    inline-size: calc(var(--_font-size) * var(--_line-height));
+    block-size: calc(var(--_font-size) * var(--_line-height));
+    margin-block: 0;
+  }
+
+  /*
+   * Remove control (Figma 4192:6017 / 4132:13894):
+   * - Glyph = 1em (label font size); does not grow on hover.
+   * - Invisible 38px tap target via ::before (may extend past the chip).
+   * - Hover stays transparent so the chip surface shows through (mimics chip bg
+   *   without painting a disc that would cover the label).
+   */
+  :where(.remove) {
+    position: relative;
+    flex: none;
+    inline-size: 1em;
+    block-size: 1em;
+    border: none;
+    border-radius: 9999px;
+    line-height: 1;
+    color: currentColor;
+    background: transparent;
+    overflow: visible;
+
+    /* 38px tap target — paint never; still receives hits where it overflows. */
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      translate: -50% -50%;
+      inline-size: 38px;
+      block-size: 38px;
+      border-radius: 9999px;
+      background: transparent;
+    }
+
+    /* Leading IconContext sizing must not size the X. */
+    :where(.icon) {
+      inline-size: 1em;
+      block-size: 1em;
+      margin-block: 0;
+    }
+
+    &:where(:focus) {
+      outline: none;
+    }
+
+    &:where([data-focus-visible], :focus-visible) {
+      outline: 2px solid Highlight;
+      outline-offset: 0;
+      border-radius: 9999px;
+    }
+
+    &:where([data-disabled], :disabled) {
+      pointer-events: none;
+    }
+  }
+}

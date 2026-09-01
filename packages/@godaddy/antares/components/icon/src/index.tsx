@@ -1,8 +1,9 @@
 import { Icon as BentoIcon, ondemand, set, type IconProps as BentoIconProps } from '@bento/icon';
 import { useDataAttributes } from '@bento/use-data-attributes';
 import { parser } from '@bento/svg-parser';
-import { forwardRef } from 'react';
+import { createContext, forwardRef } from 'react';
 import { cx } from 'cva';
+import { type ContextValue, useContextProps } from 'react-aria-components';
 import type { IconName } from './icon-names.ts';
 import styles from './index.module.css';
 
@@ -82,11 +83,18 @@ export interface IconProps extends Omit<BentoIconProps, 'icon'> {
 }
 
 /**
+ * Context used by Antares parents to pass presentation to a composed Icon
+ * without wrapping or cloning it.
+ */
+export const IconContext = createContext<ContextValue<Partial<IconProps>, SVGSVGElement>>(null);
+
+/**
  * Antares Icon component with color support
  *
  * Renders icons from the configured CDN with enhanced prop interface for
  * convenient styling. Use width and height props for sizing. Icons are loaded
  * on-demand from the CDN and cached automatically. Supports ref forwarding.
+ * Parents may inject presentation through {@link IconContext}.
  *
  * @param props - Icon component props including icon name and color
  * @param props.color - Optional fill color; defaults to currentColor
@@ -112,10 +120,9 @@ export interface IconProps extends Omit<BentoIconProps, 'icon'> {
  *
  * @throws {Error} If the icon name is invalid or cannot be loaded
  */
-export const Icon = forwardRef<SVGSVGElement, IconProps>(function AntaresIcon(
-  { color, className, children = <svg data-placeholder="true" />, ...rest },
-  ref
-) {
+export const Icon = forwardRef<SVGSVGElement, IconProps>(function AntaresIcon(props, ref) {
+  [props, ref] = useContextProps(props, ref, IconContext);
+  const { color, className, children = <svg data-placeholder="true" />, ...rest } = props;
   const dataAttributes = useDataAttributes({ color });
 
   return (
