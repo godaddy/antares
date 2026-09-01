@@ -1,0 +1,29 @@
+import{i as e}from"./preload-helper-BT3GefEN.js";import{F as t}from"./iframe-C1U0XjdE.js";import{S as n,c as r,l as i,n as a,s as o,u as s}from"./blocks-J1guKep0.js";import{t as c}from"./mdx-react-shim-Dw8Dqmvo.js";import{t as l}from"./runtime-CCpseHws.js";import{Default as u,Props as d,n as f,t as p}from"./input.stories-jZx8Wlxb.js";function m(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,ul:`ul`,...n(),...e.components};return(0,g.jsxs)(g.Fragment,{children:[(0,g.jsx)(o,{of:f,name:`Overview`}),`
+`,(0,g.jsx)(t.h1,{id:`input`,children:`Input`}),`
+`,(0,g.jsx)(t.p,{children:`Single-line text control for use inside a Group. Field injects field chrome via InputContext.`}),`
+`,(0,g.jsx)(t.h2,{id:`features`,children:`Features`}),`
+`,(0,g.jsxs)(t.ul,{children:[`
+`,(0,g.jsxs)(t.li,{children:[`Fills remaining space in a `,(0,g.jsx)(t.code,{children:`Group`}),`.`]}),`
+`,(0,g.jsxs)(t.li,{children:[`Pair with `,(0,g.jsx)(t.code,{children:`TextField`}),` (or another field root) and `,(0,g.jsx)(t.code,{children:`Group`}),`.`]}),`
+`]}),`
+`,(0,g.jsx)(t.h2,{id:`installation`,children:`Installation`}),`
+`,(0,g.jsx)(t.pre,{children:(0,g.jsx)(t.code,{className:`language-bash`,children:`npm install --save @godaddy/antares
+`})}),`
+`,(0,g.jsx)(t.h2,{id:`examples`,children:`Examples`}),`
+`,(0,g.jsx)(t.h3,{id:`default`,children:`Default`}),`
+`,(0,g.jsx)(t.p,{children:`Input fills a Group inside TextField. Field injects chrome.`}),`
+`,(0,g.jsx)(i,{of:u,inline:!0}),`
+`,(0,g.jsx)(r,{code:`import { Group, Input, Label, TextField } from '@godaddy/antares';
+
+export function DefaultExample() {
+  return (
+    <TextField>
+      <Label>Email</Label>
+      <Group>
+        <Input placeholder="you@example.com" />
+      </Group>
+    </TextField>
+  );
+}`,language:`tsx`}),`
+`,(0,g.jsx)(t.h2,{id:`props`,children:`Props`}),`
+`,(0,g.jsx)(a,{of:d})]})}function h(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,g.jsx)(t,{...e,children:(0,g.jsx)(m,{...e})}):m(e)}var g;e((()=>{g=t(),c(),s(),l(),p()}))();export{h as default};
