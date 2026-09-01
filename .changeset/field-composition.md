@@ -12,4 +12,6 @@ feat: compose field components instead of Field* wrappers
 
 `CheckboxGroup` and `RadioGroup` keep `label` / `description` / `errorMessage` / `orientation`. Item children stay the default; a composed interior is detected from `Label`, `Text`, and `FieldError`. `Checkbox` and `Radio` keep children-as-label next to the indicator.
 
+`ProgressBar` and `CircularProgress` keep their shorthand props and use Antares `Label`. They do not take a composed interior.
+
 Public components: `Label`/`LabelContext`, `Group`/`GroupContext`/`FieldSize`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.

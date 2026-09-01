@@ -3,9 +3,9 @@ import { forwardRef, useId } from 'react';
 import {
   ProgressBar as RACProgressBar,
   type ProgressBarProps as RACProgressBarProps,
-  Label as RACLabel,
   composeRenderProps
 } from 'react-aria-components';
+import { Label } from '#components/label';
 import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
@@ -97,7 +97,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
                   </Flex>
                 ) : null}
               </div>
-              {label ? <RACLabel className={styles.label}>{label}</RACLabel> : null}
+              {label ? <Label className={styles.label}>{label}</Label> : null}
               {helperText ? (
                 <Text id={helperTextId} className={styles.helperText}>
                   {helperText}
