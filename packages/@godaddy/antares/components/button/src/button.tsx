@@ -1,15 +1,16 @@
 import type React from 'react';
-import { forwardRef, useContext } from 'react';
+import { createContext, forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText
+  useContextProps,
+  type ContextValue
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
-import { FieldStateContext } from '#components/structure';
+import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -53,26 +54,27 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
+/** Lets a parent publish Antares button props (and slots). Optional. */
+export const ButtonContext = createContext<ContextValue<ButtonProps, HTMLButtonElement>>(null);
+
 /**
  * The Button component allows users to trigger an action.
+ * Parents may publish props through {@link ButtonContext}; local props win.
+ * RAC still owns press behavior via its own button context.
  *
  * @param props - The properties {@link ButtonProps} passed to the component.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
+  [props, ref] = useContextProps(props, ref, ButtonContext);
   const { variant, size, className, children, isDisabled, ...rest } = props;
-  const fieldState = useContext(FieldStateContext);
-  const inheritsFromField = variant === 'control' || variant === 'trigger';
-  const resolvedSize = size ?? (inheritsFromField ? fieldState.size : undefined);
-  const resolvedIsDisabled = isDisabled ?? (inheritsFromField ? fieldState.isDisabled : undefined);
-  const content = typeof children === 'string' && !inheritsFromField ? <RACText>{children}</RACText> : children;
+  const content = typeof children === 'string' ? <Text slot={null}>{children}</Text> : children;
 
   return (
     <RACButton
       {...rest}
       ref={ref}
-      isDisabled={resolvedIsDisabled}
-      className={composeClassName(className, buttonVariants({ variant, size: resolvedSize }))}
-      data-button-variant={inheritsFromField ? variant : undefined}
+      isDisabled={isDisabled}
+      className={composeClassName(className, buttonVariants({ variant, size }))}
     >
       {content}
     </RACButton>
@@ -100,7 +102,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      {typeof children === 'string' ? <Text>{children}</Text> : children}
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );

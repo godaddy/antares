@@ -3,14 +3,11 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
 import { ComposedExample } from '../examples/composed';
-import { ComposedStateExample } from '../examples/composed-state';
 import { DefaultExample } from '../examples/default';
-import { SelectControlledExample } from '../examples/controlled';
-import { SelectMultipleExample } from '../examples/multiple';
-import { SelectFormExample } from '../examples/form';
-import { SelectInvalidExample } from '../examples/invalid';
-import { InGroupExample } from '../examples/in-group';
-import { CustomOptionExample } from '../examples/custom-option';
+import { ControlledExample } from '../examples/controlled';
+import { MultipleExample } from '../examples/multiple';
+import { FormExample } from '../examples/form';
+import { InvalidExample } from '../examples/invalid';
 
 describe('@godaddy/antares', function antares() {
   describe('#Select', function selectSuite() {
@@ -22,7 +19,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('updates the controlled selection on click', async function controlledInteraction() {
-      await render(<SelectControlledExample />);
+      await render(<ControlledExample />);
 
       const trigger = page.getByRole('button', { name: /Latte/ });
       await userEvent.setup().click(trigger);
@@ -43,18 +40,8 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByRole('button', { name: /tea/i })).is.not.equal(null);
     });
 
-    it('passes the open state to a composed interior', async function composedRenderProps() {
-      const { container } = await render(<ComposedStateExample />);
-
-      assume(container.textContent).contains('Choose your favorite drink');
-
-      await userEvent.setup().click(page.getByRole('button', { name: /pick a drink/i }));
-
-      assume(container.textContent).contains('Use the arrow keys to browse');
-    });
-
     it('toggles items in multiple selection', async function multipleInteraction() {
-      await render(<SelectMultipleExample />);
+      await render(<MultipleExample />);
 
       const trigger = page.getByRole('button');
       await userEvent.setup().click(trigger);
@@ -67,7 +54,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('marks the group invalid when a required select fails validation on submit', async function submitInvalid() {
-      const { container } = await render(<SelectFormExample />);
+      const { container } = await render(<FormExample />);
 
       const submit = page.getByRole('button', { name: 'Submit' });
       await userEvent.setup().click(submit);
@@ -77,35 +64,10 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('marks the group invalid from the controlled isInvalid prop', async function controlledInvalid() {
-      const { container } = await render(<SelectInvalidExample />);
+      const { container } = await render(<InvalidExample />);
 
       const group = container.querySelector('[role="group"]') as HTMLElement;
       assume(group.hasAttribute('data-invalid')).equals(true);
-    });
-
-    it('collects options and selects inside a shared Group', async function inGroupSelect() {
-      const { container } = await render(<InGroupExample />);
-
-      assume(container.querySelectorAll('[data-elevation="card"]').length).equals(1);
-
-      const trigger = page.getByRole('button');
-      await userEvent.setup().click(trigger);
-
-      // Options only render if the self-provided Select built its collection.
-      const eur = page.getByRole('option', { name: 'EUR' });
-      await userEvent.setup().click(eur);
-
-      const updated = page.getByRole('button', { name: /EUR/ });
-      assume(updated).is.not.equal(null);
-    });
-
-    it('collects options wrapped in a custom component', async function customOption() {
-      await render(<CustomOptionExample />);
-
-      await userEvent.setup().click(page.getByRole('button'));
-      await userEvent.setup().click(page.getByRole('option', { name: 'Mexico' }));
-
-      assume(page.getByRole('button', { name: /Mexico/ })).is.not.equal(null);
     });
   });
 });

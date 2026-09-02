@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { NumberFieldPlaygroundExample } from './examples/number-field-playground.tsx';
+import { PlaygroundExample } from './examples/number-field-playground.tsx';
 import { NumberField } from './src/index.tsx';
 
 export default getMeta({
@@ -11,7 +11,7 @@ export const Props = getComponentDocs(NumberField);
 
 export const Examples = getExamples('./examples');
 
-export const Playground = getStory(NumberFieldPlaygroundExample, {
+export const Playground = getStory(PlaygroundExample, {
   args: {
     label: 'Quantity',
     minValue: 0,

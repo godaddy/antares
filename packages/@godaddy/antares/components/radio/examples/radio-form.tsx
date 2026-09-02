@@ -1,4 +1,4 @@
-import { Flex, Label, Radio, RadioGroup } from '@godaddy/antares';
+import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';
 import { type FormEvent, useState } from 'react';
 
 /**
@@ -6,7 +6,7 @@ import { type FormEvent, useState } from 'react';
  * @title Form Submission
  * @order 9
  */
-export function RadioFormExample() {
+export function FormExample() {
   const [submittedValue, setSubmittedValue] = useState<string | null>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -20,11 +20,11 @@ export function RadioFormExample() {
       <form onSubmit={handleSubmit}>
         <RadioGroup name="plan" defaultValue="standard">
           <Label>Select your plan</Label>
-          <Flex direction="column" gap="md">
+          <Group>
             <Radio value="basic">Basic</Radio>
             <Radio value="standard">Standard</Radio>
             <Radio value="premium">Premium</Radio>
-          </Flex>
+          </Group>
         </RadioGroup>
         <button type="submit" style={{ marginTop: '1rem' }}>
           Submit

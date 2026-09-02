@@ -13,6 +13,5 @@ export {
   type ButtonGroupProps,
   Group,
   GroupContext,
-  type GroupProps,
-  type FieldSize
+  type GroupProps
 } from '#components/structure';

@@ -20,7 +20,7 @@ npm install --save @godaddy/antares
 
 ## Customization
 
-`RadioGroup` is composed: pass `Label`, a layout (`Flex`) holding the `Radio` items, `Text slot="description"`, and `FieldError`. Each `Radio` takes label text next to the indicator. `orientation` only sets keyboard-navigation direction and ARIA — match the layout `Flex`'s `direction` to it yourself.
+`RadioGroup` is composed: pass `Label`, a `Group` holding the `Radio` items, `Text slot="description"`, and `FieldError`. Each `Radio` takes label text next to the indicator. `orientation` sets keyboard-navigation direction, ARIA, and the item layout.
 
 ### Data Attributes
 
@@ -58,14 +58,14 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 ```jsx
 <RadioGroup className="custom-radio-group">
   <Label>Select plan</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Radio value="basic" className="custom-radio">
       Basic
     </Radio>
     <Radio value="premium" className="premium-radio">
       Premium
     </Radio>
-  </Flex>
+  </Group>
 </RadioGroup>
 ```
 
@@ -95,25 +95,25 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 // ❌ Wrong: Using both value and defaultValue
 <RadioGroup value={value} defaultValue="basic">
   <Label>Plan</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Radio value="basic">Basic</Radio>
-  </Flex>
+  </Group>
 </RadioGroup>
 
 // ✅ Controlled mode
 <RadioGroup value={value} onChange={setValue}>
   <Label>Plan</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Radio value="basic">Basic</Radio>
-  </Flex>
+  </Group>
 </RadioGroup>
 
 // ✅ Uncontrolled mode
 <RadioGroup defaultValue="basic">
   <Label>Plan</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Radio value="basic">Basic</Radio>
-  </Flex>
+  </Group>
 </RadioGroup>
 ```
 
@@ -172,10 +172,10 @@ Always provide clear error messages:
 ```jsx
 <RadioGroup isRequired isInvalid={!selectedShipping}>
   <Label>Select shipping method</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Radio value="standard">Standard</Radio>
     <Radio value="express">Express</Radio>
-  </Flex>
+  </Group>
   <FieldError>Please select a shipping method</FieldError>
 </RadioGroup>
 ```

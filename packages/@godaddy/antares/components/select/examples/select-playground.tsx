@@ -1,18 +1,4 @@
-import {
-  Button,
-  Content,
-  FieldError,
-  Group,
-  Icon,
-  Label,
-  ListBox,
-  Popover,
-  Select,
-  SelectItem,
-  SelectValue,
-  Text,
-  type SelectProps
-} from '@godaddy/antares';
+import { FieldError, Label, Select, SelectItem, Text, type SelectProps } from '@godaddy/antares';
 
 /** Props for the Select playground example. */
 export interface PlaygroundExampleProps
@@ -51,25 +37,13 @@ export function PlaygroundExample({
       size={size}
     >
       <Label>{label}</Label>
-      <Group alignItems="center">
-        <Button variant="trigger">
-          <SelectValue />
-          <Icon icon="chevron-down" />
-        </Button>
-      </Group>
+      <SelectItem id="espresso">Espresso</SelectItem>
+      <SelectItem id="latte">Latte</SelectItem>
+      <SelectItem id="cappuccino">Cappuccino</SelectItem>
+      <SelectItem id="americano">Americano</SelectItem>
+      <SelectItem id="mocha">Mocha</SelectItem>
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
-      <Popover hideArrow>
-        <Content blockPadding="xs" inlinePadding="0">
-          <ListBox>
-            <SelectItem id="espresso">Espresso</SelectItem>
-            <SelectItem id="latte">Latte</SelectItem>
-            <SelectItem id="cappuccino">Cappuccino</SelectItem>
-            <SelectItem id="americano">Americano</SelectItem>
-            <SelectItem id="mocha">Mocha</SelectItem>
-          </ListBox>
-        </Content>
-      </Popover>
     </Select>
   );
 }

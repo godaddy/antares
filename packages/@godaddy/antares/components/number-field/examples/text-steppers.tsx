@@ -9,13 +9,9 @@ export function TextSteppersExample() {
     <NumberField defaultValue={1} minValue={0}>
       <Label>Quantity</Label>
       <Group>
-        <Button slot="decrement" variant="control">
-          decrement
-        </Button>
+        <Button slot="decrement">decrement</Button>
         <Input />
-        <Button slot="increment" variant="control">
-          increment
-        </Button>
+        <Button slot="increment">increment</Button>
       </Group>
       <Text slot="description">Use decrement and increment to change the value.</Text>
     </NumberField>

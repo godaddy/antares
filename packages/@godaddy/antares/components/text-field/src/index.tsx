@@ -1,11 +1,11 @@
 import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
-import type { FieldSize } from '#components/structure';
+import { Field, wrapBareFieldControl, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
 
 export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, FieldOwnProps {
   /**
-   * The interior of the field: a `Label`, a `Group` wrapping an `Input` or `TextArea`,
-   * a `Text slot="description"`, and a `FieldError`. Pass a function to read field state.
+   * The interior of the field: a `Label`, an `Input` or `TextArea` (optionally inside a `Group`
+   * when composing controls or adornments), a `Text slot="description"`, and a `FieldError`.
+   * Pass a function to read field state.
    */
   children: RACTextFieldProps['children'];
 
@@ -26,9 +26,9 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, FieldOw
 }
 
 /**
- * Text input field. Compose the interior from `Label`, `Group`, `Input` or `TextArea`,
- * `Text slot="description"`, and `FieldError`. A composed `Group` inherits `size` and
- * `isDisabled` from the field, so set those here and leave the structure to the markup.
+ * Text input field. Compose from `Label`, `Input` or `TextArea`, optional `Group` for
+ * controls/adornments, `Text slot="description"`, and `FieldError`. A bare `Input` / `TextArea`
+ * is wrapped in a `Group` for you. A composed `Group` inherits `size` and `isDisabled`.
  *
  * @param props - {@link TextFieldProps}
  *
@@ -36,9 +36,7 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, FieldOw
  * ```tsx
  * <TextField>
  *   <Label>Email</Label>
- *   <Group>
- *     <Input placeholder="you@example.com" />
- *   </Group>
+ *   <Input placeholder="you@example.com" />
  *   <Text slot="description">We won't share it.</Text>
  *   <FieldError />
  * </TextField>
@@ -48,8 +46,8 @@ export function TextField(props: TextFieldProps) {
   const { children, size, ...racProps } = props;
 
   return (
-    <Field as={RACTextField} size={size} {...racProps}>
-      {children}
+    <Field as={RACTextField} interior="box" size={size} {...racProps}>
+      {wrapBareFieldControl(children)}
     </Field>
   );
 }

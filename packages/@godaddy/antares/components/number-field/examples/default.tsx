@@ -1,4 +1,4 @@
-import { Button, Group, Icon, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';
+import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';
 
 /**
  * Minimal usage with a `Label`, min/max, and stepper `Button`s.
@@ -9,13 +9,9 @@ export function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'def
     <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>
       <Label>Quantity</Label>
       <Group>
-        <Button slot="decrement" variant="control">
-          <Icon icon="minus" />
-        </Button>
+        <Button slot="decrement" />
         <Input placeholder="0" />
-        <Button slot="increment" variant="control">
-          <Icon icon="plus" />
-        </Button>
+        <Button slot="increment" />
       </Group>
     </NumberField>
   );

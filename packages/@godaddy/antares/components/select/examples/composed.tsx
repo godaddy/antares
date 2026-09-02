@@ -24,7 +24,7 @@ export function ComposedExample() {
     <Select placeholder="Pick a drink">
       <Label>Drink</Label>
       <Group alignItems="center">
-        <Button variant="trigger">
+        <Button slot="trigger">
           <SelectValue />
           <Icon icon="chevron-down" />
         </Button>

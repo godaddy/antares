@@ -100,15 +100,17 @@ export function Checkbox(props: CheckboxProps) {
 }
 
 export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'children'>, FieldOwnProps {
-  /**
-   * The interior: a `Label`, a layout (`Flex`) holding `Checkbox`es, a `Text slot="description"`,
-   * and a `FieldError`. Pass a function to read field state.
-   */
+  /** Layout axis for the checkbox items. @default 'vertical' */
+  orientation?: 'horizontal' | 'vertical';
+
+  /** `Label`, a `Group` of `Checkbox`es, optional `Text slot="description"`, and `FieldError`. */
   children: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
 }
 
 /**
- * Antares CheckboxGroup component. Renders a group meant to hold checkboxes with shared state.
+ * Checkbox group field. Compose from `Label`, a `Group` of `Checkbox`es,
+ * `Text slot="description"`, and `FieldError`. `orientation` sets keyboard navigation,
+ * ARIA, and item layout.
  *
  * @param props - {@link CheckboxGroupProps}
  *
@@ -116,16 +118,23 @@ export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'childre
  * ```tsx
  * <CheckboxGroup>
  *   <Label>Favorite colors</Label>
- *   <Flex direction="column" gap="md">
+ *   <Group>
  *     <Checkbox value="blue">Blue</Checkbox>
- *   </Flex>
+ *   </Group>
  *   <FieldError />
  * </CheckboxGroup>
  * ```
  */
-export function CheckboxGroup({ children, className, ...rest }: CheckboxGroupProps) {
+export function CheckboxGroup({ children, className, orientation = 'vertical', ...rest }: CheckboxGroupProps) {
   return (
-    <Field as={RACCheckboxGroup} {...rest} className={composeClassName(className, styles.checkboxGroup)}>
+    <Field
+      as={RACCheckboxGroup}
+      interior="stack"
+      orientation={orientation}
+      data-orientation={orientation}
+      {...rest}
+      className={composeClassName(className, styles.checkboxGroup)}
+    >
       {children}
     </Field>
   );

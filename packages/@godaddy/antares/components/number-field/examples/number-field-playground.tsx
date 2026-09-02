@@ -2,7 +2,6 @@ import {
   Button,
   FieldError,
   Group,
-  Icon,
   Input,
   Label,
   NumberField,
@@ -10,7 +9,7 @@ import {
   type NumberFieldProps
 } from '@godaddy/antares';
 
-export interface NumberFieldPlaygroundExampleProps {
+export interface PlaygroundExampleProps {
   description?: string;
   errorMessage?: string;
   hideStepper?: boolean;
@@ -25,7 +24,7 @@ export interface NumberFieldPlaygroundExampleProps {
   step?: number;
 }
 
-export function NumberFieldPlaygroundExample({
+export function PlaygroundExample({
   description,
   errorMessage,
   hideStepper,
@@ -38,7 +37,7 @@ export function NumberFieldPlaygroundExample({
   placeholder,
   size = 'md',
   step
-}: NumberFieldPlaygroundExampleProps) {
+}: PlaygroundExampleProps) {
   return (
     <NumberField
       isDisabled={isDisabled}
@@ -51,17 +50,9 @@ export function NumberFieldPlaygroundExample({
     >
       <Label>{label}</Label>
       <Group>
-        {hideStepper ? null : (
-          <Button slot="decrement" variant="control">
-            <Icon icon="minus" />
-          </Button>
-        )}
+        {hideStepper ? null : <Button slot="decrement" />}
         <Input placeholder={placeholder} />
-        {hideStepper ? null : (
-          <Button slot="increment" variant="control">
-            <Icon icon="plus" />
-          </Button>
-        )}
+        {hideStepper ? null : <Button slot="increment" />}
       </Group>
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>

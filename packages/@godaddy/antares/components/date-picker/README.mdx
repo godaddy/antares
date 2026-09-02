@@ -11,9 +11,10 @@ import * as Stories from './date-picker.stories.tsx';
 
 ## Features
 
+- **Composable interior**: Default usage is `Label` (plus optional `Text` / `FieldError`), or no children with `aria-label`. Compose `Group`, `Button`, `DatePickerValue`, `Popover`, `Content`, and `Calendar` when you need a custom layout, or pass a function for picker state
 - `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-- Built on React Aria — native form integration, validation, focus management, and screen-reader support
-- Consumer-controlled label formatting via `formatOptions` on `DatePickerValue` / `DateRangePickerValue`
+- Built on React Aria - native form integration, validation, focus management, and screen-reader support
+- Label formatting via `formatOptions` / `placeholder` on the picker, or on `DatePickerValue` / `DateRangePickerValue` when composing
 - `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
 
 ## Installation
@@ -27,79 +28,23 @@ npm install @godaddy/antares
 Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
 
 ```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { Button, Calendar, Content, DatePicker, DatePickerValue, Group, Icon, Label, Popover } from '@godaddy/antares';
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker } from '@godaddy/antares';
 
 function EventDatePicker() {
   return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event</Label>
-      <Group alignItems="center">
-        <Button variant="trigger">
-          <Icon icon="calendar" />
-          <DatePickerValue />
-        </Button>
-      </Group>
-      <Popover hideArrow>
-        <Content>
-          <Calendar />
-        </Content>
-      </Popover>
-    </DatePicker>
+    <DatePicker aria-label="Event date" defaultValue={parseDate('2024-03-15')} />
   );
 }
 ```
 
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
 
 ## Examples
 
 <Examples of={Stories.Examples} />
-
-## Customization
-
-`children` is the interior: `Label`, `Group`, a trigger `Button` (an `Icon` plus `DatePickerValue` or
-`DateRangePickerValue`), `Text slot="description"`, `FieldError`, `Popover`, `Content`, and `Calendar`
-or `RangeCalendar`. Or a function returning that interior when it needs picker state (`isOpen`, …).
-
-```tsx
-<DatePicker>
-  <Label />
-  <Group>
-    <Button variant="trigger">
-      <Icon icon="calendar" />
-      <DatePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <FieldError />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
-</DatePicker>
-```
-
-`DatePickerValue` and `DateRangePickerValue` accept `formatOptions` (any `Intl.DateTimeFormatOptions`,
-e.g. `{ dateStyle: 'short' }`) and `placeholder` for the empty-state text.
-
-## Accessibility
-
-- The whole field is a single focusable button; Enter/Space opens the popover
-- Focus is trapped in the open popover and returns to the trigger on close
-- Esc and outside-click dismiss the popover
-- The calendar grid is fully keyboard navigable and screen-reader announced
-
-## Best Practices
-
-- Provide a `Label` (or `aria-label`) on every picker.
-- For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
-
-## Troubleshooting
-
-- Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
-- Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
 
 ## Props
 

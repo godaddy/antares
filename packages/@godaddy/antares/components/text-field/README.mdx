@@ -11,8 +11,9 @@ import * as Stories from './text-field.stories.tsx';
 
 ## Features
 
-- **Composable interior**: Compose `Label`, `Group`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`
+- **Composable interior**: Compose `Label`, `Input` or `TextArea` (a `Group` is added for you when omitted), `Text slot="description"`, and `FieldError`. Use an explicit `Group` for controls or adornments
 - **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
+- **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
 - **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
@@ -28,41 +29,6 @@ npm install --save @godaddy/antares
 <Examples of={Stories.Examples} />
 
 ## Props
-
-`children` is the interior. A composed `Group` inherits `size` and `isDisabled` from the field, so set
-them on `TextField` and leave the interior to the markup.
-
-```tsx
-<TextField>
-  <Label />
-  <Group>
-    <Select variant="control" />
-    <Input /> {/* or <TextArea /> */}
-    <Button variant="control" />
-  </Group>
-  <Text slot="description" />
-  <FieldError />
-</TextField>
-```
-
-### Adornments
-
-Fixed text or an icon before or after the input is composed inside `Group`; position comes from
-source order, not a prop.
-
-```tsx
-<TextField>
-  <Label>Amount</Label>
-  <Group>
-    <Flex as="span" alignItems="center" inlinePaddingStart="md">$</Flex>
-    <Input placeholder="0.00" />
-    <Flex as="span" alignItems="center" inlinePaddingEnd="md">.00</Flex>
-  </Group>
-</TextField>
-```
-
-An interactive affix (a country-code `Select`, a "Verify" `Button`) uses `variant="control"` instead
-of the `Flex` wrapper — see the Controls and icons example above.
 
 The `TextField` component accepts the following props:
 

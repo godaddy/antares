@@ -57,18 +57,16 @@ export function Radio({ children, ...props }: RadioProps) {
 }
 
 export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, FieldOwnProps {
-  /**
-   * The interior: a `Label`, a layout (`Flex`) holding `Radio`s, a `Text slot="description"`,
-   * and a `FieldError`. Pass a function to read field state.
-   *
-   * RAC's `orientation` only sets keyboard-navigation direction and ARIA — match the layout's
-   * `direction` to it yourself.
-   */
+  /** Layout axis for the radio items. @default 'vertical' */
+  orientation?: 'horizontal' | 'vertical';
+
+  /** `Label`, a `Group` of `Radio`s, optional `Text slot="description"`, and `FieldError`. */
   children: ReactNode | ((renderProps: RACRadioGroupRenderProps) => ReactNode);
 }
 
 /**
- * Antares RadioGroup component
+ * Radio group field. Compose from `Label`, a `Group` of `Radio`s, `Text slot="description"`,
+ * and `FieldError`. `orientation` sets keyboard navigation, ARIA, and item layout.
  *
  * @param props - {@link RadioGroupProps}
  *
@@ -76,16 +74,22 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, F
  * ```tsx
  * <RadioGroup>
  *   <Label>Select your plan</Label>
- *   <Flex direction="column" gap="md">
+ *   <Group>
  *     <Radio value="basic">Basic</Radio>
- *   </Flex>
+ *   </Group>
  *   <FieldError />
  * </RadioGroup>
  * ```
  */
-export function RadioGroup({ children, className, ...props }: RadioGroupProps) {
+export function RadioGroup({ children, className, orientation = 'vertical', ...props }: RadioGroupProps) {
   return (
-    <Field as={RACRadioGroup} {...props} className={composeClassName(className, styles.radioGroup)}>
+    <Field
+      as={RACRadioGroup}
+      interior="stack"
+      orientation={orientation}
+      {...props}
+      className={composeClassName(className, styles.radioGroup)}
+    >
       {children}
     </Field>
   );

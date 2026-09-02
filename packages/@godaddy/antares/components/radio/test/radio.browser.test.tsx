@@ -1,14 +1,13 @@
-import { RadioDescriptionExample } from '../examples/radio-description.tsx';
-import { RadioHorizontalExample } from '../examples/radio-horizontal.tsx';
-import { RadioControlledExample } from '../examples/radio-controlled.tsx';
+import { DescriptionExample } from '../examples/radio-description.tsx';
+import { HorizontalExample } from '../examples/radio-horizontal.tsx';
+import { ControlledExample } from '../examples/radio-controlled.tsx';
 import { PlaygroundExample } from '../examples/radio-playground.tsx';
-import { RadioAriaLabelExample } from '../examples/radio-aria-label.tsx';
-import { RadioDisabledExample } from '../examples/radio-disabled.tsx';
-import { RadioRequiredExample } from '../examples/radio-required.tsx';
-import { RadioErrorExample } from '../examples/radio-error.tsx';
+import { AriaLabelExample } from '../examples/radio-aria-label.tsx';
+import { DisabledExample } from '../examples/radio-disabled.tsx';
+import { RequiredExample } from '../examples/radio-required.tsx';
+import { ErrorExample } from '../examples/radio-error.tsx';
 import { DefaultExample } from '../examples/default.tsx';
-import { RadioFormExample } from '../examples/radio-form.tsx';
-import { ComposedExample } from '../examples/composed.tsx';
+import { FormExample } from '../examples/radio-form.tsx';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
@@ -23,8 +22,8 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByRole('radio', { name: 'Basic' })).exists();
     });
 
-    it('renders RadioControlledExample with interaction', async function controlledRender() {
-      await render(<RadioControlledExample />);
+    it('renders ControlledExample with interaction', async function controlledRender() {
+      await render(<ControlledExample />);
 
       await page.getByRole('radio', { name: 'Premium' }).click({ force: true });
       await vi.waitFor(function checkSelection() {
@@ -32,39 +31,39 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders RadioHorizontalExample', async function horizontalRender() {
-      await render(<RadioHorizontalExample />);
+    it('renders HorizontalExample', async function horizontalRender() {
+      await render(<HorizontalExample />);
 
       assume(page.getByRole('radiogroup')).exists();
     });
 
-    it('renders RadioDisabledExample with disabled states', async function disabledRender() {
-      await render(<RadioDisabledExample />);
+    it('renders DisabledExample with disabled states', async function disabledRender() {
+      await render(<DisabledExample />);
 
       assume(page.getByRole('radiogroup', { name: 'Disabled group' })).exists();
       assume(page.getByRole('radiogroup', { name: 'Individual disabled options' })).exists();
     });
 
-    it('renders RadioAriaLabelExample', async function ariaLabelRender() {
-      await render(<RadioAriaLabelExample />);
+    it('renders AriaLabelExample', async function ariaLabelRender() {
+      await render(<AriaLabelExample />);
 
       assume(page.getByRole('radiogroup', { name: 'Sort order' })).exists();
     });
 
-    it('renders RadioDescriptionExample', async function descriptionRender() {
-      await render(<RadioDescriptionExample />);
+    it('renders DescriptionExample', async function descriptionRender() {
+      await render(<DescriptionExample />);
 
       assume(page.getByText("Choose how you'd like to receive updates")).exists();
     });
 
-    it('renders RadioErrorExample', async function errorRender() {
-      await render(<RadioErrorExample />);
+    it('renders ErrorExample', async function errorRender() {
+      await render(<ErrorExample />);
 
       assume(page.getByText('Please select a shipping method')).exists();
     });
 
-    it('renders RadioRequiredExample', async function requiredRender() {
-      await render(<RadioRequiredExample />);
+    it('renders RequiredExample', async function requiredRender() {
+      await render(<RequiredExample />);
 
       assume(page.getByRole('radiogroup', { name: 'Payment method' })).exists();
     });
@@ -75,19 +74,10 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByRole('radiogroup')).exists();
     });
 
-    it('renders RadioFormExample', async function formRender() {
-      await render(<RadioFormExample />);
+    it('renders FormExample', async function formRender() {
+      await render(<FormExample />);
 
       assume(page.getByRole('radiogroup')).exists();
-    });
-
-    it('selects a radio from a composed interior', async function composedInteraction() {
-      await render(<ComposedExample />);
-
-      await page.getByRole('radio', { name: 'Premium' }).click({ force: true });
-      await vi.waitFor(function checkSelection() {
-        assume((page.getByRole('radio', { name: 'Premium' }).element() as HTMLInputElement).checked).is.true();
-      });
     });
   });
 });

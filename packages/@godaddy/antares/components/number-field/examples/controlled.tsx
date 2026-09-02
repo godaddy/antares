@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Button, Group, Icon, Input, Label, NumberField, Text } from '@godaddy/antares';
+import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';
 
 /**
  * Use `value` and `onChange` for controlled state.
  * @order 2
  */
-export function NumberFieldControlledExample() {
+export function ControlledExample() {
   const [value, setValue] = useState(10);
 
   return (
@@ -13,13 +13,9 @@ export function NumberFieldControlledExample() {
       <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>
         <Label>Quantity</Label>
         <Group>
-          <Button slot="decrement" variant="control">
-            <Icon icon="minus" />
-          </Button>
+          <Button slot="decrement" />
           <Input />
-          <Button slot="increment" variant="control">
-            <Icon icon="plus" />
-          </Button>
+          <Button slot="increment" />
         </Group>
       </NumberField>
       <Text>

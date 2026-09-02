@@ -7,16 +7,17 @@ import {
   SelectValue as RACSelectValue,
   type SelectValueProps as RACSelectValueProps
 } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
-import type { FieldSize } from '#components/structure';
-import { ListBoxItem, type ListBoxItemProps } from '#components/listbox';
+import { Field, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import { Button } from '#components/button';
+import { Icon } from '#components/icon';
+import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
+import { Popover } from '#components/popover';
+import { Content, Group } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
+import { classifySelectChildren } from './classify-select-children.tsx';
 import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
-
-/** State passed to a composed Select interior. */
-export interface SelectRenderProps extends RACSelectRenderProps {}
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
@@ -28,56 +29,102 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   variant?: 'default' | 'control';
 
   /**
-   * The interior: `Label`, `Group` with a `Button` (`SelectValue` plus an `Icon`), `Popover`
-   * with `Content` and `ListBox` holding `SelectItem`s, `Text slot="description"`, and
-   * `FieldError`. Pass a function to read state such as `isOpen` while composing.
+   * Semi-composed: `Label`, `SelectItem`s, `Text slot="description"`, `FieldError`.
+   * Composed: full interior with `Group`, `Button`, `Popover`, and `ListBox`.
    */
-  children: ReactNode | ((renderProps: SelectRenderProps) => ReactNode);
+  children: ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode);
+}
+
+function DefaultSelectInterior({
+  label,
+  description,
+  error,
+  items,
+  withGroup
+}: {
+  label: ReactNode[];
+  description: ReactNode[];
+  error: ReactNode[];
+  items: ReactNode[];
+  withGroup: boolean;
+}) {
+  const face = withGroup ? (
+    <Button slot="trigger">
+      <SelectValue />
+      <Icon icon="chevron-down" />
+    </Button>
+  ) : (
+    <Button slot="control">
+      <SelectValue />
+      <Icon icon="chevron-down" />
+    </Button>
+  );
+
+  return (
+    <>
+      {label}
+      {withGroup ? <Group alignItems="center">{face}</Group> : face}
+      {description}
+      {error}
+      <Popover hideArrow>
+        <Content blockPadding="xs" inlinePadding="0">
+          <ListBox>{items}</ListBox>
+        </Content>
+      </Popover>
+    </>
+  );
+}
+
+function renderSelectChildren(
+  children: SelectProps<object>['children'],
+  withGroup: boolean
+): ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode) {
+  const classified = classifySelectChildren(children);
+  if (classified.mode === 'composed') return classified.children;
+
+  return (
+    <DefaultSelectInterior
+      label={classified.label}
+      description={classified.description}
+      error={classified.error}
+      items={classified.items}
+      withGroup={withGroup}
+    />
+  );
 }
 
 /**
- * Antares Select. By default it is a labeled field. Use `variant="control"` to
- * share another field's {@link Group} without rendering a second field shell.
+ * Antares Select. Default usage is semi-composed (`Label` + items). Pass a full interior
+ * (`Group`, `Button`, `Popover`, `ListBox`) when you need to customize layout. Use
+ * `variant="control"` to share another field's Group without a second field shell.
  *
  * @param props - {@link SelectProps}
  *
  * @example
  * ```tsx
- * <Select>
+ * <Select placeholder="Pick a drink">
  *   <Label>Coffee</Label>
- *   <Group alignItems="center">
- *     <Button variant="trigger">
- *       <SelectValue />
- *       <Icon icon="chevron-down" />
- *     </Button>
- *   </Group>
- *   <Popover hideArrow>
- *     <Content blockPadding="xs" inlinePadding="0">
- *       <ListBox>
- *         <SelectItem id="espresso">Espresso</SelectItem>
- *       </ListBox>
- *     </Content>
- *   </Popover>
+ *   <SelectItem id="espresso">Espresso</SelectItem>
+ *   <Text slot="description">Select your favorite coffee</Text>
  * </Select>
- *
- * <Select>{({ isOpen }) => <>{'…'}</>}</Select>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
   const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
+  const interior = renderSelectChildren(children, variant !== 'control');
 
   if (variant === 'control') {
     return (
       <RACSelect {...racProps} className={selectClass}>
-        {children}
+        {interior}
       </RACSelect>
     );
   }
 
   return (
-    <Field as={RACSelect as typeof RACSelect<T, M>} size={size} {...racProps} className={selectClass}>
-      {children}
+    <Field as={RACSelect as typeof RACSelect<T, M>} interior="box" size={size} {...racProps} className={selectClass}>
+      {interior}
     </Field>
   );
 }

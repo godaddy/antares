@@ -20,13 +20,13 @@ npm install --save @godaddy/antares
 
 ## Customization
 
-`CheckboxGroup` is composed: pass `Label`, a layout (`Flex`) holding the `Checkbox` items, `Text slot="description"`, and `FieldError`. Each `Checkbox` takes label text next to the indicator.
+`CheckboxGroup` is composed: pass `Label`, a `Group` holding the `Checkbox` items, `Text slot="description"`, and `FieldError`. Each `Checkbox` takes label text next to the indicator. Use `orientation` to lay out the items vertically or horizontally.
 
 ### Data Attributes
 
 Components automatically add data attributes for styling different states:
 
-**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
 
 **Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
 
@@ -62,14 +62,14 @@ Pass `className` or `style` to customize a checkbox field container. Use descend
 ```jsx
 <CheckboxGroup className="custom-checkbox-group">
   <Label>Select options</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Checkbox value="option1" className="custom-checkbox">
       Option 1
     </Checkbox>
     <Checkbox value="option2" className="highlighted-checkbox">
       Option 2
     </Checkbox>
-  </Flex>
+  </Group>
 </CheckboxGroup>
 ```
 
@@ -96,18 +96,17 @@ CheckboxGroup supports validation states and error messages:
 ```jsx
 <CheckboxGroup isRequired isInvalid={!hasSelection}>
   <Label>Required selection</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Checkbox value="a">Option A</Checkbox>
     <Checkbox value="b">Option B</Checkbox>
-  </Flex>
+  </Group>
   <FieldError>At least one option must be selected</FieldError>
 </CheckboxGroup>
 ```
 
 ### Orientation
 
-Set the layout `Flex`'s `direction` and `gap` yourself: `direction="column" gap="md"` stacks
-checkboxes vertically, `direction="row" gap="lg"` arranges them in a horizontal row.
+Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row. Wrap the items in `Group`.
 
 ## Accessibility
 
@@ -132,25 +131,25 @@ checkboxes vertically, `direction="row" gap="lg"` arranges them in a horizontal 
 // ❌ Wrong: Using both value and defaultValue
 <CheckboxGroup value={value} defaultValue={["a"]}>
   <Label>Options</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Checkbox value="a">Option A</Checkbox>
-  </Flex>
+  </Group>
 </CheckboxGroup>
 
 // ✅ Controlled mode
 <CheckboxGroup value={value} onChange={setValue}>
   <Label>Options</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Checkbox value="a">Option A</Checkbox>
-  </Flex>
+  </Group>
 </CheckboxGroup>
 
 // ✅ Uncontrolled mode
 <CheckboxGroup defaultValue={["a"]}>
   <Label>Options</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Checkbox value="a">Option A</Checkbox>
-  </Flex>
+  </Group>
 </CheckboxGroup>
 ```
 
@@ -228,10 +227,10 @@ Always provide clear error messages and use appropriate validation states:
 ```jsx
 <CheckboxGroup isRequired isInvalid={!agreedToTerms}>
   <Label>Terms and conditions</Label>
-  <Flex direction="column" gap="md">
+  <Group>
     <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
     <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
-  </Flex>
+  </Group>
   <FieldError>You must agree to the terms to continue</FieldError>
 </CheckboxGroup>
 ```

@@ -89,7 +89,7 @@ export function MonthHeading(props: { offset: number }) {
     <Flex direction="row" gap="sm" alignItems="center">
       <Select aria-label="Month" value={String(displayDate.month)} onChange={handleMonthChange}>
         <Group alignItems="center">
-          <Button variant="trigger">
+          <Button slot="trigger">
             <SelectValue />
             <Icon icon="chevron-down" />
           </Button>
@@ -115,9 +115,7 @@ export function MonthHeading(props: { offset: number }) {
         onChange={handleYearChange}
         className={styles.yearField}
       >
-        <Group>
-          <Input />
-        </Group>
+        <Input />
       </NumberField>
     </Flex>
   );

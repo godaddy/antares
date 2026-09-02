@@ -1,13 +1,12 @@
 import { DefaultExample } from '../examples/default';
-import { CheckboxGroupControlledExample } from '../examples/controlled';
-import { CheckboxGroupDisabledExample } from '../examples/disabled';
-import { CheckboxGroupBasicExample } from '../examples/group';
-import { CheckboxIndeterminateExample } from '../examples/indeterminate';
-import { CheckboxGroupInvalidExample } from '../examples/invalid';
-import { CheckboxGroupRequiredExample } from '../examples/required';
-import { CheckboxGroupHorizontalExample } from '../examples/horizontal';
+import { ControlledExample } from '../examples/controlled';
+import { DisabledExample } from '../examples/disabled';
+import { GroupExample } from '../examples/group';
+import { IndeterminateExample } from '../examples/indeterminate';
+import { InvalidExample } from '../examples/invalid';
+import { RequiredExample } from '../examples/required';
+import { HorizontalExample } from '../examples/horizontal';
 import { PlaygroundExample } from '../examples/checkbox-playground';
-import { ComposedExample } from '../examples/composed';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
@@ -22,8 +21,8 @@ describe('@godaddy/antares', function antares() {
       assume(checkbox).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupControlledExample', async function controlledRender() {
-      await render(<CheckboxGroupControlledExample />);
+    it('renders ControlledExample', async function controlledRender() {
+      await render(<ControlledExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
@@ -36,22 +35,22 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders CheckboxGroupDisabledExample', async function disabledRender() {
-      await render(<CheckboxGroupDisabledExample />);
+    it('renders DisabledExample', async function disabledRender() {
+      await render(<DisabledExample />);
 
       const checkboxGroup = page.getByRole('group', { disabled: true });
       assume(checkboxGroup).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupBasicExample', async function groupRender() {
-      await render(<CheckboxGroupBasicExample />);
+    it('renders GroupExample', async function groupRender() {
+      await render(<GroupExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
     });
 
-    it('renders CheckboxIndeterminateExample', async function indeterminateRender() {
-      await render(<CheckboxIndeterminateExample />);
+    it('renders IndeterminateExample', async function indeterminateRender() {
+      await render(<IndeterminateExample />);
 
       // React aria checkbox does not use aria properties for indeterminate state, so we need to wait for the async icon to be rendered
       await vi.waitFor(function checkIndeterminateIcon() {
@@ -60,8 +59,8 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
-    it('renders CheckboxGroupInvalidExample', async function invalidRender() {
-      await render(<CheckboxGroupInvalidExample />);
+    it('renders InvalidExample', async function invalidRender() {
+      await render(<InvalidExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
@@ -70,15 +69,15 @@ describe('@godaddy/antares', function antares() {
       assume(description).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupRequiredExample', async function requiredRender() {
-      await render(<CheckboxGroupRequiredExample />);
+    it('renders RequiredExample', async function requiredRender() {
+      await render(<RequiredExample />);
 
       const checkboxGroup = page.getByRole('group', { name: 'Favorite colors' });
       assume(checkboxGroup).is.not.equal(null);
     });
 
-    it('renders CheckboxGroupHorizontalExample', async function horizontalRender() {
-      await render(<CheckboxGroupHorizontalExample />);
+    it('renders HorizontalExample', async function horizontalRender() {
+      await render(<HorizontalExample />);
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
@@ -89,17 +88,6 @@ describe('@godaddy/antares', function antares() {
 
       const checkboxGroup = page.getByRole('group');
       assume(checkboxGroup).is.not.equal(null);
-    });
-
-    it('selects a checkbox from a composed interior', async function composedInteraction() {
-      await render(<ComposedExample />);
-
-      const red = page.getByRole('checkbox', { name: 'Red' });
-      await red.click({ force: true });
-
-      await vi.waitFor(function checkSelection() {
-        assume((red.element() as HTMLInputElement).checked).is.true();
-      });
     });
   });
 });

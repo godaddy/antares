@@ -1,65 +1,23 @@
-import { createContext, forwardRef, useContext } from 'react';
+import { forwardRef } from 'react';
 import {
   Group as RACGroup,
   GroupContext as RACGroupContext,
+  useContextProps,
   type GroupProps as RACGroupProps
 } from 'react-aria-components';
-import { FieldErrorContext } from '#components/field-error';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 
 export const GroupContext = RACGroupContext;
 
-/** Size for controls inside a field group. @default 'md' */
-export type FieldSize = 'sm' | 'md';
-
-export interface GroupProps extends RACGroupProps, Omit<FlexOwnProps, 'as'> {
-  /** Size for the controls inside the group. @default 'md' */
-  size?: FieldSize;
-}
-
-export interface FieldState {
-  /** Whether the field is disabled. */
-  isDisabled?: boolean;
-
-  /** Size for the controls inside the group. */
-  size?: FieldSize;
-}
+export interface GroupProps extends RACGroupProps, Omit<FlexOwnProps, 'as'> {}
 
 /**
- * Field state a field root passes down, so a composed {@link Group} inherits it
- * instead of the consumer repeating it.
- */
-export const FieldStateContext = createContext<FieldState>({});
-
-/**
- * Boxed row for field controls. Field injects chrome via GroupContext.
+ * Semantic grouping container built on `Flex`. Layout and chrome come from a parent
+ * field's `GroupContext` when composed inside a field root.
  *
  * @param props - {@link GroupProps}
  */
 export const Group = forwardRef<HTMLDivElement, GroupProps>(function Group(props, ref) {
-  const { className, isDisabled, isInvalid, size, ...rest } = props;
-  const fieldState = useContext(FieldStateContext);
-  const validation = useContext(FieldErrorContext);
-  const isDisabledResolved = isDisabled ?? fieldState.isDisabled;
-  const isInvalidResolved = isInvalid ?? validation?.isInvalid;
-  const sizeResolved = size ?? fieldState.size;
-
-  return (
-    <FieldStateContext.Provider value={{ isDisabled: isDisabledResolved, size: sizeResolved }}>
-      <Flex
-        direction="row"
-        wrap="nowrap"
-        alignSelf="stretch"
-        alignItems="stretch"
-        elevation="card"
-        isDisabled={isDisabledResolved}
-        isInvalid={isInvalidResolved}
-        data-size={sizeResolved === 'sm' ? 'sm' : undefined}
-        {...rest}
-        as={RACGroup}
-        ref={ref}
-        className={className}
-      />
-    </FieldStateContext.Provider>
-  );
+  [props, ref] = useContextProps(props, ref, GroupContext);
+  return <Flex {...props} as={RACGroup} slot={null} ref={ref} />;
 });

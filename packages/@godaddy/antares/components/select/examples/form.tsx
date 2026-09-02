@@ -1,25 +1,11 @@
 import { useState, type FormEvent } from 'react';
-import {
-  Box,
-  Button,
-  Content,
-  Flex,
-  Group,
-  Icon,
-  Label,
-  ListBox,
-  Popover,
-  Select,
-  SelectItem,
-  SelectValue,
-  Text
-} from '@godaddy/antares';
+import { Box, Button, FieldError, Flex, Label, Select, SelectItem, Text } from '@godaddy/antares';
 
 /**
  * Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
  * @order 6
  */
-export function SelectFormExample() {
+export function FormExample() {
   const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -44,39 +30,16 @@ export function SelectFormExample() {
     <Flex as="form" direction="column" gap="md" onSubmit={handleSubmit}>
       <Select name="drink" placeholder="Pick a drink" isRequired>
         <Label>Drink</Label>
-        <Group alignItems="center">
-          <Button variant="trigger">
-            <SelectValue />
-            <Icon icon="chevron-down" />
-          </Button>
-        </Group>
-        <Popover hideArrow>
-          <Content blockPadding="xs" inlinePadding="0">
-            <ListBox>
-              <SelectItem id="espresso">Espresso</SelectItem>
-              <SelectItem id="latte">Latte</SelectItem>
-              <SelectItem id="cappuccino">Cappuccino</SelectItem>
-            </ListBox>
-          </Content>
-        </Popover>
+        <SelectItem id="espresso">Espresso</SelectItem>
+        <SelectItem id="latte">Latte</SelectItem>
+        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        <FieldError>Please select an item in the list.</FieldError>
       </Select>
       <Select name="extras" placeholder="Pick any extras" selectionMode="multiple">
         <Label>Extras</Label>
-        <Group alignItems="center">
-          <Button variant="trigger">
-            <SelectValue />
-            <Icon icon="chevron-down" />
-          </Button>
-        </Group>
-        <Popover hideArrow>
-          <Content blockPadding="xs" inlinePadding="0">
-            <ListBox>
-              <SelectItem id="oat-milk">Oat milk</SelectItem>
-              <SelectItem id="extra-shot">Extra shot</SelectItem>
-              <SelectItem id="vanilla">Vanilla syrup</SelectItem>
-            </ListBox>
-          </Content>
-        </Popover>
+        <SelectItem id="oat-milk">Oat milk</SelectItem>
+        <SelectItem id="extra-shot">Extra shot</SelectItem>
+        <SelectItem id="vanilla">Vanilla syrup</SelectItem>
       </Select>
       <Flex gap="sm">
         <Button type="submit">Submit</Button>

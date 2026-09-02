@@ -177,7 +177,7 @@
 
   /* sizes */
 
-  &:where(.sm:not(.inline)) {
+  &:where(.sm:not(.inline, .control, .trigger)) {
     font-size: var(--font-body-size-sm, calc(var(--ux-cxbe8g, 16px) / 1.125));
     padding: var(--button-space-sm) var(--button-space-md);
 
@@ -192,7 +192,7 @@
     }
   }
 
-  &:where(.md:not(.inline)) {
+  &:where(.md:not(.inline, .control, .trigger)) {
     font-size: var(--font-body-size-md, var(--ux-cxbe8g, 16px));
     padding: var(--button-space-md) var(--button-space-lg);
 
@@ -208,9 +208,14 @@
   }
 
   &:where(.control, .trigger) {
+    --button-gap: var(--sp-sm, 0.25rem);
+    font-family: var(--ux-9wtaa3, sans-serif);
+    line-height: var(--ux-hm1ty7, 1.375);
+    font-size: var(--ux-oc0naw, 1rem);
     padding: var(--button-space-md);
 
     &:where(.sm) {
+      font-size: calc(1em / 1.125);
       padding: var(--button-space-sm);
     }
   }

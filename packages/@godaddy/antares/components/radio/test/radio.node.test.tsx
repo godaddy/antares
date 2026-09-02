@@ -1,14 +1,13 @@
-import { RadioDescriptionExample } from '../examples/radio-description.tsx';
-import { RadioHorizontalExample } from '../examples/radio-horizontal.tsx';
-import { RadioControlledExample } from '../examples/radio-controlled.tsx';
+import { DescriptionExample } from '../examples/radio-description.tsx';
+import { HorizontalExample } from '../examples/radio-horizontal.tsx';
+import { ControlledExample } from '../examples/radio-controlled.tsx';
 import { PlaygroundExample } from '../examples/radio-playground.tsx';
-import { RadioAriaLabelExample } from '../examples/radio-aria-label.tsx';
-import { RadioDisabledExample } from '../examples/radio-disabled.tsx';
-import { RadioRequiredExample } from '../examples/radio-required.tsx';
-import { RadioErrorExample } from '../examples/radio-error.tsx';
+import { AriaLabelExample } from '../examples/radio-aria-label.tsx';
+import { DisabledExample } from '../examples/radio-disabled.tsx';
+import { RequiredExample } from '../examples/radio-required.tsx';
+import { ErrorExample } from '../examples/radio-error.tsx';
 import { DefaultExample } from '../examples/default.tsx';
-import { RadioFormExample } from '../examples/radio-form.tsx';
-import { ComposedExample } from '../examples/composed.tsx';
+import { FormExample } from '../examples/radio-form.tsx';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 
@@ -18,44 +17,40 @@ describe('@godaddy/antares', function antares() {
       expect(renderToString(<DefaultExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioControlledExample', function controlledExample() {
-      expect(renderToString(<RadioControlledExample />)).toMatchSnapshot();
+    it('renders ControlledExample', function controlledExample() {
+      expect(renderToString(<ControlledExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioHorizontalExample', function horizontalExample() {
-      expect(renderToString(<RadioHorizontalExample />)).toMatchSnapshot();
+    it('renders HorizontalExample', function horizontalExample() {
+      expect(renderToString(<HorizontalExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioDisabledExample', function disabledExample() {
-      expect(renderToString(<RadioDisabledExample />)).toMatchSnapshot();
+    it('renders DisabledExample', function disabledExample() {
+      expect(renderToString(<DisabledExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioAriaLabelExample', function ariaLabelExample() {
-      expect(renderToString(<RadioAriaLabelExample />)).toMatchSnapshot();
+    it('renders AriaLabelExample', function ariaLabelExample() {
+      expect(renderToString(<AriaLabelExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioDescriptionExample', function descriptionExample() {
-      expect(renderToString(<RadioDescriptionExample />)).toMatchSnapshot();
+    it('renders DescriptionExample', function descriptionExample() {
+      expect(renderToString(<DescriptionExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioErrorExample', function errorExample() {
-      expect(renderToString(<RadioErrorExample />)).toMatchSnapshot();
+    it('renders ErrorExample', function errorExample() {
+      expect(renderToString(<ErrorExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioRequiredExample', function requiredExample() {
-      expect(renderToString(<RadioRequiredExample />)).toMatchSnapshot();
+    it('renders RequiredExample', function requiredExample() {
+      expect(renderToString(<RequiredExample />)).toMatchSnapshot();
     });
 
     it('renders PlaygroundExample with default props', function playgroundExample() {
       expect(renderToString(<PlaygroundExample />)).toMatchSnapshot();
     });
 
-    it('renders RadioFormExample', function formExample() {
-      expect(renderToString(<RadioFormExample />)).toMatchSnapshot();
-    });
-
-    it('renders ComposedExample', function composedExample() {
-      expect(renderToString(<ComposedExample />)).toMatchSnapshot();
+    it('renders FormExample', function formExample() {
+      expect(renderToString(<FormExample />)).toMatchSnapshot();
     });
   });
 });

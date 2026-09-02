@@ -1,19 +1,19 @@
-import { Checkbox, CheckboxGroup, Flex, Label, Text } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';
 
 /**
  * Display error state and error message for validation feedback.
  * @title Invalid State
  * @order 8
  */
-export function CheckboxGroupInvalidExample() {
+export function InvalidExample() {
   return (
     <CheckboxGroup isInvalid>
       <Label>Favorite colors</Label>
-      <Flex direction="column" gap="md">
+      <Group>
         <Checkbox value="blue">Blue</Checkbox>
         <Checkbox value="red">Red</Checkbox>
         <Checkbox value="green">Green</Checkbox>
-      </Flex>
+      </Group>
       <Text slot="description">Choose your favorite color</Text>
     </CheckboxGroup>
   );

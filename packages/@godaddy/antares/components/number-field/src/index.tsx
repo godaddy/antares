@@ -1,12 +1,14 @@
-import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
-import type { FieldSize } from '#components/structure';
+import { type ReactNode, useContext } from 'react';
+import { mergeProps } from 'react-aria';
+import { DEFAULT_SLOT, NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
+import { Field, wrapBareFieldControl, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import { ButtonContext } from '#components/button';
+import { Icon } from '#components/icon';
 
 export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
   /**
-   * The interior of the field: a `Label`, a `Group` with an `Input` and optional stepper
-   * `Button`s (`slot="decrement"` / `slot="increment"`), a `Text slot="description"`, and a
-   * `FieldError`. Pass a function to read field state.
+   * The interior of the field: a `Label`, an `Input` (optionally inside a `Group` with stepper
+   * `Button`s), a `Text slot="description"`, and a `FieldError`. Pass a function to read field state.
    */
   children: RACNumberFieldProps['children'];
 
@@ -14,10 +16,38 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
   size?: FieldSize;
 }
 
+type ButtonContextValue = {
+  slots?: Record<string | symbol, object | undefined>;
+  [key: string]: unknown;
+};
+
+/** Publish default stepper icons on {@link ButtonContext} slots. */
+function NumberFieldStepperContext({ children }: { children: ReactNode }) {
+  const inherited = (useContext(ButtonContext) ?? {}) as ButtonContextValue;
+  const slots = inherited.slots ?? {};
+
+  return (
+    <ButtonContext.Provider
+      value={{
+        ...inherited,
+        slots: {
+          [DEFAULT_SLOT]: slots[DEFAULT_SLOT] ?? {},
+          ...slots,
+          decrement: mergeProps(slots.decrement ?? {}, { children: <Icon icon="minus" /> }),
+          increment: mergeProps(slots.increment ?? {}, { children: <Icon icon="plus" /> })
+        }
+      }}
+    >
+      {children}
+    </ButtonContext.Provider>
+  );
+}
+
 /**
- * Numeric input field. Compose the interior from `Label`, `Group`, `Input`, optional stepper
- * `Button`s, `Text slot="description"`, and `FieldError`. A composed `Group` inherits `size` and
- * `isDisabled` from the field, so set those here and leave the structure to the markup.
+ * Numeric input field. Compose from `Label`, `Input`, optional stepper `Button`s inside a
+ * `Group`, `Text slot="description"`, and `FieldError`. A bare `Input` is wrapped in a `Group`
+ * for you. Empty `slot="increment"` / `slot="decrement"` buttons pick up icons and
+ * `variant="control"` from field context.
  *
  * @param props - {@link NumberFieldProps}
  *
@@ -26,20 +56,26 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
  * <NumberField minValue={0} maxValue={100}>
  *   <Label>Quantity</Label>
  *   <Group>
- *     <Button slot="decrement" variant="control"><Icon icon="minus" /></Button>
+ *     <Button slot="decrement" />
  *     <Input />
- *     <Button slot="increment" variant="control"><Icon icon="plus" /></Button>
+ *     <Button slot="increment" />
  *   </Group>
  *   <FieldError />
  * </NumberField>
  * ```
  */
 export function NumberField(props: NumberFieldProps) {
-  const { children, size, ...racProps } = props;
+  const { children, size, isDisabled, ...racProps } = props;
+
+  const withSteppers = (interior: ReactNode) => (
+    <NumberFieldStepperContext>{interior}</NumberFieldStepperContext>
+  );
 
   return (
-    <Field as={RACNumberField} size={size} {...racProps}>
-      {children}
+    <Field as={RACNumberField} interior="box" size={size} isDisabled={isDisabled} {...racProps}>
+      {typeof children === 'function'
+        ? (renderProps) => withSteppers(children(renderProps))
+        : withSteppers(wrapBareFieldControl(children))}
     </Field>
   );
 }

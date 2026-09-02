@@ -1,8 +1,8 @@
 import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
- * Put a control or an icon beside the input. A `Button variant="control"` is an interactive
- * affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
+ * Put a control or an icon beside the input. A `Button slot="control"` is an
+ * interactive affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
  * @title Controls and icons
  * @order 8
  */
@@ -12,7 +12,7 @@ export function ControlsExample() {
       <TextField>
         <Label>Image</Label>
         <Group>
-          <Button variant="control">Browse</Button>
+          <Button slot="control">Browse</Button>
           <Input placeholder="Paste an image URL" />
         </Group>
       </TextField>
@@ -24,7 +24,7 @@ export function ControlsExample() {
             <Icon icon="star" />
           </Flex>
           <Input placeholder="Email" />
-          <Button aria-label="Verify email address" variant="control">
+          <Button aria-label="Verify email address" slot="control">
             Verify
           </Button>
         </Group>

@@ -15,7 +15,7 @@ import * as Stories from './structure.stories.tsx';
 - **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
 - **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
 - **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
-- **`Group`** — the boxed row for field controls (`Input`, `TextArea`, `Button variant="control"`). Layout defaults only; Field injects chrome via `GroupContext`. Size is `size="sm" | "md"`.
+- **`Group`** — semantic grouping container for field item controls. Layout and chrome come from the parent field's `GroupContext`.
 
 ## Hybrid styling
 
