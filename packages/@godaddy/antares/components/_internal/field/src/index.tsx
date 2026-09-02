@@ -57,16 +57,16 @@ type FieldOrientation = 'horizontal' | 'vertical';
 export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
   /** Whether the field is disabled. Inherited via context. @default false */
   isDisabled?: boolean;
+}
 
+/** Shell config passed to `Field` by a field root (not a public props type). */
+interface FieldShellOwnProps extends FieldOwnProps {
   /** Visual size of the controls. Inherited via context. @default 'md' */
   size?: FieldSize;
 
   /** Item axis when `interior` is `'stack'`. @default 'vertical' */
   orientation?: FieldOrientation;
-}
 
-/** Shell config passed to `Field` by a field root (not a public props type). */
-export interface FieldShellOwnProps extends FieldOwnProps {
   /** Group role. Omitted means no GroupContext chrome. */
   interior?: FieldInterior;
 
