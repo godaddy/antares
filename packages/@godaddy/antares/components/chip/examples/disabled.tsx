@@ -1,8 +1,7 @@
 import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';
 
 /**
- * Disable individual options with `disabledKeys`. Disabled behavior is
- * supported by the API but is not part of the supplied Chip design spec.
+ * Disable individual options with `disabledKeys` when some values are unavailable.
  * @order 6
  */
 export function DisabledExample() {

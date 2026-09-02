@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';
 
 /**
- * Use Removable Chips for user-added filters and tokens. Removing a chip
- * updates the owning collection and clears that value from the UI.
+ * Use Removable Chips for user-added filters and tokens. Removing a Chip calls
+ * the group callback so the owning collection can update its items.
  * @order 3
  */
 export function RemovableChipsExample() {

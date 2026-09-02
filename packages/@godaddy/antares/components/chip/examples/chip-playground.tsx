@@ -1,5 +1,6 @@
 import { Button, Chip, ChipGroup, ChipList, Label, Text, type ChipSize } from '@godaddy/antares';
 
+/** Props for configuring the Chip playground story. */
 export interface PlaygroundExampleProps {
   groupLabel: string;
   description: string;

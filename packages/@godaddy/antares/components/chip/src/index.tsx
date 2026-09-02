@@ -8,6 +8,7 @@ import {
   TagGroup as RACTagGroup,
   TagList as RACTagList,
   TextContext,
+  composeRenderProps,
   type TagGroupProps as RACTagGroupProps,
   type TagListProps as RACTagListProps,
   type TagProps as RACTagProps,
@@ -19,30 +20,29 @@ import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
-/** Visual size shared by every Chip in a ChipGroup. */
+/** Visual size for Chips: `sm`, `md`, or `lg`; `md` is the default. */
 export type ChipSize = 'sm' | 'md' | 'lg';
 
-/** Presentation inherited by Chips from their owning group. */
+/** Presentation context inherited by Chips from their owning group. */
 export interface ChipContextValue {
-  /** Visual size for all items in the group. */
+  /** Shared visual size. */
   size: ChipSize;
 }
 
-/** Allows composed Chip regions to read group presentation. */
+/** Presentation context used by `ChipGroup` and `Chip`. */
 export const ChipContext = createContext<ChipContextValue>({ size: 'md' });
 
+/** Re-exported primitive for naming a `ChipGroup`. */
 export { Label };
 
+/** Props for the semantic owner of a Chip collection. */
 export interface ChipGroupProps extends RACTagGroupProps {
-  /** Visual size shared by every Chip. @default 'md' */
+  /** Shared visual size. @default 'md' */
   size?: ChipSize;
 }
 
 function ChipGroupBody({ children }: { children: ReactNode }) {
   const labelProps = useSlottedContext(LabelContext) ?? {};
-  const textContext = useContext(TextContext);
-  const textSlots =
-    textContext && typeof textContext === 'object' && 'slots' in textContext ? textContext.slots : undefined;
   const descriptionProps = useSlottedContext(TextContext, 'description') ?? {};
   const errorMessageProps = useSlottedContext(TextContext, 'errorMessage') ?? {};
 
@@ -54,7 +54,6 @@ function ChipGroupBody({ children }: { children: ReactNode }) {
           TextContext,
           {
             slots: {
-              ...textSlots,
               description: {
                 ...descriptionProps,
                 className: composeClassName(descriptionProps.className, styles.description)
@@ -74,21 +73,17 @@ function ChipGroupBody({ children }: { children: ReactNode }) {
 }
 
 /**
- * Provides labeling, validation, selection, and removal behavior for a Chip collection.
+ * A group of related Chips with labeling, selection, validation, and removal.
  *
- * Compose `Label`, `ChipList`, and optional `Text` slots as children. For menu filters,
- * use a rounded Button with `MenuTrigger` instead of Chip.
+ * @param props - {@link ChipGroupProps}
  *
  * @example
- * ```tsx
  * <ChipGroup selectionMode="multiple">
  *   <Label>Categories</Label>
  *   <ChipList>
  *     <Chip id="news">News</Chip>
  *   </ChipList>
- *   <Text slot="description">Choose at least one.</Text>
  * </ChipGroup>
- * ```
  */
 export const ChipGroup = forwardRef<HTMLDivElement, ChipGroupProps>(function ChipGroup(
   { size = 'md', className, children, ...props },
@@ -103,15 +98,13 @@ export const ChipGroup = forwardRef<HTMLDivElement, ChipGroupProps>(function Chi
   );
 });
 
+/** Props for the Chip collection and its wrapping layout. */
 export interface ChipListProps<T extends object> extends RACTagListProps<T>, Omit<FlexOwnProps, 'as'> {}
 
 /**
- * Lays out Chips horizontally and wraps them onto additional lines.
+ * A collection of Chips that wraps onto additional lines.
  *
- * @example
- * ```tsx
- * <ChipList items={items}>{(item) => <Chip id={item.id}>{item.name}</Chip>}</ChipList>
- * ```
+ * @param props - {@link ChipListProps}
  */
 export const ChipList = forwardRef(function ChipList<T extends object>(
   { className, ...props }: ChipListProps<T>,
@@ -130,21 +123,8 @@ export const ChipList = forwardRef(function ChipList<T extends object>(
   );
 }) as <T extends object>(props: ChipListProps<T> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement | null;
 
+/** Props for an individual Chip item. */
 export interface ChipProps extends RACTagProps, Omit<FlexOwnProps, 'as'> {}
-
-function normalizeChildren(children: ReactNode): ReactNode {
-  if (typeof children === 'string' || typeof children === 'number') {
-    return <Text>{children}</Text>;
-  }
-
-  if (Array.isArray(children)) {
-    return children.map((child, index) =>
-      typeof child === 'string' || typeof child === 'number' ? <Text key={index}>{child}</Text> : child
-    );
-  }
-
-  return children;
-}
 
 function ChipBody({ children }: { children: ReactNode }) {
   const removeProps = useSlottedContext(ButtonContext, 'remove');
@@ -171,26 +151,15 @@ function ChipBody({ children }: { children: ReactNode }) {
         ]
       ]}
     >
-      {normalizeChildren(children)}
+      {typeof children === 'string' || typeof children === 'number' ? <Text>{children}</Text> : children}
     </RACProvider>
   );
 }
 
 /**
- * A selectable or removable item inside ChipGroup.
+ * A selectable or removable item in a `ChipGroup`.
  *
- * Place a self-closing `<Button slot="remove" />` for the default X when the group has
- * `onRemove`. Compose a selected check from the Tag render prop when you want Toggle affordance.
- * For menu filters, use a rounded Button with `MenuTrigger` instead.
- *
- * @example
- * ```tsx
- * <Chip id="austin" textValue="Austin">
- *   <Icon icon="map-pin" />
- *   <Text>Austin</Text>
- *   <Button slot="remove" />
- * </Chip>
- * ```
+ * @param props - {@link ChipProps}
  */
 export const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
   { className, children, textValue, ...props },
@@ -204,7 +173,6 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
     <Flex
       display="inline-flex"
       alignItems="center"
-      gap="sm"
       {...props}
       ref={ref}
       as={RACTag}
@@ -212,7 +180,9 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
       textValue={resolvedTextValue}
       className={composeClassName(className, styles.chip)}
     >
-      {(values) => <ChipBody>{typeof children === 'function' ? children(values) : children}</ChipBody>}
+      {composeRenderProps(children, function renderChipContent(content) {
+        return <ChipBody>{content}</ChipBody>;
+      })}
     </Flex>
   );
 });

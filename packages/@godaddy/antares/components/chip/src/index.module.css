@@ -9,7 +9,7 @@
 
 .label {
   color: var(--ux-1glcx6s, #2b2b2b);
-  font-family: var(--ux-15ks663, "Gd Sherpa VF5", Helvetica, Arial, sans-serif);
+  font-family: var(--ux-15ks663, sans-serif);
   font-size: var(--ux-16aixzc, 0.875rem);
   font-weight: var(--ux-aarlu5, 500);
   line-height: 1.25;
@@ -17,7 +17,7 @@
 
 .description {
   color: var(--ux-1m9ys0v, #767676);
-  font-family: var(--ux-15ks663, "Gd Sherpa VF5", Helvetica, Arial, sans-serif);
+  font-family: var(--ux-15ks663, sans-serif);
   font-size: var(--ux-p4h24g, 0.875rem);
   font-weight: var(--ux-g9ierp, 400);
   line-height: 1.25;
@@ -26,7 +26,7 @@
 
 .errorMessage {
   color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
-  font-family: var(--ux-15ks663, "Gd Sherpa VF5", Helvetica, Arial, sans-serif);
+  font-family: var(--ux-15ks663, sans-serif);
   font-size: var(--ux-p4h24g, 0.875rem);
   font-weight: var(--ux-g9ierp, 400);
   line-height: 1.25;
@@ -38,25 +38,26 @@
 }
 
 .chip {
-  --_chip-density: var(--ux-1sbfig8, 0.5rem);
   --_chip-font-size: 1rem;
   --_chip-line-height: 1.375;
-  --_chip-block-padding: var(--size-space-020, var(--_chip-density));
-  --_chip-inline-padding: var(--size-space-040, calc(var(--_chip-density) * 2));
+  --_chip-gap: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+  --_chip-block-padding: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+  --_chip-inline-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
+  --_chip-remove-target: calc(var(--_chip-font-size) * var(--_chip-line-height) + var(--_chip-block-padding) * 2);
   --_chip-foreground: var(--ux-1utwv7e, #111);
   --_chip-background: var(--ux-1mh0ktr, #f5f5f5);
   --_chip-border: var(--ux-1qbn65p, #f5f5f5);
 
   &:where([data-size="sm"]) {
     --_chip-font-size: 0.875rem;
-    --_chip-block-padding: var(--size-space-010, calc(var(--_chip-density) * 0.5));
-    --_chip-inline-padding: var(--size-space-020, var(--_chip-density));
+    --_chip-block-padding: var(--size-space-010, calc(var(--ux-1sbfig8, 0.5rem) * 0.5));
+    --_chip-inline-padding: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
   }
 
   &:where([data-size="lg"]) {
     --_chip-font-size: 1.125rem;
-    --_chip-block-padding: var(--size-space-040, calc(var(--_chip-density) * 2));
-    --_chip-inline-padding: var(--size-space-060, calc(var(--_chip-density) * 3));
+    --_chip-block-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
+    --_chip-inline-padding: var(--size-space-060, calc(var(--ux-1sbfig8, 0.5rem) * 3));
   }
 
   position: relative;
@@ -64,6 +65,7 @@
   box-sizing: border-box;
   min-inline-size: 0;
   max-inline-size: 100%;
+  gap: var(--_chip-gap);
   padding-block: var(--_chip-block-padding);
   padding-inline: var(--_chip-inline-padding);
   overflow: visible;
@@ -71,13 +73,17 @@
   border-radius: 9999px;
   color: var(--_chip-foreground);
   background: var(--_chip-background);
-  font-family: "Gd Sherpa VF5", Helvetica, Arial, sans-serif;
+  font-family: var(--ux-15ks663, sans-serif);
   font-size: var(--_chip-font-size);
   font-weight: normal;
   line-height: var(--_chip-line-height);
   white-space: nowrap;
-  cursor: pointer;
+  cursor: default;
   -webkit-tap-highlight-color: transparent;
+
+  &:where([data-selection-mode], [data-allows-removing], [data-href]):where(:not([data-disabled])) {
+    cursor: pointer;
+  }
 
   /* Invisible 38px hit target. */
   &::before {
@@ -129,7 +135,10 @@
   }
 
   :where(.text) {
+    flex: 1 1 auto;
     min-inline-size: 0;
+    /* Keep the visible label within the 23-character display measure. */
+    max-inline-size: 23ch;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -150,13 +159,7 @@
     margin-block: 0;
   }
 
-  /*
-   * Remove control (Figma 4192:6017 / 4132:13894):
-   * - Glyph = 1em (label font size); does not grow on hover.
-   * - Invisible 38px tap target via ::before (may extend past the chip).
-   * - Hover stays transparent so the chip surface shows through (mimics chip bg
-   *   without painting a disc that would cover the label).
-   */
+  /* Remove control: keep the glyph compact and size its target with the Chip. */
   :where(.remove) {
     position: relative;
     flex: none;
@@ -169,7 +172,7 @@
     background: transparent;
     overflow: visible;
 
-    /* 38px tap target — paint never; still receives hits where it overflows. */
+    /* The target may extend past the visible Chip without changing layout. */
     &::before {
       content: "";
       position: absolute;
@@ -177,10 +180,14 @@
       inset-block-start: 50%;
       inset-inline-start: 50%;
       translate: -50% -50%;
-      inline-size: 38px;
-      block-size: 38px;
+      inline-size: var(--_chip-remove-target);
+      block-size: var(--_chip-remove-target);
       border-radius: 9999px;
       background: transparent;
+    }
+
+    &:where(:hover, [data-hovered]):where(:not([data-disabled], :disabled))::before {
+      background: rgba(0, 0, 0, 0.04);
     }
 
     /* Leading IconContext sizing must not size the X. */
@@ -194,10 +201,9 @@
       outline: none;
     }
 
-    &:where([data-focus-visible], :focus-visible) {
+    &:where([data-focus-visible], :focus-visible)::before {
       outline: 2px solid Highlight;
       outline-offset: 0;
-      border-radius: 9999px;
     }
 
     &:where([data-disabled], :disabled) {

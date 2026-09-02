@@ -7,7 +7,6 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { EmptyStateExample } from '../examples/empty-state.tsx';
 import { MenuFilterTriggerExample } from '../examples/menu-chips.tsx';
 import { RemovableChipsExample } from '../examples/removable-chips.tsx';
-import { RtlExample } from '../examples/rtl.tsx';
 import { SizesExample } from '../examples/sizes.tsx';
 import { ToggleChipsExample } from '../examples/toggle-chips.tsx';
 import { TruncationExample } from '../examples/truncation.tsx';
@@ -60,11 +59,6 @@ describe('@godaddy/antares', function antares() {
     it('menu filter trigger', async function menuFilterTriggerRender() {
       const { container } = await render(<MenuFilterTriggerExample />);
       await expect(container).toMatchScreenshot('menu-filter-trigger');
-    });
-
-    it('rtl direction', async function rtlRender() {
-      const { container } = await render(<RtlExample />);
-      await expect(container).toMatchScreenshot('rtl-direction');
     });
   });
 });

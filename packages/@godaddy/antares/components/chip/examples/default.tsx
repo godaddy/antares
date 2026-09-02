@@ -1,8 +1,8 @@
 import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
 
 /**
- * Start with a labeled group of related values. Use a selection mode or remove
- * action when the group needs interactive behavior.
+ * Start with a labeled group of related values. Add selection or removal when
+ * the group needs interactive behavior.
  * @order 1
  */
 export function DefaultExample() {

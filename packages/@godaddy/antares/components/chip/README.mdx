@@ -1,8 +1,9 @@
 ---
 title: Chip
-description: Grouped pill-shaped items for selecting values and removing user-added filters or tokens. Use a rounded Button for menu filters.
+description: Grouped pill-shaped items for selecting values and removing user-added filters or tokens.
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
 import * as Stories from './chip.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
@@ -13,12 +14,27 @@ import * as Stories from './chip.stories.tsx';
 - Toggle Chips for selecting multiple peer filters
 - Removable Chips for user-added filters and input tokens
 - Shared `sm`, `md`, and `lg` sizes, with optional leading icons
-- Menu filters use a fully rounded Antares Button, not Chip
+- Menu filters with a Chip-like appearance using a rounded `Button` inside `MenuTrigger`
 
 ## Installation
 
 ```bash
 npm install @godaddy/antares
+```
+
+## Quick start
+
+```tsx
+import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
+
+<ChipGroup>
+  <Label>Location</Label>
+  <ChipList>
+    <Chip id="austin">Austin</Chip>
+    <Chip id="chicago">Chicago</Chip>
+    <Chip id="denver">Denver</Chip>
+  </ChipList>
+</ChipGroup>
 ```
 
 ## Examples
@@ -27,42 +43,48 @@ npm install @godaddy/antares
 
 ## Customization
 
-Chip lives inside a collection. Compose the group like this:
-
-```tsx
-<ChipGroup size="md" selectionMode="multiple">
-  <Label />
-  <ChipList>
-    <Chip>
-      <Icon />
-      <Text />
-      <Button slot="remove" />
-    </Chip>
-  </ChipList>
-  <Text slot="description" />
-  <Text slot="errorMessage" />
-</ChipGroup>
-```
-
-A plain string is enough for simple chips (`<Chip>Austin</Chip>`). With an icon or remove button, wrap the copy in `<Text>` so the label remains an explicit content role.
-
-The group applies its size consistently to every Chip. Keep one Chip family and one size per group, and let the list wrap horizontally when needed.
-
-For removable chips, enable `onRemove` on the group and place a self-closing remove button. Chip merges the default X into RAC’s remove slot:
+Use a plain string for a simple Chip label. When content is composed, use
+`Text` for the visible label and `textValue` for the complete accessible value.
 
 ```tsx
 <Chip id="austin" textValue="Austin">
-  Austin
+  <Icon icon="map-pin" />
+  <Text>Austin</Text>
   <Button slot="remove" />
 </Chip>
 ```
 
-Compose a selected check when you want Toggle affordance:
+Set the size on `ChipGroup` to share it with every Chip. `ChipList` wraps items
+horizontally by default, and its layout props can be customized when needed.
+
+For removable Chips, provide `onRemove` on the group and add a self-closing
+`Button` with `slot="remove"`. The callback receives a `Set` of removed keys;
+update the collection owned by your application.
+
+```tsx
+<ChipGroup
+  onRemove={(keys) => {
+    setFilters((current) => current.filter((filter) => !keys.has(filter.id)));
+  }}
+>
+  <ChipList items={filters}>
+    {(filter) => (
+      <Chip id={filter.id} textValue={filter.name}>
+        <Text>{filter.name}</Text>
+        <Button slot="remove" />
+      </Chip>
+    )}
+  </ChipList>
+</ChipGroup>
+```
+
+For Toggle Chips, use the Chip render prop to show a selected accessory.
 
 ```tsx
 <Chip id="home" textValue="Home">
   {({ isSelected }) => (
     <>
+      <Icon icon="home" />
       <Text>Home</Text>
       {isSelected ? <Icon icon="checkmark" /> : null}
     </>
@@ -70,33 +92,70 @@ Compose a selected check when you want Toggle affordance:
 </Chip>
 ```
 
-Chip is reserved for items inside `ChipGroup`. For a filter that opens a menu, use a fully rounded Button:
+### Menu filter button
+
+When you need a menu with a Chip-like appearance, compose a rounded
+`Button` inside `MenuTrigger`.
 
 ```tsx
 <MenuTrigger>
-  <Flex as={Button} alignItems="center" gap="sm" rounding="full" variant="secondary">
-    <Icon icon="map-pin" />
+  <Flex
+    as={Button}
+    variant="secondary"
+    size="md"
+    rounding="full"
+    blockPadding="sm"
+    inlinePadding="md"
+  >
     <Text>Location</Text>
-    <Icon icon="chevron-down" />
+    <Icon aria-hidden icon="chevron-down" />
   </Flex>
-  <Menu>{/* ... */}</Menu>
+
+  <Menu aria-label="Location">
+    {/* Menu items */}
+  </Menu>
 </MenuTrigger>
 ```
 
 ## Accessibility
 
-- Every `ChipGroup` needs a composed `Label` or `aria-label`.
-- Use `textValue` when children are composed (icon + text, or a render prop).
-- RAC supplies remove button naming (`Remove` + row label); you usually do not need a manual remove `aria-label`.
-- Menu filter Buttons expose `aria-haspopup` / `aria-expanded`; add `aria-label` when visible text is incomplete.
+- Give every `ChipGroup` a `Label` or an accessible name such as `aria-label`.
+- Use `textValue` when a Chip contains icons, composed content, or a render prop.
+- Use a descriptive group label so removal actions can be announced clearly.
+- Keep the visible label and the accessible value synchronized.
+- Menu filter buttons expose their expanded state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
 
 ## Best Practices
 
-- Keep labels brief; truncation should be exceptional.
-- Prefer groups of three or more related chips; lay them out horizontally and let them wrap.
-- Keep one family and one size per group.
-- Use only Removable chips as tokens inside an input.
-- Do not use Chip outside `ChipGroup` — use a rounded Button for menu filters.
+- Keep labels concise and let them truncate only when the available width requires it.
+- Prefer groups of three or more related values.
+- Keep one size per group.
+- Let `ChipList` wrap instead of forcing a single horizontal line.
+- Use removable Chips for user-added filters and tokens.
+- For menu filters, use the rounded `Button` composition shown above.
+
+## Troubleshooting
+
+### A Chip has no accessible name
+
+Add a visible `Label` to the group or provide `aria-label`. For composed content,
+also provide `textValue` on the Chip.
+
+### The remove action does not update the UI
+
+Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
+owned by your application.
+
+### A composed label is not truncating correctly
+
+Keep the label in `Text`, preserve `textValue`, and constrain the available width
+of the surrounding layout. Truncation is visual; the complete accessible value
+should remain available.
+
+### The menu trigger does not look like a Chip
+
+Use a rounded `Button` inside `MenuTrigger`, include the visible value, and add a
+trailing chevron to communicate that the control opens a menu.
 
 ## Props
 
