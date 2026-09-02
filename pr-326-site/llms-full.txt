@@ -323,146 +323,6 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 <PropTable />
 
 
-# Button
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
-
-Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
-
-Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
-disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Button>Click me!</Button>;\n}&#x22;" />
-
-### Primary [#primary]
-
-The primary button should be used to indicate the most important action for the user to take in their current experience.
-
-<Story of="PrimaryExample" />
-
-<Source language="tsx" code="&#x22;import { Button, type ButtonProps } from '@godaddy/antares';\n\nexport function PrimaryExample(props: ButtonProps) {\n  return (\n    <Button {...props} variant=\&#x22;primary\&#x22;>\n      Primary Button\n    </Button>\n  );\n}&#x22;" />
-
-### Secondary [#secondary]
-
-The secondary button indicates an action of secondary importance.
-
-<Story of="SecondaryExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function SecondaryExample() {\n  return <Button variant=\&#x22;secondary\&#x22;>Secondary Button</Button>;\n}&#x22;" />
-
-### Tertiary [#tertiary]
-
-The tertiary button is the default, low-emphasis style used for common, non-critical actions.
-
-<Story of="TertiaryExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function TertiaryExample() {\n  return <Button variant=\&#x22;tertiary\&#x22;>Tertiary Button</Button>;\n}&#x22;" />
-
-### Critical [#critical]
-
-The critical button signifies to the user a destructive action will take place.
-
-<Story of="CriticalExample" />
-
-<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function CriticalExample() {\n  return <Button variant=\&#x22;critical\&#x22;>Critical Button</Button>;\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Any button variant can be disabled to prevent interaction, communicated with reduced opacity and a not-allowed cursor.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\&#x22;secondary\&#x22; isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\&#x22;tertiary\&#x22; isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\&#x22;critical\&#x22; isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\&#x22;inline\&#x22; isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
-
-### Icon [#icon]
-
-You may provide an optional `Icon` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
-
-<Story of="IconExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          <Text>An external link!</Text>\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
-
-### Inline [#inline]
-
-The inline button sits within a run of text, styled like a link while retaining button semantics.
-
-<Story of="InlineExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Text } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <Text>\n      I am an <Button variant=\&#x22;inline\&#x22;>inline button</Button> surrounded by text!\n    </Text>\n  );\n}&#x22;" />
-
-### Minimal [#minimal]
-
-The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
-
-<Story of="MinimalExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <table className=\&#x22;button-story-table\&#x22;>\n      <thead>\n        <tr>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Button Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Gap Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Example\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Usage\n            </Flex>\n          </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Recommended\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Can be used, but not recommended.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  );\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Buttons come in small and medium sizes to fit different layout densities.
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Button` component accepts the following props:
-
-<PropTable />
-
-The `LinkButton` component accepts the following props:
-
-<PropTable />
-
-The `CloseButton` component accepts the following props:
-
-<PropTable />
-
-
 # Calendar
 
 
@@ -876,7 +736,7 @@ CheckboxGroup supports validation states and error messages:
 
 ### Orientation [#orientation]
 
-Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row. Wrap the items in `Group`.
+Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row.
 
 ## Accessibility [#accessibility]
 
@@ -1229,6 +1089,146 @@ The `DateRangePicker` component accepts the following props:
 <PropTable />
 
 
+# Button
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Use the `LinkButton` component instead when you need navigation functionality with a button-like appearance.
+
+Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
+
+Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
+disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default/tertiary button is the base for all other buttons in the system. It provides no significant visual treatment other than to provide indication for the user to take a common action.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Button>Click me!</Button>;\n}&#x22;" />
+
+### Primary [#primary]
+
+The primary button should be used to indicate the most important action for the user to take in their current experience.
+
+<Story of="PrimaryExample" />
+
+<Source language="tsx" code="&#x22;import { Button, type ButtonProps } from '@godaddy/antares';\n\nexport function PrimaryExample(props: ButtonProps) {\n  return (\n    <Button {...props} variant=\&#x22;primary\&#x22;>\n      Primary Button\n    </Button>\n  );\n}&#x22;" />
+
+### Secondary [#secondary]
+
+The secondary button indicates an action of secondary importance.
+
+<Story of="SecondaryExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function SecondaryExample() {\n  return <Button variant=\&#x22;secondary\&#x22;>Secondary Button</Button>;\n}&#x22;" />
+
+### Tertiary [#tertiary]
+
+The tertiary button is the default, low-emphasis style used for common, non-critical actions.
+
+<Story of="TertiaryExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function TertiaryExample() {\n  return <Button variant=\&#x22;tertiary\&#x22;>Tertiary Button</Button>;\n}&#x22;" />
+
+### Critical [#critical]
+
+The critical button signifies to the user a destructive action will take place.
+
+<Story of="CriticalExample" />
+
+<Source language="tsx" code="&#x22;import { Button } from '@godaddy/antares';\n\nexport function CriticalExample() {\n  return <Button variant=\&#x22;critical\&#x22;>Critical Button</Button>;\n}&#x22;" />
+
+### Disabled [#disabled]
+
+Any button variant can be disabled to prevent interaction, communicated with reduced opacity and a not-allowed cursor.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, LinkButton } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; isDisabled>\n        Primary Disabled\n      </Button>\n      <Button variant=\&#x22;secondary\&#x22; isDisabled>\n        Secondary Disabled\n      </Button>\n      <Button variant=\&#x22;tertiary\&#x22; isDisabled>\n        Tertiary Disabled\n      </Button>\n      <Button variant=\&#x22;critical\&#x22; isDisabled>\n        Critical Disabled\n      </Button>\n      <Button variant=\&#x22;inline\&#x22; isDisabled>\n        Inline Disabled\n      </Button>\n      <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isDisabled>\n        Link Disabled\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
+
+### Icon [#icon]
+
+You may provide an optional `Icon` component to the button. If you do not include text, you must provide an aria-label attribute to identify the purpose of the button. This will produce a square button.
+
+<Story of="IconExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function IconExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <div>\n        <Button variant=\&#x22;primary\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n          <Text>With an icon!</Text>\n        </Button>\n      </div>\n\n      <div>\n        <LinkButton variant=\&#x22;secondary\&#x22; href=\&#x22;#\&#x22; isExternal>\n          <Text>An external link!</Text>\n        </LinkButton>\n      </div>\n\n      <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Icon only button:</Text>\n        <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Button>\n      </Flex>\n\n      <div>\n        <Text>\n          Hey look at me!{' '}\n          <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;inline\&#x22; isExternal>\n            link button\n          </LinkButton>{' '}\n          I have an icon!\n        </Text>\n      </div>\n    </Flex>\n  );\n}&#x22;" />
+
+### Inline [#inline]
+
+The inline button sits within a run of text, styled like a link while retaining button semantics.
+
+<Story of="InlineExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Text } from '@godaddy/antares';\n\nexport function InlineExample() {\n  return (\n    <Text>\n      I am an <Button variant=\&#x22;inline\&#x22;>inline button</Button> surrounded by text!\n    </Text>\n  );\n}&#x22;" />
+
+### Minimal [#minimal]
+
+The minimal button is an icon-only button that's used when space is limited and/or when the action is universally understood.
+
+<Story of="MinimalExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon } from '@godaddy/antares';\n\nexport function MinimalExample() {\n  return (\n    <table className=\&#x22;button-story-table\&#x22;>\n      <thead>\n        <tr>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Button Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Gap Size\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Example\n            </Flex>\n          </th>\n          <th scope=\&#x22;col\&#x22;>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Usage\n            </Flex>\n          </th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Recommended\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;md\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Can be used, but not recommended.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>md</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              <code>sm</code>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;sm\&#x22;>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n                <Icon icon=\&#x22;star\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Edit\&#x22;>\n                <Icon icon=\&#x22;edit\&#x22; />\n              </Button>\n              <Button variant=\&#x22;minimal\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;More options\&#x22; isDisabled>\n                <Icon icon=\&#x22;ellipsis\&#x22; />\n              </Button>\n            </Flex>\n          </td>\n          <td>\n            <Flex blockPadding=\&#x22;md\&#x22; inlinePadding=\&#x22;md\&#x22; gap=\&#x22;md\&#x22;>\n              Not recommended. The button may not be accessible at this size.\n            </Flex>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  );\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Buttons come in small and medium sizes to fit different layout densities.
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Icon, LinkButton, Text } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22;>\n        Small\n      </Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22; size=\&#x22;sm\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Small</Text>\n      </LinkButton>\n\n      <Button variant=\&#x22;primary\&#x22; aria-label=\&#x22;Star\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n      </Button>\n\n      <Button variant=\&#x22;primary\&#x22;>Medium</Button>\n\n      <LinkButton href=\&#x22;#\&#x22; variant=\&#x22;primary\&#x22;>\n        <Icon icon=\&#x22;star\&#x22; />\n        <Text>Link Medium</Text>\n      </LinkButton>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Button` component accepts the following props:
+
+<PropTable />
+
+The `LinkButton` component accepts the following props:
+
+<PropTable />
+
+The `CloseButton` component accepts the following props:
+
+<PropTable />
+
+
 # Drawer
 
 
@@ -1574,7 +1574,7 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 
 ## Features [#features]
 
-* Renders `h1`-`h6` from the `level` prop (default `2`).
+* Renders `h1`-`h6` from the `level` prop (default `3`).
 * `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
 
 ## Installation [#installation]
@@ -1587,7 +1587,7 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
 Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
 
 <Story of="DefaultExample" />
@@ -3938,80 +3938,6 @@ The `Select` component accepts the following props:
 <PropTable />
 
 
-# Structure primitives
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
-* **`Group`** — semantic grouping container for field item controls. Layout and chrome come from the parent field's `GroupContext`.
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Group [#group]
-
-Group is the bordered field box. Size and invalid/disabled chrome apply here.
-
-<Story of="GroupExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-### Group [#group-1]
-
-<PropTable />
-
-
 # Switch
 
 
@@ -4207,6 +4133,80 @@ Use the interactive root data attributes for state-based customization. The trac
 ## Props [#props]
 
 The `Switch` component has the following props:
+
+<PropTable />
+
+
+# Structure primitives
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+* **`Group`** — semantic grouping container for field item controls. Layout and chrome come from the parent field's `GroupContext`.
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Group [#group]
+
+Group is the bordered field box. Size and invalid/disabled chrome apply here.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+### Group [#group-1]
 
 <PropTable />
 
@@ -4620,7 +4620,7 @@ TextArea inside TextField. Field injects chrome.
 
 ## Features [#features]
 
-* **Composable interior**: Compose `Label`, `Input` or `TextArea` (a `Group` is added for you when omitted), `Text slot="description"`, and `FieldError`. Use an explicit `Group` for controls or adornments
+* **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
 * **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
 * **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
 * **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
@@ -4713,6 +4713,96 @@ Compose a telephone number input paired with a country-code select.
 ## Props [#props]
 
 The `TextField` component accepts the following props:
+
+<PropTable />
+
+
+# Tooltip
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
+
+## Features [#features]
+
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`className` and `style` apply to the tooltip panel.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
+
+### ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+## Props [#props]
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -4978,96 +5068,6 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 ```
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Tooltip
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
-
-## Features [#features]
-
-* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
-* Flips and shifts to stay in the viewport
-* Configurable open and close delays
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`className` and `style` apply to the tooltip panel.
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the focusable element and shows the tooltip |
-| `Escape` | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-## Props [#props]
-
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -5342,6 +5342,120 @@ For better performance:
 1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+<PropTable />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A continuous gauge with a single label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="ContinuousExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="SegmentedExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="WithRangeLabelsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="VariantsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="LabelTypeExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 ## Props [#props]
 
@@ -5735,228 +5849,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 <PropTable />
 
 
-# Gauge Chart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A continuous gauge with a single label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
-
-### Continuous Values [#continuous-values]
-
-Multiple continuous gauges showing different fill percentages.
-
-<Story of="ContinuousExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
-
-### Segmented [#segmented]
-
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
-
-<Story of="SegmentedExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### With Range Labels [#with-range-labels]
-
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
-
-<Story of="WithRangeLabelsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
-
-### Variants [#variants]
-
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
-
-<Story of="VariantsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="LabelTypeExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
-
-## Props [#props]
-
-<PropTable />
-
-
-# Box
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Polymorphic `as` details [#polymorphic-as-details]
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="PaddingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="ElevationExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="RoundingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Polymorphic as Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-## Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-
 # Flex
 
 
@@ -6073,6 +5965,114 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
+
+<PropTable />
+
+
+# Box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Polymorphic `as` details [#polymorphic-as-details]
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="PaddingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="ElevationExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="RoundingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Polymorphic as Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+## Props [#props]
+
+The `Box` component accepts the following props:
 
 <PropTable />
 
