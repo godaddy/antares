@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, FieldError, Label, Text } from '@godaddy/antares';
 
 /**
  * Individual checkboxes within a group can be disabled while others remain interactive.
@@ -12,12 +12,10 @@ export function DisabledExample() {
   return (
     <CheckboxGroup value={selected} onChange={setSelected} isDisabled>
       <Label>Favorite colors</Label>
-      <Group>
-        <Checkbox value="blue">Blue</Checkbox>
-        <Checkbox value="red">Red</Checkbox>
-        <Checkbox value="green">Green</Checkbox>
-        <Checkbox value="purple">Purple</Checkbox>
-      </Group>
+      <Checkbox value="blue">Blue</Checkbox>
+      <Checkbox value="red">Red</Checkbox>
+      <Checkbox value="green">Green</Checkbox>
+      <Checkbox value="purple">Purple</Checkbox>
       <Text slot="description">Choose your favorite color</Text>
       <FieldError>At least one color must be selected</FieldError>
     </CheckboxGroup>

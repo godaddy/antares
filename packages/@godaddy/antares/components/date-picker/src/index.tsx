@@ -23,25 +23,57 @@ const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'sh
 const DEFAULT_DATE_PLACEHOLDER = 'Select a date';
 const DEFAULT_RANGE_PLACEHOLDER = 'Select dates';
 
-/** State passed to a composed DatePicker interior. */
-export interface DatePickerRenderProps extends RACDatePickerRenderProps {}
+/** The trigger both pickers present: a calendar `Icon` beside the formatted value. */
+function PickerControl({ children }: { children: ReactNode }) {
+  return (
+    <Group alignItems="center">
+      <Button slot="trigger">
+        <Icon icon="calendar" />
+        {children}
+      </Button>
+    </Group>
+  );
+}
+
+/** The popover both pickers open, holding the `Calendar` or `RangeCalendar` the field inserts. */
+function PickerOverlay({ children }: { children: ReactNode }) {
+  return (
+    <Popover hideArrow>
+      <Content>{children}</Content>
+    </Popover>
+  );
+}
+
+/** The trigger label's formatter, following the active locale. */
+function useTriggerFormatter(formatOptions: Intl.DateTimeFormatOptions) {
+  const { locale } = useLocale();
+
+  return useMemo(
+    function getFormatter() {
+      return new DateFormatter(locale, formatOptions);
+    },
+    [locale, formatOptions]
+  );
+}
 
 export interface DatePickerProps extends Omit<RACDatePickerProps<CalendarDate>, 'children' | 'size'>, FieldOwnProps {
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
   /**
-   * The interior: a `Label`, `DatePickerControl`, `DatePickerCalendar`, a
-   * `Text slot="description"`, and a `FieldError`. Pass a function to read state such as
-   * `isOpen` while composing.
+   * The interior: a `Label`, an optional `Text slot="description"` and `FieldError`, and whichever
+   * of the trigger and the calendar popover you want to customize. Pass a function to read state
+   * such as `isOpen` while composing.
    */
-  children: ReactNode | ((renderProps: DatePickerRenderProps) => ReactNode);
+  children: ReactNode | ((renderProps: RACDatePickerRenderProps) => ReactNode);
 }
 
 /**
  * DatePicker shows a read-only formatted date label; the whole field opens a calendar popover for
- * selection. Date-only (`CalendarDate`). Compose from `Label`, `DatePickerControl`,
- * `DatePickerCalendar`, `Text slot="description"`, and `FieldError`.
+ * selection. Date-only (`CalendarDate`). Write the pieces you want to customize - a `Label`, a
+ * `Text slot="description"`, a `FieldError`, a `DatePickerControl` to set the label format, or a
+ * `Group` / `Popover` interior of your own - and the field fills in the trigger and the calendar it
+ * doesn't find, in the order you wrote them.
  *
  * @param props - {@link DatePickerProps}
  *
@@ -49,8 +81,6 @@ export interface DatePickerProps extends Omit<RACDatePickerProps<CalendarDate>, 
  * ```tsx
  * <DatePicker>
  *   <Label>Event date</Label>
- *   <DatePickerControl />
- *   <DatePickerCalendar />
  * </DatePicker>
  * ```
  */
@@ -58,7 +88,20 @@ export function DatePicker(props: DatePickerProps) {
   const { children, size, ...racProps } = props;
 
   return (
-    <Field as={RACDatePicker as typeof RACDatePicker<CalendarDate>} interior="box" size={size} {...racProps}>
+    <Field
+      as={RACDatePicker as typeof RACDatePicker<CalendarDate>}
+      interior="box"
+      size={size}
+      slots={{
+        control: <DatePickerControl />,
+        overlay: (
+          <PickerOverlay>
+            <Calendar />
+          </PickerOverlay>
+        )
+      }}
+      {...racProps}
+    >
       {children}
     </Field>
   );
@@ -74,34 +117,18 @@ export interface DatePickerControlProps {
 
 /**
  * Preset trigger for `DatePicker`: a `Group` with a calendar `Icon` and the current
- * `DatePickerValue`.
+ * `DatePickerValue`. `DatePicker` inserts it when the interior has no control of its own - write it
+ * explicitly to set `formatOptions` or `placeholder`.
  *
  * @param props - {@link DatePickerControlProps}
  */
 export function DatePickerControl({ formatOptions, placeholder }: DatePickerControlProps) {
   return (
-    <Group alignItems="center">
-      <Button slot="trigger">
-        <Icon icon="calendar" />
-        <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-      </Button>
-    </Group>
+    <PickerControl>
+      <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
+    </PickerControl>
   );
 }
-
-/** Preset popover for `DatePicker`: a `Popover` with a `Calendar`. */
-export function DatePickerCalendar() {
-  return (
-    <Popover hideArrow>
-      <Content>
-        <Calendar />
-      </Content>
-    </Popover>
-  );
-}
-
-/** State passed to a composed DateRangePicker interior. */
-export interface DateRangePickerRenderProps extends RACDateRangePickerRenderProps {}
 
 export interface DateRangePickerProps
   extends Omit<RACDateRangePickerProps<CalendarDate>, 'children' | 'size'>,
@@ -110,17 +137,19 @@ export interface DateRangePickerProps
   size?: FieldSize;
 
   /**
-   * The interior: a `Label`, `DateRangePickerControl`, `DateRangePickerCalendar`, a
-   * `Text slot="description"`, and a `FieldError`. Pass a function to read state such as
-   * `isOpen` while composing.
+   * The interior: a `Label`, an optional `Text slot="description"` and `FieldError`, and whichever
+   * of the trigger and the calendar popover you want to customize. Pass a function to read state
+   * such as `isOpen` while composing.
    */
-  children: ReactNode | ((renderProps: DateRangePickerRenderProps) => ReactNode);
+  children: ReactNode | ((renderProps: RACDateRangePickerRenderProps) => ReactNode);
 }
 
 /**
  * DateRangePicker shows a read-only `start - end` label; the whole field opens a range calendar
- * popover. Date-only (`CalendarDate`). Compose from `Label`, `DateRangePickerControl`,
- * `DateRangePickerCalendar`, `Text slot="description"`, and `FieldError`.
+ * popover. Date-only (`CalendarDate`). Write the pieces you want to customize - a `Label`, a
+ * `Text slot="description"`, a `FieldError`, a `DateRangePickerControl` to set the label format, or
+ * a `Group` / `Popover` interior of your own - and the field fills in the trigger and the calendar
+ * it doesn't find, in the order you wrote them.
  *
  * @param props - {@link DateRangePickerProps}
  *
@@ -128,8 +157,6 @@ export interface DateRangePickerProps
  * ```tsx
  * <DateRangePicker>
  *   <Label>Trip dates</Label>
- *   <DateRangePickerControl />
- *   <DateRangePickerCalendar />
  * </DateRangePicker>
  * ```
  */
@@ -137,7 +164,20 @@ export function DateRangePicker(props: DateRangePickerProps) {
   const { children, size, ...racProps } = props;
 
   return (
-    <Field as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>} interior="box" size={size} {...racProps}>
+    <Field
+      as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>}
+      interior="box"
+      size={size}
+      slots={{
+        control: <DateRangePickerControl />,
+        overlay: (
+          <PickerOverlay>
+            <RangeCalendar />
+          </PickerOverlay>
+        )
+      }}
+      {...racProps}
+    >
       {children}
     </Field>
   );
@@ -153,29 +193,16 @@ export interface DateRangePickerControlProps {
 
 /**
  * Preset trigger for `DateRangePicker`: a `Group` with a calendar `Icon` and the current
- * `DateRangePickerValue`.
+ * `DateRangePickerValue`. `DateRangePicker` inserts it when the interior has no control of its own -
+ * write it explicitly to set `formatOptions` or `placeholder`.
  *
  * @param props - {@link DateRangePickerControlProps}
  */
 export function DateRangePickerControl({ formatOptions, placeholder }: DateRangePickerControlProps) {
   return (
-    <Group alignItems="center">
-      <Button slot="trigger">
-        <Icon icon="calendar" />
-        <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-      </Button>
-    </Group>
-  );
-}
-
-/** Preset popover for `DateRangePicker`: a `Popover` with a `RangeCalendar`. */
-export function DateRangePickerCalendar() {
-  return (
-    <Popover hideArrow>
-      <Content>
-        <RangeCalendar />
-      </Content>
-    </Popover>
+    <PickerControl>
+      <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
+    </PickerControl>
   );
 }
 
@@ -191,15 +218,8 @@ export interface DatePickerValueProps {
 export function DatePickerValue(props: DatePickerValueProps) {
   const { formatOptions = DEFAULT_FORMAT, placeholder = DEFAULT_DATE_PLACEHOLDER } = props;
   const state = useContext(DatePickerStateContext);
-  const { locale } = useLocale();
+  const formatter = useTriggerFormatter(formatOptions);
   const value = state?.value;
-
-  const formatter = useMemo(
-    function getFormatter() {
-      return new DateFormatter(locale, formatOptions);
-    },
-    [locale, formatOptions]
-  );
 
   if (!value) {
     return <span className={styles.placeholder}>{placeholder}</span>;
@@ -220,8 +240,7 @@ export interface DateRangePickerValueProps {
 export function DateRangePickerValue(props: DateRangePickerValueProps) {
   const { formatOptions = DEFAULT_FORMAT, placeholder = DEFAULT_RANGE_PLACEHOLDER } = props;
   const state = useContext(DateRangePickerStateContext);
-  const { locale } = useLocale();
-  const formatter = useMemo(() => new DateFormatter(locale, formatOptions), [locale, formatOptions]);
+  const formatter = useTriggerFormatter(formatOptions);
   const value = state?.value;
 
   if (!value?.start || !value?.end) {

@@ -7,7 +7,14 @@ import {
   SelectValue as RACSelectValue,
   type SelectValueProps as RACSelectValueProps
 } from 'react-aria-components';
-import { Field, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import {
+  Field,
+  mapFieldChildren,
+  normalizeFieldChildren,
+  type FieldOwnProps,
+  type FieldSize,
+  type FieldSlots
+} from '#components/_internal/field';
 import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
@@ -17,6 +24,16 @@ import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
+
+/** The interior `Select` fills in: its own trigger, and loose `SelectItem`s wrapped in the popover. */
+function selectSlots(variant: 'default' | 'control'): FieldSlots {
+  return {
+    control: <SelectControl variant={variant} />,
+    items: function wrapItems(items) {
+      return <SelectOptions>{items}</SelectOptions>;
+    }
+  };
+}
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
@@ -28,17 +45,19 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   variant?: 'default' | 'control';
 
   /**
-   * The interior: a `Label`, `SelectControl`, `SelectOptions` holding `SelectItem`s,
-   * `Text slot="description"`, and `FieldError`. Pass a function to read state such as
-   * `isOpen` while composing.
+   * The interior: a `Label`, the `SelectItem`s, an optional `Text slot="description"` and
+   * `FieldError`, and whichever of the trigger and the popover you want to customize. Pass a
+   * function to read state such as `isOpen` while composing.
    */
   children: ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode);
 }
 
 /**
- * Antares Select. Compose from `Label`, `SelectControl`, `SelectOptions` holding `SelectItem`s,
- * `Text slot="description"`, and `FieldError`. Use `variant="control"` to share another field's
- * `Group` without a second field shell.
+ * Antares Select. Write the pieces you want to customize - a `Label`, the `SelectItem`s, a
+ * `Text slot="description"`, a `FieldError`, or a `Group` / `Popover` interior of your own - and the
+ * field fills in the trigger and wraps loose items in the popover, in the order you wrote them. Use
+ * `variant="control"` to share another field's `Group` without a second field shell; its interior is
+ * filled in the same way, with a trigger that carries no `Group` of its own.
  *
  * @param props - {@link SelectProps}
  *
@@ -46,10 +65,7 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
  * ```tsx
  * <Select placeholder="Pick a drink">
  *   <Label>Coffee</Label>
- *   <SelectControl />
- *   <SelectOptions>
- *     <SelectItem id="espresso">Espresso</SelectItem>
- *   </SelectOptions>
+ *   <SelectItem id="espresso">Espresso</SelectItem>
  * </Select>
  * ```
  */
@@ -60,30 +76,40 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   if (variant === 'control') {
     return (
       <RACSelect {...racProps} className={selectClass}>
-        {children}
+        {mapFieldChildren(children, function fillInterior(node) {
+          return normalizeFieldChildren(node, selectSlots('control'));
+        })}
       </RACSelect>
     );
   }
 
   return (
-    <Field as={RACSelect as typeof RACSelect<T, M>} interior="box" size={size} {...racProps} className={selectClass}>
+    <Field
+      as={RACSelect as typeof RACSelect<T, M>}
+      interior="box"
+      size={size}
+      slots={selectSlots('default')}
+      {...racProps}
+      className={selectClass}
+    >
       {children}
     </Field>
   );
 }
 
-export interface SelectControlProps {
+interface SelectControlProps {
   /** Whether this is the field's own trigger, or a control inside another field's `Group`. @default 'default' */
   variant?: 'default' | 'control';
 }
 
 /**
  * Preset trigger for `Select`: a `Button` showing the current `SelectValue` and a chevron
- * `Icon`, wrapped in a `Group` unless `variant="control"`.
+ * `Icon`, wrapped in a `Group` unless `variant="control"`. `Select` inserts it when the interior has
+ * no control of its own. Compose a `Group` with a `Button slot="trigger"` to replace it.
  *
  * @param props - {@link SelectControlProps}
  */
-export function SelectControl({ variant = 'default' }: SelectControlProps) {
+function SelectControl({ variant = 'default' }: SelectControlProps) {
   const button = (
     <Button slot={variant === 'control' ? 'control' : 'trigger'}>
       <SelectValue />
@@ -94,17 +120,18 @@ export function SelectControl({ variant = 'default' }: SelectControlProps) {
   return variant === 'control' ? button : <Group alignItems="center">{button}</Group>;
 }
 
-export interface SelectOptionsProps {
+interface SelectOptionsProps {
   /** `SelectItem`s. */
   children: ReactNode;
 }
 
 /**
- * Preset popover for `Select`: a `Popover` with a `ListBox` holding the options.
+ * Preset popover for `Select`: a `Popover` with a `ListBox` holding the options. `Select` wraps loose
+ * `SelectItem`s in it. Compose `Popover` to replace it.
  *
  * @param props - {@link SelectOptionsProps}
  */
-export function SelectOptions({ children }: SelectOptionsProps) {
+function SelectOptions({ children }: SelectOptionsProps) {
   return (
     <Popover hideArrow>
       <Content blockPadding="xs" inlinePadding="0">

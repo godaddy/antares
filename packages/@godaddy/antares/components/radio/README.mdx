@@ -20,7 +20,7 @@ npm install --save @godaddy/antares
 
 ## Customization
 
-`RadioGroup` is composed: pass `Label`, a `Group` holding the `Radio` items, `Text slot="description"`, and `FieldError`. Each `Radio` takes label text next to the indicator. `orientation` sets keyboard-navigation direction, ARIA, and the item layout.
+`RadioGroup` is composed: pass `Label`, the `Radio` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself when you need to lay them out differently. Each `Radio` takes label text next to the indicator. `orientation` sets keyboard-navigation direction, ARIA, and the item layout.
 
 ### Data Attributes
 
@@ -58,14 +58,12 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 ```jsx
 <RadioGroup className="custom-radio-group">
   <Label>Select plan</Label>
-  <Group>
-    <Radio value="basic" className="custom-radio">
-      Basic
-    </Radio>
-    <Radio value="premium" className="premium-radio">
-      Premium
-    </Radio>
-  </Group>
+  <Radio value="basic" className="custom-radio">
+    Basic
+  </Radio>
+  <Radio value="premium" className="premium-radio">
+    Premium
+  </Radio>
 </RadioGroup>
 ```
 
@@ -95,25 +93,19 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 // ❌ Wrong: Using both value and defaultValue
 <RadioGroup value={value} defaultValue="basic">
   <Label>Plan</Label>
-  <Group>
-    <Radio value="basic">Basic</Radio>
-  </Group>
+  <Radio value="basic">Basic</Radio>
 </RadioGroup>
 
 // ✅ Controlled mode
 <RadioGroup value={value} onChange={setValue}>
   <Label>Plan</Label>
-  <Group>
-    <Radio value="basic">Basic</Radio>
-  </Group>
+  <Radio value="basic">Basic</Radio>
 </RadioGroup>
 
 // ✅ Uncontrolled mode
 <RadioGroup defaultValue="basic">
   <Label>Plan</Label>
-  <Group>
-    <Radio value="basic">Basic</Radio>
-  </Group>
+  <Radio value="basic">Basic</Radio>
 </RadioGroup>
 ```
 
@@ -172,10 +164,8 @@ Always provide clear error messages:
 ```jsx
 <RadioGroup isRequired isInvalid={!selectedShipping}>
   <Label>Select shipping method</Label>
-  <Group>
-    <Radio value="standard">Standard</Radio>
-    <Radio value="express">Express</Radio>
-  </Group>
+  <Radio value="standard">Standard</Radio>
+  <Radio value="express">Express</Radio>
   <FieldError>Please select a shipping method</FieldError>
 </RadioGroup>
 ```

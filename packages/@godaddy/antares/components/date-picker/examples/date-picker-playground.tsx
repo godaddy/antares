@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerCalendar, DatePickerControl, FieldError, Label, Text } from '@godaddy/antares';
+import { DatePicker, DatePickerControl, FieldError, Label, Text } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   label?: string;
@@ -25,7 +25,6 @@ export function PlaygroundExample({
       <DatePickerControl placeholder={placeholder} />
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
-      <DatePickerCalendar />
     </DatePicker>
   );
 }

@@ -5,14 +5,17 @@ import {
   NumberField as RACNumberField,
   type NumberFieldProps as RACNumberFieldProps
 } from 'react-aria-components';
-import { Field, mapFieldChildren, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
-import { ButtonContext } from '#components/button';
+import { Field, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import { Button, ButtonContext } from '#components/button';
 import { Icon } from '#components/icon';
+import { Input } from '#components/input';
+import { Group } from '#components/structure';
 
 export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
   /**
-   * The interior of the field: a `Label`, an `Input` (optionally inside a `Group` with stepper
-   * `Button`s), a `Text slot="description"`, and a `FieldError`. Pass a function to read field state.
+   * The interior of the field: a `Label`, a `Text slot="description"`, a `FieldError`, and the
+   * control when you want something other than the stepper preset - an `Input` on its own, or a
+   * `Group` of `Input` and stepper `Button`s. Pass a function to read field state.
    */
   children: RACNumberFieldProps['children'];
 
@@ -48,10 +51,26 @@ function NumberFieldStepperContext({ children }: { children: ReactNode }) {
 }
 
 /**
- * Numeric input field. Compose from `Label`, `Input`, optional stepper `Button`s inside a
- * `Group`, `Text slot="description"`, and `FieldError`. A bare `Input` picks up field box chrome
- * directly, with no `Group` required. Empty `slot="increment"` / `slot="decrement"` buttons pick
- * up icons and `variant="control"` from field context.
+ * Preset control for `NumberField`: a `Group` holding stepper `Button`s around the `Input`.
+ * `NumberField` inserts it when the interior has no control of its own - write a bare `Input` for a
+ * field with no steppers, or compose the `Group` yourself to change their order or content.
+ */
+function NumberFieldControl() {
+  return (
+    <Group>
+      <Button slot="decrement" />
+      <Input />
+      <Button slot="increment" />
+    </Group>
+  );
+}
+
+/**
+ * Numeric input field. Write the pieces you want to customize - a `Label`, a
+ * `Text slot="description"`, a `FieldError`, a bare `Input` for a field with no steppers, or a
+ * `Group` of your own - and the field fills in the stepper control it doesn't find, in the order you
+ * wrote them. Empty `slot="increment"` / `slot="decrement"` buttons pick up icons and
+ * `variant="control"` from field context.
  *
  * @param props - {@link NumberFieldProps}
  *
@@ -59,11 +78,6 @@ function NumberFieldStepperContext({ children }: { children: ReactNode }) {
  * ```tsx
  * <NumberField minValue={0} maxValue={100}>
  *   <Label>Quantity</Label>
- *   <Group>
- *     <Button slot="decrement" />
- *     <Input />
- *     <Button slot="increment" />
- *   </Group>
  *   <FieldError />
  * </NumberField>
  * ```
@@ -72,10 +86,17 @@ export function NumberField(props: NumberFieldProps) {
   const { children, size, isDisabled, ...racProps } = props;
 
   return (
-    <Field as={RACNumberField} interior="box" size={size} isDisabled={isDisabled} {...racProps}>
-      {mapFieldChildren(children, (node) => (
-        <NumberFieldStepperContext>{node}</NumberFieldStepperContext>
-      ))}
-    </Field>
+    <NumberFieldStepperContext>
+      <Field
+        as={RACNumberField}
+        interior="box"
+        size={size}
+        isDisabled={isDisabled}
+        slots={{ control: <NumberFieldControl /> }}
+        {...racProps}
+      >
+        {children}
+      </Field>
+    </NumberFieldStepperContext>
   );
 }

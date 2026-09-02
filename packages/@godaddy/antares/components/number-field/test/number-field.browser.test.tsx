@@ -14,12 +14,12 @@ import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
     describe('#basic', function basic() {
-      it('renders label and input with placeholder', async function renders() {
+      it('renders label and input with the stepper preset', async function renders() {
         const { locator, container } = await render(<DefaultExample />);
         const input = locator.getByRole('textbox', { name: 'Quantity' });
 
         assume(locator.getByText('Quantity').element()).exists();
-        assume(input.element().getAttribute('placeholder')).equals('0');
+        assume(input.element()).exists();
 
         await waitForSelector(container, 'svg');
 
@@ -68,6 +68,7 @@ describe('@godaddy/antares', function antares() {
         const input = locator.getByRole('textbox', { name: 'Quantity' });
 
         assume(input.element()).exists();
+        assume(input.element().getAttribute('placeholder')).equals('0');
         const buttons = await locator.getByRole('button').all();
         assume(buttons.length).equals(0);
 
@@ -77,10 +78,15 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#valueScale', function valueScale() {
-      it('renders label and input with step from minimum', async function valueScaleRenders() {
+      it('renders label and steps from the minimum', async function valueScaleRenders() {
         const { locator } = await render(<ValueScaleExample />);
         assume(locator.getByText('Step value').element()).exists();
-        assume(locator.getByRole('textbox', { name: 'Step value' }).element().getAttribute('placeholder')).equals('2');
+
+        await locator.getByRole('button', { name: 'Increase Step value' }).click();
+        assume(locator.getByRole('textbox', { name: 'Step value' }).element().getAttribute('value')).equals('2');
+
+        await locator.getByRole('button', { name: 'Increase Step value' }).click();
+        assume(locator.getByRole('textbox', { name: 'Step value' }).element().getAttribute('value')).equals('5');
       });
     });
 

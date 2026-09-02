@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerCalendar, DatePickerControl, Label } from '@godaddy/antares';
+import { DatePicker, Label } from '@godaddy/antares';
 import { parseDate } from '@godaddy/antares/date';
 
 /**
@@ -10,8 +10,6 @@ export function MinMaxExample() {
   return (
     <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>
       <Label>Booking date</Label>
-      <DatePickerControl />
-      <DatePickerCalendar />
     </DatePicker>
   );
 }

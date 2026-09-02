@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, Label, Text } from '@godaddy/antares';
 
 /**
  * Manage checkbox group state programmatically with controlled component pattern.
@@ -12,12 +12,10 @@ export function ControlledExample() {
   return (
     <CheckboxGroup value={selected} onChange={setSelected}>
       <Label>Favorite sports</Label>
-      <Group>
-        <Checkbox value="basketball">Basketball</Checkbox>
-        <Checkbox value="soccer">Soccer</Checkbox>
-        <Checkbox value="baseball">Baseball</Checkbox>
-        <Checkbox value="tennis">Tennis</Checkbox>
-      </Group>
+      <Checkbox value="basketball">Basketball</Checkbox>
+      <Checkbox value="soccer">Soccer</Checkbox>
+      <Checkbox value="baseball">Baseball</Checkbox>
+      <Checkbox value="tennis">Tennis</Checkbox>
       <Text slot="description">Select your favorite sports</Text>
     </CheckboxGroup>
   );

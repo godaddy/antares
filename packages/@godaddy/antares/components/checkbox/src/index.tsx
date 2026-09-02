@@ -10,6 +10,7 @@ import {
 } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Group } from '#components/structure';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
@@ -103,14 +104,14 @@ export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'childre
   /** Layout axis for the checkbox items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
 
-  /** `Label`, a `Group` of `Checkbox`es, optional `Text slot="description"`, and `FieldError`. */
+  /** `Label`, the `Checkbox`es, optional `Text slot="description"`, and `FieldError`. */
   children: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
 }
 
 /**
- * Checkbox group field. Compose from `Label`, a `Group` of `Checkbox`es,
- * `Text slot="description"`, and `FieldError`. `orientation` sets keyboard navigation,
- * ARIA, and item layout.
+ * Checkbox group field. Compose from `Label`, the `Checkbox`es, `Text slot="description"`, and
+ * `FieldError`; loose checkboxes are wrapped in a `Group`, or wrap them yourself to lay them out.
+ * `orientation` sets keyboard navigation, ARIA, and item layout.
  *
  * @param props - {@link CheckboxGroupProps}
  *
@@ -118,9 +119,7 @@ export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'childre
  * ```tsx
  * <CheckboxGroup>
  *   <Label>Favorite colors</Label>
- *   <Group>
- *     <Checkbox value="blue">Blue</Checkbox>
- *   </Group>
+ *   <Checkbox value="blue">Blue</Checkbox>
  *   <FieldError />
  * </CheckboxGroup>
  * ```
@@ -132,6 +131,11 @@ export function CheckboxGroup({ children, className, orientation = 'vertical', .
       interior="stack"
       orientation={orientation}
       data-orientation={orientation}
+      slots={{
+        items: function wrapItems(items) {
+          return <Group>{items}</Group>;
+        }
+      }}
       {...rest}
       className={composeClassName(className, styles.checkboxGroup)}
     >

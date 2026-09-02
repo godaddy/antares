@@ -10,7 +10,10 @@ import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { GroupContext } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
+import { normalizeFieldChildren, type FieldSlots } from './normalize-field-children.tsx';
 import styles from './index.module.css';
+
+export { normalizeFieldChildren, type FieldSlots };
 
 type ButtonContextValue = NonNullable<ContextValue<ButtonProps, HTMLButtonElement>>;
 
@@ -23,34 +26,18 @@ function buildBoxButtonContext(
   const slots = base.slots ?? {};
   const chrome = { size, isDisabled };
   // `variant` + field className: Button owns the look; field className lets Group CSS target the face.
-  const control = mergeProps(slots.control ?? {}, {
-    ...chrome,
-    variant: 'control' as const,
-    className: styles.control
-  });
-  const trigger = mergeProps(slots.trigger ?? {}, {
-    ...chrome,
-    variant: 'trigger' as const,
-    className: styles.trigger
-  });
+  const control = { ...chrome, variant: 'control' as const, className: styles.control };
+  const trigger = { ...chrome, variant: 'trigger' as const, className: styles.trigger };
 
   return {
     ...base,
     slots: {
       [DEFAULT_SLOT]: mergeProps(slots[DEFAULT_SLOT] ?? {}, chrome),
       ...slots,
-      control,
-      trigger,
-      decrement: mergeProps(slots.decrement ?? {}, {
-        ...chrome,
-        variant: 'control' as const,
-        className: styles.control
-      }),
-      increment: mergeProps(slots.increment ?? {}, {
-        ...chrome,
-        variant: 'control' as const,
-        className: styles.control
-      }),
+      control: mergeProps(slots.control ?? {}, control),
+      trigger: mergeProps(slots.trigger ?? {}, trigger),
+      decrement: mergeProps(slots.decrement ?? {}, control),
+      increment: mergeProps(slots.increment ?? {}, control),
       previous: mergeProps(slots.previous ?? {}, chrome),
       next: mergeProps(slots.next ?? {}, chrome)
     }
@@ -66,7 +53,7 @@ type FieldInterior = 'box' | 'stack';
 /** Item axis when `interior` is `'stack'`. */
 type FieldOrientation = 'horizontal' | 'vertical';
 
-/** Field shell props: layout plus interior configuration. */
+/** Field props a public field root re-exposes to its own consumers. */
 export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
   /** Whether the field is disabled. Inherited by composed controls via context. @default false */
   isDisabled?: boolean;
@@ -74,11 +61,14 @@ export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
   /** Visual size of the controls. Inherited by composed controls via context. @default 'md' */
   size?: FieldSize;
 
-  /** What the field's `Group` is for. Omitted means no GroupContext chrome. */
-  interior?: FieldInterior;
-
   /** Item axis when `interior` is `'stack'`. @default 'vertical' */
   orientation?: FieldOrientation;
+}
+
+/** Shell configuration a field root passes to `Field`. Never part of a public props type. */
+export interface FieldShellOwnProps extends FieldOwnProps {
+  /** What the field's `Group` is for. Omitted means no GroupContext chrome. */
+  interior?: FieldInterior;
 
   /**
    * Whether to forward `orientation` to the underlying RAC root, which uses it for keyboard
@@ -86,9 +76,12 @@ export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
    * @default false
    */
   forwardOrientation?: boolean;
+
+  /** Presets this root fills the interior with when the consumer leaves a slot empty. */
+  slots?: FieldSlots;
 }
 
-export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldOwnProps>;
+export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldShellOwnProps>;
 
 /**
  * Wraps `children` in `wrap`, looking through a render-fn `children` so the wrapper still sees
@@ -157,7 +150,8 @@ function FieldContexts({
 }
 
 /**
- * Internal field shell: column layout plus merged RAC contexts.
+ * Internal field shell: column layout, merged RAC contexts, and the interior slots this root fills
+ * in when the consumer leaves them empty.
  *
  * @param props - {@link FieldProps}
  */
@@ -172,6 +166,7 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
     interior,
     orientation = 'vertical',
     forwardOrientation,
+    slots,
     ...rest
   } = props;
   const rootProps =
@@ -190,8 +185,8 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
       className={composeClassName(className, styles.field)}
     >
       {mapFieldChildren(children, (node) => (
-        <FieldContexts {...contextProps}>{node}</FieldContexts>
+        <FieldContexts {...contextProps}>{normalizeFieldChildren(node, slots)}</FieldContexts>
       ))}
     </Flex>
   );
-}) as PolymorphicComponent<FieldOwnProps>;
+}) as PolymorphicComponent<FieldShellOwnProps>;

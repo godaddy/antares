@@ -14,8 +14,8 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Build the interior from lower-level pieces instead of `SelectControl` / `SelectOptions`,
- * for full control over the trigger and popover.
+ * Write the whole interior yourself instead of letting the field fill it in, for full control over
+ * the trigger and popover.
  * @title Composed
  * @order 8
  */

@@ -67,6 +67,10 @@ describe('@godaddy/antares', function antares() {
 
       const description = page.getByText('Choose your favorite color');
       assume(description).is.not.equal(null);
+
+      const error = page.getByText('At least one color must be selected');
+      assume(error.element().getAttribute('slot')).equals('errorMessage');
+      assume(checkboxGroup.element().getAttribute('data-invalid')).equals('true');
     });
 
     it('renders RequiredExample', async function requiredRender() {

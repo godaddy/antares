@@ -11,6 +11,7 @@ import {
 import { composeClassName } from '#utils/render-props.ts';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Group } from '#components/structure';
 import styles from './index.module.css';
 
 interface RadioButtonProps extends Omit<RACRadioButtonProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
@@ -60,13 +61,14 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, F
   /** Layout axis for the radio items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
 
-  /** `Label`, a `Group` of `Radio`s, optional `Text slot="description"`, and `FieldError`. */
+  /** `Label`, the `Radio`s, optional `Text slot="description"`, and `FieldError`. */
   children: ReactNode | ((renderProps: RACRadioGroupRenderProps) => ReactNode);
 }
 
 /**
- * Radio group field. Compose from `Label`, a `Group` of `Radio`s, `Text slot="description"`,
- * and `FieldError`. `orientation` sets keyboard navigation, ARIA, and item layout.
+ * Radio group field. Compose from `Label`, the `Radio`s, `Text slot="description"`, and
+ * `FieldError`; loose radios are wrapped in a `Group`, or wrap them yourself to lay them out.
+ * `orientation` sets keyboard navigation, ARIA, and item layout.
  *
  * @param props - {@link RadioGroupProps}
  *
@@ -74,9 +76,7 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, F
  * ```tsx
  * <RadioGroup>
  *   <Label>Select your plan</Label>
- *   <Group>
- *     <Radio value="basic">Basic</Radio>
- *   </Group>
+ *   <Radio value="basic">Basic</Radio>
  *   <FieldError />
  * </RadioGroup>
  * ```
@@ -88,6 +88,11 @@ export function RadioGroup({ children, className, orientation = 'vertical', ...p
       interior="stack"
       orientation={orientation}
       forwardOrientation
+      slots={{
+        items: function wrapItems(items) {
+          return <Group>{items}</Group>;
+        }
+      }}
       {...props}
       className={composeClassName(className, styles.radioGroup)}
     >

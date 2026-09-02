@@ -1,4 +1,4 @@
-import { DateRangePicker, DateRangePickerCalendar, DateRangePickerControl, Label } from '@godaddy/antares';
+import { DateRangePicker, Label } from '@godaddy/antares';
 
 /**
  * A start/end range picker.
@@ -9,8 +9,6 @@ export function RangeExample() {
   return (
     <DateRangePicker>
       <Label>Trip dates</Label>
-      <DateRangePickerControl />
-      <DateRangePickerCalendar />
     </DateRangePicker>
   );
 }

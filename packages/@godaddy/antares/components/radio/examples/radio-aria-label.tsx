@@ -1,4 +1,4 @@
-import { Group, Radio, RadioGroup } from '@godaddy/antares';
+import { Radio, RadioGroup } from '@godaddy/antares';
 
 /**
  * A radio group using `aria-label` instead of a visible label.
@@ -8,11 +8,9 @@ import { Group, Radio, RadioGroup } from '@godaddy/antares';
 export function AriaLabelExample() {
   return (
     <RadioGroup aria-label="Sort order" defaultValue="newest">
-      <Group>
-        <Radio value="newest">Newest first</Radio>
-        <Radio value="oldest">Oldest first</Radio>
-        <Radio value="popular">Most popular</Radio>
-      </Group>
+      <Radio value="newest">Newest first</Radio>
+      <Radio value="oldest">Oldest first</Radio>
+      <Radio value="popular">Most popular</Radio>
     </RadioGroup>
   );
 }

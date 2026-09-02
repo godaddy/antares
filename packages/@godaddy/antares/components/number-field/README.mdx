@@ -10,7 +10,7 @@ import * as Stories from './number-field.stories.tsx';
 
 ## Features
 
-- **Composable interior**: Compose `Label`, `Input` (optionally inside a `Group` with stepper `Button`s), `Text slot="description"`, and `FieldError`. A bare `Input` is wrapped in a `Group` for you
+- **Composable interior**: Pass `Label`, `Text slot="description"`, and `FieldError`; the field adds a `Group` of stepper `Button`s around the `Input`, keeping the order you wrote. Write a bare `Input` for a plain numeric input, or a `Group` of your own to change the steppers
 - **Steppers**: Empty `slot="decrement"` / `slot="increment"` buttons get icons and `variant="control"` from context. Omit steppers for a plain numeric input
 - **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
