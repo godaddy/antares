@@ -9,7 +9,7 @@ export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
   /** Text alignment. */
   align?: 'start' | 'center' | 'end' | 'justify';
 
-  /** HTML element to render as. @default 'span' */
+  /** HTML element to render as. Falls back to TextContext, then `span`. */
   as?: string;
 
   /** Text content. */
@@ -34,7 +34,7 @@ export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
  * ```
  */
 export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref) {
-  const { as = 'span', align, maxLines, wrap, className, slot, ...rest } = props;
+  const { as, align, maxLines, wrap, className, slot, ...rest } = props;
 
   const style = Object.assign({}, props.style, {
     '--align': align,

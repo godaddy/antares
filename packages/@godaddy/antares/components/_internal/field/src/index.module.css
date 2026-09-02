@@ -75,8 +75,7 @@
 }
 
 .group {
-  /* Direct children only - skip nested controls (e.g. in overlays). */
-  &:where(:not([data-disabled])) > :where(.control, .trigger):where([data-disabled]) {
+  &:where(:not([data-disabled])) > :where([data-disabled]) {
     opacity: 0.4;
   }
 
