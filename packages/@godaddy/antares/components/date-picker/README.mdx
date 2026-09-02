@@ -11,10 +11,10 @@ import * as Stories from './date-picker.stories.tsx';
 
 ## Features
 
-- **Composable interior**: Default usage is `Label` (plus optional `Text` / `FieldError`), or no children with `aria-label`. Compose `Group`, `Button`, `DatePickerValue`, `Popover`, `Content`, and `Calendar` when you need a custom layout, or pass a function for picker state
+- **Composable interior**: Compose `Label`, `DatePickerControl`, `DatePickerCalendar` (plus optional `Text` / `FieldError`), or build the interior from `Group`, `Button`, `DatePickerValue`, `Popover`, `Content`, and `Calendar` when you need a custom layout. `children` also accepts a function for picker state
 - `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
 - Built on React Aria - native form integration, validation, focus management, and screen-reader support
-- Label formatting via `formatOptions` / `placeholder` on the picker, or on `DatePickerValue` / `DateRangePickerValue` when composing
+- Label formatting via `formatOptions` / `placeholder` on `DatePickerControl` / `DateRangePickerControl`, or on `DatePickerValue` / `DateRangePickerValue` when composing
 - `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
 
 ## Installation
@@ -29,11 +29,15 @@ Values are `CalendarDate` objects. Import the date primitives you need from the 
 
 ```tsx
 import { parseDate } from '@godaddy/antares/date';
-import { DatePicker } from '@godaddy/antares';
+import { DatePicker, DatePickerCalendar, DatePickerControl, Label } from '@godaddy/antares';
 
 function EventDatePicker() {
   return (
-    <DatePicker aria-label="Event date" defaultValue={parseDate('2024-03-15')} />
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+      <DatePickerControl />
+      <DatePickerCalendar />
+    </DatePicker>
   );
 }
 ```

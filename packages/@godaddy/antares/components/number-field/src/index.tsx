@@ -1,7 +1,11 @@
 import { type ReactNode, useContext } from 'react';
 import { mergeProps } from 'react-aria';
-import { DEFAULT_SLOT, NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
-import { Field, wrapBareFieldControl, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import {
+  DEFAULT_SLOT,
+  NumberField as RACNumberField,
+  type NumberFieldProps as RACNumberFieldProps
+} from 'react-aria-components';
+import { Field, mapFieldChildren, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
 import { ButtonContext } from '#components/button';
 import { Icon } from '#components/icon';
 
@@ -45,9 +49,9 @@ function NumberFieldStepperContext({ children }: { children: ReactNode }) {
 
 /**
  * Numeric input field. Compose from `Label`, `Input`, optional stepper `Button`s inside a
- * `Group`, `Text slot="description"`, and `FieldError`. A bare `Input` is wrapped in a `Group`
- * for you. Empty `slot="increment"` / `slot="decrement"` buttons pick up icons and
- * `variant="control"` from field context.
+ * `Group`, `Text slot="description"`, and `FieldError`. A bare `Input` picks up field box chrome
+ * directly, with no `Group` required. Empty `slot="increment"` / `slot="decrement"` buttons pick
+ * up icons and `variant="control"` from field context.
  *
  * @param props - {@link NumberFieldProps}
  *
@@ -67,15 +71,11 @@ function NumberFieldStepperContext({ children }: { children: ReactNode }) {
 export function NumberField(props: NumberFieldProps) {
   const { children, size, isDisabled, ...racProps } = props;
 
-  const withSteppers = (interior: ReactNode) => (
-    <NumberFieldStepperContext>{interior}</NumberFieldStepperContext>
-  );
-
   return (
     <Field as={RACNumberField} interior="box" size={size} isDisabled={isDisabled} {...racProps}>
-      {typeof children === 'function'
-        ? (renderProps) => withSteppers(children(renderProps))
-        : withSteppers(wrapBareFieldControl(children))}
+      {mapFieldChildren(children, (node) => (
+        <NumberFieldStepperContext>{node}</NumberFieldStepperContext>
+      ))}
     </Field>
   );
 }

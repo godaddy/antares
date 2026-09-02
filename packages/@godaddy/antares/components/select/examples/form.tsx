@@ -1,5 +1,16 @@
 import { useState, type FormEvent } from 'react';
-import { Box, Button, FieldError, Flex, Label, Select, SelectItem, Text } from '@godaddy/antares';
+import {
+  Box,
+  Button,
+  FieldError,
+  Flex,
+  Label,
+  Select,
+  SelectControl,
+  SelectItem,
+  SelectOptions,
+  Text
+} from '@godaddy/antares';
 
 /**
  * Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
@@ -30,16 +41,22 @@ export function FormExample() {
     <Flex as="form" direction="column" gap="md" onSubmit={handleSubmit}>
       <Select name="drink" placeholder="Pick a drink" isRequired>
         <Label>Drink</Label>
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        <SelectControl />
         <FieldError>Please select an item in the list.</FieldError>
+        <SelectOptions>
+          <SelectItem id="espresso">Espresso</SelectItem>
+          <SelectItem id="latte">Latte</SelectItem>
+          <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        </SelectOptions>
       </Select>
       <Select name="extras" placeholder="Pick any extras" selectionMode="multiple">
         <Label>Extras</Label>
-        <SelectItem id="oat-milk">Oat milk</SelectItem>
-        <SelectItem id="extra-shot">Extra shot</SelectItem>
-        <SelectItem id="vanilla">Vanilla syrup</SelectItem>
+        <SelectControl />
+        <SelectOptions>
+          <SelectItem id="oat-milk">Oat milk</SelectItem>
+          <SelectItem id="extra-shot">Extra shot</SelectItem>
+          <SelectItem id="vanilla">Vanilla syrup</SelectItem>
+        </SelectOptions>
       </Select>
       <Flex gap="sm">
         <Button type="submit">Submit</Button>

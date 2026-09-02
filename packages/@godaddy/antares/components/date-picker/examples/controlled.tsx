@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DatePicker, Label } from '@godaddy/antares';
+import { DatePicker, DatePickerCalendar, DatePickerControl, Label } from '@godaddy/antares';
 import { type CalendarDate, parseDate } from '@godaddy/antares/date';
 
 /**
@@ -13,6 +13,8 @@ export function ControlledExample() {
   return (
     <DatePicker value={value} onChange={setValue}>
       <Label>Event date</Label>
+      <DatePickerControl />
+      <DatePickerCalendar />
     </DatePicker>
   );
 }

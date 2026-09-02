@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Label, Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';
+import { Label, Select, SelectControl, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';
 
 /**
  * Use `value` and `onChange` for controlled state.
@@ -12,11 +12,14 @@ export function ControlledExample() {
     <>
       <Select placeholder="Pick a drink" value={value} onChange={setValue}>
         <Label>Coffee</Label>
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
-        <SelectItem id="americano">Americano</SelectItem>
-        <SelectItem id="mocha">Mocha</SelectItem>
+        <SelectControl />
+        <SelectOptions>
+          <SelectItem id="espresso">Espresso</SelectItem>
+          <SelectItem id="latte">Latte</SelectItem>
+          <SelectItem id="cappuccino">Cappuccino</SelectItem>
+          <SelectItem id="americano">Americano</SelectItem>
+          <SelectItem id="mocha">Mocha</SelectItem>
+        </SelectOptions>
       </Select>
       <Text>
         <strong>Value:</strong> {String(value ?? '(none)')}

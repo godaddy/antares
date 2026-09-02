@@ -1,4 +1,4 @@
-import { DatePicker, Label } from '@godaddy/antares';
+import { DatePicker, DatePickerCalendar, DatePickerControl, Label } from '@godaddy/antares';
 
 /**
  * A single date picker with a `Label`.
@@ -8,6 +8,8 @@ export function DefaultExample() {
   return (
     <DatePicker>
       <Label>Event date</Label>
+      <DatePickerControl />
+      <DatePickerCalendar />
     </DatePicker>
   );
 }

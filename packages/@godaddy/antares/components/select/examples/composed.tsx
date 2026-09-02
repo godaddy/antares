@@ -14,8 +14,8 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Compose the interior out of Antares components when the default layout is not enough.
- * Select renders your children as-is instead of building its own layout.
+ * Build the interior from lower-level pieces instead of `SelectControl` / `SelectOptions`,
+ * for full control over the trigger and popover.
  * @title Composed
  * @order 8
  */

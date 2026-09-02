@@ -13,7 +13,8 @@ import {
 import { parseDate } from '@godaddy/antares/date';
 
 /**
- * Compose the interior when the default layout is not enough.
+ * Build the interior from lower-level pieces instead of `DatePickerControl` /
+ * `DatePickerCalendar`, for full control over the trigger and popover.
  * @title Composed
  * @order 8
  */

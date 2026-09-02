@@ -12,7 +12,7 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Compose a DateRangePicker interior the same way.
+ * Build a DateRangePicker interior from lower-level pieces the same way.
  * @title Composed range
  * @order 9
  */

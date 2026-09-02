@@ -14,7 +14,6 @@ import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox
 import { Popover } from '#components/popover';
 import { Content, Group } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
-import { classifySelectChildren } from './classify-select-children.tsx';
 import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
@@ -29,74 +28,17 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   variant?: 'default' | 'control';
 
   /**
-   * Semi-composed: `Label`, `SelectItem`s, `Text slot="description"`, `FieldError`.
-   * Composed: full interior with `Group`, `Button`, `Popover`, and `ListBox`.
+   * The interior: a `Label`, `SelectControl`, `SelectOptions` holding `SelectItem`s,
+   * `Text slot="description"`, and `FieldError`. Pass a function to read state such as
+   * `isOpen` while composing.
    */
   children: ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode);
 }
 
-function DefaultSelectInterior({
-  label,
-  description,
-  error,
-  items,
-  withGroup
-}: {
-  label: ReactNode[];
-  description: ReactNode[];
-  error: ReactNode[];
-  items: ReactNode[];
-  withGroup: boolean;
-}) {
-  const face = withGroup ? (
-    <Button slot="trigger">
-      <SelectValue />
-      <Icon icon="chevron-down" />
-    </Button>
-  ) : (
-    <Button slot="control">
-      <SelectValue />
-      <Icon icon="chevron-down" />
-    </Button>
-  );
-
-  return (
-    <>
-      {label}
-      {withGroup ? <Group alignItems="center">{face}</Group> : face}
-      {description}
-      {error}
-      <Popover hideArrow>
-        <Content blockPadding="xs" inlinePadding="0">
-          <ListBox>{items}</ListBox>
-        </Content>
-      </Popover>
-    </>
-  );
-}
-
-function renderSelectChildren(
-  children: SelectProps<object>['children'],
-  withGroup: boolean
-): ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode) {
-  const classified = classifySelectChildren(children);
-  if (classified.mode === 'composed') return classified.children;
-
-  return (
-    <DefaultSelectInterior
-      label={classified.label}
-      description={classified.description}
-      error={classified.error}
-      items={classified.items}
-      withGroup={withGroup}
-    />
-  );
-}
-
 /**
- * Antares Select. Default usage is semi-composed (`Label` + items). Pass a full interior
- * (`Group`, `Button`, `Popover`, `ListBox`) when you need to customize layout. Use
- * `variant="control"` to share another field's Group without a second field shell.
+ * Antares Select. Compose from `Label`, `SelectControl`, `SelectOptions` holding `SelectItem`s,
+ * `Text slot="description"`, and `FieldError`. Use `variant="control"` to share another field's
+ * `Group` without a second field shell.
  *
  * @param props - {@link SelectProps}
  *
@@ -104,28 +46,71 @@ function renderSelectChildren(
  * ```tsx
  * <Select placeholder="Pick a drink">
  *   <Label>Coffee</Label>
- *   <SelectItem id="espresso">Espresso</SelectItem>
- *   <Text slot="description">Select your favorite coffee</Text>
+ *   <SelectControl />
+ *   <SelectOptions>
+ *     <SelectItem id="espresso">Espresso</SelectItem>
+ *   </SelectOptions>
  * </Select>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
   const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
-  const interior = renderSelectChildren(children, variant !== 'control');
 
   if (variant === 'control') {
     return (
       <RACSelect {...racProps} className={selectClass}>
-        {interior}
+        {children}
       </RACSelect>
     );
   }
 
   return (
     <Field as={RACSelect as typeof RACSelect<T, M>} interior="box" size={size} {...racProps} className={selectClass}>
-      {interior}
+      {children}
     </Field>
+  );
+}
+
+export interface SelectControlProps {
+  /** Whether this is the field's own trigger, or a control inside another field's `Group`. @default 'default' */
+  variant?: 'default' | 'control';
+}
+
+/**
+ * Preset trigger for `Select`: a `Button` showing the current `SelectValue` and a chevron
+ * `Icon`, wrapped in a `Group` unless `variant="control"`.
+ *
+ * @param props - {@link SelectControlProps}
+ */
+export function SelectControl({ variant = 'default' }: SelectControlProps) {
+  const button = (
+    <Button slot={variant === 'control' ? 'control' : 'trigger'}>
+      <SelectValue />
+      <Icon icon="chevron-down" />
+    </Button>
+  );
+
+  return variant === 'control' ? button : <Group alignItems="center">{button}</Group>;
+}
+
+export interface SelectOptionsProps {
+  /** `SelectItem`s. */
+  children: ReactNode;
+}
+
+/**
+ * Preset popover for `Select`: a `Popover` with a `ListBox` holding the options.
+ *
+ * @param props - {@link SelectOptionsProps}
+ */
+export function SelectOptions({ children }: SelectOptionsProps) {
+  return (
+    <Popover hideArrow>
+      <Content blockPadding="xs" inlinePadding="0">
+        <ListBox>{children}</ListBox>
+      </Content>
+    </Popover>
   );
 }
 

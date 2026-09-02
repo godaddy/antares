@@ -37,25 +37,22 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#invalid', function invalid() {
-      it('renders error message and data-invalid on frame and input', async function invalidState() {
+      it('renders error message and data-invalid on the input', async function invalidState() {
         const { locator } = await render(<InvalidExample />);
-        const frame = locator.getByRole('presentation').element();
         const textbox = locator.getByRole('textbox').element();
 
         assume(locator.getByText('Please enter a valid email address').element()).exists();
-        assume(frame.getAttribute('data-invalid')).equals('true');
         assume(textbox.getAttribute('data-invalid')).equals('true');
       });
     });
 
     describe('#disabled', function disabled() {
-      it('renders disabled input and data-disabled on frame', async function disabledState() {
+      it('renders disabled input and data-disabled on the input', async function disabledState() {
         const { locator } = await render(<DisabledExample />);
         const textbox = locator.getByRole('textbox').element();
-        const frame = locator.getByRole('presentation').element();
 
         assume(textbox.hasAttribute('disabled')).equals(true);
-        assume(frame.getAttribute('data-disabled')).equals('true');
+        assume(textbox.getAttribute('data-disabled')).equals('true');
       });
     });
 

@@ -1,11 +1,6 @@
 import { type ElementType, type ReactNode, forwardRef, useContext } from 'react';
 import { mergeProps } from 'react-aria';
-import {
-  CheckboxGroup as RACCheckboxGroup,
-  DEFAULT_SLOT,
-  Provider as RACProvider,
-  type ContextValue
-} from 'react-aria-components';
+import { DEFAULT_SLOT, Provider as RACProvider, type ContextValue } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { ButtonContext, type ButtonProps } from '#components/button';
@@ -28,8 +23,16 @@ function buildBoxButtonContext(
   const slots = base.slots ?? {};
   const chrome = { size, isDisabled };
   // `variant` + field className: Button owns the look; field className lets Group CSS target the face.
-  const control = mergeProps(slots.control ?? {}, { ...chrome, variant: 'control' as const, className: styles.control });
-  const trigger = mergeProps(slots.trigger ?? {}, { ...chrome, variant: 'trigger' as const, className: styles.trigger });
+  const control = mergeProps(slots.control ?? {}, {
+    ...chrome,
+    variant: 'control' as const,
+    className: styles.control
+  });
+  const trigger = mergeProps(slots.trigger ?? {}, {
+    ...chrome,
+    variant: 'trigger' as const,
+    className: styles.trigger
+  });
 
   return {
     ...base,
@@ -38,15 +41,21 @@ function buildBoxButtonContext(
       ...slots,
       control,
       trigger,
-      decrement: mergeProps(slots.decrement ?? {}, { ...chrome, variant: 'control' as const, className: styles.control }),
-      increment: mergeProps(slots.increment ?? {}, { ...chrome, variant: 'control' as const, className: styles.control }),
+      decrement: mergeProps(slots.decrement ?? {}, {
+        ...chrome,
+        variant: 'control' as const,
+        className: styles.control
+      }),
+      increment: mergeProps(slots.increment ?? {}, {
+        ...chrome,
+        variant: 'control' as const,
+        className: styles.control
+      }),
       previous: mergeProps(slots.previous ?? {}, chrome),
       next: mergeProps(slots.next ?? {}, chrome)
     }
   };
 }
-
-export { wrapBareFieldControl } from './wrap-bare-control.tsx';
 
 /** Size for controls inside a field group. @default 'md' */
 export type FieldSize = 'sm' | 'md';
@@ -70,9 +79,27 @@ export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
 
   /** Item axis when `interior` is `'stack'`. @default 'vertical' */
   orientation?: FieldOrientation;
+
+  /**
+   * Whether to forward `orientation` to the underlying RAC root, which uses it for keyboard
+   * navigation and ARIA. Off for roots that don't accept it, such as RAC `CheckboxGroup`.
+   * @default false
+   */
+  forwardOrientation?: boolean;
 }
 
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldOwnProps>;
+
+/**
+ * Wraps `children` in `wrap`, looking through a render-fn `children` so the wrapper still sees
+ * the rendered interior rather than the function itself.
+ */
+export function mapFieldChildren<R>(
+  children: ReactNode | ((renderProps: R) => ReactNode),
+  wrap: (node: ReactNode) => ReactNode
+): ReactNode | ((renderProps: R) => ReactNode) {
+  return typeof children === 'function' ? (renderProps: R) => wrap(children(renderProps)) : wrap(children);
+}
 
 function FieldContexts({
   children,
@@ -102,10 +129,8 @@ function FieldContexts({
           wrap: 'nowrap',
           alignSelf: 'stretch',
           alignItems: 'stretch',
-          elevation: 'card',
           isDisabled,
-          isInvalid,
-          'data-size': size === 'sm' ? 'sm' : undefined
+          isInvalid
         })
       : interior === 'stack'
         ? mergeProps(group ?? {}, {
@@ -137,9 +162,20 @@ function FieldContexts({
  * @param props - {@link FieldProps}
  */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
-  const { as, children, gap = 'sm', className, size, isDisabled, interior, orientation = 'vertical', ...rest } = props;
+  const {
+    as,
+    children,
+    gap = 'sm',
+    className,
+    size,
+    isDisabled,
+    interior,
+    orientation = 'vertical',
+    forwardOrientation,
+    ...rest
+  } = props;
   const rootProps =
-    interior === 'stack' && as !== RACCheckboxGroup ? { ...rest, isDisabled, orientation } : { ...rest, isDisabled };
+    interior === 'stack' && forwardOrientation ? { ...rest, isDisabled, orientation } : { ...rest, isDisabled };
   const contextProps = { interior, orientation, isDisabled, size };
 
   return (
@@ -149,13 +185,13 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
       {...rootProps}
       as={as}
       ref={ref}
+      data-interior={interior}
+      data-size={size}
       className={composeClassName(className, styles.field)}
     >
-      {typeof children === 'function' ? (
-        (renderProps: never) => <FieldContexts {...contextProps}>{children(renderProps)}</FieldContexts>
-      ) : (
-        <FieldContexts {...contextProps}>{children}</FieldContexts>
-      )}
+      {mapFieldChildren(children, (node) => (
+        <FieldContexts {...contextProps}>{node}</FieldContexts>
+      ))}
     </Flex>
   );
 }) as PolymorphicComponent<FieldOwnProps>;

@@ -5,7 +5,7 @@ import styles from './index.module.css';
 
 export const TextContext = RACTextContext;
 
-export interface TextProps extends Omit<RACTextProps, 'elementType'> {
+export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
   /**
    * The alignment of the text.
    */
@@ -28,6 +28,11 @@ export interface TextProps extends Omit<RACTextProps, 'elementType'> {
   maxLines?: number;
 
   /**
+   * The slot this text fills. Pass `null` to opt out of a parent's `TextContext`.
+   */
+  slot?: string | null;
+
+  /**
    * The wrapping behavior of the text.
    */
   wrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable';
@@ -45,7 +50,7 @@ export interface TextProps extends Omit<RACTextProps, 'elementType'> {
  * ```
  */
 export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref) {
-  const { as = 'span', align, maxLines, wrap, className, ...rest } = props;
+  const { as = 'span', align, maxLines, wrap, className, slot, ...rest } = props;
 
   const style = Object.assign({}, props.style, {
     '--align': align,
@@ -53,5 +58,15 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref)
     '--wrap': wrap
   });
 
-  return <RACText {...rest} ref={ref} className={cx(styles.text, className)} elementType={as} style={style} />;
+  // RAC types `slot` as `string`, but its slotted-context lookup accepts `null` to opt out.
+  return (
+    <RACText
+      {...(rest as Omit<RACTextProps, 'slot'>)}
+      slot={slot as RACTextProps['slot']}
+      ref={ref}
+      className={cx(styles.text, className)}
+      elementType={as}
+      style={style}
+    />
+  );
 });

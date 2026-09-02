@@ -87,6 +87,7 @@ export function RadioGroup({ children, className, orientation = 'vertical', ...p
       as={RACRadioGroup}
       interior="stack"
       orientation={orientation}
+      forwardOrientation
       {...props}
       className={composeClassName(className, styles.radioGroup)}
     >

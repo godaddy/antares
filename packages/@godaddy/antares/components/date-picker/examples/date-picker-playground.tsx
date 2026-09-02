@@ -1,4 +1,4 @@
-import { DatePicker, FieldError, Label, Text } from '@godaddy/antares';
+import { DatePicker, DatePickerCalendar, DatePickerControl, FieldError, Label, Text } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   label?: string;
@@ -20,15 +20,12 @@ export function PlaygroundExample({
   errorMessage
 }: PlaygroundExampleProps) {
   return (
-    <DatePicker
-      isDisabled={isDisabled}
-      isRequired={isRequired}
-      isInvalid={isInvalid}
-      placeholder={placeholder}
-    >
+    <DatePicker isDisabled={isDisabled} isRequired={isRequired} isInvalid={isInvalid}>
       <Label>{label}</Label>
+      <DatePickerControl placeholder={placeholder} />
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
+      <DatePickerCalendar />
     </DatePicker>
   );
 }

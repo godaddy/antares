@@ -1,4 +1,13 @@
-import { FieldError, Label, Select, SelectItem, Text, type SelectProps } from '@godaddy/antares';
+import {
+  FieldError,
+  Label,
+  Select,
+  SelectControl,
+  SelectItem,
+  SelectOptions,
+  Text,
+  type SelectProps
+} from '@godaddy/antares';
 
 /** Props for the Select playground example. */
 export interface PlaygroundExampleProps
@@ -37,13 +46,16 @@ export function PlaygroundExample({
       size={size}
     >
       <Label>{label}</Label>
-      <SelectItem id="espresso">Espresso</SelectItem>
-      <SelectItem id="latte">Latte</SelectItem>
-      <SelectItem id="cappuccino">Cappuccino</SelectItem>
-      <SelectItem id="americano">Americano</SelectItem>
-      <SelectItem id="mocha">Mocha</SelectItem>
+      <SelectControl />
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{errorMessage}</FieldError>
+      <SelectOptions>
+        <SelectItem id="espresso">Espresso</SelectItem>
+        <SelectItem id="latte">Latte</SelectItem>
+        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        <SelectItem id="americano">Americano</SelectItem>
+        <SelectItem id="mocha">Mocha</SelectItem>
+      </SelectOptions>
     </Select>
   );
 }

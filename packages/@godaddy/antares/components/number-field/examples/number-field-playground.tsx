@@ -1,13 +1,4 @@
-import {
-  Button,
-  FieldError,
-  Group,
-  Input,
-  Label,
-  NumberField,
-  Text,
-  type NumberFieldProps
-} from '@godaddy/antares';
+import { Button, FieldError, Group, Input, Label, NumberField, Text, type NumberFieldProps } from '@godaddy/antares';
 
 export interface PlaygroundExampleProps {
   description?: string;
