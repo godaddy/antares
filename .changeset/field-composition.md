@@ -16,8 +16,10 @@ A bare `Input` / `TextArea` (no `Group`) picks up field box chrome directly from
 
 `Group` is now layout-agnostic: boxed field chrome (`TextField`, `NumberField`, `Select`, date pickers) and stack layouts (`CheckboxGroup`, `RadioGroup`) come from the internal `Field` shell via `GroupContext`, not from hardcoded `Group` defaults. `FieldSize` is no longer exported from the package root or `@godaddy/antares/Field` (use the `size` prop on boxed field roots).
 
-Leading/trailing adornments (fixed text or an icon beside an input) are composed inside `Group`, positioned by source order — there is no `leadingText`/`trailingText` prop or dedicated adornment component. An interactive affix uses `Button variant="control"`.
+Leading/trailing adornments (fixed text or an icon beside an input) are composed inside `Group`, positioned by source order - there is no `leadingText`/`trailingText` prop or dedicated adornment component. An interactive affix uses `Button slot="control"`.
 
 `RangeField`, `ProgressBar`, and `CircularProgress` are unchanged: they keep their shorthand props and do not take a composed interior.
 
 Public components: `Label`/`LabelContext`, `Group`/`GroupContext`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.
+
+`Heading` is no longer exported from `@godaddy/antares/Text`. Import it from `@godaddy/antares/Heading` or the package root.
