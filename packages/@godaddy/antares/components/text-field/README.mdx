@@ -1,6 +1,6 @@
 ---
 title: TextField
-description: TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
+description: TextField is a composed single-line or multiline text input. Use it in forms for short answers (email, search, name) or longer content (comments).
 ---
 
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
@@ -11,12 +11,11 @@ import * as Stories from './text-field.stories.tsx';
 
 ## Features
 
-- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-- **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+- **Composable interior**: Compose `Label`, `Group`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`
+- **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-- **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-- **Composition**: For custom interiors (leading/trailing controls, icons, nested Select), pass `children` and compose `Label`, `Group`, `Input`, `Button`, and `Select`
+- **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
+- **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 
 ## Installation
 
@@ -30,7 +29,8 @@ npm install --save @godaddy/antares
 
 ## Props
 
-When `children` is passed, `TextField` is composed. A composed `Group` inherits `size` and `isDisabled` from the field, so set them on `TextField` and leave the interior to the markup.
+`children` is the interior. A composed `Group` inherits `size` and `isDisabled` from the field, so set
+them on `TextField` and leave the interior to the markup.
 
 ```tsx
 <TextField>
@@ -44,6 +44,25 @@ When `children` is passed, `TextField` is composed. A composed `Group` inherits 
   <FieldError />
 </TextField>
 ```
+
+### Adornments
+
+Fixed text or an icon before or after the input is composed inside `Group`; position comes from
+source order, not a prop.
+
+```tsx
+<TextField>
+  <Label>Amount</Label>
+  <Group>
+    <Flex as="span" alignItems="center" inlinePaddingStart="md">$</Flex>
+    <Input placeholder="0.00" />
+    <Flex as="span" alignItems="center" inlinePaddingEnd="md">.00</Flex>
+  </Group>
+</TextField>
+```
+
+An interactive affix (a country-code `Select`, a "Verify" `Button`) uses `variant="control"` instead
+of the `Flex` wrapper — see the Controls and icons example above.
 
 The `TextField` component accepts the following props:
 

@@ -8,10 +8,7 @@ import {
   type CheckboxGroupProps as RACCheckboxGroupProps,
   type CheckboxGroupRenderProps as RACCheckboxGroupRenderProps
 } from 'react-aria-components';
-import { Field, isComposedInterior, type FieldOwnProps } from '#components/_internal/field';
-import { FieldError } from '#components/field-error';
-import { Label } from '#components/label';
-import { Text } from '#components/text';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
@@ -102,51 +99,34 @@ export function Checkbox(props: CheckboxProps) {
   );
 }
 
-const GROUP_INTERIOR_PARTS = new Set<unknown>([FieldError, Label, Text]);
-
 export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'children'>, FieldOwnProps {
-  /** Item checkboxes, or a composed interior. */
-  children?: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
-
-  /** Layout orientation of the checkboxes. @default 'vertical' */
-  orientation?: 'horizontal' | 'vertical';
+  /**
+   * The interior: a `Label`, a layout (`Flex`) holding `Checkbox`es, a `Text slot="description"`,
+   * and a `FieldError`. Pass a function to read field state.
+   */
+  children: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
 }
 
 /**
  * Antares CheckboxGroup component. Renders a group meant to hold checkboxes with shared state.
  *
  * @param props - {@link CheckboxGroupProps}
+ *
+ * @example
+ * ```tsx
+ * <CheckboxGroup>
+ *   <Label>Favorite colors</Label>
+ *   <Flex direction="column" gap="md">
+ *     <Checkbox value="blue">Blue</Checkbox>
+ *   </Flex>
+ *   <FieldError />
+ * </CheckboxGroup>
+ * ```
  */
-export function CheckboxGroup({
-  children,
-  className,
-  errorMessage,
-  label,
-  orientation = 'vertical',
-  description,
-  ...rest
-}: CheckboxGroupProps) {
-  const classNames = composeClassName(className, styles.checkboxGroup);
-
-  if (typeof children === 'function' || isComposedInterior(children, GROUP_INTERIOR_PARTS)) {
-    return (
-      <Field as={RACCheckboxGroup} {...rest} className={classNames}>
-        {children}
-      </Field>
-    );
-  }
-
+export function CheckboxGroup({ children, className, ...rest }: CheckboxGroupProps) {
   return (
-    <Field as={RACCheckboxGroup} {...rest} className={classNames}>
-      {label ? <Label>{label}</Label> : null}
-      <Flex
-        direction={orientation === 'horizontal' ? 'row' : 'column'}
-        gap={orientation === 'horizontal' ? 'lg' : 'md'}
-      >
-        {children}
-      </Flex>
-      {description ? <Text slot="description">{description}</Text> : null}
-      <FieldError>{errorMessage}</FieldError>
+    <Field as={RACCheckboxGroup} {...rest} className={composeClassName(className, styles.checkboxGroup)}>
+      {children}
     </Field>
   );
 }

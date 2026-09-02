@@ -1,18 +1,17 @@
-import { NumberField } from '@godaddy/antares';
+import { Group, Input, Label, NumberField, Text } from '@godaddy/antares';
 
 /**
- * Use `hideStepper` to show only the input without +/- buttons.
+ * Compose without stepper `Button`s for a plain numeric input.
  * @order 5
  */
 export function NumberFieldHideStepperExample() {
   return (
-    <NumberField
-      label="Quantity"
-      description="Enter a value between 0 and 100."
-      placeholder="0"
-      minValue={0}
-      maxValue={100}
-      hideStepper
-    />
+    <NumberField minValue={0} maxValue={100}>
+      <Label>Quantity</Label>
+      <Group>
+        <Input placeholder="0" />
+      </Group>
+      <Text slot="description">Enter a value between 0 and 100.</Text>
+    </NumberField>
   );
 }

@@ -12,14 +12,7 @@ import {
   useLocale
 } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
-import { FieldError } from '#components/field-error';
-import { Label } from '#components/label';
-import { Text } from '#components/text';
-import { Group, Content, type FieldSize } from '#components/structure';
-import { Button } from '#components/button';
-import { Icon } from '#components/icon';
-import { Popover } from '#components/popover';
-import { Calendar, RangeCalendar } from '#components/calendar';
+import type { FieldSize } from '#components/structure';
 import styles from './index.module.css';
 
 const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -33,14 +26,12 @@ export interface DatePickerProps extends Omit<RACDatePickerProps<CalendarDate>, 
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /** Intl.DateTimeFormat options controlling how the selected date renders in the trigger. @default DEFAULT_FORMAT */
-  formatOptions?: Intl.DateTimeFormatOptions;
-
-  /** Text shown in the trigger when no date is selected. @default 'Select a date' */
-  placeholder?: string;
-
-  /** Composed interior. Replaces the default layout. */
-  children?: ReactNode | ((renderProps: DatePickerRenderProps) => ReactNode);
+  /**
+   * The interior: a `Label`, a `Group` with a trigger `Button` (an `Icon` plus a
+   * `DatePickerValue`), a `Text slot="description"`, a `FieldError`, and a `Popover`
+   * with a `Calendar`. Pass a function to read state such as `isOpen` while composing.
+   */
+  children: ReactNode | ((renderProps: DatePickerRenderProps) => ReactNode);
 }
 
 /**
@@ -52,42 +43,29 @@ export interface DatePickerProps extends Omit<RACDatePickerProps<CalendarDate>, 
  *
  * @example
  * ```tsx
- * <DatePicker label="Event date" />
- * <DatePicker label="Booking" formatOptions={{ dateStyle: 'medium' }} />
+ * <DatePicker>
+ *   <Label>Event date</Label>
+ *   <Group alignItems="center">
+ *     <Button variant="trigger">
+ *       <Icon icon="calendar" />
+ *       <DatePickerValue />
+ *     </Button>
+ *   </Group>
+ *   <FieldError />
+ *   <Popover hideArrow>
+ *     <Content>
+ *       <Calendar />
+ *     </Content>
+ *   </Popover>
+ * </DatePicker>
  * ```
  */
 export function DatePicker(props: DatePickerProps) {
-  const {
-    children,
-    label,
-    description,
-    errorMessage,
-    size,
-    formatOptions = DEFAULT_FORMAT,
-    placeholder = DEFAULT_DATE_PLACEHOLDER,
-    ...racProps
-  } = props;
+  const { children, size, ...racProps } = props;
 
   return (
     <Field as={RACDatePicker as typeof RACDatePicker<CalendarDate>} size={size} {...racProps}>
-      {children ?? (
-        <>
-          {label ? <Label>{label}</Label> : null}
-          <Group alignItems="center">
-            <Button variant="trigger">
-              <Icon icon="calendar" />
-              <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-            </Button>
-          </Group>
-          {description ? <Text slot="description">{description}</Text> : null}
-          <FieldError>{errorMessage}</FieldError>
-          <Popover hideArrow>
-            <Content>
-              <Calendar />
-            </Content>
-          </Popover>
-        </>
-      )}
+      {children}
     </Field>
   );
 }
@@ -101,14 +79,12 @@ export interface DateRangePickerProps
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /** Intl.DateTimeFormat options controlling how each date renders in the trigger. @default DEFAULT_FORMAT */
-  formatOptions?: Intl.DateTimeFormatOptions;
-
-  /** Text shown in the trigger when no range is selected. @default 'Select dates' */
-  placeholder?: string;
-
-  /** Composed interior. Replaces the default layout. */
-  children?: ReactNode | ((renderProps: DateRangePickerRenderProps) => ReactNode);
+  /**
+   * The interior: a `Label`, a `Group` with a trigger `Button` (an `Icon` plus a
+   * `DateRangePickerValue`), a `Text slot="description"`, a `FieldError`, and a `Popover`
+   * with a `RangeCalendar`. Pass a function to read state such as `isOpen` while composing.
+   */
+  children: ReactNode | ((renderProps: DateRangePickerRenderProps) => ReactNode);
 }
 
 /**
@@ -119,41 +95,29 @@ export interface DateRangePickerProps
  *
  * @example
  * ```tsx
- * <DateRangePicker label="Trip dates" />
+ * <DateRangePicker>
+ *   <Label>Trip dates</Label>
+ *   <Group alignItems="center">
+ *     <Button variant="trigger">
+ *       <Icon icon="calendar" />
+ *       <DateRangePickerValue />
+ *     </Button>
+ *   </Group>
+ *   <FieldError />
+ *   <Popover hideArrow>
+ *     <Content>
+ *       <RangeCalendar />
+ *     </Content>
+ *   </Popover>
+ * </DateRangePicker>
  * ```
  */
 export function DateRangePicker(props: DateRangePickerProps) {
-  const {
-    children,
-    label,
-    description,
-    errorMessage,
-    size,
-    formatOptions = DEFAULT_FORMAT,
-    placeholder = DEFAULT_RANGE_PLACEHOLDER,
-    ...racProps
-  } = props;
+  const { children, size, ...racProps } = props;
 
   return (
     <Field as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>} size={size} {...racProps}>
-      {children ?? (
-        <>
-          {label ? <Label>{label}</Label> : null}
-          <Group alignItems="center">
-            <Button variant="trigger">
-              <Icon icon="calendar" />
-              <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />
-            </Button>
-          </Group>
-          {description ? <Text slot="description">{description}</Text> : null}
-          <FieldError>{errorMessage}</FieldError>
-          <Popover hideArrow>
-            <Content>
-              <RangeCalendar />
-            </Content>
-          </Popover>
-        </>
-      )}
+      {children}
     </Field>
   );
 }

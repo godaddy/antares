@@ -1,6 +1,6 @@
 ---
 title: NumberField
-description: NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
+description: NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
@@ -10,9 +10,8 @@ import * as Stories from './number-field.stories.tsx';
 
 ## Features
 
-- **Label, description, error**: Optional label, helper text, and error message
-- **Steppers**: Increment and decrement buttons, or `hideStepper` for a plain numeric input
-- **Composition**: To customize the interior (for example text steppers instead of `-` and `+` icons), pass `children` and compose `Label`, `Group`, `Input`, and `Button`
+- **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
+- **Composition**: Compose the interior from `Label`, `Group`, `Input`, and `Button`. Steppers are `Button variant="control"` with `slot="decrement"` / `slot="increment"` — omit them for a plain numeric input, or swap the icons for text
 
 ## Installation
 
@@ -51,7 +50,7 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 
 ## Props
 
-When `children` is passed, `NumberField` is composed. Use `variant="control"` with `slot="decrement"` and `slot="increment"` on Button so the steppers still change the value. A composed `Group` inherits `size` and `isDisabled` from the field, so set them on `NumberField` and leave the interior to the markup.
+`NumberField` is composed. Use `variant="control"` with `slot="decrement"` and `slot="increment"` on Button so the steppers still change the value. A composed `Group` inherits `size` and `isDisabled` from the field, so set them on `NumberField` and leave the interior to the markup.
 
 ```tsx
 <NumberField>

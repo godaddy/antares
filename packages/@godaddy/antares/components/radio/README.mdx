@@ -20,7 +20,7 @@ npm install --save @godaddy/antares
 
 ## Customization
 
-Pass `children` to compose `Label`, `Text`, `FieldError`, and item radios instead of the default group layout. Each `Radio` still takes label text next to the indicator.
+`RadioGroup` is composed: pass `Label`, a layout (`Flex`) holding the `Radio` items, `Text slot="description"`, and `FieldError`. Each `Radio` takes label text next to the indicator. `orientation` only sets keyboard-navigation direction and ARIA — match the layout `Flex`'s `direction` to it yourself.
 
 ### Data Attributes
 
@@ -56,13 +56,16 @@ Components automatically add data attributes for styling different states:
 Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
 
 ```jsx
-<RadioGroup label="Select plan" className="custom-radio-group">
-  <Radio value="basic" className="custom-radio">
-    Basic
-  </Radio>
-  <Radio value="premium" className="premium-radio">
-    Premium
-  </Radio>
+<RadioGroup className="custom-radio-group">
+  <Label>Select plan</Label>
+  <Flex direction="column" gap="md">
+    <Radio value="basic" className="custom-radio">
+      Basic
+    </Radio>
+    <Radio value="premium" className="premium-radio">
+      Premium
+    </Radio>
+  </Flex>
 </RadioGroup>
 ```
 
@@ -91,17 +94,26 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
 <RadioGroup value={value} defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Flex direction="column" gap="md">
+    <Radio value="basic">Basic</Radio>
+  </Flex>
 </RadioGroup>
 
 // ✅ Controlled mode
 <RadioGroup value={value} onChange={setValue}>
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Flex direction="column" gap="md">
+    <Radio value="basic">Basic</Radio>
+  </Flex>
 </RadioGroup>
 
 // ✅ Uncontrolled mode
 <RadioGroup defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Flex direction="column" gap="md">
+    <Radio value="basic">Basic</Radio>
+  </Flex>
 </RadioGroup>
 ```
 
@@ -158,14 +170,13 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 Always provide clear error messages:
 
 ```jsx
-<RadioGroup
-  label="Select shipping method"
-  isRequired
-  isInvalid={!selectedShipping}
-  errorMessage="Please select a shipping method"
->
-  <Radio value="standard">Standard</Radio>
-  <Radio value="express">Express</Radio>
+<RadioGroup isRequired isInvalid={!selectedShipping}>
+  <Label>Select shipping method</Label>
+  <Flex direction="column" gap="md">
+    <Radio value="standard">Standard</Radio>
+    <Radio value="express">Express</Radio>
+  </Flex>
+  <FieldError>Please select a shipping method</FieldError>
 </RadioGroup>
 ```
 

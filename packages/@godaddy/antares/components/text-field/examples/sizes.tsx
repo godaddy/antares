@@ -1,4 +1,4 @@
-import { Flex, TextField } from '@godaddy/antares';
+import { Flex, Group, Input, Label, TextField } from '@godaddy/antares';
 
 /**
  * Compare the supported `md` and `sm` visual sizes. Set `size` on `TextField`; a composed `Group` inherits it.
@@ -8,8 +8,18 @@ import { Flex, TextField } from '@godaddy/antares';
 export function SizesExample() {
   return (
     <Flex direction="column" gap="md">
-      <TextField label="Email (md)" placeholder="you@example.com" />
-      <TextField label="Email (sm)" placeholder="you@example.com" size="sm" />
+      <TextField>
+        <Label>Email (md)</Label>
+        <Group>
+          <Input placeholder="you@example.com" />
+        </Group>
+      </TextField>
+      <TextField size="sm">
+        <Label>Email (sm)</Label>
+        <Group>
+          <Input placeholder="you@example.com" />
+        </Group>
+      </TextField>
     </Flex>
   );
 }

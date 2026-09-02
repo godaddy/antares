@@ -1,7 +1,6 @@
 import { type ElementType, type ReactNode, forwardRef, useContext } from 'react';
 import { mergeProps } from 'react-aria';
 import { Provider as RACProvider, type TextProps as RACTextProps } from 'react-aria-components';
-import type { FieldErrorProps as RACFieldErrorProps } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
@@ -12,16 +11,8 @@ import { TextContext } from '#components/text';
 import { TextAreaContext } from '#components/text-area';
 import styles from './index.module.css';
 
+/** Field shell props: layout, plus the state a composed interior inherits through FieldStateContext. */
 export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
-  /** Label text shown above the field. */
-  label?: ReactNode;
-
-  /** Helper text shown below the field. */
-  description?: ReactNode;
-
-  /** Error message shown when the field is invalid. Forwarded to FieldError. */
-  errorMessage?: RACFieldErrorProps['children'];
-
   /** Whether the field is disabled. Inherited by a composed Group. @default false */
   isDisabled?: boolean;
 
@@ -115,5 +106,3 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
     </Flex>
   );
 }) as PolymorphicComponent<FieldOwnProps>;
-
-export { isComposedInterior } from './is-composed-interior.ts';

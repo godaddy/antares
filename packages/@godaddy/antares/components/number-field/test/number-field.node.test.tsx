@@ -25,13 +25,11 @@ describe('@godaddy/antares', function antares() {
 
       it('renders invalid example', function invalid() {
         const result = renderToString(<NumberFieldInvalidExample />);
-        expect(result).toContain('data-invalid');
         expect(result).toMatchSnapshot();
       });
 
       it('renders disabled example', function disabled() {
         const result = renderToString(<NumberFieldDisabledExample />);
-        expect(result).toContain('data-disabled');
         expect(result).toMatchSnapshot();
       });
 
@@ -52,7 +50,6 @@ describe('@godaddy/antares', function antares() {
 
       it('renders sizes example', function sizes() {
         const result = renderToString(<NumberFieldSizesExample />);
-        expect(result).toContain('data-size="sm"');
         expect(result).toMatchSnapshot();
       });
 

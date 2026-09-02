@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, FieldError, Flex, Label, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
 export interface PlaygroundExampleProps {
@@ -28,25 +28,29 @@ export function PlaygroundExample({
 
   return (
     <CheckboxGroup
-      orientation={orientation}
-      label={label}
-      description={description}
       isRequired={isRequired}
       isDisabled={isDisabled}
       isInvalid={isInvalid}
-      errorMessage={isInvalid ? errorMessage : undefined}
       value={selected}
       onChange={setSelected}
     >
-      <Checkbox value="option1" isIndeterminate={isIndeterminate}>
-        Option 1
-      </Checkbox>
-      <Checkbox value="option2" isIndeterminate={isIndeterminate}>
-        Option 2
-      </Checkbox>
-      <Checkbox value="option3" isIndeterminate={isIndeterminate}>
-        Option 3
-      </Checkbox>
+      <Label>{label}</Label>
+      <Flex
+        direction={orientation === 'horizontal' ? 'row' : 'column'}
+        gap={orientation === 'horizontal' ? 'lg' : 'md'}
+      >
+        <Checkbox value="option1" isIndeterminate={isIndeterminate}>
+          Option 1
+        </Checkbox>
+        <Checkbox value="option2" isIndeterminate={isIndeterminate}>
+          Option 2
+        </Checkbox>
+        <Checkbox value="option3" isIndeterminate={isIndeterminate}>
+          Option 3
+        </Checkbox>
+      </Flex>
+      {description ? <Text slot="description">{description}</Text> : null}
+      <FieldError>{isInvalid ? errorMessage : undefined}</FieldError>
     </CheckboxGroup>
   );
 }

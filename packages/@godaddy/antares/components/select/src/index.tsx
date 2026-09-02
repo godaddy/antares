@@ -7,40 +7,13 @@ import {
   SelectValue as RACSelectValue,
   type SelectValueProps as RACSelectValueProps
 } from 'react-aria-components';
-import { Field, isComposedInterior, type FieldOwnProps } from '#components/_internal/field';
-import { FieldError } from '#components/field-error';
-import { Label } from '#components/label';
-import { Text } from '#components/text';
-import { Content, Group, type FieldSize } from '#components/structure';
-import { Button } from '#components/button';
-import { Icon } from '#components/icon';
-import { Popover } from '#components/popover';
-import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
+import type { FieldSize } from '#components/structure';
+import { ListBoxItem, type ListBoxItemProps } from '#components/listbox';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
-
-function SelectTrigger({ variant = 'trigger' }: { variant?: 'trigger' | 'control' }) {
-  return (
-    <Button variant={variant}>
-      <SelectValue />
-      <Icon icon="chevron-down" />
-    </Button>
-  );
-}
-
-function SelectPopover<T extends object>({ children }: { children?: ListBoxProps<T>['children'] }) {
-  return (
-    <Popover hideArrow>
-      <Content blockPadding="xs" inlinePadding="0">
-        <ListBox>{children}</ListBox>
-      </Content>
-    </Popover>
-  );
-}
-
-const INTERIOR_PARTS = new Set<unknown>([Button, Content, FieldError, Group, Label, ListBox, Popover, Text]);
 
 /** State passed to a composed Select interior. */
 export interface SelectRenderProps extends RACSelectRenderProps {}
@@ -55,73 +28,56 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   variant?: 'default' | 'control';
 
   /**
-   * `SelectItem` options for the default layout, an interior composed from Label,
-   * Group, Button, SelectValue, Popover, Content, ListBox, Text, and
-   * FieldError, or a function returning that interior.
-   *
-   * A function receives the current {@link SelectRenderProps}, which is the only way
-   * to read state such as `isOpen` while composing.
+   * The interior: `Label`, `Group` with a `Button` (`SelectValue` plus an `Icon`), `Popover`
+   * with `Content` and `ListBox` holding `SelectItem`s, `Text slot="description"`, and
+   * `FieldError`. Pass a function to read state such as `isOpen` while composing.
    */
-  children?: ReactNode | ((renderProps: SelectRenderProps) => ReactNode);
+  children: ReactNode | ((renderProps: SelectRenderProps) => ReactNode);
 }
 
 /**
  * Antares Select. By default it is a labeled field. Use `variant="control"` to
  * share another field's {@link Group} without rendering a second field shell.
  *
+ * @param props - {@link SelectProps}
+ *
  * @example
  * ```tsx
- * <Select label="Coffee">
- *   <SelectItem id="espresso">Espresso</SelectItem>
- * </Select>
- *
  * <Select>
  *   <Label>Coffee</Label>
- *   <Group>{'…'}</Group>
- *   <Popover>{'…'}</Popover>
+ *   <Group alignItems="center">
+ *     <Button variant="trigger">
+ *       <SelectValue />
+ *       <Icon icon="chevron-down" />
+ *     </Button>
+ *   </Group>
+ *   <Popover hideArrow>
+ *     <Content blockPadding="xs" inlinePadding="0">
+ *       <ListBox>
+ *         <SelectItem id="espresso">Espresso</SelectItem>
+ *       </ListBox>
+ *     </Content>
+ *   </Popover>
  * </Select>
  *
  * <Select>{({ isOpen }) => <>{'…'}</>}</Select>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
-  const { label, description, errorMessage, children, size, variant = 'default', className, ...racProps } = props;
+  const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
-
-  // A composed interior owns everything inside, so Select only supplies the RAC root
-  // (plus the field shell for the default variant).
-  if (typeof children === 'function' || isComposedInterior(children, INTERIOR_PARTS)) {
-    return variant === 'control' ? (
-      <RACSelect {...racProps} className={selectClass}>
-        {children}
-      </RACSelect>
-    ) : (
-      <Field as={RACSelect as typeof RACSelect<T, M>} size={size} {...racProps} className={selectClass}>
-        {children}
-      </Field>
-    );
-  }
-
-  const options = children as ListBoxProps<T>['children'];
 
   if (variant === 'control') {
     return (
       <RACSelect {...racProps} className={selectClass}>
-        <SelectTrigger variant="control" />
-        <SelectPopover>{options}</SelectPopover>
+        {children}
       </RACSelect>
     );
   }
 
   return (
     <Field as={RACSelect as typeof RACSelect<T, M>} size={size} {...racProps} className={selectClass}>
-      {label ? <Label>{label}</Label> : null}
-      <Group alignItems="center">
-        <SelectTrigger />
-      </Group>
-      {description ? <Text slot="description">{description}</Text> : null}
-      <FieldError>{errorMessage}</FieldError>
-      <SelectPopover>{options}</SelectPopover>
+      {children}
     </Field>
   );
 }

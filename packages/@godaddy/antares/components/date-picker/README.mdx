@@ -13,7 +13,7 @@ import * as Stories from './date-picker.stories.tsx';
 
 - `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
 - Built on React Aria — native form integration, validation, focus management, and screen-reader support
-- Consumer-controlled label formatting via `formatOptions`
+- Consumer-controlled label formatting via `formatOptions` on `DatePickerValue` / `DateRangePickerValue`
 - `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
 
 ## Installation
@@ -28,10 +28,26 @@ Values are `CalendarDate` objects. Import the date primitives you need from the 
 
 ```tsx
 import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { DatePicker } from '@godaddy/antares';
+import { Button, Calendar, Content, DatePicker, DatePickerValue, Group, Icon, Label, Popover } from '@godaddy/antares';
 
-<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
-<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event</Label>
+      <Group alignItems="center">
+        <Button variant="trigger">
+          <Icon icon="calendar" />
+          <DatePickerValue />
+        </Button>
+      </Group>
+      <Popover hideArrow>
+        <Content>
+          <Calendar />
+        </Content>
+      </Popover>
+    </DatePicker>
+  );
+}
 ```
 
 `@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
@@ -42,9 +58,31 @@ import { DatePicker } from '@godaddy/antares';
 
 ## Customization
 
-`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
+`children` is the interior: `Label`, `Group`, a trigger `Button` (an `Icon` plus `DatePickerValue` or
+`DateRangePickerValue`), `Text slot="description"`, `FieldError`, `Popover`, `Content`, and `Calendar`
+or `RangeCalendar`. Or a function returning that interior when it needs picker state (`isOpen`, …).
 
-Pass `children` to compose `Label`, `Group`, `Button`, `DatePickerValue` or `DateRangePickerValue`, `Text`, `FieldError`, `Popover`, `Content`, and `Calendar` or `RangeCalendar` instead of the default layout.
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button variant="trigger">
+      <Icon icon="calendar" />
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+</DatePicker>
+```
+
+`DatePickerValue` and `DateRangePickerValue` accept `formatOptions` (any `Intl.DateTimeFormatOptions`,
+e.g. `{ dateStyle: 'short' }`) and `placeholder` for the empty-state text.
 
 ## Accessibility
 
@@ -55,7 +93,7 @@ Pass `children` to compose `Label`, `Group`, `Button`, `DatePickerValue` or `Dat
 
 ## Best Practices
 
-- Provide a `label` (or `aria-label`) on every picker.
+- Provide a `Label` (or `aria-label`) on every picker.
 - For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
 
 ## Troubleshooting

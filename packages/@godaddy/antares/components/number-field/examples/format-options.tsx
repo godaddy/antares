@@ -1,4 +1,4 @@
-import { NumberField } from '@godaddy/antares';
+import { Group, Input, Label, NumberField, Text } from '@godaddy/antares';
 
 const devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();
 
@@ -9,12 +9,15 @@ const devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOpt
  */
 export function NumberFieldFormatOptionsExample() {
   return (
-    <NumberField
-      label="Number (Devanagari)"
-      description="By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system locale extension (e.g. nu-deva)."
-      hideStepper
-      value={1024}
-      formatOptions={devanagariFormatOptions}
-    />
+    <NumberField value={1024} formatOptions={devanagariFormatOptions}>
+      <Label>Number (Devanagari)</Label>
+      <Group>
+        <Input />
+      </Group>
+      <Text slot="description">
+        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system
+        locale extension (e.g. nu-deva).
+      </Text>
+    </NumberField>
   );
 }

@@ -1,4 +1,16 @@
-import { Flex, Select, SelectItem } from '@godaddy/antares';
+import {
+  Button,
+  Content,
+  Flex,
+  Group,
+  Icon,
+  Label,
+  ListBox,
+  Popover,
+  Select,
+  SelectItem,
+  SelectValue
+} from '@godaddy/antares';
 
 /**
  * Compare the supported `md` and `sm` visual sizes.
@@ -8,15 +20,41 @@ import { Flex, Select, SelectItem } from '@godaddy/antares';
 export function SelectSizesExample() {
   return (
     <Flex direction="column" gap="md">
-      <Select label="Coffee (md)" placeholder="Pick a drink">
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+      <Select placeholder="Pick a drink">
+        <Label>Coffee (md)</Label>
+        <Group alignItems="center">
+          <Button variant="trigger">
+            <SelectValue />
+            <Icon icon="chevron-down" />
+          </Button>
+        </Group>
+        <Popover hideArrow>
+          <Content blockPadding="xs" inlinePadding="0">
+            <ListBox>
+              <SelectItem id="espresso">Espresso</SelectItem>
+              <SelectItem id="latte">Latte</SelectItem>
+              <SelectItem id="cappuccino">Cappuccino</SelectItem>
+            </ListBox>
+          </Content>
+        </Popover>
       </Select>
-      <Select label="Coffee (sm)" placeholder="Pick a drink" size="sm">
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+      <Select placeholder="Pick a drink" size="sm">
+        <Label>Coffee (sm)</Label>
+        <Group alignItems="center">
+          <Button variant="trigger">
+            <SelectValue />
+            <Icon icon="chevron-down" />
+          </Button>
+        </Group>
+        <Popover hideArrow>
+          <Content blockPadding="xs" inlinePadding="0">
+            <ListBox>
+              <SelectItem id="espresso">Espresso</SelectItem>
+              <SelectItem id="latte">Latte</SelectItem>
+              <SelectItem id="cappuccino">Cappuccino</SelectItem>
+            </ListBox>
+          </Content>
+        </Popover>
       </Select>
     </Flex>
   );

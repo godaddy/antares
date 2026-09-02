@@ -34,7 +34,7 @@ const MAX_MARKER_COUNT = 1000;
 /** Props for configuring a {@link RangeField}. */
 export interface RangeFieldProps<T extends number | number[] = number | number[]>
   extends Omit<RACSliderProps<T>, 'children' | 'orientation' | 'render'>,
-    Omit<FieldOwnProps, 'as' | 'className' | 'errorMessage'> {
+    Omit<FieldOwnProps, 'as' | 'className'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
@@ -85,6 +85,12 @@ export interface RangeFieldProps<T extends number | number[] = number | number[]
 
   /** Displays a required indicator in the field label. */
   isRequired?: boolean;
+
+  /** Label text shown above the field. */
+  label?: ReactNode;
+
+  /** Helper text shown below the field. */
+  description?: ReactNode;
 }
 
 /** Imperative controls for a {@link RangeField}. */
@@ -136,7 +142,8 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
   const containerRef = useRef<HTMLDivElement>(null);
   const thumbInputRefs = useRef<RefObject<HTMLInputElement | null>[]>([]);
   const descriptionId = useId();
-  const describedBy = [ariaDescribedBy, description ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
+  const describedBy =
+    [ariaDescribedBy, description != null ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
 
   useImperativeHandle(
     ref,
@@ -179,7 +186,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
         thumbInputRefs={thumbInputRefs}
       />
       <RangeFieldLabels minLabel={minLabel} maxLabel={maxLabel} />
-      {description ? (
+      {description != null ? (
         <Text id={descriptionId} slot="description">
           {description}
         </Text>

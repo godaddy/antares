@@ -20,13 +20,13 @@ npm install --save @godaddy/antares
 
 ## Customization
 
-Pass `children` to compose `Label`, `Text`, `FieldError`, and item checkboxes instead of the default group layout. Each `Checkbox` still takes label text next to the indicator.
+`CheckboxGroup` is composed: pass `Label`, a layout (`Flex`) holding the `Checkbox` items, `Text slot="description"`, and `FieldError`. Each `Checkbox` takes label text next to the indicator.
 
 ### Data Attributes
 
 Components automatically add data attributes for styling different states:
 
-**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`
 
 **Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
 
@@ -60,13 +60,16 @@ Components automatically add data attributes for styling different states:
 Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
 
 ```jsx
-<CheckboxGroup label="Select options" className="custom-checkbox-group">
-  <Checkbox value="option1" className="custom-checkbox">
-    Option 1
-  </Checkbox>
-  <Checkbox value="option2" className="highlighted-checkbox">
-    Option 2
-  </Checkbox>
+<CheckboxGroup className="custom-checkbox-group">
+  <Label>Select options</Label>
+  <Flex direction="column" gap="md">
+    <Checkbox value="option1" className="custom-checkbox">
+      Option 1
+    </Checkbox>
+    <Checkbox value="option2" className="highlighted-checkbox">
+      Option 2
+    </Checkbox>
+  </Flex>
 </CheckboxGroup>
 ```
 
@@ -88,26 +91,23 @@ CheckboxGroup supports validation states and error messages:
 
 - **isRequired**: Marks the group as required with visual indicator
 - **isInvalid**: Shows error state styling
-- **errorMessage**: Displays validation error text below the group
+- **`FieldError`**: Displays validation error text below the group
 
 ```jsx
-<CheckboxGroup
-  label="Required selection"
-  isRequired
-  isInvalid={!hasSelection}
-  errorMessage="At least one option must be selected"
->
-  <Checkbox value="a">Option A</Checkbox>
-  <Checkbox value="b">Option B</Checkbox>
+<CheckboxGroup isRequired isInvalid={!hasSelection}>
+  <Label>Required selection</Label>
+  <Flex direction="column" gap="md">
+    <Checkbox value="a">Option A</Checkbox>
+    <Checkbox value="b">Option B</Checkbox>
+  </Flex>
+  <FieldError>At least one option must be selected</FieldError>
 </CheckboxGroup>
 ```
 
 ### Orientation
 
-Control the layout with the `orientation` prop (matching `RadioGroup`):
-
-- `vertical` (default): Stacks checkboxes vertically
-- `horizontal`: Arranges checkboxes in a horizontal row
+Set the layout `Flex`'s `direction` and `gap` yourself: `direction="column" gap="md"` stacks
+checkboxes vertically, `direction="row" gap="lg"` arranges them in a horizontal row.
 
 ## Accessibility
 
@@ -131,17 +131,26 @@ Control the layout with the `orientation` prop (matching `RadioGroup`):
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
 <CheckboxGroup value={value} defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
+  <Label>Options</Label>
+  <Flex direction="column" gap="md">
+    <Checkbox value="a">Option A</Checkbox>
+  </Flex>
 </CheckboxGroup>
 
 // ✅ Controlled mode
 <CheckboxGroup value={value} onChange={setValue}>
-  <Checkbox value="a">Option A</Checkbox>
+  <Label>Options</Label>
+  <Flex direction="column" gap="md">
+    <Checkbox value="a">Option A</Checkbox>
+  </Flex>
 </CheckboxGroup>
 
 // ✅ Uncontrolled mode
 <CheckboxGroup defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
+  <Label>Options</Label>
+  <Flex direction="column" gap="md">
+    <Checkbox value="a">Option A</Checkbox>
+  </Flex>
 </CheckboxGroup>
 ```
 
@@ -217,14 +226,13 @@ const someSelected = childSelections.length > 0 && !allSelected;
 Always provide clear error messages and use appropriate validation states:
 
 ```jsx
-<CheckboxGroup
-  label="Terms and conditions"
-  isRequired
-  isInvalid={!agreedToTerms}
-  errorMessage="You must agree to the terms to continue"
->
-  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
-  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+<CheckboxGroup isRequired isInvalid={!agreedToTerms}>
+  <Label>Terms and conditions</Label>
+  <Flex direction="column" gap="md">
+    <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+    <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+  </Flex>
+  <FieldError>You must agree to the terms to continue</FieldError>
 </CheckboxGroup>
 ```
 

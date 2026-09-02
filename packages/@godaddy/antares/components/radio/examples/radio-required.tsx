@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from '@godaddy/antares';
+import { Flex, Label, Radio, RadioGroup } from '@godaddy/antares';
 
 /**
  * A required radio group with a payment method selection.
@@ -7,10 +7,13 @@ import { Radio, RadioGroup } from '@godaddy/antares';
  */
 export function RadioRequiredExample() {
   return (
-    <RadioGroup label="Payment method" isRequired defaultValue="credit">
-      <Radio value="credit">Credit Card</Radio>
-      <Radio value="paypal">PayPal</Radio>
-      <Radio value="bank">Bank Transfer</Radio>
+    <RadioGroup isRequired defaultValue="credit">
+      <Label>Payment method</Label>
+      <Flex direction="column" gap="md">
+        <Radio value="credit">Credit Card</Radio>
+        <Radio value="paypal">PayPal</Radio>
+        <Radio value="bank">Bank Transfer</Radio>
+      </Flex>
     </RadioGroup>
   );
 }

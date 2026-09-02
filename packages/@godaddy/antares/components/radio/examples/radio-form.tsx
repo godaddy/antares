@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from '@godaddy/antares';
+import { Flex, Label, Radio, RadioGroup } from '@godaddy/antares';
 import { type FormEvent, useState } from 'react';
 
 /**
@@ -18,10 +18,13 @@ export function RadioFormExample() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <RadioGroup name="plan" label="Select your plan" defaultValue="standard">
-          <Radio value="basic">Basic</Radio>
-          <Radio value="standard">Standard</Radio>
-          <Radio value="premium">Premium</Radio>
+        <RadioGroup name="plan" defaultValue="standard">
+          <Label>Select your plan</Label>
+          <Flex direction="column" gap="md">
+            <Radio value="basic">Basic</Radio>
+            <Radio value="standard">Standard</Radio>
+            <Radio value="premium">Premium</Radio>
+          </Flex>
         </RadioGroup>
         <button type="submit" style={{ marginTop: '1rem' }}>
           Submit

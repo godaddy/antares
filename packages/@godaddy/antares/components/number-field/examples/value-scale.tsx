@@ -1,4 +1,4 @@
-import { NumberField } from '@godaddy/antares';
+import { Button, Group, Icon, Input, Label, NumberField, Text } from '@godaddy/antares';
 
 /**
  * Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
@@ -6,13 +6,20 @@ import { NumberField } from '@godaddy/antares';
  */
 export function NumberFieldValueScaleExample() {
   return (
-    <NumberField
-      label="Step value"
-      description="Steps are from the minimum: minValue={2}, step={3} gives 2, 5, 8, 11, …"
-      placeholder="2"
-      minValue={2}
-      maxValue={20}
-      step={3}
-    />
+    <NumberField minValue={2} maxValue={20} step={3}>
+      <Label>Step value</Label>
+      <Group>
+        <Button slot="decrement" variant="control">
+          <Icon icon="minus" />
+        </Button>
+        <Input placeholder="2" />
+        <Button slot="increment" variant="control">
+          <Icon icon="plus" />
+        </Button>
+      </Group>
+      <Text slot="description">
+        Steps are from the minimum: minValue={2}, step={3} gives 2, 5, 8, 11, …
+      </Text>
+    </NumberField>
   );
 }

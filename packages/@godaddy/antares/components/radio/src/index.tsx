@@ -9,10 +9,7 @@ import {
   type RadioGroupRenderProps as RACRadioGroupRenderProps
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
-import { Field, isComposedInterior, type FieldOwnProps } from '#components/_internal/field';
-import { FieldError } from '#components/field-error';
-import { Label } from '#components/label';
-import { Text } from '#components/text';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import styles from './index.module.css';
 
@@ -59,49 +56,37 @@ export function Radio({ children, ...props }: RadioProps) {
   );
 }
 
-const GROUP_INTERIOR_PARTS = new Set<unknown>([FieldError, Label, Text]);
-
 export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, FieldOwnProps {
-  /** Item radios, or a composed interior. */
-  children?: ReactNode | ((renderProps: RACRadioGroupRenderProps) => ReactNode);
+  /**
+   * The interior: a `Label`, a layout (`Flex`) holding `Radio`s, a `Text slot="description"`,
+   * and a `FieldError`. Pass a function to read field state.
+   *
+   * RAC's `orientation` only sets keyboard-navigation direction and ARIA — match the layout's
+   * `direction` to it yourself.
+   */
+  children: ReactNode | ((renderProps: RACRadioGroupRenderProps) => ReactNode);
 }
 
 /**
  * Antares RadioGroup component
  *
  * @param props - {@link RadioGroupProps}
- * @returns RadioGroup component with label, radios, description, and error message
+ *
+ * @example
+ * ```tsx
+ * <RadioGroup>
+ *   <Label>Select your plan</Label>
+ *   <Flex direction="column" gap="md">
+ *     <Radio value="basic">Basic</Radio>
+ *   </Flex>
+ *   <FieldError />
+ * </RadioGroup>
+ * ```
  */
-export function RadioGroup({
-  label,
-  description,
-  errorMessage,
-  children,
-  className,
-  orientation = 'vertical',
-  ...props
-}: RadioGroupProps) {
-  const classNames = composeClassName(className, styles.radioGroup);
-
-  if (typeof children === 'function' || isComposedInterior(children, GROUP_INTERIOR_PARTS)) {
-    return (
-      <Field as={RACRadioGroup} orientation={orientation} {...props} className={classNames}>
-        {children}
-      </Field>
-    );
-  }
-
+export function RadioGroup({ children, className, ...props }: RadioGroupProps) {
   return (
-    <Field as={RACRadioGroup} orientation={orientation} {...props} className={classNames}>
-      {label ? <Label>{label}</Label> : null}
-      <Flex
-        direction={orientation === 'horizontal' ? 'row' : 'column'}
-        gap={orientation === 'horizontal' ? 'lg' : 'md'}
-      >
-        {children}
-      </Flex>
-      {description ? <Text slot="description">{description}</Text> : null}
-      <FieldError>{errorMessage}</FieldError>
+    <Field as={RACRadioGroup} {...props} className={composeClassName(className, styles.radioGroup)}>
+      {children}
     </Field>
   );
 }

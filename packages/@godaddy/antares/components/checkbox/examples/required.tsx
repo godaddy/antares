@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, FieldError, Flex, Label, Text } from '@godaddy/antares';
 
 /**
  * Mark a checkbox group as required with visual indicator and validation.
@@ -7,15 +7,15 @@ import { Checkbox, CheckboxGroup } from '@godaddy/antares';
  */
 export function CheckboxGroupRequiredExample() {
   return (
-    <CheckboxGroup
-      label="Favorite colors"
-      errorMessage="At least one color must be selected"
-      description="Choose your favorite color"
-      isRequired
-    >
-      <Checkbox value="blue">Blue</Checkbox>
-      <Checkbox value="red">Red</Checkbox>
-      <Checkbox value="green">Green</Checkbox>
+    <CheckboxGroup isRequired>
+      <Label>Favorite colors</Label>
+      <Flex direction="column" gap="md">
+        <Checkbox value="blue">Blue</Checkbox>
+        <Checkbox value="red">Red</Checkbox>
+        <Checkbox value="green">Green</Checkbox>
+      </Flex>
+      <Text slot="description">Choose your favorite color</Text>
+      <FieldError>At least one color must be selected</FieldError>
     </CheckboxGroup>
   );
 }
