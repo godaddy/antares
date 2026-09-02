@@ -6,43 +6,27 @@ import styles from './index.module.css';
 export const TextContext = RACTextContext;
 
 export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
-  /**
-   * The alignment of the text.
-   */
+  /** Text alignment. */
   align?: 'start' | 'center' | 'end' | 'justify';
 
-  /**
-   * The HTML element to render the text as.
-   * @default 'span'
-   */
+  /** HTML element to render as. @default 'span' */
   as?: string;
 
-  /**
-   * The content to display inside the text.
-   */
+  /** Text content. */
   children?: ReactNode;
 
-  /**
-   * The maximum number of lines to display.
-   */
+  /** Maximum number of lines to display. */
   maxLines?: number;
 
-  /**
-   * The slot this text fills. Pass `null` to opt out of a parent's `TextContext`.
-   */
+  /** Slot this text fills. Pass `null` to opt out of a parent's TextContext. */
   slot?: string | null;
 
-  /**
-   * The wrapping behavior of the text.
-   */
+  /** Wrapping behavior. */
   wrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable';
 }
 
 /**
- * A complete Text component.
- * Renders as a native text element.
- *
- * @param props - The properties {@link TextProps} passed to the component.
+ * Text element.
  *
  * @example
  * ```tsx
@@ -58,7 +42,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(props, ref)
     '--wrap': wrap
   });
 
-  // RAC types `slot` as `string`, but its slotted-context lookup accepts `null` to opt out.
+  // RAC types `slot` as `string`; runtime also accepts `null` to opt out of TextContext.
   return (
     <RACText
       {...(rest as Omit<RACTextProps, 'slot'>)}

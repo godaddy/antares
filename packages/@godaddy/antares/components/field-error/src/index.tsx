@@ -11,11 +11,7 @@ export const FieldErrorContext = RACFieldErrorContext;
 
 export interface FieldErrorProps extends RACFieldErrorProps {}
 
-/**
- * Field error message; renders only when the field is invalid.
- *
- * @param props - {@link FieldErrorProps}
- */
+/** Field error message; renders only when invalid. */
 export const FieldError = forwardRef<HTMLElement, FieldErrorProps>(function FieldError(props, ref) {
   const { className, ...rest } = props;
   return <RACFieldError {...rest} ref={ref} className={composeClassName(className, styles.fieldError)} />;

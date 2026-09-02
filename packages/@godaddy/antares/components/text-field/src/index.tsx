@@ -2,11 +2,7 @@ import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } f
 import { Field, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
 
 export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, FieldOwnProps {
-  /**
-   * The interior of the field: a `Label`, an `Input` or `TextArea` (optionally inside a `Group`
-   * when composing controls or adornments), a `Text slot="description"`, and a `FieldError`.
-   * Pass a function to read field state.
-   */
+  /** Field interior. Pass a function to read field state. */
   children: RACTextFieldProps['children'];
 
   /** Default value (uncontrolled). */
@@ -26,12 +22,7 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, FieldOw
 }
 
 /**
- * Text input field. Compose from `Label`, `Input` or `TextArea`, optional `Group` for
- * controls/adornments, `Text slot="description"`, and `FieldError`. A bare `Input` / `TextArea`
- * picks up field box chrome directly, with no `Group` required. A composed `Group` inherits
- * `size` and `isDisabled`.
- *
- * @param props - {@link TextFieldProps}
+ * Text input field. Compose `Label`, `Input`/`TextArea`, optional `Group`, description, and `FieldError`.
  *
  * @example
  * ```tsx

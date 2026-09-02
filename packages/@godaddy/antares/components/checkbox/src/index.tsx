@@ -28,14 +28,8 @@ export interface CheckboxIndicatorProps {
 }
 
 /**
- * Presentational checkbox indicator: the box plus its check/minus glyph.
- *
- * Decorative by default (`aria-hidden`) - the surrounding control owns
- * interaction and accessibility. It carries its own `data-selected` /
- * `data-indeterminate` so it renders correctly outside an interactive
- * `Checkbox` (e.g. as a selection indicator inside a menu item).
- *
- * @param props - {@link CheckboxIndicatorProps}
+ * Presentational checkbox indicator (box + check/minus glyph).
+ * Decorative (`aria-hidden`); carries its own selected/indeterminate data attrs for use outside Checkbox.
  */
 export function CheckboxIndicator({ isSelected, isIndeterminate, className }: CheckboxIndicatorProps) {
   return (
@@ -77,9 +71,7 @@ export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, 
 }
 
 /**
- * Antares Checkbox component. Renders a checkbox input with an associated label.
- *
- * @param props - {@link CheckboxProps}
+ * Checkbox with an associated label.
  */
 export function Checkbox(props: CheckboxProps) {
   const { children, ...rest } = props;
@@ -104,16 +96,12 @@ export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'childre
   /** Layout axis for the checkbox items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
 
-  /** `Label`, the `Checkbox`es, optional `Text slot="description"`, and `FieldError`. */
+  /** Field interior (`Label`, checkboxes, description, `FieldError`). */
   children: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
 }
 
 /**
- * Checkbox group field. Compose from `Label`, the `Checkbox`es, `Text slot="description"`, and
- * `FieldError`; loose checkboxes are wrapped in a `Group`, or wrap them yourself to lay them out.
- * `orientation` sets keyboard navigation, ARIA, and item layout.
- *
- * @param props - {@link CheckboxGroupProps}
+ * Checkbox group. Loose checkboxes are wrapped in a Group when omitted.
  *
  * @example
  * ```tsx

@@ -43,12 +43,7 @@
   min-height: min-content;
 }
 
-/*
- * Box chrome. A `Group` paints it when the interior is composed; a bare `Input` / `TextArea`
- * paints it itself. Both are direct children of the field, so the two cases never overlap and
- * no wrapper element has to be injected. Declared after the `.input` reset above because both
- * selectors are 0-1-0 (`:where()` adds no specificity), so source order resolves them.
- */
+/* Box chrome on direct Group or bare Input/TextArea. After `.input` so equal 0-1-0 specificity wins. */
 .field:where([data-interior="box"]) > :where(.group),
 .field:where([data-interior="box"]) > :where(.input, .textarea) {
   --field-br: var(--ux-1oqjeuu, 0.375rem);
@@ -67,12 +62,12 @@
   }
 }
 
-/* A bare control is a field child, not a flex item filling a Group. */
+/* Bare control is a field child, not a Group flex item. */
 .field:where([data-interior="box"]) > :where(.input, .textarea) {
   flex: none;
 }
 
-/* Scoped to one level so a nested field's own size wins. */
+/* One level only so a nested field's size wins. */
 .field:where([data-size="sm"]) > :where(.input, .textarea),
 .field:where([data-size="sm"]) > :where(.group) > :where(.input, .textarea) {
   font-size: calc(1em / 1.125);
@@ -80,7 +75,7 @@
 }
 
 .group {
-  /* Direct children only - avoid matching nested controls (e.g. inside overlays). */
+  /* Direct children only - skip nested controls (e.g. in overlays). */
   &:where(:not([data-disabled])) > :where(.control, .trigger):where([data-disabled]) {
     opacity: 0.4;
   }

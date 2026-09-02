@@ -25,7 +25,6 @@ import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-/** The interior `Select` fills in: its own trigger, and loose `SelectItem`s wrapped in the popover. */
 function selectSlots(variant: 'default' | 'control'): FieldSlots {
   return {
     control: <SelectControl variant={variant} />,
@@ -41,25 +40,16 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /** Whether Select renders a complete field or a control inside another field. @default 'default' */
+  /** Complete field, or a control inside another field's Group. @default 'default' */
   variant?: 'default' | 'control';
 
-  /**
-   * The interior: a `Label`, the `SelectItem`s, an optional `Text slot="description"` and
-   * `FieldError`, and whichever of the trigger and the popover you want to customize. Pass a
-   * function to read state such as `isOpen` while composing.
-   */
+  /** Field interior. Pass a function to read render props such as `isOpen`. */
   children: ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode);
 }
 
 /**
- * Antares Select. Write the pieces you want to customize - a `Label`, the `SelectItem`s, a
- * `Text slot="description"`, a `FieldError`, or a `Group` / `Popover` interior of your own - and the
- * field fills in the trigger and wraps loose items in the popover, in the order you wrote them. Use
- * `variant="control"` to share another field's `Group` without a second field shell; its interior is
- * filled in the same way, with a trigger that carries no `Group` of its own.
- *
- * @param props - {@link SelectProps}
+ * Select field. Fills in the trigger and wraps loose items in a popover when omitted.
+ * Use `variant="control"` to compose inside another field's Group.
  *
  * @example
  * ```tsx
@@ -98,17 +88,11 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
 }
 
 interface SelectControlProps {
-  /** Whether this is the field's own trigger, or a control inside another field's `Group`. @default 'default' */
+  /** Field trigger, or a control inside another field's Group. @default 'default' */
   variant?: 'default' | 'control';
 }
 
-/**
- * Preset trigger for `Select`: a `Button` showing the current `SelectValue` and a chevron
- * `Icon`, wrapped in a `Group` unless `variant="control"`. `Select` inserts it when the interior has
- * no control of its own. Compose a `Group` with a `Button slot="trigger"` to replace it.
- *
- * @param props - {@link SelectControlProps}
- */
+/** Preset trigger (`Group` + button) unless `variant="control"`. */
 function SelectControl({ variant = 'default' }: SelectControlProps) {
   const button = (
     <Button slot={variant === 'control' ? 'control' : 'trigger'}>
@@ -125,12 +109,7 @@ interface SelectOptionsProps {
   children: ReactNode;
 }
 
-/**
- * Preset popover for `Select`: a `Popover` with a `ListBox` holding the options. `Select` wraps loose
- * `SelectItem`s in it. Compose `Popover` to replace it.
- *
- * @param props - {@link SelectOptionsProps}
- */
+/** Preset popover wrapping loose `SelectItem`s. */
 function SelectOptions({ children }: SelectOptionsProps) {
   return (
     <Popover hideArrow>
@@ -143,9 +122,7 @@ function SelectOptions({ children }: SelectOptionsProps) {
 
 export interface SelectValueProps extends RACSelectValueProps<object> {}
 
-/**
- * Displays the selected option, or the Select placeholder when no option is selected.
- */
+/** Selected option, or the Select placeholder. */
 export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(function SelectValue(props, ref) {
   const { className, ...rest } = props;
 
@@ -154,7 +131,7 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(functio
 
 export interface SelectItemProps extends ListBoxItemProps {}
 
-/** One option inside a Select. Thin wrapper over `ListBoxItem`. */
+/** One option inside a Select. */
 export function SelectItem(props: SelectItemProps) {
   return <ListBoxItem {...props} />;
 }

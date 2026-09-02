@@ -8,27 +8,14 @@ import {
 export const LabelContext = RACLabelContext;
 
 export interface LabelProps extends Omit<RACLabelProps, 'elementType'> {
-  /**
-   * The HTML element to render the label as.
-   */
+  /** HTML element to render as. */
   as?: RACLabelProps['elementType'];
 
-  /**
-   * The content to display inside the label.
-   */
+  /** Label content. */
   children?: ReactNode;
 }
 
-/**
- * Names a form field. Field injects label chrome via {@link LabelContext}.
- *
- * @param props - {@link LabelProps}
- *
- * @example
- * ```tsx
- * <Label>Email</Label>
- * ```
- */
+/** Names a form field. Field injects chrome via LabelContext. */
 export const Label = forwardRef<HTMLElement, LabelProps>(function Label(props, ref) {
   const { as, ...rest } = props;
 

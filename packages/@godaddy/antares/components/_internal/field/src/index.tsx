@@ -25,7 +25,7 @@ function buildBoxButtonContext(
   const base = (inherited ?? {}) as ButtonContextValue & { slots?: Record<string | symbol, object | undefined> };
   const slots = base.slots ?? {};
   const chrome = { size, isDisabled };
-  // `variant` + field className: Button owns the look; field className lets Group CSS target the face.
+  // Button owns the look; field className lets Group CSS target the face.
   const control = { ...chrome, variant: 'control' as const, className: styles.control };
   const trigger = { ...chrome, variant: 'trigger' as const, className: styles.trigger };
 
@@ -47,46 +47,42 @@ function buildBoxButtonContext(
 /** Size for controls inside a field group. @default 'md' */
 export type FieldSize = 'sm' | 'md';
 
-/** What the field's `Group` is for. Omitted means the field provides no GroupContext. */
+/** Group role for this field. Omitted means no GroupContext. */
 type FieldInterior = 'box' | 'stack';
 
 /** Item axis when `interior` is `'stack'`. */
 type FieldOrientation = 'horizontal' | 'vertical';
 
-/** Field props a public field root re-exposes to its own consumers. */
+/** Field props re-exported by public field roots. */
 export interface FieldOwnProps extends Omit<FlexOwnProps, 'as'> {
-  /** Whether the field is disabled. Inherited by composed controls via context. @default false */
+  /** Whether the field is disabled. Inherited via context. @default false */
   isDisabled?: boolean;
 
-  /** Visual size of the controls. Inherited by composed controls via context. @default 'md' */
+  /** Visual size of the controls. Inherited via context. @default 'md' */
   size?: FieldSize;
 
   /** Item axis when `interior` is `'stack'`. @default 'vertical' */
   orientation?: FieldOrientation;
 }
 
-/** Shell configuration a field root passes to `Field`. Never part of a public props type. */
+/** Shell config passed to `Field` by a field root (not a public props type). */
 export interface FieldShellOwnProps extends FieldOwnProps {
-  /** What the field's `Group` is for. Omitted means no GroupContext chrome. */
+  /** Group role. Omitted means no GroupContext chrome. */
   interior?: FieldInterior;
 
   /**
-   * Whether to forward `orientation` to the underlying RAC root, which uses it for keyboard
-   * navigation and ARIA. Off for roots that don't accept it, such as RAC `CheckboxGroup`.
-   * @default false
+   * Forward `orientation` to the RAC root for keyboard/ARIA.
+   * Off for roots that reject it (e.g. RAC `CheckboxGroup`). @default false
    */
   forwardOrientation?: boolean;
 
-  /** Presets this root fills the interior with when the consumer leaves a slot empty. */
+  /** Presets filled in when the consumer leaves a slot empty. */
   slots?: FieldSlots;
 }
 
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldShellOwnProps>;
 
-/**
- * Wraps `children` in `wrap`, looking through a render-fn `children` so the wrapper still sees
- * the rendered interior rather than the function itself.
- */
+/** Apply `wrap` to `children`, including render-fn children. */
 export function mapFieldChildren<R>(
   children: ReactNode | ((renderProps: R) => ReactNode),
   wrap: (node: ReactNode) => ReactNode
@@ -149,12 +145,7 @@ function FieldContexts({
   );
 }
 
-/**
- * Internal field shell: column layout, merged RAC contexts, and the interior slots this root fills
- * in when the consumer leaves them empty.
- *
- * @param props - {@link FieldProps}
- */
+/** Internal field shell: layout, RAC contexts, and empty-slot presets. */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
   const {
     as,

@@ -12,11 +12,7 @@ import { Input } from '#components/input';
 import { Group } from '#components/structure';
 
 export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
-  /**
-   * The interior of the field: a `Label`, a `Text slot="description"`, a `FieldError`, and the
-   * control when you want something other than the stepper preset - an `Input` on its own, or a
-   * `Group` of `Input` and stepper `Button`s. Pass a function to read field state.
-   */
+  /** Field interior. Pass a function to read field state. */
   children: RACNumberFieldProps['children'];
 
   /** Visual size of the input. @default 'md' */
@@ -28,7 +24,7 @@ type ButtonContextValue = {
   [key: string]: unknown;
 };
 
-/** Publish default stepper icons on {@link ButtonContext} slots. */
+/** Default stepper icons on ButtonContext slots. */
 function NumberFieldStepperContext({ children }: { children: ReactNode }) {
   const inherited = (useContext(ButtonContext) ?? {}) as ButtonContextValue;
   const slots = inherited.slots ?? {};
@@ -50,11 +46,7 @@ function NumberFieldStepperContext({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * Preset control for `NumberField`: a `Group` holding stepper `Button`s around the `Input`.
- * `NumberField` inserts it when the interior has no control of its own - write a bare `Input` for a
- * field with no steppers, or compose the `Group` yourself to change their order or content.
- */
+/** Preset stepper Group; replace with a bare Input or custom Group. */
 function NumberFieldControl() {
   return (
     <Group>
@@ -66,13 +58,7 @@ function NumberFieldControl() {
 }
 
 /**
- * Numeric input field. Write the pieces you want to customize - a `Label`, a
- * `Text slot="description"`, a `FieldError`, a bare `Input` for a field with no steppers, or a
- * `Group` of your own - and the field fills in the stepper control it doesn't find, in the order you
- * wrote them. Empty `slot="increment"` / `slot="decrement"` buttons pick up icons and
- * `variant="control"` from field context.
- *
- * @param props - {@link NumberFieldProps}
+ * Numeric input field. Fills in the stepper control when omitted.
  *
  * @example
  * ```tsx

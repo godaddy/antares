@@ -10,11 +10,7 @@ export const TextAreaContext = RACTextAreaContext;
 
 export interface TextAreaProps extends RACTextAreaProps, Omit<BoxOwnProps, 'as'> {}
 
-/**
- * Multiline input that fills a Group. Field injects chrome via TextAreaContext.
- *
- * @param props - {@link TextAreaProps}
- */
+/** Multiline input. Field injects chrome via TextAreaContext. */
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {
   return <Box flex={1} {...props} as={RACTextArea} ref={ref} />;
 });

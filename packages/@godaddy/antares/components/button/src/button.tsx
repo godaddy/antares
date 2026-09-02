@@ -54,15 +54,11 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
-/** Lets a parent publish Antares button props (and slots). Optional. */
+/** Optional parent context for Antares button props (and slots). */
 export const ButtonContext = createContext<ContextValue<ButtonProps, HTMLButtonElement>>(null);
 
 /**
- * The Button component allows users to trigger an action.
- * Parents may publish props through {@link ButtonContext}; local props win.
- * RAC still owns press behavior via its own button context.
- *
- * @param props - The properties {@link ButtonProps} passed to the component.
+ * Triggers an action. Parents may publish props via ButtonContext; local props win.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   [props, ref] = useContextProps(props, ref, ButtonContext);

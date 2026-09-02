@@ -40,12 +40,7 @@ export interface RadioProps extends Omit<RACRadioFieldProps, 'children'>, FlexOw
   children?: ReactNode;
 }
 
-/**
- * Antares Radio component
- *
- * @param props - {@link RadioProps}
- * @returns Radio button with indicator and label
- */
+/** Radio with an associated label. */
 export function Radio({ children, ...props }: RadioProps) {
   return (
     <Flex {...props} as={RACRadioField}>
@@ -61,16 +56,12 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, F
   /** Layout axis for the radio items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
 
-  /** `Label`, the `Radio`s, optional `Text slot="description"`, and `FieldError`. */
+  /** Field interior (`Label`, radios, description, `FieldError`). */
   children: ReactNode | ((renderProps: RACRadioGroupRenderProps) => ReactNode);
 }
 
 /**
- * Radio group field. Compose from `Label`, the `Radio`s, `Text slot="description"`, and
- * `FieldError`; loose radios are wrapped in a `Group`, or wrap them yourself to lay them out.
- * `orientation` sets keyboard navigation, ARIA, and item layout.
- *
- * @param props - {@link RadioGroupProps}
+ * Radio group. Loose radios are wrapped in a Group when omitted.
  *
  * @example
  * ```tsx

@@ -23,7 +23,7 @@ const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'sh
 const DEFAULT_DATE_PLACEHOLDER = 'Select a date';
 const DEFAULT_RANGE_PLACEHOLDER = 'Select dates';
 
-/** The trigger both pickers present: a calendar `Icon` beside the formatted value. */
+/** Shared trigger: calendar icon beside the formatted value. */
 function PickerControl({ children }: { children: ReactNode }) {
   return (
     <Group alignItems="center">
@@ -35,7 +35,7 @@ function PickerControl({ children }: { children: ReactNode }) {
   );
 }
 
-/** The popover both pickers open, holding the `Calendar` or `RangeCalendar` the field inserts. */
+/** Shared calendar popover shell. */
 function PickerOverlay({ children }: { children: ReactNode }) {
   return (
     <Popover hideArrow>
@@ -44,7 +44,7 @@ function PickerOverlay({ children }: { children: ReactNode }) {
   );
 }
 
-/** The trigger label's formatter, following the active locale. */
+/** Locale-aware formatter for the trigger label. */
 function useTriggerFormatter(formatOptions: Intl.DateTimeFormatOptions) {
   const { locale } = useLocale();
 
@@ -60,22 +60,12 @@ export interface DatePickerProps extends Omit<RACDatePickerProps<CalendarDate>, 
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /**
-   * The interior: a `Label`, an optional `Text slot="description"` and `FieldError`, and whichever
-   * of the trigger and the calendar popover you want to customize. Pass a function to read state
-   * such as `isOpen` while composing.
-   */
+  /** Field interior. Pass a function to read render props such as `isOpen`. */
   children: ReactNode | ((renderProps: RACDatePickerRenderProps) => ReactNode);
 }
 
 /**
- * DatePicker shows a read-only formatted date label; the whole field opens a calendar popover for
- * selection. Date-only (`CalendarDate`). Write the pieces you want to customize - a `Label`, a
- * `Text slot="description"`, a `FieldError`, a `DatePickerControl` to set the label format, or a
- * `Group` / `Popover` interior of your own - and the field fills in the trigger and the calendar it
- * doesn't find, in the order you wrote them.
- *
- * @param props - {@link DatePickerProps}
+ * Date-only picker (`CalendarDate`). Fills in the trigger and calendar popover when omitted.
  *
  * @example
  * ```tsx
@@ -111,17 +101,11 @@ export interface DatePickerControlProps {
   /** Intl.DateTimeFormat options for the trigger label. */
   formatOptions?: Intl.DateTimeFormatOptions;
 
-  /** Text shown in the trigger when no date is selected. @default 'Select a date' */
+  /** Placeholder when no date is selected. @default 'Select a date' */
   placeholder?: string;
 }
 
-/**
- * Preset trigger for `DatePicker`: a `Group` with a calendar `Icon` and the current
- * `DatePickerValue`. `DatePicker` inserts it when the interior has no control of its own - write it
- * explicitly to set `formatOptions` or `placeholder`.
- *
- * @param props - {@link DatePickerControlProps}
- */
+/** Preset trigger; write explicitly to set `formatOptions` or `placeholder`. */
 export function DatePickerControl({ formatOptions, placeholder }: DatePickerControlProps) {
   return (
     <PickerControl>
@@ -136,22 +120,12 @@ export interface DateRangePickerProps
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
 
-  /**
-   * The interior: a `Label`, an optional `Text slot="description"` and `FieldError`, and whichever
-   * of the trigger and the calendar popover you want to customize. Pass a function to read state
-   * such as `isOpen` while composing.
-   */
+  /** Field interior. Pass a function to read render props such as `isOpen`. */
   children: ReactNode | ((renderProps: RACDateRangePickerRenderProps) => ReactNode);
 }
 
 /**
- * DateRangePicker shows a read-only `start - end` label; the whole field opens a range calendar
- * popover. Date-only (`CalendarDate`). Write the pieces you want to customize - a `Label`, a
- * `Text slot="description"`, a `FieldError`, a `DateRangePickerControl` to set the label format, or
- * a `Group` / `Popover` interior of your own - and the field fills in the trigger and the calendar
- * it doesn't find, in the order you wrote them.
- *
- * @param props - {@link DateRangePickerProps}
+ * Date-only range picker (`CalendarDate`). Fills in the trigger and calendar popover when omitted.
  *
  * @example
  * ```tsx
@@ -187,17 +161,11 @@ export interface DateRangePickerControlProps {
   /** Intl.DateTimeFormat options for the trigger label. */
   formatOptions?: Intl.DateTimeFormatOptions;
 
-  /** Text shown in the trigger when no range is selected. @default 'Select dates' */
+  /** Placeholder when no range is selected. @default 'Select dates' */
   placeholder?: string;
 }
 
-/**
- * Preset trigger for `DateRangePicker`: a `Group` with a calendar `Icon` and the current
- * `DateRangePickerValue`. `DateRangePicker` inserts it when the interior has no control of its own -
- * write it explicitly to set `formatOptions` or `placeholder`.
- *
- * @param props - {@link DateRangePickerControlProps}
- */
+/** Preset trigger; write explicitly to set `formatOptions` or `placeholder`. */
 export function DateRangePickerControl({ formatOptions, placeholder }: DateRangePickerControlProps) {
   return (
     <PickerControl>
@@ -207,14 +175,14 @@ export function DateRangePickerControl({ formatOptions, placeholder }: DateRange
 }
 
 export interface DatePickerValueProps {
-  /** Intl.DateTimeFormat options controlling how the selected date renders in the trigger. */
+  /** Format options for the selected date. */
   formatOptions?: Intl.DateTimeFormatOptions;
 
-  /** Text shown in the trigger when no date is selected. @default 'Select a date' */
+  /** Placeholder when no date is selected. @default 'Select a date' */
   placeholder?: string;
 }
 
-/** Reads the picker value from context and renders it as a formatted label, or the placeholder. */
+/** Formatted date label, or the placeholder. */
 export function DatePickerValue(props: DatePickerValueProps) {
   const { formatOptions = DEFAULT_FORMAT, placeholder = DEFAULT_DATE_PLACEHOLDER } = props;
   const state = useContext(DatePickerStateContext);
@@ -229,14 +197,14 @@ export function DatePickerValue(props: DatePickerValueProps) {
 }
 
 export interface DateRangePickerValueProps {
-  /** Intl.DateTimeFormat options controlling how each date renders in the trigger. */
+  /** Format options for each date in the range. */
   formatOptions?: Intl.DateTimeFormatOptions;
 
-  /** Text shown in the trigger when no range is selected. @default 'Select dates' */
+  /** Placeholder when no range is selected. @default 'Select dates' */
   placeholder?: string;
 }
 
-/** Reads the range value from context and renders `start - end`, or the placeholder. */
+/** Formatted `start - end` label, or the placeholder. */
 export function DateRangePickerValue(props: DateRangePickerValueProps) {
   const { formatOptions = DEFAULT_FORMAT, placeholder = DEFAULT_RANGE_PLACEHOLDER } = props;
   const state = useContext(DateRangePickerStateContext);
