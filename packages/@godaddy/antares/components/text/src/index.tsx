@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef } from 'react';
 import { cx } from 'cva';
 import { Text as RACText, TextContext as RACTextContext, type TextProps as RACTextProps } from 'react-aria-components';
 import styles from './index.module.css';
@@ -13,7 +13,7 @@ export interface TextProps extends Omit<RACTextProps, 'elementType' | 'slot'> {
   as?: string;
 
   /** Text content. */
-  children?: ReactNode;
+  children?: RACTextProps['children'];
 
   /** Maximum number of lines to display. */
   maxLines?: number;

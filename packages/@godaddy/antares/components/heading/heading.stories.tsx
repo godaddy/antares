@@ -13,7 +13,7 @@ export const Examples = getExamples('./examples');
 
 export const Playground = getStory(PlaygroundExample, {
   args: {
-    level: 2,
+    level: 3,
     children: 'Heading'
   },
   argTypes: {

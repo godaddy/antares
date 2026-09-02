@@ -11,7 +11,7 @@ import * as Stories from './text-field.stories.tsx';
 
 ## Features
 
-- **Composable interior**: Compose `Label`, `Input` or `TextArea` (a `Group` is added for you when omitted), `Text slot="description"`, and `FieldError`. Use an explicit `Group` for controls or adornments
+- **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
 - **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
 - **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled

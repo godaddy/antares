@@ -214,6 +214,11 @@
     font-size: var(--ux-oc0naw, 1rem);
     padding: var(--button-space-md);
 
+    > :where([data-icon]) {
+      width: 1lh;
+      height: 1lh;
+    }
+
     &:where(.sm) {
       font-size: calc(1em / 1.125);
       padding: var(--button-space-sm);

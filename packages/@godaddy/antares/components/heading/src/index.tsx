@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef } from 'react';
 import { cx } from 'cva';
 import {
   Heading as RACHeading,
@@ -12,19 +12,15 @@ export const HeadingContext = RACHeadingContext;
 export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
   /**
    * The heading level, rendered as the matching `h1`-`h6` element.
-   * @default 2
+   * @default 3
    */
   level?: 1 | 2 | 3 | 4 | 5 | 6;
 
-  /**
-   * Additional class names to apply to the heading.
-   */
+  /** Additional class names to apply to the heading. */
   className?: string;
 
-  /**
-   * The content to display inside the heading.
-   */
-  children?: ReactNode;
+  /** The content to display inside the heading. */
+  children?: RACHeadingProps['children'];
 }
 
 /**
@@ -36,11 +32,11 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
  * @example
  * ```tsx
  * <Heading slot="title">Delete file?</Heading>
- * <Heading level={3}>Section</Heading>
+ * <Heading level={2}>Section</Heading>
  * ```
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
-  const { level = 2, className, ...rest } = props;
+  const { level, className, ...rest } = props;
 
   return <RACHeading {...rest} ref={ref} level={level} className={cx(styles.heading, className)} />;
 });

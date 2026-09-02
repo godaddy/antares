@@ -1,7 +1,7 @@
 import { Flex, Heading } from '@godaddy/antares';
 
 /**
- * `Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
+ * `Heading` renders a semantic `h1`-`h6` element via the `level` prop.
  * Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
  * @order 1
  */
