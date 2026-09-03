@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-XlZ5Wlzt.js";import{Dn as t}from"./useTooltipTrigger-CaWwNj6z.js";var n=e((()=>{t()}));export{n as t};
