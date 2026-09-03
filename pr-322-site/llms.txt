@@ -18,9 +18,9 @@
 - [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
 - [ListBox](/docs/components/listbox): ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.
 - [Menu](/docs/components/menu): Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.
-- [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
 - [NumberField](/docs/components/number-field): NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
+- [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [Pressable](/docs/components/pressable): A wrapperless interaction primitive that adds accessible press behavior to a single child element.
@@ -30,10 +30,10 @@
 - [RangeField](/docs/components/range-field): RangeField lets users select one numeric value or a related set of values on a bounded scale.
 - [SegmentedController](/docs/components/segmented-controller): A segmented controller is a linear set of two or more segments, each of which functions as a button. A segmented controller allows users to select options, switch views, or sort elements.
 - [Select](/docs/components/select): Select is a dropdown for picking one or more values from a list of options. It renders a labeled trigger and a popover listbox, supports single and multiple selection, and submits naturally inside a form.
+- [Structure primitives](/docs/components/structure): Generic structural containers (Content, Header, Footer, ButtonGroup) for composing a component's interior.
 - [Switch](/docs/components/switch): A binary toggle control that switches a setting between on and off states, communicated via the WAI-ARIA switch role.
 - [Tabs](/docs/components/tabs): Tabs organize peer sections of content and let users switch between them without leaving the page.
 - [Tag](/docs/components/tag): Non-interactive labels that highlight statuses and categories.
-- [Structure primitives](/docs/components/structure): Generic structural containers (Content, Header, Footer, ButtonGroup) for composing a component's interior.
 - [Text](/docs/components/text): Text component for displaying and formatting text content with alignment and truncation options
 - [TextField](/docs/components/text-field): TextField is a single-line or multiline text input with optional label, description, and error message. Use it in forms for short answers (email, search, name) or longer content (comments). It supports optional leading and trailing text adornments (e.g. currency or units).
 - [ToggleButton](/docs/components/toggle-button): Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.

@@ -2418,115 +2418,6 @@ Nested menus via `SubmenuTrigger`.
 <PropTable />
 
 
-# Modal
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
-`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
-
-### Scrollable [#scrollable]
-
-When the content is taller than the viewport, the `Content` region scrolls while the title
-row and the `ButtonGroup` stay pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
-
-### Triggerless [#triggerless]
-
-`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
-`ModalTrigger`. Useful when the modal is opened from several places at once.
-
-<Story of="TriggerlessExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard interaction [#keyboard-interaction]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the next focusable element inside the modal |
-| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
-
-### ARIA [#aria]
-
-* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
-* Focus is trapped within the modal while open and returned to the trigger on close
-
-## Best Practices [#best-practices]
-
-* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
-* Pair every action button with `slot="close"` when it should dismiss the modal
-* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
-
-## Props [#props]
-
-```tsx
-<ModalTrigger>
-  <Button />
-  <Modal>
-    <Heading slot="title" />
-    <CloseButton />
-    <Header />
-    <Content />
-    <Footer />
-    <ButtonGroup />
-    {/* ... */}
-  </Modal>
-</ModalTrigger>
-```
-
-The `Modal` component accepts the following props:
-
-<PropTable />
-
-The `ModalTrigger` component accepts the following props:
-
-<PropTable />
-
-
 # MetricsLockup
 
 
@@ -2730,6 +2621,115 @@ Stepper buttons are real buttons and follow standard button keyboard activation.
 ## Props [#props]
 
 The `NumberField` component accepts the following props:
+
+<PropTable />
+
+
+# Modal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`ModalTrigger` wraps a trigger button and a `<Modal>`, handling open state automatically. Based on RAC `DialogTrigger`.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Compose a Modal from a `Heading slot="title"`, a `CloseButton`, `Content`, and a
+`ButtonGroup`. `ModalTrigger` opens the Modal and manages its open/close state.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Delete file?</Heading>\n        <CloseButton />\n        <Content>This action cannot be undone. The file will be permanently removed.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22;>Cancel</Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;critical\&#x22;>\n            Delete\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `isOpen` and `onOpenChange` to `ModalTrigger` to control the open state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Flex, Text } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ModalTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n        <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n        <Modal>\n          <Heading slot=\&#x22;title\&#x22;>Modal title</Heading>\n          <CloseButton />\n          <Content>\n            She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n          </Content>\n          <ButtonGroup>\n            <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n              Close\n            </Button>\n          </ButtonGroup>\n        </Modal>\n      </ModalTrigger>\n\n      <Text>The modal is currently {isOpen ? 'open' : 'closed'}.</Text>\n\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setIsOpen(true)}>\n        Open from outside\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Scrollable [#scrollable]
+
+When the content is taller than the viewport, the `Content` region scrolls while the title
+row and the `ButtonGroup` stay pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { ModalTrigger, Modal, Button, CloseButton, Heading, Content, ButtonGroup, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <ModalTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open modal</Button>\n      <Modal>\n        <Heading slot=\&#x22;title\&#x22;>Terms of service</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 24 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;secondary\&#x22;>\n            Decline\n          </Button>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Accept\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </ModalTrigger>\n  );\n}&#x22;" />
+
+### Triggerless [#triggerless]
+
+`Modal` accepts `isOpen` and `onOpenChange` directly, so it can be controlled without a
+`ModalTrigger`. Useful when the modal is opened from several places at once.
+
+<Story of="TriggerlessExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, ButtonGroup, CloseButton, Content, Heading, Modal } from '@godaddy/antares';\n\nexport function TriggerlessExample() {\n  const [isOpen, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open modal\n      </Button>\n      <Modal isOpen={isOpen} onOpenChange={setOpen}>\n        <Heading slot=\&#x22;title\&#x22;>Triggerless modal</Heading>\n        <CloseButton />\n        <Content>This is the content of the modal.</Content>\n        <ButtonGroup>\n          <Button slot=\&#x22;close\&#x22; variant=\&#x22;primary\&#x22;>\n            Done\n          </Button>\n        </ButtonGroup>\n      </Modal>\n    </>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard interaction [#keyboard-interaction]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the next focusable element inside the modal |
+| `Escape` | Closes the modal (unless `isKeyboardDismissDisabled`)      |
+
+### ARIA [#aria]
+
+* `role="dialog"` is applied automatically by the underlying React Aria `Dialog`
+* Focus is trapped within the modal while open and returned to the trigger on close
+
+## Best Practices [#best-practices]
+
+* Always include a `Heading slot="title"` so the dialog has an accessible name; otherwise pass `aria-label`/`aria-labelledby` on `<Modal>`
+* Pair every action button with `slot="close"` when it should dismiss the modal
+* Set `isDismissable={false}` to prevent outside-click dismissal for required confirmations; to also block `Escape`, pass `isKeyboardDismissDisabled`
+
+## Props [#props]
+
+```tsx
+<ModalTrigger>
+  <Button />
+  <Modal>
+    <Heading slot="title" />
+    <CloseButton />
+    <Header />
+    <Content />
+    <Footer />
+    <ButtonGroup />
+    {/* ... */}
+  </Modal>
+</ModalTrigger>
+```
+
+The `Modal` component accepts the following props:
+
+<PropTable />
+
+The `ModalTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -3879,6 +3879,83 @@ The `Select` component accepts the following props:
 <PropTable />
 
 
+# Structure primitives
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
+
+A parent adopts them by providing the contexts around its children:
+
+```tsx
+import { Provider } from 'react-aria-components';
+import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
+
+<Provider
+  values={[
+    [HeaderContext, { padding: 'md' }],
+    [ContentContext, { padding: 'md' }],
+    [FooterContext, { padding: 'md' }],
+    [ButtonGroupContext, { justifyContent: 'end' }]
+  ]}
+>
+  {children}
+</Provider>;
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+
 # Switch
 
 
@@ -4343,83 +4420,6 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 * If the label is part of a sentence with no visual distinction — just use text.
 
 ## Props [#props]
-
-<PropTable />
-
-
-# Structure primitives
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
-
-A parent adopts them by providing the contexts around its children:
-
-```tsx
-import { Provider } from 'react-aria-components';
-import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
-
-<Provider
-  values={[
-    [HeaderContext, { padding: 'md' }],
-    [ContentContext, { padding: 'md' }],
-    [FooterContext, { padding: 'md' }],
-    [ButtonGroupContext, { justifyContent: 'end' }]
-  ]}
->
-  {children}
-</Provider>;
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
 
 <PropTable />
 
