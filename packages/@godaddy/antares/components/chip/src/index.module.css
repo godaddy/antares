@@ -1,5 +1,5 @@
 .group {
-  --_chip-group-gap: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+  --_chip-group-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
 
   display: flex;
   flex-direction: column;
@@ -40,9 +40,9 @@
 .chip {
   --_chip-font-size: 1rem;
   --_chip-line-height: 1.375;
-  --_chip-gap: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
-  --_chip-block-padding: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
-  --_chip-inline-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
+  --_chip-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_chip-block-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
+  --_chip-inline-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
   --_chip-remove-target: calc(var(--_chip-font-size) * var(--_chip-line-height) + var(--_chip-block-padding) * 2);
   --_chip-foreground: var(--ux-1utwv7e, #111);
   --_chip-background: var(--ux-1mh0ktr, #f5f5f5);
@@ -50,14 +50,14 @@
 
   &:where([data-size="sm"]) {
     --_chip-font-size: 0.875rem;
-    --_chip-block-padding: var(--size-space-010, calc(var(--ux-1sbfig8, 0.5rem) * 0.5));
-    --_chip-inline-padding: var(--size-space-020, var(--ux-1sbfig8, 0.5rem));
+    --_chip-block-padding: var(--size-space-010, calc(var(--ux-1sbfig8, 0.25rem) * 0.5));
+    --_chip-inline-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
   }
 
   &:where([data-size="lg"]) {
     --_chip-font-size: 1.125rem;
-    --_chip-block-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.5rem) * 2));
-    --_chip-inline-padding: var(--size-space-060, calc(var(--ux-1sbfig8, 0.5rem) * 3));
+    --_chip-block-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
+    --_chip-inline-padding: var(--size-space-060, calc(var(--ux-1sbfig8, 0.25rem) * 3));
   }
 
   position: relative;
@@ -114,7 +114,7 @@
   &:where([data-selected]) {
     --_chip-foreground: var(--ux-k4fkva, #111);
     --_chip-background: var(--ux-gdy377, #fff);
-    --_chip-border: var(--ux-187j9dd, #09757a);
+    --_chip-border: var(--ux-187j9dd, #00a4a6);
 
     &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
       --_chip-foreground: var(--ux-k4fkva, #111);
@@ -125,7 +125,7 @@
     &:where([data-focus-visible]) {
       --_chip-foreground: var(--ux-k4fkva, #111);
       --_chip-background: var(--ux-gdy377, #fff);
-      --_chip-border: var(--ux-187j9dd, #09757a);
+      --_chip-border: var(--ux-187j9dd, #00a4a6);
     }
   }
 
