@@ -2,7 +2,6 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
-import { Chip, ChipGroup, ChipList } from '@godaddy/antares';
 import { RouterProvider } from 'react-aria-components';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { ControlledSelectionExample } from '../examples/controlled-selection.tsx';
@@ -10,6 +9,7 @@ import { DisabledExample } from '../examples/disabled.tsx';
 import { EmptyStateExample } from '../examples/empty-state.tsx';
 import { InteractionStatesExample } from '../examples/interaction-states.tsx';
 import { LabelLengthExample } from '../examples/label-length.tsx';
+import { LinkedChipExample } from '../examples/linked.tsx';
 import { PrimitiveAndComposedExample } from '../examples/primitive-and-composed.tsx';
 import { RemovableChipsExample } from '../examples/removable-chips.tsx';
 import { SelectionModesExample } from '../examples/selection-modes.tsx';
@@ -47,6 +47,18 @@ describe('@godaddy/antares', function antares() {
       assume(link.getAttribute('data-href')).equals('/filters');
     });
 
+    it('preserves explicit dimensions on composed Icons', async function iconDimensions() {
+      await render(<PrimitiveAndComposedExample />);
+
+      const icons = page.getByRole('row', { name: 'Sized icon' }).element().querySelectorAll('svg');
+
+      expect(icons).toHaveLength(2);
+      expect(getComputedStyle(icons[0]).inlineSize).toBe('12px');
+      expect(getComputedStyle(icons[0]).blockSize).toBe('12px');
+      expect(getComputedStyle(icons[1]).inlineSize).toBe('10px');
+      expect(getComputedStyle(icons[1]).blockSize).toBe('10px');
+    });
+
     it('supports linked Chips', async function linkedChips() {
       const user = userEvent.setup();
       const onAction = vi.fn();
@@ -54,13 +66,7 @@ describe('@godaddy/antares', function antares() {
 
       await render(
         <RouterProvider navigate={navigate}>
-          <ChipGroup aria-label="Filters">
-            <ChipList>
-              <Chip id="filters" href="/filters" onAction={onAction}>
-                Filters
-              </Chip>
-            </ChipList>
-          </ChipGroup>
+          <LinkedChipExample onAction={onAction} />
         </RouterProvider>
       );
 

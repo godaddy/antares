@@ -8,7 +8,7 @@
 }
 
 .label {
-  color: var(--ux-1glcx6s, #2b2b2b);
+  color: var(--color-input-text-default, var(--ux-1glcx6s, #2b2b2b));
   font-family: var(--ux-15ks663, sans-serif);
   font-size: var(--ux-16aixzc, 0.875rem);
   font-weight: var(--ux-aarlu5, 500);
@@ -149,19 +149,31 @@
 
   :where(.icon) {
     flex: none;
-    inline-size: calc(var(--_chip-font-size) * 1.5);
-    block-size: calc(var(--_chip-font-size) * 1.5);
-    margin-block: calc((var(--_chip-font-size) * var(--_chip-line-height) - var(--_chip-font-size) * 1.5) / 2);
     overflow: visible;
   }
 
+  :where(.icon:not([width])) {
+    inline-size: calc(var(--_chip-font-size) * 1.5);
+  }
+
+  :where(.icon:not([height])) {
+    block-size: calc(var(--_chip-font-size) * 1.5);
+    margin-block: calc((var(--_chip-font-size) * var(--_chip-line-height) - var(--_chip-font-size) * 1.5) / 2);
+  }
+
   /* Trailing consumer icon: Toggle check. Descendant — Tag gridcell. */
-  :where(.icon:last-child) {
+  :where(.icon:last-child:not([width])) {
     inline-size: calc(var(--_chip-font-size) * var(--_chip-line-height));
+  }
+
+  :where(.icon:last-child:not([height])) {
     block-size: calc(var(--_chip-font-size) * var(--_chip-line-height));
     margin-block: 0;
   }
+}
 
+/* Keep the remove defaults low-specificity so Button presentation classes can override them. */
+:where(.chip) {
   /* Remove control: keep the glyph compact and size its target with the Chip. */
   :where(.remove) {
     position: relative;
@@ -195,9 +207,15 @@
 
     /* Leading IconContext sizing must not size the X. */
     :where(.icon) {
-      inline-size: 1em;
-      block-size: 1em;
       margin-block: 0;
+    }
+
+    :where(.icon:not([width])) {
+      inline-size: 1em;
+    }
+
+    :where(.icon:not([height])) {
+      block-size: 1em;
     }
 
     &:where(:focus) {

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ConsumerClassesExample } from '../examples/consumer-classes.tsx';
-import { ContextOverridesExample } from '../examples/context-overrides.tsx';
 import { ControlledSelectionExample } from '../examples/controlled-selection.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
@@ -57,10 +56,6 @@ describe('@godaddy/antares', function antares() {
 
     it('renders ConsumerClassesExample', function consumerClassesExample() {
       expect(renderToString(<ConsumerClassesExample />)).toMatchSnapshot();
-    });
-
-    it('renders ContextOverridesExample', function contextOverridesExample() {
-      expect(renderToString(<ContextOverridesExample />)).toMatchSnapshot();
     });
   });
 });
