@@ -1,9 +1,9 @@
 export {
   Select,
   SelectItem,
-  FieldSelect,
+  SelectValue,
   type SelectProps,
   type SelectItemProps,
-  type SelectKey,
-  type FieldSelectProps
+  type SelectValueProps,
+  type SelectKey
 } from '#components/select';

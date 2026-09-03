@@ -1,65 +1,88 @@
-import { forwardRef } from 'react';
-import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
+import { type ReactNode, useContext } from 'react';
+import { mergeProps } from 'react-aria';
 import {
-  Field,
-  FieldButton,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  type FieldSize,
-  FieldInput,
-  type FieldOwnProps
-} from '#components/field';
+  DEFAULT_SLOT,
+  NumberField as RACNumberField,
+  type NumberFieldProps as RACNumberFieldProps
+} from 'react-aria-components';
+import { Field, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import { Button, ButtonContext } from '#components/button';
 import { Icon } from '#components/icon';
+import { Input } from '#components/input';
+import { Group } from '#components/structure';
 
 export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
-  /** When true, hides the increment/decrement stepper buttons. @default false */
-  hideStepper?: boolean;
-
-  /** Placeholder when the value is empty. */
-  placeholder?: string;
+  /** Field interior. Pass a function to read field state. */
+  children: RACNumberFieldProps['children'];
 
   /** Visual size of the input. @default 'md' */
   size?: FieldSize;
 }
 
+type ButtonContextValue = {
+  slots?: Record<string | symbol, object | undefined>;
+  [key: string]: unknown;
+};
+
+/** Default stepper icons on ButtonContext slots. */
+function NumberFieldStepperContext({ children }: { children: ReactNode }) {
+  const inherited = (useContext(ButtonContext) ?? {}) as ButtonContextValue;
+  const slots = inherited.slots ?? {};
+
+  return (
+    <ButtonContext.Provider
+      value={{
+        ...inherited,
+        slots: {
+          [DEFAULT_SLOT]: slots[DEFAULT_SLOT] ?? {},
+          ...slots,
+          decrement: mergeProps(slots.decrement ?? {}, { children: <Icon icon="minus" /> }),
+          increment: mergeProps(slots.increment ?? {}, { children: <Icon icon="plus" /> })
+        }
+      }}
+    >
+      {children}
+    </ButtonContext.Provider>
+  );
+}
+
+/** Preset stepper Group; replace with a bare Input or custom Group. */
+function NumberFieldControl() {
+  return (
+    <Group>
+      <Button slot="decrement" />
+      <Input />
+      <Button slot="increment" />
+    </Group>
+  );
+}
+
 /**
- * Antares NumberField component. Renders a numeric input with label, description, error message, and optional stepper buttons.
- *
- * @param props - {@link NumberFieldProps}
- * @param ref - Ref for the input element.
- * @returns JSX element
+ * Numeric input field. Fills in the stepper control when omitted.
  *
  * @example
  * ```tsx
- * <NumberField label="Quantity" placeholder="0" minValue={0} maxValue={100} />
- * <NumberField label="Amount" value={amount} onChange={setAmount} minValue={0} />
- * <NumberField label="Guests" hideStepper description="Enter a whole number." />
+ * <NumberField minValue={0} maxValue={100}>
+ *   <Label>Quantity</Label>
+ *   <FieldError />
+ * </NumberField>
  * ```
  */
-export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
-  const { description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
-  const { isDisabled, isRequired } = racProps;
+export function NumberField(props: NumberFieldProps) {
+  const { children, size, isDisabled, ...racProps } = props;
 
   return (
-    <Field as={RACNumberField} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size}>
-        {!hideStepper && (
-          <FieldButton slot="decrement">
-            <Icon icon="minus" />
-          </FieldButton>
-        )}
-        <FieldInput ref={ref} placeholder={placeholder} />
-        {!hideStepper && (
-          <FieldButton slot="increment">
-            <Icon icon="plus" />
-          </FieldButton>
-        )}
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
-    </Field>
+    <NumberFieldStepperContext>
+      <Field
+        as={RACNumberField}
+        interior="box"
+        size={size}
+        isDisabled={isDisabled}
+        slots={{ control: <NumberFieldControl /> }}
+        {...racProps}
+      >
+        {children}
+      </Field>
+    </NumberFieldStepperContext>
   );
-});
+}

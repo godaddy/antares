@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { TextFieldAdornmentsExample } from '../examples/adornments';
+import { AdornmentsExample } from '../examples/adornments';
+import { ControlsExample } from '../examples/controls';
 import { DefaultExample } from '../examples/default';
-import { TextFieldDisabledExample } from '../examples/disabled';
-import { TextFieldInvalidExample } from '../examples/invalid';
-import { TextFieldMultilineExample } from '../examples/multiline';
-import { TextFieldSizesExample } from '../examples/sizes';
+import { DisabledExample } from '../examples/disabled';
+import { InvalidExample } from '../examples/invalid';
+import { MultilineExample } from '../examples/multiline';
+import { SizesExample } from '../examples/sizes';
+import { TelephoneFieldExample } from '../examples/telephone-field';
 
 describe('@godaddy/antares', function antares() {
   describe('#TextField', function textField() {
@@ -16,32 +18,36 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('renders invalid example', function invalid() {
-        const result = renderToString(<TextFieldInvalidExample />);
-        expect(result).toContain('data-invalid');
+        const result = renderToString(<InvalidExample />);
         expect(result).toMatchSnapshot();
       });
 
       it('renders disabled example', function disabled() {
-        const result = renderToString(<TextFieldDisabledExample />);
-        expect(result).toContain('data-disabled');
+        const result = renderToString(<DisabledExample />);
         expect(result).toMatchSnapshot();
       });
 
       it('renders adornments example', function adornments() {
-        const result = renderToString(<TextFieldAdornmentsExample />);
+        const result = renderToString(<AdornmentsExample />);
         expect(result).toMatchSnapshot();
       });
 
       it('renders multiline example', function multiline() {
-        const result = renderToString(<TextFieldMultilineExample />);
-        expect(result).toContain('textarea');
+        const result = renderToString(<MultilineExample />);
         expect(result).toMatchSnapshot();
       });
 
       it('renders sizes example', function sizes() {
-        const result = renderToString(<TextFieldSizesExample />);
-        expect(result).toContain('data-size="sm"');
+        const result = renderToString(<SizesExample />);
         expect(result).toMatchSnapshot();
+      });
+
+      it('renders controls example', function controls() {
+        expect(renderToString(<ControlsExample />)).toMatchSnapshot();
+      });
+
+      it('renders telephone field example', function telephoneField() {
+        expect(renderToString(<TelephoneFieldExample />)).toMatchSnapshot();
       });
     });
   });

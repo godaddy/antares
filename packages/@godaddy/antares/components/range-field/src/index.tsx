@@ -8,7 +8,9 @@ import {
   SliderThumb as RACSliderThumb,
   SliderTrack as RACSliderTrack
 } from 'react-aria-components';
-import { Field, FieldDescription, FieldLabel, type FieldOwnProps } from '#components/field';
+import { Field, type FieldOwnProps } from '#components/_internal/field';
+import { Label } from '#components/label';
+import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
 import {
@@ -32,7 +34,7 @@ const MAX_MARKER_COUNT = 1000;
 /** Props for configuring a {@link RangeField}. */
 export interface RangeFieldProps<T extends number | number[] = number | number[]>
   extends Omit<RACSliderProps<T>, 'children' | 'orientation' | 'render'>,
-    Omit<FieldOwnProps, 'as' | 'className' | 'errorMessage'> {
+    Omit<FieldOwnProps, 'as' | 'className'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
@@ -83,6 +85,12 @@ export interface RangeFieldProps<T extends number | number[] = number | number[]
 
   /** Displays a required indicator in the field label. */
   isRequired?: boolean;
+
+  /** Label text shown above the field. */
+  label?: ReactNode;
+
+  /** Helper text shown below the field. */
+  description?: ReactNode;
 }
 
 /** Imperative controls for a {@link RangeField}. */
@@ -134,7 +142,8 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
   const containerRef = useRef<HTMLDivElement>(null);
   const thumbInputRefs = useRef<RefObject<HTMLInputElement | null>[]>([]);
   const descriptionId = useId();
-  const describedBy = [ariaDescribedBy, description ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
+  const describedBy =
+    [ariaDescribedBy, description != null ? descriptionId : undefined].filter(Boolean).join(' ') || undefined;
 
   useImperativeHandle(
     ref,
@@ -163,9 +172,10 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
       formatOptions={formatOptions}
       aria-describedby={describedBy}
       gap={gap}
+      data-required={isRequired || undefined}
       className={composeClassName(className, styles.slider)}
     >
-      <RangeFieldHeader label={label} isRequired={isRequired} valueLabel={valueLabel} />
+      <RangeFieldHeader label={label} valueLabel={valueLabel} />
       <RangeFieldControl
         markers={markers}
         minValue={minValue}
@@ -176,7 +186,11 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
         thumbInputRefs={thumbInputRefs}
       />
       <RangeFieldLabels minLabel={minLabel} maxLabel={maxLabel} />
-      <FieldDescription id={descriptionId}>{description}</FieldDescription>
+      {description != null ? (
+        <Text id={descriptionId} slot="description">
+          {description}
+        </Text>
+      ) : null}
     </Field>
   );
 }) as <T extends number | number[] = number | number[]>(
@@ -189,11 +203,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
  * @param props - Label, required state, and value-label configuration from {@link RangeFieldProps}.
  * @returns Header content, or `null` when neither label is present.
  */
-function RangeFieldHeader({
-  label,
-  isRequired,
-  valueLabel
-}: Pick<RangeFieldProps<number | number[]>, 'label' | 'isRequired' | 'valueLabel'>) {
+function RangeFieldHeader({ label, valueLabel }: Pick<RangeFieldProps<number | number[]>, 'label' | 'valueLabel'>) {
   const valueLabelVisible = valueLabel != null && valueLabel !== false;
 
   if (!label && !valueLabelVisible) {
@@ -202,9 +212,7 @@ function RangeFieldHeader({
 
   return (
     <Flex direction="row" wrap="wrap" gap="sm" alignItems="center" className={styles.header}>
-      <FieldLabel isRequired={isRequired} className={styles.label}>
-        {label}
-      </FieldLabel>
+      {label ? <Label className={styles.label}>{label}</Label> : null}
       {valueLabelVisible && (
         <RACSliderOutput className={styles.valueLabel}>{valueLabel === true ? undefined : valueLabel}</RACSliderOutput>
       )}

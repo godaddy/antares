@@ -1,11 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { forwardRef, useId } from 'react';
-import {
-  ProgressBar as RACProgressBar,
-  type ProgressBarProps as RACProgressBarProps,
-  Label as RACLabel
-} from 'react-aria-components';
+import { ProgressBar as RACProgressBar, type ProgressBarProps as RACProgressBarProps } from 'react-aria-components';
 import styles from './index.module.css';
+import { Label } from '#components/label';
 import { Text } from '#components/text';
 import { Flex } from '#components/layout/flex';
 import { composeClassName } from '#utils/render-props.ts';
@@ -63,7 +60,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(function
         <>
           {label ? (
             <Flex justifyContent="space-between" alignItems="baseline">
-              <RACLabel className={styles.label}>{label}</RACLabel>
+              <Label className={styles.label}>{label}</Label>
               {valueText ? <Text className={styles.valueLabel}>{valueText}</Text> : null}
             </Flex>
           ) : null}

@@ -1,5 +1,6 @@
 export {
   Button,
+  ButtonContext,
   type ButtonProps,
   LinkButton,
   type LinkButtonProps,

@@ -1,18 +1,14 @@
-import { NumberField } from '@godaddy/antares';
+import { FieldError, Label, NumberField } from '@godaddy/antares';
 
 /**
- * Use `isInvalid` with `errorMessage` for validation feedback.
+ * Use `isInvalid` with a `FieldError` for validation feedback.
  * @order 3
  */
-export function NumberFieldInvalidExample() {
+export function InvalidExample() {
   return (
-    <NumberField
-      label="Quantity"
-      minValue={0}
-      maxValue={100}
-      errorMessage="Please enter a value between 0 and 100"
-      isInvalid
-      isRequired
-    />
+    <NumberField minValue={0} maxValue={100} isInvalid isRequired>
+      <Label>Quantity</Label>
+      <FieldError>Please enter a value between 0 and 100</FieldError>
+    </NumberField>
   );
 }

@@ -1,12 +1,12 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
-import { DatePickerControlledExample } from '../examples/controlled.tsx';
-import { DateRangePickerExample } from '../examples/range.tsx';
-import { DatePickerWithErrorExample } from '../examples/with-error.tsx';
-import { DatePickerDisabledExample } from '../examples/disabled.tsx';
-import { DatePickerMinMaxExample } from '../examples/min-max.tsx';
-import { DatePickerFormatOptionsExample } from '../examples/format-options.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { RangeExample } from '../examples/range.tsx';
+import { WithErrorExample } from '../examples/with-error.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { MinMaxExample } from '../examples/min-max.tsx';
+import { FormatOptionsExample } from '../examples/format-options.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -14,32 +14,32 @@ describe('@godaddy/antares', function antares() {
 
   describe('#DatePicker', function datePicker() {
     it('with value', async function withValue() {
-      const { container } = await render(<DatePickerControlledExample />);
+      const { container } = await render(<ControlledExample />);
       await expect(container).toMatchScreenshot('date-picker-value');
     });
 
     it('range', async function range() {
-      const { container } = await render(<DateRangePickerExample />);
+      const { container } = await render(<RangeExample />);
       await expect(container).toMatchScreenshot('date-range-picker');
     });
 
     it('error', async function error() {
-      const { container } = await render(<DatePickerWithErrorExample />);
+      const { container } = await render(<WithErrorExample />);
       await expect(container).toMatchScreenshot('date-picker-error');
     });
 
     it('disabled', async function disabled() {
-      const { container } = await render(<DatePickerDisabledExample />);
+      const { container } = await render(<DisabledExample />);
       await expect(container).toMatchScreenshot('date-picker-disabled');
     });
 
     it('min-max', async function minMax() {
-      const { container } = await render(<DatePickerMinMaxExample />);
+      const { container } = await render(<MinMaxExample />);
       await expect(container).toMatchScreenshot('date-picker-min-max');
     });
 
     it('format-options', async function formatOptions() {
-      const { container } = await render(<DatePickerFormatOptionsExample />);
+      const { container } = await render(<FormatOptionsExample />);
       await expect(container).toMatchScreenshot('date-picker-format-options');
     });
   });

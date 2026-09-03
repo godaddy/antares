@@ -1,10 +1,14 @@
-import { DatePicker } from '@godaddy/antares';
+import { DatePicker, Label } from '@godaddy/antares';
 
 /**
  * A disabled picker via `isDisabled`.
  * @title Disabled
  * @order 7
  */
-export function DatePickerDisabledExample() {
-  return <DatePicker label="Event date" isDisabled />;
+export function DisabledExample() {
+  return (
+    <DatePicker isDisabled>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
 }

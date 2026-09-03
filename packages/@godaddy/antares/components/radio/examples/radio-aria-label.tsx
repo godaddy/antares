@@ -5,7 +5,7 @@ import { Radio, RadioGroup } from '@godaddy/antares';
  * @title Aria Label
  * @order 8
  */
-export function RadioAriaLabelExample() {
+export function AriaLabelExample() {
   return (
     <RadioGroup aria-label="Sort order" defaultValue="newest">
       <Radio value="newest">Newest first</Radio>

@@ -1,0 +1,29 @@
+---
+title: Heading
+description: Semantic h1-h6 heading. Use slot="title" inside a Modal or Dialog to name the overlay.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './heading.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Renders `h1`-`h6` from the `level` prop (default `3`).
+- `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

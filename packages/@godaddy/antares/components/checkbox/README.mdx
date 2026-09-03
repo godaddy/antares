@@ -20,6 +20,8 @@ npm install --save @godaddy/antares
 
 ## Customization
 
+`CheckboxGroup` is composed: pass `Label`, the `Checkbox` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself when you need to lay them out differently. Each `Checkbox` takes label text next to the indicator. Use `orientation` to lay out the items vertically or horizontally.
+
 ### Data Attributes
 
 Components automatically add data attributes for styling different states:
@@ -58,7 +60,8 @@ Components automatically add data attributes for styling different states:
 Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
 
 ```jsx
-<CheckboxGroup label="Select options" className="custom-checkbox-group">
+<CheckboxGroup className="custom-checkbox-group">
+  <Label>Select options</Label>
   <Checkbox value="option1" className="custom-checkbox">
     Option 1
   </Checkbox>
@@ -86,26 +89,20 @@ CheckboxGroup supports validation states and error messages:
 
 - **isRequired**: Marks the group as required with visual indicator
 - **isInvalid**: Shows error state styling
-- **errorMessage**: Displays validation error text below the group
+- **`FieldError`**: Displays validation error text below the group
 
 ```jsx
-<CheckboxGroup
-  label="Required selection"
-  isRequired
-  isInvalid={!hasSelection}
-  errorMessage="At least one option must be selected"
->
+<CheckboxGroup isRequired isInvalid={!hasSelection}>
+  <Label>Required selection</Label>
   <Checkbox value="a">Option A</Checkbox>
   <Checkbox value="b">Option B</Checkbox>
+  <FieldError>At least one option must be selected</FieldError>
 </CheckboxGroup>
 ```
 
 ### Orientation
 
-Control the layout with the `orientation` prop (matching `RadioGroup`):
-
-- `vertical` (default): Stacks checkboxes vertically
-- `horizontal`: Arranges checkboxes in a horizontal row
+Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row.
 
 ## Accessibility
 
@@ -129,16 +126,19 @@ Control the layout with the `orientation` prop (matching `RadioGroup`):
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
 <CheckboxGroup value={value} defaultValue={["a"]}>
+  <Label>Options</Label>
   <Checkbox value="a">Option A</Checkbox>
 </CheckboxGroup>
 
 // ✅ Controlled mode
 <CheckboxGroup value={value} onChange={setValue}>
+  <Label>Options</Label>
   <Checkbox value="a">Option A</Checkbox>
 </CheckboxGroup>
 
 // ✅ Uncontrolled mode
 <CheckboxGroup defaultValue={["a"]}>
+  <Label>Options</Label>
   <Checkbox value="a">Option A</Checkbox>
 </CheckboxGroup>
 ```
@@ -215,14 +215,11 @@ const someSelected = childSelections.length > 0 && !allSelected;
 Always provide clear error messages and use appropriate validation states:
 
 ```jsx
-<CheckboxGroup
-  label="Terms and conditions"
-  isRequired
-  isInvalid={!agreedToTerms}
-  errorMessage="You must agree to the terms to continue"
->
+<CheckboxGroup isRequired isInvalid={!agreedToTerms}>
+  <Label>Terms and conditions</Label>
   <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
   <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+  <FieldError>You must agree to the terms to continue</FieldError>
 </CheckboxGroup>
 ```
 

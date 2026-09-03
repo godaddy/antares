@@ -20,6 +20,8 @@ npm install --save @godaddy/antares
 
 ## Customization
 
+`RadioGroup` is composed: pass `Label`, the `Radio` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself when you need to lay them out differently. Each `Radio` takes label text next to the indicator. `orientation` sets keyboard-navigation direction, ARIA, and the item layout.
+
 ### Data Attributes
 
 Components automatically add data attributes for styling different states:
@@ -54,7 +56,8 @@ Components automatically add data attributes for styling different states:
 Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
 
 ```jsx
-<RadioGroup label="Select plan" className="custom-radio-group">
+<RadioGroup className="custom-radio-group">
+  <Label>Select plan</Label>
   <Radio value="basic" className="custom-radio">
     Basic
   </Radio>
@@ -89,16 +92,19 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
 <RadioGroup value={value} defaultValue="basic">
+  <Label>Plan</Label>
   <Radio value="basic">Basic</Radio>
 </RadioGroup>
 
 // ✅ Controlled mode
 <RadioGroup value={value} onChange={setValue}>
+  <Label>Plan</Label>
   <Radio value="basic">Basic</Radio>
 </RadioGroup>
 
 // ✅ Uncontrolled mode
 <RadioGroup defaultValue="basic">
+  <Label>Plan</Label>
   <Radio value="basic">Basic</Radio>
 </RadioGroup>
 ```
@@ -156,14 +162,11 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 Always provide clear error messages:
 
 ```jsx
-<RadioGroup
-  label="Select shipping method"
-  isRequired
-  isInvalid={!selectedShipping}
-  errorMessage="Please select a shipping method"
->
+<RadioGroup isRequired isInvalid={!selectedShipping}>
+  <Label>Select shipping method</Label>
   <Radio value="standard">Standard</Radio>
   <Radio value="express">Express</Radio>
+  <FieldError>Please select a shipping method</FieldError>
 </RadioGroup>
 ```
 

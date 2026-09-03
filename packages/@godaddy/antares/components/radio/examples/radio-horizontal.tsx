@@ -1,13 +1,14 @@
-import { Radio, RadioGroup } from '@godaddy/antares';
+import { Label, Radio, RadioGroup } from '@godaddy/antares';
 
 /**
  * A radio group arranged horizontally.
  * @title Horizontal Layout
  * @order 3
  */
-export function RadioHorizontalExample() {
+export function HorizontalExample() {
   return (
-    <RadioGroup label="Select your plan" defaultValue="standard" orientation="horizontal">
+    <RadioGroup defaultValue="standard" orientation="horizontal">
+      <Label>Select your plan</Label>
       <Radio value="basic">Basic</Radio>
       <Radio value="standard">Standard</Radio>
       <Radio value="premium">Premium</Radio>

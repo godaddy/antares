@@ -1,6 +1,6 @@
-import { NumberField, type NumberFieldProps } from '@godaddy/antares';
+import { Button, FieldError, Group, Input, Label, NumberField, Text, type NumberFieldProps } from '@godaddy/antares';
 
-export interface NumberFieldPlaygroundExampleProps {
+export interface PlaygroundExampleProps {
   description?: string;
   errorMessage?: string;
   hideStepper?: boolean;
@@ -15,34 +15,38 @@ export interface NumberFieldPlaygroundExampleProps {
   step?: number;
 }
 
-export function NumberFieldPlaygroundExample({
+export function PlaygroundExample({
   description,
   errorMessage,
   hideStepper,
   isDisabled,
   isInvalid,
   isRequired,
-  label,
+  label = 'Quantity',
   maxValue,
   minValue,
   placeholder,
   size = 'md',
   step
-}: NumberFieldPlaygroundExampleProps) {
+}: PlaygroundExampleProps) {
   return (
     <NumberField
-      description={description}
-      errorMessage={errorMessage}
-      hideStepper={hideStepper}
       isDisabled={isDisabled}
       isInvalid={isInvalid}
       isRequired={isRequired}
-      label={label}
       maxValue={maxValue}
       minValue={minValue}
-      placeholder={placeholder}
       size={size}
       step={step}
-    />
+    >
+      <Label>{label}</Label>
+      <Group>
+        {hideStepper ? null : <Button slot="decrement" />}
+        <Input placeholder={placeholder} />
+        {hideStepper ? null : <Button slot="increment" />}
+      </Group>
+      {description ? <Text slot="description">{description}</Text> : null}
+      <FieldError>{errorMessage}</FieldError>
+    </NumberField>
   );
 }

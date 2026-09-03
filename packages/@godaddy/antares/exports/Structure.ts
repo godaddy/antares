@@ -10,5 +10,8 @@ export {
   type FooterProps,
   ButtonGroup,
   ButtonGroupContext,
-  type ButtonGroupProps
+  type ButtonGroupProps,
+  Group,
+  GroupContext,
+  type GroupProps
 } from '#components/structure';

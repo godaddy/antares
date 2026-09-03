@@ -11,10 +11,10 @@ import * as Stories from './select.stories.tsx';
 
 ## Features
 
-- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+- **Composable interior**: Pass `Label`, the `SelectItem`s, and optional `Text` / `FieldError`; the field adds the trigger and wraps the items in a popover, keeping the order you wrote. Write a `Group`, `Button`, `SelectValue`, `Popover`, `Content`, and `ListBox` interior of your own to replace either part
 - **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+- **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 - **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
 - **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
 

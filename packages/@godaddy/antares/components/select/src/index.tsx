@@ -1,112 +1,137 @@
-import { Select as RACSelect, type SelectProps as RACSelectProps, type Key as RACKey } from 'react-aria-components';
+import { forwardRef, type ReactNode } from 'react';
+import {
+  Select as RACSelect,
+  type SelectProps as RACSelectProps,
+  type SelectRenderProps as RACSelectRenderProps,
+  type Key as RACKey,
+  SelectValue as RACSelectValue,
+  type SelectValueProps as RACSelectValueProps
+} from 'react-aria-components';
 import {
   Field,
-  FieldSelectFragment,
-  type FieldSelectFragmentProps,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
+  mapFieldChildren,
+  normalizeFieldChildren,
   type FieldOwnProps,
-  type FieldSize
-} from '#components/field';
-import { Popover } from '#components/popover';
+  type FieldSize,
+  type FieldSlots
+} from '#components/_internal/field';
+import { Button } from '#components/button';
+import { Icon } from '#components/icon';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
-import { Content } from '#components/structure';
+import { Popover } from '#components/popover';
+import { Content, Group } from '#components/structure';
+import { composeClassName } from '#utils/render-props.ts';
+import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-type FieldSelectTriggerProps<T extends object, M extends SelectionMode> = Omit<FieldSelectFragmentProps, 'children'> & {
-  children?: RACSelectProps<T, M>['children'];
-};
-
-// Trigger (value + chevron), popover, and listbox — no Select provider. Rendered inside
-// whichever Select wraps it (the public Select, or FieldSelect's own). Wrapping the listbox
-// in a component is collection-safe: RAC builds the collection by rendering children.
-function FieldSelectTrigger<T extends object, M extends SelectionMode = 'single'>({
-  children,
-  ...props
-}: FieldSelectTriggerProps<T, M>) {
-  return (
-    <>
-      <FieldSelectFragment {...props} />
-      <Popover hideArrow>
-        <Content blockPadding="xs" inlinePadding="0">
-          <ListBox>{children}</ListBox>
-        </Content>
-      </Popover>
-    </>
-  );
-}
-
-export interface FieldSelectProps<T extends object, M extends SelectionMode = 'single'> extends RACSelectProps<T, M> {}
-
-/**
- * Box-less select for a {@link FieldGroup}.
- * Brings its own Select provider but no field/label/description/error wrapper, so it composes
- * inside a shared box (e.g. amount input + currency select). Give it an `aria-label`. For a
- * standalone, fully-decorated select use {@link Select}.
- *
- * @example
- * ```tsx
- * <FieldGroup aria-labelledby={priceLabelId}>
- *   <FieldInput aria-label="Amount" />
- *   <FieldSelect aria-label="Currency" defaultValue="usd">
- *     <SelectItem id="usd">USD</SelectItem>
- *   </FieldSelect>
- * </FieldGroup>
- * ```
- */
-export function FieldSelect<T extends object, M extends SelectionMode = 'single'>(props: FieldSelectProps<T, M>) {
-  const { children, ...selectProps } = props;
-
-  return (
-    <RACSelect {...selectProps}>
-      <FieldSelectTrigger<T, M>>{children}</FieldSelectTrigger>
-    </RACSelect>
-  );
+function selectSlots(variant: 'default' | 'control'): FieldSlots {
+  return {
+    control: <SelectControl variant={variant} />,
+    items: function wrapItems(items) {
+      return <SelectOptions>{items}</SelectOptions>;
+    }
+  };
 }
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
-  extends Omit<RACSelectProps<T, M>, 'size'>,
+  extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
     FieldOwnProps {
   /** Visual size of the trigger. @default 'md' */
   size?: FieldSize;
+
+  /** Complete field, or a control inside another field's Group. @default 'default' */
+  variant?: 'default' | 'control';
+
+  /** Field interior. Pass a function to read render props such as `isOpen`. */
+  children: ReactNode | ((renderProps: RACSelectRenderProps) => ReactNode);
 }
 
 /**
- * Antares Select. Single or multiple selection dropdown built on React Aria's Select, laid
- * out with the field primitives. Keeps the Select provider at the field root so React Aria
- * wires label/description/error automatically; shares its trigger with {@link FieldSelect}.
- * For a box-less select inside a shared {@link FieldGroup}, use {@link FieldSelect}.
+ * Select field. Fills in the trigger and wraps loose items in a popover when omitted.
+ * Use `variant="control"` to compose inside another field's Group.
  *
  * @example
  * ```tsx
- * <Select label="Coffee">
+ * <Select placeholder="Pick a drink">
+ *   <Label>Coffee</Label>
  *   <SelectItem id="espresso">Espresso</SelectItem>
- *   <SelectItem id="latte">Latte</SelectItem>
  * </Select>
  * ```
  */
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
-  const { label, description, errorMessage, children, size, ...racProps } = props;
-  const { isDisabled, isRequired } = racProps;
+  const { children, size, variant = 'default', className, ...racProps } = props;
+  const selectClass = composeClassName(className, styles.select);
+
+  if (variant === 'control') {
+    return (
+      <RACSelect {...racProps} className={selectClass}>
+        {mapFieldChildren(children, function fillInterior(node) {
+          return normalizeFieldChildren(node, selectSlots('control'));
+        })}
+      </RACSelect>
+    );
+  }
 
   return (
-    <Field as={RACSelect} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size} alignItems="center">
-        <FieldSelectTrigger<T, M> variant="select">{children}</FieldSelectTrigger>
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
+    <Field
+      as={RACSelect as typeof RACSelect<T, M>}
+      interior="box"
+      size={size}
+      slots={selectSlots('default')}
+      {...racProps}
+      className={selectClass}
+    >
+      {children}
     </Field>
   );
 }
 
+interface SelectControlProps {
+  /** Field trigger, or a control inside another field's Group. @default 'default' */
+  variant?: 'default' | 'control';
+}
+
+/** Preset trigger (`Group` + button) unless `variant="control"`. */
+function SelectControl({ variant = 'default' }: SelectControlProps) {
+  const button = (
+    <Button slot={variant === 'control' ? 'control' : 'trigger'}>
+      <SelectValue />
+      <Icon icon="chevron-down" />
+    </Button>
+  );
+
+  return variant === 'control' ? button : <Group alignItems="center">{button}</Group>;
+}
+
+interface SelectOptionsProps {
+  /** `SelectItem`s. */
+  children: ReactNode;
+}
+
+/** Preset popover wrapping loose `SelectItem`s. */
+function SelectOptions({ children }: SelectOptionsProps) {
+  return (
+    <Popover hideArrow>
+      <Content blockPadding="xs" inlinePadding="0">
+        <ListBox>{children}</ListBox>
+      </Content>
+    </Popover>
+  );
+}
+
+export interface SelectValueProps extends RACSelectValueProps<object> {}
+
+/** Selected option, or the Select placeholder. */
+export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(function SelectValue(props, ref) {
+  const { className, ...rest } = props;
+
+  return <RACSelectValue {...rest} ref={ref} className={composeClassName(className, styles.value)} />;
+});
+
 export interface SelectItemProps extends ListBoxItemProps {}
 
-/** One option inside a Select. Thin wrapper over `ListBoxItem`. */
+/** One option inside a Select. */
 export function SelectItem(props: SelectItemProps) {
   return <ListBoxItem {...props} />;
 }

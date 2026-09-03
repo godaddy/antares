@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';
+import { Label, Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';
 
 /**
  * Use `value` and `onChange` for controlled state.
  * @order 2
  */
-export function SelectControlledExample() {
+export function ControlledExample() {
   const [value, setValue] = useState<SelectKey | null>('latte');
 
   return (
     <>
-      <Select label="Coffee" placeholder="Pick a drink" value={value} onChange={setValue}>
+      <Select placeholder="Pick a drink" value={value} onChange={setValue}>
+        <Label>Coffee</Label>
         <SelectItem id="espresso">Espresso</SelectItem>
         <SelectItem id="latte">Latte</SelectItem>
         <SelectItem id="cappuccino">Cappuccino</SelectItem>

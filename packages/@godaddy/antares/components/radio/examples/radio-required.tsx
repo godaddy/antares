@@ -1,13 +1,14 @@
-import { Radio, RadioGroup } from '@godaddy/antares';
+import { Label, Radio, RadioGroup } from '@godaddy/antares';
 
 /**
  * A required radio group with a payment method selection.
  * @title Required Indicator
  * @order 5
  */
-export function RadioRequiredExample() {
+export function RequiredExample() {
   return (
-    <RadioGroup label="Payment method" isRequired defaultValue="credit">
+    <RadioGroup isRequired defaultValue="credit">
+      <Label>Payment method</Label>
       <Radio value="credit">Credit Card</Radio>
       <Radio value="paypal">PayPal</Radio>
       <Radio value="bank">Bank Transfer</Radio>

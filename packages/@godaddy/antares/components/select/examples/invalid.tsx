@@ -1,12 +1,14 @@
-import { Select, SelectItem } from '@godaddy/antares';
+import { FieldError, Label, Select, SelectItem } from '@godaddy/antares';
 
 /**
- * Use `isInvalid` with `errorMessage` for validation feedback.
+ * Use `isInvalid` with a `FieldError` for validation feedback.
  * @order 4
  */
-export function SelectInvalidExample() {
+export function InvalidExample() {
   return (
-    <Select label="Coffee" placeholder="Pick a drink" errorMessage="Please choose a drink" isInvalid isRequired>
+    <Select placeholder="Pick a drink" isInvalid isRequired>
+      <Label>Coffee</Label>
+      <FieldError>Please choose a drink</FieldError>
       <SelectItem id="espresso">Espresso</SelectItem>
       <SelectItem id="latte">Latte</SelectItem>
       <SelectItem id="cappuccino">Cappuccino</SelectItem>

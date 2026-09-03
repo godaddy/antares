@@ -1,19 +1,20 @@
-import { Select, SelectItem, type SelectProps } from '@godaddy/antares';
+import { FieldError, Label, Select, SelectItem, Text, type SelectProps } from '@godaddy/antares';
 
 /** Props for the Select playground example. */
 export interface PlaygroundExampleProps
   extends Pick<
     SelectProps<object>,
-    | 'label'
-    | 'placeholder'
-    | 'description'
-    | 'errorMessage'
-    | 'selectionMode'
-    | 'isDisabled'
-    | 'isRequired'
-    | 'isInvalid'
-    | 'size'
-  > {}
+    'placeholder' | 'selectionMode' | 'isDisabled' | 'isRequired' | 'isInvalid' | 'size'
+  > {
+  /** Label text shown above the field. */
+  label?: string;
+
+  /** Helper text shown below the field. */
+  description?: string;
+
+  /** Error message shown when the field is invalid. */
+  errorMessage?: string;
+}
 
 export function PlaygroundExample({
   label = 'Coffee',
@@ -28,16 +29,16 @@ export function PlaygroundExample({
 }: PlaygroundExampleProps) {
   return (
     <Select
-      label={label}
       placeholder={placeholder}
-      description={description}
-      errorMessage={errorMessage}
       selectionMode={selectionMode}
       isDisabled={isDisabled}
       isRequired={isRequired}
       isInvalid={isInvalid}
       size={size}
     >
+      <Label>{label}</Label>
+      {description ? <Text slot="description">{description}</Text> : null}
+      <FieldError>{errorMessage}</FieldError>
       <SelectItem id="espresso">Espresso</SelectItem>
       <SelectItem id="latte">Latte</SelectItem>
       <SelectItem id="cappuccino">Cappuccino</SelectItem>

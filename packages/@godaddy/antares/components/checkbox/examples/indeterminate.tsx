@@ -5,6 +5,6 @@ import { Checkbox } from '@godaddy/antares';
  * @title Indeterminate
  * @order 2
  */
-export function CheckboxIndeterminateExample() {
+export function IndeterminateExample() {
   return <Checkbox isIndeterminate>Option 1</Checkbox>;
 }

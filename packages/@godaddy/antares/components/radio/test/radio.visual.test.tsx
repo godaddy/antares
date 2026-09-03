@@ -3,11 +3,11 @@ import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
-import { RadioDescriptionExample } from '../examples/radio-description.tsx';
-import { RadioDisabledExample } from '../examples/radio-disabled.tsx';
-import { RadioErrorExample } from '../examples/radio-error.tsx';
-import { RadioHorizontalExample } from '../examples/radio-horizontal.tsx';
-import { RadioRequiredExample } from '../examples/radio-required.tsx';
+import { DescriptionExample } from '../examples/radio-description.tsx';
+import { DisabledExample } from '../examples/radio-disabled.tsx';
+import { ErrorExample } from '../examples/radio-error.tsx';
+import { HorizontalExample } from '../examples/radio-horizontal.tsx';
+import { RequiredExample } from '../examples/radio-required.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -21,34 +21,34 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('horizontal example', async function horizontalRender() {
-      const { container } = await render(<RadioHorizontalExample />);
+      const { container } = await render(<HorizontalExample />);
       await expect(container).toMatchScreenshot('horizontal');
     });
 
     it('disabled example', async function disabledRender() {
-      const { container } = await render(<RadioDisabledExample />);
+      const { container } = await render(<DisabledExample />);
       await expect(container).toMatchScreenshot('disabled');
     });
 
     it('description example', async function descriptionRender() {
-      const { container } = await render(<RadioDescriptionExample />);
+      const { container } = await render(<DescriptionExample />);
       await expect(container).toMatchScreenshot('description');
     });
 
     it('error example', async function errorRender() {
-      const { container } = await render(<RadioErrorExample />);
+      const { container } = await render(<ErrorExample />);
       await expect(container).toMatchScreenshot('error');
     });
 
     it('error example with selected option', async function errorRenderWithSelectedOption() {
-      const { container } = await render(<RadioErrorExample />);
+      const { container } = await render(<ErrorExample />);
 
       await page.getByRole('radio', { name: 'Standard Shipping' }).click({ force: true });
       await expect(container).toMatchScreenshot('error-selected');
     });
 
     it('required example', async function requiredRender() {
-      const { container } = await render(<RadioRequiredExample />);
+      const { container } = await render(<RequiredExample />);
       await expect(container).toMatchScreenshot('required');
     });
   });

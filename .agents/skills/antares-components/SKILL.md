@@ -39,7 +39,7 @@ A small component defines itself right there, as `alert` and `tabs` do. Past tha
 - `structure/src/index.tsx` re-exports `header.tsx`, `content.tsx`, `footer.tsx`, and `button-group.tsx`, and nothing else. That folder has no CSS at all, because its regions are built from layout components.
 - `carousel/src/` keeps its hooks beside it: `use-accessibility.tsx`, `use-navigation-controls.tsx`.
 
-Each styled component gets its own stylesheet, so `text/src/` has both `index.module.css` and `heading.module.css`.
+Each styled component gets its own stylesheet, so `heading/src/` has `index.module.css` beside `index.tsx`.
 
 ### Naming and grouping
 

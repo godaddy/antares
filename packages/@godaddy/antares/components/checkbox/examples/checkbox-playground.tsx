@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, FieldError, Label, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
 export interface PlaygroundExampleProps {
@@ -29,15 +29,13 @@ export function PlaygroundExample({
   return (
     <CheckboxGroup
       orientation={orientation}
-      label={label}
-      description={description}
       isRequired={isRequired}
       isDisabled={isDisabled}
       isInvalid={isInvalid}
-      errorMessage={isInvalid ? errorMessage : undefined}
       value={selected}
       onChange={setSelected}
     >
+      <Label>{label}</Label>
       <Checkbox value="option1" isIndeterminate={isIndeterminate}>
         Option 1
       </Checkbox>
@@ -47,6 +45,8 @@ export function PlaygroundExample({
       <Checkbox value="option3" isIndeterminate={isIndeterminate}>
         Option 3
       </Checkbox>
+      {description ? <Text slot="description">{description}</Text> : null}
+      <FieldError>{isInvalid ? errorMessage : undefined}</FieldError>
     </CheckboxGroup>
   );
 }

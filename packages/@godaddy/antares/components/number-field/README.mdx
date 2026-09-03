@@ -1,12 +1,20 @@
 ---
 title: NumberField
-description: NumberField is a numeric input with optional label, description, error message, min/max/step, and increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
+description: NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
 ---
 import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
 import { Examples } from '@bento/storybook-addon-helpers/runtime';
 import * as Stories from './number-field.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
+
+## Features
+
+- **Composable interior**: Pass `Label`, `Text slot="description"`, and `FieldError`; the field adds a `Group` of stepper `Button`s around the `Input`, keeping the order you wrote. Write a bare `Input` for a plain numeric input, or a `Group` of your own to change the steppers
+- **Steppers**: Empty `slot="decrement"` / `slot="increment"` buttons get icons and `variant="control"` from context. Omit steppers for a plain numeric input
+- **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
+- **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+- **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 
 ## Installation
 
@@ -17,31 +25,6 @@ npm install --save @godaddy/antares
 ## Examples
 
 <Examples of={Stories.Examples} />
-
-## Accessibility
-
-### Keyboard
-
-When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
-
-- **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
-- **Page Up** / **Page Down**: larger increase or decrease when supported
-- **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
-
-Stepper buttons are real buttons and follow standard button keyboard activation. Use **`incrementAriaLabel`** and **`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
-
-### ARIA and labeling
-
-- The input is associated with the visible label and optional description and error content for assistive technologies.
-- Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
-- Set **`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
-
-## Best practices
-
-- Pair **`isInvalid`** with **`errorMessage`** so users get both visual and programmatic feedback.
-- Remember valid steps start from **`minValue`**.
-- Use **`isDisabled`** when the value cannot be changed; use **`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
-- For currency or units, ensure **`formatOptions`** (and locale) match what users are allowed to type.
 
 ## Props
 
