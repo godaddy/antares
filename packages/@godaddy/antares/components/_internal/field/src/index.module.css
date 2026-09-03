@@ -67,6 +67,10 @@
   flex: none;
 }
 
+.group > :where(.input, .textarea) {
+  flex: 1;
+}
+
 /* One level only so a nested field's size wins. */
 .field:where([data-size="sm"]) > :where(.input, .textarea),
 .field:where([data-size="sm"]) > :where(.group) > :where(.input, .textarea) {

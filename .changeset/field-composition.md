@@ -20,6 +20,6 @@ Leading/trailing adornments (fixed text or an icon beside an input) are composed
 
 `RangeField`, `ProgressBar`, and `CircularProgress` are unchanged: they keep their shorthand props and do not take a composed interior.
 
-Public components: `Label`/`LabelContext`, `Group`/`GroupContext`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.
+Public components: `Label`/`LabelContext`, `Group`/`GroupContext`, `Input`/`InputContext`, `TextArea`/`TextAreaContext`, and `FieldError`/`FieldErrorContext`. `TextContext`, `HeadingContext`, and `ButtonContext` are also exported. `Button` adds `control` and `trigger` variants for field interiors. Field is an internal shell that merges RAC contexts to inject chrome.
 
-`Heading` is no longer exported from `@godaddy/antares/Text`. Import it from `@godaddy/antares/Heading` or the package root.
+`Heading` is no longer exported from `@godaddy/antares/Text`. Import it from `@godaddy/antares/Heading` or the package root. An omitted `level` now resolves to `3` (previously `2`).

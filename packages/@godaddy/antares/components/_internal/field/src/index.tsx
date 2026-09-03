@@ -32,8 +32,8 @@ function buildBoxButtonContext(
   return {
     ...base,
     slots: {
-      [DEFAULT_SLOT]: mergeProps(slots[DEFAULT_SLOT] ?? {}, chrome),
       ...slots,
+      [DEFAULT_SLOT]: mergeProps(slots[DEFAULT_SLOT] ?? {}, chrome),
       control: mergeProps(slots.control ?? {}, control),
       trigger: mergeProps(slots.trigger ?? {}, trigger),
       decrement: mergeProps(slots.decrement ?? {}, control),

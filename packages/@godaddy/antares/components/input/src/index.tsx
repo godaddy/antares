@@ -12,5 +12,5 @@ export interface InputProps extends RACInputProps, Omit<BoxOwnProps, 'as'> {}
 
 /** Single-line input. Field injects chrome via InputContext. */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {
-  return <Box flex={1} {...props} as={RACInput} ref={ref} />;
+  return <Box {...props} as={RACInput} ref={ref} />;
 });
