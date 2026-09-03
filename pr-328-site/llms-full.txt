@@ -1015,6 +1015,71 @@ The `CheckboxGroup` component has the following props:
 <PropTable />
 
 
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
+
+<PropTable />
+
+
 # Chip
 
 
@@ -1299,6 +1364,135 @@ trailing chevron to communicate that the control opens a menu.
 <PropTable />
 
 
+# Drawer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
+modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
+navigation and bottom sheets.
+
+`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
+state automatically.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+### Bottom Sheet [#bottom-sheet]
+
+Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
+`CloseButton` for the dismiss affordance.
+
+<Story of="BottomSheetExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Placements [#placements]
+
+The drawer slides in from whichever edge you set with `placement`.
+
+<Story of="PlacementsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Nested Popover [#nested-popover]
+
+Popovers rendered inside a drawer stay open without dismissing the drawer.
+
+<Story of="NestedPopoverExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### No Escape Dismiss [#no-escape-dismiss]
+
+Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
+
+<Story of="NoEscapeDismissExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
+
+### Scrollable content [#scrollable-content]
+
+When the content is taller than the drawer, the `Content` region scrolls while the title row
+stays pinned.
+
+<Story of="ScrollableExample" />
+
+<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                |
+| -------- | ----------------------------------------------------- |
+| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
+| `Tab`    | Move focus within the drawer (focus is trapped)       |
+
+### ARIA [#aria]
+
+* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
+* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
+
+## Best Practices [#best-practices]
+
+* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
+* Use `isDismissable` to allow closing via backdrop click.
+* Don't nest drawers.
+
+## Props [#props]
+
+```tsx
+<Drawer placement="right">
+  <Header>
+    <Heading slot="title" />
+    <CloseButton />
+  </Header>
+  <Content />
+  {/* ... */}
+</Drawer>
+```
+
+The `Drawer` component accepts the following props:
+
+<PropTable />
+
+The `DrawerTrigger` component accepts the following props:
+
+<PropTable />
+
+
 # DatePicker
 
 
@@ -1440,80 +1634,7 @@ The `DateRangePicker` component accepts the following props:
 <PropTable />
 
 
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-<PropTable />
-
-
-# Drawer
-
-
-
-
-
-
-
-
+# FileTrigger
 
 
 
@@ -1527,12 +1648,12 @@ Use the `emphasis` prop to communicate status: `success`, `warning`, or `critica
 
 <Meta of="Stories" name="Overview" />
 
-An overlay panel that slides in from a screen edge. Built on the same RAC stack as `Modal` (a
-modal overlay with an `elevation="overlay"` panel and CSS transitions), it supports sidebar
-navigation and bottom sheets.
+## Features [#features]
 
-`DrawerTrigger` wraps a trigger button and a `<Drawer>`, handling open
-state automatically.
+* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
+* Renders a visually hidden `<input type="file">` — no styling of its own.
+* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
+* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
 
 ## Installation [#installation]
 
@@ -1544,194 +1665,29 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Use `<DrawerTrigger>` to wrap a trigger button and a `<Drawer>`. The drawer opens when the trigger is pressed.
+Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Button, Content, Drawer, DrawerTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Drawer\&#x22;>\n        <Content>Drawer content goes here.</Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
 
-### Bottom Sheet [#bottom-sheet]
+### Accepted Types [#accepted-types]
 
-Use `placement="bottom"` with controlled state for a bottom sheet pattern. Compose a
-`CloseButton` for the dismiss affordance.
+Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
 
-<Story of="BottomSheetExample" />
+<Story of="AcceptedTypesExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, CloseButton, Content, Drawer, Heading } from '@godaddy/antares';\n\nexport function BottomSheetExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open bottom sheet\n      </Button>\n      <Drawer placement=\&#x22;bottom\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable>\n        <Heading slot=\&#x22;title\&#x22;>Bottom sheet</Heading>\n        <CloseButton />\n        <Content>Bottom sheet with a composed close button.</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Placements [#placements]
-
-The drawer slides in from whichever edge you set with `placement`.
-
-<Story of="PlacementsExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Flex, type DrawerPlacement } from '@godaddy/antares';\n\nconst PLACEMENTS: DrawerPlacement[] = ['left', 'right', 'top', 'bottom'];\n\nexport function PlacementsExample() {\n  const [placement, setPlacement] = useState<DrawerPlacement>('right');\n  const [open, setOpen] = useState(false);\n\n  return (\n    <Flex gap=\&#x22;md\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {PLACEMENTS.map(function renderButton(p) {\n        return (\n          <Button\n            key={p}\n            variant=\&#x22;primary\&#x22;\n            onPress={function openAt() {\n              setPlacement(p);\n              setOpen(true);\n            }}\n          >\n            Open {p}\n          </Button>\n        );\n      })}\n      <Drawer\n        placement={placement}\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        aria-label={`${placement} drawer`}\n      >\n        <Content>Placement: {placement}</Content>\n      </Drawer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Nested Popover [#nested-popover]
-
-Popovers rendered inside a drawer stay open without dismissing the drawer.
-
-<Story of="NestedPopoverExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer, Popover, PopoverTrigger, Text } from '@godaddy/antares';\n\nexport function NestedPopoverExample() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open drawer\n      </Button>\n      <Drawer placement=\&#x22;right\&#x22; isOpen={open} onOpenChange={setOpen} isDismissable aria-label=\&#x22;Nested popover\&#x22;>\n        <Content>\n          <PopoverTrigger>\n            <Button variant=\&#x22;primary\&#x22;>Open popover</Button>\n            <Popover aria-label=\&#x22;Popover\&#x22;>\n              <Content>\n                <Text>Popover inside drawer</Text>\n              </Content>\n            </Popover>\n          </PopoverTrigger>\n        </Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### No Escape Dismiss [#no-escape-dismiss]
-
-Use `isKeyboardDismissDisabled` to prevent the drawer from being dismissed by the escape key.
-
-<Story of="NoEscapeDismissExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Content, Drawer } from '@godaddy/antares';\n\nexport function NoEscapeDismissExample() {\n  const [open, setOpen] = useState(false);\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setOpen(true)}>\n        Open\n      </Button>\n      <Drawer\n        placement=\&#x22;right\&#x22;\n        isOpen={open}\n        onOpenChange={setOpen}\n        isDismissable\n        isKeyboardDismissDisabled\n        aria-label=\&#x22;Drawer\&#x22;\n      >\n        <Content>Cannot escape</Content>\n      </Drawer>\n    </>\n  );\n}&#x22;" />
-
-### Scrollable content [#scrollable-content]
-
-When the content is taller than the drawer, the `Content` region scrolls while the title row
-stays pinned.
-
-<Story of="ScrollableExample" />
-
-<Source language="tsx" code="&#x22;import { Button, CloseButton, Content, Drawer, DrawerTrigger, Heading, Text } from '@godaddy/antares';\n\nexport function ScrollableExample() {\n  return (\n    <DrawerTrigger>\n      <Button variant=\&#x22;primary\&#x22;>Open drawer</Button>\n      <Drawer placement=\&#x22;right\&#x22; isDismissable aria-label=\&#x22;Terms\&#x22;>\n        <Heading slot=\&#x22;title\&#x22;>Terms</Heading>\n        <CloseButton />\n        <Content>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Text as=\&#x22;p\&#x22; key={i}>\n              She expressed her gratitude again, but as it was too painful a subject to each, to be dwelt on farther.\n            </Text>\n          ))}\n        </Content>\n      </Drawer>\n    </DrawerTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
-### Keyboard [#keyboard]
-
-| Key      | Action                                                |
-| -------- | ----------------------------------------------------- |
-| `Escape` | Close the drawer (unless `isKeyboardDismissDisabled`) |
-| `Tab`    | Move focus within the drawer (focus is trapped)       |
-
-### ARIA [#aria]
-
-* `role="dialog"` with `aria-modal="true"` on the drawer panel (via RAC Modal)
-* A `Heading slot="title"` labels the dialog via `aria-labelledby`; otherwise pass `aria-label`
+`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
 
 ## Best Practices [#best-practices]
 
-* Provide a `Heading slot="title"` or an `aria-label` so the dialog has an accessible name.
-* Use `isDismissable` to allow closing via backdrop click.
-* Don't nest drawers.
-
-## Props [#props]
-
-```tsx
-<Drawer placement="right">
-  <Header>
-    <Heading slot="title" />
-    <CloseButton />
-  </Header>
-  <Content />
-  {/* ... */}
-</Drawer>
-```
-
-The `Drawer` component accepts the following props:
-
-<PropTable />
-
-The `DrawerTrigger` component accepts the following props:
-
-<PropTable />
-
-
-# DropZone
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, isFileDropItem, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DropZone\n      onDrop={function handleDrop(e) {\n        const files = e.items.filter(isFileDropItem);\n        console.log('Dropped files:', files);\n      }}\n    >\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DropZone isDisabled>\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
-
-### File Upload [#file-upload]
-
-A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
-
-<Story of="FileUploadExample" />
-
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
-
-### Drop Target Label [#drop-target-label]
-
-Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
-
-<Story of="DropTargetLabelExample" />
-
-<Source language="tsx" code="&#x22;import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\nexport function DropTargetLabelExample() {\n  return (\n    <DropZone\n      getDropOperation={function getDropOperation(types) {\n        return ACCEPTED_TYPES.some(function matches(type) {\n          return types.has(type);\n        })\n          ? 'copy'\n          : 'cancel';\n      }}\n      onDrop={async function handleDrop(e) {\n        const files = await Promise.all(\n          e.items.filter(isFileDropItem).map(function getFile(item) {\n            return item.getFile();\n          })\n        );\n        console.log(\n          'Dropped files:',\n          files.map(function getName(f) {\n            return f.name;\n          })\n        );\n      }}\n    >\n      {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n        return isDropTarget ? (\n          <Text as=\&#x22;strong\&#x22;>Drop files to upload.</Text>\n        ) : (\n          <Text slot=\&#x22;label\&#x22;>Add files or drag them here.</Text>\n        );\n      }}\n    </DropZone>\n  );\n}&#x22;" />
-
-### Replace Existing File [#replace-existing-file]
-
-Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
-
-<Story of="ReplaceFileExample" />
-
-<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Description                                                      |
-| ----------------- | ---------------------------------------------------------------- |
-| `Tab`             | Moves focus to the drop zone                                     |
-| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
-
-### Screen readers [#screen-readers]
-
-The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
-
-The button's accessible name is built from two sources, combined in order:
-
-1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
-2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
-
-```tsx
-<DropZone onDrop={handleDrop}>
-  <Text slot="label">Drop files to upload.</Text>
-</DropZone>
-```
-
-## Best Practices [#best-practices]
-
-* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
-* Replace the default text with `children` to communicate the accepted file types and size limits up front.
-* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
-* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
+* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
+* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
+* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
 
 ## Props [#props]
 
@@ -1852,7 +1808,13 @@ The `FieldGroup` component has the following props:
 <PropTable />
 
 
-# FileTrigger
+# DropZone
+
+
+
+
+
+
 
 
 
@@ -1866,13 +1828,6 @@ The `FieldGroup` component has the following props:
 
 <Meta of="Stories" name="Overview" />
 
-## Features [#features]
-
-* Turns any pressable component (such as an Antares `Button`) into a file picker trigger.
-* Renders a visually hidden `<input type="file">` — no styling of its own.
-* Restricts selection by MIME type, allows multiple files, directory selection, and camera capture.
-* Resets the input value before every open, so re-selecting the same file still fires `onSelect`.
-
 ## Installation [#installation]
 
 ```bash
@@ -1883,29 +1838,74 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Wrap any pressable component. Activating the child opens the native file picker; the selected files arrive in `onSelect`.
+A minimal drop zone. The `onDrop` callback receives the dropped items; use the exported `isFileDropItem` guard to narrow them to files. Wrap the instructional text in `<Text slot="label">` so it labels the visually hidden drop button for screen readers.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <FileTrigger\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected files:', Array.from(files));\n      }}\n    >\n      <Button>Select a file</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DropZone, isFileDropItem, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DropZone\n      onDrop={function handleDrop(e) {\n        const files = e.items.filter(isFileDropItem);\n        console.log('Dropped files:', files);\n      }}\n    >\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
 
-### Accepted Types [#accepted-types]
+### Disabled [#disabled]
 
-Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow more than one file with `allowsMultiple`.
+Set `isDisabled` to prevent the drop zone from accepting interactions. The zone is dimmed and the cursor indicates it is not interactive.
 
-<Story of="AcceptedTypesExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { Button, FileTrigger } from '@godaddy/antares';\n\nexport function AcceptedTypesExample() {\n  return (\n    <FileTrigger\n      acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif']}\n      allowsMultiple\n      onSelect={function handleSelect(files) {\n        if (!files) return;\n        console.log('Selected images:', Array.from(files));\n      }}\n    >\n      <Button>Select images</Button>\n    </FileTrigger>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DropZone, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DropZone isDisabled>\n      <Text slot=\&#x22;label\&#x22;>Drop files to upload.</Text>\n    </DropZone>\n  );\n}&#x22;" />
+
+### File Upload [#file-upload]
+
+A reference composition combining `DropZone` with `FileTrigger` to support both click-to-browse and drag-and-drop. Use this as a starting point and adapt the accepted formats, size limit, and handlers to your product's requirements.
+
+<Story of="FileUploadExample" />
+
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport { Button, DropZone, FileTrigger, Flex, Icon, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function FileUploadExample() {\n  const [files, setFiles] = useState<File[]>([]);\n  const [previews, setPreviews] = useState<Preview[]>([]);\n\n  useEffect(\n    function buildPreviews() {\n      const next: Preview[] = files.map(function toPreview(file) {\n        return {\n          name: file.name,\n          url: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined\n        };\n      });\n      setPreviews(next);\n\n      return function revoke() {\n        for (const preview of next) {\n          if (preview.url) URL.revokeObjectURL(preview.url);\n        }\n      };\n    },\n    [files]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    setFiles(Array.from(list));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <DropZone\n        aria-label=\&#x22;Add files or drag them here\&#x22;\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n      >\n        <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} allowsMultiple onSelect={handleFiles}>\n          <Button variant=\&#x22;inline\&#x22; style={{ fontSize: '0.984rem', fontWeight: 700 }}>\n            <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n            Add files\n          </Button>\n        </FileTrigger>\n        <Text style={{ fontSize: '0.778rem' }}>The file must be less than 256MB</Text>\n      </DropZone>\n\n      <Flex justifyContent=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n        <Text style={{ fontSize: '0.778rem' }}>Supported formats:</Text>\n        <Text as=\&#x22;strong\&#x22; style={{ fontSize: '0.778rem' }}>\n          .pdf, .jpg, .gif, .png\n        </Text>\n      </Flex>\n\n      {previews.length > 0 ? (\n        <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22; aria-label=\&#x22;Selected files\&#x22;>\n          {previews.map(function renderPreview(preview) {\n            return (\n              <Flex key={preview.name} direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 64, borderRadius: 8, background: '#f5f5f5' }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{preview.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 64 }}>\n                  {preview.name}\n                </Text>\n              </Flex>\n            );\n          })}\n        </Flex>\n      ) : null}\n    </Flex>\n  );\n}&#x22;" />
+
+### Drop Target Label [#drop-target-label]
+
+Pass a render-prop function as `children` to change the zone's content while a valid drag is active. Branching on `isDropTarget` requires no extra state. Pair it with `getDropOperation` to reject unsupported types - the label only appears when the drag is accepted.
+
+<Story of="DropTargetLabelExample" />
+
+<Source language="tsx" code="&#x22;import { DropZone, type DropZoneRenderProps, isFileDropItem, Text } from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\nexport function DropTargetLabelExample() {\n  return (\n    <DropZone\n      getDropOperation={function getDropOperation(types) {\n        return ACCEPTED_TYPES.some(function matches(type) {\n          return types.has(type);\n        })\n          ? 'copy'\n          : 'cancel';\n      }}\n      onDrop={async function handleDrop(e) {\n        const files = await Promise.all(\n          e.items.filter(isFileDropItem).map(function getFile(item) {\n            return item.getFile();\n          })\n        );\n        console.log(\n          'Dropped files:',\n          files.map(function getName(f) {\n            return f.name;\n          })\n        );\n      }}\n    >\n      {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n        return isDropTarget ? (\n          <Text as=\&#x22;strong\&#x22;>Drop files to upload.</Text>\n        ) : (\n          <Text slot=\&#x22;label\&#x22;>Add files or drag them here.</Text>\n        );\n      }}\n    </DropZone>\n  );\n}&#x22;" />
+
+### Replace Existing File [#replace-existing-file]
+
+Use `children` as a render function to show different content based on the current zone state - here, swapping the default label for "Drop to replace" when a file is already selected and a new drag is active. The same `onDrop` handler services both the drag path and the `FileTrigger` click path, so either gesture replaces the selection.
+
+<Story of="ReplaceFileExample" />
+
+<Source language="tsx" code="&#x22;import { useEffect, useState } from 'react';\nimport {\n  Button,\n  DropZone,\n  type DropZoneRenderProps,\n  FileTrigger,\n  Flex,\n  Icon,\n  isFileDropItem,\n  Text\n} from '@godaddy/antares';\n\nconst ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];\n\ntype Preview = { name: string; url?: string };\n\nexport function ReplaceFileExample() {\n  const [file, setFile] = useState<File | null>(null);\n  const [preview, setPreview] = useState<Preview | null>(null);\n\n  useEffect(\n    function buildPreview() {\n      if (!file) {\n        setPreview(null);\n        return;\n      }\n      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined;\n      setPreview({ name: file.name, url });\n      return function revoke() {\n        if (url) URL.revokeObjectURL(url);\n      };\n    },\n    [file]\n  );\n\n  function handleFiles(list: FileList | File[] | null) {\n    if (!list) return;\n    const f = Array.from(list)[0];\n    if (f) setFile(f);\n  }\n\n  const isFilled = file !== null;\n\n  return (\n    <div style={{ width: 200 }}>\n      <DropZone\n        aria-label={isFilled ? 'Replace uploaded file' : 'Add a file'}\n        getDropOperation={function getDropOperation(types) {\n          return ACCEPTED_TYPES.some(function matches(type) {\n            return types.has(type);\n          })\n            ? 'copy'\n            : 'cancel';\n        }}\n        onDrop={async function handleDrop(e) {\n          const dropped = await Promise.all(\n            e.items.filter(isFileDropItem).map(function getFile(item) {\n              return item.getFile();\n            })\n          );\n          handleFiles(dropped);\n        }}\n        gap=\&#x22;sm\&#x22;\n        style={{ minHeight: 200 }}\n      >\n        {function renderContent({ isDropTarget }: DropZoneRenderProps) {\n          if (isFilled && isDropTarget) {\n            return <Text as=\&#x22;strong\&#x22;>Drop to replace</Text>;\n          }\n\n          if (isFilled) {\n            return (\n              <Flex direction=\&#x22;column\&#x22; alignItems=\&#x22;center\&#x22; gap=\&#x22;xs\&#x22;>\n                {preview?.url ? (\n                  <img\n                    src={preview.url}\n                    alt={preview.name}\n                    style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }}\n                  />\n                ) : (\n                  <Flex\n                    alignItems=\&#x22;center\&#x22;\n                    justifyContent=\&#x22;center\&#x22;\n                    style={{ width: 64, height: 48, background: '#f5f5f5', borderRadius: 4 }}\n                  >\n                    <Text style={{ textTransform: 'uppercase' }}>{file?.name.split('.').pop()}</Text>\n                  </Flex>\n                )}\n                <Text maxLines={1} style={{ maxWidth: 96 }}>\n                  {file?.name}\n                </Text>\n                <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n                  <Button variant=\&#x22;inline\&#x22;>Replace</Button>\n                </FileTrigger>\n              </Flex>\n            );\n          }\n\n          return (\n            <FileTrigger acceptedFileTypes={ACCEPTED_TYPES} onSelect={handleFiles}>\n              <Button\n                variant=\&#x22;inline\&#x22;\n                style={{\n                  position: 'absolute',\n                  inset: 0,\n                  display: 'flex',\n                  flexDirection: 'column',\n                  alignItems: 'center',\n                  justifyContent: 'center',\n                  gap: '0.5rem',\n                  fontSize: '0.984rem',\n                  fontWeight: 700\n                }}\n              >\n                <Icon icon=\&#x22;add\&#x22; aria-hidden=\&#x22;true\&#x22; />\n                Add files\n              </Button>\n            </FileTrigger>\n          );\n        }}\n      </DropZone>\n    </div>\n  );\n}&#x22;" />
 
 ## Accessibility [#accessibility]
 
-`FileTrigger` adds no visuals or ARIA of its own — accessibility comes from the pressable child you provide. Use a component with an accessible name (e.g. an Antares `Button` with clear label text) so assistive technology announces the action. The underlying `<input>` is visually hidden but remains operable by keyboard through the child's press behavior.
+### Keyboard [#keyboard]
+
+| Key               | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| `Tab`             | Moves focus to the drop zone                                     |
+| `Enter` / `Space` | Opens the file picker so files can be selected without a pointer |
+
+### Screen readers [#screen-readers]
+
+The drop zone renders a visually hidden `<button>` inside the container. Assistive technology discovers and announces this button as an interactive element — activating it opens the native file picker without a pointer.
+
+The button's accessible name is built from two sources, combined in order:
+
+1. **`<Text slot="label">`** — any `Text` child with `slot="label"` has its `id` linked to the button via `aria-labelledby`. This is the recommended way to provide a contextual label that is also visible to sighted users.
+2. **`aria-label`** — pass `aria-label` on the `DropZone` component to override or supplement the label (e.g. `aria-label="Upload profile photo"`). When no `Text slot="label"` is present and no `aria-label` is set, the button falls back to the default "DropZone" label provided by React Aria.
+
+```tsx
+<DropZone onDrop={handleDrop}>
+  <Text slot="label">Drop files to upload.</Text>
+</DropZone>
+```
 
 ## Best Practices [#best-practices]
 
-* `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
-* Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
-* Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+* Use the drop zone alongside a button-based file picker — drag-and-drop is a convenience, never the only way to upload.
+* Replace the default text with `children` to communicate the accepted file types and size limits up front.
+* Let the drop zone fill its container; constrain it with the surrounding layout rather than setting a fixed width on the component itself.
+* Reflect upload state (validating, uploading, error) outside the drop zone so the target area stays clear and predictable.
 
 ## Props [#props]
 
@@ -3270,69 +3270,6 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 <PropTable />
 
 
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-<PropTable />
-
-
 # ProgressSteps
 
 
@@ -3457,6 +3394,69 @@ The `ProgressSteps` component has the following props:
 <PropTable />
 
 The `ProgressStep` component has the following props:
+
+<PropTable />
+
+
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
 
 <PropTable />
 
@@ -4708,100 +4708,6 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 <PropTable />
 
 
-# Text
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-The `Text` component prepares content with a few properties.
-
-Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic text content.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop allows you to change the HTML tag of the `Text` component.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Heading [#heading]
-
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
-
-<Story of="HeadingExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function HeadingExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-### Align [#align]
-
-Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
-
-<Story of="AlignExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
-
-### Max Lines [#max-lines]
-
-Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
-
-<Story of="MaxLinesExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-### Wrap [#wrap]
-
-Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
-
-<Story of="WrapExample" />
-
-<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Text` component accepts the following props:
-
-<PropTable />
-
-The `Heading` component accepts the following props:
-
-<PropTable />
-
-
 # TextField
 
 
@@ -5257,6 +5163,100 @@ The `Tooltip` component accepts the following props:
 <PropTable />
 
 The `TooltipTrigger` component accepts the following props:
+
+<PropTable />
+
+
+# Text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+The `Text` component prepares content with a few properties.
+
+Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic text content.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function DefaultExample(args: TextProps) {\n  return <Text {...args}>Hello, world!</Text>;\n}&#x22;" />
+
+### As [#as]
+
+Setting the `as` prop allows you to change the HTML tag of the `Text` component.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
+
+### Heading [#heading]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="HeadingExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function HeadingExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+
+### Align [#align]
+
+Setting the `align` prop allows you to change the alignment of the text. Choose from `start`, `center`, `end`, or `justify`; the logical keywords support RTL languages.
+
+<Story of="AlignExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AlignExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;p\&#x22; align=\&#x22;center\&#x22;>\n      Text is aligned to the center\n    </Text>\n  );\n}&#x22;" />
+
+### Max Lines [#max-lines]
+
+Setting the `maxLines` prop limits the number of displayed lines using an ellipsis.
+
+<Story of="MaxLinesExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function MaxLinesExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; maxLines={2}>\n        This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod\n        tempor incididunt ut labore et dolore magna aliqua.\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+### Wrap [#wrap]
+
+Setting the `wrap` prop controls text wrapping with values such as `wrap`, `nowrap`, `balance`, `pretty`, or `stable`.
+
+<Story of="WrapExample" />
+
+<Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function WrapExample(args: TextProps) {\n  return (\n    <div style={{ width: '300px', border: '1px solid red' }}>\n      <Text {...args} as=\&#x22;p\&#x22; wrap=\&#x22;pretty\&#x22;>\n        Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and\n        legibility. Because counting characters and balancing them across multiple lines is computationally expensive,\n        this value is only supported for blocks of text spanning a limited number of lines\n      </Text>\n    </div>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Text` component accepts the following props:
+
+<PropTable />
+
+The `Heading` component accepts the following props:
 
 <PropTable />
 
@@ -6038,114 +6038,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 <PropTable />
 
 
-# Box
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Polymorphic `as` details [#polymorphic-as-details]
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="PaddingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="ElevationExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="RoundingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Polymorphic as Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-## Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-
 # Flex
 
 
@@ -6262,6 +6154,114 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
+
+<PropTable />
+
+
+# Box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Polymorphic `as` details [#polymorphic-as-details]
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="PaddingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="ElevationExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="RoundingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Polymorphic as Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+## Props [#props]
+
+The `Box` component accepts the following props:
 
 <PropTable />
 
