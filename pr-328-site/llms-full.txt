@@ -1299,71 +1299,6 @@ trailing chevron to communicate that the control opens a menu.
 <PropTable />
 
 
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A basic determinate progress indicator with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
-
-## Props [#props]
-
-<PropTable />
-
-
 # DatePicker
 
 
@@ -1501,6 +1436,71 @@ The `DatePicker` component accepts the following props:
 <PropTable />
 
 The `DateRangePicker` component accepts the following props:
+
+<PropTable />
+
+
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
 
 <PropTable />
 
@@ -4240,6 +4240,205 @@ they adopt that parent's spacing automatically.
 <PropTable />
 
 
+# Switch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
+* Communicates state to assistive technologies via the WAI-ARIA `switch` role
+* Toggles on click or tap anywhere in the control — track, thumb, or label
+* Toggles with the `Space` key when focused
+* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
+* Two sizes: `md` (default) and `sm`
+* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
+* Takes effect immediately — no form submission required
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled switch, off by default, with the label at the start.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Selected [#switch-selected]
+
+A switch that starts in the on state via `defaultSelected`.
+
+<Story of="SwitchSelectedExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Sizes [#switch-sizes]
+
+The `size` prop accepts `md` (default) or `sm`.
+
+<Story of="SwitchSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Label Position [#switch-label-position]
+
+The `labelPosition` prop places the label at the `start` or `end` of the track.
+
+<Story of="SwitchLabelPositionExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### No Label [#no-label]
+
+When no label is provided, pass `aria-label` so the switch has an accessible name.
+
+<Story of="SwitchNoLabelExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
+
+### Switch Disabled [#switch-disabled]
+
+A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
+
+<Story of="SwitchDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Controlled [#switch-controlled]
+
+Manage switch state programmatically with `isSelected` and `onChange`.
+
+<Story of="SwitchControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+The interactive switch control exposes data attributes for styling different states:
+
+`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
+
+```css
+.my-switch [data-focus-visible] {
+  outline: 2px solid Highlight;
+}
+
+.my-switch [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Design Tokens [#design-tokens]
+
+The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
+
+| Element           | Token                               | Legacy fallback |
+| ----------------- | ----------------------------------- | --------------- |
+| Track (off)       | —                                   | `--ux-1m9ys0v`  |
+| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
+| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
+| Thumb inset       | —                                   | `--ux-1sbfig8`  |
+| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
+| Focus ring radius | —                                   | `--ux-zvaw3s`   |
+
+### Component Customization [#component-customization]
+
+Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
+
+```jsx
+<Switch className="custom-switch">Wi-Fi</Switch>
+```
+
+Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
+## Accessibility [#accessibility]
+
+* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
+* `Space` toggles the switch when it has focus
+* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
+* Disabled switches render at `40%` opacity and are excluded from tab order
+* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
+
+## Best Practices [#best-practices]
+
+### When to Use Switch [#when-to-use-switch]
+
+* ✅ For settings that take effect immediately, without a form submission
+* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
+* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
+* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
+
+### Labeling [#labeling]
+
+* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
+* If the label is omitted, always provide `aria-label`
+* Keep labels short and describe the setting, not its current state
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+```jsx
+// ❌ Wrong: isSelected without onChange leaves the switch stuck
+<Switch isSelected={isOn}>Wi-Fi</Switch>
+
+// ✅ Controlled mode
+<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
+
+// ✅ Uncontrolled mode
+<Switch defaultSelected>Wi-Fi</Switch>
+```
+
+### Missing Accessible Name [#missing-accessible-name]
+
+```jsx
+// ❌ No children and no aria-label — screen readers announce nothing useful
+<Switch />
+
+// ✅ Provide a label
+<Switch>Wi-Fi</Switch>
+
+// ✅ Or an aria-label when the label is visual-only elsewhere
+<Switch aria-label="Wi-Fi" />
+```
+
+## Props [#props]
+
+The `Switch` component has the following props:
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -4603,205 +4802,6 @@ The `Heading` component accepts the following props:
 <PropTable />
 
 
-# Switch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
-* Communicates state to assistive technologies via the WAI-ARIA `switch` role
-* Toggles on click or tap anywhere in the control — track, thumb, or label
-* Toggles with the `Space` key when focused
-* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
-* Two sizes: `md` (default) and `sm`
-* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
-* Takes effect immediately — no form submission required
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-An uncontrolled switch, off by default, with the label at the start.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
-
-### Switch Selected [#switch-selected]
-
-A switch that starts in the on state via `defaultSelected`.
-
-<Story of="SwitchSelectedExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
-
-### Switch Sizes [#switch-sizes]
-
-The `size` prop accepts `md` (default) or `sm`.
-
-<Story of="SwitchSizesExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Label Position [#switch-label-position]
-
-The `labelPosition` prop places the label at the `start` or `end` of the track.
-
-<Story of="SwitchLabelPositionExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### No Label [#no-label]
-
-When no label is provided, pass `aria-label` so the switch has an accessible name.
-
-<Story of="SwitchNoLabelExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
-
-### Switch Disabled [#switch-disabled]
-
-A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
-
-<Story of="SwitchDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Controlled [#switch-controlled]
-
-Manage switch state programmatically with `isSelected` and `onChange`.
-
-<Story of="SwitchControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-The interactive switch control exposes data attributes for styling different states:
-
-`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
-
-```css
-.my-switch [data-focus-visible] {
-  outline: 2px solid Highlight;
-}
-
-.my-switch [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Design Tokens [#design-tokens]
-
-The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
-
-| Element           | Token                               | Legacy fallback |
-| ----------------- | ----------------------------------- | --------------- |
-| Track (off)       | —                                   | `--ux-1m9ys0v`  |
-| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
-| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
-| Thumb inset       | —                                   | `--ux-1sbfig8`  |
-| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
-| Focus ring radius | —                                   | `--ux-zvaw3s`   |
-
-### Component Customization [#component-customization]
-
-Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
-
-```jsx
-<Switch className="custom-switch">Wi-Fi</Switch>
-```
-
-Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
-
-## Accessibility [#accessibility]
-
-* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
-* `Space` toggles the switch when it has focus
-* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
-* Disabled switches render at `40%` opacity and are excluded from tab order
-* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
-
-## Best Practices [#best-practices]
-
-### When to Use Switch [#when-to-use-switch]
-
-* ✅ For settings that take effect immediately, without a form submission
-* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
-* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
-* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
-
-### Labeling [#labeling]
-
-* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
-* If the label is omitted, always provide `aria-label`
-* Keep labels short and describe the setting, not its current state
-
-## Troubleshooting [#troubleshooting]
-
-### Controlled State Not Updating [#controlled-state-not-updating]
-
-```jsx
-// ❌ Wrong: isSelected without onChange leaves the switch stuck
-<Switch isSelected={isOn}>Wi-Fi</Switch>
-
-// ✅ Controlled mode
-<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
-
-// ✅ Uncontrolled mode
-<Switch defaultSelected>Wi-Fi</Switch>
-```
-
-### Missing Accessible Name [#missing-accessible-name]
-
-```jsx
-// ❌ No children and no aria-label — screen readers announce nothing useful
-<Switch />
-
-// ✅ Provide a label
-<Switch>Wi-Fi</Switch>
-
-// ✅ Or an aria-label when the label is visual-only elsewhere
-<Switch aria-label="Wi-Fi" />
-```
-
-## Props [#props]
-
-The `Switch` component has the following props:
-
-<PropTable />
-
-
 # TextField
 
 
@@ -4902,96 +4902,6 @@ Compare the supported `md` and `sm` visual sizes.
 ## Props [#props]
 
 The `TextField` component accepts the following props:
-
-<PropTable />
-
-
-# Tooltip
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
-
-## Features [#features]
-
-* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
-* Flips and shifts to stay in the viewport
-* Configurable open and close delays
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`className` and `style` apply to the tooltip panel.
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the focusable element and shows the tooltip |
-| `Escape` | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-## Props [#props]
-
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -5257,6 +5167,96 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 ```
 
 ## Props [#props]
+
+<PropTable />
+
+
+# Tooltip
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
+
+## Features [#features]
+
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
+
+### Custom Anchor [#custom-anchor]
+
+To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
+
+<Story of="CustomAnchorExample" />
+
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`className` and `style` apply to the tooltip panel.
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
+
+### ARIA [#aria]
+
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
+
+## Best Practices [#best-practices]
+
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
+
+## Props [#props]
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
