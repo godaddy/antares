@@ -1,5 +1,6 @@
 import { createContext, forwardRef, useContext, type ForwardedRef, type ReactNode } from 'react';
 import {
+  Button as RACButton,
   ButtonContext,
   Label,
   LabelContext,
@@ -9,6 +10,7 @@ import {
   TagList as RACTagList,
   TextContext,
   composeRenderProps,
+  type ButtonProps as RACButtonProps,
   type TagGroupProps as RACTagGroupProps,
   type TagListProps as RACTagListProps,
   type TagProps as RACTagProps,
@@ -29,8 +31,14 @@ export interface ChipContextValue {
   size: ChipSize;
 }
 
-/** Presentation context used by `ChipGroup` and `Chip`. */
+/** Presentation context used by `ChipGroup`, `Chip`, and `ChipButton`. */
 export const ChipContext = createContext<ChipContextValue>({ size: 'md' });
+
+/** Props for a `ChipButton`. */
+export interface ChipButtonProps extends RACButtonProps, Omit<FlexOwnProps, 'as'> {
+  /** Visual size. @default 'md' */
+  size?: ChipSize;
+}
 
 /** Re-exported primitive for naming a `ChipGroup`. */
 export { Label };
@@ -139,8 +147,6 @@ function ChipBody({ children }: { children: ReactNode }) {
   return (
     <RACProvider
       values={[
-        [IconContext, { 'aria-hidden': true, className: styles.icon }],
-        [TextContext, { className: styles.text }],
         [
           ButtonContext,
           {
@@ -148,7 +154,9 @@ function ChipBody({ children }: { children: ReactNode }) {
               remove: removeSlotProps
             }
           }
-        ]
+        ],
+        [IconContext, { 'aria-hidden': true, className: styles.icon }],
+        [TextContext, { className: styles.text }]
       ]}
     >
       {typeof children === 'string' || typeof children === 'number' ? <Text>{children}</Text> : children}
@@ -182,6 +190,38 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
     >
       {composeRenderProps(children, function renderChipContent(content) {
         return <ChipBody>{content}</ChipBody>;
+      })}
+    </Flex>
+  );
+});
+
+/** A button with Chip presentation. */
+export const ChipButton = forwardRef<HTMLButtonElement, ChipButtonProps>(function ChipButton(props, ref) {
+  const { size: requestedSize, className, children, ...rest } = props;
+  const { size: contextSize } = useContext(ChipContext);
+  const size = requestedSize ?? contextSize;
+
+  return (
+    <Flex
+      {...rest}
+      display="inline-flex"
+      alignItems="center"
+      as={RACButton}
+      data-size={size}
+      ref={ref}
+      className={composeClassName(className, styles.chip, styles.chipButton)}
+    >
+      {composeRenderProps(children, function renderChipButtonContent(content) {
+        return (
+          <RACProvider
+            values={[
+              [IconContext, { 'aria-hidden': true, className: styles.icon }],
+              [TextContext, { className: styles.text }]
+            ]}
+          >
+            {typeof content === 'string' || typeof content === 'number' ? <Text>{content}</Text> : content}
+          </RACProvider>
+        );
       })}
     </Flex>
   );

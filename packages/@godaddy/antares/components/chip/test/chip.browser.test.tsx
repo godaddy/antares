@@ -3,17 +3,33 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
 import { RouterProvider } from 'react-aria-components';
+import { ChipButton } from '@godaddy/antares';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { ControlledSelectionExample } from '../examples/controlled-selection.tsx';
+import { ChipButtonStatesExample } from '../examples/chip-button-states.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
 import { EmptyStateExample } from '../examples/empty-state.tsx';
 import { InteractionStatesExample } from '../examples/interaction-states.tsx';
 import { LabelLengthExample } from '../examples/label-length.tsx';
 import { LinkedChipExample } from '../examples/linked.tsx';
+import { MenuFilterTriggerExample } from '../examples/menu-chips.tsx';
 import { PrimitiveAndComposedExample } from '../examples/primitive-and-composed.tsx';
 import { RemovableChipsExample } from '../examples/removable-chips.tsx';
 import { SelectionModesExample } from '../examples/selection-modes.tsx';
 import { ToggleChipsExample } from '../examples/toggle-chips.tsx';
+
+/** Wait for an element rendered through a portal to become available. */
+async function waitForElement(locator: ReturnType<typeof page.getByRole>, timeout = 500): Promise<Element> {
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    const element = await locator.query();
+    if (element) return element;
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  return locator.element();
+}
+
+const settle = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -217,6 +233,77 @@ describe('@godaddy/antares', function antares() {
 
       assume(page.getByRole('row', { name: 'Austin' }).query()).equals(null);
       assume(page.getByRole('row', { name: 'Active' }).query()).is.not.equal(null);
+    });
+
+    it('opens a menu from ChipButton and mirrors the open state in the chevron', async function menuButton() {
+      const user = userEvent.setup();
+      await render(<MenuFilterTriggerExample />);
+
+      const trigger = page.getByRole('button', { name: 'Location' });
+      const chevron = trigger.element().querySelector('[data-icon="chevron-down"]');
+
+      if (!chevron) throw new Error('Expected a menu chevron');
+
+      expect(trigger.element().getAttribute('aria-expanded')).toBe('false');
+      expect(trigger.element().getAttribute('aria-pressed')).toBe(null);
+      expect(chevron.getAttribute('data-flip')).toBe(null);
+
+      await user.click(trigger);
+      await waitForElement(page.getByRole('menu'));
+
+      expect(trigger.element().getAttribute('aria-expanded')).toBe('true');
+      expect(chevron.getAttribute('data-flip')).toBe('vertical');
+
+      await user.keyboard('{Escape}');
+      await settle();
+
+      expect(trigger.element().getAttribute('aria-expanded')).toBe('false');
+      expect(document.activeElement).toBe(trigger.element());
+    });
+
+    it('supports ChipButton sizes, composed content, custom classes, and disabled state', async function buttonStates() {
+      const user = userEvent.setup();
+      let pressed = false;
+
+      await render(
+        <ChipButtonStatesExample
+          onPress={function handlePress() {
+            pressed = true;
+          }}
+        />
+      );
+
+      const small = page.getByRole('button', { name: 'Small with icon' });
+      const medium = page.getByRole('button', { name: 'Medium' });
+      const large = page.getByRole('button', { name: 'Large disabled' });
+
+      expect(small.element()).toHaveAttribute('data-size', 'sm');
+      expect(medium.element()).toHaveAttribute('data-size', 'md');
+      expect(large.element()).toHaveAttribute('data-size', 'lg');
+      expect(medium).toHaveClass('consumer-chip-button');
+      expect(small.element().querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+      expect(getComputedStyle(small.element(), '::before').blockSize).toBe('38px');
+
+      await user.click(small);
+      expect(pressed).toBe(true);
+
+      expect(large).toHaveAttribute('data-disabled', 'true');
+      await user.click(large, { force: true });
+      expect(pressed).toBe(true);
+    });
+
+    it('supports RAC children render props', async function childrenRenderProps() {
+      await render(
+        <ChipButton isDisabled>
+          {function renderChildren({ isDisabled }) {
+            return isDisabled ? 'Disabled' : 'Enabled';
+          }}
+        </ChipButton>
+      );
+
+      const button = page.getByRole('button', { name: 'Disabled' });
+
+      expect(button).toHaveAttribute('data-disabled', 'true');
     });
 
     it('adds and removes the first item from an empty collection', async function emptyCollection() {

@@ -1,18 +1,21 @@
-import { Button, Flex, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
+import { useState } from 'react';
+import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
 
 /**
- * For a menu with a Chip-like appearance, compose a rounded Button inside
- * `MenuTrigger`.
+ * Use `ChipButton` for a menu trigger that shares the Chip family's compact
+ * sizing and presentation.
  * @title Menu filter trigger
  * @order 9
  */
 export function MenuFilterTriggerExample() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <MenuTrigger>
-      <Flex as={Button} variant="secondary" size="md" rounding="full" blockPadding="sm" inlinePadding="md">
+    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
+      <ChipButton>
         <Text>Location</Text>
-        <Icon aria-hidden icon="chevron-down" />
-      </Flex>
+        <Icon icon="chevron-down" flip={isOpen ? 'vertical' : undefined} />
+      </ChipButton>
       <Menu aria-label="Location">
         <MenuItem id="austin">Austin</MenuItem>
         <MenuItem id="chicago">Chicago</MenuItem>

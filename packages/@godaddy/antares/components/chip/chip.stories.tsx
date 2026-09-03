@@ -1,6 +1,6 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Chip, ChipGroup, ChipList } from './src/index.tsx';
+import { Chip, ChipButton, ChipGroup, ChipList } from './src/index.tsx';
 import { PlaygroundExample } from './examples/chip-playground.tsx';
 
 export default getMeta({
@@ -8,6 +8,8 @@ export default getMeta({
 });
 
 export const Props = getComponentDocs(Chip);
+
+export const ChipButtonProps = getComponentDocs(ChipButton);
 
 export const ChipGroupProps = getComponentDocs(ChipGroup);
 

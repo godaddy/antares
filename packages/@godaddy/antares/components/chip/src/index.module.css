@@ -172,10 +172,23 @@
   }
 }
 
+.chipButton {
+  cursor: pointer;
+  text-align: start;
+
+  &:where([data-focus-visible], :focus-visible):where(:not([data-disabled], :disabled)) {
+    outline: 2px solid Highlight;
+  }
+
+  &:where([data-disabled], :disabled) {
+    cursor: not-allowed;
+  }
+}
+
 /* Keep the remove defaults low-specificity so Button presentation classes can override them. */
 :where(.chip) {
   /* Remove control: keep the glyph compact and size its target with the Chip. */
-  :where(.remove) {
+  .remove {
     position: relative;
     flex: none;
     inline-size: 1em;
