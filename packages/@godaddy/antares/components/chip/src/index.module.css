@@ -43,7 +43,10 @@
   --_chip-gap: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
   --_chip-block-padding: var(--size-space-020, var(--ux-1sbfig8, 0.25rem));
   --_chip-inline-padding: var(--size-space-040, calc(var(--ux-1sbfig8, 0.25rem) * 2));
-  --_chip-remove-target: calc(var(--_chip-font-size) * var(--_chip-line-height) + var(--_chip-block-padding) * 2);
+  --_chip-remove-target: min(
+    calc(var(--_chip-font-size) * var(--_chip-line-height) + var(--_chip-block-padding) * 2),
+    38px
+  );
   --_chip-foreground: var(--ux-1utwv7e, #111);
   --_chip-background: var(--ux-1mh0ktr, #f5f5f5);
   --_chip-border: var(--ux-1qbn65p, #f5f5f5);
