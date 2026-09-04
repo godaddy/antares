@@ -217,7 +217,7 @@
       background: transparent;
     }
 
-    &:where(:hover, [data-hovered]):where(:not([data-disabled], :disabled))::before {
+    &:where([data-hovered]):where(:not([data-disabled], :disabled))::before {
       background: rgba(0, 0, 0, 0.04);
     }
 
