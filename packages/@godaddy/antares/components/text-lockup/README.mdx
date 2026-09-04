@@ -1,0 +1,83 @@
+---
+title: TextLockup
+description: TextLockup stacks an eyebrow, title, and body text as one coordinated type group across six sizes.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './text-lockup.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Six coordinated sizes, from a `2xl` page title down to `xs`
+- An eyebrow that takes plain text or a `Tag`, sized to match the lockup
+- Slotted parts, so nested components keep their own type
+- Any heading level, chosen independently of the visual size
+- Start or center alignment
+- A legible line-length clamp, on by default
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
+sit alongside them — a call to action, a second paragraph, an image — without the component
+growing a prop for it.
+
+- **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Anything unslotted is
+  left alone, which is what lets a nested component keep its own internal text. Forget the slot
+  and the text simply renders untypeset rather than erroring.
+- **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
+  freely, and a `Tag` is sized to pair with the lockup.
+- **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
+  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
+- **The body is `<Text slot="body">`**, once or as many times as the copy needs.
+- **An explicit prop on a child always wins** over what the lockup supplies. Pass
+  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
+- **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
+  not the lockup's.
+- **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
+  the body on `body`, so there is no table to memorize.
+- Pass `className` to extend the styles, or select on `[data-size]` and `[data-align]`.
+
+## Accessibility
+
+- The title carries the heading semantics. Choose `level` so the page outline stays correct
+  rather than to achieve a size.
+- Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
+  container's. Inside a
+  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
+  child for the accessible name, and use the lockup for the body.
+- The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
+  reads sensibly on its own, since screen reader users often navigate by heading.
+
+## Best Practices
+
+- Use one `2xl` lockup per page at most — it is the page title.
+- Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
+  narrow column, where the clamp does nothing but complicate the layout.
+- Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
+- Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
+
+## Props
+
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Heading slot="title" />
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
+```
+
+<ArgTypes of={Stories.Props} />

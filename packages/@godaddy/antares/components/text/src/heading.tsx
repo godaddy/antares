@@ -3,10 +3,11 @@ import { cx } from 'cva';
 import { Heading as RACHeading, type HeadingProps as RACHeadingProps } from 'react-aria-components';
 import styles from './heading.module.css';
 
-export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
+export interface HeadingProps extends Omit<RACHeadingProps, 'className' | 'level'> {
   /**
    * The heading level, rendered as the matching `h1`-`h6` element.
-   * @default 2
+   * Falls back to the level a container provides, then to `3`.
+   * @default 3
    */
   level?: 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -35,7 +36,8 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
  * ```
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
-  const { level = 2, className, ...rest } = props;
+  const { level, className, ...rest } = props;
 
+  // `level` stays undefined when unset so RACHeading resolves it from context, then its own default.
   return <RACHeading {...rest} ref={ref} level={level} className={cx(styles.heading, className)} />;
 });

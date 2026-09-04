@@ -4,6 +4,7 @@ import { userEvent } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
+import { IsolatedLabelExample } from '../examples/isolated-label.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
 import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.tsx';
 
@@ -101,6 +102,29 @@ describe('@godaddy/antares', function antares() {
     it('renders a CloseButton with the "Close" accessible name', async function closeButtonAccessibleName() {
       const { getByRole } = await render(<CloseButton />);
       await expect.element(getByRole('button', { name: 'Close' })).toBeVisible();
+    });
+
+    it('shadows an ancestor TextContext so the label keeps the button type', async function isolatedLabel() {
+      const { getByRole, getByText } = await render(<IsolatedLabelExample />);
+
+      // Control: Text outside the button takes the injected size, so the provider is live.
+      expect(getComputedStyle(getByText('Outside the button').element()).fontSize).toEqual('40px');
+
+      for (const name of ['String label', 'Composed label']) {
+        const button = getByRole('button', { name }).element();
+        const label = button.querySelector('span');
+
+        expect(label).not.toBeNull();
+        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(button).fontSize);
+      }
+
+      for (const name of ['String link label', 'Composed link label']) {
+        const link = getByRole('link', { name }).element();
+        const label = link.querySelector('span');
+
+        expect(label).not.toBeNull();
+        expect(getComputedStyle(label as Element).fontSize).toEqual(getComputedStyle(link).fontSize);
+      }
     });
   });
 });

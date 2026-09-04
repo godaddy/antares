@@ -1,5 +1,5 @@
 .heading {
   margin-block: 0;
-  font-weight: bolder;
+  font-weight: var(--font-heading-weight, var(--ux-c539b7, 700));
   overflow-wrap: break-word;
 }

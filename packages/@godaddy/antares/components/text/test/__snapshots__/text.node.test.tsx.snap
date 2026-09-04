@@ -8,8 +8,12 @@ exports[`@godaddy/antares > #Text > renders the as example 1`] = `"<marquee clas
 
 exports[`@godaddy/antares > #Text > renders the heading example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading">Heading level 1</h1><h2 class="heading">Heading level 2</h2><h3 class="heading">Heading level 3</h3></div>"`;
 
+exports[`@godaddy/antares > #Text > renders the heading level resolution fixture 1`] = `"<h2 slot="title" class="heading">Container level</h2><h5 slot="title" class="heading">Explicit level</h5><h3 class="heading">Default level</h3>"`;
+
 exports[`@godaddy/antares > #Text > renders the maxLines example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text" style="--max-lines:2">This will have a maximum of two lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>"`;
 
 exports[`@godaddy/antares > #Text > renders the text example 1`] = `"<span class="text">Hello, world!</span>"`;
+
+exports[`@godaddy/antares > #Text > renders the themed heading weight fixture 1`] = `"<h3 style="--font-heading-weight:500" class="heading">Themed weight</h3>"`;
 
 exports[`@godaddy/antares > #Text > renders the wrap example 1`] = `"<div style="width:300px;border:1px solid red"><p class="text" style="--wrap:pretty">Text is wrapped in a way that best balances the number of characters on each line, enhancing layout quality and legibility. Because counting characters and balancing them across multiple lines is computationally expensive, this value is only supported for blocks of text spanning a limited number of lines</p></div>"`;

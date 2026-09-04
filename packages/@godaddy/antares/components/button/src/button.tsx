@@ -6,7 +6,9 @@ import {
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText
+  Provider as RACProvider,
+  Text as RACText,
+  TextContext as RACTextContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { composeClassName } from '#utils/render-props.ts';
@@ -35,6 +37,18 @@ const buttonVariants = cva(styles.button, {
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
+/**
+ * The button's label region.
+ * Shadows an ancestor's `TextContext` so the label keeps the button's own type.
+ */
+function ButtonLabel({ children }: { children?: React.ReactNode }) {
+  return (
+    <RACProvider values={[[RACTextContext, {}]]}>
+      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+    </RACProvider>
+  );
+}
+
 interface BaseButtonProps {
   /** The variant of the button. */
   variant?: ButtonVariantProps['variant'];
@@ -58,7 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   return (
     <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      <ButtonLabel>{children}</ButtonLabel>
     </RACButton>
   );
 });
@@ -84,7 +98,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      <ButtonLabel>{children}</ButtonLabel>
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );

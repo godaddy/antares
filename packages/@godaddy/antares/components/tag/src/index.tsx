@@ -1,5 +1,6 @@
-import { type ComponentProps, type ReactNode, forwardRef } from 'react';
+import { type ComponentProps, type ReactNode, createContext, forwardRef } from 'react';
 import { cx } from 'cva';
+import { type ContextValue, useContextProps } from 'react-aria-components';
 import styles from './index.module.css';
 
 /**
@@ -71,6 +72,12 @@ export interface TagProps extends ComponentProps<'span'> {
 }
 
 /**
+ * Lets a parent supply per-slot `Tag` defaults; consumer props always win. Providers must
+ * include `DEFAULT_SLOT`, since `useSlottedContext` throws on a missing slot key.
+ */
+export const TagContext = createContext<ContextValue<Partial<TagProps>, HTMLSpanElement>>(null);
+
+/**
  * Highlights statuses and categories with a colored label.
  *
  * Tags are non-interactive and placed in prominent places on related items.
@@ -88,6 +95,8 @@ export interface TagProps extends ComponentProps<'span'> {
  * @param props - {@link TagProps}
  */
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref) {
+  [props, ref] = useContextProps(props, ref, TagContext);
+
   const {
     emphasis = 'passive',
     size = 'md',
