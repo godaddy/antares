@@ -52,7 +52,7 @@ export function PlaygroundExample({
       <ChipList items={items} renderEmptyState={() => 'No chips'}>
         {(item) => (
           <Chip id={item.id} textValue={textValue || item.name} isDisabled={isChipDisabled} href={href || undefined}>
-            {item.name}
+            <Text>{item.name}</Text>
             {removable ? <Button slot="remove" /> : null}
           </Chip>
         )}

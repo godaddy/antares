@@ -11,6 +11,7 @@ import {
   TextContext,
   composeRenderProps,
   type ButtonProps as RACButtonProps,
+  type LabelProps,
   type TagGroupProps as RACTagGroupProps,
   type TagListProps as RACTagListProps,
   type TagProps as RACTagProps,
@@ -40,8 +41,12 @@ export interface ChipButtonProps extends RACButtonProps, Omit<FlexOwnProps, 'as'
   size?: ChipSize;
 }
 
-/** Re-exported primitive for naming a `ChipGroup`. */
-export { Label };
+/**
+ * Re-exported primitive for naming a `ChipGroup`.
+ *
+ * TODO: Move `Label` and `LabelProps` to their dedicated Antares component when implemented.
+ */
+export { Label, type LabelProps };
 
 /** Props for the semantic owner of a Chip collection. */
 export interface ChipGroupProps extends RACTagGroupProps {

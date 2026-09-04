@@ -9,6 +9,7 @@ export {
   type ChipButtonProps,
   type ChipGroupProps,
   type ChipListProps,
+  type LabelProps,
   type ChipProps,
   type ChipSize
 } from '#components/chip';

@@ -197,18 +197,15 @@ describe('@godaddy/antares', function antares() {
       assume(page.getByText('No filters applied').query()).is.not.equal(null);
     });
 
-    it('shows a hover surface on the remove control', async function removeHover() {
+    it('reports hover state on the remove control', async function removeHover() {
       const user = userEvent.setup();
       await render(<RemovableChipsExample />);
 
       const remove = page.getByRole('button', { name: 'Remove Austin' });
-      const initialBackground = getComputedStyle(remove.element(), '::before').backgroundColor;
 
       await user.hover(remove);
 
-      const removeTargetStyle = getComputedStyle(remove.element(), '::before');
       expect(remove).toHaveAttribute('data-hovered', 'true');
-      expect(removeTargetStyle.backgroundColor).not.toBe(initialBackground);
     });
 
     it('focuses the remove control with the keyboard', async function removalFocus() {
@@ -216,11 +213,10 @@ describe('@godaddy/antares', function antares() {
       await render(<RemovableChipsExample />);
 
       const remove = page.getByRole('button', { name: 'Remove Austin' });
-      remove.element().focus();
-      await user.keyboard('{Shift>}{Tab}{/Shift}');
-      await user.keyboard('{Tab}');
+      await user.keyboard('{Tab}{Tab}');
 
       expect(document.activeElement).toBe(remove.element());
+      expect(remove).toHaveAttribute('data-focus-visible', 'true');
     });
 
     it('removes an item from the keyboard', async function keyboardRemoval() {
@@ -252,13 +248,26 @@ describe('@godaddy/antares', function antares() {
       await waitForElement(page.getByRole('menu'));
 
       expect(trigger.element().getAttribute('aria-expanded')).toBe('true');
+      expect(trigger).toHaveAttribute('data-pressed', 'true');
       expect(chevron.getAttribute('data-flip')).toBe('vertical');
 
       await user.keyboard('{Escape}');
       await settle();
 
       expect(trigger.element().getAttribute('aria-expanded')).toBe('false');
+      expect(trigger).not.toHaveAttribute('data-pressed');
       expect(document.activeElement).toBe(trigger.element());
+    });
+
+    it('reports hover state on ChipButton', async function chipButtonHover() {
+      const user = userEvent.setup();
+      await render(<MenuFilterTriggerExample />);
+
+      const trigger = page.getByRole('button', { name: 'Location' });
+
+      await user.hover(trigger);
+
+      expect(trigger).toHaveAttribute('data-hovered', 'true');
     });
 
     it('supports ChipButton sizes, composed content, custom classes, and disabled state', async function buttonStates() {

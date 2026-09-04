@@ -101,7 +101,9 @@
     border-radius: inherit;
   }
 
-  &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
+  &:where(.chipButton, [data-selection-mode], [data-allows-removing], [data-href]):where(:hover, [data-hovered]):where(
+      :not([data-disabled])
+    ) {
     --_chip-foreground: var(--ux-1e4ese5, #111);
     --_chip-background: var(--ux-11rtwg8, #f5f5f5);
     --_chip-border: var(--ux-bg7olm, #d6d6d6);
@@ -114,7 +116,7 @@
     outline: 2px solid Highlight;
   }
 
-  &:where([data-selected]) {
+  &:where([data-selected], [data-pressed]) {
     --_chip-foreground: var(--ux-k4fkva, #111);
     --_chip-background: var(--ux-gdy377, #fff);
     --_chip-border: var(--ux-187j9dd, #00a4a6);
@@ -231,7 +233,7 @@
       block-size: 1em;
     }
 
-    &:where(:focus) {
+    &:where([data-focus-visible]) {
       outline: none;
     }
 
