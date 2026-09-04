@@ -200,7 +200,11 @@ export const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
   );
 });
 
-/** A button with Chip presentation. */
+/**
+ * A button with Chip presentation.
+ *
+ * @param props - {@link ChipButtonProps}
+ */
 export const ChipButton = forwardRef<HTMLButtonElement, ChipButtonProps>(function ChipButton(props, ref) {
   const { size: requestedSize, className, children, ...rest } = props;
   const { size: contextSize } = useContext(ChipContext);

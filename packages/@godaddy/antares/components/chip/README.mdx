@@ -118,8 +118,10 @@ const [isOpen, setIsOpen] = useState(false);
 
 ## Accessibility
 
-- Give every `ChipGroup` a `Label` or an accessible name such as `aria-label`.
-- Use `textValue` when a Chip contains icons, composed content, or a render prop.
+- Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
+  not its individual Chips.
+- Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
+  when a Chip contains icons, composed content, or a render prop.
 - Use a descriptive group label so removal actions can be announced clearly.
 - Keep the visible label and the accessible value synchronized.
 - `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
@@ -135,10 +137,10 @@ const [isOpen, setIsOpen] = useState(false);
 
 ## Troubleshooting
 
-### A Chip has no accessible name
+### A ChipGroup has no accessible name
 
-Add a visible `Label` to the group or provide `aria-label`. For composed content,
-also provide `textValue` on the Chip.
+Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
+with composed content, provide a visible label, `textValue`, or `aria-label`.
 
 ### The remove action does not update the UI
 

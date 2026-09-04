@@ -195,6 +195,7 @@
     flex: none;
     inline-size: 1em;
     block-size: 1em;
+    padding: 0;
     border: none;
     border-radius: 9999px;
     line-height: 1;
