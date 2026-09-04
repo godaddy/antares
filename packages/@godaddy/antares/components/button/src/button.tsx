@@ -3,10 +3,12 @@ import { forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
+  ButtonContext,
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText
+  Text as RACText,
+  useSlottedContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { composeClassName } from '#utils/render-props.ts';
@@ -48,16 +50,26 @@ interface BaseButtonProps {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
+type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
+
 /**
  * The Button component allows users to trigger an action.
  *
  * @param props - The properties {@link ButtonProps} passed to the component.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  const { variant, size, className, children, ...rest } = props;
+  const { variant, size, className, children, slot, ...rest } = props;
+  const contextProps = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
+  const resolvedVariant = variant !== undefined ? variant : contextProps?.variant;
+  const resolvedSize = size !== undefined ? size : contextProps?.size;
 
   return (
-    <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
+    <RACButton
+      {...rest}
+      ref={ref}
+      slot={slot}
+      className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
+    >
       {typeof children === 'string' ? <RACText>{children}</RACText> : children}
     </RACButton>
   );

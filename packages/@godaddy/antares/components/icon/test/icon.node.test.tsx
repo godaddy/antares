@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { Icon, set, ondemand, parser } from '@godaddy/antares';
 import assume from 'assume';
 import { DefaultExample } from '../examples/default.tsx';
+import { IconContextExample } from '../examples/icon-context.tsx';
 
 /**
  * Renders the Icon component to a string with provided props for SSR testing
@@ -57,6 +58,11 @@ describe('@godaddy/antares', function antares() {
 
     it('renders the default Example', function defaultExample() {
       const result = renderToString(<DefaultExample />);
+      expect(result).toMatchSnapshot();
+    });
+
+    it('renders IconContextExample', function iconContextExample() {
+      const result = renderToString(<IconContextExample />);
       expect(result).toMatchSnapshot();
     });
 
