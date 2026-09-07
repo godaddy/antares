@@ -3,11 +3,11 @@ import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
-import { DescriptionExample } from '../examples/radio-description.tsx';
-import { DisabledExample } from '../examples/radio-disabled.tsx';
-import { ErrorExample } from '../examples/radio-error.tsx';
-import { HorizontalExample } from '../examples/radio-horizontal.tsx';
-import { RequiredExample } from '../examples/radio-required.tsx';
+import { DescriptionExample } from '../examples/description.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { ErrorExample } from '../examples/error.tsx';
+import { HorizontalExample } from '../examples/horizontal.tsx';
+import { RequiredExample } from '../examples/required.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
