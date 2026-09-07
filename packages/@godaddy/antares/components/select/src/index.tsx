@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, useContext, type ReactNode } from 'react';
 import {
   Select as RACSelect,
   type SelectProps as RACSelectProps,
@@ -16,7 +16,7 @@ import {
   type FieldSize,
   type FieldSlots
 } from '#components/_internal/field';
-import { Button } from '#components/button';
+import { Button, ButtonContext } from '#components/button';
 import { Icon } from '#components/icon';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
 import { Popover } from '#components/popover';
@@ -26,9 +26,9 @@ import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-function selectSlots(variant: 'default' | 'control'): FieldSlots {
+function selectSlots(variant: 'default' | 'control', size?: FieldSize): FieldSlots {
   return {
-    control: <SelectControl variant={variant} />,
+    control: <SelectControl variant={variant} size={size} />,
     items: function wrapItems(items) {
       return <SelectOptions>{items}</SelectOptions>;
     }
@@ -64,12 +64,15 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
   const group = useSlottedContext(GroupContext);
+  // RAC's Select replaces ButtonContext for its interior, so a control variant reads the
+  // parent field's chrome here and hands it to the trigger.
+  const inherited = useContext(ButtonContext) as { slots?: Record<string, { size?: FieldSize }> } | null;
 
   if (variant === 'control') {
     return (
       <RACSelect {...racProps} isDisabled={racProps.isDisabled ?? group?.isDisabled} className={selectClass}>
         {mapFieldChildren(children, function fillInterior(node) {
-          return normalizeFieldChildren(node, selectSlots('control'));
+          return normalizeFieldChildren(node, selectSlots('control', size ?? inherited?.slots?.control?.size));
         })}
       </RACSelect>
     );
@@ -92,18 +95,23 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
 interface SelectControlProps {
   /** Field trigger, or a control inside another field's Group. @default 'default' */
   variant?: 'default' | 'control';
+
+  /** Trigger size when composed as a control; the field publishes it otherwise. */
+  size?: FieldSize;
 }
 
 /** Preset trigger (`Group` + button) unless `variant="control"`. */
-function SelectControl({ variant = 'default' }: SelectControlProps) {
+function SelectControl({ variant = 'default', size }: SelectControlProps) {
+  const isControl = variant === 'control';
+  // A control-variant trigger owns its own face: no parent field publishes one here.
   const button = (
-    <Button slot={variant === 'control' ? 'control' : 'trigger'}>
+    <Button slot={isControl ? 'control' : 'trigger'} variant={isControl ? 'control' : undefined} size={size}>
       <SelectValue />
       <Icon icon="chevron-down" />
     </Button>
   );
 
-  return variant === 'control' ? button : <Group alignItems="center">{button}</Group>;
+  return isControl ? button : <Group alignItems="center">{button}</Group>;
 }
 
 interface SelectOptionsProps {

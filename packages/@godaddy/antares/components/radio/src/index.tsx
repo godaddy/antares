@@ -76,12 +76,20 @@ export function RadioGroup({ children, className, orientation = 'vertical', ...p
   return (
     <Field
       as={RACRadioGroup}
-      interior="stack"
       orientation={orientation}
-      forwardOrientation
       slots={{
         items: function wrapItems(items) {
-          return <Group>{items}</Group>;
+          // The group owns its own axis; `presentation` keeps a bare group out of the
+          // radiogroup's a11y tree. RAC gets `orientation` from the root for keyboard/ARIA.
+          return (
+            <Group
+              role="presentation"
+              direction={orientation === 'horizontal' ? 'row' : 'column'}
+              gap={orientation === 'horizontal' ? 'lg' : 'md'}
+            >
+              {items}
+            </Group>
+          );
         }
       }}
       {...props}

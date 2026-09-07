@@ -1,12 +1,6 @@
-import { type ReactNode, useContext } from 'react';
-import { mergeProps } from 'react-aria';
-import {
-  DEFAULT_SLOT,
-  NumberField as RACNumberField,
-  type NumberFieldProps as RACNumberFieldProps
-} from 'react-aria-components';
+import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
 import { Field, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
-import { Button, ButtonContext } from '#components/button';
+import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { Input } from '#components/input';
 import { Group } from '#components/structure';
@@ -19,32 +13,11 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
   size?: FieldSize;
 }
 
-type ButtonContextValue = {
-  slots?: Record<string | symbol, object | undefined>;
-  [key: string]: unknown;
+/** Stepper faces and default icons. The field only adds its chrome to these. */
+const STEPPER_SLOTS = {
+  decrement: { variant: 'control', children: <Icon icon="minus" /> },
+  increment: { variant: 'control', children: <Icon icon="plus" /> }
 };
-
-/** Default stepper icons on ButtonContext slots. */
-function NumberFieldStepperContext({ children }: { children: ReactNode }) {
-  const inherited = (useContext(ButtonContext) ?? {}) as ButtonContextValue;
-  const slots = inherited.slots ?? {};
-
-  return (
-    <ButtonContext.Provider
-      value={{
-        ...inherited,
-        slots: {
-          [DEFAULT_SLOT]: slots[DEFAULT_SLOT] ?? {},
-          ...slots,
-          decrement: mergeProps(slots.decrement ?? {}, { children: <Icon icon="minus" /> }),
-          increment: mergeProps(slots.increment ?? {}, { children: <Icon icon="plus" /> })
-        }
-      }}
-    >
-      {children}
-    </ButtonContext.Provider>
-  );
-}
 
 /** Preset stepper Group; replace with a bare Input or custom Group. */
 function NumberFieldControl() {
@@ -72,17 +45,16 @@ export function NumberField(props: NumberFieldProps) {
   const { children, size, isDisabled, ...racProps } = props;
 
   return (
-    <NumberFieldStepperContext>
-      <Field
-        as={RACNumberField}
-        interior="box"
-        size={size}
-        isDisabled={isDisabled}
-        slots={{ control: <NumberFieldControl /> }}
-        {...racProps}
-      >
-        {children}
-      </Field>
-    </NumberFieldStepperContext>
+    <Field
+      as={RACNumberField}
+      interior="box"
+      size={size}
+      isDisabled={isDisabled}
+      slots={{ control: <NumberFieldControl /> }}
+      buttonSlots={STEPPER_SLOTS}
+      {...racProps}
+    >
+      {children}
+    </Field>
   );
 }

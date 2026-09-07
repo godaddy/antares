@@ -53,21 +53,21 @@ describe('@godaddy/antares', function antares() {
       assume(selected.length).greaterThan(0);
     });
 
-    it('marks the group invalid when a required select fails validation on submit', async function submitInvalid() {
+    it('marks the field invalid when a required select fails validation on submit', async function submitInvalid() {
       const { container } = await render(<FormExample />);
 
       const submit = page.getByRole('button', { name: 'Submit' });
       await userEvent.setup().click(submit);
 
-      const group = container.querySelector('[role="group"]') as HTMLElement;
-      assume(group.hasAttribute('data-invalid')).equals(true);
+      const field = container.querySelector('[data-interior="box"]') as HTMLElement;
+      assume(field.hasAttribute('data-invalid')).equals(true);
     });
 
-    it('marks the group invalid from the controlled isInvalid prop', async function controlledInvalid() {
+    it('marks the field invalid from the controlled isInvalid prop', async function controlledInvalid() {
       const { container } = await render(<InvalidExample />);
 
-      const group = container.querySelector('[role="group"]') as HTMLElement;
-      assume(group.hasAttribute('data-invalid')).equals(true);
+      const field = container.querySelector('[data-interior="box"]') as HTMLElement;
+      assume(field.hasAttribute('data-invalid')).equals(true);
     });
   });
 });

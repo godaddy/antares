@@ -1,13 +1,13 @@
 import type React from 'react';
-import { createContext, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
+  ButtonContext as RACButtonContext,
   type ButtonProps as RACButtonProps,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  useContextProps,
-  type ContextValue
+  useSlottedContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
 import { Text } from '#components/text';
@@ -54,23 +54,36 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
-/** Optional parent context for Antares button props (and slots). */
-export const ButtonContext = createContext<ContextValue<ButtonProps, HTMLButtonElement>>(null);
+/**
+ * React Aria's button context. A parent publishes props per `slot`; Antares reads
+ * `variant` and `size` from it, and RAC merges everything else.
+ */
+export { ButtonContext } from 'react-aria-components';
+
+/** Presentation a parent may publish. RAC's own props flow through {@link RACButton}. */
+type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
+
+/** Variants whose chrome belongs to the surrounding field, exposed for its CSS. */
+const FIELD_VARIANTS = new Set<ButtonVariant>(['control', 'trigger']);
 
 /**
- * Triggers an action. Parents may publish props via ButtonContext; local props win.
+ * Triggers an action. A parent may publish `variant`/`size` through
+ * {@link ButtonContext}; local props win.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  [props, ref] = useContextProps(props, ref, ButtonContext);
-  const { variant, size, className, children, isDisabled, ...rest } = props;
+  const { variant, size, className, children, slot, ...rest } = props;
+  const inherited = useSlottedContext(RACButtonContext, slot) as ButtonPresentationProps | null | undefined;
+  const resolvedVariant = variant ?? inherited?.variant;
+  const resolvedSize = size ?? inherited?.size;
   const content = typeof children === 'string' ? <Text slot={null}>{children}</Text> : children;
 
   return (
     <RACButton
       {...rest}
       ref={ref}
-      isDisabled={isDisabled}
-      className={composeClassName(className, buttonVariants({ variant, size }))}
+      slot={slot}
+      data-variant={FIELD_VARIANTS.has(resolvedVariant) ? resolvedVariant : undefined}
+      className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
     >
       {content}
     </RACButton>

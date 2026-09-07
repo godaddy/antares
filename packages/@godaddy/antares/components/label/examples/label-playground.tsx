@@ -1,11 +1,11 @@
 import { Group, Input, Label, TextField, type LabelProps } from '@godaddy/antares';
 
-export function PlaygroundExample(props: Pick<LabelProps, 'as' | 'children'>) {
-  const { as = 'label', children = 'Email' } = props;
+export function PlaygroundExample(props: Pick<LabelProps, 'children'>) {
+  const { children = 'Email' } = props;
 
   return (
     <TextField>
-      <Label as={as}>{children}</Label>
+      <Label>{children}</Label>
       <Group>
         <Input placeholder="you@example.com" />
       </Group>

@@ -1,7 +1,7 @@
 import { Label, TextArea, TextField } from '@godaddy/antares';
 
 /**
- * TextArea inside TextField. Field injects chrome.
+ * TextArea inside TextField. The field styles it.
  * @order 1
  */
 export function DefaultExample() {
