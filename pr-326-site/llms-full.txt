@@ -463,6 +463,111 @@ The `CloseButton` component accepts the following props:
 <PropTable />
 
 
+# Carousel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
+
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
+
+<Story of="ExternalControlsUncontrolledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### External Controls (Controlled) [#external-controls-controlled]
+
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
+
+<Story of="ExternalControlsControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### Hide Controls [#hide-controls]
+
+The hide controls carousel is a carousel that hides the navigation controls.
+
+<Story of="HideControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Variable Widths [#variable-widths]
+
+It supports multiple slides with different widths.
+
+<Story of="VariableWidthsExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
+
+### Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="EventsExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="RTLDirectionExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+The `Carousel` component accepts the following props:
+
+<PropTable />
+
+
 # Calendar
 
 
@@ -585,111 +690,6 @@ The `Calendar` component accepts the following props:
 <PropTable />
 
 The `RangeCalendar` component accepts the following props:
-
-<PropTable />
-
-
-# Carousel
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="ExternalControlsUncontrolledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="ExternalControlsControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="HideControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="VariableWidthsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="EventsExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="RTLDirectionExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Carousel` component accepts the following props:
 
 <PropTable />
 
@@ -1403,6 +1403,43 @@ The `DrawerTrigger` component accepts the following props:
 <PropTable />
 
 
+# FieldError
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+FieldError renders when the field is invalid.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
 # DropZone
 
 
@@ -1507,43 +1544,6 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
-# FieldError
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-FieldError renders when the field is invalid.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # FileTrigger
 
 
@@ -1637,182 +1637,6 @@ Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatic
 <Story of="DefaultExample" />
 
 <Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
-# Image
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders a native `<img>` and accepts all of its attributes
-* Inherits presentation and behavior when composed inside Antares components such as Avatar
-* Ships no default styles, loading state, or fallback so it stays predictable everywhere
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Render an image with alternative text and explicit dimensions.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-* Provide concise, meaningful `alt` text when the image conveys information.
-* Use `alt=""` for decorative images or images already described by adjacent text.
-* Set `width` and `height` when known to reserve space and reduce layout shift.
-
-## Props [#props]
-
-<PropTable />
-
-
-# InlineDrawer
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
-
-## Features [#features]
-
-* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
-* Animated by default; `animate={false}` disables the transition
-* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
-* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
-* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
-* `prefers-reduced-motion` support
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Box style={{ maxInlineSize: 360 }}>\n      <InlineDrawer>\n        <Button slot=\&#x22;trigger\&#x22;>Toggle details</Button>\n        <InlineDrawerPanel>\n          <Box padding=\&#x22;md\&#x22;>\n            <Text>Collapsible content goes here.</Text>\n          </Box>\n        </InlineDrawerPanel>\n      </InlineDrawer>\n    </Box>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Use `isExpanded` and `onExpandedChange` to drive state externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setExpanded(!expanded)}>\n        {expanded ? 'Collapse' : 'Expand'}\n      </Button>\n      <Text>Expanded: {String(expanded)}</Text>\n      <Box style={{ maxInlineSize: 360 }}>\n        <InlineDrawer isExpanded={expanded} onExpandedChange={setExpanded}>\n          <Button slot=\&#x22;trigger\&#x22;>Details</Button>\n          <InlineDrawerPanel>\n            <Box padding=\&#x22;md\&#x22;>\n              <Text>Controlled panel content.</Text>\n            </Box>\n          </InlineDrawerPanel>\n        </InlineDrawer>\n      </Box>\n    </>\n  );\n}&#x22;" />
-
-### Sidebar Nav [#sidebar-nav]
-
-A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
-
-<Story of="SidebarNavExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';\n\nconst NAV = [\n  { icon: 'grid', label: 'Dashboard', href: '#' },\n  { icon: 'star', label: 'Favorites', href: '#' },\n  { icon: 'comment', label: 'Messages', href: '#' }\n] as const;\n\nexport function SidebarNavExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;row\&#x22;>\n      <InlineDrawer placement=\&#x22;left\&#x22; isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22; padding=\&#x22;xs\&#x22;>\n          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label=\&#x22;Menu\&#x22;>\n            <Icon icon=\&#x22;bulleted-list\&#x22; />\n          </ToggleButton>\n          {NAV.map(function renderItem(item) {\n            return (\n              <LinkButton\n                key={item.label}\n                href={item.href}\n                aria-label={!expanded ? item.label : undefined}\n                variant=\&#x22;minimal\&#x22;\n                style={{ justifyContent: 'flex-start' }}\n              >\n                <Icon icon={item.icon} />\n                {expanded ? item.label : null}\n              </LinkButton>\n            );\n          })}\n        </Flex>\n      </InlineDrawer>\n      <Flex padding=\&#x22;md\&#x22; style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>\n        <Text>Main content area</Text>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key               | Action                         |
-| ----------------- | ------------------------------ |
-| `Enter` / `Space` | Toggle via the slotted trigger |
-| `Tab`             | Move focus through the content |
-
-### ARIA [#aria]
-
-* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
-* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
-
-## Best Practices [#best-practices]
-
-* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
-* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
-* `placement` does not flip in RTL; the side is decided by document/flex order.
-* Don't nest InlineDrawers.
-
-## Props [#props]
-
-<PropTable />
-
-The `InlineDrawerPanel` component accepts the following props:
-
-<PropTable />
-
-
-# Input
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
-
-```tsx
-<TextField>
-  <Label>Email</Label>
-  <Input placeholder="you@example.com" />
-</TextField>
-```
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Input inside TextField. Field injects chrome.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -2229,6 +2053,182 @@ For performance optimization:
 1. **Preload common icons**: Consider preloading frequently used icons
 2. **Use sprite mode**: For repeated icons, consider sprite mode which consolidates multiple icons into a single SVG sprite sheet, reducing DOM size and improving performance when the same icon appears multiple times
 3. **Minimize icon sets**: Only load icons that are actually used
+
+
+# Image
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a native `<img>` and accepts all of its attributes
+* Inherits presentation and behavior when composed inside Antares components such as Avatar
+* Ships no default styles, loading state, or fallback so it stays predictable everywhere
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Render an image with alternative text and explicit dimensions.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Image } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 320 180%22%3E%3Crect width=%22320%22 height=%22180%22 fill=%22%23145fa9%22/%3E%3Ctext x=%22160%22 y=%2298%22 fill=%22white%22 font-family=%22Arial%22 font-size=%2228%22 text-anchor=%22middle%22%3EGoDaddy%3C/text%3E%3C/svg%3E';\n\nexport function DefaultExample() {\n  return <Image src={image} alt=\&#x22;GoDaddy blue brand panel\&#x22; width={320} height={180} />;\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+* Provide concise, meaningful `alt` text when the image conveys information.
+* Use `alt=""` for decorative images or images already described by adjacent text.
+* Set `width` and `height` when known to reserve space and reduce layout shift.
+
+## Props [#props]
+
+<PropTable />
+
+
+# InlineDrawer
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`InlineDrawerPanel` is the collapsible content for the accordion pattern — a thin wrapper over RAC `DisclosurePanel` that hides when collapsed. The trigger is any component you slot in with `slot="trigger"` — there's no dedicated trigger component.
+
+## Features [#features]
+
+* In-flow collapsible built on RAC Disclosure — bring your own trigger via `slot="trigger"`
+* Animated by default; `animate={false}` disables the transition
+* `placement` selects the collapse axis (`left`/`right` → width, `top`/`bottom` → height)
+* Controlled and uncontrolled modes (`isExpanded` / `defaultExpanded` / `onExpandedChange`)
+* Accordion collapse uses the browser's `hidden="until-found"` for find-in-page
+* `prefers-reduced-motion` support
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Put a `<Button slot="trigger">` and an `<InlineDrawerPanel>` inside `InlineDrawer`. The panel hides when collapsed and animates open.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Box style={{ maxInlineSize: 360 }}>\n      <InlineDrawer>\n        <Button slot=\&#x22;trigger\&#x22;>Toggle details</Button>\n        <InlineDrawerPanel>\n          <Box padding=\&#x22;md\&#x22;>\n            <Text>Collapsible content goes here.</Text>\n          </Box>\n        </InlineDrawerPanel>\n      </InlineDrawer>\n    </Box>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Use `isExpanded` and `onExpandedChange` to drive state externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, InlineDrawerPanel, Button, Box, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <>\n      <Button variant=\&#x22;primary\&#x22; onPress={() => setExpanded(!expanded)}>\n        {expanded ? 'Collapse' : 'Expand'}\n      </Button>\n      <Text>Expanded: {String(expanded)}</Text>\n      <Box style={{ maxInlineSize: 360 }}>\n        <InlineDrawer isExpanded={expanded} onExpandedChange={setExpanded}>\n          <Button slot=\&#x22;trigger\&#x22;>Details</Button>\n          <InlineDrawerPanel>\n            <Box padding=\&#x22;md\&#x22;>\n              <Text>Controlled panel content.</Text>\n            </Box>\n          </InlineDrawerPanel>\n        </InlineDrawer>\n      </Box>\n    </>\n  );\n}&#x22;" />
+
+### Sidebar Nav [#sidebar-nav]
+
+A rail whose content stays visible when collapsed is a composition, not a mode: drive `isExpanded` yourself, render always-visible children (no `InlineDrawerPanel`), and let `minSize`/`maxSize` size the rail. Use numeric (px) sizes so the width animates; intrinsic keywords like `min-content`/`max-content` fit the content exactly but don't animate.
+
+<Story of="SidebarNavExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { InlineDrawer, Flex, ToggleButton, LinkButton, Icon, Text } from '@godaddy/antares';\n\nconst NAV = [\n  { icon: 'grid', label: 'Dashboard', href: '#' },\n  { icon: 'star', label: 'Favorites', href: '#' },\n  { icon: 'comment', label: 'Messages', href: '#' }\n] as const;\n\nexport function SidebarNavExample() {\n  const [expanded, setExpanded] = useState(false);\n\n  return (\n    <Flex direction=\&#x22;row\&#x22;>\n      <InlineDrawer placement=\&#x22;left\&#x22; isExpanded={expanded} onExpandedChange={setExpanded} minSize={35} maxSize={150}>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22; padding=\&#x22;xs\&#x22;>\n          <ToggleButton isSelected={expanded} onChange={setExpanded} aria-label=\&#x22;Menu\&#x22;>\n            <Icon icon=\&#x22;bulleted-list\&#x22; />\n          </ToggleButton>\n          {NAV.map(function renderItem(item) {\n            return (\n              <LinkButton\n                key={item.label}\n                href={item.href}\n                aria-label={!expanded ? item.label : undefined}\n                variant=\&#x22;minimal\&#x22;\n                style={{ justifyContent: 'flex-start' }}\n              >\n                <Icon icon={item.icon} />\n                {expanded ? item.label : null}\n              </LinkButton>\n            );\n          })}\n        </Flex>\n      </InlineDrawer>\n      <Flex padding=\&#x22;md\&#x22; style={{ flex: 1, borderInlineStart: '1px solid var(--bd-base)' }}>\n        <Text>Main content area</Text>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Action                         |
+| ----------------- | ------------------------------ |
+| `Enter` / `Space` | Toggle via the slotted trigger |
+| `Tab`             | Move focus through the content |
+
+### ARIA [#aria]
+
+* A `<Button slot="trigger">` gets `aria-expanded` + `aria-controls` wired to the `InlineDrawerPanel` automatically (via RAC Disclosure).
+* For the sidebar rail, the toggle is your own control (e.g. a `ToggleButton`) — give icon-only buttons an `aria-label`, and the content stays in the DOM and accessible since nothing is hidden.
+
+## Best Practices [#best-practices]
+
+* Accordion → `Button slot="trigger"` + `InlineDrawerPanel`. Sidebar rail → controlled state + always-visible children.
+* For the rail, use numeric (px) `minSize`/`maxSize` so the width animates; `min-content`/`max-content` fit the content exactly but won't animate.
+* `placement` does not flip in RTL; the side is decided by document/flex order.
+* Don't nest InlineDrawers.
+
+## Props [#props]
+
+<PropTable />
+
+The `InlineDrawerPanel` component accepts the following props:
+
+<PropTable />
+
+
+# Input
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
+
+```tsx
+<TextField>
+  <Label>Email</Label>
+  <Input placeholder="you@example.com" />
+</TextField>
+```
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Input inside TextField. Field injects chrome.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
 
 
 # Label
@@ -2998,6 +2998,88 @@ The `Popover` component accepts the following props:
 <PropTable />
 
 The `PopoverTrigger` component accepts the following props:
+
+<PropTable />
+
+
+# Pressable
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Adds accessible press behavior to an existing visual component.
+* Applies interaction states directly to the child without adding a wrapper element.
+* Supports pointer, touch, and keyboard interactions through React Aria.
+* Preserves the child's layout, shape, and base visual styling while adding state feedback.
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Add accessible press behavior to an existing visual component without adding a wrapper element.
+The surface supports pointer, touch, and keyboard activation.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
+
+Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
+
+Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
+
+```tsx
+<Pressable aria-label="View account summary" onPress={handlePress}>
+  <Box role="button" padding="md" rounding="md" elevation="card">
+    Account summary
+  </Box>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
+
+Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
+
+Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
+
+## Best Practices [#best-practices]
+
+* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
+* Avoid nesting interactive elements inside the child passed to `Pressable`.
+* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
+
+## Troubleshooting [#troubleshooting]
+
+* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
+* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
+
+## Props [#props]
+
+```tsx
+<Pressable>
+  <Box />
+</Pressable>
+```
 
 <PropTable />
 
@@ -3914,88 +3996,6 @@ the trigger and popover.
 ## Props [#props]
 
 The `Select` component accepts the following props:
-
-<PropTable />
-
-
-# Pressable
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Adds accessible press behavior to an existing visual component.
-* Applies interaction states directly to the child without adding a wrapper element.
-* Supports pointer, touch, and keyboard interactions through React Aria.
-* Preserves the child's layout, shape, and base visual styling while adding state feedback.
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Add accessible press behavior to an existing visual component without adding a wrapper element.
-The surface supports pointer, touch, and keyboard activation.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, Pressable, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Pressable aria-label=\&#x22;View account summary\&#x22;>\n      <Box role=\&#x22;button\&#x22; padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xs\&#x22;>\n          <Text>Account summary</Text>\n          <Text>View your account details</Text>\n        </Flex>\n      </Box>\n    </Pressable>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use `Pressable` when an existing visual component or layout surface needs press behavior while keeping its own DOM element, layout, and styles. The child must be a single element that forwards its ref and accepts the DOM, ARIA, and event props supplied by React Aria.
-
-Use `Button` when you need a standard button control with button-specific sizing, layout, and visual variants.
-
-Pass `onPress` for the action instead of wiring separate pointer and keyboard handlers:
-
-```tsx
-<Pressable aria-label="View account summary" onPress={handlePress}>
-  <Box role="button" padding="md" rounding="md" elevation="card">
-    Account summary
-  </Box>
-</Pressable>
-```
-
-## Accessibility [#accessibility]
-
-`Pressable` accepts the React Aria press props, including `onPress`, `onPressStart`, `onPressEnd`, `onPressUp`, and `onPressChange`.
-
-Use a semantic interactive element when possible. For a non-semantic child such as `Avatar` or `Box`, provide an appropriate interactive role and an accessible name. Pressable makes the child focusable when the required props are forwarded.
-
-Do not add `role="button"` to a native `<button>` or `<a>` unless you intentionally need to change its semantics. Use a dedicated semantic component such as `Button`, `LinkButton`, `Menu`, or `ToggleButton` when that control's meaning is known.
-
-## Best Practices [#best-practices]
-
-* Prefer a native interactive element or a semantic Antares component when the interaction meaning is known.
-* Avoid nesting interactive elements inside the child passed to `Pressable`.
-* `Pressable` automatically applies React Aria state attributes such as `[data-hovered]`, `[data-pressed]`, `[data-focus-visible]`, and `[data-disabled]` to the child. Ensure the child component styles these states appropriately if it overrides the default `Pressable` styles.
-
-## Troubleshooting [#troubleshooting]
-
-* If React Aria warns that the child must be focusable, ensure it is a single element that forwards its ref, `tabIndex`, DOM props, and ARIA attributes.
-* If `onPress` does not fire, confirm that the child forwards event handlers and is not disabled by another component.
-
-## Props [#props]
-
-```tsx
-<Pressable>
-  <Box />
-</Pressable>
-```
 
 <PropTable />
 
@@ -5143,79 +5143,6 @@ The `TooltipTrigger` component accepts the following props:
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # Bar Chart
 
 
@@ -5419,9 +5346,7 @@ For better performance:
 <PropTable />
 
 
-# Gauge Chart
-
-
+# DonutChart
 
 
 
@@ -5444,89 +5369,50 @@ For better performance:
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-A continuous gauge with a single label.
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
 
-### Continuous Values [#continuous-values]
+### Single slice [#single-slice]
 
-Multiple continuous gauges showing different fill percentages.
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
 
-<Story of="ContinuousExample" />
+<Story of="SingleSliceExample" />
 
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
 
-### Segmented [#segmented]
+### Legend placement [#legend-placement]
 
-Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
 
-<Story of="SegmentedExample" />
+<Story of="LegendLayoutExample" />
 
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
 
-### With Range Labels [#with-range-labels]
+### Small slices [#small-slices]
 
-Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
 
-<Story of="WithRangeLabelsExample" />
+<Story of="SmallSlicesExample" />
 
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
 
-### Variants [#variants]
+### Format value [#format-value]
 
-Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
 
-<Story of="VariantsExample" />
+<Story of="FormatValueExample" />
 
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-### Label Type [#label-type]
-
-Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
-
-<Story of="LabelTypeExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
-
-## Troubleshooting [#troubleshooting]
-
-### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
-
-The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
-
-```tsx
-// ❌ No width constraint — gauge may stretch to full viewport
-<GaugeChart label="50%" value={50} aria-label="Progress" />
-
-// ✅ Parent provides width context
-<div style={{ width: 200 }}>
-  <GaugeChart label="50%" value={50} aria-label="Progress" />
-</div>
-
-// ✅ Or use className for max-width
-<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
-```
-
-### Value Out of Range [#value-out-of-range]
-
-Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
-
-```tsx
-// ✅ Continuous: 0–100
-<GaugeChart label="75%" value={75} aria-label="Score" />
-
-// ✅ Segmented: 0 to segments
-<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
-```
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -5914,6 +5800,120 @@ Use `xType="time"` when the X-axis values are Date objects:
 ### Tooltip or Crosshair Not Showing [#tooltip-or-crosshair-not-showing]
 
 Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, and that the chart receives pointer events (e.g. no overlay blocking hover).
+
+## Props [#props]
+
+<PropTable />
+
+
+# Gauge Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A continuous gauge with a single label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { GaugeChart } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <GaugeChart value={50} label=\&#x22;50%\&#x22; aria-label=\&#x22;Basic gauge\&#x22; style={{ maxWidth: '200px', margin: 'auto' }} />;\n}&#x22;" />
+
+### Continuous Values [#continuous-values]
+
+Multiple continuous gauges showing different fill percentages.
+
+<Story of="ContinuousExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function ContinuousExample() {\n  const values = [0, 25, 50, 75, 100];\n\n  return (\n    <Grid columns=\&#x22;repeat(auto-fit, minmax(180px, 1fr))\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22; alignContent=\&#x22;center\&#x22;>\n      {values.map(function renderGauge(v) {\n        return <GaugeChart key={v} value={v} label={`${v}%`} subLabel=\&#x22;Progress\&#x22; aria-label={`Gauge at ${v}%`} />;\n      })}\n    </Grid>\n  );\n}&#x22;" />
+
+### Segmented [#segmented]
+
+Segmented gauges divide the arc into discrete sections (1–5). The `value` prop selects how many segments are filled.
+
+<Story of="SegmentedExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function SegmentedExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 200px)\&#x22; gap=\&#x22;md\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart segments={5} value={0} label=\&#x22;0/5\&#x22; subLabel=\&#x22;Empty\&#x22; aria-label=\&#x22;Gauge with 0 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={2} label=\&#x22;2/5\&#x22; subLabel=\&#x22;Partial\&#x22; aria-label=\&#x22;Gauge with 2 of 5 filled\&#x22; />\n      <GaugeChart segments={5} value={5} label=\&#x22;5/5\&#x22; subLabel=\&#x22;Full\&#x22; aria-label=\&#x22;Gauge with 5 of 5 filled\&#x22; />\n      <GaugeChart segments={3} value={1} label=\&#x22;1/3\&#x22; subLabel=\&#x22;Three segments\&#x22; aria-label=\&#x22;Gauge with 1 of 3 filled\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### With Range Labels [#with-range-labels]
+
+Min/max labels positioned below the gauge arc at the left and right edges. Both `min` and `max` must be provided.
+
+<Story of="WithRangeLabelsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function WithRangeLabelsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart\n        value={65}\n        label=\&#x22;65%\&#x22;\n        subLabel=\&#x22;CPU Usage\&#x22;\n        rangeLabel={{ min: 0, max: 100 }}\n        aria-label=\&#x22;CPU usage gauge\&#x22;\n      />\n      <GaugeChart\n        value={3}\n        segments={5}\n        label=\&#x22;3/5\&#x22;\n        subLabel=\&#x22;Risk Level\&#x22;\n        rangeLabel={{ min: 'Low', max: 'High' }}\n        variant=\&#x22;warning\&#x22;\n        aria-label=\&#x22;Risk level gauge\&#x22;\n      />\n    </Grid>\n  );\n}&#x22;" />
+
+### Variants [#variants]
+
+Color variants convey meaning at a glance — use `success`, `warning`, or `critical` alongside descriptive text.
+
+<Story of="VariantsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function VariantsExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Default\&#x22; variant=\&#x22;default\&#x22; aria-label=\&#x22;Default variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Success\&#x22; variant=\&#x22;success\&#x22; aria-label=\&#x22;Success variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Warning\&#x22; variant=\&#x22;warning\&#x22; aria-label=\&#x22;Warning variant gauge\&#x22; />\n      <GaugeChart value={50} label=\&#x22;50%\&#x22; subLabel=\&#x22;Critical\&#x22; variant=\&#x22;critical\&#x22; aria-label=\&#x22;Critical variant gauge\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+### Label Type [#label-type]
+
+Control the font size of the primary label using `labelType`. Use `'value'` for numeric or percentage values and `'text'` for short descriptive strings.
+
+<Story of="LabelTypeExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, GaugeChart } from '@godaddy/antares';\n\nexport function LabelTypeExample() {\n  return (\n    <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;lg\&#x22; justifyContent=\&#x22;center\&#x22;>\n      <GaugeChart value={72} label=\&#x22;72%\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with numeric value label\&#x22; />\n      <GaugeChart value={72} label=\&#x22;Good\&#x22; labelType=\&#x22;text\&#x22; subLabel=\&#x22;Completion\&#x22; aria-label=\&#x22;Gauge with text label\&#x22; />\n    </Grid>\n  );\n}&#x22;" />
+
+## Troubleshooting [#troubleshooting]
+
+### Gauge Not Sizing Correctly [#gauge-not-sizing-correctly]
+
+The component uses `container-type: inline-size` and fills its parent width. Ensure the parent has a defined width:
+
+```tsx
+// ❌ No width constraint — gauge may stretch to full viewport
+<GaugeChart label="50%" value={50} aria-label="Progress" />
+
+// ✅ Parent provides width context
+<div style={{ width: 200 }}>
+  <GaugeChart label="50%" value={50} aria-label="Progress" />
+</div>
+
+// ✅ Or use className for max-width
+<GaugeChart className="my-gauge" label="50%" value={50} aria-label="Progress" />
+```
+
+### Value Out of Range [#value-out-of-range]
+
+Values outside the valid range are clamped silently at runtime. For continuous mode the range is 0–100; for segmented mode the range is 0 to the segment count.
+
+```tsx
+// ✅ Continuous: 0–100
+<GaugeChart label="75%" value={75} aria-label="Score" />
+
+// ✅ Segmented: 0 to segments
+<GaugeChart label="3/5" value={3} segments={5} aria-label="Risk level" />
+```
 
 ## Props [#props]
 
