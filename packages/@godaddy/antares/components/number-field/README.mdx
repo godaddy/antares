@@ -28,6 +28,19 @@ npm install --save @godaddy/antares
 
 ## Props
 
+```tsx
+<NumberField>
+  <Label />
+  <Group>
+    <Button slot="decrement" />
+    <Input />
+    <Button slot="increment" />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</NumberField>
+```
+
 The `NumberField` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />

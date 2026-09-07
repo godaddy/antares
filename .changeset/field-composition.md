@@ -10,6 +10,8 @@ Each field fills in the interior slots you leave empty, so you only write the pi
 
 Only presets that carry configuration are public: `DatePickerControl` / `DateRangePickerControl`, the trigger carrying `formatOptions` / `placeholder` (which moved off the picker root). The rest are not exported, since the field supplies them and a custom interior is composed from the lower-level pieces (as in each component's "Composed" example): `SelectControl`, `SelectOptions`, `DatePickerCalendar`, and `DateRangePickerCalendar`. `DatePickerRenderProps` / `DateRangePickerRenderProps` are gone too — a render function's argument is inferred, and the other composed fields never exported one. `CheckboxIndicator` stays public for `Checkbox`, `Menu`, and other selection UIs.
 
+`NumberField` no longer forwards a `ref` to its input, matching every other field root. Put the `ref` on the `Input` you compose (`<NumberField><Input ref={inputRef} /></NumberField>`), which also works when you replace the stepper `Group`.
+
 A bare `Input` / `TextArea` (no `Group`) picks up field box chrome directly from CSS — no wrapper element is added, so it now renders as a single DOM node.
 
 `CheckboxGroup` and `RadioGroup` take `orientation` to lay out item controls vertically or horizontally. Checkboxes and radios go straight in the group and are wrapped in a `Group` for you — the field injects spacing and axis through `GroupContext`, and you can wrap them yourself to lay them out differently. `RadioGroup` also forwards `orientation` to React Aria for keyboard navigation and ARIA.

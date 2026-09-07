@@ -30,6 +30,26 @@ npm install --save @godaddy/antares
 
 ## Props
 
+```tsx
+<Select>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <SelectValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <ListBox>
+        <SelectItem />
+      </ListBox>
+    </Content>
+  </Popover>
+  <FieldError />
+</Select>
+```
+
 The `Select` component accepts the following props:
 
 <ArgTypes of={Stories.Props} />

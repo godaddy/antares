@@ -5,7 +5,8 @@ import {
   type SelectRenderProps as RACSelectRenderProps,
   type Key as RACKey,
   SelectValue as RACSelectValue,
-  type SelectValueProps as RACSelectValueProps
+  type SelectValueProps as RACSelectValueProps,
+  useSlottedContext
 } from 'react-aria-components';
 import {
   Field,
@@ -19,7 +20,7 @@ import { Button } from '#components/button';
 import { Icon } from '#components/icon';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
 import { Popover } from '#components/popover';
-import { Content, Group } from '#components/structure';
+import { Content, Group, GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -62,10 +63,11 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 export function Select<T extends object, M extends SelectionMode = 'single'>(props: SelectProps<T, M>) {
   const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
+  const group = useSlottedContext(GroupContext);
 
   if (variant === 'control') {
     return (
-      <RACSelect {...racProps} className={selectClass}>
+      <RACSelect {...racProps} isDisabled={racProps.isDisabled ?? group?.isDisabled} className={selectClass}>
         {mapFieldChildren(children, function fillInterior(node) {
           return normalizeFieldChildren(node, selectSlots('control'));
         })}

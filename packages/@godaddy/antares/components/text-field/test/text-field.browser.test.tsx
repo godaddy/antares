@@ -2,7 +2,7 @@ import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { FieldError, Group, Input, TextField } from '@godaddy/antares';
+import { FieldError, Group, Input, Label, Select, SelectItem, TextField } from '@godaddy/antares';
 import { AdornmentsExample } from '../examples/adornments';
 import { DefaultExample } from '../examples/default';
 import { ControlledExample } from '../examples/controlled';
@@ -120,6 +120,25 @@ describe('@godaddy/antares', function antares() {
 
         const updated = page.getByRole('button', { name: /MX \+52/ });
         assume(updated).is.not.equal(null);
+      });
+
+      it('disables the nested Select when the field is disabled', async function disablesNestedSelect() {
+        const { container } = await render(
+          <TextField isDisabled>
+            <Label>Phone number</Label>
+            <Group>
+              <Select aria-label="Country code" defaultValue="us" name="country" variant="control">
+                <SelectItem id="us">US +1</SelectItem>
+                <SelectItem id="mx">MX +52</SelectItem>
+              </Select>
+              <Input />
+            </Group>
+          </TextField>
+        );
+
+        const hidden = container.querySelector('[data-testid="hidden-select-container"] select');
+
+        assume((hidden as HTMLSelectElement).disabled).equals(true);
       });
     });
 
