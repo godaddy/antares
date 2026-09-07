@@ -9,6 +9,15 @@ import * as Stories from './input.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
+`Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
+
+```tsx
+<TextField>
+  <Label>Email</Label>
+  <Input placeholder="you@example.com" />
+</TextField>
+```
+
 ## Installation
 
 ```bash

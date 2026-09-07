@@ -9,6 +9,15 @@ import * as Stories from './text-area.stories.tsx';
 
 <Meta of={Stories} name="Overview" />
 
+`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
+
+```tsx
+<TextField>
+  <Label>Comment</Label>
+  <TextArea placeholder="Enter your comment" />
+</TextField>
+```
+
 ## Installation
 
 ```bash

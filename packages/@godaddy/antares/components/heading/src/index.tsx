@@ -36,7 +36,7 @@ export interface HeadingProps extends Omit<RACHeadingProps, 'className'> {
  * ```
  */
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(props, ref) {
-  const { level, className, ...rest } = props;
+  const { className, ...rest } = props;
 
-  return <RACHeading {...rest} ref={ref} level={level} className={cx(styles.heading, className)} />;
+  return <RACHeading {...rest} ref={ref} className={cx(styles.heading, className)} />;
 });
