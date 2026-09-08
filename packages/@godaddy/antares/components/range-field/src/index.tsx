@@ -8,10 +8,10 @@ import {
   SliderThumb as RACSliderThumb,
   SliderTrack as RACSliderTrack
 } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Label } from '#components/label';
 import { Text } from '#components/text';
-import { Flex } from '#components/layout/flex';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
 import {
   createRef,
@@ -27,6 +27,7 @@ import {
   useMemo,
   useRef
 } from 'react';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 import styles from './index.module.css';
 
 const MAX_MARKER_COUNT = 1000;
@@ -34,7 +35,7 @@ const MAX_MARKER_COUNT = 1000;
 /** Props for configuring a {@link RangeField}. */
 export interface RangeFieldProps<T extends number | number[] = number | number[]>
   extends Omit<RACSliderProps<T>, 'children' | 'orientation' | 'render'>,
-    Omit<FieldOwnProps, 'as' | 'className'> {
+    Omit<FlexOwnProps, 'as' | 'className'> {
   /** Current value or values. Each array entry renders an independently adjustable thumb. */
   value?: T;
 
@@ -160,7 +161,9 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
   );
 
   return (
-    <Field
+    <Flex
+      direction="column"
+      gap={gap}
       {...props}
       as={RACSlider<T>}
       ref={containerRef}
@@ -171,9 +174,8 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
       step={step}
       formatOptions={formatOptions}
       aria-describedby={describedBy}
-      gap={gap}
       data-required={isRequired || undefined}
-      className={composeClassName(className, styles.slider)}
+      className={composeClassName(className, fieldStyles.field, styles.slider)}
     >
       <RangeFieldHeader label={label} valueLabel={valueLabel} />
       <RangeFieldControl
@@ -191,7 +193,7 @@ export const RangeField = forwardRef(function RangeField<T extends number | numb
           {description}
         </Text>
       ) : null}
-    </Field>
+    </Flex>
   );
 }) as <T extends number | number[] = number | number[]>(
   props: RangeFieldProps<T> & RefAttributes<RangeFieldRef>
@@ -212,7 +214,7 @@ function RangeFieldHeader({ label, valueLabel }: Pick<RangeFieldProps<number | n
 
   return (
     <Flex direction="row" wrap="wrap" gap="sm" alignItems="center" className={styles.header}>
-      {label ? <Label className={styles.label}>{label}</Label> : null}
+      {label ? <Label className={cx(fieldStyles.label, styles.label)}>{label}</Label> : null}
       {valueLabelVisible && (
         <RACSliderOutput className={styles.valueLabel}>{valueLabel === true ? undefined : valueLabel}</RACSliderOutput>
       )}
