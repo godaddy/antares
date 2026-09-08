@@ -65,7 +65,7 @@ function NumberFieldBody({ size, isDisabled, children }: NumberFieldBodyProps) {
         [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
         [InputContext, { ...input, className: composeClassName(input.className, fieldStyles.input) }],
 
-        // The box group owns the chrome, so it carries the disabled state instead of each child dimming itself.
+        // The box group owns the chrome, so it carries the disabled state for the parts the field paints.
         [GroupContext, { ...group, isDisabled, className: composeClassName(group.className, fieldStyles.group) }],
         [
           ButtonContext,
