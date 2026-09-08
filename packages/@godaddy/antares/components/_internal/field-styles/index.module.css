@@ -62,6 +62,7 @@
 
 .field:where([data-interior="box"]) > :where(.trigger) {
   --_field-bd: var(--bd-card);
+  --_field-fg: var(--fg-card);
 }
 
 .field:where([data-interior="box"][data-disabled]),
