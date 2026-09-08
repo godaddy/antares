@@ -65,6 +65,10 @@ describe('@godaddy/antares', function antares() {
       it('takes the control chrome inside another field Group', function control() {
         expect(html).toMatch(/<button[^>]*class="control button control md"/);
       });
+
+      it('disables a control button with the field', function disabledControl() {
+        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
+      });
     });
   });
 });

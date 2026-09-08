@@ -54,10 +54,9 @@ function NumberFieldBody({ size, isDisabled, children }: NumberFieldBodyProps) {
   const group = useSlottedContext(GroupContext) ?? {};
   const stepperSlots =
     (useContext(ButtonContext) as { slots?: Record<string | symbol, ButtonProps> } | null)?.slots ?? {};
+  // Chrome only. It carries no disabled state, so merging it over a stepper cannot overwrite the
+  // bounds state React Aria published for that stepper.
   const control: ButtonProps = { variant: 'control', size, className: fieldStyles.control };
-
-  // A Button the field does not style still inherits its size and disabled state.
-  const plain: ButtonProps = { size, isDisabled };
 
   return (
     <RACProvider
@@ -71,10 +70,11 @@ function NumberFieldBody({ size, isDisabled, children }: NumberFieldBodyProps) {
           ButtonContext,
           {
             slots: {
-              // React Aria publishes only the stepper slots, so an unslotted or otherwise slotted
-              // Button inside the field would throw. These keep the interior free-form.
-              [DEFAULT_SLOT]: plain,
-              control,
+              // React Aria publishes only the stepper slots, so an unslotted Button inside the
+              // field would throw. A Button the field does not own inherits nothing, so this entry
+              // is empty; it is here only to keep the interior free-form.
+              [DEFAULT_SLOT]: {},
+              control: { ...control, isDisabled },
               decrement: mergeProps(stepperSlots.decrement, control, { children: STEPPER_FACES.decrement }),
               increment: mergeProps(stepperSlots.increment, control, { children: STEPPER_FACES.increment })
             }

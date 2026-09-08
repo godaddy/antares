@@ -77,8 +77,14 @@ describe('@godaddy/antares', function antares() {
         expect(html).toMatch(/<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text">less/);
       });
 
-      it('keeps an unslotted Button working', function defaultSlot() {
-        expect(html).toMatch(/<button class="button tertiary sm"/);
+      it('leaves an unslotted Button on the Button defaults', function defaultSlot() {
+        expect(html).toMatch(/<button class="button tertiary md"/);
+        expect(html).not.toMatch(/<button class="button tertiary sm"/);
+      });
+
+      it('disables a control button with the field, but not an unslotted one', function disabledControl() {
+        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
+        expect(html).toMatch(/<button class="button tertiary md"(?![^>]*disabled)/);
       });
     });
   });

@@ -59,8 +59,7 @@ function PickerBody({ size, isDisabled, value, children }: PickerBodyProps) {
   const group = useSlottedContext(GroupContext) ?? {};
   const popover = useContext(PopoverContext) ?? {};
   const triggerProps = (useContext(ButtonContext) ?? {}) as ButtonProps;
-  const plain: ButtonProps = { size, isDisabled };
-  const control: ButtonProps = { variant: 'control', size, className: fieldStyles.control };
+  const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
 
   // `mergeProps` merges refs, so React Aria keeps whatever ref it may publish for the trigger.
   const trigger: ButtonProps & { ref?: Ref<HTMLButtonElement> } = {
@@ -81,7 +80,7 @@ function PickerBody({ size, isDisabled, value, children }: PickerBodyProps) {
           ButtonContext,
           {
             slots: {
-              [DEFAULT_SLOT]: mergeProps(triggerProps, plain),
+              [DEFAULT_SLOT]: triggerProps,
               control,
               trigger: mergeProps(triggerProps, trigger, {
                 children: (

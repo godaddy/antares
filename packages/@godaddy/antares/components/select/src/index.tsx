@@ -85,8 +85,7 @@ function SelectBody({ trigger, group, size, isDisabled, children }: SelectBodyPr
   const label = useSlottedContext(LabelContext) ?? {};
   const inheritedGroup = useSlottedContext(GroupContext) ?? {};
   const triggerProps = (useContext(ButtonContext) ?? {}) as ButtonProps;
-  const plain: ButtonProps = { size, isDisabled };
-  const control: ButtonProps = { variant: 'control', size, className: fieldStyles.control };
+  const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
 
   return (
     <RACProvider
@@ -99,7 +98,7 @@ function SelectBody({ trigger, group, size, isDisabled, children }: SelectBodyPr
             slots: {
               // React Aria publishes the trigger unslotted, so the same props stand in for a
               // `Button` with no slot. `control` is here so a Select nested in this one can read it.
-              [DEFAULT_SLOT]: mergeProps(triggerProps, plain),
+              [DEFAULT_SLOT]: triggerProps,
               control,
               trigger: mergeProps(triggerProps, trigger, { children: TRIGGER_FACE })
             }

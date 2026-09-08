@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import {
+  DEFAULT_SLOT,
   Provider as RACProvider,
   TextField as RACTextField,
   type TextFieldProps as RACTextFieldProps,
@@ -56,8 +57,6 @@ function TextFieldBody({ size, isDisabled, children }: TextFieldBodyProps) {
   const textArea = useSlottedContext(TextAreaContext) ?? {};
   const group = useSlottedContext(GroupContext) ?? {};
 
-  // React Aria's TextField publishes no ButtonContext, so control chrome is published unslotted:
-  // a `Button slot="control"` and a plain `Button` both read it.
   const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
 
   return (
@@ -69,7 +68,15 @@ function TextFieldBody({ size, isDisabled, children }: TextFieldBodyProps) {
 
         // The box group owns the chrome, so it carries the disabled state instead of each child dimming itself.
         [GroupContext, { ...group, isDisabled, className: composeClassName(group.className, fieldStyles.group) }],
-        [ButtonContext, control]
+        [
+          ButtonContext,
+          {
+            // React Aria's TextField publishes no ButtonContext, so the field publishes both
+            // entries itself. A Button the field does not own inherits nothing: the default entry
+            // is here only so an unslotted Button does not throw.
+            slots: { [DEFAULT_SLOT]: {}, control }
+          }
+        ]
       ]}
     >
       {children}

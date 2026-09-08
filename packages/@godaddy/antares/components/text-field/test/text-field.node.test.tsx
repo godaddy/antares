@@ -61,12 +61,17 @@ describe('@godaddy/antares', function antares() {
       });
 
       it('gives a composed Button the control chrome', function controlButton() {
-        expect(html).toMatch(/<button class="control button control md"/);
+        expect(html).toMatch(/<button[^>]*class="control button control md"/);
       });
 
-      it('disables the group and a control button with the field', function disabled() {
+      it('keeps an unslotted Button off the control chrome', function defaultSlot() {
+        expect(html).toMatch(/<button class="button tertiary md"/);
+      });
+
+      it('disables the group and a control button with the field, but not an unslotted one', function disabled() {
         expect(html).toMatch(/class="box flex group"[^>]*data-disabled="true"/);
-        expect(html).toMatch(/<button class="control button control md"[^>]*disabled=""/);
+        expect(html).toMatch(/<button[^>]*class="control button control md"[^>]*disabled=""/);
+        expect(html).not.toMatch(/<button class="button tertiary md"[^>]*disabled=""/);
       });
     });
   });
