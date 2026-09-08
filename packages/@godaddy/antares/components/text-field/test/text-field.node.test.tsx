@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { Button } from '#components/button';
-import { Input } from '#components/input';
-import { Label } from '#components/label';
-import { Group } from '#components/structure';
-import { TextField } from '#components/text-field';
+import { InteriorExample } from '../examples/interior';
 import { AdornmentsExample } from '../examples/adornments';
 import { ControlsExample } from '../examples/controls';
 import { DefaultExample } from '../examples/default';
@@ -57,45 +53,18 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#interior', function interior() {
-      it('styles the label and a composed Group', function parts() {
-        const html = renderToString(
-          <TextField>
-            <Label>Email</Label>
-            <Group>
-              <Input />
-            </Group>
-          </TextField>
-        );
+      const html = renderToString(<InteriorExample />);
 
+      it('styles the label and a composed Group', function parts() {
         expect(html).toContain('<label class="label"');
         expect(html).toMatch(/class="box flex group"/);
       });
 
       it('gives a composed Button the control chrome', function controlButton() {
-        const html = renderToString(
-          <TextField>
-            <Label>Image</Label>
-            <Group>
-              <Button slot="control">Browse</Button>
-              <Input />
-            </Group>
-          </TextField>
-        );
-
         expect(html).toMatch(/<button class="control button control md"/);
       });
 
       it('disables the group and a control button with the field', function disabled() {
-        const html = renderToString(
-          <TextField isDisabled>
-            <Label>Image</Label>
-            <Group>
-              <Button slot="control">Browse</Button>
-              <Input />
-            </Group>
-          </TextField>
-        );
-
         expect(html).toMatch(/class="box flex group"[^>]*data-disabled="true"/);
         expect(html).toMatch(/<button class="control button control md"[^>]*disabled=""/);
       });

@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { Button } from '#components/button';
-import { Input } from '#components/input';
-import { Label } from '#components/label';
-import { NumberField } from '#components/number-field';
-import { Group } from '#components/structure';
+import { InteriorExample } from '../examples/interior';
 import { DefaultExample } from '../examples/default';
 import { ControlledExample } from '../examples/controlled';
 import { DisabledExample } from '../examples/disabled';
@@ -64,60 +60,25 @@ describe('@godaddy/antares', function antares() {
     });
 
     describe('#interior', function interior() {
-      /** A stepper composed with empty buttons, so the field fills their faces. */
-      function stepper(props: { size?: 'sm' | 'md'; maxValue?: number } = {}) {
-        return renderToString(
-          <NumberField defaultValue={0} {...props}>
-            <Label>Quantity</Label>
-            <Group>
-              <Button slot="decrement" />
-              <Input />
-              <Button slot="increment" />
-            </Group>
-          </NumberField>
-        );
-      }
+      const html = renderToString(<InteriorExample />);
 
       it('fills the stepper faces under the field chrome', function faces() {
-        const html = stepper({ size: 'sm' });
-
         expect(html).toContain('data-icon="minus"');
         expect(html).toContain('data-icon="plus"');
         expect(html).toMatch(/<button[^>]*class="control button control sm"/);
       });
 
       it('keeps the stepper wiring React Aria published', function wiring() {
-        const html = stepper({ maxValue: 0 });
-
         expect(html).toContain('aria-label="Decrease"');
         expect(html).toMatch(/slot="increment" data-disabled="true"/);
       });
 
       it('lets a local prop beat the field default', function localWins() {
-        const html = renderToString(
-          <NumberField>
-            <Group>
-              <Button slot="decrement" variant="primary">
-                less
-              </Button>
-              <Input />
-            </Group>
-          </NumberField>
-        );
-
-        expect(html).toContain('less');
-        expect(html).not.toContain('data-icon="minus"');
+        expect(html).toMatch(/<button[^>]*class="control button primary sm"[^>]*>\s*<span class="text">less/);
       });
 
       it('keeps an unslotted Button working', function defaultSlot() {
-        const html = renderToString(
-          <NumberField size="sm">
-            <Input />
-            <Button>Go</Button>
-          </NumberField>
-        );
-
-        expect(html).toMatch(/class="button tertiary sm"/);
+        expect(html).toMatch(/<button class="button tertiary sm"/);
       });
     });
   });
