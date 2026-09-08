@@ -1,9 +1,21 @@
-import { page } from 'vitest/browser';
+import { commands, page } from 'vitest/browser';
 import { set } from '#components/icon';
 
+declare module 'vitest/internal/browser' {
+  interface BrowserCommands {
+    /** Declared in `configs/vitest.config.mts`. */
+    resetPointer: () => Promise<void>;
+  }
+}
+
 /**
- * Move the pointer to the top-left corner to clear any hover state before a
- * screenshot. Use from a `beforeEach` hook so each test starts un-hovered.
+ * Move the pointer to the top-left corner of the page to take it off whatever
+ * it currently hovers. The pointer stays inside the page, so React Aria keeps
+ * treating the following interactions as pointer input - hover behaviour that
+ * checks the interaction modality (tooltips) needs that.
+ *
+ * The corner is not empty: anything rendered at the top-left ends up hovered
+ * instead. Use `resetPointer()` when a test asserts that nothing is hovered.
  *
  * @example
  * ```tsx
@@ -14,6 +26,30 @@ import { set } from '#components/icon';
  */
 export function resetHover() {
   return page.getByRole('document').hover({ position: { x: 0, y: 0 } });
+}
+
+/**
+ * Move the pointer outside the viewport, where no element can be under it. Use
+ * from a `beforeEach` hook in tests that assert an un-hovered state, because
+ * Vitest runs every test file of a session in the same page: the pointer is
+ * left wherever the previous file dropped it, and Chromium re-runs its hit test
+ * when a document mounts under a resting pointer, so an element can render
+ * hovered before the test touches it.
+ *
+ * Leaving the viewport means the next pointer event over an element is its
+ * `pointerenter`, with no `pointermove` before it. React Aria reads the
+ * interaction modality on hover start, so tests that expect hover to open a
+ * tooltip need `resetHover()` instead.
+ *
+ * @example
+ * ```tsx
+ * import { resetPointer } from '#test/utils/test-helpers.tsx';
+ *
+ * beforeEach(resetPointer);
+ * ```
+ */
+export function resetPointer() {
+  return commands.resetPointer();
 }
 
 /**

@@ -1,7 +1,11 @@
 import { Icon } from '#components/icon';
 import { Flex } from '#components/layout/flex';
+import { Input } from '#components/input';
 import { NumberField } from '#components/number-field';
-import { Select, SelectItem } from '#components/select';
+import { Select, SelectItem, SelectValue } from '#components/select';
+import { Content, Group } from '#components/structure';
+import { Popover } from '#components/popover';
+import { ListBox } from '#components/listbox';
 import { Button } from '#components/button';
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date';
 import { useCallback, useContext, useMemo } from 'react';
@@ -84,22 +88,35 @@ export function MonthHeading(props: { offset: number }) {
   return (
     <Flex direction="row" gap="sm" alignItems="center">
       <Select aria-label="Month" value={String(displayDate.month)} onChange={handleMonthChange}>
-        {monthNames.map(function mapMonthNames(name, index) {
-          return (
-            <SelectItem key={index + 1} id={String(index + 1)}>
-              {name}
-            </SelectItem>
-          );
-        })}
+        <Group alignItems="center">
+          <Button slot="trigger">
+            <SelectValue />
+            <Icon icon="chevron-down" />
+          </Button>
+        </Group>
+        <Popover hideArrow>
+          <Content blockPadding="xs" inlinePadding="0">
+            <ListBox>
+              {monthNames.map(function mapMonthNames(name, index) {
+                return (
+                  <SelectItem key={index + 1} id={String(index + 1)}>
+                    {name}
+                  </SelectItem>
+                );
+              })}
+            </ListBox>
+          </Content>
+        </Popover>
       </Select>
       <NumberField
         aria-label="Year"
-        hideStepper
         formatOptions={{ useGrouping: false }}
         value={displayDate.year}
         onChange={handleYearChange}
         className={styles.yearField}
-      />
+      >
+        <Input />
+      </NumberField>
     </Flex>
   );
 }

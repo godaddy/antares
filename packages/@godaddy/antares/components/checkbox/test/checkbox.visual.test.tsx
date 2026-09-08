@@ -3,12 +3,12 @@ import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
-import { CheckboxIndeterminateExample } from '../examples/indeterminate.tsx';
-import { CheckboxGroupBasicExample } from '../examples/group.tsx';
-import { CheckboxGroupControlledExample } from '../examples/controlled.tsx';
-import { CheckboxGroupRequiredExample } from '../examples/required.tsx';
-import { CheckboxGroupDisabledExample } from '../examples/disabled.tsx';
-import { CheckboxGroupInvalidExample } from '../examples/invalid.tsx';
+import { IndeterminateExample } from '../examples/indeterminate.tsx';
+import { GroupExample } from '../examples/group.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { RequiredExample } from '../examples/required.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { InvalidExample } from '../examples/invalid.tsx';
 
 describe('@godaddy/antares', function antares() {
   beforeAll(preloadTestIcons);
@@ -23,37 +23,37 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('indeterminate example', async function indeterminateRender() {
-      const { container } = await render(<CheckboxIndeterminateExample />);
+      const { container } = await render(<IndeterminateExample />);
       await expect(container).toMatchScreenshot('indeterminate');
     });
 
     it('group example', async function groupRender() {
-      const { container } = await render(<CheckboxGroupBasicExample />);
+      const { container } = await render(<GroupExample />);
       await expect(container).toMatchScreenshot('group');
     });
 
     it('controlled example', async function controlledRender() {
-      const { container } = await render(<CheckboxGroupControlledExample />);
+      const { container } = await render(<ControlledExample />);
       await expect(container).toMatchScreenshot('controlled');
     });
 
     it('required example', async function requiredRender() {
-      const { container } = await render(<CheckboxGroupRequiredExample />);
+      const { container } = await render(<RequiredExample />);
       await expect(container).toMatchScreenshot('required');
     });
 
     it('disabled example', async function disabledRender() {
-      const { container } = await render(<CheckboxGroupDisabledExample />);
+      const { container } = await render(<DisabledExample />);
       await expect(container).toMatchScreenshot('disabled');
     });
 
     it('invalid example', async function invalidRender() {
-      const { container } = await render(<CheckboxGroupInvalidExample />);
+      const { container } = await render(<InvalidExample />);
       await expect(container).toMatchScreenshot('invalid');
     });
 
     it('error example with selected option', async function errorRenderWithSelectedOption() {
-      const { container } = await render(<CheckboxGroupInvalidExample />);
+      const { container } = await render(<InvalidExample />);
 
       await page.getByRole('checkbox', { name: 'Blue' }).click({ force: true });
       await expect(container).toMatchScreenshot('error-selected');

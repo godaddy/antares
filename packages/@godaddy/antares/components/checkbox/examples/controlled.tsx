@@ -1,25 +1,24 @@
 import { useState } from 'react';
-import { Checkbox, CheckboxGroup } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';
 
 /**
  * Manage checkbox group state programmatically with controlled component pattern.
  * @title Controlled
  * @order 4
  */
-export function CheckboxGroupControlledExample() {
+export function ControlledExample() {
   const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);
 
   return (
-    <CheckboxGroup
-      label="Favorite sports"
-      description="Select your favorite sports"
-      value={selected}
-      onChange={setSelected}
-    >
-      <Checkbox value="basketball">Basketball</Checkbox>
-      <Checkbox value="soccer">Soccer</Checkbox>
-      <Checkbox value="baseball">Baseball</Checkbox>
-      <Checkbox value="tennis">Tennis</Checkbox>
+    <CheckboxGroup value={selected} onChange={setSelected}>
+      <Label>Favorite sports</Label>
+      <Group>
+        <Checkbox value="basketball">Basketball</Checkbox>
+        <Checkbox value="soccer">Soccer</Checkbox>
+        <Checkbox value="baseball">Baseball</Checkbox>
+        <Checkbox value="tennis">Tennis</Checkbox>
+      </Group>
+      <Text slot="description">Select your favorite sports</Text>
     </CheckboxGroup>
   );
 }

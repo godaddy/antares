@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { resetHover } from '#test/utils/test-helpers.tsx';
+import { resetPointer } from '#test/utils/test-helpers.tsx';
 import { PaddingExample } from '../examples/padding.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
 import { HostCompositionExample } from '../examples/host-composition.tsx';
@@ -10,6 +10,8 @@ import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Box', function boxTests() {
+    beforeEach(resetPointer);
+
     it('renders boxes with padding in the browser', async function rendersPadding() {
       const { getByText } = await render(<PaddingExample />);
       expect(getByText('Padding: md')).toBeInTheDocument();
@@ -41,8 +43,6 @@ describe('@godaddy/antares', function antares() {
 
       await userEvent.hover(button);
       expect(button).toHaveClass('hover');
-
-      await resetHover();
     });
 
     it('merges a function style and re-evaluates when progress changes', async function mergesFunctionStyle() {

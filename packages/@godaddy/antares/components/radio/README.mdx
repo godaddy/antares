@@ -20,6 +20,8 @@ npm install --save @godaddy/antares
 
 ## Customization
 
+`RadioGroup` is composed: write `Label`, a `Group` holding the `Radio` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Radio` takes label text next to the indicator. `orientation` also sets keyboard-navigation direction and ARIA.
+
 ### Data Attributes
 
 Components automatically add data attributes for styling different states:
@@ -54,13 +56,16 @@ Components automatically add data attributes for styling different states:
 Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
 
 ```jsx
-<RadioGroup label="Select plan" className="custom-radio-group">
-  <Radio value="basic" className="custom-radio">
-    Basic
-  </Radio>
-  <Radio value="premium" className="premium-radio">
-    Premium
-  </Radio>
+<RadioGroup className="custom-radio-group">
+  <Label>Select plan</Label>
+  <Group>
+    <Radio value="basic" className="custom-radio">
+      Basic
+    </Radio>
+    <Radio value="premium" className="premium-radio">
+      Premium
+    </Radio>
+  </Group>
 </RadioGroup>
 ```
 
@@ -89,17 +94,26 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
 <RadioGroup value={value} defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
 </RadioGroup>
 
 // ✅ Controlled mode
 <RadioGroup value={value} onChange={setValue}>
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
 </RadioGroup>
 
 // ✅ Uncontrolled mode
 <RadioGroup defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
 </RadioGroup>
 ```
 
@@ -156,18 +170,28 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 Always provide clear error messages:
 
 ```jsx
-<RadioGroup
-  label="Select shipping method"
-  isRequired
-  isInvalid={!selectedShipping}
-  errorMessage="Please select a shipping method"
->
-  <Radio value="standard">Standard</Radio>
-  <Radio value="express">Express</Radio>
+<RadioGroup isRequired isInvalid={!selectedShipping}>
+  <Label>Select shipping method</Label>
+  <Group>
+    <Radio value="standard">Standard</Radio>
+    <Radio value="express">Express</Radio>
+  </Group>
+  <FieldError>Please select a shipping method</FieldError>
 </RadioGroup>
 ```
 
 ## Props
+
+```tsx
+<RadioGroup>
+  <Label />
+  <Group>
+    <Radio />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</RadioGroup>
+```
 
 The `Radio` component has the following props:
 

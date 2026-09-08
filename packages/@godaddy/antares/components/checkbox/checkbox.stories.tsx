@@ -29,7 +29,7 @@ export const Playground = getStory(PlaygroundExample, {
     orientation: {
       control: 'radio',
       options: ['horizontal', 'vertical'],
-      description: 'Layout orientation of the checkboxes'
+      description: 'Item layout axis for the checkbox group'
     },
     label: {
       control: 'text',

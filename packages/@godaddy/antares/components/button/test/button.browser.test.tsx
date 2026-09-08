@@ -1,7 +1,7 @@
-import { describe, it, beforeAll, expect } from 'vitest';
+import { describe, it, beforeAll, beforeEach, expect } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
-import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
+import { preloadTestIcons, resetPointer } from '#test/utils/test-helpers.tsx';
 import { CloseButton } from '@godaddy/antares';
 import { InlineExample } from '../examples/inline.tsx';
 import { PrimaryExample } from '../examples/primary.tsx';
@@ -10,14 +10,12 @@ import { ClassNameRenderPropExample } from '../examples/class-name-render-prop.t
 describe('@godaddy/antares', function antares() {
   describe('#Button', function buttonTests() {
     beforeAll(preloadTestIcons);
+    beforeEach(resetPointer);
 
     it('renders the primary button hovered', async function rendersPrimaryHovered() {
       const { getByRole } = await render(<PrimaryExample />);
       await userEvent.hover(getByRole('button'));
       expect(getByRole('button')).toHaveAttribute('data-hovered', 'true');
-
-      // Move cursor away to prevent hover state leaking between tests
-      await resetHover();
     });
 
     it('renders the primary button focused', async function rendersPrimaryFocused() {
@@ -78,8 +76,6 @@ describe('@godaddy/antares', function antares() {
       expect(button).toHaveClass('hovered');
       // Base classes still present alongside the state-derived class.
       expect(getComputedStyle(el).display).toBe('inline-flex');
-
-      await resetHover();
     });
 
     it('handles press events', async function pressEvents() {

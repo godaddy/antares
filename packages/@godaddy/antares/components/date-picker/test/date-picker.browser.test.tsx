@@ -2,10 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { DefaultExample } from '../examples/default.tsx';
-import { DatePickerControlledExample } from '../examples/controlled.tsx';
-import { DatePickerWithErrorExample } from '../examples/with-error.tsx';
-import { DateRangePickerExample } from '../examples/range.tsx';
-import { DatePickerDisabledExample } from '../examples/disabled.tsx';
+import { ControlledExample } from '../examples/controlled.tsx';
+import { WithErrorExample } from '../examples/with-error.tsx';
+import { RangeExample } from '../examples/range.tsx';
+import { DisabledExample } from '../examples/disabled.tsx';
+import { ComposedExample } from '../examples/composed.tsx';
+import { ComposedRangeExample } from '../examples/composed-range.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#DatePicker', function datePicker() {
@@ -16,7 +18,7 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('opens the range calendar popover when the field is pressed', async function opensRange() {
-      const screen = await render(<DateRangePickerExample />);
+      const screen = await render(<RangeExample />);
       await userEvent.click(screen.getByRole('button'));
       const grids = screen.getByRole('grid').all();
       expect(grids.length).toBe(2);
@@ -24,22 +26,37 @@ describe('@godaddy/antares', function antares() {
     });
 
     it('does not open the popover when the trigger is disabled', async function disabled() {
-      const { getByRole, container } = await render(<DatePickerDisabledExample />);
+      const { getByRole, container } = await render(<DisabledExample />);
       await expect.element(getByRole('button')).toBeDisabled();
       await userEvent.click(getByRole('button'), { force: true });
       expect(container.querySelector('[role="grid"]')).toBeNull();
     });
 
     it('selecting a day updates the trigger label', async function select() {
-      const { getByRole } = await render(<DatePickerControlledExample />);
+      const { getByRole } = await render(<ControlledExample />);
       await userEvent.click(getByRole('button'));
       await userEvent.click(getByRole('button', { name: /March 20/ }));
       await expect.element(getByRole('button')).toHaveTextContent(/Mar 20/);
     });
 
     it('renders an error message when invalid', async function error() {
-      const { getByText } = await render(<DatePickerWithErrorExample />);
+      const { getByText } = await render(<WithErrorExample />);
       await expect.element(getByText('Please choose a date')).toBeVisible();
+    });
+
+    it('selects a day from a composed interior', async function composedInteraction() {
+      const { getByRole } = await render(<ComposedExample />);
+      await userEvent.click(getByRole('button'));
+      await userEvent.click(getByRole('button', { name: /March 20/ }));
+      await expect.element(getByRole('button')).toHaveTextContent(/Mar 20/);
+    });
+
+    it('opens the range calendar from a composed interior', async function composedRange() {
+      const screen = await render(<ComposedRangeExample />);
+      await userEvent.click(screen.getByRole('button'));
+      const grids = screen.getByRole('grid').all();
+      expect(grids.length).toBe(2);
+      await expect.element(grids[0]).toBeVisible();
     });
   });
 });

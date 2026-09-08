@@ -1,17 +1,15 @@
-import { TextField } from '@godaddy/antares';
+import { FieldError, Input, Label, TextField } from '@godaddy/antares';
 
 /**
- * Use `isInvalid` with `errorMessage` for validation feedback.
+ * Use `isInvalid` with a `FieldError` for validation feedback.
  * @order 3
  */
-export function TextFieldInvalidExample() {
+export function InvalidExample() {
   return (
-    <TextField
-      label="Email"
-      placeholder="you@example.com"
-      errorMessage="Please enter a valid email address"
-      isInvalid
-      isRequired
-    />
+    <TextField isInvalid isRequired>
+      <Label>Email</Label>
+      <Input placeholder="you@example.com" />
+      <FieldError>Please enter a valid email address</FieldError>
+    </TextField>
   );
 }
