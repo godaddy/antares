@@ -1,4 +1,4 @@
-import { Label, Select, SelectItem, Text } from '@godaddy/antares';
+import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';
 
 /**
  * Minimal usage with a `Label`, items, and a placeholder.
@@ -8,12 +8,15 @@ export function DefaultExample() {
   return (
     <Select placeholder="Pick a drink">
       <Label>Coffee</Label>
+      <Button slot="trigger" />
       <Text slot="description">Select your favorite coffee</Text>
-      <SelectItem id="espresso">Espresso</SelectItem>
-      <SelectItem id="latte">Latte</SelectItem>
-      <SelectItem id="cappuccino">Cappuccino</SelectItem>
-      <SelectItem id="americano">Americano</SelectItem>
-      <SelectItem id="mocha">Mocha</SelectItem>
+      <SelectOptions>
+        <SelectItem id="espresso">Espresso</SelectItem>
+        <SelectItem id="latte">Latte</SelectItem>
+        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        <SelectItem id="americano">Americano</SelectItem>
+        <SelectItem id="mocha">Mocha</SelectItem>
+      </SelectOptions>
     </Select>
   );
 }

@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup, Label } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';
 
 /**
  * Display checkboxes in a horizontal row instead of vertical stack.
@@ -9,9 +9,11 @@ export function HorizontalExample() {
   return (
     <CheckboxGroup orientation="horizontal">
       <Label>Favorite colors</Label>
-      <Checkbox value="blue">Blue</Checkbox>
-      <Checkbox value="red">Red</Checkbox>
-      <Checkbox value="green">Green</Checkbox>
+      <Group>
+        <Checkbox value="blue">Blue</Checkbox>
+        <Checkbox value="red">Red</Checkbox>
+        <Checkbox value="green">Green</Checkbox>
+      </Group>
     </CheckboxGroup>
   );
 }

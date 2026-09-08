@@ -2,7 +2,17 @@ import assume from 'assume';
 import { describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import { FieldError, Group, Input, Label, Select, SelectItem, TextField } from '@godaddy/antares';
+import {
+  Button,
+  FieldError,
+  Group,
+  Input,
+  Label,
+  Select,
+  SelectItem,
+  SelectOptions,
+  TextField
+} from '@godaddy/antares';
 import { AdornmentsExample } from '../examples/adornments';
 import { DefaultExample } from '../examples/default';
 import { ControlledExample } from '../examples/controlled';
@@ -128,8 +138,11 @@ describe('@godaddy/antares', function antares() {
             <Label>Phone number</Label>
             <Group>
               <Select aria-label="Country code" defaultValue="us" name="country" variant="control">
-                <SelectItem id="us">US +1</SelectItem>
-                <SelectItem id="mx">MX +52</SelectItem>
+                <Button slot="trigger" />
+                <SelectOptions>
+                  <SelectItem id="us">US +1</SelectItem>
+                  <SelectItem id="mx">MX +52</SelectItem>
+                </SelectOptions>
               </Select>
               <Input />
             </Group>

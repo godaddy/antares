@@ -1,4 +1,4 @@
-import { type ElementType, type ReactNode, forwardRef, useContext } from 'react';
+import { type ElementType, type ReactNode, type Ref, forwardRef, useContext } from 'react';
 import { mergeProps } from 'react-aria';
 import { DEFAULT_SLOT, Provider as RACProvider } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
@@ -7,14 +7,15 @@ import { ButtonContext, type ButtonProps } from '#components/button';
 import { InputContext } from '#components/input';
 import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { GroupContext } from '#components/structure';
+import { GroupContext, type GroupProps } from '#components/structure';
 import { TextAreaContext } from '#components/text-area';
-import { normalizeFieldChildren, type FieldSlots } from './normalize-field-children.tsx';
 import styles from './index.module.css';
 
-export { normalizeFieldChildren, type FieldSlots };
-
 type ButtonSlots = Record<string | symbol, ButtonProps>;
+
+interface ButtonContextValue extends ButtonProps {
+  slots?: ButtonSlots;
+}
 
 /** Size for controls inside a field group. */
 export type FieldSize = 'sm' | 'md';
@@ -29,6 +30,22 @@ export interface FieldOwnProps
   isDisabled?: boolean;
 }
 
+/**
+ * What a root fills into the parts it owns: a stepper's icons, a trigger's value, a selection
+ * group's axis. The field owns chrome (`variant`, `size`, `isDisabled`, class hooks); a root owns
+ * content. Consumer props beat both.
+ */
+export interface FieldSlotDefaults {
+  /**
+   * Props per button slot name. A slot takes control chrome, except `trigger`, which takes trigger
+   * chrome; set `chrome` to choose, as a Select composed inside another field's Group does.
+   */
+  buttons?: Record<string, ButtonProps & { ref?: Ref<HTMLButtonElement>; chrome?: 'control' | 'trigger' }>;
+
+  /** Props for a composed `Group`. */
+  group?: GroupProps;
+}
+
 /** Shell config passed to `Field` by a field root (not a public props type). */
 interface FieldShellOwnProps extends FieldOwnProps {
   /** Visual size of the controls. Inherited via context. @default 'md' */
@@ -37,11 +54,8 @@ interface FieldShellOwnProps extends FieldOwnProps {
   /** Box chrome around the control. Omitted means no chrome. */
   interior?: 'box';
 
-  /** Presets filled in when the consumer leaves a slot empty. */
-  slots?: FieldSlots;
-
-  /** Button props per slot the root owns, such as a stepper. Merged over the field's control chrome. */
-  buttonSlots?: Record<string, object>;
+  /** What this root fills into its own parts. */
+  slotDefaults?: FieldSlotDefaults;
 }
 
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldShellOwnProps>;
@@ -54,37 +68,59 @@ export function mapFieldChildren<R>(
   return typeof children === 'function' ? (renderProps: R) => wrap(children(renderProps)) : wrap(children);
 }
 
-function FieldContexts({
-  children,
-  interior,
-  isDisabled,
-  size,
-  buttonSlots
-}: {
+interface FieldSlotsProps extends FieldSlotDefaults {
   children: ReactNode;
+
+  /** Box chrome around the control. Omitted means no chrome. */
   interior?: 'box';
+
   isDisabled?: boolean;
+
   size?: FieldSize;
-  buttonSlots?: FieldShellOwnProps['buttonSlots'];
-}) {
+}
+
+/**
+ * Publishes everything a field's interior reads: chrome for the parts the field styles, and the
+ * root's own content for the parts it fills. Merge order is React Aria's wiring, then chrome, then
+ * the root's defaults; the consumer's own props win last, in each part's `useContextProps`.
+ *
+ * A root that renders no `Field`, such as a Select composed inside another field's Group, publishes
+ * with this directly.
+ */
+export function FieldSlots(props: FieldSlotsProps) {
+  const { children, buttons, group, interior, isDisabled, size } = props;
   const label = useContext(LabelContext);
-  const group = useContext(GroupContext);
+  const inheritedGroup = useContext(GroupContext);
   const input = useContext(InputContext);
   const textArea = useContext(TextAreaContext);
-  const button = useContext(ButtonContext) as (ButtonProps & { slots?: ButtonSlots }) | null;
-  const { slots: inheritedSlots, ...inheritedProps } = button ?? {};
-  const buttonProps = mergeProps(inheritedProps, { size, isDisabled });
-  const control = { ...buttonProps, variant: 'control' as const, className: styles.control };
-  const trigger = { ...buttonProps, variant: 'trigger' as const, className: styles.trigger };
-  const slots: ButtonSlots = {
-    ...inheritedSlots,
-    [DEFAULT_SLOT]: mergeProps(inheritedSlots?.[DEFAULT_SLOT] ?? {}, buttonProps),
-    control: mergeProps(inheritedSlots?.control ?? {}, control),
-    trigger: mergeProps(inheritedSlots?.trigger ?? {}, trigger)
+  const button = useContext(ButtonContext) as ButtonContextValue | null;
+  const { slots: inherited, ...unslotted } = button ?? {};
+  const chrome = { size, isDisabled };
+
+  // What React Aria wired, per slot. A root that owns a single trigger publishes it unslotted, so
+  // that value stands in for both the trigger and the default slot.
+  const wiring: ButtonSlots = {
+    ...inherited,
+    [DEFAULT_SLOT]: inherited?.[DEFAULT_SLOT] ?? unslotted,
+    trigger: inherited?.trigger ?? unslotted
   };
 
-  for (const [slot, props] of Object.entries(buttonSlots ?? {})) {
-    slots[slot] = mergeProps(inheritedSlots?.[slot] ?? {}, control, props);
+  // The two shapes a button takes inside a field. A root picks one per slot it fills.
+  const shapes = {
+    control: { ...chrome, variant: 'control' as const, className: styles.control },
+    trigger: { ...chrome, variant: 'trigger' as const, className: styles.trigger }
+  };
+
+  const slots: ButtonSlots = {
+    ...wiring,
+    [DEFAULT_SLOT]: mergeProps(wiring[DEFAULT_SLOT], chrome),
+    control: mergeProps(inherited?.control ?? {}, shapes.control),
+    trigger: mergeProps(wiring.trigger, shapes.trigger)
+  };
+
+  for (const [slot, { chrome: kind, ...content }] of Object.entries(buttons ?? {})) {
+    const shape = shapes[kind ?? (slot === 'trigger' ? 'trigger' : 'control')];
+    slots[slot] = mergeProps(wiring[slot] ?? {}, shape, content);
   }
 
   return (
@@ -93,7 +129,14 @@ function FieldContexts({
         [LabelContext, mergeProps(label ?? {}, { className: styles.label })],
 
         // The box group owns the chrome, so it carries the disabled state instead of each child dimming itself.
-        [GroupContext, mergeProps(group ?? {}, interior === 'box' ? { isDisabled, className: styles.group } : {})],
+        [
+          GroupContext,
+          mergeProps(
+            inheritedGroup ?? {},
+            interior === 'box' ? { isDisabled, className: styles.group } : {},
+            group ?? {}
+          )
+        ],
         [InputContext, mergeProps(input ?? {}, { className: styles.input })],
         [TextAreaContext, mergeProps(textArea ?? {}, { className: styles.textarea })],
         [ButtonContext, { slots }]
@@ -104,10 +147,10 @@ function FieldContexts({
   );
 }
 
-/** Internal field shell: layout, chrome contexts, and empty-slot presets. */
+/** Internal field shell: layout, plus the contexts its interior reads. */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
-  const { as, children, gap = 'sm', className, size, isDisabled, interior, slots, buttonSlots, ...rest } = props;
-  const contextProps = { interior, isDisabled, size, buttonSlots };
+  const { as, children, gap = 'sm', className, size, isDisabled, interior, slotDefaults, ...rest } = props;
+  const slots = { interior, isDisabled, size, ...slotDefaults };
 
   return (
     <Flex
@@ -122,7 +165,7 @@ export const Field = forwardRef(function Field(props: FieldProps<ElementType>, r
       className={composeClassName(className, styles.field)}
     >
       {mapFieldChildren(children, (node) => (
-        <FieldContexts {...contextProps}>{normalizeFieldChildren(node, slots)}</FieldContexts>
+        <FieldSlots {...slots}>{node}</FieldSlots>
       ))}
     </Flex>
   );

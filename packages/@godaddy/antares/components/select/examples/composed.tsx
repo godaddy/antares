@@ -1,8 +1,7 @@
 import {
-  Content,
   Button,
+  Content,
   FieldError,
-  Group,
   Icon,
   Label,
   ListBox,
@@ -14,8 +13,8 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Write the whole interior yourself instead of letting the field fill it in, for full control over
- * the trigger and popover.
+ * Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
+ * over the popover and the list.
  * @title Composed
  * @order 8
  */
@@ -23,12 +22,10 @@ export function ComposedExample() {
   return (
     <Select placeholder="Pick a drink">
       <Label>Drink</Label>
-      <Group alignItems="center">
-        <Button slot="trigger">
-          <SelectValue />
-          <Icon icon="chevron-down" />
-        </Button>
-      </Group>
+      <Button slot="trigger">
+        <SelectValue />
+        <Icon icon="chevron-down" />
+      </Button>
       <Text slot="description">Choose your favorite drink</Text>
       <FieldError />
       <Popover hideArrow>

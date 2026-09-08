@@ -10,8 +10,8 @@ import * as Stories from './number-field.stories.tsx';
 
 ## Features
 
-- **Composable interior**: Pass `Label`, `Text slot="description"`, and `FieldError`; the field adds a `Group` of stepper `Button`s around the `Input`, keeping the order you wrote. Write a bare `Input` for a plain numeric input, or a `Group` of your own to change the steppers
-- **Steppers**: Empty `slot="decrement"` / `slot="increment"` buttons get icons and `variant="control"` from context. Omit steppers for a plain numeric input
+- **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+- **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon, `variant="control"`, and `size` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
 - **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
 - **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
@@ -36,6 +36,7 @@ npm install --save @godaddy/antares
     <Input />
     <Button slot="increment" />
   </Group>
+  {/* or a bare <Input /> for a plain numeric input */}
   <Text slot="description" />
   <FieldError />
 </NumberField>

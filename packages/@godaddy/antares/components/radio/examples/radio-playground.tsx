@@ -1,4 +1,4 @@
-import { FieldError, Label, Radio, RadioGroup, Text } from '@godaddy/antares';
+import { FieldError, Group, Label, Radio, RadioGroup, Text } from '@godaddy/antares';
 import { useState } from 'react';
 
 export interface PlaygroundExampleProps {
@@ -34,9 +34,11 @@ export function PlaygroundExample({
       onChange={setSelected}
     >
       <Label>{label}</Label>
-      <Radio value="basic">Basic</Radio>
-      <Radio value="standard">Standard</Radio>
-      <Radio value="premium">Premium</Radio>
+      <Group>
+        <Radio value="basic">Basic</Radio>
+        <Radio value="standard">Standard</Radio>
+        <Radio value="premium">Premium</Radio>
+      </Group>
       {description ? <Text slot="description">{description}</Text> : null}
       <FieldError>{isInvalid ? errorMessage : undefined}</FieldError>
     </RadioGroup>

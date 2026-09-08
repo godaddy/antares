@@ -11,7 +11,7 @@ import {
 import { composeClassName } from '#utils/render-props.ts';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Group } from '#components/structure';
+import type { GroupProps } from '#components/structure';
 import styles from './index.module.css';
 
 interface RadioButtonProps extends Omit<RACRadioButtonProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
@@ -52,6 +52,13 @@ export function Radio({ children, ...props }: RadioProps) {
   );
 }
 
+/** Layout an item `Group` inherits. `presentation` keeps it out of the radiogroup's a11y tree. */
+function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {
+  const horizontal = orientation === 'horizontal';
+
+  return { role: 'presentation', direction: horizontal ? 'row' : 'column', gap: horizontal ? 'lg' : 'md' };
+}
+
 export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, FieldOwnProps {
   /** Layout axis for the radio items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
@@ -61,13 +68,16 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, F
 }
 
 /**
- * Radio group. Loose radios are wrapped in a Group when omitted.
+ * Radio group. Compose `Label`, a `Group` of radios, description, and `FieldError`. The `Group`
+ * picks up its axis, gap, and presentational role from `orientation`.
  *
  * @example
  * ```tsx
  * <RadioGroup>
  *   <Label>Select your plan</Label>
- *   <Radio value="basic">Basic</Radio>
+ *   <Group>
+ *     <Radio value="basic">Basic</Radio>
+ *   </Group>
  *   <FieldError />
  * </RadioGroup>
  * ```
@@ -77,20 +87,7 @@ export function RadioGroup({ children, className, orientation = 'vertical', ...p
     <Field
       as={RACRadioGroup}
       orientation={orientation}
-      slots={{
-        items: function wrapItems(items) {
-          // `presentation` keeps this group out of the radiogroup's a11y tree.
-          return (
-            <Group
-              role="presentation"
-              direction={orientation === 'horizontal' ? 'row' : 'column'}
-              gap={orientation === 'horizontal' ? 'lg' : 'md'}
-            >
-              {items}
-            </Group>
-          );
-        }
-      }}
+      slotDefaults={{ group: itemGroup(orientation) }}
       {...props}
       className={composeClassName(className, styles.radioGroup)}
     >

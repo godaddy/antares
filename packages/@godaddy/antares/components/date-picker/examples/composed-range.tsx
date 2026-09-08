@@ -3,7 +3,6 @@ import {
   Content,
   DateRangePicker,
   DateRangePickerValue,
-  Group,
   Icon,
   Label,
   Popover,
@@ -12,7 +11,7 @@ import {
 } from '@godaddy/antares';
 
 /**
- * Build a DateRangePicker interior from lower-level pieces the same way.
+ * Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
  * @title Composed range
  * @order 9
  */
@@ -20,12 +19,10 @@ export function ComposedRangeExample() {
   return (
     <DateRangePicker>
       <Label>Trip dates</Label>
-      <Group alignItems="center">
-        <Button slot="trigger">
-          <Icon icon="calendar" />
-          <DateRangePickerValue />
-        </Button>
-      </Group>
+      <Button slot="trigger">
+        <Icon icon="calendar" />
+        <DateRangePickerValue />
+      </Button>
       <Text slot="description">Choose your start and end dates</Text>
       <Popover hideArrow>
         <Content>

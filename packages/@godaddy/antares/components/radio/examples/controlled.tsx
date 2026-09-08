@@ -1,4 +1,4 @@
-import { Label, Radio, RadioGroup } from '@godaddy/antares';
+import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';
 import { useState } from 'react';
 
 /**
@@ -12,9 +12,11 @@ export function ControlledExample() {
     <>
       <RadioGroup value={selected} onChange={setSelected}>
         <Label>Select your plan</Label>
-        <Radio value="basic">Basic</Radio>
-        <Radio value="standard">Standard</Radio>
-        <Radio value="premium">Premium</Radio>
+        <Group>
+          <Radio value="basic">Basic</Radio>
+          <Radio value="standard">Standard</Radio>
+          <Radio value="premium">Premium</Radio>
+        </Group>
       </RadioGroup>
       <p>Current selection: {selected}</p>
     </>

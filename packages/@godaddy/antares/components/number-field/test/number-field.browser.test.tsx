@@ -14,7 +14,7 @@ import { waitForSelector } from '#test/utils/wait-for-selector.ts';
 describe('@godaddy/antares', function antares() {
   describe('#NumberField', function numberField() {
     describe('#basic', function basic() {
-      it('renders label and input with the stepper preset', async function renders() {
+      it('renders label, input, and stepper faces from context', async function renders() {
         const { locator, container } = await render(<DefaultExample />);
         const input = locator.getByRole('textbox', { name: 'Quantity' });
 

@@ -10,7 +10,7 @@ import {
 } from 'react-aria-components';
 import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Group } from '#components/structure';
+import type { GroupProps } from '#components/structure';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
@@ -92,6 +92,13 @@ export function Checkbox(props: CheckboxProps) {
   );
 }
 
+/** Layout an item `Group` inherits. `presentation` keeps it out of the checkboxgroup's a11y tree. */
+function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {
+  const horizontal = orientation === 'horizontal';
+
+  return { role: 'presentation', direction: horizontal ? 'row' : 'column', gap: horizontal ? 'lg' : 'md' };
+}
+
 export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'children'>, FieldOwnProps {
   /** Layout axis for the checkbox items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
@@ -101,13 +108,16 @@ export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'childre
 }
 
 /**
- * Checkbox group. Loose checkboxes are wrapped in a Group when omitted.
+ * Checkbox group. Compose `Label`, a `Group` of checkboxes, description, and `FieldError`. The
+ * `Group` picks up its axis, gap, and presentational role from `orientation`.
  *
  * @example
  * ```tsx
  * <CheckboxGroup>
  *   <Label>Favorite colors</Label>
- *   <Checkbox value="blue">Blue</Checkbox>
+ *   <Group>
+ *     <Checkbox value="blue">Blue</Checkbox>
+ *   </Group>
  *   <FieldError />
  * </CheckboxGroup>
  * ```
@@ -117,20 +127,7 @@ export function CheckboxGroup({ children, className, orientation = 'vertical', .
     <Field
       as={RACCheckboxGroup}
       data-orientation={orientation}
-      slots={{
-        items: function wrapItems(items) {
-          // `presentation` keeps this group out of the checkboxgroup's a11y tree.
-          return (
-            <Group
-              role="presentation"
-              direction={orientation === 'horizontal' ? 'row' : 'column'}
-              gap={orientation === 'horizontal' ? 'lg' : 'md'}
-            >
-              {items}
-            </Group>
-          );
-        }
-      }}
+      slotDefaults={{ group: itemGroup(orientation) }}
       {...rest}
       className={composeClassName(className, styles.checkboxGroup)}
     >

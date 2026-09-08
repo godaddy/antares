@@ -8,38 +8,29 @@ import {
   type SelectValueProps as RACSelectValueProps,
   useSlottedContext
 } from 'react-aria-components';
-import {
-  Field,
-  mapFieldChildren,
-  normalizeFieldChildren,
-  type FieldOwnProps,
-  type FieldSize,
-  type FieldSlots
-} from '#components/_internal/field';
-import { Button, ButtonContext, type ButtonProps } from '#components/button';
+import { Field, FieldSlots, mapFieldChildren, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import { ButtonContext, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
-import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
-import { Popover } from '#components/popover';
-import { Content, Group, GroupContext } from '#components/structure';
+import { ListBox, ListBoxItem, type ListBoxItemProps, type ListBoxProps } from '#components/listbox';
+import { Popover, type PopoverProps } from '#components/popover';
+import { Content, GroupContext } from '#components/structure';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-/** Chrome a parent field publishes on its `control` button slot. */
-interface FieldControlChrome {
-  size?: FieldSize;
-  className?: ButtonProps['className'];
+/** Selected value beside a chevron. Declared as a component so it can precede `SelectValue`. */
+function TriggerFace() {
+  return (
+    <>
+      <SelectValue />
+      <Icon icon="chevron-down" />
+    </>
+  );
 }
 
-function selectSlots(variant: 'default' | 'control', chrome?: FieldControlChrome): FieldSlots {
-  return {
-    control: <SelectControl variant={variant} size={chrome?.size} className={chrome?.className} />,
-    items: function wrapItems(items) {
-      return <SelectOptions>{items}</SelectOptions>;
-    }
-  };
-}
+/** Face for a `Button slot="trigger"` left empty. Local children replace it. */
+const TRIGGER_SLOTS = { trigger: { children: <TriggerFace /> } };
 
 export interface SelectProps<T, M extends SelectionMode = 'single'>
   extends Omit<RACSelectProps<T, M>, 'children' | 'size' | 'items'>,
@@ -55,14 +46,19 @@ export interface SelectProps<T, M extends SelectionMode = 'single'>
 }
 
 /**
- * Select field. Fills in the trigger and wraps loose items in a popover when omitted.
+ * Select field. Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, description, and
+ * `FieldError`. An empty trigger picks up the selected value and a chevron from the field.
+ *
  * Use `variant="control"` to compose inside another field's Group.
  *
  * @example
  * ```tsx
  * <Select placeholder="Pick a drink">
  *   <Label>Coffee</Label>
- *   <SelectItem id="espresso">Espresso</SelectItem>
+ *   <Button slot="trigger" />
+ *   <SelectOptions>
+ *     <SelectItem id="espresso">Espresso</SelectItem>
+ *   </SelectOptions>
  * </Select>
  * ```
  */
@@ -70,16 +66,24 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
   const group = useSlottedContext(GroupContext);
-  // RAC's Select replaces ButtonContext for its interior, so read the parent chrome here.
-  const inherited = useContext(ButtonContext) as { slots?: Record<string, FieldControlChrome> } | null;
+
+  // RAC's Select replaces ButtonContext for its interior, so read the parent field's state here.
+  const inherited = useContext(ButtonContext) as { slots?: Record<string, ButtonProps> } | null;
 
   if (variant === 'control') {
-    const chrome = { ...inherited?.slots?.control, size: size ?? inherited?.slots?.control?.size };
+    const parent = inherited?.slots?.control;
+    const isDisabled = racProps.isDisabled ?? group?.isDisabled;
+    const trigger = { chrome: 'control' as const, ...TRIGGER_SLOTS.trigger };
 
+    // A control Select is its own small shell: it publishes control chrome for the trigger it holds.
     return (
-      <RACSelect {...racProps} isDisabled={racProps.isDisabled ?? group?.isDisabled} className={selectClass}>
-        {mapFieldChildren(children, function fillInterior(node) {
-          return normalizeFieldChildren(node, selectSlots('control', chrome));
+      <RACSelect {...racProps} isDisabled={isDisabled} className={selectClass}>
+        {mapFieldChildren(children, function publish(node) {
+          return (
+            <FieldSlots size={size ?? parent?.size ?? undefined} isDisabled={isDisabled} buttons={{ trigger }}>
+              {node}
+            </FieldSlots>
+          );
         })}
       </RACSelect>
     );
@@ -90,7 +94,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
       as={RACSelect as typeof RACSelect<T, M>}
       interior="box"
       size={size}
-      slots={selectSlots('default')}
+      slotDefaults={{ buttons: TRIGGER_SLOTS }}
       {...racProps}
       className={selectClass}
     >
@@ -99,46 +103,23 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   );
 }
 
-interface SelectControlProps {
-  /** Field trigger, or a control inside another field's Group. @default 'default' */
-  variant?: 'default' | 'control';
-
-  /** Trigger size when composed as a control; the field publishes it otherwise. */
-  size?: FieldSize;
-
-  /** Parent field's control chrome; RAC's Select would otherwise drop it. */
-  className?: ButtonProps['className'];
+export interface SelectOptionsProps<T extends object = object> extends Omit<ListBoxProps<T>, 'slot'> {
+  /** Props for the popover layer that positions the list. */
+  popoverProps?: Omit<PopoverProps, 'children'>;
 }
 
-/** Preset trigger (`Group` + button) unless `variant="control"`. */
-function SelectControl({ variant = 'default', size, className }: SelectControlProps) {
-  const isControl = variant === 'control';
-  const button = (
-    <Button
-      slot={isControl ? 'control' : 'trigger'}
-      variant={isControl ? 'control' : undefined}
-      size={size}
-      className={className}
-    >
-      <SelectValue />
-      <Icon icon="chevron-down" />
-    </Button>
-  );
+/**
+ * The options of a Select, in the popover it opens. `SelectItem`s go here, or pass `items` with a
+ * render function for a dynamic collection. Write `Popover`, `Content`, and `ListBox` yourself to
+ * replace the whole overlay.
+ */
+export function SelectOptions<T extends object = object>(props: SelectOptionsProps<T>) {
+  const { popoverProps, ...listBoxProps } = props;
 
-  return isControl ? button : <Group alignItems="center">{button}</Group>;
-}
-
-interface SelectOptionsProps {
-  /** `SelectItem`s. */
-  children: ReactNode;
-}
-
-/** Preset popover wrapping loose `SelectItem`s. */
-function SelectOptions({ children }: SelectOptionsProps) {
   return (
-    <Popover hideArrow>
+    <Popover hideArrow {...popoverProps}>
       <Content blockPadding="xs" inlinePadding="0">
-        <ListBox>{children}</ListBox>
+        <ListBox {...listBoxProps} />
       </Content>
     </Popover>
   );

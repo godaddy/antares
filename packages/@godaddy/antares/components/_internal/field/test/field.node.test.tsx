@@ -1,197 +1,156 @@
 import { describe, expect, it } from 'vitest';
-import { isValidElement, type ReactNode } from 'react';
+import { useContext, type Context, type ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
-import { normalizeFieldChildren } from '#components/_internal/field';
+import { ButtonContext, GroupContext, LabelContext, Provider as RACProvider } from 'react-aria-components';
+import { Field, FieldSlots } from '#components/_internal/field';
 import { Button } from '#components/button';
-import { DatePicker } from '#components/date-picker';
-import { FieldError } from '#components/field-error';
-import { Input } from '#components/input';
-import { Label } from '#components/label';
-import { Popover } from '#components/popover';
 import { Group } from '#components/structure';
-import { Text } from '#components/text';
+import { Input } from '#components/input';
 
-/** Stand-ins for a root's presets, so the test asserts placement rather than a component's markup. */
-function Control() {
-  return null;
+/** Reads a button slot's resolved props out of context, so a test can assert what the field published. */
+function SlotProbe({ slot }: { slot: string }) {
+  const context = useContext(ButtonContext) as { slots?: Record<string, Record<string, unknown>> } | null;
+  const props = context?.slots?.[slot] ?? {};
+
+  return <i data-probe={JSON.stringify({ variant: props.variant, size: props.size, isDisabled: props.isDisabled })} />;
 }
 
-function Overlay() {
-  return null;
+/** Reads the chrome a context carries, so a test can assert it reaches the part. */
+function ChromeProbe({ name, context }: { name: string; context: Context<unknown> }) {
+  const value = useContext(context) as { className?: string; isDisabled?: boolean } | null;
+
+  return <i data-probe={name} data-class={value?.className ?? ''} data-disabled={String(value?.isDisabled)} />;
 }
 
-/** A collection item: it fills no field slot, so the field wraps it. */
-function Item({ children }: { children?: ReactNode }) {
-  return <span>{children}</span>;
-}
+function probeOf(html: string, index = 0) {
+  const matches = [...html.matchAll(/data-probe="([^"]*)"/g)];
+  const raw = matches[index]?.[1] ?? '';
 
-const pickerSlots = { control: <Control />, overlay: <Overlay /> };
-const collectionSlots = {
-  control: <Control />,
-  items: function wrapItems(items: ReactNode[]) {
-    return <Group>{items}</Group>;
-  }
-};
-
-/** The component of each normalized child, so expectations read as the resulting interior. */
-function interiorOf(children: ReactNode) {
-  return (children as ReactNode[]).map(function typeOf(child) {
-    return isValidElement(child) ? child.type : child;
-  });
+  return raw.replaceAll('&quot;', '"');
 }
 
 describe('@godaddy/antares', function antares() {
-  describe('#normalizeFieldChildren', function normalize() {
-    it('leaves the interior alone when the root fills in nothing', function noSlots() {
-      const children = <Label>Event date</Label>;
-
-      expect(normalizeFieldChildren(children)).toBe(children);
-    });
-
-    it('inserts both presets after the label', function insertsPresets() {
-      const children = <Label>Event date</Label>;
-
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Label, Control, Overlay]);
-    });
-
-    it('inserts the control after the last label only', function afterLastLabel() {
-      const children = (
-        <>
-          <Label>One</Label>
-          <Label>Two</Label>
-        </>
+  describe('#Field', function field() {
+    it('publishes control and trigger chrome to the button slots', function publishesChrome() {
+      const html = renderToString(
+        <Field interior="box" size="sm">
+          <SlotProbe slot="control" />
+          <SlotProbe slot="trigger" />
+        </Field>
       );
 
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Label, Label, Control, Overlay]);
+      expect(JSON.parse(probeOf(html, 0))).toEqual({ variant: 'control', size: 'sm' });
+      expect(JSON.parse(probeOf(html, 1))).toEqual({ variant: 'trigger', size: 'sm' });
     });
 
-    it('inserts the control first when there is no label', function noLabel() {
-      const children = <FieldError>Required</FieldError>;
-
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Control, FieldError, Overlay]);
-    });
-
-    it('keeps the description and error where they were written', function keepsOrder() {
-      const children = (
-        <>
-          <Label>Event date</Label>
-          <FieldError>Required</FieldError>
-          <Text slot="description">Pick a day</Text>
-        </>
+    it('publishes the disabled state on the box group', function boxGroupOwnsDisabled() {
+      const html = renderToString(
+        <Field interior="box" isDisabled>
+          <SlotProbe slot="control" />
+          <ChromeProbe name="group" context={GroupContext as Context<unknown>} />
+        </Field>
       );
 
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([
-        Label,
-        Control,
-        FieldError,
-        Text,
-        Overlay
-      ]);
+      expect(JSON.parse(probeOf(html))).toEqual({ variant: 'control', isDisabled: true });
+      expect(html).toMatch(/data-probe="group"[^>]*data-disabled="true"/);
     });
 
-    it('recognizes a composed Group as the control', function composedGroup() {
-      const children = (
-        <>
-          <Label>Event date</Label>
-          <Group>
-            <Button slot="trigger">Open</Button>
-          </Group>
-        </>
+    it('publishes class hooks for the label and the box group', function publishesClassHooks() {
+      const html = renderToString(
+        <Field interior="box">
+          <ChromeProbe name="label" context={LabelContext as Context<unknown>} />
+          <ChromeProbe name="group" context={GroupContext as Context<unknown>} />
+        </Field>
       );
 
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Label, Group, Overlay]);
+      expect(probeOf(html, 0)).toBe('label');
+      expect(html).toMatch(/data-probe="label" data-class="[^"]+"/);
+      expect(html).toMatch(/data-probe="group" data-class="[^"]+"/);
     });
 
-    it('recognizes a bare trigger Button as the control', function bareTrigger() {
-      const children = <Button slot="trigger">Open</Button>;
-
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Button, Overlay]);
-    });
-
-    it('recognizes a bare Input as the control', function bareInput() {
-      const children = <Input />;
-
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Input, Overlay]);
-    });
-
-    it('recognizes a composed Popover as the overlay', function composedPopover() {
-      const children = (
-        <>
-          <Label>Event date</Label>
-          <Popover>Calendar</Popover>
-        </>
-      );
-
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Label, Control, Popover]);
-    });
-
-    it('recognizes the root preset a consumer wrote themselves', function writtenPreset() {
-      const children = (
-        <>
-          <Label>Event date</Label>
-          <Control />
-          <Overlay />
-        </>
-      );
-
-      expect(normalizeFieldChildren(children, pickerSlots)).toBe(children);
-    });
-
-    it('wraps loose items where the first one was written', function wrapsItems() {
-      const children = (
-        <>
-          <Label>Coffee</Label>
-          <Text slot="description">Pick one</Text>
-          <Item>Espresso</Item>
-          <Item>Latte</Item>
-        </>
-      );
-      const normalized = normalizeFieldChildren(children, {
-        items: collectionSlots.items
-      }) as ReactNode[];
-
-      expect(interiorOf(normalized)).toEqual([Label, Text, Group]);
-      expect(interiorOf((normalized[2] as { props: { children: ReactNode } }).props.children)).toEqual([Item, Item]);
-    });
-
-    it('inserts the control alongside wrapped items', function itemsAndControl() {
-      const children = (
-        <>
-          <Label>Coffee</Label>
-          <FieldError>Required</FieldError>
-          <Item>Espresso</Item>
-        </>
-      );
-
-      expect(interiorOf(normalizeFieldChildren(children, collectionSlots))).toEqual([
-        Label,
-        Control,
-        FieldError,
-        Group
-      ]);
-    });
-
-    it('looks through a fragment for the children it holds', function throughFragments() {
-      const children = (
-        <>
-          <Label>Event date</Label>
-          <>
+    it('leaves a slot the root wires itself untouched', function keepsRootWiring() {
+      const html = renderToString(
+        <RACProvider values={[[ButtonContext, { slots: { decrement: { 'aria-label': 'Decrease' } } }]]}>
+          <Field interior="box">
             <Group>
-              <Button slot="trigger">Open</Button>
+              <Button slot="decrement" />
             </Group>
-          </>
-        </>
+          </Field>
+        </RACProvider>
       );
 
-      expect(interiorOf(normalizeFieldChildren(children, pickerSlots))).toEqual([Label, Group, Overlay]);
+      expect(html).toContain('aria-label="Decrease"');
+    });
+  });
+
+  describe('#FieldSlots', function slots() {
+    /** A root's own content default for a slot the field only publishes chrome for. */
+    function stepper(children: ReactNode) {
+      return { decrement: { children } };
+    }
+
+    it('puts a root content default under the field chrome', function rootContent() {
+      const html = renderToString(
+        <Field interior="box" size="sm" slotDefaults={{ buttons: stepper('minus') }}>
+          <Group>
+            <Button slot="decrement" />
+          </Group>
+        </Field>
+      );
+
+      // Chrome from the field, content from the root.
+      expect(html).toContain('minus');
+      expect(html).toContain('control');
+      expect(html).toContain('sm');
     });
 
-    it('fills in the interior a render function returns', function renderFunction() {
-      const html = renderToString(<DatePicker>{() => <Label>Event date</Label>}</DatePicker>);
+    it('lets a local prop beat both the chrome and the root default', function localWins() {
+      const html = renderToString(
+        <Field interior="box" slotDefaults={{ buttons: stepper('minus') }}>
+          <Group>
+            <Button slot="decrement" variant="primary">
+              less
+            </Button>
+          </Group>
+        </Field>
+      );
 
-      // The inserted DatePickerControl renders the trigger button and its placeholder.
-      expect(html).toContain('slot="trigger"');
-      expect(html).toContain('Select a date');
+      expect(html).toContain('less');
+      expect(html).not.toContain('minus');
+    });
+
+    it('publishes a group default a composed Group picks up', function groupDefault() {
+      const html = renderToString(
+        <Field slotDefaults={{ group: { role: 'presentation' } }}>
+          <Group>
+            <Input />
+          </Group>
+        </Field>
+      );
+
+      expect(html).toContain('role="presentation"');
+    });
+
+    it('publishes without a Field, for a control composed in another field', function standalone() {
+      const html = renderToString(
+        <FieldSlots buttons={stepper('minus')}>
+          <Group>
+            <Button slot="decrement" />
+          </Group>
+        </FieldSlots>
+      );
+
+      expect(html).toContain('minus');
+    });
+
+    it('keeps an unslotted button working when a root publishes slots', function defaultSlotSurvives() {
+      const html = renderToString(
+        <Field interior="box" slotDefaults={{ buttons: stepper('minus') }}>
+          <Button>Go</Button>
+        </Field>
+      );
+
+      expect(html).toContain('Go');
     });
   });
 });

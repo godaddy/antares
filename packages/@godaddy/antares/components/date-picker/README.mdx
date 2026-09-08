@@ -11,10 +11,11 @@ import * as Stories from './date-picker.stories.tsx';
 
 ## Features
 
-- **Composable interior**: Pass `Label` and optional `Text` / `FieldError`; the field adds the trigger and the calendar popover, keeping the order you wrote. Write a `DatePickerControl` to set the label format, or a `Group`, `Button`, `DatePickerValue`, `Popover`, `Content`, and `Calendar` interior of your own to replace either part. `children` also accepts a function for picker state
+- **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+- **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
 - `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
 - Built on React Aria - native form integration, validation, focus management, and screen-reader support
-- Label formatting via `formatOptions` / `placeholder` on `DatePickerControl` / `DateRangePickerControl`, or on `DatePickerValue` / `DateRangePickerValue` when composing
+- Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
 - `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
 
 ## Installation

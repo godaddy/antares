@@ -1,14 +1,14 @@
 export {
   DatePicker,
-  DatePickerControl,
+  DatePickerCalendar,
   DateRangePicker,
-  DateRangePickerControl,
+  DateRangePickerCalendar,
   DatePickerValue,
   DateRangePickerValue,
   type DatePickerProps,
-  type DatePickerControlProps,
+  type DatePickerCalendarProps,
   type DateRangePickerProps,
-  type DateRangePickerControlProps,
+  type DateRangePickerCalendarProps,
   type DatePickerValueProps,
   type DateRangePickerValueProps
 } from '#components/date-picker';

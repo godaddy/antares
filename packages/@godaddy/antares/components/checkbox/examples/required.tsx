@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup, Label, Text } from '@godaddy/antares';
+import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';
 
 /**
  * Mark a checkbox group as required with visual indicator and validation.
@@ -9,9 +9,11 @@ export function RequiredExample() {
   return (
     <CheckboxGroup isRequired>
       <Label>Favorite colors</Label>
-      <Checkbox value="blue">Blue</Checkbox>
-      <Checkbox value="red">Red</Checkbox>
-      <Checkbox value="green">Green</Checkbox>
+      <Group>
+        <Checkbox value="blue">Blue</Checkbox>
+        <Checkbox value="red">Red</Checkbox>
+        <Checkbox value="green">Green</Checkbox>
+      </Group>
       <Text slot="description">Choose your favorite color</Text>
     </CheckboxGroup>
   );
