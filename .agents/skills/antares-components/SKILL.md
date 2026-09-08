@@ -121,6 +121,28 @@ Styled components keep their CSS in `src/index.module.css`. Three rules hold eve
 
 **`references/styling.md` has the rest: focus and disabled recipes, value conventions, spacing tokens, and custom properties.**
 
+## Motion
+
+Use motion only when it clarifies feedback, state, or spatial relationships. If a component changes many times a day, keep it instant. If it changes less often, motion can help users track what changed and where it came from. Keyboard response, focus, and activation stay immediate. Subtle, interruptible state transitions may remain modality-independent.
+
+| Role | When to use | Default |
+| --- | --- | --- |
+| `None` | High frequency, keyboard driven, or purely structural changes | No motion |
+| `Feedback` | Frequent color, opacity, and other state changes | `150ms ease` |
+| `Surface` | Occasional anchored surfaces and centered modals | `125ms` or `200ms cubic-bezier(0.23, 1, 0.32, 1)` |
+| `Spatial` | Short movement, drawers, measured indicators, and in-flow size changes | `150ms`, `200ms`, `250ms`, or `300ms` for `InlineDrawer` |
+
+When creating or changing motion, read `references/motion.md` before editing.
+
+Mandatory rules:
+
+- Use exact-property CSS transitions, not `transition: all`.
+- Prefer `transform` and `opacity` first. Keep layout motion out unless the component's meaning depends on it.
+- Preserve RAC ownership of state, positioning, focus, keyboard handling, and dismiss behavior.
+- Use a reduced-motion path for spatial motion.
+- Gate hover motion behind `@media (hover: hover) and (pointer: fine)`.
+- For anchored overlays, use the exact anchor origin when RAC exposes one, otherwise fall back to placement-edge origins. `Modal` stays centered.
+
 ## Examples, tests, and docs
 
 Examples are the unit everything else is built on: tests render them, and stories and the README are generated from them.

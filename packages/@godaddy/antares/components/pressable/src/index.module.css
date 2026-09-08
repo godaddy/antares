@@ -2,7 +2,7 @@
   cursor: pointer;
   outline: 2px solid transparent;
   outline-offset: 0;
-  transition: outline-color 0.15s ease-in-out;
+  transition: outline-color 150ms ease;
 
   &:where([data-hovered]:not([data-disabled])) {
     outline-color: var(--color-action-background-tertiary-hovered, var(--ux-1m7qrkf, rgba(17, 17, 17, 0.1)));

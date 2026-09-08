@@ -6,8 +6,8 @@
   --_arrow-offset: calc(var(--_arrow-height) * -1 + 1px);
 
   transition:
-    transform 0.1s,
-    opacity 0.1s;
+    transform 125ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 125ms cubic-bezier(0.23, 1, 0.32, 1);
 
   /* Own stacking context so `.arrow` can sit behind the content. See `.arrow`. */
   isolation: isolate;
@@ -23,22 +23,26 @@
 }
 
 .tooltip:where([data-placement="top"]) {
-  --_animation-offset: translateY(-4px);
+  --_animation-offset: translateY(-4px) scale(0.95);
+  transform-origin: bottom center;
   margin-bottom: var(--_content-offset);
 }
 
 .tooltip:where([data-placement="bottom"]) {
-  --_animation-offset: translateY(4px);
+  --_animation-offset: translateY(4px) scale(0.95);
+  transform-origin: top center;
   margin-top: var(--_content-offset);
 }
 
 .tooltip:where([data-placement="right"]) {
-  --_animation-offset: translateX(4px);
+  --_animation-offset: translateX(4px) scale(0.95);
+  transform-origin: left center;
   margin-left: var(--_content-offset);
 }
 
 .tooltip:where([data-placement="left"]) {
-  --_animation-offset: translateX(-4px);
+  --_animation-offset: translateX(-4px) scale(0.95);
+  transform-origin: right center;
   margin-right: var(--_content-offset);
 }
 
@@ -77,4 +81,13 @@
   transform-origin: top;
   rotate: -45deg;
   margin-right: var(--_arrow-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    transition-property: opacity;
+  }
+  .tooltip:where([data-entering], [data-exiting]) {
+    transform: none;
+  }
 }

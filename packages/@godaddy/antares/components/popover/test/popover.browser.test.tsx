@@ -113,29 +113,29 @@ describe('@godaddy/antares', function antares() {
 
       await getByRole('button', { name: 'Open popover' }).click();
 
-      let dialog: Element | null = null;
       await vi.waitFor(async function open() {
-        dialog = getByRole('dialog', { name: 'Popover title' }).query();
+        const dialog = getByRole('dialog', { name: 'Popover title' }).query();
         assume(dialog).is.not.equal(null);
+        assume(dialog?.closest('[data-entering]')).equals(null);
+
+        const title = (dialog as unknown as Element).querySelector('[slot="title"]');
+        const content = (dialog as unknown as Element).querySelector('section');
+        assume(title).is.not.equal(null);
+        assume(content).is.not.equal(null);
+
+        const titleRect = (title as Element).getBoundingClientRect();
+        const contentRect = (content as Element).getBoundingClientRect();
+        const closeRect = getByRole('button', { name: 'Close' }).element().getBoundingClientRect();
+
+        // The close button owns its own column in the title row, so the title stops where the
+        // button begins and they share the row.
+        assume(titleRect.right <= closeRect.left).is.true();
+        assume(closeRect.top < titleRect.bottom).is.true();
+
+        // Content spans both columns below, so it keeps the full popover width.
+        assume(contentRect.top >= titleRect.bottom).is.true();
+        assume(contentRect.right > closeRect.left).is.true();
       });
-
-      const title = (dialog as unknown as Element).querySelector('[slot="title"]');
-      const content = (dialog as unknown as Element).querySelector('section');
-      assume(title).is.not.equal(null);
-      assume(content).is.not.equal(null);
-
-      const titleRect = (title as Element).getBoundingClientRect();
-      const contentRect = (content as Element).getBoundingClientRect();
-      const closeRect = getByRole('button', { name: 'Close' }).element().getBoundingClientRect();
-
-      // The close button owns its own column in the title row, so the title stops where the
-      // button begins and they share the row.
-      assume(titleRect.right <= closeRect.left).is.true();
-      assume(closeRect.top < titleRect.bottom).is.true();
-
-      // Content spans both columns below, so it keeps the full popover width.
-      assume(contentRect.top >= titleRect.bottom).is.true();
-      assume(contentRect.right > closeRect.left).is.true();
     });
 
     it('routes className to the dialog and containerProps to the panel', async function layerProps() {

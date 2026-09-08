@@ -64,6 +64,9 @@
   color: var(--_fg-default);
   font: inherit;
   text-align: start;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease;
 
   &:where([data-hovered]) {
     color: var(--_fg-hovered);

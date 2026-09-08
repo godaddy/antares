@@ -69,10 +69,6 @@
     color: var(--ux-k4fkva, #111);
   }
 
-  &:where([data-focused]) {
-    outline: 2px solid Highlight;
-  }
-
   &:where([data-disabled]),
   &:disabled {
     cursor: not-allowed;
@@ -90,7 +86,7 @@
 
 /* chevron affordance — Select trigger only; never inherited by a plain .fieldTrigger */
 .fieldSelectFragment > [data-icon] {
-  transition: transform 0.15s ease;
+  transition: transform 150ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .fieldSelectFragment:where([aria-expanded="true"]) > [data-icon] {
@@ -150,5 +146,11 @@
       border-start-end-radius: var(--field-br);
       border-end-end-radius: var(--field-br);
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fieldSelectFragment > [data-icon] {
+    transition: none;
   }
 }

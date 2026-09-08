@@ -1,5 +1,4 @@
-.checkboxGroup,
-.checkbox {
+:where(.checkboxGroup, .checkbox) {
   --checkbox-critical-color: var(--color-feedback-critical-strong, var(--ux-1marogz, #ae1302));
 }
 
@@ -9,14 +8,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.checkbox[data-disabled] {
+.checkbox:where([data-disabled]) {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
 .indicator {
   width: 1.25em;
-  aspect-ratio: 1;
+  height: 1.25em;
   border-width: 1px;
   border-style: solid;
   background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
@@ -24,44 +23,55 @@
   color: var(--color-input-text-selected, var(--ux-1lw8azc, #111));
   border-radius: 2px;
   box-sizing: border-box;
-  transition: all 0.15s ease-in-out;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
   pointer-events: none;
 }
 
-.indicator .selectedIcon,
-.indicator .indeterminateIcon {
+.indicator :where(.selectedIcon, .indeterminateIcon) {
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-.checkbox[data-focused] .indicator {
-  outline: 2px solid Highlight;
-  outline-offset: 2px;
-}
-
-.checkbox[data-pressed]:not([data-disabled]) .indicator {
-  transform: scale(0.95);
-}
-
-.checkbox:hover:not([data-disabled]) .indicator,
-.checkbox[data-focused] .indicator,
-.checkbox[data-selected]:hover:not([data-disabled]) .indicator,
-.checkbox[data-indeterminate]:hover:not([data-disabled]) .indicator {
-  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
-}
-
-.indicator[data-selected],
-.indicator[data-indeterminate] {
+.indicator:where([data-selected], [data-indeterminate]) {
   background: var(--color-input-background-selected, var(--ux-sywk25, #1bdbdb));
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #1bdbdb));
 }
 
-.checkboxGroup[data-invalid] .checkbox[data-selected] .indicator {
+.indicator:where(.checkbox[data-pressed]:not([data-disabled]) *) {
+  transform: scale(0.95);
+}
+
+.indicator:where(.checkbox[data-focused] *) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .indicator:where(.checkbox:hover:not([data-disabled]) *) {
+    border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
+  }
+}
+
+.indicator:where(.checkboxGroup[data-invalid] .checkbox[data-selected] *) {
   background-color: var(--checkbox-critical-color);
 }
 
-.checkboxGroup[data-invalid] .indicator,
-.checkboxGroup[data-invalid] .checkbox:hover:not([data-disabled]) .indicator,
-.checkboxGroup[data-invalid] .checkbox[data-selected] .indicator {
+.indicator:where(.checkboxGroup[data-invalid] *) {
   border-color: var(--checkbox-critical-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition-property: background-color, border-color;
+  }
+
+  .indicator:where(.checkbox[data-pressed]:not([data-disabled]) *) {
+    transform: none;
+  }
 }

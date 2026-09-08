@@ -111,7 +111,7 @@
     border-bottom: 0;
     padding-block-end: calc(var(--_tabs-item-block-space) + var(--_tabs-border-width));
     padding-inline: var(--_tabs-manilla-space);
-    transition: color 200ms;
+    transition: color 150ms ease;
 
     @media (prefers-reduced-motion: reduce) {
       transition: none;
@@ -125,6 +125,7 @@
   contain: strict;
   transition-property: translate, width;
   transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
 
   &:where([data-entering]) {
     transition: none;

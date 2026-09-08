@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s;
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .overlay:where([data-entering], [data-exiting]) {
@@ -16,12 +16,12 @@
 
 .modal {
   transition:
-    transform 0.2s,
-    opacity 0.2s;
+    transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .modal:where([data-entering], [data-exiting]) {
-  transform: translateY(8px);
+  transform: translateY(8px) scale(0.95);
   opacity: 0;
 }
 
@@ -29,4 +29,13 @@
   max-block-size: calc(100dvh - var(--sp-md) * 2);
   inline-size: calc(100dvw - var(--sp-md) * 2);
   max-inline-size: 80ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    transition-property: opacity;
+  }
+  .modal:where([data-entering], [data-exiting]) {
+    transform: none;
+  }
 }

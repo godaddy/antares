@@ -90,6 +90,7 @@
     inset: 0;
     transition-property: translate, width;
     transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
 
     @media (prefers-reduced-motion: reduce) {
       transition: none;
