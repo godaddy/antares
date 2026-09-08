@@ -6,14 +6,18 @@ import {
   type CheckboxFieldProps as RACCheckboxFieldProps,
   CheckboxGroup as RACCheckboxGroup,
   type CheckboxGroupProps as RACCheckboxGroupProps,
-  type CheckboxGroupRenderProps as RACCheckboxGroupRenderProps
+  type CheckboxGroupRenderProps as RACCheckboxGroupRenderProps,
+  Provider as RACProvider,
+  composeRenderProps,
+  useSlottedContext
 } from 'react-aria-components';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import type { GroupProps } from '#components/structure';
+import { GroupContext, type GroupProps } from '#components/structure';
+import { LabelContext } from '#components/label';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 import styles from './index.module.css';
 
 export interface CheckboxIndicatorProps {
@@ -99,7 +103,9 @@ function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {
   return { role: 'presentation', direction: horizontal ? 'row' : 'column', gap: horizontal ? 'lg' : 'md' };
 }
 
-export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'children'>, FieldOwnProps {
+export interface CheckboxGroupProps
+  extends Omit<RACCheckboxGroupProps, 'children'>,
+    Omit<FlexOwnProps, 'as' | 'className'> {
   /** Layout axis for the checkbox items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
 
@@ -122,16 +128,47 @@ export interface CheckboxGroupProps extends Omit<RACCheckboxGroupProps, 'childre
  * </CheckboxGroup>
  * ```
  */
-export function CheckboxGroup({ children, className, orientation = 'vertical', ...rest }: CheckboxGroupProps) {
+export function CheckboxGroup({
+  children,
+  className,
+  orientation = 'vertical',
+  gap = 'sm',
+  isDisabled,
+  ...rest
+}: CheckboxGroupProps) {
   return (
-    <Field
+    <Flex
+      direction="column"
+      gap={gap}
+      {...rest}
+      isDisabled={isDisabled}
       as={RACCheckboxGroup}
       data-orientation={orientation}
-      slotDefaults={{ group: itemGroup(orientation) }}
-      {...rest}
-      className={composeClassName(className, styles.checkboxGroup)}
+      className={composeClassName(className, fieldStyles.field, styles.checkboxGroup)}
+    >
+      {composeRenderProps(children, function body(node) {
+        return <CheckboxGroupBody orientation={orientation}>{node}</CheckboxGroupBody>;
+      })}
+    </Flex>
+  );
+}
+
+/**
+ * Styles the label a CheckboxGroup owns and lays out the `Group` holding its items. It runs inside
+ * `RACCheckboxGroup`, so it reads what React Aria wired to the label before republishing it.
+ */
+function CheckboxGroupBody({ orientation, children }: { orientation: 'horizontal' | 'vertical'; children: ReactNode }) {
+  const label = useSlottedContext(LabelContext) ?? {};
+  const group = useSlottedContext(GroupContext) ?? {};
+
+  return (
+    <RACProvider
+      values={[
+        [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
+        [GroupContext, { ...group, ...itemGroup(orientation) }]
+      ]}
     >
       {children}
-    </Field>
+    </RACProvider>
   );
 }

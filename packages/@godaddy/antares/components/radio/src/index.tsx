@@ -6,12 +6,16 @@ import {
   type RadioFieldProps as RACRadioFieldProps,
   RadioGroup as RACRadioGroup,
   type RadioGroupProps as RACRadioGroupProps,
-  type RadioGroupRenderProps as RACRadioGroupRenderProps
+  type RadioGroupRenderProps as RACRadioGroupRenderProps,
+  Provider as RACProvider,
+  composeRenderProps,
+  useSlottedContext
 } from 'react-aria-components';
 import { composeClassName } from '#utils/render-props.ts';
-import { Field, type FieldOwnProps } from '#components/_internal/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import type { GroupProps } from '#components/structure';
+import { LabelContext } from '#components/label';
+import { GroupContext, type GroupProps } from '#components/structure';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 import styles from './index.module.css';
 
 interface RadioButtonProps extends Omit<RACRadioButtonProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
@@ -59,7 +63,7 @@ function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {
   return { role: 'presentation', direction: horizontal ? 'row' : 'column', gap: horizontal ? 'lg' : 'md' };
 }
 
-export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, FieldOwnProps {
+export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, Omit<FlexOwnProps, 'as' | 'className'> {
   /** Layout axis for the radio items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
 
@@ -82,16 +86,47 @@ export interface RadioGroupProps extends Omit<RACRadioGroupProps, 'children'>, F
  * </RadioGroup>
  * ```
  */
-export function RadioGroup({ children, className, orientation = 'vertical', ...props }: RadioGroupProps) {
+export function RadioGroup({
+  children,
+  className,
+  orientation = 'vertical',
+  gap = 'sm',
+  isDisabled,
+  ...props
+}: RadioGroupProps) {
   return (
-    <Field
-      as={RACRadioGroup}
+    <Flex
+      direction="column"
+      gap={gap}
       orientation={orientation}
-      slotDefaults={{ group: itemGroup(orientation) }}
       {...props}
-      className={composeClassName(className, styles.radioGroup)}
+      isDisabled={isDisabled}
+      as={RACRadioGroup}
+      className={composeClassName(className, fieldStyles.field, styles.radioGroup)}
+    >
+      {composeRenderProps(children, function body(node) {
+        return <RadioGroupBody orientation={orientation}>{node}</RadioGroupBody>;
+      })}
+    </Flex>
+  );
+}
+
+/**
+ * Styles the label a RadioGroup owns and lays out the `Group` holding its items. It runs inside
+ * `RACRadioGroup`, so it reads what React Aria wired to the label before republishing it.
+ */
+function RadioGroupBody({ orientation, children }: { orientation: 'horizontal' | 'vertical'; children: ReactNode }) {
+  const label = useSlottedContext(LabelContext) ?? {};
+  const group = useSlottedContext(GroupContext) ?? {};
+
+  return (
+    <RACProvider
+      values={[
+        [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
+        [GroupContext, { ...group, ...itemGroup(orientation) }]
+      ]}
     >
       {children}
-    </Field>
+    </RACProvider>
   );
 }
