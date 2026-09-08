@@ -92,6 +92,94 @@ Any bundler that supports CSS imports will work with Antares. If your bundler do
 <ComponentCards />
 
 
+# Alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A minimal alert with a title and body text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
+
+### Emphasis Variants [#emphasis-variants]
+
+All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+
+<Story of="EmphasesExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+
+### Dismissible [#dismissible]
+
+When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+
+<Story of="DismissibleExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
+
+### With Action [#with-action]
+
+Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+
+<Story of="WithActionExample" />
+
+<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### Keyboard [#keyboard]
+
+| Key               | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `Tab`             | Moves focus to the dismiss button or action button |
+| `Space` / `Enter` | Activates the focused button                       |
+
+### Screen readers [#screen-readers]
+
+The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+
+### Dismiss button label [#dismiss-button-label]
+
+The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+
+## Best Practices [#best-practices]
+
+* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
+* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
+* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
+* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
+* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+
+## Props [#props]
+
+<PropTable />
+
+
 # Avatar
 
 
@@ -235,7 +323,15 @@ When an Avatar triggers an action, compose it with `Pressable` so the Avatar kee
 <PropTable />
 
 
-# Alert
+# Carousel
+
+
+
+
+
+
+
+
 
 
 
@@ -263,62 +359,71 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-A minimal alert with a title and body text.
+The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Partial<AlertProps>) {\n  return (\n    <Alert emphasis=\&#x22;info\&#x22; title=\&#x22;Your domain is ready\&#x22; {...props}>\n      You can now start building your website.\n    </Alert>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
 
-### Emphasis Variants [#emphasis-variants]
+### Controlled [#controlled]
 
-All 7 emphasis categories. Each variant carries a distinct visual accent and semantic icon so the type of message is never communicated by color alone.
+The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
 
-<Story of="EmphasesExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Alert, Flex } from '@godaddy/antares';\n\nconst emphases = ['critical', 'warning', 'success', 'info', 'highlight', 'premium', 'internal'] as const;\n\nexport function EmphasesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;1rem\&#x22;>\n      {emphases.map((emphasis) => (\n        <Alert key={emphasis} emphasis={emphasis} title={`This is a ${emphasis} alert`}>\n          Description for the {emphasis} emphasis variant.\n        </Alert>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
 
-### Dismissible [#dismissible]
+### External Controls (Uncontrolled) [#external-controls-uncontrolled]
 
-When an `onClose` callback is provided, a dismiss button is rendered. The component does not manage its own visibility — the parent is responsible for unmounting or hiding the alert when `onClose` fires.
+You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
 
-<Story of="DismissibleExample" />
+<Story of="ExternalControlsUncontrolledExample" />
 
-<Source language="tsx" code="&#x22;import { Alert, type AlertProps, Button } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DismissibleExample(props?: Partial<AlertProps>) {\n  const [visible, setVisible] = useState(true);\n\n  if (!visible) return <Button onPress={() => setVisible(true)}>Show alert</Button>;\n\n  return (\n    <Alert emphasis=\&#x22;success\&#x22; title=\&#x22;Your account's been verified\&#x22; onClose={() => setVisible(false)} {...props}>\n      We've successfully verified your identity.\n    </Alert>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
 
-### With Action [#with-action]
+### External Controls (Controlled) [#external-controls-controlled]
 
-Pass a `Button` to the `actions` slot to give the user a clear path to resolve the alert.
+You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
 
-<Story of="WithActionExample" />
+<Story of="ExternalControlsControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Alert, Button } from '@godaddy/antares';\n\nexport function WithActionExample() {\n  return (\n    <Alert\n      emphasis=\&#x22;warning\&#x22;\n      title=\&#x22;Your payment method is expiring\&#x22;\n      actions={\n        <Button variant=\&#x22;secondary\&#x22; size=\&#x22;sm\&#x22;>\n          Update Payment Method\n        </Button>\n      }\n      onClose={() => undefined}\n    >\n      Please update your payment method before it expires.\n    </Alert>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
 
-## Accessibility [#accessibility]
+### Hide Controls [#hide-controls]
 
-### Keyboard [#keyboard]
+The hide controls carousel is a carousel that hides the navigation controls.
 
-| Key               | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| `Tab`             | Moves focus to the dismiss button or action button |
-| `Space` / `Enter` | Activates the focused button                       |
+<Story of="HideControlsExample" />
 
-### Screen readers [#screen-readers]
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
 
-The alert container uses `role="alert"`, which creates an ARIA live region. When an alert is rendered or its content changes, screen readers announce the message automatically — the user does not need to navigate to the alert to hear it.
+### Variable Widths [#variable-widths]
 
-### Dismiss button label [#dismiss-button-label]
+It supports multiple slides with different widths.
 
-The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels={{ close: '...' }}` to provide more specific context for screen readers (e.g. `"Dismiss payment warning"`). This is especially useful when multiple alerts are visible at the same time.
+<Story of="VariableWidthsExample" />
 
-## Best Practices [#best-practices]
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
 
-* Write alert content from the user's perspective: describe what happened and what they can do next, not the underlying technical error.
-* Use `critical` only when the user truly cannot continue without resolving the issue. Overusing it reduces its impact.
-* Always provide a `title` when the alert includes a dismiss button — it improves the reading experience for screen reader users.
-* When using `actions`, prefer `secondary` or `tertiary` Button variants. Avoid placing a primary action inside an alert.
-* Do not stack multiple alerts of the same emphasis; consolidate the message into a single alert.
+### Events [#events]
+
+You can listen to events like `onChange`, `onPrev`, or `onNext`.
+
+<Story of="EventsExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
+
+### RTL Direction [#rtl-direction]
+
+The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
+
+<Story of="RTLDirectionExample" />
+
+<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+The `Carousel` component accepts the following props:
 
 <PropTable />
 
@@ -589,111 +694,6 @@ The `RangeCalendar` component accepts the following props:
 <PropTable />
 
 
-# Carousel
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default carousel is a carousel that is uncontrolled, it shows the first slide by default. You can also pass the `defaultActiveIndex` prop to the `Carousel` component to set the initial active slide index.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-The controlled carousel is a carousel that is controlled by the `activeIndex` prop.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.max(0, index - 1));\n  }\n\n  function handleNext(index: number, _values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setActiveIndex(Math.min(2, index + 1));\n  }\n\n  function handleChange(index: number) {\n    setActiveIndex(index);\n  }\n\n  return (\n    <Carousel\n      style={{ maxWidth: 400 }}\n      activeIndex={activeIndex}\n      onPrev={handlePrev}\n      onNext={handleNext}\n      onChange={handleChange}\n    >\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### External Controls (Uncontrolled) [#external-controls-uncontrolled]
-
-You can control the carousel externally by passing the `ref` prop to the `Carousel` component and using the `emblaApi` to control the carousel imperatively.
-
-<Story of="ExternalControlsUncontrolledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex, type CarouselRef } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsUncontrolledExample() {\n  const carouselRef = useRef<CarouselRef>(null);\n\n  function handlePrev() {\n    carouselRef.current?.emblaApi?.goToPrev();\n  }\n\n  function handleNext() {\n    carouselRef.current?.emblaApi?.goToNext();\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External prev slide\&#x22; onClick={handlePrev}>\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button variant=\&#x22;secondary\&#x22; aria-label=\&#x22;External next slide\&#x22; onClick={handleNext}>\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideNavigationControls ref={carouselRef} id=\&#x22;carousel\&#x22;>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### External Controls (Controlled) [#external-controls-controlled]
-
-You can control the carousel externally by using the `activeIndex` prop to control the active slide index.
-
-<Story of="ExternalControlsControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Button, Icon, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nconst TOTAL_SLIDES = 3;\n\nexport function ExternalControlsControlledExample() {\n  const [activeIndex, setActiveIndex] = useState(1);\n\n  function handlePrev() {\n    setActiveIndex(Math.max(0, activeIndex - 1));\n  }\n\n  function handleNext() {\n    setActiveIndex(Math.min(TOTAL_SLIDES - 1, activeIndex + 1));\n  }\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; style={{ maxWidth: 400 }}>\n      <Flex direction=\&#x22;row\&#x22; gap=\&#x22;md\&#x22; alignSelf=\&#x22;end\&#x22;>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External prev slide\&#x22;\n          onClick={handlePrev}\n          isDisabled={activeIndex === 0}\n        >\n          <Icon icon=\&#x22;chevron-left\&#x22; />\n        </Button>\n        <Button\n          variant=\&#x22;secondary\&#x22;\n          aria-label=\&#x22;External next slide\&#x22;\n          onClick={handleNext}\n          isDisabled={activeIndex === TOTAL_SLIDES - 1}\n        >\n          <Icon icon=\&#x22;chevron-right\&#x22; />\n        </Button>\n      </Flex>\n\n      <Carousel hideDots hideNavigationControls activeIndex={activeIndex}>\n        {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### Hide Controls [#hide-controls]
-
-The hide controls carousel is a carousel that hides the navigation controls.
-
-<Story of="HideControlsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nexport function HideControlsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }} hideNavigationControls hideDots>\n      {Array.from({ length: 3 }).map((_, index) => (\n        <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Variable Widths [#variable-widths]
-
-It supports multiple slides with different widths.
-
-<Story of="VariableWidthsExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\n\nconst SLIDE_WIDTHS = [200, 100, 300, 100, 200];\n\nexport function VariableWidthsExample() {\n  return (\n    <Carousel style={{ maxWidth: 400 }}>\n      {SLIDE_WIDTHS.map((width, index) => (\n        <Flex\n          key={index}\n          alignItems=\&#x22;center\&#x22;\n          justifyContent=\&#x22;center\&#x22;\n          style={{ width, height: 300, background: 'lavender' }}\n        >\n          Slide {index + 1}\n        </Flex>\n      ))}\n    </Carousel>\n  );\n}&#x22;" />
-
-### Events [#events]
-
-You can listen to events like `onChange`, `onPrev`, or `onNext`.
-
-<Story of="EventsExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Carousel, Flex } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function EventsExample() {\n  const [message, setMessage] = useState('Listening for change events...');\n  const [messagePrev, setMessagePrev] = useState('Listening for prev events...');\n  const [messageNext, setMessageNext] = useState('Listening for next events...');\n\n  function handleChange(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessage(`onChange: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handlePrev(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessagePrev(`onPrev: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n\n  function handleNext(index: number, values: { atFirstSlide: boolean; atLastSlide: boolean }) {\n    setMessageNext(`onNext: ${index}, firstSlide: ${values.atFirstSlide}, lastSlide: ${values.atLastSlide}`);\n  }\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box>{message}</Box>\n      <Box>{messagePrev}</Box>\n      <Box>{messageNext}</Box>\n\n      <Carousel\n        style={{ maxWidth: 400 }}\n        defaultActiveIndex={2}\n        onChange={handleChange}\n        onPrev={handlePrev}\n        onNext={handleNext}\n      >\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </Flex>\n  );\n}&#x22;" />
-
-### RTL Direction [#rtl-direction]
-
-The carousel follows the current **layout direction** (LTR or RTL). By default, that direction is detected automatically from the browser or system settings.
-
-<Story of="RTLDirectionExample" />
-
-<Source language="tsx" code="&#x22;import { Carousel, Flex } from '@godaddy/antares';\nimport { RTLProvider } from '#utils/rtl-locale-provider.tsx';\n\nexport function RTLDirectionExample() {\n  return (\n    <RTLProvider>\n      <Carousel style={{ maxWidth: 400 }}>\n        {Array.from({ length: 3 }).map((_, index) => (\n          <Flex key={index} alignItems=\&#x22;center\&#x22; justifyContent=\&#x22;center\&#x22; style={{ height: 300, background: 'lavender' }}>\n            Slide {index + 1}\n          </Flex>\n        ))}\n      </Carousel>\n    </RTLProvider>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-The `Carousel` component accepts the following props:
-
-<PropTable />
-
-
 # Checkbox
 
 
@@ -794,7 +794,7 @@ Display error state and error message for validation feedback.
 
 ## Customization [#customization]
 
-`CheckboxGroup` is composed: pass `Label`, the `Checkbox` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself when you need to lay them out differently. Each `Checkbox` takes label text next to the indicator. Use `orientation` to lay out the items vertically or horizontally.
+`CheckboxGroup` is composed: pass `Label`, the `Checkbox` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself in a `Group` with your own `direction`/`gap` when you need to lay them out differently. Each `Checkbox` takes label text next to the indicator. Use `orientation` to lay out the items vertically or horizontally.
 
 ### Data Attributes [#data-attributes]
 
@@ -1024,6 +1024,191 @@ The `CheckboxGroup` component has the following props:
 <PropTable />
 
 
+# DatePicker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Pass `Label` and optional `Text` / `FieldError`; the field adds the trigger and the calendar popover, keeping the order you wrote. Write a `DatePickerControl` to set the label format, or a `Group`, `Button`, `DatePickerValue`, `Popover`, `Content`, and `Calendar` interior of your own to replace either part. `children` also accepts a function for picker state
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria - native form integration, validation, focus management, and screen-reader support
+* Label formatting via `formatOptions` / `placeholder` on `DatePickerControl` / `DateRangePickerControl`, or on `DatePickerValue` / `DateRangePickerValue` when composing
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
+
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
+```
+
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single date picker with a `Label`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DatePicker, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { DateRangePicker, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { DatePicker, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Format Options [#format-options]
+
+Controlling the label format via `formatOptions` on `DatePickerControl`.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { DatePicker, DatePickerControl, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <DatePickerControl formatOptions={{ dateStyle: 'short' }} />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Story of="MinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { DatePicker, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### With error [#with-error]
+
+An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+
+<Story of="WithErrorExample" />
+
+<Source language="tsx" code="&#x22;import { DatePicker, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <FieldError>Please choose a date</FieldError>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { DatePicker, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the whole interior yourself instead of letting the field fill it in, for full control over
+the trigger and popover.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Calendar,\n  Content,\n  DatePicker,\n  DatePickerValue,\n  Group,\n  Icon,\n  Label,\n  Popover,\n  Text\n} from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Group alignItems=\&#x22;center\&#x22;>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Icon icon=\&#x22;calendar\&#x22; />\n          <DatePickerValue />\n        </Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed range [#composed-range]
+
+Build a DateRangePicker interior from lower-level pieces the same way.
+
+<Story of="ComposedRangeExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Group,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Group alignItems=\&#x22;center\&#x22;>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Icon icon=\&#x22;calendar\&#x22; />\n          <DateRangePickerValue />\n        </Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
+
+The `DatePicker` component accepts the following props:
+
+<PropTable />
+
+The `DateRangePicker` component accepts the following props:
+
+<PropTable />
+
+
 # CircularProgress
 
 
@@ -1214,191 +1399,6 @@ The `Drawer` component accepts the following props:
 <PropTable />
 
 The `DrawerTrigger` component accepts the following props:
-
-<PropTable />
-
-
-# DatePicker
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* **Composable interior**: Pass `Label` and optional `Text` / `FieldError`; the field adds the trigger and the calendar popover, keeping the order you wrote. Write a `DatePickerControl` to set the label format, or a `Group`, `Button`, `DatePickerValue`, `Popover`, `Content`, and `Calendar` interior of your own to replace either part. `children` also accepts a function for picker state
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria - native form integration, validation, focus management, and screen-reader support
-* Label formatting via `formatOptions` / `placeholder` on `DatePickerControl` / `DateRangePickerControl`, or on `DatePickerValue` / `DateRangePickerValue` when composing
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate } from '@godaddy/antares/date';
-import { DatePicker, Label } from '@godaddy/antares';
-
-function EventDatePicker() {
-  return (
-    <DatePicker defaultValue={parseDate('2024-03-15')}>
-      <Label>Event date</Label>
-    </DatePicker>
-  );
-}
-```
-
-Import date helpers from `@godaddy/antares/date` (a re-export of
-[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
-Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single date picker with a `Label`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Story of="RangeExample" />
-
-<Source language="tsx" code="&#x22;import { DateRangePicker, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { DatePicker, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Format Options [#format-options]
-
-Controlling the label format via `formatOptions` on `DatePickerControl`.
-
-<Story of="FormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker, DatePickerControl, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <DatePickerControl formatOptions={{ dateStyle: 'short' }} />\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Story of="MinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### With error [#with-error]
-
-An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
-
-<Story of="WithErrorExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <FieldError>Please choose a date</FieldError>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed [#composed]
-
-Write the whole interior yourself instead of letting the field fill it in, for full control over
-the trigger and popover.
-
-<Story of="ComposedExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Calendar,\n  Content,\n  DatePicker,\n  DatePickerValue,\n  Group,\n  Icon,\n  Label,\n  Popover,\n  Text\n} from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Group alignItems=\&#x22;center\&#x22;>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Icon icon=\&#x22;calendar\&#x22; />\n          <DatePickerValue />\n        </Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
-
-### Composed range [#composed-range]
-
-Build a DateRangePicker interior from lower-level pieces the same way.
-
-<Story of="ComposedRangeExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Group,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Group alignItems=\&#x22;center\&#x22;>\n        <Button slot=\&#x22;trigger\&#x22;>\n          <Icon icon=\&#x22;calendar\&#x22; />\n          <DateRangePickerValue />\n        </Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-```tsx
-<DatePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DatePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <Calendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DatePicker>
-```
-
-```tsx
-<DateRangePicker>
-  <Label />
-  <Group>
-    <Button slot="trigger">
-      <DateRangePickerValue />
-    </Button>
-  </Group>
-  <Text slot="description" />
-  <Popover>
-    <Content>
-      <RangeCalendar />
-    </Content>
-  </Popover>
-  <FieldError />
-</DateRangePicker>
-```
-
-The `DatePicker` component accepts the following props:
-
-<PropTable />
-
-The `DateRangePicker` component accepts the following props:
 
 <PropTable />
 
@@ -2189,54 +2189,6 @@ The `InlineDrawerPanel` component accepts the following props:
 <PropTable />
 
 
-# Label
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Associates the visible name with the field control.
-* Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Label names a field. The required asterisk comes from Field CSS when the root is `isRequired`.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-### As [#as]
-
-Setting the `as` prop changes the HTML tag.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <TextField>\n      <Label as=\&#x22;span\&#x22;>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # Input
 
 
@@ -2268,11 +2220,49 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Input inside TextField. Field injects chrome.
+Input inside TextField.
 
 <Story of="DefaultExample" />
 
 <Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
+# Label
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Associates the visible name with the field control.
+* Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Label names a field. The required asterisk comes from Field CSS when the root is `isRequired`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -3097,6 +3087,69 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 <PropTable />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+<PropTable />
+
+
 # ProgressSteps
 
 
@@ -3221,349 +3274,6 @@ The `ProgressSteps` component has the following props:
 <PropTable />
 
 The `ProgressStep` component has the following props:
-
-<PropTable />
-
-
-# Radio
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A radio group with a default selection.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;basic\&#x22;>\n      <Label>Select your plan</Label>\n      <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n      <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n      <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-A controlled radio group using `value` and `onChange`.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('standard');\n\n  return (\n    <>\n      <RadioGroup value={selected} onChange={setSelected}>\n        <Label>Select your plan</Label>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
-
-### Horizontal Layout [#horizontal-layout]
-
-A radio group arranged horizontally.
-
-<Story of="HorizontalExample" />
-
-<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;standard\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Label>Select your plan</Label>\n      <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n      <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n      <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Disabled group and individually disabled radio options.
-
-<Story of="DisabledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RadioGroup defaultValue=\&#x22;basic\&#x22; isDisabled>\n        <Label>Disabled group</Label>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n\n      <RadioGroup defaultValue=\&#x22;standard\&#x22;>\n        <Label>Individual disabled options</Label>\n        <Radio value=\&#x22;basic\&#x22; isDisabled>\n          Basic (disabled)\n        </Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
-
-### Required Indicator [#required-indicator]
-
-A required radio group with a payment method selection.
-
-<Story of="RequiredExample" />
-
-<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <RadioGroup isRequired defaultValue=\&#x22;credit\&#x22;>\n      <Label>Payment method</Label>\n      <Radio value=\&#x22;credit\&#x22;>Credit Card</Radio>\n      <Radio value=\&#x22;paypal\&#x22;>PayPal</Radio>\n      <Radio value=\&#x22;bank\&#x22;>Bank Transfer</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Description Text [#description-text]
-
-A radio group with helper description text.
-
-<Story of="DescriptionExample" />
-
-<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup, Text } from '@godaddy/antares';\n\nexport function DescriptionExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;email\&#x22;>\n      <Label>Notification preferences</Label>\n      <Radio value=\&#x22;email\&#x22;>Email</Radio>\n      <Radio value=\&#x22;sms\&#x22;>SMS</Radio>\n      <Radio value=\&#x22;push\&#x22;>Push Notifications</Radio>\n      <Text slot=\&#x22;description\&#x22;>Choose how you'd like to receive updates</Text>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Error State [#error-state]
-
-An invalid required group displaying an error message.
-
-<Story of="ErrorExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function ErrorExample() {\n  return (\n    <RadioGroup isRequired isInvalid>\n      <Label>Select shipping method</Label>\n      <Radio value=\&#x22;standard\&#x22;>Standard Shipping</Radio>\n      <Radio value=\&#x22;express\&#x22;>Express Shipping</Radio>\n      <Radio value=\&#x22;overnight\&#x22;>Overnight Shipping</Radio>\n      <FieldError>Please select a shipping method</FieldError>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Aria Label [#aria-label]
-
-A radio group using `aria-label` instead of a visible label.
-
-<Story of="AriaLabelExample" />
-
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function AriaLabelExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Sort order\&#x22; defaultValue=\&#x22;newest\&#x22;>\n      <Radio value=\&#x22;newest\&#x22;>Newest first</Radio>\n      <Radio value=\&#x22;oldest\&#x22;>Oldest first</Radio>\n      <Radio value=\&#x22;popular\&#x22;>Most popular</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
-
-### Form Submission [#form-submission]
-
-A radio group integrated with native form submission.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { type FormEvent, useState } from 'react';\n\nexport function FormExample() {\n  const [submittedValue, setSubmittedValue] = useState<string | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const value = new FormData(event.currentTarget).get('plan');\n    setSubmittedValue(value != null ? String(value) : null);\n  }\n\n  return (\n    <>\n      <form onSubmit={handleSubmit}>\n        <RadioGroup name=\&#x22;plan\&#x22; defaultValue=\&#x22;standard\&#x22;>\n          <Label>Select your plan</Label>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </RadioGroup>\n        <button type=\&#x22;submit\&#x22; style={{ marginTop: '1rem' }}>\n          Submit\n        </button>\n      </form>\n      {submittedValue && <p>Form submitted with value: {submittedValue}</p>}\n    </>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`RadioGroup` is composed: pass `Label`, the `Radio` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself when you need to lay them out differently. Each `Radio` takes label text next to the indicator. `orientation` sets keyboard-navigation direction, ARIA, and the item layout.
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-radio-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-radio-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-radio-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-radio-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Component Customization [#component-customization]
-
-Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
-
-```jsx
-<RadioGroup className="custom-radio-group">
-  <Label>Select plan</Label>
-  <Radio value="basic" className="custom-radio">
-    Basic
-  </Radio>
-  <Radio value="premium" className="premium-radio">
-    Premium
-  </Radio>
-</RadioGroup>
-```
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to/from the radio group
-* **Arrow Down/Right**: Move to next radio button
-* **Arrow Up/Left**: Move to previous radio button
-* **Space**: Select the focused radio button
-
-### ARIA Support [#aria-support]
-
-* `role="radiogroup"` on the container
-* `role="radio"` on each option
-* `aria-checked` indicates selection state
-* `aria-disabled` for disabled options
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<RadioGroup value={value} defaultValue="basic">
-  <Label>Plan</Label>
-  <Radio value="basic">Basic</Radio>
-</RadioGroup>
-
-// ✅ Controlled mode
-<RadioGroup value={value} onChange={setValue}>
-  <Label>Plan</Label>
-  <Radio value="basic">Basic</Radio>
-</RadioGroup>
-
-// ✅ Uncontrolled mode
-<RadioGroup defaultValue="basic">
-  <Label>Plan</Label>
-  <Radio value="basic">Basic</Radio>
-</RadioGroup>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-radio {
-  color: red;
-}
-
-/* ✅ Use data attributes and className for higher specificity */
-.my-radio-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-radio-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-## Best Practices [#best-practices]
-
-### When to Use Radio Buttons [#when-to-use-radio-buttons]
-
-* ✅ When there are 2-7 mutually exclusive options
-* ✅ When all options should be visible at once
-* ✅ When the decision is important and deserves space
-* ❌ For more than 7 options (use Select instead)
-* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
-* ❌ When space is limited (use Select dropdown)
-
-### Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels
-* Keep labels short (1-3 words when possible)
-* Place the most common option first
-* Ensure labels are descriptive without being verbose
-
-### Validation [#validation]
-
-Always provide clear error messages:
-
-```jsx
-<RadioGroup isRequired isInvalid={!selectedShipping}>
-  <Label>Select shipping method</Label>
-  <Radio value="standard">Standard</Radio>
-  <Radio value="express">Express</Radio>
-  <FieldError>Please select a shipping method</FieldError>
-</RadioGroup>
-```
-
-## Props [#props]
-
-```tsx
-<RadioGroup>
-  <Label />
-  <Radio />
-  <Text slot="description" />
-  <FieldError />
-</RadioGroup>
-```
-
-The `Radio` component has the following props:
-
-<PropTable />
-
-The `RadioGroup` component has the following props:
-
-<PropTable />
-
-
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
 
 <PropTable />
 
@@ -3756,6 +3466,286 @@ Negative values are supported. Set a negative `minValue` and ensure every scalar
 Provide finite bounds where `minValue` is less than `maxValue`, a finite `step` greater than zero, and finite values inside the configured range.
 
 
+# Radio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A radio group with a default selection.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;basic\&#x22;>\n      <Label>Select your plan</Label>\n      <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n      <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n      <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+A controlled radio group using `value` and `onChange`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('standard');\n\n  return (\n    <>\n      <RadioGroup value={selected} onChange={setSelected}>\n        <Label>Select your plan</Label>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
+
+### Horizontal Layout [#horizontal-layout]
+
+A radio group arranged horizontally.
+
+<Story of="HorizontalExample" />
+
+<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;standard\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Label>Select your plan</Label>\n      <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n      <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n      <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Disabled group and individually disabled radio options.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RadioGroup defaultValue=\&#x22;basic\&#x22; isDisabled>\n        <Label>Disabled group</Label>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n\n      <RadioGroup defaultValue=\&#x22;standard\&#x22;>\n        <Label>Individual disabled options</Label>\n        <Radio value=\&#x22;basic\&#x22; isDisabled>\n          Basic (disabled)\n        </Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+
+### Required Indicator [#required-indicator]
+
+A required radio group with a payment method selection.
+
+<Story of="RequiredExample" />
+
+<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <RadioGroup isRequired defaultValue=\&#x22;credit\&#x22;>\n      <Label>Payment method</Label>\n      <Radio value=\&#x22;credit\&#x22;>Credit Card</Radio>\n      <Radio value=\&#x22;paypal\&#x22;>PayPal</Radio>\n      <Radio value=\&#x22;bank\&#x22;>Bank Transfer</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Description Text [#description-text]
+
+A radio group with helper description text.
+
+<Story of="DescriptionExample" />
+
+<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup, Text } from '@godaddy/antares';\n\nexport function DescriptionExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;email\&#x22;>\n      <Label>Notification preferences</Label>\n      <Radio value=\&#x22;email\&#x22;>Email</Radio>\n      <Radio value=\&#x22;sms\&#x22;>SMS</Radio>\n      <Radio value=\&#x22;push\&#x22;>Push Notifications</Radio>\n      <Text slot=\&#x22;description\&#x22;>Choose how you'd like to receive updates</Text>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Error State [#error-state]
+
+An invalid required group displaying an error message.
+
+<Story of="ErrorExample" />
+
+<Source language="tsx" code="&#x22;import { FieldError, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function ErrorExample() {\n  return (\n    <RadioGroup isRequired isInvalid>\n      <Label>Select shipping method</Label>\n      <Radio value=\&#x22;standard\&#x22;>Standard Shipping</Radio>\n      <Radio value=\&#x22;express\&#x22;>Express Shipping</Radio>\n      <Radio value=\&#x22;overnight\&#x22;>Overnight Shipping</Radio>\n      <FieldError>Please select a shipping method</FieldError>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Aria Label [#aria-label]
+
+A radio group using `aria-label` instead of a visible label.
+
+<Story of="AriaLabelExample" />
+
+<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function AriaLabelExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Sort order\&#x22; defaultValue=\&#x22;newest\&#x22;>\n      <Radio value=\&#x22;newest\&#x22;>Newest first</Radio>\n      <Radio value=\&#x22;oldest\&#x22;>Oldest first</Radio>\n      <Radio value=\&#x22;popular\&#x22;>Most popular</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+
+### Form Submission [#form-submission]
+
+A radio group integrated with native form submission.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { type FormEvent, useState } from 'react';\n\nexport function FormExample() {\n  const [submittedValue, setSubmittedValue] = useState<string | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const value = new FormData(event.currentTarget).get('plan');\n    setSubmittedValue(value != null ? String(value) : null);\n  }\n\n  return (\n    <>\n      <form onSubmit={handleSubmit}>\n        <RadioGroup name=\&#x22;plan\&#x22; defaultValue=\&#x22;standard\&#x22;>\n          <Label>Select your plan</Label>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </RadioGroup>\n        <button type=\&#x22;submit\&#x22; style={{ marginTop: '1rem' }}>\n          Submit\n        </button>\n      </form>\n      {submittedValue && <p>Form submitted with value: {submittedValue}</p>}\n    </>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`RadioGroup` is composed: pass `Label`, the `Radio` items, `Text slot="description"`, and `FieldError`. The items are wrapped in a `Group` for you - wrap them yourself in a `Group` with your own `direction`/`gap` when you need to lay them out differently. Each `Radio` takes label text next to the indicator. `orientation` sets keyboard-navigation direction, ARIA, and the item layout.
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**RadioGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Radio Button:** `data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-radio-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-radio-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-radio-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization [#component-customization]
+
+Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
+
+```jsx
+<RadioGroup className="custom-radio-group">
+  <Label>Select plan</Label>
+  <Radio value="basic" className="custom-radio">
+    Basic
+  </Radio>
+  <Radio value="premium" className="premium-radio">
+    Premium
+  </Radio>
+</RadioGroup>
+```
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to/from the radio group
+* **Arrow Down/Right**: Move to next radio button
+* **Arrow Up/Left**: Move to previous radio button
+* **Space**: Select the focused radio button
+
+### ARIA Support [#aria-support]
+
+* `role="radiogroup"` on the container
+* `role="radio"` on each option
+* `aria-checked` indicates selection state
+* `aria-disabled` for disabled options
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+
+## Troubleshooting [#troubleshooting]
+
+### Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<RadioGroup value={value} defaultValue="basic">
+  <Label>Plan</Label>
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Controlled mode
+<RadioGroup value={value} onChange={setValue}>
+  <Label>Plan</Label>
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+
+// ✅ Uncontrolled mode
+<RadioGroup defaultValue="basic">
+  <Label>Plan</Label>
+  <Radio value="basic">Basic</Radio>
+</RadioGroup>
+```
+
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-radio {
+  color: red;
+}
+
+/* ✅ Use data attributes and className for higher specificity */
+.my-radio-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-radio-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices [#best-practices]
+
+### When to Use Radio Buttons [#when-to-use-radio-buttons]
+
+* ✅ When there are 2-7 mutually exclusive options
+* ✅ When all options should be visible at once
+* ✅ When the decision is important and deserves space
+* ❌ For more than 7 options (use Select instead)
+* ❌ For binary yes/no choices (use Checkbox or Toggle instead)
+* ❌ When space is limited (use Select dropdown)
+
+### Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels
+* Keep labels short (1-3 words when possible)
+* Place the most common option first
+* Ensure labels are descriptive without being verbose
+
+### Validation [#validation]
+
+Always provide clear error messages:
+
+```jsx
+<RadioGroup isRequired isInvalid={!selectedShipping}>
+  <Label>Select shipping method</Label>
+  <Radio value="standard">Standard</Radio>
+  <Radio value="express">Express</Radio>
+  <FieldError>Please select a shipping method</FieldError>
+</RadioGroup>
+```
+
+## Props [#props]
+
+```tsx
+<RadioGroup>
+  <Label />
+  <Radio />
+  <Text slot="description" />
+  <FieldError />
+</RadioGroup>
+```
+
+The `Radio` component has the following props:
+
+<PropTable />
+
+The `RadioGroup` component has the following props:
+
+<PropTable />
+
+
 # SegmentedController
 
 
@@ -3898,6 +3888,80 @@ Components automatically add data attributes for styling different states:
 <PropTable />
 
 
+# Structure primitives
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
+
+* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
+* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
+* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
+* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
+
+## Hybrid styling [#hybrid-styling]
+
+Each container works in two modes:
+
+* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
+
+## Examples [#examples]
+
+### Default [#default]
+
+The shared structural containers composed together into a card-like layout. Each is a
+plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
+they adopt that parent's spacing automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Group [#group]
+
+Group is the bordered field box. Size and invalid/disabled chrome apply here.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
+
+### Content [#content]
+
+<PropTable />
+
+### Header [#header]
+
+<PropTable />
+
+### Footer [#footer]
+
+<PropTable />
+
+### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+### Group [#group-1]
+
+<PropTable />
+
+
 # Select
 
 
@@ -4029,80 +4093,6 @@ the trigger and popover.
 ```
 
 The `Select` component accepts the following props:
-
-<PropTable />
-
-
-# Structure primitives
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-**Shared structural containers.** These generic, layout-only components are the building blocks for composing a component's interior (a `Modal`, a card, a panel). They are semantic containers built on `Flex`, so they accept the same layout props (`direction`, `gap`, `alignItems`, `justifyContent`, `padding`, ...).
-
-* **`Content`** — the primary body region (a `<section>`, a column that grows to fill).
-* **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
-* **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
-* **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
-* **`Group`** — semantic grouping container for field item controls. Layout and chrome come from the parent field's `GroupContext`.
-
-## Hybrid styling [#hybrid-styling]
-
-Each container works in two modes:
-
-* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
-
-## Examples [#examples]
-
-### Default [#default]
-
-The shared structural containers composed together into a card-like layout. Each is a
-plain semantic region here; inside a parent that provides their contexts (e.g. `Modal`)
-they adopt that parent's spacing automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
-
-### Group [#group]
-
-Group is the bordered field box. Size and invalid/disabled chrome apply here.
-
-<Story of="GroupExample" />
-
-<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-`Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
-
-### Content [#content]
-
-<PropTable />
-
-### Header [#header]
-
-<PropTable />
-
-### Footer [#footer]
-
-<PropTable />
-
-### ButtonGroup [#buttongroup]
-
-<PropTable />
-
-### Group [#group-1]
 
 <PropTable />
 
@@ -4683,7 +4673,7 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-TextArea inside TextField. Field injects chrome.
+TextArea inside TextField.
 
 <Story of="DefaultExample" />
 
@@ -4828,96 +4818,6 @@ Compose a telephone number input paired with a country-code select.
 ```
 
 The `TextField` component accepts the following props:
-
-<PropTable />
-
-
-# Tooltip
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
-Once a tooltip has been shown, subsequent tooltips appear without delay.
-
-`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
-
-## Features [#features]
-
-* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
-* Flips and shifts to stay in the viewport
-* Configurable open and close delays
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
-
-### Custom Anchor [#custom-anchor]
-
-To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
-
-<Story of="CustomAnchorExample" />
-
-<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-`className` and `style` apply to the tooltip panel.
-
-## Accessibility [#accessibility]
-
-### Keyboard [#keyboard]
-
-| Key      | Action                                                     |
-| -------- | ---------------------------------------------------------- |
-| `Tab`    | Moves focus to the focusable element and shows the tooltip |
-| `Escape` | Closes the tooltip                                         |
-
-### ARIA [#aria]
-
-* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
-
-## Best Practices [#best-practices]
-
-* Keep tooltip content short and informative.
-* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
-* Do not place interactive content inside tooltips. Use a `Popover` instead.
-
-## Props [#props]
-
-```tsx
-<TooltipTrigger>
-  <Button />
-  <Tooltip placement="bottom" />
-</TooltipTrigger>
-```
-
-The `Tooltip` component accepts the following props:
-
-<PropTable />
-
-The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -5187,13 +5087,7 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 <PropTable />
 
 
-# DonutChart
-
-
-
-
-
-
+# Tooltip
 
 
 
@@ -5207,55 +5101,78 @@ Use icon-only items only when the icon's meaning is universally recognized. Alwa
 
 <Meta of="Stories" name="Overview" />
 
+Tooltips appear after a short delay when hovering, and immediately when the element receives focus.
+Once a tooltip has been shown, subsequent tooltips appear without delay.
+
+`TooltipTrigger` wraps a focusable element and a `<Tooltip>`, handling hover/focus state and positioning automatically.
+
+## Features [#features]
+
+* `overlay` elevation panel positioned relative to its trigger, with an optional arrow
+* Flips and shifts to stay in the viewport
+* Configurable open and close delays
+
 ## Installation [#installation]
 
 ```bash
-npm install @godaddy/antares
+npm install --save @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+Use it with `TooltipTrigger`, which wraps both the tooltip content and a focusable element such as a `Button`. The tooltip appears on hover and focus.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Button, type TooltipTriggerProps, type TooltipProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: {\n  tooltipTriggerProps?: Partial<TooltipTriggerProps>;\n  tooltipProps?: Partial<TooltipProps>;\n}) {\n  return (\n    <TooltipTrigger {...props.tooltipTriggerProps}>\n      <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n      <Tooltip {...props.tooltipProps}>This is the tooltip content!</Tooltip>\n    </TooltipTrigger>\n  );\n}&#x22;" />
 
-### Single slice [#single-slice]
+### Custom Anchor [#custom-anchor]
 
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+To position a tooltip relative to a different focusable element, use the `triggerRef` prop. `TooltipTrigger` still handles showing and hiding on hover and focus.
 
-<Story of="SingleSliceExample" />
+<Story of="CustomAnchorExample" />
 
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Tooltip, TooltipTrigger, Box, Flex, Button } from '@godaddy/antares';\nimport { useRef } from 'react';\n\nexport function CustomAnchorExample() {\n  const triggerRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22;>\n      <TooltipTrigger>\n        <Button variant=\&#x22;primary\&#x22;>Hover me</Button>\n        <Tooltip triggerRef={triggerRef}>Tooltip positioned relative to the box</Tooltip>\n      </TooltipTrigger>\n\n      <Box elevation=\&#x22;card\&#x22; padding=\&#x22;sm\&#x22; ref={triggerRef}>\n        Tooltip appears here\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
 
-### Legend placement [#legend-placement]
+## Customization [#customization]
 
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+`className` and `style` apply to the tooltip panel.
 
-<Story of="LegendLayoutExample" />
+## Accessibility [#accessibility]
 
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+### Keyboard [#keyboard]
 
-### Small slices [#small-slices]
+| Key      | Action                                                     |
+| -------- | ---------------------------------------------------------- |
+| `Tab`    | Moves focus to the focusable element and shows the tooltip |
+| `Escape` | Closes the tooltip                                         |
 
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+### ARIA [#aria]
 
-<Story of="SmallSlicesExample" />
+* The tooltip uses `role="tooltip"` and is associated with its focusable element via `aria-describedby`
 
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+## Best Practices [#best-practices]
 
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+* Keep tooltip content short and informative.
+* Tooltips are not shown on touch screen interactions. Ensure your UI is usable without tooltips.
+* Do not place interactive content inside tooltips. Use a `Popover` instead.
 
 ## Props [#props]
+
+```tsx
+<TooltipTrigger>
+  <Button />
+  <Tooltip placement="bottom" />
+</TooltipTrigger>
+```
+
+The `Tooltip` component accepts the following props:
+
+<PropTable />
+
+The `TooltipTrigger` component accepts the following props:
 
 <PropTable />
 
@@ -5457,6 +5374,79 @@ For better performance:
 1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
+
+## Props [#props]
+
+<PropTable />
+
+
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
