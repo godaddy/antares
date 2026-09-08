@@ -16,7 +16,7 @@ A bare `Input` / `TextArea` (no `Group`) picks up field box chrome directly from
 
 `CheckboxGroup` and `RadioGroup` take `orientation` to lay out item controls vertically or horizontally. Checkboxes and radios go straight in the group and are wrapped in a `Group` for you, which carries the spacing and axis; wrap them yourself in a `Group` with your own `direction`/`gap` to lay them out differently. `RadioGroup` also forwards `orientation` to React Aria for keyboard navigation and ARIA.
 
-`Group` is now layout-agnostic: boxed field chrome (`TextField`, `NumberField`, `Select`, date pickers) comes from the internal `Field` shell via `GroupContext`, not from hardcoded `Group` defaults. Disabled and invalid chrome is styled from the field root's own `data-disabled`/`data-invalid`, so a `Group` inside a field no longer carries those attributes. `FieldSize` is no longer exported from the package root or `@godaddy/antares/Field` (use the `size` prop on boxed field roots).
+`Group` is now layout-agnostic: boxed field chrome (`TextField`, `NumberField`, `Select`, date pickers) comes from the internal `Field` shell via `GroupContext`, not from hardcoded `Group` defaults. Disabled and invalid chrome is styled from the field root's own `data-disabled`/`data-invalid`, rather than requiring callers to pass those states to `Group`. `FieldSize` is no longer exported from the package root or `@godaddy/antares/Field` (use the `size` prop on boxed field roots).
 
 Leading/trailing adornments (fixed text or an icon beside an input) are composed inside `Group`, positioned by source order - there is no `leadingText`/`trailingText` prop or dedicated adornment component. An interactive affix uses `Button slot="control"`.
 

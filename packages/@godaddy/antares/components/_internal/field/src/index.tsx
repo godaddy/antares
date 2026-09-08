@@ -1,33 +1,23 @@
 import { type ElementType, type ReactNode, forwardRef, useContext } from 'react';
 import { mergeProps } from 'react-aria';
-import {
-  ButtonContext,
-  DEFAULT_SLOT,
-  GroupContext,
-  InputContext,
-  LabelContext,
-  Provider as RACProvider,
-  TextAreaContext,
-  type ButtonProps,
-  type ContextValue
-} from 'react-aria-components';
+import { DEFAULT_SLOT, Provider as RACProvider } from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName } from '#utils/render-props.ts';
+import { ButtonContext, type ButtonProps } from '#components/button';
+import { InputContext } from '#components/input';
+import { LabelContext } from '#components/label';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { GroupContext } from '#components/structure';
+import { TextAreaContext } from '#components/text-area';
 import { normalizeFieldChildren, type FieldSlots } from './normalize-field-children.tsx';
 import styles from './index.module.css';
 
 export { normalizeFieldChildren, type FieldSlots };
 
-type ButtonContextValue = NonNullable<ContextValue<ButtonProps, HTMLButtonElement>>;
+type ButtonSlots = Record<string | symbol, ButtonProps>;
 
-type ButtonSlots = Record<string | symbol, object>;
-
-/** Size for controls inside a field group. @default 'md' */
+/** Size for controls inside a field group. */
 export type FieldSize = 'sm' | 'md';
-
-/** Button props per slot a field root owns, keyed by slot name. */
-export type FieldButtonSlots = Record<string, object>;
 
 /** Field props re-exported by public field roots. A field owns its own interior axis. */
 export interface FieldOwnProps
@@ -51,7 +41,7 @@ interface FieldShellOwnProps extends FieldOwnProps {
   slots?: FieldSlots;
 
   /** Button props per slot the root owns, such as a stepper. Merged with field chrome. */
-  buttonSlots?: FieldButtonSlots;
+  buttonSlots?: Record<string, object>;
 }
 
 export type FieldProps<C extends ElementType = 'div'> = PolymorphicProps<C, FieldShellOwnProps>;
@@ -75,27 +65,26 @@ function FieldContexts({
   interior?: 'box';
   isDisabled?: boolean;
   size?: FieldSize;
-  buttonSlots?: FieldButtonSlots;
+  buttonSlots?: FieldShellOwnProps['buttonSlots'];
 }) {
   const label = useContext(LabelContext);
   const group = useContext(GroupContext);
   const input = useContext(InputContext);
   const textArea = useContext(TextAreaContext);
-  const button = useContext(ButtonContext);
-  const { slots: inherited, ...buttonProps } = (button ?? {}) as ButtonContextValue & { slots?: ButtonSlots };
-  // Un-slotted props from a root are meant for whichever button the interior composes.
-  const chrome = { ...buttonProps, size, isDisabled };
-  const control = { ...chrome, variant: 'control' as const, className: styles.control };
-  const trigger = { ...chrome, variant: 'trigger' as const, className: styles.trigger };
+  const button = useContext(ButtonContext) as (ButtonProps & { slots?: ButtonSlots }) | null;
+  const { slots: inheritedSlots, ...inheritedProps } = button ?? {};
+  const buttonProps = mergeProps(inheritedProps, { size, isDisabled });
+  const control = { ...buttonProps, variant: 'control' as const, className: styles.control };
+  const trigger = { ...buttonProps, variant: 'trigger' as const, className: styles.trigger };
   const slots: ButtonSlots = {
-    ...inherited,
-    [DEFAULT_SLOT]: mergeProps(inherited?.[DEFAULT_SLOT] ?? {}, chrome),
-    control: mergeProps(inherited?.control ?? {}, control),
-    trigger: mergeProps(inherited?.trigger ?? {}, trigger)
+    ...inheritedSlots,
+    [DEFAULT_SLOT]: mergeProps(inheritedSlots?.[DEFAULT_SLOT] ?? {}, buttonProps),
+    control: mergeProps(inheritedSlots?.control ?? {}, control),
+    trigger: mergeProps(inheritedSlots?.trigger ?? {}, trigger)
   };
 
   for (const [slot, props] of Object.entries(buttonSlots ?? {})) {
-    slots[slot] = mergeProps(inherited?.[slot] ?? {}, chrome, props);
+    slots[slot] = mergeProps(inheritedSlots?.[slot] ?? {}, buttonProps, props);
   }
 
   return (
@@ -105,7 +94,7 @@ function FieldContexts({
         [GroupContext, mergeProps(group ?? {}, interior === 'box' ? { className: styles.group } : {})],
         [InputContext, mergeProps(input ?? {}, { className: styles.input })],
         [TextAreaContext, mergeProps(textArea ?? {}, { className: styles.textarea })],
-        [ButtonContext, { slots } as ButtonContextValue]
+        [ButtonContext, { slots }]
       ]}
     >
       {children}
