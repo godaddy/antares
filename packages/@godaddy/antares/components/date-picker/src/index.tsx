@@ -1,6 +1,8 @@
-import { useContext, useMemo, useRef, type ReactNode, type RefObject } from 'react';
+import { type ReactNode, type Ref, useContext, useMemo, useRef } from 'react';
 import { DateFormatter, getLocalTimeZone, type CalendarDate } from '@internationalized/date';
+import { mergeProps } from 'react-aria';
 import {
+  DEFAULT_SLOT,
   DatePicker as RACDatePicker,
   type DatePickerProps as RACDatePickerProps,
   type DatePickerRenderProps as RACDatePickerRenderProps,
@@ -11,58 +13,93 @@ import {
   DateRangePickerStateContext,
   PopoverContext,
   Provider as RACProvider,
-  useLocale
+  composeRenderProps,
+  useLocale,
+  useSlottedContext
 } from 'react-aria-components';
-import { Field, mapFieldChildren, type FieldOwnProps, type FieldSize } from '#components/_internal/field';
+import { ButtonContext, type ButtonProps } from '#components/button';
 import { Calendar, type CalendarProps, RangeCalendar, type RangeCalendarProps } from '#components/calendar';
 import { Icon } from '#components/icon';
+import { LabelContext } from '#components/label';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
 import { Popover, type PopoverProps } from '#components/popover';
-import { Content } from '#components/structure';
+import { Content, GroupContext } from '#components/structure';
+import { composeClassName } from '#utils/render-props.ts';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 import styles from './index.module.css';
 
 const DEFAULT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 const DEFAULT_DATE_PLACEHOLDER = 'Select a date';
 const DEFAULT_RANGE_PLACEHOLDER = 'Select dates';
 
-/** Trigger content for either picker: a calendar icon beside the formatted value. */
-function triggerSlots(value: ReactNode, ref: RefObject<HTMLButtonElement | null>) {
-  return {
-    trigger: {
-      ref,
-      children: (
-        <>
-          <Icon icon="calendar" />
-          {value}
-        </>
-      )
-    }
-  };
+interface PickerBodyProps {
+  /** Visual size of the trigger. */
+  size?: 'sm' | 'md';
+
+  /** Whether the field is disabled. */
+  isDisabled?: boolean;
+
+  /** The picker's own formatted value, shown in a trigger left empty. */
+  value: ReactNode;
+
+  children: ReactNode;
 }
 
 /**
+ * Styles the parts a picker owns, fills its trigger face, and anchors the overlay to that trigger.
+ * It runs inside the picker root, which publishes its trigger props unslotted, so that one value
+ * stands in for the trigger and for a plain `Button`.
+ *
  * React Aria anchors a picker's overlay to its `Group`, which a composed interior need not have, so
- * anchor it to the trigger instead - the same element React Aria's own Select anchors to.
+ * this anchors it to the trigger instead - the same element React Aria's own Select anchors to.
  */
-function PickerOverlayAnchor({
-  triggerRef,
-  children
-}: {
-  triggerRef: RefObject<HTMLButtonElement | null>;
-  children: ReactNode;
-}) {
-  const popover = useContext(PopoverContext);
+function PickerBody({ size, isDisabled, value, children }: PickerBodyProps) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const label = useSlottedContext(LabelContext) ?? {};
+  const group = useSlottedContext(GroupContext) ?? {};
+  const popover = useContext(PopoverContext) ?? {};
+  const triggerProps = (useContext(ButtonContext) ?? {}) as ButtonProps;
+  const plain: ButtonProps = { size, isDisabled };
+  const control: ButtonProps = { variant: 'control', size, className: fieldStyles.control };
 
-  return <RACProvider values={[[PopoverContext, { ...popover, triggerRef }]]}>{children}</RACProvider>;
-}
+  // `mergeProps` merges refs, so React Aria keeps whatever ref it may publish for the trigger.
+  const trigger: ButtonProps & { ref?: Ref<HTMLButtonElement> } = {
+    variant: 'trigger',
+    size,
+    className: fieldStyles.trigger,
+    ref: triggerRef
+  };
 
-/** Wrap a picker's interior in its overlay anchor, keeping a render-fn child a function. */
-function anchorInterior<R>(
-  children: ReactNode | ((renderProps: R) => ReactNode),
-  triggerRef: RefObject<HTMLButtonElement | null>
-) {
-  return mapFieldChildren(children, function anchor(node) {
-    return <PickerOverlayAnchor triggerRef={triggerRef}>{node}</PickerOverlayAnchor>;
-  });
+  return (
+    <RACProvider
+      values={[
+        [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
+
+        // The box group owns the chrome, so it carries the disabled state instead of each child dimming itself.
+        [GroupContext, { ...group, isDisabled, className: composeClassName(group.className, fieldStyles.group) }],
+        [
+          ButtonContext,
+          {
+            slots: {
+              [DEFAULT_SLOT]: mergeProps(triggerProps, plain),
+              control,
+              trigger: mergeProps(triggerProps, trigger, {
+                children: (
+                  <>
+                    <Icon icon="calendar" />
+                    {value}
+                  </>
+                )
+              })
+            }
+          }
+        ],
+        [PopoverContext, { ...popover, triggerRef }]
+      ]}
+    >
+      {children}
+    </RACProvider>
+  );
 }
 
 /** Locale-aware formatter for the trigger label. */
@@ -88,10 +125,10 @@ interface PickerValueOwnProps {
 
 export interface DatePickerProps
   extends Omit<RACDatePickerProps<CalendarDate>, 'children' | 'size'>,
-    FieldOwnProps,
+    Omit<FlexOwnProps, 'as' | 'className'>,
     PickerValueOwnProps {
   /** Visual size of the trigger. @default 'md' */
-  size?: FieldSize;
+  size?: 'sm' | 'md';
 
   /** Placeholder when no date is selected. @default 'Select a date' */
   placeholder?: string;
@@ -115,29 +152,37 @@ export interface DatePickerProps
  * ```
  */
 export function DatePicker(props: DatePickerProps) {
-  const { children, size, formatOptions, placeholder, ...racProps } = props;
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const { children, size, formatOptions, placeholder, gap = 'sm', className, isDisabled, ...racProps } = props;
   const value = <DatePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <Field
-      as={RACDatePicker as typeof RACDatePicker<CalendarDate>}
-      interior="box"
-      size={size}
-      slotDefaults={{ buttons: triggerSlots(value, triggerRef) }}
+    <Flex
+      direction="column"
+      gap={gap}
       {...racProps}
+      isDisabled={isDisabled}
+      as={RACDatePicker as typeof RACDatePicker<CalendarDate>}
+      data-interior="box"
+      data-size={size}
+      className={composeClassName(className, fieldStyles.field)}
     >
-      {anchorInterior(children, triggerRef)}
-    </Field>
+      {composeRenderProps(children, function body(node) {
+        return (
+          <PickerBody size={size} isDisabled={isDisabled} value={value}>
+            {node}
+          </PickerBody>
+        );
+      })}
+    </Flex>
   );
 }
 
 export interface DateRangePickerProps
   extends Omit<RACDateRangePickerProps<CalendarDate>, 'children' | 'size'>,
-    FieldOwnProps,
+    Omit<FlexOwnProps, 'as' | 'className'>,
     PickerValueOwnProps {
   /** Visual size of the trigger. @default 'md' */
-  size?: FieldSize;
+  size?: 'sm' | 'md';
 
   /** Placeholder when no range is selected. @default 'Select dates' */
   placeholder?: string;
@@ -160,20 +205,28 @@ export interface DateRangePickerProps
  * ```
  */
 export function DateRangePicker(props: DateRangePickerProps) {
-  const { children, size, formatOptions, placeholder, ...racProps } = props;
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const { children, size, formatOptions, placeholder, gap = 'sm', className, isDisabled, ...racProps } = props;
   const value = <DateRangePickerValue formatOptions={formatOptions} placeholder={placeholder} />;
 
   return (
-    <Field
-      as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>}
-      interior="box"
-      size={size}
-      slotDefaults={{ buttons: triggerSlots(value, triggerRef) }}
+    <Flex
+      direction="column"
+      gap={gap}
       {...racProps}
+      isDisabled={isDisabled}
+      as={RACDateRangePicker as typeof RACDateRangePicker<CalendarDate>}
+      data-interior="box"
+      data-size={size}
+      className={composeClassName(className, fieldStyles.field)}
     >
-      {anchorInterior(children, triggerRef)}
-    </Field>
+      {composeRenderProps(children, function body(node) {
+        return (
+          <PickerBody size={size} isDisabled={isDisabled} value={value}>
+            {node}
+          </PickerBody>
+        );
+      })}
+    </Flex>
   );
 }
 
