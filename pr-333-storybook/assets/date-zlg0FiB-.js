@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-rvmC_k-r.js";import{Dn as t}from"./useTooltipTrigger-DZcMhgRL.js";var n=e((()=>{t()}));export{n as t};

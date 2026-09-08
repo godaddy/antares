@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-rvmC_k-r.js";import{w as t}from"./chunk-KEIR6QF5-BjVpGirD.js";import{C as n,w as r}from"./mermaid-parser.core-PZCxNjEr.js";e((()=>{r(),t()}))();export{n as createRailroadServices};
