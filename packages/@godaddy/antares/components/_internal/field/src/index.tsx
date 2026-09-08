@@ -40,7 +40,7 @@ interface FieldShellOwnProps extends FieldOwnProps {
   /** Presets filled in when the consumer leaves a slot empty. */
   slots?: FieldSlots;
 
-  /** Button props per slot the root owns, such as a stepper. Merged with field chrome. */
+  /** Button props per slot the root owns, such as a stepper. Merged over the field's control chrome. */
   buttonSlots?: Record<string, object>;
 }
 
@@ -84,14 +84,16 @@ function FieldContexts({
   };
 
   for (const [slot, props] of Object.entries(buttonSlots ?? {})) {
-    slots[slot] = mergeProps(inheritedSlots?.[slot] ?? {}, buttonProps, props);
+    slots[slot] = mergeProps(inheritedSlots?.[slot] ?? {}, control, props);
   }
 
   return (
     <RACProvider
       values={[
         [LabelContext, mergeProps(label ?? {}, { className: styles.label })],
-        [GroupContext, mergeProps(group ?? {}, interior === 'box' ? { className: styles.group } : {})],
+
+        // The box group owns the chrome, so it carries the disabled state instead of each child dimming itself.
+        [GroupContext, mergeProps(group ?? {}, interior === 'box' ? { isDisabled, className: styles.group } : {})],
         [InputContext, mergeProps(input ?? {}, { className: styles.input })],
         [TextAreaContext, mergeProps(textArea ?? {}, { className: styles.textarea })],
         [ButtonContext, { slots }]

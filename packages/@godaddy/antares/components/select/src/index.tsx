@@ -16,7 +16,7 @@ import {
   type FieldSize,
   type FieldSlots
 } from '#components/_internal/field';
-import { Button, ButtonContext } from '#components/button';
+import { Button, ButtonContext, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
 import { ListBox, ListBoxItem, type ListBoxItemProps } from '#components/listbox';
 import { Popover } from '#components/popover';
@@ -26,9 +26,15 @@ import styles from './index.module.css';
 
 type SelectionMode = 'single' | 'multiple';
 
-function selectSlots(variant: 'default' | 'control', size?: FieldSize): FieldSlots {
+/** Chrome a parent field publishes on its `control` button slot. */
+interface FieldControlChrome {
+  size?: FieldSize;
+  className?: ButtonProps['className'];
+}
+
+function selectSlots(variant: 'default' | 'control', chrome?: FieldControlChrome): FieldSlots {
   return {
-    control: <SelectControl variant={variant} size={size} />,
+    control: <SelectControl variant={variant} size={chrome?.size} className={chrome?.className} />,
     items: function wrapItems(items) {
       return <SelectOptions>{items}</SelectOptions>;
     }
@@ -65,13 +71,15 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   const selectClass = composeClassName(className, styles.select);
   const group = useSlottedContext(GroupContext);
   // RAC's Select replaces ButtonContext for its interior, so read the parent chrome here.
-  const inherited = useContext(ButtonContext) as { slots?: Record<string, { size?: FieldSize }> } | null;
+  const inherited = useContext(ButtonContext) as { slots?: Record<string, FieldControlChrome> } | null;
 
   if (variant === 'control') {
+    const chrome = { ...inherited?.slots?.control, size: size ?? inherited?.slots?.control?.size };
+
     return (
       <RACSelect {...racProps} isDisabled={racProps.isDisabled ?? group?.isDisabled} className={selectClass}>
         {mapFieldChildren(children, function fillInterior(node) {
-          return normalizeFieldChildren(node, selectSlots('control', size ?? inherited?.slots?.control?.size));
+          return normalizeFieldChildren(node, selectSlots('control', chrome));
         })}
       </RACSelect>
     );
@@ -97,13 +105,21 @@ interface SelectControlProps {
 
   /** Trigger size when composed as a control; the field publishes it otherwise. */
   size?: FieldSize;
+
+  /** Parent field's control chrome; RAC's Select would otherwise drop it. */
+  className?: ButtonProps['className'];
 }
 
 /** Preset trigger (`Group` + button) unless `variant="control"`. */
-function SelectControl({ variant = 'default', size }: SelectControlProps) {
+function SelectControl({ variant = 'default', size, className }: SelectControlProps) {
   const isControl = variant === 'control';
   const button = (
-    <Button slot={isControl ? 'control' : 'trigger'} variant={isControl ? 'control' : undefined} size={size}>
+    <Button
+      slot={isControl ? 'control' : 'trigger'}
+      variant={isControl ? 'control' : undefined}
+      size={size}
+      className={className}
+    >
       <SelectValue />
       <Icon icon="chevron-down" />
     </Button>
