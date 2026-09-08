@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
+import { Button } from '#components/button';
+import { Input } from '#components/input';
+import { Select, SelectItem, SelectOptions } from '#components/select';
+import { Group } from '#components/structure';
+import { TextField } from '#components/text-field';
 import { DefaultExample } from '../examples/default';
 import { ControlledExample } from '../examples/controlled';
 import { ComposedExample } from '../examples/composed';
@@ -50,6 +55,42 @@ describe('@godaddy/antares', function antares() {
       it('renders sizes example', function sizes() {
         const result = renderToString(<SizesExample />);
         expect(result).toMatchSnapshot();
+      });
+    });
+
+    describe('#interior', function interior() {
+      const options = (
+        <SelectOptions>
+          <SelectItem id="espresso">Espresso</SelectItem>
+        </SelectOptions>
+      );
+
+      it('fills the trigger face with the trigger chrome', function trigger() {
+        const html = renderToString(
+          <Select aria-label="Coffee">
+            <Button slot="trigger" />
+            {options}
+          </Select>
+        );
+
+        expect(html).toMatch(/<button[^>]*class="trigger button trigger md"/);
+        expect(html).toContain('data-icon="chevron-down"');
+      });
+
+      it('takes the control chrome inside another field Group', function control() {
+        const html = renderToString(
+          <TextField>
+            <Group>
+              <Select aria-label="Country code" variant="control">
+                <Button slot="trigger" />
+                {options}
+              </Select>
+              <Input />
+            </Group>
+          </TextField>
+        );
+
+        expect(html).toMatch(/<button[^>]*class="control button control md"/);
       });
     });
   });
