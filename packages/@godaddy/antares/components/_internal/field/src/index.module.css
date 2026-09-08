@@ -2,17 +2,16 @@
   --field-critical-color: var(--color-feedback-critical-strong, var(--ux-1fhc073, #db1802));
 }
 
-.field:where([data-required]) :where([data-label])::after {
+.field:where([data-required]) :where(.label)::after {
   content: " *";
   color: var(--field-critical-color);
 }
 
-/* A nested field decides for its own label. */
-.field :where(.field:not([data-required])) :where([data-label])::after {
+.field :where(.field:not([data-required])) :where(.label)::after {
   content: none;
 }
 
-.field :where([data-label]) {
+.label {
   color: var(--ux-1glcx6s, #2b2b2b);
   font-size: var(--ux-16aixzc, 0.875rem);
   font-family: var(--ux-15ks663, sans-serif);
@@ -25,7 +24,8 @@
   font-weight: var(--ux-g9ierp, 400);
 }
 
-.field :where([data-input], [data-textarea]) {
+.input,
+.textarea {
   background: transparent;
   border: none;
   font-family: var(--ux-9wtaa3, sans-serif);
@@ -42,14 +42,13 @@
   }
 }
 
-.field :where([data-textarea]) {
+.textarea {
   field-sizing: content;
   min-height: min-content;
 }
 
-/* Box chrome on a direct Group or a bare input/textarea. */
-.field:where([data-interior="box"]) > :where([data-group]),
-.field:where([data-interior="box"]) > :where([data-input], [data-textarea]) {
+.field:where([data-interior="box"]) > :where(.group),
+.field:where([data-interior="box"]) > :where(.input, .textarea) {
   --field-br: var(--ux-1oqjeuu, 0.375rem);
   border: 1px solid var(--bd-card);
   border-radius: var(--field-br);
@@ -58,42 +57,40 @@
   box-sizing: border-box;
 }
 
-/* Disabled/invalid come from the field root; RAC stamps both on every field root. */
-.field:where([data-interior="box"][data-disabled]) > :where([data-group], [data-input], [data-textarea]),
-.field:where([data-interior="box"]) > :where([data-group], [data-input], [data-textarea]):where([data-disabled]) {
+.field:where([data-interior="box"][data-disabled]) > :where(.group, .input, .textarea),
+.field:where([data-interior="box"]) > :where(.group, .input, .textarea):where([data-disabled]) {
   opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.field:where([data-interior="box"][data-invalid]) > :where([data-group], [data-input], [data-textarea]),
-.field:where([data-interior="box"]) > :where([data-group], [data-input], [data-textarea]):where([data-invalid]) {
+.field:where([data-interior="box"][data-invalid]) > :where(.group, .input, .textarea),
+.field:where([data-interior="box"]) > :where(.group, .input, .textarea):where([data-invalid]) {
   border-color: var(--field-critical-color);
 }
 
-/* Bare control is a field child, not a Group flex item. */
-.field:where([data-interior="box"]) > :where([data-input], [data-textarea]) {
+.field:where([data-interior="box"]) > :where(.input, .textarea) {
   flex: none;
 }
 
-.field :where([data-group]) > :where([data-input], [data-textarea]) {
+.group > :where(.input, .textarea) {
   flex: 1;
 }
 
-/* One level only so a nested field's size wins. */
-.field:where([data-size="sm"]) > :where([data-input], [data-textarea]),
-.field:where([data-size="sm"]) > :where([data-group]) > :where([data-input], [data-textarea]) {
+.field:where([data-size="sm"]) > :where(.input, .textarea),
+.field:where([data-size="sm"]) > :where(.group) > :where(.input, .textarea) {
   font-size: calc(1em / 1.125);
   padding-block: var(--sp-sm);
 }
 
-/* Dim a disabled item only when neither the field nor the group is already dimmed. */
-.field:where(:not([data-disabled])) :where([data-group]):where(:not([data-disabled])) > :where([data-disabled]) {
-  opacity: 0.4;
-}
+.group {
+  &:where(:not([data-disabled])) > :where([data-disabled]) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 
-.field :where([data-group]) {
   & > :where(:nth-child(1 of :not(template))) {
     &,
-    > :where([data-variant="control"], [data-variant="trigger"]) {
+    > :where(.control, .trigger) {
       border-start-start-radius: var(--field-br);
       border-end-start-radius: var(--field-br);
     }
@@ -101,7 +98,7 @@
 
   & > :where(:nth-last-child(1 of :not(template))) {
     &,
-    > :where([data-variant="control"], [data-variant="trigger"]) {
+    > :where(.control, .trigger) {
       border-start-end-radius: var(--field-br);
       border-end-end-radius: var(--field-br);
     }

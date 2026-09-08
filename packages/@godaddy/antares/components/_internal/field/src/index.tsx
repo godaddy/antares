@@ -1,6 +1,16 @@
 import { type ElementType, type ReactNode, forwardRef, useContext } from 'react';
 import { mergeProps } from 'react-aria';
-import { ButtonContext, DEFAULT_SLOT, type ButtonProps, type ContextValue } from 'react-aria-components';
+import {
+  ButtonContext,
+  DEFAULT_SLOT,
+  GroupContext,
+  InputContext,
+  LabelContext,
+  Provider as RACProvider,
+  TextAreaContext,
+  type ButtonProps,
+  type ContextValue
+} from 'react-aria-components';
 import type { PolymorphicComponent, PolymorphicProps, PolymorphicRef } from '#types/polymorphic-react.ts';
 import { composeClassName } from '#utils/render-props.ts';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
@@ -11,51 +21,15 @@ export { normalizeFieldChildren, type FieldSlots };
 
 type ButtonContextValue = NonNullable<ContextValue<ButtonProps, HTMLButtonElement>>;
 
-type ButtonSlots = Record<string | symbol, object | undefined>;
-
-/** Button props a field root publishes for the slots it owns, keyed by slot name. */
-export type FieldButtonSlots = Record<string, object>;
-
-/**
- * Field chrome on `ButtonContext`, merged over whatever the RAC root published.
- *
- * Roots that publish un-slotted props (`Select`, `DatePicker`) mean them for whichever
- * button the interior composes, so every entry keeps them. `slots` entries a root passed
- * are merged as-is: the field adds chrome and reads nothing.
- */
-function buildButtonContext(
-  inherited: ContextValue<ButtonProps, HTMLButtonElement>,
-  size: FieldSize | undefined,
-  isDisabled: boolean | undefined,
-  buttonSlots: FieldButtonSlots | undefined
-): ButtonContextValue {
-  const { slots: inheritedSlots, ...inheritedProps } = (inherited ?? {}) as ButtonContextValue & {
-    slots?: ButtonSlots;
-  };
-  const chrome = { ...inheritedProps, size, isDisabled };
-  const slots: Record<string | symbol, object> = { ...inheritedSlots } as Record<string | symbol, object>;
-
-  slots[DEFAULT_SLOT] = mergeProps(inheritedSlots?.[DEFAULT_SLOT] ?? {}, chrome);
-  slots.control = mergeProps(inheritedSlots?.control ?? {}, chrome, { variant: 'control' as const });
-  slots.trigger = mergeProps(inheritedSlots?.trigger ?? {}, chrome, { variant: 'trigger' as const });
-
-  for (const [slot, props] of Object.entries(buttonSlots ?? {})) {
-    slots[slot] = mergeProps(inheritedSlots?.[slot] ?? {}, chrome, props);
-  }
-
-  return { slots } as ButtonContextValue;
-}
+type ButtonSlots = Record<string | symbol, object>;
 
 /** Size for controls inside a field group. @default 'md' */
 export type FieldSize = 'sm' | 'md';
 
-/** Field interior. Omitted means no box chrome. */
-type FieldInterior = 'box';
+/** Button props per slot a field root owns, keyed by slot name. */
+export type FieldButtonSlots = Record<string, object>;
 
-/**
- * Field props re-exported by public field roots. A field owns its own interior axis, so
- * the props that would redefine it are not offered; placement props still are.
- */
+/** Field props re-exported by public field roots. A field owns its own interior axis. */
 export interface FieldOwnProps
   extends Omit<
     FlexOwnProps,
@@ -71,12 +45,12 @@ interface FieldShellOwnProps extends FieldOwnProps {
   size?: FieldSize;
 
   /** Box chrome around the control. Omitted means no chrome. */
-  interior?: FieldInterior;
+  interior?: 'box';
 
   /** Presets filled in when the consumer leaves a slot empty. */
   slots?: FieldSlots;
 
-  /** Button props per slot the root owns (e.g. a stepper). Merged with field chrome. */
+  /** Button props per slot the root owns, such as a stepper. Merged with field chrome. */
   buttonSlots?: FieldButtonSlots;
 }
 
@@ -90,10 +64,6 @@ export function mapFieldChildren<R>(
   return typeof children === 'function' ? (renderProps: R) => wrap(children(renderProps)) : wrap(children);
 }
 
-/**
- * Button chrome for the interior. Label, description, input and box looks are CSS: the
- * field's stylesheet reaches them through `data-*` hooks the parts stamp themselves.
- */
 function FieldContexts({
   children,
   interior,
@@ -102,25 +72,48 @@ function FieldContexts({
   buttonSlots
 }: {
   children: ReactNode;
-  interior?: FieldInterior;
+  interior?: 'box';
   isDisabled?: boolean;
   size?: FieldSize;
   buttonSlots?: FieldButtonSlots;
 }) {
+  const label = useContext(LabelContext);
+  const group = useContext(GroupContext);
+  const input = useContext(InputContext);
+  const textArea = useContext(TextAreaContext);
   const button = useContext(ButtonContext);
+  const { slots: inherited, ...buttonProps } = (button ?? {}) as ButtonContextValue & { slots?: ButtonSlots };
+  // Un-slotted props from a root are meant for whichever button the interior composes.
+  const chrome = { ...buttonProps, size, isDisabled };
+  const control = { ...chrome, variant: 'control' as const, className: styles.control };
+  const trigger = { ...chrome, variant: 'trigger' as const, className: styles.trigger };
+  const slots: ButtonSlots = {
+    ...inherited,
+    [DEFAULT_SLOT]: mergeProps(inherited?.[DEFAULT_SLOT] ?? {}, chrome),
+    control: mergeProps(inherited?.control ?? {}, control),
+    trigger: mergeProps(inherited?.trigger ?? {}, trigger)
+  };
 
-  if (interior !== 'box' && buttonSlots === undefined) {
-    return children;
+  for (const [slot, props] of Object.entries(buttonSlots ?? {})) {
+    slots[slot] = mergeProps(inherited?.[slot] ?? {}, chrome, props);
   }
 
   return (
-    <ButtonContext.Provider value={buildButtonContext(button, size, isDisabled, buttonSlots)}>
+    <RACProvider
+      values={[
+        [LabelContext, mergeProps(label ?? {}, { className: styles.label })],
+        [GroupContext, mergeProps(group ?? {}, interior === 'box' ? { className: styles.group } : {})],
+        [InputContext, mergeProps(input ?? {}, { className: styles.input })],
+        [TextAreaContext, mergeProps(textArea ?? {}, { className: styles.textarea })],
+        [ButtonContext, { slots } as ButtonContextValue]
+      ]}
+    >
       {children}
-    </ButtonContext.Provider>
+    </RACProvider>
   );
 }
 
-/** Internal field shell: layout, button chrome, and empty-slot presets. */
+/** Internal field shell: layout, chrome contexts, and empty-slot presets. */
 export const Field = forwardRef(function Field(props: FieldProps<ElementType>, ref: PolymorphicRef<ElementType>) {
   const { as, children, gap = 'sm', className, size, isDisabled, interior, slots, buttonSlots, ...rest } = props;
   const contextProps = { interior, isDisabled, size, buttonSlots };

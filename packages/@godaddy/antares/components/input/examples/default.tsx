@@ -1,7 +1,7 @@
 import { Input, Label, TextField } from '@godaddy/antares';
 
 /**
- * Input inside TextField. The field styles it.
+ * Input inside TextField.
  * @order 1
  */
 export function DefaultExample() {

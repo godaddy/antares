@@ -11,11 +11,8 @@ export const GroupContext = RACGroupContext;
 
 export interface GroupProps extends RACGroupProps, Omit<FlexOwnProps, 'as'> {}
 
-/**
- * Semantic grouping container. `data-group` lets a surrounding field's CSS style it as
- * the field box; RAC's own group context supplies the field's aria wiring.
- */
+/** Semantic grouping container. A parent field injects chrome via GroupContext. */
 export const Group = forwardRef<HTMLDivElement, GroupProps>(function Group(props, ref) {
   [props, ref] = useContextProps(props, ref, GroupContext);
-  return <Flex {...props} as={RACGroup} slot={null} ref={ref} data-group="" />;
+  return <Flex {...props} as={RACGroup} slot={null} ref={ref} />;
 });

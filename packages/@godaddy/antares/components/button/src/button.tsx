@@ -1,10 +1,11 @@
 import type React from 'react';
-import { forwardRef } from 'react';
+import { type Context, forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
   ButtonContext as RACButtonContext,
   type ButtonProps as RACButtonProps,
+  type ContextValue,
   Link as RACLink,
   type LinkProps as RACLinkProps,
   useSlottedContext
@@ -54,25 +55,14 @@ interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
-/**
- * React Aria's button context. A parent publishes props per `slot`; Antares reads
- * `variant` and `size` from it, and RAC merges everything else.
- */
-export { ButtonContext } from 'react-aria-components';
+export const ButtonContext: Context<ContextValue<RACButtonProps, HTMLButtonElement>> = RACButtonContext;
 
-/** Presentation a parent may publish. RAC's own props flow through {@link RACButton}. */
 type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
 
-/** Variants whose chrome belongs to the surrounding field, exposed for its CSS. */
-const FIELD_VARIANTS = new Set<ButtonVariant>(['control', 'trigger']);
-
-/**
- * Triggers an action. A parent may publish `variant`/`size` through
- * {@link ButtonContext}; local props win.
- */
+/** Triggers an action. A parent may publish `variant`/`size` per slot; local props win. */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   const { variant, size, className, children, slot, ...rest } = props;
-  const inherited = useSlottedContext(RACButtonContext, slot) as ButtonPresentationProps | null | undefined;
+  const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
   const resolvedVariant = variant ?? inherited?.variant;
   const resolvedSize = size ?? inherited?.size;
   const content = typeof children === 'string' ? <Text slot={null}>{children}</Text> : children;
@@ -82,7 +72,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       {...rest}
       ref={ref}
       slot={slot}
-      data-variant={FIELD_VARIANTS.has(resolvedVariant) ? resolvedVariant : undefined}
       className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
     >
       {content}

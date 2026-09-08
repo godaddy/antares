@@ -119,8 +119,7 @@ export function CheckboxGroup({ children, className, orientation = 'vertical', .
       data-orientation={orientation}
       slots={{
         items: function wrapItems(items) {
-          // The group owns its own axis: RAC's CheckboxGroup publishes no group context,
-          // and `presentation` keeps a bare group out of the checkboxgroup's a11y tree.
+          // `presentation` keeps this group out of the checkboxgroup's a11y tree.
           return (
             <Group
               role="presentation"

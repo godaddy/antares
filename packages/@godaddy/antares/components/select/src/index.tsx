@@ -64,8 +64,7 @@ export function Select<T extends object, M extends SelectionMode = 'single'>(pro
   const { children, size, variant = 'default', className, ...racProps } = props;
   const selectClass = composeClassName(className, styles.select);
   const group = useSlottedContext(GroupContext);
-  // RAC's Select replaces ButtonContext for its interior, so a control variant reads the
-  // parent field's chrome here and hands it to the trigger.
+  // RAC's Select replaces ButtonContext for its interior, so read the parent chrome here.
   const inherited = useContext(ButtonContext) as { slots?: Record<string, { size?: FieldSize }> } | null;
 
   if (variant === 'control') {
@@ -103,7 +102,6 @@ interface SelectControlProps {
 /** Preset trigger (`Group` + button) unless `variant="control"`. */
 function SelectControl({ variant = 'default', size }: SelectControlProps) {
   const isControl = variant === 'control';
-  // A control-variant trigger owns its own face: no parent field publishes one here.
   const button = (
     <Button slot={isControl ? 'control' : 'trigger'} variant={isControl ? 'control' : undefined} size={size}>
       <SelectValue />

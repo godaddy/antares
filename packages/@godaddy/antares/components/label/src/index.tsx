@@ -12,10 +12,7 @@ export interface LabelProps extends Omit<RACLabelProps, 'elementType'> {
   children?: RACLabelProps['children'];
 }
 
-/**
- * Names a form field. The element type comes from the field root (RAC renders a `span`
- * for group fields), and `data-label` lets a field's CSS find it either way.
- */
+/** Names a form field. */
 export const Label = forwardRef<HTMLElement, LabelProps>(function Label(props, ref) {
-  return <RACLabel {...props} ref={ref as Ref<HTMLLabelElement>} data-label="" />;
+  return <RACLabel {...props} ref={ref as Ref<HTMLLabelElement>} />;
 });

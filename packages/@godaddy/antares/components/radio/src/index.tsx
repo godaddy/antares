@@ -79,8 +79,7 @@ export function RadioGroup({ children, className, orientation = 'vertical', ...p
       orientation={orientation}
       slots={{
         items: function wrapItems(items) {
-          // The group owns its own axis; `presentation` keeps a bare group out of the
-          // radiogroup's a11y tree. RAC gets `orientation` from the root for keyboard/ARIA.
+          // `presentation` keeps this group out of the radiogroup's a11y tree.
           return (
             <Group
               role="presentation"

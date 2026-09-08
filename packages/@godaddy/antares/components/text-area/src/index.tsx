@@ -10,7 +10,7 @@ export const TextAreaContext = RACTextAreaContext;
 
 export interface TextAreaProps extends RACTextAreaProps, Omit<BoxOwnProps, 'as'> {}
 
-/** Multiline input. `data-textarea` lets a surrounding field's CSS style it. */
+/** Multiline text control for use inside a field. */
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {
-  return <Box {...props} as={RACTextArea} ref={ref} data-textarea="" />;
+  return <Box {...props} as={RACTextArea} ref={ref} />;
 });

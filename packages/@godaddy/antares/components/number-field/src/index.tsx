@@ -13,7 +13,7 @@ export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' |
   size?: FieldSize;
 }
 
-/** Stepper faces and default icons. The field only adds its chrome to these. */
+/** Stepper faces and default icons. */
 const STEPPER_SLOTS = {
   decrement: { variant: 'control', children: <Icon icon="minus" /> },
   increment: { variant: 'control', children: <Icon icon="plus" /> }
