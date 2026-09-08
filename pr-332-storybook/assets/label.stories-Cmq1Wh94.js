@@ -1,0 +1,11 @@
+import{n as e,r as t}from"./rolldown-runtime-DkW27tQK.js";import{t as n}from"./jsx-runtime-DeHZSEgm.js";import{r,t as i}from"./src-C_arto2N.js";import{r as a,t as o}from"./group-LXqyvSDT.js";import{n as s,t as c}from"./src-BwCn68fm.js";import{r as l,t as u}from"./src-DLMFWbkR.js";function d(){return(0,f.jsxs)(c,{isRequired:!0,children:[(0,f.jsx)(u,{children:`Email`}),(0,f.jsx)(o,{children:(0,f.jsx)(i,{placeholder:`you@example.com`})})]})}var f;function p(){return(p=e((()=>{a(),r(),l(),s(),f=n()})))()}function m(e){let{children:t=`Email`}=e;return(0,h.jsxs)(c,{children:[(0,h.jsx)(u,{children:t}),(0,h.jsx)(o,{children:(0,h.jsx)(i,{placeholder:`you@example.com`})})]})}var h;function g(){return(g=e((()=>{a(),r(),l(),s(),h=n()})))()}var _=t({Default:()=>x,Playground:()=>S,Props:()=>b,__namedExportsOrder:()=>C,default:()=>y}),v,y,b,x,S,C;function w(){return(w=e((()=>{p(),v=n(),g(),y={title:`components/Label`},b={tags:[`!dev`],argTypes:{children:{name:`children`,description:`Label content.`,type:{name:`other`,value:`RACLabelProps['children']`,required:!1},table:{type:{summary:`RACLabelProps['children']`},defaultValue:{summary:null}}},render:{name:`render`,description:`Overrides the default DOM element with a custom render function.
+This allows rendering existing components with built-in styles and behaviors
+such as router links, animation libraries, and pre-styled components.
+
+Requirements:
+
+- You must render the expected element type (e.g. if \`<button>\` is expected, you cannot render an
+  \`<a>\`).
+- Only a single root DOM element can be rendered (no fragments).
+- You must pass through props and ref to the underlying DOM element, merging with your own prop
+  as appropriate.`,type:{name:`other`,value:`DOMRenderFunction<E, T>`,required:!1},table:{type:{summary:`DOMRenderFunction<E, T>`},defaultValue:{summary:null}}}}},x=d,S={args:{children:`Email`},argTypes:{children:{control:`text`,description:`Label content`}},render:e=>(0,v.jsx)(m,{...e})},C=[`Props`,`Default`,`Playground`]})))()}export{_ as i,b as n,w as r,x as t};
