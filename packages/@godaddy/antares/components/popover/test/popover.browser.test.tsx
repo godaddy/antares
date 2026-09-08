@@ -3,7 +3,7 @@ import { CustomAnchorExample } from '../examples/custom-anchor.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { PlaygroundExample } from '../examples/popover-playground.tsx';
 import { LayerPropsExample } from '../examples/layer-props.tsx';
-import { userEvent } from 'vitest/browser';
+import { cdp, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import assume from 'assume';
@@ -20,6 +20,32 @@ describe('@godaddy/antares', function antares() {
         assume(dialog).is.not.equal(null);
         assume(dialog?.textContent).includes('This is the popover content!');
       });
+    });
+
+    it('keeps opacity feedback without spatial motion when reduced motion is preferred', async function reducedMotion() {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      const setReducedMotion = (value: 'reduce' | 'no-preference') =>
+        session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value }]
+        });
+
+      await setReducedMotion('reduce');
+
+      try {
+        assume(matchMedia('(prefers-reduced-motion: reduce)').matches).is.true();
+
+        const { getByRole } = await render(<DefaultExample />);
+        await getByRole('button', { name: 'Open popover' }).click();
+
+        const dialog = getByRole('dialog', { name: 'Open popover' }).element();
+        const surface = dialog.closest('[data-placement]') as HTMLElement;
+        const style = getComputedStyle(surface);
+
+        assume(style.transform).equals('none');
+        assume(style.transitionProperty).equals('opacity');
+      } finally {
+        await setReducedMotion('no-preference');
+      }
     });
 
     it('opens DefaultExample with Enter key', async function keyboardOpen() {

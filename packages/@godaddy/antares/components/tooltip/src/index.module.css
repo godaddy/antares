@@ -24,25 +24,25 @@
 
 .tooltip:where([data-placement="top"]) {
   --_animation-offset: translateY(-4px) scale(0.95);
-  transform-origin: bottom center;
+  transform-origin: var(--trigger-anchor-point, bottom center);
   margin-bottom: var(--_content-offset);
 }
 
 .tooltip:where([data-placement="bottom"]) {
   --_animation-offset: translateY(4px) scale(0.95);
-  transform-origin: top center;
+  transform-origin: var(--trigger-anchor-point, top center);
   margin-top: var(--_content-offset);
 }
 
 .tooltip:where([data-placement="right"]) {
   --_animation-offset: translateX(4px) scale(0.95);
-  transform-origin: left center;
+  transform-origin: var(--trigger-anchor-point, left center);
   margin-left: var(--_content-offset);
 }
 
 .tooltip:where([data-placement="left"]) {
   --_animation-offset: translateX(-4px) scale(0.95);
-  transform-origin: right center;
+  transform-origin: var(--trigger-anchor-point, right center);
   margin-right: var(--_content-offset);
 }
 

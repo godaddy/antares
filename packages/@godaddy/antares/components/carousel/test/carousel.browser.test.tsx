@@ -35,25 +35,17 @@ describe('@godaddy/antares', function antares() {
       const prev = getByRole('button', { name: 'Go to previous page', includeHidden: true });
       const next = getByRole('button', { name: 'Go to next page', includeHidden: true });
 
-      // At first slide, prev is hidden.
-      document.body.focus();
+      await expect.element(prev).toBeDisabled();
+      next.element().focus();
+      await user.tab({ shift: true });
+      expect(document.activeElement).not.toBe(prev.element());
 
-      // Tab should go to the next button (skipping prev)
-      await user.tab();
-      expect(document.activeElement).toBe(next.element());
-
-      // Navigate to last slide
       await next.click();
       await next.click();
 
-      // At last slide, next is hidden.
-      document.body.focus();
+      await expect.element(next).toBeDisabled();
 
-      // Tab should go to the prev button (skipping next)
-      await user.tab();
-      expect(document.activeElement).toBe(prev.element());
-
-      // Tab again should go to the dots (or out of the controls)
+      prev.element().focus();
       await user.tab();
       expect(document.activeElement).not.toBe(next.element());
     });

@@ -255,7 +255,11 @@ describe('@godaddy/antares', function antares() {
           const viewport = getViewport('Product settings');
           const previous = page.getByRole('button', { name: 'Previous tabs' });
           const next = page.getByRole('button', { name: 'Next tabs' });
-          viewport.scrollLeft = viewport.scrollWidth;
+
+          await expect.element(previous).toBeDisabled();
+          await expect.element(next).not.toBeDisabled();
+
+          viewport.scrollLeft = viewport.scrollWidth - viewport.clientWidth;
           viewport.dispatchEvent(new Event('scroll'));
           await expect.element(next).toBeDisabled();
           await expect.element(previous).not.toBeDisabled();
