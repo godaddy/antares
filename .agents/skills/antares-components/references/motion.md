@@ -35,7 +35,7 @@ Durations in `ms`, never `s`. Name every property; `transition: all` and `ease-i
 }
 ```
 
-That thumb used to animate `inset-inline-start`, which lays out every frame; it now translates. See [Physical over logical](#physical-over-logical) for what the swap costs.
+That thumb used to animate `inset-inline-start`, which lays out every frame; it now translates. See [Physical transforms and RTL](#physical-transforms-and-rtl) for what the swap costs.
 
 ## Surfaces
 
@@ -82,9 +82,9 @@ Two things to get right. `transform: none` may only cancel the animation transfo
 
 Hover motion goes behind `@media (hover: hover) and (pointer: fine)`, so a tap doesn't leave a touch device in a stuck hover state. RAC's `[data-hovered]` follows the same rule: never make a keyboard or touch user depend on hover to see feedback.
 
-## Physical over logical
+## Physical transforms and RTL
 
-`translateX` is physical and does not flip in RTL, so moving to `transform` costs you logical properties. Pay that deliberately: when a transform positions an element, its static position has to be physical too, or the two disagree under RTL. It is why the Switch thumb sits at `left` rather than `inset-inline-start`, and why the Drawer pins itself to physical edges.
+`translateX` is physical and does not flip in RTL, so its relationship with logical positioning has to be handled deliberately. For logical movement, as in Switch, anchor with `inset-inline-start` and explicitly reverse the transform in RTL. For physically placed surfaces, such as Drawer, use physical edges so the anchor and transform share the same coordinate system.
 
 Sizing and spacing stay logical. Check RTL whenever you move something.
 
