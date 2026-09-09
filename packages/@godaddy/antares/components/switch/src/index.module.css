@@ -49,7 +49,7 @@
 .thumb {
   position: absolute;
   inset-block-start: var(--_thumb-inset);
-  left: var(--_thumb-inset);
+  inset-inline-start: var(--_thumb-inset);
   box-sizing: border-box;
   width: var(--_thumb-size);
   height: var(--_thumb-size);
@@ -62,6 +62,10 @@
 
 .thumb:where(.switch[data-selected] *) {
   transform: translateX(calc(var(--_track-w) - var(--_thumb-size) - var(--_thumb-inset) * 2));
+}
+
+.switch:where([data-selected]:dir(rtl)) :where(.thumb) {
+  transform: translateX(calc(var(--_thumb-size) + var(--_thumb-inset) * 2 - var(--_track-w)));
 }
 
 @media (forced-colors: active) {

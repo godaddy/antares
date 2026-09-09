@@ -1,5 +1,5 @@
 import { DefaultExample } from '../examples/default.tsx';
-import { page, userEvent } from 'vitest/browser';
+import { cdp, page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { describe, it, vi } from 'vitest';
 import { resetHover } from '#test/utils/test-helpers.tsx';
@@ -17,6 +17,31 @@ describe('@godaddy/antares', function antares() {
         assume(tooltip).is.not.equal(null);
         assume(tooltip?.textContent).includes('This is the tooltip content!');
       });
+    });
+
+    it('keeps opacity feedback without spatial motion when reduced motion is preferred', async function reducedMotion() {
+      const session = cdp() as unknown as { send: (method: string, params: unknown) => Promise<void> };
+      const setReducedMotion = (value: 'reduce' | 'no-preference') =>
+        session.send('Emulation.setEmulatedMedia', {
+          features: [{ name: 'prefers-reduced-motion', value }]
+        });
+
+      await setReducedMotion('reduce');
+
+      try {
+        assume(matchMedia('(prefers-reduced-motion: reduce)').matches).is.true();
+
+        const { getByRole } = await render(<DefaultExample />);
+        await userEvent.keyboard('{Tab}');
+
+        const tooltip = getByRole('tooltip').element();
+        const style = getComputedStyle(tooltip);
+
+        assume(style.transform).equals('none');
+        assume(style.transitionProperty).equals('opacity');
+      } finally {
+        await setReducedMotion('no-preference');
+      }
     });
 
     it('hides tooltip on Escape', async function escapeHide() {

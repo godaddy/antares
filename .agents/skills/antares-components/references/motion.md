@@ -1,171 +1,95 @@
 # Motion
 
-Read this when creating or changing motion in an Antares component.
+Read this while creating or changing motion in a component.
 
-## Decide whether motion is justified
+Values are local literals in component CSS. There is no motion token and no motion prop, so don't reach for either.
 
-Motion should clarify feedback, state, or spatial relationships. It should not decorate a control just because there is room for it.
+## The ladder
 
-Use this flow:
+Pick the role, then take its value.
 
-1. `None`, for high frequency, keyboard driven, or purely structural changes. Keep it instant.
-2. `Feedback`, for frequent state changes such as color, opacity, or small emphasis shifts.
-3. `Surface`, for occasional anchored surfaces and centered modals that need to feel placed.
-4. `Spatial`, for movement that explains where something came from, where it is going, or how far it moved.
-
-If the answer is unclear, pick the simplest role that still helps the user understand change. If that role is `None`, stop there.
-
-## Component local recipes
-
-Use these values as the default ladder. Keep the motion local to the component unless the same semantic role repeats enough to justify a token later.
-
-| Recipe | Use for | Default |
+| Role | Recipe | Duration and easing |
 | --- | --- | --- |
-| Lightweight anchored surface | Tooltip-like anchored surfaces and other rare, compact overlays | `125ms cubic-bezier(0.23, 1, 0.32, 1)` |
-| Frequent feedback | Color, opacity, and other common state changes | `150ms ease` |
-| Small spatial move | Chevrons, thumbs, and other short motion that stays on `transform` and `opacity` | `150ms cubic-bezier(0.77, 0, 0.175, 1)` |
-| Determinate progress | Stroke or value updates that should read as steady progress | `150ms linear` |
-| Surface entry and exit | Popovers, overlays, and centered modals | `200ms cubic-bezier(0.23, 1, 0.32, 1)` |
-| Measured indicators | Motion whose geometry is part of the component's meaning | `200ms cubic-bezier(0.77, 0, 0.175, 1)` |
-| Drawer-like motion | Edge-bound spatial translation | `250ms cubic-bezier(0.32, 0.72, 0, 1)` |
-| InlineDrawer exception | In-flow size change where the size change is the point | `300ms` |
+| `Feedback` | Color, border, opacity, outline | `150ms ease` |
+| `Feedback` | Determinate progress and other value updates | `150ms linear` |
+| `Surface` | Lightweight anchored surface, tooltip weight | `125ms cubic-bezier(0.23, 1, 0.32, 1)` |
+| `Surface` | Popover, overlay, centered modal | `200ms cubic-bezier(0.23, 1, 0.32, 1)` |
+| `Spatial` | Short move on `transform`: chevrons, thumbs | `150ms cubic-bezier(0.77, 0, 0.175, 1)` |
+| `Spatial` | Measured indicator, where the geometry is the meaning | `200ms cubic-bezier(0.77, 0, 0.175, 1)` |
+| `Spatial` | Edge-bound drawer translation, and its overlay | `250ms cubic-bezier(0.32, 0.72, 0, 1)` |
+| `Spatial` | `InlineDrawer` in-flow size change, the one exception | `300ms cubic-bezier(0.32, 0.72, 0, 1)` |
 
-Keep the motion short. If a role wants to exceed these values, that usually means the role is wrong.
+`None`, meaning no transition at all, stays the right answer for high frequency, keyboard driven, or purely structural change. One element can hold two roles: the Checkbox indicator is `Feedback` for its fill and `Spatial` for the press scale, each with its own duration and its own reduced-motion branch.
 
-## Property rules
+Wanting a value that isn't on the ladder almost always means the role is wrong. `linear` belongs to determinate progress and nowhere else.
 
-Use exact-property transitions. Do not write `transition: all`.
+## Write the transition
 
-Prefer `transform` and `opacity` first. Use layout properties only when the component's meaning depends on the geometry change, such as measured indicators or `InlineDrawer`'s in-flow size change.
+Durations in `ms`, never `s`. Name every property; `transition: all` and `ease-in-out` are both gone from the package. Prefer `transform` and `opacity`, and animate a layout property only when the geometry *is* the meaning, as with a measured indicator or `InlineDrawer`'s size change.
 
 ```css
-.surface {
-  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease;
-}
-
-.surface:where([data-entering], [data-exiting]) {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-.surface:where([data-hovered]) {
-  opacity: 1;
-}
-
-.drawer:where([data-entering], [data-exiting]) {
-  transform: translate3d(0, 0, 0);
+.thumb {
+  transition:
+    transform 150ms cubic-bezier(0.77, 0, 0.175, 1),
+    background-color 150ms ease;
 }
 ```
 
-Avoid these patterns:
+That thumb used to animate `inset-inline-start`, which lays out every frame; it now translates. See [Physical over logical](#physical-over-logical) for what the swap costs.
 
-- `transition: all 200ms ease;`
-- `ease-in` on UI motion.
-- `scale(0)` entrances.
-- Layout motion for ordinary feedback when a transform would work.
+## Surfaces
+
+An anchored surface enters offset toward its own placement edge and slightly small — `8px` at popover weight, `4px` at tooltip weight, always with `scale(0.95)` — and grows from the trigger rather than from its own middle. Consumers pass an exact anchor through `--trigger-anchor-point`; without one, fall back to the placement edge nearest the trigger.
+
+```css
+.popover:where([data-placement="bottom"]) {
+  --_animation-offset: translateY(8px) scale(0.95);
+  transform-origin: var(--trigger-anchor-point, top center);
+}
+```
+
+`bottom` anchors `top center`, `top` anchors `bottom center`, `right` anchors `left center`, `left` anchors `right center`. `Modal` is the exception: centered, with no trigger to grow from.
 
 ## Behavioral ownership
 
-RAC owns state, positioning, focus, keyboard handling, and dismiss behavior. Antares owns the visual transition layered on top of that behavior.
+RAC owns state, positioning, focus, keyboard handling, and dismiss. Antares owns only the visual transition on top.
 
-Check where the transform is owned before you edit it:
+Find out who owns a transform before editing it, and never overwrite RAC's placement transform with an animation one. When a component has a positioning shell and an inner surface, motion goes on the inner surface so positioning stays stable.
 
-- If RAC owns the placement transform, do not replace it.
-- If Antares adds an inner surface transform, keep it on the inner surface, not on the positioning shell.
-- If a component has both a root and an inner surface, place visual motion on the inner surface so positioning remains stable.
+## Reduced motion
 
-For anchored surfaces, use the exact anchor origin if RAC exposes one. If it does not, fall back to the placement edge that best matches the anchor. `Modal` is the exception, because it stays centered.
+Reduced motion removes spatial movement. It keeps the end state, and it keeps non-spatial feedback that helps comprehension.
 
-## Interruptibility and exit
+When the element also transitions something worth keeping, narrow `transition-property` and neutralize the animation transform:
 
-Motion must be interruptible. Use transitions or state-driven CSS that retargets from the current state.
+```css
+@media (prefers-reduced-motion: reduce) {
+  .popover {
+    transition-property: opacity;
+  }
 
-Design for cases like open, close, open and A, then B, then A again. The latest action wins.
+  .popover:where([data-entering], [data-exiting]) {
+    transform: none;
+  }
+}
+```
 
-Do not add fixed delays or queued behavior that makes the interface wait for an older state to finish before honoring the new one.
+When the spatial transition is the only one, drop it with `transition: none`, as the Select chevron and the Tabs indicator do.
 
-Exit motion should feel like the reverse of entry, but not as a perfect mirror if that makes the interaction feel stiff. Keep the exit short and clear.
+Two things to get right. `transform: none` may only cancel the animation transform Antares added, never one that positions the element, such as the `translateY(-50%)` centering a Carousel control. And judge each element, not each component: the Drawer panel loses its slide while its overlay keeps fading, because a backdrop that appears instantly reads as a bug.
 
-## Reduced motion matrix
+## Hover gating
 
-Use reduced motion to remove spatial animation, not the useful end state.
+Hover motion goes behind `@media (hover: hover) and (pointer: fine)`, so a tap doesn't leave a touch device in a stuck hover state. RAC's `[data-hovered]` follows the same rule: never make a keyboard or touch user depend on hover to see feedback.
 
-| Role | Reduced motion behavior |
-| --- | --- |
-| `None` | No change |
-| `Feedback` | Keep color or opacity feedback when it helps comprehension |
-| `Surface` | Apply the final visual state immediately, or keep only the smallest opacity hint if it helps orientation |
-| `Spatial` | Remove the Antares-owned animation transform and apply the final visual state immediately; do not remove required positioning transforms that come from RAC or layout |
+## Physical over logical
 
-The phrase `transform: none` only applies to the animation transform Antares owns. It must never remove a required positioning transform.
+`translateX` is physical and does not flip in RTL, so moving to `transform` costs you logical properties. Pay that deliberately: when a transform positions an element, its static position has to be physical too, or the two disagree under RTL. It is why the Switch thumb sits at `left` rather than `inset-inline-start`, and why the Drawer pins itself to physical edges.
 
-## Hover gating and RAC hover state
+Sizing and spacing stay logical. Check RTL whenever you move something.
 
-Hover motion belongs behind `@media (hover: hover) and (pointer: fine)`.
+## Interruptibility
 
-RAC's `[data-hovered]` state is only useful on hover-capable pointers. Do not build hover motion that depends on it for keyboard users or touch users.
+Motion retargets from wherever the element currently is, so open, close, open and A, B, A all land with the latest action winning. Never add a delay or a queue that finishes an old state before honoring a new one. Exit mirrors entry at the same duration.
 
-## Accessibility and direction
-
-Keep keyboard response, focus, and activation immediate. Motion must not delay those actions.
-
-Preserve focus restoration, Escape handling, and outside dismiss behavior while motion runs.
-
-Remove hidden controls from the tab order immediately. Do not leave them tabbable while an exit animation plays.
-
-Respect RTL. Use physical motion only when the component is describing physical space. Logical layout should still read correctly in both directions.
-
-Preserve forced-colors behavior. Motion can change opacity or transform, but it should not break contrast or hide the active affordance.
-
-## Test matrix
-
-Add or update browser tests for the public examples that exercise the motion.
-
-Test the computed behavior, not private CSS imports or string snapshots of style source.
-
-Cover:
-
-- Entry and exit motion.
-- Reversal, such as open, close, open.
-- Reduced motion.
-- Keyboard interaction.
-- Focus restoration.
-- RTL.
-- Forced colors.
-- Pointer hover gating.
-- Hidden tab order removal.
-- `animate=false` or the equivalent no-motion path, when the component has one.
-
-Avoid fixed sleeps. Assert the state that matters after the interaction settles.
-
-Use visual tests when the look itself is worth locking, such as a surface whose origin, reversal, or exit shape is part of the component's value.
-
-## Examples
-
-### Frequent control
-
-A high-frequency control such as `Button` keeps its color feedback at `150ms ease` and adds no
-spatial motion. `None` means no transform, scale, or movement; it does not mean color feedback
-has to snap.
-
-### Anchored overlay
-
-Use `Surface` for a tooltip or popover. The entry should come from the trigger or the closest placement edge, not from the center unless the component is a centered `Modal`.
-
-### Drawer
-
-Use `Spatial` for an edge-bound drawer. Keep the movement on `transform` and respect the `250ms` recipe. Use the `300ms` in-flow exception only for `InlineDrawer`.
-
-### Deliberate no-motion
-
-Use `None` when the control is keyboard driven, high frequency, or already clear without animation. If motion would only add noise, leave it out.
-
-## Future token adoption
-
-Keep local literal timing and easing values today. That keeps the component shippable and easy to reason about.
-
-If a semantic role repeats across multiple components, promote the role to `@godaddy/design-tokens` later. Let the token describe the reusable intent, not one component's implementation detail.
-
-Do not create a component named token for every surface. That turns a shared vocabulary into a catalog and makes future changes harder.
-
-When tokens arrive, keep component policy local. Things like transform distance, anchor origin, interruption behavior, and reduced motion branching stay in component code.
+Keyboard response, focus, and activation are immediate. While a surface exits, focus restoration, Escape, and outside dismiss keep working, and a hidden control leaves the tab order at once instead of staying tabbable until the fade ends. Under forced colors, motion may change transform and opacity, but it must not flatten contrast or hide the active affordance.

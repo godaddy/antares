@@ -123,25 +123,27 @@ Styled components keep their CSS in `src/index.module.css`. Three rules hold eve
 
 ## Motion
 
-Use motion only when it clarifies feedback, state, or spatial relationships. If a component changes many times a day, keep it instant. If it changes less often, motion can help users track what changed and where it came from. Keyboard response, focus, and activation stay immediate. Subtle, interruptible state transitions may remain modality-independent.
+Use motion only when it clarifies feedback, state, or spatial relationships. Spatial motion on something that changes many times a day turns into noise, though its color and opacity feedback can stay. On something that changes rarely, motion helps users track what moved and where it came from. Keyboard response, focus, and activation are always immediate.
+
+Pick a role, then take its value from the ladder. One element can hold two roles, as the Checkbox indicator does with a `Feedback` fill and a `Spatial` press scale.
 
 | Role | When to use | Default |
 | --- | --- | --- |
-| `None` | High frequency, keyboard driven, or purely structural changes | No motion |
-| `Feedback` | Frequent color, opacity, and other state changes | `150ms ease` |
-| `Surface` | Occasional anchored surfaces and centered modals | `125ms` or `200ms cubic-bezier(0.23, 1, 0.32, 1)` |
-| `Spatial` | Short movement, drawers, measured indicators, and in-flow size changes | `150ms`, `200ms`, `250ms`, or `300ms` for `InlineDrawer` |
-
-When creating or changing motion, read `references/motion.md` before editing.
+| `None` | High frequency, keyboard driven, or purely structural changes | No transition |
+| `Feedback` | Color, border, opacity, and outline changes | `150ms ease`, or `150ms linear` for determinate progress |
+| `Surface` | Anchored overlays and centered modals | `cubic-bezier(0.23, 1, 0.32, 1)` at `125ms` tooltip weight, `200ms` popover and modal weight |
+| `Spatial` | Movement that explains where something came from | `150ms` short transform, `200ms` measured indicator, `250ms` drawer, `300ms` `InlineDrawer` |
 
 Mandatory rules:
 
-- Use exact-property CSS transitions, not `transition: all`.
-- Prefer `transform` and `opacity` first. Keep layout motion out unless the component's meaning depends on it.
+- Write durations in `ms`. Name every property; no `transition: all`, no `ease-in-out`.
+- Prefer `transform` and `opacity`. Animate layout only when the geometry is the meaning.
 - Preserve RAC ownership of state, positioning, focus, keyboard handling, and dismiss behavior.
-- Use a reduced-motion path for spatial motion.
+- Branch on `prefers-reduced-motion` for every spatial transition, keeping the non-spatial feedback.
 - Gate hover motion behind `@media (hover: hover) and (pointer: fine)`.
-- For anchored overlays, use the exact anchor origin when RAC exposes one, otherwise fall back to placement-edge origins. `Modal` stays centered.
+- Anchor overlay `transform-origin` on `--trigger-anchor-point`, falling back to the placement edge. `Modal` stays centered.
+
+**Read `references/motion.md` before editing motion.** It carries the full ladder, the reduced-motion patterns, the surface entry shape, and the RTL consequences of moving to `transform`.
 
 ## Examples, tests, and docs
 

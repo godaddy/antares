@@ -57,6 +57,22 @@ describe('@godaddy/antares', function antares() {
       });
     });
 
+    it('moves the selected thumb toward inline-end in RTL', async function rtlSelection() {
+      const user = userEvent.setup();
+      const { container } = await render(<Switch dir="rtl">Wi-Fi</Switch>);
+      const switchInput = page.getByRole('switch', { name: 'Wi-Fi' });
+      const track = container.querySelector('[aria-hidden="true"]') as HTMLElement;
+      const thumb = container.querySelector('[aria-hidden="true"] > span') as HTMLElement;
+
+      await user.click(track, { force: true });
+
+      await vi.waitFor(function checkThumbPosition() {
+        assume((switchInput.element() as HTMLInputElement).checked).is.true();
+        const transform = new DOMMatrixReadOnly(getComputedStyle(thumb).transform);
+        assume(transform.m41 < 0).is.true();
+      });
+    });
+
     it('does not toggle when disabled', async function disabledClick() {
       const user = userEvent.setup();
       await render(<SwitchDisabledExample />);
