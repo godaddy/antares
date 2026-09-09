@@ -1,26 +1,23 @@
 import { createContext, forwardRef, useContext, type ForwardedRef, type ReactNode } from 'react';
+import { Icon, IconContext } from '#components/icon';
+import { LabelContext } from '#components/label';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { Text, TextContext } from '#components/text';
+import { composeClassName } from '#utils/render-props.ts';
 import {
+  ButtonContext as RACButtonContext,
   Button as RACButton,
-  ButtonContext,
-  Label,
-  LabelContext,
   Provider as RACProvider,
   Tag as RACTag,
   TagGroup as RACTagGroup,
   TagList as RACTagList,
-  TextContext,
   composeRenderProps,
+  useSlottedContext,
   type ButtonProps as RACButtonProps,
-  type LabelProps,
   type TagGroupProps as RACTagGroupProps,
   type TagListProps as RACTagListProps,
-  type TagProps as RACTagProps,
-  useSlottedContext
+  type TagProps as RACTagProps
 } from 'react-aria-components';
-import { Icon, IconContext } from '#components/icon';
-import { Flex, type FlexOwnProps } from '#components/layout/flex';
-import { Text } from '#components/text';
-import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
 /** Visual size for Chips: `sm`, `md`, or `lg`; `md` is the default. */
@@ -40,13 +37,6 @@ export interface ChipButtonProps extends RACButtonProps, Omit<FlexOwnProps, 'as'
   /** Visual size. @default 'md' */
   size?: ChipSize;
 }
-
-/**
- * Re-exported primitive for naming a `ChipGroup`.
- *
- * TODO: Move `Label` and `LabelProps` to their dedicated Antares component when implemented.
- */
-export { Label, type LabelProps };
 
 /** Props for the semantic owner of a Chip collection. */
 export interface ChipGroupProps extends RACTagGroupProps {
@@ -140,7 +130,7 @@ export const ChipList = forwardRef(function ChipList<T extends object>(
 export interface ChipProps extends RACTagProps, Omit<FlexOwnProps, 'as'> {}
 
 function ChipBody({ children }: { children: ReactNode }) {
-  const removeProps = useSlottedContext(ButtonContext, 'remove');
+  const removeProps = useSlottedContext(RACButtonContext, 'remove');
   const removeSlotProps = {
     ...removeProps,
     variant: null,
@@ -153,7 +143,7 @@ function ChipBody({ children }: { children: ReactNode }) {
     <RACProvider
       values={[
         [
-          ButtonContext,
+          RACButtonContext,
           {
             slots: {
               remove: removeSlotProps

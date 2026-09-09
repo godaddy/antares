@@ -4,12 +4,10 @@ export {
   ChipGroup,
   ChipList,
   ChipContext,
-  Label,
   type ChipContextValue,
   type ChipButtonProps,
   type ChipGroupProps,
   type ChipListProps,
-  type LabelProps,
   type ChipProps,
   type ChipSize
 } from '#components/chip';
