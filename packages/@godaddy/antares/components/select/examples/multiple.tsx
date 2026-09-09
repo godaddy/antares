@@ -1,27 +1,25 @@
 import { useState } from 'react';
-import { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';
+import { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';
 
 /**
  * Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
  * @order 3
  */
-export function SelectMultipleExample() {
+export function MultipleExample() {
   const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);
 
   return (
     <>
-      <Select
-        label="Coffees you like"
-        placeholder="Pick one or more"
-        selectionMode="multiple"
-        value={value}
-        onChange={setValue}
-      >
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
-        <SelectItem id="americano">Americano</SelectItem>
-        <SelectItem id="mocha">Mocha</SelectItem>
+      <Select placeholder="Pick one or more" selectionMode="multiple" value={value} onChange={setValue}>
+        <Label>Coffees you like</Label>
+        <Button slot="trigger" />
+        <SelectOptions>
+          <SelectItem id="espresso">Espresso</SelectItem>
+          <SelectItem id="latte">Latte</SelectItem>
+          <SelectItem id="cappuccino">Cappuccino</SelectItem>
+          <SelectItem id="americano">Americano</SelectItem>
+          <SelectItem id="mocha">Mocha</SelectItem>
+        </SelectOptions>
       </Select>
       <Text>
         <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}

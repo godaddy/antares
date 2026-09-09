@@ -13,6 +13,9 @@ Use the `LinkButton` component instead when you need navigation functionality wi
 
 Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
 
+Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
+disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
+
 ## Installation
 
 ```bash

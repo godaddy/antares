@@ -11,9 +11,11 @@ import * as Stories from './date-picker.stories.tsx';
 
 ## Features
 
+- **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+- **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
 - `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-- Built on React Aria — native form integration, validation, focus management, and screen-reader support
-- Consumer-controlled label formatting via `formatOptions`
+- Built on React Aria - native form integration, validation, focus management, and screen-reader support
+- Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
 - `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
 
 ## Installation
@@ -27,41 +29,63 @@ npm install @godaddy/antares
 Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
 
 ```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { DatePicker } from '@godaddy/antares';
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
 
-<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
-<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
 ```
 
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
 
 ## Examples
 
 <Examples of={Stories.Examples} />
 
-## Customization
-
-`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
-
-## Accessibility
-
-- The whole field is a single focusable button; Enter/Space opens the popover
-- Focus is trapped in the open popover and returns to the trigger on close
-- Esc and outside-click dismiss the popover
-- The calendar grid is fully keyboard navigable and screen-reader announced
-
-## Best Practices
-
-- Provide a `label` (or `aria-label`) on every picker.
-- For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
-
-## Troubleshooting
-
-- Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
-- Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
-
 ## Props
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
 
 The `DatePicker` component accepts the following props:
 

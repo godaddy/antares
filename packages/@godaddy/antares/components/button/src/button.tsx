@@ -1,16 +1,17 @@
 import type React from 'react';
-import { forwardRef } from 'react';
+import { type Context, forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
-  ButtonContext,
+  ButtonContext as RACButtonContext,
   type ButtonProps as RACButtonProps,
+  type ContextValue,
   Link as RACLink,
   type LinkProps as RACLinkProps,
-  Text as RACText,
   useSlottedContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
+import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -22,7 +23,9 @@ const buttonVariants = cva(styles.button, {
       tertiary: styles.tertiary,
       critical: styles.critical,
       inline: styles.inline,
-      minimal: styles.minimal
+      minimal: styles.minimal,
+      control: styles.control,
+      trigger: styles.trigger
     },
     size: {
       sm: styles.sm,
@@ -36,10 +39,12 @@ const buttonVariants = cva(styles.button, {
 });
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+type ButtonVariant = ButtonVariantProps['variant'];
+type LinkButtonVariant = Exclude<ButtonVariant, 'control' | 'trigger'>;
 
-interface BaseButtonProps {
+interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
   /** The variant of the button. */
-  variant?: ButtonVariantProps['variant'];
+  variant?: V;
 
   /** The size of the button. */
   size?: ButtonVariantProps['size'];
@@ -50,18 +55,17 @@ interface BaseButtonProps {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
+export const ButtonContext: Context<ContextValue<RACButtonProps, HTMLButtonElement>> = RACButtonContext;
+
 type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
 
-/**
- * The Button component allows users to trigger an action.
- *
- * @param props - The properties {@link ButtonProps} passed to the component.
- */
+/** Triggers an action. A parent may publish `variant`/`size` per slot; local props win. */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   const { variant, size, className, children, slot, ...rest } = props;
-  const contextProps = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
-  const resolvedVariant = variant !== undefined ? variant : contextProps?.variant;
-  const resolvedSize = size !== undefined ? size : contextProps?.size;
+  const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
+  const resolvedVariant = variant ?? inherited?.variant;
+  const resolvedSize = size ?? inherited?.size;
+  const content = typeof children === 'string' ? <Text slot={null}>{children}</Text> : children;
 
   return (
     <RACButton
@@ -70,12 +74,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       slot={slot}
       className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
     >
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      {content}
     </RACButton>
   );
 });
 
-export interface LinkButtonProps extends BaseButtonProps, Omit<RACLinkProps, 'children'> {
+export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omit<RACLinkProps, 'children'> {
   /** Whether the link is external. It will show an external icon if true. */
   isExternal?: boolean;
 }
@@ -96,7 +100,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      {typeof children === 'string' ? <Text>{children}</Text> : children}
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );

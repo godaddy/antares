@@ -1,36 +1,39 @@
 import type { ReactNode } from 'react';
 import {
   CheckboxButton as RACCheckboxButton,
+  type CheckboxButtonProps as RACCheckboxButtonProps,
   CheckboxField as RACCheckboxField,
   type CheckboxFieldProps as RACCheckboxFieldProps,
   CheckboxGroup as RACCheckboxGroup,
-  type CheckboxGroupProps as RACCheckboxGroupProps
+  type CheckboxGroupProps as RACCheckboxGroupProps,
+  type CheckboxGroupRenderProps as RACCheckboxGroupRenderProps,
+  Provider as RACProvider,
+  composeRenderProps,
+  useSlottedContext
 } from 'react-aria-components';
-import { Field, FieldDescription, FieldError, FieldLabel, type FieldOwnProps } from '#components/field';
 import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { GroupContext, type GroupProps } from '#components/structure';
+import { LabelContext } from '#components/label';
 import { Icon } from '#components/icon';
 import { cx } from 'cva';
 import { composeClassName } from '#utils/render-props.ts';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 import styles from './index.module.css';
 
 export interface CheckboxIndicatorProps {
   /** Whether the control is selected. */
   isSelected?: boolean;
+
   /** Whether the control is in an indeterminate state. */
   isIndeterminate?: boolean;
+
   /** Additional CSS class for the indicator. */
   className?: string;
 }
 
 /**
- * Presentational checkbox indicator: the box plus its check/minus glyph.
- *
- * Decorative by default (`aria-hidden`) - the surrounding control owns
- * interaction and accessibility. It carries its own `data-selected` /
- * `data-indeterminate` so it renders correctly outside an interactive
- * `Checkbox` (e.g. as a selection indicator inside a menu item).
- *
- * @param props - {@link CheckboxIndicatorProps}
+ * Presentational checkbox indicator (box + check/minus glyph).
+ * Decorative (`aria-hidden`); carries its own selected/indeterminate data attrs for use outside Checkbox.
  */
 export function CheckboxIndicator({ isSelected, isIndeterminate, className }: CheckboxIndicatorProps) {
   return (
@@ -51,21 +54,35 @@ export function CheckboxIndicator({ isSelected, isIndeterminate, className }: Ch
   );
 }
 
+interface CheckboxButtonProps extends Omit<RACCheckboxButtonProps, 'className' | 'children'>, Omit<FlexOwnProps, 'as'> {
+  children?: RACCheckboxButtonProps['children'];
+  className?: string;
+}
+
+function CheckboxButton(props: CheckboxButtonProps) {
+  const { className, children, ...rest } = props;
+
+  return (
+    <Flex {...rest} as={RACCheckboxButton} className={composeClassName(className, styles.checkbox)}>
+      {children}
+    </Flex>
+  );
+}
+
 export interface CheckboxProps extends Omit<RACCheckboxFieldProps, 'children'>, FlexOwnProps {
-  /** The content of the checkbox label. */
+  /** Label text shown next to the indicator. */
   children?: ReactNode;
 }
 
 /**
- * Antares Checkbox component. Renders a checkbox input with an associated label.
- *
- * @param props - {@link CheckboxProps}
+ * Checkbox with an associated label.
  */
 export function Checkbox(props: CheckboxProps) {
   const { children, ...rest } = props;
+
   return (
     <Flex {...rest} as={RACCheckboxField}>
-      <Flex as={RACCheckboxButton} className={styles.checkbox}>
+      <CheckboxButton>
         {function renderCheckbox({ isSelected, isIndeterminate }) {
           return (
             <Flex alignItems="center" gap="sm">
@@ -74,44 +91,84 @@ export function Checkbox(props: CheckboxProps) {
             </Flex>
           );
         }}
-      </Flex>
+      </CheckboxButton>
     </Flex>
   );
 }
 
-export interface CheckboxGroupProps extends RACCheckboxGroupProps, FieldOwnProps {
-  /** The checkboxes within the group. */
-  children?: ReactNode;
+/** Layout an item `Group` inherits. `presentation` keeps it out of the checkboxgroup's a11y tree. */
+function itemGroup(orientation: 'horizontal' | 'vertical'): GroupProps {
+  const horizontal = orientation === 'horizontal';
 
-  /** Layout orientation of the checkboxes. @default 'vertical' */
+  return { role: 'presentation', direction: horizontal ? 'row' : 'column', gap: horizontal ? 'lg' : 'md' };
+}
+
+export interface CheckboxGroupProps
+  extends Omit<RACCheckboxGroupProps, 'children'>,
+    Omit<FlexOwnProps, 'as' | 'className'> {
+  /** Layout axis for the checkbox items. @default 'vertical' */
   orientation?: 'horizontal' | 'vertical';
+
+  /** Field interior (`Label`, checkboxes, description, `FieldError`). */
+  children: ReactNode | ((renderProps: RACCheckboxGroupRenderProps) => ReactNode);
 }
 
 /**
- * Antares CheckboxGroup component. Renders a group meant to hold checkboxes with shared state.
+ * Checkbox group. Compose `Label`, a `Group` of checkboxes, description, and `FieldError`. The
+ * `Group` picks up its axis, gap, and presentational role from `orientation`.
  *
- * @param props - {@link CheckboxGroupProps}
+ * @example
+ * ```tsx
+ * <CheckboxGroup>
+ *   <Label>Favorite colors</Label>
+ *   <Group>
+ *     <Checkbox value="blue">Blue</Checkbox>
+ *   </Group>
+ *   <FieldError />
+ * </CheckboxGroup>
+ * ```
  */
 export function CheckboxGroup({
   children,
   className,
-  errorMessage,
-  label,
   orientation = 'vertical',
-  description,
+  gap = 'sm',
+  isDisabled,
   ...rest
 }: CheckboxGroupProps) {
   return (
-    <Field as={RACCheckboxGroup} {...rest} className={composeClassName(className, styles.checkboxGroup)}>
-      <FieldLabel isRequired={rest.isRequired}>{label}</FieldLabel>
-      <Flex
-        direction={orientation === 'horizontal' ? 'row' : 'column'}
-        gap={orientation === 'horizontal' ? 'lg' : 'md'}
-      >
-        {children}
-      </Flex>
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
-    </Field>
+    <Flex
+      direction="column"
+      gap={gap}
+      {...rest}
+      isDisabled={isDisabled}
+      as={RACCheckboxGroup}
+      data-orientation={orientation}
+      className={composeClassName(className, fieldStyles.field, styles.checkboxGroup)}
+    >
+      {composeRenderProps(children, function body(node) {
+        return <CheckboxGroupBody orientation={orientation}>{node}</CheckboxGroupBody>;
+      })}
+    </Flex>
+  );
+}
+
+/**
+ * Styles the label a CheckboxGroup owns and lays out the `Group` holding its items. It runs inside
+ * `RACCheckboxGroup`, so it reads what React Aria wired to the label before republishing it.
+ */
+function CheckboxGroupBody({ orientation, children }: { orientation: 'horizontal' | 'vertical'; children: ReactNode }) {
+  const label = useSlottedContext(LabelContext) ?? {};
+  const group = useSlottedContext(GroupContext) ?? {};
+
+  return (
+    <RACProvider
+      values={[
+        [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
+        [GroupContext, { ...group, ...itemGroup(orientation) }]
+      ]}
+    >
+      {children}
+    </RACProvider>
   );
 }

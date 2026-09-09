@@ -1,13 +1,16 @@
-import { DatePicker } from '@godaddy/antares';
+import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';
 import { parseDate } from '@godaddy/antares/date';
 
 /**
- * Controlling the label with `formatOptions`.
- * @title Custom format
+ * Controlling the trigger's label format via `formatOptions`.
  * @order 4
  */
-export function DatePickerFormatOptionsExample() {
+export function FormatOptionsExample() {
   return (
-    <DatePicker label="Event date" defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }} />
+    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>
+      <Label>Event date</Label>
+      <Button slot="trigger" />
+      <DatePickerCalendar />
+    </DatePicker>
   );
 }

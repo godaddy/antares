@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig, defaultExclude, type TestProjectConfiguration } from 'vitest/config';
+import type { BrowserCommand } from 'vitest/node';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import type { Plugin } from 'vite';
@@ -75,6 +76,20 @@ export const ssr: TestProjectConfiguration = {
   }
 };
 
+/**
+ * Move the pointer outside the viewport so that no element is hovered.
+ *
+ * Why: the pointer belongs to the page, and Vitest reuses one page for every
+ * test file it runs in a session. A file that leaves the pointer over content
+ * poisons the next one, whose elements can mount already hovered - Chromium
+ * re-runs its hit test when the document changes under a resting pointer.
+ * Outside the viewport is the only position no element can occupy. Tests reach
+ * this through `resetPointer()` in `@godaddy/antares`'s `test/utils/test-helpers`.
+ */
+const resetPointer: BrowserCommand<[]> = function resetPointer({ page }) {
+  return page.mouse.move(-1, -1);
+};
+
 export const browser: TestProjectConfiguration = {
   extends: true,
   test: {
@@ -97,7 +112,8 @@ export const browser: TestProjectConfiguration = {
       provider: playwright(),
       headless: true,
       enabled: true,
-      screenshotFailures: false
+      screenshotFailures: false,
+      commands: { resetPointer }
     }
   }
 };

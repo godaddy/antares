@@ -1,17 +1,24 @@
-import { TextField } from '@godaddy/antares';
+import { Flex, Group, Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
- * Use `leadingText` and `trailingText` for fixed text before and after the input, such as currency.
+ * Fixed text before and after the input, such as currency. Leading and trailing content is
+ * composed inside the `Group` and its position comes from source order.
  * @order 5
  */
-export function TextFieldAdornmentsExample() {
+export function AdornmentsExample() {
   return (
-    <TextField
-      description="Use leadingText and trailingText to show fixed text before and after the input (e.g. currency)."
-      label="Amount"
-      leadingText="$"
-      placeholder="0.00"
-      trailingText=".00"
-    />
+    <TextField>
+      <Label>Amount</Label>
+      <Group>
+        <Flex as="span" alignItems="center" inlinePaddingStart="md">
+          $
+        </Flex>
+        <Input placeholder="0.00" />
+        <Flex as="span" alignItems="center" inlinePaddingEnd="md">
+          .00
+        </Flex>
+      </Group>
+      <Text slot="description">Compose fixed text before and after the input (e.g. currency).</Text>
+    </TextField>
   );
 }

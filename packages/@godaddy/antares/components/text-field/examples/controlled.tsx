@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Text, TextField } from '@godaddy/antares';
+import { Input, Label, Text, TextField } from '@godaddy/antares';
 
 /**
  * Use `value` and `onChange` for controlled state.
  * @order 2
  */
-export function TextFieldControlledExample() {
+export function ControlledExample() {
   const [value, setValue] = useState('');
 
   return (
     <>
-      <TextField label="Email" placeholder="you@example.com" value={value} onChange={setValue} />
+      <TextField value={value} onChange={setValue}>
+        <Label>Email</Label>
+        <Input placeholder="you@example.com" />
+      </TextField>
       <Text>
         <strong>Value:</strong> {value || '(empty)'}
       </Text>

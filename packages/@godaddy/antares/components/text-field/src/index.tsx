@@ -1,19 +1,25 @@
 import type { ReactNode } from 'react';
-import { TextField as RACTextField, type TextFieldProps as RACTextFieldProps } from 'react-aria-components';
 import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  type FieldSize,
-  FieldInput,
-  FieldTextArea,
-  type FieldOwnProps
-} from '#components/field';
-import { Flex } from '#components/layout/flex';
+  DEFAULT_SLOT,
+  Provider as RACProvider,
+  TextField as RACTextField,
+  type TextFieldProps as RACTextFieldProps,
+  composeRenderProps,
+  useSlottedContext
+} from 'react-aria-components';
+import { ButtonContext, type ButtonProps } from '#components/button';
+import { InputContext } from '#components/input';
+import { LabelContext } from '#components/label';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { GroupContext } from '#components/structure';
+import { TextAreaContext } from '#components/text-area';
+import { composeClassName } from '#utils/render-props.ts';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 
-export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'size'>, FieldOwnProps {
+export interface TextFieldProps extends Omit<RACTextFieldProps, 'size'>, Omit<FlexOwnProps, 'as' | 'className'> {
+  /** Field interior. Pass a function to read field state. */
+  children: RACTextFieldProps['children'];
+
   /** Default value (uncontrolled). */
   defaultValue?: string;
 
@@ -21,68 +27,97 @@ export interface TextFieldProps extends Omit<RACTextFieldProps, 'children' | 'si
   value?: string;
 
   /** Visual size of the input. @default 'md' */
-  size?: FieldSize;
-
-  /** Content rendered before the input (leading adornment) — text or an icon. */
-  leadingText?: ReactNode;
-
-  /** Content rendered after the input (trailing adornment) — text or an icon. */
-  trailingText?: ReactNode;
-
-  /** When true, renders a textarea instead of a single-line input. */
-  multiline?: boolean;
+  size?: 'sm' | 'md';
 
   /** Name of the input element, used when submitting a form. */
   name?: string;
-
-  /** Placeholder text when the input value is empty. */
-  placeholder?: string;
 
   /** Handler called when the value changes. */
   onChange?: RACTextFieldProps['onChange'];
 }
 
+interface TextFieldBodyProps {
+  /** Visual size of the controls. */
+  size?: 'sm' | 'md';
+
+  /** Whether the field is disabled. */
+  isDisabled?: boolean;
+
+  children: ReactNode;
+}
+
 /**
- * TextField composes React Aria TextField with the field primitives (Field, FieldLabel,
- * FieldGroup, FieldError) and optional leading/trailing text adornments. Use for
- * single-line or multiline text input with label, description, and error message.
- *
- * @param props - {@link TextFieldProps}
- * @returns JSX element
+ * Styles the parts a TextField owns. It runs inside `RACTextField`, so it reads what React Aria
+ * wired to each part and republishes it with the field's chrome; a part's own props still win last,
+ * in its `useContextProps`.
+ */
+function TextFieldBody({ size, isDisabled, children }: TextFieldBodyProps) {
+  const label = useSlottedContext(LabelContext) ?? {};
+  const input = useSlottedContext(InputContext) ?? {};
+  const textArea = useSlottedContext(TextAreaContext) ?? {};
+  const group = useSlottedContext(GroupContext) ?? {};
+
+  const control: ButtonProps = { variant: 'control', size, isDisabled, className: fieldStyles.control };
+
+  return (
+    <RACProvider
+      values={[
+        [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
+        [InputContext, { ...input, className: composeClassName(input.className, fieldStyles.input) }],
+        [TextAreaContext, { ...textArea, className: composeClassName(textArea.className, fieldStyles.textarea) }],
+
+        // The box group owns the chrome, so it carries the disabled state instead of each child dimming itself.
+        [GroupContext, { ...group, isDisabled, className: composeClassName(group.className, fieldStyles.group) }],
+        [
+          ButtonContext,
+          {
+            // React Aria's TextField publishes no ButtonContext, so the field publishes both
+            // entries itself. A Button the field does not own inherits nothing: the default entry
+            // is here only so an unslotted Button does not throw.
+            slots: { [DEFAULT_SLOT]: {}, control }
+          }
+        ]
+      ]}
+    >
+      {children}
+    </RACProvider>
+  );
+}
+
+/**
+ * Text input field. Compose `Label`, `Input`/`TextArea`, optional `Group`, description, and `FieldError`.
  *
  * @example
  * ```tsx
- * <TextField label="Email" placeholder="you@example.com" />
- * <TextField label="Amount" leadingText="$" trailingText=".00" />
- * <TextField label="Comment" multiline placeholder="Enter a comment" />
+ * <TextField>
+ *   <Label>Email</Label>
+ *   <Input placeholder="you@example.com" />
+ *   <Text slot="description">We won't share it.</Text>
+ *   <FieldError />
+ * </TextField>
  * ```
  */
 export function TextField(props: TextFieldProps) {
-  const { description, errorMessage, label, leadingText, multiline, placeholder, size, trailingText, ...racProps } =
-    props;
-  const { isDisabled, isRequired } = racProps;
-
-  const hasLeading = leadingText != null && leadingText !== false;
-  const hasTrailing = trailingText != null && trailingText !== false;
+  const { children, size, gap = 'sm', className, isDisabled, ...rest } = props;
 
   return (
-    <Field as={RACTextField} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size} gap="sm">
-        {hasLeading && (
-          <Flex as="span" alignItems="center" inlinePaddingStart="md">
-            {leadingText}
-          </Flex>
-        )}
-        {multiline ? <FieldTextArea placeholder={placeholder} /> : <FieldInput placeholder={placeholder} />}
-        {hasTrailing && (
-          <Flex as="span" alignItems="center" inlinePaddingEnd="md">
-            {trailingText}
-          </Flex>
-        )}
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
-    </Field>
+    <Flex
+      direction="column"
+      gap={gap}
+      {...rest}
+      isDisabled={isDisabled}
+      as={RACTextField}
+      data-interior="box"
+      data-size={size}
+      className={composeClassName(className, fieldStyles.field)}
+    >
+      {composeRenderProps(children, function body(node) {
+        return (
+          <TextFieldBody size={size} isDisabled={isDisabled}>
+            {node}
+          </TextFieldBody>
+        );
+      })}
+    </Flex>
   );
 }

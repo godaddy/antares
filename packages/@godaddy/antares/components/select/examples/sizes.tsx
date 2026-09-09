@@ -1,22 +1,30 @@
-import { Flex, Select, SelectItem } from '@godaddy/antares';
+import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';
 
 /**
  * Compare the supported `md` and `sm` visual sizes.
  * @title Sizes
  * @order 7
  */
-export function SelectSizesExample() {
+export function SizesExample() {
   return (
     <Flex direction="column" gap="md">
-      <Select label="Coffee (md)" placeholder="Pick a drink">
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+      <Select placeholder="Pick a drink">
+        <Label>Coffee (md)</Label>
+        <Button slot="trigger" />
+        <SelectOptions>
+          <SelectItem id="espresso">Espresso</SelectItem>
+          <SelectItem id="latte">Latte</SelectItem>
+          <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        </SelectOptions>
       </Select>
-      <Select label="Coffee (sm)" placeholder="Pick a drink" size="sm">
-        <SelectItem id="espresso">Espresso</SelectItem>
-        <SelectItem id="latte">Latte</SelectItem>
-        <SelectItem id="cappuccino">Cappuccino</SelectItem>
+      <Select placeholder="Pick a drink" size="sm">
+        <Label>Coffee (sm)</Label>
+        <Button slot="trigger" />
+        <SelectOptions>
+          <SelectItem id="espresso">Espresso</SelectItem>
+          <SelectItem id="latte">Latte</SelectItem>
+          <SelectItem id="cappuccino">Cappuccino</SelectItem>
+        </SelectOptions>
       </Select>
     </Flex>
   );
