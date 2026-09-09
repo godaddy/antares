@@ -11,10 +11,10 @@
 - [CircularProgress](/docs/components/circular-progress): A circular progress indicator shows determinate progress of an operation over time
 - [DatePicker](/docs/components/date-picker): Date fields that display the selected value as a label and open a calendar popover to pick a single date (DatePicker) or a range (DateRangePicker).
 - [Drawer](/docs/components/drawer): An overlay panel that slides in from a screen edge, supporting sidebar navigation and bottom sheets.
-- [FieldError](/docs/components/field-error): Validation message for a field. Renders only when the field is invalid.
 - [DropZone](/docs/components/drop-zone): A standalone region that accepts drag-and-drop file interactions, rendering a clearly defined target area where users can drop files.
-- [Heading](/docs/components/heading): Semantic h1-h6 heading. Use slot="title" inside a Modal or Dialog to name the overlay.
+- [FieldError](/docs/components/field-error): Validation message for a field. Renders only when the field is invalid.
 - [FileTrigger](/docs/components/file-trigger): A style-less primitive that wraps any pressable component and opens the native file picker when it is activated.
+- [Heading](/docs/components/heading): Semantic h1-h6 heading. Use slot="title" inside a Modal or Dialog to name the overlay.
 - [Icon](/docs/components/icon): Flexible SVG icon component with on-demand loading, automatic caching, and extensive customization options
 - [Image](/docs/components/image): A native image element that inherits presentation and behavior from its Antares parent.
 - [InlineDrawer](/docs/components/inline-drawer): An in-flow collapsible built on RAC Disclosure. Compose a trigger and content to make an accordion or a sidebar rail.
@@ -25,10 +25,10 @@
 - [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
 - [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
 - [NumberField](/docs/components/number-field): NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
-- [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
 - [Pressable](/docs/components/pressable): A wrapperless interaction primitive that adds accessible press behavior to a single child element.
 - [ProgressBar](/docs/components/progress-bar): A progress bar shows determinate progress of an operation over time
+- [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [ProgressSteps](/docs/components/progress-steps): A multi-step progress indicator for wizard and onboarding flows.
 - [Radio](/docs/components/radio): Accessible radio button component for mutually exclusive selections with keyboard navigation, validation states, and flexible layouts.
 - [RangeField](/docs/components/range-field): RangeField lets users select one numeric value or a related set of values on a bounded scale.

@@ -1098,8 +1098,8 @@ the group needs interactive behavior.
 
 ### Toggle Chips [#toggle-chips]
 
-Use Toggle Chips for multiple peer filters. Selected items show a check while
-unselected items remain available in the same group.
+Use Toggle Chips for multiple peer filters. The Chip render prop supplies
+selection state for the checkmark, while `textValue` names composed content.
 
 <Story of="ToggleChipsExample" />
 
@@ -1107,8 +1107,9 @@ unselected items remain available in the same group.
 
 ### Removable Chips [#removable-chips]
 
-Use Removable Chips for user-added filters and tokens. Removing a Chip calls
-the group callback so the owning collection can update its items.
+Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
+removed keys through `onRemove`; the owner updates its collection. A
+self-closing `Button` in the `remove` slot supplies each remove control.
 
 <Story of="RemovableChipsExample" />
 
@@ -1125,7 +1126,8 @@ needs to own the selected filter state.
 
 ### Sizes [#sizes]
 
-Compare the supported `sm`, `md`, and `lg` sizes. Keep one size per group.
+Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
+so every Chip inherits one consistent size.
 
 <Story of="SizesExample" />
 
@@ -1159,8 +1161,8 @@ value. Removable items continue to be owned by the collection.
 
 ### Menu filter trigger [#menu-filter-trigger]
 
-Use `ChipButton` for a menu trigger that shares the Chip family's compact
-sizing and presentation.
+Use `ChipButton` for Chip presentation without collection semantics.
+`MenuTrigger` continues to own open state, focus, and keyboard behavior.
 
 <Story of="MenuFilterTriggerExample" />
 
@@ -1168,78 +1170,28 @@ sizing and presentation.
 
 ## Customization [#customization]
 
-Use a plain string for a simple Chip label. When content is composed, use
-`Text` for the visible label and `textValue` for the complete accessible value.
+### Content [#content]
 
-```tsx
-<Chip id="austin" textValue="Austin">
-  <Icon icon="map-pin" />
-  <Text>Austin</Text>
-  <Button slot="remove" />
-</Chip>
-```
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
 
-Set the size on `ChipGroup` to share it with every Chip. `ChipList` wraps items
-horizontally by default, and its layout props can be customized when needed.
+### Selection and removal [#selection-and-removal]
 
-For removable Chips, provide `onRemove` on the group and add a self-closing
-`Button` with `slot="remove"`. The callback receives a `Set` of removed keys;
-update the collection owned by your application.
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
 
-```tsx
-<ChipGroup
-  onRemove={(keys) => {
-    setFilters((current) => current.filter((filter) => !keys.has(filter.id)));
-  }}
->
-  <ChipList items={filters}>
-    {(filter) => (
-      <Chip id={filter.id} textValue={filter.name}>
-        <Text>{filter.name}</Text>
-        <Button slot="remove" />
-      </Chip>
-    )}
-  </ChipList>
-</ChipGroup>
-```
+### Layout and sizing [#layout-and-sizing]
 
-For Toggle Chips, use the Chip render prop to show a selected accessory.
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
 
-```tsx
-<Chip id="home" textValue="Home">
-  {({ isSelected }) => (
-    <>
-      <Icon icon="home" />
-      <Text>Home</Text>
-      {isSelected ? <Icon icon="checkmark" /> : null}
-    </>
-  )}
-</Chip>
-```
+### Button composition [#button-composition]
 
-### Menu filter button [#menu-filter-button]
-
-When you need a menu with a Chip-like appearance, use `ChipButton` inside
-`MenuTrigger`. The menu trigger owns open state, focus, keyboard interaction,
-and `aria-expanded`; the consumer owns any configured-filter state.
-
-```tsx
-import { useState } from 'react';
-import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
-
-const [isOpen, setIsOpen] = useState(false);
-
-<MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
-  <ChipButton>
-    <Text>Location</Text>
-    <Icon icon="chevron-down" flip={isOpen ? 'vertical' : undefined} />
-  </ChipButton>
-
-  <Menu aria-label="Location">
-    {/* Menu items */}
-  </Menu>
-</MenuTrigger>
-```
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
 
 ## Accessibility [#accessibility]
 
@@ -1713,43 +1665,6 @@ The `DrawerTrigger` component accepts the following props:
 <PropTable />
 
 
-# FieldError
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-FieldError renders when the field is invalid.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # DropZone
 
 
@@ -1854,7 +1769,7 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
-# Heading
+# FieldError
 
 
 
@@ -1868,8 +1783,7 @@ The button's accessible name is built from two sources, combined in order:
 
 ## Features [#features]
 
-* Renders `h1`-`h6` from the `level` prop (default `3`).
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
 
 ## Installation [#installation]
 
@@ -1881,12 +1795,11 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+FieldError renders when the field is invalid.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -1947,6 +1860,45 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 * `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
 * Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
 * Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Heading
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders `h1`-`h6` from the `level` prop (default `3`).
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -3146,79 +3098,6 @@ The `NumberField` component accepts the following props:
 <PropTable />
 
 
-# Pagination
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Pass `activeIndex` and `onChange` to control the active page externally.
-
-<Story of="ControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Default Active [#default-active]
-
-Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
-
-<Story of="DefaultActiveExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
-
-### With Limit [#with-limit]
-
-Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
-
-<Story of="WithLimitExample" />
-
-<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
-
-### onChange Event [#onchange-event]
-
-The `onChange` callback fires with the new page index whenever the user navigates.
-
-<Story of="OnChangeExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # Popover
 
 
@@ -3455,6 +3334,79 @@ Use the `status` prop to communicate intent: `default`, `success`, `warning`, or
 * `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
 * `aria-valuetext` provides a formatted string (e.g. `"60%"`)
 * `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+<PropTable />
+
+
+# Pagination
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+The default pagination is uncontrolled. It renders prev/next buttons and one dot per page. The `total` prop sets the number of items.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function DefaultExample() {\n  const [page, setPage] = useState(0);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={5} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Pass `activeIndex` and `onChange` to control the active page externally.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [page, setPage] = useState(2);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={4} activeIndex={page} onChange={setPage} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        Current page: {page}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Default Active [#default-active]
+
+Use `defaultActiveIndex` to set the starting page in uncontrolled mode.
+
+<Story of="DefaultActiveExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function DefaultActiveExample() {\n  return <Pagination total={5} defaultActiveIndex={2} />;\n}&#x22;" />
+
+### With Limit [#with-limit]
+
+Limit the number of items shown per page. When `limit` is greater than 1, the number of pages (dots) is derived from `Math.ceil(total / limit)`. For example, 10 items with a limit of 3 produces 4 pages (dots).
+
+<Story of="WithLimitExample" />
+
+<Source language="tsx" code="&#x22;import { Pagination } from '@godaddy/antares';\n\nexport function WithLimitExample() {\n  return <Pagination total={10} limit={3} />;\n}&#x22;" />
+
+### onChange Event [#onchange-event]
+
+The `onChange` callback fires with the new page index whenever the user navigates.
+
+<Story of="OnChangeExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Pagination } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function OnChangeExample() {\n  const [onChangeValue, setOnChangeValue] = useState<number | undefined>(undefined);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Pagination total={3} onChange={setOnChangeValue} />\n      <Flex as=\&#x22;span\&#x22; justifyContent=\&#x22;center\&#x22;>\n        onChange: {onChangeValue ?? 'none'}\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
