@@ -24,11 +24,6 @@
   --_track-w: 2.5em;
 }
 
-.label:where(.switch[data-size="sm"] *) {
-  font-size: 0.875em;
-  line-height: 1.375;
-}
-
 .track {
   position: relative;
   display: inline-block;
@@ -93,6 +88,11 @@
   font-size: 1em;
   font-weight: bolder;
   line-height: 1.125;
+}
+
+.label:where(.switch[data-size="sm"] *) {
+  font-size: 0.875em;
+  line-height: 1.375;
 }
 
 @media (prefers-reduced-motion: reduce) {

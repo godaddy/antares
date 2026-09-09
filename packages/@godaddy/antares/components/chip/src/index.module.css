@@ -106,7 +106,7 @@
     border-radius: inherit;
   }
 
-  &:where(.chipButton, [data-selection-mode], [data-allows-removing], [data-href]):where(:hover, [data-hovered]):where(
+  &:where(.chipButton, [data-selection-mode], [data-allows-removing], [data-href]):where([data-hovered]):where(
       :not([data-disabled])
     ) {
     --_chip-foreground: var(--ux-1e4ese5, #111);
@@ -126,7 +126,7 @@
     --_chip-background: var(--ux-gdy377, #fff);
     --_chip-border: var(--ux-187j9dd, #00a4a6);
 
-    &:where(:hover, [data-hovered]):where(:not([data-disabled])) {
+    &:where([data-hovered]):where(:not([data-disabled])) {
       --_chip-foreground: var(--ux-k4fkva, #111);
       --_chip-background: var(--ux-gdy377, #fff);
       --_chip-border: var(--ux-bg7olm, #d6d6d6);
