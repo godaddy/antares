@@ -1,5 +1,6 @@
-import { type ComponentProps, type ReactNode, forwardRef } from 'react';
+import { type ComponentProps, type ReactNode, createContext, forwardRef } from 'react';
 import { cx } from 'cva';
+import { type ContextValue, useContextProps } from 'react-aria-components';
 import styles from './index.module.css';
 
 /**
@@ -70,6 +71,8 @@ export interface TagProps extends ComponentProps<'span'> {
   children: ReactNode;
 }
 
+export const TagContext = createContext<ContextValue<Partial<TagProps>, HTMLSpanElement>>(null);
+
 /**
  * Highlights statuses and categories with a colored label.
  *
@@ -88,6 +91,8 @@ export interface TagProps extends ComponentProps<'span'> {
  * @param props - {@link TagProps}
  */
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(props, ref) {
+  [props, ref] = useContextProps(props, ref, TagContext);
+
   const {
     emphasis = 'passive',
     size = 'md',
