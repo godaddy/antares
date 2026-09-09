@@ -357,6 +357,9 @@ Use the `LinkButton` component instead when you need navigation functionality wi
 
 Use the `CloseButton` preset to dismiss an overlay (such as a `Modal`). It defaults to `slot="close"`, so it picks up the overlay's close behavior with no wiring, and always renders an `x` icon with `aria-label="Close"`. For a labelled dismiss action (e.g. "Cancel"), use a raw `<Button slot="close">Cancel</Button>`.
 
+Inside a field `Group`, `slot="control"` and `slot="trigger"` pick up the matching look, size, and
+disabled state from context. See TextField for control affixes, and Select or DatePicker for trigger faces.
+
 ## Installation [#installation]
 
 ```bash
@@ -691,6 +694,340 @@ The `Carousel` component accepts the following props:
 <PropTable />
 
 
+# Checkbox
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single checkbox with a label.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Checkbox>One checkbox</Checkbox>;\n}&#x22;" />
+
+### Indeterminate [#indeterminate]
+
+Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
+
+<Story of="IndeterminateExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function IndeterminateExample() {\n  return <Checkbox isIndeterminate>Option 1</Checkbox>;\n}&#x22;" />
+
+### Checkbox Group [#checkbox-group]
+
+Group multiple checkboxes together with a shared label.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <CheckboxGroup>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Manage checkbox group state programmatically with controlled component pattern.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);\n\n  return (\n    <CheckboxGroup value={selected} onChange={setSelected}>\n      <Label>Favorite sports</Label>\n      <Group>\n        <Checkbox value=\&#x22;basketball\&#x22;>Basketball</Checkbox>\n        <Checkbox value=\&#x22;soccer\&#x22;>Soccer</Checkbox>\n        <Checkbox value=\&#x22;baseball\&#x22;>Baseball</Checkbox>\n        <Checkbox value=\&#x22;tennis\&#x22;>Tennis</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Select your favorite sports</Text>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Horizontal Layout [#horizontal-layout]
+
+Display checkboxes in a horizontal row instead of vertical stack.
+
+<Story of="HorizontalExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <CheckboxGroup orientation=\&#x22;horizontal\&#x22;>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Disabled States [#disabled-states]
+
+Individual checkboxes within a group can be disabled while others remain interactive.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  const [selected, setSelected] = useState<string[]>(['purple', 'red']);\n\n  return (\n    <CheckboxGroup value={selected} onChange={setSelected} isDisabled>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n        <Checkbox value=\&#x22;purple\&#x22;>Purple</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n      <FieldError>At least one color must be selected</FieldError>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Required Indicator [#required-indicator]
+
+Mark a checkbox group as required with visual indicator and validation.
+
+<Story of="RequiredExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, Group, Label, Text } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <CheckboxGroup isRequired>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+### Invalid State [#invalid-state]
+
+Display error state and error message for validation feedback.
+
+<Story of="InvalidExample" />
+
+<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup, FieldError, Group, Label, Text } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <CheckboxGroup isInvalid>\n      <Label>Favorite colors</Label>\n      <Group>\n        <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n        <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n        <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite color</Text>\n      <FieldError>At least one color must be selected</FieldError>\n    </CheckboxGroup>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+`CheckboxGroup` is composed: write `Label`, a `Group` holding the `Checkbox` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Checkbox` takes label text next to the indicator.
+
+### Data Attributes [#data-attributes]
+
+Components automatically add data attributes for styling different states:
+
+**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
+
+**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
+
+```css
+.my-checkbox-group [data-selected] {
+  color: #09757a;
+  font-weight: 500;
+}
+
+.my-checkbox-group[data-invalid] {
+  border-color: #db1802;
+}
+
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.my-checkbox-group [data-indeterminate] {
+  background-color: #1976d2;
+}
+
+.my-checkbox-group [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Component Customization [#component-customization]
+
+Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
+
+```jsx
+<CheckboxGroup className="custom-checkbox-group">
+  <Label>Select options</Label>
+  <Group>
+    <Checkbox value="option1" className="custom-checkbox">
+      Option 1
+    </Checkbox>
+    <Checkbox value="option2" className="highlighted-checkbox">
+      Option 2
+    </Checkbox>
+  </Group>
+</CheckboxGroup>
+```
+
+## Key Features [#key-features]
+
+### Indeterminate State [#indeterminate-state]
+
+The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
+
+```jsx
+<Checkbox isIndeterminate onChange={handleSelectAll}>
+  Select All
+</Checkbox>
+```
+
+### Group Validation [#group-validation]
+
+CheckboxGroup supports validation states and error messages:
+
+* **isRequired**: Marks the group as required with visual indicator
+* **isInvalid**: Shows error state styling
+* **`FieldError`**: Displays validation error text below the group
+
+```jsx
+<CheckboxGroup isRequired isInvalid={!hasSelection}>
+  <Label>Required selection</Label>
+  <Checkbox value="a">Option A</Checkbox>
+  <Checkbox value="b">Option B</Checkbox>
+  <FieldError>At least one option must be selected</FieldError>
+</CheckboxGroup>
+```
+
+### Orientation [#orientation]
+
+Use `orientation="vertical"` (default) to stack checkboxes, or `orientation="horizontal"` to arrange them in a row.
+
+## Accessibility [#accessibility]
+
+### Keyboard Navigation [#keyboard-navigation]
+
+* **Tab**: Moves focus to the next/previous checkbox
+* **Space**: Toggles the focused checkbox
+* **Shift + Tab**: Moves focus to the previous checkbox
+
+### ARIA Support [#aria-support]
+
+* `aria-disabled` for disabled checkboxes
+* `aria-required` when selection is required
+* `aria-invalid` for validation errors
+* Proper labeling with `aria-labelledby` and `aria-describedby`
+
+## Troubleshooting [#troubleshooting]
+
+### Selection Not Updating [#selection-not-updating]
+
+```jsx
+// ❌ Wrong: Using both value and defaultValue
+<CheckboxGroup value={value} defaultValue={["a"]}>
+  <Label>Options</Label>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Controlled mode
+<CheckboxGroup value={value} onChange={setValue}>
+  <Label>Options</Label>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+
+// ✅ Uncontrolled mode
+<CheckboxGroup defaultValue={["a"]}>
+  <Label>Options</Label>
+  <Checkbox value="a">Option A</Checkbox>
+</CheckboxGroup>
+```
+
+### Indeterminate State Not Updating [#indeterminate-state-not-updating]
+
+The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
+
+```jsx
+// ✅ Correct: Manually manage indeterminate state
+const [childSelections, setChildSelections] = React.useState([]);
+const allSelected = childSelections.length === totalChildren;
+const someSelected = childSelections.length > 0 && !allSelected;
+
+<Checkbox
+  isSelected={allSelected}
+  isIndeterminate={someSelected}
+  onChange={handleSelectAll}
+>
+  Select All
+</Checkbox>
+```
+
+### Styling Overrides Not Applying [#styling-overrides-not-applying]
+
+```css
+/* ❌ May not have enough specificity */
+.my-custom-checkbox {
+  color: red;
+}
+
+/* ✅ Use data attributes with className for higher specificity */
+.my-checkbox-group [data-selected] {
+  color: red;
+  font-weight: 600;
+}
+```
+
+### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
+
+```css
+/* ❌ Don't remove focus outlines without replacement */
+[data-focused] {
+  outline: none;
+}
+
+/* ✅ Provide visible focus indicator */
+.my-checkbox-group [data-focused] {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+```
+
+## Best Practices [#best-practices]
+
+### When to Use Checkboxes [#when-to-use-checkboxes]
+
+* ✅ For selecting multiple independent options
+* ✅ When users can select zero, one, or many items
+* ✅ For toggling settings or features on/off
+* ✅ When all available options should be visible
+* ❌ For mutually exclusive options (use Radio instead)
+* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
+
+### Label Guidelines [#label-guidelines]
+
+* Use clear, concise labels that describe what selecting the option means
+* Keep labels short (1-5 words when possible)
+* Ensure labels are descriptive without being verbose
+* Place the most commonly selected options first in groups
+
+### Validation [#validation]
+
+Always provide clear error messages and use appropriate validation states:
+
+```jsx
+<CheckboxGroup isRequired isInvalid={!agreedToTerms}>
+  <Label>Terms and conditions</Label>
+  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
+  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
+  <FieldError>You must agree to the terms to continue</FieldError>
+</CheckboxGroup>
+```
+
+### Group Organization [#group-organization]
+
+* Limit checkbox groups to 7-10 options for better usability
+* Use logical ordering (alphabetical, frequency of use, or importance)
+* Consider using CheckboxGroup for related options, even if there are only 2-3
+* Provide a group label that clearly describes the choice being made
+
+## Props [#props]
+
+```tsx
+<CheckboxGroup>
+  <Label />
+  <Group>
+    <Checkbox />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</CheckboxGroup>
+```
+
+The `Checkbox` component has the following props:
+
+<PropTable />
+
+The `CheckboxGroup` component has the following props:
+
+<PropTable />
+
+
 # Chip
 
 
@@ -996,330 +1333,6 @@ For a menu trigger, the button and menu are composed as siblings inside
 <PropTable />
 
 
-# Checkbox
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A single checkbox with a label.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Checkbox>One checkbox</Checkbox>;\n}&#x22;" />
-
-### Indeterminate [#indeterminate]
-
-Checkboxes can display an indeterminate state (neither checked nor unchecked), with the use of the `isIndeterminate` prop, commonly used for "select all" functionality when some but not all child items are selected.
-
-<Story of="CheckboxIndeterminateExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox } from '@godaddy/antares';\n\nexport function CheckboxIndeterminateExample() {\n  return <Checkbox isIndeterminate>Option 1</Checkbox>;\n}&#x22;" />
-
-### Checkbox Group [#checkbox-group]
-
-Group multiple checkboxes together with a shared label and description.
-
-<Story of="CheckboxGroupBasicExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupBasicExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Manage checkbox group state programmatically with controlled component pattern.
-
-<Story of="CheckboxGroupControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupControlledExample() {\n  const [selected, setSelected] = useState<string[]>(['baseball', 'tennis']);\n\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite sports\&#x22;\n      description=\&#x22;Select your favorite sports\&#x22;\n      value={selected}\n      onChange={setSelected}\n    >\n      <Checkbox value=\&#x22;basketball\&#x22;>Basketball</Checkbox>\n      <Checkbox value=\&#x22;soccer\&#x22;>Soccer</Checkbox>\n      <Checkbox value=\&#x22;baseball\&#x22;>Baseball</Checkbox>\n      <Checkbox value=\&#x22;tennis\&#x22;>Tennis</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Horizontal Layout [#horizontal-layout]
-
-Display checkboxes in a horizontal row instead of vertical stack.
-
-<Story of="CheckboxGroupHorizontalExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupHorizontalExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Disabled States [#disabled-states]
-
-Individual checkboxes within a group can be disabled while others remain interactive.
-
-<Story of="CheckboxGroupDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupDisabledExample() {\n  const [selected, setSelected] = useState<string[]>(['purple', 'red']);\n\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite colors\&#x22;\n      value={selected}\n      onChange={setSelected}\n      errorMessage=\&#x22;At least one color must be selected\&#x22;\n      description=\&#x22;Choose your favorite color\&#x22;\n      isDisabled\n    >\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n      <Checkbox value=\&#x22;purple\&#x22;>Purple</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Required Indicator [#required-indicator]
-
-Mark a checkbox group as required with visual indicator and validation.
-
-<Story of="CheckboxGroupRequiredExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupRequiredExample() {\n  return (\n    <CheckboxGroup\n      label=\&#x22;Favorite colors\&#x22;\n      errorMessage=\&#x22;At least one color must be selected\&#x22;\n      description=\&#x22;Choose your favorite color\&#x22;\n      isRequired\n    >\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-### Invalid State [#invalid-state]
-
-Display error state and error message for validation feedback.
-
-<Story of="CheckboxGroupInvalidExample" />
-
-<Source language="tsx" code="&#x22;import { Checkbox, CheckboxGroup } from '@godaddy/antares';\n\nexport function CheckboxGroupInvalidExample() {\n  return (\n    <CheckboxGroup label=\&#x22;Favorite colors\&#x22; isInvalid description=\&#x22;Choose your favorite color\&#x22;>\n      <Checkbox value=\&#x22;blue\&#x22;>Blue</Checkbox>\n      <Checkbox value=\&#x22;red\&#x22;>Red</Checkbox>\n      <Checkbox value=\&#x22;green\&#x22;>Green</Checkbox>\n    </CheckboxGroup>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-### Data Attributes [#data-attributes]
-
-Components automatically add data attributes for styling different states:
-
-**CheckboxGroup Container:** `data-invalid`, `data-disabled`, `data-required`, `data-readonly`, `data-orientation`
-
-**Checkbox:** `data-selected`, `data-indeterminate`, `data-hovered`, `data-pressed`, `data-focused`, `data-disabled`
-
-```css
-.my-checkbox-group [data-selected] {
-  color: #09757a;
-  font-weight: 500;
-}
-
-.my-checkbox-group[data-invalid] {
-  border-color: #db1802;
-}
-
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-
-.my-checkbox-group [data-indeterminate] {
-  background-color: #1976d2;
-}
-
-.my-checkbox-group [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Component Customization [#component-customization]
-
-Pass `className` or `style` to customize a checkbox field container. Use descendant data-attribute selectors to style the interactive checkbox state:
-
-```jsx
-<CheckboxGroup label="Select options" className="custom-checkbox-group">
-  <Checkbox value="option1" className="custom-checkbox">
-    Option 1
-  </Checkbox>
-  <Checkbox value="option2" className="highlighted-checkbox">
-    Option 2
-  </Checkbox>
-</CheckboxGroup>
-```
-
-## Key Features [#key-features]
-
-### Indeterminate State [#indeterminate-state]
-
-The `isIndeterminate` prop displays a minus icon to represent a partial selection state. This is useful for "select all" checkboxes when only some items in a collection are selected.
-
-```jsx
-<Checkbox isIndeterminate onChange={handleSelectAll}>
-  Select All
-</Checkbox>
-```
-
-### Group Validation [#group-validation]
-
-CheckboxGroup supports validation states and error messages:
-
-* **isRequired**: Marks the group as required with visual indicator
-* **isInvalid**: Shows error state styling
-* **errorMessage**: Displays validation error text below the group
-
-```jsx
-<CheckboxGroup
-  label="Required selection"
-  isRequired
-  isInvalid={!hasSelection}
-  errorMessage="At least one option must be selected"
->
-  <Checkbox value="a">Option A</Checkbox>
-  <Checkbox value="b">Option B</Checkbox>
-</CheckboxGroup>
-```
-
-### Orientation [#orientation]
-
-Control the layout with the `orientation` prop (matching `RadioGroup`):
-
-* `vertical` (default): Stacks checkboxes vertically
-* `horizontal`: Arranges checkboxes in a horizontal row
-
-## Accessibility [#accessibility]
-
-### Keyboard Navigation [#keyboard-navigation]
-
-* **Tab**: Moves focus to the next/previous checkbox
-* **Space**: Toggles the focused checkbox
-* **Shift + Tab**: Moves focus to the previous checkbox
-
-### ARIA Support [#aria-support]
-
-* `aria-disabled` for disabled checkboxes
-* `aria-required` when selection is required
-* `aria-invalid` for validation errors
-* Proper labeling with `aria-labelledby` and `aria-describedby`
-
-## Troubleshooting [#troubleshooting]
-
-### Selection Not Updating [#selection-not-updating]
-
-```jsx
-// ❌ Wrong: Using both value and defaultValue
-<CheckboxGroup value={value} defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Controlled mode
-<CheckboxGroup value={value} onChange={setValue}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-
-// ✅ Uncontrolled mode
-<CheckboxGroup defaultValue={["a"]}>
-  <Checkbox value="a">Option A</Checkbox>
-</CheckboxGroup>
-```
-
-### Indeterminate State Not Updating [#indeterminate-state-not-updating]
-
-The `isIndeterminate` prop must be explicitly managed - it doesn't automatically reflect parent-child relationships:
-
-```jsx
-// ✅ Correct: Manually manage indeterminate state
-const [childSelections, setChildSelections] = React.useState([]);
-const allSelected = childSelections.length === totalChildren;
-const someSelected = childSelections.length > 0 && !allSelected;
-
-<Checkbox
-  isSelected={allSelected}
-  isIndeterminate={someSelected}
-  onChange={handleSelectAll}
->
-  Select All
-</Checkbox>
-```
-
-### Styling Overrides Not Applying [#styling-overrides-not-applying]
-
-```css
-/* ❌ May not have enough specificity */
-.my-custom-checkbox {
-  color: red;
-}
-
-/* ✅ Use data attributes with className for higher specificity */
-.my-checkbox-group [data-selected] {
-  color: red;
-  font-weight: 600;
-}
-```
-
-### Keyboard Navigation Not Working [#keyboard-navigation-not-working]
-
-```css
-/* ❌ Don't remove focus outlines without replacement */
-[data-focused] {
-  outline: none;
-}
-
-/* ✅ Provide visible focus indicator */
-.my-checkbox-group [data-focused] {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-}
-```
-
-## Best Practices [#best-practices]
-
-### When to Use Checkboxes [#when-to-use-checkboxes]
-
-* ✅ For selecting multiple independent options
-* ✅ When users can select zero, one, or many items
-* ✅ For toggling settings or features on/off
-* ✅ When all available options should be visible
-* ❌ For mutually exclusive options (use Radio instead)
-* ❌ For simple on/off toggles without labels (use Toggle/Switch instead)
-
-### Label Guidelines [#label-guidelines]
-
-* Use clear, concise labels that describe what selecting the option means
-* Keep labels short (1-5 words when possible)
-* Ensure labels are descriptive without being verbose
-* Place the most commonly selected options first in groups
-
-### Validation [#validation]
-
-Always provide clear error messages and use appropriate validation states:
-
-```jsx
-<CheckboxGroup
-  label="Terms and conditions"
-  isRequired
-  isInvalid={!agreedToTerms}
-  errorMessage="You must agree to the terms to continue"
->
-  <Checkbox value="terms">I agree to the terms and conditions</Checkbox>
-  <Checkbox value="privacy">I agree to the privacy policy</Checkbox>
-</CheckboxGroup>
-```
-
-### Group Organization [#group-organization]
-
-* Limit checkbox groups to 7-10 options for better usability
-* Use logical ordering (alphabetical, frequency of use, or importance)
-* Consider using CheckboxGroup for related options, even if there are only 2-3
-* Provide a group label that clearly describes the choice being made
-
-## Props [#props]
-
-The `Checkbox` component has the following props:
-
-<PropTable />
-
-The `CheckboxGroup` component has the following props:
-
-<PropTable />
-
-
 # CircularProgress
 
 
@@ -1381,6 +1394,192 @@ Use the `emphasis` prop to communicate status: `success`, `warning`, or `critica
 * The decorative SVG and output text are hidden via `aria-hidden="true"`
 
 ## Props [#props]
+
+<PropTable />
+
+
+# DatePicker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `DatePickerCalendar`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in. `children` also accepts a function for picker state
+* **Trigger and calendar**: An empty `Button slot="trigger"` renders a calendar icon and the formatted value from the field. `DatePickerCalendar` (and `DateRangePickerCalendar`) is the calendar in the popover it opens: it takes `Calendar` props plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `Calendar` yourself to replace the whole overlay
+* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
+* Built on React Aria - native form integration, validation, focus management, and screen-reader support
+* Label formatting via `formatOptions` / `placeholder` on the picker itself, or on `DatePickerValue` / `DateRangePickerValue` in a trigger you write
+* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Working with dates [#working-with-dates]
+
+Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
+
+```tsx
+import { parseDate } from '@godaddy/antares/date';
+import { DatePicker, Label } from '@godaddy/antares';
+
+function EventDatePicker() {
+  return (
+    <DatePicker defaultValue={parseDate('2024-03-15')}>
+      <Label>Event date</Label>
+    </DatePicker>
+  );
+}
+```
+
+Import date helpers from `@godaddy/antares/date` (a re-export of
+[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)).
+Wrap the app in `<I18nProvider>` so formatting and the calendar follow the user's locale.
+
+## Examples [#examples]
+
+### Default [#default]
+
+A single date picker with a `Label`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <DatePicker>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Range [#range]
+
+A start/end range picker.
+
+<Story of="RangeExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DateRangePicker, DateRangePickerCalendar, Label } from '@godaddy/antares';\n\nexport function RangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DateRangePickerCalendar />\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+### Controlled [#controlled]
+
+Driving the value with `useState`.
+
+<Story of="ControlledExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n\n  return (\n    <DatePicker value={value} onChange={setValue}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Format Options [#format-options]
+
+Controlling the trigger's label format via `formatOptions`.
+
+<Story of="FormatOptionsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function FormatOptionsExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Min / Max [#min--max]
+
+Bounding selectable dates with `minValue` / `maxValue`.
+
+<Story of="MinMaxExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function MinMaxExample() {\n  return (\n    <DatePicker minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')}>\n      <Label>Booking date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### With error [#with-error]
+
+An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+
+<Story of="WithErrorExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';\n\nexport function WithErrorExample() {\n  return (\n    <DatePicker isInvalid>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a date</FieldError>\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Disabled [#disabled]
+
+A disabled picker via `isDisabled`.
+
+<Story of="DisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <DatePicker isDisabled>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <DatePickerCalendar />\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `DatePickerCalendar`, for full
+control over the popover and the calendar.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Calendar, Content, DatePicker, DatePickerValue, Icon, Label, Popover, Text } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function ComposedExample() {\n  return (\n    <DatePicker defaultValue={parseDate('2024-03-15')}>\n      <Label>Event date</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DatePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose the event date</Text>\n      <Popover hideArrow>\n        <Content>\n          <Calendar />\n        </Content>\n      </Popover>\n    </DatePicker>\n  );\n}&#x22;" />
+
+### Composed range [#composed-range]
+
+Write a DateRangePicker's trigger and overlay from lower-level pieces the same way.
+
+<Story of="ComposedRangeExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  DateRangePicker,\n  DateRangePickerValue,\n  Icon,\n  Label,\n  Popover,\n  RangeCalendar,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedRangeExample() {\n  return (\n    <DateRangePicker>\n      <Label>Trip dates</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <Icon icon=\&#x22;calendar\&#x22; />\n        <DateRangePickerValue />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your start and end dates</Text>\n      <Popover hideArrow>\n        <Content>\n          <RangeCalendar />\n        </Content>\n      </Popover>\n    </DateRangePicker>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+```tsx
+<DatePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DatePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <Calendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DatePicker>
+```
+
+```tsx
+<DateRangePicker>
+  <Label />
+  <Group>
+    <Button slot="trigger">
+      <DateRangePickerValue />
+    </Button>
+  </Group>
+  <Text slot="description" />
+  <Popover>
+    <Content>
+      <RangeCalendar />
+    </Content>
+  </Popover>
+  <FieldError />
+</DateRangePicker>
+```
+
+The `DatePicker` component accepts the following props:
+
+<PropTable />
+
+The `DateRangePicker` component accepts the following props:
 
 <PropTable />
 
@@ -1514,19 +1713,7 @@ The `DrawerTrigger` component accepts the following props:
 <PropTable />
 
 
-# DatePicker
-
-
-
-
-
-
-
-
-
-
-
-
+# FieldError
 
 
 
@@ -1540,117 +1727,25 @@ The `DrawerTrigger` component accepts the following props:
 
 ## Features [#features]
 
-* `DatePicker` (single) and `DateRangePicker` (range): a read-only formatted date label; the whole field opens a calendar popover
-* Built on React Aria — native form integration, validation, focus management, and screen-reader support
-* Consumer-controlled label formatting via `formatOptions`
-* `minValue` / `maxValue` bounds and `isDateUnavailable` per-day disabling
+* Shown when the parent field is invalid (`isInvalid` or native constraint validation).
 
 ## Installation [#installation]
 
 ```bash
-npm install @godaddy/antares
+npm install --save @godaddy/antares
 ```
-
-## Working with dates [#working-with-dates]
-
-Values are `CalendarDate` objects. Import the date primitives you need from the `@godaddy/antares/date` subpath:
-
-```tsx
-import { parseDate, today, getLocalTimeZone } from '@godaddy/antares/date';
-import { DatePicker } from '@godaddy/antares';
-
-<DatePicker label="Event" defaultValue={parseDate('2024-03-15')} />;
-<DatePicker label="Today" defaultValue={today(getLocalTimeZone())} />;
-```
-
-`@godaddy/antares/date` re-exports [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/), the package behind these date primitives. Locale comes from a host `<I18nProvider>`. This version has no typed/segmented entry - selection is via the calendar.
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-A single date picker.
+FieldError renders when the field is invalid.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { DatePicker } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <DatePicker label=\&#x22;Event date\&#x22; />;\n}&#x22;" />
-
-### Range [#range]
-
-A start/end range picker.
-
-<Story of="DateRangePickerExample" />
-
-<Source language="tsx" code="&#x22;import { DateRangePicker } from '@godaddy/antares';\n\nexport function DateRangePickerExample() {\n  return <DateRangePicker label=\&#x22;Trip dates\&#x22; />;\n}&#x22;" />
-
-### Controlled [#controlled]
-
-Driving the value with `useState`.
-
-<Story of="DatePickerControlledExample" />
-
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { DatePicker } from '@godaddy/antares';\nimport { type CalendarDate, parseDate } from '@godaddy/antares/date';\n\nexport function DatePickerControlledExample() {\n  const [value, setValue] = useState<CalendarDate | null>(parseDate('2024-03-15'));\n  return <DatePicker label=\&#x22;Event date\&#x22; value={value} onChange={setValue} />;\n}&#x22;" />
-
-### Custom format [#custom-format]
-
-Controlling the label with `formatOptions`.
-
-<Story of="DatePickerFormatOptionsExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DatePickerFormatOptionsExample() {\n  return (\n    <DatePicker label=\&#x22;Event date\&#x22; defaultValue={parseDate('2024-03-15')} formatOptions={{ dateStyle: 'short' }} />\n  );\n}&#x22;" />
-
-### Min / Max [#min--max]
-
-Bounding selectable dates with `minValue` / `maxValue`.
-
-<Story of="DatePickerMinMaxExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker } from '@godaddy/antares';\nimport { parseDate } from '@godaddy/antares/date';\n\nexport function DatePickerMinMaxExample() {\n  return <DatePicker label=\&#x22;Booking date\&#x22; minValue={parseDate('2024-03-05')} maxValue={parseDate('2024-03-25')} />;\n}&#x22;" />
-
-### Error [#error]
-
-An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
-
-<Story of="DatePickerWithErrorExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker } from '@godaddy/antares';\n\nexport function DatePickerWithErrorExample() {\n  return <DatePicker label=\&#x22;Event date\&#x22; isInvalid errorMessage=\&#x22;Please choose a date\&#x22; />;\n}&#x22;" />
-
-### Disabled [#disabled]
-
-A disabled picker via `isDisabled`.
-
-<Story of="DatePickerDisabledExample" />
-
-<Source language="tsx" code="&#x22;import { DatePicker } from '@godaddy/antares';\n\nexport function DatePickerDisabledExample() {\n  return <DatePicker label=\&#x22;Event date\&#x22; isDisabled />;\n}&#x22;" />
-
-## Customization [#customization]
-
-`formatOptions` accepts any `Intl.DateTimeFormatOptions` (e.g. `{ dateStyle: 'short' }`, `{ month: 'long', year: 'numeric' }`). `placeholder` sets the empty-state text.
-
-## Accessibility [#accessibility]
-
-* The whole field is a single focusable button; Enter/Space opens the popover
-* Focus is trapped in the open popover and returns to the trigger on close
-* Esc and outside-click dismiss the popover
-* The calendar grid is fully keyboard navigable and screen-reader announced
-
-## Best Practices [#best-practices]
-
-* Provide a `label` (or `aria-label`) on every picker.
-* For typed/keyboard-fast date entry far from today, use the calendar's month dropdown and year input.
-
-## Troubleshooting [#troubleshooting]
-
-* Dates not localizing? Wrap the app in `<I18nProvider locale="…">`.
-* Form value missing on submit? Pass a `name` — React Aria renders the hidden input.
+<Source language="tsx" code="&#x22;import { FieldError, Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
-
-The `DatePicker` component accepts the following props:
-
-<PropTable />
-
-The `DateRangePicker` component accepts the following props:
 
 <PropTable />
 
@@ -1759,13 +1854,7 @@ The button's accessible name is built from two sources, combined in order:
 <PropTable />
 
 
-# Field primitives
-
-
-
-
-
-
+# Heading
 
 
 
@@ -1777,98 +1866,29 @@ The button's accessible name is built from two sources, combined in order:
 
 <Meta of="Stories" name="Overview" />
 
-**Composition primitives.** The field components (TextField, NumberField, DateField, Select, RadioGroup, CheckboxGroup) compose these internally — reach for those first. These primitives are also the building blocks for custom composite fields, e.g. an input and a select sharing one bordered box.
+## Features [#features]
 
-The field decoration is split into granular, composable pieces so the same structure is shared across every field:
+* Renders `h1`-`h6` from the `level` prop (default `3`).
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
 
-* **`Field`** — stacks a field's label, control, description, and error in one consistently spaced column (pure layout — a `Flex` column with the standard field gap).
-* **`FieldLabel`** — names the field and flags whether it's required (wraps React Aria `Label`, rendering an optional `*` indicator).
-* **`FieldGroup`** — the bordered box that visually unites a field's controls and reflects their shared focus, disabled, and invalid state. Used only by "boxed" fields (TextField, NumberField, Select, DateField); presentationally it is a React Aria `Group`.
-* **`FieldInput`** — the single-line control the user types into (a normalized React Aria `Input` given antares spacing via `Box`).
-* **`FieldTextArea`** — the multiline control the user types into (a normalized React Aria `TextArea` given antares spacing via `Box`).
-* **`FieldButton`** — an actionable control placed inside the box, such as the NumberField steppers or a search submit (a click target within the group).
-* **`FieldTrigger`** — a full-width value-display button inside the box that opens an overlay (used by Select and DatePicker): a value area plus a trailing icon, laid out across the group. `variant="select"` is transparent and input-like; `variant="control"` is a filled segment inside a shared group.
-* **`FieldDescription`** — helper text that explains the field; renders nothing when empty (wraps the antares `Text` with `slot="description"`).
-* **`FieldError`** — surfaces the field's validation messages when it is invalid, and nothing when valid (a thin wrapper over React Aria `FieldError`).
+## Installation [#installation]
 
-`FieldLabel`, `FieldDescription`, and `FieldError` each render `null` when they have no content, so callers pass `label` / `description` / `errorMessage` straight through without guarding.
-
-## Usage [#usage]
-
-## Composition [#composition]
-
-A boxed field composes the primitives inside its React Aria field wrapper. Use
-`Field as={...}` to merge the field wrapper and the layout column into a single
-element:
-
-```text
-Field as={RACTextField}                   ← field wrapper + layout column (one element)
-├── FieldLabel                            ← when label provided (+ required indicator)
-├── FieldGroup                            ← the bordered Group; styles inner controls via CSS
-│   └── {children}                        ← FieldInput, FieldButton, DateInput, etc.
-├── FieldDescription                      ← when description provided
-└── FieldError                            ← renders validation messages when invalid
+```bash
+npm install --save @godaddy/antares
 ```
-
-A field without a box (RadioGroup / CheckboxGroup) composes `Field` + `FieldLabel` + `FieldError` and omits `FieldGroup`.
-
-`FieldGroup` is purely presentational — it renders the styled `Group` and holds no React Aria context. The surrounding field wires value, disabled, and validation state into its controls.
-
-### Positioning controls inside the group [#positioning-controls-inside-the-group]
-
-`FieldGroup` rounds its outer corners from DOM order: the group's CSS rounds the start corners of its **first child** and the end corners of its **last child**, so controls are seamless inside and rounded only at the box edges. Author children in visual order and the rounding follows — no per-control positioning prop. A lone control (a TextField input, a Select trigger) is both first and last, so it rounds both edges. The rules are RTL-safe (they use logical `start`/`end` corners).
-
-### States [#states]
-
-The states **disabled**, **readonly**, and **invalid** are applied by the field wrapper (e.g. TextField, NumberField, Select). The group reflects them via data attributes on the group.
-
-| State                                                                                    | CSS Selector      |
-| ---------------------------------------------------------------------------------------- | ----------------- |
-| disabled — Applied when the field wrapper is disabled.                                   | `[data-disabled]` |
-| invalid — Applied when the field wrapper is invalid (e.g. validation failed).            | `[data-invalid]`  |
-| focus — Whether an element within the group has keyboard focus (for focus-ring styling). | `[data-focused]`  |
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-Composes the presentational field primitives (Field, FieldLabel, FieldGroup,
-FieldDescription) into a minimal boxed field, showing how the group and its
-position markers are assembled. The fill is a static placeholder - real value,
-focus, and validation behavior is wired up by the field components (TextField,
-NumberField, Select).
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Field, FieldDescription, FieldGroup, FieldLabel, Flex } from '@godaddy/antares';\n\n/** Props for the composed field-group examples. */\nexport interface FieldGroupBasicProps {\n  /** Class name merged onto the FieldGroup. */\n  className?: string;\n\n  /** Helper text shown below the group. */\n  description?: string;\n\n  /** Whether the control is disabled. */\n  isDisabled?: boolean;\n\n  /** Whether the field is required. */\n  isRequired?: boolean;\n\n  /** Label text shown above the group. */\n  label?: string;\n}\n\nexport function DefaultExample({ className, description, isDisabled, isRequired, label }: FieldGroupBasicProps) {\n  return (\n    <Field>\n      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>\n      <FieldGroup className={className} isDisabled={isDisabled} gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; padding=\&#x22;md\&#x22;>\n          Placeholder content\n        </Flex>\n      </FieldGroup>\n      <FieldDescription>{description}</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-### Leading control [#leading-control]
-
-A field group with a leading control before the input area.
-
-<Story of="FieldGroupLeadingControlExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  Flex,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupLeadingControlExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Phone</FieldLabel>\n      <FieldGroup gap=\&#x22;sm\&#x22; {...props}>\n        <FieldButton aria-label=\&#x22;Country code\&#x22;>Click Me</FieldButton>\n        <Flex as=\&#x22;span\&#x22; flex={1} alignItems=\&#x22;center\&#x22; padding=\&#x22;md\&#x22;>\n          Placeholder content\n        </Flex>\n      </FieldGroup>\n      <FieldDescription>Enter your phone number</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-### Trailing control [#trailing-control]
-
-A field group with an input and a trailing action control.
-
-<Story of="FieldGroupTrailingControlExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  FieldInput,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupTrailingControlExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Search</FieldLabel>\n      <FieldGroup gap=\&#x22;sm\&#x22; {...props}>\n        <FieldInput placeholder=\&#x22;Type...\&#x22; />\n        <FieldButton aria-label=\&#x22;Search\&#x22;>Search</FieldButton>\n      </FieldGroup>\n      <FieldDescription>Search by keyword</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
-
-### Icon accessories [#icon-accessories]
-
-A field group with leading icon and trailing action accessories.
-
-<Story of="FieldGroupIconAccessoriesExample" />
-
-<Source language="tsx" code="&#x22;import {\n  Field,\n  FieldButton,\n  FieldDescription,\n  FieldGroup,\n  FieldLabel,\n  Flex,\n  Icon,\n  FieldInput,\n  type FieldGroupProps\n} from '@godaddy/antares';\n\nexport function FieldGroupIconAccessoriesExample(props: FieldGroupProps) {\n  return (\n    <Field>\n      <FieldLabel>Email</FieldLabel>\n      <FieldGroup {...props}>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n          <Icon icon=\&#x22;star\&#x22; />\n        </Flex>\n        <FieldInput placeholder=\&#x22;Email\&#x22; />\n        <FieldButton aria-label=\&#x22;Verify email address\&#x22;>Verify</FieldButton>\n      </FieldGroup>\n      <FieldDescription>Enter your email address</FieldDescription>\n    </Field>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
-
-The `FieldGroup` component has the following props:
 
 <PropTable />
 
@@ -2479,6 +2499,86 @@ The `InlineDrawerPanel` component accepts the following props:
 <PropTable />
 
 
+# Input
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
+
+```tsx
+<TextField>
+  <Label>Email</Label>
+  <Input placeholder="you@example.com" />
+</TextField>
+```
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Input inside TextField.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
+# Label
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Associates the visible name with the field control.
+* Field CSS adds the required asterisk when the field root is `isRequired`. That is not a Label prop.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Label names a field. The required asterisk comes from Field CSS when the root is `isRequired`.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField isRequired>\n      <Label>Email</Label>\n      <Group>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
 # ListBox
 
 
@@ -2933,7 +3033,17 @@ The `ModalTrigger` component accepts the following props:
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* **Composable interior**: Compose `Label`, the control, `Text slot="description"`, and `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Steppers**: A stepper is a `Group` holding `Button slot="decrement"`, an `Input`, and `Button slot="increment"`. Left empty, each button takes its icon, `variant="control"`, and `size` from the field, so no icon imports are needed. Compose a bare `Input` instead for a plain numeric input
+* **Value scale**: `minValue`, `maxValue`, `step`, and `formatOptions` configure the numeric behavior
+* **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 
 ## Installation [#installation]
 
@@ -2945,94 +3055,91 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Minimal usage with label, placeholder, and min/max.
+Minimal usage with a `Label`, min/max, and stepper `Button`s.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: NumberFieldProps) {\n  return <NumberField label=\&#x22;Quantity\&#x22; placeholder=\&#x22;0\&#x22; defaultValue={0} {...props} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, type NumberFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample({ defaultValue = 0 }: Pick<NumberFieldProps, 'defaultValue'> = {}) {\n  return (\n    <NumberField defaultValue={defaultValue} minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
 
-### Number Field Controlled [#number-field-controlled]
+### Controlled [#controlled]
 
 Use `value` and `onChange` for controlled state.
 
-<Story of="NumberFieldControlledExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { NumberField, Text } from '@godaddy/antares';\n\nexport function NumberFieldControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField label=\&#x22;Quantity\&#x22; minValue={0} maxValue={100} value={value} onChange={setValue} />\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState(10);\n\n  return (\n    <>\n      <NumberField minValue={0} maxValue={100} value={value} onChange={setValue}>\n        <Label>Quantity</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <Text>\n        <strong>Value:</strong> {value ?? '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
 
-### Number Field Invalid [#number-field-invalid]
+### Invalid [#invalid]
 
-Use `isInvalid` with `errorMessage` for validation feedback.
+Use `isInvalid` with a `FieldError` for validation feedback.
 
-<Story of="NumberFieldInvalidExample" />
+<Story of="InvalidExample" />
 
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldInvalidExample() {\n  return (\n    <NumberField\n      label=\&#x22;Quantity\&#x22;\n      minValue={0}\n      maxValue={100}\n      errorMessage=\&#x22;Please enter a value between 0 and 100\&#x22;\n      isInvalid\n      isRequired\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, FieldError, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <NumberField minValue={0} maxValue={100} isInvalid isRequired>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <FieldError>Please enter a value between 0 and 100</FieldError>\n    </NumberField>\n  );\n}&#x22;" />
 
-### Number Field Disabled [#number-field-disabled]
+### Disabled [#disabled]
 
 Use `isDisabled` to prevent input.
 
-<Story of="NumberFieldDisabledExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldDisabledExample() {\n  return <NumberField label=\&#x22;Quantity\&#x22; defaultValue={42} minValue={0} maxValue={100} isDisabled />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <NumberField defaultValue={42} minValue={0} maxValue={100} isDisabled>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n    </NumberField>\n  );\n}&#x22;" />
 
-### Number Field Hide Stepper [#number-field-hide-stepper]
+### Hide Stepper [#hide-stepper]
 
-Use `hideStepper` to show only the input without +/- buttons.
+Compose without stepper `Button`s for a plain numeric input.
 
-<Story of="NumberFieldHideStepperExample" />
+<Story of="HideStepperExample" />
 
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldHideStepperExample() {\n  return (\n    <NumberField\n      label=\&#x22;Quantity\&#x22;\n      description=\&#x22;Enter a value between 0 and 100.\&#x22;\n      placeholder=\&#x22;0\&#x22;\n      minValue={0}\n      maxValue={100}\n      hideStepper\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function HideStepperExample() {\n  return (\n    <NumberField minValue={0} maxValue={100}>\n      <Label>Quantity</Label>\n      <Input placeholder=\&#x22;0\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Enter a value between 0 and 100.</Text>\n    </NumberField>\n  );\n}&#x22;" />
 
-### Number Field Value Scale [#number-field-value-scale]
+### Value Scale [#value-scale]
 
 Use `minValue`, `maxValue`, and `step` to set the allowed values. Steps are calculated from the minimum value.
 
-<Story of="NumberFieldValueScaleExample" />
+<Story of="ValueScaleExample" />
 
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nexport function NumberFieldValueScaleExample() {\n  return (\n    <NumberField\n      label=\&#x22;Step value\&#x22;\n      description=\&#x22;Steps are from the minimum: minValue={2}, step={3} gives 2, 5, 8, 11, …\&#x22;\n      placeholder=\&#x22;2\&#x22;\n      minValue={2}\n      maxValue={20}\n      step={3}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function ValueScaleExample() {\n  return (\n    <NumberField minValue={2} maxValue={20} step={3}>\n      <Label>Step value</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22; />\n        <Input />\n        <Button slot=\&#x22;increment\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>\n        Steps are from the minimum: minValue={'{2}'}, step={'{3}'} gives 2, 5, 8, 11, …\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
 
 ### Format options (numbering system) [#format-options-numbering-system]
 
 By default, NumberField displays the value using the numbering system for the user's locale. Use the `formatOptions` prop to override the numbering system by setting the Unicode numbering system locale extension.
 
-<Story of="NumberFieldFormatOptionsExample" />
+<Story of="FormatOptionsExample" />
 
-<Source language="tsx" code="&#x22;import { NumberField } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function NumberFieldFormatOptionsExample() {\n  return (\n    <NumberField\n      label=\&#x22;Number (Devanagari)\&#x22;\n      description=\&#x22;By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system locale extension (e.g. nu-deva).\&#x22;\n      hideStepper\n      value={1024}\n      formatOptions={devanagariFormatOptions}\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Input, Label, NumberField, Text } from '@godaddy/antares';\n\nconst devanagariFormatOptions = Intl.NumberFormat('hi-IN-u-nu-deva').resolvedOptions();\n\nexport function FormatOptionsExample() {\n  return (\n    <NumberField value={1024} formatOptions={devanagariFormatOptions}>\n      <Label>Number (Devanagari)</Label>\n      <Input />\n      <Text slot=\&#x22;description\&#x22;>\n        By default, NumberField uses the user's locale. Use formatOptions to override with a Unicode numbering system\n        locale extension (e.g. nu-deva).\n      </Text>\n    </NumberField>\n  );\n}&#x22;" />
 
-### Number Field Sizes [#number-field-sizes]
+### Sizes [#sizes]
 
 Compare the supported `md` and `sm` visual sizes.
 
-<Story of="NumberFieldSizesExample" />
+<Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, NumberField } from '@godaddy/antares';\n\nexport function NumberFieldSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <NumberField label=\&#x22;Quantity (md)\&#x22; placeholder=\&#x22;0\&#x22; minValue={0} maxValue={100} />\n      <NumberField label=\&#x22;Quantity (sm)\&#x22; placeholder=\&#x22;0\&#x22; minValue={0} maxValue={100} size=\&#x22;sm\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Input, Label, NumberField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <NumberField minValue={0} maxValue={100}>\n        <Label>Quantity (md)</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n      <NumberField minValue={0} maxValue={100} size=\&#x22;sm\&#x22;>\n        <Label>Quantity (sm)</Label>\n        <Group>\n          <Button slot=\&#x22;decrement\&#x22; />\n          <Input />\n          <Button slot=\&#x22;increment\&#x22; />\n        </Group>\n      </NumberField>\n    </Flex>\n  );\n}&#x22;" />
 
-## Accessibility [#accessibility]
+### Text Steppers [#text-steppers]
 
-### Keyboard [#keyboard]
+Compose with `children` to replace the stepper icons with your own content, such as text.
 
-When focus is in the input (and the field is not read-only), keyboard behavior follows common spinbutton-style conventions:
+<Story of="TextSteppersExample" />
 
-* **Arrow Up** / **Arrow Down** (or **Up** / **Down**): increase or decrease by `step`
-* **Page Up** / **Page Down**: larger increase or decrease when supported
-* **Home** / **End**: jump to `minValue` or `maxValue` when those props are set
-
-Stepper buttons are real buttons and follow standard button keyboard activation. Use &#x2A;*`incrementAriaLabel`*&#x2A; and &#x2A;*`decrementAriaLabel`** when the default labels are not enough in your locale or UI.
-
-### ARIA and labeling [#aria-and-labeling]
-
-* The input is associated with the visible label and optional description and error content for assistive technologies.
-* Invalid and required states are exposed to assistive technologies when you use `isInvalid`, `errorMessage`, and `isRequired`.
-* Set &#x2A;*`isWheelDisabled`** if the value should not change when the user scrolls with a pointer wheel while the field is focused.
-
-## Best practices [#best-practices]
-
-* Pair &#x2A;*`isInvalid`*&#x2A; with &#x2A;*`errorMessage`** so users get both visual and programmatic feedback.
-* Remember valid steps start from &#x2A;*`minValue`**.
-* Use &#x2A;*`isDisabled`*&#x2A; when the value cannot be changed; use &#x2A;*`isReadOnly`** when the value should be visible but not editable. Do not use them interchangeably.
-* For currency or units, ensure &#x2A;*`formatOptions`** (and locale) match what users are allowed to type.
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, NumberField, Text } from '@godaddy/antares';\n\nexport function TextSteppersExample() {\n  return (\n    <NumberField defaultValue={1} minValue={0}>\n      <Label>Quantity</Label>\n      <Group>\n        <Button slot=\&#x22;decrement\&#x22;>decrement</Button>\n        <Input />\n        <Button slot=\&#x22;increment\&#x22;>increment</Button>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Use decrement and increment to change the value.</Text>\n    </NumberField>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+```tsx
+<NumberField>
+  <Label />
+  <Group>
+    <Button slot="decrement" />
+    <Input />
+    <Button slot="increment" />
+  </Group>
+  {/* or a bare <Input /> for a plain numeric input */}
+  <Text slot="description" />
+  <FieldError />
+</NumberField>
+```
 
 The `NumberField` component accepts the following props:
 
@@ -3291,6 +3398,69 @@ Do not add `role="button"` to a native `<button>` or `<a>` unless you intentiona
 <PropTable />
 
 
+# ProgressBar
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A determinate progress bar with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
+
+### Statuses [#statuses]
+
+Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
+
+<Story of="StatusesExample" />
+
+<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+
+## Props [#props]
+
+<PropTable />
+
+
 # ProgressSteps
 
 
@@ -3419,69 +3589,6 @@ The `ProgressStep` component has the following props:
 <PropTable />
 
 
-# ProgressBar
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-A determinate progress bar with a label and helper text.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <ProgressBar label=\&#x22;Loading…\&#x22; value={60} helperText=\&#x22;Please wait while we process your request\&#x22; />;\n}&#x22;" />
-
-### Sizes [#sizes]
-
-Three track heights are available: `xs` (6px), `sm` (12px), and `md` (24px).
-
-<Story of="SizesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Extra Small\&#x22; size=\&#x22;xs\&#x22; value={40} />\n      <ProgressBar label=\&#x22;Small\&#x22; size=\&#x22;sm\&#x22; value={60} />\n      <ProgressBar label=\&#x22;Medium\&#x22; size=\&#x22;md\&#x22; value={80} />\n    </Flex>\n  );\n}&#x22;" />
-
-### Statuses [#statuses]
-
-Use the `status` prop to communicate intent: `default`, `success`, `warning`, or `critical`. Pair with `helperText` to provide additional context.
-
-<Story of="StatusesExample" />
-
-<Source language="tsx" code="&#x22;import { ProgressBar, Flex } from '@godaddy/antares';\n\nexport function StatusesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <ProgressBar label=\&#x22;Default\&#x22; status=\&#x22;default\&#x22; value={50} helperText=\&#x22;In progress\&#x22; />\n      <ProgressBar label=\&#x22;Success\&#x22; status=\&#x22;success\&#x22; value={100} helperText=\&#x22;Complete\&#x22; />\n      <ProgressBar label=\&#x22;Warning\&#x22; status=\&#x22;warning\&#x22; value={70} helperText=\&#x22;Storage almost full\&#x22; />\n      <ProgressBar label=\&#x22;Critical\&#x22; status=\&#x22;critical\&#x22; value={30} helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
-
-## Accessibility [#accessibility]
-
-### ARIA Support [#aria-support]
-
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`)
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-
-## Props [#props]
-
-<PropTable />
-
-
 # Radio
 
 
@@ -3524,73 +3631,75 @@ A radio group with a default selection.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <RadioGroup label=\&#x22;Select your plan\&#x22; defaultValue=\&#x22;basic\&#x22;>\n      <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n      <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n      <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;basic\&#x22;>\n      <Label>Select your plan</Label>\n      <Group>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
 
-### Radio Controlled [#radio-controlled]
+### Controlled [#controlled]
 
 A controlled radio group using `value` and `onChange`.
 
-<Story of="RadioControlledExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function RadioControlledExample() {\n  const [selected, setSelected] = useState('standard');\n\n  return (\n    <>\n      <RadioGroup label=\&#x22;Select your plan\&#x22; value={selected} onChange={setSelected}>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function ControlledExample() {\n  const [selected, setSelected] = useState('standard');\n\n  return (\n    <>\n      <RadioGroup value={selected} onChange={setSelected}>\n        <Label>Select your plan</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n      <p>Current selection: {selected}</p>\n    </>\n  );\n}&#x22;" />
 
 ### Horizontal Layout [#horizontal-layout]
 
 A radio group arranged horizontally.
 
-<Story of="RadioHorizontalExample" />
+<Story of="HorizontalExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RadioHorizontalExample() {\n  return (\n    <RadioGroup label=\&#x22;Select your plan\&#x22; defaultValue=\&#x22;standard\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n      <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n      <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function HorizontalExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;standard\&#x22; orientation=\&#x22;horizontal\&#x22;>\n      <Label>Select your plan</Label>\n      <Group>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
 
 ### Disabled States [#disabled-states]
 
 Disabled group and individually disabled radio options.
 
-<Story of="RadioDisabledExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup, Flex } from '@godaddy/antares';\n\nexport function RadioDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RadioGroup label=\&#x22;Disabled group\&#x22; defaultValue=\&#x22;basic\&#x22; isDisabled>\n        <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n\n      <RadioGroup label=\&#x22;Individual disabled options\&#x22; defaultValue=\&#x22;standard\&#x22;>\n        <Radio value=\&#x22;basic\&#x22; isDisabled>\n          Basic (disabled)\n        </Radio>\n        <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n        <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <RadioGroup defaultValue=\&#x22;basic\&#x22; isDisabled>\n        <Label>Disabled group</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n\n      <RadioGroup defaultValue=\&#x22;standard\&#x22;>\n        <Label>Individual disabled options</Label>\n        <Group>\n          <Radio value=\&#x22;basic\&#x22; isDisabled>\n            Basic (disabled)\n          </Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </Group>\n      </RadioGroup>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Required Indicator [#required-indicator]
 
 A required radio group with a payment method selection.
 
-<Story of="RadioRequiredExample" />
+<Story of="RequiredExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RadioRequiredExample() {\n  return (\n    <RadioGroup label=\&#x22;Payment method\&#x22; isRequired defaultValue=\&#x22;credit\&#x22;>\n      <Radio value=\&#x22;credit\&#x22;>Credit Card</Radio>\n      <Radio value=\&#x22;paypal\&#x22;>PayPal</Radio>\n      <Radio value=\&#x22;bank\&#x22;>Bank Transfer</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RequiredExample() {\n  return (\n    <RadioGroup isRequired defaultValue=\&#x22;credit\&#x22;>\n      <Label>Payment method</Label>\n      <Group>\n        <Radio value=\&#x22;credit\&#x22;>Credit Card</Radio>\n        <Radio value=\&#x22;paypal\&#x22;>PayPal</Radio>\n        <Radio value=\&#x22;bank\&#x22;>Bank Transfer</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
 
 ### Description Text [#description-text]
 
 A radio group with helper description text.
 
-<Story of="RadioDescriptionExample" />
+<Story of="DescriptionExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RadioDescriptionExample() {\n  return (\n    <RadioGroup\n      label=\&#x22;Notification preferences\&#x22;\n      description=\&#x22;Choose how you'd like to receive updates\&#x22;\n      defaultValue=\&#x22;email\&#x22;\n    >\n      <Radio value=\&#x22;email\&#x22;>Email</Radio>\n      <Radio value=\&#x22;sms\&#x22;>SMS</Radio>\n      <Radio value=\&#x22;push\&#x22;>Push Notifications</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup, Text } from '@godaddy/antares';\n\nexport function DescriptionExample() {\n  return (\n    <RadioGroup defaultValue=\&#x22;email\&#x22;>\n      <Label>Notification preferences</Label>\n      <Group>\n        <Radio value=\&#x22;email\&#x22;>Email</Radio>\n        <Radio value=\&#x22;sms\&#x22;>SMS</Radio>\n        <Radio value=\&#x22;push\&#x22;>Push Notifications</Radio>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Choose how you'd like to receive updates</Text>\n    </RadioGroup>\n  );\n}&#x22;" />
 
 ### Error State [#error-state]
 
 An invalid required group displaying an error message.
 
-<Story of="RadioErrorExample" />
+<Story of="ErrorExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RadioErrorExample() {\n  return (\n    <RadioGroup label=\&#x22;Select shipping method\&#x22; isRequired isInvalid errorMessage=\&#x22;Please select a shipping method\&#x22;>\n      <Radio value=\&#x22;standard\&#x22;>Standard Shipping</Radio>\n      <Radio value=\&#x22;express\&#x22;>Express Shipping</Radio>\n      <Radio value=\&#x22;overnight\&#x22;>Overnight Shipping</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { FieldError, Group, Label, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function ErrorExample() {\n  return (\n    <RadioGroup isRequired isInvalid>\n      <Label>Select shipping method</Label>\n      <Group>\n        <Radio value=\&#x22;standard\&#x22;>Standard Shipping</Radio>\n        <Radio value=\&#x22;express\&#x22;>Express Shipping</Radio>\n        <Radio value=\&#x22;overnight\&#x22;>Overnight Shipping</Radio>\n      </Group>\n      <FieldError>Please select a shipping method</FieldError>\n    </RadioGroup>\n  );\n}&#x22;" />
 
 ### Aria Label [#aria-label]
 
 A radio group using `aria-label` instead of a visible label.
 
-<Story of="RadioAriaLabelExample" />
+<Story of="AriaLabelExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\n\nexport function RadioAriaLabelExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Sort order\&#x22; defaultValue=\&#x22;newest\&#x22;>\n      <Radio value=\&#x22;newest\&#x22;>Newest first</Radio>\n      <Radio value=\&#x22;oldest\&#x22;>Oldest first</Radio>\n      <Radio value=\&#x22;popular\&#x22;>Most popular</Radio>\n    </RadioGroup>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Radio, RadioGroup } from '@godaddy/antares';\n\nexport function AriaLabelExample() {\n  return (\n    <RadioGroup aria-label=\&#x22;Sort order\&#x22; defaultValue=\&#x22;newest\&#x22;>\n      <Group>\n        <Radio value=\&#x22;newest\&#x22;>Newest first</Radio>\n        <Radio value=\&#x22;oldest\&#x22;>Oldest first</Radio>\n        <Radio value=\&#x22;popular\&#x22;>Most popular</Radio>\n      </Group>\n    </RadioGroup>\n  );\n}&#x22;" />
 
 ### Form Submission [#form-submission]
 
 A radio group integrated with native form submission.
 
-<Story of="RadioFormExample" />
+<Story of="FormExample" />
 
-<Source language="tsx" code="&#x22;import { Radio, RadioGroup } from '@godaddy/antares';\nimport { type FormEvent, useState } from 'react';\n\nexport function RadioFormExample() {\n  const [submittedValue, setSubmittedValue] = useState<string | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const value = new FormData(event.currentTarget).get('plan');\n    setSubmittedValue(value != null ? String(value) : null);\n  }\n\n  return (\n    <>\n      <form onSubmit={handleSubmit}>\n        <RadioGroup name=\&#x22;plan\&#x22; label=\&#x22;Select your plan\&#x22; defaultValue=\&#x22;standard\&#x22;>\n          <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n          <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n          <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n        </RadioGroup>\n        <button type=\&#x22;submit\&#x22; style={{ marginTop: '1rem' }}>\n          Submit\n        </button>\n      </form>\n      {submittedValue && <p>Form submitted with value: {submittedValue}</p>}\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Group, Label, Radio, RadioGroup } from '@godaddy/antares';\nimport { type FormEvent, useState } from 'react';\n\nexport function FormExample() {\n  const [submittedValue, setSubmittedValue] = useState<string | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const value = new FormData(event.currentTarget).get('plan');\n    setSubmittedValue(value != null ? String(value) : null);\n  }\n\n  return (\n    <>\n      <form onSubmit={handleSubmit}>\n        <RadioGroup name=\&#x22;plan\&#x22; defaultValue=\&#x22;standard\&#x22;>\n          <Label>Select your plan</Label>\n          <Group>\n            <Radio value=\&#x22;basic\&#x22;>Basic</Radio>\n            <Radio value=\&#x22;standard\&#x22;>Standard</Radio>\n            <Radio value=\&#x22;premium\&#x22;>Premium</Radio>\n          </Group>\n        </RadioGroup>\n        <button type=\&#x22;submit\&#x22; style={{ marginTop: '1rem' }}>\n          Submit\n        </button>\n      </form>\n      {submittedValue && <p>Form submitted with value: {submittedValue}</p>}\n    </>\n  );\n}&#x22;" />
 
 ## Customization [#customization]
+
+`RadioGroup` is composed: write `Label`, a `Group` holding the `Radio` items, `Text slot="description"`, and `FieldError`. The `Group` takes its axis, gap, and presentational role from the group's `orientation`, so a bare `<Group>` is all you need; pass your own `direction`/`gap` to lay the items out differently. Each `Radio` takes label text next to the indicator. `orientation` also sets keyboard-navigation direction and ARIA.
 
 ### Data Attributes [#data-attributes]
 
@@ -3626,13 +3735,16 @@ Components automatically add data attributes for styling different states:
 Pass `className` or `style` to customize a radio field container. Use descendant data-attribute selectors to style the interactive radio state:
 
 ```jsx
-<RadioGroup label="Select plan" className="custom-radio-group">
-  <Radio value="basic" className="custom-radio">
-    Basic
-  </Radio>
-  <Radio value="premium" className="premium-radio">
-    Premium
-  </Radio>
+<RadioGroup className="custom-radio-group">
+  <Label>Select plan</Label>
+  <Group>
+    <Radio value="basic" className="custom-radio">
+      Basic
+    </Radio>
+    <Radio value="premium" className="premium-radio">
+      Premium
+    </Radio>
+  </Group>
 </RadioGroup>
 ```
 
@@ -3661,17 +3773,26 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 ```jsx
 // ❌ Wrong: Using both value and defaultValue
 <RadioGroup value={value} defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
 </RadioGroup>
 
 // ✅ Controlled mode
 <RadioGroup value={value} onChange={setValue}>
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
 </RadioGroup>
 
 // ✅ Uncontrolled mode
 <RadioGroup defaultValue="basic">
-  <Radio value="basic">Basic</Radio>
+  <Label>Plan</Label>
+  <Group>
+    <Radio value="basic">Basic</Radio>
+  </Group>
 </RadioGroup>
 ```
 
@@ -3728,18 +3849,28 @@ Pass `className` or `style` to customize a radio field container. Use descendant
 Always provide clear error messages:
 
 ```jsx
-<RadioGroup
-  label="Select shipping method"
-  isRequired
-  isInvalid={!selectedShipping}
-  errorMessage="Please select a shipping method"
->
-  <Radio value="standard">Standard</Radio>
-  <Radio value="express">Express</Radio>
+<RadioGroup isRequired isInvalid={!selectedShipping}>
+  <Label>Select shipping method</Label>
+  <Group>
+    <Radio value="standard">Standard</Radio>
+    <Radio value="express">Express</Radio>
+  </Group>
+  <FieldError>Please select a shipping method</FieldError>
 </RadioGroup>
 ```
 
 ## Props [#props]
+
+```tsx
+<RadioGroup>
+  <Label />
+  <Group>
+    <Radio />
+  </Group>
+  <Text slot="description" />
+  <FieldError />
+</RadioGroup>
+```
 
 The `Radio` component has the following props:
 
@@ -4102,14 +4233,18 @@ Components automatically add data attributes for styling different states:
 
 
 
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Features [#features]
 
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+* **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+* **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
+* **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
 * **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 * **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 * **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
 * **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
 
@@ -4123,61 +4258,82 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Minimal usage with a label and a placeholder.
+Minimal usage with a `Label`, items, and a placeholder.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Select, SelectItem, type SelectProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: Omit<SelectProps<object>, 'children'> = {}) {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; description=\&#x22;Select your favorite coffee\&#x22; {...props}>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n      <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <Text slot=\&#x22;description\&#x22;>Select your favorite coffee</Text>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
 
-### Select Controlled [#select-controlled]
+### Controlled [#controlled]
 
 Use `value` and `onChange` for controlled state.
 
-<Story of="SelectControlledExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState<SelectKey | null>('latte');\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; value={value} onChange={setValue}>\n        <Label>Coffee</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Value:</strong> {String(value ?? '(none)')}\n      </Text>\n    </>\n  );\n}&#x22;" />
 
-### Select Multiple [#select-multiple]
+### Multiple [#multiple]
 
 Set `selectionMode="multiple"` to allow multiple values. `value` is an array of keys.
 
-<Story of="SelectMultipleExample" />
+<Story of="MultipleExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Select, SelectItem, Text, type SelectKey } from '@godaddy/antares';\n\nexport function SelectMultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select\n        label=\&#x22;Coffees you like\&#x22;\n        placeholder=\&#x22;Pick one or more\&#x22;\n        selectionMode=\&#x22;multiple\&#x22;\n        value={value}\n        onChange={setValue}\n      >\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n        <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Label, Select, SelectItem, SelectOptions, Text, type SelectKey } from '@godaddy/antares';\n\nexport function MultipleExample() {\n  const [value, setValue] = useState<readonly SelectKey[]>(['latte', 'mocha']);\n\n  return (\n    <>\n      <Select placeholder=\&#x22;Pick one or more\&#x22; selectionMode=\&#x22;multiple\&#x22; value={value} onChange={setValue}>\n        <Label>Coffees you like</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n          <SelectItem id=\&#x22;americano\&#x22;>Americano</SelectItem>\n          <SelectItem id=\&#x22;mocha\&#x22;>Mocha</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Text>\n        <strong>Selected:</strong> {value.length === 0 ? '(none)' : value.join(', ')}\n      </Text>\n    </>\n  );\n}&#x22;" />
 
-### Select Invalid [#select-invalid]
+### Invalid [#invalid]
 
-Use `isInvalid` with `errorMessage` for validation feedback.
+Use `isInvalid` with a `FieldError` for validation feedback.
 
-<Story of="SelectInvalidExample" />
+<Story of="InvalidExample" />
 
-<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectInvalidExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; placeholder=\&#x22;Pick a drink\&#x22; errorMessage=\&#x22;Please choose a drink\&#x22; isInvalid isRequired>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, FieldError, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22; isInvalid isRequired>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <FieldError>Please choose a drink</FieldError>\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
 
-### Select Disabled [#select-disabled]
+### Disabled [#disabled]
 
 Use `isDisabled` to prevent interaction.
 
-<Story of="SelectDisabledExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectDisabledExample() {\n  return (\n    <Select label=\&#x22;Coffee\&#x22; defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n      <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n      <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n    </Select>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <Select defaultValue=\&#x22;latte\&#x22; isDisabled>\n      <Label>Coffee</Label>\n      <Button slot=\&#x22;trigger\&#x22; />\n      <SelectOptions>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </SelectOptions>\n    </Select>\n  );\n}&#x22;" />
 
-### Select Form [#select-form]
+### Form [#form]
 
 Set `name` to submit the value with a native `<form>`. Multiple-mode values submit as repeated entries with the same `name`.
 
-<Story of="SelectFormExample" />
+<Story of="FormExample" />
 
-<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, Flex, Select, SelectItem, Text } from '@godaddy/antares';\n\nexport function SelectFormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; label=\&#x22;Drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; label=\&#x22;Extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n        <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n        <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState, type FormEvent } from 'react';\nimport { Box, Button, FieldError, Flex, Label, Select, SelectItem, SelectOptions, Text } from '@godaddy/antares';\n\nexport function FormExample() {\n  const [submitted, setSubmitted] = useState<Record<string, string | string[]> | null>(null);\n\n  function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    const entries: Record<string, string | string[]> = {};\n    for (const [key, value] of data.entries()) {\n      const stringValue = String(value);\n      const existing = entries[key];\n      if (existing === undefined) {\n        entries[key] = stringValue;\n      } else if (Array.isArray(existing)) {\n        entries[key] = [...existing, stringValue];\n      } else {\n        entries[key] = [existing, stringValue];\n      }\n    }\n    setSubmitted(entries);\n  }\n\n  return (\n    <Flex as=\&#x22;form\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; onSubmit={handleSubmit}>\n      <Select name=\&#x22;drink\&#x22; placeholder=\&#x22;Pick a drink\&#x22; isRequired>\n        <Label>Drink</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <FieldError>Please select an item in the list.</FieldError>\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select name=\&#x22;extras\&#x22; placeholder=\&#x22;Pick any extras\&#x22; selectionMode=\&#x22;multiple\&#x22;>\n        <Label>Extras</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;oat-milk\&#x22;>Oat milk</SelectItem>\n          <SelectItem id=\&#x22;extra-shot\&#x22;>Extra shot</SelectItem>\n          <SelectItem id=\&#x22;vanilla\&#x22;>Vanilla syrup</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Flex gap=\&#x22;sm\&#x22;>\n        <Button type=\&#x22;submit\&#x22;>Submit</Button>\n        <Button type=\&#x22;reset\&#x22; variant=\&#x22;minimal\&#x22; onPress={() => setSubmitted(null)}>\n          Reset\n        </Button>\n      </Flex>\n      {submitted && (\n        <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; rounding=\&#x22;lg\&#x22;>\n          <Text>\n            <strong>Submitted:</strong> {JSON.stringify(submitted)}\n          </Text>\n        </Box>\n      )}\n    </Flex>\n  );\n}&#x22;" />
 
 ### Sizes [#sizes]
 
 Compare the supported `md` and `sm` visual sizes.
 
-<Story of="SelectSizesExample" />
+<Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Select, SelectItem } from '@godaddy/antares';\n\nexport function SelectSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select label=\&#x22;Coffee (md)\&#x22; placeholder=\&#x22;Pick a drink\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n      <Select label=\&#x22;Coffee (sm)\&#x22; placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n        <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n        <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Label, Select, SelectItem, SelectOptions } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Select placeholder=\&#x22;Pick a drink\&#x22;>\n        <Label>Coffee (md)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n      <Select placeholder=\&#x22;Pick a drink\&#x22; size=\&#x22;sm\&#x22;>\n        <Label>Coffee (sm)</Label>\n        <Button slot=\&#x22;trigger\&#x22; />\n        <SelectOptions>\n          <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n          <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n          <SelectItem id=\&#x22;cappuccino\&#x22;>Cappuccino</SelectItem>\n        </SelectOptions>\n      </Select>\n    </Flex>\n  );\n}&#x22;" />
+
+### Composed [#composed]
+
+Write the trigger and the overlay yourself instead of composing `SelectOptions`, for full control
+over the popover and the list.
+
+<Story of="ComposedExample" />
+
+<Source language="tsx" code="&#x22;import {\n  Button,\n  Content,\n  FieldError,\n  Icon,\n  Label,\n  ListBox,\n  Popover,\n  Select,\n  SelectItem,\n  SelectValue,\n  Text\n} from '@godaddy/antares';\n\nexport function ComposedExample() {\n  return (\n    <Select placeholder=\&#x22;Pick a drink\&#x22;>\n      <Label>Drink</Label>\n      <Button slot=\&#x22;trigger\&#x22;>\n        <SelectValue />\n        <Icon icon=\&#x22;chevron-down\&#x22; />\n      </Button>\n      <Text slot=\&#x22;description\&#x22;>Choose your favorite drink</Text>\n      <FieldError />\n      <Popover hideArrow>\n        <Content blockPadding=\&#x22;xs\&#x22; inlinePadding=\&#x22;0\&#x22;>\n          <ListBox>\n            <SelectItem id=\&#x22;espresso\&#x22;>Espresso</SelectItem>\n            <SelectItem id=\&#x22;latte\&#x22;>Latte</SelectItem>\n            <SelectItem id=\&#x22;tea\&#x22;>Tea</SelectItem>\n          </ListBox>\n        </Content>\n      </Popover>\n    </Select>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+```tsx
+<Select>
+  <Label />
+  <Button slot="trigger" />
+  <Text slot="description" />
+  <SelectOptions>
+    <SelectItem />
+  </SelectOptions>
+  <FieldError />
+</Select>
+```
 
 The `Select` component accepts the following props:
 
@@ -4185,6 +4341,8 @@ The `Select` component accepts the following props:
 
 
 # Structure primitives
+
+
 
 
 
@@ -4202,31 +4360,14 @@ The `Select` component accepts the following props:
 * **`Header`** — the top region: title area and optional trailing close (a `<header>` row that spaces its contents apart).
 * **`Footer`** — the bottom region: secondary content and/or actions (a `<footer>` row that spaces its contents apart).
 * **`ButtonGroup`** — a cluster of related actions, typically inside a `Footer` (an end-aligned, wrapping row with `role="group"`).
+* **`Group`** — semantic grouping container for field item controls. A parent field injects the box chrome.
 
 ## Hybrid styling [#hybrid-styling]
 
 Each container works in two modes:
 
-* **Standalone** — with no parent context it renders with its own structural defaults and looks the same everywhere.
-* **Adopted** — placed inside a parent that provides its context (`ContentContext`, `HeaderContext`, `FooterContext`, `ButtonGroupContext`), it picks up that parent's styling and spacing automatically. Merge precedence is defaults \< parent context \< consumer props (`className` concatenates, handlers chain), via React Aria's `useContextProps`.
-
-A parent adopts them by providing the contexts around its children:
-
-```tsx
-import { Provider } from 'react-aria-components';
-import { ContentContext, FooterContext, HeaderContext, ButtonGroupContext } from '@godaddy/antares';
-
-<Provider
-  values={[
-    [HeaderContext, { padding: 'md' }],
-    [ContentContext, { padding: 'md' }],
-    [FooterContext, { padding: 'md' }],
-    [ButtonGroupContext, { justifyContent: 'end' }]
-  ]}
->
-  {children}
-</Provider>;
-```
+* **Standalone** - with no parent context it renders with its own structural defaults and looks the same everywhere.
+* **Adopted** - inside a parent that provides its context (e.g. `Modal`), it picks up that parent's styling and spacing automatically. Consumer props still win over the adopted defaults.
 
 ## Examples [#examples]
 
@@ -4239,6 +4380,14 @@ they adopt that parent's spacing automatically.
 <Story of="DefaultExample" />
 
 <Source language="tsx" code="&#x22;import { Flex, Header, Content, Footer, ButtonGroup, Text, Button } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex\n      direction=\&#x22;column\&#x22;\n      gap=\&#x22;md\&#x22;\n      padding=\&#x22;md\&#x22;\n      style={{ border: '1px solid var(--ux-gray-300, #ccc)', borderRadius: 8 }}\n    >\n      <Header>\n        <Text>Delete file?</Text>\n        <Button variant=\&#x22;secondary\&#x22;>Close</Button>\n      </Header>\n      <Content>\n        <Text>This action cannot be undone.</Text>\n      </Content>\n      <Footer>\n        <ButtonGroup flexGrow={1}>\n          <Button variant=\&#x22;secondary\&#x22;>Cancel</Button>\n          <Button variant=\&#x22;critical\&#x22;>Delete</Button>\n        </ButtonGroup>\n      </Footer>\n    </Flex>\n  );\n}&#x22;" />
+
+### Group [#group]
+
+Group is the bordered field box. Size and invalid/disabled chrome apply here.
+
+<Story of="GroupExample" />
+
+<Source language="tsx" code="&#x22;import { Group, Input, Label, TextField } from '@godaddy/antares';\n\nexport function GroupExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Group>\n        <Input placeholder=\&#x22;Enter your name\&#x22; />\n      </Group>\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -4257,6 +4406,10 @@ they adopt that parent's spacing automatically.
 <PropTable />
 
 ### ButtonGroup [#buttongroup]
+
+<PropTable />
+
+### Group [#group-1]
 
 <PropTable />
 
@@ -4747,13 +4900,9 @@ The colored dot is decorative and invisible to screen readers. The text label mu
 
 
 
-
-
 <Meta of="Stories" name="Overview" />
 
 The `Text` component prepares content with a few properties.
-
-Use the `Heading` preset for semantic headings. It renders an `h1`-`h6` element via the `level` prop (default `2`). Because it is built on React Aria's `Heading`, adding `slot="title"` inside a `Modal`/`Dialog` wires the accessible name (`aria-labelledby`) automatically.
 
 ## Installation [#installation]
 
@@ -4778,15 +4927,6 @@ Setting the `as` prop allows you to change the HTML tag of the `Text` component.
 <Story of="AsExample" />
 
 <Source language="tsx" code="&#x22;import { Text, type TextProps } from '@godaddy/antares';\n\nexport function AsExample(args: TextProps) {\n  return (\n    <Text {...args} as=\&#x22;marquee\&#x22;>\n      A scrolling marquee\n    </Text>\n  );\n}&#x22;" />
-
-### Heading [#heading]
-
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop (default `2`).
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
-
-<Story of="HeadingExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function HeadingExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
 
 ### Align [#align]
 
@@ -4818,7 +4958,45 @@ The `Text` component accepts the following props:
 
 <PropTable />
 
-The `Heading` component accepts the following props:
+
+# TextArea
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`TextArea` is the multiline control inside a field, not a field on its own. Prefer `TextField` as the parent; see that component for fuller examples.
+
+```tsx
+<TextField>
+  <Label>Comment</Label>
+  <TextArea placeholder="Enter your comment" />
+</TextField>
+```
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+TextArea inside TextField.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
+
+## Props [#props]
 
 <PropTable />
 
@@ -4845,16 +5023,20 @@ The `Heading` component accepts the following props:
 
 
 
+
+
+
+
 <Meta of="Stories" name="Overview" />
 
 ## Features [#features]
 
-* **Label, description, error**: Optional label, helper text, and error message with proper accessibility
-* **Adornments**: Optional `leadingText` and `trailingText` for fixed text before or after the input (e.g. `$`, `.00`, `px`)
+* **Composable interior**: Compose `Label`, `Input` or `TextArea`, `Text slot="description"`, and `FieldError`. Omitting `Group` leaves the control as a direct field child with box chrome. Use an explicit `Group` for controls or adornments
+* **Adornments**: Fixed text or icons before or after the input (e.g. `$`, `.00`, `px`) are composed inside `Group`, positioned by source order
+* **Controls**: A `Button slot="control"` beside the input is an interactive affix; it picks up field chrome from context
 * **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-* **Multiline**: Set `multiline` to render a textarea instead of a single-line input
-* **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
-* **React Aria integration**: Built on React Aria TextField for accessibility and behavior
+* **Multiline**: Compose a `TextArea` instead of an `Input` for multiline entry
+* **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 
 ## Installation [#installation]
 
@@ -4866,61 +5048,91 @@ npm install --save @godaddy/antares
 
 ### Default [#default]
 
-Minimal usage with label and placeholder.
+Minimal usage: a `Label` and an `Input`.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: TextFieldProps) {\n  return <TextField label=\&#x22;Name\&#x22; placeholder=\&#x22;Enter your name\&#x22; {...props} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextField>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
 
-### Text Field Controlled [#text-field-controlled]
+### Controlled [#controlled]
 
 Use `value` and `onChange` for controlled state.
 
-<Story of="TextFieldControlledExample" />
+<Story of="ControlledExample" />
 
-<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Text, TextField } from '@godaddy/antares';\n\nexport function TextFieldControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField label=\&#x22;Email\&#x22; placeholder=\&#x22;you@example.com\&#x22; value={value} onChange={setValue} />\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlledExample() {\n  const [value, setValue] = useState('');\n\n  return (\n    <>\n      <TextField value={value} onChange={setValue}>\n        <Label>Email</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <Text>\n        <strong>Value:</strong> {value || '(empty)'}\n      </Text>\n    </>\n  );\n}&#x22;" />
 
-### Text Field Invalid [#text-field-invalid]
+### Invalid [#invalid]
 
-Use `isInvalid` with `errorMessage` for validation feedback.
+Use `isInvalid` with a `FieldError` for validation feedback.
 
-<Story of="TextFieldInvalidExample" />
+<Story of="InvalidExample" />
 
-<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldInvalidExample() {\n  return (\n    <TextField\n      label=\&#x22;Email\&#x22;\n      placeholder=\&#x22;you@example.com\&#x22;\n      errorMessage=\&#x22;Please enter a valid email address\&#x22;\n      isInvalid\n      isRequired\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { FieldError, Input, Label, TextField } from '@godaddy/antares';\n\nexport function InvalidExample() {\n  return (\n    <TextField isInvalid isRequired>\n      <Label>Email</Label>\n      <Input placeholder=\&#x22;you@example.com\&#x22; />\n      <FieldError>Please enter a valid email address</FieldError>\n    </TextField>\n  );\n}&#x22;" />
 
-### Text Field Disabled [#text-field-disabled]
+### Disabled [#disabled]
 
 Use `isDisabled` to prevent input.
 
-<Story of="TextFieldDisabledExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldDisabledExample() {\n  return <TextField label=\&#x22;Name\&#x22; placeholder=\&#x22;Enter your name\&#x22; defaultValue=\&#x22;Disabled value\&#x22; isDisabled />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Input, Label, TextField } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <TextField defaultValue=\&#x22;Disabled value\&#x22; isDisabled>\n      <Label>Name</Label>\n      <Input placeholder=\&#x22;Enter your name\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
 
-### Text Field Adornments [#text-field-adornments]
+### Adornments [#adornments]
 
-Use `leadingText` and `trailingText` for fixed text before and after the input, such as currency.
+Fixed text before and after the input, such as currency. Leading and trailing content is
+composed inside the `Group` and its position comes from source order.
 
-<Story of="TextFieldAdornmentsExample" />
+<Story of="AdornmentsExample" />
 
-<Source language="tsx" code="&#x22;import { TextField } from '@godaddy/antares';\n\nexport function TextFieldAdornmentsExample() {\n  return (\n    <TextField\n      description=\&#x22;Use leadingText and trailingText to show fixed text before and after the input (e.g. currency).\&#x22;\n      label=\&#x22;Amount\&#x22;\n      leadingText=\&#x22;$\&#x22;\n      placeholder=\&#x22;0.00\&#x22;\n      trailingText=\&#x22;.00\&#x22;\n    />\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Group, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function AdornmentsExample() {\n  return (\n    <TextField>\n      <Label>Amount</Label>\n      <Group>\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n          $\n        </Flex>\n        <Input placeholder=\&#x22;0.00\&#x22; />\n        <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingEnd=\&#x22;md\&#x22;>\n          .00\n        </Flex>\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>Compose fixed text before and after the input (e.g. currency).</Text>\n    </TextField>\n  );\n}&#x22;" />
 
-### Text Field Multiline [#text-field-multiline]
+### Multiline [#multiline]
 
-Use `multiline` to render a textarea.
+Compose a `TextArea` instead of an `Input` for multiline entry.
 
-<Story of="TextFieldMultilineExample" />
+<Story of="MultilineExample" />
 
-<Source language="tsx" code="&#x22;import { TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function TextFieldMultilineExample(props: TextFieldProps) {\n  return <TextField label=\&#x22;Comment\&#x22; placeholder=\&#x22;Enter your comment\&#x22; multiline {...props} />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Label, TextArea, TextField, type TextFieldProps } from '@godaddy/antares';\n\nexport function MultilineExample({ value }: Pick<TextFieldProps, 'value'> = {}) {\n  return (\n    <TextField value={value}>\n      <Label>Comment</Label>\n      <TextArea placeholder=\&#x22;Enter your comment\&#x22; />\n    </TextField>\n  );\n}&#x22;" />
 
 ### Sizes [#sizes]
 
-Compare the supported `md` and `sm` visual sizes.
+Compare the supported `md` and `sm` visual sizes, plain and with an icon plus control button.
+Set `size` on `TextField` so the input and `Button slot="control"` share the same size.
 
-<Story of="TextFieldSizesExample" />
+<Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, TextField } from '@godaddy/antares';\n\nexport function TextFieldSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField label=\&#x22;Email (md)\&#x22; placeholder=\&#x22;you@example.com\&#x22; />\n      <TextField label=\&#x22;Email (sm)\&#x22; placeholder=\&#x22;you@example.com\&#x22; size=\&#x22;sm\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, TextField } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Email (md)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email (sm)</Label>\n        <Input placeholder=\&#x22;you@example.com\&#x22; />\n      </TextField>\n\n      <TextField>\n        <Label>Email with icon (md)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n\n      <TextField size=\&#x22;sm\&#x22;>\n        <Label>Email with icon (sm)</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;sm\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
+
+### Controls and icons [#controls-and-icons]
+
+Put a control or an icon beside the input. A `Button slot="control"` is an
+interactive affix; static content is wrapped in a `Flex as="span"` to center it and give it a gutter.
+
+<Story of="ControlsExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Flex, Group, Icon, Input, Label, Text, TextField } from '@godaddy/antares';\n\nexport function ControlsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <TextField>\n        <Label>Image</Label>\n        <Group>\n          <Button slot=\&#x22;control\&#x22;>Browse</Button>\n          <Input placeholder=\&#x22;Paste an image URL\&#x22; />\n        </Group>\n      </TextField>\n\n      <TextField>\n        <Label>Email</Label>\n        <Group>\n          <Flex as=\&#x22;span\&#x22; alignItems=\&#x22;center\&#x22; inlinePaddingStart=\&#x22;md\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n          </Flex>\n          <Input placeholder=\&#x22;Email\&#x22; />\n          <Button aria-label=\&#x22;Verify email address\&#x22; slot=\&#x22;control\&#x22;>\n            Verify\n          </Button>\n        </Group>\n        <Text slot=\&#x22;description\&#x22;>Enter your email address</Text>\n      </TextField>\n    </Flex>\n  );\n}&#x22;" />
+
+### Telephone Field [#telephone-field]
+
+Compose a telephone number input paired with a country-code select.
+
+<Story of="TelephoneFieldExample" />
+
+<Source language="tsx" code="&#x22;import { Button, Group, Input, Label, Select, SelectItem, SelectOptions, Text, TextField } from '@godaddy/antares';\n\nexport function TelephoneFieldExample() {\n  return (\n    <TextField autoComplete=\&#x22;tel-national\&#x22; inputMode=\&#x22;tel\&#x22; type=\&#x22;tel\&#x22;>\n      <Label>Phone number</Label>\n      <Group>\n        <Select aria-label=\&#x22;Country code\&#x22; defaultValue=\&#x22;us\&#x22; variant=\&#x22;control\&#x22;>\n          <Button slot=\&#x22;trigger\&#x22; />\n          <SelectOptions>\n            <SelectItem id=\&#x22;us\&#x22;>US +1</SelectItem>\n            <SelectItem id=\&#x22;mx\&#x22;>MX +52</SelectItem>\n            <SelectItem id=\&#x22;gb\&#x22;>GB +44</SelectItem>\n          </SelectOptions>\n        </Select>\n        <Input placeholder=\&#x22;555-555-5555\&#x22; />\n      </Group>\n      <Text slot=\&#x22;description\&#x22;>We'll only call about your order.</Text>\n    </TextField>\n  );\n}&#x22;" />
 
 ## Props [#props]
+
+```tsx
+<TextField>
+  <Label />
+  <Input />
+  {/* or <TextArea /> */}
+  {/* or <Group><Input /></Group> for adornments or a control */}
+  <Text slot="description" />
+  <FieldError />
+</TextField>
+```
 
 The `TextField` component accepts the following props:
 
@@ -6167,124 +6379,6 @@ The `Box` component accepts the following props:
 <PropTable />
 
 
-# Grid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
-
-**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
-
-## Examples [#examples]
-
-### Default [#default]
-
-Basic 3-column grid layout with gap.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Columns [#columns]
-
-The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
-
-<Story of="ColumnsExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Gap [#gap]
-
-The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
-
-<Story of="GapExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Named Areas [#named-areas]
-
-Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
-
-<Story of="AreasExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Responsive Grid [#responsive-grid]
-
-Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
-
-<Story of="ResponsiveExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Use `justifyItems` and `alignItems` to control default alignment of all grid children.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Form [#form]
-
-A common two-column form pattern with auto-sized label column.
-
-<Story of="FormExample" />
-
-<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
-
-## Grid vs Flex [#grid-vs-flex]
-
-| Use Case                   | Recommended      |
-| -------------------------- | ---------------- |
-| Single row/column of items | Flex             |
-| Two-dimensional layouts    | Grid             |
-| Named layout regions       | Grid             |
-| Auto-wrapping cards        | Grid (auto-fill) |
-| Navigation bars            | Flex             |
-| Form layouts               | Grid             |
-
-## Props [#props]
-
-The `Grid` component accepts the following props:
-
-<PropTable />
-
-
 # Flex
 
 
@@ -6401,5 +6495,123 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
+
+<PropTable />
+
+
+# Grid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Grid` is a two-dimensional CSS Grid layout component for complex grid-based layouts. It extends `Box`, inheriting all `Box` capabilities (padding, elevation, rounding, self-alignment, and polymorphic `as` prop).
+
+**Use `Grid` when**: You need explicit two-dimensional layouts with rows and columns, named grid areas, or responsive auto-fill patterns.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+We use the same scale sizes as the `Box` component. For more information, see the [**Box component documentation**](../box/README.mdx#scale-sizes).
+
+## Examples [#examples]
+
+### Default [#default]
+
+Basic 3-column grid layout with gap.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex, type GridProps } from '@godaddy/antares';\n\nexport function DefaultExample(props: GridProps) {\n  return (\n    <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; {...props}>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 1\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 2\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 3\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 4\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 5\n      </Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Item 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Columns [#columns]
+
+The `columns` prop defines grid column tracks using CSS grid-template-columns syntax.
+
+<Story of="ColumnsExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ColumnsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: repeat(2, 1fr)</Flex>\n        <Grid columns=\&#x22;repeat(2, 1fr)\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: 1fr 2fr 1fr</Flex>\n        <Grid columns=\&#x22;1fr 2fr 1fr\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Wide\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Narrow\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>columns: auto 1fr auto</Flex>\n        <Grid columns=\&#x22;auto 1fr auto\&#x22; gap=\&#x22;sm\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Flexible\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Auto\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Gap [#gap]
+
+The `gap` prop controls spacing between grid cells. Use `rowGap` and `columnGap` for independent control.
+
+<Story of="GapExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function GapExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: md</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;md\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>gap: xl</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;xl\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>rowGap: lg, columnGap: xs</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rowGap=\&#x22;lg\&#x22; columnGap=\&#x22;xs\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 1\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 2\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 3\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 4\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 5\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Item 6\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Named Areas [#named-areas]
+
+Use `areas` to define named grid regions. Children use the `gridArea` prop for placement.
+
+<Story of="AreasExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AreasExample() {\n  return (\n    <Grid\n      areas={['header header header', 'sidebar main main', 'footer footer footer']}\n      columns=\&#x22;200px 1fr 1fr\&#x22;\n      rows=\&#x22;auto 1fr auto\&#x22;\n      gap=\&#x22;sm\&#x22;\n      style={{ height: '300px' }}\n    >\n      <Flex gridArea=\&#x22;header\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Header\n      </Flex>\n      <Flex gridArea=\&#x22;sidebar\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#d0d0d0' }}>\n        Sidebar\n      </Flex>\n      <Flex gridArea=\&#x22;main\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n        Main Content\n      </Flex>\n      <Flex gridArea=\&#x22;footer\&#x22; padding=\&#x22;sm\&#x22; style={{ background: '#c0c0c0' }}>\n        Footer\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Responsive Grid [#responsive-grid]
+
+Use CSS `auto-fill` and `minmax()` for responsive column counts without media queries.
+
+<Story of="ResponsiveExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function ResponsiveExample() {\n  return (\n    <Grid columns=\&#x22;repeat(auto-fill, minmax(150px, 1fr))\&#x22; gap=\&#x22;sm\&#x22;>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 1\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 2\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 3\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 4\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 5\n      </Flex>\n      <Flex padding=\&#x22;md\&#x22; style={{ background: '#e0e0e0' }}>\n        Card 6\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Use `justifyItems` and `alignItems` to control default alignment of all grid children.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: center</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>alignItems: center (with fixed row height)</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;100px\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;center\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            Centered\n          </Flex>\n        </Grid>\n      </Flex>\n\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Flex as=\&#x22;strong\&#x22;>justifyItems: end, alignItems: end</Flex>\n        <Grid columns=\&#x22;repeat(3, 1fr)\&#x22; rows=\&#x22;80px\&#x22; gap=\&#x22;sm\&#x22; justifyItems=\&#x22;end\&#x22; alignItems=\&#x22;end\&#x22; elevation=\&#x22;base\&#x22;>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n          <Flex padding=\&#x22;sm\&#x22; style={{ background: '#e0e0e0' }}>\n            End\n          </Flex>\n        </Grid>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Form [#form]
+
+A common two-column form pattern with auto-sized label column.
+
+<Story of="FormExample" />
+
+<Source language="tsx" code="&#x22;import { Grid, Flex } from '@godaddy/antares';\n\nexport function FormExample() {\n  return (\n    <Grid columns=\&#x22;auto 1fr\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;center\&#x22; style={{ width: '400px' }}>\n      <Flex as=\&#x22;label\&#x22;>Name</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Email</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Input placeholder\n      </Flex>\n\n      <Flex as=\&#x22;label\&#x22;>Message</Flex>\n      <Flex padding=\&#x22;sm\&#x22; style={{ background: '#f5f5f5' }}>\n        Textarea placeholder\n      </Flex>\n    </Grid>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Grid uses CSS logical properties which automatically adapt to RTL layouts. Grid areas and alignment respect the document direction.
+
+## Grid vs Flex [#grid-vs-flex]
+
+| Use Case                   | Recommended      |
+| -------------------------- | ---------------- |
+| Single row/column of items | Flex             |
+| Two-dimensional layouts    | Grid             |
+| Named layout regions       | Grid             |
+| Auto-wrapping cards        | Grid (auto-fill) |
+| Navigation bars            | Flex             |
+| Form layouts               | Grid             |
+
+## Props [#props]
+
+The `Grid` component accepts the following props:
 
 <PropTable />
