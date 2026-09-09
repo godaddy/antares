@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-DME-cQh5.js";import{w as t}from"./chunk-KEIR6QF5-DJIenlP5.js";import{A as n,k as r}from"./mermaid-parser.core-Cf1qypke.js";e((()=>{n(),t()}))();export{r as createPieServices};
