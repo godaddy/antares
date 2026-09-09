@@ -71,10 +71,6 @@ export interface TagProps extends ComponentProps<'span'> {
   children: ReactNode;
 }
 
-/**
- * Lets a parent supply per-slot `Tag` defaults; consumer props always win. Providers must
- * include `DEFAULT_SLOT`, since `useSlottedContext` throws on a missing slot key.
- */
 export const TagContext = createContext<ContextValue<Partial<TagProps>, HTMLSpanElement>>(null);
 
 /**
