@@ -1,10 +1,17 @@
-import { DatePicker } from '@godaddy/antares';
+import { Button, DatePicker, DatePickerCalendar, FieldError, Label } from '@godaddy/antares';
 
 /**
- * An invalid picker showing a validation message via `isInvalid` and `errorMessage`.
- * @title Error
+ * An invalid picker showing a validation message via `isInvalid` and a `FieldError`.
+ * @title With error
  * @order 6
  */
-export function DatePickerWithErrorExample() {
-  return <DatePicker label="Event date" isInvalid errorMessage="Please choose a date" />;
+export function WithErrorExample() {
+  return (
+    <DatePicker isInvalid>
+      <Label>Event date</Label>
+      <Button slot="trigger" />
+      <FieldError>Please choose a date</FieldError>
+      <DatePickerCalendar />
+    </DatePicker>
+  );
 }

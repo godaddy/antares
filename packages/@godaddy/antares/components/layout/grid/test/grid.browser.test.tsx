@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { resetHover } from '#test/utils/test-helpers.tsx';
+import { resetPointer } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { ColumnsExample } from '../examples/columns.tsx';
 import { AreasExample } from '../examples/areas.tsx';
@@ -11,6 +11,8 @@ import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Grid', function gridTests() {
+    beforeEach(resetPointer);
+
     it('renders the default grid in the browser', async function rendersDefault() {
       const { getByText } = await render(<DefaultExample />);
       expect(getByText('Item 1')).toBeInTheDocument();
@@ -50,8 +52,6 @@ describe('@godaddy/antares', function antares() {
 
       await userEvent.hover(button);
       expect(button).toHaveClass('hover');
-
-      await resetHover();
     });
 
     it('preserves grid style when progress changes', async function preservesGridStyle() {

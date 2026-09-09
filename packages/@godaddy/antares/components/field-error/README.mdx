@@ -1,0 +1,28 @@
+---
+title: FieldError
+description: Validation message for a field. Renders only when the field is invalid.
+---
+
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './field-error.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- Shown when the parent field is invalid (`isInvalid` or native constraint validation).
+
+## Installation
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Props
+
+<ArgTypes of={Stories.Props} />

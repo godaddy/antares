@@ -1,65 +1,132 @@
-import { forwardRef } from 'react';
-import { NumberField as RACNumberField, type NumberFieldProps as RACNumberFieldProps } from 'react-aria-components';
+import { type ReactNode, useContext } from 'react';
+import { mergeProps } from 'react-aria';
 import {
-  Field,
-  FieldButton,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  type FieldSize,
-  FieldInput,
-  type FieldOwnProps
-} from '#components/field';
+  DEFAULT_SLOT,
+  NumberField as RACNumberField,
+  type NumberFieldProps as RACNumberFieldProps,
+  Provider as RACProvider,
+  composeRenderProps,
+  useSlottedContext
+} from 'react-aria-components';
+import { ButtonContext, type ButtonProps } from '#components/button';
 import { Icon } from '#components/icon';
+import { InputContext } from '#components/input';
+import { LabelContext } from '#components/label';
+import { Flex, type FlexOwnProps } from '#components/layout/flex';
+import { GroupContext } from '#components/structure';
+import { composeClassName } from '#utils/render-props.ts';
+import fieldStyles from '../../_internal/field-styles/index.module.css';
 
-export interface NumberFieldProps extends Omit<RACNumberFieldProps, 'children' | 'size'>, FieldOwnProps {
-  /** When true, hides the increment/decrement stepper buttons. @default false */
-  hideStepper?: boolean;
-
-  /** Placeholder when the value is empty. */
-  placeholder?: string;
+export interface NumberFieldProps
+  extends Omit<RACNumberFieldProps, 'children' | 'size'>,
+    Omit<FlexOwnProps, 'as' | 'className'> {
+  /** Field interior. Pass a function to read field state. */
+  children: RACNumberFieldProps['children'];
 
   /** Visual size of the input. @default 'md' */
-  size?: FieldSize;
+  size?: 'sm' | 'md';
+}
+
+/** Faces for stepper `Button`s left empty. Local children replace them. */
+const STEPPER_FACES = {
+  decrement: <Icon icon="minus" />,
+  increment: <Icon icon="plus" />
+};
+
+interface NumberFieldBodyProps {
+  /** Visual size of the controls. */
+  size?: 'sm' | 'md';
+
+  /** Whether the field is disabled. */
+  isDisabled?: boolean;
+
+  children: ReactNode;
 }
 
 /**
- * Antares NumberField component. Renders a numeric input with label, description, error message, and optional stepper buttons.
+ * Styles the parts a NumberField owns and fills its stepper faces. It runs inside `RACNumberField`,
+ * so it reads the increment/decrement props React Aria wired and republishes them with the field's
+ * chrome and an icon; a button's own props still win last, in its `useContextProps`.
+ */
+function NumberFieldBody({ size, isDisabled, children }: NumberFieldBodyProps) {
+  const label = useSlottedContext(LabelContext) ?? {};
+  const input = useSlottedContext(InputContext) ?? {};
+  const group = useSlottedContext(GroupContext) ?? {};
+  const stepperSlots =
+    (useContext(ButtonContext) as { slots?: Record<string | symbol, ButtonProps> } | null)?.slots ?? {};
+  // Chrome only. It carries no disabled state, so merging it over a stepper cannot overwrite the
+  // bounds state React Aria published for that stepper.
+  const control: ButtonProps = { variant: 'control', size, className: fieldStyles.control };
+
+  return (
+    <RACProvider
+      values={[
+        [LabelContext, { ...label, className: composeClassName(label.className, fieldStyles.label) }],
+        [InputContext, { ...input, className: composeClassName(input.className, fieldStyles.input) }],
+
+        // The box group owns the chrome, so it carries the disabled state for the parts the field paints.
+        [GroupContext, { ...group, isDisabled, className: composeClassName(group.className, fieldStyles.group) }],
+        [
+          ButtonContext,
+          {
+            slots: {
+              // React Aria publishes only the stepper slots, so an unslotted Button inside the
+              // field would throw. A Button the field does not own inherits nothing, so this entry
+              // is empty; it is here only to keep the interior free-form.
+              [DEFAULT_SLOT]: {},
+              control: { ...control, isDisabled },
+              decrement: mergeProps(stepperSlots.decrement, control, { children: STEPPER_FACES.decrement }),
+              increment: mergeProps(stepperSlots.increment, control, { children: STEPPER_FACES.increment })
+            }
+          }
+        ]
+      ]}
+    >
+      {children}
+    </RACProvider>
+  );
+}
+
+/**
+ * Numeric input field. Compose `Label`, the control, description, and `FieldError`.
  *
- * @param props - {@link NumberFieldProps}
- * @param ref - Ref for the input element.
- * @returns JSX element
+ * An empty `Button slot="decrement"` / `slot="increment"` picks up its icon, `variant`, and `size`
+ * from the field, so a stepper needs no icon imports.
  *
  * @example
  * ```tsx
- * <NumberField label="Quantity" placeholder="0" minValue={0} maxValue={100} />
- * <NumberField label="Amount" value={amount} onChange={setAmount} minValue={0} />
- * <NumberField label="Guests" hideStepper description="Enter a whole number." />
+ * <NumberField minValue={0} maxValue={100}>
+ *   <Label>Quantity</Label>
+ *   <Group>
+ *     <Button slot="decrement" />
+ *     <Input />
+ *     <Button slot="increment" />
+ *   </Group>
+ *   <FieldError />
+ * </NumberField>
  * ```
  */
-export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(function NumberField(props, ref) {
-  const { description, errorMessage, hideStepper, label, placeholder, size, ...racProps } = props;
-  const { isDisabled, isRequired } = racProps;
+export function NumberField(props: NumberFieldProps) {
+  const { children, size, gap = 'sm', className, isDisabled, ...rest } = props;
 
   return (
-    <Field as={RACNumberField} {...racProps}>
-      <FieldLabel isRequired={isRequired}>{label}</FieldLabel>
-      <FieldGroup isDisabled={isDisabled} size={size}>
-        {!hideStepper && (
-          <FieldButton slot="decrement">
-            <Icon icon="minus" />
-          </FieldButton>
-        )}
-        <FieldInput ref={ref} placeholder={placeholder} />
-        {!hideStepper && (
-          <FieldButton slot="increment">
-            <Icon icon="plus" />
-          </FieldButton>
-        )}
-      </FieldGroup>
-      <FieldDescription>{description}</FieldDescription>
-      <FieldError>{errorMessage}</FieldError>
-    </Field>
+    <Flex
+      direction="column"
+      gap={gap}
+      {...rest}
+      isDisabled={isDisabled}
+      as={RACNumberField}
+      data-interior="box"
+      data-size={size}
+      className={composeClassName(className, fieldStyles.field)}
+    >
+      {composeRenderProps(children, function body(node) {
+        return (
+          <NumberFieldBody size={size} isDisabled={isDisabled}>
+            {node}
+          </NumberFieldBody>
+        );
+      })}
+    </Flex>
   );
-});
+}

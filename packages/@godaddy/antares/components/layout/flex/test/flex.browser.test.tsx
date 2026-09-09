@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { resetHover } from '#test/utils/test-helpers.tsx';
+import { resetPointer } from '#test/utils/test-helpers.tsx';
 import { DefaultExample } from '../examples/default.tsx';
 import { DirectionExample } from '../examples/direction.tsx';
 import { AlignmentExample } from '../examples/alignment.tsx';
@@ -11,6 +11,8 @@ import { StyleRenderPropExample } from '../examples/style-render-prop.tsx';
 
 describe('@godaddy/antares', function antares() {
   describe('#Flex', function flexTests() {
+    beforeEach(resetPointer);
+
     it('renders the default flex in the browser', async function rendersDefault() {
       const { getByText } = await render(<DefaultExample />);
       expect(getByText('Item 1')).toBeInTheDocument();
@@ -49,8 +51,6 @@ describe('@godaddy/antares', function antares() {
 
       await userEvent.hover(button);
       expect(button).toHaveClass('hover');
-
-      await resetHover();
     });
 
     it('preserves layout style when progress changes', async function preservesFlexStyle() {

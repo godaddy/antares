@@ -1,4 +1,5 @@
 import { DefaultExample } from '../examples/default.tsx';
+import { IconContextExample } from '../examples/icon-context.tsx';
 import { render } from 'vitest-browser-react';
 import { Icon } from '@godaddy/antares';
 import { type ReactElement, createRef } from 'react';
@@ -85,6 +86,38 @@ describe('@godaddy/antares', function antares() {
       const { container } = await render(<DefaultExample icon="unknown" />);
 
       assume(container.innerHTML).includes('<svg data-placeholder="true"');
+    });
+  });
+
+  describe('#IconContext', function iconContext() {
+    it('applies presentation from context', async function fromContext() {
+      const { container } = await renderAndWait(<IconContextExample />);
+      const star = container.querySelector('[data-icon="star"]');
+
+      assume(star?.getAttribute('fill')).equals('blue');
+      assume(star?.getAttribute('width')).equals('24');
+      assume(star?.getAttribute('height')).equals('24');
+      assume(star?.getAttribute('aria-hidden')).equals('true');
+      assume(star?.getAttribute('class')).includes('from-context');
+    });
+
+    it('lets local props override context', async function localWins() {
+      const { container } = await renderAndWait(<IconContextExample />);
+      const heart = container.querySelector('[data-icon="heart"]');
+
+      assume(heart?.getAttribute('fill')).equals('red');
+      assume(heart?.getAttribute('width')).equals('24');
+      assume(heart?.getAttribute('aria-hidden')).equals('true');
+      assume(heart?.getAttribute('class')).includes('from-context');
+    });
+
+    it('merges className from context and local props', async function className() {
+      const { container } = await renderAndWait(<IconContextExample />);
+      const heart = container.querySelector('[data-icon="heart"]');
+      const className = heart?.getAttribute('class') ?? '';
+
+      assume(className).includes('from-context');
+      assume(className).includes('from-local');
     });
   });
 
