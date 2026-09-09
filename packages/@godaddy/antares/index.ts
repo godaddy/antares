@@ -47,7 +47,8 @@ export * from './exports/Calendar';
 export * from './exports/DatePicker';
 export * from './exports/Tabs';
 export * from './exports/Avatar';
-export * from './exports/Pressable.ts';
+export * from './exports/Pressable';
 export * from './exports/Chip';
+export * from './exports/TextLockup';
 
 export { FocusScope, type FocusScopeProps } from '@react-aria/focus';

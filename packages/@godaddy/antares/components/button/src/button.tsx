@@ -8,6 +8,8 @@ import {
   type ContextValue,
   Link as RACLink,
   type LinkProps as RACLinkProps,
+  Provider as RACProvider,
+  TextContext as RACTextContext,
   useSlottedContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
@@ -42,6 +44,21 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 type ButtonVariant = ButtonVariantProps['variant'];
 type LinkButtonVariant = Exclude<ButtonVariant, 'control' | 'trigger'>;
 
+/**
+ * The button's label region: shadows an ancestor's `TextContext` so the label keeps the button's
+ * own type, and puts a bare string on a `Text`. Stays `undefined` when the caller passes no
+ * children, so children a parent publishes per slot still reach the button.
+ */
+function buttonLabel(children: React.ReactNode) {
+  if (children === undefined) return children;
+
+  return (
+    <RACProvider values={[[RACTextContext, {}]]}>
+      {typeof children === 'string' ? <Text>{children}</Text> : children}
+    </RACProvider>
+  );
+}
+
 interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
   /** The variant of the button. */
   variant?: V;
@@ -65,7 +82,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
   const resolvedVariant = variant ?? inherited?.variant;
   const resolvedSize = size ?? inherited?.size;
-  const content = typeof children === 'string' ? <Text slot={null}>{children}</Text> : children;
 
   return (
     <RACButton
@@ -74,7 +90,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       slot={slot}
       className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
     >
-      {content}
+      {buttonLabel(children)}
     </RACButton>
   );
 });
@@ -100,7 +116,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      {typeof children === 'string' ? <Text>{children}</Text> : children}
+      {buttonLabel(children)}
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );

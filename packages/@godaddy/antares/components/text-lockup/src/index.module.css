@@ -1,0 +1,104 @@
+.lockup {
+  container: text-lockup / inline-size;
+  /* Definite, since `inline-size` containment drops the children from the intrinsic size. */
+  inline-size: 100%;
+  align-items: flex-start;
+  /* Explicit, since `text-align` would otherwise inherit from a centered ancestor. */
+  text-align: start;
+
+  --_text-lockup-measure: none;
+  --_text-lockup-title-size-narrow: var(--_text-lockup-title-size);
+
+  --_text-lockup-eyebrow-family: var(--font-detail-family, var(--ux-1gutwvn, sans-serif));
+  --_text-lockup-eyebrow-line-height: var(--font-detail-line-height, var(--ux-1dje42v, 1.5));
+  --_text-lockup-eyebrow-weight: var(--font-detail-weight, var(--ux-g9ierp, 400));
+  --_text-lockup-eyebrow-variation: var(--font-detail-variation, var(--ux-tjt16c, normal));
+
+  --_text-lockup-title-family: var(--font-heading-family, var(--ux-shg991, sans-serif));
+  --_text-lockup-title-line-height: var(--font-heading-line-height, var(--ux-p25s1t, 1.25));
+  --_text-lockup-title-variation: var(--font-heading-variation, var(--ux-1458mfm, "DSPL" 1));
+
+  --_text-lockup-body-family: var(--font-body-family, var(--ux-pze30t, var(--ux-117cu43, sans-serif)));
+  --_text-lockup-body-line-height: var(--font-body-line-height, var(--ux-1hhfdnd, var(--ux-mgbt9j, 1.5)));
+  --_text-lockup-body-weight: var(--font-body-weight, var(--ux-8n6y9x, 400));
+  --_text-lockup-body-variation: var(--font-body-variation, var(--ux-1i4pt2s, normal));
+}
+
+.lockup:where([data-legible-lines]) {
+  --_text-lockup-measure: 60ch;
+}
+
+.lockup:where([data-align="center"]) {
+  align-items: center;
+  text-align: center;
+}
+
+.lockup:where([data-size="2xl"]) {
+  --_text-lockup-eyebrow-size: var(--font-detail-size-2xl, 1.125rem);
+  --_text-lockup-title-size: var(--font-heading-size-2xl, 2.25rem);
+  --_text-lockup-title-size-narrow: var(--font-heading-size-xl, 1.875rem);
+  --_text-lockup-body-size: var(--font-body-size-2xl, 1.5rem);
+}
+
+.lockup:where([data-size="xl"]) {
+  --_text-lockup-eyebrow-size: var(--font-detail-size-xl, 1rem);
+  --_text-lockup-title-size: var(--font-heading-size-xl, 1.875rem);
+  --_text-lockup-body-size: var(--font-body-size-xl, 1.25rem);
+}
+
+.lockup:where([data-size="lg"]) {
+  --_text-lockup-eyebrow-size: var(--font-detail-size-lg, 0.875rem);
+  --_text-lockup-title-size: var(--font-heading-size-lg, 1.5rem);
+  --_text-lockup-body-size: var(--font-body-size-lg, 1.125rem);
+}
+
+.lockup:where([data-size="md"]) {
+  --_text-lockup-eyebrow-size: var(--font-detail-size-md, 0.8125rem);
+  --_text-lockup-title-size: var(--font-heading-size-md, 1.25rem);
+  --_text-lockup-body-size: var(--font-body-size-md, 1rem);
+}
+
+.lockup:where([data-size="sm"]) {
+  --_text-lockup-eyebrow-size: var(--font-detail-size-sm, 0.75rem);
+  --_text-lockup-title-size: var(--font-heading-size-sm, 1.125rem);
+  --_text-lockup-title-size-narrow: var(--font-heading-size-xs, 1rem);
+  --_text-lockup-body-size: var(--font-body-size-sm, 0.875rem);
+}
+
+.lockup:where([data-size="xs"]) {
+  --_text-lockup-eyebrow-size: var(--font-detail-size-xs, 0.6875rem);
+  --_text-lockup-title-size: var(--font-heading-size-xs, 1rem);
+  --_text-lockup-body-size: var(--font-body-size-xs, 0.75rem);
+}
+
+.eyebrow {
+  max-width: var(--_text-lockup-measure);
+  font-family: var(--_text-lockup-eyebrow-family);
+  font-size: var(--_text-lockup-eyebrow-size);
+  font-weight: var(--_text-lockup-eyebrow-weight);
+  font-variation-settings: var(--_text-lockup-eyebrow-variation);
+  line-height: var(--_text-lockup-eyebrow-line-height);
+}
+
+.title {
+  max-width: var(--_text-lockup-measure);
+  font-family: var(--_text-lockup-title-family);
+  font-size: var(--_text-lockup-title-size);
+  font-variation-settings: var(--_text-lockup-title-variation);
+  line-height: var(--_text-lockup-title-line-height);
+}
+
+@container text-lockup (width < 520px) {
+  .title {
+    font-size: var(--_text-lockup-title-size-narrow);
+  }
+}
+
+.body {
+  max-width: var(--_text-lockup-measure);
+  font-family: var(--_text-lockup-body-family);
+  font-size: var(--_text-lockup-body-size);
+  font-weight: var(--_text-lockup-body-weight);
+  font-variation-settings: var(--_text-lockup-body-variation);
+  line-height: var(--_text-lockup-body-line-height);
+}

@@ -1,0 +1,27 @@
+import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';
+
+/**
+ * `align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
+ * @order 4
+ */
+export function AlignmentExample() {
+  return (
+    <Flex direction="column" gap="lg">
+      <TextLockup align="start">
+        <Text slot="eyebrow">Unaffectedly Modest</Text>
+        <Heading slot="title">Start aligned</Heading>
+        <Text slot="body">
+          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.
+        </Text>
+      </TextLockup>
+
+      <TextLockup align="center">
+        <Text slot="eyebrow">Unaffectedly Modest</Text>
+        <Heading slot="title">Center aligned</Heading>
+        <Text slot="body">
+          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.
+        </Text>
+      </TextLockup>
+    </Flex>
+  );
+}
