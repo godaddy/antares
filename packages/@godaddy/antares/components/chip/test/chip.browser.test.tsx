@@ -3,8 +3,8 @@ import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
 import assume from 'assume';
 import { RouterProvider } from 'react-aria-components';
-import { ChipButton } from '@godaddy/antares';
 import { preloadTestIcons, resetHover } from '#test/utils/test-helpers.tsx';
+import { ChipButtonChildrenRenderPropExample } from '../examples/chip-button-children-render-prop.tsx';
 import { ControlledSelectionExample } from '../examples/controlled-selection.tsx';
 import { ChipButtonStatesExample } from '../examples/chip-button-states.tsx';
 import { DisabledExample } from '../examples/disabled.tsx';
@@ -272,15 +272,9 @@ describe('@godaddy/antares', function antares() {
 
     it('supports ChipButton sizes, composed content, custom classes, and disabled state', async function buttonStates() {
       const user = userEvent.setup();
-      let pressed = false;
+      const onPress = vi.fn();
 
-      await render(
-        <ChipButtonStatesExample
-          onPress={function handlePress() {
-            pressed = true;
-          }}
-        />
-      );
+      await render(<ChipButtonStatesExample onPress={onPress} />);
 
       const small = page.getByRole('button', { name: 'Small with icon' });
       const medium = page.getByRole('button', { name: 'Medium' });
@@ -294,21 +288,16 @@ describe('@godaddy/antares', function antares() {
       expect(getComputedStyle(small.element(), '::before').blockSize).toBe('38px');
 
       await user.click(small);
-      expect(pressed).toBe(true);
+      expect(onPress).toHaveBeenCalledOnce();
+      onPress.mockClear();
 
       expect(large).toHaveAttribute('data-disabled', 'true');
       await user.click(large, { force: true });
-      expect(pressed).toBe(true);
+      expect(onPress).not.toHaveBeenCalled();
     });
 
     it('supports RAC children render props', async function childrenRenderProps() {
-      await render(
-        <ChipButton isDisabled>
-          {function renderChildren({ isDisabled }) {
-            return isDisabled ? 'Disabled' : 'Enabled';
-          }}
-        </ChipButton>
-      );
+      await render(<ChipButtonChildrenRenderPropExample />);
 
       const button = page.getByRole('button', { name: 'Disabled' });
 

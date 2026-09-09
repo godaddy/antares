@@ -43,78 +43,28 @@ import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
 
 ## Customization
 
-Use a plain string for a simple Chip label. When content is composed, use
-`Text` for the visible label and `textValue` for the complete accessible value.
+### Content
 
-```tsx
-<Chip id="austin" textValue="Austin">
-  <Icon icon="map-pin" />
-  <Text>Austin</Text>
-  <Button slot="remove" />
-</Chip>
-```
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
 
-Set the size on `ChipGroup` to share it with every Chip. `ChipList` wraps items
-horizontally by default, and its layout props can be customized when needed.
+### Selection and removal
 
-For removable Chips, provide `onRemove` on the group and add a self-closing
-`Button` with `slot="remove"`. The callback receives a `Set` of removed keys;
-update the collection owned by your application.
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
 
-```tsx
-<ChipGroup
-  onRemove={(keys) => {
-    setFilters((current) => current.filter((filter) => !keys.has(filter.id)));
-  }}
->
-  <ChipList items={filters}>
-    {(filter) => (
-      <Chip id={filter.id} textValue={filter.name}>
-        <Text>{filter.name}</Text>
-        <Button slot="remove" />
-      </Chip>
-    )}
-  </ChipList>
-</ChipGroup>
-```
+### Layout and sizing
 
-For Toggle Chips, use the Chip render prop to show a selected accessory.
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
 
-```tsx
-<Chip id="home" textValue="Home">
-  {({ isSelected }) => (
-    <>
-      <Icon icon="home" />
-      <Text>Home</Text>
-      {isSelected ? <Icon icon="checkmark" /> : null}
-    </>
-  )}
-</Chip>
-```
+### Button composition
 
-### Menu filter button
-
-When you need a menu with a Chip-like appearance, use `ChipButton` inside
-`MenuTrigger`. The menu trigger owns open state, focus, keyboard interaction,
-and `aria-expanded`; the consumer owns any configured-filter state.
-
-```tsx
-import { useState } from 'react';
-import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
-
-const [isOpen, setIsOpen] = useState(false);
-
-<MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
-  <ChipButton>
-    <Text>Location</Text>
-    <Icon icon="chevron-down" flip={isOpen ? 'vertical' : undefined} />
-  </ChipButton>
-
-  <Menu aria-label="Location">
-    {/* Menu items */}
-  </Menu>
-</MenuTrigger>
-```
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
 
 ## Accessibility
 

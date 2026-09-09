@@ -14,7 +14,7 @@ export function ChipButtonStatesExample({ onPress }: ChipButtonStatesExampleProp
         <Text>Small</Text>
       </ChipButton>
       <ChipButton className="consumer-chip-button">Medium</ChipButton>
-      <ChipButton size="lg" isDisabled>
+      <ChipButton size="lg" isDisabled onPress={onPress}>
         Large disabled
       </ChipButton>
     </Flex>

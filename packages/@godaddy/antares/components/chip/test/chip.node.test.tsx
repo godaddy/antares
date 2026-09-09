@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { ConsumerClassesExample } from '../examples/consumer-classes.tsx';
+import { ChipButtonChildrenRenderPropExample } from '../examples/chip-button-children-render-prop.tsx';
 import { ChipButtonStatesExample } from '../examples/chip-button-states.tsx';
 import { ControlledSelectionExample } from '../examples/controlled-selection.tsx';
 import { DefaultExample } from '../examples/default.tsx';
@@ -66,6 +67,10 @@ describe('@godaddy/antares', function antares() {
 
     it('renders ChipButtonStatesExample', function chipButtonStatesExample() {
       expect(renderToString(<ChipButtonStatesExample />)).toMatchSnapshot();
+    });
+
+    it('renders ChipButtonChildrenRenderPropExample', function chipButtonChildrenRenderPropExample() {
+      expect(renderToString(<ChipButtonChildrenRenderPropExample />)).toMatchSnapshot();
     });
   });
 });

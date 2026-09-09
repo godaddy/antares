@@ -3,7 +3,8 @@ import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';
 const sizes = ['sm', 'md', 'lg'] as const;
 
 /**
- * Compare the supported `sm`, `md`, and `lg` sizes. Keep one size per group.
+ * Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
+ * so every Chip inherits one consistent size.
  * @order 5
  */
 export function SizesExample() {

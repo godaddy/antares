@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';
 
 /**
- * Use `ChipButton` for a menu trigger that shares the Chip family's compact
- * sizing and presentation.
+ * Use `ChipButton` for Chip presentation without collection semantics.
+ * `MenuTrigger` continues to own open state, focus, and keyboard behavior.
  * @title Menu filter trigger
  * @order 9
  */

@@ -1,8 +1,8 @@
 import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';
 
 /**
- * Use Toggle Chips for multiple peer filters. Selected items show a check while
- * unselected items remain available in the same group.
+ * Use Toggle Chips for multiple peer filters. The Chip render prop supplies
+ * selection state for the checkmark, while `textValue` names composed content.
  * @order 2
  */
 export function ToggleChipsExample() {
