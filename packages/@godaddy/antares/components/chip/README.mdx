@@ -1,0 +1,158 @@
+---
+title: Chip
+description: Grouped pill-shaped items for selecting values and removing user-added filters or tokens.
+---
+import { ArgTypes, Meta } from '@storybook/addon-docs/blocks';
+import { Examples } from '@bento/storybook-addon-helpers/runtime';
+import * as Stories from './chip.stories.tsx';
+
+<Meta of={Stories} name="Overview" />
+
+## Features
+
+- `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
+- Toggle Chips for selecting multiple peer filters
+- Removable Chips for user-added filters and input tokens
+- Shared `sm`, `md`, and `lg` sizes, with optional leading icons
+- `ChipButton` for menu filters and other actions with a Chip-like appearance
+
+## Installation
+
+```bash
+npm install @godaddy/antares
+```
+
+## Quick start
+
+```tsx
+import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
+
+<ChipGroup>
+  <Label>Location</Label>
+  <ChipList>
+    <Chip id="austin">Austin</Chip>
+    <Chip id="chicago">Chicago</Chip>
+    <Chip id="denver">Denver</Chip>
+  </ChipList>
+</ChipGroup>
+```
+
+## Examples
+
+<Examples of={Stories.Examples} />
+
+## Customization
+
+### Content
+
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
+
+### Selection and removal
+
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
+
+### Layout and sizing
+
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
+
+### Button composition
+
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
+
+## Accessibility
+
+- Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
+  not its individual Chips.
+- Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
+  when a Chip contains icons, composed content, or a render prop.
+- Use a descriptive group label so removal actions can be announced clearly.
+- Keep the visible label and the accessible value synchronized.
+- `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
+
+## Best Practices
+
+- Keep labels concise and let them truncate only when the available width requires it.
+- Prefer groups of three or more related values.
+- Keep one size per group.
+- Let `ChipList` wrap instead of forcing a single horizontal line.
+- Use removable Chips for user-added filters and tokens.
+- For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
+
+## Troubleshooting
+
+### A ChipGroup has no accessible name
+
+Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
+with composed content, provide a visible label, `textValue`, or `aria-label`.
+
+### The remove action does not update the UI
+
+Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
+owned by your application.
+
+### A composed label is not truncating correctly
+
+Keep the label in `Text`, preserve `textValue`, and constrain the available width
+of the surrounding layout. Truncation is visual; the complete accessible value
+should remain available.
+
+### The menu trigger does not look like a Chip
+
+Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
+trailing chevron to communicate that the control opens a menu.
+
+## Props
+
+```tsx
+<ChipGroup>
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+For a menu trigger, the button and menu are composed as siblings inside
+`MenuTrigger`:
+
+```tsx
+<MenuTrigger>
+  <ChipButton>
+    <Text />
+    <Icon />
+  </ChipButton>
+  <Menu>
+    <MenuItem />
+    {/* ... */}
+  </Menu>
+</MenuTrigger>
+```
+
+### Chip
+
+<ArgTypes of={Stories.Props} />
+
+### ChipGroup
+
+<ArgTypes of={Stories.ChipGroupProps} />
+
+### ChipList
+
+<ArgTypes of={Stories.ChipListProps} />
+
+### ChipButton
+
+<ArgTypes of={Stories.ChipButtonProps} />

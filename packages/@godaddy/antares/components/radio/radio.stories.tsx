@@ -28,7 +28,7 @@ export const Playground = getStory(PlaygroundExample, {
     orientation: {
       control: 'radio',
       options: ['vertical', 'horizontal'],
-      description: 'Layout orientation of radio buttons'
+      description: 'Item layout axis for the radio group'
     },
     label: {
       control: 'text',

@@ -1,16 +1,19 @@
 import type React from 'react';
-import { forwardRef } from 'react';
+import { type Context, forwardRef } from 'react';
 import { cva, type VariantProps } from 'cva';
 import {
   Button as RACButton,
+  ButtonContext as RACButtonContext,
   type ButtonProps as RACButtonProps,
+  type ContextValue,
   Link as RACLink,
   type LinkProps as RACLinkProps,
   Provider as RACProvider,
-  Text as RACText,
-  TextContext as RACTextContext
+  TextContext as RACTextContext,
+  useSlottedContext
 } from 'react-aria-components';
 import { Icon } from '#components/icon';
+import { Text } from '#components/text';
 import { composeClassName } from '#utils/render-props.ts';
 import styles from './index.module.css';
 
@@ -22,7 +25,9 @@ const buttonVariants = cva(styles.button, {
       tertiary: styles.tertiary,
       critical: styles.critical,
       inline: styles.inline,
-      minimal: styles.minimal
+      minimal: styles.minimal,
+      control: styles.control,
+      trigger: styles.trigger
     },
     size: {
       sm: styles.sm,
@@ -36,22 +41,27 @@ const buttonVariants = cva(styles.button, {
 });
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+type ButtonVariant = ButtonVariantProps['variant'];
+type LinkButtonVariant = Exclude<ButtonVariant, 'control' | 'trigger'>;
 
 /**
- * The button's label region.
- * Shadows an ancestor's `TextContext` so the label keeps the button's own type.
+ * The button's label region: shadows an ancestor's `TextContext` so the label keeps the button's
+ * own type, and puts a bare string on a `Text`. Stays `undefined` when the caller passes no
+ * children, so children a parent publishes per slot still reach the button.
  */
-function ButtonLabel({ children }: { children?: React.ReactNode }) {
+function buttonLabel(children: React.ReactNode) {
+  if (children === undefined) return children;
+
   return (
     <RACProvider values={[[RACTextContext, {}]]}>
-      {typeof children === 'string' ? <RACText>{children}</RACText> : children}
+      {typeof children === 'string' ? <Text>{children}</Text> : children}
     </RACProvider>
   );
 }
 
-interface BaseButtonProps {
+interface BaseButtonProps<V extends ButtonVariant = ButtonVariant> {
   /** The variant of the button. */
-  variant?: ButtonVariantProps['variant'];
+  variant?: V;
 
   /** The size of the button. */
   size?: ButtonVariantProps['size'];
@@ -62,22 +72,30 @@ interface BaseButtonProps {
 
 export interface ButtonProps extends BaseButtonProps, Omit<RACButtonProps, 'children' | 'isPending'> {}
 
-/**
- * The Button component allows users to trigger an action.
- *
- * @param props - The properties {@link ButtonProps} passed to the component.
- */
+export const ButtonContext: Context<ContextValue<RACButtonProps, HTMLButtonElement>> = RACButtonContext;
+
+type ButtonPresentationProps = Pick<ButtonProps, 'variant' | 'size'>;
+
+/** Triggers an action. A parent may publish `variant`/`size` per slot; local props win. */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  const { variant, size, className, children, ...rest } = props;
+  const { variant, size, className, children, slot, ...rest } = props;
+  const inherited = useSlottedContext(ButtonContext, slot) as ButtonPresentationProps | null | undefined;
+  const resolvedVariant = variant ?? inherited?.variant;
+  const resolvedSize = size ?? inherited?.size;
 
   return (
-    <RACButton {...rest} ref={ref} className={composeClassName(className, buttonVariants({ variant, size }))}>
-      <ButtonLabel>{children}</ButtonLabel>
+    <RACButton
+      {...rest}
+      ref={ref}
+      slot={slot}
+      className={composeClassName(className, buttonVariants({ variant: resolvedVariant, size: resolvedSize }))}
+    >
+      {buttonLabel(children)}
     </RACButton>
   );
 });
 
-export interface LinkButtonProps extends BaseButtonProps, Omit<RACLinkProps, 'children'> {
+export interface LinkButtonProps extends BaseButtonProps<LinkButtonVariant>, Omit<RACLinkProps, 'children'> {
   /** Whether the link is external. It will show an external icon if true. */
   isExternal?: boolean;
 }
@@ -98,7 +116,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(functio
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      <ButtonLabel>{children}</ButtonLabel>
+      {buttonLabel(children)}
       {isExternal ? <Icon icon="window-new" /> : null}
     </RACLink>
   );

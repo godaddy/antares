@@ -1,9 +1,15 @@
-import { DatePicker } from '@godaddy/antares';
+import { Button, DatePicker, DatePickerCalendar, Label } from '@godaddy/antares';
 
 /**
- * A single date picker.
+ * A single date picker with a `Label`.
  * @order 1
  */
 export function DefaultExample() {
-  return <DatePicker label="Event date" />;
+  return (
+    <DatePicker>
+      <Label>Event date</Label>
+      <Button slot="trigger" />
+      <DatePickerCalendar />
+    </DatePicker>
+  );
 }

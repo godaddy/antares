@@ -12,9 +12,8 @@ feat: add TextLockup, a composed eyebrow / title / body type group in six sizes
 
 Supporting changes:
 
-- **`Heading` now honors a container-provided `level`** instead of always using its own; default
-  changes from `2` to `3` when nothing supplies a level.
-- **`Heading` takes its weight from the heading ramp** instead of a relative `bolder`.
+- **`Heading` takes its weight from the heading ramp** instead of a relative `bolder`, so a themed
+  `--font-heading-weight` reaches it.
 - **`Button`/`LinkButton` shadow `TextContext`**, so their label keeps its own type inside a
   container that styles text slots.
 - **`Tag` accepts a `TagContext`**, for parent-supplied per-slot defaults.

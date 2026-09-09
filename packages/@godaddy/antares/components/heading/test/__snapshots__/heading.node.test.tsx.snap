@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@godaddy/antares > #Heading > renders the default example 1`] = `"<div class="box flex column" style="gap:var(--sp-sm)"><h1 class="heading">Heading level 1</h1><h2 class="heading">Heading level 2</h2><h3 class="heading">Heading level 3</h3></div>"`;
+
+exports[`@godaddy/antares > #Heading > renders the level resolution fixture 1`] = `"<h2 slot="title" class="heading">Container level</h2><h5 slot="title" class="heading">Explicit level</h5><h3 class="heading">Default level</h3>"`;
+
+exports[`@godaddy/antares > #Heading > renders the themed weight fixture 1`] = `"<h3 style="--font-heading-weight:500" class="heading">Themed weight</h3>"`;

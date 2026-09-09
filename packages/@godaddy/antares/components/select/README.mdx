@@ -11,10 +11,12 @@ import * as Stories from './select.stories.tsx';
 
 ## Features
 
-- **Label, description, error**: Optional label, helper text, and error message with proper accessibility
+- **Composable interior**: Compose `Label`, a `Button slot="trigger"`, `SelectOptions`, and optional `Text` / `FieldError`. Nothing is added for you, and what you write keeps the order you wrote it in
+- **Trigger and options**: An empty `Button slot="trigger"` renders the selected value and a chevron from the field. `SelectOptions` is the list in the popover the Select opens: it takes `ListBox` props (including `items` with a render function for a dynamic collection) plus `popoverProps` for the overlay. Write `Popover`, `Content`, and `ListBox` yourself to replace the whole overlay
+- **Composed in another field**: Use `variant="control"` to sit inside another field's `Group`, as a country-code select beside a phone `Input`
 - **Single or multiple selection**: Set `selectionMode="multiple"` to allow multiple values
 - **Controlled or uncontrolled**: Use `value` and `onChange` for controlled state, or `defaultValue` for uncontrolled
-- **Validation states**: Use `isInvalid` with `errorMessage` and `isDisabled` for validation and disabled state
+- **Validation states**: Use `isInvalid` with a `FieldError` and `isDisabled` for validation and disabled state
 - **Form integration**: Set `name` and the value submits as part of a native `<form>` (multiple values submit as repeated entries)
 - **React Aria integration**: Built on React Aria Select for accessibility, keyboard navigation, and typeahead
 
@@ -29,6 +31,18 @@ npm install --save @godaddy/antares
 <Examples of={Stories.Examples} />
 
 ## Props
+
+```tsx
+<Select>
+  <Label />
+  <Button slot="trigger" />
+  <Text slot="description" />
+  <SelectOptions>
+    <SelectItem />
+  </SelectOptions>
+  <FieldError />
+</Select>
+```
 
 The `Select` component accepts the following props:
 
