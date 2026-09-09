@@ -180,6 +180,149 @@ The dismiss button defaults to `aria-label="Close"`. Override it via `ariaLabels
 <PropTable />
 
 
+# Avatar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Composable `Avatar`, `Image`, and `Text` parts
+* Circle and rounded-square shapes at four named sizes
+* Automatic image loading with a Text monogram fallback
+* Primary, subtle, and 15 categorical figure emphases
+* Avatar Button and Account Menu compositions built with Pressable
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+Use an Avatar with a one- or two-character monogram when no image is available.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image [#image]
+
+Place Image before Text so the monogram is available while the image loads or if it fails.
+
+<Story of="ImageExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Image Fallback [#image-fallback]
+
+Include a Text fallback so an unavailable photo never leaves an empty identity marker.
+
+<Story of="ImageFallbackExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
+
+### Shapes and sizes [#shapes-and-sizes]
+
+Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
+
+<Story of="ShapesExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
+
+### Avatar Button [#avatar-button]
+
+Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
+
+<Story of="AvatarButtonExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
+
+### Account Menu [#account-menu]
+
+Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
+
+<Story of="AccountMenuExample" />
+
+<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
+
+When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
+
+```tsx
+<Pressable aria-label="Account menu" onPress={openAccountMenu}>
+  <Avatar role="button">
+    <Text>UT</Text>
+  </Avatar>
+</Pressable>
+```
+
+## Accessibility [#accessibility]
+
+* Give Image meaningful `alt` text when the image conveys an identity.
+* Text remains available to assistive technology when no image loads.
+* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
+* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
+* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
+
+## Best Practices [#best-practices]
+
+* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
+* Use circle for people and square for businesses, workspaces, and accounts.
+* Keep monograms to one or two uppercase characters.
+* Use the same `figure*` emphasis for the same entity wherever it appears.
+
+## Troubleshooting [#troubleshooting]
+
+* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
+* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
+* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
+
+## Props [#props]
+
+```tsx
+<Avatar>
+  <Image />
+  <Text />
+</Avatar>
+```
+
+<PropTable />
+
+
 # Button
 
 
@@ -885,7 +1028,11 @@ The `CheckboxGroup` component has the following props:
 <PropTable />
 
 
-# Avatar
+# Chip
+
+
+
+
 
 
 
@@ -911,11 +1058,11 @@ The `CheckboxGroup` component has the following props:
 
 ## Features [#features]
 
-* Composable `Avatar`, `Image`, and `Text` parts
-* Circle and rounded-square shapes at four named sizes
-* Automatic image loading with a Text monogram fallback
-* Primary, subtle, and 15 categorical figure emphases
-* Avatar Button and Account Menu compositions built with Pressable
+* `ChipGroup` + `ChipList` + `Chip` for grouped values, selection, keyboard navigation, and removal
+* Toggle Chips for selecting multiple peer filters
+* Removable Chips for user-added filters and input tokens
+* Shared `sm`, `md`, and `lg` sizes, with optional leading icons
+* `ChipButton` for menu filters and other actions with a Chip-like appearance
 
 ## Installation [#installation]
 
@@ -923,172 +1070,217 @@ The `CheckboxGroup` component has the following props:
 npm install @godaddy/antares
 ```
 
-## Examples [#examples]
-
-### Default [#default]
-
-Use an Avatar with a one- or two-character monogram when no image is available.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Text } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Avatar>\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image [#image]
-
-Place Image before Text so the monogram is available while the image loads or if it fails.
-
-<Story of="ImageExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nconst image =\n  'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%2302242a%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22%2309757a%22/%3E%3Cpath d=%22M13 72c18-18 34-26 51-26s33 8 51 26v43H13z%22 fill=%22%23145fa9%22/%3E%3Ccircle cx=%2264%22 cy=%2253%22 r=%2220%22 fill=%22%23f5f7f8%22/%3E%3Cpath d=%22M35 106c4-17 15-26 29-26s25 9 29 26%22 fill=%22%23f5f7f8%22/%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2251%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%22.35%22 stroke-width=%224%22/%3E%3C/svg%3E';\n\nexport function ImageExample() {\n  return (\n    <Avatar>\n      <Image src={image} alt=\&#x22;Uma Thurman\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Image Fallback [#image-fallback]
-
-Include a Text fallback so an unavailable photo never leaves an empty identity marker.
-
-<Story of="ImageFallbackExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Image, Text } from '@godaddy/antares';\n\nexport function ImageFallbackExample() {\n  return (\n    <Avatar>\n      <Image src=\&#x22;/missing-avatar-image.png\&#x22; alt=\&#x22;\&#x22; />\n      <Text>UT</Text>\n    </Avatar>\n  );\n}&#x22;" />
-
-### Shapes and sizes [#shapes-and-sizes]
-
-Use circular Avatars for people and square Avatars for organizations, workspaces, and accounts.
-
-<Story of="ShapesExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg', 'xl'] as const;\n\nexport function ShapesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Circle</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderCircle(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;circle\&#x22; size={size}>\n                <Text>UT</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n      <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n        <Text>Square</Text>\n        <Flex alignItems=\&#x22;center\&#x22; gap=\&#x22;md\&#x22;>\n          {sizes.map(function renderSquare(size) {\n            return (\n              <Avatar key={size} shape=\&#x22;square\&#x22; size={size}>\n                <Text>AC</Text>\n              </Avatar>\n            );\n          })}\n        </Flex>\n      </Flex>\n    </Flex>\n  );\n}&#x22;" />
-
-### Emphasis [#emphasis]
-
-Use primary or subtle for standard treatments, and a deterministic figure emphasis to categorize entities in a list.
-
-<Story of="EmphasisExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Flex, Text, type AvatarEmphasis } from '@godaddy/antares';\n\nconst emphases: AvatarEmphasis[] = [\n  'primary',\n  'subtle',\n  'figure0',\n  'figure1',\n  'figure2',\n  'figure3',\n  'figure4',\n  'figure5',\n  'figure6',\n  'figure7',\n  'figure8',\n  'figure9',\n  'figure10',\n  'figure11',\n  'figure12',\n  'figure13',\n  'figure14'\n];\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;sm\&#x22; wrap=\&#x22;wrap\&#x22;>\n      {emphases.map(function renderAvatar(emphasis, index) {\n        return (\n          <Avatar key={emphasis} emphasis={emphasis}>\n            <Text>{index < 2 ? emphasis.slice(0, 1).toUpperCase() : `${index - 2}`}</Text>\n          </Avatar>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
-
-### Avatar Button [#avatar-button]
-
-Use `Pressable` to add accessible interaction to an Avatar while preserving its shape.
-
-<Story of="AvatarButtonExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Pressable, Text } from '@godaddy/antares';\n\nexport function AvatarButtonExample() {\n  return (\n    <Pressable aria-label=\&#x22;Account\&#x22;>\n      <Avatar shape=\&#x22;circle\&#x22; role=\&#x22;button\&#x22;>\n        <Text>UT</Text>\n      </Avatar>\n    </Pressable>\n  );\n}&#x22;" />
-
-### Account Menu [#account-menu]
-
-Wrap an Avatar in a Pressable inside MenuTrigger for an account or profile menu.
-
-<Story of="AccountMenuExample" />
-
-<Source language="tsx" code="&#x22;import { Avatar, Menu, MenuItem, MenuTrigger, Pressable, Text } from '@godaddy/antares';\n\nexport function AccountMenuExample() {\n  return (\n    <MenuTrigger>\n      <Pressable aria-label=\&#x22;Account menu\&#x22;>\n        <Avatar role=\&#x22;button\&#x22;>\n          <Text>UT</Text>\n        </Avatar>\n      </Pressable>\n      <Menu>\n        <MenuItem id=\&#x22;profile\&#x22;>Profile</MenuItem>\n        <MenuItem id=\&#x22;settings\&#x22;>Settings</MenuItem>\n        <MenuItem id=\&#x22;sign-out\&#x22;>Sign out</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
-
-## Customization [#customization]
-
-Use Image native image props for responsive image sources. Choose a deterministic `figure0` through `figure14` emphasis in lists that categorize multiple entities.
-
-When an Avatar triggers an action, compose it with `Pressable` so the Avatar keeps its own shape and receives the interaction behavior directly. Use this pattern for an Avatar Button, or place it inside `MenuTrigger` for an Account Menu:
+## Quick start [#quick-start]
 
 ```tsx
-<Pressable aria-label="Account menu" onPress={openAccountMenu}>
-  <Avatar role="button">
-    <Text>UT</Text>
-  </Avatar>
-</Pressable>
-```
+import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';
 
-## Accessibility [#accessibility]
-
-* Give Image meaningful `alt` text when the image conveys an identity.
-* Text remains available to assistive technology when no image loads.
-* Use `alt=""` on the Image and `aria-hidden="true"` on the Avatar when the entire avatar is purely decorative.
-* Give an Avatar Button or Account Menu an accessible name with `aria-label` or `aria-labelledby`.
-* When using `Pressable`, provide an interactive role for the non-semantic Avatar child.
-
-## Best Practices [#best-practices]
-
-* Use Avatar for informational identity; compose it with `Pressable` for an Avatar Button or Account Menu when it is independently actionable.
-* Use circle for people and square for businesses, workspaces, and accounts.
-* Keep monograms to one or two uppercase characters.
-* Use the same `figure*` emphasis for the same entity wherever it appears.
-
-## Troubleshooting [#troubleshooting]
-
-* If an image is unavailable because of a bad URL or CORS policy, Text remains visible.
-* Long Text content is clipped to the avatar shape; provide a one- or two-character monogram.
-* Figure colors repeat after 15 values; assign a deterministic figure emphasis in the consuming application.
-
-## Props [#props]
-
-```tsx
-<Avatar>
-  <Image />
-  <Text />
-</Avatar>
-```
-
-<PropTable />
-
-
-# CircularProgress
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
+<ChipGroup>
+  <Label>Location</Label>
+  <ChipList>
+    <Chip id="austin">Austin</Chip>
+    <Chip id="chicago">Chicago</Chip>
+    <Chip id="denver">Denver</Chip>
+  </ChipList>
+</ChipGroup>
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-A basic determinate progress indicator with a label and helper text.
+Start with a labeled group of related values. Add selection or removal when
+the group needs interactive behavior.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <ChipGroup>\n      <Label>Location</Label>\n      <ChipList>\n        <Chip id=\&#x22;austin\&#x22;>Austin</Chip>\n        <Chip id=\&#x22;chicago\&#x22;>Chicago</Chip>\n        <Chip id=\&#x22;denver\&#x22;>Denver</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Toggle Chips [#toggle-chips]
+
+Use Toggle Chips for multiple peer filters. The Chip render prop supplies
+selection state for the checkmark, while `textValue` names composed content.
+
+<Story of="ToggleChipsExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function ToggleChipsExample() {\n  return (\n    <ChipGroup defaultSelectedKeys={['home']} selectionMode=\&#x22;multiple\&#x22;>\n      <Label>Amenities</Label>\n      <ChipList>\n        <Chip id=\&#x22;home\&#x22; textValue=\&#x22;Home\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;home\&#x22; />\n              <Text>Home</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;star\&#x22; textValue=\&#x22;Featured\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Icon icon=\&#x22;star\&#x22; />\n              <Text>Featured</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n        <Chip id=\&#x22;wifi\&#x22; textValue=\&#x22;Wifi\&#x22;>\n          {({ isSelected }) => (\n            <>\n              <Text>Wifi</Text>\n              {isSelected ? <Icon icon=\&#x22;checkmark\&#x22; /> : null}\n            </>\n          )}\n        </Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Removable Chips [#removable-chips]
+
+Use Removable Chips for user-added filters and tokens. `ChipGroup` reports
+removed keys through `onRemove`; the owner updates its collection. A
+self-closing `Button` in the `remove` slot supplies each remove control.
+
+<Story of="RemovableChipsExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function RemovableChipsExample() {\n  const [filters, setFilters] = useState([\n    { id: 'austin', name: 'Austin', icon: 'map-pin' as const },\n    { id: 'active', name: 'Active' }\n  ]);\n\n  return (\n    <ChipGroup\n      onRemove={function handleRemove(keys) {\n        setFilters((current) => current.filter((item) => !keys.has(item.id)));\n      }}\n    >\n      <Label>Applied filters</Label>\n      <ChipList items={filters} renderEmptyState={() => 'No filters applied'}>\n        {(item) => (\n          <Chip id={item.id} textValue={item.name}>\n            {'icon' in item && item.icon ? <Icon icon={item.icon} /> : null}\n            <Text>{item.name}</Text>\n            <Button slot=\&#x22;remove\&#x22; />\n          </Chip>\n        )}\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Controlled Selection [#controlled-selection]
+
+Use `selectedKeys` and `onSelectionChange` when another part of the page
+needs to own the selected filter state.
+
+<Story of="ControlledSelectionExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Chip, ChipGroup, ChipList, Label, Text } from '@godaddy/antares';\n\nconst options = [\n  { id: 'austin', name: 'Austin' },\n  { id: 'active', name: 'Active' },\n  { id: 'featured', name: 'Featured' }\n];\n\nexport function ControlledSelectionExample() {\n  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(['austin']));\n\n  return (\n    <>\n      <ChipGroup\n        selectionMode=\&#x22;multiple\&#x22;\n        selectedKeys={selectedKeys}\n        onSelectionChange={function handleSelectionChange(keys) {\n          setSelectedKeys(\n            keys === 'all' ? new Set(options.map((option) => option.id)) : new Set([...keys].map(String))\n          );\n        }}\n      >\n        <Label>Filters</Label>\n        <ChipList>\n          {options.map((option) => (\n            <Chip key={option.id} id={option.id}>\n              {option.name}\n            </Chip>\n          ))}\n        </ChipList>\n      </ChipGroup>\n      <Text>Selected: {selectedKeys.size === 0 ? '(none)' : Array.from(selectedKeys).join(', ')}</Text>\n    </>\n  );\n}&#x22;" />
 
 ### Sizes [#sizes]
 
-Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+Compare the supported `sm`, `md`, and `lg` sizes. Set `size` on `ChipGroup`
+so every Chip inherits one consistent size.
 
 <Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Flex, Label } from '@godaddy/antares';\n\nconst sizes = ['sm', 'md', 'lg'] as const;\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22; alignItems=\&#x22;start\&#x22;>\n      {sizes.map((size) => (\n        <ChipGroup key={size} size={size}>\n          <Label>Topics ({size})</Label>\n          <ChipList>\n            <Chip id=\&#x22;design\&#x22;>Design</Chip>\n            <Chip id=\&#x22;development\&#x22;>Development</Chip>\n            <Chip id=\&#x22;research\&#x22;>Research</Chip>\n          </ChipList>\n        </ChipGroup>\n      ))}\n    </Flex>\n  );\n}&#x22;" />
 
-### Emphasis [#emphasis]
+### Disabled [#disabled]
 
-Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+Disable individual options with `disabledKeys` when some values are unavailable.
 
-<Story of="EmphasisExample" />
+<Story of="DisabledExample" />
 
-<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Icon, Label, Text } from '@godaddy/antares';\n\nexport function DisabledExample() {\n  return (\n    <>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['a', 'b']} defaultSelectedKeys={['a']}>\n        <Label>Unavailable options</Label>\n        <ChipList>\n          <Chip id=\&#x22;a\&#x22;>Disabled option</Chip>\n          <Chip id=\&#x22;b\&#x22; textValue=\&#x22;Also unavailable\&#x22;>\n            <Icon icon=\&#x22;star\&#x22; />\n            <Text>Also unavailable</Text>\n          </Chip>\n        </ChipList>\n      </ChipGroup>\n      <ChipGroup selectionMode=\&#x22;multiple\&#x22; disabledKeys={['off']} defaultSelectedKeys={['on']}>\n        <Label>Mixed availability</Label>\n        <ChipList>\n          <Chip id=\&#x22;on\&#x22;>Enabled</Chip>\n          <Chip id=\&#x22;off\&#x22;>Disabled option</Chip>\n        </ChipList>\n      </ChipGroup>\n    </>\n  );\n}&#x22;" />
+
+### Truncation [#truncation]
+
+By default, long labels truncate visually when space is constrained, while
+the complete accessible value remains available.
+
+<Story of="TruncationExample" />
+
+<Source language="tsx" code="&#x22;import { Chip, ChipGroup, ChipList, Label } from '@godaddy/antares';\n\nexport function TruncationExample() {\n  return (\n    <ChipGroup>\n      <Label>Filters</Label>\n      <ChipList>\n        <Chip id=\&#x22;category\&#x22;>Category</Chip>\n        <Chip id=\&#x22;long\&#x22;>Discounted price up to $20,000</Chip>\n        <Chip id=\&#x22;status\&#x22;>Active</Chip>\n      </ChipList>\n    </ChipGroup>\n  );\n}&#x22;" />
+
+### Empty State [#empty-state]
+
+Give an empty collection useful guidance, then let the user add the first
+value. Removable items continue to be owned by the collection.
+
+<Story of="EmptyStateExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { Button, Chip, ChipGroup, ChipList, Flex, Text } from '@godaddy/antares';\n\nconst newsCategory = { id: 'news', name: 'News' };\n\nexport function EmptyStateExample() {\n  const [categories, setCategories] = useState<Set<typeof newsCategory>>(new Set());\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22; alignItems=\&#x22;start\&#x22;>\n      <ChipGroup\n        aria-label=\&#x22;Categories\&#x22;\n        onRemove={function handleRemove(keys) {\n          setCategories((current) => new Set([...current].filter((category) => !keys.has(category.id))));\n        }}\n      >\n        <ChipList items={categories} renderEmptyState={() => 'No categories yet'}>\n          {(category) => (\n            <Chip id={category.id} textValue={category.name}>\n              {category.name}\n              <Button slot=\&#x22;remove\&#x22; />\n            </Chip>\n          )}\n        </ChipList>\n        <Text slot=\&#x22;description\&#x22;>Add a category to get started.</Text>\n      </ChipGroup>\n      <Button\n        onPress={function addCategory() {\n          setCategories((current) => new Set(current).add(newsCategory));\n        }}\n      >\n        Add category\n      </Button>\n    </Flex>\n  );\n}&#x22;" />
+
+### Menu filter trigger [#menu-filter-trigger]
+
+Use `ChipButton` for Chip presentation without collection semantics.
+`MenuTrigger` continues to own open state, focus, and keyboard behavior.
+
+<Story of="MenuFilterTriggerExample" />
+
+<Source language="tsx" code="&#x22;import { useState } from 'react';\nimport { ChipButton, Icon, Menu, MenuItem, MenuTrigger, Text } from '@godaddy/antares';\n\nexport function MenuFilterTriggerExample() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen}>\n      <ChipButton>\n        <Text>Location</Text>\n        <Icon icon=\&#x22;chevron-down\&#x22; flip={isOpen ? 'vertical' : undefined} />\n      </ChipButton>\n      <Menu aria-label=\&#x22;Location\&#x22;>\n        <MenuItem id=\&#x22;austin\&#x22;>Austin</MenuItem>\n        <MenuItem id=\&#x22;chicago\&#x22;>Chicago</MenuItem>\n        <MenuItem id=\&#x22;denver\&#x22;>Denver</MenuItem>\n      </Menu>\n    </MenuTrigger>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Content [#content]
+
+Use a string for a simple label. For icons or other composed content, wrap the
+visible label in `Text` and provide `textValue` for the accessible name. See
+**Toggle Chips** and **Removable Chips** above.
+
+### Selection and removal [#selection-and-removal]
+
+`ChipGroup` owns selection and removal behavior. Use a Chip render prop for
+state-dependent content, and `Button` with `slot="remove"` together with
+`onRemove` for removable items. See **Toggle Chips** and **Removable Chips**.
+
+### Layout and sizing [#layout-and-sizing]
+
+Set `size` on `ChipGroup` to keep a collection consistent. `ChipList` wraps by
+default and accepts layout props for custom arrangements. See **Sizes**.
+
+### Button composition [#button-composition]
+
+Use `ChipButton` when Chip presentation is needed without collection semantics.
+Compose it with components such as `MenuTrigger`; those components continue to
+own open state, focus, and keyboard behavior. See **Menu filter trigger**.
 
 ## Accessibility [#accessibility]
 
-### ARIA Support [#aria-support]
+* Use `Label` or `aria-label` to name the `ChipGroup`; this names the collection,
+  not its individual Chips.
+* Give each Chip a visible label, `textValue`, or `aria-label`. Use `textValue`
+  when a Chip contains icons, composed content, or a render prop.
+* Use a descriptive group label so removal actions can be announced clearly.
+* Keep the visible label and the accessible value synchronized.
+* `ChipButton` is a real button and exposes menu state through `MenuTrigger`; provide an accessible name when the visible content is incomplete.
 
-* `role="progressbar"` on the container
-* `aria-valuenow` reflects the current value (clamped to 0–100)
-* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
-* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
-* `aria-labelledby` associates the visible label when the `label` prop is provided
-* `aria-describedby` wires the `helperText` to the progressbar for screen readers
-* The decorative SVG and output text are hidden via `aria-hidden="true"`
+## Best Practices [#best-practices]
+
+* Keep labels concise and let them truncate only when the available width requires it.
+* Prefer groups of three or more related values.
+* Keep one size per group.
+* Let `ChipList` wrap instead of forcing a single horizontal line.
+* Use removable Chips for user-added filters and tokens.
+* For menu filters, use `ChipButton` with `MenuTrigger` and provide the chevron explicitly.
+
+## Troubleshooting [#troubleshooting]
+
+### A ChipGroup has no accessible name [#a-chipgroup-has-no-accessible-name]
+
+Add a visible `Label` to the group or provide `aria-label`. For an individual Chip
+with composed content, provide a visible label, `textValue`, or `aria-label`.
+
+### The remove action does not update the UI [#the-remove-action-does-not-update-the-ui]
+
+Add `onRemove` to `ChipGroup` and remove the returned keys from the collection
+owned by your application.
+
+### A composed label is not truncating correctly [#a-composed-label-is-not-truncating-correctly]
+
+Keep the label in `Text`, preserve `textValue`, and constrain the available width
+of the surrounding layout. Truncation is visual; the complete accessible value
+should remain available.
+
+### The menu trigger does not look like a Chip [#the-menu-trigger-does-not-look-like-a-chip]
+
+Use `ChipButton` inside `MenuTrigger`, include the visible value, and add a
+trailing chevron to communicate that the control opens a menu.
 
 ## Props [#props]
+
+```tsx
+<ChipGroup>
+  <Label />
+  <ChipList>
+    <Chip>
+      <Icon />
+      <Text />
+      <Button slot="remove" />
+    </Chip>
+  </ChipList>
+  <Text slot="description" />
+  <Text slot="errorMessage" />
+</ChipGroup>
+```
+
+For a menu trigger, the button and menu are composed as siblings inside
+`MenuTrigger`:
+
+```tsx
+<MenuTrigger>
+  <ChipButton>
+    <Text />
+    <Icon />
+  </ChipButton>
+  <Menu>
+    <MenuItem />
+    {/* ... */}
+  </Menu>
+</MenuTrigger>
+```
+
+### Chip [#chip]
+
+<PropTable />
+
+### ChipGroup [#chipgroup]
+
+<PropTable />
+
+### ChipList [#chiplist]
+
+<PropTable />
+
+### ChipButton [#chipbutton]
 
 <PropTable />
 
@@ -1275,6 +1467,71 @@ The `DatePicker` component accepts the following props:
 <PropTable />
 
 The `DateRangePicker` component accepts the following props:
+
+<PropTable />
+
+
+# CircularProgress
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+A basic determinate progress indicator with a label and helper text.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <CircularProgress value={60} label=\&#x22;Uploading…\&#x22; helperText=\&#x22;3 of 5 files uploaded\&#x22; />;\n}&#x22;" />
+
+### Sizes [#sizes]
+
+Four circle diameters are available: `sm` (64px), `md` (96px), `lg` (128px), and `xl` (160px).
+
+<Story of="SizesExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function SizesExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress size=\&#x22;sm\&#x22; value={40} label=\&#x22;Small\&#x22; />\n      <CircularProgress size=\&#x22;md\&#x22; value={60} label=\&#x22;Medium\&#x22; />\n      <CircularProgress size=\&#x22;lg\&#x22; value={75} label=\&#x22;Large\&#x22; />\n      <CircularProgress size=\&#x22;xl\&#x22; value={90} label=\&#x22;Extra Large\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+### Emphasis [#emphasis]
+
+Use the `emphasis` prop to communicate status: `success`, `warning`, or `critical`. When omitted, the default teal fill is used.
+
+<Story of="EmphasisExample" />
+
+<Source language="tsx" code="&#x22;import { CircularProgress, Flex } from '@godaddy/antares';\n\nexport function EmphasisExample() {\n  return (\n    <Flex gap=\&#x22;lg\&#x22; alignItems=\&#x22;flex-end\&#x22;>\n      <CircularProgress value={60} label=\&#x22;Default\&#x22; />\n      <CircularProgress emphasis=\&#x22;success\&#x22; value={100} label=\&#x22;Success\&#x22; helperText=\&#x22;Complete\&#x22; />\n      <CircularProgress emphasis=\&#x22;warning\&#x22; value={70} label=\&#x22;Warning\&#x22; helperText=\&#x22;Storage almost full\&#x22; />\n      <CircularProgress emphasis=\&#x22;critical\&#x22; value={30} label=\&#x22;Critical\&#x22; helperText=\&#x22;Action required\&#x22; />\n    </Flex>\n  );\n}&#x22;" />
+
+## Accessibility [#accessibility]
+
+### ARIA Support [#aria-support]
+
+* `role="progressbar"` on the container
+* `aria-valuenow` reflects the current value (clamped to 0–100)
+* `aria-valuemin` and `aria-valuemax` define the range (default `0`–`100`)
+* `aria-valuetext` provides a formatted string (e.g. `"60%"`) via `Intl.NumberFormat`; the same string is rendered inside the circle. Override the text with the `aria-valuetext` prop, or control formatting with `formatOptions`
+* `aria-labelledby` associates the visible label when the `label` prop is provided
+* `aria-describedby` wires the `helperText` to the progressbar for screen readers
+* The decorative SVG and output text are hidden via `aria-hidden="true"`
+
+## Props [#props]
 
 <PropTable />
 
@@ -1549,45 +1806,6 @@ FieldError renders when the field is invalid.
 <PropTable />
 
 
-# Heading
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Features [#features]
-
-* Renders `h1`-`h6` from the `level` prop (default `3`).
-* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
-Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
-
-## Props [#props]
-
-<PropTable />
-
-
 # FileTrigger
 
 
@@ -1642,6 +1860,45 @@ Restrict the picker to specific MIME types with `acceptedFileTypes`, and allow m
 * `acceptedFileTypes` is a best-effort filter for the OS picker — always validate file type and size again in your `onSelect` handler, since it can be bypassed.
 * Pair `FileTrigger` with `DropZone` to offer both click-to-browse and drag-and-drop. See the DropZone "File Upload" example.
 * Keep the child a single pressable element; `FileTrigger` forwards press behavior to whatever you nest inside it.
+
+## Props [#props]
+
+<PropTable />
+
+
+# Heading
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders `h1`-`h6` from the `level` prop (default `3`).
+* `slot="title"` inside a `Modal` or `Dialog` sets the accessible name.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+`Heading` renders a semantic `h1`-`h6` element via the `level` prop.
+Inside a `Modal`/`Dialog`, add `slot="title"` and it labels the dialog automatically.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Heading } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Heading level={1}>Heading level 1</Heading>\n      <Heading level={2}>Heading level 2</Heading>\n      <Heading level={3}>Heading level 3</Heading>\n    </Flex>\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -4109,6 +4366,205 @@ Group is the bordered field box. Size and invalid/disabled chrome apply here.
 <PropTable />
 
 
+# Switch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Features [#features]
+
+* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
+* Communicates state to assistive technologies via the WAI-ARIA `switch` role
+* Toggles on click or tap anywhere in the control — track, thumb, or label
+* Toggles with the `Space` key when focused
+* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
+* Two sizes: `md` (default) and `sm`
+* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
+* Takes effect immediately — no form submission required
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+An uncontrolled switch, off by default, with the label at the start.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Selected [#switch-selected]
+
+A switch that starts in the on state via `defaultSelected`.
+
+<Story of="SwitchSelectedExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
+
+### Switch Sizes [#switch-sizes]
+
+The `size` prop accepts `md` (default) or `sm`.
+
+<Story of="SwitchSizesExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Label Position [#switch-label-position]
+
+The `labelPosition` prop places the label at the `start` or `end` of the track.
+
+<Story of="SwitchLabelPositionExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### No Label [#no-label]
+
+When no label is provided, pass `aria-label` so the switch has an accessible name.
+
+<Story of="SwitchNoLabelExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
+
+### Switch Disabled [#switch-disabled]
+
+A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
+
+<Story of="SwitchDisabledExample" />
+
+<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+
+### Switch Controlled [#switch-controlled]
+
+Manage switch state programmatically with `isSelected` and `onChange`.
+
+<Story of="SwitchControlledExample" />
+
+<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
+
+## Customization [#customization]
+
+### Data Attributes [#data-attributes]
+
+The interactive switch control exposes data attributes for styling different states:
+
+`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
+
+```css
+.my-switch [data-focus-visible] {
+  outline: 2px solid Highlight;
+}
+
+.my-switch [data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+### Design Tokens [#design-tokens]
+
+The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
+
+| Element           | Token                               | Legacy fallback |
+| ----------------- | ----------------------------------- | --------------- |
+| Track (off)       | —                                   | `--ux-1m9ys0v`  |
+| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
+| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
+| Thumb inset       | —                                   | `--ux-1sbfig8`  |
+| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
+| Focus ring radius | —                                   | `--ux-zvaw3s`   |
+
+### Component Customization [#component-customization]
+
+Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
+
+```jsx
+<Switch className="custom-switch">Wi-Fi</Switch>
+```
+
+Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+
+## Accessibility [#accessibility]
+
+* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
+* `Space` toggles the switch when it has focus
+* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
+* Disabled switches render at `40%` opacity and are excluded from tab order
+* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
+
+## Best Practices [#best-practices]
+
+### When to Use Switch [#when-to-use-switch]
+
+* ✅ For settings that take effect immediately, without a form submission
+* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
+* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
+* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
+
+### Labeling [#labeling]
+
+* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
+* If the label is omitted, always provide `aria-label`
+* Keep labels short and describe the setting, not its current state
+
+## Troubleshooting [#troubleshooting]
+
+### Controlled State Not Updating [#controlled-state-not-updating]
+
+```jsx
+// ❌ Wrong: isSelected without onChange leaves the switch stuck
+<Switch isSelected={isOn}>Wi-Fi</Switch>
+
+// ✅ Controlled mode
+<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
+
+// ✅ Uncontrolled mode
+<Switch defaultSelected>Wi-Fi</Switch>
+```
+
+### Missing Accessible Name [#missing-accessible-name]
+
+```jsx
+// ❌ No children and no aria-label — screen readers announce nothing useful
+<Switch />
+
+// ✅ Provide a label
+<Switch>Wi-Fi</Switch>
+
+// ✅ Or an aria-label when the label is visual-only elsewhere
+<Switch aria-label="Wi-Fi" />
+```
+
+## Props [#props]
+
+The `Switch` component has the following props:
+
+<PropTable />
+
+
 # Tabs
 
 
@@ -4635,9 +5091,7 @@ The `TextField` component accepts the following props:
 <PropTable />
 
 
-# Switch
-
-
+# TextLockup
 
 
 
@@ -4661,175 +5115,129 @@ The `TextField` component accepts the following props:
 
 ## Features [#features]
 
-* Renders a horizontal toggle with a sliding thumb inside a pill-shaped track
-* Communicates state to assistive technologies via the WAI-ARIA `switch` role
-* Toggles on click or tap anywhere in the control — track, thumb, or label
-* Toggles with the `Space` key when focused
-* Optional label, positioned at the `start` or `end` of the track, or omitted entirely
-* Two sizes: `md` (default) and `sm`
-* Supports controlled (`isSelected` + `onChange`) and uncontrolled (`defaultSelected`) usage
-* Takes effect immediately — no form submission required
+* Six coordinated sizes, from a `2xl` page title down to `xs`
+* An eyebrow that takes plain text or a `Tag`, sized to match the lockup
+* Slotted parts, so nested components keep their own type
+* Any heading level, chosen independently of the visual size
+* Start or center alignment
+* A legible line-length clamp, on by default
 
 ## Installation [#installation]
 
 ```bash
-npm install --save @godaddy/antares
+npm install @godaddy/antares
 ```
 
 ## Examples [#examples]
 
 ### Default [#default]
 
-An uncontrolled switch, off by default, with the label at the start.
+A lockup stacks an optional eyebrow, a title and body text as one coordinated type
+group. You supply the parts, so the title can be any heading level and the body any
+number of paragraphs; `size` sets the tier for all of them at once.
 
 <Story of="DefaultExample" />
 
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return <Switch>Wi-Fi</Switch>;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function DefaultExample() {\n  return (\n    <TextLockup>\n      <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n      <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n      <Text slot=\&#x22;body\&#x22;>\n        She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n      </Text>\n    </TextLockup>\n  );\n}&#x22;" />
 
-### Switch Selected [#switch-selected]
+### Sizes [#sizes]
 
-A switch that starts in the on state via `defaultSelected`.
+`size` is the tier: the eyebrow reads it on the `detail` ramp, the title on `heading`,
+and the body on `body`. Use `2xl` for a page title, `xl` for a hero, `lg` for a section
+title, and `md` (the default) everywhere else.
 
-<Story of="SwitchSelectedExample" />
+<Story of="SizesExample" />
 
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchSelectedExample() {\n  return <Switch defaultSelected>Wi-Fi</Switch>;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup, type TextLockupSize } from '@godaddy/antares';\n\nconst SIZES: TextLockupSize[] = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];\n\nexport function SizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      {SIZES.map(function renderSize(size) {\n        return (\n          <TextLockup key={size} size={size}>\n            <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n            <Heading slot=\&#x22;title\&#x22;>Text Lockup</Heading>\n            <Text slot=\&#x22;body\&#x22;>\n              She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n            </Text>\n          </TextLockup>\n        );\n      })}\n    </Flex>\n  );\n}&#x22;" />
 
-### Switch Sizes [#switch-sizes]
+### Tag Eyebrow [#tag-eyebrow]
 
-The `size` prop accepts `md` (default) or `sm`.
+The eyebrow takes either plain text or a `Tag`. Both use `slot="eyebrow"`, so the two
+forms swap freely, and the lockup pairs the tag's `size` with its own.
 
-<Story of="SwitchSizesExample" />
+<Story of="TagEyebrowExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchSizesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch size=\&#x22;md\&#x22; defaultSelected>\n        Medium\n      </Switch>\n      <Switch size=\&#x22;sm\&#x22; defaultSelected>\n        Small\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function TagEyebrowExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup size=\&#x22;xl\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>Tag eyebrow</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag is sized to match the lockup, so changing `size` keeps them in step.</Text>\n      </TextLockup>\n\n      <TextLockup size=\&#x22;sm\&#x22;>\n        <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;success\&#x22;>\n          New\n        </Tag>\n        <Heading slot=\&#x22;title\&#x22;>The same lockup, smaller</Heading>\n        <Text slot=\&#x22;body\&#x22;>The tag steps down with it.</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
 
-### Switch Label Position [#switch-label-position]
+### Alignment [#alignment]
 
-The `labelPosition` prop places the label at the `start` or `end` of the track.
+`align` centers the parts as well as the text, so a `Tag` eyebrow stays centered too.
 
-<Story of="SwitchLabelPositionExample" />
+<Story of="AlignmentExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchLabelPositionExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch labelPosition=\&#x22;start\&#x22; defaultSelected>\n        Label on the start\n      </Switch>\n      <Switch labelPosition=\&#x22;end\&#x22; defaultSelected>\n        Label on the end\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22;>\n      <TextLockup align=\&#x22;start\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Start aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n\n      <TextLockup align=\&#x22;center\&#x22;>\n        <Text slot=\&#x22;eyebrow\&#x22;>Unaffectedly Modest</Text>\n        <Heading slot=\&#x22;title\&#x22;>Center aligned</Heading>\n        <Text slot=\&#x22;body\&#x22;>\n          She expressed her gratitude again, but it was too painful a subject to be dwelt on farther.\n        </Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
 
-### No Label [#no-label]
+### Legible Lines [#legible-lines]
 
-When no label is provided, pass `aria-label` so the switch has an accessible name.
+The text parts are constrained to a comfortable line length by default. Set
+`legibleLines={false}` to let them run the full width of their container, which suits a
+lockup already inside a narrow column. Both lockups below share one wide container, so the
+clamp is what makes the first one narrower.
 
-<Story of="SwitchNoLabelExample" />
+<Story of="LegibleLinesExample" />
 
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\n\nexport function SwitchNoLabelExample() {\n  return <Switch aria-label=\&#x22;Wi-Fi\&#x22; />;\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Flex, Heading, Text, TextLockup } from '@godaddy/antares';\n\nconst COPY =\n  'She expressed her gratitude again, but it was too painful a subject to be dwelt on farther. ' +\n  'Elizabeth was pleased to find that he had not betrayed the interference of his friend, and she ' +\n  'was glad of it, for she could not have borne the reflection.';\n\nexport function LegibleLinesExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; style={{ inlineSize: '46rem', maxInlineSize: '100%' }}>\n      <TextLockup>\n        <Heading slot=\&#x22;title\&#x22;>Constrained by default</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n\n      <TextLockup legibleLines={false}>\n        <Heading slot=\&#x22;title\&#x22;>Full width</Heading>\n        <Text slot=\&#x22;body\&#x22;>{COPY}</Text>\n      </TextLockup>\n    </Flex>\n  );\n}&#x22;" />
 
-### Switch Disabled [#switch-disabled]
+### With Actions [#with-actions]
 
-A disabled switch prevents interaction and renders at reduced opacity, whether off or on.
+Because you compose the parts, anything else can sit alongside them — a call to action
+here. Controls keep their own type: the buttons are unaffected by the lockup's `size`.
 
-<Story of="SwitchDisabledExample" />
+<Story of="WithActionsExample" />
 
-<Source language="tsx" code="&#x22;import { Flex, Switch } from '@godaddy/antares';\n\nexport function SwitchDisabledExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Switch isDisabled>Disabled off</Switch>\n      <Switch isDisabled defaultSelected>\n        Disabled on\n      </Switch>\n    </Flex>\n  );\n}&#x22;" />
-
-### Switch Controlled [#switch-controlled]
-
-Manage switch state programmatically with `isSelected` and `onChange`.
-
-<Story of="SwitchControlledExample" />
-
-<Source language="tsx" code="&#x22;import { Switch } from '@godaddy/antares';\nimport { useState } from 'react';\n\nexport function SwitchControlledExample() {\n  const [isSelected, setIsSelected] = useState(false);\n\n  return (\n    <Switch isSelected={isSelected} onChange={setIsSelected}>\n      Wi-Fi\n    </Switch>\n  );\n}&#x22;" />
+<Source language="tsx" code="&#x22;import { Button, ButtonGroup, Heading, Tag, Text, TextLockup } from '@godaddy/antares';\n\nexport function WithActionsExample() {\n  return (\n    <TextLockup size=\&#x22;xl\&#x22;>\n      <Tag slot=\&#x22;eyebrow\&#x22; emphasis=\&#x22;premium\&#x22;>\n        Pro\n      </Tag>\n      <Heading slot=\&#x22;title\&#x22; level={1}>\n        Upgrade your plan\n      </Heading>\n      <Text slot=\&#x22;body\&#x22;>Unlock advanced reporting, priority support, and unlimited seats for your whole team.</Text>\n      <ButtonGroup inlinePadding=\&#x22;0\&#x22; blockPadding=\&#x22;0\&#x22;>\n        <Button variant=\&#x22;primary\&#x22;>Upgrade</Button>\n        <Button variant=\&#x22;secondary\&#x22;>Compare plans</Button>\n      </ButtonGroup>\n    </TextLockup>\n  );\n}&#x22;" />
 
 ## Customization [#customization]
 
-### Data Attributes [#data-attributes]
+`TextLockup` positions and type-sets its parts; you supply them. That means anything else can
+sit alongside them — a call to action, a second paragraph, an image — without the component
+growing a prop for it.
 
-The interactive switch control exposes data attributes for styling different states:
-
-`data-selected`, `data-hovered`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-disabled`, `data-readonly`, `data-invalid`, `data-required`, `data-size`
-
-```css
-.my-switch [data-focus-visible] {
-  outline: 2px solid Highlight;
-}
-
-.my-switch [data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-```
-
-### Design Tokens [#design-tokens]
-
-The track and thumb read from Antares curated tokens, falling back to legacy `--ux-*` custom properties:
-
-| Element           | Token                               | Legacy fallback |
-| ----------------- | ----------------------------------- | --------------- |
-| Track (off)       | —                                   | `--ux-1m9ys0v`  |
-| Track (on)        | `--color-input-background-selected` | `--ux-sywk25`   |
-| Thumb             | `--color-input-background-default`  | `--ux-1nu8itt`  |
-| Thumb inset       | —                                   | `--ux-1sbfig8`  |
-| Label             | `--color-input-text-default`        | `--ux-1glcx6s`  |
-| Focus ring radius | —                                   | `--ux-zvaw3s`   |
-
-### Component Customization [#component-customization]
-
-Pass a `className` or `style` to customize the field container. Target the interactive descendant's data attributes for state-based styling:
-
-```jsx
-<Switch className="custom-switch">Wi-Fi</Switch>
-```
-
-Use the interactive root data attributes for state-based customization. The track and thumb are internal implementation details and do not expose class-name hooks.
+* **Every part names its role with a slot**: `eyebrow`, `title`, `body`. Anything unslotted is
+  left alone, which is what lets a nested component keep its own internal text. Forget the slot
+  and the text simply renders untypeset rather than erroring.
+* **The eyebrow is `slot="eyebrow"`**, on either a `Text` or a `Tag`. The two forms swap
+  freely, and a `Tag` is sized to pair with the lockup.
+* **The title is `<Heading slot="title">`.** Pick the level from the document outline, not the
+  visual size: `size` handles the visuals, so `level={1}` in an `xs` lockup is perfectly valid.
+* **The body is `<Text slot="body">`**, once or as many times as the copy needs.
+* **An explicit prop on a child always wins** over what the lockup supplies. Pass
+  `<Tag slot="eyebrow" size="sm">` to break the pairing, for instance.
+* **Controls keep their own type.** A `Button` inside a lockup is sized by its own `size` prop,
+  not the lockup's.
+* **`size` is the tier.** The eyebrow reads it on the `detail` ramp, the title on `heading`, and
+  the body on `body`, so there is no table to memorize.
+* Pass `className` to extend the styles, or select on `[data-size]` and `[data-align]`.
 
 ## Accessibility [#accessibility]
 
-* Renders with the WAI-ARIA `switch` role via the native `<input type="checkbox" role="switch">`
-* `Space` toggles the switch when it has focus
-* Displays a visible focus ring (`outline: 2px solid Highlight`) for keyboard focus
-* Disabled switches render at `40%` opacity and are excluded from tab order
-* When `children` is omitted, provide `aria-label` or `aria-labelledby` so the switch has an accessible name
+* The title carries the heading semantics. Choose `level` so the page outline stays correct
+  rather than to achieve a size.
+* Slots resolve against the lockup, so `slot="title"` names the lockup's title, not an outer
+  container's. Inside a
+  `Modal`, `Drawer` or `Popover`, give the dialog its own `<Heading slot="title">` as a direct
+  child for the accessible name, and use the lockup for the body.
+* The eyebrow is decorative in most designs. If it carries meaning, make sure the title still
+  reads sensibly on its own, since screen reader users often navigate by heading.
 
 ## Best Practices [#best-practices]
 
-### When to Use Switch [#when-to-use-switch]
-
-* ✅ For settings that take effect immediately, without a form submission
-* ✅ For binary on/off preferences (e.g. Wi-Fi, notifications, dark mode)
-* ❌ For selections that require a "Save" or "Submit" action (use `Checkbox` instead)
-* ❌ For choosing one of several mutually exclusive options (use `Radio` or `SegmentedController` instead)
-
-### Labeling [#labeling]
-
-* Prefer a visible label that names the setting being toggled (e.g. "Wi-Fi", not "On/Off")
-* If the label is omitted, always provide `aria-label`
-* Keep labels short and describe the setting, not its current state
-
-## Troubleshooting [#troubleshooting]
-
-### Controlled State Not Updating [#controlled-state-not-updating]
-
-```jsx
-// ❌ Wrong: isSelected without onChange leaves the switch stuck
-<Switch isSelected={isOn}>Wi-Fi</Switch>
-
-// ✅ Controlled mode
-<Switch isSelected={isOn} onChange={setIsOn}>Wi-Fi</Switch>
-
-// ✅ Uncontrolled mode
-<Switch defaultSelected>Wi-Fi</Switch>
-```
-
-### Missing Accessible Name [#missing-accessible-name]
-
-```jsx
-// ❌ No children and no aria-label — screen readers announce nothing useful
-<Switch />
-
-// ✅ Provide a label
-<Switch>Wi-Fi</Switch>
-
-// ✅ Or an aria-label when the label is visual-only elsewhere
-<Switch aria-label="Wi-Fi" />
-```
+* Use one `2xl` lockup per page at most — it is the page title.
+* Keep `legibleLines` on for running prose. Turn it off only when the lockup already sits in a
+  narrow column, where the clamp does nothing but complicate the layout.
+* Prefer a `Tag` eyebrow for status or category, and plain text for a kicker or section label.
+* Reach for `MetricsLockup` instead when the emphasis is a single number rather than prose.
 
 ## Props [#props]
 
-The `Switch` component has the following props:
+```tsx
+<TextLockup>
+  <Tag slot="eyebrow" />
+  <Heading slot="title" />
+  <Text slot="body" />
+  {/* ... */}
+</TextLockup>
+```
 
 <PropTable />
 
@@ -5189,6 +5597,79 @@ The `TooltipTrigger` component accepts the following props:
 <PropTable />
 
 
+# DonutChart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+## Installation [#installation]
+
+```bash
+npm install @godaddy/antares
+```
+
+## Examples [#examples]
+
+### Default [#default]
+
+You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
+
+<Story of="DefaultExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
+
+### Single slice [#single-slice]
+
+When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
+
+<Story of="SingleSliceExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
+
+### Legend placement [#legend-placement]
+
+Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
+
+<Story of="LegendLayoutExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
+
+### Small slices [#small-slices]
+
+Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
+
+<Story of="SmallSlicesExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
+
+### Format value [#format-value]
+
+Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
+
+<Story of="FormatValueExample" />
+
+<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
+
+## Props [#props]
+
+<PropTable />
+
+
 # Bar Chart
 
 
@@ -5386,79 +5867,6 @@ For better performance:
 1. **Limit data points**: Consider pagination or filtering for very large datasets (>100 points)
 2. **Debounce resize**: The default 15ms debounce on `useParentSize` balances smoothness and performance
 3. **Simplify tooltips**: If tooltips are complex, consider using simpler content or disabling them
-
-## Props [#props]
-
-<PropTable />
-
-
-# DonutChart
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-## Installation [#installation]
-
-```bash
-npm install @godaddy/antares
-```
-
-## Examples [#examples]
-
-### Default [#default]
-
-You give the chart a `data` array (`id`, `name`, `value`) and a `label` in the middle - this is the everyday setup when you want several categories on one ring and a headline number or title in the hole.
-
-<Story of="DefaultExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Category A', value: 35 },\n  { id: '2', name: 'Category B', value: 25 },\n  { id: '3', name: 'Category C', value: 18 },\n  { id: '4', name: 'Category D', value: 12 },\n  { id: '5', name: 'Category E', value: 10 }\n];\n\nexport function DefaultExample(props: Partial<DonutChartProps>) {\n  return <DonutChart data={data} label=\&#x22;100%\&#x22; aria-label=\&#x22;Donut chart with five categories\&#x22; {...props} />;\n}&#x22;" />
-
-### Single slice [#single-slice]
-
-When there is only one slice, the ring is full. Add `subLabel` if you want a smaller second line under the main center text.
-
-<Story of="SingleSliceExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\nexport function SingleSliceExample() {\n  return (\n    <DonutChart\n      data={[{ id: 'only', name: 'Total', value: 100 }]}\n      label=\&#x22;$1,000\&#x22;\n      subLabel=\&#x22;Sub label\&#x22;\n      aria-label=\&#x22;Donut chart with a single full ring\&#x22;\n    />\n  );\n}&#x22;" />
-
-### Legend placement [#legend-placement]
-
-Switch `legend` to `right` to sit the legend beside the donut, or `bottom` to stack it underneath. `legendLabel` is there when you want a title above the legend items.
-
-<Story of="LegendLayoutExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, Flex } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Product A', value: 40 },\n  { id: '2', name: 'Product B', value: 30 },\n  { id: '3', name: 'Product C', value: 20 },\n  { id: '4', name: 'Product D', value: 10 }\n];\n\nexport function LegendLayoutExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;xl\&#x22;>\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;right\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend to the right\&#x22;\n      />\n      <DonutChart\n        data={data}\n        label=\&#x22;100%\&#x22;\n        legend=\&#x22;bottom\&#x22;\n        legendLabel=\&#x22;Legend title\&#x22;\n        aria-label=\&#x22;Donut with legend below\&#x22;\n      />\n    </Flex>\n  );\n}&#x22;" />
-
-### Small slices [#small-slices]
-
-Very thin slices can be noisy to hover. Anything at or below `smallSliceThreshold` (default `0.05` of the total) is treated as “small,” and if those slices sit next to each other on the ring, one hover opens a single tooltip that lists the whole group.
-
-<Story of="SmallSlicesExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart } from '@godaddy/antares';\n\n/** Two large slices with two separate clusters of small slices — hover a small slice to see only that adjacent group (A–C or E–G) in the tooltip. */\nconst data = [\n  { id: 'main', name: 'Primary', value: 88 },\n  { id: 'a', name: 'Slice A', value: 3 },\n  { id: 'b', name: 'Slice B', value: 3 },\n  { id: 'c', name: 'Slice C', value: 3 },\n  { id: 'd', name: 'Slice D', value: 90 },\n  { id: 'e', name: 'Slice E', value: 5 },\n  { id: 'f', name: 'Slice F', value: 4 },\n  { id: 'g', name: 'Slice G', value: 3 }\n];\n\nexport function SmallSlicesExample() {\n  return <DonutChart data={data} label=\&#x22;88%\&#x22; aria-label=\&#x22;Donut with small slices for combined tooltip\&#x22; />;\n}&#x22;" />
-
-### Format value [#format-value]
-
-Use `formatValue` when the raw numbers in the tooltip should read like money, counts with separators, or whatever your product expects. The percentage of the total still formats on its own; your function only shapes the value column.
-
-<Story of="FormatValueExample" />
-
-<Source language="tsx" code="&#x22;import { DonutChart, type DonutChartProps } from '@godaddy/antares';\n\nconst data = [\n  { id: '1', name: 'Sales', value: 42 },\n  { id: '2', name: 'Services', value: 35 },\n  { id: '3', name: 'Support', value: 23 }\n];\n\nexport function FormatValueExample(props: Partial<DonutChartProps>) {\n  return (\n    <DonutChart\n      data={data}\n      label=\&#x22;$100.00\&#x22;\n      formatValue={function format(v: number) {\n        return `$${v}.00`;\n      }}\n      aria-label=\&#x22;Donut with formatted tooltip values for multiple revenue categories\&#x22;\n      {...props}\n    />\n  );\n}&#x22;" />
 
 ## Props [#props]
 
@@ -5966,114 +6374,6 @@ Ensure `tooltip`, `showCrosshair`, or `showDataPoints` are not set to `false`, a
 <PropTable />
 
 
-# Box
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Meta of="Stories" name="Overview" />
-
-`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
-
-**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
-
-## Installation [#installation]
-
-```bash
-npm install --save @godaddy/antares
-```
-
-## Scale Sizes [#scale-sizes]
-
-The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
-
-* `xs` - Extra small spacing
-* `sm` - Small spacing
-* `md` - Medium spacing
-* `lg` - Large spacing
-* `xl` - Extra large spacing
-* `2xl` - 2x extra large spacing
-
-Custom CSS values are also supported for edge cases.
-
-## Polymorphic `as` details [#polymorphic-as-details]
-
-**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
-
-**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
-
-**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
-
-## Examples [#examples]
-
-### Padding [#padding]
-
-The padding props support t-shirt sizes and CSS logical properties for RTL support.
-
-<Story of="PaddingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Elevation [#elevation]
-
-The elevation prop adds visual depth using box-shadow.
-
-<Story of="ElevationExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Rounding [#rounding]
-
-The rounding prop sets border-radius. Use `full` for fully rounded corners.
-
-<Story of="RoundingExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-### Polymorphic as Prop [#polymorphic-as-prop]
-
-Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
-
-<Story of="AsExample" />
-
-<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
-
-### Alignment [#alignment]
-
-Self-alignment props allow Box to position itself within flex or grid containers.
-
-<Story of="AlignmentExample" />
-
-<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
-
-## RTL Support [#rtl-support]
-
-Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
-
-## Design Tokens [#design-tokens]
-
-All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
-
-## Props [#props]
-
-The `Box` component accepts the following props:
-
-<PropTable />
-
-
 # Flex
 
 
@@ -6190,6 +6490,114 @@ All gap and padding values are derived from the theme. If no theme is provided, 
 ## Props [#props]
 
 The `Flex` component accepts the following props:
+
+<PropTable />
+
+
+# Box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Meta of="Stories" name="Overview" />
+
+`Box` is a polymorphic layout component that renders as any HTML element or custom component via the `as` prop. It provides consistent spacing, elevation, rounding, and self-alignment within flex or grid containers.
+
+**Important**: Since `Flex` and `Grid` extend `Box`, prefer them for layouts. Use `Box` only when you need a non-flex, non-grid container.
+
+## Installation [#installation]
+
+```bash
+npm install --save @godaddy/antares
+```
+
+## Scale Sizes [#scale-sizes]
+
+The spacing props use semantic t-shirt sizes for padding, gap, and other spacing properties:
+
+* `xs` - Extra small spacing
+* `sm` - Small spacing
+* `md` - Medium spacing
+* `lg` - Large spacing
+* `xl` - Extra large spacing
+* `2xl` - 2x extra large spacing
+
+Custom CSS values are also supported for edge cases.
+
+## Polymorphic `as` details [#polymorphic-as-details]
+
+**HTML Elements:** When using `as="button"`, TypeScript enforces button-specific props like `type`, `disabled`, and `onClick`.
+
+**Custom Components:** When using `as={MyComponent}`, Box accepts that component's props. If there's a prop name conflict, Box's props take priority.
+
+**Typed Refs:** Refs are correctly typed based on the `as` value - `useRef<HTMLButtonElement>` works with `as="button"`.
+
+## Examples [#examples]
+
+### Padding [#padding]
+
+The padding props support t-shirt sizes and CSS logical properties for RTL support.
+
+<Story of="PaddingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function PaddingExample(attrs: BoxProps) {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22; {...attrs}>\n        Padding: md\n      </Box>\n      <Box blockPadding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding: lg\n      </Box>\n      <Box inlinePadding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        Inline Padding: xl\n      </Box>\n      <Box blockPaddingStart=\&#x22;sm\&#x22; blockPaddingEnd=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        Block Padding Start: sm, End: lg\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Elevation [#elevation]
+
+The elevation prop adds visual depth using box-shadow.
+
+<Story of="ElevationExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function ElevationExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;lg\&#x22; padding=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;base\&#x22;>\n        Elevation: base\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        Elevation: card\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;raised\&#x22;>\n        Elevation: raised\n      </Box>\n\n      <Box padding=\&#x22;md\&#x22; elevation=\&#x22;overlay\&#x22;>\n        Elevation: overlay\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Rounding [#rounding]
+
+The rounding prop sets border-radius. Use `full` for fully rounded corners.
+
+<Story of="RoundingExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function RoundingExample() {\n  return (\n    <Flex wrap=\&#x22;wrap\&#x22; direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xs\&#x22; elevation=\&#x22;card\&#x22;>\n        xs\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;sm\&#x22; elevation=\&#x22;card\&#x22;>\n        sm\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;md\&#x22; elevation=\&#x22;card\&#x22;>\n        md\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;lg\&#x22; elevation=\&#x22;card\&#x22;>\n        lg\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;xl\&#x22; elevation=\&#x22;card\&#x22;>\n        xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;2xl\&#x22; elevation=\&#x22;card\&#x22;>\n        2xl\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '80px', height: '80px' }}>\n        full\n      </Box>\n      <Box padding=\&#x22;md\&#x22; rounding=\&#x22;full\&#x22; elevation=\&#x22;card\&#x22; style={{ width: '200px', height: '80px' }}>\n        pill\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+### Polymorphic as Prop [#polymorphic-as-prop]
+
+Box is fully polymorphic - the `as` prop allows rendering as any HTML element or custom component while preserving type-safe props.
+
+<Story of="AsExample" />
+
+<Source language="tsx" code="&#x22;import { useRef } from 'react';\nimport { Box, Flex, type BoxProps } from '@godaddy/antares';\n\nexport function AsExample() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;md\&#x22;>\n      <AsSemanticElements />\n      <AsInteractiveElements />\n      <AsWithTypedRefs />\n      <AsCustomComponent />\n    </Flex>\n  );\n}\n\nfunction AsSemanticElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Default (div)\n      </Box>\n      <Box as=\&#x22;section\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As section\n      </Box>\n      <Box as=\&#x22;article\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As article\n      </Box>\n      <Box as=\&#x22;span\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        As span\n      </Box>\n    </Flex>\n  );\n}\n\n/** Interactive elements with their specific props. */\nfunction AsInteractiveElements() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;button\&#x22;>\n        As button (click me)\n      </Box>\n\n      {/* Anchor with href - TypeScript enforces anchor-specific props */}\n      <Box as=\&#x22;a\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; href=\&#x22;https://example.com\&#x22; target=\&#x22;_blank\&#x22; rel=\&#x22;noopener noreferrer\&#x22;>\n        As anchor (link)\n      </Box>\n\n      {/* Input element */}\n      <Box as=\&#x22;input\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22; type=\&#x22;text\&#x22; placeholder=\&#x22;As input element\&#x22; />\n    </Flex>\n  );\n}\n\n/** Demonstrating typed refs for different elements. */\nfunction AsWithTypedRefs() {\n  // Each ref is typed to match the \&#x22;as\&#x22; element\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const anchorRef = useRef<HTMLAnchorElement>(null);\n  const divRef = useRef<HTMLDivElement>(null);\n\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as=\&#x22;button\&#x22; ref={buttonRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Button with typed ref\n      </Box>\n\n      <Box as=\&#x22;a\&#x22; ref={anchorRef} href=\&#x22;#\&#x22; padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Anchor with typed ref\n      </Box>\n\n      <Box ref={divRef} padding=\&#x22;sm\&#x22; elevation=\&#x22;base\&#x22;>\n        Div with typed ref (default)\n      </Box>\n    </Flex>\n  );\n}\n\n/** Using Box with a custom component. */\nfunction AsCustomComponent() {\n  return (\n    <Flex direction=\&#x22;column\&#x22; gap=\&#x22;sm\&#x22;>\n      <Box as={Card} type=\&#x22;A\&#x22;>\n        Custom Card\n      </Box>\n\n      <Box as={Card} type=\&#x22;B\&#x22;>\n        Custom Card\n      </Box>\n    </Flex>\n  );\n}\n\n/** Custom component to demonstrate polymorphism with custom components. */\nfunction Card(props: BoxProps & { type?: 'A' | 'B' }) {\n  return (\n    <Box {...props}>\n      {props.type === 'A' ? 'type A! ' : 'type B! '}\n      {props.children}\n    </Box>\n  );\n}&#x22;" />
+
+### Alignment [#alignment]
+
+Self-alignment props allow Box to position itself within flex or grid containers.
+
+<Story of="AlignmentExample" />
+
+<Source language="tsx" code="&#x22;import { Box, Flex } from '@godaddy/antares';\n\nexport function AlignmentExample() {\n  return (\n    <Flex gap=\&#x22;md\&#x22; style={{ height: '150px' }}>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;start\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: start\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;center\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: center\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;end\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: end\n      </Box>\n      <Box padding=\&#x22;sm\&#x22; alignSelf=\&#x22;stretch\&#x22; elevation=\&#x22;card\&#x22;>\n        align-self: stretch\n      </Box>\n    </Flex>\n  );\n}&#x22;" />
+
+## RTL Support [#rtl-support]
+
+Box uses CSS logical properties (`padding-inline-start`, `padding-block-end`, etc.) which automatically adapt to RTL layouts. No additional configuration is needed.
+
+## Design Tokens [#design-tokens]
+
+All spacing, elevation, and rounding values are derived from the theme. If no theme is provided, default values are used. This ensures consistency across the design system.
+
+## Props [#props]
+
+The `Box` component accepts the following props:
 
 <PropTable />
 
