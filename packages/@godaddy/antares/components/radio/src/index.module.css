@@ -48,10 +48,8 @@
   border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .indicator:where(.radio:hover:not([data-disabled]) *) {
-    border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
-  }
+.indicator:where(.radio[data-hovered]:not([data-disabled]) *) {
+  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
 }
 
 .indicator:where(.radio[data-selected] *)::after {
