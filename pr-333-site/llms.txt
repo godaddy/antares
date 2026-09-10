@@ -22,8 +22,8 @@
 - [Label](/docs/components/label): Names a form field. The required asterisk appears when the field is required.
 - [ListBox](/docs/components/listbox): ListBox is a selectable collection of items rendered inline. Use it for non-popover pickers, inline lists, or as a building block for higher-level components like Select.
 - [Menu](/docs/components/menu): Accessible dropdown menu with grouping, multi-select checkbox items, leading icons, and submenus.
-- [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
 - [Modal](/docs/components/modal): The Modal component presents a dialog window over the page that focuses the user's attention on a single task or piece of information.
+- [MetricsLockup](/docs/components/metrics-lockup): The MetricsLockup component displays a single metric with an optional title, info tooltip, trend indicator, and description.
 - [NumberField](/docs/components/number-field): NumberField is a composed numeric input with min/max/step and optional increment/decrement stepper buttons. Use it in forms for quantities, amounts, or percentages.
 - [Pagination](/docs/components/pagination): A pagination component with prev/next buttons and dot indicators, configurable page limits, and optional visibility of controls and dots
 - [Popover](/docs/components/popover): The Popover component is an overlay element positioned relative to a trigger element.
@@ -44,8 +44,8 @@
 - [TextLockup](/docs/components/text-lockup): TextLockup stacks an eyebrow, title, and body text as one coordinated type group across six sizes.
 - [ToggleButton](/docs/components/toggle-button): Accessible toggle button component for grouped contextual actions with single or multiple selection, keyboard navigation, and RTL-aware layouts.
 - [Tooltip](/docs/components/tooltip): The Tooltip component displays a description of an element on hover or focus.
-- [Bar Chart](/docs/components/chart/bar-chart): A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.
 - [DonutChart](/docs/components/chart/donut-chart): Donut charts are for parts-to-whole comparison—how partial elements add up to a total—shown as a ring so a few categories are easy to compare at a glance.
+- [Bar Chart](/docs/components/chart/bar-chart): A flexible, accessible, and design-aligned data visualization solution for displaying single or multi-series bar charts.
 - [Gauge Chart](/docs/components/chart/gauge-chart): A visual indicator for representing a single quantitative value within a known range, rendered as a semicircle arc in continuous or segmented mode.
 - [LineChart](/docs/components/chart/line-chart): Line Chart shows how something changes over time or along a continuous scale. It connects data points with lines so people can quickly spot trends, peaks, dips, and patterns.
 - [Box](/docs/components/layout/box): Polymorphic layout component providing consistent spacing, elevation, rounding, and self-alignment
