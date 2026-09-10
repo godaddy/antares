@@ -39,11 +39,11 @@ That thumb used to animate `inset-inline-start`, which lays out every frame; it 
 
 ## Surfaces
 
-An anchored surface enters offset toward its own placement edge and slightly small — `8px` at popover weight, `4px` at tooltip weight, always with `scale(0.95)` — and grows from the trigger rather than from its own middle. Consumers pass an exact anchor through `--trigger-anchor-point`; without one, fall back to the placement edge nearest the trigger.
+An anchored surface enters offset toward its trigger and slightly small — `8px` at popover weight, `4px` at tooltip weight, always with `scale(0.95)` — then settles outward into its placement. This makes it grow from the trigger rather than move toward it from the far edge. Consumers pass an exact anchor through `--trigger-anchor-point`; without one, fall back to the placement edge nearest the trigger.
 
 ```css
 .popover:where([data-placement="bottom"]) {
-  --_animation-offset: translateY(8px) scale(0.95);
+  --_animation-offset: translateY(-8px) scale(0.95);
   transform-origin: var(--trigger-anchor-point, top center);
 }
 ```
@@ -80,7 +80,9 @@ Two things to get right. `transform: none` may only cancel the animation transfo
 
 ## Hover gating
 
-Hover motion goes behind `@media (hover: hover) and (pointer: fine)`, so a tap doesn't leave a touch device in a stuck hover state. RAC's `[data-hovered]` follows the same rule: never make a keyboard or touch user depend on hover to see feedback.
+Gate native `:hover` behind `@media (hover: hover) and (pointer: fine)`, so a tap doesn't leave a touch device in a stuck hover state. RAC's `[data-hovered]` feedback can live outside that query because RAC clears the state without relying on sticky CSS hover behavior.
+
+Never make hover the only path to feedback. Keep pressed, focus-visible, and selected states where they apply so keyboard and touch users do not depend on hover.
 
 ## Physical transforms and RTL
 

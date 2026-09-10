@@ -40,6 +40,7 @@
 
   filter: none;
   box-shadow: var(--donut-tooltip-shadow);
+  pointer-events: none;
 }
 
 .item {
