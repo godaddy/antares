@@ -39,7 +39,7 @@
     "shx": "^0.4.0",
     "style-dictionary": "^5.5.0",
     "tsx": "^4.22.3",
-    "vitest": "^4.1.7",
+    "vitest": "^4.1.11",
     "yaml": "^2.9.0",
     "ajv": "^8.20.0",
     "@upft/schemas": "^0.0.6"

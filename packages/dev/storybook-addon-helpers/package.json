@@ -39,7 +39,7 @@
     "react": "^19.2.6",
     "tsdown": "^0.22.14",
     "vite": "^8.0.14",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "@storybook/react-vite": "^10.5.7",

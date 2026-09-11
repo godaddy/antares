@@ -41,7 +41,7 @@
     "@types/react-dom": "^19.2.3",
     "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.7",
+    "vitest": "^4.1.11",
     "vitest-browser-react": "^2.2.0"
   },
   "peerDependencies": {
