@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-C3N-5HIY.js";import{n as t,r as n}from"./chunk-Y2CYZVJY-DTj8-25F.js";import{l as r,t as i}from"./src-Do_hKWqU.js";var a,o=e((()=>{n(),i(),a=t((e,t)=>{let n;return t===`sandbox`&&(n=r(`#i`+e)),r(t===`sandbox`?n.nodes()[0].contentDocument.body:`body`).select(`[id="${e}"]`)},`getDiagramElement`)}));export{o as n,a as t};
