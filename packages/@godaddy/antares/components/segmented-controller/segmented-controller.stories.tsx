@@ -1,13 +1,15 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/segmented-controller-playground.tsx';
-import { SegmentedController } from './src/index.tsx';
+import { SegmentedController, SegmentedControllerItem } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/SegmentedController'
 });
 
 export const Props = getComponentDocs(SegmentedController);
+
+export const SegmentedControllerItemProps = getComponentDocs(SegmentedControllerItem);
 
 export const Examples = getExamples('./examples');
 

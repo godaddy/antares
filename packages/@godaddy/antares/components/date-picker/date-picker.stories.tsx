@@ -1,12 +1,28 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { DatePicker, DateRangePicker } from '@godaddy/antares';
+import {
+  DatePicker,
+  DateRangePicker,
+  DatePickerCalendar,
+  DateRangePickerCalendar,
+  DatePickerValue,
+  DateRangePickerValue
+} from '@godaddy/antares';
 import { PlaygroundExample } from './examples/date-picker-playground.tsx';
 
 export default getMeta({ title: 'components/DatePicker' });
 
 export const Props = getComponentDocs(DatePicker);
+
 export const DateRangePickerProps = getComponentDocs(DateRangePicker);
+
+export const DatePickerCalendarProps = getComponentDocs(DatePickerCalendar);
+
+export const DateRangePickerCalendarProps = getComponentDocs(DateRangePickerCalendar);
+
+export const DatePickerValueProps = getComponentDocs(DatePickerValue);
+
+export const DateRangePickerValueProps = getComponentDocs(DateRangePickerValue);
 
 export const Examples = getExamples('./examples');
 

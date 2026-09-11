@@ -54,6 +54,22 @@ npm install --save @godaddy/antares
 
 ## Props
 
+```tsx
+<MenuTrigger>
+  <Button />
+  <Menu>
+    <MenuGroup>
+      <MenuItem />
+      <MenuSeparator />
+    </MenuGroup>
+    <SubmenuTrigger>
+      <MenuItem />
+      <Menu />
+    </SubmenuTrigger>
+  </Menu>
+</MenuTrigger>
+```
+
 ### Menu
 
 <ArgTypes of={Stories.Props} />
@@ -69,6 +85,10 @@ npm install --save @godaddy/antares
 ### MenuItem
 
 <ArgTypes of={Stories.MenuItemProps} />
+
+### MenuSeparator
+
+<ArgTypes of={Stories.MenuSeparatorProps} />
 
 ### SubmenuTrigger
 

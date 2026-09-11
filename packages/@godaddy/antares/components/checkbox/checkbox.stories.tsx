@@ -1,7 +1,7 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/checkbox-playground.tsx';
-import { Checkbox, CheckboxGroup } from './src/index.tsx';
+import { Checkbox, CheckboxGroup, CheckboxIndicator } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Checkbox',
@@ -11,6 +11,8 @@ export default getMeta({
 export const Props = getComponentDocs(Checkbox);
 
 export const GroupProps = getComponentDocs(CheckboxGroup);
+
+export const CheckboxIndicatorProps = getComponentDocs(CheckboxIndicator);
 
 export const Examples = getExamples('./examples');
 

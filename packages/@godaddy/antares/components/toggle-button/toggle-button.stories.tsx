@@ -1,13 +1,14 @@
 'use client';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
 import { PlaygroundExample } from './examples/toggle-button-playground.tsx';
-import { ToggleButtonGroup } from './src/index.tsx';
+import { ToggleButtonGroup, ToggleButton } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/ToggleButton'
 });
 
 export const Props = getComponentDocs(ToggleButtonGroup);
+export const ToggleButtonProps = getComponentDocs(ToggleButton);
 
 export const Examples = getExamples('./examples');
 
