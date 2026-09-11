@@ -73,7 +73,7 @@
 .fill {
   stroke: var(--circular-progress-fill-color);
   stroke-width: var(--circular-progress-stroke-width);
-  transition: stroke-dashoffset 0.15s ease-in-out;
+  transition: stroke-dashoffset 150ms linear;
 }
 
 .output {
@@ -102,4 +102,10 @@
   line-height: var(--ux-1dje42v, 1.5);
   color: var(--circular-progress-help-color);
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
 }

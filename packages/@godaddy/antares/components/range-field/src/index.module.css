@@ -90,10 +90,7 @@
   background-color: var(--_slider-thumb-bg);
   border-color: var(--_slider-thumb-border);
   cursor: grab;
-  transition:
-    border-color 0.15s ease-in-out,
-    background-color 0.15s ease-in-out,
-    opacity 0.15s ease-in-out;
+  transition: border-color 150ms ease;
   top: 50%;
   transform: translateY(-50%);
   position: absolute;

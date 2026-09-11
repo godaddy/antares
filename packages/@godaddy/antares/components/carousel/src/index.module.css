@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.container:dir(rtl) {
+.container:where(:dir(rtl)) {
   --icon-direction: scaleX(-1);
   --mask-fade-direction-start: to right;
   --mask-fade-direction-end: to left;
@@ -30,7 +30,7 @@
   content: "";
   background: var(--bg-base);
   width: calc(var(--edge-clear-width) + var(--edge-fade-width));
-  transition: opacity 1s ease;
+  transition: opacity 200ms ease;
   mask-image: linear-gradient(
     var(--mask-fade-direction-start),
     transparent 0,
@@ -50,8 +50,8 @@
   );
 }
 
-.edgeMask.hideFirst::before,
-.edgeMask.hideLast::after {
+.edgeMask:where(.hideFirst)::before,
+.edgeMask:where(.hideLast)::after {
   opacity: 0;
 }
 
@@ -69,14 +69,13 @@
   top: 50%;
   transform: translateY(-50%);
   transition:
-    opacity 0.3s ease,
-    visibility 1s ease;
+    opacity 200ms ease,
+    visibility 200ms ease;
   visibility: visible;
   opacity: 1;
 }
 
-.prev [data-icon],
-.next [data-icon] {
+:where(.prev, .next) [data-icon] {
   transform: var(--icon-direction);
 }
 
@@ -86,8 +85,8 @@
   transform: translateY(-50%);
 }
 
-.prev.hide,
-.next.hide {
+.prev:where(.hide),
+.next:where(.hide) {
   cursor: inherit;
   visibility: hidden; /* removes buttons from accessibility tree */
   opacity: 0;

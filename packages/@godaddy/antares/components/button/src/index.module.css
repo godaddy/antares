@@ -29,10 +29,10 @@
   white-space: nowrap;
   text-decoration: none;
   transition:
-    background 0.15s ease-in-out,
-    border-color 0.15s ease-in-out,
-    color 0.15s ease-in-out,
-    opacity 0.15s ease-in-out;
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
   cursor: pointer;
   border: none;
   padding: 0;

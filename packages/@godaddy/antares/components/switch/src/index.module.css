@@ -7,36 +7,21 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   color: var(--color-input-text-default, var(--ux-1glcx6s, #2b2b2b));
-
-  &[data-disabled] {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  &[data-focus-visible] {
-    outline: 2px solid Highlight;
-    border-radius: var(--ux-zvaw3s, 6px);
-  }
-
-  &[data-selected] {
-    .track {
-      background: var(--color-input-background-selected, var(--ux-sywk25, #00a4a6));
-    }
-
-    .thumb {
-      inset-inline-start: calc(var(--_track-w) - var(--_thumb-size) - var(--_thumb-inset));
-    }
-  }
 }
 
-.switch[data-size="sm"] {
+.switch:where([data-disabled]) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.switch:where([data-focus-visible]) {
+  outline: 2px solid Highlight;
+  border-radius: var(--ux-zvaw3s, 6px);
+}
+
+.switch:where([data-size="sm"]) {
   --_thumb-size: 1em;
   --_track-w: 2.5em;
-
-  .label {
-    font-size: 0.875em;
-    line-height: 1.375;
-  }
 }
 
 .track {
@@ -48,8 +33,12 @@
   height: var(--_track-h);
   border-radius: calc(var(--_track-h) / 2);
   background: var(--ux-1m9ys0v, #767676);
-  transition: background-color 0.15s ease-in-out;
+  transition: background-color 150ms ease;
   pointer-events: none;
+}
+
+.track:where(.switch[data-selected] *) {
+  background: var(--color-input-background-selected, var(--ux-sywk25, #00a4a6));
 }
 
 .thumb {
@@ -61,7 +50,17 @@
   height: var(--_thumb-size);
   border-radius: 50%;
   background: var(--color-input-background-default, var(--ux-1nu8itt, #fff));
-  transition: inset-inline-start 0.15s ease-in-out;
+  transition:
+    transform 150ms cubic-bezier(0.77, 0, 0.175, 1),
+    background-color 150ms ease;
+}
+
+.thumb:where(.switch[data-selected] *) {
+  transform: translateX(calc(var(--_track-w) - var(--_thumb-size) - var(--_thumb-inset) * 2));
+}
+
+.switch:where([data-selected]:dir(rtl)) :where(.thumb) {
+  transform: translateX(calc(var(--_thumb-size) + var(--_thumb-inset) * 2 - var(--_track-w)));
 }
 
 @media (forced-colors: active) {
@@ -75,12 +74,12 @@
     background: CanvasText;
   }
 
-  .switch[data-selected] .track {
+  .track:where(.switch[data-selected] *) {
     border-color: Highlight;
     background: Highlight;
   }
 
-  .switch[data-selected] .thumb {
+  .thumb:where(.switch[data-selected] *) {
     background: HighlightText;
   }
 }
@@ -89,4 +88,15 @@
   font-size: 1em;
   font-weight: bolder;
   line-height: 1.125;
+}
+
+.label:where(.switch[data-size="sm"] *) {
+  font-size: 0.875em;
+  line-height: 1.375;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition-property: background-color;
+  }
 }

@@ -11,6 +11,9 @@
   border: 1.5px dashed var(--drop-zone-border-color);
   border-radius: var(--drop-zone-radius);
   background: var(--drop-zone-bg);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
 
   &:where([data-focus-visible]) {
     border-color: var(--drop-zone-border-color-active);

@@ -11,7 +11,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.radio[data-disabled] {
+.radio:where([data-disabled]) {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -26,35 +26,33 @@
   border-color: var(--color-input-border-default, var(--ux-by6mab, #767676));
   box-sizing: border-box;
   transition:
-    border-color 0.15s ease-in-out,
-    background-color 0.15s ease-in-out,
-    transform 0.15s ease-in-out,
-    opacity 0.15s ease-in-out;
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
   position: relative;
   pointer-events: none;
 }
 
-.radio[data-pressed]:not([data-disabled]) .indicator {
-  transform: scale(0.95);
-}
-
-.radio[data-focused] .indicator {
-  outline: 2px solid Highlight;
-  outline-offset: 2px;
-}
-
-.radio:hover:not([data-disabled]) .indicator,
-.radio[data-focused] .indicator,
-.radio[data-selected]:hover:not([data-disabled]) .indicator {
-  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
-}
-
-.radio[data-selected] .indicator {
+.indicator:where(.radio[data-selected] *) {
   background: var(--color-input-background-selected, var(--ux-sywk25, #1bdbdb));
   border-color: var(--color-input-border-selected, var(--ux-77zzwv, #1bdbdb));
 }
 
-.radio[data-selected] .indicator::after {
+.indicator:where(.radio[data-pressed]:not([data-disabled]) *) {
+  transform: scale(0.95);
+}
+
+.indicator:where(.radio[data-focused] *) {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
+}
+
+.indicator:where(.radio[data-hovered]:not([data-disabled]) *) {
+  border-color: var(--color-input-border-hovered, var(--ux-1bdyuno, #00a4a6));
+}
+
+.indicator:where(.radio[data-selected] *)::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -64,17 +62,22 @@
   height: var(--radio-dot-size);
   border-radius: 50%;
   background-color: var(--color-input-text-selected, var(--ux-1lw8azc, #111111));
-  transition:
-    background-color 0.15s ease-in-out,
-    opacity 0.15s ease-in-out;
 }
 
-.radioGroup[data-invalid] .radio[data-selected] .indicator {
+.indicator:where(.radioGroup[data-invalid] .radio[data-selected] *) {
   background-color: var(--radio-critical-color);
 }
 
-.radioGroup[data-invalid] .indicator,
-.radioGroup[data-invalid] .radio:hover:not([data-disabled]) .indicator,
-.radioGroup[data-invalid] .radio[data-selected] .indicator {
+.indicator:where(.radioGroup[data-invalid] *) {
   border-color: var(--radio-critical-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition-property: border-color, background-color;
+  }
+
+  .indicator:where(.radio[data-pressed]:not([data-disabled]) *) {
+    transform: none;
+  }
 }

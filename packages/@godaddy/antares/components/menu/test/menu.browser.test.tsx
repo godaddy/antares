@@ -1,6 +1,6 @@
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import assume from 'assume';
 import { DefaultExample } from '../examples/default.tsx';
 import { GroupsExample } from '../examples/groups.tsx';
@@ -154,8 +154,9 @@ describe('@godaddy/antares', function antares() {
       assume(await profile.query()).is.not.equal(null);
 
       await user.click(profile);
-      await settle();
-      assume(await page.getByRole('menuitem', { name: 'Profile' }).query()).equals(null);
+      await vi.waitFor(async function drawerClosed() {
+        assume(await profile.query()).equals(null);
+      });
     });
 
     it('opens a calendar popover from an item and closes it on selection', async function richContent() {
