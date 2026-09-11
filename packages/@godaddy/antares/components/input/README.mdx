@@ -11,13 +11,6 @@ import * as Stories from './input.stories.tsx';
 
 `Input` is the single-line control inside a field, not a field on its own. Prefer `TextField` or `NumberField` as the parent; see those components for fuller examples.
 
-```tsx
-<TextField>
-  <Label>Email</Label>
-  <Input placeholder="you@example.com" />
-</TextField>
-```
-
 ## Installation
 
 ```bash
@@ -29,5 +22,14 @@ npm install --save @godaddy/antares
 <Examples of={Stories.Examples} />
 
 ## Props
+
+```tsx
+<TextField>
+  <Label>Email</Label>
+  <Input placeholder="you@example.com" />
+</TextField>
+```
+
+### Input
 
 <ArgTypes of={Stories.Props} />

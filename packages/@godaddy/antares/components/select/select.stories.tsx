@@ -1,13 +1,19 @@
 'use client';
 import { PlaygroundExample } from './examples/select-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { Select } from './src/index.tsx';
+import { Select, SelectOptions, SelectValue, SelectItem } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/Select'
 });
 
 export const Props = getComponentDocs(Select);
+
+export const SelectOptionsProps = getComponentDocs(SelectOptions);
+
+export const SelectValueProps = getComponentDocs(SelectValue);
+
+export const SelectItemProps = getComponentDocs(SelectItem);
 
 export const Examples = getExamples('./examples');
 

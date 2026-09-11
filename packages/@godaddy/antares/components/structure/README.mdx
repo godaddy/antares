@@ -32,6 +32,19 @@ Each container works in two modes:
 
 `Content`, `Header`, `Footer`, and `ButtonGroup` each accept all `Flex` layout props.
 
+```tsx
+<Header>
+  <Heading slot="title" />
+  <CloseButton />
+</Header>
+<Content />
+<Footer>
+  <ButtonGroup>
+    <Button />
+  </ButtonGroup>
+</Footer>
+```
+
 ### Content
 
 <ArgTypes of={Stories.ContentProps} />

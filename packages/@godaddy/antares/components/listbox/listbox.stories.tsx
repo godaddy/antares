@@ -1,13 +1,15 @@
 'use client';
 import { PlaygroundExample } from './examples/listbox-playground.tsx';
 import { getComponentDocs, getExamples, getMeta, getStory } from '@bento/storybook-addon-helpers';
-import { ListBox } from './src/index.tsx';
+import { ListBox, ListBoxItem } from './src/index.tsx';
 
 export default getMeta({
   title: 'components/ListBox'
 });
 
 export const ListBoxProps = getComponentDocs(ListBox);
+
+export const ListBoxItemProps = getComponentDocs(ListBoxItem);
 
 export const Examples = getExamples('./examples');
 
