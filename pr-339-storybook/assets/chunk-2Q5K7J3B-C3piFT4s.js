@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-C1CI-jU3.js";import{n as t,r as n}from"./chunk-Y2CYZVJY-DKGczKBu.js";var r,i=e((()=>{n(),r=class{constructor(e){this.init=e,this.records=this.init()}static{t(this,`ImperativeState`)}reset(){this.records=this.init()}}}));export{i as n,r as t};
