@@ -809,6 +809,22 @@ font-heading-weight:
   $description: "Default heading weight for clear hierarchy above body and detail text."
 
 # --
+# Typography — action
+# --
+font-action-family:
+  $type: fontFamily
+  $value: "system-ui, sans-serif"
+  $description: "Typeface for interactive action labels (buttons, links, controls). Defaults to the body family."
+font-action-line-height:
+  $type: number
+  $value: 1.375
+  $description: "Line height for action labels to maintain legibility at compact button sizes."
+font-action-weight:
+  $type: fontWeight
+  $value: "bold"
+  $description: "Font weight for action labels. Bold by default to distinguish interactive controls from body text."
+
+# --
 # Typography — global size scale
 # --
 font-size-005:
