@@ -6,7 +6,7 @@ const README_FILE_REGEX = /README\.mdx$/;
 const BLOCK_MARKER_REGEX = /<(Block|BlockLink)\b[\s\S]*?\/>/;
 
 /** Adds block MDX expansion before Storybook's MDX loader runs. */
-export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config) {
+export const viteFinal: StorybookConfig['viteFinal'] = async function viteFinal(config, _options) {
   config.plugins ??= [];
   config.plugins.unshift(generateBlocksPlugin());
   return config;
