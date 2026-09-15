@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build:sd && npm run build:schema",
     "build:sd": "tsx src/build-tokens.ts",
-    "build:schema": "shx cp src/schema.json dist/schema.json",
+    "build:schema": "shx cp src/schema.json dist/schema.json && shx cp src/extensions.d.ts dist/extensions.d.ts",
     "lint": "biome lint",
     "lint:fix": "biome lint --write",
     "test": "vitest run",
@@ -63,6 +63,9 @@
     },
     "./schema": {
       "default": "./dist/schema.json"
+    },
+    "./extensions": {
+      "types": "./dist/extensions.d.ts"
     }
   },
   "publishConfig": {
