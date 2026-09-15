@@ -87,15 +87,31 @@
     "hash": "1mh0ktr",
     "var": "--ux-1mh0ktr",
     "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-background-control-default",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-background-overlay-default",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControl.borderColor": {
     "hash": "1qbn65p",
     "var": "--ux-1qbn65p",
     "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-border-control-default",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-border-overlay-default",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControl.borderRadius": {
     "hash": "zvaw3s",
@@ -115,8 +131,16 @@
     "hash": "1utwv7e",
     "var": "--ux-1utwv7e",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-text-control-default",
+        "dtcgDefault": "#111111"
+      },
+      {
+        "token": "color-action-text-overlay-default",
+        "dtcgDefault": "#111111"
+      }
+    ]
   },
   "ux.actionControl.outlineColor": {
     "hash": "1iktadd",
@@ -129,15 +153,39 @@
     "hash": "gdy377",
     "var": "--ux-gdy377",
     "legacyDefault": "#fff",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-background-selected-default",
+        "dtcgDefault": "white"
+      },
+      {
+        "token": "color-action-background-selected-hovered",
+        "dtcgDefault": "white"
+      },
+      {
+        "token": "color-action-background-selected-pressed",
+        "dtcgDefault": "white"
+      }
+    ]
   },
   "ux.actionControlChosen.borderColor": {
     "hash": "187j9dd",
     "var": "--ux-187j9dd",
     "legacyDefault": "#00a4a6",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-border-selected-default",
+        "dtcgDefault": "teal"
+      },
+      {
+        "token": "color-action-border-selected-hovered",
+        "dtcgDefault": "teal"
+      },
+      {
+        "token": "color-action-border-selected-pressed",
+        "dtcgDefault": "teal"
+      }
+    ]
   },
   "ux.actionControlChosen.borderRadius": {
     "hash": "ocvlxw",
@@ -157,8 +205,20 @@
     "hash": "k4fkva",
     "var": "--ux-k4fkva",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-text-selected-default",
+        "dtcgDefault": "#111111"
+      },
+      {
+        "token": "color-action-text-selected-hovered",
+        "dtcgDefault": "#111111"
+      },
+      {
+        "token": "color-action-text-selected-pressed",
+        "dtcgDefault": "#111111"
+      }
+    ]
   },
   "ux.actionControlChosen.outlineColor": {
     "hash": "ws2b8d",
@@ -171,15 +231,31 @@
     "hash": "qebq9u",
     "var": "--ux-qebq9u",
     "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-background-control-pressed",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-background-overlay-pressed",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControlFocused.borderColor": {
     "hash": "18hlgn4",
     "var": "--ux-18hlgn4",
     "legacyDefault": "#d6d6d6",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-border-control-pressed",
+        "dtcgDefault": "lightgray"
+      },
+      {
+        "token": "color-action-border-overlay-pressed",
+        "dtcgDefault": "lightgray"
+      }
+    ]
   },
   "ux.actionControlFocused.borderRadius": {
     "hash": "kdmzt1",
@@ -199,8 +275,16 @@
     "hash": "6gm31z",
     "var": "--ux-6gm31z",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-text-control-pressed",
+        "dtcgDefault": "#111111"
+      },
+      {
+        "token": "color-action-text-overlay-pressed",
+        "dtcgDefault": "#111111"
+      }
+    ]
   },
   "ux.actionControlFocused.outlineColor": {
     "hash": "1njwmlo",
@@ -213,15 +297,31 @@
     "hash": "11rtwg8",
     "var": "--ux-11rtwg8",
     "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-background-control-hovered",
+        "dtcgDefault": "whitesmoke"
+      },
+      {
+        "token": "color-action-background-overlay-hovered",
+        "dtcgDefault": "whitesmoke"
+      }
+    ]
   },
   "ux.actionControlHovered.borderColor": {
     "hash": "bg7olm",
     "var": "--ux-bg7olm",
     "legacyDefault": "#d6d6d6",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-border-control-hovered",
+        "dtcgDefault": "lightgray"
+      },
+      {
+        "token": "color-action-border-overlay-hovered",
+        "dtcgDefault": "lightgray"
+      }
+    ]
   },
   "ux.actionControlHovered.borderRadius": {
     "hash": "mpv2fj",
@@ -241,8 +341,16 @@
     "hash": "1e4ese5",
     "var": "--ux-1e4ese5",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "tokens": [
+      {
+        "token": "color-action-text-control-hovered",
+        "dtcgDefault": "#111111"
+      },
+      {
+        "token": "color-action-text-overlay-hovered",
+        "dtcgDefault": "#111111"
+      }
+    ]
   },
   "ux.actionControlHovered.outlineColor": {
     "hash": "r2wrvq",
@@ -507,15 +615,15 @@
     "hash": "1sw32wb",
     "var": "--ux-1sw32wb",
     "legacyDefault": "#fff",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-background-option-default",
+    "dtcgDefault": "white"
   },
   "ux.actionOption.borderColor": {
     "hash": "iz7fvt",
     "var": "--ux-iz7fvt",
     "legacyDefault": "#fff",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-border-option-default",
+    "dtcgDefault": "white"
   },
   "ux.actionOption.borderRadius": {
     "hash": "1frurfw",
@@ -535,8 +643,8 @@
     "hash": "1wf60ri",
     "var": "--ux-1wf60ri",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-text-option-default",
+    "dtcgDefault": "#111111"
   },
   "ux.actionOption.outlineColor": {
     "hash": "1tuh6f9",
@@ -591,15 +699,15 @@
     "hash": "1tn536u",
     "var": "--ux-1tn536u",
     "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-background-option-pressed",
+    "dtcgDefault": "whitesmoke"
   },
   "ux.actionOptionFocused.borderColor": {
     "hash": "1x4s92c",
     "var": "--ux-1x4s92c",
     "legacyDefault": "#f5f5f5",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-border-option-pressed",
+    "dtcgDefault": "whitesmoke"
   },
   "ux.actionOptionFocused.borderRadius": {
     "hash": "1nlxwe9",
@@ -619,8 +727,8 @@
     "hash": "1jz8rn7",
     "var": "--ux-1jz8rn7",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-text-option-pressed",
+    "dtcgDefault": "#111111"
   },
   "ux.actionOptionFocused.outlineColor": {
     "hash": "1s3rs7c",
@@ -633,15 +741,15 @@
     "hash": "1x1u50s",
     "var": "--ux-1x1u50s",
     "legacyDefault": "#e8eaeb",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-background-option-hovered",
+    "dtcgDefault": "gainsboro"
   },
   "ux.actionOptionHovered.borderColor": {
     "hash": "19xthpq",
     "var": "--ux-19xthpq",
     "legacyDefault": "transparent",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-border-option-hovered",
+    "dtcgDefault": "transparent"
   },
   "ux.actionOptionHovered.borderRadius": {
     "hash": "qn0bm3",
@@ -661,8 +769,8 @@
     "hash": "1mntjax",
     "var": "--ux-1mntjax",
     "legacyDefault": "#111",
-    "token": null,
-    "dtcgDefault": null
+    "token": "color-action-text-option-hovered",
+    "dtcgDefault": "#111111"
   },
   "ux.actionOptionHovered.outlineColor": {
     "hash": "16ez05e",

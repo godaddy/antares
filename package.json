@@ -80,7 +80,7 @@
     "npm": ">=11"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,json,css}": [
+    "{,!(.agents|.claude|.codex|.cursor|.opencode)/**/}*.{js,jsx,ts,tsx,mjs,cjs,json,css}": [
       "biome lint --write --error-on-warnings",
       "biome format --write"
     ],

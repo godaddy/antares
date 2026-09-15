@@ -168,6 +168,166 @@ color-action-text-inline-pressed:
   $description: "Text or icon color for an inline action when pressed or active."
 
 # --
+# Color — action — Control
+# --
+color-action-background-control-default:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for a form control (e.g. input, select) in its default resting state."
+color-action-background-control-hovered:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for a form control when hovered or keyboard-focused."
+color-action-background-control-pressed:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for a form control while pressed or active."
+color-action-border-control-default:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Border for a form control in the default state."
+color-action-border-control-hovered:
+  $type: color
+  $value: "lightgray"
+  $description: "Border for a form control when hovered or focused."
+color-action-border-control-pressed:
+  $type: color
+  $value: "lightgray"
+  $description: "Border for a form control when pressed or active."
+color-action-text-control-default:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for a form control in the default state."
+color-action-text-control-hovered:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for a form control when hovered or focused."
+color-action-text-control-pressed:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for a form control when pressed or active."
+
+# --
+# Color — action — Overlay
+# --
+color-action-background-overlay-default:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for a button overlaid on arbitrary content (images, text, cards) such as a corner-action button, in its default resting state."
+color-action-background-overlay-hovered:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for an overlay button when hovered or keyboard-focused."
+color-action-background-overlay-pressed:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for an overlay button while pressed or active."
+color-action-border-overlay-default:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Border for an overlay button in its default resting state."
+color-action-border-overlay-hovered:
+  $type: color
+  $value: "lightgray"
+  $description: "Border for an overlay button when hovered or focused."
+color-action-border-overlay-pressed:
+  $type: color
+  $value: "lightgray"
+  $description: "Border for an overlay button when pressed or active."
+color-action-text-overlay-default:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for an overlay button in the default state."
+color-action-text-overlay-hovered:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for an overlay button when hovered or focused."
+color-action-text-overlay-pressed:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for an overlay button when pressed or active."
+
+# --
+# Color — action — Option
+# --
+color-action-background-option-default:
+  $type: color
+  $value: "white"
+  $description: "Fill for a selectable option item (e.g. a list row, menu item) in its default state."
+color-action-background-option-hovered:
+  $type: color
+  $value: "gainsboro"
+  $description: "Fill for an option item when hovered or focused."
+color-action-background-option-pressed:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Fill for an option item while pressed or active."
+color-action-border-option-default:
+  $type: color
+  $value: "white"
+  $description: "Border for an option item in the default state."
+color-action-border-option-hovered:
+  $type: color
+  $value: "transparent"
+  $description: "Border for an option item when hovered or focused."
+color-action-border-option-pressed:
+  $type: color
+  $value: "whitesmoke"
+  $description: "Border for an option item when pressed or active."
+color-action-text-option-default:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for an option item in the default state."
+color-action-text-option-hovered:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for an option item when hovered or focused."
+color-action-text-option-pressed:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for an option item when pressed or active."
+
+# --
+# Color — action — Selected
+# --
+color-action-background-selected-default:
+  $type: color
+  $value: "white"
+  $description: "Fill for a selected-state control (e.g. a chosen tab, active item) in the default state."
+color-action-background-selected-hovered:
+  $type: color
+  $value: "white"
+  $description: "Fill for a selected control when hovered or focused."
+color-action-background-selected-pressed:
+  $type: color
+  $value: "white"
+  $description: "Fill for a selected control while pressed or active."
+color-action-border-selected-default:
+  $type: color
+  $value: "teal"
+  $description: "Border for a selected control in the default state."
+color-action-border-selected-hovered:
+  $type: color
+  $value: "teal"
+  $description: "Border for a selected control when hovered or focused."
+color-action-border-selected-pressed:
+  $type: color
+  $value: "teal"
+  $description: "Border for a selected control when pressed or active."
+color-action-text-selected-default:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for a selected control in the default state."
+color-action-text-selected-hovered:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for a selected control when hovered or focused."
+color-action-text-selected-pressed:
+  $type: color
+  $value: "#111111"
+  $description: "Label and icon color for a selected control when pressed or active."
+
+# --
 # Color — canvas
 # --
 color-canvas-background:
@@ -647,6 +807,22 @@ font-heading-weight:
   $type: fontWeight
   $value: "bold"
   $description: "Default heading weight for clear hierarchy above body and detail text."
+
+# --
+# Typography — action
+# --
+font-action-family:
+  $type: fontFamily
+  $value: "system-ui, sans-serif"
+  $description: "Typeface for interactive action labels (buttons, links, controls). Defaults to the body family."
+font-action-line-height:
+  $type: number
+  $value: 1.375
+  $description: "Line height for action labels to maintain legibility at compact button sizes."
+font-action-weight:
+  $type: fontWeight
+  $value: "bold"
+  $description: "Font weight for action labels. Bold by default to distinguish interactive controls from body text."
 
 # --
 # Typography — global size scale
