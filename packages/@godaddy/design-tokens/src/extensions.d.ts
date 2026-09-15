@@ -23,8 +23,10 @@
 export interface ClampExtension {
   /** Minimum value — alias or static dimension (e.g., `"{font-size-040}"` or `"1rem"`). */
   min: string;
-  /** Preferred value — CSS expression, may contain aliases (e.g., `"1rem + 1.5vw"`). */
-  preferred: string;
+  /** Static base of the preferred value — alias or static dimension (e.g., `"1rem"`). */
+  base: string;
+  /** Viewport-relative scale component of the preferred value (e.g., `"1.5vw"`). */
+  scale: string;
   /** Maximum value — alias or static dimension (e.g., `"{font-size-070}"` or `"2rem"`). */
   max: string;
 }

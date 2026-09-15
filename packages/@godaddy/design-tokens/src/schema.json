@@ -40,15 +40,19 @@
           "com.godaddy.clamp": {
             "type": "object",
             "description": "Fluid responsive value. Attaches to $type: dimension. $value is the static fallback.",
-            "required": ["min", "preferred", "max"],
+            "required": ["min", "base", "scale", "max"],
             "properties": {
               "min": {
                 "type": "string",
                 "description": "Minimum value — alias or static dimension"
               },
-              "preferred": {
+              "base": {
                 "type": "string",
-                "description": "Preferred value — CSS expression, may contain aliases"
+                "description": "Static base of the preferred value — alias or static dimension"
+              },
+              "scale": {
+                "type": "string",
+                "description": "Viewport-relative scale component of the preferred value (e.g. '1.5vw')"
               },
               "max": {
                 "type": "string",
