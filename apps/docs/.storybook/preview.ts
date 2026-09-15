@@ -35,6 +35,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Welcome',
+          'Blocks',
           'components',
           'Bento',
           [

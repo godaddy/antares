@@ -1,0 +1,12 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Block } from '@bento/block-explorer/runtime';
+import { BlockCatalogEntry, BlocksCatalog } from './blocks-catalog.tsx';
+import * as SignInFormStories from './sign-in-form/sign-in-form.stories.tsx';
+
+<Meta title="Blocks" id="blocks" />
+
+<BlocksCatalog>
+  <BlockCatalogEntry>
+    <Block id="sign-in-form" of={SignInFormStories.Preview} />
+  </BlockCatalogEntry>
+</BlocksCatalog>

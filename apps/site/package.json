@@ -12,6 +12,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@bento/block-explorer": "^0.1.0",
     "@bento/storybook-addon-helpers": "*",
     "estree-util-value-to-estree": "^3.5.0",
     "fumadocs-core": "^16.14.3",

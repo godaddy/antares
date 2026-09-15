@@ -50,7 +50,10 @@
       "cache": true
     },
     "typecheck": {
-      "dependsOn": [{ "target": "typecheck", "projects": "*" }]
+      "dependsOn": [
+        { "target": "typecheck", "projects": "*" },
+        { "target": "build", "projects": ["@bento/block-explorer"] }
+      ]
     }
   }
 }

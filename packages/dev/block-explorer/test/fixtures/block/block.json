@@ -1,0 +1,6 @@
+{
+  "id": "fixture-block",
+  "title": "Fixture block",
+  "description": "A fixture used by the block explorer tests.",
+  "files": ["index.tsx", "styles/theme.css"]
+}
